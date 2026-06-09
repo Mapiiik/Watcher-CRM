@@ -35,9 +35,9 @@ class CustomersController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         $customers = $this->Customers
             ->find('all', contain: [
@@ -53,10 +53,10 @@ class CustomersController extends AppController
      * View method
      *
      * @param string|null $id Customer id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $customer = $this->Customers->get($id, contain: [
             'Addresses' => [
@@ -111,17 +111,13 @@ class CustomersController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): void
     {
         $this->getRequest()->allowMethod(['post', 'put']);
         $customer = $this->Customers->newEntity($this->getRequest()->getData());
-        if ($this->Customers->save($customer)) {
-            $message = 'Saved';
-        } else {
-            $message = 'Error';
-        }
+        $message = $this->Customers->save($customer) ? 'Saved' : 'Error';
         $this->set([
             'message' => $message,
             'customer' => $customer,
@@ -133,19 +129,15 @@ class CustomersController extends AppController
      * Edit method
      *
      * @param string|null $id Customer id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): void
     {
         $this->getRequest()->allowMethod(['patch', 'post', 'put']);
         $customer = $this->Customers->get($id);
         $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
-        if ($this->Customers->save($customer)) {
-            $message = 'Saved';
-        } else {
-            $message = 'Error';
-        }
+        $message = $this->Customers->save($customer) ? 'Saved' : 'Error';
         $this->set([
             'message' => $message,
             'customer' => $customer,
@@ -157,18 +149,14 @@ class CustomersController extends AppController
      * Delete method
      *
      * @param string|null $id Customer id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): void
     {
         $this->getRequest()->allowMethod(['delete']);
         $customer = $this->Customers->get($id);
-        if ($this->Customers->delete($customer)) {
-            $message = 'Deleted';
-        } else {
-            $message = 'Error';
-        }
+        $message = $this->Customers->delete($customer) ? 'Deleted' : 'Error';
         $this->set('message', $message);
         $this->viewBuilder()->setOption('serialize', ['message']);
     }
@@ -176,9 +164,9 @@ class CustomersController extends AppController
     /**
      * Customer points method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function customerPoints()
+    public function customerPoints(): void
     {
         $customerPoints = $this->fetchTable(ContractsTable::class)->find()
             ->contain('InstallationAddresses')
@@ -187,7 +175,7 @@ class CustomersController extends AppController
             ->innerJoinWith('ContractStates', function (SelectQuery $q) {
                 return $q->where(['ContractStates.active_services' => true]);
             })
-            ->formatResults(function (CollectionInterface $customerPoints) {
+            ->formatResults(function (CollectionInterface $customerPoints): array {
                 // Materialize once so we can iterate twice (matchMap + groupBy).
                 $contracts = $customerPoints->toList();
 
@@ -201,17 +189,14 @@ class CustomersController extends AppController
                             ->toList(),
                     );
                 } catch (RuntimeException $e) {
-                    throw new RuntimeException(
-                        __(
-                            'Could not retrieve addresses from national address registry: {0}',
-                            $e->getMessage(),
-                        ),
-                        previous: $e,
-                    );
+                    throw new RuntimeException(__(
+                        'Could not retrieve addresses from national address registry: {0}',
+                        $e->getMessage(),
+                    ), $e->getCode(), previous: $e);
                 }
 
                 return (new Collection($contracts))
-                    ->groupBy(function (Contract $contract) {
+                    ->groupBy(function (Contract $contract): string {
                         $address = $contract->installation_address;
 
                         if (
@@ -227,7 +212,7 @@ class CustomersController extends AppController
 
                         return 'unknown location';
                     })
-                    ->map(function ($contracts, $key) use ($addressRegistryMatches) {
+                    ->map(function (array $contracts, $key) use ($addressRegistryMatches): array {
                         $addressRegistryMatch = $addressRegistryMatches[$key] ?? null;
 
                         if ($addressRegistryMatch !== null) {
@@ -238,7 +223,7 @@ class CustomersController extends AppController
                                 'gps_x' => $addressRegistryMatch['geometry']['coordinates'][0],
                                 'note' => sprintf(
                                     '%s: %s',
-                                    strtoupper($addressRegistryMatch['source']),
+                                    strtoupper((string)$addressRegistryMatch['source']),
                                     $addressRegistryMatch['registry_ref'],
                                 ),
                                 'CustomerConnections' => $this->buildCustomerConnections($contracts),
@@ -273,7 +258,7 @@ class CustomersController extends AppController
     {
         /** @var \Cake\Collection\CollectionInterface<int, array<string, mixed>> */
         return (new Collection($contracts))->map(
-            fn(Contract $contract) => [
+            fn(Contract $contract): array => [
                 'name' => $contract->installation_address->name ?? $contract->customer->name,
                 'customer_number' => $contract->customer->number,
                 'customer_url' => Router::url([
@@ -293,7 +278,7 @@ class CustomersController extends AppController
                 'access_point_id' => $contract->access_point_id,
                 'note' => $contract->note,
                 'CustomerConnectionIps' => (new Collection($contract->ip_addresses))->map(
-                    fn(IpAddress $ipAddress) => [
+                    fn(IpAddress $ipAddress): array => [
                         'ip_address' => $ipAddress->ip_address,
                         'name' => $ipAddress->note,
                         'note' => $ipAddress->note,

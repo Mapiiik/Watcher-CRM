@@ -97,19 +97,19 @@ class Address extends AppEntity
             $full_name .= $this->title;
         }
         if (isset($this->first_name)) {
-            if ($full_name <> '') {
+            if ($full_name !== '') {
                 $full_name .= ' ';
             }
             $full_name .= $this->first_name;
         }
         if (isset($this->last_name)) {
-            if ($full_name <> '') {
+            if ($full_name !== '') {
                 $full_name .= ' ';
             }
             $full_name .= $this->last_name;
         }
         if (isset($this->suffix)) {
-            if ($full_name <> '') {
+            if ($full_name !== '') {
                 $full_name .= ' ';
             }
             $full_name .= $this->suffix;
@@ -130,8 +130,8 @@ class Address extends AppEntity
         if (isset($this->company)) {
             $name .= '[' . $this->company . ']';
         }
-        if ($this->full_name <> '') {
-            if ($name <> '') {
+        if ($this->full_name != '') {
+            if ($name !== '') {
                 $name .= ' ';
             }
             $name .= $this->full_name;
@@ -150,9 +150,8 @@ class Address extends AppEntity
         $address = '';
 
         $address .= $this->street_and_number_extra;
-        $address .= ', ' . $this->zip_and_city;
 
-        return $address;
+        return $address . ', ' . $this->zip_and_city;
     }
 
     /**
@@ -228,9 +227,8 @@ class Address extends AppEntity
 
         $address .= $this->name;
         $address .= ', ';
-        $address .= $this->address;
 
-        return $address;
+        return $address . $this->address;
     }
 
     /**
@@ -260,7 +258,7 @@ class Address extends AppEntity
             $parts[] = __d('addresses', 'unit') . $valueSeparator . $this->unit;
         }
 
-        if (empty($parts)) {
+        if ($parts === []) {
             return '';
         }
 
@@ -275,7 +273,7 @@ class Address extends AppEntity
         }
 
         if ($addLeadingComma) {
-            $result = ',' . $result;
+            return ',' . $result;
         }
 
         return $result;

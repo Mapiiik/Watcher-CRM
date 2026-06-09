@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
+use Cake\Database\Connection;
+use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\ConnectionHelper;
 use Migrations\TestSuite\Migrator;
@@ -39,8 +41,8 @@ if (empty($_SERVER['HTTP_HOST'])) {
 // But since PagesControllerTest is run with debug enabled and DebugKit is loaded
 // in application, without setting up these config DebugKit errors out.
 ConnectionManager::setConfig('test_debug_kit', [
-    'className' => 'Cake\Database\Connection',
-    'driver' => 'Cake\Database\Driver\Sqlite',
+    'className' => Connection::class,
+    'driver' => Sqlite::class,
     'database' => TMP . 'debug_kit.sqlite',
     'encoding' => 'utf8',
     'cacheMetadata' => true,

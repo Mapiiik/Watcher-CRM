@@ -13,7 +13,6 @@ class ApiClient
     /**
      * POST request to SledovaniTV
      *
-     * @param string $function
      * @return \Cake\Http\Client\Response
      * @throws \Exception When data cannot be retrieved from the SledovaniTV API.
      */
@@ -34,22 +33,21 @@ class ApiClient
 
         if ($response->isOk()) {
             return $response;
-        } else {
-            Log::error(
-                'Invalid response from SledovaniTV API: '
-                    . json_encode(
-                        [
-                            'status' => $response->getStatusCode(),
-                            'reason' => $response->getReasonPhrase(),
-                            'headers' => $response->getHeaders(),
-                            'body' => $response->getBody()->getContents(),
-                            'data' => $response->getJson(),
-                        ],
-                        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
-                    ),
-            );
-            throw new RuntimeException('Error while communicating with the SledovaniTV API.');
         }
+        Log::error(
+            'Invalid response from SledovaniTV API: '
+                . json_encode(
+                    [
+                        'status' => $response->getStatusCode(),
+                        'reason' => $response->getReasonPhrase(),
+                        'headers' => $response->getHeaders(),
+                        'body' => $response->getBody()->getContents(),
+                        'data' => $response->getJson(),
+                    ],
+                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
+                ),
+        );
+        throw new RuntimeException('Error while communicating with the SledovaniTV API.');
     }
 
     /**
@@ -64,9 +62,9 @@ class ApiClient
 
         if (is_array($data['users'])) {
             return $data['users'];
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**

@@ -53,10 +53,10 @@ class PagesController extends AppController
         }
         $page = $subpage = null;
 
-        if (!empty($path[0])) {
+        if (isset($path[0]) && ($path[0] !== '' && $path[0] !== '0')) {
             $page = $path[0];
         }
-        if (!empty($path[1])) {
+        if (isset($path[1]) && ($path[1] !== '' && $path[1] !== '0')) {
             $subpage = $path[1];
         }
         $this->set(compact('page', 'subpage'));
@@ -67,7 +67,7 @@ class PagesController extends AppController
             if (Configure::read('debug')) {
                 throw $exception;
             }
-            throw new NotFoundException();
+            throw new NotFoundException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 }

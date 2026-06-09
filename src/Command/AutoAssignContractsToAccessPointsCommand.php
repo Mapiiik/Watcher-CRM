@@ -5,6 +5,7 @@ namespace App\Command;
 
 use App\Model\Table\ContractsTable;
 use App\NMS\ApiClient as NMSApiClient;
+use Cake\Collection\CollectionInterface;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -27,7 +28,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
     #[Override]
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 
@@ -39,10 +40,10 @@ class AutoAssignContractsToAccessPointsCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return int|null|void The exit code or null for success
+     * @return void The exit code or null for success
      */
     #[Override]
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): void
     {
         $contractsTable = $this->fetchTable(ContractsTable::class);
         $radiusAccountsTable = $this->fetchTable(AccountsTable::class);
@@ -87,7 +88,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                 if (isset($radiusAccount->radacct[0]->nasipaddress)) {
                     $routerosDevices = $api->getRouterosDevicesForIp($radiusAccount->radacct[0]->nasipaddress);
 
-                    if ($routerosDevices === null) {
+                    if (!$routerosDevices instanceof CollectionInterface) {
                         Log::write(
                             'error',
                             'Error when fetching RouterOS devices for NAS IP: '

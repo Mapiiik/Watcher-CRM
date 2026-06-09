@@ -26,9 +26,9 @@ class NetworkManagementSystemBridgeController extends AppController
     /**
      * RouterOS Devices method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function routerosDevices()
+    public function routerosDevices(): void
     {
         $ip_address = $this->getRequest()->getParam('ip_address');
         $routerosDevices = NMSApiClient::getRouterosDevicesForIp($ip_address);
@@ -40,9 +40,9 @@ class NetworkManagementSystemBridgeController extends AppController
     /**
      * Access Points method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function accessPoints()
+    public function accessPoints(): void
     {
         $this->routerosDevices();
     }
@@ -50,12 +50,13 @@ class NetworkManagementSystemBridgeController extends AppController
     /**
      * IP Address Ranges method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function ipAddressRanges()
+    public function ipAddressRanges(): void
     {
         $ip_network = $this->getRequest()->getParam('ip_network');
         $ip_network = strtr($ip_network, ['-mask-' => '/']);
+
         $ipAddressRanges = NMSApiClient::getIpAddressRangesForIp($ip_network);
 
         $this->set('ipAddressRanges', $ipAddressRanges);

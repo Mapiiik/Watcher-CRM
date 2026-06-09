@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\View\Cell;
 
 use App\View\Cell\ServiceOverridesStatusCell;
+use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -40,8 +42,8 @@ class ServiceOverridesStatusCellTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = $this->getMockBuilder('Cake\Http\ServerRequest')->getMock();
-        $this->response = $this->getMockBuilder('Cake\Http\Response')->getMock();
+        $this->request = $this->getMockBuilder(ServerRequest::class)->getMock();
+        $this->response = $this->getMockBuilder(Response::class)->getMock();
         $this->ServiceOverridesStatus = new ServiceOverridesStatusCell($this->request, $this->response);
     }
 

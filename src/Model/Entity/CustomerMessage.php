@@ -83,7 +83,7 @@ class CustomerMessage extends AppEntity
                 } elseif (is_string($item)) {
                     // strings
                     $item = trim($item);
-                    if (!empty($item)) {
+                    if ($item !== '' && $item !== '0') {
                         $recipientsOutput[] = str_replace(' ', '', $item);
                     }
                 } else {

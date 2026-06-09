@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
+
 /**
  * EquipmentTypes Controller
  *
@@ -13,9 +15,9 @@ class EquipmentTypesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
@@ -25,7 +27,7 @@ class EquipmentTypesController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'EquipmentTypes.name ILIKE' => '%' . trim($search) . '%',
+                    'EquipmentTypes.name ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -49,10 +51,10 @@ class EquipmentTypesController extends AppController
      * View method
      *
      * @param string|null $id Equipment Type id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $equipmentType = $this->EquipmentTypes->get($id, contain: [
             'BorrowedEquipments' => ['Customers', 'Contracts'],
@@ -67,9 +69,9 @@ class EquipmentTypesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $equipmentType = $this->EquipmentTypes->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
@@ -82,16 +84,18 @@ class EquipmentTypesController extends AppController
             $this->Flash->error(__('The equipment type could not be saved. Please, try again.'));
         }
         $this->set(compact('equipmentType'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Equipment Type id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $equipmentType = $this->EquipmentTypes->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -104,16 +108,18 @@ class EquipmentTypesController extends AppController
             $this->Flash->error(__('The equipment type could not be saved. Please, try again.'));
         }
         $this->set(compact('equipmentType'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Equipment Type id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $equipmentType = $this->EquipmentTypes->get($id);

@@ -24,8 +24,6 @@ class CustomerCell extends Cell
 
     /**
      * Compact view
-     *
-     * @var bool
      */
     protected bool $compact = false;
 

@@ -51,16 +51,6 @@ class ContractStateValidator
     private array $errors = [];
 
     /**
-     * Returns all collected validation errors.
-     *
-     * @return array<string, array<string>>
-     */
-    private function getErrors(): array
-    {
-        return $this->errors;
-    }
-
-    /**
      * Adds a validation error message for the given field.
      *
      * Multiple messages may be added for the same field.
@@ -90,7 +80,6 @@ class ContractStateValidator
      * required condition is not met by attaching validation errors
      * to the contract entity.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return array<string, array<string>>
      */
     public function validate(Contract $contract): array
@@ -115,7 +104,7 @@ class ContractStateValidator
                 );
             }
             // Skip further validations when creating a new contract for now
-            return $this->getErrors();
+            return $this->errors;
         }
 
         // Dates
@@ -134,7 +123,7 @@ class ContractStateValidator
         // Skip further validations if contract state is not being changed
         if (!$contract->isDirty('contract_state_id')) {
             // No contract state change, nothing more to validate for now
-            return $this->getErrors();
+            return $this->errors;
         }
 
         // Tasks
@@ -203,7 +192,7 @@ class ContractStateValidator
             }
         }
 
-        return $this->getErrors();
+        return $this->errors;
     }
 
     /**
@@ -212,7 +201,6 @@ class ContractStateValidator
      * Ensures that the contract has an installation date set when required
      * by the target contract state.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresInstallationDate(Contract $contract): void
@@ -231,7 +219,6 @@ class ContractStateValidator
      * Ensures that the contract has an uninstallation date set when required
      * by the target contract state.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresUninstallationDate(Contract $contract): void
@@ -250,7 +237,6 @@ class ContractStateValidator
      * Ensures that the contract has a termination date set when required
      * by the target contract state.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresTerminationDate(Contract $contract): void
@@ -269,8 +255,6 @@ class ContractStateValidator
      * Ensures that the contract has at least one task
      * of the required type in a non-completed state.
      *
-     * @param \App\Model\Entity\Contract $contract
-     * @param string $taskTypeId
      * @return void
      */
     private function validateRequiresOpenTaskType(
@@ -311,7 +295,6 @@ class ContractStateValidator
      * in a non-completed state when required
      * by the target contract state.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresNoOpenTasks(Contract $contract): void
@@ -342,7 +325,6 @@ class ContractStateValidator
      * Ensures that the contract has no currently active billing records.
      * A billing is considered active when its billing period includes today.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresNoActiveBillings(Contract $contract): void
@@ -376,7 +358,6 @@ class ContractStateValidator
      * Ensures that the contract has no billing records
      * scheduled to start in the future.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresNoFutureBillings(Contract $contract): void
@@ -406,7 +387,6 @@ class ContractStateValidator
      * Ensures that the contract has no IP addresses or IP networks
      * currently assigned to it.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresNoAssignedIpAddressesOrNetworks(Contract $contract): void
@@ -442,7 +422,6 @@ class ContractStateValidator
      * Ensures that the contract has no active RADIUS accounts
      * associated with it.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresNoActiveRadiusAccounts(Contract $contract): void
@@ -471,7 +450,6 @@ class ContractStateValidator
      * Ensures that the contract has no equipments currently borrowed
      * and not yet returned.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresNoBorrowedEquipments(Contract $contract): void
@@ -499,7 +477,6 @@ class ContractStateValidator
      *
      * Ensures that the contract has at least one version defined.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresContractVersion(Contract $contract): void
@@ -526,7 +503,6 @@ class ContractStateValidator
      *
      * Ensures that the contract has a currently active version.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresActiveContractVersion(Contract $contract): void
@@ -559,7 +535,6 @@ class ContractStateValidator
      *
      * Ensures that the contract has at least one active or future version.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresActiveOrFutureContractVersion(Contract $contract): void
@@ -599,7 +574,6 @@ class ContractStateValidator
      *
      * Ensures that the contract has no active or future versions defined.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresNoActiveOrFutureContractVersions(Contract $contract): void
@@ -640,7 +614,6 @@ class ContractStateValidator
      *
      * Ensures that the contract has no active obligations.
      *
-     * @param \App\Model\Entity\Contract $contract
      * @return void
      */
     private function validateRequiresNoActiveObligations(Contract $contract): void

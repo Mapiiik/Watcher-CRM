@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\AccountingProfilesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * App\Controller\AccountingProfilesController Test Case
- *
- * @uses \App\Controller\AccountingProfilesController
  */
+#[UsesClass(AccountingProfilesController::class)]
 class AccountingProfilesControllerTest extends TestCase
 {
     use IntegrationTestTrait;

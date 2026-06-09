@@ -9,6 +9,7 @@ use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\LabelsTable;
+use Cake\Http\Response;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
 use RuntimeException;
@@ -26,13 +27,13 @@ class CustomerMessagesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions = ['CustomerMessages.customer_id' => $this->customer_id];
         }
 
@@ -41,8 +42,8 @@ class CustomerMessagesController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'CustomerMessages.subject ILIKE' => '%' . trim($search) . '%',
-                    'CustomerMessages.body ILIKE' => '%' . trim($search) . '%',
+                    'CustomerMessages.subject ILIKE' => '%' . trim((string)$search) . '%',
+                    'CustomerMessages.body ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -66,10 +67,10 @@ class CustomerMessagesController extends AppController
      * View method
      *
      * @param string|null $id Customer Message id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $customerMessage = $this->CustomerMessages->get($id, contain: [
             'Customers',
@@ -82,9 +83,9 @@ class CustomerMessagesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $customerMessage = $this->CustomerMessages->newEmptyEntity();
         if ($this->request->is('post')) {
@@ -102,14 +103,16 @@ class CustomerMessagesController extends AppController
             'first_name',
         ])->all();
         $this->set(compact('customerMessage', 'customers'));
+
+        return null;
     }
 
     /**
      * Add Bulk method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function addBulk()
+    public function addBulk(): ?Response
     {
         // load labels
         $labelsTable = $this->fetchTable(LabelsTable::class);
@@ -201,7 +204,7 @@ class CustomerMessagesController extends AppController
             unset($filterQuery);
         }
 
-        if (!empty($customersFilter)) {
+        if ($customersFilter !== []) {
             $customers = $this->CustomerMessages->Customers->find()
             ->contain([
                 'Emails',
@@ -282,16 +285,18 @@ class CustomerMessagesController extends AppController
 
         // load access points from NMS if possible (only active)
         $this->setAccessPointsViewVarList(onlyActive: true);
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Customer Message id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $customerMessage = $this->CustomerMessages->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -309,6 +314,8 @@ class CustomerMessagesController extends AppController
             'first_name',
         ])->all();
         $this->set(compact('customerMessage', 'customers'));
+
+        return null;
     }
 
     /**
@@ -318,7 +325,7 @@ class CustomerMessagesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->request->allowMethod(['post', 'delete']);
         $customerMessage = $this->CustomerMessages->get($id);

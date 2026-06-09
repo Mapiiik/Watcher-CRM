@@ -25,14 +25,10 @@ final class ColorThemeSelector
             return self::$cache[$key];
         }
 
-        switch ($theme) {
-            case 'dark':
-                $result = ColorTransformer::invertLightness($hex, $factor);
-                break;
-
-            default:
-                $result = $hex;
-        }
+        $result = match ($theme) {
+            'dark' => ColorTransformer::invertLightness($hex, $factor),
+            default => $hex,
+        };
 
         return self::$cache[$key] = $result;
     }

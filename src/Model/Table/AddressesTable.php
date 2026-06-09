@@ -112,7 +112,7 @@ class AddressesTable extends AppTable
             ->notEmptyString(
                 'first_name',
                 __('First name and last name are required when company is not filled in.'),
-                fn($context) => empty($context['data']['company'] ?? null),
+                fn($context): bool => empty($context['data']['company'] ?? null),
             );
 
         $validator
@@ -120,7 +120,7 @@ class AddressesTable extends AppTable
             ->notEmptyString(
                 'last_name',
                 __('First name and last name are required when company is not filled in.'),
-                fn($context) => empty($context['data']['company'] ?? null),
+                fn($context): bool => empty($context['data']['company'] ?? null),
             );
 
         $validator
@@ -132,7 +132,7 @@ class AddressesTable extends AppTable
             ->notEmptyString(
                 'company',
                 __('Company is required when first and last name are not filled in.'),
-                fn($context) => (
+                fn($context): bool => (
                     empty($context['data']['first_name'] ?? null)
                     || empty($context['data']['last_name'] ?? null)
                 ),

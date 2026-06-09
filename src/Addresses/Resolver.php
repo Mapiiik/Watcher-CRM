@@ -44,7 +44,7 @@ class Resolver
         /** @var \Cake\Collection\CollectionInterface<string, mixed> $return */
         $return = collection($matches)
             ->indexBy(
-                fn(array $match) => $match['source'] . '|' . $match['registry_ref'],
+                fn(array $match): string => $match['source'] . '|' . $match['registry_ref'],
             );
 
         return $return->toArray();
@@ -77,14 +77,14 @@ class Resolver
         /** @var \Cake\Collection\CollectionInterface<string, string> $return */
         $return = collection($matches)
             ->sortBy(
-                fn(array $match) => ($match['city'] ?? '')
+                fn(array $match): string => ($match['city'] ?? '')
                     . '|' . ($match['street'] ?? '')
                     . '|' . str_pad((string)($match['house_number'] ?? ''), 8, '0', STR_PAD_LEFT),
                 SORT_ASC,
                 SORT_NATURAL,
             )
             ->combine(
-                fn(array $match) => $match['source'] . '|' . $match['registry_ref'],
+                fn(array $match): string => $match['source'] . '|' . $match['registry_ref'],
                 'formatted_address',
             );
 
@@ -113,8 +113,10 @@ class Resolver
         foreach ($addresses as $address) {
             $source = $address->address_registry_source ?? null;
             $reference = $address->address_registry_reference ?? null;
-
-            if ($source === null || $reference === null) {
+            if ($source === null) {
+                continue;
+            }
+            if ($reference === null) {
                 continue;
             }
 

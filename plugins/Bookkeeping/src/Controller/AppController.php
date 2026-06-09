@@ -16,7 +16,7 @@ class AppController extends BaseController
      * @return void
      */
     #[Override]
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): void
     {
         // add support for dBase extension
         $this->response->setTypeMap('dbf', ['application/dbase']);

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service\ContractPrint;
 
+use App\Model\Entity\ContractVersion;
 use App\Model\Entity\IpAddress;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\IpAddressTypeOfUse;
@@ -40,22 +41,10 @@ final class ContractPrintValidator
     private array $errors = [];
 
     /**
-     * Returns all collected validation errors.
-     *
-     * @return array<string, array<string>>
-     */
-    private function getErrors(): array
-    {
-        return $this->errors;
-    }
-
-    /**
      * Adds a validation error message for the given field.
      *
      * Multiple messages may be added for the same field.
      *
-     * @param string $field
-     * @param string $message
      * @return void
      */
     private function setError(string $field, string $message): void
@@ -66,8 +55,6 @@ final class ContractPrintValidator
     /**
      * Validates print data according to document type.
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
-     * @param array $query
      * @return array<string, array<string>>
      */
     public function validate(
@@ -80,7 +67,7 @@ final class ContractPrintValidator
 
         match ($data->type) {
             ContractPrintType::ContractNew =>
-                $this->validateContractNew($data, $query),
+                $this->validateContractNew($data),
 
             ContractPrintType::ContractNewX =>
                 $this->validateContractNewX($data, $query),
@@ -92,13 +79,13 @@ final class ContractPrintValidator
                 $this->validateContractTermination($data, $query),
 
             ContractPrintType::HandoverInstallation =>
-                $this->validateHandoverInstallation($data, $query),
+                $this->validateHandoverInstallation($data),
 
             ContractPrintType::HandoverUninstallation =>
                 $this->validateHandoverUninstallation($data, $query),
         };
 
-        return $this->getErrors();
+        return $this->errors;
     }
 
     /**
@@ -110,7 +97,7 @@ final class ContractPrintValidator
      */
     private function requireContractVersionToBeExecuted(ContractPrintData $data): bool
     {
-        if ($data->contractVersionToBeExecuted === null) {
+        if (!$data->contractVersionToBeExecuted instanceof ContractVersion) {
             $this->setError(
                 'contract_version_to_be_executed_id',
                 __('Please select the contract version to be executed.'),
@@ -131,7 +118,7 @@ final class ContractPrintValidator
      */
     private function requireContractVersionToBeTerminated(ContractPrintData $data): bool
     {
-        if ($data->contractVersionToBeTerminated === null) {
+        if (!$data->contractVersionToBeTerminated instanceof ContractVersion) {
             $this->setError(
                 'contract_version_to_be_terminated_id',
                 __('Please select the contract version to be terminated.'),
@@ -171,10 +158,10 @@ final class ContractPrintValidator
             $ipAddresses = new Collection($data->contract->ip_addresses);
 
             $radiusIpAddresses = $ipAddresses
-                ->filter(fn(IpAddress $ip) => $ip->type_of_use === IpAddressTypeOfUse::CustomerRADIUS);
+                ->filter(fn(IpAddress $ip): bool => $ip->type_of_use === IpAddressTypeOfUse::CustomerRADIUS);
 
             $staticIpAddresses = $ipAddresses
-                ->filter(fn(IpAddress $ip) => $ip->type_of_use === IpAddressTypeOfUse::CustomerManually);
+                ->filter(fn(IpAddress $ip): bool => $ip->type_of_use === IpAddressTypeOfUse::CustomerManually);
         }
 
         // For service types that normally require IP addresses, check that either the customer does not use IP addresses or that they are assigned.
@@ -232,10 +219,8 @@ final class ContractPrintValidator
      */
     private function validateContractNew(
         ContractPrintData $data,
-        array $query,
     ): void {
         if (!$this->requireContractVersionToBeExecuted($data)) {
-            return;
         }
     }
 
@@ -353,10 +338,8 @@ final class ContractPrintValidator
      */
     private function validateHandoverInstallation(
         ContractPrintData $data,
-        array $query,
     ): void {
         if (!$this->requireContractVersionToBeExecuted($data)) {
-            return;
         }
     }
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
 use Cake\I18n\DateTime;
 
 /**
@@ -15,16 +16,16 @@ class RemovedIpNetworksController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions += ['RemovedIpNetworks.customer_id' => $this->customer_id];
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $conditions += ['RemovedIpNetworks.contract_id' => $this->contract_id];
         }
 
@@ -33,8 +34,8 @@ class RemovedIpNetworksController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'RemovedIpNetworks.ip_network::character varying ILIKE' => '%' . trim($search) . '%',
-                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                    'RemovedIpNetworks.ip_network::character varying ILIKE' => '%' . trim((string)$search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -60,10 +61,10 @@ class RemovedIpNetworksController extends AppController
      * View method
      *
      * @param string|null $id Removed IP Network id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $removedIpNetwork = $this->RemovedIpNetworks->get($id, contain: [
             'Customers',
@@ -79,16 +80,16 @@ class RemovedIpNetworksController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $removedIpNetwork = $this->RemovedIpNetworks->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $removedIpNetwork->customer_id = $this->customer_id;
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $removedIpNetwork->contract_id = $this->contract_id;
         }
 
@@ -126,25 +127,27 @@ class RemovedIpNetworksController extends AppController
             ],
         );
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('removedIpNetwork', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Removed IP Network id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $removedIpNetwork = $this->RemovedIpNetworks->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -177,25 +180,27 @@ class RemovedIpNetworksController extends AppController
             ],
         );
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('removedIpNetwork', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Removed IP Network id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $removedIpNetwork = $this->RemovedIpNetworks->get($id);

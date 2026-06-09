@@ -56,13 +56,11 @@ class ContractVersion extends AppEntity
      */
     protected function _getMinimumDuration(): ?int
     {
-        $minimum_duration = null;
-
         if (isset($this->obligation_until) && ($this->valid_from < $this->obligation_until)) {
-            $minimum_duration = $this->valid_from->diffInMonths($this->obligation_until->addDays(1));
+            return $this->valid_from->diffInMonths($this->obligation_until->addDays(1));
         }
 
-        return $minimum_duration;
+        return null;
     }
 
     /**

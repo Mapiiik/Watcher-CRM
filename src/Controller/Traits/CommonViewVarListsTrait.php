@@ -6,6 +6,7 @@ namespace App\Controller\Traits;
 use App\Model\Table\QueuesTable;
 use App\Model\Table\ServiceTypesTable;
 use App\NMS\ApiClient as NMSApiClient;
+use Cake\Collection\CollectionInterface;
 
 /**
  * @psalm-require-extends \Cake\Controller\Controller
@@ -75,13 +76,13 @@ trait CommonViewVarListsTrait
         $accessPoints = NMSApiClient::getAccessPoints();
         $ipAddressRanges = NMSApiClient::searchIpAddressRanges([]);
 
-        if ($accessPoints !== null && $ipAddressRanges !== null) {
+        if ($accessPoints instanceof CollectionInterface && $ipAddressRanges instanceof CollectionInterface) {
             if ($onlyActive) {
                 $accessPoints = $accessPoints->match(['archived' => null]);
             }
             $accessPoints = $accessPoints
                 ->map(
-                    function ($accessPoint) use ($ipAddressRanges) {
+                    function (array $accessPoint) use ($ipAddressRanges): array {
                         $text = $accessPoint['name']
                             . ($accessPoint['archived'] === null ? '' : ' (' . __('archived') . ')');
 
@@ -91,7 +92,7 @@ trait CommonViewVarListsTrait
 
                         if (!$ranges->isEmpty()) {
                             $rangeNames = $ranges->extract('name');
-                            $text .= '     ' . '[' . implode(', ', $rangeNames->toArray()) . ']';
+                            $text .= '     [' . implode(', ', $rangeNames->toArray()) . ']';
                         }
 
                         return [

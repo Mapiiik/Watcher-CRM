@@ -13,10 +13,9 @@ class AppUsersFixture extends TestFixture
 {
     /**
      * Table name
-     *
-     * @var string
      */
     public string $table = 'users';
+
     /**
      * Init method
      *

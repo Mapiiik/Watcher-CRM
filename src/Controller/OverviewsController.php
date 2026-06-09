@@ -17,6 +17,7 @@ use App\Model\Table\ServicesTable;
 use ArrayObject;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
@@ -42,10 +43,10 @@ class OverviewsController extends AppController
     /**
      * Overview of contracts method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfContracts()
+    public function overviewOfContracts(): void
     {
         // get contracts table
         $contractsTable = $this->fetchTable(ContractsTable::class);
@@ -86,7 +87,7 @@ class OverviewsController extends AppController
             if (is_array($this->getRequest()->getQuery('label_ids'))) {
                 foreach ($this->getRequest()->getQuery('label_ids') as $labelId) {
                     if (is_string($labelId) && Validation::uuid($labelId)) {
-                        $uuidLabels[] = "'{$labelId}'::uuid";
+                        $uuidLabels[] = sprintf("'%s'::uuid", $labelId);
                     }
                 }
             }
@@ -108,7 +109,7 @@ class OverviewsController extends AppController
             if (is_array($this->getRequest()->getQuery('not_label_ids'))) {
                 foreach ($this->getRequest()->getQuery('not_label_ids') as $labelId) {
                     if (is_string($labelId) && Validation::uuid($labelId)) {
-                        $uuidLabels[] = "'{$labelId}'::uuid";
+                        $uuidLabels[] = sprintf("'%s'::uuid", $labelId);
                     }
                 }
             }
@@ -149,7 +150,7 @@ class OverviewsController extends AppController
             ->contain('ContractStates')
             ->contain('ServiceTypes')
             ->contain('InstallationAddresses')
-            ->contain('Billings', function (SelectQuery $q) {
+            ->contain('Billings', function (SelectQuery $q): SelectQuery {
                 $q->contain('Services');
                 $q->contain('Services.Queues');
 
@@ -247,10 +248,10 @@ class OverviewsController extends AppController
     /**
      * Overview of active services method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfActiveServices()
+    public function overviewOfActiveServices(): void
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
         $service_type_id = $this->getRequest()->getQuery('service_type_id');
@@ -261,7 +262,7 @@ class OverviewsController extends AppController
 
         $servicesQuery = $this->fetchTable(ServicesTable::class)
             ->find()
-            ->contain('Billings', function (SelectQuery $q) use ($month_to_display, $access_point_id) {
+            ->contain('Billings', function (SelectQuery $q) use ($month_to_display, $access_point_id): SelectQuery {
                 $q
                     ->contain('Services')
                     ->contain('Customers')
@@ -273,13 +274,13 @@ class OverviewsController extends AppController
                             $q;
                     });
 
-                return self::applyActiveInMonthScope($q, $month_to_display);
+                return $this->applyActiveInMonthScope($q, $month_to_display);
             })
             ->contain('Queues')
             ->contain('ServiceTypes')
             ->formatResults(
-                function (CollectionInterface $services) {
-                    $services = $services->map(function ($service) {
+                function (CollectionInterface $services): CollectionInterface {
+                    $services = $services->map(function (array $service): array {
                         $billings = new Collection($service['billings']);
 
                         $service['number_of_uses'] = $billings
@@ -339,13 +340,13 @@ class OverviewsController extends AppController
                     });
 
                     // only services that are used
-                    $services = $services->filter(function ($service) {
+                    $services = $services->filter(function ($service): bool {
                         return $service->number_of_uses > 0;
                     });
 
                     // sorting by number of uses, if no other sorting is set¨
                     if ($this->getRequest()->getQuery('sort') === null) {
-                        $services = $services->sortBy('number_of_uses');
+                        return $services->sortBy('number_of_uses');
                     }
 
                     return $services;
@@ -385,30 +386,27 @@ class OverviewsController extends AppController
      * Overview of Czech customer connection points method
      *
      * @param string|null $category Optional parameter, CTO category.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response|null Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCzechCustomerConnectionPoints(?string $category = null)
+    public function overviewOfCzechCustomerConnectionPoints(?string $category = null): ?Response
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
         /** @var \Cake\Collection\CollectionInterface<string, \Cake\Collection\CollectionInterface<string, \stdClass>> $cto_categories */
-        $cto_categories = self::applyActiveInMonthScope(
-            $this->fetchTable(BillingsTable::class)->find()
-                ->contain('Customers')
-                ->contain([
-                    'Contracts' => [
-                        'InstallationAddresses',
-                    ],
-                ])
-                ->contain([
-                    'Services' => [
-                        'ServiceTypes',
-                        'Queues',
-                    ],
-                ]),
-            $month_to_display,
-        )
+        $cto_categories = $this->applyActiveInMonthScope($this->fetchTable(BillingsTable::class)->find()
+            ->contain('Customers')
+            ->contain([
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
+            ])
+            ->contain([
+                'Services' => [
+                    'ServiceTypes',
+                    'Queues',
+                ],
+            ]), $month_to_display)
             ->where(['Queues.speed_down IS NOT NULL'])
             ->where(['Queues.speed_up IS NOT NULL'])
             ->where(['Queues.cto_category IS NOT NULL'])
@@ -421,7 +419,7 @@ class OverviewsController extends AppController
             ])
 
             ->formatResults(
-                function (CollectionInterface $billings) {
+                function (CollectionInterface $billings): CollectionInterface {
                     // Resolve all installation addresses with registry refs in one batch.
                     // Failure → empty map; groups will fall back to GPS / unknown branches.
                     try {
@@ -442,9 +440,12 @@ class OverviewsController extends AppController
 
                     return $billings
                         ->groupBy('service.queue.cto_category')
-                        ->map(function ($category_billings, $cto_category) use ($addressRegistryMatches) {
+                        ->map(function (
+                            $category_billings,
+                            $cto_category,
+                        ) use ($addressRegistryMatches): CollectionInterface {
                             return (new Collection($category_billings))
-                                ->groupBy(function (Billing $billing) {
+                                ->groupBy(function (Billing $billing): ?string {
                                     $address = $billing->contract->installation_address;
 
                                     if (
@@ -458,7 +459,13 @@ class OverviewsController extends AppController
                                     // This should not happen due to the query conditions, but just in case.
                                     return null;
                                 })
-                                ->map(function ($billings, $key) use ($cto_category, $addressRegistryMatches) {
+                                ->map(function (
+                                    $billings,
+                                    $key,
+                                ) use (
+                                    $cto_category,
+                                    $addressRegistryMatches,
+                                ): stdClass {
                                     $billings_collection = new Collection($billings);
 
                                     $address = new stdClass();
@@ -472,7 +479,7 @@ class OverviewsController extends AppController
                                         // Authoritative data from the national address registry.
                                         $address->ruian_gid = $addressRegistryMatch['registry_ref'];
                                         $address->ruian_address = $addressRegistryMatch['formatted_address'];
-                                    } elseif (!empty($addressRegistryMatches)) {
+                                    } elseif ($addressRegistryMatches !== []) {
                                         $address->ruian_gid = null;
                                         $address->ruian_address = null;
 
@@ -499,18 +506,19 @@ class OverviewsController extends AppController
 
                                     $address->active_speeds = new ArrayObject(
                                         $billings_collection
-                                            ->countBy(function (Billing $billing) {
+                                            ->countBy(function (Billing $billing): string {
                                                 $commonly_available_download_speed =
                                                     $billing->service?->queue->speed_down ?
                                                         $billing->service->queue->speed_down * 0.6 : null;
-
                                                 if ($commonly_available_download_speed < 30720) {
                                                     return 'speed_0_30';
-                                                } elseif ($commonly_available_download_speed < 102400) {
-                                                    return 'speed_30_100';
-                                                } else {
-                                                    return 'speed_100_plus';
                                                 }
+
+                                                if ($commonly_available_download_speed < 102400) {
+                                                    return 'speed_30_100';
+                                                }
+
+                                                return 'speed_100_plus';
                                             })
                                             ->toArray(),
                                         ArrayObject::ARRAY_AS_PROPS,
@@ -530,22 +538,14 @@ class OverviewsController extends AppController
 
                                     $address->available_speeds = new ArrayObject(
                                         [
-                                            'maximal_download_category' => self::categorizeAvailableSpeed(
-                                                $maximal_download,
-                                                $cto_category,
-                                            ),
-                                            'effective_download_category' => self::categorizeAvailableSpeed(
-                                                $effective_download,
-                                                $cto_category,
-                                            ),
-                                            'maximal_upload_category' => self::categorizeAvailableSpeed(
-                                                $maximal_upload,
-                                                $cto_category,
-                                            ),
-                                            'effective_upload_category' => self::categorizeAvailableSpeed(
-                                                $effective_upload,
-                                                $cto_category,
-                                            ),
+                                            'maximal_download_category' =>
+                                                $this->categorizeAvailableSpeed($maximal_download, $cto_category),
+                                            'effective_download_category' =>
+                                                $this->categorizeAvailableSpeed($effective_download, $cto_category),
+                                            'maximal_upload_category' =>
+                                                $this->categorizeAvailableSpeed($maximal_upload, $cto_category),
+                                            'effective_upload_category' =>
+                                                $this->categorizeAvailableSpeed($effective_upload, $cto_category),
                                         ],
                                         ArrayObject::ARRAY_AS_PROPS,
                                     );
@@ -573,7 +573,7 @@ class OverviewsController extends AppController
                 'VHCN síť (třída)',
             ];
 
-            if (in_array($category, ['s2_catv'])) {
+            if ($category === 's2_catv') {
                 $headers[] = 'Standard DOCSIS 3.1 a vyšší (ANO/NE)';
             }
 
@@ -595,7 +595,7 @@ class OverviewsController extends AppController
                     (int)$connection_point->vhcn_category,
                 ];
 
-                if (in_array($category, ['s2_catv'])) {
+                if ($category === 's2_catv') {
                     $row[] = 'NE';
                 }
 
@@ -618,34 +618,33 @@ class OverviewsController extends AppController
         }
 
         $this->set(compact('cto_categories', 'month_to_display'));
+
+        return null;
     }
 
     /**
      * Overview of connection speeds method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfCzechCustomerConnectionSpeeds()
+    public function overviewOfCzechCustomerConnectionSpeeds(): void
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
-        $cto_categories = self::applyActiveInMonthScope(
-            $this->fetchTable(BillingsTable::class)->find()
-                ->contain('Customers')
-                ->contain([
-                    'Contracts' => [
-                        'InstallationAddresses',
-                    ],
-                ])
-                ->contain([
-                    'Services' => [
-                        'ServiceTypes',
-                        'Queues',
-                    ],
-                ]),
-            $month_to_display,
-        )
+        $cto_categories = $this->applyActiveInMonthScope($this->fetchTable(BillingsTable::class)->find()
+            ->contain('Customers')
+            ->contain([
+                'Contracts' => [
+                    'InstallationAddresses',
+                ],
+            ])
+            ->contain([
+                'Services' => [
+                    'ServiceTypes',
+                    'Queues',
+                ],
+            ]), $month_to_display)
             ->where(['Queues.speed_down IS NOT NULL'])
             ->where(['Queues.speed_up IS NOT NULL'])
             ->where(['Queues.cto_category IS NOT NULL'])
@@ -658,13 +657,13 @@ class OverviewsController extends AppController
             ])
 
             ->formatResults(
-                function (CollectionInterface $billings) {
+                function (CollectionInterface $billings): CollectionInterface {
                     return $billings
                         ->groupBy('service.queue.cto_category')
-                        ->map(function ($category_billings, $cto_category) {
+                        ->map(function ($category_billings, $cto_category): CollectionInterface {
                             return (new Collection($category_billings))
                                 ->groupBy('contract.installation_address.city')
-                                ->map(function ($billings, $city) use ($cto_category) {
+                                ->map(function ($billings, $city) use ($cto_category): stdClass {
                                     $billings_collection = new Collection($billings);
 
                                     $address = new stdClass();
@@ -682,22 +681,24 @@ class OverviewsController extends AppController
 
                                     $address->advertised_speeds = new ArrayObject(
                                         $billings_collection
-                                            ->countBy(fn(Billing $billing) => self::bucketAdvertisedSpeed(
-                                                $billing->service?->queue?->speed_down,
-                                            ))
+                                            ->countBy(
+                                                fn(Billing $billing): string => $this->bucketAdvertisedSpeed(
+                                                    $billing->service?->queue?->speed_down,
+                                                ),
+                                            )
                                             ->toArray(),
                                         ArrayObject::ARRAY_AS_PROPS,
                                     );
 
                                     $address->advertised_speeds_nonbusiness = new ArrayObject(
                                         $billings_collection
-                                            ->countBy(function (Billing $billing) {
+                                            ->countBy(function (Billing $billing): string {
                                                 // skip business customers
                                                 if ($billing->customer->identity_number !== null) {
                                                     return 'business';
                                                 }
 
-                                                return self::bucketAdvertisedSpeed(
+                                                return $this->bucketAdvertisedSpeed(
                                                     $billing->service?->queue?->speed_down,
                                                 );
                                             })
@@ -716,10 +717,10 @@ class OverviewsController extends AppController
     /**
      * Overview of dealer commissions
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function overviewOfDealerCommissions()
+    public function overviewOfDealerCommissions(): void
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
@@ -730,15 +731,12 @@ class OverviewsController extends AppController
                     return $q
                         ->contain('ContractStates')
                         ->contain('Customers')
-                        ->contain('Billings', function (SelectQuery $q) use ($month_to_display) {
-                            return self::applyActiveInMonthScope(
-                                $q->contain('Services'),
-                                $month_to_display,
-                            );
+                        ->contain('Billings', function (SelectQuery $q) use ($month_to_display): SelectQuery {
+                            return $this->applyActiveInMonthScope($q->contain('Services'), $month_to_display);
                         })
                         // format results
-                        ->formatResults(function (CollectionInterface $contracts) {
-                            return $contracts->map(function (Contract $contract) {
+                        ->formatResults(function (CollectionInterface $contracts): CollectionInterface {
+                            return $contracts->map(function (Contract $contract): Contract {
                                 $contract->set(
                                     'total_price',
                                     (new Collection($contract->billings))->sumOf(
@@ -753,8 +751,8 @@ class OverviewsController extends AppController
                         });
                 })
                 // format results
-                ->formatResults(function (CollectionInterface $commissions) {
-                    return $commissions->map(function (Commission $commission) {
+                ->formatResults(function (CollectionInterface $commissions): CollectionInterface {
+                    return $commissions->map(function (Commission $commission): Commission {
                         $commission->set(
                             'total_price',
                             (new Collection($commission->contracts))->sumOf('total_price'),
@@ -767,7 +765,7 @@ class OverviewsController extends AppController
 
         $dealers = $dealerCommissionsQuery
             ->all()
-            ->groupBy(function ($dealerCommission) {
+            ->groupBy(function ($dealerCommission): string {
                 return ($dealerCommission->dealer->name ?? __('unknown dealer'))
                     . ' [ID: ' . $dealerCommission->dealer_id . ']';
             });
@@ -786,7 +784,7 @@ class OverviewsController extends AppController
      * @param \Cake\I18n\Date $monthToDisplay Any date within the target month.
      * @return \Cake\ORM\Query\SelectQuery<TSubject> The same query (returned for chaining).
      */
-    private static function applyActiveInMonthScope(SelectQuery $query, Date $monthToDisplay): SelectQuery
+    private function applyActiveInMonthScope(SelectQuery $query, Date $monthToDisplay): SelectQuery
     {
         return $query
             ->where(['Billings.billing_from <=' => $monthToDisplay->lastOfMonth()])
@@ -804,7 +802,7 @@ class OverviewsController extends AppController
      *
      * Used by the connection-points report's available_speeds output.
      */
-    private static function categorizeAvailableSpeed(int|float|null $speed, string $ctoCategory): string
+    private function categorizeAvailableSpeed(int|float|null $speed, string $ctoCategory): string
     {
         if (in_array($ctoCategory, ['s2_fttb', 's2_ftth'], true)) {
             return '1000';
@@ -831,7 +829,7 @@ class OverviewsController extends AppController
      * out null speeds via `Queues.speed_down IS NOT NULL`, so this branch
      * is defensive only.
      */
-    private static function bucketAdvertisedSpeed(?int $speedKbps): string
+    private function bucketAdvertisedSpeed(?int $speedKbps): string
     {
         return match (true) {
             $speedKbps === null, $speedKbps < 2048 => 'speed_0_2',

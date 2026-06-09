@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Billing;
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
 use Cake\Collection\CollectionInterface;
@@ -371,8 +372,6 @@ class CustomersTable extends AppTable
      * - `accountingProfileId` (string) Required. Accounting profile identifier used to filter customers.
      *
      * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer> $query Base query.
-     * @param \Cake\I18n\Date $invoicedMonth
-     * @param string $accountingProfileId
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Customer>
      */
     public function findBillingDataForMonth(
@@ -409,12 +408,12 @@ class CustomersTable extends AppTable
                             ])
                             // enrich billings with computed period totals
                             ->formatResults(
-                                function (CollectionInterface $billings) use ($invoicedMonth) {
-                                    return $billings->map(function ($billing) use ($invoicedMonth) {
-                                        $billing['period_total'] = $billing->periodTotal(
+                                function (CollectionInterface $billings) use ($invoicedMonth): CollectionInterface {
+                                    return $billings->map(function (Billing $billing) use ($invoicedMonth): Billing {
+                                        $billing->set('period_total', $billing->periodTotal(
                                             $invoicedMonth->firstOfMonth(),
                                             $invoicedMonth->lastOfMonth(),
-                                        );
+                                        ));
 
                                         return $billing;
                                     });

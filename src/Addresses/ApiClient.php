@@ -129,6 +129,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Addresses API is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }
@@ -149,6 +150,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Addresses API is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }
@@ -166,7 +168,7 @@ class ApiClient
     {
         return Cache::remember(
             'addresses_meta',
-            fn() => self::meta(),
+            fn(): array => self::meta(),
             'addresses_api',
         );
     }
@@ -184,12 +186,13 @@ class ApiClient
 
         try {
             $response = self::getRequest(
-                path: "v1/addresses/{$source}/{$registryId}",
+                path: sprintf('v1/addresses/%s/%s', $source, $registryId),
                 query: $query,
             );
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Addresses API is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }
@@ -220,7 +223,7 @@ class ApiClient
 
         return Cache::remember(
             $key,
-            fn() => self::byId($source, $registryId, $include),
+            fn(): ?array => self::byId($source, $registryId, $include),
             'addresses_api',
         );
     }
@@ -254,6 +257,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Addresses API is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }
@@ -294,7 +298,7 @@ class ApiClient
 
         return Cache::remember(
             $key,
-            fn() => self::byIdBatch($items, $include),
+            fn(): array => self::byIdBatch($items, $include),
             'addresses_api',
         );
     }
@@ -324,6 +328,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Addresses API is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }
@@ -355,6 +360,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Addresses API is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }
@@ -393,6 +399,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Addresses API is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }
@@ -425,6 +432,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Addresses API is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }

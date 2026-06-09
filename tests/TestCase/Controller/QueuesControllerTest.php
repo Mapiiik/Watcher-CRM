@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\QueuesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * App\Controller\QueuesController Test Case
- *
- * @uses \App\Controller\QueuesController
  */
+#[UsesClass(QueuesController::class)]
 class QueuesControllerTest extends TestCase
 {
     use IntegrationTestTrait;

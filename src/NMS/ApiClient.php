@@ -42,9 +42,7 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['accessPoints'])) {
-                $collection = new Collection($json['accessPoints']);
-
-                return $collection;
+                return new Collection($json['accessPoints']);
             }
         }
 
@@ -60,7 +58,7 @@ class ApiClient
     {
         return Cache::remember(
             'access_points',
-            function () {
+            function (): ?CollectionInterface {
                 return self::fetchAccessPoints();
             },
             'api_client',
@@ -76,9 +74,9 @@ class ApiClient
     {
         return Cache::remember(
             'access_points_list|' . ($onlyActive ? 'active' : 'all'),
-            function () use ($onlyActive) {
+            function () use ($onlyActive): ?array {
                 $accessPoints = self::getAccessPoints();
-                if ($accessPoints) {
+                if ($accessPoints instanceof CollectionInterface) {
                     $list = $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL);
 
                     if ($onlyActive) {
@@ -86,9 +84,9 @@ class ApiClient
                     }
 
                     return $list->combine('id', 'name')->toArray();
-                } else {
-                    return null;
                 }
+
+                return null;
             },
             'api_client',
         );
@@ -110,9 +108,7 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['accessPoint'])) {
-                $accessPoint = new ArrayObject($json['accessPoint'], ArrayObject::ARRAY_AS_PROPS);
-
-                return $accessPoint;
+                return new ArrayObject($json['accessPoint'], ArrayObject::ARRAY_AS_PROPS);
             }
         }
 
@@ -129,7 +125,7 @@ class ApiClient
     {
         return Cache::remember(
             'access_point_' . $id,
-            function () use ($id) {
+            function () use ($id): ?ArrayObject {
                 return self::fetchAccessPoint($id);
             },
             'api_client',
@@ -152,9 +148,7 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['accessPoints'])) {
-                $collection = new Collection($json['accessPoints']);
-
-                return $collection;
+                return new Collection($json['accessPoints']);
             }
         }
 
@@ -172,7 +166,7 @@ class ApiClient
     {
         return Cache::remember(
             'access_points_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ipAddress) {
+            function () use ($ipAddress): ?CollectionInterface {
                 return self::searchAccessPoints(['ip_address' => $ipAddress]);
             },
             'api_client',
@@ -194,9 +188,7 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['ipAddressRanges'])) {
-                $collection = new Collection($json['ipAddressRanges']);
-
-                return $collection;
+                return new Collection($json['ipAddressRanges']);
             }
         }
 
@@ -213,7 +205,7 @@ class ApiClient
     {
         return Cache::remember(
             'ip_address_ranges',
-            function () {
+            function (): ?CollectionInterface {
                 return self::fetchIpAddressRanges();
             },
             'api_client',
@@ -236,9 +228,7 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['ipAddressRange'])) {
-                $ipAddressRange = new ArrayObject($json['ipAddressRange'], ArrayObject::ARRAY_AS_PROPS);
-
-                return $ipAddressRange;
+                return new ArrayObject($json['ipAddressRange'], ArrayObject::ARRAY_AS_PROPS);
             }
         }
 
@@ -256,7 +246,7 @@ class ApiClient
     {
         return Cache::remember(
             'ip_address_range_' . $id,
-            function () use ($id) {
+            function () use ($id): ?ArrayObject {
                 return self::fetchIpAddressRange($id);
             },
             'api_client',
@@ -279,9 +269,7 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['ipAddressRanges'])) {
-                $collection = new Collection($json['ipAddressRanges']);
-
-                return $collection;
+                return new Collection($json['ipAddressRanges']);
             }
         }
 
@@ -298,7 +286,7 @@ class ApiClient
     {
         return Cache::remember(
             'ip_address_ranges_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ipAddress) {
+            function () use ($ipAddress): ?CollectionInterface {
                 return self::searchIpAddressRanges(['ip_address' => $ipAddress]);
             },
             'api_client',
@@ -321,9 +309,7 @@ class ApiClient
 
             $json = $response->getJson();
             if (isset($json['routerosDevices'])) {
-                $collection = new Collection($json['routerosDevices']);
-
-                return $collection;
+                return new Collection($json['routerosDevices']);
             }
         }
 
@@ -340,7 +326,7 @@ class ApiClient
     {
         return Cache::remember(
             'routeros_devices_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ipAddress) {
+            function () use ($ipAddress): ?CollectionInterface {
                 return self::searchRouterosDevices(['some_ip_address' => $ipAddress]);
             },
             'api_client',

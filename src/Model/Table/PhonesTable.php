@@ -107,17 +107,19 @@ class PhonesTable extends AppTable
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
 
         $rules->add(
-            function ($entity, $_options) {
+            function ($entity, $_options): bool {
                 $phoneUtil = PhoneNumberUtil::getInstance();
 
                 $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
-                $phoneRegion = is_string($phoneRegion) && !empty($phoneRegion) ? $phoneRegion : null;
+                $phoneRegion = is_string($phoneRegion) && ($phoneRegion !== '' && $phoneRegion !== '0') ?
+                    $phoneRegion
+                    : null;
 
                 try {
                     $phoneNumber = $phoneUtil->parse($entity->phone, $phoneRegion);
 
                     return $phoneUtil->isValidNumber($phoneNumber);
-                } catch (NumberParseException $e) {
+                } catch (NumberParseException) {
                     return false;
                 }
             },
@@ -142,11 +144,13 @@ class PhonesTable extends AppTable
      */
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
-        if (isset($data['phone']) && is_string($data['phone']) && (strlen($data['phone']) > 0)) {
+        if (isset($data['phone']) && is_string($data['phone']) && ($data['phone'] !== '')) {
             $phoneUtil = PhoneNumberUtil::getInstance();
 
             $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
-            $phoneRegion = is_string($phoneRegion) && !empty($phoneRegion) ? $phoneRegion : null;
+            $phoneRegion = is_string($phoneRegion) && ($phoneRegion !== '' && $phoneRegion !== '0') ?
+                $phoneRegion
+                : null;
 
             try {
                 $phoneNumber = $phoneUtil->parse($data['phone'], $phoneRegion);
@@ -155,7 +159,7 @@ class PhonesTable extends AppTable
                     // The phone number is fine, formatting...
                     $data['phone'] = $phoneUtil->format($phoneNumber, PhoneNumberFormat::INTERNATIONAL);
                 }
-            } catch (NumberParseException $e) {
+            } catch (NumberParseException) {
                 // The problem will be caught by the "isPhoneNumberValid" validator
             }
         }

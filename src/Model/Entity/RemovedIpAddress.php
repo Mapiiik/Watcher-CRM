@@ -72,12 +72,6 @@ class RemovedIpAddress extends AppEntity
      */
     protected function _getIpAddressRanges(): ?CollectionInterface
     {
-        $ipAddressRanges = NMSApiClient::getIpAddressRangesForIp($this->ip_address);
-
-        if ($ipAddressRanges) {
-            return $ipAddressRanges;
-        }
-
-        return null;
+        return NMSApiClient::getIpAddressRangesForIp($this->ip_address);
     }
 }

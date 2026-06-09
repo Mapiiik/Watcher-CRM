@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\CommissionsController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * App\Controller\CommissionsController Test Case
- *
- * @uses \App\Controller\CommissionsController
  */
+#[UsesClass(CommissionsController::class)]
 class CommissionsControllerTest extends TestCase
 {
     use IntegrationTestTrait;

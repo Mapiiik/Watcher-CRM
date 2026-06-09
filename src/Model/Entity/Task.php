@@ -86,9 +86,7 @@ class Task extends AppEntity
      */
     protected function _getNumber(): string
     {
-        $number = strval($this->nid);
-
-        return $number;
+        return strval($this->nid);
     }
 
     /**

@@ -16,22 +16,16 @@ final class ContractPrintTechnicalData
 {
     /**
      * Name of the access point.
-     *
-     * @var string|null
      */
     public ?string $accessPoint = null;
 
     /**
      * RADIUS username.
-     *
-     * @var string|null
      */
     public ?string $radiusUsername = null;
 
     /**
      * RADIUS password.
-     *
-     * @var string|null
      */
     public ?string $radiusPassword = null;
 }

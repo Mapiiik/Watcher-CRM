@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\CustomerMessagesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * App\Controller\CustomerMessagesController Test Case
- *
- * @uses \App\Controller\CustomerMessagesController
  */
+#[UsesClass(CustomerMessagesController::class)]
 class CustomerMessagesControllerTest extends TestCase
 {
     use IntegrationTestTrait;

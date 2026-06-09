@@ -24,23 +24,16 @@ final class CustomerPrintData
 {
     /**
      * Type of document being printed.
-     *
-     * @var \App\Model\Enum\CustomerPrintType
      */
     public CustomerPrintType $type;
 
     /**
      * Customer being printed.
-     *
-     * @var \App\Model\Entity\Customer
      */
     public Customer $customer;
 
     /**
      * Constructor.
-     *
-     * @param \App\Model\Enum\CustomerPrintType $type
-     * @param \App\Model\Entity\Customer $customer
      */
     public function __construct(
         CustomerPrintType $type,

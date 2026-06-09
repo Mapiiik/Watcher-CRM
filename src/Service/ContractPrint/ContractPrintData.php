@@ -30,29 +30,21 @@ final class ContractPrintData
 {
     /**
      * Type of document being printed.
-     *
-     * @var \App\Model\Enum\ContractPrintType
      */
     public ContractPrintType $type;
 
     /**
      * Contract being printed.
-     *
-     * @var \App\Model\Entity\Contract
      */
     public Contract $contract;
 
     /**
      * Contract version to be executed used for printing.
-     *
-     * @var \App\Model\Entity\ContractVersion|null
      */
     public ?ContractVersion $contractVersionToBeExecuted = null;
 
     /**
      * Contract version to be terminated used for printing.
-     *
-     * @var \App\Model\Entity\ContractVersion|null
      */
     public ?ContractVersion $contractVersionToBeTerminated = null;
 
@@ -61,15 +53,11 @@ final class ContractPrintData
      *
      * Used for:
      *  - contract-amendment
-     *
-     * @var \Cake\I18n\Date|null
      */
     public ?Date $effectiveDateOfAmendment = null;
 
     /**
      * Technical details required for handover protocols.
-     *
-     * @var \App\Service\ContractPrint\ContractPrintTechnicalData|null
      */
     public ?ContractPrintTechnicalData $technicalDetails = null;
 
@@ -80,15 +68,11 @@ final class ContractPrintData
      *  - contract-termination
      *  - contract-new-x
      *  - handover-protocol-uninstallation
-     *
-     * @var string|null
      */
     public ?string $contractNumberToBeTerminated = null;
 
     /**
      * Indicates whether the document should be generated as signed.
-     *
-     * @var bool
      */
     public bool $signed = false;
 
@@ -112,11 +96,6 @@ final class ContractPrintData
 
     /**
      * Constructor.
-     *
-     * @param \App\Model\Enum\ContractPrintType $type
-     * @param \App\Model\Entity\Contract $contract
-     * @param \App\Model\Entity\ContractVersion|null $contractVersionToBeExecuted
-     * @param \App\Model\Entity\ContractVersion|null $contractVersionToBeTerminated
      */
     public function __construct(
         ContractPrintType $type,
@@ -139,7 +118,7 @@ final class ContractPrintData
     public function getActiveStandardBillings(): CollectionInterface
     {
         return $this->activeBillings->filter(
-            fn(Billing $billing) => $billing->price === null,
+            fn(Billing $billing): bool => $billing->price === null,
         );
     }
 
@@ -149,7 +128,7 @@ final class ContractPrintData
     public function getActiveIndividualBillings(): CollectionInterface
     {
         return $this->activeBillings->filter(
-            fn(Billing $billing) => $billing->price !== null,
+            fn(Billing $billing): bool => $billing->price !== null,
         );
     }
 
@@ -159,7 +138,7 @@ final class ContractPrintData
     public function getFutureStandardBillings(): CollectionInterface
     {
         return $this->futureBillings->filter(
-            fn(Billing $billing) => $billing->price === null,
+            fn(Billing $billing): bool => $billing->price === null,
         );
     }
 
@@ -169,7 +148,7 @@ final class ContractPrintData
     public function getFutureIndividualBillings(): CollectionInterface
     {
         return $this->futureBillings->filter(
-            fn(Billing $billing) => $billing->price !== null,
+            fn(Billing $billing): bool => $billing->price !== null,
         );
     }
 }

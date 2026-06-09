@@ -11,7 +11,7 @@ use Settings\Utility\Settings;
 use TCPDF;
 
 //set image path for TCPDF
-define('K_PATH_IMAGES', (string)env('DATA_ROOT', ROOT . DS . 'data') . DS . 'images' . DS);
+define('K_PATH_IMAGES', env('DATA_ROOT', ROOT . DS . 'data') . DS . 'images' . DS);
 
 class AppPDF extends TCPDF
 {
@@ -245,10 +245,10 @@ class AppPDF extends TCPDF
         $html = '<table border="0" cellpadding="0" cellspacing="2">';
 
         // Header row
-        if (!empty($headers)) {
+        if ($headers !== []) {
             $html .= '<tr>';
             foreach ($headers as $header) {
-                $html .= '<td width="' . (string)(180 / count($headers)) . 'mm" align="left">'
+                $html .= '<td width="' . (180 / count($headers)) . 'mm" align="left">'
                     . '<b>' . htmlspecialchars($header) . '</b></td>';
             }
             $html .= '</tr>';
@@ -264,7 +264,7 @@ class AppPDF extends TCPDF
 
                 $html .= '<td width="' . $labelWidth . 'mm" align="right">'
                     . htmlspecialchars($row[0]['label']) . '</td>';
-                $html .= '<td width="' . $valueWidth . 'mm" colspan="' . (string)(count($headers) * 2 - 1) . '">'
+                $html .= '<td width="' . $valueWidth . 'mm" colspan="' . (count($headers) * 2 - 1) . '">'
                     . '<b>' . htmlspecialchars($row[0]['value']) . '</b></td>';
             } else {
                 // Multi-column row

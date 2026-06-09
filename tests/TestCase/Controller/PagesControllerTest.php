@@ -16,17 +16,18 @@ declare(strict_types=1);
  */
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\PagesController;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\Constraint\Response\StatusCode;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * PagesControllerTest class
- *
- * @uses \App\Controller\PagesController
  */
+#[UsesClass(PagesController::class)]
 class PagesControllerTest extends TestCase
 {
     use IntegrationTestTrait;
@@ -54,7 +55,7 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDisplay()
+    public function testDisplay(): void
     {
         Configure::write('debug', true);
         $this->login();
@@ -69,7 +70,7 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testMissingTemplate()
+    public function testMissingTemplate(): void
     {
         $this->login();
 
@@ -85,7 +86,7 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testMissingTemplateInDebug()
+    public function testMissingTemplateInDebug(): void
     {
         $this->login();
 
@@ -103,7 +104,7 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDirectoryTraversalProtection()
+    public function testDirectoryTraversalProtection(): void
     {
         $this->login();
         $this->get('/pages/../Layout/ajax');
@@ -116,7 +117,7 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testCsrfAppliedError()
+    public function testCsrfAppliedError(): void
     {
         $this->login();
         $this->post('/pages/home', ['hello' => 'world']);
@@ -130,7 +131,7 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testCsrfAppliedOk()
+    public function testCsrfAppliedOk(): void
     {
         $this->login();
         $this->enableSecurityToken();

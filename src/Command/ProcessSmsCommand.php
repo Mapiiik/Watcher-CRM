@@ -37,7 +37,7 @@ class ProcessSmsCommand extends Command
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
     #[Override]
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 
@@ -94,10 +94,10 @@ class ProcessSmsCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return int|null|void The exit code or null for success
+     * @return void The exit code or null for success
      */
     #[Override]
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): void
     {
         $customerMessagesTable = $this->fetchTable(CustomerMessagesTable::class);
 
@@ -132,7 +132,7 @@ class ProcessSmsCommand extends Command
         $login = is_string($login) ? $login : null;
 
         $password = env('ANDROID_SMS_GATEWAY_PASSWORD');
-        if (!is_string($password) || empty($password)) {
+        if (!is_string($password) || ($password === '' || $password === '0')) {
             $io->abort(__('ANDROID_SMS_GATEWAY_PASSWORD is not set in environment variables.'));
         }
 
@@ -143,11 +143,7 @@ class ProcessSmsCommand extends Command
         $serverUrl = is_string($serverUrl) ? $serverUrl : Client::DEFAULT_URL;
 
         // Prepare encryption if passphrase is set
-        if (!empty($passphrase)) {
-            $encryptor = new Encryptor($passphrase);
-        } else {
-            $encryptor = null;
-        }
+        $encryptor = in_array($passphrase, [null, '', '0'], true) ? null : new Encryptor($passphrase);
 
         // Android SMS Gateway Client
         $client = new Client(
@@ -217,7 +213,7 @@ class ProcessSmsCommand extends Command
                 }
 
                 // sleep for a while to slow down the sending
-                sleep(max(0, rand((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max'))));
+                sleep(max(0, random_int((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max'))));
             }
 
             // Find out the status of individual messages

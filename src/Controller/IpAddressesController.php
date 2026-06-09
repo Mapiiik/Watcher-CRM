@@ -8,6 +8,7 @@ use App\Model\Entity\IpAddress;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Table\RemovedIpAddressesTable;
 use App\NMS\ApiClient as NMSApiClient;
+use Cake\Http\Response;
 use Cake\I18n\DateTime;
 use Cake\Validation\Validation;
 use IPLib\Range\Subnet;
@@ -24,16 +25,16 @@ class IpAddressesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions += ['IpAddresses.customer_id' => $this->customer_id];
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $conditions += ['IpAddresses.contract_id' => $this->contract_id];
         }
 
@@ -42,8 +43,8 @@ class IpAddressesController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'IpAddresses.ip_address::character varying ILIKE' => '%' . trim($search) . '%',
-                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                    'IpAddresses.ip_address::character varying ILIKE' => '%' . trim((string)$search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -69,10 +70,10 @@ class IpAddressesController extends AppController
      * View method
      *
      * @param string|null $id IpAddress id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $ipAddress = $this->IpAddresses->get($id, contain: [
             'Contracts',
@@ -87,16 +88,16 @@ class IpAddressesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $ipAddress = $this->IpAddresses->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $ipAddress->customer_id = $this->customer_id;
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $ipAddress->contract_id = $this->contract_id;
         }
 
@@ -128,30 +129,32 @@ class IpAddressesController extends AppController
             ],
         );
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('ipAddress', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Add from range method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function addFromRange()
+    public function addFromRange(): ?Response
     {
         $ipAddress = $this->IpAddresses->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $ipAddress->customer_id = $this->customer_id;
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $ipAddress->contract_id = $this->contract_id;
         }
 
@@ -188,11 +191,11 @@ class IpAddressesController extends AppController
             ],
         );
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
@@ -235,7 +238,7 @@ class IpAddressesController extends AppController
                 'ipAddressRanges',
                 $ipAddressRanges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine(
                     'id',
-                    function (array $ipAddressRange) {
+                    function (array $ipAddressRange): string {
                         return $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')';
                     },
                 ),
@@ -268,16 +271,18 @@ class IpAddressesController extends AppController
         }
 
         $this->set(compact('ipAddress', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id IP Address id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $ipAddress = $this->IpAddresses->get($id);
 
@@ -306,25 +311,27 @@ class IpAddressesController extends AppController
             ],
         );
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('ipAddress', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id IP Address id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $ipAddress = $this->IpAddresses->get($id);
@@ -347,7 +354,7 @@ class IpAddressesController extends AppController
      * @param \App\Model\Entity\IpAddress $ipAddress IP Address Entity.
      * @return bool
      */
-    private function addToRemovedIpAddresses(IpAddress $ipAddress)
+    private function addToRemovedIpAddresses(IpAddress $ipAddress): bool
     {
         $removedIpAddressesTable = $this->fetchTable(RemovedIpAddressesTable::class);
 
@@ -376,9 +383,9 @@ class IpAddressesController extends AppController
     /**
      * Bulk Reassignment
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return void Redirects on successful add, renders view otherwise.
      */
-    public function bulkReassignment()
+    public function bulkReassignment(): void
     {
         $ipAddress = $this->IpAddresses->newEmptyEntity();
 
@@ -440,7 +447,7 @@ class IpAddressesController extends AppController
                 'ipAddressRanges',
                 $ipAddressRanges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine(
                     'id',
-                    function (array $ipAddressRange) {
+                    function (array $ipAddressRange): string {
                         return $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')';
                     },
                 ),

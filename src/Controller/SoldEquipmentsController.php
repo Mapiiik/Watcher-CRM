@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
+
 /**
  * SoldEquipments Controller
  *
@@ -13,16 +15,16 @@ class SoldEquipmentsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions += ['SoldEquipments.customer_id' => $this->customer_id];
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $conditions += ['SoldEquipments.contract_id' => $this->contract_id];
         }
 
@@ -31,9 +33,9 @@ class SoldEquipmentsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'SoldEquipments.serial_number ILIKE' => '%' . trim($search) . '%',
-                    'EquipmentTypes.name ILIKE' => '%' . trim($search) . '%',
-                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                    'SoldEquipments.serial_number ILIKE' => '%' . trim((string)$search) . '%',
+                    'EquipmentTypes.name ILIKE' => '%' . trim((string)$search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -60,10 +62,10 @@ class SoldEquipmentsController extends AppController
      * View method
      *
      * @param string|null $id Sold Equipment id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $soldEquipment = $this->SoldEquipments->get($id, contain: [
             'Customers',
@@ -79,16 +81,16 @@ class SoldEquipmentsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $soldEquipment = $this->SoldEquipments->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $soldEquipment->customer_id = $this->customer_id;
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $soldEquipment->contract_id = $this->contract_id;
         }
 
@@ -125,25 +127,27 @@ class SoldEquipmentsController extends AppController
         'name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('soldEquipment', 'customers', 'contracts', 'equipmentTypes'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Sold Equipment id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $soldEquipment = $this->SoldEquipments->get($id, contain: []);
 
@@ -180,25 +184,27 @@ class SoldEquipmentsController extends AppController
         'name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
         }
 
         $this->set(compact('soldEquipment', 'customers', 'contracts', 'equipmentTypes'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Sold Equipment id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $soldEquipment = $this->SoldEquipments->get($id);

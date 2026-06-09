@@ -294,15 +294,15 @@ class ContractsTable extends AppTable
         $rules->add($rules->existsIn(['contract_state_id'], 'ContractStates'), ['errorField' => 'contract_state_id']);
 
         $rules->add(
-            function ($entity, $_options) {
+            function ($entity, $_options): bool {
                 // load service type
                 $service_type = $this->ServiceTypes->get($entity->service_type_id);
                 // check if installation adress required for this service type
                 if ($service_type->installation_address_required) {
                     return !empty($entity->installation_address_id);
-                } else {
-                    return true;
                 }
+
+                return true;
             },
             'isRequiredInstallationAdressFilled',
             [
@@ -312,15 +312,15 @@ class ContractsTable extends AppTable
         );
 
         $rules->add(
-            function ($entity, $_options) {
+            function ($entity, $_options): bool {
                 // load service type
                 $service_type = $this->ServiceTypes->get($entity->service_type_id);
                 // check if access point required for this service type
                 if ($service_type->access_point_required) {
                     return !empty($entity->access_point_id);
-                } else {
-                    return true;
                 }
+
+                return true;
             },
             'isRequiredAccessPointFilled',
             [

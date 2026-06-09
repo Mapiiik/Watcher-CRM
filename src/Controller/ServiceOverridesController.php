@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
 use Cake\I18n\DateTime;
 
 /**
@@ -15,16 +16,16 @@ class ServiceOverridesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions += ['Contracts.customer_id' => $this->customer_id];
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $conditions += ['ServiceOverrides.contract_id' => $this->contract_id];
         }
 
@@ -46,8 +47,8 @@ class ServiceOverridesController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'ServiceOverrides.reason ILIKE' => '%' . trim($search) . '%',
-                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                    'ServiceOverrides.reason ILIKE' => '%' . trim((string)$search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -80,10 +81,10 @@ class ServiceOverridesController extends AppController
      * View method
      *
      * @param string|null $id Service Override id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $serviceOverride = $this->ServiceOverrides->get($id, contain: [
             'Contracts' => [
@@ -103,13 +104,13 @@ class ServiceOverridesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $serviceOverride = $this->ServiceOverrides->newEmptyEntity();
 
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $serviceOverride->contract_id = $this->contract_id;
         }
 
@@ -141,10 +142,10 @@ class ServiceOverridesController extends AppController
             'name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id) || isset($serviceOverride->contract_id)) {
+        if ($this->contract_id !== null || isset($serviceOverride->contract_id)) {
             $contractId = $this->contract_id ?? $serviceOverride->contract_id;
             $contracts->where(['Contracts.id' => $contractId]);
             $services->where(['OR' => [
@@ -154,16 +155,18 @@ class ServiceOverridesController extends AppController
         }
 
         $this->set(compact('serviceOverride', 'contracts', 'services'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Service Override id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $serviceOverride = $this->ServiceOverrides->get($id, contain: []);
 
@@ -220,10 +223,10 @@ class ServiceOverridesController extends AppController
             'name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id) || isset($serviceOverride->contract_id)) {
+        if ($this->contract_id !== null || isset($serviceOverride->contract_id)) {
             $contractId = $this->contract_id ?? $serviceOverride->contract_id;
             $contracts->where(['Contracts.id' => $contractId]);
             $services->where(['OR' => [
@@ -233,6 +236,8 @@ class ServiceOverridesController extends AppController
         }
 
         $this->set(compact('serviceOverride', 'contracts', 'services'));
+
+        return null;
     }
 
     /**
@@ -242,7 +247,7 @@ class ServiceOverridesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->request->allowMethod(['post', 'delete']);
         $serviceOverride = $this->ServiceOverrides->get($id);
@@ -264,7 +269,7 @@ class ServiceOverridesController extends AppController
      * @param string|null $id Service Override id.
      * @return \Cake\Http\Response|null
      */
-    public function revoke(?string $id = null)
+    public function revoke(?string $id = null): ?Response
     {
         $this->request->allowMethod(['post']);
 

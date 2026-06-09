@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Controller\IpNetworksController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * App\Controller\IpNetworksController Test Case
- *
- * @uses \App\Controller\IpNetworksController
  */
+#[UsesClass(IpNetworksController::class)]
 class IpNetworksControllerTest extends TestCase
 {
     use IntegrationTestTrait;

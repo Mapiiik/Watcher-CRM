@@ -29,9 +29,9 @@ class AgentBridgeController extends AppController
     /**
      * Ping method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function ping()
+    public function ping(): void
     {
         $ip_address = $this->getRequest()->getParam('ip_address');
 

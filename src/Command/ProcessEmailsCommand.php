@@ -34,7 +34,7 @@ class ProcessEmailsCommand extends Command
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
     #[Override]
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser = parent::buildOptionParser($parser);
 
@@ -104,10 +104,10 @@ class ProcessEmailsCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return int|null|void The exit code or null for success
+     * @return void The exit code or null for success
      */
     #[Override]
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): void
     {
         $customerMessagesTable = $this->fetchTable(CustomerMessagesTable::class);
 
@@ -155,7 +155,7 @@ class ProcessEmailsCommand extends Command
                     $mailer->deliver($emailMessage->body);
 
                     $messageId = $mailer->getMessageId();
-                    if (!is_string($messageId) || empty($messageId)) {
+                    if (!is_string($messageId) || ($messageId === '' || $messageId === '0')) {
                         throw new RuntimeException(
                             'Mailer did not return a valid message ID after sending email message with ID '
                                 . $emailMessage->id,
@@ -197,7 +197,7 @@ class ProcessEmailsCommand extends Command
                 }
 
                 // sleep for a while to slow down the sending
-                sleep(max(0, rand((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max'))));
+                sleep(max(0, random_int((int)$args->getOption('wait_min'), (int)$args->getOption('wait_max'))));
             }
         }
         $io->info(__('Done'));

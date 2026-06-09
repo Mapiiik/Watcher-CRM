@@ -33,7 +33,7 @@ class UpdateCustomerLabelsCommand extends Command
      * @return \Cake\Console\ConsoleOptionParser The built parser.
      */
     #[Override]
-    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
+    protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser->addArgument('label_id', [
             'help' => 'ID of the label to be updated',
@@ -64,7 +64,7 @@ class UpdateCustomerLabelsCommand extends Command
                 ]);
 
             $labelId = $args->getArgument('label_id');
-            if (!empty($labelId)) {
+            if (!in_array($labelId, [null, '', '0'], true)) {
                 $labels->where(['id' => $labelId]);
             }
 
@@ -138,7 +138,7 @@ class UpdateCustomerLabelsCommand extends Command
                                     'contract_id' => $dynamicSqlResult['contract_id'] ?? null,
                                     'note' =>
                                         __('dynamic')
-                                        . (!empty($dynamicSqlResult['note']) ? ' - ' . $dynamicSqlResult['note'] : '')
+                                        . (empty($dynamicSqlResult['note']) ? '' : ' - ' . $dynamicSqlResult['note'])
                                     ,
                                 ],
                             );
@@ -150,7 +150,6 @@ class UpdateCustomerLabelsCommand extends Command
                             unset($customerLabel);
                         }
                     }
-
                     // save changes for customer labels
                     if (
                         $labelsTable->CustomerLabels->saveMany(
@@ -170,40 +169,38 @@ class UpdateCustomerLabelsCommand extends Command
                             __('The related dynamic customer labels could not be saved. Please, try again.'),
                         );
                     }
-
                     // removal of expired customer labels (for dynamic labels - based on modification date)
-                    if (is_numeric($label->validity)) {
-                        if (
-                            $labelsTable->CustomerLabels->deleteMany(
-                                $labelsTable->CustomerLabels->find()->where([
+                    if (
+                        is_numeric($label->validity)
+                        && $labelsTable->CustomerLabels->deleteMany(
+                            $labelsTable->CustomerLabels->find()
+                                ->where([
                                     'label_id' => $label->id,
                                     'modified <' => $startTime->subDays($label->validity),
-                                ])->all(),
-                            ) === false
-                        ) {
-                            Log::error('The related dynamic customer labels could not be deleted. Please, try again.');
-                            $io->abort(
-                                __('The related dynamic customer labels could not be deleted. Please, try again.'),
-                            );
-                        }
+                                ])
+                                ->all(),
+                        ) === false
+                    ) {
+                        Log::error('The related dynamic customer labels could not be deleted. Please, try again.');
+                        $io->abort(
+                            __('The related dynamic customer labels could not be deleted. Please, try again.'),
+                        );
                     }
-                } else {
+                } elseif (is_numeric($label->validity)) {
                     // NOT DYNAMIC
                     // removal of expired customer labels (for static labels - based on creation date)
-                    if (is_numeric($label->validity)) {
-                        if (
-                            $labelsTable->CustomerLabels->deleteMany(
-                                $labelsTable->CustomerLabels->find()->where([
-                                    'label_id' => $label->id,
-                                    'created <' => $startTime->subDays($label->validity),
-                                ])->all(),
-                            ) === false
-                        ) {
-                            Log::error('The related static customer labels could not be deleted. Please, try again.');
-                            $io->abort(
-                                __('The related static customer labels could not be deleted. Please, try again.'),
-                            );
-                        }
+                    if (
+                        $labelsTable->CustomerLabels->deleteMany(
+                            $labelsTable->CustomerLabels->find()->where([
+                                'label_id' => $label->id,
+                                'created <' => $startTime->subDays($label->validity),
+                            ])->all(),
+                        ) === false
+                    ) {
+                        Log::error('The related static customer labels could not be deleted. Please, try again.');
+                        $io->abort(
+                            __('The related static customer labels could not be deleted. Please, try again.'),
+                        );
                     }
                 }
             }

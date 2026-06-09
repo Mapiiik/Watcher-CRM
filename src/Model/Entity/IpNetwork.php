@@ -70,12 +70,6 @@ class IpNetwork extends AppEntity
      */
     protected function _getIpAddressRanges(): ?CollectionInterface
     {
-        $ipAddressRanges = NMSApiClient::getIpAddressRangesForIp($this->ip_network);
-
-        if ($ipAddressRanges) {
-            return $ipAddressRanges;
-        }
-
-        return null;
+        return NMSApiClient::getIpAddressRangesForIp($this->ip_network);
     }
 }

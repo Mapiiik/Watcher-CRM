@@ -9,15 +9,11 @@ class PdfView extends AppView
 {
     /**
      * PDF layouts are located in the 'pdf' subdirectory of `Layouts/`
-     *
-     * @var string
      */
     protected string $layoutPath = 'pdf';
 
     /**
      * PDF views are located in the 'pdf' subdirectory for controllers' views.
-     *
-     * @var string
      */
     protected string $subDir = 'pdf';
 

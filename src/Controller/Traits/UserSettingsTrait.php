@@ -22,7 +22,8 @@ trait UserSettingsTrait
     public function userSettings(?string $id = null)
     {
         $identity = $this->getRequest()->getAttribute('identity');
-        $identity = $identity ?? [];
+        $identity ??= [];
+
         $userId = $identity['id'] ?? null;
 
         if ($id && $identity['is_superuser'] && Configure::read('Users.Superuser.allowedToChangeSettings')) {

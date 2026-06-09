@@ -48,7 +48,7 @@ class ErrorController extends AppController
      * @return void
      */
     #[Override]
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): void
     {
     }
 
@@ -59,7 +59,7 @@ class ErrorController extends AppController
      * @return void
      */
     #[Override]
-    public function beforeRender(EventInterface $event)
+    public function beforeRender(EventInterface $event): void
     {
         parent::beforeRender($event);
 

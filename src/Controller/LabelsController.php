@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Application;
 use Cake\Console\CommandRunner;
+use Cake\Http\Response;
 
 /**
  * Labels Controller
@@ -16,9 +17,9 @@ class LabelsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
@@ -28,9 +29,9 @@ class LabelsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Labels.name ILIKE' => '%' . trim($search) . '%',
-                    'Labels.caption ILIKE' => '%' . trim($search) . '%',
-                    'Labels.dynamic_sql ILIKE' => '%' . trim($search) . '%',
+                    'Labels.name ILIKE' => '%' . trim((string)$search) . '%',
+                    'Labels.caption ILIKE' => '%' . trim((string)$search) . '%',
+                    'Labels.dynamic_sql ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -55,10 +56,10 @@ class LabelsController extends AppController
      * View method
      *
      * @param string|null $id Label id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $label = $this->Labels->get($id, contain: [
             'CustomerLabels' => [
@@ -75,9 +76,9 @@ class LabelsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $label = $this->Labels->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
@@ -89,27 +90,27 @@ class LabelsController extends AppController
                     'dynamic_sql',
                     __('An expression for data modification was detected in the SQL query, which is forbidden.'),
                 );
-            } else {
+            } elseif ($this->Labels->save($label)) {
                 // good SQL - proceed
-                if ($this->Labels->save($label)) {
-                    $this->Flash->success(__('The label has been saved.'));
+                $this->Flash->success(__('The label has been saved.'));
 
-                    return $this->afterAddRedirect(['action' => 'view', $label->id]);
-                }
+                return $this->afterAddRedirect(['action' => 'view', $label->id]);
             }
             $this->Flash->error(__('The label could not be saved. Please, try again.'));
         }
         $this->set(compact('label'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Label id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $label = $this->Labels->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -121,27 +122,27 @@ class LabelsController extends AppController
                     'dynamic_sql',
                     __('An expression for data modification was detected in the SQL query, which is forbidden.'),
                 );
-            } else {
+            } elseif ($this->Labels->save($label)) {
                 // good SQL - proceed
-                if ($this->Labels->save($label)) {
-                    $this->Flash->success(__('The label has been saved.'));
+                $this->Flash->success(__('The label has been saved.'));
 
-                    return $this->afterEditRedirect(['action' => 'view', $label->id]);
-                }
+                return $this->afterEditRedirect(['action' => 'view', $label->id]);
             }
             $this->Flash->error(__('The label could not be saved. Please, try again.'));
         }
         $this->set(compact('label'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Label id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $label = $this->Labels->get($id);
@@ -186,10 +187,10 @@ class LabelsController extends AppController
      * Update related customer labels method
      *
      * @param string|null $id Label id.
-     * @return \Cake\Http\Response|null|void Redirects to view.
+     * @return \Cake\Http\Response|null Redirects to view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function updateRelatedCustomerLabels(?string $id = null)
+    public function updateRelatedCustomerLabels(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 

@@ -76,7 +76,7 @@ final class ColorTransformer
     {
         $h /= 360;
 
-        if ($s == 0.0) {
+        if ($s === 0.0) {
             $r = $g = $b = $l;
         } else {
             $q = $l < 0.5
@@ -101,9 +101,6 @@ final class ColorTransformer
     /**
      * Helper function for HSL → RGB conversion.
      *
-     * @param float $p
-     * @param float $q
-     * @param float $t
      * @return float RGB component in range 0–1.
      */
     private static function hueToRgb(float $p, float $q, float $t): float

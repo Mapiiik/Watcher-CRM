@@ -30,7 +30,6 @@ final class ContractPrintPdfOutput
      *
      * Returns a CakePHP Response containing the PDF output with appropriate headers.
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return \Cake\Http\Response
      */
     public function render(ContractPrintData $data): Response
@@ -91,7 +90,6 @@ final class ContractPrintPdfOutput
      *  - relevant contract date
      *  - optional signed suffix
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return string
      */
     private function buildFilename(ContractPrintData $data): string
@@ -108,7 +106,7 @@ final class ContractPrintPdfOutput
 
         $typeSuffix = match ($data->type) {
             ContractPrintType::ContractAmendment
-                => '-' . (string)(($data->contractVersionToBeExecuted->number_of_amendments ?? 0) + 1),
+                => '-' . (($data->contractVersionToBeExecuted->number_of_amendments ?? 0) + 1),
             default => '',
         };
 

@@ -28,15 +28,11 @@ class ServiceOverridesStatusCell extends Cell
 
     /**
      * Show contract number in output
-     *
-     * @var bool
      */
     protected bool $showContractNumber = true;
 
     /**
      * Show only active overrides (skip future)
-     *
-     * @var bool
      */
     protected bool $onlyActiveOverrides = false;
 
@@ -61,7 +57,7 @@ class ServiceOverridesStatusCell extends Cell
     {
         $this->set('showContractNumber', $this->showContractNumber);
 
-        if (empty($contractIds)) {
+        if ($contractIds === []) {
             $this->set([
                 'activeServiceOverrides' => collection([]),
                 'futureServiceOverrides' => collection([]),
@@ -95,11 +91,11 @@ class ServiceOverridesStatusCell extends Cell
             $collection = collection($serviceOverrides);
 
             $activeServiceOverrides = $collection->filter(
-                fn(ServiceOverride $override) => $override->isActive(),
+                fn(ServiceOverride $override): bool => $override->isActive(),
             );
 
             $futureServiceOverrides = $collection->filter(
-                fn(ServiceOverride $override) => $override->isFuture(),
+                fn(ServiceOverride $override): bool => $override->isFuture(),
             );
         }
 

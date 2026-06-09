@@ -49,10 +49,8 @@ class StringModificationsBehavior extends Behavior
                     $value = trim($value);
                 }
                 // empty as null
-                if ($this->_config['emptyAsNull']) {
-                    if ($value === '') {
-                        $value = null;
-                    }
+                if ($this->_config['emptyAsNull'] && $value === '') {
+                    $value = null;
                 }
                 // update value in data
                 $data[$key] = $value;

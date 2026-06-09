@@ -11,6 +11,7 @@ use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
 use App\Utility\ServiceChangeMessageBuilder;
+use Cake\Http\Response;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
 use Settings\Utility\Settings;
@@ -28,17 +29,17 @@ class BillingsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions += ['Billings.customer_id' => $this->customer_id];
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $conditions += ['Billings.contract_id' => $this->contract_id];
         }
 
@@ -47,9 +48,9 @@ class BillingsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Billings.text ILIKE' => '%' . trim($search) . '%',
-                    'Services.name ILIKE' => '%' . trim($search) . '%',
-                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                    'Billings.text ILIKE' => '%' . trim((string)$search) . '%',
+                    'Services.name ILIKE' => '%' . trim((string)$search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -78,10 +79,10 @@ class BillingsController extends AppController
      * View method
      *
      * @param string|null $id Billing id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $billing = $this->Billings->get($id, contain: [
             'Contracts' => ['ContractStates'],
@@ -97,16 +98,16 @@ class BillingsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $billing = $this->Billings->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $billing->customer_id = $this->customer_id;
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $billing->contract_id = $this->contract_id;
         }
 
@@ -124,7 +125,7 @@ class BillingsController extends AppController
                 && isset($this->Billings->Services->get($billing->service_id)->service_type_id)
                 && (
                     $this->Billings->Contracts->get($billing->contract_id)->service_type_id
-                    <> $this->Billings->Services->get($billing->service_id)->service_type_id
+                    != $this->Billings->Services->get($billing->service_id)->service_type_id
                 )
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
@@ -156,11 +157,11 @@ class BillingsController extends AppController
             'name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
             $services->where(['OR' => [
                 'service_type_id' => $this->Billings->Contracts->get($this->contract_id)->service_type_id,
@@ -177,16 +178,18 @@ class BillingsController extends AppController
         $services->andWhere(['Services.not_for_new_customers' => false]);
 
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Billing id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $billing = $this->Billings->get($id, contain: []);
 
@@ -204,7 +207,7 @@ class BillingsController extends AppController
                 && isset($this->Billings->Services->get($billing->service_id)->service_type_id)
                 && (
                     $this->Billings->Contracts->get($billing->contract_id)->service_type_id
-                    <> $this->Billings->Services->get($billing->service_id)->service_type_id
+                    != $this->Billings->Services->get($billing->service_id)->service_type_id
                 )
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
@@ -236,11 +239,11 @@ class BillingsController extends AppController
             'name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $contracts->where(['Contracts.id' => $this->contract_id]);
             $services->where(['OR' => [
                 'service_type_id' => $this->Billings->Contracts->get($this->contract_id)->service_type_id,
@@ -254,16 +257,18 @@ class BillingsController extends AppController
         }
 
         $this->set(compact('billing', 'customers', 'services', 'contracts'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Billing id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $billing = $this->Billings->get($id);
@@ -281,10 +286,10 @@ class BillingsController extends AppController
      * Service Change method
      *
      * @param string|null $id Billing id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response|null Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function serviceChange(?string $id = null)
+    public function serviceChange(?string $id = null): ?Response
     {
         $billing = $this->Billings->get($id, contain: [
             'Contracts' => [
@@ -324,14 +329,16 @@ class BillingsController extends AppController
 
         // set data
         $this->set(compact('billing', 'services'));
+
+        return null;
     }
 
     /**
      * Bulk Service Change method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response|null Renders view
      */
-    public function bulkServiceChange()
+    public function bulkServiceChange(): ?Response
     {
         // query
         $billingsQuery = $this->Billings->find(
@@ -443,6 +450,8 @@ class BillingsController extends AppController
 
         // set data
         $this->set(compact('billings', 'services'));
+
+        return null;
     }
 
     /**

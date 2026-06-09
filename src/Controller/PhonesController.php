@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
 use Cake\Utility\Text;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberFormat;
@@ -19,13 +20,13 @@ class PhonesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions = ['Phones.customer_id' => $this->customer_id];
         }
 
@@ -34,8 +35,8 @@ class PhonesController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Phones.phone ILIKE' => '%' . trim($search) . '%',
-                    "REPLACE(Phones.phone, ' ', '') ILIKE" => '%' . trim($search) . '%',
+                    'Phones.phone ILIKE' => '%' . trim((string)$search) . '%',
+                    "REPLACE(Phones.phone, ' ', '') ILIKE" => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -60,10 +61,10 @@ class PhonesController extends AppController
      * View method
      *
      * @param string|null $id Phone id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $phone = $this->Phones->get($id, contain: [
             'Customers',
@@ -77,13 +78,13 @@ class PhonesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $phone = $this->Phones->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $phone->customer_id = $this->customer_id;
         }
 
@@ -102,21 +103,23 @@ class PhonesController extends AppController
             'first_name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['id' => $this->customer_id]);
         }
 
         $this->set(compact('phone', 'customers'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Phone id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $phone = $this->Phones->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -134,21 +137,23 @@ class PhonesController extends AppController
             'first_name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('phone', 'customers'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Phone id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $phone = $this->Phones->get($id);
@@ -165,10 +170,10 @@ class PhonesController extends AppController
     /**
      * Format all method
      *
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Http\Exception\MethodNotAllowedException When badly called.
      */
-    public function formatAll()
+    public function formatAll(): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -178,7 +183,7 @@ class PhonesController extends AppController
         $phoneUtil = PhoneNumberUtil::getInstance();
 
         $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
-        $phoneRegion = is_string($phoneRegion) && !empty($phoneRegion) ? $phoneRegion : null;
+        $phoneRegion = is_string($phoneRegion) && ($phoneRegion !== '' && $phoneRegion !== '0') ? $phoneRegion : null;
 
         // check the formatting of the phone number and update it if necessary
         foreach ($phones as $phone) {
@@ -198,7 +203,7 @@ class PhonesController extends AppController
                         __('The phone number is invalid: {0}', $phone->phone),
                     );
                 }
-            } catch (NumberParseException $e) {
+            } catch (NumberParseException) {
                 $this->Flash->error(
                     __('The phone number is invalid: {0}', $phone->phone),
                 );

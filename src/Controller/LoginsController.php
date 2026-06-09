@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Utility\Strings;
+use Cake\Http\Response;
 
 /**
  * Logins Controller
@@ -15,13 +16,13 @@ class LoginsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions = ['Logins.customer_id' => $this->customer_id];
         }
 
@@ -30,7 +31,7 @@ class LoginsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Logins.login ILIKE' => '%' . trim($search) . '%',
+                    'Logins.login ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -55,10 +56,10 @@ class LoginsController extends AppController
      * View method
      *
      * @param string|null $id Login id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $login = $this->Logins->get($id, contain: [
             'Customers',
@@ -72,13 +73,13 @@ class LoginsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $login = $this->Logins->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $login->customer_id = $this->customer_id;
         }
 
@@ -98,7 +99,7 @@ class LoginsController extends AppController
         ]);
 
         $new_login = '';
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
 
             // START find free login
@@ -124,21 +125,23 @@ class LoginsController extends AppController
 
         // generate new password
         $this->set('new_password', Strings::generatePassword(8));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Login id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $login = $this->Logins->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             // change password if is set new
-            if (strlen($this->getRequest()->getData()['new_password']) > 0) {
+            if ((string)$this->getRequest()->getData()['new_password'] !== '') {
                 $login->password = $this->getRequest()->getData()['new_password'];
             }
 
@@ -156,21 +159,23 @@ class LoginsController extends AppController
             'first_name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('login', 'customers'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Login id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $login = $this->Logins->get($id);

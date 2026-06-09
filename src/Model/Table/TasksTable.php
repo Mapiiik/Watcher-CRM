@@ -155,15 +155,15 @@ class TasksTable extends AppTable
         $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
 
         $rules->add(
-            function ($entity, $_options) {
+            function ($entity, $_options): bool {
                 // load task type
                 $task_type = $this->TaskTypes->get($entity->task_type_id);
                 // check if customer required for this task type
                 if ($task_type->customer_required) {
                     return !empty($entity->customer_id);
-                } else {
-                    return true;
                 }
+
+                return true;
             },
             'isRequiredCustomerFilled',
             [
@@ -173,15 +173,15 @@ class TasksTable extends AppTable
         );
 
         $rules->add(
-            function ($entity, $_options) {
+            function ($entity, $_options): bool {
                 // load task type
                 $task_type = $this->TaskTypes->get($entity->task_type_id);
                 // check if contract required for this task type
                 if ($task_type->contract_required) {
                     return !empty($entity->contract_id);
-                } else {
-                    return true;
                 }
+
+                return true;
             },
             'isRequiredContractFilled',
             [

@@ -182,7 +182,7 @@ class ContractPDF extends AppPDF
                 $this->MultiCell(
                     180,
                     4,
-                    strtr(Settings::getString("core.documents.contracts.contract.texts.$key"), [
+                    strtr(Settings::getString('core.documents.contracts.contract.texts.' . $key), [
                         '{activation_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
                     ]) . PHP_EOL,
                     align: 'J',
@@ -198,7 +198,7 @@ class ContractPDF extends AppPDF
                 $this->MultiCell(
                     180,
                     4,
-                    strtr(Settings::getString("core.documents.contracts.contract.texts.$key"), [
+                    strtr(Settings::getString('core.documents.contracts.contract.texts.' . $key), [
                         '{activation_fee_obligation}' =>
                             Number::currency($contract->activation_fee_with_obligation_sum->toFloat()),
                     ]) . PHP_EOL,
@@ -214,7 +214,7 @@ class ContractPDF extends AppPDF
             $this->MultiCell(
                 180,
                 4,
-                strtr(Settings::getString("core.documents.contracts.contract.texts.$clauseKey"), [
+                strtr(Settings::getString('core.documents.contracts.contract.texts.' . $clauseKey), [
                     '{duration}' => $this->contractDurationBefore($contract_version->minimum_duration),
                     '{difference}' =>
                         Number::currency(
@@ -233,7 +233,6 @@ class ContractPDF extends AppPDF
     /**
      * Generate PDF document - handover protocol
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return void
      */
     public function generateHandoverProtocol(ContractPrintData $data): void
@@ -252,14 +251,20 @@ class ContractPDF extends AppPDF
             );
         }
 
-        if ($contract_version_to_be_executed === null && $type === ContractPrintType::HandoverInstallation) {
+        if (
+            $contract_version_to_be_executed === null
+            && $type === ContractPrintType::HandoverInstallation
+        ) {
             throw new InvalidArgumentException(
                 'The contract version to be executed must be provided in order to generate'
                     . ' a handover protocol for installation',
             );
         }
 
-        if ($contract_version_to_be_terminated === null && $type === ContractPrintType::HandoverUninstallation) {
+        if (
+            $contract_version_to_be_terminated === null
+            && $type === ContractPrintType::HandoverUninstallation
+        ) {
             throw new InvalidArgumentException(
                 'The contract version to be terminated must be provided in order to generate'
                     . ' a handover protocol for uninstallation',
@@ -1048,13 +1053,12 @@ class ContractPDF extends AppPDF
      * Assert that all required data for contract amendment generation is present in the print data object,
      * otherwise throw an exception with clear message indicating missing data
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return void
      * @phpstan-assert !null $data->effectiveDateOfAmendment
      */
     private function assertAmendmentData(ContractPrintData $data): void
     {
-        if ($data->effectiveDateOfAmendment === null) {
+        if (!$data->effectiveDateOfAmendment instanceof Date) {
             throw new InvalidArgumentException(
                 'Effective date of amendment must be provided in order to generate a contract amendment',
             );
@@ -1064,7 +1068,6 @@ class ContractPDF extends AppPDF
     /**
      * Generate PDF document - contract
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return void
      */
     public function generateContract(ContractPrintData $data): void
@@ -1081,10 +1084,14 @@ class ContractPDF extends AppPDF
         }
 
         if (
-            (
-                $type === ContractPrintType::ContractNew
-                || $type === ContractPrintType::ContractNewX
-                || $type === ContractPrintType::ContractAmendment
+            in_array(
+                $type,
+                [
+                    ContractPrintType::ContractNew,
+                    ContractPrintType::ContractNewX,
+                    ContractPrintType::ContractAmendment,
+                ],
+                true,
             )
             && $contract_version_to_be_executed === null
         ) {
@@ -1441,9 +1448,15 @@ class ContractPDF extends AppPDF
         }
 
         if (
-            $type === ContractPrintType::ContractNew
-            || $type === ContractPrintType::ContractNewX
-            || $type === ContractPrintType::ContractAmendment
+            in_array(
+                $type,
+                [
+                    ContractPrintType::ContractNew,
+                    ContractPrintType::ContractNewX,
+                    ContractPrintType::ContractAmendment,
+                ],
+                true,
+            )
         ) {
             if ($type === ContractPrintType::ContractAmendment) {
                 // For amendments use the effective date of amendment as reference date for billing relevance
@@ -1565,7 +1578,7 @@ class ContractPDF extends AppPDF
             $this->Cell(
                 45,
                 4,
-                'do ' . (string)$billingReferenceDate->day(1)->addMonths(1)->addDays(9),
+                'do ' . $billingReferenceDate->day(1)->addMonths(1)->addDays(9),
                 align: 'C',
             );
 

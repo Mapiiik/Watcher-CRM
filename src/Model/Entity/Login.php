@@ -67,7 +67,7 @@ class Login extends AppEntity
      */
     protected function _setPassword(string $password): ?string
     {
-        if (strlen($password) > 0) {
+        if ($password !== '') {
             return Security::hash($password, 'sha1');
         }
 

@@ -42,7 +42,7 @@ trait MessageHandlerTrait
             $io->info($message->text);
 
             // Log a warning about the unknown message type
-            Log::warning("Unknown message type: {$message->type}");
+            Log::warning('Unknown message type: ' . $message->type);
         }
     }
 }

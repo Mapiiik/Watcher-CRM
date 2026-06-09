@@ -30,7 +30,6 @@ final class CustomerPrintPdfOutput
      *
      * Returns a CakePHP Response containing the PDF output with appropriate headers.
      *
-     * @param \App\Service\CustomerPrint\CustomerPrintData $data
      * @return \Cake\Http\Response
      */
     public function render(CustomerPrintData $data): Response
@@ -84,7 +83,6 @@ final class CustomerPrintPdfOutput
      *  - document type
      *  - generation date
      *
-     * @param \App\Service\CustomerPrint\CustomerPrintData $data
      * @return string
      */
     private function buildFilename(CustomerPrintData $data): string

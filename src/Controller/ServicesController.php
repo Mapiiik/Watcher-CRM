@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
+
 /**
  * Services Controller
  *
@@ -13,9 +15,9 @@ class ServicesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
@@ -25,7 +27,7 @@ class ServicesController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Services.name ILIKE' => '%' . trim($search) . '%',
+                    'Services.name ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -52,10 +54,10 @@ class ServicesController extends AppController
      * View method
      *
      * @param string|null $id Service id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $service = $this->Services->get($id, contain: [
             'ServiceTypes',
@@ -75,9 +77,9 @@ class ServicesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $service = $this->Services->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
@@ -104,16 +106,18 @@ class ServicesController extends AppController
             ],
         );
         $this->set(compact('service', 'serviceTypes', 'queues'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Service id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $service = $this->Services->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -140,16 +144,18 @@ class ServicesController extends AppController
             ],
         );
         $this->set(compact('service', 'serviceTypes', 'queues'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Service id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $service = $this->Services->get($id);

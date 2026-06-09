@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace App\Service\ContractPrint;
 
 use App\Model\Entity\Billing;
+use App\Model\Entity\ContractVersion;
 use App\Model\Enum\ContractPrintType;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
+use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Radius\Model\Table\AccountsTable;
 
@@ -35,7 +37,6 @@ final class ContractPrintDataEnricher
      * It mutates the provided DTO by filling optional properties
      * based on document type and contract context.
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @param array $query Original query parameters from the request
      * @return void
      */
@@ -62,8 +63,6 @@ final class ContractPrintDataEnricher
      *
      * For non-handover document types, this method does nothing.
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
-     * @param array $query
      * @return void
      */
     private function enrichTechnicalDetails(
@@ -141,14 +140,13 @@ final class ContractPrintDataEnricher
      *
      * If no contract version is selected, no billing data is enriched.
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data
      * @return void
      */
     private function enrichBillings(
         ContractPrintData $data,
     ): void {
         // Billing enrichment only makes sense if we have a specific contract version context
-        if ($data->contractVersionToBeExecuted === null) {
+        if (!$data->contractVersionToBeExecuted instanceof ContractVersion) {
             return;
         }
 
@@ -156,7 +154,7 @@ final class ContractPrintDataEnricher
         $referenceDate = $data->contractVersionToBeExecuted->valid_from;
         if (
             $data->type === ContractPrintType::ContractAmendment
-            && $data->effectiveDateOfAmendment !== null
+            && $data->effectiveDateOfAmendment instanceof Date
         ) {
             $referenceDate = $data->effectiveDateOfAmendment;
         }
@@ -166,7 +164,7 @@ final class ContractPrintDataEnricher
 
         // Active billings are those that are applicable at the reference date
         $data->activeBillings = $billings->reject(
-            function (Billing $billing) use ($referenceDate) {
+            function (Billing $billing) use ($referenceDate): bool {
                 return (
                         $billing->billing_from !== null
                         && $billing->billing_from > $referenceDate
@@ -179,7 +177,7 @@ final class ContractPrintDataEnricher
 
         // Future billings are those that start after the reference date
         $data->futureBillings = $billings->reject(
-            function (Billing $billing) use ($referenceDate) {
+            function (Billing $billing) use ($referenceDate): bool {
                 return (
                         $billing->billing_from !== null
                         && $billing->billing_from <= $referenceDate

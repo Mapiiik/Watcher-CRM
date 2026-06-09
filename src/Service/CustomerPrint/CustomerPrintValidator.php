@@ -31,63 +31,33 @@ final class CustomerPrintValidator
     private array $errors = [];
 
     /**
-     * Returns all collected validation errors.
-     *
-     * @return array<string, array<string>>
-     */
-    private function getErrors(): array
-    {
-        return $this->errors;
-    }
-
-    /**
-     * Adds a validation error message for the given field.
-     *
-     * Multiple messages may be added for the same field.
-     *
-     * @param string $field
-     * @param string $message
-     * @return void
-     * @phpstan-ignore method.unused
-     */
-    private function setError(string $field, string $message): void
-    {
-        $this->errors[$field][] = $message;
-    }
-
-    /**
      * Validates print data according to document type.
      *
-     * @param \App\Service\CustomerPrint\CustomerPrintData $data
-     * @param array $query
      * @return array<string, array<string>>
      */
     public function validate(
         CustomerPrintData $data,
-        array $query,
     ): array {
         $this->errors = [];
 
-        $this->validateCommon($data, $query);
+        $this->validateCommon();
 
         match ($data->type) {
             CustomerPrintType::GdprNew =>
-                $this->validateGdprNew($data, $query),
+                $this->validateGdprNew(),
 
             CustomerPrintType::GdprChange =>
-                $this->validateGdprChange($data, $query),
+                $this->validateGdprChange(),
         };
 
-        return $this->getErrors();
+        return $this->errors;
     }
 
     /**
      * Common validation shared by all customer document types.
      */
-    private function validateCommon(
-        CustomerPrintData $data,
-        array $query,
-    ): void {
+    private function validateCommon(): void
+    {
         // Placeholder for future shared validations
         // (e.g. required customer attributes, consent state, etc.)
     }
@@ -95,20 +65,16 @@ final class CustomerPrintValidator
     /**
      * Validation for new GDPR consent document.
      */
-    private function validateGdprNew(
-        CustomerPrintData $data,
-        array $query,
-    ): void {
+    private function validateGdprNew(): void
+    {
         // Currently no additional validation required
     }
 
     /**
      * Validation for GDPR consent change document.
      */
-    private function validateGdprChange(
-        CustomerPrintData $data,
-        array $query,
-    ): void {
+    private function validateGdprChange(): void
+    {
         // Currently no additional validation required
     }
 }

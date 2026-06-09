@@ -69,11 +69,7 @@ class ServiceOverride extends AppEntity
             return false;
         }
 
-        if ($this->valid_until < $date) {
-            return false;
-        }
-
-        return true;
+        return $this->valid_until >= $date;
     }
 
     /**
@@ -94,10 +90,6 @@ class ServiceOverride extends AppEntity
             return false;
         }
 
-        if ($this->valid_from <= $date) {
-            return false;
-        }
-
-        return true;
+        return $this->valid_from > $date;
     }
 }

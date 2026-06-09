@@ -11,6 +11,7 @@ use App\Service\CustomerPrint\CustomerPrintValidator;
 use App\View\PdfView;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Form\Form;
+use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
@@ -143,9 +144,9 @@ class CustomersController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         /**
          * Handle filters persistency in session
@@ -231,7 +232,7 @@ class CustomersController extends AppController
         $customersQuery = $this->Customers->find();
 
         // search
-        if ($allow_advanced_search && $advanced_search && !empty($search)) {
+        if ($allow_advanced_search && $advanced_search && ($search !== '' && $search !== '0')) {
             // advanced search
             $customersQuery->where([
                 'OR' => [
@@ -251,7 +252,7 @@ class CustomersController extends AppController
                     'Customers.identity_number' => trim($search),
                 ],
             ]);
-        } elseif (!empty($search) || !$allow_advanced_search) {
+        } elseif ($search !== '' && $search !== '0' || !$allow_advanced_search) {
             // notify the required use of the customer number
             $this->Flash->info(__('Please use the customer number or company identification number in the search.'));
             $customersQuery->where([
@@ -298,25 +299,28 @@ class CustomersController extends AppController
         }
 
         // filter by labels
-        if ($allow_advanced_search && is_array($label_ids) && !empty($label_ids)) {
+        if ($allow_advanced_search && is_array($label_ids) && $label_ids !== []) {
             $customersQuery->where([
                 'Customers.id IN ('
                 . ' SELECT customer_id FROM customer_labels '
                 . 'GROUP BY customer_id '
                 . 'HAVING array_agg(label_id) @> ARRAY['
-                    . implode(',', array_map(fn($label) => "'{$label}'::uuid", $label_ids))
+                    . implode(',', array_map(fn(string $label): string => sprintf("'%s'::uuid", $label), $label_ids))
                 . ']'
                 . ')',
             ]);
         }
 
         // filter by not labels
-        if ($allow_advanced_search && is_array($not_label_ids) && !empty($not_label_ids)) {
+        if ($allow_advanced_search && is_array($not_label_ids) && $not_label_ids !== []) {
             $customersQuery->where([
                 'Customers.id NOT IN (
                     SELECT customer_id FROM customer_labels
                     WHERE label_id = ANY(ARRAY['
-                        . implode(',', array_map(fn($label) => "'{$label}'::uuid", $not_label_ids))
+                        . implode(',', array_map(
+                            fn(string $label): string => sprintf("'%s'::uuid", $label),
+                            $not_label_ids,
+                        ))
                     . '])
                 )',
             ]);
@@ -385,10 +389,10 @@ class CustomersController extends AppController
      * View method
      *
      * @param string|null $id Customer id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         // determine whether to show historical records based on the user settings and query parameter
         $show_historical_records = $this->request->getQuery('show_historical_records');
@@ -492,9 +496,9 @@ class CustomersController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $customer = $this->Customers->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
@@ -511,16 +515,18 @@ class CustomersController extends AppController
         ]);
 
         $this->set(compact('customer', 'accountingProfiles'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Customer id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $customer = $this->Customers->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -537,16 +543,18 @@ class CustomersController extends AppController
         ]);
 
         $this->set(compact('customer', 'accountingProfiles'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Customer id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $customer = $this->Customers->get($id);
@@ -565,10 +573,10 @@ class CustomersController extends AppController
      *
      * @param string|null $id Customer id.
      * @param string|null $type Document type.
-     * @return \Cake\Http\Response|null|void Renders print.
+     * @return \Cake\Http\Response|null Renders print.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function print(?string $id = null, ?string $type = null)
+    public function print(?string $id = null, ?string $type = null): ?Response
     {
         // prepare supported document types for selection in the print view
         $documentTypes = [
@@ -623,10 +631,10 @@ class CustomersController extends AppController
             );
 
             // validate the data for the requested document type
-            $errors = (new CustomerPrintValidator())->validate($data, $query);
+            $errors = (new CustomerPrintValidator())->validate($data);
 
             // if there are validation errors, process them
-            if (!empty($errors)) {
+            if ($errors !== []) {
                 // flash error messages for the user
                 foreach ($errors['Flash'] ?? [] as $error) {
                     $this->Flash->error($error);
@@ -657,14 +665,16 @@ class CustomersController extends AppController
             'printType',
             'customer',
         ));
+
+        return null;
     }
 
     /**
      * Identity Number Check
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function identityNumberCheck()
+    public function identityNumberCheck(): void
     {
         $customers = $this->Customers
             ->find()

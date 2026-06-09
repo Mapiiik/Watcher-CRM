@@ -13,6 +13,7 @@ use App\Service\ContractPrint\ContractPrintValidator;
 use App\View\PdfView;
 use Cake\Collection\Collection;
 use Cake\Form\Form;
+use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
@@ -44,13 +45,13 @@ class ContractsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions = ['Contracts.customer_id' => $this->customer_id];
         }
 
@@ -59,8 +60,8 @@ class ContractsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
-                    'Contracts.subscriber_verification_code' => trim($search),
+                    'Contracts.number ILIKE' => '%' . trim((string)$search) . '%',
+                    'Contracts.subscriber_verification_code' => trim((string)$search),
                 ],
             ];
         }
@@ -117,10 +118,10 @@ class ContractsController extends AppController
      * View method
      *
      * @param string|null $id Contract id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         // determine whether to show historical records based on the user settings and query parameter
         $show_historical_records = $this->request->getQuery('show_historical_records');
@@ -219,13 +220,13 @@ class ContractsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $contract = $this->Contracts->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $contract->customer_id = $this->customer_id;
         }
 
@@ -280,7 +281,7 @@ class ContractsController extends AppController
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer) {
+            ->map(function ($dealer): array {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
@@ -299,7 +300,7 @@ class ContractsController extends AppController
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer) {
+            ->map(function ($dealer): array {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
@@ -310,7 +311,7 @@ class ContractsController extends AppController
             'name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $installationAddresses->where([['InstallationAddresses.customer_id' => $this->customer_id]]);
         }
@@ -327,16 +328,18 @@ class ContractsController extends AppController
 
         // load access points with ranges from NMS if possible (only active)
         $this->setAccessPointsViewVarListWithRanges(onlyActive: true);
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Contract id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $contract = $this->Contracts->get($id);
 
@@ -387,7 +390,7 @@ class ContractsController extends AppController
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer) {
+            ->map(function ($dealer): array {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
@@ -403,7 +406,7 @@ class ContractsController extends AppController
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer) {
+            ->map(function ($dealer): array {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
@@ -414,7 +417,7 @@ class ContractsController extends AppController
             'name',
         ]);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
             $installationAddresses->where([['InstallationAddresses.customer_id' => $this->customer_id]]);
         }
@@ -431,16 +434,18 @@ class ContractsController extends AppController
 
         // load access points with ranges from NMS if possible
         $this->setAccessPointsViewVarListWithRanges(onlyActive: false);
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Contract id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $contract = $this->Contracts->get($id);
@@ -461,7 +466,7 @@ class ContractsController extends AppController
      * @param bool $flash Enable flash messages
      * @return bool Return true on success false on failure
      */
-    private function updateNumber(string|int|null $id = null, bool $flash = true)
+    private function updateNumber(string|int|null $id = null, bool $flash = true): bool
     {
         $contract = $this->Contracts->get($id);
         $service_type = $this->Contracts->ServiceTypes->get($contract->service_type_id);
@@ -525,10 +530,10 @@ class ContractsController extends AppController
      * Update all contract numbers according to the format defined in the service type
      *
      * @param bool $force Update even where already set
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Http\Exception\MethodNotAllowedException When badly called.
      */
-    public function updateAllNumbers(bool $force = false)
+    public function updateAllNumbers(bool $force = false): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -564,7 +569,7 @@ class ContractsController extends AppController
      * @param bool $flash Enable flash messages
      * @return bool Return true on success false on failure
      */
-    private function updateSubscriberVerificationCode(string|int|null $id = null, bool $flash = true)
+    private function updateSubscriberVerificationCode(string|int|null $id = null, bool $flash = true): bool
     {
         $contract = $this->Contracts->get($id);
         $service_type = $this->Contracts->ServiceTypes->get($contract->service_type_id);
@@ -623,10 +628,10 @@ class ContractsController extends AppController
      * Update all subscriber verification codes for the contracts according to the format defined in the service type
      *
      * @param bool $force Update even where already set
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Http\Exception\MethodNotAllowedException When badly called.
      */
-    public function updateAllSubscriberVerificationCodes(bool $force = false)
+    public function updateAllSubscriberVerificationCodes(bool $force = false): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -659,10 +664,10 @@ class ContractsController extends AppController
      * Set dates for related borrowed equipments
      *
      * @param string|null $id Contract id.
-     * @return \Cake\Http\Response|null|void Redirects to view.
+     * @return \Cake\Http\Response|null Redirects to view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function setDatesForRelatedBorrowedEquipments(?string $id = null)
+    public function setDatesForRelatedBorrowedEquipments(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -736,10 +741,10 @@ class ContractsController extends AppController
      * Terminate related billings
      *
      * @param string|null $id Contract id.
-     * @return \Cake\Http\Response|null|void Redirects to view.
+     * @return \Cake\Http\Response|null Redirects to view.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function terminateRelatedBillings(?string $id = null)
+    public function terminateRelatedBillings(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
 
@@ -785,10 +790,10 @@ class ContractsController extends AppController
      *
      * @param string|null $id Contract id.
      * @param string|null $type Document type.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response|null Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function print(?string $id = null, ?string $type = null)
+    public function print(?string $id = null, ?string $type = null): ?Response
     {
         // prepare supported document types for selection in the print view
         $documentTypes = [
@@ -841,7 +846,7 @@ class ContractsController extends AppController
         ]);
 
         // prepare contract versions for selection in the print view
-        $contractVersions = (new Collection($contract->contract_versions))->map(function ($contract_version) {
+        $contractVersions = (new Collection($contract->contract_versions))->map(function ($contract_version): array {
             return [
                 'value' => $contract_version->id,
                 'text' => $contract_version->valid_from
@@ -916,7 +921,7 @@ class ContractsController extends AppController
             $errors = (new ContractPrintValidator())->validate($data, $query);
 
             // if there are validation errors, process them
-            if (!empty($errors)) {
+            if ($errors !== []) {
                 // flash error messages for the user
                 foreach ($errors['Flash'] ?? [] as $error) {
                     $this->Flash->error($error);
@@ -951,5 +956,7 @@ class ContractsController extends AppController
             'contract',
             'contractVersions',
         ));
+
+        return null;
     }
 }

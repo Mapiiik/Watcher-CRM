@@ -135,19 +135,19 @@ class Customer extends AppEntity
             $name .= $this->title;
         }
         if (isset($this->first_name)) {
-            if ($name <> '') {
+            if ($name !== '') {
                 $name .= ' ';
             }
             $name .= $this->first_name;
         }
         if (isset($this->last_name)) {
-            if ($name <> '') {
+            if ($name !== '') {
                 $name .= ' ';
             }
             $name .= $this->last_name;
         }
         if (isset($this->suffix)) {
-            if ($name <> '') {
+            if ($name !== '') {
                 $name .= ' ';
             }
             $name .= $this->suffix;
@@ -168,8 +168,8 @@ class Customer extends AppEntity
         if (isset($this->company)) {
             $name .= '[' . $this->company . ']';
         }
-        if ($this->full_name <> '') {
-            if ($name <> '') {
+        if ($this->full_name != '') {
+            if ($name !== '') {
                 $name .= ' ';
             }
             $name .= $this->full_name;
@@ -191,25 +191,25 @@ class Customer extends AppEntity
             $name .= '[' . $this->company . ']';
         }
         if (isset($this->last_name)) {
-            if ($name <> '') {
+            if ($name !== '') {
                 $name .= ' ';
             }
             $name .= $this->last_name;
         }
         if (isset($this->first_name)) {
-            if ($name <> '') {
+            if ($name !== '') {
                 $name .= ' ';
             }
             $name .= $this->first_name;
         }
         if (isset($this->title)) {
-            if ($name <> '') {
+            if ($name !== '') {
                 $name .= ', ';
             }
             $name .= $this->title;
         }
         if (isset($this->suffix)) {
-            if ($name <> '') {
+            if ($name !== '') {
                 $name .= ', ';
             }
             $name .= $this->suffix;
@@ -225,9 +225,7 @@ class Customer extends AppEntity
      */
     protected function _getNumber(): string
     {
-        $number = strval($this->nid + (int)env('CUSTOMER_SERIES', '0'));
-
-        return $number;
+        return strval($this->nid + (int)env('CUSTOMER_SERIES', '0'));
     }
 
     /**
@@ -237,9 +235,7 @@ class Customer extends AppEntity
      */
     protected function _getEmail(): string
     {
-        $email = implode(', ', array_column($this->emails, 'email'));
-
-        return $email;
+        return implode(', ', array_column($this->emails, 'email'));
     }
 
     /**
@@ -266,9 +262,7 @@ class Customer extends AppEntity
      */
     protected function _getBillingEmail(): string
     {
-        $email = implode(', ', array_column($this->billing_emails, 'email'));
-
-        return $email;
+        return implode(', ', array_column($this->billing_emails, 'email'));
     }
 
     /**
@@ -278,9 +272,7 @@ class Customer extends AppEntity
      */
     protected function _getPhone(): string
     {
-        $phone = implode(', ', array_column($this->phones, 'phone'));
-
-        return $phone;
+        return implode(', ', array_column($this->phones, 'phone'));
     }
 
     /**
@@ -307,9 +299,7 @@ class Customer extends AppEntity
      */
     protected function _getBillingPhone(): string
     {
-        $phone = implode(', ', array_column($this->billing_phones, 'phone'));
-
-        return $phone;
+        return implode(', ', array_column($this->billing_phones, 'phone'));
     }
 
     /**
@@ -354,7 +344,7 @@ class Customer extends AppEntity
 
         // if there is no billing address take installation address
         if (!isset($billing_address) && isset($this->installation_address)) {
-            $billing_address = $this->installation_address;
+            return $this->installation_address;
         }
 
         return $billing_address;
@@ -408,9 +398,11 @@ class Customer extends AppEntity
     public function verifyIdentityNumber(): bool
     {
         $identityNumber = (string)$this->identity_number;
+        if ($this->verifyIdentityNumberCzech($identityNumber)) {
+            return true;
+        }
 
-        return $this->verifyIdentityNumberCzech($identityNumber)
-            || $this->verifyIdentityNumberCroatian($identityNumber);
+        return $this->verifyIdentityNumberCroatian($identityNumber);
     }
 
     /**

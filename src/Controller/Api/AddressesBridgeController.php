@@ -40,9 +40,9 @@ class AddressesBridgeController extends AppController
      * It accepts "query" and "country_code" as GET parameters, performs a search against the
      * Addresses API, and returns results formatted for Select2.
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function search()
+    public function search(): void
     {
         $country = $this->getRequest()->getQuery('country_code'); // Required parameter to scope the search
         $query = $this->getRequest()->getQuery('query'); // Search query parameter
@@ -60,7 +60,7 @@ class AddressesBridgeController extends AppController
 
         try {
             $searchResult = AddressesApiClient::search(
-                country: strtolower($country),
+                country: strtolower((string)$country),
                 q: $query,
                 limit: 50,
             );
@@ -74,7 +74,11 @@ class AddressesBridgeController extends AppController
             }
         } catch (Throwable $e) {
             Log::error('Error when searching addresses: ' . $e->getMessage());
-            throw new RuntimeException('Error when searching addresses: ' . $e->getMessage(), previous: $e);
+            throw new RuntimeException(
+                'Error when searching addresses: ' . $e->getMessage(),
+                $e->getCode(),
+                previous: $e,
+            );
         }
 
         $this->set(compact('results', 'pagination'));

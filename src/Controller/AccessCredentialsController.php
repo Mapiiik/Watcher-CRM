@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
+
 /**
  * AccessCredentials Controller
  *
@@ -13,16 +15,16 @@ class AccessCredentialsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions += ['AccessCredentials.customer_id' => $this->customer_id];
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $conditions += [
                 'OR' => [
                     'AccessCredentials.contract_id' => $this->contract_id,
@@ -36,8 +38,8 @@ class AccessCredentialsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'AccessCredentials.name ILIKE' => '%' . trim($search) . '%',
-                    'Contracts.number ILIKE' => '%' . trim($search) . '%',
+                    'AccessCredentials.name ILIKE' => '%' . trim((string)$search) . '%',
+                    'Contracts.number ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -60,10 +62,10 @@ class AccessCredentialsController extends AppController
      * View method
      *
      * @param string|null $id Access Credential id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $accessCredential = $this->AccessCredentials->get($id, contain: [
             'Creators',
@@ -77,16 +79,16 @@ class AccessCredentialsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $accessCredential = $this->AccessCredentials->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $accessCredential->customer_id = $this->customer_id;
         }
-        if (isset($this->contract_id)) {
+        if ($this->contract_id !== null) {
             $accessCredential->contract_id = $this->contract_id;
         }
 
@@ -110,7 +112,7 @@ class AccessCredentialsController extends AppController
             'last_name',
             'first_name',
         ]);
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customersQuery->where(['Customers.id' => $this->customer_id]);
         }
         $customers = $customersQuery->all();
@@ -136,16 +138,18 @@ class AccessCredentialsController extends AppController
         }
 
         $this->set(compact('accessCredential', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Access Credential id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $accessCredential = $this->AccessCredentials->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -168,7 +172,7 @@ class AccessCredentialsController extends AppController
             'last_name',
             'first_name',
         ]);
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customersQuery->where(['Customers.id' => $this->customer_id]);
         }
         $customers = $customersQuery->all();
@@ -194,6 +198,8 @@ class AccessCredentialsController extends AppController
         }
 
         $this->set(compact('accessCredential', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
@@ -203,7 +209,7 @@ class AccessCredentialsController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->request->allowMethod(['post', 'delete']);
         $accessCredential = $this->AccessCredentials->get($id);

@@ -36,15 +36,13 @@ class ApiClient
             'timeout' => $timeout,
         ]);
 
-        $response = $http->post(
+        return $http->post(
             $agentUrl . '/api/' . $function,
             $data,
             [
                 'type' => 'json',
             ],
         );
-
-        return $response;
     }
 
     /**
@@ -69,6 +67,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Watcher Agent is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }
@@ -123,6 +122,7 @@ class ApiClient
         } catch (Throwable $e) {
             throw new RuntimeException(
                 __('Watcher Agent is unreachable: {0}', $e->getMessage()),
+                $e->getCode(),
                 previous: $e,
             );
         }

@@ -28,6 +28,7 @@ use Cake\Datasource\RepositoryInterface;
 use Cake\Event\EventInterface;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 use Cake\I18n\I18n;
 use Cake\Routing\Router;
 use Override;
@@ -92,7 +93,7 @@ class AppController extends Controller
             $this->paginate['limit'] = Configure::read('UI.number_of_rows_per_page');
 
             return parent::paginate($object, $settings);
-        } catch (NotFoundException $e) {
+        } catch (NotFoundException) {
             $this->Flash->error(__(
                 'Unable to find results on page {0}. Redirect to page 1.',
                 $this->getRequest()->getQuery('page'),
@@ -101,16 +102,15 @@ class AppController extends Controller
                 ['?' => ['page' => '1'] + $this->getRequest()->getQueryParams()]
                 + $this->getRequest()->getParam('pass'),
             );
-            if ($response === null) {
+            if (!$response instanceof Response) {
                 throw new NotFoundException('Unable to prepare redirection response.');
             }
 
             // Redirect if not called from CLI
             if (PHP_SAPI === 'cli') {
                 throw new NotFoundException('Redirect to ' . $response->getHeaderLine('Location') . ' for non-CLI.');
-            } else {
-                header('Location: ' . $response->getHeaderLine('Location'), true, 303);
             }
+            header('Location: ' . $response->getHeaderLine('Location'), true, 303);
 
             exit;
         }
@@ -122,10 +122,9 @@ class AppController extends Controller
      * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event An Event instance
      * @return void
      * @link https://book.cakephp.org/5/en/controllers.html#request-life-cycle-callbacks
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     #[Override]
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): void
     {
         # Load current user
         /** @var \Authorization\Identity|null $identity */

@@ -71,13 +71,7 @@ class IpAddress extends AppEntity
      */
     protected function _getRouterosDevices(): ?CollectionInterface
     {
-        $routerosDevices = NMSApiClient::getRouterosDevicesForIp($this->ip_address);
-
-        if ($routerosDevices) {
-            return $routerosDevices;
-        }
-
-        return null;
+        return NMSApiClient::getRouterosDevicesForIp($this->ip_address);
     }
 
     /**
@@ -87,12 +81,6 @@ class IpAddress extends AppEntity
      */
     protected function _getIpAddressRanges(): ?CollectionInterface
     {
-        $ipAddressRanges = NMSApiClient::getIpAddressRangesForIp($this->ip_address);
-
-        if ($ipAddressRanges) {
-            return $ipAddressRanges;
-        }
-
-        return null;
+        return NMSApiClient::getIpAddressRangesForIp($this->ip_address);
     }
 }

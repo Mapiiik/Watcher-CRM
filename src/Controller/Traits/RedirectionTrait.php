@@ -24,7 +24,7 @@ trait RedirectionTrait
     public function afterAddRedirect(UriInterface|array|string $url, int $status = 302): ?Response
     {
         // other behavior if not in win-link
-        if (!($this->getRequest()->getQuery('win-link') == 'true')) {
+        if ($this->getRequest()->getQuery('win-link') != 'true') {
             # Redirect to contract card if contract ID is known
             if (isset($this->contract_id) && $this->getRequest()->getParam('controller') !== 'Contracts') {
                 return $this->redirect([
@@ -95,7 +95,7 @@ trait RedirectionTrait
         }
 
         // other behavior if not in win-link
-        if (!($this->getRequest()->getQuery('win-link') == 'true')) {
+        if ($this->getRequest()->getQuery('win-link') != 'true') {
             # Redirect to contract card if contract ID is known
             if (isset($this->contract_id) && $this->getRequest()->getParam('controller') !== 'Contracts') {
                 return $this->redirect([

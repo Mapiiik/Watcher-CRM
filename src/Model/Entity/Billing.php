@@ -90,7 +90,7 @@ class Billing extends AppEntity
         }
 
         if ($this->quantity > 1) {
-            $name = $this->quantity . 'x ' . $name;
+            return $this->quantity . 'x ' . $name;
         }
 
         return $name;
@@ -111,9 +111,7 @@ class Billing extends AppEntity
             $sum = $this->service->price;
         }
 
-        $sum = $sum->multiply($this->quantity);
-
-        return $sum;
+        return $sum->multiply($this->quantity);
     }
 
     /**
@@ -123,13 +121,7 @@ class Billing extends AppEntity
      */
     protected function _getFixedDiscountSum(): Decimal
     {
-        $discount = Decimal::create(0, 2);
-
-        if (isset($this->fixed_discount)) {
-            $discount = $this->fixed_discount;
-        }
-
-        return $discount;
+        return $this->fixed_discount ?? Decimal::create(0, 2);
     }
 
     /**
@@ -139,13 +131,11 @@ class Billing extends AppEntity
      */
     protected function _getPercentageDiscountSum(): Decimal
     {
-        $discount = Decimal::create(0, 2);
-
         if (isset($this->percentage_discount)) {
-            $discount = $this->sum->multiply($this->percentage_discount)->divide(100, 4)->round(2);
+            return $this->sum->multiply($this->percentage_discount)->divide(100, 4)->round(2);
         }
 
-        return $discount;
+        return Decimal::create(0, 2);
     }
 
     /**
@@ -216,40 +206,32 @@ class Billing extends AppEntity
         }
 
         $e = bcpow('10', (string)$exponent);
-        switch ($roundMode) {
-            case Decimal::ROUND_FLOOR:
-                $result = bcdiv(
-                    bcadd(
-                        bcmul($numberString, $e, 0),
-                        $number->isNegative() ? '-999999' : '0',
-                    ),
-                    $e,
-                    $scale,
-                );
-
-                break;
-            case Decimal::ROUND_CEIL:
-                $result = bcdiv(
-                    bcadd(
-                        bcmul($numberString, $e, 0),
-                        $number->isNegative() ? '0' : '999999',
-                    ),
-                    $e,
-                    $scale,
-                );
-
-                break;
-            case Decimal::ROUND_HALF_UP:
-            default:
-                $result = bcdiv(
-                    bcadd(
-                        bcmul($numberString, $e, 0),
-                        $number->isNegative() ? '-500000' : '500000',
-                    ),
-                    $e,
-                    $scale,
-                );
-        }
+        $result = match ($roundMode) {
+            Decimal::ROUND_FLOOR => bcdiv(
+                bcadd(
+                    bcmul($numberString, $e, 0),
+                    $number->isNegative() ? '-999999' : '0',
+                ),
+                $e,
+                $scale,
+            ),
+            Decimal::ROUND_CEIL => bcdiv(
+                bcadd(
+                    bcmul($numberString, $e, 0),
+                    $number->isNegative() ? '0' : '999999',
+                ),
+                $e,
+                $scale,
+            ),
+            default => bcdiv(
+                bcadd(
+                    bcmul($numberString, $e, 0),
+                    $number->isNegative() ? '-500000' : '500000',
+                ),
+                $e,
+                $scale,
+            ),
+        };
 
         return new Decimal($result);
     }

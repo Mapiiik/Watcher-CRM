@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Addresses\ApiClient as AddressesApiClient;
 use App\Model\Entity\Address;
 use App\Model\Enum\AddressNumberType;
+use Cake\Http\Response;
 use RuntimeException;
 
 /**
@@ -18,13 +19,13 @@ class AddressesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions = ['Addresses.customer_id' => $this->customer_id];
         }
 
@@ -68,10 +69,10 @@ class AddressesController extends AppController
      * View method
      *
      * @param string|null $id Address id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $address = $this->Addresses->get($id, contain: [
             'Countries',
@@ -86,14 +87,14 @@ class AddressesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $address = $this->Addresses->newEmptyEntity();
         $address->country_id = $this->Addresses->getSchema()->getColumn('country_id')['default'] ?? null;
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customer = $this->Addresses->Customers->get($this->customer_id);
 
             $address = $this->Addresses->patchEntity($address, $customer->toArray(), ['validate' => false]);
@@ -152,21 +153,23 @@ class AddressesController extends AppController
         // set country code for address search widget (Select2)
         $searchCountryCode = $this->getSearchCountryCodeForAddress($address);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('address', 'customers', 'countries', 'searchCountryCode'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Address id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $address = $this->Addresses->get($id);
 
@@ -222,21 +225,23 @@ class AddressesController extends AppController
         // set country code for address search widget (Select2)
         $searchCountryCode = $this->getSearchCountryCodeForAddress($address);
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
         $this->set(compact('address', 'customers', 'countries', 'searchCountryCode'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Address id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $address = $this->Addresses->get($id);
@@ -304,7 +309,7 @@ class AddressesController extends AppController
             return [];
         }
 
-        return array_map('strtoupper', $addressesMeta['supported_countries']);
+        return array_map(strtoupper(...), $addressesMeta['supported_countries']);
     }
 
     /**
@@ -322,7 +327,10 @@ class AddressesController extends AppController
             $addressRegistryReference,
         ] = explode('|', $addressRegistryKey, limit: 2) + [null, null];
 
-        if (empty($addressRegistrySource) || empty($addressRegistryReference)) {
+        if (
+            in_array($addressRegistrySource, [null, '', '0'], true)
+            || in_array($addressRegistryReference, [null, '', '0'], true)
+        ) {
             throw new RuntimeException('Invalid address registry key format: ' . $addressRegistryKey);
         }
 
@@ -466,22 +474,22 @@ class AddressesController extends AppController
      * Scoped to the current customer when `$this->customer_id` is set,
      * otherwise iterates over every address.
      *
-     * @return \Cake\Http\Response|null|void Redirects back to the index on completion.
+     * @return \Cake\Http\Response|null Redirects back to the index on completion.
      */
-    public function updateAllFromNationalAddressRegistries()
+    public function updateAllFromNationalAddressRegistries(): ?Response
     {
         $this->getRequest()->allowMethod(['post']);
         set_time_limit(0); // batched external API calls may take a while
 
         /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Address> $query */
         $query = $this->Addresses->find()->contain('Countries');
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $query->where(['Addresses.customer_id' => $this->customer_id]);
         }
 
         // Fetch supported-countries metadata once; bail out on transient failure.
         $supportedCountries = $this->loadSupportedCountriesForAddressRegistry();
-        if (empty($supportedCountries)) {
+        if ($supportedCountries === []) {
             return $this->redirect(['action' => 'index']);
         }
 
@@ -566,7 +574,7 @@ class AddressesController extends AppController
         foreach (array_chunk($batchItems, $chunkSize) as $chunk) {
             try {
                 $response = AddressesApiClient::lookupBatch($chunk);
-            } catch (RuntimeException $e) {
+            } catch (RuntimeException) {
                 // transient failure for this chunk → keep existing data
                 $skipped += count($chunk);
                 $offset += count($chunk);

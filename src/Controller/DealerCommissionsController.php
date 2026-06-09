@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Enum\CustomerDealer;
+use Cake\Http\Response;
 
 /**
  * DealerCommissions Controller
@@ -15,9 +16,9 @@ class DealerCommissionsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
@@ -27,7 +28,7 @@ class DealerCommissionsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Commissions.name ILIKE' => '%' . trim($search) . '%',
+                    'Commissions.name ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -53,10 +54,10 @@ class DealerCommissionsController extends AppController
      * View method
      *
      * @param string|null $id Dealer Commission id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $dealerCommission = $this->DealerCommissions->get($id, contain: [
             'Dealers',
@@ -71,9 +72,9 @@ class DealerCommissionsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $dealerCommission = $this->DealerCommissions->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
@@ -99,7 +100,7 @@ class DealerCommissionsController extends AppController
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer) {
+            ->map(function ($dealer): array {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
@@ -110,16 +111,18 @@ class DealerCommissionsController extends AppController
             'name',
         ]);
         $this->set(compact('dealerCommission', 'dealers', 'commissions'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Dealer Commission id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $dealerCommission = $this->DealerCommissions->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -142,7 +145,7 @@ class DealerCommissionsController extends AppController
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer) {
+            ->map(function ($dealer): array {
                 return [
                     'value' => $dealer->id,
                     'text' => $dealer->name_for_lists,
@@ -153,16 +156,18 @@ class DealerCommissionsController extends AppController
             'name',
         ]);
         $this->set(compact('dealerCommission', 'dealers', 'commissions'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Dealer Commission id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $dealerCommission = $this->DealerCommissions->get($id);

@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Command;
 
+use App\Command\AutoAssignContractsToAccessPointsCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * App\Command\AutoAssignContractsToAccessPointsCommand Test Case
- *
- * @uses \App\Command\AutoAssignContractsToAccessPointsCommand
  */
+#[UsesClass(AutoAssignContractsToAccessPointsCommand::class)]
 class AutoAssignContractsToAccessPointsCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;

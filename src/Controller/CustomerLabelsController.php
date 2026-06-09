@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
+
 /**
  * CustomerLabels Controller
  *
@@ -13,13 +15,13 @@ class CustomerLabelsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
-    public function index()
+    public function index(): void
     {
         // filter
         $conditions = [];
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $conditions = ['CustomerLabels.customer_id' => $this->customer_id];
         }
 
@@ -28,7 +30,7 @@ class CustomerLabelsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'Labels.name ILIKE' => '%' . trim($search) . '%',
+                    'Labels.name ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
@@ -55,10 +57,10 @@ class CustomerLabelsController extends AppController
      * View method
      *
      * @param string|null $id Customer Label id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): void
     {
         $customerLabel = $this->CustomerLabels->get($id, contain: [
             'Labels',
@@ -74,13 +76,13 @@ class CustomerLabelsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $customerLabel = $this->CustomerLabels->newEmptyEntity();
 
-        if (isset($this->customer_id)) {
+        if ($this->customer_id !== null) {
             $customerLabel->customer_id = $this->customer_id;
         }
 
@@ -123,16 +125,18 @@ class CustomerLabelsController extends AppController
             [];
 
         $this->set(compact('customerLabel', 'labels', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Edit method
      *
      * @param string|null $id Customer Label id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $customerLabel = $this->CustomerLabels->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
@@ -174,16 +178,18 @@ class CustomerLabelsController extends AppController
             [];
 
         $this->set(compact('customerLabel', 'labels', 'customers', 'contracts'));
+
+        return null;
     }
 
     /**
      * Delete method
      *
      * @param string|null $id Customer Label id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $customerLabel = $this->CustomerLabels->get($id);
