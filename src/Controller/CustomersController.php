@@ -401,7 +401,7 @@ class CustomersController extends AppController
         // pass the value to the view
         $this->set('show_historical_records', $show_historical_records);
 
-        $customer = $this->Customers->get($id, contain: [
+        $contain = [
             'Addresses' => [
                 'Countries',
             ],
@@ -473,8 +473,10 @@ class CustomersController extends AppController
             ],
             'Creators',
             'Modifiers',
-        ] + (
-            $show_historical_records ? [
+        ];
+
+        if ($show_historical_records) {
+            $contain = array_merge($contain, [
                 'RemovedIpAddresses' => [
                     'Contracts' => [
                         'ContractStates',
@@ -485,8 +487,10 @@ class CustomersController extends AppController
                         'ContractStates',
                     ],
                 ],
-            ] : []
-        ));
+            ]);
+        }
+
+        $customer = $this->Customers->get($id, contain: $contain);
 
         $this->set(compact(
             'customer',

@@ -130,7 +130,7 @@ class ContractsController extends AppController
         // pass the value to the view
         $this->set('show_historical_records', $show_historical_records);
 
-        $contract = $this->Contracts->get($id, contain: [
+        $contain = [
             'Billings' => [
                 'Contracts' => [
                     'ContractStates',
@@ -207,12 +207,16 @@ class ContractsController extends AppController
             'UninstallationTechnicians',
             'Creators',
             'Modifiers',
-        ] + (
-            $show_historical_records ? [
+        ];
+
+        if ($show_historical_records) {
+            $contain = array_merge($contain, [
                 'RemovedIpAddresses',
                 'RemovedIpNetworks',
-            ] : []
-        ));
+            ]);
+        }
+
+        $contract = $this->Contracts->get($id, contain: $contain);
 
         $this->set(compact('contract'));
     }
