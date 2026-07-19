@@ -21,7 +21,12 @@
         <div class="customerMessages form content">
             <?= $this->Form->create(null) ?>
             <fieldset>
-                <legend><?= __('Bulk Customer Message') . ' — ' . __('Step {0} of {1}: {2}', 1, 3, __('Purpose')) ?></legend>
+                <legend><?= __('Bulk Customer Message') . ' — ' . __(
+                    'Step {0} of {1}: {2}',
+                    1,
+                    3,
+                    __('Purpose'),
+                ) ?></legend>
                 <?= $this->Form->control('purpose', [
                     'type' => 'radio',
                     'options' => $purposes,

@@ -34,7 +34,12 @@
         <div class="customerMessages form content">
             <?= $this->Form->create(null) ?>
             <fieldset>
-                <legend><?= __('Bulk Customer Message') . ' — ' . __('Step {0} of {1}: {2}', 2, 3, __('Filters')) ?></legend>
+                <legend><?= __('Bulk Customer Message') . ' — ' . __(
+                    'Step {0} of {1}: {2}',
+                    2,
+                    3,
+                    __('Filters'),
+                ) ?></legend>
                 <p><?= __('Purpose: {0}', $purpose->label()) ?></p>
                 <hr>
                 <?php if ($filterControls === []) : ?>

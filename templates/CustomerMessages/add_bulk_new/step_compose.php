@@ -38,7 +38,12 @@
             <?php // opt-out checkboxes submit customer ids into send_to[]; varies per selection
                 $this->Form->unlockField('send_to'); ?>
             <fieldset>
-                <legend><?= __('Bulk Customer Message') . ' — ' . __('Step {0} of {1}: {2}', 3, 3, __('Compose')) ?></legend>
+                <legend><?= __('Bulk Customer Message') . ' — ' . __(
+                    'Step {0} of {1}: {2}',
+                    3,
+                    3,
+                    __('Compose'),
+                ) ?></legend>
                 <p>
                     <?= __('Purpose: {0}', $purpose->label()) ?><br><br>
                     <?php if ($ignoreCustomerConsent) : ?>
