@@ -39,6 +39,13 @@ class CustomerMessagesController extends AppController
     private const BULK_WIZARD_STATE_KEY = 'CustomerMessages.bulkWizard';
 
     /**
+     * Session key holding the one-shot bulk send result (for the done step).
+     *
+     * @var string
+     */
+    private const BULK_RESULT_KEY = 'CustomerMessages.bulkResult';
+
+    /**
      * Index method
      *
      * @return void Renders view
@@ -356,6 +363,18 @@ class CustomerMessagesController extends AppController
         // render the requested step (falling back to purpose selection)
         $step = (string)($this->getRequest()->getQuery('step') ?? 'purpose');
 
+        if ($step === 'done') {
+            // one-shot send summary (post/redirect/get); safe to refresh
+            $result = $session->consume(self::BULK_RESULT_KEY);
+            if (!is_array($result)) {
+                return $this->redirect(['action' => 'addBulkNew']);
+            }
+            $this->set('result', $result);
+            $this->viewBuilder()->setTemplate('add_bulk_new/step_done');
+
+            return null;
+        }
+
         if ($purpose !== null && $step === 'filters') {
             $this->prepareBulkFilterStep($purpose, $registry, $state);
             $this->viewBuilder()->setTemplate('add_bulk_new/step_filters');
@@ -427,9 +446,9 @@ class CustomerMessagesController extends AppController
         if ($step === 'compose') {
             if ($this->saveBulkMessages($purpose, $state, $registry)) {
                 $session->delete(self::BULK_WIZARD_STATE_KEY);
-                $this->Flash->success(__('The bulk customer message has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'index']);
+                // the summary is shown on the done step (read from the session)
+                return $this->redirect(['action' => 'addBulkNew', '?' => ['step' => 'done']]);
             }
 
             // fall through: caller re-renders the compose step with errors
@@ -490,6 +509,9 @@ class CustomerMessagesController extends AppController
         $sendTo = is_array($sendTo) ? array_map('strval', $sendTo) : [];
 
         $customerMessages = [];
+        // selected customers with no eligible contact for this channel, kept for
+        // the post-send summary (e.g. an SMS send lists everyone with no phone)
+        $skipped = [];
         foreach ($customers as $customer) {
             // skip customers the operator deselected entirely
             if (!in_array((string)$customer->id, $sendTo, true)) {
@@ -501,11 +523,12 @@ class CustomerMessagesController extends AppController
                 ? $customer->phones
                 : $customer->emails;
 
-            // skip customers with no eligible contact for this channel
             if ($recipients === []) {
-                $this->Flash->warning(__('No contact was found for customer number {number}.', [
+                $skipped[] = [
+                    'id' => (string)$customer->id,
                     'number' => $customer->number,
-                ]));
+                    'name' => $customer->name,
+                ];
 
                 continue;
             }
@@ -524,7 +547,7 @@ class CustomerMessagesController extends AppController
             return false;
         }
 
-        return (bool)$this->CustomerMessages->saveMany(
+        $saved = (bool)$this->CustomerMessages->saveMany(
             $customerMessages,
             [
                 // saveMany audit options kept intentionally:
@@ -535,6 +558,20 @@ class CustomerMessagesController extends AppController
                 '_auditTransaction' => Text::uuid(),
             ],
         );
+
+        if (!$saved) {
+            return false;
+        }
+
+        // stash a one-shot summary for the done step (post/redirect/get)
+        $this->getRequest()->getSession()->write(self::BULK_RESULT_KEY, [
+            'sent' => count($customerMessages),
+            'channel' => $customerMessage->type->label(),
+            'is_sms' => $customerMessage->type === CustomerMessageType::Sms,
+            'skipped' => $skipped,
+        ]);
+
+        return true;
     }
 
     /**
