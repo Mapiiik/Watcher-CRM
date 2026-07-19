@@ -27,6 +27,11 @@
         ['action' => 'add-bulk'],
         ['class' => 'button float-right win-link'],
     ) ?>
+    <?= $this->AuthLink->link(
+        __('New Bulk Customer Message (wizard)'),
+        ['action' => 'add-bulk-new'],
+        ['class' => 'button float-right win-link'],
+    ) ?>
     <h3><?= __('Customer Messages') ?></h3>
     <div class="table-responsive">
         <table>
