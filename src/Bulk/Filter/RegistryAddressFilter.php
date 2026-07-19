@@ -97,7 +97,12 @@ final class RegistryAddressFilter extends AbstractBulkRecipientFilter
 
         try {
             return AddressesResolver::dropdownMap($installationAddresses);
-        } catch (RuntimeException) {
+        } catch (RuntimeException $e) {
+            $this->warning = __(
+                'Could not retrieve addresses from national address registry: {0}',
+                $e->getMessage(),
+            );
+
             return [];
         }
     }

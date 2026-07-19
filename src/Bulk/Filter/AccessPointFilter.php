@@ -133,7 +133,14 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter
      */
     private function accessPointOptions(): array
     {
-        return NMSApiClient::getAccessPointsList(onlyActive: true) ?? [];
+        $accessPoints = NMSApiClient::getAccessPointsList(onlyActive: true);
+        if ($accessPoints === null) {
+            $this->warning = __('The access points list could not be loaded. Please, try again.');
+
+            return [];
+        }
+
+        return $accessPoints;
     }
 
     /**

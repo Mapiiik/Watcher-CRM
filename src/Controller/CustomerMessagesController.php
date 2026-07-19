@@ -679,6 +679,11 @@ class CustomerMessagesController extends AppController
             foreach ($filter->controls($value) as $control) {
                 $filterControls[] = $control;
             }
+            // surface an unavailable data source (e.g. NMS / address registry down)
+            $warning = $filter->warning();
+            if ($warning !== null) {
+                $this->Flash->warning($warning);
+            }
         }
 
         $this->set([

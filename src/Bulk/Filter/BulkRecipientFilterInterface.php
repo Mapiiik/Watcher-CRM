@@ -48,4 +48,13 @@ interface BulkRecipientFilterInterface
      * @return array<mixed>|null
      */
     public function conditions(mixed $value): ?array;
+
+    /**
+     * A user-facing warning about this filter's data source (e.g. an external
+     * service is unavailable), or null when everything is fine. Populated as a
+     * side effect of building the controls.
+     *
+     * @return string|null
+     */
+    public function warning(): ?string;
 }
