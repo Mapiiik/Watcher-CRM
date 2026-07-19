@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Addresses\Resolver as AddressesResolver;
 use App\Bulk\BulkRecipientFilterRegistry;
+use App\Bulk\Filter\AccessPointFilter;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
@@ -681,10 +682,23 @@ class CustomerMessagesController extends AppController
 
         $apNames = NMSApiClient::getAccessPointsList(onlyActive: false) ?? [];
 
+        // when the access point filter is active, restrict the preview grouping
+        // to the access points it allows (selection + cascade subtree), so a
+        // customer's contracts on other access points don't surface groups the
+        // filter would exclude
+        $allowedApIds = null;
+        $apFilter = $registry->get('access_point');
+        if (isset($state['filters']['access_point']) && $apFilter instanceof AccessPointFilter) {
+            $matched = $apFilter->matchedAccessPointIds($state['filters']['access_point']);
+            if ($matched !== []) {
+                $allowedApIds = array_fill_keys($matched, true);
+            }
+        }
+
         $this->set([
             'purpose' => $purpose,
             'customers' => $customers,
-            'apGroups' => $this->groupCustomersByAccessPoint($customers, $apNames),
+            'apGroups' => $this->groupCustomersByAccessPoint($customers, $apNames, $allowedApIds),
             'ignoreCustomerConsent' => $ignoreCustomerConsent,
             'ignoreContactUse' => $ignoreContactUse,
         ]);
@@ -700,9 +714,11 @@ class CustomerMessagesController extends AppController
      *
      * @param array<\App\Model\Entity\Customer> $customers Deduplicated recipients.
      * @param array<array-key, string> $apNames Access point id => name map.
+     * @param array<string, true>|null $allowedApIds When set, only these access points are grouped
+     *   (the active access point filter's scope); contracts elsewhere are ignored.
      * @return list<array{ap_id: string|null, ap_name: string, customers: list<\App\Model\Entity\Customer>}>
      */
-    private function groupCustomersByAccessPoint(array $customers, array $apNames): array
+    private function groupCustomersByAccessPoint(array $customers, array $apNames, ?array $allowedApIds = null): array
     {
         /** @var array<string, list<\App\Model\Entity\Customer>> $byAccessPoint */
         $byAccessPoint = [];
@@ -712,10 +728,16 @@ class CustomerMessagesController extends AppController
         foreach ($customers as $customer) {
             $placed = false;
             foreach ($customer->contracts as $contract) {
-                if (is_string($contract->access_point_id) && $contract->access_point_id !== '') {
-                    $byAccessPoint[$contract->access_point_id][] = $customer;
-                    $placed = true;
+                $apId = $contract->access_point_id;
+                if (!is_string($apId) || $apId === '') {
+                    continue;
                 }
+                if ($allowedApIds !== null && !isset($allowedApIds[$apId])) {
+                    // outside the active access point filter's scope
+                    continue;
+                }
+                $byAccessPoint[$apId][] = $customer;
+                $placed = true;
             }
 
             if (!$placed) {

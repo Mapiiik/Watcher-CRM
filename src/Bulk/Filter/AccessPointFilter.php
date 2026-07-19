@@ -86,20 +86,9 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter
      */
     public function conditions(mixed $value): ?array
     {
-        if (!is_array($value) || !isset($value['ids']) || !is_array($value['ids'])) {
-            return null;
-        }
-
-        $ids = array_values(array_filter(
-            $value['ids'],
-            static fn(mixed $id): bool => is_string($id) && Validation::uuid($id),
-        ));
+        $ids = $this->matchedAccessPointIds($value);
         if ($ids === []) {
             return null;
-        }
-
-        if (!empty($value['cascade'])) {
-            $ids = $this->expandSubtree($ids);
         }
 
         $filterQuery = $this->customerMessages->Customers->Contracts
@@ -109,6 +98,32 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter
             ->where(['Contracts.access_point_id IN' => $ids]);
 
         return ['Customers.id IN' => $filterQuery];
+    }
+
+    /**
+     * Effective access point ids this filter matches: the validated selection,
+     * expanded with the whole subtree when the cascade toggle is on. Empty when
+     * the filter is inactive. Shared by {@see conditions()} and the preview
+     * grouping, so both stay consistent.
+     *
+     * @param mixed $value Stored filter value.
+     * @return array<string>
+     */
+    public function matchedAccessPointIds(mixed $value): array
+    {
+        if (!is_array($value) || !isset($value['ids']) || !is_array($value['ids'])) {
+            return [];
+        }
+
+        $ids = array_values(array_filter(
+            $value['ids'],
+            static fn(mixed $id): bool => is_string($id) && Validation::uuid($id),
+        ));
+        if ($ids === []) {
+            return [];
+        }
+
+        return empty($value['cascade']) ? $ids : $this->expandSubtree($ids);
     }
 
     /**
