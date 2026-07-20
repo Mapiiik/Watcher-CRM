@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2026-05-29 10:59+0200\n"
-"PO-Revision-Date: 2026-05-29 11:14+0200\n"
+"POT-Creation-Date: 2026-07-20 14:57+0200\n"
+"PO-Revision-Date: 2026-07-20 15:16+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
 "Language: cs_CZ\n"
@@ -15,15 +15,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: src/Controller/Traits/UserSettingsTrait.php:37
+#: src/Controller/Traits/UserSettingsTrait.php:38
 msgid "You are not allowed to edit another user's settings."
 msgstr "Nejste oprávněni upravovat nastavení jiného uživatele."
 
-#: src/Controller/Traits/UserSettingsTrait.php:69
+#: src/Controller/Traits/UserSettingsTrait.php:70
 msgid "The user settings have been saved."
 msgstr "Nastavení uživatele bylo uloženo."
 
-#: src/Controller/Traits/UserSettingsTrait.php:73
+#: src/Controller/Traits/UserSettingsTrait.php:74
 msgid "The user settings could not be saved. Please, try again."
 msgstr "Nastavení uživatele se nepodařilo uložit. Zkuste to prosím znovu."
 

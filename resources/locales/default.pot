@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-29 10:59+0200\n"
+"POT-Creation-Date: 2026-07-20 14:57+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -23,8 +23,8 @@ msgid "Addresses API returned HTTP {0} ({1})"
 msgstr ""
 
 #: ./src/Addresses/ApiClient.php:84
-#: ./src/Agent/ApiClient.php:84
-#: ./src/Agent/ApiClient.php:92
+#: ./src/Agent/ApiClient.php:83
+#: ./src/Agent/ApiClient.php:91
 #: ./src/Agent/ApiClient.php:138
 #: ./src/Agent/ApiClient.php:146
 msgid "Unknown error"
@@ -35,13 +35,13 @@ msgid "Addresses API returned an invalid response."
 msgstr ""
 
 #: ./src/Addresses/ApiClient.php:131
-#: ./src/Addresses/ApiClient.php:151
-#: ./src/Addresses/ApiClient.php:192
-#: ./src/Addresses/ApiClient.php:256
-#: ./src/Addresses/ApiClient.php:326
-#: ./src/Addresses/ApiClient.php:357
-#: ./src/Addresses/ApiClient.php:395
-#: ./src/Addresses/ApiClient.php:427
+#: ./src/Addresses/ApiClient.php:152
+#: ./src/Addresses/ApiClient.php:194
+#: ./src/Addresses/ApiClient.php:259
+#: ./src/Addresses/ApiClient.php:330
+#: ./src/Addresses/ApiClient.php:362
+#: ./src/Addresses/ApiClient.php:401
+#: ./src/Addresses/ApiClient.php:434
 msgid "Addresses API is unreachable: {0}"
 msgstr ""
 
@@ -49,19 +49,60 @@ msgstr ""
 msgid "Watcher Agent is not configured."
 msgstr ""
 
-#: ./src/Agent/ApiClient.php:71
-#: ./src/Agent/ApiClient.php:125
+#: ./src/Agent/ApiClient.php:69
+#: ./src/Agent/ApiClient.php:124
 msgid "Watcher Agent is unreachable: {0}"
 msgstr ""
 
-#: ./src/Agent/ApiClient.php:81
+#: ./src/Agent/ApiClient.php:80
 #: ./src/Agent/ApiClient.php:135
 msgid "Watcher Agent returned HTTP {0} ({1})"
 msgstr ""
 
-#: ./src/Agent/ApiClient.php:90
+#: ./src/Agent/ApiClient.php:89
 #: ./src/Agent/ApiClient.php:144
 msgid "Watcher Agent returned an unexpected response: {0}"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/AccessPointFilter.php:43
+msgid "Access Points"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/AccessPointFilter.php:54
+msgid "Include sub access points (whole subtree)"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/AccessPointFilter.php:154
+#: ./src/Controller/Traits/CommonViewVarListsTrait.php:61
+#: ./src/Controller/Traits/CommonViewVarListsTrait.php:108
+msgid "The access points list could not be loaded. Please, try again."
+msgstr ""
+
+#: ./src/BulkMessages/Filter/ActiveServicesContractFilter.php:33
+msgid "Only customers with an active contract (provides active services)"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/BilledContractFilter.php:33
+msgid "Only customers with a billed contract"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/LabelsFilter.php:25
+msgid "Labels (has all selected)"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/NotLabelsFilter.php:25
+msgid "Exclude labels (has none selected)"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/RegistryAddressFilter.php:36
+msgid "Installation Address (registry)"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/RegistryAddressFilter.php:133
+#: ./src/Controller/Api/CustomersController.php:193
+#: ./src/Controller/OverviewsController.php:76
+#: ./src/Controller/OverviewsController.php:459
+msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:42
@@ -88,14 +129,14 @@ msgid "Processing email messages:"
 msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:166
-#: ./src/Command/ProcessSmsCommand.php:181
+#: ./src/Command/ProcessSmsCommand.php:177
 msgid "Message with ID {0} was sent with identifier: {1}"
 msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:179
 #: ./src/Command/ProcessEmailsCommand.php:190
-#: ./src/Command/ProcessSmsCommand.php:207
-#: ./src/Command/ProcessSmsCommand.php:216
+#: ./src/Command/ProcessSmsCommand.php:203
+#: ./src/Command/ProcessSmsCommand.php:212
 msgid "Error sending message with ID {0}: {1}"
 msgstr ""
 
@@ -104,7 +145,8 @@ msgid "Error sending email message with ID {0}"
 msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:203
-#: ./src/Command/ProcessSmsCommand.php:261
+#: ./src/Command/ProcessSmsCommand.php:257
+#: ./templates/CustomerMessages/add_bulk/step_done.php:27
 msgid "Done"
 msgstr ""
 
@@ -120,20 +162,20 @@ msgstr ""
 msgid "ANDROID_SMS_GATEWAY_PASSWORD is not set in environment variables."
 msgstr ""
 
-#: ./src/Command/ProcessSmsCommand.php:205
+#: ./src/Command/ProcessSmsCommand.php:201
 msgid "Error sending SMS message with ID {0}"
 msgstr ""
 
-#: ./src/Command/ProcessSmsCommand.php:232
+#: ./src/Command/ProcessSmsCommand.php:228
 msgid "Message status with ID {0}: {1}"
 msgstr ""
 
-#: ./src/Command/ProcessSmsCommand.php:247
+#: ./src/Command/ProcessSmsCommand.php:243
 msgid "Error getting SMS message status with ID {0}"
 msgstr ""
 
-#: ./src/Command/ProcessSmsCommand.php:249
-#: ./src/Command/ProcessSmsCommand.php:258
+#: ./src/Command/ProcessSmsCommand.php:245
+#: ./src/Command/ProcessSmsCommand.php:254
 msgid "Error getting message status with ID {0}: {1}"
 msgstr ""
 
@@ -153,7 +195,7 @@ msgstr ""
 msgid "dynamic"
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:170
+#: ./src/Command/UpdateCustomerLabelsCommand.php:169
 msgid "The related dynamic customer labels could not be saved. Please, try again."
 msgstr ""
 
@@ -161,114 +203,114 @@ msgstr ""
 msgid "The related dynamic customer labels could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:204
+#: ./src/Command/UpdateCustomerLabelsCommand.php:202
 msgid "The related static customer labels could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:217
+#: ./src/Command/UpdateCustomerLabelsCommand.php:214
 msgid "Error during customer labels update: {0}"
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:229
+#: ./src/Command/UpdateCustomerLabelsCommand.php:226
 msgid "Customer labels update failed"
 msgstr ""
 
-#: ./src/Command/UpdateCustomerLabelsCommand.php:231
+#: ./src/Command/UpdateCustomerLabelsCommand.php:228
 msgid "Customer labels update failed."
 msgstr ""
 
-#: ./src/Controller/AccessCredentialsController.php:99
-#: ./src/Controller/AccessCredentialsController.php:157
+#: ./src/Controller/AccessCredentialsController.php:101
+#: ./src/Controller/AccessCredentialsController.php:161
 msgid "The access credential has been saved."
 msgstr ""
 
-#: ./src/Controller/AccessCredentialsController.php:103
-#: ./src/Controller/AccessCredentialsController.php:161
+#: ./src/Controller/AccessCredentialsController.php:105
+#: ./src/Controller/AccessCredentialsController.php:165
 msgid "The access credential could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AccessCredentialsController.php:211
+#: ./src/Controller/AccessCredentialsController.php:217
 msgid "The access credential has been deleted."
 msgstr ""
 
-#: ./src/Controller/AccessCredentialsController.php:213
+#: ./src/Controller/AccessCredentialsController.php:219
 msgid "The access credential could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AccountingProfilesController.php:83
-#: ./src/Controller/AccountingProfilesController.php:106
+#: ./src/Controller/AccountingProfilesController.php:85
+#: ./src/Controller/AccountingProfilesController.php:110
 msgid "The accounting profile has been saved."
 msgstr ""
 
-#: ./src/Controller/AccountingProfilesController.php:87
-#: ./src/Controller/AccountingProfilesController.php:110
+#: ./src/Controller/AccountingProfilesController.php:89
+#: ./src/Controller/AccountingProfilesController.php:114
 msgid "The accounting profile could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AccountingProfilesController.php:127
+#: ./src/Controller/AccountingProfilesController.php:133
 msgid "The accounting profile has been deleted."
 msgstr ""
 
-#: ./src/Controller/AccountingProfilesController.php:130
+#: ./src/Controller/AccountingProfilesController.php:136
 msgid "The accounting profile could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:119
-#: ./src/Controller/AddressesController.php:189
+#: ./src/Controller/AddressesController.php:120
+#: ./src/Controller/AddressesController.php:192
 msgid "Could not retrieve address from national address registry: {0}"
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:136
-#: ./src/Controller/AddressesController.php:206
+#: ./src/Controller/AddressesController.php:137
+#: ./src/Controller/AddressesController.php:209
 msgid "The address has been saved."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:140
-#: ./src/Controller/AddressesController.php:210
+#: ./src/Controller/AddressesController.php:141
+#: ./src/Controller/AddressesController.php:213
 msgid "The address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:244
+#: ./src/Controller/AddressesController.php:249
 msgid "The address has been deleted."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:247
+#: ./src/Controller/AddressesController.php:252
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:290
+#: ./src/Controller/AddressesController.php:295
 msgid "Could not retrieve national address registry metadata: {0}"
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:299
+#: ./src/Controller/AddressesController.php:304
 msgid "National address registry lookup is not available. Could not retrieve supported countries list."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:379
+#: ./src/Controller/AddressesController.php:387
 msgid "Country code is not defined for the address country."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:391
+#: ./src/Controller/AddressesController.php:399
 msgid "National address registry lookup is not supported for country code: {0}."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:412
+#: ./src/Controller/AddressesController.php:420
 msgid "Multiple ({0}) addresses found in national ({1}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:421
+#: ./src/Controller/AddressesController.php:429
 msgid "Address found in national ({0}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:434
+#: ./src/Controller/AddressesController.php:442
 msgid "Error during national ({0}) address registry lookup: {1}"
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:444
+#: ./src/Controller/AddressesController.php:452
 msgid "Address could not be found in national ({0}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:607
+#: ./src/Controller/AddressesController.php:615
 msgid "Addresses updated from national address registries: {0} updated, {1} unchanged, {2} skipped, {3} failed."
 msgstr ""
 
@@ -280,215 +322,208 @@ msgstr ""
 msgid "Invalid IP address"
 msgstr ""
 
-#: ./src/Controller/Api/CustomersController.php:205
-#: ./src/Controller/CustomerMessagesController.php:134
-#: ./src/Controller/OverviewsController.php:74
-#: ./src/Controller/OverviewsController.php:437
-msgid "Could not retrieve addresses from national address registry: {0}"
-msgstr ""
-
-#: ./src/Controller/AppController.php:96
+#: ./src/Controller/AppController.php:97
 msgid "Unable to find results on page {0}. Redirect to page 1."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:121
-#: ./src/Controller/BillingsController.php:201
+#: ./src/Controller/BillingsController.php:122
+#: ./src/Controller/BillingsController.php:204
 msgid "Billing text must be entered or service selected."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:130
-#: ./src/Controller/BillingsController.php:210
+#: ./src/Controller/BillingsController.php:131
+#: ./src/Controller/BillingsController.php:213
 msgid "The service type does not match the selected contract."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:133
-#: ./src/Controller/BillingsController.php:213
-#: ./src/Controller/BillingsController.php:310
-#: ./src/Controller/BillingsController.php:439
-#: ./src/Controller/ContractsController.php:767
+#: ./src/Controller/BillingsController.php:134
+#: ./src/Controller/BillingsController.php:216
+#: ./src/Controller/BillingsController.php:315
+#: ./src/Controller/BillingsController.php:446
+#: ./src/Controller/ContractsController.php:776
 msgid "The billing has been saved."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:137
-#: ./src/Controller/BillingsController.php:217
-#: ./src/Controller/BillingsController.php:506
-#: ./src/Controller/ContractsController.php:771
+#: ./src/Controller/BillingsController.php:138
+#: ./src/Controller/BillingsController.php:220
+#: ./src/Controller/BillingsController.php:515
+#: ./src/Controller/ContractsController.php:780
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:271
+#: ./src/Controller/BillingsController.php:276
 msgid "The billing has been deleted."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:274
+#: ./src/Controller/BillingsController.php:279
 msgid "The billing could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:507
+#: ./src/Controller/BillingsController.php:516
 msgid "Contract Number"
 msgstr ""
 
-#: ./src/Controller/BorrowedEquipmentsController.php:100
-#: ./src/Controller/BorrowedEquipmentsController.php:155
-#: ./src/Controller/ContractsController.php:693
-#: ./src/Controller/ContractsController.php:719
+#: ./src/Controller/BorrowedEquipmentsController.php:102
+#: ./src/Controller/BorrowedEquipmentsController.php:159
+#: ./src/Controller/ContractsController.php:702
+#: ./src/Controller/ContractsController.php:728
 msgid "The borrowed equipment has been saved."
 msgstr ""
 
-#: ./src/Controller/BorrowedEquipmentsController.php:104
-#: ./src/Controller/BorrowedEquipmentsController.php:159
-#: ./src/Controller/ContractsController.php:699
-#: ./src/Controller/ContractsController.php:725
+#: ./src/Controller/BorrowedEquipmentsController.php:106
+#: ./src/Controller/BorrowedEquipmentsController.php:163
+#: ./src/Controller/ContractsController.php:708
+#: ./src/Controller/ContractsController.php:734
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BorrowedEquipmentsController.php:206
+#: ./src/Controller/BorrowedEquipmentsController.php:212
 msgid "The borrowed equipment has been deleted."
 msgstr ""
 
-#: ./src/Controller/BorrowedEquipmentsController.php:209
+#: ./src/Controller/BorrowedEquipmentsController.php:215
 msgid "The borrowed equipment could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CommissionsController.php:84
-#: ./src/Controller/CommissionsController.php:106
+#: ./src/Controller/CommissionsController.php:86
+#: ./src/Controller/CommissionsController.php:110
 msgid "The commission has been saved."
 msgstr ""
 
-#: ./src/Controller/CommissionsController.php:88
-#: ./src/Controller/CommissionsController.php:110
+#: ./src/Controller/CommissionsController.php:90
+#: ./src/Controller/CommissionsController.php:114
 msgid "The commission could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CommissionsController.php:127
+#: ./src/Controller/CommissionsController.php:133
 msgid "The commission has been deleted."
 msgstr ""
 
-#: ./src/Controller/CommissionsController.php:130
+#: ./src/Controller/CommissionsController.php:136
 msgid "The commission could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractStatesController.php:84
-#: ./src/Controller/ContractStatesController.php:111
+#: ./src/Controller/ContractStatesController.php:86
+#: ./src/Controller/ContractStatesController.php:115
 msgid "The contract state has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractStatesController.php:88
-#: ./src/Controller/ContractStatesController.php:115
+#: ./src/Controller/ContractStatesController.php:90
+#: ./src/Controller/ContractStatesController.php:119
 msgid "The contract state could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractStatesController.php:137
+#: ./src/Controller/ContractStatesController.php:143
 msgid "The contract state has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractStatesController.php:140
+#: ./src/Controller/ContractStatesController.php:146
 msgid "The contract state could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:93
-#: ./src/Controller/ContractVersionsController.php:133
+#: ./src/Controller/ContractVersionsController.php:95
+#: ./src/Controller/ContractVersionsController.php:137
 msgid "The contract version has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:97
-#: ./src/Controller/ContractVersionsController.php:137
+#: ./src/Controller/ContractVersionsController.php:99
+#: ./src/Controller/ContractVersionsController.php:141
 msgid "The contract version could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:172
+#: ./src/Controller/ContractVersionsController.php:178
 msgid "The contract version has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:175
+#: ./src/Controller/ContractVersionsController.php:181
 msgid "The contract version could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:235
-#: ./src/Controller/ContractsController.php:346
+#: ./src/Controller/ContractsController.php:240
+#: ./src/Controller/ContractsController.php:353
 msgid "The contract has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:246
-#: ./src/Controller/ContractsController.php:357
+#: ./src/Controller/ContractsController.php:251
+#: ./src/Controller/ContractsController.php:364
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:448
+#: ./src/Controller/ContractsController.php:457
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:451
+#: ./src/Controller/ContractsController.php:460
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:492
+#: ./src/Controller/ContractsController.php:501
 msgid "The contract number could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:510
+#: ./src/Controller/ContractsController.php:519
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:518
+#: ./src/Controller/ContractsController.php:527
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:546
+#: ./src/Controller/ContractsController.php:555
 msgid "The contract numbers could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:554
+#: ./src/Controller/ContractsController.php:563
 msgid "The contract numbers have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:591
+#: ./src/Controller/ContractsController.php:600
 msgid "The subscriber verification code could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:608
+#: ./src/Controller/ContractsController.php:617
 msgid "The subscriber verification code has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:616
+#: ./src/Controller/ContractsController.php:625
 msgid "The subscriber verification code could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:644
+#: ./src/Controller/ContractsController.php:653
 msgid "The subscriber verification codes could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:652
+#: ./src/Controller/ContractsController.php:661
 msgid "The subscriber verification codes have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:682
+#: ./src/Controller/ContractsController.php:691
 msgid "No related borrowed equipments to install."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:691
-#: ./src/Controller/ContractsController.php:697
+#: ./src/Controller/ContractsController.php:700
+#: ./src/Controller/ContractsController.php:706
 msgid "Installation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:708
+#: ./src/Controller/ContractsController.php:717
 msgid "No related borrowed equipments to uninstall."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:717
-#: ./src/Controller/ContractsController.php:723
+#: ./src/Controller/ContractsController.php:726
+#: ./src/Controller/ContractsController.php:732
 msgid "Uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:758
+#: ./src/Controller/ContractsController.php:767
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:777
+#: ./src/Controller/ContractsController.php:786
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:795
+#: ./src/Controller/ContractsController.php:804
 #: ./templates/AccountingProfiles/view.php:88
 #: ./templates/Contracts/index.php:33
 #: ./templates/Customers/index.php:74
@@ -497,267 +532,275 @@ msgstr ""
 msgid "Contracts"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:801
+#: ./src/Controller/ContractsController.php:810
 msgid "Handover Protocols"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:849
+#: ./src/Controller/ContractsController.php:858
 #: ./templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:874
-#: ./src/Controller/CustomersController.php:614
+#: ./src/Controller/ContractsController.php:883
+#: ./src/Controller/CustomersController.php:626
 msgid "Invalid type of document."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:887
+#: ./src/Controller/ContractsController.php:896
 msgid "Invalid contract version to be executed."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:901
+#: ./src/Controller/ContractsController.php:910
 msgid "Invalid contract version to be terminated."
 msgstr ""
 
-#: ./src/Controller/CountriesController.php:76
-#: ./src/Controller/CountriesController.php:98
+#: ./src/Controller/CountriesController.php:78
+#: ./src/Controller/CountriesController.php:102
 msgid "The country has been saved."
 msgstr ""
 
-#: ./src/Controller/CountriesController.php:80
-#: ./src/Controller/CountriesController.php:102
+#: ./src/Controller/CountriesController.php:82
+#: ./src/Controller/CountriesController.php:106
 msgid "The country could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CountriesController.php:119
+#: ./src/Controller/CountriesController.php:125
 msgid "The country has been deleted."
 msgstr ""
 
-#: ./src/Controller/CountriesController.php:122
+#: ./src/Controller/CountriesController.php:128
 msgid "The country could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerLabelsController.php:93
-#: ./src/Controller/CustomerLabelsController.php:144
+#: ./src/Controller/CustomerLabelsController.php:95
+#: ./src/Controller/CustomerLabelsController.php:148
 msgid "The customer label has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomerLabelsController.php:97
-#: ./src/Controller/CustomerLabelsController.php:148
+#: ./src/Controller/CustomerLabelsController.php:99
+#: ./src/Controller/CustomerLabelsController.php:152
 msgid "The customer label could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerLabelsController.php:191
+#: ./src/Controller/CustomerLabelsController.php:197
 msgid "The customer label has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomerLabelsController.php:194
+#: ./src/Controller/CustomerLabelsController.php:200
 msgid "The customer label could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:93
-#: ./src/Controller/CustomerMessagesController.php:300
+#: ./src/Controller/CustomerMessagesController.php:111
+#: ./src/Controller/CustomerMessagesController.php:640
 msgid "The customer message has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:97
-#: ./src/Controller/CustomerMessagesController.php:304
+#: ./src/Controller/CustomerMessagesController.php:115
+#: ./src/Controller/CustomerMessagesController.php:644
 msgid "The customer message could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:224
+#: ./src/Controller/CustomerMessagesController.php:229
+msgid "Please select a message purpose."
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:308
 msgid "No customers were selected."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:245
-msgid "No contact was found for customer number {number}."
+#: ./src/Controller/CustomerMessagesController.php:314
+msgid "Please select a valid message type."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:269
-msgid "The bulk customer message has been saved."
+#: ./src/Controller/CustomerMessagesController.php:359
+msgid "No recipients with a valid contact were found."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:273
-msgid "The bulk customer message could not be saved. Please, try again."
+#: ./src/Controller/CustomerMessagesController.php:610
+msgid "Unknown access point"
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:326
+#: ./src/Controller/CustomerMessagesController.php:619
+msgid "No access point"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:668
 msgid "The customer message has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:329
+#: ./src/Controller/CustomerMessagesController.php:671
 msgid "The customer message could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:256
+#: ./src/Controller/CustomersController.php:257
 msgid "Please use the customer number or company identification number in the search."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:503
-#: ./src/Controller/CustomersController.php:529
+#: ./src/Controller/CustomersController.php:511
+#: ./src/Controller/CustomersController.php:539
 msgid "The customer has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:507
-#: ./src/Controller/CustomersController.php:533
+#: ./src/Controller/CustomersController.php:515
+#: ./src/Controller/CustomersController.php:543
 msgid "The customer could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:554
+#: ./src/Controller/CustomersController.php:566
 msgid "The customer has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:557
+#: ./src/Controller/CustomersController.php:569
 msgid "The customer could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/DealerCommissionsController.php:84
-#: ./src/Controller/DealerCommissionsController.php:130
+#: ./src/Controller/DealerCommissionsController.php:85
+#: ./src/Controller/DealerCommissionsController.php:133
 msgid "The dealer commission has been saved."
 msgstr ""
 
-#: ./src/Controller/DealerCommissionsController.php:88
-#: ./src/Controller/DealerCommissionsController.php:134
+#: ./src/Controller/DealerCommissionsController.php:89
+#: ./src/Controller/DealerCommissionsController.php:137
 msgid "The dealer commission could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/DealerCommissionsController.php:170
+#: ./src/Controller/DealerCommissionsController.php:175
 msgid "The dealer commission has been deleted."
 msgstr ""
 
-#: ./src/Controller/DealerCommissionsController.php:173
+#: ./src/Controller/DealerCommissionsController.php:178
 msgid "The dealer commission could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/EmailsController.php:86
-#: ./src/Controller/EmailsController.php:118
+#: ./src/Controller/EmailsController.php:88
+#: ./src/Controller/EmailsController.php:122
 msgid "The email has been saved."
 msgstr ""
 
-#: ./src/Controller/EmailsController.php:90
-#: ./src/Controller/EmailsController.php:122
+#: ./src/Controller/EmailsController.php:92
+#: ./src/Controller/EmailsController.php:126
 msgid "The email could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/EmailsController.php:149
+#: ./src/Controller/EmailsController.php:155
 msgid "The email has been deleted."
 msgstr ""
 
-#: ./src/Controller/EmailsController.php:152
+#: ./src/Controller/EmailsController.php:158
 msgid "The email could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/EquipmentTypesController.php:78
-#: ./src/Controller/EquipmentTypesController.php:100
+#: ./src/Controller/EquipmentTypesController.php:80
+#: ./src/Controller/EquipmentTypesController.php:104
 msgid "The equipment type has been saved."
 msgstr ""
 
-#: ./src/Controller/EquipmentTypesController.php:82
-#: ./src/Controller/EquipmentTypesController.php:104
+#: ./src/Controller/EquipmentTypesController.php:84
+#: ./src/Controller/EquipmentTypesController.php:108
 msgid "The equipment type could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/EquipmentTypesController.php:121
+#: ./src/Controller/EquipmentTypesController.php:127
 msgid "The equipment type has been deleted."
 msgstr ""
 
-#: ./src/Controller/EquipmentTypesController.php:124
+#: ./src/Controller/EquipmentTypesController.php:130
 msgid "The equipment type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:106
-#: ./src/Controller/IpAddressesController.php:165
-#: ./src/Controller/IpAddressesController.php:287
-#: ./src/Controller/IpAddressesController.php:518
+#: ./src/Controller/IpAddressesController.php:107
+#: ./src/Controller/IpAddressesController.php:168
+#: ./src/Controller/IpAddressesController.php:300
+#: ./src/Controller/IpAddressesController.php:533
 msgid "The IP address has been saved."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:110
-#: ./src/Controller/IpAddressesController.php:169
-#: ./src/Controller/IpAddressesController.php:291
-#: ./src/Controller/IpAddressesController.php:522
+#: ./src/Controller/IpAddressesController.php:111
+#: ./src/Controller/IpAddressesController.php:172
+#: ./src/Controller/IpAddressesController.php:304
+#: ./src/Controller/IpAddressesController.php:537
 msgid "The IP address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:244
-#: ./src/Controller/IpAddressesController.php:449
+#: ./src/Controller/IpAddressesController.php:255
+#: ./src/Controller/IpAddressesController.php:464
 msgid "The IP address ranges list could not be loaded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:334
-#: ./src/Controller/IpAddressesController.php:503
+#: ./src/Controller/IpAddressesController.php:349
+#: ./src/Controller/IpAddressesController.php:518
 msgid "The IP address has been deleted."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:337
-#: ./src/Controller/IpAddressesController.php:528
+#: ./src/Controller/IpAddressesController.php:352
+#: ./src/Controller/IpAddressesController.php:543
 msgid "The IP address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:365
-#: ./src/Controller/RemovedIpAddressesController.php:106
-#: ./src/Controller/RemovedIpAddressesController.php:160
+#: ./src/Controller/IpAddressesController.php:380
+#: ./src/Controller/RemovedIpAddressesController.php:107
+#: ./src/Controller/RemovedIpAddressesController.php:163
 msgid "The removed IP address has been saved."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:371
-#: ./src/Controller/RemovedIpAddressesController.php:110
-#: ./src/Controller/RemovedIpAddressesController.php:164
+#: ./src/Controller/IpAddressesController.php:386
+#: ./src/Controller/RemovedIpAddressesController.php:111
+#: ./src/Controller/RemovedIpAddressesController.php:167
 msgid "The removed IP address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:496
+#: ./src/Controller/IpAddressesController.php:511
 msgid "No available IP addresses for reassignment."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:537
+#: ./src/Controller/IpAddressesController.php:552
 msgid "Processing completed."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:561
+#: ./src/Controller/IpAddressesController.php:576
 msgid "Invalid IP address range CIDR: {0}"
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:620
+#: ./src/Controller/IpAddressesController.php:635
 msgid "last used until {0} by {1}"
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:625
+#: ./src/Controller/IpAddressesController.php:640
 msgid "unknown customer"
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:98
-#: ./src/Controller/IpNetworksController.php:147
+#: ./src/Controller/IpNetworksController.php:99
+#: ./src/Controller/IpNetworksController.php:150
 msgid "The IP network has been saved."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:102
-#: ./src/Controller/IpNetworksController.php:151
+#: ./src/Controller/IpNetworksController.php:103
+#: ./src/Controller/IpNetworksController.php:154
 msgid "The IP network could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:197
+#: ./src/Controller/IpNetworksController.php:202
 msgid "The IP network has been deleted."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:200
+#: ./src/Controller/IpNetworksController.php:205
 msgid "The IP network could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:228
-#: ./src/Controller/RemovedIpNetworksController.php:104
-#: ./src/Controller/RemovedIpNetworksController.php:155
+#: ./src/Controller/IpNetworksController.php:233
+#: ./src/Controller/RemovedIpNetworksController.php:105
+#: ./src/Controller/RemovedIpNetworksController.php:158
 msgid "The removed IP network has been saved."
 msgstr ""
 
-#: ./src/Controller/IpNetworksController.php:233
-#: ./src/Controller/RemovedIpNetworksController.php:108
-#: ./src/Controller/RemovedIpNetworksController.php:159
+#: ./src/Controller/IpNetworksController.php:238
+#: ./src/Controller/RemovedIpNetworksController.php:109
+#: ./src/Controller/RemovedIpNetworksController.php:162
 msgid "The removed IP network could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:90
-#: ./src/Controller/LabelsController.php:122
+#: ./src/Controller/LabelsController.php:91
+#: ./src/Controller/LabelsController.php:123
 msgid "An expression for data modification was detected in the SQL query, which is forbidden."
 msgstr ""
 
@@ -766,50 +809,50 @@ msgstr ""
 msgid "The label has been saved."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:100
-#: ./src/Controller/LabelsController.php:132
+#: ./src/Controller/LabelsController.php:99
+#: ./src/Controller/LabelsController.php:131
 msgid "The label could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:149
+#: ./src/Controller/LabelsController.php:150
 msgid "The label has been deleted."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:152
+#: ./src/Controller/LabelsController.php:153
 msgid "The label could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:205
+#: ./src/Controller/LabelsController.php:206
 msgid "The related customer labels has been updated."
 msgstr ""
 
-#: ./src/Controller/LabelsController.php:207
+#: ./src/Controller/LabelsController.php:208
 msgid "The related customer labels could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:88
-#: ./src/Controller/LoginsController.php:147
+#: ./src/Controller/LoginsController.php:89
+#: ./src/Controller/LoginsController.php:150
 msgid "The login has been saved."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:92
-#: ./src/Controller/LoginsController.php:151
+#: ./src/Controller/LoginsController.php:93
+#: ./src/Controller/LoginsController.php:154
 msgid "The login could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:178
+#: ./src/Controller/LoginsController.php:183
 msgid "The login has been deleted."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:181
+#: ./src/Controller/LoginsController.php:186
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:484
+#: ./src/Controller/OverviewsController.php:515
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:486
+#: ./src/Controller/OverviewsController.php:517
 #: ./templates/Addresses/index.php:80
 #: ./templates/Addresses/index.php:87
 #: ./templates/Addresses/view.php:116
@@ -822,210 +865,210 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:771
+#: ./src/Controller/OverviewsController.php:793
 msgid "unknown dealer"
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:93
-#: ./src/Controller/PhonesController.php:125
+#: ./src/Controller/PhonesController.php:94
+#: ./src/Controller/PhonesController.php:128
 msgid "The phone has been saved."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:97
-#: ./src/Controller/PhonesController.php:129
+#: ./src/Controller/PhonesController.php:98
+#: ./src/Controller/PhonesController.php:132
 msgid "The phone could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:156
+#: ./src/Controller/PhonesController.php:161
 msgid "The phone has been deleted."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:159
+#: ./src/Controller/PhonesController.php:164
 msgid "The phone could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:198
 #: ./src/Controller/PhonesController.php:203
+#: ./src/Controller/PhonesController.php:208
 msgid "The phone number is invalid: {0}"
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:223
+#: ./src/Controller/PhonesController.php:228
 msgid "The phones could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:227
+#: ./src/Controller/PhonesController.php:232
 msgid "The phones have been updated."
 msgstr ""
 
-#: ./src/Controller/QueuesController.php:77
-#: ./src/Controller/QueuesController.php:99
+#: ./src/Controller/QueuesController.php:79
+#: ./src/Controller/QueuesController.php:103
 msgid "The queue has been saved."
 msgstr ""
 
-#: ./src/Controller/QueuesController.php:81
-#: ./src/Controller/QueuesController.php:103
+#: ./src/Controller/QueuesController.php:83
+#: ./src/Controller/QueuesController.php:107
 msgid "The queue could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/QueuesController.php:120
+#: ./src/Controller/QueuesController.php:126
 msgid "The queue has been deleted."
 msgstr ""
 
-#: ./src/Controller/QueuesController.php:123
+#: ./src/Controller/QueuesController.php:129
 msgid "The queue could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/RemovedIpAddressesController.php:205
+#: ./src/Controller/RemovedIpAddressesController.php:210
 msgid "The removed IP address has been deleted."
 msgstr ""
 
-#: ./src/Controller/RemovedIpAddressesController.php:208
+#: ./src/Controller/RemovedIpAddressesController.php:213
 msgid "The removed IP address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/RemovedIpNetworksController.php:203
+#: ./src/Controller/RemovedIpNetworksController.php:208
 msgid "The removed IP network has been deleted."
 msgstr ""
 
-#: ./src/Controller/RemovedIpNetworksController.php:206
+#: ./src/Controller/RemovedIpNetworksController.php:211
 msgid "The removed IP network could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:123
-#: ./src/Controller/ServiceOverridesController.php:202
+#: ./src/Controller/ServiceOverridesController.php:124
+#: ./src/Controller/ServiceOverridesController.php:205
 msgid "The service override has been saved."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:127
-#: ./src/Controller/ServiceOverridesController.php:206
+#: ./src/Controller/ServiceOverridesController.php:128
+#: ./src/Controller/ServiceOverridesController.php:209
 msgid "The service override could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:250
+#: ./src/Controller/ServiceOverridesController.php:255
 msgid "The service override has been deleted."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:253
+#: ./src/Controller/ServiceOverridesController.php:258
 msgid "The service override could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:274
+#: ./src/Controller/ServiceOverridesController.php:279
 msgid "This service override is already revoked."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:283
+#: ./src/Controller/ServiceOverridesController.php:288
 msgid "The service override has been revoked."
 msgstr ""
 
-#: ./src/Controller/ServiceOverridesController.php:286
+#: ./src/Controller/ServiceOverridesController.php:291
 msgid "The service override could not be revoked. Please try again."
 msgstr ""
 
-#: ./src/Controller/ServiceTypesController.php:85
-#: ./src/Controller/ServiceTypesController.php:107
+#: ./src/Controller/ServiceTypesController.php:87
+#: ./src/Controller/ServiceTypesController.php:111
 msgid "The service type has been saved."
 msgstr ""
 
-#: ./src/Controller/ServiceTypesController.php:89
-#: ./src/Controller/ServiceTypesController.php:111
+#: ./src/Controller/ServiceTypesController.php:91
+#: ./src/Controller/ServiceTypesController.php:115
 msgid "The service type could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServiceTypesController.php:128
+#: ./src/Controller/ServiceTypesController.php:134
 msgid "The service type has been deleted."
 msgstr ""
 
-#: ./src/Controller/ServiceTypesController.php:131
+#: ./src/Controller/ServiceTypesController.php:137
 msgid "The service type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServicesController.php:86
-#: ./src/Controller/ServicesController.php:122
+#: ./src/Controller/ServicesController.php:88
+#: ./src/Controller/ServicesController.php:126
 msgid "The service has been saved."
 msgstr ""
 
-#: ./src/Controller/ServicesController.php:90
-#: ./src/Controller/ServicesController.php:126
+#: ./src/Controller/ServicesController.php:92
+#: ./src/Controller/ServicesController.php:130
 msgid "The service could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ServicesController.php:157
+#: ./src/Controller/ServicesController.php:163
 msgid "The service has been deleted."
 msgstr ""
 
-#: ./src/Controller/ServicesController.php:160
+#: ./src/Controller/ServicesController.php:166
 msgid "The service could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/SoldEquipmentsController.php:100
-#: ./src/Controller/SoldEquipmentsController.php:155
+#: ./src/Controller/SoldEquipmentsController.php:102
+#: ./src/Controller/SoldEquipmentsController.php:159
 msgid "The sold equipment has been saved."
 msgstr ""
 
-#: ./src/Controller/SoldEquipmentsController.php:104
-#: ./src/Controller/SoldEquipmentsController.php:159
+#: ./src/Controller/SoldEquipmentsController.php:106
+#: ./src/Controller/SoldEquipmentsController.php:163
 msgid "The sold equipment could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/SoldEquipmentsController.php:206
+#: ./src/Controller/SoldEquipmentsController.php:212
 msgid "The sold equipment has been deleted."
 msgstr ""
 
-#: ./src/Controller/SoldEquipmentsController.php:209
+#: ./src/Controller/SoldEquipmentsController.php:215
 msgid "The sold equipment could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TaskStatesController.php:76
-#: ./src/Controller/TaskStatesController.php:98
+#: ./src/Controller/TaskStatesController.php:78
+#: ./src/Controller/TaskStatesController.php:102
 msgid "The task state has been saved."
 msgstr ""
 
-#: ./src/Controller/TaskStatesController.php:80
-#: ./src/Controller/TaskStatesController.php:102
+#: ./src/Controller/TaskStatesController.php:82
+#: ./src/Controller/TaskStatesController.php:106
 msgid "The task state could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TaskStatesController.php:119
+#: ./src/Controller/TaskStatesController.php:125
 msgid "The task state has been deleted."
 msgstr ""
 
-#: ./src/Controller/TaskStatesController.php:122
+#: ./src/Controller/TaskStatesController.php:128
 msgid "The task state could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TaskTypesController.php:77
-#: ./src/Controller/TaskTypesController.php:99
+#: ./src/Controller/TaskTypesController.php:79
+#: ./src/Controller/TaskTypesController.php:103
 msgid "The task type has been saved."
 msgstr ""
 
-#: ./src/Controller/TaskTypesController.php:81
-#: ./src/Controller/TaskTypesController.php:103
+#: ./src/Controller/TaskTypesController.php:83
+#: ./src/Controller/TaskTypesController.php:107
 msgid "The task type could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TaskTypesController.php:120
+#: ./src/Controller/TaskTypesController.php:126
 msgid "The task type has been deleted."
 msgstr ""
 
-#: ./src/Controller/TaskTypesController.php:123
+#: ./src/Controller/TaskTypesController.php:129
 msgid "The task type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:248
+#: ./src/Controller/TasksController.php:249
 msgid "none"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:359
-#: ./src/Controller/TasksController.php:513
+#: ./src/Controller/TasksController.php:360
+#: ./src/Controller/TasksController.php:516
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:363
-#: ./src/Controller/TasksController.php:517
+#: ./src/Controller/TasksController.php:364
+#: ./src/Controller/TasksController.php:520
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:444
+#: ./src/Controller/TasksController.php:445
 #: ./src/Model/Enum/AddressType.php:26
 #: ./templates/Commissions/view.php:100
 #: ./templates/ContractStates/view.php:183
@@ -1036,7 +1079,7 @@ msgstr ""
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:457
+#: ./src/Controller/TasksController.php:458
 #: ./src/Model/Enum/CustomerMessageType.php:27
 #: ./src/Utility/ServiceChangeMessageBuilder.php:163
 #: ./templates/Customers/view.php:284
@@ -1048,7 +1091,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:458
+#: ./src/Controller/TasksController.php:459
 #: ./src/Utility/ServiceChangeMessageBuilder.php:164
 #: ./templates/Customers/view.php:333
 #: ./templates/Phones/view.php:43
@@ -1059,42 +1102,37 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:593
+#: ./src/Controller/TasksController.php:598
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:596
+#: ./src/Controller/TasksController.php:601
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:652
+#: ./src/Controller/TasksController.php:657
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:654
+#: ./src/Controller/TasksController.php:658
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:668
+#: ./src/Controller/TasksController.php:671
 msgid "Notification email sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:672
+#: ./src/Controller/TasksController.php:675
 msgid "The notification email could not be sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:268
+#: ./src/Controller/TasksController.php:269
 msgid "There was {0} unfinished task found that does not have a dealer assigned."
 msgid_plural "There were {0} unfinished tasks found that do not have a dealer assigned."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Controller/Traits/CommonViewVarListsTrait.php:60
-#: ./src/Controller/Traits/CommonViewVarListsTrait.php:107
-msgid "The access points list could not be loaded. Please, try again."
-msgstr ""
-
-#: ./src/Controller/Traits/CommonViewVarListsTrait.php:86
+#: ./src/Controller/Traits/CommonViewVarListsTrait.php:87
 msgid "archived"
 msgstr ""
 
@@ -1139,45 +1177,45 @@ msgstr ""
 msgid "API"
 msgstr ""
 
-#: ./src/Model/Entity/Billing.php:424
+#: ./src/Model/Entity/Billing.php:406
 msgid "Contract data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:264
-#: ./src/Model/Entity/Contract.php:279
-#: ./src/Model/Entity/Contract.php:294
+#: ./src/Model/Entity/Contract.php:250
+#: ./src/Model/Entity/Contract.php:265
+#: ./src/Model/Entity/Contract.php:280
 msgid "Contract state data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:309
-#: ./src/Model/Entity/Contract.php:324
-#: ./src/Model/Entity/Contract.php:339
+#: ./src/Model/Entity/Contract.php:295
+#: ./src/Model/Entity/Contract.php:310
+#: ./src/Model/Entity/Contract.php:325
 msgid "Service type data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Customer.php:511
-#: ./src/Model/Entity/Customer.php:533
+#: ./src/Model/Entity/Customer.php:503
+#: ./src/Model/Entity/Customer.php:525
 msgid "Contracts data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Customer.php:548
+#: ./src/Model/Entity/Customer.php:540
 msgid "Accounting profile data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:208
+#: ./src/Model/Entity/Task.php:206
 msgid "Low"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:209
+#: ./src/Model/Entity/Task.php:207
 #: ./src/Model/Enum/ServiceCriticalityLevel.php:25
 msgid "Normal"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:210
+#: ./src/Model/Entity/Task.php:208
 msgid "High"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:211
+#: ./src/Model/Entity/Task.php:209
 msgid "Urgent"
 msgstr ""
 
@@ -1517,6 +1555,18 @@ msgstr ""
 msgid "Incoming"
 msgstr ""
 
+#: ./src/Model/Enum/CustomerMessagePurpose.php:29
+msgid "Billing message"
+msgstr ""
+
+#: ./src/Model/Enum/CustomerMessagePurpose.php:30
+msgid "Outage notification"
+msgstr ""
+
+#: ./src/Model/Enum/CustomerMessagePurpose.php:31
+msgid "Commercial message"
+msgstr ""
+
 #: ./src/Model/Enum/CustomerMessageType.php:28
 msgid "Email - Contracts"
 msgstr ""
@@ -1606,7 +1656,7 @@ msgstr ""
 msgid "The specified service type requires the assignment of an access point."
 msgstr ""
 
-#: ./src/Model/Table/CustomersTable.php:331
+#: ./src/Model/Table/CustomersTable.php:332
 msgid "The specified identification number is not valid."
 msgstr ""
 
@@ -1618,7 +1668,7 @@ msgstr ""
 msgid "This IP network is already in use."
 msgstr ""
 
-#: ./src/Model/Table/PhonesTable.php:127
+#: ./src/Model/Table/PhonesTable.php:129
 msgid "The phone number is not valid."
 msgstr ""
 
@@ -1654,115 +1704,115 @@ msgstr ""
 msgid "The specified task type requires the assignment of an contract."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:114
+#: ./src/Model/Validation/ContractStateValidator.php:103
 msgid "The selected contract state cannot be used for new contracts."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:223
+#: ./src/Model/Validation/ContractStateValidator.php:211
 msgid "Installation date must be set for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:242
+#: ./src/Model/Validation/ContractStateValidator.php:229
 msgid "Uninstallation date must be set for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:261
+#: ./src/Model/Validation/ContractStateValidator.php:247
 msgid "Termination date must be set for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:299
+#: ./src/Model/Validation/ContractStateValidator.php:283
 msgid "An open task of the required type ({0}) must exist before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:334
+#: ./src/Model/Validation/ContractStateValidator.php:317
 msgid "All tasks must be completed before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:368
+#: ./src/Model/Validation/ContractStateValidator.php:350
 msgid "Active billings must be finished before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:398
+#: ./src/Model/Validation/ContractStateValidator.php:379
 msgid "Future billings must be removed before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:434
+#: ./src/Model/Validation/ContractStateValidator.php:414
 msgid "All assigned IP addresses and networks must be removed before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:463
+#: ./src/Model/Validation/ContractStateValidator.php:442
 msgid "Active RADIUS accounts must be disabled before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:492
+#: ./src/Model/Validation/ContractStateValidator.php:470
 msgid "All borrowed equipment must be returned before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:519
+#: ./src/Model/Validation/ContractStateValidator.php:496
 msgid "At least one contract version must exist for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:552
+#: ./src/Model/Validation/ContractStateValidator.php:528
 msgid "An active contract version is required for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:592
+#: ./src/Model/Validation/ContractStateValidator.php:567
 msgid "An active or future contract version is required for this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:632
+#: ./src/Model/Validation/ContractStateValidator.php:606
 msgid "Active or future contract versions must be terminated or removed before changing to this contract state."
 msgstr ""
 
-#: ./src/Model/Validation/ContractStateValidator.php:664
+#: ./src/Model/Validation/ContractStateValidator.php:637
 msgid "Active contractual obligations must be finished before changing to this contract state."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:116
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:103
 msgid "Please select the contract version to be executed."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:137
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:124
 msgid "Please select the contract version to be terminated."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:162
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:149
 msgid "A borrowed equipment is not assigned, although it should normally be for this type of service. Please confirm that the customer has their own equipment or add it."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:189
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:176
 msgid "IP addresses are not assigned, although they usually should be for this type of service. Please confirm that the customer does not use IP addresses or add them."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:219
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:206
 msgid "RADIUS accounts are not assigned, although they usually should be for this type of service. Please confirm that the customer does not use RADIUS accounts or add them."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:260
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:245
 msgid "The contract version to be terminated must differ from the contract version to be executed."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:271
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:336
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:256
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:321
 msgid "Please set the conclusion date of the contract version to be terminated."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:278
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:343
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:384
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:263
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:328
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:367
 msgid "Please enter the contract number to be terminated."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:300
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:285
 msgid "Please enter the effective date of the amendment."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:310
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:295
 msgid "Please set the conclusion date of the contract version to be executed."
 msgstr ""
 
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:329
-#: ./src/Service/ContractPrint/ContractPrintValidator.php:377
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:314
+#: ./src/Service/ContractPrint/ContractPrintValidator.php:360
 msgid "Please set the date until which the contract version to be terminated is valid."
 msgstr ""
 
@@ -1826,7 +1876,10 @@ msgstr ""
 #: ./templates/CustomerLabels/index.php:36
 #: ./templates/CustomerLabels/view.php:10
 #: ./templates/CustomerMessages/add.php:11
-#: ./templates/CustomerMessages/add_bulk.php:14
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:17
+#: ./templates/CustomerMessages/add_bulk/step_done.php:12
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:15
+#: ./templates/CustomerMessages/add_bulk/step_purpose.php:12
 #: ./templates/CustomerMessages/edit.php:11
 #: ./templates/CustomerMessages/index.php:46
 #: ./templates/CustomerMessages/view.php:10
@@ -2004,7 +2057,6 @@ msgstr ""
 #: ./templates/CustomerLabels/add.php:47
 #: ./templates/CustomerLabels/edit.php:55
 #: ./templates/CustomerMessages/add.php:37
-#: ./templates/CustomerMessages/add_bulk.php:55
 #: ./templates/CustomerMessages/edit.php:45
 #: ./templates/Customers/add.php:68
 #: ./templates/Customers/edit.php:73
@@ -2332,7 +2384,8 @@ msgstr ""
 #: ./templates/Countries/view.php:52
 #: ./templates/CustomerLabels/index.php:31
 #: ./templates/CustomerLabels/view.php:50
-#: ./templates/CustomerMessages/add_bulk.php:66
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:100
+#: ./templates/CustomerMessages/add_bulk/step_done.php:46
 #: ./templates/Emails/index.php:27
 #: ./templates/Emails/view.php:39
 #: ./templates/EquipmentTypes/view.php:69
@@ -2431,7 +2484,7 @@ msgstr ""
 #: ./templates/element/Contracts/RemovedIpAddresses.php:41
 #: ./templates/element/Contracts/RemovedIpNetworks.php:41
 #: ./templates/element/Contracts/SoldEquipments.php:47
-#: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1226
+#: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1225
 msgid "View"
 msgstr ""
 
@@ -2691,7 +2744,8 @@ msgstr ""
 #: ./templates/Contracts/view.php:134
 #: ./templates/Countries/view.php:51
 #: ./templates/CustomerLabels/view.php:43
-#: ./templates/CustomerMessages/add_bulk.php:65
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:99
+#: ./templates/CustomerMessages/add_bulk/step_done.php:47
 #: ./templates/CustomerMessages/view.php:48
 #: ./templates/Customers/view.php:75
 #: ./templates/Emails/view.php:32
@@ -3892,7 +3946,10 @@ msgstr ""
 
 #: ./templates/Contracts/view.php:32
 #: ./templates/CustomerMessages/add.php:13
-#: ./templates/CustomerMessages/add_bulk.php:16
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:29
+#: ./templates/CustomerMessages/add_bulk/step_done.php:19
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:27
+#: ./templates/CustomerMessages/add_bulk/step_purpose.php:14
 #: ./templates/CustomerMessages/edit.php:21
 #: ./templates/CustomerMessages/view.php:25
 #: ./templates/Customers/view.php:32
@@ -4180,30 +4237,163 @@ msgstr ""
 msgid "Add Customer Message"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk.php:26
-msgid "Customers to Receive The Message"
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:19
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:17
+#: ./templates/layout/error.php:36
+msgid "Back"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk.php:47
-msgid "Add Bulk Customer Message"
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:24
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:22
+msgid "Start Over"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk.php:60
-msgid "Selected Customers"
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:41
+#: ./templates/CustomerMessages/add_bulk/step_done.php:27
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:37
+#: ./templates/CustomerMessages/add_bulk/step_purpose.php:24
+msgid "Bulk Customer Message"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk.php:67
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:41
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:37
+#: ./templates/CustomerMessages/add_bulk/step_purpose.php:24
+msgid "Step {0} of {1}: {2}"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:45
+msgid "Compose"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:48
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:43
+msgid "Purpose: {0}"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:50
+msgid "Customer mailing consent is being ignored for this send."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:53
+msgid "Per-contact routing flag is being ignored for this send."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:56
+msgid "Only customers and contacts that consented are included."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:62
+msgid "Customer Message"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:72
+msgid "Recipients by access points — {0} customer(s)"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:74
+msgid "Uncheck a row to skip that contract. A customer with contracts on several access points is listed under each; the message is sent once if at least one row stays checked."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:83
+msgid "No customers match the selected filters (or none consented). Go back and adjust the filters."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:98
+msgid "Send"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:101
 #: ./templates/Customers/view.php:279
 #: ./templates/Emails/index.php:21
 #: ./templates/Overviews/overview_of_contracts.php:93
 msgid "Emails"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk.php:68
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:102
 #: ./templates/Customers/view.php:328
 #: ./templates/Overviews/overview_of_contracts.php:94
 #: ./templates/Phones/index.php:21
 msgid "Phones"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:118
+msgid "Email Missing"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:121
+msgid "Phone Missing"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:130
+msgid "Send to {0} customer(s)"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:14
+#: ./templates/CustomerMessages/index.php:26
+#: ./templates/CustomerMessages/view.php:35
+msgid "New Bulk Customer Message"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:28
+msgid "{0} message(s) queued for sending ({1})."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:31
+msgid "All selected customers received the message."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:34
+msgid "Skipped — no phone number ({0})"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:35
+msgid "Skipped — no e-mail ({0})"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:37
+msgid "These customers were selected but had no eligible contact for this channel, so no message was sent to them — handle them individually."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:41
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:50
+msgid "Filters"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:45
+msgid "This purpose offers no filters."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:57
+msgid "Consent overrides (exceptional cases only)"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:60
+msgid "Ignore customer mailing consent"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:63
+msgid "Include customers regardless of their mailing consent for this purpose (agree_mailing_*). Use only when legally justified."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:70
+msgid "Ignore per-contact routing flag"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:73
+msgid "Send to every email/phone of the selected customers, regardless of the per-contact routing flag (use_for_*)."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:78
+#: ./templates/CustomerMessages/add_bulk/step_purpose.php:39
+msgid "Continue"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_purpose.php:28
+msgid "Purpose"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_purpose.php:33
+msgid "Choose the purpose of the message. It determines the available filters and which mailing consent is required."
 msgstr ""
 
 #: ./templates/CustomerMessages/edit.php:31
@@ -4214,11 +4404,6 @@ msgstr ""
 #: ./templates/CustomerMessages/index.php:21
 #: ./templates/CustomerMessages/view.php:30
 msgid "New Customer Message"
-msgstr ""
-
-#: ./templates/CustomerMessages/index.php:26
-#: ./templates/CustomerMessages/view.php:35
-msgid "New Bulk Customer Message"
 msgstr ""
 
 #: ./templates/CustomerMessages/index.php:30
@@ -5807,9 +5992,5 @@ msgstr ""
 
 #: ./templates/layout/default.php:277
 msgid "Version"
-msgstr ""
-
-#: ./templates/layout/error.php:36
-msgid "Back"
 msgstr ""
 

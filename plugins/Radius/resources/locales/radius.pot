@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-05-30 22:24+0200\n"
+"POT-Creation-Date: 2026-07-20 14:57+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -106,194 +106,194 @@ msgstr ""
 msgid "RADIUS accounts update failed."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:174
-#: ./plugins/Radius/src/Controller/AccountsController.php:283
+#: ./plugins/Radius/src/Controller/AccountsController.php:175
+#: ./plugins/Radius/src/Controller/AccountsController.php:286
 msgid "The RADIUS account has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:178
-#: ./plugins/Radius/src/Controller/AccountsController.php:287
+#: ./plugins/Radius/src/Controller/AccountsController.php:179
+#: ./plugins/Radius/src/Controller/AccountsController.php:290
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:332
+#: ./plugins/Radius/src/Controller/AccountsController.php:337
 msgid "The RADIUS account has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:335
+#: ./plugins/Radius/src/Controller/AccountsController.php:340
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:360
+#: ./plugins/Radius/src/Controller/AccountsController.php:365
 msgid "No RADIUS session for {0} found."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:381
+#: ./plugins/Radius/src/Controller/AccountsController.php:386
 msgid "Problem connecting to an access point: {0}"
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:405
+#: ./plugins/Radius/src/Controller/AccountsController.php:410
 msgid "Removed MAC address entry {0} on interface {1} from router {2}."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:416
+#: ./plugins/Radius/src/Controller/AccountsController.php:421
 msgid "Access point updated."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:417
+#: ./plugins/Radius/src/Controller/AccountsController.php:422
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:421
+#: ./plugins/Radius/src/Controller/AccountsController.php:426
 msgid "Invalid RADIUS session for {0}."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:452
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:199
+#: ./plugins/Radius/src/Controller/AccountsController.php:457
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:198
 msgid "No active RADIUS session for {0} found."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/NasController.php:54
-#: ./plugins/Radius/src/Controller/NasController.php:76
+#: ./plugins/Radius/src/Controller/NasController.php:56
+#: ./plugins/Radius/src/Controller/NasController.php:80
 msgid "The RADIUS NAS has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/NasController.php:58
-#: ./plugins/Radius/src/Controller/NasController.php:80
+#: ./plugins/Radius/src/Controller/NasController.php:60
+#: ./plugins/Radius/src/Controller/NasController.php:84
 msgid "The RADIUS NAS could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/NasController.php:97
+#: ./plugins/Radius/src/Controller/NasController.php:103
 msgid "The RADIUS NAS has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/NasController.php:100
+#: ./plugins/Radius/src/Controller/NasController.php:106
 msgid "The RADIUS NAS could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadacctController.php:56
-#: ./plugins/Radius/src/Controller/RadacctController.php:81
+#: ./plugins/Radius/src/Controller/RadacctController.php:58
+#: ./plugins/Radius/src/Controller/RadacctController.php:85
 msgid "The RADIUS accounting has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadacctController.php:60
-#: ./plugins/Radius/src/Controller/RadacctController.php:85
+#: ./plugins/Radius/src/Controller/RadacctController.php:62
+#: ./plugins/Radius/src/Controller/RadacctController.php:89
 msgid "The RADIUS accounting could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadacctController.php:105
+#: ./plugins/Radius/src/Controller/RadacctController.php:111
 msgid "The RADIUS accounting has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadacctController.php:108
+#: ./plugins/Radius/src/Controller/RadacctController.php:114
 msgid "The RADIUS accounting could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadcheckController.php:56
-#: ./plugins/Radius/src/Controller/RadcheckController.php:81
+#: ./plugins/Radius/src/Controller/RadcheckController.php:58
+#: ./plugins/Radius/src/Controller/RadcheckController.php:85
 msgid "The RADIUS check has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadcheckController.php:60
-#: ./plugins/Radius/src/Controller/RadcheckController.php:85
+#: ./plugins/Radius/src/Controller/RadcheckController.php:62
+#: ./plugins/Radius/src/Controller/RadcheckController.php:89
 msgid "The RADIUS check could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadcheckController.php:105
+#: ./plugins/Radius/src/Controller/RadcheckController.php:111
 msgid "The RADIUS check has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadcheckController.php:108
+#: ./plugins/Radius/src/Controller/RadcheckController.php:114
 msgid "The RADIUS check could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:54
-#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:76
+#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:56
+#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:80
 msgid "The RADIUS group check has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:58
-#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:80
+#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:60
+#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:84
 msgid "The RADIUS group check could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:97
+#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:103
 msgid "The RADIUS group check has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:100
+#: ./plugins/Radius/src/Controller/RadgroupcheckController.php:106
 msgid "The RADIUS group check could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:54
-#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:76
+#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:56
+#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:80
 msgid "The RADIUS group reply has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:58
-#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:80
+#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:60
+#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:84
 msgid "The RADIUS group reply could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:97
+#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:103
 msgid "The RADIUS group reply has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:100
+#: ./plugins/Radius/src/Controller/RadgroupreplyController.php:106
 msgid "The RADIUS group reply could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadpostauthController.php:56
-#: ./plugins/Radius/src/Controller/RadpostauthController.php:81
+#: ./plugins/Radius/src/Controller/RadpostauthController.php:58
+#: ./plugins/Radius/src/Controller/RadpostauthController.php:85
 msgid "The RADIUS post authentication has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadpostauthController.php:60
-#: ./plugins/Radius/src/Controller/RadpostauthController.php:85
+#: ./plugins/Radius/src/Controller/RadpostauthController.php:62
+#: ./plugins/Radius/src/Controller/RadpostauthController.php:89
 msgid "The RADIUS post authentication could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadpostauthController.php:105
+#: ./plugins/Radius/src/Controller/RadpostauthController.php:111
 msgid "The RADIUS post authentication has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadpostauthController.php:109
+#: ./plugins/Radius/src/Controller/RadpostauthController.php:115
 msgid "The RADIUS post authentication could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadreplyController.php:56
-#: ./plugins/Radius/src/Controller/RadreplyController.php:81
+#: ./plugins/Radius/src/Controller/RadreplyController.php:58
+#: ./plugins/Radius/src/Controller/RadreplyController.php:85
 msgid "The RADIUS reply has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadreplyController.php:60
-#: ./plugins/Radius/src/Controller/RadreplyController.php:85
+#: ./plugins/Radius/src/Controller/RadreplyController.php:62
+#: ./plugins/Radius/src/Controller/RadreplyController.php:89
 msgid "The RADIUS reply could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadreplyController.php:105
+#: ./plugins/Radius/src/Controller/RadreplyController.php:111
 msgid "The RADIUS reply has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadreplyController.php:108
+#: ./plugins/Radius/src/Controller/RadreplyController.php:114
 msgid "The RADIUS reply could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadusergroupController.php:56
-#: ./plugins/Radius/src/Controller/RadusergroupController.php:92
+#: ./plugins/Radius/src/Controller/RadusergroupController.php:58
+#: ./plugins/Radius/src/Controller/RadusergroupController.php:96
 msgid "The RADIUS user group has been saved."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadusergroupController.php:60
-#: ./plugins/Radius/src/Controller/RadusergroupController.php:96
+#: ./plugins/Radius/src/Controller/RadusergroupController.php:62
+#: ./plugins/Radius/src/Controller/RadusergroupController.php:100
 msgid "The RADIUS user group could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadusergroupController.php:127
+#: ./plugins/Radius/src/Controller/RadusergroupController.php:133
 msgid "The RADIUS user group has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/RadusergroupController.php:130
+#: ./plugins/Radius/src/Controller/RadusergroupController.php:136
 msgid "The RADIUS user group could not be deleted. Please, try again."
 msgstr ""
 
@@ -309,47 +309,47 @@ msgstr ""
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:134
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:133
 msgid "Nothing has been selected for update."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:176
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:175
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:223
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:222
 msgid "Related entries for {0} RADIUS accounts were processed, {1} accounts were updated, and {2} accounts failed to update."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:247
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:246
 msgid "Automatic RADIUS account changes"
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:256
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:255
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:263
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:262
 msgid "Automatic RADIUS account changes have been reported."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:269
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:268
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:428
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:427
 msgid "The RADIUS replies for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:434
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:433
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:547
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:543
 msgid "The RADIUS user groups for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:553
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:549
 msgid "The billings for the contract for the current or upcoming period are probably not set correctly."
 msgstr ""
 
