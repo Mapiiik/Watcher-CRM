@@ -8,6 +8,7 @@ use App\BulkMessages\Filter\ContractScopedFilterInterface;
 use App\BulkMessages\Filter\CustomerScopedFilterInterface;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\CustomerMessage;
+use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessagePurpose;
@@ -17,6 +18,7 @@ use Cake\Http\Response;
 use Cake\Http\Session;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Text;
+use Settings\Utility\Settings;
 use SplObjectStorage;
 
 /**
@@ -567,9 +569,12 @@ class CustomerMessagesController extends AppController
             $ignoreContactUse,
         );
 
-        // preserve a patched entity across a failed submit; otherwise start fresh
+        // preserve a patched entity across a failed submit; otherwise start
+        // fresh and prefill the purpose's default template
         if (!$this->viewBuilder()->getVar('customerMessage') instanceof CustomerMessage) {
-            $this->set('customerMessage', $this->CustomerMessages->newEmptyEntity());
+            $customerMessage = $this->CustomerMessages->newEmptyEntity();
+            $this->applyPurposeComposeDefaults($customerMessage, $purpose);
+            $this->set('customerMessage', $customerMessage);
         }
 
         $apNames = NMSApiClient::getAccessPointsList(onlyActive: false) ?? [];
@@ -584,6 +589,27 @@ class CustomerMessagesController extends AppController
             'ignoreCustomerConsent' => $ignoreCustomerConsent,
             'ignoreContactUse' => $ignoreContactUse,
         ]);
+    }
+
+    /**
+     * Prefill a fresh compose entity with the purpose's default subject/body.
+     *
+     * Defaults come from the Settings plugin (DB overlay > config/settings.php),
+     * so operators can customise the template without touching code.
+     *
+     * @param \App\Model\Entity\CustomerMessage $customerMessage Fresh message entity.
+     * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
+     * @return void
+     */
+    private function applyPurposeComposeDefaults(
+        CustomerMessage $customerMessage,
+        CustomerMessagePurpose $purpose,
+    ): void {
+        $path = 'core.customer_messages.' . $purpose->settingsKey();
+
+        $customerMessage->subject = Settings::getString($path . '.subject');
+        $customerMessage->body = Settings::getString($path . '.body_text');
+        $customerMessage->body_format = CustomerMessageBodyFormat::Plaintext;
     }
 
     /**

@@ -449,5 +449,40 @@ return [
                 'closing' => 'Pokud budete mít jakékoliv dotazy nebo máte zájem o jiný tarif, než který navrhujeme, neváhejte nás kontaktovat.',
             ],
         ],
+
+        'customer_messages' => [
+            'outages' => [
+                'subject' => 'NETAIR – plánovaná odstávka internetu dne DD.MM.YYYY',
+
+                'body_text' => <<<'TEXT'
+                    Vážený zákazníku,
+
+                    dne DD.MM.YYYY proběhne v rámci zkvalitňování našich služeb výměna technologie přístupového bodu internetu v lokalitě LOKALITA.
+
+                    Z tohoto důvodu může docházet k dočasným výpadkům internetového připojení na vaší přípojce.
+                    Práce proběhnou mezi HH:MM a HH:MM. Krátké výpadky mohou nastat i v průběhu odpoledne.
+
+                    V případě velmi nepříznivého počasí bude akce přesunuta na náhradní termín.
+                    Omlouváme se za případné komplikace a děkujeme za pochopení.
+
+                    S pozdravem
+                    NETAIR, s.r.o.
+                    Jablonec nad Jizerou 299
+                    512 43 Jablonec nad Jizerou
+                    tel: +420 488 572 050, +420 604 553 444
+                    e-mail: podpora@netair.cz
+                    TEXT,
+            ],
+
+            'billing' => [
+                'subject' => '',
+                'body_text' => '',
+            ],
+
+            'commercial' => [
+                'subject' => '',
+                'body_text' => '',
+            ],
+        ],
     ],
 ];

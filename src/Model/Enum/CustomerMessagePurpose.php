@@ -63,6 +63,21 @@ enum CustomerMessagePurpose: int implements EnumLabelInterface
     }
 
     /**
+     * Settings key under `core.customer_messages.*` holding this purpose's
+     * default compose template (subject / body_text).
+     *
+     * @return string
+     */
+    public function settingsKey(): string
+    {
+        return match ($this) {
+            self::Billing => 'billing',
+            self::Outages => 'outages',
+            self::Commercial => 'commercial',
+        };
+    }
+
+    /**
      * Ordered list of filter keys offered for this purpose.
      *
      * The keys must match filters registered in
