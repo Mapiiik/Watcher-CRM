@@ -236,12 +236,20 @@ class IpAddressesController extends AppController
         if ($ipAddressRanges != null) {
             $this->set(
                 'ipAddressRanges',
-                $ipAddressRanges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine(
-                    'id',
-                    function (array $ipAddressRange): string {
-                        return $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')';
-                    },
-                ),
+                $ipAddressRanges
+                    ->sortBy('name', SORT_ASC, SORT_NATURAL)
+                    ->sortBy(
+                        fn(array $ipAddressRange): int => $ipAddressRange['access_point_id'] === null ? 1 : 0,
+                        SORT_ASC,
+                        SORT_NUMERIC,
+                    )
+                    ->map(function (array $ipAddressRange): array {
+                        return [
+                            'value' => $ipAddressRange['id'],
+                            'text' => $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')',
+                            'style' => $ipAddressRange['access_point_id'] === null ? 'font-style: italic;' : '',
+                        ];
+                    }),
             );
         } else {
             $this->Flash->warning(__('The IP address ranges list could not be loaded. Please, try again.'));
