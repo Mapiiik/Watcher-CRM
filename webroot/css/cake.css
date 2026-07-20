@@ -226,12 +226,16 @@ label {
 
 /* Legend */
 legend {
+    display: block;
+    width: 100%;
     font-family: "Exo 2", sans-serif;
     font-weight: 500;
     font-size: 2.0rem;
     color: var(--color-headings);
     letter-spacing: -.08rem;
     margin-bottom: 2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 0.1rem solid var(--color-table-headings-bg);
 }
 
 /* Input */
@@ -293,6 +297,12 @@ fieldset, input, select, textarea {
 fieldset.settings-group {
     padding-left: 1.0rem;
     border: #d1d1d1 solid 0.1rem;
+}
+
+fieldset.settings-group legend {
+    width: auto;
+    display: revert;
+    border-bottom: none;
 }
 
 /* Full width */

@@ -15,12 +15,12 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('Back'),
-                ['action' => 'addBulkNew', '?' => ['step' => 'purpose']],
+                ['action' => 'addBulk', '?' => ['step' => 'purpose']],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->Html->link(
                 __('Start Over'),
-                ['action' => 'addBulkNew', '?' => ['reset' => 1]],
+                ['action' => 'addBulk', '?' => ['reset' => 1]],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -41,15 +41,18 @@
                     __('Filters'),
                 ) ?></legend>
                 <p><?= __('Purpose: {0}', $purpose->label()) ?></p>
-                <hr>
                 <?php if ($filterControls === []) : ?>
                     <p><?= __('This purpose offers no filters.') ?></p>
                 <?php endif; ?>
+            </fieldset>
+            <br>
+            <fieldset>
+                <legend><?= __('Filters') ?></legend>
                 <?php foreach ($filterControls as $control) : ?>
                     <?= $this->Form->control($control['name'], $control['options']) ?>
                 <?php endforeach; ?>
             </fieldset>
-            <hr>
+            <br>
             <fieldset>
                 <legend><?= __('Consent overrides (exceptional cases only)') ?></legend>
                 <?= $this->Form->control('ignore_customer_consent', [
@@ -72,7 +75,6 @@
                     . 'per-contact routing flag (use_for_*).',
                 ) ?></p>
             </fieldset>
-            <hr>
             <?= $this->Form->button(__('Continue')) ?>
             <?= $this->Form->end() ?>
         </div>

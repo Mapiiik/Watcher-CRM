@@ -66,16 +66,32 @@ enum CustomerMessagePurpose: int implements EnumLabelInterface
      * Ordered list of filter keys offered for this purpose.
      *
      * The keys must match filters registered in
-     * {@see \App\Bulk\BulkRecipientFilterRegistry}.
+     * {@see \App\BulkMessages\BulkRecipientFilterRegistry}.
      *
      * @return array<string>
      */
     public function filterKeys(): array
     {
         return match ($this) {
-            self::Billing => ['label_ids', 'not_label_ids', 'registry_address_id', 'access_point'],
-            self::Outages => ['label_ids', 'not_label_ids', 'registry_address_id', 'access_point'],
-            self::Commercial => ['label_ids', 'not_label_ids'],
+            self::Billing => [
+                'label_ids',
+                'not_label_ids',
+                'registry_address_id',
+                'access_point',
+                'billed_contract',
+            ],
+            self::Outages => [
+                'label_ids',
+                'not_label_ids',
+                'registry_address_id',
+                'access_point',
+                'active_services_contract',
+            ],
+            self::Commercial => [
+                'label_ids',
+                'not_label_ids',
+                'active_services_contract',
+            ],
         };
     }
 }

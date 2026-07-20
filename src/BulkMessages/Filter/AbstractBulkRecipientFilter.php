@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Bulk\Filter;
+namespace App\BulkMessages\Filter;
 
 use App\Model\Table\CustomerMessagesTable;
 

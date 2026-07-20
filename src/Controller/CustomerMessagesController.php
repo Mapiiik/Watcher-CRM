@@ -3,23 +3,19 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Addresses\Resolver as AddressesResolver;
-use App\Bulk\BulkRecipientFilterRegistry;
-use App\Bulk\Filter\AccessPointFilter;
+use App\BulkMessages\BulkRecipientFilterRegistry;
+use App\BulkMessages\Filter\ContractScopedFilterInterface;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessagePurpose;
 use App\Model\Enum\CustomerMessageType;
-use App\Model\Table\LabelsTable;
 use App\NMS\ApiClient as NMSApiClient;
 use Cake\Http\Response;
 use Cake\Http\Session;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Text;
-use Cake\Validation\Validation;
-use RuntimeException;
 use SplObjectStorage;
 
 /**
@@ -131,188 +127,6 @@ class CustomerMessagesController extends AppController
     /**
      * Add Bulk method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function addBulk(): ?Response
-    {
-        // load labels
-        $labelsTable = $this->fetchTable(LabelsTable::class);
-        $labels = $labelsTable->find('list', order: [
-            'name',
-        ])->all();
-
-        // Load addresses from national address registry for existing installation addresses
-        /** @var \Cake\Datasource\ResultSetInterface<int, \App\Model\Entity\Address> $installationAddresses */
-        $installationAddresses = $this->CustomerMessages->Customers->Contracts->InstallationAddresses
-            ->find()
-            ->where([
-                'address_registry_source IS NOT' => null,
-                'address_registry_reference IS NOT' => null,
-            ])
-            ->all();
-
-        $registryAddresses = [];
-        try {
-            $registryAddresses = AddressesResolver::dropdownMap($installationAddresses);
-        } catch (RuntimeException $e) {
-            $this->Flash->warning(__(
-                'Could not retrieve addresses from national address registry: {0}',
-                $e->getMessage(),
-            ));
-        }
-
-        // customers filter
-        $customersFilter = [];
-
-        $labelId = $this->getRequest()->getQuery('label_id');
-        if (is_string($labelId) && Validation::uuid($labelId)) {
-            $filterQuery = $labelsTable->CustomerLabels->find()
-                ->select([
-                    'customer_id',
-                ])
-                ->distinct()
-                ->where([
-                    'CustomerLabels.label_id IS' => $labelId,
-                ]);
-
-            $customersFilter[] = [
-                'Customers.id IN' => $filterQuery,
-            ];
-            unset($filterQuery);
-        }
-
-        $accessPointId = $this->getRequest()->getQuery('access_point_id');
-        if (is_string($accessPointId) && Validation::uuid($accessPointId)) {
-            $filterQuery = $this->CustomerMessages->Customers->Contracts->find()
-                ->select([
-                    'customer_id',
-                ])
-                ->distinct()
-                ->where([
-                    'Contracts.access_point_id IS' => $accessPointId,
-                ]);
-
-            $customersFilter[] = [
-                'Customers.id IN' => $filterQuery,
-            ];
-            unset($filterQuery);
-        }
-
-        $registryAddressId = $this->getRequest()->getQuery('registry_address_id');
-        if (is_string($registryAddressId)) {
-            // expect format "source|reference", e.g. "cz|12345678"
-            [
-                $address_registry_source,
-                $address_registry_reference,
-            ] = explode('|', $registryAddressId, limit: 2) + [null, null];
-
-            $filterQuery = $this->CustomerMessages->Customers->Contracts->find()
-                ->select([
-                    'customer_id',
-                ])
-                ->contain([
-                    'InstallationAddresses',
-                ])
-                ->distinct()
-                ->where([
-                    'InstallationAddresses.address_registry_reference IS' => $address_registry_reference,
-                    'InstallationAddresses.address_registry_source IS' => $address_registry_source,
-                ]);
-
-            $customersFilter[] = [
-                'Customers.id IN' => $filterQuery,
-            ];
-            unset($filterQuery);
-        }
-
-        if ($customersFilter !== []) {
-            $customers = $this->CustomerMessages->Customers->find()
-            ->contain([
-                'Emails',
-                'Phones',
-            ])
-            ->where($customersFilter)
-            ->orderBy([
-                'Customers.company',
-                'Customers.last_name',
-                'Customers.first_name',
-            ]);
-        } else {
-            $customers = [];
-        }
-        /** @var iterable<\App\Model\Entity\Customer> $customers */
-
-        $customerMessage = $this->CustomerMessages->newEmptyEntity();
-        if ($this->request->is('post')) {
-            if (empty($customers)) {
-                $this->Flash->error(__('No customers were selected.'));
-            } else {
-                $customerMessage = $this->CustomerMessages->patchEntity($customerMessage, $this->request->getData());
-
-                $customerMessage->direction = CustomerMessageDirection::Outgoing;
-                $customerMessage->delivery_status = CustomerMessageDeliveryStatus::Pending;
-
-                $customerMessages = [];
-                foreach ($customers as $customer) {
-                    $thisMessage = clone $customerMessage;
-                    $thisMessage->customer_id = $customer->id;
-                    $thisMessage->recipients = match ($thisMessage->type) {
-                        CustomerMessageType::Sms => $customer->phones,
-                        CustomerMessageType::Email,
-                        CustomerMessageType::EmailContracts,
-                        CustomerMessageType::EmailInvoices,
-                        CustomerMessageType::EmailSupport => $customer->emails,
-                    };
-
-                    // skip messages without recipients
-                    if (empty($thisMessage->recipients)) {
-                        $this->Flash->warning(__('No contact was found for customer number {number}.', [
-                            'number' => $customer->number,
-                        ]));
-
-                        continue;
-                    }
-
-                    $customerMessages[] = $thisMessage;
-                    unset($thisMessage);
-                }
-
-                if (
-                    $this->CustomerMessages->saveMany(
-                        $customerMessages,
-                        [
-                            // saveMany audit options kept intentionally:
-                            // - mapiiik/audit-log (5.x, 6.x) logs nothing without them
-                            // - even audit-stash 2.0.1+ groups the batch under one transaction id only
-                            //   when they're passed (otherwise each record gets its own)
-                            '_auditQueue' => new SplObjectStorage(),
-                            '_auditTransaction' => Text::uuid(),
-                        ],
-                    )
-                ) {
-                    $this->Flash->success(__('The bulk customer message has been saved.'));
-
-                    return $this->afterAddRedirect(['action' => 'index']);
-                }
-                $this->Flash->error(__('The bulk customer message could not be saved. Please, try again.'));
-            }
-        }
-        $this->set(compact(
-            'customerMessage',
-            'labels',
-            'registryAddresses',
-            'customers',
-        ));
-
-        // load access points from NMS if possible (only active)
-        $this->setAccessPointsViewVarList(onlyActive: true);
-
-        return null;
-    }
-
-    /**
-     * Add Bulk method (wizard)
-     *
      * Multi-step wizard: pick a message purpose, narrow recipients with the
      * filters offered for that purpose, then compose and send. Recipient
      * selection honours the customer's mailing consent and each contact's
@@ -322,7 +136,7 @@ class CustomerMessagesController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on step change / successful add, renders view otherwise.
      */
-    public function addBulkNew(): ?Response
+    public function addBulk(): ?Response
     {
         $session = $this->getRequest()->getSession();
 
@@ -330,7 +144,7 @@ class CustomerMessagesController extends AppController
         if ($this->getRequest()->getQuery('reset') !== null) {
             $session->delete(self::BULK_WIZARD_STATE_KEY);
 
-            return $this->redirect(['action' => 'addBulkNew']);
+            return $this->redirect(['action' => 'addBulk']);
         }
 
         /** @var array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state */
@@ -367,23 +181,23 @@ class CustomerMessagesController extends AppController
             // one-shot send summary (post/redirect/get); safe to refresh
             $result = $session->consume(self::BULK_RESULT_KEY);
             if (!is_array($result)) {
-                return $this->redirect(['action' => 'addBulkNew']);
+                return $this->redirect(['action' => 'addBulk']);
             }
             $this->set('result', $result);
-            $this->viewBuilder()->setTemplate('add_bulk_new/step_done');
+            $this->viewBuilder()->setTemplate('add_bulk/step_done');
 
             return null;
         }
 
         if ($purpose !== null && $step === 'filters') {
             $this->prepareBulkFilterStep($purpose, $registry, $state);
-            $this->viewBuilder()->setTemplate('add_bulk_new/step_filters');
+            $this->viewBuilder()->setTemplate('add_bulk/step_filters');
         } elseif ($purpose !== null && $step === 'compose') {
             $this->prepareBulkComposeStep($purpose, $registry, $state);
-            $this->viewBuilder()->setTemplate('add_bulk_new/step_compose');
+            $this->viewBuilder()->setTemplate('add_bulk/step_compose');
         } else {
             $this->prepareBulkPurposeStep();
-            $this->viewBuilder()->setTemplate('add_bulk_new/step_purpose');
+            $this->viewBuilder()->setTemplate('add_bulk/step_purpose');
         }
 
         return null;
@@ -398,7 +212,7 @@ class CustomerMessagesController extends AppController
      * @param string $step Submitted step name.
      * @param array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Current state.
      * @param \App\Model\Enum\CustomerMessagePurpose|null $purpose Selected purpose (from state).
-     * @param \App\Bulk\BulkRecipientFilterRegistry $registry Filter registry.
+     * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @param \Cake\Http\Session $session Session instance.
      * @return \Cake\Http\Response|null
      */
@@ -414,16 +228,16 @@ class CustomerMessagesController extends AppController
             if ($selected === null) {
                 $this->Flash->error(__('Please select a message purpose.'));
 
-                return $this->redirect(['action' => 'addBulkNew']);
+                return $this->redirect(['action' => 'addBulk']);
             }
             // changing the purpose resets any downstream selections
             $session->write(self::BULK_WIZARD_STATE_KEY, ['purpose' => $selected->value]);
 
-            return $this->redirect(['action' => 'addBulkNew', '?' => ['step' => 'filters']]);
+            return $this->redirect(['action' => 'addBulk', '?' => ['step' => 'filters']]);
         }
 
         if ($purpose === null) {
-            return $this->redirect(['action' => 'addBulkNew']);
+            return $this->redirect(['action' => 'addBulk']);
         }
 
         if ($step === 'filters') {
@@ -440,7 +254,7 @@ class CustomerMessagesController extends AppController
             $state['ignore_contact_use'] = (bool)$this->request->getData('ignore_contact_use');
             $session->write(self::BULK_WIZARD_STATE_KEY, $state);
 
-            return $this->redirect(['action' => 'addBulkNew', '?' => ['step' => 'compose']]);
+            return $this->redirect(['action' => 'addBulk', '?' => ['step' => 'compose']]);
         }
 
         if ($step === 'compose') {
@@ -448,14 +262,14 @@ class CustomerMessagesController extends AppController
                 $session->delete(self::BULK_WIZARD_STATE_KEY);
 
                 // the summary is shown on the done step (read from the session)
-                return $this->redirect(['action' => 'addBulkNew', '?' => ['step' => 'done']]);
+                return $this->redirect(['action' => 'addBulk', '?' => ['step' => 'done']]);
             }
 
             // fall through: caller re-renders the compose step with errors
             return null;
         }
 
-        return $this->redirect(['action' => 'addBulkNew']);
+        return $this->redirect(['action' => 'addBulk']);
     }
 
     /**
@@ -466,7 +280,7 @@ class CustomerMessagesController extends AppController
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
      * @param array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
-     * @param \App\Bulk\BulkRecipientFilterRegistry $registry Filter registry.
+     * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @return bool True when messages were saved.
      */
     private function saveBulkMessages(
@@ -585,7 +399,7 @@ class CustomerMessagesController extends AppController
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
      * @param array<string, mixed> $filters Submitted filter values keyed by filter key.
-     * @param \App\Bulk\BulkRecipientFilterRegistry $registry Filter registry.
+     * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @param bool $ignoreCustomerConsent Whether to bypass the customer mailing consent (agree_mailing_*).
      * @param bool $ignoreContactUse Whether to bypass the per-contact routing flag (use_for_*).
      * @return array<\App\Model\Entity\Customer>
@@ -598,6 +412,10 @@ class CustomerMessagesController extends AppController
         bool $ignoreContactUse,
     ): array {
         $conditions = [];
+        // extra WHEREs applied to the *contained* Contracts so the preview's
+        // access-point grouping hides contracts a filter excludes (e.g. a
+        // non-active / non-billed contract state) instead of surfacing them
+        $containedContractConditions = [];
         foreach ($filters as $key => $value) {
             $filter = $registry->get($key);
             if ($filter === null) {
@@ -606,6 +424,12 @@ class CustomerMessagesController extends AppController
             $filterConditions = $filter->conditions($value);
             if ($filterConditions !== null) {
                 $conditions[] = $filterConditions;
+            }
+            if ($filter instanceof ContractScopedFilterInterface) {
+                $contained = $filter->containedContractConditions($value);
+                if ($contained !== null) {
+                    $containedContractConditions[] = $contained;
+                }
             }
         }
 
@@ -629,12 +453,20 @@ class CustomerMessagesController extends AppController
             ->contain([
                 'Emails' => fn(SelectQuery $q): SelectQuery => $contactFinder($q, 'Emails'),
                 'Phones' => fn(SelectQuery $q): SelectQuery => $contactFinder($q, 'Phones'),
-                // contracts drive the access-point grouping in the preview
-                'Contracts' => fn(SelectQuery $q): SelectQuery => $q->select([
-                    'Contracts.id',
-                    'Contracts.customer_id',
-                    'Contracts.access_point_id',
-                ]),
+                // contracts drive the access-point grouping in the preview;
+                // any contract-scoped filter (e.g. contract state) narrows them
+                // so excluded contracts never surface a customer under an AP
+                'Contracts' => function (SelectQuery $q) use ($containedContractConditions): SelectQuery {
+                    $q = $q->select([
+                        'Contracts.id',
+                        'Contracts.customer_id',
+                        'Contracts.access_point_id',
+                    ]);
+
+                    return $containedContractConditions === []
+                        ? $q
+                        : $q->where($containedContractConditions);
+                },
             ])
             ->where($conditions)
             ->orderBy([
@@ -664,7 +496,7 @@ class CustomerMessagesController extends AppController
      * Set view vars for the filter step.
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
-     * @param \App\Bulk\BulkRecipientFilterRegistry $registry Filter registry.
+     * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @param array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
      * @return void
      */
@@ -698,7 +530,7 @@ class CustomerMessagesController extends AppController
      * Set view vars for the compose/preview step.
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
-     * @param \App\Bulk\BulkRecipientFilterRegistry $registry Filter registry.
+     * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @param array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
      * @return void
      */
@@ -724,23 +556,13 @@ class CustomerMessagesController extends AppController
 
         $apNames = NMSApiClient::getAccessPointsList(onlyActive: false) ?? [];
 
-        // when the access point filter is active, restrict the preview grouping
-        // to the access points it allows (selection + cascade subtree), so a
-        // customer's contracts on other access points don't surface groups the
-        // filter would exclude
-        $allowedApIds = null;
-        $apFilter = $registry->get('access_point');
-        if (isset($state['filters']['access_point']) && $apFilter instanceof AccessPointFilter) {
-            $matched = $apFilter->matchedAccessPointIds($state['filters']['access_point']);
-            if ($matched !== []) {
-                $allowedApIds = array_fill_keys($matched, true);
-            }
-        }
-
+        // contract-scoped filters (access point, contract state) have already
+        // narrowed the contained contracts in findBulkCustomers(), so grouping
+        // only ever sees contracts the active filters allow
         $this->set([
             'purpose' => $purpose,
             'customers' => $customers,
-            'apGroups' => $this->groupCustomersByAccessPoint($customers, $apNames, $allowedApIds),
+            'apGroups' => $this->groupCustomersByAccessPoint($customers, $apNames),
             'ignoreCustomerConsent' => $ignoreCustomerConsent,
             'ignoreContactUse' => $ignoreContactUse,
         ]);
@@ -756,11 +578,9 @@ class CustomerMessagesController extends AppController
      *
      * @param array<\App\Model\Entity\Customer> $customers Deduplicated recipients.
      * @param array<array-key, string> $apNames Access point id => name map.
-     * @param array<string, true>|null $allowedApIds When set, only these access points are grouped
-     *   (the active access point filter's scope); contracts elsewhere are ignored.
      * @return list<array{ap_id: string|null, ap_name: string, customers: list<\App\Model\Entity\Customer>}>
      */
-    private function groupCustomersByAccessPoint(array $customers, array $apNames, ?array $allowedApIds = null): array
+    private function groupCustomersByAccessPoint(array $customers, array $apNames): array
     {
         /** @var array<string, list<\App\Model\Entity\Customer>> $byAccessPoint */
         $byAccessPoint = [];
@@ -772,10 +592,6 @@ class CustomerMessagesController extends AppController
             foreach ($customer->contracts as $contract) {
                 $apId = $contract->access_point_id;
                 if (!is_string($apId) || $apId === '') {
-                    continue;
-                }
-                if ($allowedApIds !== null && !isset($allowedApIds[$apId])) {
-                    // outside the active access point filter's scope
                     continue;
                 }
                 $byAccessPoint[$apId][] = $customer;

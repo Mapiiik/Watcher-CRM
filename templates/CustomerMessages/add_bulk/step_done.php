@@ -12,7 +12,7 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('New Bulk Customer Message'),
-                ['action' => 'addBulkNew'],
+                ['action' => 'addBulk'],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -24,13 +24,12 @@
     </aside>
     <div class="column column-90">
         <div class="customerMessages content">
-            <h3><?= __('Bulk Customer Message') . ' — ' . __('Done') ?></h3>
+            <h4><?= __('Bulk Customer Message') . ' — ' . __('Done') ?></h4>
             <p><?= __('{0} message(s) queued for sending ({1}).', $result['sent'], h($result['channel'])) ?></p>
-
+            <br>
             <?php if ($result['skipped'] === []) : ?>
                 <p><?= __('All selected customers received the message.') ?></p>
             <?php else : ?>
-                <hr />
                 <h4><?= $result['is_sms']
                     ? __('Skipped — no phone number ({0})', count($result['skipped']))
                     : __('Skipped — no e-mail ({0})', count($result['skipped'])) ?></h4>
@@ -40,6 +39,7 @@
                         . 'so no message was sent to them — handle them individually.',
                     ) ?>
                 </p>
+                <br>
                 <div class="table-responsive">
                     <table>
                         <tr>

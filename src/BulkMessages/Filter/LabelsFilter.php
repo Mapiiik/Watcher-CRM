@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Bulk\Filter;
+namespace App\BulkMessages\Filter;
 
 /**
  * Filters customers that carry *all* of the selected labels (AND semantics),

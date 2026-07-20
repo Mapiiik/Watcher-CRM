@@ -1,13 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Bulk;
+namespace App\BulkMessages;
 
-use App\Bulk\Filter\AccessPointFilter;
-use App\Bulk\Filter\BulkRecipientFilterInterface;
-use App\Bulk\Filter\LabelsFilter;
-use App\Bulk\Filter\NotLabelsFilter;
-use App\Bulk\Filter\RegistryAddressFilter;
+use App\BulkMessages\Filter\AccessPointFilter;
+use App\BulkMessages\Filter\ActiveServicesContractFilter;
+use App\BulkMessages\Filter\BilledContractFilter;
+use App\BulkMessages\Filter\BulkRecipientFilterInterface;
+use App\BulkMessages\Filter\LabelsFilter;
+use App\BulkMessages\Filter\NotLabelsFilter;
+use App\BulkMessages\Filter\RegistryAddressFilter;
 use App\Model\Enum\CustomerMessagePurpose;
 use App\Model\Table\CustomerMessagesTable;
 
@@ -22,7 +24,7 @@ use App\Model\Table\CustomerMessagesTable;
 final class BulkRecipientFilterRegistry
 {
     /**
-     * @var array<string, callable(): \App\Bulk\Filter\BulkRecipientFilterInterface>
+     * @var array<string, callable(): \App\BulkMessages\Filter\BulkRecipientFilterInterface>
      */
     private array $factories;
 
@@ -32,6 +34,9 @@ final class BulkRecipientFilterRegistry
     public function __construct(CustomerMessagesTable $customerMessages)
     {
         $this->factories = [
+            'active_services_contract' =>
+                fn(): BulkRecipientFilterInterface => new ActiveServicesContractFilter($customerMessages),
+            'billed_contract' => fn(): BulkRecipientFilterInterface => new BilledContractFilter($customerMessages),
             'label_ids' => fn(): BulkRecipientFilterInterface => new LabelsFilter($customerMessages),
             'not_label_ids' => fn(): BulkRecipientFilterInterface => new NotLabelsFilter($customerMessages),
             'access_point' => fn(): BulkRecipientFilterInterface => new AccessPointFilter($customerMessages),
@@ -43,7 +48,7 @@ final class BulkRecipientFilterRegistry
      * Return the ordered filters offered for the given purpose.
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
-     * @return array<string, \App\Bulk\Filter\BulkRecipientFilterInterface>
+     * @return array<string, \App\BulkMessages\Filter\BulkRecipientFilterInterface>
      */
     public function forPurpose(CustomerMessagePurpose $purpose): array
     {
@@ -62,7 +67,7 @@ final class BulkRecipientFilterRegistry
      * Return a single filter instance by key, or null when unknown.
      *
      * @param string $key Filter key.
-     * @return \App\Bulk\Filter\BulkRecipientFilterInterface|null
+     * @return \App\BulkMessages\Filter\BulkRecipientFilterInterface|null
      */
     public function get(string $key): ?BulkRecipientFilterInterface
     {

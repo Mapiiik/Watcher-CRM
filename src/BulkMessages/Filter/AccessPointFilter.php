@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Bulk\Filter;
+namespace App\BulkMessages\Filter;
 
 use App\NMS\ApiClient as NMSApiClient;
 use Cake\Collection\CollectionInterface;
@@ -18,7 +18,7 @@ use Cake\Validation\Validation;
  * The access point list is loaded from the NMS API; when unavailable the
  * options are empty and the filter simply offers nothing to select.
  */
-final class AccessPointFilter extends AbstractBulkRecipientFilter
+final class AccessPointFilter extends AbstractBulkRecipientFilter implements ContractScopedFilterInterface
 {
     /**
      * @inheritDoc
@@ -101,15 +101,31 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter
     }
 
     /**
+     * @inheritDoc
+     */
+    public function containedContractConditions(mixed $value): ?array
+    {
+        // narrows the preview's contained contracts to the matched access points
+        // so a matched customer's contracts on other access points do not
+        // surface groups this filter excludes
+        $ids = $this->matchedAccessPointIds($value);
+        if ($ids === []) {
+            return null;
+        }
+
+        return ['Contracts.access_point_id IN' => $ids];
+    }
+
+    /**
      * Effective access point ids this filter matches: the validated selection,
      * expanded with the whole subtree when the cascade toggle is on. Empty when
-     * the filter is inactive. Shared by {@see conditions()} and the preview
-     * grouping, so both stay consistent.
+     * the filter is inactive. Shared by {@see conditions()} and
+     * {@see containedContractConditions()}, so both stay consistent.
      *
      * @param mixed $value Stored filter value.
      * @return array<string>
      */
-    public function matchedAccessPointIds(mixed $value): array
+    private function matchedAccessPointIds(mixed $value): array
     {
         if (!is_array($value) || !isset($value['ids']) || !is_array($value['ids'])) {
             return [];

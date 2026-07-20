@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Bulk\Filter;
+namespace App\BulkMessages\Filter;
 
 use App\Addresses\Resolver as AddressesResolver;
+use Cake\ORM\Query\SelectQuery;
 use RuntimeException;
 
 /**
@@ -13,7 +14,7 @@ use RuntimeException;
  * The submitted value is expected in the "source|reference" format
  * (e.g. "cz|12345678"), matching the option keys built from the registry.
  */
-final class RegistryAddressFilter extends AbstractBulkRecipientFilter
+final class RegistryAddressFilter extends AbstractBulkRecipientFilter implements ContractScopedFilterInterface
 {
     /**
      * @inheritDoc
@@ -56,6 +57,40 @@ final class RegistryAddressFilter extends AbstractBulkRecipientFilter
      */
     public function conditions(mixed $value): ?array
     {
+        $query = $this->matchingContractsQuery($value);
+        if ($query === null) {
+            return null;
+        }
+
+        return ['Customers.id IN' => $query->select(['customer_id'])];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function containedContractConditions(mixed $value): ?array
+    {
+        $query = $this->matchingContractsQuery($value);
+        if ($query === null) {
+            return null;
+        }
+
+        // narrow the preview's contained contracts to those at the selected
+        // registry address, so a matched customer's contracts elsewhere do not
+        // surface groups this filter excludes
+        return ['Contracts.id IN' => $query->select(['Contracts.id'])];
+    }
+
+    /**
+     * Base query of the contracts whose installation address matches the stored
+     * registry reference, or null when the filter is inactive. The caller adds
+     * the projection it needs (customer_id or Contracts.id).
+     *
+     * @param mixed $value Stored filter value ("source|reference").
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>|null
+     */
+    private function matchingContractsQuery(mixed $value): ?SelectQuery
+    {
         if (!is_string($value) || $value === '') {
             return null;
         }
@@ -66,17 +101,14 @@ final class RegistryAddressFilter extends AbstractBulkRecipientFilter
             $address_registry_reference,
         ] = explode('|', $value, limit: 2) + [null, null];
 
-        $filterQuery = $this->customerMessages->Customers->Contracts
+        return $this->customerMessages->Customers->Contracts
             ->find()
-            ->select(['customer_id'])
             ->contain(['InstallationAddresses'])
             ->distinct()
             ->where([
                 'InstallationAddresses.address_registry_reference IS' => $address_registry_reference,
                 'InstallationAddresses.address_registry_source IS' => $address_registry_source,
             ]);
-
-        return ['Customers.id IN' => $filterQuery];
     }
 
     /**
