@@ -412,7 +412,7 @@ class CustomerMessagesController extends AppController
         bool $ignoreContactUse,
     ): array {
         $conditions = [];
-        // extra WHEREs applied to the *contained* Contracts so the preview's
+        // conditions applied to the *contained* Contracts so the preview's
         // access-point grouping hides contracts a filter excludes (e.g. a
         // non-active / non-billed contract state) instead of surfacing them
         $containedContractConditions = [];
@@ -421,16 +421,35 @@ class CustomerMessagesController extends AppController
             if ($filter === null) {
                 continue;
             }
-            $filterConditions = $filter->conditions($value);
-            if ($filterConditions !== null) {
-                $conditions[] = $filterConditions;
-            }
             if ($filter instanceof ContractScopedFilterInterface) {
+                // contract-scoped filters are correlated on a single contract
+                // below, so their independent per-filter customer condition is
+                // intentionally NOT added here
                 $contained = $filter->containedContractConditions($value);
                 if ($contained !== null) {
                     $containedContractConditions[] = $contained;
                 }
+
+                continue;
             }
+            $filterConditions = $filter->conditions($value);
+            if ($filterConditions !== null) {
+                $conditions[] = $filterConditions;
+            }
+        }
+
+        // contract-scoped filters must be satisfied by the *same* contract: a
+        // customer qualifies only when one contract matches all of them together
+        // (e.g. an active contract *on* the selected access point), never when
+        // different contracts each satisfy a different filter
+        if ($containedContractConditions !== []) {
+            $conditions[] = [
+                'Customers.id IN' => $this->CustomerMessages->Customers->Contracts
+                    ->find()
+                    ->select(['customer_id'])
+                    ->distinct()
+                    ->where($containedContractConditions),
+            ];
         }
 
         // mailing consent (unless overridden). With no filter selected this is
