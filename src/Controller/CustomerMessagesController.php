@@ -607,6 +607,7 @@ class CustomerMessagesController extends AppController
     ): void {
         $path = 'core.customer_messages.' . $purpose->settingsKey();
 
+        $customerMessage->type = $purpose->defaultType();
         $customerMessage->subject = Settings::getString($path . '.subject');
         $customerMessage->body = Settings::getString($path . '.body_text');
         $customerMessage->body_format = CustomerMessageBodyFormat::Plaintext;

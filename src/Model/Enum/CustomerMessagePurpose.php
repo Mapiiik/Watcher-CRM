@@ -78,6 +78,21 @@ enum CustomerMessagePurpose: int implements EnumLabelInterface
     }
 
     /**
+     * Default message type (channel) prefilled in the compose step. Always an
+     * e-mail flavour matching the purpose; the operator can still change it.
+     *
+     * @return \App\Model\Enum\CustomerMessageType
+     */
+    public function defaultType(): CustomerMessageType
+    {
+        return match ($this) {
+            self::Billing => CustomerMessageType::EmailInvoices,
+            self::Outages => CustomerMessageType::EmailSupport,
+            self::Commercial => CustomerMessageType::EmailContracts,
+        };
+    }
+
+    /**
      * Ordered list of filter keys offered for this purpose.
      *
      * The keys must match filters registered in
