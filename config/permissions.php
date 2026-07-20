@@ -419,6 +419,21 @@ $permissions = [
             ],
             'action' => '*',
         ],
+        //enable customer message sending for network managers and sales managers
+        [
+            'role' => [
+                'network-manager',
+                'sales-manager',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'CustomerMessages',
+            ],
+            'action' => [
+                'add',
+                'addBulk',
+            ],
+        ],
         //allow invoice view/download for sales
         [
             'role' => [
