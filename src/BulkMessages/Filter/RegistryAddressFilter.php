@@ -55,19 +55,6 @@ final class RegistryAddressFilter extends AbstractBulkRecipientFilter implements
     /**
      * @inheritDoc
      */
-    public function conditions(mixed $value): ?array
-    {
-        $query = $this->matchingContractsQuery($value);
-        if ($query === null) {
-            return null;
-        }
-
-        return ['Customers.id IN' => $query->select(['customer_id'])];
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function containedContractConditions(mixed $value): ?array
     {
         $query = $this->matchingContractsQuery($value);

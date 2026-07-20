@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\BulkMessages\BulkRecipientFilterRegistry;
 use App\BulkMessages\Filter\ContractScopedFilterInterface;
+use App\BulkMessages\Filter\CustomerScopedFilterInterface;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
@@ -423,18 +424,16 @@ class CustomerMessagesController extends AppController
             }
             if ($filter instanceof ContractScopedFilterInterface) {
                 // contract-scoped filters are correlated on a single contract
-                // below, so their independent per-filter customer condition is
-                // intentionally NOT added here
+                // below (not added as independent per-filter customer conditions)
                 $contained = $filter->containedContractConditions($value);
                 if ($contained !== null) {
                     $containedContractConditions[] = $contained;
                 }
-
-                continue;
-            }
-            $filterConditions = $filter->conditions($value);
-            if ($filterConditions !== null) {
-                $conditions[] = $filterConditions;
+            } elseif ($filter instanceof CustomerScopedFilterInterface) {
+                $filterConditions = $filter->conditions($value);
+                if ($filterConditions !== null) {
+                    $conditions[] = $filterConditions;
+                }
             }
         }
 

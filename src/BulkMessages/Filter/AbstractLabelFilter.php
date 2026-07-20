@@ -8,7 +8,7 @@ use Cake\Validation\Validation;
 /**
  * Common base for the (multiselect) label filters.
  */
-abstract class AbstractLabelFilter extends AbstractBulkRecipientFilter
+abstract class AbstractLabelFilter extends AbstractBulkRecipientFilter implements CustomerScopedFilterInterface
 {
     /**
      * Label shown above the multiselect control.

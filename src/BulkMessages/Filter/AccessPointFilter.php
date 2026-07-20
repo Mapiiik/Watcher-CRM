@@ -84,25 +84,6 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter implements Con
     /**
      * @inheritDoc
      */
-    public function conditions(mixed $value): ?array
-    {
-        $ids = $this->matchedAccessPointIds($value);
-        if ($ids === []) {
-            return null;
-        }
-
-        $filterQuery = $this->customerMessages->Customers->Contracts
-            ->find()
-            ->select(['customer_id'])
-            ->distinct()
-            ->where(['Contracts.access_point_id IN' => $ids]);
-
-        return ['Customers.id IN' => $filterQuery];
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function containedContractConditions(mixed $value): ?array
     {
         // narrows the preview's contained contracts to the matched access points

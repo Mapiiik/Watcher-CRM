@@ -66,26 +66,19 @@ class RegistryAddressFilterTest extends TestCase
     {
         $filter = new RegistryAddressFilter($this->CustomerMessages);
 
-        $this->assertNull($filter->conditions(''));
-        $this->assertNull($filter->conditions(null));
         $this->assertNull($filter->containedContractConditions(''));
         $this->assertNull($filter->containedContractConditions(null));
     }
 
     /**
-     * A selected registry address narrows both the matched customers and the
-     * contained contracts, each via its own subquery projection.
+     * A selected registry address narrows the contained contracts to those at
+     * that address via a subquery.
      *
      * @return void
      */
-    public function testActiveValueNarrowsCustomersAndContracts(): void
+    public function testActiveValueNarrowsContainedContracts(): void
     {
         $filter = new RegistryAddressFilter($this->CustomerMessages);
-
-        $conditions = $filter->conditions('cz|12345678');
-        $this->assertIsArray($conditions);
-        $this->assertArrayHasKey('Customers.id IN', $conditions);
-        $this->assertInstanceOf(SelectQuery::class, $conditions['Customers.id IN']);
 
         $contained = $filter->containedContractConditions('cz|12345678');
         $this->assertIsArray($contained);

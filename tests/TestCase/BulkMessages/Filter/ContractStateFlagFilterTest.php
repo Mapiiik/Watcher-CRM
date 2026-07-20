@@ -90,14 +90,8 @@ class ContractStateFlagFilterTest extends TestCase
     {
         $filter = new ActiveServicesContractFilter($this->CustomerMessages);
 
-        $this->assertNull($filter->conditions(false));
-        $this->assertNull($filter->conditions(null));
         $this->assertNull($filter->containedContractConditions(false));
         $this->assertNull($filter->containedContractConditions(null));
-
-        $conditions = $filter->conditions(true);
-        $this->assertIsArray($conditions);
-        $this->assertArrayHasKey('Customers.id IN', $conditions);
 
         $contained = $filter->containedContractConditions(true);
         $this->assertIsArray($contained);

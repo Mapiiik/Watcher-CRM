@@ -7,11 +7,15 @@ namespace App\BulkMessages\Filter;
  * A single recipient filter for the bulk customer message wizard.
  *
  * A filter owns a logical id (its slot in the wizard state and registry key),
- * renders one or more form controls, folds the posted form fields into a single
- * value, and turns that value into query conditions. Owning several form fields
- * while exposing a single value keeps composite filters (e.g. an access point
- * selection plus a "cascade" toggle) as one logical unit without nesting the
- * form field names.
+ * renders one or more form controls, and folds the posted form fields into a
+ * single value. Owning several form fields while exposing a single value keeps
+ * composite filters (e.g. an access point selection plus a "cascade" toggle) as
+ * one logical unit without nesting the form field names.
+ *
+ * How a filter narrows the query is delegated to one of the two scoping
+ * sub-interfaces it must also implement: {@see CustomerScopedFilterInterface}
+ * (a condition on the customer) or {@see ContractScopedFilterInterface} (a
+ * condition on the customer's contracts, correlated on a single contract).
  */
 interface BulkRecipientFilterInterface
 {
@@ -39,15 +43,6 @@ interface BulkRecipientFilterInterface
      * @return mixed
      */
     public function buildValue(array $data): mixed;
-
-    /**
-     * Conditions to merge into the Customers query for the given stored value,
-     * or null when the value does not activate the filter.
-     *
-     * @param mixed $value Stored filter value.
-     * @return array<mixed>|null
-     */
-    public function conditions(mixed $value): ?array;
 
     /**
      * A user-facing warning about this filter's data source (e.g. an external

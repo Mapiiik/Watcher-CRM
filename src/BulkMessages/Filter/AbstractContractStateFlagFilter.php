@@ -69,24 +69,6 @@ abstract class AbstractContractStateFlagFilter extends AbstractBulkRecipientFilt
     /**
      * @inheritDoc
      */
-    public function conditions(mixed $value): ?array
-    {
-        if ($value !== true) {
-            return null;
-        }
-
-        $filterQuery = $this->customerMessages->Customers->Contracts
-            ->find()
-            ->select(['customer_id'])
-            ->distinct()
-            ->where(['Contracts.contract_state_id IN' => $this->qualifyingStateIds()]);
-
-        return ['Customers.id IN' => $filterQuery];
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function containedContractConditions(mixed $value): ?array
     {
         if ($value !== true) {
