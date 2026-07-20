@@ -34,7 +34,9 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter implements Con
     public function controls(mixed $value): array
     {
         $selected = is_array($value) && isset($value['ids']) && is_array($value['ids']) ? $value['ids'] : [];
-        $cascade = is_array($value) && !empty($value['cascade']);
+        // cascade (whole subtree) defaults to on for a fresh filter step; once
+        // the filter has been submitted the operator's own choice is preserved
+        $cascade = is_array($value) ? !empty($value['cascade']) : true;
 
         return [
             [
