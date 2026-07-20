@@ -8,6 +8,7 @@ use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
+use App\Model\Entity\Service;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractStatesTable;
@@ -280,59 +281,82 @@ class OverviewsController extends AppController
             ->contain('ServiceTypes')
             ->formatResults(
                 function (CollectionInterface $services): CollectionInterface {
-                    $services = $services->map(function (array $service): array {
-                        $billings = new Collection($service['billings']);
+                    $services = $services->map(function (Service $service): Service {
+                        $billings = new Collection($service->billings);
 
-                        $service['number_of_uses'] = $billings
-                            ->sumOf('quantity');
+                        $service->set(
+                            'number_of_uses',
+                            $billings->sumOf('quantity'),
+                        );
 
-                        $service['number_of_uses_nonbusiness'] = $billings
-                            ->match(['customer.identity_number' => null])
-                            ->sumOf('quantity');
+                        $service->set(
+                            'number_of_uses_nonbusiness',
+                            $billings
+                                ->match(['customer.identity_number' => null])
+                                ->sumOf('quantity'),
+                        );
 
-                        $service['sum'] = $billings
-                            ->sumOf(
-                                function (Billing $billing) {
-                                    return $billing->sum->toFloat();
-                                },
-                            );
+                        $service->set(
+                            'sum',
+                            $billings
+                                ->sumOf(
+                                    function (Billing $billing) {
+                                        return $billing->sum->toFloat();
+                                    },
+                                ),
+                        );
 
-                        $service['fixed_discount_sum'] = $billings
-                            ->sumOf(
-                                function (Billing $billing) {
-                                    return $billing->fixed_discount_sum->toFloat();
-                                },
-                            );
+                        $service->set(
+                            'fixed_discount_sum',
+                            $billings
+                                ->sumOf(
+                                    function (Billing $billing) {
+                                        return $billing->fixed_discount_sum->toFloat();
+                                    },
+                                ),
+                        );
 
-                        $service['percentage_discount_sum'] = $billings
-                            ->sumOf(
-                                function (Billing $billing) {
-                                    return $billing->percentage_discount_sum->toFloat();
-                                },
-                            );
+                        $service->set(
+                            'percentage_discount_sum',
+                            $billings
+                                ->sumOf(
+                                    function (Billing $billing) {
+                                        return $billing->percentage_discount_sum->toFloat();
+                                    },
+                                ),
+                        );
 
-                        $service['total_sum'] = $billings
-                            ->sumOf(
-                                function (Billing $billing) {
-                                    return $billing->total_price->toFloat();
-                                },
-                            );
+                        $service->set(
+                            'total_sum',
+                            $billings
+                                ->sumOf(
+                                    function (Billing $billing) {
+                                        return $billing->total_price->toFloat();
+                                    },
+                                ),
+                        );
 
-                        $service['total_sum_nonbusiness'] = $billings
-                            ->match(['customer.identity_number' => null])
-                            ->sumOf(
-                                function (Billing $billing) {
-                                    return $billing->total_price->toFloat();
-                                },
-                            );
+                        $service->set(
+                            'total_sum_nonbusiness',
+                            $billings
+                                ->match(['customer.identity_number' => null])
+                                ->sumOf(
+                                    function (Billing $billing) {
+                                        return $billing->total_price->toFloat();
+                                    },
+                                ),
+                        );
 
-                        $service['total_sum_unbilled'] = $billings
-                            ->match(['contract.billed' => false])
-                            ->sumOf(
-                                function (Billing $billing) {
-                                    return $billing->total_price->toFloat();
-                                },
-                            );
+                        $service->set(
+                            'total_sum_unbilled',
+                            $billings
+                                ->match(['contract.billed' => false])
+                                ->sumOf(
+                                    function (Billing $billing) {
+                                        return $billing->total_price->toFloat();
+                                    },
+                                ),
+                        );
 
                         unset($billings);
 
