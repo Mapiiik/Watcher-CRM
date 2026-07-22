@@ -142,7 +142,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
             }
 
             foreach ($routerosDevices as $routerosDevice) {
-                /** @var array{access_point_id?: string} $routerosDevice */
+                /** @var array{access_point_id?: string, access_point?: array{name?: string}} $routerosDevice */
                 if (!isset($routerosDevice['access_point_id'])) {
                     continue;
                 }
@@ -150,12 +150,17 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                 $newApId = $routerosDevice['access_point_id'];
                 $oldApId = $contract->access_point_id;
 
+                // access point ID with its name appended when the API provides one
+                $newApLabel = isset($routerosDevice['access_point']['name'])
+                    ? sprintf('%s (%s)', $newApId, $routerosDevice['access_point']['name'])
+                    : $newApId;
+
                 // contract already has this access point, nothing to do
                 if ($oldApId === $newApId) {
                     $io->verbose(sprintf(
                         'Contract %s already has access point ID: %s',
                         $contract->number,
-                        $newApId,
+                        $newApLabel,
                     ));
 
                     return;
@@ -166,7 +171,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                         'DRY-RUN: contract %s | access point ID: %s → %s',
                         $contract->number,
                         $oldApId ?? 'NULL',
-                        $newApId,
+                        $newApLabel,
                     ));
 
                     return;
@@ -174,7 +179,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
 
                 $io->info(sprintf(
                     'Assigning access point ID: %s to contract %s',
-                    $newApId,
+                    $newApLabel,
                     $contract->number,
                 ));
 
@@ -189,7 +194,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                 if ($query->execute()->rowCount() === 1) {
                     Log::write('debug', sprintf(
                         'Assigned access point ID: %s to contract %s',
-                        $newApId,
+                        $newApLabel,
                         $contract->number,
                     ));
 
@@ -198,7 +203,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
 
                 $message = sprintf(
                     'Error when assigning access point ID: %s to contract %s',
-                    $newApId,
+                    $newApLabel,
                     $contract->number,
                 );
                 Log::write('error', $message);
