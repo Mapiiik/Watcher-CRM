@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-07-20 14:57+0200\n"
-"PO-Revision-Date: 2026-07-20 15:16+0200\n"
+"POT-Creation-Date: 2026-07-22 12:25+0200\n"
+"PO-Revision-Date: 2026-07-22 12:26+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -56,15 +56,15 @@ msgstr "Watcher Agent vrátil HTTP {0} ({1})"
 msgid "Watcher Agent returned an unexpected response: {0}"
 msgstr "Watcher Agent vrátil neočekávanou odpověď: {0}"
 
-#: src/BulkMessages/Filter/AccessPointFilter.php:43
+#: src/BulkMessages/Filter/AccessPointFilter.php:45
 msgid "Access Points"
 msgstr "Přístupové body"
 
-#: src/BulkMessages/Filter/AccessPointFilter.php:54
+#: src/BulkMessages/Filter/AccessPointFilter.php:56
 msgid "Include sub access points (whole subtree)"
 msgstr "Zahrnout podřízené přístupové body (celý podstrom)"
 
-#: src/BulkMessages/Filter/AccessPointFilter.php:154
+#: src/BulkMessages/Filter/AccessPointFilter.php:137
 #: src/Controller/Traits/CommonViewVarListsTrait.php:61
 #: src/Controller/Traits/CommonViewVarListsTrait.php:108
 msgid "The access points list could not be loaded. Please, try again."
@@ -92,7 +92,7 @@ msgstr "Vyloučit štítky (nemá žádné vybrané)"
 msgid "Installation Address (registry)"
 msgstr "Adresa instalace (registr)"
 
-#: src/BulkMessages/Filter/RegistryAddressFilter.php:133
+#: src/BulkMessages/Filter/RegistryAddressFilter.php:120
 #: src/Controller/Api/CustomersController.php:193
 #: src/Controller/OverviewsController.php:76
 #: src/Controller/OverviewsController.php:459
@@ -609,45 +609,45 @@ msgstr "Štítek zákazníka byl odstraněn."
 msgid "The customer label could not be deleted. Please, try again."
 msgstr "Štítek zákazníka nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerMessagesController.php:111
-#: src/Controller/CustomerMessagesController.php:640
+#: src/Controller/CustomerMessagesController.php:114
+#: src/Controller/CustomerMessagesController.php:685
 msgid "The customer message has been saved."
 msgstr "Zpráva pro zákazníka byla uložena."
 
-#: src/Controller/CustomerMessagesController.php:115
-#: src/Controller/CustomerMessagesController.php:644
+#: src/Controller/CustomerMessagesController.php:118
+#: src/Controller/CustomerMessagesController.php:689
 msgid "The customer message could not be saved. Please, try again."
 msgstr "Zprávu pro zákazníka se nepodařilo uložit. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerMessagesController.php:229
+#: src/Controller/CustomerMessagesController.php:232
 msgid "Please select a message purpose."
 msgstr "Vyberte prosím účel zprávy."
 
-#: src/Controller/CustomerMessagesController.php:308
+#: src/Controller/CustomerMessagesController.php:311
 msgid "No customers were selected."
 msgstr "Nebyl vybrán žádný zákazník."
 
-#: src/Controller/CustomerMessagesController.php:314
+#: src/Controller/CustomerMessagesController.php:317
 msgid "Please select a valid message type."
 msgstr "Vyberte prosím platný typ zprávy."
 
-#: src/Controller/CustomerMessagesController.php:359
+#: src/Controller/CustomerMessagesController.php:362
 msgid "No recipients with a valid contact were found."
 msgstr "Nebyli nalezeni žádní příjemci s platnými kontaktními údaji."
 
-#: src/Controller/CustomerMessagesController.php:610
+#: src/Controller/CustomerMessagesController.php:655
 msgid "Unknown access point"
 msgstr "Neznámý přístupový bod"
 
-#: src/Controller/CustomerMessagesController.php:619
+#: src/Controller/CustomerMessagesController.php:664
 msgid "No access point"
 msgstr "Žádný přístupový bod"
 
-#: src/Controller/CustomerMessagesController.php:668
+#: src/Controller/CustomerMessagesController.php:713
 msgid "The customer message has been deleted."
 msgstr "Zpráva pro zákazníka byla smazána."
 
-#: src/Controller/CustomerMessagesController.php:671
+#: src/Controller/CustomerMessagesController.php:716
 msgid "The customer message could not be deleted. Please, try again."
 msgstr "Zprávu pro zákazníka nebylo možné odstranit. Zkuste to prosím znovu."
 

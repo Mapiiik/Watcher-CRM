@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-07-20 14:57+0200\n"
+"POT-Creation-Date: 2026-07-22 12:25+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -367,30 +367,34 @@ msgstr ""
 msgid "debtor"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:737
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:765
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:719
+msgid "RouterOS device {0}: {1}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:773
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:801
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:786
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:822
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:814
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:842
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:850
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:878
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:863
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:899
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:911
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:946
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:921
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:931
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:956
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:966
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
