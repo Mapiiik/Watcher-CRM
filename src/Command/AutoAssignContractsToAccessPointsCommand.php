@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Model\Entity\Contract;
 use App\Model\Table\ContractsTable;
 use App\NMS\ApiClient as NMSApiClient;
 use Cake\Collection\CollectionInterface;
@@ -32,6 +33,18 @@ class AutoAssignContractsToAccessPointsCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
+        $parser->addOption('overwrite', [
+            'short' => 'o',
+            'help' => 'Reassign access points even for contracts that already have one.',
+            'boolean' => true,
+        ]);
+
+        $parser->addOption('dry-run', [
+            'short' => 'd',
+            'help' => 'Do not write anything, only show what would be changed.',
+            'boolean' => true,
+        ]);
+
         return $parser;
     }
 
@@ -45,102 +58,151 @@ class AutoAssignContractsToAccessPointsCommand extends Command
     #[Override]
     public function execute(Arguments $args, ConsoleIo $io): void
     {
+        $overwrite = (bool)$args->getOption('overwrite');
+        $dryRun = (bool)$args->getOption('dry-run');
+
         $contractsTable = $this->fetchTable(ContractsTable::class);
         $radiusAccountsTable = $this->fetchTable(AccountsTable::class);
 
-        $api = new NMSApiClient();
-
-        // load contracts without assigned access point
-        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Contract> $unassignedContracts */
-        $unassignedContracts = $contractsTable
+        // load contracts
+        $query = $contractsTable
             ->find()
             ->contain([
                 'IpAddresses',
-            ])
-            ->where([
+            ]);
+
+        if (!$overwrite) {
+            $query->where([
                 'Contracts.access_point_id IS NULL',
+            ]);
+        }
+
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Contract> $contracts */
+        $contracts = $query->all();
+
+        foreach ($contracts as $contract) {
+            $this->processContract($contract, $radiusAccountsTable, $contractsTable, $io, $dryRun);
+        }
+    }
+
+    /**
+     * Process one contract.
+     */
+    private function processContract(
+        Contract $contract,
+        AccountsTable $radiusAccountsTable,
+        ContractsTable $contractsTable,
+        ConsoleIo $io,
+        bool $dryRun,
+    ): void {
+        // load RADIUS accounts for contract
+        /** @var \Cake\Datasource\ResultSetInterface<array-key, \Radius\Model\Entity\Account> $radiusAccounts */
+        $radiusAccounts = $radiusAccountsTable
+            ->find()
+            ->where([
+                'Accounts.contract_id' => $contract->id,
+                'Accounts.active' => true,
             ])
+            ->orderBy([
+                'Accounts.id' => 'DESC',
+            ])
+            // for each RADIUS account find lastly opened session
+            ->contain(['Radacct' => function (SelectQuery $q) {
+                return $q
+                    ->orderBy([
+                        'Radacct.acctstarttime' => 'DESC',
+                    ])
+                    ->limit(1);
+            }])
             ->all();
 
-        foreach ($unassignedContracts as $contract) {
-            // load RADIUS accounts for contract
-            $radiusAccounts = $radiusAccountsTable
-                ->find()
-                ->where([
-                    'Accounts.contract_id' => $contract->id,
-                    'Accounts.active' => true,
-                ])
-                ->orderBy([
-                    'Accounts.id' => 'DESC',
-                ])
-                // for each RADIUS account find lastly opened session
-                ->contain(['Radacct' => function (SelectQuery $q) {
-                    return $q
-                        ->orderBy([
-                            'Radacct.acctstarttime' => 'DESC',
-                        ])
-                        ->limit(1);
-                }])
-                ->all();
+        foreach ($radiusAccounts as $radiusAccount) {
+            // try to find RouterOS devices via API from NMS with RADIUS NAS IP address
+            if (!isset($radiusAccount->radacct[0]->nasipaddress)) {
+                $io->verbose(sprintf(
+                    'No NAS IP for RADIUS account %s of contract %s',
+                    $radiusAccount->username,
+                    $contract->number,
+                ));
+                continue;
+            }
 
-            foreach ($radiusAccounts as $radiusAccount) {
-                // try to find RouterOS devices via API from NMS with RADIUS NAS IP address
-                if (isset($radiusAccount->radacct[0]->nasipaddress)) {
-                    $routerosDevices = $api->getRouterosDevicesForIp($radiusAccount->radacct[0]->nasipaddress);
+            $nasIp = $radiusAccount->radacct[0]->nasipaddress;
+            $routerosDevices = NMSApiClient::getRouterosDevicesForIp($nasIp);
 
-                    if (!$routerosDevices instanceof CollectionInterface) {
-                        Log::write(
-                            'error',
-                            'Error when fetching RouterOS devices for NAS IP: '
-                            . $radiusAccount->radacct[0]->nasipaddress
-                            . ' for contract ' . $contract->number,
-                        );
-                        $io->error(
-                            'Error when fetching RouterOS devices for NAS IP: '
-                            . $radiusAccount->radacct[0]->nasipaddress
-                            . ' for contract ' . $contract->number,
-                        );
-                        continue;
-                    }
+            if (!$routerosDevices instanceof CollectionInterface) {
+                $message = sprintf(
+                    'Error when fetching RouterOS devices for NAS IP: %s for contract %s',
+                    $nasIp,
+                    $contract->number,
+                );
+                Log::write('error', $message);
+                $io->error($message);
+                continue;
+            }
 
-                    // if some RouterOS device has assigned access point assign same to contract
-                    foreach ($routerosDevices as $routerosDevice) {
-                        if (isset($routerosDevice['access_point_id'])) {
-                            Log::write(
-                                'debug',
-                                'Assigning access point ID: ' . $routerosDevice['access_point_id']
-                                . ' to contract ' . $contract->number,
-                            );
-                            $io->info(
-                                'Assigning access point ID: ' . $routerosDevice['access_point_id']
-                                . ' to contract ' . $contract->number,
-                            );
-
-                            $query = $contractsTable->updateQuery()
-                                ->set([
-                                    'access_point_id' => $routerosDevice['access_point_id'],
-                                ])
-                                ->where([
-                                    'id' => $contract->id,
-                                ]);
-
-                            if ($query->execute()->rowCount() == 1) {
-                                // stop processing of this contract
-                                break 2;
-                            } else {
-                                Log::write(
-                                    'error',
-                                    'Error when assigning access point ID: ' . $routerosDevice['access_point_id']
-                                    . ' to contract ' . $contract->number,
-                                );
-                                $io->error(
-                                    'Error when assigning access point ID: ' . $routerosDevice['access_point_id']
-                                    . ' to contract ' . $contract->number,
-                                );
-                            }
-                        }
-                    }
+            foreach ($routerosDevices as $routerosDevice) {
+                /** @var array{access_point_id?: string} $routerosDevice */
+                if (!isset($routerosDevice['access_point_id'])) {
+                    continue;
                 }
+
+                $newApId = $routerosDevice['access_point_id'];
+                $oldApId = $contract->access_point_id;
+
+                // contract already has this access point, nothing to do
+                if ($oldApId === $newApId) {
+                    $io->verbose(sprintf(
+                        'Contract %s already has access point ID: %s',
+                        $contract->number,
+                        $newApId,
+                    ));
+
+                    return;
+                }
+
+                if ($dryRun) {
+                    $io->info(sprintf(
+                        'DRY-RUN: contract %s | access point ID: %s → %s',
+                        $contract->number,
+                        $oldApId ?? 'NULL',
+                        $newApId,
+                    ));
+
+                    return;
+                }
+
+                $io->info(sprintf(
+                    'Assigning access point ID: %s to contract %s',
+                    $newApId,
+                    $contract->number,
+                ));
+
+                $query = $contractsTable->updateQuery()
+                    ->set([
+                        'access_point_id' => $newApId,
+                    ])
+                    ->where([
+                        'id' => $contract->id,
+                    ]);
+
+                if ($query->execute()->rowCount() === 1) {
+                    Log::write('debug', sprintf(
+                        'Assigned access point ID: %s to contract %s',
+                        $newApId,
+                        $contract->number,
+                    ));
+
+                    return; // stop processing this contract
+                }
+
+                $message = sprintf(
+                    'Error when assigning access point ID: %s to contract %s',
+                    $newApId,
+                    $contract->number,
+                );
+                Log::write('error', $message);
+                $io->error($message);
             }
         }
     }
