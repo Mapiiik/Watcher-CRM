@@ -179,18 +179,10 @@
                                     <?php $address = $contract->installation_address ?>
                                     <?= $address->gps_x !== null && $address->gps_y !== null ?
                                         '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
-                                    <?= $address->gps_x !== null && $address->gps_y !== null ? $this->Html->link(
-                                        __('Google Maps'),
-                                        'https://maps.google.com/maps?q='
-                                            . h("{$address->gps_y},{$address->gps_x}"),
-                                        ['target' => '_blank'],
-                                    ) : '' ?>
-                                    <?= $address->gps_x !== null && $address->gps_y !== null ? $this->Html->link(
-                                        __('Mapy.cz'),
-                                        'https://mapy.cz/zakladni?source=coor&id='
-                                            . h("{$address->gps_x},{$address->gps_y}"),
-                                        ['target' => '_blank'],
-                                    ) : ''?>
+                                    <?= $this->element('Maps/links', [
+                                        'lat' => $address->gps_y,
+                                        'lng' => $address->gps_x,
+                                    ]) ?>
                                 <?php endif; ?>
                             </td>
                         </tr>
