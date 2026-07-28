@@ -24,6 +24,15 @@
     </aside>
     <div class="column column-90">
         <div class="tasks form content">
+            <?= $this->element('common/copy_url', [
+                // win-link null keeps the routing filter from marking the copied
+                // link as one that belongs inside the popup window
+                'url' => $this->Url->build(
+                    ['action' => 'view', $task->id, '?' => ['win-link' => null]],
+                    ['fullBase' => true],
+                ),
+                'clear' => true,
+            ]) ?>
             <?= $this->Form->create($task) ?>
             <fieldset>
                 <legend><?= __('Edit Task') ?></legend>

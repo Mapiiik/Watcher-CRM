@@ -20,6 +20,14 @@
     </aside>
     <div class="column column-90">
         <div class="tasks view content">
+            <?= $this->element('common/copy_url', [
+                // win-link null keeps the routing filter from marking the copied
+                // link as one that belongs inside the popup window
+                'url' => $this->Url->build(
+                    ['action' => 'view', $task->id, '?' => ['win-link' => null]],
+                    ['fullBase' => true],
+                ),
+            ]) ?>
             <?= __('Task No.') ?><h3><?= h($task->number) ?></h3>
             <div class="row">
                 <div class="column">
