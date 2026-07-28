@@ -255,8 +255,13 @@ return function (RouteBuilder $routes): void {
     //apply URL filters only if not called from console
     if (PHP_SAPI !== 'cli') {
         Router::addUrlFilter(function (array $params, ServerRequest $request) {
-            // persistent win-link
-            if ($request->getQuery('win-link') == 'true') {
+            // persistent win-link, unless the caller asked for something else -
+            // passing null opts out, for links meant to be followed outside the
+            // popup window. Note isset() would not see that null.
+            if (
+                $request->getQuery('win-link') == 'true'
+                && !array_key_exists('win-link', $params['?'] ?? [])
+            ) {
                 $params['?']['win-link'] = 'true';
             }
 
