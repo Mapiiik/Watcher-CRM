@@ -410,13 +410,7 @@ class CustomersController extends AppController
                     'ContractStates',
                 ],
                 'Services',
-                'conditions' => $show_historical_records ?
-                    [] : [
-                        'OR' => [
-                            'Billings.billing_until >=' => Date::now()->firstOfMonth(),
-                            'Billings.billing_until IS' => null,
-                        ],
-                    ],
+                'finder' => $show_historical_records ? 'all' : 'activeOrFuture',
             ],
             'BorrowedEquipments' => [
                 'Contracts' => [

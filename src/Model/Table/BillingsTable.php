@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\I18n\Date;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -58,6 +60,26 @@ class BillingsTable extends AppTable
         $this->belongsTo('Contracts', [
             'foreignKey' => 'contract_id',
             'joinType' => 'INNER',
+        ]);
+    }
+
+    /**
+     * Restrict a billings query to the non-historical ones: still open
+     * (`billing_until IS NULL`) or ending in the current month or later.
+     *
+     * This is the "active or future" scope the contract and customer views show
+     * by default, shared so the bulk message wizard reads services the same way.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Billing> $query Query to restrict.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Billing>
+     */
+    public function findActiveOrFuture(SelectQuery $query): SelectQuery
+    {
+        return $query->where([
+            'OR' => [
+                'Billings.billing_until IS' => null,
+                'Billings.billing_until >=' => Date::now()->firstOfMonth(),
+            ],
         ]);
     }
 

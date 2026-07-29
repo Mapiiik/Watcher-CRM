@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\BulkMessages\Filter;
 
 use App\Model\Entity\Service;
-use Cake\I18n\Date;
 use Cake\Validation\Validation;
 
 /**
@@ -76,18 +75,12 @@ final class ServicesFilter extends AbstractBulkRecipientFilter implements Contra
         // service, so a matched customer's other contracts do not surface
         // access-point groups this filter excludes
         $billings = $this->customerMessages->Customers->Contracts->Billings
-            ->find()
+            // active or future only — historical billings say nothing about
+            // which services a customer has today
+            ->find('activeOrFuture')
             ->select(['Billings.contract_id'])
             ->distinct()
-            ->where([
-                'Billings.service_id IN' => $ids,
-                // active or future only — mirrors the non-historical billing
-                // scope used by the contract / customer views
-                'OR' => [
-                    'Billings.billing_until IS' => null,
-                    'Billings.billing_until >=' => Date::now()->firstOfMonth(),
-                ],
-            ]);
+            ->where(['Billings.service_id IN' => $ids]);
 
         return ['Contracts.id IN' => $billings];
     }
