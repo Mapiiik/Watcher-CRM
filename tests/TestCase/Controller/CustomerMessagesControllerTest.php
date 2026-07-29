@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\BulkMessages\BulkRecipientFilterRegistry;
 use App\Controller\CustomerMessagesController;
 use App\Model\Enum\CustomerMessagePurpose;
+use App\Model\Enum\ServiceCriticalityLevel;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -306,6 +307,50 @@ class CustomerMessagesControllerTest extends TestCase
     }
 
     /**
+     * A preview row carries the two flags the operator must notice: the VIP flag
+     * of its contract, and the highest criticality level among the services that
+     * contract *currently* bills — a historically billed service says nothing
+     * about the customer today, however critical it was.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::buildRecipientRow()
+     */
+    public function testPreviewRowsCarryContractAndServiceFlags(): void
+    {
+        $rows = $this->resolveBulkPreviewRows(CustomerMessagePurpose::Outages, []);
+
+        $withContract = $rows[self::CUSTOMER_WITH_CONTRACT] ?? null;
+        $this->assertNotNull($withContract);
+        $this->assertTrue($withContract['vip'], 'the seeded contract is flagged VIP');
+        // Important comes from the open-ended billing; the historical billing's
+        // Critical service must not win (nor show up at all)
+        $this->assertSame(ServiceCriticalityLevel::Important, $withContract['criticality']);
+
+        $withoutContract = $rows[self::CUSTOMER_WITHOUT_CONTRACT] ?? null;
+        $this->assertNotNull($withoutContract);
+        $this->assertFalse($withoutContract['vip']);
+        $this->assertNull($withoutContract['criticality']);
+    }
+
+    /**
+     * The warning counts people, not rows — and only those whose flags are set.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::countFlaggedCustomers()
+     */
+    public function testFlaggedRecipientsAreCountedPerCustomer(): void
+    {
+        $controller = new CustomerMessagesController(new ServerRequest());
+        $customers = $this->findBulkCustomers($controller, CustomerMessagePurpose::Outages, []);
+        $method = new ReflectionMethod(CustomerMessagesController::class, 'countFlaggedCustomers');
+
+        $this->assertSame(
+            ['vip' => 1, 'critical' => 1],
+            $method->invoke($controller, $customers),
+        );
+    }
+
+    /**
      * Resolve the eligible recipient customer ids for a purpose/filter set by
      * invoking the controller's private recipient resolver against the fixtures.
      *
@@ -315,13 +360,61 @@ class CustomerMessagesControllerTest extends TestCase
      */
     private function resolveBulkCustomers(CustomerMessagePurpose $purpose, array $filters): array
     {
+        $customers = $this->findBulkCustomers(
+            new CustomerMessagesController(new ServerRequest()),
+            $purpose,
+            $filters,
+        );
+
+        return array_map(static fn($customer): string => (string)$customer->id, $customers);
+    }
+
+    /**
+     * Resolve the preview rows for a purpose/filter set, flattened and keyed by
+     * customer id (the fixtures give every customer at most one row).
+     *
+     * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
+     * @param array<string, mixed> $filters Stored filter values keyed by filter id.
+     * @return array<string, array<string, mixed>> Rows keyed by customer id.
+     */
+    private function resolveBulkPreviewRows(CustomerMessagePurpose $purpose, array $filters): array
+    {
         $controller = new CustomerMessagesController(new ServerRequest());
+        $customers = $this->findBulkCustomers($controller, $purpose, $filters);
+        $method = new ReflectionMethod(CustomerMessagesController::class, 'groupCustomersByAccessPoint');
+
+        /** @var list<array{rows: list<array<string, mixed>>}> $groups */
+        $groups = $method->invoke($controller, $customers, []);
+
+        $rows = [];
+        foreach ($groups as $group) {
+            foreach ($group['rows'] as $row) {
+                $rows[(string)$row['customer']->id] = $row;
+            }
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Invoke the controller's private recipient resolver against the fixtures.
+     *
+     * @param \App\Controller\CustomerMessagesController $controller Controller to invoke on.
+     * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
+     * @param array<string, mixed> $filters Stored filter values keyed by filter id.
+     * @return array<\App\Model\Entity\Customer> Matched customers.
+     */
+    private function findBulkCustomers(
+        CustomerMessagesController $controller,
+        CustomerMessagePurpose $purpose,
+        array $filters,
+    ): array {
         $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
         $method = new ReflectionMethod(CustomerMessagesController::class, 'findBulkCustomers');
 
         /** @var array<\App\Model\Entity\Customer> $customers */
         $customers = $method->invoke($controller, $purpose, $filters, $registry, false, true);
 
-        return array_map(static fn($customer): string => (string)$customer->id, $customers);
+        return $customers;
     }
 }

@@ -6,7 +6,8 @@
  * @var \App\Model\Enum\CustomerMessagePurpose $purpose
  * @var \App\Model\Entity\CustomerMessage $customerMessage
  * @var array<\App\Model\Entity\Customer> $customers
- * @var list<array{ap_id: string|null, ap_name: string, customers: list<\App\Model\Entity\Customer>}> $apGroups
+ * @var list<array{ap_id: string|null, ap_name: string, rows: list<array{customer: \App\Model\Entity\Customer, contract: \App\Model\Entity\Contract|null, vip: bool, criticality: \App\Model\Enum\ServiceCriticalityLevel|null}>}> $apGroups
+ * @var array{vip: int, critical: int} $flagged
  * @var bool $ignoreCustomerConsent
  * @var bool $ignoreContactUse
  */
@@ -87,22 +88,47 @@
                         </p>
                         <br>
                     <?php endif; ?>
+
+                    <?php if ($flagged['vip'] > 0 || $flagged['critical'] > 0) : ?>
+                        <p style="color: darkred;">
+                            <strong><?= __('Check the wording before sending.') ?></strong><br>
+                            <?php if ($flagged['vip'] > 0) : ?>
+                                <?= __(
+                                    '{0} of the recipients have a guaranteed / VIP contract.',
+                                    $flagged['vip'],
+                                ) ?><br>
+                            <?php endif; ?>
+                            <?php if ($flagged['critical'] > 0) : ?>
+                                <?= __(
+                                    '{0} of the recipients are billed a service above the normal criticality level.',
+                                    $flagged['critical'],
+                                ) ?>
+                            <?php endif; ?>
+                        </p>
+                        <br>
+                    <?php endif; ?>
                 </div>
 
                 <?php foreach ($apGroups as $group) : ?>
                     <div class="related">
-                        <h5><?= h($group['ap_name']) ?> (<?= count($group['customers']) ?>)</h5>
+                        <h5><?= h($group['ap_name']) ?> (<?= count($group['rows']) ?>)</h5>
                         <div class="table-responsive">
                             <table>
                                 <tr>
                                     <th><?= __('Send') ?></th>
                                     <th><?= __('Customer') ?></th>
                                     <th><?= __('Customer Number') ?></th>
+                                    <th><?= __('Contract Number') ?></th>
+                                    <th><?= __('Flags') ?></th>
                                     <th><?= __('Emails') ?></th>
                                     <th><?= __('Phones') ?></th>
                                 </tr>
-                                <?php foreach ($group['customers'] as $customer) : ?>
-                                    <?php $noContact = $customer->emails === [] && $customer->phones === []; ?>
+                                <?php foreach ($group['rows'] as $row) : ?>
+                                    <?php
+                                        $customer = $row['customer'];
+                                        $contract = $row['contract'];
+                                        $noContact = $customer->emails === [] && $customer->phones === [];
+                                    ?>
                                     <tr<?= $noContact ? ' style="color: darkred;"' : '' ?>>
                                         <td><input type="checkbox" name="send_to[]"
                                             value="<?= h($customer->id) ?>" checked></td>
@@ -114,6 +140,23 @@
                                         <td><?= $noContact
                                             ? '<strong>' . h($customer->number) . '</strong>'
                                             : h($customer->number) ?></td>
+                                        <td><?= $contract === null
+                                            ? '&mdash;'
+                                            : $this->Html->link($contract->number ?? __('(no number)'), [
+                                                'controller' => 'Contracts',
+                                                'action' => 'view',
+                                                $contract->id,
+                                            ]) ?></td>
+                                        <td>
+                                            <?php if ($row['vip']) : ?>
+                                                <strong style="color: darkred;"><?= __('VIP') ?></strong>
+                                            <?php endif; ?>
+                                            <?php if ($row['criticality'] !== null) : ?>
+                                                <strong style="color: darkred;">
+                                                    <?= h($row['criticality']->label()) ?>
+                                                </strong>
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?= $customer->emails === []
                                             ? '<strong>&mdash; ' . __('Email Missing') . ' &mdash;</strong>'
                                             : implode('<br>', array_column($customer->emails, 'email')) ?></td>

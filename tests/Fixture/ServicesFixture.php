@@ -27,7 +27,9 @@ class ServicesFixture extends TestFixture
                 'price' => 1,
                 'accounting_product_code' => 'Lorem ipsum dolor sit amet',
                 'not_for_new_customers' => 1,
-                'criticality_level' => 20,
+                // deliberately the *higher* level of the two: it is only billed
+                // historically, so it must never leak into a recipient's flags
+                'criticality_level' => 30,
                 'queue_id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4',
                 'service_type_id' => '907cbc5c-af88-43b6-b535-959b4fa2ce3d',
                 'id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',

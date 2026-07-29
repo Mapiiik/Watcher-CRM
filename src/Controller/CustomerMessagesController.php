@@ -7,12 +7,15 @@ use App\BulkMessages\BulkRecipientFilterRegistry;
 use App\BulkMessages\Filter\ContractScopedFilterInterface;
 use App\BulkMessages\Filter\CustomerScopedFilterInterface;
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Model\Entity\Contract;
+use App\Model\Entity\Customer;
 use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessagePurpose;
 use App\Model\Enum\CustomerMessageType;
+use App\Model\Enum\ServiceCriticalityLevel;
 use App\NMS\ApiClient as NMSApiClient;
 use Cake\Http\Response;
 use Cake\Http\Session;
@@ -25,6 +28,12 @@ use SplObjectStorage;
  * CustomerMessages Controller
  *
  * @property \App\Model\Table\CustomerMessagesTable $CustomerMessages
+ * @phpstan-type BulkRecipientRow array{
+ *     customer: \App\Model\Entity\Customer,
+ *     contract: \App\Model\Entity\Contract|null,
+ *     vip: bool,
+ *     criticality: \App\Model\Enum\ServiceCriticalityLevel|null
+ * }
  */
 class CustomerMessagesController extends AppController
 {
@@ -329,6 +338,9 @@ class CustomerMessagesController extends AppController
         // selected customers with no eligible contact for this channel, kept for
         // the post-send summary (e.g. an SMS send lists everyone with no phone)
         $skipped = [];
+        // customers actually messaged, so the summary flags what really went out
+        // rather than what the preview offered
+        $messaged = [];
         foreach ($customers as $customer) {
             // skip customers the operator deselected entirely
             if (!in_array((string)$customer->id, $sendTo, true)) {
@@ -355,6 +367,7 @@ class CustomerMessagesController extends AppController
             $thisMessage->recipients = $recipients;
 
             $customerMessages[] = $thisMessage;
+            $messaged[] = $customer;
             unset($thisMessage);
         }
 
@@ -386,6 +399,7 @@ class CustomerMessagesController extends AppController
             'channel' => $customerMessage->type->label(),
             'is_sms' => $customerMessage->type === CustomerMessageType::Sms,
             'skipped' => $skipped,
+            'flagged' => $this->countFlaggedCustomers($messaged),
         ]);
 
         return true;
@@ -477,11 +491,37 @@ class CustomerMessagesController extends AppController
                 // any contract-scoped filter (e.g. contract state) narrows them
                 // so excluded contracts never surface a customer under an AP
                 'Contracts' => function (SelectQuery $q) use ($containedContractConditions): SelectQuery {
-                    $q = $q->select([
-                        'Contracts.id',
-                        'Contracts.customer_id',
-                        'Contracts.access_point_id',
-                    ]);
+                    $q = $q
+                        ->select([
+                            'Contracts.id',
+                            'Contracts.customer_id',
+                            'Contracts.access_point_id',
+                            // shown (and linked) in the preview so the operator
+                            // can tell a customer's contracts apart
+                            'Contracts.number',
+                            // guaranteed / VIP flag, warned about before sending
+                            'Contracts.vip',
+                        ])
+                        // the billed services carry the second flag (their
+                        // criticality level); only non-historical billings say
+                        // anything about what the customer has today
+                        ->contain([
+                            'Billings' => [
+                                'finder' => 'activeOrFuture',
+                                'fields' => [
+                                    'Billings.id',
+                                    'Billings.contract_id',
+                                    'Billings.service_id',
+                                ],
+                                'Services' => [
+                                    'fields' => [
+                                        'Services.id',
+                                        'Services.name',
+                                        'Services.criticality_level',
+                                    ],
+                                ],
+                            ],
+                        ]);
 
                     return $containedContractConditions === []
                         ? $q
@@ -582,10 +622,13 @@ class CustomerMessagesController extends AppController
         // contract-scoped filters (access point, contract state) have already
         // narrowed the contained contracts in findBulkCustomers(), so grouping
         // only ever sees contracts the active filters allow
+        $apGroups = $this->groupCustomersByAccessPoint($customers, $apNames);
+
         $this->set([
             'purpose' => $purpose,
             'customers' => $customers,
-            'apGroups' => $this->groupCustomersByAccessPoint($customers, $apNames),
+            'apGroups' => $apGroups,
+            'flagged' => $this->countFlaggedCustomers($customers),
             'ignoreCustomerConsent' => $ignoreCustomerConsent,
             'ignoreContactUse' => $ignoreContactUse,
         ]);
@@ -619,41 +662,44 @@ class CustomerMessagesController extends AppController
      * under each (so it is visible everywhere it belongs). The opt-out checkbox
      * of every row submits the customer id, so unchecking one row still sends as
      * long as another stays checked; the send step then builds a single message
-     * per customer. Customers without an access point form a trailing group.
+     * per customer. Contracts without an access point, and customers without any
+     * contract at all, form a trailing group.
      *
      * @param array<\App\Model\Entity\Customer> $customers Deduplicated recipients.
      * @param array<array-key, string> $apNames Access point id => name map.
-     * @return list<array{ap_id: string|null, ap_name: string, customers: list<\App\Model\Entity\Customer>}>
+     * @return list<array{ap_id: string|null, ap_name: string, rows: list<BulkRecipientRow>}>
      */
     private function groupCustomersByAccessPoint(array $customers, array $apNames): array
     {
-        /** @var array<string, list<\App\Model\Entity\Customer>> $byAccessPoint */
+        /** @var array<string, list<BulkRecipientRow>> $byAccessPoint */
         $byAccessPoint = [];
-        /** @var list<\App\Model\Entity\Customer> $withoutAccessPoint */
+        /** @var list<BulkRecipientRow> $withoutAccessPoint */
         $withoutAccessPoint = [];
 
         foreach ($customers as $customer) {
-            $placed = false;
-            foreach ($customer->contracts as $contract) {
-                $apId = $contract->access_point_id;
-                if (!is_string($apId) || $apId === '') {
-                    continue;
-                }
-                $byAccessPoint[$apId][] = $customer;
-                $placed = true;
+            if ($customer->contracts === []) {
+                $withoutAccessPoint[] = $this->buildRecipientRow($customer, null);
+
+                continue;
             }
 
-            if (!$placed) {
-                $withoutAccessPoint[] = $customer;
+            foreach ($customer->contracts as $contract) {
+                $apId = $contract->access_point_id;
+                $row = $this->buildRecipientRow($customer, $contract);
+                if (is_string($apId) && $apId !== '') {
+                    $byAccessPoint[$apId][] = $row;
+                } else {
+                    $withoutAccessPoint[] = $row;
+                }
             }
         }
 
         $groups = [];
-        foreach ($byAccessPoint as $apId => $groupCustomers) {
+        foreach ($byAccessPoint as $apId => $rows) {
             $groups[] = [
                 'ap_id' => $apId,
                 'ap_name' => $apNames[$apId] ?? __('Unknown access point'),
-                'customers' => $groupCustomers,
+                'rows' => $rows,
             ];
         }
         usort($groups, static fn(array $a, array $b): int => strnatcasecmp($a['ap_name'], $b['ap_name']));
@@ -662,11 +708,85 @@ class CustomerMessagesController extends AppController
             $groups[] = [
                 'ap_id' => null,
                 'ap_name' => __('No access point'),
-                'customers' => $withoutAccessPoint,
+                'rows' => $withoutAccessPoint,
             ];
         }
 
         return $groups;
+    }
+
+    /**
+     * Build one preview row: the customer as seen through one of its contracts,
+     * carrying the two flags the operator must notice before sending.
+     *
+     * @param \App\Model\Entity\Customer $customer Recipient customer.
+     * @param \App\Model\Entity\Contract|null $contract Contract the row stands for, if any.
+     * @return BulkRecipientRow
+     */
+    private function buildRecipientRow(Customer $customer, ?Contract $contract): array
+    {
+        return [
+            'customer' => $customer,
+            'contract' => $contract,
+            'vip' => $contract?->vip === true,
+            'criticality' => $this->highestServiceCriticality($contract),
+        ];
+    }
+
+    /**
+     * Highest above-normal criticality level among the services the contract
+     * currently bills, or null when it bills nothing noteworthy.
+     *
+     * @param \App\Model\Entity\Contract|null $contract Contract to inspect.
+     * @return \App\Model\Enum\ServiceCriticalityLevel|null
+     */
+    private function highestServiceCriticality(?Contract $contract): ?ServiceCriticalityLevel
+    {
+        if ($contract === null) {
+            return null;
+        }
+
+        $highest = null;
+        foreach ($contract->billings as $billing) {
+            $level = $billing->service->criticality_level ?? null;
+            if (!$level instanceof ServiceCriticalityLevel || $level === ServiceCriticalityLevel::Normal) {
+                continue;
+            }
+            if ($highest === null || $level->value > $highest->value) {
+                $highest = $level;
+            }
+        }
+
+        return $highest;
+    }
+
+    /**
+     * How many of the given customers carry each flag — counted per customer, so
+     * someone with two VIP contracts is one person to double-check, not two.
+     *
+     * @param array<\App\Model\Entity\Customer> $customers Recipients to inspect.
+     * @return array{vip: int, critical: int}
+     */
+    private function countFlaggedCustomers(array $customers): array
+    {
+        $vip = 0;
+        $critical = 0;
+        foreach ($customers as $customer) {
+            $isVip = false;
+            $isCritical = false;
+            foreach ($customer->contracts as $contract) {
+                $isVip = $isVip || $contract->vip === true;
+                $isCritical = $isCritical || $this->highestServiceCriticality($contract) !== null;
+            }
+
+            $vip += (int)$isVip;
+            $critical += (int)$isCritical;
+        }
+
+        return [
+            'vip' => $vip,
+            'critical' => $critical,
+        ];
     }
 
     /**

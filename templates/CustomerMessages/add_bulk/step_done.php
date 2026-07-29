@@ -3,7 +3,7 @@
  * Bulk message wizard — done: summary of the send.
  *
  * @var \App\View\AppView $this
- * @var array{sent: int, channel: string, is_sms: bool, skipped: list<array{id: string, number: string, name: string}>} $result
+ * @var array{sent: int, channel: string, is_sms: bool, skipped: list<array{id: string, number: string, name: string}>, flagged: array{vip: int, critical: int}} $result
  */
 ?>
 <div class="row">
@@ -27,6 +27,23 @@
             <h4><?= __('Bulk Customer Message') . ' — ' . __('Done') ?></h4>
             <p><?= __('{0} message(s) queued for sending ({1}).', $result['sent'], h($result['channel'])) ?></p>
             <br>
+            <?php if ($result['flagged']['vip'] > 0 || $result['flagged']['critical'] > 0) : ?>
+                <p>
+                    <?php if ($result['flagged']['vip'] > 0) : ?>
+                        <?= __(
+                            '{0} of them have a guaranteed / VIP contract.',
+                            $result['flagged']['vip'],
+                        ) ?><br>
+                    <?php endif; ?>
+                    <?php if ($result['flagged']['critical'] > 0) : ?>
+                        <?= __(
+                            '{0} of them are billed a service above the normal criticality level.',
+                            $result['flagged']['critical'],
+                        ) ?>
+                    <?php endif; ?>
+                </p>
+                <br>
+            <?php endif; ?>
             <?php if ($result['skipped'] === []) : ?>
                 <p><?= __('All selected customers received the message.') ?></p>
             <?php else : ?>
