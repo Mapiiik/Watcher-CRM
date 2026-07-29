@@ -71,10 +71,13 @@
 
 .select2-container
 .select2-selection {
-    height: 3rem;
     font-family: inherit;
     font-size: 100%;
     line-height: 1.15;
+}
+.select2-container
+.select2-selection--single {
+    height: 3rem;
 }
 .select2-container
 .select2-selection--single
@@ -82,10 +85,35 @@
     line-height: inherit;
     padding: 0.6rem 1rem;
 }
+/* Multi-selects have to grow with the chosen items. With a fixed height the
+   rendered list overflows the selection, covers whatever follows it and
+   swallows the clicks meant for it. */
+.select2-container
+.select2-selection--multiple {
+    height: auto;
+    min-height: 3rem;
+}
 .select2-container
 .select2-selection--multiple
 .select2-selection__rendered {
     line-height: inherit;
+    padding: 0 0.5rem 0.5rem;
+}
+/* Milligram spaces list items apart, which tears the chosen items into rows
+   far too loose. */
+.select2-container
+.select2-selection--multiple
+.select2-selection__rendered li {
+    margin-bottom: 0;
+}
+/* The inline search field is an input, so it would otherwise pick up the
+   height and the margin every other input has. */
+.select2-container
+.select2-selection--multiple
+.select2-search__field {
+    height: auto;
+    line-height: inherit;
+    margin-bottom: 0;
 }
 .select2-results__options {
     padding: 0.6rem 1rem;
