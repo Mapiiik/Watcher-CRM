@@ -36,6 +36,27 @@ class CustomerMessagesControllerTest extends TestCase
     private const CUSTOMER_WITHOUT_CONTRACT = 'ae128a49-82fd-4b80-921f-f11af75fd113';
 
     /**
+     * Service type of the seeded contract.
+     *
+     * @var string
+     */
+    private const SERVICE_TYPE = '907cbc5c-af88-43b6-b535-959b4fa2ce3d';
+
+    /**
+     * Service the seeded contract only billed historically (billing_until in 2021).
+     *
+     * @var string
+     */
+    private const SERVICE_BILLED_HISTORICALLY = 'eaacfeb3-1430-43ce-842e-497c5c95d953';
+
+    /**
+     * Service the seeded contract still bills (billing_until IS NULL).
+     *
+     * @var string
+     */
+    private const SERVICE_BILLED_OPEN_ENDED = '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -50,6 +71,9 @@ class CustomerMessagesControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
+        'app.Queues',
+        'app.Services',
+        'app.Billings',
         'app.Emails',
         'app.Phones',
         'app.CustomerMessages',
@@ -176,6 +200,109 @@ class CustomerMessagesControllerTest extends TestCase
 
         $this->assertContains(self::CUSTOMER_WITH_CONTRACT, $ids);
         $this->assertContains(self::CUSTOMER_WITHOUT_CONTRACT, $ids);
+    }
+
+    /**
+     * The service type filter matches a customer through the service type of one
+     * of their contracts, and offers nobody for a type nothing is contracted for.
+     *
+     * @return void
+     * @link \App\BulkMessages\Filter\ServiceTypesFilter::containedContractConditions()
+     */
+    public function testServiceTypesFilterMatchesContractServiceType(): void
+    {
+        $matched = $this->resolveBulkCustomers(
+            CustomerMessagePurpose::Outages,
+            ['service_type_ids' => [self::SERVICE_TYPE]],
+        );
+
+        $this->assertContains(self::CUSTOMER_WITH_CONTRACT, $matched);
+        // being contract-scoped, it can never match a customer without contracts
+        $this->assertNotContains(self::CUSTOMER_WITHOUT_CONTRACT, $matched);
+
+        $unmatched = $this->resolveBulkCustomers(
+            CustomerMessagePurpose::Outages,
+            ['service_type_ids' => ['8a2a4a6c-0e3f-4b1d-9d59-7e0a1c2b3d4e']],
+        );
+
+        $this->assertNotContains(self::CUSTOMER_WITH_CONTRACT, $unmatched);
+    }
+
+    /**
+     * The services filter looks at what the contract actually bills, and counts
+     * only active or future billings — a service billed until 2021 is history and
+     * must not make its customer a recipient.
+     *
+     * @return void
+     * @link \App\BulkMessages\Filter\ServicesFilter::containedContractConditions()
+     */
+    public function testServicesFilterMatchesOnlyActiveOrFutureBillings(): void
+    {
+        $matched = $this->resolveBulkCustomers(
+            CustomerMessagePurpose::Outages,
+            ['service_ids' => [self::SERVICE_BILLED_OPEN_ENDED]],
+        );
+
+        $this->assertContains(self::CUSTOMER_WITH_CONTRACT, $matched);
+        $this->assertNotContains(self::CUSTOMER_WITHOUT_CONTRACT, $matched);
+
+        $historical = $this->resolveBulkCustomers(
+            CustomerMessagePurpose::Outages,
+            ['service_ids' => [self::SERVICE_BILLED_HISTORICALLY]],
+        );
+
+        $this->assertNotContains(self::CUSTOMER_WITH_CONTRACT, $historical);
+    }
+
+    /**
+     * Both service filters are inactive unless something valid was selected, so a
+     * junk or empty submission must not narrow the recipients (nor reach the DB
+     * with a malformed uuid).
+     *
+     * @return void
+     * @link \App\BulkMessages\Filter\ServicesFilter::buildValue()
+     */
+    public function testServiceFiltersIgnoreInvalidSelections(): void
+    {
+        $controller = new CustomerMessagesController(new ServerRequest());
+        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
+
+        foreach (['service_ids', 'service_type_ids'] as $key) {
+            $filter = $registry->get($key);
+            $this->assertNotNull($filter, $key . ' must be registered');
+            $this->assertNull($filter->buildValue([]), $key . ' must be inactive when unsubmitted');
+            $this->assertNull(
+                $filter->buildValue([$key => ['', 'not-a-uuid', 42]]),
+                $key . ' must drop values that are not uuids',
+            );
+        }
+    }
+
+    /**
+     * Both filters must offer the seeded records as selectable options, the
+     * services one grouped by service type (optgroups in the multiselect).
+     *
+     * @return void
+     * @link \App\BulkMessages\Filter\ServicesFilter::controls()
+     */
+    public function testServiceFilterControlsOfferSeededOptions(): void
+    {
+        $controller = new CustomerMessagesController(new ServerRequest());
+        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
+
+        $serviceTypeControls = $registry->get('service_type_ids')?->controls(null) ?? [];
+        $this->assertCount(1, $serviceTypeControls);
+        $this->assertArrayHasKey(self::SERVICE_TYPE, $serviceTypeControls[0]['options']['options']);
+
+        $serviceControls = $registry->get('service_ids')?->controls(null) ?? [];
+        $this->assertCount(1, $serviceControls);
+
+        // one optgroup per service type, holding both seeded services
+        $grouped = $serviceControls[0]['options']['options'];
+        $this->assertCount(1, $grouped);
+        $services = reset($grouped);
+        $this->assertArrayHasKey(self::SERVICE_BILLED_HISTORICALLY, $services);
+        $this->assertArrayHasKey(self::SERVICE_BILLED_OPEN_ENDED, $services);
     }
 
     /**

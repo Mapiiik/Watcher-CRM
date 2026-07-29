@@ -10,6 +10,8 @@ use App\BulkMessages\Filter\BulkRecipientFilterInterface;
 use App\BulkMessages\Filter\LabelsFilter;
 use App\BulkMessages\Filter\NotLabelsFilter;
 use App\BulkMessages\Filter\RegistryAddressFilter;
+use App\BulkMessages\Filter\ServicesFilter;
+use App\BulkMessages\Filter\ServiceTypesFilter;
 use App\Model\Enum\CustomerMessagePurpose;
 use App\Model\Table\CustomerMessagesTable;
 
@@ -41,6 +43,8 @@ final class BulkRecipientFilterRegistry
             'not_label_ids' => fn(): BulkRecipientFilterInterface => new NotLabelsFilter($customerMessages),
             'access_point' => fn(): BulkRecipientFilterInterface => new AccessPointFilter($customerMessages),
             'registry_address_id' => fn(): BulkRecipientFilterInterface => new RegistryAddressFilter($customerMessages),
+            'service_type_ids' => fn(): BulkRecipientFilterInterface => new ServiceTypesFilter($customerMessages),
+            'service_ids' => fn(): BulkRecipientFilterInterface => new ServicesFilter($customerMessages),
         ];
     }
 

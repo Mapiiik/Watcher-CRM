@@ -108,6 +108,8 @@ enum CustomerMessagePurpose: int implements EnumLabelInterface
                 'not_label_ids',
                 'registry_address_id',
                 'access_point',
+                'service_type_ids',
+                'service_ids',
                 'billed_contract',
             ],
             self::Outages => [
@@ -115,11 +117,15 @@ enum CustomerMessagePurpose: int implements EnumLabelInterface
                 'not_label_ids',
                 'registry_address_id',
                 'access_point',
+                'service_type_ids',
+                'service_ids',
                 'active_services_contract',
             ],
             self::Commercial => [
                 'label_ids',
                 'not_label_ids',
+                'service_type_ids',
+                'service_ids',
                 'active_services_contract',
             ],
         };
