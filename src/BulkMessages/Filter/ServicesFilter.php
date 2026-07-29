@@ -86,6 +86,25 @@ final class ServicesFilter extends AbstractBulkRecipientFilter implements Contra
     }
 
     /**
+     * @inheritDoc
+     */
+    public function describe(mixed $value): ?string
+    {
+        $ids = $this->serviceIds($value);
+        if ($ids === []) {
+            return null;
+        }
+
+        /** @var array<array-key, string> $options */
+        $options = $this->customerMessages->Customers->Contracts->Billings->Services
+            ->find('list', valueField: 'name')
+            ->where(['Services.id IN' => $ids])
+            ->toArray();
+
+        return $this->describeSelection(__('Services (billed)'), $options, $ids);
+    }
+
+    /**
      * Available services as a value => name list, grouped by service type so the
      * multiselect stays readable when several types offer similar names.
      *

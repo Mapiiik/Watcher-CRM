@@ -91,6 +91,32 @@ final class BulkRecipientFilterRegistry
     }
 
     /**
+     * Plain-text lines stating what the stored filters narrowed the recipients
+     * to, in the order the purpose offers them. Inactive filters contribute
+     * nothing, so an empty result means the send was unfiltered.
+     *
+     * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
+     * @param array<string, mixed> $filters Stored filter values keyed by filter id.
+     * @return list<string>
+     */
+    public function describeFilters(CustomerMessagePurpose $purpose, array $filters): array
+    {
+        $lines = [];
+        foreach ($this->forPurpose($purpose) as $key => $filter) {
+            if (!array_key_exists($key, $filters)) {
+                continue;
+            }
+
+            $line = $filter->describe($filters[$key]);
+            if ($line !== null) {
+                $lines[] = $line;
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
      * Return a single filter instance by key, or null when unknown.
      *
      * @param string $key Filter key.

@@ -69,6 +69,22 @@ final class RegistryAddressFilter extends AbstractBulkRecipientFilter implements
     }
 
     /**
+     * @inheritDoc
+     */
+    public function describe(mixed $value): ?string
+    {
+        if (!is_string($value) || $value === '') {
+            return null;
+        }
+
+        return $this->describeSelection(
+            __('Installation Address (registry)'),
+            $this->addressOptions(),
+            [$value],
+        );
+    }
+
+    /**
      * Base query of the contracts whose installation address matches the stored
      * registry reference, or null when the filter is inactive. The caller adds
      * the projection it needs (customer_id or Contracts.id).

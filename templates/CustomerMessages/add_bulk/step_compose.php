@@ -6,7 +6,7 @@
  * @var \App\Model\Enum\CustomerMessagePurpose $purpose
  * @var \App\Model\Entity\CustomerMessage $customerMessage
  * @var array<\App\Model\Entity\Customer> $customers
- * @var list<array{ap_id: string|null, ap_name: string, rows: list<array{customer: \App\Model\Entity\Customer, contract: \App\Model\Entity\Contract|null, vip: bool, criticality: \App\Model\Enum\ServiceCriticalityLevel|null}>}> $apGroups
+ * @var list<array{ap_id: string|null, ap_name: string, rows: list<array{customer: \App\Model\Entity\Customer, contract: \App\Model\Entity\Contract|null, services: list<string>, vip: bool, criticality: \App\Model\Enum\ServiceCriticalityLevel|null}>}> $apGroups
  * @var array{vip: int, critical: int} $flagged
  * @var list<array{number: string|null, name: string|null, errors: string}>|null $saveFailures
  * @var bool $ignoreCustomerConsent
@@ -155,6 +155,7 @@
                                     <th><?= __('Customer') ?></th>
                                     <th><?= __('Customer Number') ?></th>
                                     <th><?= __('Contract Number') ?></th>
+                                    <th><?= __('Services') ?></th>
                                     <th><?= __('Flags') ?></th>
                                     <th><?= __('Emails') ?></th>
                                     <th><?= __('Phones') ?></th>
@@ -183,6 +184,7 @@
                                                 'action' => 'view',
                                                 $contract->id,
                                             ]) ?></td>
+                                        <td><?= h(implode(', ', $row['services'])) ?></td>
                                         <td>
                                             <?php if ($row['vip']) : ?>
                                                 <strong style="color: darkred;"><?= __('VIP') ?></strong>

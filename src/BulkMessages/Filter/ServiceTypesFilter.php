@@ -73,6 +73,18 @@ final class ServiceTypesFilter extends AbstractBulkRecipientFilter implements Co
     }
 
     /**
+     * @inheritDoc
+     */
+    public function describe(mixed $value): ?string
+    {
+        return $this->describeSelection(
+            __('Service types'),
+            $this->serviceTypeOptions(),
+            $this->serviceTypeIds($value),
+        );
+    }
+
+    /**
      * Available service types as a value => name list.
      *
      * @return array<array-key, string>

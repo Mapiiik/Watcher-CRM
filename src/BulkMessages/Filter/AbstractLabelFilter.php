@@ -47,6 +47,18 @@ abstract class AbstractLabelFilter extends AbstractBulkRecipientFilter implement
     }
 
     /**
+     * @inheritDoc
+     */
+    public function describe(mixed $value): ?string
+    {
+        return $this->describeSelection(
+            $this->controlLabel(),
+            $this->labelOptions(),
+            $this->labelIds($value),
+        );
+    }
+
+    /**
      * Available labels as a value => name list.
      *
      * @return array<array-key, string>

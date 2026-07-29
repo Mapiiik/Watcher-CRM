@@ -19,10 +19,13 @@ use App\Model\Enum\ServiceCriticalityLevel;
 use App\NMS\ApiClient as NMSApiClient;
 use Cake\Http\Response;
 use Cake\Http\Session;
+use Cake\Log\Log;
+use Cake\Mailer\Mailer;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Text;
 use Settings\Utility\Settings;
 use SplObjectStorage;
+use Throwable;
 
 /**
  * CustomerMessages Controller
@@ -31,8 +34,36 @@ use SplObjectStorage;
  * @phpstan-type BulkRecipientRow array{
  *     customer: \App\Model\Entity\Customer,
  *     contract: \App\Model\Entity\Contract|null,
+ *     services: list<string>,
  *     vip: bool,
  *     criticality: \App\Model\Enum\ServiceCriticalityLevel|null
+ * }
+ * @phpstan-type BulkSendReport array{
+ *     sent: int,
+ *     channel: string,
+ *     is_sms: bool,
+ *     purpose: string,
+ *     subject: string,
+ *     body: string,
+ *     filters: list<string>,
+ *     ignored_customer_consent: bool,
+ *     ignored_contact_use: bool,
+ *     groups: list<array{
+ *         ap_name: string,
+ *         customers: list<array{
+ *             number: string|null,
+ *             name: string,
+ *             contract_number: string|null,
+ *             services: list<string>,
+ *             vip: bool,
+ *             criticality: string|null,
+ *             recipients: list<string>
+ *         }>
+ *     }>,
+ *     skipped: list<array{id: string, number: string|null, name: string}>,
+ *     dropped: list<array{number: string|null, name: string}>,
+ *     flagged: array{vip: int, critical: int},
+ *     summary_mailed: bool
  * }
  */
 class CustomerMessagesController extends AppController
@@ -159,7 +190,7 @@ class CustomerMessagesController extends AppController
             return $this->redirect(['action' => 'addBulk']);
         }
 
-        /** @var array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state */
+        /** @var array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state */
         $state = (array)$session->read(self::BULK_WIZARD_STATE_KEY, []);
         $purpose = isset($state['purpose']) ? CustomerMessagePurpose::tryFrom($state['purpose']) : null;
 
@@ -222,7 +253,7 @@ class CustomerMessagesController extends AppController
      * step failed and the caller should re-render it with validation errors.
      *
      * @param string $step Submitted step name.
-     * @param array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Current state.
+     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Current state.
      * @param \App\Model\Enum\CustomerMessagePurpose|null $purpose Selected purpose (from state).
      * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @param \Cake\Http\Session $session Session instance.
@@ -296,7 +327,7 @@ class CustomerMessagesController extends AppController
      * as `customerMessage` so validation errors are shown on re-render.
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
-     * @param array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
+     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
      * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
      * @return bool True when messages were saved.
      */
@@ -337,7 +368,17 @@ class CustomerMessagesController extends AppController
         // customer id into send_to[], so a customer is included as soon as at
         // least one of its rows stayed checked (duplicate ids are harmless).
         $sendTo = $this->request->getData('send_to');
-        $sendTo = is_array($sendTo) ? array_map('strval', $sendTo) : [];
+        $sendTo = is_array($sendTo) ? array_values(array_map('strval', $sendTo)) : [];
+
+        // the recipients are resolved again here, so the set can differ from the
+        // one the operator approved (a contract terminated, a billing ended in
+        // between). Narrow to what the preview actually offered and report the
+        // difference rather than letting it change the send silently.
+        $previewed = array_map('strval', $state['preview'] ?? []);
+        if ($previewed !== []) {
+            $sendTo = array_values(array_intersect($sendTo, $previewed));
+        }
+        $dropped = $this->findDroppedRecipients($sendTo, $customers);
 
         $customerMessages = [];
         // selected customers with no eligible contact for this channel, kept for
@@ -402,16 +443,309 @@ class CustomerMessagesController extends AppController
             return false;
         }
 
+        $report = $this->buildBulkSendReport(
+            $purpose,
+            $state,
+            $registry,
+            $customerMessage,
+            $messaged,
+            $customerMessages,
+            $skipped,
+            $dropped,
+        );
+
+        // the done step must not claim a summary was mailed when it was not
+        $report['summary_mailed'] = $this->mailBulkSendReport($report);
+
         // stash a one-shot summary for the done step (post/redirect/get)
-        $this->getRequest()->getSession()->write(self::BULK_RESULT_KEY, [
+        $this->getRequest()->getSession()->write(self::BULK_RESULT_KEY, $report);
+
+        return true;
+    }
+
+    /**
+     * Selected recipients that the send-time query no longer returns.
+     *
+     * @param list<string> $sendTo Customer ids the operator kept checked.
+     * @param array<\App\Model\Entity\Customer> $customers Recipients resolved at send time.
+     * @return list<array{number: string|null, name: string}>
+     */
+    private function findDroppedRecipients(array $sendTo, array $customers): array
+    {
+        $resolved = [];
+        foreach ($customers as $customer) {
+            $resolved[(string)$customer->id] = true;
+        }
+
+        $droppedIds = array_values(array_diff(array_unique($sendTo), array_keys($resolved)));
+        if ($droppedIds === []) {
+            return [];
+        }
+
+        // they are gone from the recipient query, so their names have to come
+        // from the customers table directly
+        $dropped = [];
+        foreach (
+            $this->CustomerMessages->Customers
+                ->find()
+                ->where(['Customers.id IN' => $droppedIds])
+                ->all() as $customer
+        ) {
+            $dropped[] = [
+                'number' => $customer->number,
+                'name' => $customer->name,
+            ];
+        }
+
+        return $dropped;
+    }
+
+    /**
+     * Assemble the record of what a bulk send did: the message itself, the
+     * filters that picked the recipients, and every recipient grouped by access
+     * point with their services, flags and the addresses the message went to.
+     *
+     * The same structure feeds the done step and the summary e-mail, so both
+     * always tell the same story.
+     *
+     * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
+     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
+     * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
+     * @param \App\Model\Entity\CustomerMessage $customerMessage Composed message.
+     * @param list<\App\Model\Entity\Customer> $messaged Customers a message was built for.
+     * @param list<\App\Model\Entity\CustomerMessage> $customerMessages Their messages, in the same order.
+     * @param list<array{id: string, number: string|null, name: string}> $skipped Selected but without a usable contact.
+     * @param list<array{number: string|null, name: string}> $dropped Selected but no longer eligible.
+     * @return BulkSendReport
+     */
+    private function buildBulkSendReport(
+        CustomerMessagePurpose $purpose,
+        array $state,
+        BulkRecipientFilterRegistry $registry,
+        CustomerMessage $customerMessage,
+        array $messaged,
+        array $customerMessages,
+        array $skipped,
+        array $dropped,
+    ): array {
+        // the entity normalises contacts into plain addresses, which is exactly
+        // what the report should show
+        $recipientsByCustomer = [];
+        foreach ($customerMessages as $index => $message) {
+            $customer = $messaged[$index] ?? null;
+            if ($customer !== null) {
+                $recipientsByCustomer[(string)$customer->id] = array_values(
+                    array_map('strval', $message->recipients),
+                );
+            }
+        }
+
+        $apNames = NMSApiClient::getAccessPointsList(onlyActive: false) ?? [];
+        $groups = [];
+        foreach ($this->groupCustomersByAccessPoint($messaged, $apNames) as $group) {
+            $customers = [];
+            foreach ($group['rows'] as $row) {
+                $customers[] = [
+                    'number' => $row['customer']->number,
+                    'name' => $row['customer']->name,
+                    'contract_number' => $row['contract']?->number,
+                    'services' => $row['services'],
+                    'vip' => $row['vip'],
+                    'criticality' => $row['criticality']?->label(),
+                    'recipients' => $recipientsByCustomer[(string)$row['customer']->id] ?? [],
+                ];
+            }
+
+            $groups[] = [
+                'ap_name' => $group['ap_name'],
+                'customers' => $customers,
+            ];
+        }
+
+        return [
             'sent' => count($customerMessages),
             'channel' => $customerMessage->type->label(),
             'is_sms' => $customerMessage->type === CustomerMessageType::Sms,
+            'purpose' => $purpose->label(),
+            'subject' => (string)$customerMessage->subject,
+            'body' => (string)$customerMessage->body,
+            'filters' => $registry->describeFilters($purpose, $state['filters'] ?? []),
+            'ignored_customer_consent' => ($state['ignore_customer_consent'] ?? false) === true,
+            'ignored_contact_use' => ($state['ignore_contact_use'] ?? false) === true,
+            'groups' => $groups,
             'skipped' => $skipped,
+            'dropped' => $dropped,
             'flagged' => $this->countFlaggedCustomers($messaged),
-        ]);
+            // the caller flips this once the summary has actually gone out
+            'summary_mailed' => false,
+        ];
+    }
+
+    /**
+     * Names of the services a contract currently bills.
+     *
+     * @param \App\Model\Entity\Contract|null $contract Contract to inspect.
+     * @return list<string>
+     */
+    private function contractServiceNames(?Contract $contract): array
+    {
+        if ($contract === null) {
+            return [];
+        }
+
+        $names = [];
+        foreach ($contract->billings as $billing) {
+            $name = $billing->service->name ?? null;
+            if (is_string($name) && $name !== '' && !in_array($name, $names, true)) {
+                $names[] = $name;
+            }
+        }
+
+        return $names;
+    }
+
+    /**
+     * Mail the send report to the operator who sent it, plus the reporting
+     * addresses the console commands already use.
+     *
+     * With no address to send to there is nothing to do but log it — the
+     * messages themselves are already saved either way.
+     *
+     * @param BulkSendReport $report Report to send.
+     * @return bool True when the summary was handed to the mailer.
+     */
+    private function mailBulkSendReport(array $report): bool
+    {
+        $identity = $this->getRequest()->getAttribute('identity');
+        $addresses = [];
+
+        $operator = $identity['email'] ?? null;
+        if (is_string($operator) && $operator !== '') {
+            $addresses[] = $operator;
+        }
+
+        foreach (explode(' ', (string)env('REPORT_EMAILS')) as $address) {
+            $address = trim($address);
+            if ($address !== '' && !in_array($address, $addresses, true)) {
+                $addresses[] = $address;
+            }
+        }
+
+        if ($addresses === []) {
+            Log::warning('Bulk customer message summary has no recipient address, not sending it.');
+            $this->Flash->warning(__(
+                'The messages were sent, but there is no address to e-mail the summary to.',
+            ));
+
+            return false;
+        }
+
+        $mailer = new Mailer('default');
+        foreach ($addresses as $address) {
+            $mailer->addTo($address);
+        }
+
+        $mailer->setSubject(__(
+            'Bulk customer message: {0} — {1} message(s) sent',
+            $report['purpose'],
+            $report['sent'],
+        ));
+
+        try {
+            $mailer->deliver($this->renderBulkSendReport($report));
+        } catch (Throwable $e) {
+            // the messages themselves are already saved and will go out, so a
+            // broken summary must not take the send down with it
+            Log::error('Error sending the bulk customer message summary: ' . $e->getMessage());
+            $this->Flash->error(__(
+                'The messages were sent, but the summary could not be e-mailed to you: {0}',
+                $e->getMessage(),
+            ));
+
+            return false;
+        }
 
         return true;
+    }
+
+    /**
+     * Render the send report as the plain-text body of the summary e-mail.
+     *
+     * @param BulkSendReport $report Report to render.
+     * @return string
+     */
+    private function renderBulkSendReport(array $report): string
+    {
+        $lines = [
+            __('Purpose: {0}', $report['purpose']),
+            __('Channel: {0}', $report['channel']),
+            __('{0} message(s) queued for sending.', $report['sent']),
+            '',
+            __('Recipient filters:'),
+        ];
+
+        $lines = array_merge(
+            $lines,
+            $report['filters'] === []
+                ? ['- ' . __('No filter was applied.')]
+                : array_map(static fn(string $filter): string => '- ' . $filter, $report['filters']),
+        );
+
+        if ($report['ignored_customer_consent']) {
+            $lines[] = '- ' . __('Customer mailing consent was ignored.');
+        }
+        if ($report['ignored_contact_use']) {
+            $lines[] = '- ' . __('Per-contact routing flag was ignored.');
+        }
+
+        $lines[] = '';
+        $lines[] = __('Recipients:');
+        foreach ($report['groups'] as $group) {
+            $lines[] = '';
+            $lines[] = $group['ap_name'] . ' (' . count($group['customers']) . ')';
+            foreach ($group['customers'] as $customer) {
+                $flags = [];
+                if ($customer['vip']) {
+                    $flags[] = __('VIP');
+                }
+                if ($customer['criticality'] !== null) {
+                    $flags[] = $customer['criticality'];
+                }
+
+                $lines[] = '  ' . implode(' | ', array_filter([
+                    trim($customer['number'] . ' ' . $customer['name']),
+                    $customer['contract_number'],
+                    implode(', ', $customer['services']),
+                    implode(', ', $customer['recipients']),
+                    $flags === [] ? null : '!! ' . implode(', ', $flags),
+                ]));
+            }
+        }
+
+        foreach (
+            [
+                __('Not sent — no usable contact:') => $report['skipped'],
+                __('Not sent — no longer eligible when sending:') => $report['dropped'],
+            ] as $heading => $customers
+        ) {
+            if ($customers === []) {
+                continue;
+            }
+
+            $lines[] = '';
+            $lines[] = $heading;
+            foreach ($customers as $customer) {
+                $lines[] = '  ' . trim($customer['number'] . ' ' . $customer['name']);
+            }
+        }
+
+        $lines[] = '';
+        $lines[] = str_repeat('-', 60);
+        $lines[] = __('Subject: {0}', $report['subject']);
+        $lines[] = '';
+        $lines[] = $report['body'];
+
+        return implode(PHP_EOL, $lines);
     }
 
     /**
@@ -609,7 +943,7 @@ class CustomerMessagesController extends AppController
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
      * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
-     * @param array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
+     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
      * @return void
      */
     private function prepareBulkFilterStep(
@@ -643,7 +977,7 @@ class CustomerMessagesController extends AppController
      *
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
      * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
-     * @param array{purpose?: int, filters?: array<string, mixed>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
+     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
      * @return void
      */
     private function prepareBulkComposeStep(
@@ -674,12 +1008,23 @@ class CustomerMessagesController extends AppController
             $this->set('saveFailures', null);
         }
 
-        $apNames = NMSApiClient::getAccessPointsList(onlyActive: false) ?? [];
+        $apNames = NMSApiClient::getAccessPointsList(onlyActive: false);
+        if ($apNames === null) {
+            // without them every group falls back to "unknown", which would go
+            // unnoticed in both the preview and the summary e-mail
+            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            $apNames = [];
+        }
 
         // contract-scoped filters (access point, contract state) have already
         // narrowed the contained contracts in findBulkCustomers(), so grouping
         // only ever sees contracts the active filters allow
         $apGroups = $this->groupCustomersByAccessPoint($customers, $apNames);
+
+        // remember what was offered, so the send can tell whether the recipient
+        // set changed underneath the operator
+        $state['preview'] = array_map(static fn($customer): string => (string)$customer->id, $customers);
+        $this->getRequest()->getSession()->write(self::BULK_WIZARD_STATE_KEY, $state);
 
         $this->set([
             'purpose' => $purpose,
@@ -785,6 +1130,7 @@ class CustomerMessagesController extends AppController
         return [
             'customer' => $customer,
             'contract' => $contract,
+            'services' => $this->contractServiceNames($contract),
             'vip' => $contract?->vip === true,
             'criticality' => $this->highestServiceCriticality($contract),
         ];

@@ -100,6 +100,34 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter implements Con
     }
 
     /**
+     * @inheritDoc
+     */
+    public function describe(mixed $value): ?string
+    {
+        if (!is_array($value) || !isset($value['ids']) || !is_array($value['ids'])) {
+            return null;
+        }
+
+        // the operator's own selection, not the expanded subtree — a report
+        // listing forty descendants would hide what was actually chosen
+        $described = $this->describeSelection(
+            __('Access Points'),
+            NMSApiClient::getAccessPointsList(onlyActive: false) ?? [],
+            array_values(array_filter(
+                $value['ids'],
+                static fn(mixed $id): bool => is_string($id) && Validation::uuid($id),
+            )),
+        );
+        if ($described === null) {
+            return null;
+        }
+
+        return empty($value['cascade'])
+            ? $described
+            : $described . ' (' . __('including sub access points') . ')';
+    }
+
+    /**
      * Effective access point ids this filter matches: the validated selection,
      * expanded with the whole subtree when the cascade toggle is on. Empty when
      * the filter is inactive. Shared by {@see conditions()} and

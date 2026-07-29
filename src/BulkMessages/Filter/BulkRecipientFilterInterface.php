@@ -62,4 +62,14 @@ interface BulkRecipientFilterInterface
      * @return string|null
      */
     public function warning(): ?string;
+
+    /**
+     * One plain-text line stating what this filter narrowed the recipients to,
+     * or null when it was inactive. Goes into the post-send report, so a send can
+     * be explained after the fact — keep it readable, not a dump of ids.
+     *
+     * @param mixed $value Stored filter value.
+     * @return string|null
+     */
+    public function describe(mixed $value): ?string;
 }

@@ -80,6 +80,14 @@ abstract class AbstractContractStateFlagFilter extends AbstractBulkRecipientFilt
     /**
      * @inheritDoc
      */
+    public function describe(mixed $value): ?string
+    {
+        return $value === true ? $this->controlLabel() : null;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function containedContractConditions(mixed $value): ?array
     {
         if ($value !== true) {

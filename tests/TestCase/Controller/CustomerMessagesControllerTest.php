@@ -325,6 +325,8 @@ class CustomerMessagesControllerTest extends TestCase
         // Important comes from the open-ended billing; the historical billing's
         // Critical service must not win (nor show up at all)
         $this->assertSame(ServiceCriticalityLevel::Important, $withContract['criticality']);
+        // and for the same reason the row lists only the service still billed
+        $this->assertSame(['Sed do eiusmod tempor'], $withContract['services']);
 
         $withoutContract = $rows[self::CUSTOMER_WITHOUT_CONTRACT] ?? null;
         $this->assertNotNull($withoutContract);
@@ -384,6 +386,145 @@ class CustomerMessagesControllerTest extends TestCase
                 ['active_services_contract' => true],
             ),
         );
+    }
+
+    /**
+     * The post-send report has to explain how the recipients were picked, so
+     * every active filter contributes a readable line, in the order the purpose
+     * offers them. Inactive filters stay silent.
+     *
+     * @return void
+     * @link \App\BulkMessages\BulkRecipientFilterRegistry::describeFilters()
+     */
+    public function testActiveFiltersDescribeThemselvesForTheReport(): void
+    {
+        $controller = new CustomerMessagesController(new ServerRequest());
+        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
+
+        // the locale is not fixed for tests, so the expectation goes through the
+        // same translation the filters do
+        $this->assertSame(
+            [
+                __('Service types') . ': Lorem ipsum dolor sit amet',
+                __('Only customers with an active contract (provides active services)'),
+            ],
+            $registry->describeFilters(CustomerMessagePurpose::Outages, [
+                'service_type_ids' => [self::SERVICE_TYPE],
+                'active_services_contract' => true,
+            ]),
+        );
+
+        // an unchecked flag narrowed nothing, so it must not claim to have
+        $this->assertSame(
+            [],
+            $registry->describeFilters(CustomerMessagePurpose::Outages, [
+                'active_services_contract' => false,
+                'service_type_ids' => [],
+            ]),
+        );
+    }
+
+    /**
+     * Recipients the operator approved but that no longer resolve at send time
+     * must be reported by name, not silently left out.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::findDroppedRecipients()
+     */
+    public function testRecipientsLostBetweenPreviewAndSendAreReported(): void
+    {
+        $controller = new CustomerMessagesController(new ServerRequest());
+        // only the contracted customer still resolves; the other one was
+        // approved in the preview and has since fallen out
+        $customers = $this->findBulkCustomers(
+            $controller,
+            CustomerMessagePurpose::Outages,
+            ['active_services_contract' => true],
+        );
+        $method = new ReflectionMethod(CustomerMessagesController::class, 'findDroppedRecipients');
+
+        /** @var list<array{number: string|null, name: string}> $dropped */
+        $dropped = $method->invoke(
+            $controller,
+            [self::CUSTOMER_WITH_CONTRACT, self::CUSTOMER_WITHOUT_CONTRACT],
+            $customers,
+        );
+
+        $this->assertCount(1, $dropped);
+        $this->assertNotSame('', $dropped[0]['name']);
+
+        // nothing was lost when every selected customer still resolves
+        $this->assertSame(
+            [],
+            $method->invoke($controller, [self::CUSTOMER_WITH_CONTRACT], $customers),
+        );
+    }
+
+    /**
+     * The summary e-mail body must carry everything the send is judged by: the
+     * filters, every recipient with the addresses it went to, and the text.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::renderBulkSendReport()
+     */
+    public function testSummaryEmailBodyCarriesTheWholeSend(): void
+    {
+        $controller = new CustomerMessagesController(new ServerRequest());
+        $method = new ReflectionMethod(CustomerMessagesController::class, 'renderBulkSendReport');
+
+        $body = $method->invoke($controller, [
+            'sent' => 1,
+            'channel' => 'E-mail (support)',
+            'is_sms' => false,
+            'purpose' => 'Outage notification',
+            'subject' => 'Planned outage',
+            'body' => 'We are replacing a radio unit.',
+            'filters' => ['Access Points: Hilltop (including sub access points)'],
+            'ignored_customer_consent' => false,
+            'ignored_contact_use' => true,
+            'groups' => [
+                [
+                    'ap_name' => 'Hilltop',
+                    'customers' => [
+                        [
+                            'number' => 'C-1',
+                            'name' => 'Acme s.r.o.',
+                            'contract_number' => 'S-42',
+                            'services' => ['Internet 100/100'],
+                            'vip' => true,
+                            'criticality' => 'Critical',
+                            'recipients' => ['it@acme.example'],
+                        ],
+                    ],
+                ],
+            ],
+            'skipped' => [['id' => 'x', 'number' => 'C-2', 'name' => 'No Contact Ltd.']],
+            'dropped' => [['number' => 'C-3', 'name' => 'Gone Away Ltd.']],
+            'flagged' => ['vip' => 1, 'critical' => 1],
+        ]);
+
+        $this->assertIsString($body);
+        foreach (
+            [
+                'Outage notification',
+                'Access Points: Hilltop (including sub access points)',
+                // rendered through __(), unlike the values above
+                __('Per-contact routing flag was ignored.'),
+                __('VIP'),
+                'Hilltop',
+                'C-1 Acme s.r.o.',
+                'S-42',
+                'Internet 100/100',
+                'it@acme.example',
+                'Critical',
+                'No Contact Ltd.',
+                'Gone Away Ltd.',
+                'Planned outage',
+                'We are replacing a radio unit.',
+            ] as $expected
+        ) {
+            $this->assertStringContainsString($expected, $body);
+        }
     }
 
     /**
