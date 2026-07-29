@@ -31,12 +31,32 @@ class BillingsFixture extends TestFixture
                 'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'created' => 1636113486,
                 'billing_until' => '2021-11-05',
-                'separate' => 1,
+                'separate_invoice' => 1,
                 'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
                 'quantity' => 1,
                 'contract_id' => '7f76dc3f-a11b-4109-958b-4b0382545a66',
                 'fixed_discount' => 1,
                 'percentage_discount' => 1,
+            ],
+            // still open (billing_until IS NULL) — the "active service" counterpart
+            // of the historical billing above, on the same contract
+            [
+                'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
+                'text' => 'Sed do eiusmod tempor',
+                'price' => 2,
+                'billing_from' => '2022-01-01',
+                'note' => null,
+                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'modified' => 1636113486,
+                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'created' => 1636113486,
+                'billing_until' => null,
+                'separate_invoice' => 0,
+                'service_id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2',
+                'quantity' => 1,
+                'contract_id' => '7f76dc3f-a11b-4109-958b-4b0382545a66',
+                'fixed_discount' => 0,
+                'percentage_discount' => 0,
             ],
         ];
         parent::init();

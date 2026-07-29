@@ -34,6 +34,22 @@ class ServicesFixture extends TestFixture
                 'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
             ],
+            // second service, billed open-ended by the seeded contract — lets a
+            // test tell an active service apart from a historically billed one
+            [
+                'created' => 1698516626,
+                'modified' => 1698516626,
+                'name' => 'Sed do eiusmod tempor',
+                'price' => 2,
+                'accounting_product_code' => 'Sed do eiusmod tempor',
+                'not_for_new_customers' => 0,
+                'criticality_level' => 20,
+                'queue_id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4',
+                'service_type_id' => '907cbc5c-af88-43b6-b535-959b4fa2ce3d',
+                'id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2',
+                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+            ],
         ];
         parent::init();
     }
