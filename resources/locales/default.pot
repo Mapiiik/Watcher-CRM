@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-07-28 13:20+0200\n"
+"POT-Creation-Date: 2026-07-29 16:21+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -65,6 +65,7 @@ msgid "Watcher Agent returned an unexpected response: {0}"
 msgstr ""
 
 #: ./src/BulkMessages/Filter/AccessPointFilter.php:45
+#: ./src/BulkMessages/Filter/AccessPointFilter.php:114
 msgid "Access Points"
 msgstr ""
 
@@ -72,7 +73,12 @@ msgstr ""
 msgid "Include sub access points (whole subtree)"
 msgstr ""
 
-#: ./src/BulkMessages/Filter/AccessPointFilter.php:137
+#: ./src/BulkMessages/Filter/AccessPointFilter.php:127
+msgid "including sub access points"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/AccessPointFilter.php:165
+#: ./src/Controller/CustomerMessagesController.php:1015
 #: ./src/Controller/Traits/CommonViewVarListsTrait.php:61
 #: ./src/Controller/Traits/CommonViewVarListsTrait.php:108
 msgid "The access points list could not be loaded. Please, try again."
@@ -95,14 +101,35 @@ msgid "Exclude labels (has none selected)"
 msgstr ""
 
 #: ./src/BulkMessages/Filter/RegistryAddressFilter.php:36
+#: ./src/BulkMessages/Filter/RegistryAddressFilter.php:81
 msgid "Installation Address (registry)"
 msgstr ""
 
-#: ./src/BulkMessages/Filter/RegistryAddressFilter.php:120
+#: ./src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: ./src/Controller/Api/CustomersController.php:193
 #: ./src/Controller/OverviewsController.php:76
 #: ./src/Controller/OverviewsController.php:459
 msgid "Could not retrieve addresses from national address registry: {0}"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/ServiceTypesFilter.php:39
+msgid "Service types (has any of the selected)"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/ServiceTypesFilter.php:81
+msgid "Service types"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/ServicesFilter.php:44
+msgid "Services (billed, has any of the selected)"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/ServicesFilter.php:104
+msgid "Services (billed)"
+msgstr ""
+
+#: ./src/BulkMessages/Filter/ServicesFilter.php:120
+msgid "Without a service type"
 msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:42
@@ -146,7 +173,7 @@ msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:203
 #: ./src/Command/ProcessSmsCommand.php:257
-#: ./templates/CustomerMessages/add_bulk/step_done.php:27
+#: ./templates/CustomerMessages/add_bulk/step_done.php:44
 msgid "Done"
 msgstr ""
 
@@ -340,14 +367,14 @@ msgstr ""
 #: ./src/Controller/BillingsController.php:216
 #: ./src/Controller/BillingsController.php:315
 #: ./src/Controller/BillingsController.php:446
-#: ./src/Controller/ContractsController.php:776
+#: ./src/Controller/ContractsController.php:770
 msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:138
 #: ./src/Controller/BillingsController.php:220
 #: ./src/Controller/BillingsController.php:515
-#: ./src/Controller/ContractsController.php:780
+#: ./src/Controller/ContractsController.php:774
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
@@ -360,20 +387,22 @@ msgid "The billing could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:516
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:157
+#: ./templates/CustomerMessages/add_bulk/step_done.php:105
 msgid "Contract Number"
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:102
 #: ./src/Controller/BorrowedEquipmentsController.php:159
-#: ./src/Controller/ContractsController.php:702
-#: ./src/Controller/ContractsController.php:728
+#: ./src/Controller/ContractsController.php:696
+#: ./src/Controller/ContractsController.php:722
 msgid "The borrowed equipment has been saved."
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:106
 #: ./src/Controller/BorrowedEquipmentsController.php:163
-#: ./src/Controller/ContractsController.php:708
-#: ./src/Controller/ContractsController.php:734
+#: ./src/Controller/ContractsController.php:702
+#: ./src/Controller/ContractsController.php:728
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr ""
 
@@ -439,91 +468,91 @@ msgstr ""
 msgid "The contract version could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:240
-#: ./src/Controller/ContractsController.php:353
+#: ./src/Controller/ContractsController.php:234
+#: ./src/Controller/ContractsController.php:347
 msgid "The contract has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:251
-#: ./src/Controller/ContractsController.php:364
+#: ./src/Controller/ContractsController.php:245
+#: ./src/Controller/ContractsController.php:358
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:457
+#: ./src/Controller/ContractsController.php:451
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:460
+#: ./src/Controller/ContractsController.php:454
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:501
+#: ./src/Controller/ContractsController.php:495
 msgid "The contract number could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:519
+#: ./src/Controller/ContractsController.php:513
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:527
+#: ./src/Controller/ContractsController.php:521
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:555
+#: ./src/Controller/ContractsController.php:549
 msgid "The contract numbers could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:563
+#: ./src/Controller/ContractsController.php:557
 msgid "The contract numbers have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:600
+#: ./src/Controller/ContractsController.php:594
 msgid "The subscriber verification code could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:617
+#: ./src/Controller/ContractsController.php:611
 msgid "The subscriber verification code has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:625
+#: ./src/Controller/ContractsController.php:619
 msgid "The subscriber verification code could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:653
+#: ./src/Controller/ContractsController.php:647
 msgid "The subscriber verification codes could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:661
+#: ./src/Controller/ContractsController.php:655
 msgid "The subscriber verification codes have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:691
+#: ./src/Controller/ContractsController.php:685
 msgid "No related borrowed equipments to install."
 msgstr ""
 
+#: ./src/Controller/ContractsController.php:694
 #: ./src/Controller/ContractsController.php:700
-#: ./src/Controller/ContractsController.php:706
 msgid "Installation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:717
+#: ./src/Controller/ContractsController.php:711
 msgid "No related borrowed equipments to uninstall."
 msgstr ""
 
+#: ./src/Controller/ContractsController.php:720
 #: ./src/Controller/ContractsController.php:726
-#: ./src/Controller/ContractsController.php:732
 msgid "Uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:767
+#: ./src/Controller/ContractsController.php:761
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:786
+#: ./src/Controller/ContractsController.php:780
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:804
+#: ./src/Controller/ContractsController.php:798
 #: ./templates/AccountingProfiles/view.php:88
 #: ./templates/Contracts/index.php:33
 #: ./templates/Customers/index.php:74
@@ -532,25 +561,25 @@ msgstr ""
 msgid "Contracts"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:810
+#: ./src/Controller/ContractsController.php:804
 msgid "Handover Protocols"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:858
+#: ./src/Controller/ContractsController.php:852
 #: ./templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:883
-#: ./src/Controller/CustomersController.php:626
+#: ./src/Controller/ContractsController.php:877
+#: ./src/Controller/CustomersController.php:620
 msgid "Invalid type of document."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:896
+#: ./src/Controller/ContractsController.php:890
 msgid "Invalid contract version to be executed."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:910
+#: ./src/Controller/ContractsController.php:904
 msgid "Invalid contract version to be terminated."
 msgstr ""
 
@@ -590,45 +619,117 @@ msgstr ""
 msgid "The customer label could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:114
-#: ./src/Controller/CustomerMessagesController.php:685
+#: ./src/Controller/CustomerMessagesController.php:154
+#: ./src/Controller/CustomerMessagesController.php:1208
 msgid "The customer message has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:118
-#: ./src/Controller/CustomerMessagesController.php:689
+#: ./src/Controller/CustomerMessagesController.php:158
+#: ./src/Controller/CustomerMessagesController.php:1212
 msgid "The customer message could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:232
+#: ./src/Controller/CustomerMessagesController.php:272
 msgid "Please select a message purpose."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:311
+#: ./src/Controller/CustomerMessagesController.php:356
 msgid "No customers were selected."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:317
+#: ./src/Controller/CustomerMessagesController.php:362
 msgid "Please select a valid message type."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:362
+#: ./src/Controller/CustomerMessagesController.php:421
 msgid "No recipients with a valid contact were found."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:655
+#: ./src/Controller/CustomerMessagesController.php:439
+msgid "The customer messages could not be saved. Please, try again."
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:636
+msgid "The messages were sent, but there is no address to e-mail the summary to."
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:648
+msgid "Bulk customer message: {0} — {1} message(s) sent"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:660
+msgid "The messages were sent, but the summary could not be e-mailed to you: {0}"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:680
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:50
+#: ./templates/CustomerMessages/add_bulk/step_done.php:46
+#: ./templates/CustomerMessages/add_bulk/step_filters.php:43
+msgid "Purpose: {0}"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:681
+msgid "Channel: {0}"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:682
+msgid "{0} message(s) queued for sending."
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:684
+msgid "Recipient filters:"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:690
+#: ./templates/CustomerMessages/add_bulk/step_done.php:80
+msgid "No filter was applied."
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:695
+#: ./templates/CustomerMessages/add_bulk/step_done.php:87
+msgid "Customer mailing consent was ignored."
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:698
+#: ./templates/CustomerMessages/add_bulk/step_done.php:90
+msgid "Per-contact routing flag was ignored."
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:702
+msgid "Recipients:"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:709
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:190
+#: ./templates/CustomerMessages/add_bulk/step_done.php:118
+msgid "VIP"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:727
+msgid "Not sent — no usable contact:"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:728
+msgid "Not sent — no longer eligible when sending:"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:744
+msgid "Subject: {0}"
+msgstr ""
+
+#: ./src/Controller/CustomerMessagesController.php:1103
 msgid "Unknown access point"
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:664
+#: ./src/Controller/CustomerMessagesController.php:1112
 msgid "No access point"
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:713
+#: ./src/Controller/CustomerMessagesController.php:1236
 msgid "The customer message has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomerMessagesController.php:716
+#: ./src/Controller/CustomerMessagesController.php:1239
 msgid "The customer message could not be deleted. Please, try again."
 msgstr ""
 
@@ -636,21 +737,21 @@ msgstr ""
 msgid "Please use the customer number or company identification number in the search."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:511
-#: ./src/Controller/CustomersController.php:539
+#: ./src/Controller/CustomersController.php:505
+#: ./src/Controller/CustomersController.php:533
 msgid "The customer has been saved."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:515
-#: ./src/Controller/CustomersController.php:543
+#: ./src/Controller/CustomersController.php:509
+#: ./src/Controller/CustomersController.php:537
 msgid "The customer could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:566
+#: ./src/Controller/CustomersController.php:560
 msgid "The customer has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:569
+#: ./src/Controller/CustomersController.php:563
 msgid "The customer could not be deleted. Please, try again."
 msgstr ""
 
@@ -1137,6 +1238,7 @@ msgid "archived"
 msgstr ""
 
 #: ./src/Controller/Traits/ErrorFormatterTrait.php:35
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:82
 msgid "Errors"
 msgstr ""
 
@@ -1876,8 +1978,8 @@ msgstr ""
 #: ./templates/CustomerLabels/index.php:36
 #: ./templates/CustomerLabels/view.php:10
 #: ./templates/CustomerMessages/add.php:11
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:17
-#: ./templates/CustomerMessages/add_bulk/step_done.php:12
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:19
+#: ./templates/CustomerMessages/add_bulk/step_done.php:29
 #: ./templates/CustomerMessages/add_bulk/step_filters.php:15
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:12
 #: ./templates/CustomerMessages/edit.php:11
@@ -2384,8 +2486,10 @@ msgstr ""
 #: ./templates/Countries/view.php:52
 #: ./templates/CustomerLabels/index.php:31
 #: ./templates/CustomerLabels/view.php:50
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:100
-#: ./templates/CustomerMessages/add_bulk/step_done.php:46
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:80
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:156
+#: ./templates/CustomerMessages/add_bulk/step_done.php:103
+#: ./templates/CustomerMessages/add_bulk/step_done.php:151
 #: ./templates/Emails/index.php:27
 #: ./templates/Emails/view.php:39
 #: ./templates/EquipmentTypes/view.php:69
@@ -2744,8 +2848,10 @@ msgstr ""
 #: ./templates/Contracts/view.php:134
 #: ./templates/Countries/view.php:51
 #: ./templates/CustomerLabels/view.php:43
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:99
-#: ./templates/CustomerMessages/add_bulk/step_done.php:47
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:81
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:155
+#: ./templates/CustomerMessages/add_bulk/step_done.php:104
+#: ./templates/CustomerMessages/add_bulk/step_done.php:152
 #: ./templates/CustomerMessages/view.php:48
 #: ./templates/Customers/view.php:75
 #: ./templates/Emails/view.php:32
@@ -3930,8 +4036,8 @@ msgstr ""
 
 #: ./templates/Contracts/view.php:32
 #: ./templates/CustomerMessages/add.php:13
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:29
-#: ./templates/CustomerMessages/add_bulk/step_done.php:19
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:31
+#: ./templates/CustomerMessages/add_bulk/step_done.php:36
 #: ./templates/CustomerMessages/add_bulk/step_filters.php:27
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:14
 #: ./templates/CustomerMessages/edit.php:21
@@ -4221,121 +4327,182 @@ msgstr ""
 msgid "Add Customer Message"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:19
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:21
 #: ./templates/CustomerMessages/add_bulk/step_filters.php:17
 #: ./templates/layout/error.php:36
 msgid "Back"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:24
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:26
 #: ./templates/CustomerMessages/add_bulk/step_filters.php:22
 msgid "Start Over"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:41
-#: ./templates/CustomerMessages/add_bulk/step_done.php:27
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:43
+#: ./templates/CustomerMessages/add_bulk/step_done.php:44
 #: ./templates/CustomerMessages/add_bulk/step_filters.php:37
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:24
 msgid "Bulk Customer Message"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:41
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:43
 #: ./templates/CustomerMessages/add_bulk/step_filters.php:37
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:24
 msgid "Step {0} of {1}: {2}"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:45
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:47
 msgid "Compose"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:48
-#: ./templates/CustomerMessages/add_bulk/step_filters.php:43
-msgid "Purpose: {0}"
-msgstr ""
-
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:50
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:52
 msgid "Customer mailing consent is being ignored for this send."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:53
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:55
 msgid "Per-contact routing flag is being ignored for this send."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:56
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:58
 msgid "Only customers and contacts that consented are included."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:62
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:65
+msgid "Nothing was sent"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:68
+msgid "The messages are saved together, so none of them was sent. Fix the problem below and submit again."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:75
+msgid "No further details are available."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:99
 msgid "Customer Message"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:72
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:109
 msgid "Recipients by access points — {0} customer(s)"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:74
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:111
 msgid "Uncheck a row to skip that contract. A customer with contracts on several access points is listed under each; the message is sent once if at least one row stays checked."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:83
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:120
 msgid "No customers match the selected filters (or none consented). Go back and adjust the filters."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:98
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:130
+msgid "Check the wording before sending."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:132
+msgid "{0} of the recipients have a guaranteed / VIP contract."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:138
+msgid "{0} of the recipients are billed a service above the normal criticality level."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:154
 msgid "Send"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:101
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:158
+#: ./templates/CustomerMessages/add_bulk/step_done.php:106
+#: ./templates/Services/index.php:21
+msgid "Services"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:159
+#: ./templates/CustomerMessages/add_bulk/step_done.php:107
+msgid "Flags"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:160
+#: ./templates/CustomerMessages/add_bulk/step_done.php:108
 #: ./templates/Customers/view.php:279
 #: ./templates/Emails/index.php:21
 #: ./templates/Overviews/overview_of_contracts.php:93
 msgid "Emails"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:102
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:161
+#: ./templates/CustomerMessages/add_bulk/step_done.php:108
 #: ./templates/Customers/view.php:328
 #: ./templates/Overviews/overview_of_contracts.php:94
 #: ./templates/Phones/index.php:21
 msgid "Phones"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:118
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:182
+msgid "(no number)"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:199
 msgid "Email Missing"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:121
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:202
 msgid "Phone Missing"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:130
-msgid "Send to {0} customer(s)"
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:212
+msgid "Send to the customers checked above"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_done.php:14
+#: ./templates/CustomerMessages/add_bulk/step_done.php:31
 #: ./templates/CustomerMessages/index.php:26
 #: ./templates/CustomerMessages/view.php:35
 msgid "New Bulk Customer Message"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_done.php:28
+#: ./templates/CustomerMessages/add_bulk/step_done.php:47
 msgid "{0} message(s) queued for sending ({1})."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_done.php:31
-msgid "All selected customers received the message."
+#: ./templates/CustomerMessages/add_bulk/step_done.php:49
+msgid "A summary of this send has been e-mailed to you."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_done.php:34
-msgid "Skipped — no phone number ({0})"
+#: ./templates/CustomerMessages/add_bulk/step_done.php:51
+msgid "The summary below could not be e-mailed — this page is the only copy."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_done.php:35
-msgid "Skipped — no e-mail ({0})"
+#: ./templates/CustomerMessages/add_bulk/step_done.php:59
+msgid "{0} of them have a guaranteed / VIP contract."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_done.php:37
-msgid "These customers were selected but had no eligible contact for this channel, so no message was sent to them — handle them individually."
+#: ./templates/CustomerMessages/add_bulk/step_done.php:65
+msgid "{0} of them are billed a service above the normal criticality level."
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:74
+msgid "Recipient filters"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:96
+#: ./templates/CustomerMessages/view.php:56
+msgid "Recipients"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:138
+msgid "Not sent — no phone number ({0})"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:139
+msgid "Not sent — no e-mail ({0})"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:141
+msgid "Not sent — no longer eligible when sending ({0})"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_done.php:172
+msgid "Message"
 msgstr ""
 
 #: ./templates/CustomerMessages/add_bulk/step_filters.php:41
@@ -4396,10 +4563,6 @@ msgstr ""
 
 #: ./templates/CustomerMessages/view.php:17
 msgid "Delete Customer Message"
-msgstr ""
-
-#: ./templates/CustomerMessages/view.php:56
-msgid "Recipients"
 msgstr ""
 
 #: ./templates/CustomerMessages/view.php:68
@@ -5535,10 +5698,6 @@ msgstr ""
 #: ./templates/Services/edit.php:25
 #: ./templates/Services/view.php:16
 msgid "Edit Service"
-msgstr ""
-
-#: ./templates/Services/index.php:21
-msgid "Services"
 msgstr ""
 
 #: ./templates/Services/view.php:21
