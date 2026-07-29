@@ -45,6 +45,16 @@ interface BulkRecipientFilterInterface
     public function buildValue(array $data): mixed;
 
     /**
+     * The value this filter starts out with, seeded into the wizard state when a
+     * purpose is picked, or null when it starts inactive. A filter that restricts
+     * by default (rather than merely offering to) must return that restriction
+     * here, so it also applies to a wizard that never submitted the filter step.
+     *
+     * @return mixed
+     */
+    public function defaultValue(): mixed;
+
+    /**
      * A user-facing warning about this filter's data source (e.g. an external
      * service is unavailable), or null when everything is fine. Populated as a
      * side effect of building the controls.

@@ -68,6 +68,29 @@ final class BulkRecipientFilterRegistry
     }
 
     /**
+     * The filter values a freshly picked purpose starts with, keyed by filter id.
+     *
+     * Seeded into the wizard state so the defaults hold even when the operator
+     * never submits the filter step (which would otherwise leave the state
+     * unfiltered and silently drop restrictions like the active-contract one).
+     *
+     * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
+     * @return array<string, mixed>
+     */
+    public function defaultsForPurpose(CustomerMessagePurpose $purpose): array
+    {
+        $defaults = [];
+        foreach ($this->forPurpose($purpose) as $key => $filter) {
+            $value = $filter->defaultValue();
+            if ($value !== null) {
+                $defaults[$key] = $value;
+            }
+        }
+
+        return $defaults;
+    }
+
+    /**
      * Return a single filter instance by key, or null when unknown.
      *
      * @param string $key Filter key.

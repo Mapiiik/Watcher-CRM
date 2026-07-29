@@ -242,8 +242,13 @@ class CustomerMessagesController extends AppController
 
                 return $this->redirect(['action' => 'addBulk']);
             }
-            // changing the purpose resets any downstream selections
-            $session->write(self::BULK_WIZARD_STATE_KEY, ['purpose' => $selected->value]);
+            // changing the purpose resets any downstream selections, seeded with
+            // the filter defaults so they hold even for a wizard that jumps
+            // straight to the compose step without submitting the filter form
+            $session->write(self::BULK_WIZARD_STATE_KEY, [
+                'purpose' => $selected->value,
+                'filters' => $registry->defaultsForPurpose($selected),
+            ]);
 
             return $this->redirect(['action' => 'addBulk', '?' => ['step' => 'filters']]);
         }
@@ -390,6 +395,10 @@ class CustomerMessagesController extends AppController
         );
 
         if (!$saved) {
+            $this->Flash->error(__('The customer messages could not be saved. Please, try again.'));
+            // saveMany runs in a transaction, so nothing at all was written
+            $this->reportBulkSaveFailure($customerMessages, $messaged, $customerMessage);
+
             return false;
         }
 
@@ -403,6 +412,49 @@ class CustomerMessagesController extends AppController
         ]);
 
         return true;
+    }
+
+    /**
+     * Explain a failed bulk save on the re-rendered compose step.
+     *
+     * The messages that failed validation are listed with their recipient, and
+     * the first set of errors is copied onto the entity backing the form so the
+     * offending field is highlighted too. A failure with no per-message errors
+     * (a database or rule failure) still yields an empty list, which the view
+     * turns into a "no details available" note.
+     *
+     * @param list<\App\Model\Entity\CustomerMessage> $customerMessages Messages that were attempted, in order.
+     * @param list<\App\Model\Entity\Customer> $messaged Their recipients, in the same order.
+     * @param \App\Model\Entity\CustomerMessage $customerMessage Entity backing the compose form.
+     * @return void
+     */
+    private function reportBulkSaveFailure(
+        array $customerMessages,
+        array $messaged,
+        CustomerMessage $customerMessage,
+    ): void {
+        $failures = [];
+        foreach ($customerMessages as $index => $message) {
+            $errors = $message->getErrors();
+            if ($errors === []) {
+                continue;
+            }
+
+            if ($failures === []) {
+                // every message carries the same operator input, so the first
+                // set of errors is what the form needs to show
+                $customerMessage->setErrors($errors);
+            }
+
+            $customer = $messaged[$index] ?? null;
+            $failures[] = [
+                'number' => $customer?->number,
+                'name' => $customer?->name,
+                'errors' => $this->formatValidationErrors($errors),
+            ];
+        }
+
+        $this->set('saveFailures', $failures);
     }
 
     /**
@@ -615,6 +667,11 @@ class CustomerMessagesController extends AppController
             $customerMessage = $this->CustomerMessages->newEmptyEntity();
             $this->applyPurposeComposeDefaults($customerMessage, $purpose);
             $this->set('customerMessage', $customerMessage);
+        }
+
+        // only a failed submit fills this in
+        if (!is_array($this->viewBuilder()->getVar('saveFailures'))) {
+            $this->set('saveFailures', null);
         }
 
         $apNames = NMSApiClient::getAccessPointsList(onlyActive: false) ?? [];

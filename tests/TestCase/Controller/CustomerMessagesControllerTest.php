@@ -351,6 +351,42 @@ class CustomerMessagesControllerTest extends TestCase
     }
 
     /**
+     * A filter that restricts by default must say so through defaultValue(), so
+     * picking a purpose seeds the restriction into the wizard state. Without it,
+     * a wizard that never submits the filter step would send unrestricted.
+     *
+     * @return void
+     * @link \App\BulkMessages\BulkRecipientFilterRegistry::defaultsForPurpose()
+     */
+    public function testPurposeDefaultsSeedTheRestrictingFilters(): void
+    {
+        $controller = new CustomerMessagesController(new ServerRequest());
+        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
+
+        $this->assertSame(
+            ['active_services_contract' => true],
+            $registry->defaultsForPurpose(CustomerMessagePurpose::Outages),
+        );
+        $this->assertSame(
+            ['billed_contract' => true],
+            $registry->defaultsForPurpose(CustomerMessagePurpose::Billing),
+        );
+
+        // and the seeded defaults must resolve the same way an explicit
+        // submission of the same values does
+        $this->assertSame(
+            $this->resolveBulkCustomers(
+                CustomerMessagePurpose::Outages,
+                $registry->defaultsForPurpose(CustomerMessagePurpose::Outages),
+            ),
+            $this->resolveBulkCustomers(
+                CustomerMessagePurpose::Outages,
+                ['active_services_contract' => true],
+            ),
+        );
+    }
+
+    /**
      * Resolve the eligible recipient customer ids for a purpose/filter set by
      * invoking the controller's private recipient resolver against the fixtures.
      *

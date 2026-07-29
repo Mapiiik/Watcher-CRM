@@ -8,6 +8,7 @@
  * @var array<\App\Model\Entity\Customer> $customers
  * @var list<array{ap_id: string|null, ap_name: string, rows: list<array{customer: \App\Model\Entity\Customer, contract: \App\Model\Entity\Contract|null, vip: bool, criticality: \App\Model\Enum\ServiceCriticalityLevel|null}>}> $apGroups
  * @var array{vip: int, critical: int} $flagged
+ * @var list<array{number: string|null, name: string|null, errors: string}>|null $saveFailures
  * @var bool $ignoreCustomerConsent
  * @var bool $ignoreContactUse
  */
@@ -59,6 +60,41 @@
                 </p>
             </fieldset>
             <br>
+            <?php if ($saveFailures !== null) : ?>
+                <fieldset>
+                    <legend style="color: darkred;"><?= __('Nothing was sent') ?></legend>
+                    <div class="text">
+                        <p>
+                            <?= __(
+                                'The messages are saved together, so none of them was sent. '
+                                . 'Fix the problem below and submit again.',
+                            ) ?>
+                        </p>
+                        <br>
+                        <?php if ($saveFailures === []) : ?>
+                            <p><?= __('No further details are available.') ?></p>
+                        <?php else : ?>
+                            <div class="table-responsive">
+                                <table>
+                                    <tr>
+                                        <th><?= __('Customer Number') ?></th>
+                                        <th><?= __('Customer') ?></th>
+                                        <th><?= __('Errors') ?></th>
+                                    </tr>
+                                    <?php foreach ($saveFailures as $failure) : ?>
+                                        <tr>
+                                            <td><?= h($failure['number']) ?></td>
+                                            <td><?= h($failure['name']) ?></td>
+                                            <td><?= $failure['errors'] ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </table>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </fieldset>
+                <br>
+            <?php endif; ?>
             <fieldset>
                 <legend><?= __('Customer Message') ?></legend>
                 <?php
@@ -170,7 +206,8 @@
                     </div>
                 <?php endforeach; ?>
             </fieldset>
-            <?= $this->Form->button(__('Send to {0} customer(s)', count($customers))) ?>
+            <?php // no count here: it would promise the full list even after rows were unchecked ?>
+            <?= $this->Form->button(__('Send to the customers checked above')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

@@ -32,4 +32,13 @@ abstract class AbstractBulkRecipientFilter implements BulkRecipientFilterInterfa
     {
         return $this->warning;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function defaultValue(): mixed
+    {
+        // most filters offer a choice and start out selecting nothing
+        return null;
+    }
 }

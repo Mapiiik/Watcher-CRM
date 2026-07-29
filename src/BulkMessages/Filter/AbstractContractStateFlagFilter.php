@@ -39,9 +39,20 @@ abstract class AbstractContractStateFlagFilter extends AbstractBulkRecipientFilt
     /**
      * @inheritDoc
      */
+    public function defaultValue(): mixed
+    {
+        // this filter restricts by default, so the restriction must hold even
+        // for a wizard that never submitted the filter step
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function controls(mixed $value): array
     {
-        // checked by default (fresh state); once submitted the stored bool wins
+        // normally the seeded default (true) or the stored bool; the null
+        // fallback only covers wizard state written before defaults existed
         $checked = $value === null ? true : (bool)$value;
 
         return [
