@@ -33,6 +33,14 @@ class CustomersControllerTest extends TestCase
     private const string CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * Verification code of the contract from the Contracts fixture, rendered in the column
+     * the obligation column has to precede.
+     *
+     * @var string
+     */
+    private const string VERIFICATION_CODE = 'Lorem ipsum dolor sit amet';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -107,6 +115,22 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * Asserts the obligation cell of the fixture contract, anchored to the verification code
+     * cell that has to follow it.
+     *
+     * @param string $style Expected style attribute of the cell.
+     * @param string $obligationUntil Expected content of the cell.
+     * @return void
+     */
+    private function assertObligationCell(string $style, string $obligationUntil): void
+    {
+        $this->assertResponseRegExp(
+            '~<td style="' . preg_quote($style, '~') . '">' . preg_quote($obligationUntil, '~') . '</td>\s*'
+            . '<td>' . preg_quote(self::VERIFICATION_CODE, '~') . '</td>~',
+        );
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -147,9 +171,7 @@ class CustomersControllerTest extends TestCase
         $this->get('/customers/view/' . self::CUSTOMER_ID);
 
         $this->assertResponseOk();
-        $this->assertResponseContains(
-            '<td style="">' . new Date('2023-06-30') . '</td>',
-        );
+        $this->assertObligationCell('', (string)new Date('2023-06-30'));
     }
 
     /**
@@ -167,9 +189,7 @@ class CustomersControllerTest extends TestCase
         $this->get('/customers/view/' . self::CUSTOMER_ID);
 
         $this->assertResponseOk();
-        $this->assertResponseContains(
-            '<td style="color: red;">' . $futureObligationUntil . '</td>',
-        );
+        $this->assertObligationCell('color: red;', (string)$futureObligationUntil);
     }
 
     /**
@@ -187,7 +207,7 @@ class CustomersControllerTest extends TestCase
         $this->get('/customers/view/' . self::CUSTOMER_ID);
 
         $this->assertResponseOk();
-        $this->assertResponseContains('<td style=""></td>');
+        $this->assertObligationCell('', '');
     }
 
     /**
