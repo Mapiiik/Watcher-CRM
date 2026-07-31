@@ -23,14 +23,14 @@ class CustomersControllerTest extends TestCase
      *
      * @var string
      */
-    private const string CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
      * Contract from the Contracts fixture.
      *
      * @var string
      */
-    private const string CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
      * Verification code of the contract from the Contracts fixture, rendered in the column
@@ -38,7 +38,7 @@ class CustomersControllerTest extends TestCase
      *
      * @var string
      */
-    private const string VERIFICATION_CODE = 'Lorem ipsum dolor sit amet';
+    private const VERIFICATION_CODE = 'Lorem ipsum dolor sit amet';
 
     /**
      * Fixtures
