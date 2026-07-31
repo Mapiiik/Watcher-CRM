@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use Cake\Datasource\ConnectionManager;
 use Migrations\BaseMigration;
 use Migrations\Db\Literal;
 
@@ -60,10 +59,10 @@ class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends BaseMigration
 
         // set new UUID keys for the customers//users
         if ($this->isMigratingUp()) {
-            /** @var \Cake\Database\Connection $connection */
-            $connection = ConnectionManager::get('default', false);
-
-            $selectBuilder = $this->getSelectBuilder()->setConnection($connection);
+            // invoices share their connection with customers and users, so the builders of this
+            // migration already point at the right database - naming one here would break every
+            // environment whose connection is not called "default", the test suite among them
+            $selectBuilder = $this->getSelectBuilder();
             $customers = $selectBuilder
                 ->select(['id', 'nid'])
                 ->from('customers')
@@ -82,7 +81,7 @@ class MigratePrimaryKeyToUuidAndAddForeignKeysOnInvoices extends BaseMigration
             unset($customers);
             unset($selectBuilder);
 
-            $selectBuilder = $this->getSelectBuilder()->setConnection($connection);
+            $selectBuilder = $this->getSelectBuilder();
             $users = $selectBuilder
                 ->select(['id', 'nid'])
                 ->from('users')
