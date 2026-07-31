@@ -82,4 +82,5 @@ $migrator->runMany([
     ['plugin' => 'CakeDC/Users'],
     [],
     ['plugin' => 'Settings'],
+    ['plugin' => 'Bookkeeping'],
 ]);

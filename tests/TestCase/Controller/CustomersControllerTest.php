@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\CustomersController;
+use Cake\Core\Configure;
+use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -15,6 +17,20 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class CustomersControllerTest extends TestCase
 {
     use IntegrationTestTrait;
+
+    /**
+     * Customer owning the contract from the Contracts fixture.
+     *
+     * @var string
+     */
+    private const string CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
+     * Contract from the Contracts fixture.
+     *
+     * @var string
+     */
+    private const string CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
      * Fixtures
@@ -31,6 +47,7 @@ class CustomersControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
+        'app.ContractVersions',
         'app.Queues',
         'app.Services',
         'app.Billings',
@@ -53,6 +70,43 @@ class CustomersControllerTest extends TestCase
     ];
 
     /**
+     * login method
+     *
+     * @return void
+     */
+    protected function login(): void
+    {
+        /** @var \App\Model\Table\AppUsersTable $usersTable */
+        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
+
+        $user = $usersTable->newEmptyEntity();
+        $user->username = 'tester';
+        $user->role = 'admin';
+        $user->active = true;
+
+        $this->session(['Auth' => $user]);
+    }
+
+    /**
+     * Adds a contract version with the given obligation date to the fixture contract.
+     *
+     * @param string $obligationUntil Obligation date.
+     * @return void
+     */
+    private function addContractVersion(string $obligationUntil): void
+    {
+        $contractVersionsTable = $this->getTableLocator()->get('ContractVersions');
+        $contractVersion = $contractVersionsTable->newEntity([
+            'contract_id' => self::CONTRACT_ID,
+            'valid_from' => '2023-01-01',
+            'obligation_until' => $obligationUntil,
+            'obligations_settled' => false,
+            'number_of_amendments' => 0,
+        ]);
+        $contractVersionsTable->saveOrFail($contractVersion);
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -71,7 +125,69 @@ class CustomersControllerTest extends TestCase
      */
     public function testView(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Obligation Until'));
+    }
+
+    /**
+     * Test that the related contracts show the latest obligation date of their contract versions.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewShowsLatestObligationUntilOfContractVersions(): void
+    {
+        // later than the 2022-11-30 obligation of the fixture contract version, but still in the past
+        $this->addContractVersion('2023-06-30');
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(
+            '<td style="">' . new Date('2023-06-30') . '</td>',
+        );
+    }
+
+    /**
+     * Test that an obligation date in the future is highlighted, as it is on the contract detail.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewHighlightsFutureObligationUntil(): void
+    {
+        $futureObligationUntil = Date::now()->addYears(1);
+        $this->addContractVersion($futureObligationUntil->toDateString());
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(
+            '<td style="color: red;">' . $futureObligationUntil . '</td>',
+        );
+    }
+
+    /**
+     * Test that a contract without any obligation renders an empty cell.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewRendersEmptyObligationUntilWithoutObligation(): void
+    {
+        $contractVersionsTable = $this->getTableLocator()->get('ContractVersions');
+        $contractVersionsTable->updateAll(['obligation_until' => null], ['contract_id' => self::CONTRACT_ID]);
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<td style=""></td>');
     }
 
     /**
