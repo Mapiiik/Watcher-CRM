@@ -12,8 +12,6 @@ use Radius\Model\Table\RadacctTable;
 
 /**
  * Accounts cell
- *
- * @extends \Cake\View\Cell<\App\View\AppView>
  */
 class AccountsCell extends Cell
 {

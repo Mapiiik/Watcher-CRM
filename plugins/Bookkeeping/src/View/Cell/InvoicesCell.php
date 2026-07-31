@@ -9,8 +9,6 @@ use Override;
 
 /**
  * Invoices cell
- *
- * @extends \Cake\View\Cell<\App\View\AppView>
  */
 class InvoicesCell extends Cell
 {

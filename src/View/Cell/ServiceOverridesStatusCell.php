@@ -10,8 +10,6 @@ use Cake\View\Cell;
  * ServiceOverridesStatus cell
  *
  * Displays active and/or scheduled service overrides for given contracts.
- *
- * @extends \Cake\View\Cell<\App\View\AppView>
  */
 class ServiceOverridesStatusCell extends Cell
 {
