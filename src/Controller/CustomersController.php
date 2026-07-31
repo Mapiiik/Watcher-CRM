@@ -429,6 +429,13 @@ class CustomersController extends AppController
                 'ContractStates',
                 'ServiceTypes',
                 'InstallationAddresses',
+                'ContractVersions' => [
+                    'fields' => [
+                        'ContractVersions.id',
+                        'ContractVersions.contract_id',
+                        'ContractVersions.obligation_until',
+                    ],
+                ],
             ],
             'CustomerLabels' => [
                 'Labels',

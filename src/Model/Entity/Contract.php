@@ -7,6 +7,7 @@ use App\Colors\ColorThemeSelector;
 use App\NMS\ApiClient as NMSApiClient;
 use ArrayObject;
 use Cake\Core\Configure;
+use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
 use RuntimeException;
 
@@ -323,5 +324,30 @@ class Contract extends AppEntity
         }
 
         throw new RuntimeException(__('Service type data not available.'));
+    }
+
+    /**
+     * getter for the latest obligation_until found in the contract versions
+     *
+     * @return \Cake\I18n\Date|null Null when no contract version has an obligation set.
+     * @throws \RuntimeException When contract versions data not available.
+     */
+    public function getMaxObligationUntil(): ?Date
+    {
+        if (!$this->has('contract_versions')) {
+            throw new RuntimeException(__('Contract versions data not available.'));
+        }
+
+        $maxObligationUntil = null;
+        foreach ($this->contract_versions as $contractVersion) {
+            if (!isset($contractVersion->obligation_until)) {
+                continue;
+            }
+            if ($maxObligationUntil === null || $contractVersion->obligation_until > $maxObligationUntil) {
+                $maxObligationUntil = $contractVersion->obligation_until;
+            }
+        }
+
+        return $maxObligationUntil;
     }
 }
