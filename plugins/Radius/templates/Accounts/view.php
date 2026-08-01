@@ -31,6 +31,18 @@
                 ['action' => 'add'],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <br>
+            <?php // the filter has to be a query parameter, a bare key is swallowed by the route ?>
+            <?= $this->AuthLink->link(
+                __d('radius', 'List Connection History'),
+                [
+                    'plugin' => null,
+                    'controller' => 'ConnectionHistory',
+                    'action' => 'index',
+                    '?' => ['source_reference' => $account->username],
+                ],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
