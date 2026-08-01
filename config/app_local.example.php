@@ -105,6 +105,11 @@ return [
             //'schema' => 'public',
             'url' => env('DATABASE_TEST_URL', null),
         ],
+        /*
+         * Mirrors the production split: RADIUS lives in its own database, so the test suite
+         * gets its own too. Sharing one with `test` would let the migrator of either side
+         * drop the other side's tables, since both would be the same database.
+         */
         'test_radius' => [
             'className' => 'Cake\Database\Connection',
             'driver' => 'Cake\Database\Driver\Postgres',
@@ -112,9 +117,9 @@ return [
             //'port' => 'non_standard_port_number',
             'username' => 'postgres',
             'password' => 'postgres',
-            'database' => 'watcher_crm_test',
+            'database' => 'watcher_crm_test_radius',
             //'schema' => 'public',
-            'url' => env('DATABASE_TEST_URL', null),
+            'url' => env('DATABASE_TEST_RADIUS_URL', null),
         ],
     ],
 

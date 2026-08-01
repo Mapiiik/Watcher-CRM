@@ -21,6 +21,7 @@ use Cake\Database\Connection;
 use Cake\Database\Driver\Sqlite;
 use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\ConnectionHelper;
+use Cake\TestSuite\Fixture\SchemaLoader;
 use Migrations\TestSuite\Migrator;
 
 /**
@@ -84,3 +85,38 @@ $migrator->runMany([
     ['plugin' => 'Settings'],
     ['plugin' => 'Bookkeeping'],
 ]);
+
+/*
+ * Build the RADIUS schema on its own connection.
+ *
+ * The plugin's migrations only reshape `accounts`; the tables themselves belong to FreeRADIUS
+ * and are created outside this project. What stands in for that here are the plugin's own
+ * runbooks, applied in the order a primary database goes through them:
+ *
+ *   1001  the FreeRADIUS schema plus `accounts`
+ *   2001  integer keys renamed aside, UUID columns added
+ *   2002  UUID columns tightened, the old integer ones dropped
+ *   2003  the primary key moved to UUID
+ *
+ * The two Cake migrations that normally sit between 2001 and 2002 only carry data across, and
+ * there is none on a freshly built schema, so the SQL alone lands on the same shape. Running
+ * the migrator here instead would be worse than redundant: it reports the migrations as `down`
+ * on an empty database and drops every table it finds before applying them - including the
+ * ones these files just created.
+ *
+ * The plugin's own cleanup file has to come first. SchemaLoader drops the tables it finds, but
+ * the sequences of 1001 are standalone rather than owned by a column, so they outlive their
+ * tables and the second run would fail on creating them again.
+ */
+$radiusRunbooks = ROOT . DS . 'plugins' . DS . 'Radius' . DS . 'config' . DS . 'ManualMigrations' . DS;
+
+(new SchemaLoader())->loadSqlFiles(
+    [
+        ROOT . DS . 'plugins' . DS . 'Radius' . DS . 'tests' . DS . 'schema.sql',
+        $radiusRunbooks . '1001_InitialMaster.sql',
+        $radiusRunbooks . '2001_PreMigrateRelatedKeysToUuidOnAccounts.sql',
+        $radiusRunbooks . '2002_PostMigrateRelatedKeysToUuidOnAccounts.sql',
+        $radiusRunbooks . '2003_MigratePrimaryKeyToUuidOnAccounts.sql',
+    ],
+    'test_radius',
+);
