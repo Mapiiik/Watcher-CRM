@@ -408,6 +408,25 @@ $permissions = [
                 'overviewOfCzechCustomerConnectionSpeeds',
             ],
         ],
+        //connection history - only index and view
+        //it is recorded by the connection history update from the sources
+        [
+            'role' => [
+                'network-technician',
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'ConnectionHistory',
+            ],
+            'action' => [
+                'index',
+                'view',
+            ],
+        ],
         //allow all in overviews for sales-managers
         [
             'role' => [

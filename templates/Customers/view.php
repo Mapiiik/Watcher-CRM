@@ -43,6 +43,11 @@
                 ['controller' => 'ServiceOverrides', 'action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?= $this->AuthLink->link(
+                __('List Connection History'),
+                ['controller' => 'ConnectionHistory', 'action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
         <br>
         <div class="side-labels">

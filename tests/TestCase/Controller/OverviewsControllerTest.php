@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\OverviewsController;
+use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -21,7 +22,27 @@ class OverviewsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected array $fixtures = [];
+    protected array $fixtures = [
+        'app.AppUsers',
+    ];
+
+    /**
+     * login method
+     *
+     * @return void
+     */
+    protected function login(): void
+    {
+        /** @var \App\Model\Table\AppUsersTable $usersTable */
+        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
+
+        $user = $usersTable->newEmptyEntity();
+        $user->username = 'tester';
+        $user->role = 'admin';
+        $user->active = true;
+
+        $this->session(['Auth' => $user]);
+    }
 
     /**
      * Test index method
@@ -31,7 +52,14 @@ class OverviewsControllerTest extends TestCase
      */
     public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+
+        $this->get('/overviews');
+
+        $this->assertResponseOk();
+        // the whole table of connection history is reachable from here, there is
+        // nowhere else to get at it outside a single customer or contract
+        $this->assertResponseContains('/connection-history');
     }
 
     /**

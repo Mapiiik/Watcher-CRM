@@ -131,6 +131,11 @@
                     ['controller' => 'RemovedIpNetworks', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
                 ) ?>
+                <?= $this->AuthLink->link(
+                    __('List Connection History'),
+                    ['controller' => 'ConnectionHistory', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item'],
+                ) ?>
             </div>
         </div>
     </div>
