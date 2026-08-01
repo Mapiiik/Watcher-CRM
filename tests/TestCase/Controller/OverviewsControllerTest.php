@@ -24,6 +24,21 @@ class OverviewsControllerTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Emails',
+        'app.Phones',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
+        'app.Labels',
+        'app.CustomerLabels',
+        'app.Queues',
+        'app.Services',
+        'app.Billings',
     ];
 
     /**
@@ -60,6 +75,37 @@ class OverviewsControllerTest extends TestCase
         // the whole table of connection history is reachable from here, there is
         // nowhere else to get at it outside a single customer or contract
         $this->assertResponseContains('/connection-history');
+    }
+
+    /**
+     * Test overview of contracts method
+     *
+     * The listing is sorted by columns of the customers while it eager loads the billings of the
+     * contracts - the combination the `subquery` strategy of CakePHP 5.4 turns into an `ORDER BY`
+     * over a column that is neither grouped nor aggregated, hence the `select` strategy there.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContracts()
+     */
+    public function testOverviewOfContracts(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-contracts');
+
+        $this->assertResponseOk();
+
+        /** @var iterable<\App\Model\Entity\Contract> $contracts */
+        $contracts = $this->viewVariable('contracts');
+        $contracts = iterator_to_array($contracts, false);
+
+        $this->assertNotEmpty($contracts);
+        // the eager loaded branches the listing renders
+        $this->assertNotEmpty($contracts[0]->billings);
+        $this->assertNotNull($contracts[0]->billings[0]->service);
+        $this->assertNotNull($contracts[0]->billings[0]->service->queue);
+        $this->assertNotNull($contracts[0]->customer->emails);
+        $this->assertNotNull($contracts[0]->customer->phones);
     }
 
     /**

@@ -10,6 +10,7 @@ use Cake\Form\Form;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
+use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
@@ -219,7 +220,14 @@ class TasksController extends AppController
                     'InstallationAddresses',
                 ],
                 'Customers' => [
-                    'Addresses',
+                    // The listing is ordered by columns of the tasks and of their states, while
+                    // the addresses are eager loaded per customer. The `subquery` strategy would
+                    // reduce this query to `SELECT Customers.id ... GROUP BY Customers.id` with
+                    // that ORDER BY kept, which PostgreSQL rejects - none of the ordered columns
+                    // is functionally dependent on the customer. Hence `select` here.
+                    'Addresses' => [
+                        'strategy' => Association::STRATEGY_SELECT,
+                    ],
                 ],
                 'Dealers',
                 'TaskStates',

@@ -20,6 +20,7 @@ use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Http\Response;
 use Cake\I18n\Date;
+use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use RuntimeException;
@@ -151,17 +152,28 @@ class OverviewsController extends AppController
             ->contain('ContractStates')
             ->contain('ServiceTypes')
             ->contain('InstallationAddresses')
-            ->contain('Billings', function (SelectQuery $q): SelectQuery {
-                $q->contain('Services');
-                $q->contain('Services.Queues');
-
-                return $q;
-            })
-            ->contain('Customers', function (SelectQuery $q) {
-                return $q
-                    ->contain('Emails')
-                    ->contain('Phones');
-            })
+            // The listing is ordered by columns of the customers, while the billings are eager
+            // loaded per contract. The `subquery` strategy would reduce this query to
+            // `SELECT Contracts.id ... GROUP BY Contracts.id` with that ORDER BY kept, which
+            // PostgreSQL rejects - the ordered columns are not functionally dependent on the
+            // contract. The emails and phones are loaded the same way, so that they survive
+            // sorting by any of the contract columns the listing offers as well.
+            ->contain([
+                'Billings' => [
+                    'strategy' => Association::STRATEGY_SELECT,
+                    'Services' => [
+                        'Queues',
+                    ],
+                ],
+                'Customers' => [
+                    'Emails' => [
+                        'strategy' => Association::STRATEGY_SELECT,
+                    ],
+                    'Phones' => [
+                        'strategy' => Association::STRATEGY_SELECT,
+                    ],
+                ],
+            ])
             ->where($contractsFilter);
 
         // filter by contract state
