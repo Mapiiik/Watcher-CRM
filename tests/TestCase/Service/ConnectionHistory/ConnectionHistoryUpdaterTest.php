@@ -1,0 +1,320 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Test\TestCase\Service\ConnectionHistory;
+
+use App\Model\Enum\ConnectionHistorySource;
+use App\Model\Enum\FirstSeenSource;
+use App\Service\ConnectionHistory\ConnectionHistoryUpdater;
+use App\Service\ConnectionHistory\ConnectionInterval;
+use Cake\I18n\DateTime;
+use Cake\TestSuite\TestCase;
+use Override;
+
+/**
+ * App\Service\ConnectionHistory\ConnectionHistoryUpdater Test Case
+ */
+class ConnectionHistoryUpdaterTest extends TestCase
+{
+    /**
+     * Account the intervals belong to
+     */
+    private const string ACCOUNT = 'tester';
+
+    /**
+     * Customers standing in for a placement of the account
+     */
+    private const string CUSTOMER_A = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+    private const string CUSTOMER_B = 'ae128a49-82fd-4b80-921f-f11af75fd113';
+
+    /**
+     * Table under test
+     *
+     * @var \App\Model\Table\ConnectionHistoryTable
+     */
+    protected $ConnectionHistory;
+
+    /**
+     * Fixtures
+     *
+     * @var array<string>
+     */
+    protected array $fixtures = [
+        'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ConnectionHistory',
+    ];
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        /** @var \App\Model\Table\ConnectionHistoryTable $table */
+        $table = $this->getTableLocator()->get('ConnectionHistory');
+        $this->ConnectionHistory = $table;
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        /** @phpstan-ignore unset.possiblyHookedProperty */
+        unset($this->ConnectionHistory);
+
+        parent::tearDown();
+    }
+
+    /**
+     * An account nobody has recorded yet gets everything the source can see,
+     * with only the earliest interval marked as a lower bound.
+     *
+     * @return void
+     */
+    public function testInitialLoadMarksOnlyTheEarliestAsUncertain(): void
+    {
+        $updater = new ConnectionHistoryUpdater();
+        $summary = $updater->update([new StubSource([
+            $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-02 12:00:00'),
+            $this->interval('10.0.0.2', '2026-02-01 10:00:00', '2026-02-01 12:00:00'),
+        ])]);
+
+        $this->assertSame(2, $summary->opened);
+
+        $recorded = $this->recorded();
+        $this->assertCount(2, $recorded);
+        $this->assertSame(FirstSeenSource::InitialLoad, $recorded[0]->first_seen_source);
+        $this->assertFalse($recorded[0]->first_seen_exact);
+        $this->assertSame(FirstSeenSource::Session, $recorded[1]->first_seen_source);
+        $this->assertTrue($recorded[1]->first_seen_exact);
+    }
+
+    /**
+     * Going away and coming back to the same place has to read as two separate
+     * stays, otherwise the gap in between disappears from the history.
+     *
+     * @return void
+     */
+    public function testReturningToTheSamePlaceOpensANewInterval(): void
+    {
+        $updater = new ConnectionHistoryUpdater();
+        $updater->update([new StubSource([
+            $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-02 12:00:00'),
+            $this->interval('10.0.0.2', '2026-02-01 10:00:00', '2026-02-01 12:00:00'),
+            $this->interval('10.0.0.1', '2026-03-01 10:00:00', '2026-03-01 12:00:00'),
+        ])]);
+
+        $recorded = $this->recorded();
+        $this->assertCount(3, $recorded);
+        $this->assertSame('10.0.0.1', $recorded[0]->nas_ip_address);
+        $this->assertSame('10.0.0.2', $recorded[1]->nas_ip_address);
+        $this->assertSame('10.0.0.1', $recorded[2]->nas_ip_address);
+        $this->assertNotSame($recorded[0]->id, $recorded[2]->id);
+    }
+
+    /**
+     * Running the update again over the same data must not change anything, so
+     * that a missed run can simply be caught up on.
+     *
+     * @return void
+     */
+    public function testRunningTwiceChangesNothing(): void
+    {
+        $intervals = [
+            $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-02 12:00:00'),
+            $this->interval('10.0.0.2', '2026-02-01 10:00:00', '2026-02-01 12:00:00'),
+        ];
+
+        (new ConnectionHistoryUpdater())->update([new StubSource($intervals)]);
+        $before = $this->recorded();
+
+        $summary = (new ConnectionHistoryUpdater())->update([new StubSource($intervals)]);
+
+        $this->assertSame(0, $summary->opened);
+        $this->assertSame(0, $summary->extended);
+
+        $after = $this->recorded();
+        $this->assertCount(count($before), $after);
+        $this->assertEquals($before[0]->first_seen, $after[0]->first_seen);
+        $this->assertEquals($before[1]->last_seen, $after[1]->last_seen);
+    }
+
+    /**
+     * Once the oldest sessions of a running stay have been purged, the source
+     * reports it as having started later than it did. The recorded start is the
+     * older evidence and has to win, with only the end moving forward.
+     *
+     * @return void
+     */
+    public function testAStayOutlivingItsOldestSessionsIsExtendedNotDuplicated(): void
+    {
+        (new ConnectionHistoryUpdater())->update([new StubSource([
+            $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-10 12:00:00'),
+        ])]);
+
+        // the same stay, seen again after its first days aged out of the source
+        $summary = (new ConnectionHistoryUpdater())->update([new StubSource([
+            $this->interval('10.0.0.1', '2026-01-05 10:00:00', '2026-02-20 12:00:00'),
+        ])]);
+
+        $this->assertSame(0, $summary->opened);
+        $this->assertSame(1, $summary->extended);
+
+        $recorded = $this->recorded();
+        $this->assertCount(1, $recorded);
+        $this->assertSame('2026-01-01 10:00:00', $recorded[0]->first_seen->format('Y-m-d H:i:s'));
+        $this->assertSame('2026-02-20 12:00:00', $recorded[0]->last_seen->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * Moving the account to another customer closes the running interval and
+     * opens a new one, so an operator can see when it happened without having
+     * to reach the audit log.
+     *
+     * @return void
+     */
+    public function testMovingTheAccountOpensANewInterval(): void
+    {
+        (new ConnectionHistoryUpdater())->update([new StubSource([
+            $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-10 12:00:00'),
+        ])]);
+
+        $movedAt = new DateTime('2026-01-15 08:30:00');
+
+        // the same place, only the account now sits under another customer
+        $summary = (new ConnectionHistoryUpdater())->update([new StubSource([
+            $this->interval(
+                '10.0.0.1',
+                '2026-01-05 10:00:00',
+                '2026-02-20 12:00:00',
+                customerId: self::CUSTOMER_B,
+                accountModified: $movedAt,
+            ),
+        ])]);
+
+        $this->assertSame(1, $summary->openedByAccountChange);
+
+        $recorded = $this->recorded();
+        $this->assertCount(2, $recorded);
+
+        $this->assertSame(self::CUSTOMER_A, $recorded[0]->customer_id);
+        $this->assertSame('2026-01-10 12:00:00', $recorded[0]->last_seen->format('Y-m-d H:i:s'));
+
+        $this->assertSame(self::CUSTOMER_B, $recorded[1]->customer_id);
+        $this->assertSame(FirstSeenSource::AccountChange, $recorded[1]->first_seen_source);
+        $this->assertSame('2026-01-15 08:30:00', $recorded[1]->first_seen->format('Y-m-d H:i:s'));
+        // the place carried over, the customer did not physically move
+        $this->assertSame('10.0.0.1', $recorded[1]->nas_ip_address);
+        // and the sessions that followed the move extended it
+        $this->assertSame('2026-02-20 12:00:00', $recorded[1]->last_seen->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * An account moved without connecting since still has to show up under its
+     * new placement, or the history would keep claiming the old one.
+     *
+     * @return void
+     */
+    public function testMovingAnAccountWithNoLaterSessionsStillOpensAnInterval(): void
+    {
+        (new ConnectionHistoryUpdater())->update([new StubSource([
+            $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-10 12:00:00'),
+        ])]);
+
+        $movedAt = new DateTime('2026-01-15 08:30:00');
+
+        (new ConnectionHistoryUpdater())->update([new StubSource([
+            $this->interval(
+                '10.0.0.1',
+                '2026-01-01 10:00:00',
+                '2026-01-10 12:00:00',
+                customerId: self::CUSTOMER_B,
+                accountModified: $movedAt,
+            ),
+        ])]);
+
+        $recorded = $this->recorded();
+        $this->assertCount(2, $recorded);
+        $this->assertSame(self::CUSTOMER_B, $recorded[1]->customer_id);
+        $this->assertEquals($recorded[1]->first_seen, $recorded[1]->last_seen);
+    }
+
+    /**
+     * A source that cannot be reached reports nothing, which must never be read
+     * as every account having gone away.
+     *
+     * @return void
+     */
+    public function testAnUnreachableSourceIsLeftAlone(): void
+    {
+        (new ConnectionHistoryUpdater())->update([new StubSource([
+            $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-10 12:00:00'),
+        ])]);
+
+        $summary = (new ConnectionHistoryUpdater())->update([new StubSource([], available: false)]);
+
+        $this->assertSame(['radius'], $summary->unavailableSources);
+        $this->assertSame(0, $summary->accounts);
+        $this->assertCount(1, $this->recorded());
+    }
+
+    /**
+     * Everything recorded, oldest first.
+     *
+     * @return array<\App\Model\Entity\ConnectionHistory>
+     */
+    private function recorded(): array
+    {
+        /** @var array<\App\Model\Entity\ConnectionHistory> $recorded */
+        $recorded = $this->ConnectionHistory->find()
+            ->orderBy(['first_seen' => 'ASC'])
+            ->toArray();
+
+        return $recorded;
+    }
+
+    /**
+     * An interval at a given network access server.
+     *
+     * @param string $nasIpAddress Address of the network access server.
+     * @param string $firstSeen Start of the interval.
+     * @param string $lastSeen End of the interval.
+     * @param string $customerId Customer the account sits under.
+     * @param \Cake\I18n\DateTime|null $accountModified When the account was last edited.
+     * @return \App\Service\ConnectionHistory\ConnectionInterval
+     */
+    private function interval(
+        string $nasIpAddress,
+        string $firstSeen,
+        string $lastSeen,
+        string $customerId = self::CUSTOMER_A,
+        ?DateTime $accountModified = null,
+    ): ConnectionInterval {
+        return new ConnectionInterval(
+            source: ConnectionHistorySource::Radius,
+            sourceReference: self::ACCOUNT,
+            firstSeen: new DateTime($firstSeen),
+            lastSeen: new DateTime($lastSeen),
+            customerId: $customerId,
+            stationId: 'aa:bb:cc:dd:ee:ff',
+            nasIpAddress: $nasIpAddress,
+            nasPortId: 'ether1',
+            ipAddress: '192.0.2.10',
+            accountModified: $accountModified,
+        );
+    }
+}
