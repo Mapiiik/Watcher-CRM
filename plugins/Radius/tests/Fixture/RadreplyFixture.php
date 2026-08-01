@@ -12,9 +12,14 @@ use Override;
 class RadreplyFixture extends TestFixture
 {
     /**
-     * Table name
+     * RADIUS keeps its own database, and so does the test suite.
      */
-    public string $table = 'radreply';
+    public string $connection = 'test_radius';
+
+    /**
+     * Table alias
+     */
+    public string $tableAlias = 'Radius.Radreply';
 
     /**
      * Init method

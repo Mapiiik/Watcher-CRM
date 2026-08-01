@@ -12,9 +12,14 @@ use Override;
 class NasFixture extends TestFixture
 {
     /**
-     * Table name
+     * RADIUS keeps its own database, and so does the test suite.
      */
-    public string $table = 'nas';
+    public string $connection = 'test_radius';
+
+    /**
+     * Table alias
+     */
+    public string $tableAlias = 'Radius.Nas';
 
     /**
      * Init method

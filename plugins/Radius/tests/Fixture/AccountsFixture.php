@@ -13,6 +13,16 @@ use Radius\Model\Enum\AccountType;
 class AccountsFixture extends TestFixture
 {
     /**
+     * RADIUS keeps its own database, and so does the test suite.
+     */
+    public string $connection = 'test_radius';
+
+    /**
+     * Table alias
+     */
+    public string $tableAlias = 'Radius.Accounts';
+
+    /**
      * Init method
      *
      * @return void
@@ -22,7 +32,7 @@ class AccountsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 1,
+                'id' => 'ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63',
                 'username' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'password' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'type' => AccountType::PPPoE,
