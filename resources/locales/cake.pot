@@ -4,8 +4,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: CakePHP 5.3.7\n"
-"POT-Creation-Date: 2026-07-20 14:57+0200\n"
+"Project-Id-Version: CakePHP 5.4.1\n"
+"POT-Creation-Date: 2026-08-01 15:11+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -53,31 +53,22 @@ msgstr ""
 msgid "Missing or incorrect CSRF session key"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Http/Response.php:1186
+#: ./vendor/cakephp/cakephp/src/Http/Response.php:1262
 msgid "The requested file contains `..` and will not be read."
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/Http/Response.php:1194
+#: ./vendor/cakephp/cakephp/src/Http/Response.php:1270
 msgid "The requested file was not found"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/I18n/Number.php:105
-msgid "{0,number,#,###.##} KB"
+#: ./vendor/cakephp/cakephp/src/I18n/Number.php:125
+#: ./vendor/cakephp/cakephp/src/I18n/Number.php:127
+#: ./vendor/cakephp/cakephp/src/I18n/Number.php:129
+#: ./vendor/cakephp/cakephp/src/I18n/Number.php:130
+msgid "{0,number,#,###.##} {1}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/I18n/Number.php:106
-msgid "{0,number,#,###.##} MB"
-msgstr ""
-
-#: ./vendor/cakephp/cakephp/src/I18n/Number.php:108
-msgid "{0,number,#,###.##} GB"
-msgstr ""
-
-#: ./vendor/cakephp/cakephp/src/I18n/Number.php:109
-msgid "{0,number,#,###.##} TB"
-msgstr ""
-
-#: ./vendor/cakephp/cakephp/src/I18n/Number.php:104
+#: ./vendor/cakephp/cakephp/src/I18n/Number.php:124
 msgid "{0,number,integer} Byte"
 msgid_plural "{0,number,integer} Bytes"
 msgstr[0] ""
@@ -507,15 +498,15 @@ msgstr ""
 msgid "The provided value is invalid"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1027
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1037
 msgid "Edit {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1029
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1039
 msgid "New {0}"
 msgstr ""
 
-#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2059
+#: ./vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2073
 msgid "Submit"
 msgstr ""
 

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakePHP 4.2.4\n"
-"POT-Creation-Date: 2026-07-20 14:57+0200\n"
-"PO-Revision-Date: 2026-07-20 15:16+0200\n"
+"POT-Creation-Date: 2026-08-01 15:11+0200\n"
+"PO-Revision-Date: 2026-08-01 15:17+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -56,31 +56,22 @@ msgstr ""
 msgid "Missing or incorrect CSRF session key"
 msgstr "Chybějící nebo nesprávný klíč relace CSRF"
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1186
+#: vendor/cakephp/cakephp/src/Http/Response.php:1262
 msgid "The requested file contains `..` and will not be read."
 msgstr "Požadovaný soubor obsahuje '.. ' a nebude načten."
 
-#: vendor/cakephp/cakephp/src/Http/Response.php:1194
+#: vendor/cakephp/cakephp/src/Http/Response.php:1270
 msgid "The requested file was not found"
 msgstr "Požadovaný soubor nebyl nalezen"
 
-#: vendor/cakephp/cakephp/src/I18n/Number.php:105
-msgid "{0,number,#,###.##} KB"
-msgstr "{0,number,#,###.##} KB"
+#: vendor/cakephp/cakephp/src/I18n/Number.php:125
+#: vendor/cakephp/cakephp/src/I18n/Number.php:127
+#: vendor/cakephp/cakephp/src/I18n/Number.php:129
+#: vendor/cakephp/cakephp/src/I18n/Number.php:130
+msgid "{0,number,#,###.##} {1}"
+msgstr "{0,number,#,###.##} {1}"
 
-#: vendor/cakephp/cakephp/src/I18n/Number.php:106
-msgid "{0,number,#,###.##} MB"
-msgstr "{0,number,#,###.##} MB"
-
-#: vendor/cakephp/cakephp/src/I18n/Number.php:108
-msgid "{0,number,#,###.##} GB"
-msgstr "{0,number,#,###.##} GB"
-
-#: vendor/cakephp/cakephp/src/I18n/Number.php:109
-msgid "{0,number,#,###.##} TB"
-msgstr "{0,number,#,###.##} TB"
-
-#: vendor/cakephp/cakephp/src/I18n/Number.php:104
+#: vendor/cakephp/cakephp/src/I18n/Number.php:124
 msgid "{0,number,integer} Byte"
 msgid_plural "{0,number,integer} Bytes"
 msgstr[0] "{0,number,integer} bajt"
@@ -526,17 +517,26 @@ msgstr "Toto pole je povinné"
 msgid "The provided value is invalid"
 msgstr "Zadaná hodnota je neplatná"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1027
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1037
 msgid "Edit {0}"
 msgstr "Upravit {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1029
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:1039
 msgid "New {0}"
 msgstr "Nový {0}"
 
-#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2059
+#: vendor/cakephp/cakephp/src/View/Helper/FormHelper.php:2073
 msgid "Submit"
 msgstr "Potvrdit"
+
+#~ msgid "{0,number,#,###.##} MB"
+#~ msgstr "{0,number,#,###.##} MB"
+
+#~ msgid "{0,number,#,###.##} GB"
+#~ msgstr "{0,number,#,###.##} GB"
+
+#~ msgid "{0,number,#,###.##} TB"
+#~ msgstr "{0,number,#,###.##} TB"
 
 #~ msgid "An Internal Error Has Occurred"
 #~ msgstr "Došlo k vnitřní chybě"
