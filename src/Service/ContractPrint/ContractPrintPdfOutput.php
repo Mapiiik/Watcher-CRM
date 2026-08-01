@@ -52,7 +52,7 @@ final class ContractPrintPdfOutput
 
         $filename = $this->buildFilename($data);
 
-        return new Response()
+        return (new Response())
             ->withType('application/pdf')
             //->withDownload($this->buildFilename($data))
             ->withHeader('Content-Disposition', 'inline; filename="' . $filename . '"')

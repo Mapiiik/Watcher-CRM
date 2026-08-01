@@ -36,7 +36,7 @@ class RadiusSource implements SourceInterface
      *
      * @var string
      */
-    private const string INTERVALS_SQL = <<<'SQL'
+    private const INTERVALS_SQL = <<<'SQL'
         WITH sessions AS (
             SELECT
                 radacct.radacctid,

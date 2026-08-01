@@ -22,23 +22,23 @@ class ConnectionHistoryControllerTest extends TestCase
     /**
      * Customer the recorded intervals belong to
      */
-    private const string CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
      * Contract the recorded intervals belong to
      */
-    private const string CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
      * Account in the source system, which lives in another database and is
      * therefore only ever referred to by its identifier
      */
-    private const string ACCOUNT_ID = 'ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63';
+    private const ACCOUNT_ID = 'ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63';
 
     /**
      * Station shared by two accounts
      */
-    private const string STATION_ID = 'aa:11:22:33:44:55';
+    private const STATION_ID = 'aa:11:22:33:44:55';
 
     /**
      * Fixtures

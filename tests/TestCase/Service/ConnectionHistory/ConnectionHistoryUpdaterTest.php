@@ -19,13 +19,13 @@ class ConnectionHistoryUpdaterTest extends TestCase
     /**
      * Account the intervals belong to
      */
-    private const string ACCOUNT = 'tester';
+    private const ACCOUNT = 'tester';
 
     /**
      * Customers standing in for a placement of the account
      */
-    private const string CUSTOMER_A = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
-    private const string CUSTOMER_B = 'ae128a49-82fd-4b80-921f-f11af75fd113';
+    private const CUSTOMER_A = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+    private const CUSTOMER_B = 'ae128a49-82fd-4b80-921f-f11af75fd113';
 
     /**
      * Table under test

@@ -45,7 +45,7 @@ class AccountsControllerTest extends TestCase
     /**
      * Account of the fixture
      */
-    private const string ACCOUNT_ID = 'ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63';
+    private const ACCOUNT_ID = 'ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63';
 
     /**
      * login method
