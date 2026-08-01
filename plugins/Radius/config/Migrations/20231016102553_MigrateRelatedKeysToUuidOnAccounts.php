@@ -50,8 +50,11 @@ class MigrateRelatedKeysToUuidOnAccounts extends BaseMigration
 
         // set new UUID keys for the customers/contracts/users
         if ($this->isMigratingUp()) {
+            // accounts live on their own connection, so the customers and users this maps have to
+            // come from the application one - resolved through aliases, so that the test suite gets
+            // its own connection instead of the production default
             /** @var \Cake\Database\Connection $connection */
-            $connection = ConnectionManager::get('default', false);
+            $connection = ConnectionManager::get('default');
 
             $selectBuilder = $this->getSelectBuilder()->setConnection($connection);
             $customers = $selectBuilder
