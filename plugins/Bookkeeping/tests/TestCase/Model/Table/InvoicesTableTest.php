@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Model\Table;
 
+use App\Test\Traits\TableTestTrait;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -12,6 +13,8 @@ use Override;
  */
 class InvoicesTableTest extends TestCase
 {
+    use TableTestTrait;
+
     /**
      * Test subject
      *
@@ -59,24 +62,26 @@ class InvoicesTableTest extends TestCase
     }
 
     /**
-     * Test validationDefault method
+     * A new record with nothing filled in is refused - see the trait for why that is the question
+     * worth asking here.
      *
      * @return void
      * @link \Bookkeeping\Model\Table\InvoicesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertEmptyRecordIsRefused($this->Invoices);
     }
 
     /**
-     * Test buildRules method
+     * The rules refuse a record whose references point nowhere - see the trait for why that is
+     * the question worth asking here.
      *
      * @return void
      * @link \Bookkeeping\Model\Table\InvoicesTable::buildRules()
      */
     public function testBuildRules(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertDanglingReferencesAreRefused($this->Invoices);
     }
 }

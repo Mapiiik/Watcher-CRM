@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Radius\Test\TestCase\Model\Table;
 
+use App\Test\Traits\TableTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use Radius\Model\Table\NasTable;
@@ -12,6 +13,8 @@ use Radius\Model\Table\NasTable;
  */
 class NasTableTest extends TestCase
 {
+    use TableTestTrait;
+
     /**
      * Test subject
      *
@@ -56,13 +59,14 @@ class NasTableTest extends TestCase
     }
 
     /**
-     * Test validationDefault method
+     * A new record with nothing filled in is refused - see the trait for why that is the question
+     * worth asking here.
      *
      * @return void
      */
     public function testValidationDefault(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertEmptyRecordIsRefused($this->Nas);
     }
 
     /**
