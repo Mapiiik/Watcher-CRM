@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-01 18:49+0200\n"
+"POT-Creation-Date: 2026-08-02 09:27+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -107,8 +107,8 @@ msgstr ""
 
 #: ./src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: ./src/Controller/Api/CustomersController.php:193
-#: ./src/Controller/OverviewsController.php:76
-#: ./src/Controller/OverviewsController.php:459
+#: ./src/Controller/OverviewsController.php:77
+#: ./src/Controller/OverviewsController.php:471
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr ""
 
@@ -206,54 +206,6 @@ msgstr ""
 msgid "Error getting message status with ID {0}: {1}"
 msgstr ""
 
-#: ./src/Command/UpdateConnectionHistoryCommand.php:42
-msgid "Records where accounts have been connected, from every configured source."
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:47
-msgid "Read only the named source instead of all of them."
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:68
-msgid "No connection history source is configured."
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "Accounts"
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "Opened"
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "By account change"
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "Extended"
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "Enriched"
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:92
-msgid "These sources could not be reached and their history is now behind: {0}"
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:104
-msgid "Error during connection history update: {0}"
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:116
-msgid "Connection history update failed"
-msgstr ""
-
-#: ./src/Command/UpdateConnectionHistoryCommand.php:118
-msgid "Connection history update failed."
-msgstr ""
-
 #: ./src/Command/UpdateCustomerLabelsCommand.php:74
 msgid "Processing"
 msgstr ""
@@ -292,6 +244,54 @@ msgstr ""
 
 #: ./src/Command/UpdateCustomerLabelsCommand.php:228
 msgid "Customer labels update failed."
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:42
+msgid "Records where accounts have been connected, from every configured source."
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:47
+msgid "Read only the named source instead of all of them."
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:68
+msgid "No historical connections source is configured."
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "Accounts"
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "Opened"
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "By account change"
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "Extended"
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "Enriched"
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:92
+msgid "These sources could not be reached and their history is now behind: {0}"
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:104
+msgid "Error during historical connections update: {0}"
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:116
+msgid "Historical connections update failed"
+msgstr ""
+
+#: ./src/Command/UpdateHistoricalConnectionsCommand.php:118
+msgid "Historical connections update failed."
 msgstr ""
 
 #: ./src/Controller/AccessCredentialsController.php:101
@@ -997,11 +997,11 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:515
+#: ./src/Controller/OverviewsController.php:527
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:517
+#: ./src/Controller/OverviewsController.php:529
 #: ./templates/Addresses/index.php:80
 #: ./templates/Addresses/index.php:87
 #: ./templates/Addresses/view.php:116
@@ -1014,7 +1014,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:793
+#: ./src/Controller/OverviewsController.php:805
 msgid "unknown dealer"
 msgstr ""
 
@@ -1203,21 +1203,21 @@ msgstr ""
 msgid "The task type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:249
+#: ./src/Controller/TasksController.php:257
 msgid "none"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:360
-#: ./src/Controller/TasksController.php:516
+#: ./src/Controller/TasksController.php:368
+#: ./src/Controller/TasksController.php:524
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:364
-#: ./src/Controller/TasksController.php:520
+#: ./src/Controller/TasksController.php:372
+#: ./src/Controller/TasksController.php:528
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:445
+#: ./src/Controller/TasksController.php:453
 #: ./src/Model/Enum/AddressType.php:26
 #: ./templates/Commissions/view.php:100
 #: ./templates/ContractStates/view.php:183
@@ -1228,7 +1228,7 @@ msgstr ""
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:458
+#: ./src/Controller/TasksController.php:466
 #: ./src/Model/Enum/CustomerMessageType.php:27
 #: ./src/Utility/ServiceChangeMessageBuilder.php:163
 #: ./templates/Customers/view.php:289
@@ -1240,7 +1240,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:459
+#: ./src/Controller/TasksController.php:467
 #: ./src/Utility/ServiceChangeMessageBuilder.php:164
 #: ./templates/Customers/view.php:338
 #: ./templates/Phones/view.php:43
@@ -1251,31 +1251,31 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:598
+#: ./src/Controller/TasksController.php:606
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:601
+#: ./src/Controller/TasksController.php:609
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:657
+#: ./src/Controller/TasksController.php:665
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:658
+#: ./src/Controller/TasksController.php:666
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:671
+#: ./src/Controller/TasksController.php:679
 msgid "Notification email sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:675
+#: ./src/Controller/TasksController.php:683
 msgid "The notification email could not be sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:269
+#: ./src/Controller/TasksController.php:277
 msgid "There was {0} unfinished task found that does not have a dealer assigned."
 msgid_plural "There were {0} unfinished tasks found that do not have a dealer assigned."
 msgstr[0] ""
@@ -1391,15 +1391,6 @@ msgstr ""
 
 #: ./src/Model/Enum/AddressType.php:29
 msgid "Permanent Address"
-msgstr ""
-
-#: ./src/Model/Enum/ConnectionHistorySource.php:30
-#: ./templates/layout/default.php:144
-msgid "RADIUS"
-msgstr ""
-
-#: ./src/Model/Enum/ConnectionHistorySource.php:45
-msgid "RADIUS Account"
 msgstr ""
 
 #: ./src/Model/Enum/ContractPrintType.php:32
@@ -1766,6 +1757,15 @@ msgstr ""
 msgid "Account change"
 msgstr ""
 
+#: ./src/Model/Enum/HistoricalConnectionSource.php:30
+#: ./templates/layout/default.php:144
+msgid "RADIUS"
+msgstr ""
+
+#: ./src/Model/Enum/HistoricalConnectionSource.php:45
+msgid "RADIUS Account"
+msgstr ""
+
 #: ./src/Model/Enum/IpAddressTypeOfUse.php:25
 msgid "Customer address set via RADIUS"
 msgstr ""
@@ -1823,14 +1823,6 @@ msgstr ""
 msgid "Company is required when first and last name are not filled in."
 msgstr ""
 
-#: ./src/Model/Table/ConnectionHistoryTable.php:197
-msgid "This interval has already been recorded."
-msgstr ""
-
-#: ./src/Model/Table/ConnectionHistoryTable.php:208
-msgid "The end of the interval must not precede its start."
-msgstr ""
-
 #: ./src/Model/Table/ContractsTable.php:310
 msgid "The specified service type requires the assignment of an installation address."
 msgstr ""
@@ -1841,6 +1833,14 @@ msgstr ""
 
 #: ./src/Model/Table/CustomersTable.php:332
 msgid "The specified identification number is not valid."
+msgstr ""
+
+#: ./src/Model/Table/HistoricalConnectionsTable.php:195
+msgid "This interval has already been recorded."
+msgstr ""
+
+#: ./src/Model/Table/HistoricalConnectionsTable.php:206
+msgid "The end of the interval must not precede its start."
 msgstr ""
 
 #: ./src/Model/Table/IpAddressesTable.php:96
@@ -1951,22 +1951,6 @@ msgstr ""
 msgid "Active contractual obligations must be finished before changing to this contract state."
 msgstr ""
 
-#: ./src/Service/ConnectionHistory/ConnectionHistoryUpdater.php:70
-msgid "The {0} connection history source could not be reached and was skipped."
-msgstr ""
-
-#: ./src/Service/ConnectionHistory/ConnectionHistoryUpdater.php:276
-msgid "The connection history interval for {0} starting {1} could not be saved."
-msgstr ""
-
-#: ./src/Service/ConnectionHistory/ConnectionHistoryUpdater.php:314
-msgid "The connection history interval for {0} could not be extended."
-msgstr ""
-
-#: ./src/Service/ConnectionHistory/ConnectionHistoryUpdater.php:354
-msgid "The network management system could not be asked about {0}."
-msgstr ""
-
 #: ./src/Service/ContractPrint/ContractPrintValidator.php:103
 msgid "Please select the contract version to be executed."
 msgstr ""
@@ -2015,6 +1999,22 @@ msgstr ""
 msgid "Please set the date until which the contract version to be terminated is valid."
 msgstr ""
 
+#: ./src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:70
+msgid "The {0} historical connections source could not be reached and was skipped."
+msgstr ""
+
+#: ./src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:276
+msgid "The historical connection for {0} starting {1} could not be saved."
+msgstr ""
+
+#: ./src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:314
+msgid "The historical connection for {0} could not be extended."
+msgstr ""
+
+#: ./src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:354
+msgid "The network management system could not be asked about {0}."
+msgstr ""
+
 #: ./src/Versioning.php:53
 #: ./src/Versioning.php:76
 msgid "Not installed via Git"
@@ -2049,9 +2049,6 @@ msgstr ""
 #: ./templates/Commissions/view.php:10
 #: ./templates/Commissions/view.php:53
 #: ./templates/Commissions/view.php:108
-#: ./templates/ConnectionHistory/index.php:48
-#: ./templates/ConnectionHistory/view.php:11
-#: ./templates/ConnectionHistory/view.php:145
 #: ./templates/ContractStates/add.php:10
 #: ./templates/ContractStates/edit.php:11
 #: ./templates/ContractStates/index.php:36
@@ -2111,6 +2108,9 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:10
 #: ./templates/EquipmentTypes/view.php:74
 #: ./templates/EquipmentTypes/view.php:136
+#: ./templates/HistoricalConnections/index.php:48
+#: ./templates/HistoricalConnections/view.php:11
+#: ./templates/HistoricalConnections/view.php:145
 #: ./templates/IpAddresses/add.php:12
 #: ./templates/IpAddresses/add_from_range.php:13
 #: ./templates/IpAddresses/bulk_reassignment.php:15
@@ -2533,7 +2533,6 @@ msgstr ""
 #: ./templates/Billings/index.php:11
 #: ./templates/BorrowedEquipments/index.php:11
 #: ./templates/Commissions/index.php:11
-#: ./templates/ConnectionHistory/index.php:18
 #: ./templates/ContractStates/index.php:11
 #: ./templates/ContractVersions/index.php:11
 #: ./templates/Contracts/index.php:11
@@ -2544,6 +2543,7 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:11
 #: ./templates/Emails/index.php:11
 #: ./templates/EquipmentTypes/index.php:11
+#: ./templates/HistoricalConnections/index.php:18
 #: ./templates/IpAddresses/index.php:11
 #: ./templates/IpNetworks/index.php:11
 #: ./templates/Labels/index.php:11
@@ -2632,8 +2632,6 @@ msgstr ""
 #: ./templates/Commissions/index.php:35
 #: ./templates/Commissions/view.php:69
 #: ./templates/Commissions/view.php:174
-#: ./templates/ConnectionHistory/index.php:89
-#: ./templates/ConnectionHistory/view.php:180
 #: ./templates/ContractStates/index.php:50
 #: ./templates/ContractStates/view.php:254
 #: ./templates/ContractVersions/index.php:62
@@ -2657,6 +2655,8 @@ msgstr ""
 #: ./templates/EquipmentTypes/index.php:45
 #: ./templates/EquipmentTypes/view.php:101
 #: ./templates/EquipmentTypes/view.php:161
+#: ./templates/HistoricalConnections/index.php:89
+#: ./templates/HistoricalConnections/view.php:180
 #: ./templates/IpAddresses/index.php:58
 #: ./templates/IpNetworks/index.php:61
 #: ./templates/Labels/index.php:68
@@ -2767,7 +2767,6 @@ msgstr ""
 #: ./templates/Billings/index.php:103
 #: ./templates/BorrowedEquipments/index.php:96
 #: ./templates/Commissions/index.php:54
-#: ./templates/ConnectionHistory/index.php:100
 #: ./templates/ContractStates/index.php:71
 #: ./templates/ContractVersions/index.php:83
 #: ./templates/Contracts/index.php:131
@@ -2778,6 +2777,7 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:76
 #: ./templates/Emails/index.php:69
 #: ./templates/EquipmentTypes/index.php:64
+#: ./templates/HistoricalConnections/index.php:100
 #: ./templates/IpAddresses/index.php:77
 #: ./templates/IpNetworks/index.php:82
 #: ./templates/Labels/index.php:87
@@ -2803,7 +2803,6 @@ msgstr ""
 #: ./templates/Billings/index.php:104
 #: ./templates/BorrowedEquipments/index.php:97
 #: ./templates/Commissions/index.php:55
-#: ./templates/ConnectionHistory/index.php:101
 #: ./templates/ContractStates/index.php:72
 #: ./templates/ContractVersions/index.php:84
 #: ./templates/Contracts/index.php:132
@@ -2814,6 +2813,7 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:77
 #: ./templates/Emails/index.php:70
 #: ./templates/EquipmentTypes/index.php:65
+#: ./templates/HistoricalConnections/index.php:101
 #: ./templates/IpAddresses/index.php:78
 #: ./templates/IpNetworks/index.php:83
 #: ./templates/Labels/index.php:88
@@ -2839,7 +2839,6 @@ msgstr ""
 #: ./templates/Billings/index.php:106
 #: ./templates/BorrowedEquipments/index.php:99
 #: ./templates/Commissions/index.php:57
-#: ./templates/ConnectionHistory/index.php:103
 #: ./templates/ContractStates/index.php:74
 #: ./templates/ContractVersions/index.php:86
 #: ./templates/Contracts/index.php:134
@@ -2850,6 +2849,7 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:79
 #: ./templates/Emails/index.php:72
 #: ./templates/EquipmentTypes/index.php:67
+#: ./templates/HistoricalConnections/index.php:103
 #: ./templates/IpAddresses/index.php:80
 #: ./templates/IpNetworks/index.php:85
 #: ./templates/Labels/index.php:90
@@ -2875,7 +2875,6 @@ msgstr ""
 #: ./templates/Billings/index.php:107
 #: ./templates/BorrowedEquipments/index.php:100
 #: ./templates/Commissions/index.php:58
-#: ./templates/ConnectionHistory/index.php:104
 #: ./templates/ContractStates/index.php:75
 #: ./templates/ContractVersions/index.php:87
 #: ./templates/Contracts/index.php:135
@@ -2886,6 +2885,7 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:80
 #: ./templates/Emails/index.php:73
 #: ./templates/EquipmentTypes/index.php:68
+#: ./templates/HistoricalConnections/index.php:104
 #: ./templates/IpAddresses/index.php:81
 #: ./templates/IpNetworks/index.php:86
 #: ./templates/Labels/index.php:91
@@ -2911,7 +2911,6 @@ msgstr ""
 #: ./templates/Billings/index.php:110
 #: ./templates/BorrowedEquipments/index.php:103
 #: ./templates/Commissions/index.php:61
-#: ./templates/ConnectionHistory/index.php:107
 #: ./templates/ContractStates/index.php:78
 #: ./templates/ContractVersions/index.php:90
 #: ./templates/Contracts/index.php:138
@@ -2922,6 +2921,7 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:83
 #: ./templates/Emails/index.php:76
 #: ./templates/EquipmentTypes/index.php:71
+#: ./templates/HistoricalConnections/index.php:107
 #: ./templates/IpAddresses/index.php:84
 #: ./templates/IpNetworks/index.php:89
 #: ./templates/Labels/index.php:94
@@ -2951,9 +2951,6 @@ msgstr ""
 #: ./templates/Billings/view.php:39
 #: ./templates/BorrowedEquipments/view.php:43
 #: ./templates/Commissions/view.php:95
-#: ./templates/ConnectionHistory/index.php:35
-#: ./templates/ConnectionHistory/view.php:35
-#: ./templates/ConnectionHistory/view.php:139
 #: ./templates/ContractStates/view.php:179
 #: ./templates/Contracts/print.php:43
 #: ./templates/Contracts/view.php:139
@@ -2968,6 +2965,9 @@ msgstr ""
 #: ./templates/Emails/view.php:32
 #: ./templates/EquipmentTypes/view.php:68
 #: ./templates/EquipmentTypes/view.php:131
+#: ./templates/HistoricalConnections/index.php:35
+#: ./templates/HistoricalConnections/view.php:35
+#: ./templates/HistoricalConnections/view.php:139
 #: ./templates/IpAddresses/bulk_reassignment.php:70
 #: ./templates/IpAddresses/view.php:32
 #: ./templates/IpNetworks/view.php:40
@@ -2993,8 +2993,6 @@ msgstr ""
 #: ./templates/Billings/service_change.php:44
 #: ./templates/Billings/view.php:50
 #: ./templates/BorrowedEquipments/view.php:56
-#: ./templates/ConnectionHistory/index.php:38
-#: ./templates/ConnectionHistory/view.php:46
 #: ./templates/ContractVersions/view.php:59
 #: ./templates/Contracts/view.php:80
 #: ./templates/Contracts/view.php:593
@@ -3002,6 +3000,8 @@ msgstr ""
 #: ./templates/Customers/view.php:786
 #: ./templates/EquipmentTypes/view.php:70
 #: ./templates/EquipmentTypes/view.php:133
+#: ./templates/HistoricalConnections/index.php:38
+#: ./templates/HistoricalConnections/view.php:46
 #: ./templates/IpAddresses/bulk_reassignment.php:72
 #: ./templates/IpAddresses/view.php:43
 #: ./templates/IpNetworks/view.php:52
@@ -3341,13 +3341,13 @@ msgstr ""
 #: ./templates/Api/NetworkManagementSystemBridge/ip_address_ranges.php:10
 #: ./templates/Billings/bulk_service_change.php:47
 #: ./templates/Commissions/view.php:102
-#: ./templates/ConnectionHistory/index.php:41
-#: ./templates/ConnectionHistory/view.php:82
-#: ./templates/ConnectionHistory/view.php:141
 #: ./templates/ContractStates/view.php:185
 #: ./templates/Contracts/print.php:89
 #: ./templates/Contracts/view.php:199
 #: ./templates/Customers/view.php:526
+#: ./templates/HistoricalConnections/index.php:41
+#: ./templates/HistoricalConnections/view.php:82
+#: ./templates/HistoricalConnections/view.php:141
 #: ./templates/IpAddresses/view.php:83
 #: ./templates/IpNetworks/view.php:78
 #: ./templates/RemovedIpAddresses/view.php:80
@@ -3832,84 +3832,6 @@ msgstr ""
 msgid "Date of Termination of Services"
 msgstr ""
 
-#: ./templates/ConnectionHistory/index.php:27
-msgid "Connection History"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:32
-#: ./templates/ConnectionHistory/view.php:64
-#: ./templates/ConnectionHistory/view.php:137
-msgid "From"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:33
-#: ./templates/ConnectionHistory/view.php:74
-#: ./templates/ConnectionHistory/view.php:138
-msgid "Until"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:40
-#: ./templates/ConnectionHistory/view.php:58
-#: ./templates/ConnectionHistory/view.php:140
-msgid "Source Reference"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:42
-#: ./templates/ConnectionHistory/view.php:88
-#: ./templates/ConnectionHistory/view.php:142
-msgid "RouterOS Device"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:43
-#: ./templates/ConnectionHistory/view.php:94
-#: ./templates/ConnectionHistory/view.php:143
-msgid "NAS IP Address"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:44
-#: ./templates/ConnectionHistory/view.php:98
-#: ./templates/ConnectionHistory/view.php:144
-msgid "NAS Port ID"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:45
-#: ./templates/ConnectionHistory/view.php:102
-msgid "Calling Station ID"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:46
-#: ./templates/ConnectionHistory/view.php:110
-msgid "Framed IP Address"
-msgstr ""
-
-#: ./templates/ConnectionHistory/index.php:47
-#: ./templates/ConnectionHistory/view.php:114
-msgid "Framed IPv6 Prefix"
-msgstr ""
-
-#: ./templates/ConnectionHistory/view.php:13
-#: ./templates/Contracts/view.php:47
-#: ./templates/Customers/view.php:47
-#: ./templates/Overviews/index.php:135
-msgid "List Connection History"
-msgstr ""
-
-#: ./templates/ConnectionHistory/view.php:70
-msgid "Accuracy of the start"
-msgstr ""
-
-#: ./templates/ConnectionHistory/view.php:106
-msgid "Called Station ID"
-msgstr ""
-
-#: ./templates/ConnectionHistory/view.php:125
-msgid "The same station elsewhere"
-msgstr ""
-
-#: ./templates/ConnectionHistory/view.php:127
-msgid "Other periods recorded for station {0}. The same station under more than one account is usually either a mistake in the configuration or equipment that has moved."
-msgstr ""
-
 #: ./templates/ContractStates/add.php:12
 #: ./templates/ContractStates/edit.php:21
 #: ./templates/ContractStates/view.php:25
@@ -4249,6 +4171,13 @@ msgstr ""
 #: ./templates/ServiceOverrides/edit.php:36
 #: ./templates/ServiceOverrides/view.php:37
 msgid "List Service Overrides"
+msgstr ""
+
+#: ./templates/Contracts/view.php:47
+#: ./templates/Customers/view.php:47
+#: ./templates/HistoricalConnections/view.php:13
+#: ./templates/Overviews/index.php:135
+msgid "List Historical Connections"
 msgstr ""
 
 #: ./templates/Contracts/view.php:54
@@ -5157,6 +5086,77 @@ msgstr ""
 #: ./templates/SoldEquipments/view.php:82
 #: ./templates/element/Contracts/SoldEquipments.php:17
 msgid "Date Of Sale"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:27
+msgid "Historical Connections"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:32
+#: ./templates/HistoricalConnections/view.php:64
+#: ./templates/HistoricalConnections/view.php:137
+msgid "From"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:33
+#: ./templates/HistoricalConnections/view.php:74
+#: ./templates/HistoricalConnections/view.php:138
+msgid "Until"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:40
+#: ./templates/HistoricalConnections/view.php:58
+#: ./templates/HistoricalConnections/view.php:140
+msgid "Source Reference"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:42
+#: ./templates/HistoricalConnections/view.php:88
+#: ./templates/HistoricalConnections/view.php:142
+msgid "RouterOS Device"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:43
+#: ./templates/HistoricalConnections/view.php:94
+#: ./templates/HistoricalConnections/view.php:143
+msgid "NAS IP Address"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:44
+#: ./templates/HistoricalConnections/view.php:98
+#: ./templates/HistoricalConnections/view.php:144
+msgid "NAS Port ID"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:45
+#: ./templates/HistoricalConnections/view.php:102
+msgid "Calling Station ID"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:46
+#: ./templates/HistoricalConnections/view.php:110
+msgid "Framed IP Address"
+msgstr ""
+
+#: ./templates/HistoricalConnections/index.php:47
+#: ./templates/HistoricalConnections/view.php:114
+msgid "Framed IPv6 Prefix"
+msgstr ""
+
+#: ./templates/HistoricalConnections/view.php:70
+msgid "Accuracy of the start"
+msgstr ""
+
+#: ./templates/HistoricalConnections/view.php:106
+msgid "Called Station ID"
+msgstr ""
+
+#: ./templates/HistoricalConnections/view.php:125
+msgid "The same station elsewhere"
+msgstr ""
+
+#: ./templates/HistoricalConnections/view.php:127
+msgid "Other periods recorded for station {0}. The same station under more than one account is usually either a mistake in the configuration or equipment that has moved."
 msgstr ""
 
 #: ./templates/IpAddresses/add.php:13
@@ -6224,10 +6224,6 @@ msgstr ""
 msgid "scheduled from {0} to {1}"
 msgstr ""
 
-#: ./templates/element/ConnectionHistory/first_seen.php:21
-msgid "{0} or earlier"
-msgstr ""
-
 #: ./templates/element/Contracts/IpAddresses.php:20
 msgid "Status"
 msgstr ""
@@ -6242,6 +6238,10 @@ msgstr ""
 #: ./templates/element/Contracts/RemovedIpNetworks.php:18
 #: ./templates/element/common/audit.php:53
 msgid "Removed"
+msgstr ""
+
+#: ./templates/element/HistoricalConnections/first_seen.php:21
+msgid "{0} or earlier"
 msgstr ""
 
 #: ./templates/element/Maps/links.php:22

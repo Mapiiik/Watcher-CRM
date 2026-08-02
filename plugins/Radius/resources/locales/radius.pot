@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-01 18:49+0200\n"
+"POT-Creation-Date: 2026-08-02 09:19+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -729,7 +729,7 @@ msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:43
 #: ./plugins/Radius/templates/Accounts/view.php:37
-msgid "List Connection History"
+msgid "List Historical Connections"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/monitoring.php:57

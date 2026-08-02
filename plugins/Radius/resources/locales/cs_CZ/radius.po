@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-01 18:49+0200\n"
-"PO-Revision-Date: 2026-08-01 18:50+0200\n"
+"POT-Creation-Date: 2026-08-02 09:19+0200\n"
+"PO-Revision-Date: 2026-08-02 09:22+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -751,8 +751,8 @@ msgstr ""
 
 #: plugins/Radius/templates/Accounts/monitoring.php:43
 #: plugins/Radius/templates/Accounts/view.php:37
-msgid "List Connection History"
-msgstr "Zobrazit historii připojení"
+msgid "List Historical Connections"
+msgstr "Seznam historických připojení"
 
 #: plugins/Radius/templates/Accounts/monitoring.php:57
 msgid "View RADIUS Account"

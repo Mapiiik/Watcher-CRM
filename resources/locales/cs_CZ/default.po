@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-01 18:49+0200\n"
-"PO-Revision-Date: 2026-08-01 18:57+0200\n"
+"POT-Creation-Date: 2026-08-02 09:27+0200\n"
+"PO-Revision-Date: 2026-08-02 09:42+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -101,8 +101,8 @@ msgstr "Adresa instalace (registr)"
 
 #: src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: src/Controller/Api/CustomersController.php:193
-#: src/Controller/OverviewsController.php:76
-#: src/Controller/OverviewsController.php:459
+#: src/Controller/OverviewsController.php:77
+#: src/Controller/OverviewsController.php:471
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr "Nepodařilo se načíst adresy z národního adresního registru: {0}"
 
@@ -196,57 +196,6 @@ msgstr "Chyba při získávání stavu SMS zprávy s ID {0}"
 msgid "Error getting message status with ID {0}: {1}"
 msgstr "Chyba při získávání stavu zprávy s ID {0}: {1}"
 
-#: src/Command/UpdateConnectionHistoryCommand.php:42
-msgid ""
-"Records where accounts have been connected, from every configured source."
-msgstr ""
-"Záznamy o tom, kde byli účty připojeny, ze všech nakonfigurovaných zdrojů."
-
-#: src/Command/UpdateConnectionHistoryCommand.php:47
-msgid "Read only the named source instead of all of them."
-msgstr "Načtěte pouze uvedený zdroj, nikoli všechny."
-
-#: src/Command/UpdateConnectionHistoryCommand.php:68
-msgid "No connection history source is configured."
-msgstr "Není nakonfigurován žádný zdroj historie připojení."
-
-#: src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "Accounts"
-msgstr "Účty"
-
-#: src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "Opened"
-msgstr "Otevřeno"
-
-#: src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "By account change"
-msgstr "Změnou účtu"
-
-#: src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "Extended"
-msgstr "Rozšířeno"
-
-#: src/Command/UpdateConnectionHistoryCommand.php:79
-msgid "Enriched"
-msgstr "Obohaceno"
-
-#: src/Command/UpdateConnectionHistoryCommand.php:92
-msgid "These sources could not be reached and their history is now behind: {0}"
-msgstr ""
-"Tyto zdroje se nepodařilo kontaktovat a jejich historie je již minulostí: {0}"
-
-#: src/Command/UpdateConnectionHistoryCommand.php:104
-msgid "Error during connection history update: {0}"
-msgstr "Chyba při aktualizaci historie připojení: {0}"
-
-#: src/Command/UpdateConnectionHistoryCommand.php:116
-msgid "Connection history update failed"
-msgstr "Aktualizace historie připojení se nezdařila"
-
-#: src/Command/UpdateConnectionHistoryCommand.php:118
-msgid "Connection history update failed."
-msgstr "Aktualizace historie připojení se nezdařila."
-
 #: src/Command/UpdateCustomerLabelsCommand.php:74
 msgid "Processing"
 msgstr "Zpracování"
@@ -295,6 +244,57 @@ msgstr "Aktualizace štítků zákazníků se nezdařila"
 #: src/Command/UpdateCustomerLabelsCommand.php:228
 msgid "Customer labels update failed."
 msgstr "Aktualizace štítků zákazníků se nezdařila."
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:42
+msgid ""
+"Records where accounts have been connected, from every configured source."
+msgstr ""
+"Zaznamenává, kde byly účty připojeny, ze všech nakonfigurovaných zdrojů."
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:47
+msgid "Read only the named source instead of all of them."
+msgstr "Načtěte pouze uvedený zdroj, nikoli všechny."
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:68
+msgid "No historical connections source is configured."
+msgstr "Není nakonfigurován žádný zdroj historických připojení."
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "Accounts"
+msgstr "Účty"
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "Opened"
+msgstr "Otevřeno"
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "By account change"
+msgstr "Změnou účtu"
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "Extended"
+msgstr "Rozšířeno"
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:79
+msgid "Enriched"
+msgstr "Obohaceno"
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:92
+msgid "These sources could not be reached and their history is now behind: {0}"
+msgstr ""
+"Tyto zdroje se nepodařilo kontaktovat a jejich historie je nyní pozadu: {0}"
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:104
+msgid "Error during historical connections update: {0}"
+msgstr "Chyba při aktualizaci historických připojení: {0}"
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:116
+msgid "Historical connections update failed"
+msgstr "Aktualizace historických připojení se nezdařila"
+
+#: src/Command/UpdateHistoricalConnectionsCommand.php:118
+msgid "Historical connections update failed."
+msgstr "Aktualizace historických připojení se nezdařila."
 
 #: src/Controller/AccessCredentialsController.php:101
 #: src/Controller/AccessCredentialsController.php:161
@@ -1031,11 +1031,11 @@ msgstr "Přihlášení bylo odstraněno."
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/OverviewsController.php:515
+#: src/Controller/OverviewsController.php:527
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 
-#: src/Controller/OverviewsController.php:517 templates/Addresses/index.php:80
+#: src/Controller/OverviewsController.php:529 templates/Addresses/index.php:80
 #: templates/Addresses/index.php:87 templates/Addresses/view.php:116
 #: templates/Addresses/view.php:128 templates/Contracts/view.php:186
 #: templates/Countries/view.php:93 templates/Countries/view.php:100
@@ -1043,7 +1043,7 @@ msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 msgid "unknown"
 msgstr "neznámé"
 
-#: src/Controller/OverviewsController.php:793
+#: src/Controller/OverviewsController.php:805
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
@@ -1233,28 +1233,28 @@ msgstr "Typ úkolu byl odstraněn."
 msgid "The task type could not be deleted. Please, try again."
 msgstr "Typ úkolu nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:249
+#: src/Controller/TasksController.php:257
 msgid "none"
 msgstr "žádný"
 
-#: src/Controller/TasksController.php:360
-#: src/Controller/TasksController.php:516
+#: src/Controller/TasksController.php:368
+#: src/Controller/TasksController.php:524
 msgid "The task has been saved."
 msgstr "Úkol byl uložen."
 
-#: src/Controller/TasksController.php:364
-#: src/Controller/TasksController.php:520
+#: src/Controller/TasksController.php:372
+#: src/Controller/TasksController.php:528
 msgid "The task could not be saved. Please, try again."
 msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:445 src/Model/Enum/AddressType.php:26
+#: src/Controller/TasksController.php:453 src/Model/Enum/AddressType.php:26
 #: templates/Commissions/view.php:100 templates/ContractStates/view.php:183
 #: templates/Contracts/print.php:76 templates/Contracts/view.php:172
 #: templates/Customers/view.php:524 templates/ServiceTypes/view.php:165
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
-#: src/Controller/TasksController.php:458
+#: src/Controller/TasksController.php:466
 #: src/Model/Enum/CustomerMessageType.php:27
 #: src/Utility/ServiceChangeMessageBuilder.php:163
 #: templates/Customers/view.php:289 templates/Emails/view.php:43
@@ -1263,7 +1263,7 @@ msgstr "Adresa instalace"
 msgid "Email"
 msgstr "E-mail"
 
-#: src/Controller/TasksController.php:459
+#: src/Controller/TasksController.php:467
 #: src/Utility/ServiceChangeMessageBuilder.php:164
 #: templates/Customers/view.php:338 templates/Phones/view.php:43
 #: templates/TaskStates/view.php:66 templates/TaskTypes/view.php:62
@@ -1271,31 +1271,31 @@ msgstr "E-mail"
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/Controller/TasksController.php:598
+#: src/Controller/TasksController.php:606
 msgid "The task has been deleted."
 msgstr "Úkol byl odstraněn."
 
-#: src/Controller/TasksController.php:601
+#: src/Controller/TasksController.php:609
 msgid "The task could not be deleted. Please, try again."
 msgstr "Úkol nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:657
+#: src/Controller/TasksController.php:665
 msgid "You have a new task # {0}"
 msgstr "Máte nový úkol č. {0}"
 
-#: src/Controller/TasksController.php:658
+#: src/Controller/TasksController.php:666
 msgid "You have changes in task # {0}"
 msgstr "Máte změny v úkolu č. {0}"
 
-#: src/Controller/TasksController.php:671
+#: src/Controller/TasksController.php:679
 msgid "Notification email sent."
 msgstr "E-mail s oznámením odeslán."
 
-#: src/Controller/TasksController.php:675
+#: src/Controller/TasksController.php:683
 msgid "The notification email could not be sent."
 msgstr "E-mail s oznámením se nepodařilo odeslat."
 
-#: src/Controller/TasksController.php:269
+#: src/Controller/TasksController.php:277
 msgid ""
 "There was {0} unfinished task found that does not have a dealer assigned."
 msgid_plural ""
@@ -1412,15 +1412,6 @@ msgstr "Doručovací adresa"
 #: src/Model/Enum/AddressType.php:29
 msgid "Permanent Address"
 msgstr "Adresa trvalého bydliště"
-
-#: src/Model/Enum/ConnectionHistorySource.php:30
-#: templates/layout/default.php:144
-msgid "RADIUS"
-msgstr "RADIUS"
-
-#: src/Model/Enum/ConnectionHistorySource.php:45
-msgid "RADIUS Account"
-msgstr "Účet RADIUS"
 
 #: src/Model/Enum/ContractPrintType.php:32
 msgid "Contract for the provision of services"
@@ -1671,7 +1662,7 @@ msgstr "Souhlas se zpracováním osobních údajů (změna)"
 
 #: src/Model/Enum/FirstSeenSource.php:46
 msgid "First session"
-msgstr "První sezení"
+msgstr "První relace"
 
 #: src/Model/Enum/FirstSeenSource.php:47
 msgid "Oldest available record"
@@ -1680,6 +1671,15 @@ msgstr "Nejstarší dostupný záznam"
 #: src/Model/Enum/FirstSeenSource.php:48
 msgid "Account change"
 msgstr "Změna účtu"
+
+#: src/Model/Enum/HistoricalConnectionSource.php:30
+#: templates/layout/default.php:144
+msgid "RADIUS"
+msgstr "RADIUS"
+
+#: src/Model/Enum/HistoricalConnectionSource.php:45
+msgid "RADIUS Account"
+msgstr "Účet RADIUS"
 
 #: src/Model/Enum/IpAddressTypeOfUse.php:25
 msgid "Customer address set via RADIUS"
@@ -1738,14 +1738,6 @@ msgstr "Jméno a příjmení jsou povinné, pokud není vyplněno jméno společ
 msgid "Company is required when first and last name are not filled in."
 msgstr "Jméno společnosti je povinné, pokud není vyplněno jméno a příjmení."
 
-#: src/Model/Table/ConnectionHistoryTable.php:197
-msgid "This interval has already been recorded."
-msgstr "Tento interval již byl zaznamenán."
-
-#: src/Model/Table/ConnectionHistoryTable.php:208
-msgid "The end of the interval must not precede its start."
-msgstr "Konec intervalu nesmí nastat dříve než jeho začátek."
-
 #: src/Model/Table/ContractsTable.php:310
 msgid ""
 "The specified service type requires the assignment of an installation "
@@ -1759,6 +1751,14 @@ msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 #: src/Model/Table/CustomersTable.php:332
 msgid "The specified identification number is not valid."
 msgstr "Zadané identifikační číslo není platné."
+
+#: src/Model/Table/HistoricalConnectionsTable.php:195
+msgid "This interval has already been recorded."
+msgstr "Tento interval již byl zaznamenán."
+
+#: src/Model/Table/HistoricalConnectionsTable.php:206
+msgid "The end of the interval must not precede its start."
+msgstr "Konec intervalu nesmí nastat dříve než jeho začátek."
 
 #: src/Model/Table/IpAddressesTable.php:96
 msgid "This IP address is already in use."
@@ -1900,23 +1900,6 @@ msgid ""
 msgstr ""
 "Aktivní smluvní závazky musí být splněny před změnou na tento stav smlouvy."
 
-#: src/Service/ConnectionHistory/ConnectionHistoryUpdater.php:70
-msgid "The {0} connection history source could not be reached and was skipped."
-msgstr "Zdroj historie připojení {0} nebyl dostupný a byl přeskočen."
-
-#: src/Service/ConnectionHistory/ConnectionHistoryUpdater.php:276
-msgid ""
-"The connection history interval for {0} starting {1} could not be saved."
-msgstr "Interval historie připojení pro {0} počínaje {1} se nepodařilo uložit."
-
-#: src/Service/ConnectionHistory/ConnectionHistoryUpdater.php:314
-msgid "The connection history interval for {0} could not be extended."
-msgstr "Interval historie připojení pro {0} nebylo možné prodloužit."
-
-#: src/Service/ConnectionHistory/ConnectionHistoryUpdater.php:354
-msgid "The network management system could not be asked about {0}."
-msgstr "Systém správy sítě nebylo možné dotázat na {0}."
-
 #: src/Service/ContractPrint/ContractPrintValidator.php:103
 msgid "Please select the contract version to be executed."
 msgstr "Vyberte prosím verzi smlouvy, kterou chcete uzavřít."
@@ -1989,6 +1972,23 @@ msgstr ""
 "Zadejte prosím datum, do kterého je verze smlouvy, která má být ukončena, "
 "platná."
 
+#: src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:70
+msgid ""
+"The {0} historical connections source could not be reached and was skipped."
+msgstr "Zdroj historického připojení {0} nebyl dostupný a byl přeskočen."
+
+#: src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:276
+msgid "The historical connection for {0} starting {1} could not be saved."
+msgstr "Historické připojení pro {0} počínaje {1} se nepodařilo uložit."
+
+#: src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:314
+msgid "The historical connection for {0} could not be extended."
+msgstr "Historické připojení pro {0} nebylo možné prodloužit."
+
+#: src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:354
+msgid "The network management system could not be asked about {0}."
+msgstr "Systém správy sítě nebylo možné dotázat na {0}."
+
 #: src/Versioning.php:53 src/Versioning.php:76
 msgid "Not installed via Git"
 msgstr "Není nainstalováno přes Git"
@@ -2012,9 +2012,7 @@ msgstr "Není nainstalováno přes Git"
 #: templates/BorrowedEquipments/view.php:10 templates/Commissions/add.php:10
 #: templates/Commissions/edit.php:10 templates/Commissions/index.php:27
 #: templates/Commissions/view.php:10 templates/Commissions/view.php:53
-#: templates/Commissions/view.php:108 templates/ConnectionHistory/index.php:48
-#: templates/ConnectionHistory/view.php:11
-#: templates/ConnectionHistory/view.php:145 templates/ContractStates/add.php:10
+#: templates/Commissions/view.php:108 templates/ContractStates/add.php:10
 #: templates/ContractStates/edit.php:11 templates/ContractStates/index.php:36
 #: templates/ContractStates/view.php:10 templates/ContractStates/view.php:192
 #: templates/ContractVersions/add.php:13 templates/ContractVersions/edit.php:11
@@ -2049,8 +2047,11 @@ msgstr "Není nainstalováno přes Git"
 #: templates/Emails/view.php:10 templates/EquipmentTypes/add.php:10
 #: templates/EquipmentTypes/edit.php:10 templates/EquipmentTypes/index.php:33
 #: templates/EquipmentTypes/view.php:10 templates/EquipmentTypes/view.php:74
-#: templates/EquipmentTypes/view.php:136 templates/IpAddresses/add.php:12
-#: templates/IpAddresses/add_from_range.php:13
+#: templates/EquipmentTypes/view.php:136
+#: templates/HistoricalConnections/index.php:48
+#: templates/HistoricalConnections/view.php:11
+#: templates/HistoricalConnections/view.php:145
+#: templates/IpAddresses/add.php:12 templates/IpAddresses/add_from_range.php:13
 #: templates/IpAddresses/bulk_reassignment.php:15
 #: templates/IpAddresses/bulk_reassignment.php:76
 #: templates/IpAddresses/edit.php:12 templates/IpAddresses/index.php:31
@@ -2321,16 +2322,17 @@ msgstr "Upravit přístupové oprávnění"
 #: templates/AccessCredentials/index.php:11
 #: templates/AccountingProfiles/index.php:11 templates/Addresses/index.php:11
 #: templates/Billings/index.php:11 templates/BorrowedEquipments/index.php:11
-#: templates/Commissions/index.php:11 templates/ConnectionHistory/index.php:18
-#: templates/ContractStates/index.php:11
+#: templates/Commissions/index.php:11 templates/ContractStates/index.php:11
 #: templates/ContractVersions/index.php:11 templates/Contracts/index.php:11
 #: templates/Countries/index.php:11 templates/CustomerLabels/index.php:11
 #: templates/CustomerMessages/index.php:11 templates/Customers/index.php:16
 #: templates/DealerCommissions/index.php:11 templates/Emails/index.php:11
-#: templates/EquipmentTypes/index.php:11 templates/IpAddresses/index.php:11
-#: templates/IpNetworks/index.php:11 templates/Labels/index.php:11
-#: templates/Logins/index.php:11 templates/Phones/index.php:11
-#: templates/Queues/index.php:11 templates/RemovedIpAddresses/index.php:11
+#: templates/EquipmentTypes/index.php:11
+#: templates/HistoricalConnections/index.php:18
+#: templates/IpAddresses/index.php:11 templates/IpNetworks/index.php:11
+#: templates/Labels/index.php:11 templates/Logins/index.php:11
+#: templates/Phones/index.php:11 templates/Queues/index.php:11
+#: templates/RemovedIpAddresses/index.php:11
 #: templates/RemovedIpNetworks/index.php:11
 #: templates/ServiceOverrides/index.php:14 templates/ServiceTypes/index.php:11
 #: templates/Services/index.php:11 templates/SoldEquipments/index.php:11
@@ -2387,9 +2389,8 @@ msgstr "Číslo zákazníka"
 #: templates/AccountingProfiles/view.php:112 templates/Addresses/index.php:94
 #: templates/Billings/index.php:84 templates/BorrowedEquipments/index.php:77
 #: templates/Commissions/index.php:35 templates/Commissions/view.php:69
-#: templates/Commissions/view.php:174 templates/ConnectionHistory/index.php:89
-#: templates/ConnectionHistory/view.php:180
-#: templates/ContractStates/index.php:50 templates/ContractStates/view.php:254
+#: templates/Commissions/view.php:174 templates/ContractStates/index.php:50
+#: templates/ContractStates/view.php:254
 #: templates/ContractVersions/index.php:62 templates/Contracts/index.php:112
 #: templates/Contracts/view.php:562 templates/Contracts/view.php:620
 #: templates/Countries/index.php:37 templates/Countries/view.php:108
@@ -2402,6 +2403,8 @@ msgstr "Číslo zákazníka"
 #: templates/Customers/view.php:813 templates/DealerCommissions/index.php:57
 #: templates/Emails/index.php:50 templates/EquipmentTypes/index.php:45
 #: templates/EquipmentTypes/view.php:101 templates/EquipmentTypes/view.php:161
+#: templates/HistoricalConnections/index.php:89
+#: templates/HistoricalConnections/view.php:180
 #: templates/IpAddresses/index.php:58 templates/IpNetworks/index.php:61
 #: templates/Labels/index.php:68 templates/Labels/view.php:118
 #: templates/Logins/index.php:56
@@ -2474,15 +2477,15 @@ msgstr "Upravit"
 #: templates/AccessCredentials/index.php:96
 #: templates/AccountingProfiles/index.php:70 templates/Addresses/index.php:113
 #: templates/Billings/index.php:103 templates/BorrowedEquipments/index.php:96
-#: templates/Commissions/index.php:54 templates/ConnectionHistory/index.php:100
-#: templates/ContractStates/index.php:71
+#: templates/Commissions/index.php:54 templates/ContractStates/index.php:71
 #: templates/ContractVersions/index.php:83 templates/Contracts/index.php:131
 #: templates/Countries/index.php:56 templates/CustomerLabels/index.php:85
 #: templates/CustomerMessages/index.php:92 templates/Customers/index.php:154
 #: templates/DealerCommissions/index.php:76 templates/Emails/index.php:69
-#: templates/EquipmentTypes/index.php:64 templates/IpAddresses/index.php:77
-#: templates/IpNetworks/index.php:82 templates/Labels/index.php:87
-#: templates/Logins/index.php:75
+#: templates/EquipmentTypes/index.php:64
+#: templates/HistoricalConnections/index.php:100
+#: templates/IpAddresses/index.php:77 templates/IpNetworks/index.php:82
+#: templates/Labels/index.php:87 templates/Logins/index.php:75
 #: templates/Overviews/overview_of_contracts.php:152
 #: templates/Phones/index.php:69 templates/Queues/index.php:72
 #: templates/RemovedIpAddresses/index.php:83
@@ -2497,15 +2500,15 @@ msgstr "první"
 #: templates/AccessCredentials/index.php:97
 #: templates/AccountingProfiles/index.php:71 templates/Addresses/index.php:114
 #: templates/Billings/index.php:104 templates/BorrowedEquipments/index.php:97
-#: templates/Commissions/index.php:55 templates/ConnectionHistory/index.php:101
-#: templates/ContractStates/index.php:72
+#: templates/Commissions/index.php:55 templates/ContractStates/index.php:72
 #: templates/ContractVersions/index.php:84 templates/Contracts/index.php:132
 #: templates/Countries/index.php:57 templates/CustomerLabels/index.php:86
 #: templates/CustomerMessages/index.php:93 templates/Customers/index.php:155
 #: templates/DealerCommissions/index.php:77 templates/Emails/index.php:70
-#: templates/EquipmentTypes/index.php:65 templates/IpAddresses/index.php:78
-#: templates/IpNetworks/index.php:83 templates/Labels/index.php:88
-#: templates/Logins/index.php:76
+#: templates/EquipmentTypes/index.php:65
+#: templates/HistoricalConnections/index.php:101
+#: templates/IpAddresses/index.php:78 templates/IpNetworks/index.php:83
+#: templates/Labels/index.php:88 templates/Logins/index.php:76
 #: templates/Overviews/overview_of_contracts.php:153
 #: templates/Phones/index.php:70 templates/Queues/index.php:73
 #: templates/RemovedIpAddresses/index.php:84
@@ -2520,15 +2523,15 @@ msgstr "předchozí"
 #: templates/AccessCredentials/index.php:99
 #: templates/AccountingProfiles/index.php:73 templates/Addresses/index.php:116
 #: templates/Billings/index.php:106 templates/BorrowedEquipments/index.php:99
-#: templates/Commissions/index.php:57 templates/ConnectionHistory/index.php:103
-#: templates/ContractStates/index.php:74
+#: templates/Commissions/index.php:57 templates/ContractStates/index.php:74
 #: templates/ContractVersions/index.php:86 templates/Contracts/index.php:134
 #: templates/Countries/index.php:59 templates/CustomerLabels/index.php:88
 #: templates/CustomerMessages/index.php:95 templates/Customers/index.php:157
 #: templates/DealerCommissions/index.php:79 templates/Emails/index.php:72
-#: templates/EquipmentTypes/index.php:67 templates/IpAddresses/index.php:80
-#: templates/IpNetworks/index.php:85 templates/Labels/index.php:90
-#: templates/Logins/index.php:78
+#: templates/EquipmentTypes/index.php:67
+#: templates/HistoricalConnections/index.php:103
+#: templates/IpAddresses/index.php:80 templates/IpNetworks/index.php:85
+#: templates/Labels/index.php:90 templates/Logins/index.php:78
 #: templates/Overviews/overview_of_contracts.php:155
 #: templates/Phones/index.php:72 templates/Queues/index.php:75
 #: templates/RemovedIpAddresses/index.php:86
@@ -2543,15 +2546,15 @@ msgstr "další"
 #: templates/AccessCredentials/index.php:100
 #: templates/AccountingProfiles/index.php:74 templates/Addresses/index.php:117
 #: templates/Billings/index.php:107 templates/BorrowedEquipments/index.php:100
-#: templates/Commissions/index.php:58 templates/ConnectionHistory/index.php:104
-#: templates/ContractStates/index.php:75
+#: templates/Commissions/index.php:58 templates/ContractStates/index.php:75
 #: templates/ContractVersions/index.php:87 templates/Contracts/index.php:135
 #: templates/Countries/index.php:60 templates/CustomerLabels/index.php:89
 #: templates/CustomerMessages/index.php:96 templates/Customers/index.php:158
 #: templates/DealerCommissions/index.php:80 templates/Emails/index.php:73
-#: templates/EquipmentTypes/index.php:68 templates/IpAddresses/index.php:81
-#: templates/IpNetworks/index.php:86 templates/Labels/index.php:91
-#: templates/Logins/index.php:79
+#: templates/EquipmentTypes/index.php:68
+#: templates/HistoricalConnections/index.php:104
+#: templates/IpAddresses/index.php:81 templates/IpNetworks/index.php:86
+#: templates/Labels/index.php:91 templates/Logins/index.php:79
 #: templates/Overviews/overview_of_contracts.php:156
 #: templates/Phones/index.php:73 templates/Queues/index.php:76
 #: templates/RemovedIpAddresses/index.php:87
@@ -2566,15 +2569,15 @@ msgstr "poslední"
 #: templates/AccessCredentials/index.php:103
 #: templates/AccountingProfiles/index.php:77 templates/Addresses/index.php:120
 #: templates/Billings/index.php:110 templates/BorrowedEquipments/index.php:103
-#: templates/Commissions/index.php:61 templates/ConnectionHistory/index.php:107
-#: templates/ContractStates/index.php:78
+#: templates/Commissions/index.php:61 templates/ContractStates/index.php:78
 #: templates/ContractVersions/index.php:90 templates/Contracts/index.php:138
 #: templates/Countries/index.php:63 templates/CustomerLabels/index.php:92
 #: templates/CustomerMessages/index.php:99 templates/Customers/index.php:161
 #: templates/DealerCommissions/index.php:83 templates/Emails/index.php:76
-#: templates/EquipmentTypes/index.php:71 templates/IpAddresses/index.php:84
-#: templates/IpNetworks/index.php:89 templates/Labels/index.php:94
-#: templates/Logins/index.php:82
+#: templates/EquipmentTypes/index.php:71
+#: templates/HistoricalConnections/index.php:107
+#: templates/IpAddresses/index.php:84 templates/IpNetworks/index.php:89
+#: templates/Labels/index.php:94 templates/Logins/index.php:82
 #: templates/Overviews/overview_of_contracts.php:160
 #: templates/Phones/index.php:76 templates/Queues/index.php:79
 #: templates/RemovedIpAddresses/index.php:90
@@ -2597,9 +2600,6 @@ msgstr "Odstranit přístupové oprávnění"
 #: templates/AccessCredentials/view.php:43 templates/Addresses/view.php:32
 #: templates/Billings/service_change.php:33 templates/Billings/view.php:39
 #: templates/BorrowedEquipments/view.php:43 templates/Commissions/view.php:95
-#: templates/ConnectionHistory/index.php:35
-#: templates/ConnectionHistory/view.php:35
-#: templates/ConnectionHistory/view.php:139
 #: templates/ContractStates/view.php:179 templates/Contracts/print.php:43
 #: templates/Contracts/view.php:139 templates/Countries/view.php:51
 #: templates/CustomerLabels/view.php:43
@@ -2610,6 +2610,9 @@ msgstr "Odstranit přístupové oprávnění"
 #: templates/CustomerMessages/view.php:48 templates/Customers/view.php:80
 #: templates/Emails/view.php:32 templates/EquipmentTypes/view.php:68
 #: templates/EquipmentTypes/view.php:131
+#: templates/HistoricalConnections/index.php:35
+#: templates/HistoricalConnections/view.php:35
+#: templates/HistoricalConnections/view.php:139
 #: templates/IpAddresses/bulk_reassignment.php:70
 #: templates/IpAddresses/view.php:32 templates/IpNetworks/view.php:40
 #: templates/Labels/view.php:88 templates/Logins/view.php:32
@@ -2627,12 +2630,12 @@ msgstr "Zákazník"
 #: templates/AccessCredentials/view.php:51
 #: templates/Billings/service_change.php:44 templates/Billings/view.php:50
 #: templates/BorrowedEquipments/view.php:56
-#: templates/ConnectionHistory/index.php:38
-#: templates/ConnectionHistory/view.php:46
 #: templates/ContractVersions/view.php:59 templates/Contracts/view.php:80
 #: templates/Contracts/view.php:593 templates/CustomerLabels/view.php:55
 #: templates/Customers/view.php:786 templates/EquipmentTypes/view.php:70
 #: templates/EquipmentTypes/view.php:133
+#: templates/HistoricalConnections/index.php:38
+#: templates/HistoricalConnections/view.php:46
 #: templates/IpAddresses/bulk_reassignment.php:72
 #: templates/IpAddresses/view.php:43 templates/IpNetworks/view.php:52
 #: templates/Labels/view.php:90
@@ -2911,11 +2914,12 @@ msgstr "GPS X"
 #: templates/Api/NetworkManagementSystemBridge/access_points.php:10
 #: templates/Api/NetworkManagementSystemBridge/ip_address_ranges.php:10
 #: templates/Billings/bulk_service_change.php:47
-#: templates/Commissions/view.php:102 templates/ConnectionHistory/index.php:41
-#: templates/ConnectionHistory/view.php:82
-#: templates/ConnectionHistory/view.php:141
-#: templates/ContractStates/view.php:185 templates/Contracts/print.php:89
-#: templates/Contracts/view.php:199 templates/Customers/view.php:526
+#: templates/Commissions/view.php:102 templates/ContractStates/view.php:185
+#: templates/Contracts/print.php:89 templates/Contracts/view.php:199
+#: templates/Customers/view.php:526
+#: templates/HistoricalConnections/index.php:41
+#: templates/HistoricalConnections/view.php:82
+#: templates/HistoricalConnections/view.php:141
 #: templates/IpAddresses/view.php:83 templates/IpNetworks/view.php:78
 #: templates/RemovedIpAddresses/view.php:80
 #: templates/RemovedIpNetworks/view.php:83 templates/ServiceTypes/view.php:167
@@ -3322,88 +3326,6 @@ msgstr "Technik pro deinstalaci"
 msgid "Date of Termination of Services"
 msgstr "Datum ukončení poskytování služeb"
 
-#: templates/ConnectionHistory/index.php:27
-msgid "Connection History"
-msgstr "Historie připojení"
-
-#: templates/ConnectionHistory/index.php:32
-#: templates/ConnectionHistory/view.php:64
-#: templates/ConnectionHistory/view.php:137
-msgid "From"
-msgstr "Od"
-
-#: templates/ConnectionHistory/index.php:33
-#: templates/ConnectionHistory/view.php:74
-#: templates/ConnectionHistory/view.php:138
-msgid "Until"
-msgstr "Do"
-
-#: templates/ConnectionHistory/index.php:40
-#: templates/ConnectionHistory/view.php:58
-#: templates/ConnectionHistory/view.php:140
-msgid "Source Reference"
-msgstr "Odkaz na zdroj"
-
-#: templates/ConnectionHistory/index.php:42
-#: templates/ConnectionHistory/view.php:88
-#: templates/ConnectionHistory/view.php:142
-msgid "RouterOS Device"
-msgstr "Zařízení RouterOS"
-
-#: templates/ConnectionHistory/index.php:43
-#: templates/ConnectionHistory/view.php:94
-#: templates/ConnectionHistory/view.php:143
-msgid "NAS IP Address"
-msgstr "IP adresa NAS"
-
-#: templates/ConnectionHistory/index.php:44
-#: templates/ConnectionHistory/view.php:98
-#: templates/ConnectionHistory/view.php:144
-msgid "NAS Port ID"
-msgstr "ID portu NAS"
-
-#: templates/ConnectionHistory/index.php:45
-#: templates/ConnectionHistory/view.php:102
-msgid "Calling Station ID"
-msgstr "ID volající stanice"
-
-#: templates/ConnectionHistory/index.php:46
-#: templates/ConnectionHistory/view.php:110
-msgid "Framed IP Address"
-msgstr "Rámcová IP adresa"
-
-#: templates/ConnectionHistory/index.php:47
-#: templates/ConnectionHistory/view.php:114
-msgid "Framed IPv6 Prefix"
-msgstr "Rámcová předpona IPv6"
-
-#: templates/ConnectionHistory/view.php:13 templates/Contracts/view.php:47
-#: templates/Customers/view.php:47 templates/Overviews/index.php:135
-msgid "List Connection History"
-msgstr "Zobrazit historii připojení"
-
-#: templates/ConnectionHistory/view.php:70
-msgid "Accuracy of the start"
-msgstr "Přesnost startu"
-
-#: templates/ConnectionHistory/view.php:106
-msgid "Called Station ID"
-msgstr "ID volané stanice"
-
-#: templates/ConnectionHistory/view.php:125
-msgid "The same station elsewhere"
-msgstr "Stejná stanice jinde"
-
-#: templates/ConnectionHistory/view.php:127
-msgid ""
-"Other periods recorded for station {0}. The same station under more than one "
-"account is usually either a mistake in the configuration or equipment that "
-"has moved."
-msgstr ""
-"Další zaznamenaná období pro stanici {0}. Pokud je stejná stanice vedena pod "
-"více než jedním účtem, jedná se obvykle buď o chybu v konfiguraci, nebo o "
-"přemístění zařízení."
-
 #: templates/ContractStates/add.php:12 templates/ContractStates/edit.php:21
 #: templates/ContractStates/view.php:25 templates/Settings/index.php:220
 msgid "List Contract States"
@@ -3703,6 +3625,12 @@ msgstr "Seznam zpráv pro zákazníky"
 #: templates/ServiceOverrides/view.php:37
 msgid "List Service Overrides"
 msgstr "Seznam dočasných úprav služby"
+
+#: templates/Contracts/view.php:47 templates/Customers/view.php:47
+#: templates/HistoricalConnections/view.php:13
+#: templates/Overviews/index.php:135
+msgid "List Historical Connections"
+msgstr "Seznam historických připojení"
 
 #: templates/Contracts/view.php:54 templates/Customers/view.php:54
 #: templates/Labels/index.php:33
@@ -4539,6 +4467,83 @@ msgstr "Cena se závazkem"
 #: templates/element/Contracts/SoldEquipments.php:17
 msgid "Date Of Sale"
 msgstr "Datum prodeje"
+
+#: templates/HistoricalConnections/index.php:27
+msgid "Historical Connections"
+msgstr "Historická připojení"
+
+#: templates/HistoricalConnections/index.php:32
+#: templates/HistoricalConnections/view.php:64
+#: templates/HistoricalConnections/view.php:137
+msgid "From"
+msgstr "Od"
+
+#: templates/HistoricalConnections/index.php:33
+#: templates/HistoricalConnections/view.php:74
+#: templates/HistoricalConnections/view.php:138
+msgid "Until"
+msgstr "Do"
+
+#: templates/HistoricalConnections/index.php:40
+#: templates/HistoricalConnections/view.php:58
+#: templates/HistoricalConnections/view.php:140
+msgid "Source Reference"
+msgstr "Odkaz na zdroj"
+
+#: templates/HistoricalConnections/index.php:42
+#: templates/HistoricalConnections/view.php:88
+#: templates/HistoricalConnections/view.php:142
+msgid "RouterOS Device"
+msgstr "Zařízení RouterOS"
+
+#: templates/HistoricalConnections/index.php:43
+#: templates/HistoricalConnections/view.php:94
+#: templates/HistoricalConnections/view.php:143
+msgid "NAS IP Address"
+msgstr "IP adresa NAS"
+
+#: templates/HistoricalConnections/index.php:44
+#: templates/HistoricalConnections/view.php:98
+#: templates/HistoricalConnections/view.php:144
+msgid "NAS Port ID"
+msgstr "ID portu NAS"
+
+#: templates/HistoricalConnections/index.php:45
+#: templates/HistoricalConnections/view.php:102
+msgid "Calling Station ID"
+msgstr "ID volající stanice"
+
+#: templates/HistoricalConnections/index.php:46
+#: templates/HistoricalConnections/view.php:110
+msgid "Framed IP Address"
+msgstr "Rámcová IP adresa"
+
+#: templates/HistoricalConnections/index.php:47
+#: templates/HistoricalConnections/view.php:114
+msgid "Framed IPv6 Prefix"
+msgstr "Rámcová předpona IPv6"
+
+#: templates/HistoricalConnections/view.php:70
+msgid "Accuracy of the start"
+msgstr "Přesnost začátku"
+
+#: templates/HistoricalConnections/view.php:106
+msgid "Called Station ID"
+msgstr "ID volané stanice"
+
+#: templates/HistoricalConnections/view.php:125
+msgid "The same station elsewhere"
+msgstr "Stejná stanice jinde"
+
+#: templates/HistoricalConnections/view.php:127
+msgid ""
+"Other periods recorded for station {0}. The same station under more than one "
+"account is usually either a mistake in the configuration or equipment that "
+"has moved."
+msgstr ""
+"Další zaznamenaná období pro stanici {0}. Pokud je stejná stanice vedena pod "
+"více než jedním účtem, jedná se obvykle buď o chybu v konfiguraci, nebo o "
+"přemístění zařízení."
 
 #: templates/IpAddresses/add.php:13 templates/IpAddresses/add_from_range.php:14
 #: templates/IpAddresses/bulk_reassignment.php:16
@@ -5534,10 +5539,6 @@ msgstr "Budoucí dočasné úpravy služby"
 msgid "scheduled from {0} to {1}"
 msgstr "naplánováno od {0} do {1}"
 
-#: templates/element/ConnectionHistory/first_seen.php:21
-msgid "{0} or earlier"
-msgstr "{0} nebo dříve"
-
 #: templates/element/Contracts/IpAddresses.php:20
 msgid "Status"
 msgstr "Stav"
@@ -5553,6 +5554,10 @@ msgstr "Načítání…"
 #: templates/element/common/audit.php:53
 msgid "Removed"
 msgstr "Odstraněno"
+
+#: templates/element/HistoricalConnections/first_seen.php:21
+msgid "{0} or earlier"
+msgstr "{0} nebo dříve"
 
 #: templates/element/Maps/links.php:22
 msgid "Google Maps"
@@ -5660,6 +5665,12 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:277
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Connection history update failed"
+#~ msgstr "Aktualizace historie připojení se nezdařila"
+
+#~ msgid "Connection History"
+#~ msgstr "Historie připojení"
 
 #~ msgid "All selected customers received the message."
 #~ msgstr "Všichni vybraní zákazníci obdrželi tuto zprávu."
