@@ -181,6 +181,33 @@ class HistoricalConnectionsUpdaterTest extends TestCase
     }
 
     /**
+     * A stay whose last session is still running ends later than the stay that
+     * follows it began, so intervals reported by a source may overlap. Those
+     * older ones are settled and must be left alone, not offered again on every
+     * run for the unique index to reject.
+     *
+     * @return void
+     */
+    public function testAnOverlappingSettledIntervalIsNotOfferedAgain(): void
+    {
+        // the first stay is still open, so it outlasts the start of the second
+        $intervals = [
+            $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-06-01 12:00:00'),
+            $this->interval('10.0.0.2', '2026-02-01 10:00:00', '2026-02-02 12:00:00'),
+        ];
+
+        (new HistoricalConnectionsUpdater())->update([new StubSource($intervals)]);
+        $this->assertCount(2, $this->recorded());
+
+        $updater = new HistoricalConnectionsUpdater();
+        $summary = $updater->update([new StubSource($intervals)]);
+
+        $this->assertSame(0, $summary->opened);
+        $this->assertCount(2, $this->recorded());
+        $this->assertSame([], $updater->Messages->getMessages());
+    }
+
+    /**
      * Moving the account to another customer closes the running interval and
      * opens a new one, so an operator can see when it happened without having
      * to reach the audit log.

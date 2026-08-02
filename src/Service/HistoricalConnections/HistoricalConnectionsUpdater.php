@@ -149,18 +149,23 @@ class HistoricalConnectionsUpdater
         $latest = $this->applyPlacementChange($latest, $first, $summary);
 
         foreach ($intervals as $interval) {
-            // already covered by what was recorded before, and the source can no
-            // longer see far enough back to say anything new about it
-            if ($interval->lastSeen <= $latest->first_seen) {
-                $summary->skipped++;
+            // The running interval seen again: the same place, still going on
+            // after it began. Its start may fall on either side of the recorded
+            // one - later once the oldest sessions have been purged, earlier
+            // when the interval was opened at the moment the account was moved.
+            if ($latest->isSamePointAs($interval) && $interval->lastSeen > $latest->first_seen) {
+                $this->extend($latest, $interval->lastSeen, $summary);
 
                 continue;
             }
 
-            // the same place, so this is the running interval seen again, part
-            // of it possibly through sessions that have since been purged
-            if ($latest->isSamePointAs($interval)) {
-                $this->extend($latest, $interval->lastSeen, $summary);
+            // Anything else that began no later than the running interval is
+            // settled. Compared by start rather than by end because intervals
+            // overlap: a stay whose last session is still open outlasts the
+            // start of the stay that followed it, and going by the end would
+            // offer it again on every run for the unique index to reject.
+            if ($interval->firstSeen <= $latest->first_seen) {
+                $summary->skipped++;
 
                 continue;
             }
