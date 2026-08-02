@@ -34,6 +34,14 @@ class RadiusSource implements SourceInterface
      * Sessions with no start time cannot be placed on the timeline and are
      * dropped, as are those not tied to an account.
      *
+     * A session with no stop time is not necessarily still running. A network
+     * access server does not always manage to report every session it ended:
+     * after a restart some accounting stops are never sent, and some are sent
+     * before routing has converged and never arrive. Such sessions keep their
+     * last interim update as their end forever, which leaves intervals that
+     * outlast the start of the interval following them. Whatever consumes these
+     * has to expect them to overlap.
+     *
      * @var string
      */
     private const INTERVALS_SQL = <<<'SQL'
