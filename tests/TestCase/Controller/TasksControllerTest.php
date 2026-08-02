@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\TasksController;
-use Cake\Core\Configure;
+use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(TasksController::class)]
 class TasksControllerTest extends TestCase
 {
+    use ControllerTestTrait;
     use IntegrationTestTrait;
 
     /**
@@ -43,24 +44,6 @@ class TasksControllerTest extends TestCase
         'app.TaskTypes',
         'app.Tasks',
     ];
-
-    /**
-     * login method
-     *
-     * @return void
-     */
-    protected function login(): void
-    {
-        /** @var \App\Model\Table\AppUsersTable $usersTable */
-        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
-
-        $user = $usersTable->newEmptyEntity();
-        $user->username = 'tester';
-        $user->role = 'admin';
-        $user->active = true;
-
-        $this->session(['Auth' => $user]);
-    }
 
     /**
      * Test index method
@@ -94,46 +77,76 @@ class TasksControllerTest extends TestCase
     }
 
     /**
-     * Test view method
+     * The listing renders with the search filled in, which builds a different query than the plain
+     * listing does and is therefore worth requesting on its own.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testIndexWithSearch(): void
+    {
+        $this->login();
+        $this->get('/tasks?show_completed=1&search=Lorem');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The detail of a task renders.
      *
      * @return void
      * @link \App\Controller\TasksController::view()
      */
     public function testView(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/tasks/view/' . $this->firstId('Tasks'));
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test add method
+     * The form for a new task renders.
      *
      * @return void
      * @link \App\Controller\TasksController::add()
      */
     public function testAdd(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/tasks/add');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test edit method
+     * The form of an existing task renders.
      *
      * @return void
      * @link \App\Controller\TasksController::edit()
      */
     public function testEdit(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/tasks/edit/' . $this->firstId('Tasks'));
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test delete method
+     * The delete action runs and redirects. Whether the task really goes depends on what else still
+     * references it, which is the application rules' business rather than this test's.
      *
      * @return void
      * @link \App\Controller\TasksController::delete()
      */
     public function testDelete(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/tasks/delete/' . $this->firstId('Tasks'));
+
+        $this->assertRedirect();
     }
 }

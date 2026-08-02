@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\CustomersController;
-use Cake\Core\Configure;
+use App\Test\Traits\ControllerTestTrait;
 use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(CustomersController::class)]
 class CustomersControllerTest extends TestCase
 {
+    use ControllerTestTrait;
     use IntegrationTestTrait;
 
     /**
@@ -76,24 +77,6 @@ class CustomersControllerTest extends TestCase
         'app.Tasks',
         'app.DealerCommissions',
     ];
-
-    /**
-     * login method
-     *
-     * @return void
-     */
-    protected function login(): void
-    {
-        /** @var \App\Model\Table\AppUsersTable $usersTable */
-        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
-
-        $user = $usersTable->newEmptyEntity();
-        $user->username = 'tester';
-        $user->role = 'admin';
-        $user->active = true;
-
-        $this->session(['Auth' => $user]);
-    }
 
     /**
      * Adds a contract version with the given obligation date to the fixture contract.
@@ -228,46 +211,61 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
-     * Test add method
+     * The form for a new customer renders.
      *
      * @return void
      * @link \App\Controller\CustomersController::add()
      */
     public function testAdd(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/customers/add');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test edit method
+     * The form of an existing customer renders.
      *
      * @return void
      * @link \App\Controller\CustomersController::edit()
      */
     public function testEdit(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/edit');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test delete method
+     * The delete action runs and redirects. Whether the customer really goes depends on what else
+     * still references them, which is the application rules' business rather than this test's.
      *
      * @return void
      * @link \App\Controller\CustomersController::delete()
      */
     public function testDelete(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/customers/' . self::CUSTOMER_ID . '/delete');
+
+        $this->assertRedirect();
     }
 
     /**
-     * Test print method
+     * The print page renders its document type selection.
      *
      * @return void
      * @link \App\Controller\CustomersController::print()
      */
     public function testPrint(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/print');
+
+        $this->assertResponseOk();
     }
 }

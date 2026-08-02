@@ -17,8 +17,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\PagesController;
+use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\Constraint\Response\StatusCode;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -30,25 +30,8 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(PagesController::class)]
 class PagesControllerTest extends TestCase
 {
+    use ControllerTestTrait;
     use IntegrationTestTrait;
-
-    /**
-     * login method
-     *
-     * @return void
-     */
-    protected function login()
-    {
-        /** @var \App\Model\Table\AppUsersTable $usersTable */
-        $usersTable = TableRegistry::getTableLocator()->get(Configure::read('Users.table', 'Users'));
-
-        $user = $usersTable->newEmptyEntity();
-        $user->username = 'tester';
-        $user->role = 'admin';
-        $user->active = true;
-
-        $this->session(['Auth' => $user]);
-    }
 
     /**
      * testDisplay method

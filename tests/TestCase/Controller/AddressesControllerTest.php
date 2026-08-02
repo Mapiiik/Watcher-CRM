@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\AddressesController;
+use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -14,6 +15,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(AddressesController::class)]
 class AddressesControllerTest extends TestCase
 {
+    use ControllerTestTrait;
     use IntegrationTestTrait;
 
     /**
@@ -41,7 +43,24 @@ class AddressesControllerTest extends TestCase
      */
     public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/addresses');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Test index method with the search filled in
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::index()
+     */
+    public function testIndexWithSearch(): void
+    {
+        $this->login();
+        $this->get('/addresses?search=Lorem');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -52,7 +71,10 @@ class AddressesControllerTest extends TestCase
      */
     public function testView(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/addresses/view/' . $this->firstId('Addresses'));
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -63,7 +85,10 @@ class AddressesControllerTest extends TestCase
      */
     public function testAdd(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/addresses/add');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -74,17 +99,26 @@ class AddressesControllerTest extends TestCase
      */
     public function testEdit(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/addresses/edit/' . $this->firstId('Addresses'));
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test delete method
+     * The delete action runs and redirects. Whether the record really goes depends on what else
+     * still references it, which is the application rules' business rather than this test's.
      *
      * @return void
      * @link \App\Controller\AddressesController::delete()
      */
     public function testDelete(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/addresses/delete/' . $this->firstId('Addresses'));
+
+        $this->assertRedirect();
     }
 }

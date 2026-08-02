@@ -5,7 +5,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Model\Enum\FirstSeenSource;
 use App\Model\Enum\HistoricalConnectionSource;
-use Cake\Core\Configure;
+use App\Test\Traits\ControllerTestTrait;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -17,6 +17,7 @@ use Cake\TestSuite\TestCase;
  */
 class HistoricalConnectionsControllerTest extends TestCase
 {
+    use ControllerTestTrait;
     use IntegrationTestTrait;
 
     /**
@@ -59,24 +60,6 @@ class HistoricalConnectionsControllerTest extends TestCase
         'app.Contracts',
         'app.HistoricalConnections',
     ];
-
-    /**
-     * login method
-     *
-     * @return void
-     */
-    protected function login(): void
-    {
-        /** @var \App\Model\Table\AppUsersTable $usersTable */
-        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
-
-        $user = $usersTable->newEmptyEntity();
-        $user->username = 'tester';
-        $user->role = 'admin';
-        $user->active = true;
-
-        $this->session(['Auth' => $user]);
-    }
 
     /**
      * The listing renders and shows what was recorded.

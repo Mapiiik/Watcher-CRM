@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\OverviewsController;
-use Cake\Core\Configure;
+use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(OverviewsController::class)]
 class OverviewsControllerTest extends TestCase
 {
+    use ControllerTestTrait;
     use IntegrationTestTrait;
 
     /**
@@ -40,24 +41,6 @@ class OverviewsControllerTest extends TestCase
         'app.Services',
         'app.Billings',
     ];
-
-    /**
-     * login method
-     *
-     * @return void
-     */
-    protected function login(): void
-    {
-        /** @var \App\Model\Table\AppUsersTable $usersTable */
-        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
-
-        $user = $usersTable->newEmptyEntity();
-        $user->username = 'tester';
-        $user->role = 'admin';
-        $user->active = true;
-
-        $this->session(['Auth' => $user]);
-    }
 
     /**
      * Test index method
@@ -109,46 +92,62 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
-     * Test view method
+     * Test overview of active services method
      *
      * @return void
-     * @link \App\Controller\OverviewsController::view()
+     * @link \App\Controller\OverviewsController::overviewOfActiveServices()
      */
-    public function testView(): void
+    public function testOverviewOfActiveServices(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+
+        $this->get('/overviews/overview-of-active-services');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test add method
+     * Test overview of Czech customer connection points method
      *
      * @return void
-     * @link \App\Controller\OverviewsController::add()
+     * @link \App\Controller\OverviewsController::overviewOfCzechCustomerConnectionPoints()
      */
-    public function testAdd(): void
+    public function testOverviewOfCzechCustomerConnectionPoints(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+
+        $this->get('/overviews/overview-of-czech-customer-connection-points');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test edit method
+     * Test overview of Czech customer connection speeds method
      *
      * @return void
-     * @link \App\Controller\OverviewsController::edit()
+     * @link \App\Controller\OverviewsController::overviewOfCzechCustomerConnectionSpeeds()
      */
-    public function testEdit(): void
+    public function testOverviewOfCzechCustomerConnectionSpeeds(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+
+        $this->get('/overviews/overview-of-czech-customer-connection-speeds');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test delete method
+     * Test overview of dealer commissions method
      *
      * @return void
-     * @link \App\Controller\OverviewsController::delete()
+     * @link \App\Controller\OverviewsController::overviewOfDealerCommissions()
      */
-    public function testDelete(): void
+    public function testOverviewOfDealerCommissions(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+
+        $this->get('/overviews/overview-of-dealer-commissions');
+
+        $this->assertResponseOk();
     }
 }
