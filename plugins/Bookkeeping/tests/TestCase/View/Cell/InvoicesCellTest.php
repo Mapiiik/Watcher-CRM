@@ -3,37 +3,71 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\View\Cell;
 
+use App\Test\Traits\ControllerTestTrait;
 use Bookkeeping\View\Cell\InvoicesCell;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
+use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
  * Bookkeeping\View\Cell\InvoicesCell Test Case
+ *
+ * The cell lists the invoices of whatever it is given conditions for, and is rendered on the
+ * customer and the contract detail. It is exercised through one of those pages: its links go
+ * through `AuthLink`, which asks the authorization service in the request whether to render each
+ * one, and outside a request there is nothing to ask.
  */
+#[UsesClass(InvoicesCell::class)]
 class InvoicesCellTest extends TestCase
 {
-    /**
-     * Request mock
-     *
-     * @var \Cake\Http\ServerRequest|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $request;
+    use ControllerTestTrait;
+    use IntegrationTestTrait;
 
     /**
-     * Response mock
+     * Customer the fixture invoice belongs to.
      *
-     * @var \Cake\Http\Response|\PHPUnit\Framework\MockObject\MockObject
+     * @var string
      */
-    protected $response;
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
-     * Test subject
+     * Fixtures
      *
-     * @var \Bookkeeping\View\Cell\InvoicesCell
+     * @var array<string>
      */
-    protected $Invoices;
+    protected array $fixtures = [
+        'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
+        'app.ContractVersions',
+        'app.Queues',
+        'app.Services',
+        'app.Billings',
+        'app.EquipmentTypes',
+        'app.BorrowedEquipments',
+        'app.Emails',
+        'app.Labels',
+        'app.CustomerLabels',
+        'app.Logins',
+        'app.Phones',
+        'app.SoldEquipments',
+        'app.IpAddresses',
+        'app.RemovedIpAddresses',
+        'app.IpNetworks',
+        'app.RemovedIpNetworks',
+        'app.TaskStates',
+        'app.TaskTypes',
+        'app.Tasks',
+        'app.DealerCommissions',
+        'plugin.Bookkeeping.Invoices',
+    ];
 
     /**
      * setUp method
@@ -44,33 +78,44 @@ class InvoicesCellTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = $this->getMockBuilder(ServerRequest::class)->getMock();
-        $this->response = $this->getMockBuilder(Response::class)->getMock();
-        $this->Invoices = new InvoicesCell($this->request, $this->response);
+
+        $this->login();
     }
 
     /**
-     * tearDown method
+     * The invoices of the customer are listed, by the number they are referred to by.
      *
-     * @return void
-     */
-    #[Override]
-    protected function tearDown(): void
-    {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
-        unset($this->Invoices);
-
-        parent::tearDown();
-    }
-
-    /**
-     * Test display method
+     * On their own page the customer column is left out - it would repeat whose page it is on
+     * every row.
      *
      * @return void
      * @link \Bookkeeping\View\Cell\InvoicesCell::display()
      */
     public function testDisplay(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__d('bookkeeping', 'Variable Symbol'));
+        $this->assertResponseNotContains(__d('bookkeeping', 'Customer Number'));
+
+        $number = $this->getTableLocator()->get('Bookkeeping.Invoices')->find()->firstOrFail()->get('number');
+        $this->assertResponseContains(h($number));
+    }
+
+    /**
+     * A customer with no invoice gets no table rather than an empty one.
+     *
+     * @return void
+     * @link \Bookkeeping\View\Cell\InvoicesCell::display()
+     */
+    public function testDisplayWithoutAnyInvoices(): void
+    {
+        $this->getTableLocator()->get('Bookkeeping.Invoices')->deleteAll([]);
+
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains(__d('bookkeeping', 'Variable Symbol'));
     }
 }

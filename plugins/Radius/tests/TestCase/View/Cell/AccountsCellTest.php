@@ -3,37 +3,75 @@ declare(strict_types=1);
 
 namespace Radius\Test\TestCase\View\Cell;
 
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
+use App\Test\Traits\ControllerTestTrait;
+use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Radius\View\Cell\AccountsCell;
 
 /**
  * Radius\View\Cell\AccountsCell Test Case
+ *
+ * The cell lists the RADIUS accounts of whatever it is given conditions for, and is rendered on the
+ * customer and the contract detail. It is exercised through one of those pages: its links go
+ * through `AuthLink`, which asks the authorization service in the request whether to render each
+ * one, and outside a request there is nothing to ask.
  */
+#[UsesClass(AccountsCell::class)]
 class AccountsCellTest extends TestCase
 {
-    /**
-     * Request mock
-     *
-     * @var \Cake\Http\ServerRequest|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $request;
+    use ControllerTestTrait;
+    use IntegrationTestTrait;
 
     /**
-     * Response mock
+     * Customer the fixture RADIUS account belongs to.
      *
-     * @var \Cake\Http\Response|\PHPUnit\Framework\MockObject\MockObject
+     * @var string
      */
-    protected $response;
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
-     * Test subject
+     * Fixtures
      *
-     * @var \Radius\View\Cell\AccountsCell
+     * @var array<string>
      */
-    protected $Accounts;
+    protected array $fixtures = [
+        'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
+        'app.ContractVersions',
+        'app.Queues',
+        'app.Services',
+        'app.Billings',
+        'app.EquipmentTypes',
+        'app.BorrowedEquipments',
+        'app.Emails',
+        'app.Labels',
+        'app.CustomerLabels',
+        'app.Logins',
+        'app.Phones',
+        'app.SoldEquipments',
+        'app.IpAddresses',
+        'app.RemovedIpAddresses',
+        'app.IpNetworks',
+        'app.RemovedIpNetworks',
+        'app.TaskStates',
+        'app.TaskTypes',
+        'app.Tasks',
+        'app.DealerCommissions',
+        'plugin.Radius.Accounts',
+        'plugin.Radius.Radcheck',
+        'plugin.Radius.Radreply',
+        'plugin.Radius.Radusergroup',
+        'plugin.Radius.Radacct',
+    ];
 
     /**
      * setUp method
@@ -44,33 +82,41 @@ class AccountsCellTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = $this->getMockBuilder(ServerRequest::class)->getMock();
-        $this->response = $this->getMockBuilder(Response::class)->getMock();
-        $this->Accounts = new AccountsCell($this->request, $this->response);
+
+        $this->login();
     }
 
     /**
-     * tearDown method
-     *
-     * @return void
-     */
-    #[Override]
-    protected function tearDown(): void
-    {
-        /** @phpstan-ignore unset.possiblyHookedProperty */
-        unset($this->Accounts);
-
-        parent::tearDown();
-    }
-
-    /**
-     * Test display method
+     * The accounts of the customer are listed, with the columns the operator works from.
      *
      * @return void
      * @link \Radius\View\Cell\AccountsCell::display()
      */
     public function testDisplay(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__d('radius', 'Username'));
+        $this->assertResponseContains(__d('radius', 'Network Access Server'));
+
+        $username = $this->getTableLocator()->get('Radius.Accounts')->find()->firstOrFail()->get('username');
+        $this->assertResponseContains(h($username));
+    }
+
+    /**
+     * A customer with no RADIUS account gets no table rather than an empty one.
+     *
+     * @return void
+     * @link \Radius\View\Cell\AccountsCell::display()
+     */
+    public function testDisplayWithoutAnyAccounts(): void
+    {
+        $this->getTableLocator()->get('Radius.Accounts')->deleteAll([]);
+
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains(__d('radius', 'Network Access Server'));
     }
 }
