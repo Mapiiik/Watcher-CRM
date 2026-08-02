@@ -17,13 +17,18 @@ trait ControllerTestTrait
     /**
      * Log a user of the given role in.
      *
+     * The setting is not loaded under the test environment, so the fallback is what actually
+     * applies - and it has to name the table the application uses. `Users` would be resolved to a
+     * generic table and cached under that alias, which any association of that name then clashes
+     * with.
+     *
      * @param string $role Role to act as; the default sees everything.
      * @return void
      */
     protected function login(string $role = 'admin'): void
     {
         /** @var \App\Model\Table\AppUsersTable $usersTable */
-        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
+        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'AppUsers'));
 
         $user = $usersTable->newEmptyEntity();
         $user->username = 'tester';
