@@ -15,7 +15,7 @@ class RenameConnectionHistoryToHistoricalConnections extends BaseMigration
      *
      * @var array<string, string>
      */
-    private const array INDEXES = [
+    private const INDEXES = [
         'connection_history_account_id_first_seen' => 'historical_connections_account_id_first_seen',
         'connection_history_contract_id_first_seen' => 'historical_connections_contract_id_first_seen',
         'connection_history_customer_id_first_seen' => 'historical_connections_customer_id_first_seen',
@@ -28,7 +28,7 @@ class RenameConnectionHistoryToHistoricalConnections extends BaseMigration
      *
      * @var array<string, string>
      */
-    private const array CONSTRAINTS = [
+    private const CONSTRAINTS = [
         'connection_history_pkey' => 'historical_connections_pkey',
         'connection_history_contract_id_fkey' => 'historical_connections_contract_id_fkey',
         'connection_history_created_by_fkey' => 'historical_connections_created_by_fkey',
