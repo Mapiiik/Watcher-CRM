@@ -66,12 +66,17 @@ class NasTableTest extends TestCase
     }
 
     /**
-     * Test defaultConnectionName method
+     * The table lives in the radius server's own database rather than ours, so it has to name that
+     * connection - on the default one the table is simply not there.
      *
      * @return void
+     * @link \Radius\Model\Table\NasTable::defaultConnectionName()
      */
     public function testDefaultConnectionName(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertSame('radius', NasTable::defaultConnectionName());
+        // the test environment aliases it onto the radius test database, so what the connection
+        // is called there is not 'radius' itself - but it is still a radius one, never the default
+        $this->assertStringContainsString('radius', $this->Nas->getConnection()->configName());
     }
 }

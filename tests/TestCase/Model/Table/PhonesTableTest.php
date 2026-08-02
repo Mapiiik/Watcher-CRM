@@ -81,13 +81,60 @@ class PhonesTableTest extends TestCase
     }
 
     /**
-     * Test beforeMarshal method
+     * A number is stored the way the international format writes it, whichever way it was typed -
+     * the same number written two ways would otherwise not be recognised as the same one.
+     *
+     * The region the local forms are read against comes from the environment, so the test says
+     * which one it means rather than relying on what is configured.
      *
      * @return void
      * @link \App\Model\Table\PhonesTable::beforeMarshal()
      */
-    public function testBeforeMarshal(): void
+    public function testBeforeMarshalFormatsANumber(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $phone = $this->Phones->newEntity(['phone' => '+420601234567']);
+
+        $this->assertSame('+420 601 234 567', $phone->phone);
+    }
+
+    /**
+     * A number typed the local way is read against the configured region and stored in the same
+     * international form, so it matches the one typed with the prefix.
+     *
+     * @return void
+     * @link \App\Model\Table\PhonesTable::beforeMarshal()
+     */
+    public function testBeforeMarshalReadsALocalNumberAgainstTheRegion(): void
+    {
+        $phone = $this->Phones->newEntity(['phone' => '601 234 567']);
+
+        $this->assertSame('+420 601 234 567', $phone->phone);
+    }
+
+    /**
+     * Something that cannot be read as a number is left as it was typed. Silently keeping whatever
+     * could be made of it would hide from the operator what they got wrong.
+     *
+     * @return void
+     * @link \App\Model\Table\PhonesTable::beforeMarshal()
+     */
+    public function testBeforeMarshalLeavesAnUnparseableNumberAlone(): void
+    {
+        $phone = $this->Phones->newEntity(['phone' => 'not a phone number']);
+
+        $this->assertSame('not a phone number', $phone->phone);
+    }
+
+    /**
+     * An empty field is nothing to format.
+     *
+     * @return void
+     * @link \App\Model\Table\PhonesTable::beforeMarshal()
+     */
+    public function testBeforeMarshalLeavesAnEmptyFieldAlone(): void
+    {
+        $phone = $this->Phones->newEntity(['phone' => '']);
+
+        $this->assertNull($phone->phone);
     }
 }
