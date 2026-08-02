@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Radius\Test\TestCase\Controller;
 
-use Cake\Core\Configure;
+use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -15,6 +15,7 @@ use Radius\Controller\AccountsController;
 #[UsesClass(AccountsController::class)]
 class AccountsControllerTest extends TestCase
 {
+    use ControllerTestTrait;
     use IntegrationTestTrait;
 
     /**
@@ -48,31 +49,32 @@ class AccountsControllerTest extends TestCase
     private const ACCOUNT_ID = 'ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63';
 
     /**
-     * login method
+     * The listing renders.
      *
      * @return void
-     */
-    protected function login(): void
-    {
-        /** @var \App\Model\Table\AppUsersTable $usersTable */
-        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
-
-        $user = $usersTable->newEmptyEntity();
-        $user->username = 'tester';
-        $user->role = 'admin';
-        $user->active = true;
-
-        $this->session(['Auth' => $user]);
-    }
-
-    /**
-     * Test index method
-     *
-     * @return void
+     * @link \Radius\Controller\AccountsController::index()
      */
     public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/radius/accounts');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The listing renders with the search filled in, which builds a different query than the plain
+     * listing does and is therefore worth requesting on its own.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::index()
+     */
+    public function testIndexWithSearch(): void
+    {
+        $this->login();
+        $this->get('/radius/accounts?search=Lorem');
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -110,32 +112,47 @@ class AccountsControllerTest extends TestCase
     }
 
     /**
-     * Test add method
+     * The form for a new account renders.
      *
      * @return void
+     * @link \Radius\Controller\AccountsController::add()
      */
     public function testAdd(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/radius/accounts/add');
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test edit method
+     * The form of an existing account renders.
      *
      * @return void
+     * @link \Radius\Controller\AccountsController::edit()
      */
     public function testEdit(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/radius/accounts/edit/' . self::ACCOUNT_ID);
+
+        $this->assertResponseOk();
     }
 
     /**
-     * Test delete method
+     * The delete action runs and redirects. Whether the account really goes depends on what else
+     * still references it, which is the application rules' business rather than this test's.
      *
      * @return void
+     * @link \Radius\Controller\AccountsController::delete()
      */
     public function testDelete(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/delete/' . self::ACCOUNT_ID);
+
+        $this->assertRedirect();
     }
 }

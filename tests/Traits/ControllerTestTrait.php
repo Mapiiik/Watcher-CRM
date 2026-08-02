@@ -55,18 +55,24 @@ trait ControllerTestTrait
     }
 
     /**
-     * Id of a record the fixtures put in the given table.
+     * Primary key of a record the fixtures put in the given table.
      *
-     * @param string $table Table alias.
+     * @param string $table Table alias, plugin prefixed where the table belongs to one.
      * @return string
      */
     protected function firstId(string $table): string
     {
-        $id = $this->getTableLocator()->get($table)
+        $tableObject = $this->getTableLocator()->get($table);
+        // the radius tables are named after what the radius server expects rather than after our
+        // own conventions, so the key is not always called `id`
+        $primaryKey = $tableObject->getPrimaryKey();
+        assert(is_string($primaryKey));
+
+        $id = $tableObject
             ->find()
-            ->orderByAsc('id')
+            ->orderByAsc($primaryKey)
             ->firstOrFail()
-            ->get('id');
+            ->get($primaryKey);
 
         return (string)$id;
     }
