@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Radius\Test\TestCase\ConnectionHistory;
+namespace Radius\Test\TestCase\HistoricalConnections;
 
-use App\Model\Enum\ConnectionHistorySource;
-use App\Service\ConnectionHistory\ConnectionInterval;
+use App\Model\Enum\HistoricalConnectionSource;
+use App\Service\HistoricalConnections\ConnectionInterval;
 use Cake\TestSuite\TestCase;
-use Radius\ConnectionHistory\RadiusSource;
+use Radius\HistoricalConnections\RadiusSource;
 
 /**
- * Radius\ConnectionHistory\RadiusSource Test Case
+ * Radius\HistoricalConnections\RadiusSource Test Case
  */
 class RadiusSourceTest extends TestCase
 {
@@ -19,8 +19,8 @@ class RadiusSourceTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'plugin.Radius.ConnectionHistoryAccounts',
-        'plugin.Radius.ConnectionHistoryRadacct',
+        'plugin.Radius.HistoricalConnectionsAccounts',
+        'plugin.Radius.HistoricalConnectionsRadacct',
     ];
 
     /**
@@ -30,7 +30,7 @@ class RadiusSourceTest extends TestCase
      */
     public function testReportsItsSource(): void
     {
-        $this->assertSame(ConnectionHistorySource::Radius, (new RadiusSource())->getSource());
+        $this->assertSame(HistoricalConnectionSource::Radius, (new RadiusSource())->getSource());
     }
 
     /**
@@ -117,7 +117,7 @@ class RadiusSourceTest extends TestCase
     /**
      * Everything the source can derive, in order.
      *
-     * @return array<\App\Service\ConnectionHistory\ConnectionInterval>
+     * @return array<\App\Service\HistoricalConnections\ConnectionInterval>
      */
     private function intervals(): array
     {

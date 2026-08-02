@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 /**
- * ConnectionHistory Controller
+ * HistoricalConnections Controller
  *
- * Read only on purpose. The history is written by the connection history
+ * Read only on purpose. The history is written by the historical connections
  * update from what the sources report, and letting it be edited by hand would
  * cost it the one property that makes it worth keeping.
  *
- * @property \App\Model\Table\ConnectionHistoryTable $ConnectionHistory
+ * @property \App\Model\Table\HistoricalConnectionsTable $HistoricalConnections
  */
-class ConnectionHistoryController extends AppController
+class HistoricalConnectionsController extends AppController
 {
     /**
      * Index method
@@ -24,10 +24,10 @@ class ConnectionHistoryController extends AppController
         // filter
         $conditions = [];
         if ($this->customer_id !== null) {
-            $conditions += ['ConnectionHistory.customer_id' => $this->customer_id];
+            $conditions += ['HistoricalConnections.customer_id' => $this->customer_id];
         }
         if ($this->contract_id !== null) {
-            $conditions += ['ConnectionHistory.contract_id' => $this->contract_id];
+            $conditions += ['HistoricalConnections.contract_id' => $this->contract_id];
         }
 
         $request = $this->getRequest();
@@ -35,7 +35,7 @@ class ConnectionHistoryController extends AppController
         // reachable from the monitoring of a single account
         $account = $request->getQuery('source_reference');
         if (!empty($account)) {
-            $conditions += ['ConnectionHistory.source_reference' => $account];
+            $conditions += ['HistoricalConnections.source_reference' => $account];
         }
 
         // search across the identifiers an operator is likely to have at hand
@@ -44,18 +44,18 @@ class ConnectionHistoryController extends AppController
             $term = '%' . trim((string)$search) . '%';
             $conditions[] = [
                 'OR' => [
-                    'ConnectionHistory.source_reference ILIKE' => $term,
-                    'ConnectionHistory.station_id ILIKE' => $term,
-                    'ConnectionHistory.ip_address ILIKE' => $term,
-                    'ConnectionHistory.ipv6_prefix ILIKE' => $term,
-                    'ConnectionHistory.nas_ip_address ILIKE' => $term,
-                    'ConnectionHistory.access_point_name ILIKE' => $term,
-                    'ConnectionHistory.routeros_device_name ILIKE' => $term,
+                    'HistoricalConnections.source_reference ILIKE' => $term,
+                    'HistoricalConnections.station_id ILIKE' => $term,
+                    'HistoricalConnections.ip_address ILIKE' => $term,
+                    'HistoricalConnections.ipv6_prefix ILIKE' => $term,
+                    'HistoricalConnections.nas_ip_address ILIKE' => $term,
+                    'HistoricalConnections.access_point_name ILIKE' => $term,
+                    'HistoricalConnections.routeros_device_name ILIKE' => $term,
                 ],
             ];
         }
 
-        $query = $this->ConnectionHistory
+        $query = $this->HistoricalConnections
             ->find()
             ->contain([
                 'Customers',
@@ -85,21 +85,21 @@ class ConnectionHistoryController extends AppController
             ],
         ];
 
-        $connectionHistory = $this->paginate($query);
+        $historicalConnections = $this->paginate($query);
 
-        $this->set(compact('connectionHistory'));
+        $this->set(compact('historicalConnections'));
     }
 
     /**
      * View method
      *
-     * @param string|null $id Connection History id.
+     * @param string|null $id Historical Connection id.
      * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view(?string $id = null): void
     {
-        $connectionHistory = $this->ConnectionHistory->get($id, contain: [
+        $historicalConnection = $this->HistoricalConnections->get($id, contain: [
             'Customers',
             'Contracts',
             'Creators',
@@ -108,15 +108,15 @@ class ConnectionHistoryController extends AppController
 
         // the same station turning up under another account is worth seeing
         $relatedStations = [];
-        if ($connectionHistory->station_id !== null) {
-            $relatedStations = $this->ConnectionHistory
-                ->find('forStation', stationId: $connectionHistory->station_id)
+        if ($historicalConnection->station_id !== null) {
+            $relatedStations = $this->HistoricalConnections
+                ->find('forStation', stationId: $historicalConnection->station_id)
                 ->contain(['Customers', 'Contracts'])
-                ->where(['ConnectionHistory.id !=' => $connectionHistory->id])
+                ->where(['HistoricalConnections.id !=' => $historicalConnection->id])
                 ->limit(50)
                 ->all();
         }
 
-        $this->set(compact('connectionHistory', 'relatedStations'));
+        $this->set(compact('historicalConnection', 'relatedStations'));
     }
 }

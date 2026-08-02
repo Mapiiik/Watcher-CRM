@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Model\Entity\ConnectionHistory;
-use App\Model\Enum\ConnectionHistorySource;
+use App\Model\Entity\HistoricalConnection;
 use App\Model\Enum\FirstSeenSource;
+use App\Model\Enum\HistoricalConnectionSource;
 use Cake\Database\Type\EnumType;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -13,26 +13,26 @@ use Cake\Validation\Validator;
 use Override;
 
 /**
- * ConnectionHistory Model
+ * HistoricalConnections Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- * @method \App\Model\Entity\ConnectionHistory newEmptyEntity()
- * @method \App\Model\Entity\ConnectionHistory newEntity(array $data, array $options = [])
- * @method array<\App\Model\Entity\ConnectionHistory> newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\ConnectionHistory get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\ConnectionHistory findOrCreate($search, ?callable $callback = null, array $options = [])
- * @method \App\Model\Entity\ConnectionHistory patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method array<\App\Model\Entity\ConnectionHistory> patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\ConnectionHistory|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method \App\Model\Entity\ConnectionHistory saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method iterable<\App\Model\Entity\ConnectionHistory>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ConnectionHistory>|false saveMany(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\ConnectionHistory>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ConnectionHistory> saveManyOrFail(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\ConnectionHistory>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ConnectionHistory>|false deleteMany(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\ConnectionHistory>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ConnectionHistory> deleteManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\HistoricalConnection newEmptyEntity()
+ * @method \App\Model\Entity\HistoricalConnection newEntity(array $data, array $options = [])
+ * @method array<\App\Model\Entity\HistoricalConnection> newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\HistoricalConnection get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\HistoricalConnection findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method \App\Model\Entity\HistoricalConnection patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method array<\App\Model\Entity\HistoricalConnection> patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\HistoricalConnection|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\HistoricalConnection saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method iterable<\App\Model\Entity\HistoricalConnection>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\HistoricalConnection>|false saveMany(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\HistoricalConnection>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\HistoricalConnection> saveManyOrFail(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\HistoricalConnection>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\HistoricalConnection>|false deleteMany(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\HistoricalConnection>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\HistoricalConnection> deleteManyOrFail(iterable $entities, array $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class ConnectionHistoryTable extends AppTable
+class HistoricalConnectionsTable extends AppTable
 {
     /**
      * Initialize method
@@ -45,14 +45,12 @@ class ConnectionHistoryTable extends AppTable
     {
         parent::initialize($config);
 
-        // singular on purpose, the table holds a history rather than histories
-        $this->setTable('connection_history');
         $this->setDisplayField('source_reference');
         $this->setPrimaryKey('id');
 
         $this->getSchema()->setColumnType(
             'source',
-            EnumType::from(ConnectionHistorySource::class),
+            EnumType::from(HistoricalConnectionSource::class),
         );
         $this->getSchema()->setColumnType(
             'first_seen_source',
@@ -216,15 +214,15 @@ class ConnectionHistoryTable extends AppTable
      * The most recent interval recorded for an account, which is the one an
      * incoming interval may be able to extend.
      *
-     * @param \App\Model\Enum\ConnectionHistorySource $source Source of the interval.
+     * @param \App\Model\Enum\HistoricalConnectionSource $source Source of the interval.
      * @param string $sourceReference Identity of the account within the source.
-     * @return \App\Model\Entity\ConnectionHistory|null
+     * @return \App\Model\Entity\HistoricalConnection|null
      */
     public function getLatestForAccount(
-        ConnectionHistorySource $source,
+        HistoricalConnectionSource $source,
         string $sourceReference,
-    ): ?ConnectionHistory {
-        /** @var \App\Model\Entity\ConnectionHistory|null $latest */
+    ): ?HistoricalConnection {
+        /** @var \App\Model\Entity\HistoricalConnection|null $latest */
         $latest = $this->find()
             ->where([
                 'source' => $source->value,
@@ -239,29 +237,29 @@ class ConnectionHistoryTable extends AppTable
     /**
      * Find intervals belonging to a customer, newest first.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ConnectionHistory> $query Base query.
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\HistoricalConnection> $query Base query.
      * @param string $customerId Customer to list the history for.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ConnectionHistory>
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\HistoricalConnection>
      */
     public function findForCustomer(SelectQuery $query, string $customerId): SelectQuery
     {
         return $query
-            ->where(['ConnectionHistory.customer_id' => $customerId])
-            ->orderBy(['ConnectionHistory.first_seen' => 'DESC']);
+            ->where(['HistoricalConnections.customer_id' => $customerId])
+            ->orderBy(['HistoricalConnections.first_seen' => 'DESC']);
     }
 
     /**
      * Find intervals belonging to a contract, newest first.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ConnectionHistory> $query Base query.
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\HistoricalConnection> $query Base query.
      * @param string $contractId Contract to list the history for.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ConnectionHistory>
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\HistoricalConnection>
      */
     public function findForContract(SelectQuery $query, string $contractId): SelectQuery
     {
         return $query
-            ->where(['ConnectionHistory.contract_id' => $contractId])
-            ->orderBy(['ConnectionHistory.first_seen' => 'DESC']);
+            ->where(['HistoricalConnections.contract_id' => $contractId])
+            ->orderBy(['HistoricalConnections.first_seen' => 'DESC']);
     }
 
     /**
@@ -271,14 +269,14 @@ class ConnectionHistoryTable extends AppTable
      * usually means either a mistake in the configuration or equipment that has
      * moved somewhere it should not have.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ConnectionHistory> $query Base query.
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\HistoricalConnection> $query Base query.
      * @param string $stationId Station identifier to look for.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ConnectionHistory>
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\HistoricalConnection>
      */
     public function findForStation(SelectQuery $query, string $stationId): SelectQuery
     {
         return $query
-            ->where(['ConnectionHistory.station_id' => $stationId])
-            ->orderBy(['ConnectionHistory.first_seen' => 'DESC']);
+            ->where(['HistoricalConnections.station_id' => $stationId])
+            ->orderBy(['HistoricalConnections.first_seen' => 'DESC']);
     }
 }

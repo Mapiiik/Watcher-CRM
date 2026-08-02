@@ -408,8 +408,8 @@ $permissions = [
                 'overviewOfCzechCustomerConnectionSpeeds',
             ],
         ],
-        //connection history - only index and view
-        //it is recorded by the connection history update from the sources
+        //historical connections - only index and view
+        //it is recorded by the historical connections update from the sources
         [
             'role' => [
                 'network-technician',
@@ -420,7 +420,7 @@ $permissions = [
             ],
             'plugin' => null,
             'controller' => [
-                'ConnectionHistory',
+                'HistoricalConnections',
             ],
             'action' => [
                 'index',

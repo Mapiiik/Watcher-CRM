@@ -8,13 +8,13 @@ use Cake\Database\Type\EnumLabelInterface;
 use Override;
 
 /**
- * ConnectionHistorySource Enum
+ * HistoricalConnectionSource Enum
  *
- * The system a connection history interval was derived from. Further sources
- * may be added by implementing \App\Service\ConnectionHistory\SourceInterface
- * and registering it under ConnectionHistory.sources.
+ * The system a historical connection was derived from. Further sources
+ * may be added by implementing \App\Service\HistoricalConnections\SourceInterface
+ * and registering it under HistoricalConnections.sources.
  */
-enum ConnectionHistorySource: string implements EnumLabelInterface
+enum HistoricalConnectionSource: string implements EnumLabelInterface
 {
     use EnumOptionsTrait;
 

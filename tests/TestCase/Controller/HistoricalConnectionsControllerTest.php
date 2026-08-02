@@ -3,19 +3,19 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Model\Enum\ConnectionHistorySource;
 use App\Model\Enum\FirstSeenSource;
+use App\Model\Enum\HistoricalConnectionSource;
 use Cake\Core\Configure;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\ConnectionHistoryController Test Case
+ * App\Controller\HistoricalConnectionsController Test Case
  *
- * @link \App\Controller\ConnectionHistoryController
+ * @link \App\Controller\HistoricalConnectionsController
  */
-class ConnectionHistoryControllerTest extends TestCase
+class HistoricalConnectionsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -57,7 +57,7 @@ class ConnectionHistoryControllerTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Contracts',
-        'app.ConnectionHistory',
+        'app.HistoricalConnections',
     ];
 
     /**
@@ -82,14 +82,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * The listing renders and shows what was recorded.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndex(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1');
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseContains('10.20.0.1');
@@ -102,7 +102,7 @@ class ConnectionHistoryControllerTest extends TestCase
      * which name is which.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexKeepsTheAccessPointAndTheBoardApart(): void
     {
@@ -111,7 +111,7 @@ class ConnectionHistoryControllerTest extends TestCase
         // response is no proof of the other having rendered
         $this->record('smith.john', '10.20.0.1', accessPoint: 'North Hill', routerosDevice: 'RB-north-01');
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         // columns of their own, asserted through the sort links rather than the
@@ -127,14 +127,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * can be picked up and pasted into WinBox without hunting around it.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexCarriesTheNasAddressOnItsOwn(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1', accessPoint: 'North Hill');
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseContains('sort=nas_ip_address');
@@ -146,14 +146,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * the address standing next to it.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexLeavesAnUnknownAccessPointBlank(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1');
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseContains('<td>10.20.0.1</td>');
@@ -166,14 +166,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * belongs to, there is nothing else on the page saying it.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexShowsTheCustomerAndContractOutsideTheirCards(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1');
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseContains('sort=Customers.company');
@@ -186,14 +186,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * customer may hold several.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexDropsOnlyTheCustomerColumnInsideTheCustomerCard(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1');
 
-        $this->get('/customers/' . self::CUSTOMER_ID . '/connection-history');
+        $this->get('/customers/' . self::CUSTOMER_ID . '/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseContains('10.20.0.1');
@@ -205,14 +205,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * Inside the card of a contract both are already settled.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexDropsBothColumnsInsideTheContractCard(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1');
 
-        $this->get('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/connection-history');
+        $this->get('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseNotContains('sort=Customers.company');
@@ -223,14 +223,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * The account is worth following back to the RADIUS side.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexLinksTheAccountToItsRadiusRecord(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1', accountId: self::ACCOUNT_ID);
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseContains('/radius/accounts/view/' . self::ACCOUNT_ID);
@@ -241,18 +241,18 @@ class ConnectionHistoryControllerTest extends TestCase
      * column stay headed "Source Reference" once there are other sources.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexNamesWhatTheReferenceRefersTo(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1', accountId: self::ACCOUNT_ID);
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseContains(
-            ConnectionHistorySource::Radius->referenceLabel() . ': ',
+            HistoricalConnectionSource::Radius->referenceLabel() . ': ',
         );
     }
 
@@ -261,14 +261,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * name still has to show, that is the whole point of keeping it as text.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexKeepsTheAccountNameWithoutARecordToLinkTo(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1');
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseContains('smith.john');
@@ -279,14 +279,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * A start that is only a lower bound has to say so, an exact one must not.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexMarksAnUncertainStart(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1', firstSeenSource: FirstSeenSource::InitialLoad);
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         // the marker rather than its wording, which is translated
@@ -297,14 +297,14 @@ class ConnectionHistoryControllerTest extends TestCase
      * A start taken from an observed session carries no such warning.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexLeavesAnExactStartUnmarked(): void
     {
         $this->login();
         $this->record('smith.john', '10.20.0.1');
 
-        $this->get('/connection-history');
+        $this->get('/historical-connections');
 
         $this->assertResponseOk();
         $this->assertResponseNotContains('class="approximate"');
@@ -314,7 +314,7 @@ class ConnectionHistoryControllerTest extends TestCase
      * Filtering by account is what the link from the RADIUS monitoring relies on.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::index()
+     * @link \App\Controller\HistoricalConnectionsController::index()
      */
     public function testIndexFiltersByAccount(): void
     {
@@ -322,7 +322,7 @@ class ConnectionHistoryControllerTest extends TestCase
         $this->record('smith.john', '10.20.0.1');
         $this->record('doe.jane', '10.20.0.9');
 
-        $this->get('/connection-history?source_reference=smith.john');
+        $this->get('/historical-connections?source_reference=smith.john');
 
         $this->assertResponseOk();
         $this->assertResponseContains('10.20.0.1');
@@ -335,18 +335,18 @@ class ConnectionHistoryControllerTest extends TestCase
      * account apart, whereas the period does.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::view()
+     * @link \App\Controller\HistoricalConnectionsController::view()
      */
     public function testViewIsHeadedByThePeriodAndTheReference(): void
     {
         $this->login();
         $interval = $this->record('smith.john', '10.20.0.1', accessPoint: 'North Hill');
 
-        $this->get('/connection-history/view/' . $interval->id);
+        $this->get('/historical-connections/view/' . $interval->id);
 
         $this->assertResponseOk();
         $this->assertResponseContains(
-            ' &middot; ' . ConnectionHistorySource::Radius->referenceLabel() . ': smith.john</h3>',
+            ' &middot; ' . HistoricalConnectionSource::Radius->referenceLabel() . ': smith.john</h3>',
         );
         $this->assertResponseNotContains('<h3>North Hill');
     }
@@ -355,7 +355,7 @@ class ConnectionHistoryControllerTest extends TestCase
      * The detail renders and points out the same station under another account.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::view()
+     * @link \App\Controller\HistoricalConnectionsController::view()
      */
     public function testViewShowsTheSameStationElsewhere(): void
     {
@@ -363,28 +363,28 @@ class ConnectionHistoryControllerTest extends TestCase
         $interval = $this->record('smith.john', '10.20.0.1');
         $elsewhere = $this->record('smith.jane', '10.20.0.1');
 
-        $this->get('/connection-history/view/' . $interval->id);
+        $this->get('/historical-connections/view/' . $interval->id);
 
         $this->assertResponseOk();
         $this->assertResponseContains('smith.jane');
-        $this->assertResponseContains('/connection-history/view/' . $elsewhere->id);
+        $this->assertResponseContains('/historical-connections/view/' . $elsewhere->id);
     }
 
     /**
      * A station seen under one account only has nothing to point out.
      *
      * @return void
-     * @link \App\Controller\ConnectionHistoryController::view()
+     * @link \App\Controller\HistoricalConnectionsController::view()
      */
     public function testViewSaysNothingAboutAStationSeenOnce(): void
     {
         $this->login();
         $interval = $this->record('smith.john', '10.20.0.1');
 
-        $this->get('/connection-history/view/' . $interval->id);
+        $this->get('/historical-connections/view/' . $interval->id);
 
         $this->assertResponseOk();
-        $this->assertResponseNotContains('/connection-history/view/' . $interval->id . '"');
+        $this->assertResponseNotContains('/historical-connections/view/' . $interval->id . '"');
     }
 
     /**
@@ -396,7 +396,7 @@ class ConnectionHistoryControllerTest extends TestCase
      * @param string|null $accessPoint Access point as the NMS named it.
      * @param string|null $routerosDevice Board as the NMS named it.
      * @param string|null $accountId Account in the source system, if still known.
-     * @return \App\Model\Entity\ConnectionHistory
+     * @return \App\Model\Entity\HistoricalConnection
      */
     private function record(
         string $account,
@@ -406,10 +406,10 @@ class ConnectionHistoryControllerTest extends TestCase
         ?string $routerosDevice = null,
         ?string $accountId = null,
     ): mixed {
-        $table = $this->getTableLocator()->get('ConnectionHistory');
+        $table = $this->getTableLocator()->get('HistoricalConnections');
 
         $interval = $table->newEmptyEntity();
-        $interval->source = ConnectionHistorySource::Radius;
+        $interval->source = HistoricalConnectionSource::Radius;
         $interval->source_reference = $account;
         $interval->customer_id = self::CUSTOMER_ID;
         $interval->contract_id = self::CONTRACT_ID;

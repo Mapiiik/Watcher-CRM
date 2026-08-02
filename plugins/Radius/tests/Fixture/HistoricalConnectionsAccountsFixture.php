@@ -8,12 +8,12 @@ use Override;
 use Radius\Model\Enum\AccountType;
 
 /**
- * ConnectionHistoryAccountsFixture
+ * HistoricalConnectionsAccountsFixture
  *
- * A readable account for the connection history source, the shared accounts
+ * A readable account for the historical connections source, the shared accounts
  * fixture carries filler text where a username belongs.
  */
-class ConnectionHistoryAccountsFixture extends TestFixture
+class HistoricalConnectionsAccountsFixture extends TestFixture
 {
     /**
      * RADIUS keeps its own database, and so does the test suite.

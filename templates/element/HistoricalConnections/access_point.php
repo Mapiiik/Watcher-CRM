@@ -12,7 +12,7 @@
  * column of its own everywhere this is used.
  *
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ConnectionHistory $interval
+ * @var \App\Model\Entity\HistoricalConnection $interval
  */
 
 if ($interval->access_point_name === null) {

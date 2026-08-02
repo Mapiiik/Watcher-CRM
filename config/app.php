@@ -5,7 +5,7 @@ use Cake\Database\Connection;
 use Cake\Database\Driver\Postgres;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
-use Radius\ConnectionHistory\RadiusSource;
+use Radius\HistoricalConnections\RadiusSource;
 use function Cake\Core\env;
 
 return [
@@ -559,14 +559,14 @@ return [
     ],
 
     /*
-     * Connection History
+     * Historical Connections
      *
      * Systems asked where accounts have been connected over time. Each entry is
-     * a class implementing \App\Service\ConnectionHistory\SourceInterface. They
+     * a class implementing \App\Service\HistoricalConnections\SourceInterface. They
      * are only ever read from, so a source may be removed here without any of
      * the history recorded from it being affected.
      */
-    'ConnectionHistory' => [
+    'HistoricalConnections' => [
         'sources' => [
             RadiusSource::class,
         ],

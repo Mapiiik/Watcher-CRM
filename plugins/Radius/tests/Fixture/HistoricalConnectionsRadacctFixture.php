@@ -7,13 +7,13 @@ use Cake\TestSuite\Fixture\TestFixture;
 use Override;
 
 /**
- * ConnectionHistoryRadacctFixture
+ * HistoricalConnectionsRadacctFixture
  *
  * Accounting for one account that moves away and comes back, written the way a
  * network access server actually would: the same station reported in two MAC
  * notations, an interval with no IPv6 at all, and a session still running.
  */
-class ConnectionHistoryRadacctFixture extends TestFixture
+class HistoricalConnectionsRadacctFixture extends TestFixture
 {
     /**
      * RADIUS keeps its own database, and so does the test suite.

@@ -7,7 +7,7 @@
  * different questions and must not be read as one.
  *
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ConnectionHistory $interval
+ * @var \App\Model\Entity\HistoricalConnection $interval
  */
 
 if ($interval->routeros_device_name === null) {

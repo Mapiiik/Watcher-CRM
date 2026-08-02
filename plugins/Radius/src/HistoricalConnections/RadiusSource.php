@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Radius\ConnectionHistory;
+namespace Radius\HistoricalConnections;
 
-use App\Model\Enum\ConnectionHistorySource;
-use App\Service\ConnectionHistory\ConnectionInterval;
-use App\Service\ConnectionHistory\SourceInterface;
+use App\Model\Enum\HistoricalConnectionSource;
+use App\Service\HistoricalConnections\ConnectionInterval;
+use App\Service\HistoricalConnections\SourceInterface;
 use Cake\Database\Connection;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\DateTime;
@@ -129,9 +129,9 @@ class RadiusSource implements SourceInterface
      * @inheritDoc
      */
     #[Override]
-    public function getSource(): ConnectionHistorySource
+    public function getSource(): HistoricalConnectionSource
     {
-        return ConnectionHistorySource::Radius;
+        return HistoricalConnectionSource::Radius;
     }
 
     /**
@@ -145,7 +145,7 @@ class RadiusSource implements SourceInterface
 
             return true;
         } catch (Throwable $e) {
-            Log::error('RADIUS connection history source unavailable: ' . $e->getMessage());
+            Log::error('RADIUS historical connections source unavailable: ' . $e->getMessage());
 
             return false;
         }

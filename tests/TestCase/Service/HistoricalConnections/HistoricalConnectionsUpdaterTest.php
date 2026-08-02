@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Service\ConnectionHistory;
+namespace App\Test\TestCase\Service\HistoricalConnections;
 
-use App\Model\Enum\ConnectionHistorySource;
 use App\Model\Enum\FirstSeenSource;
-use App\Service\ConnectionHistory\ConnectionHistoryUpdater;
-use App\Service\ConnectionHistory\ConnectionInterval;
+use App\Model\Enum\HistoricalConnectionSource;
+use App\Service\HistoricalConnections\ConnectionInterval;
+use App\Service\HistoricalConnections\HistoricalConnectionsUpdater;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
 use Override;
 
 /**
- * App\Service\ConnectionHistory\ConnectionHistoryUpdater Test Case
+ * App\Service\HistoricalConnections\HistoricalConnectionsUpdater Test Case
  */
-class ConnectionHistoryUpdaterTest extends TestCase
+class HistoricalConnectionsUpdaterTest extends TestCase
 {
     /**
      * Account the intervals belong to
@@ -30,9 +30,9 @@ class ConnectionHistoryUpdaterTest extends TestCase
     /**
      * Table under test
      *
-     * @var \App\Model\Table\ConnectionHistoryTable
+     * @var \App\Model\Table\HistoricalConnectionsTable
      */
-    protected $ConnectionHistory;
+    protected $HistoricalConnections;
 
     /**
      * Fixtures
@@ -47,7 +47,7 @@ class ConnectionHistoryUpdaterTest extends TestCase
         'app.Addresses',
         'app.Commissions',
         'app.ContractStates',
-        'app.ConnectionHistory',
+        'app.HistoricalConnections',
     ];
 
     /**
@@ -60,9 +60,9 @@ class ConnectionHistoryUpdaterTest extends TestCase
     {
         parent::setUp();
 
-        /** @var \App\Model\Table\ConnectionHistoryTable $table */
-        $table = $this->getTableLocator()->get('ConnectionHistory');
-        $this->ConnectionHistory = $table;
+        /** @var \App\Model\Table\HistoricalConnectionsTable $table */
+        $table = $this->getTableLocator()->get('HistoricalConnections');
+        $this->HistoricalConnections = $table;
     }
 
     /**
@@ -74,7 +74,7 @@ class ConnectionHistoryUpdaterTest extends TestCase
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */
-        unset($this->ConnectionHistory);
+        unset($this->HistoricalConnections);
 
         parent::tearDown();
     }
@@ -87,7 +87,7 @@ class ConnectionHistoryUpdaterTest extends TestCase
      */
     public function testInitialLoadMarksOnlyTheEarliestAsUncertain(): void
     {
-        $updater = new ConnectionHistoryUpdater();
+        $updater = new HistoricalConnectionsUpdater();
         $summary = $updater->update([new StubSource([
             $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-02 12:00:00'),
             $this->interval('10.0.0.2', '2026-02-01 10:00:00', '2026-02-01 12:00:00'),
@@ -111,7 +111,7 @@ class ConnectionHistoryUpdaterTest extends TestCase
      */
     public function testReturningToTheSamePlaceOpensANewInterval(): void
     {
-        $updater = new ConnectionHistoryUpdater();
+        $updater = new HistoricalConnectionsUpdater();
         $updater->update([new StubSource([
             $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-02 12:00:00'),
             $this->interval('10.0.0.2', '2026-02-01 10:00:00', '2026-02-01 12:00:00'),
@@ -139,10 +139,10 @@ class ConnectionHistoryUpdaterTest extends TestCase
             $this->interval('10.0.0.2', '2026-02-01 10:00:00', '2026-02-01 12:00:00'),
         ];
 
-        (new ConnectionHistoryUpdater())->update([new StubSource($intervals)]);
+        (new HistoricalConnectionsUpdater())->update([new StubSource($intervals)]);
         $before = $this->recorded();
 
-        $summary = (new ConnectionHistoryUpdater())->update([new StubSource($intervals)]);
+        $summary = (new HistoricalConnectionsUpdater())->update([new StubSource($intervals)]);
 
         $this->assertSame(0, $summary->opened);
         $this->assertSame(0, $summary->extended);
@@ -162,12 +162,12 @@ class ConnectionHistoryUpdaterTest extends TestCase
      */
     public function testAStayOutlivingItsOldestSessionsIsExtendedNotDuplicated(): void
     {
-        (new ConnectionHistoryUpdater())->update([new StubSource([
+        (new HistoricalConnectionsUpdater())->update([new StubSource([
             $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-10 12:00:00'),
         ])]);
 
         // the same stay, seen again after its first days aged out of the source
-        $summary = (new ConnectionHistoryUpdater())->update([new StubSource([
+        $summary = (new HistoricalConnectionsUpdater())->update([new StubSource([
             $this->interval('10.0.0.1', '2026-01-05 10:00:00', '2026-02-20 12:00:00'),
         ])]);
 
@@ -189,14 +189,14 @@ class ConnectionHistoryUpdaterTest extends TestCase
      */
     public function testMovingTheAccountOpensANewInterval(): void
     {
-        (new ConnectionHistoryUpdater())->update([new StubSource([
+        (new HistoricalConnectionsUpdater())->update([new StubSource([
             $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-10 12:00:00'),
         ])]);
 
         $movedAt = new DateTime('2026-01-15 08:30:00');
 
         // the same place, only the account now sits under another customer
-        $summary = (new ConnectionHistoryUpdater())->update([new StubSource([
+        $summary = (new HistoricalConnectionsUpdater())->update([new StubSource([
             $this->interval(
                 '10.0.0.1',
                 '2026-01-05 10:00:00',
@@ -231,13 +231,13 @@ class ConnectionHistoryUpdaterTest extends TestCase
      */
     public function testMovingAnAccountWithNoLaterSessionsStillOpensAnInterval(): void
     {
-        (new ConnectionHistoryUpdater())->update([new StubSource([
+        (new HistoricalConnectionsUpdater())->update([new StubSource([
             $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-10 12:00:00'),
         ])]);
 
         $movedAt = new DateTime('2026-01-15 08:30:00');
 
-        (new ConnectionHistoryUpdater())->update([new StubSource([
+        (new HistoricalConnectionsUpdater())->update([new StubSource([
             $this->interval(
                 '10.0.0.1',
                 '2026-01-01 10:00:00',
@@ -261,11 +261,11 @@ class ConnectionHistoryUpdaterTest extends TestCase
      */
     public function testAnUnreachableSourceIsLeftAlone(): void
     {
-        (new ConnectionHistoryUpdater())->update([new StubSource([
+        (new HistoricalConnectionsUpdater())->update([new StubSource([
             $this->interval('10.0.0.1', '2026-01-01 10:00:00', '2026-01-10 12:00:00'),
         ])]);
 
-        $summary = (new ConnectionHistoryUpdater())->update([new StubSource([], available: false)]);
+        $summary = (new HistoricalConnectionsUpdater())->update([new StubSource([], available: false)]);
 
         $this->assertSame(['radius'], $summary->unavailableSources);
         $this->assertSame(0, $summary->accounts);
@@ -275,12 +275,12 @@ class ConnectionHistoryUpdaterTest extends TestCase
     /**
      * Everything recorded, oldest first.
      *
-     * @return array<\App\Model\Entity\ConnectionHistory>
+     * @return array<\App\Model\Entity\HistoricalConnection>
      */
     private function recorded(): array
     {
-        /** @var array<\App\Model\Entity\ConnectionHistory> $recorded */
-        $recorded = $this->ConnectionHistory->find()
+        /** @var array<\App\Model\Entity\HistoricalConnection> $recorded */
+        $recorded = $this->HistoricalConnections->find()
             ->orderBy(['first_seen' => 'ASC'])
             ->toArray();
 
@@ -295,7 +295,7 @@ class ConnectionHistoryUpdaterTest extends TestCase
      * @param string $lastSeen End of the interval.
      * @param string $customerId Customer the account sits under.
      * @param \Cake\I18n\DateTime|null $accountModified When the account was last edited.
-     * @return \App\Service\ConnectionHistory\ConnectionInterval
+     * @return \App\Service\HistoricalConnections\ConnectionInterval
      */
     private function interval(
         string $nasIpAddress,
@@ -305,7 +305,7 @@ class ConnectionHistoryUpdaterTest extends TestCase
         ?DateTime $accountModified = null,
     ): ConnectionInterval {
         return new ConnectionInterval(
-            source: ConnectionHistorySource::Radius,
+            source: HistoricalConnectionSource::Radius,
             sourceReference: self::ACCOUNT,
             firstSeen: new DateTime($firstSeen),
             lastSeen: new DateTime($lastSeen),

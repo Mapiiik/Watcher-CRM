@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\ConnectionHistory;
+namespace App\Service\HistoricalConnections;
 
-use App\Model\Enum\ConnectionHistorySource;
+use App\Model\Enum\HistoricalConnectionSource;
 use Cake\I18n\DateTime;
 
 /**
@@ -16,7 +16,7 @@ use Cake\I18n\DateTime;
 class ConnectionInterval
 {
     /**
-     * @param \App\Model\Enum\ConnectionHistorySource $source The source that observed the interval.
+     * @param \App\Model\Enum\HistoricalConnectionSource $source The source that observed the interval.
      * @param string $sourceReference Identity of the account within the source.
      * @param \Cake\I18n\DateTime $firstSeen Start of the interval.
      * @param \Cake\I18n\DateTime $lastSeen End of the interval, equal to firstSeen when still open.
@@ -32,7 +32,7 @@ class ConnectionInterval
      * @param \Cake\I18n\DateTime|null $accountModified When the account was last edited in the source.
      */
     public function __construct(
-        public readonly ConnectionHistorySource $source,
+        public readonly HistoricalConnectionSource $source,
         public readonly string $sourceReference,
         public readonly DateTime $firstSeen,
         public readonly DateTime $lastSeen,

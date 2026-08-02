@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Traits\MessageHandlerTrait;
-use App\Service\ConnectionHistory\ConnectionHistoryUpdater;
-use App\Service\ConnectionHistory\SourceInterface;
+use App\Service\HistoricalConnections\HistoricalConnectionsUpdater;
+use App\Service\HistoricalConnections\SourceInterface;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -17,13 +17,13 @@ use Override;
 use Throwable;
 
 /**
- * Update connection history command.
+ * Update historical connections command.
  *
  * Meant to run daily. The sources it reads keep only a few months of accounting
  * data, so a run that never happens is a gap that cannot be filled in later,
  * whereas a run that happens twice changes nothing.
  */
-class UpdateConnectionHistoryCommand extends Command
+class UpdateHistoricalConnectionsCommand extends Command
 {
     use MessageHandlerTrait;
 
@@ -65,12 +65,12 @@ class UpdateConnectionHistoryCommand extends Command
             $sources = $this->buildSources((string)$args->getOption('source'));
 
             if ($sources === []) {
-                $io->warning(__('No connection history source is configured.'));
+                $io->warning(__('No historical connections source is configured.'));
 
                 return static::CODE_SUCCESS;
             }
 
-            $updater = new ConnectionHistoryUpdater();
+            $updater = new HistoricalConnectionsUpdater();
             $summary = $updater->update($sources);
 
             $this->handleMessages($updater->Messages->getMessages(), $io);
@@ -99,10 +99,10 @@ class UpdateConnectionHistoryCommand extends Command
 
             return static::CODE_SUCCESS;
         } catch (Throwable $e) {
-            Log::error('Error during connection history update: ' . $e->getMessage());
+            Log::error('Error during historical connections update: ' . $e->getMessage());
 
             $io->error(__(
-                'Error during connection history update: {0}',
+                'Error during historical connections update: {0}',
                 $e->getMessage(),
             ));
 
@@ -113,10 +113,10 @@ class UpdateConnectionHistoryCommand extends Command
                 $errorMailer->addTo($email);
             }
 
-            $errorMailer->setSubject(__('Connection history update failed'));
+            $errorMailer->setSubject(__('Historical connections update failed'));
 
             $errorMailer->deliver(__(
-                'Connection history update failed.' . PHP_EOL . PHP_EOL
+                'Historical connections update failed.' . PHP_EOL . PHP_EOL
                 . 'Error: {0}',
                 [$e->getMessage()],
             ));
@@ -131,15 +131,15 @@ class UpdateConnectionHistoryCommand extends Command
      * Build the configured sources.
      *
      * @param string $only Read only this source, empty for all of them.
-     * @return array<\App\Service\ConnectionHistory\SourceInterface>
+     * @return array<\App\Service\HistoricalConnections\SourceInterface>
      */
     protected function buildSources(string $only): array
     {
         $sources = [];
 
-        foreach ((array)Configure::read('ConnectionHistory.sources', []) as $className) {
+        foreach ((array)Configure::read('HistoricalConnections.sources', []) as $className) {
             if (!is_string($className) || !class_exists($className)) {
-                Log::warning('Configured connection history source does not exist: ' . (string)$className);
+                Log::warning('Configured historical connections source does not exist: ' . (string)$className);
 
                 continue;
             }
@@ -147,7 +147,7 @@ class UpdateConnectionHistoryCommand extends Command
             $source = new $className();
 
             if (!$source instanceof SourceInterface) {
-                Log::warning('Configured connection history source is not a source: ' . $className);
+                Log::warning('Configured historical connections source is not a source: ' . $className);
 
                 continue;
             }
@@ -168,6 +168,6 @@ class UpdateConnectionHistoryCommand extends Command
     #[Override]
     public static function defaultName(): string
     {
-        return 'connection_history update';
+        return 'historical_connections update';
     }
 }

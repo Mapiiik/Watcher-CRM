@@ -8,7 +8,7 @@
  * would otherwise read as exact dates.
  *
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ConnectionHistory $interval
+ * @var \App\Model\Entity\HistoricalConnection $interval
  */
 
 if ($interval->first_seen_exact) {

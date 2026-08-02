@@ -10,7 +10,7 @@ use Override;
 /**
  * FirstSeenSource Enum
  *
- * Says how the first_seen of a connection history interval came to be, which
+ * Says how the first_seen of a historical connection came to be, which
  * decides whether it may be read as an exact moment.
  */
 enum FirstSeenSource: string implements EnumLabelInterface

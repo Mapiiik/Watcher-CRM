@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ConnectionHistory $connectionHistory
- * @var iterable<\App\Model\Entity\ConnectionHistory> $relatedStations
+ * @var \App\Model\Entity\HistoricalConnection $historicalConnection
+ * @var iterable<\App\Model\Entity\HistoricalConnection> $relatedStations
  */
 ?>
 <div class="row">
@@ -10,69 +10,69 @@
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
-                __('List Connection History'),
+                __('List Historical Connections'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="connectionHistory view content">
+        <div class="historicalConnections view content">
             <?php
             // which interval is open, and whose: the period first, because that
             // is what tells one interval of an account from the next
             ?>
             <h3><?=
-                $this->element('ConnectionHistory/first_seen', ['interval' => $connectionHistory])
-                    . ' &ndash; ' . h($connectionHistory->last_seen)
-                    . ' &middot; ' . h($connectionHistory->source->referenceLabel())
-                    . ': ' . h($connectionHistory->source_reference)
+                $this->element('HistoricalConnections/first_seen', ['interval' => $historicalConnection])
+                    . ' &ndash; ' . h($historicalConnection->last_seen)
+                    . ' &middot; ' . h($historicalConnection->source->referenceLabel())
+                    . ': ' . h($historicalConnection->source_reference)
             ?></h3>
             <div class="row">
                 <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Customer') ?></th>
-                            <td><?= $connectionHistory->hasValue('customer') ? $this->Html->link(
-                                $connectionHistory->customer->name,
+                            <td><?= $historicalConnection->hasValue('customer') ? $this->Html->link(
+                                $historicalConnection->customer->name,
                                 [
                                     'controller' => 'Customers',
                                     'action' => 'view',
-                                    $connectionHistory->customer->id,
+                                    $historicalConnection->customer->id,
                                 ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract') ?></th>
-                            <td><?= $connectionHistory->hasValue('contract') ? $this->Html->link(
-                                $connectionHistory->contract->number ?? '--',
+                            <td><?= $historicalConnection->hasValue('contract') ? $this->Html->link(
+                                $historicalConnection->contract->number ?? '--',
                                 [
                                     'controller' => 'Contracts',
                                     'action' => 'view',
-                                    $connectionHistory->contract->id,
-                                    'customer_id' => $connectionHistory->contract->customer_id,
+                                    $historicalConnection->contract->id,
+                                    'customer_id' => $historicalConnection->contract->customer_id,
                                 ],
                             ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Source Reference') ?></th>
-                            <td><?= $this->element('ConnectionHistory/source_reference', [
-                                'interval' => $connectionHistory,
+                            <td><?= $this->element('HistoricalConnections/source_reference', [
+                                'interval' => $historicalConnection,
                             ]) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('From') ?></th>
-                            <td><?= $this->element('ConnectionHistory/first_seen', [
-                                'interval' => $connectionHistory,
+                            <td><?= $this->element('HistoricalConnections/first_seen', [
+                                'interval' => $historicalConnection,
                             ]) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Accuracy of the start') ?></th>
-                            <td><?= h($connectionHistory->first_seen_source->label()) ?></td>
+                            <td><?= h($historicalConnection->first_seen_source->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Until') ?></th>
-                            <td><?= h($connectionHistory->last_seen) ?></td>
+                            <td><?= h($historicalConnection->last_seen) ?></td>
                         </tr>
                     </table>
                 </div>
@@ -80,44 +80,44 @@
                     <table>
                         <tr>
                             <th><?= __('Access Point') ?></th>
-                            <td><?= $this->element('ConnectionHistory/access_point', [
-                                'interval' => $connectionHistory,
+                            <td><?= $this->element('HistoricalConnections/access_point', [
+                                'interval' => $historicalConnection,
                             ]) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('RouterOS Device') ?></th>
-                            <td><?= $this->element('ConnectionHistory/routeros_device', [
-                                'interval' => $connectionHistory,
+                            <td><?= $this->element('HistoricalConnections/routeros_device', [
+                                'interval' => $historicalConnection,
                             ]) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('NAS IP Address') ?></th>
-                            <td><?= h($connectionHistory->nas_ip_address) ?></td>
+                            <td><?= h($historicalConnection->nas_ip_address) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('NAS Port ID') ?></th>
-                            <td><?= h($connectionHistory->nas_port_id) ?></td>
+                            <td><?= h($historicalConnection->nas_port_id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Calling Station ID') ?></th>
-                            <td><?= h($connectionHistory->station_id) ?></td>
+                            <td><?= h($historicalConnection->station_id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Called Station ID') ?></th>
-                            <td><?= h($connectionHistory->called_station_id) ?></td>
+                            <td><?= h($historicalConnection->called_station_id) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Framed IP Address') ?></th>
-                            <td><?= h($connectionHistory->ip_address) ?></td>
+                            <td><?= h($historicalConnection->ip_address) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Framed IPv6 Prefix') ?></th>
-                            <td><?= h($connectionHistory->ipv6_prefix) ?></td>
+                            <td><?= h($historicalConnection->ipv6_prefix) ?></td>
                         </tr>
                     </table>
                 </div>
                 <div class="column">
-                    <?= $this->element('common/audit', ['entity' => $connectionHistory]) ?>
+                    <?= $this->element('common/audit', ['entity' => $historicalConnection]) ?>
                 </div>
             </div>
             <?php if (!empty($relatedStations)) : ?>
@@ -128,7 +128,7 @@
                         'Other periods recorded for station {0}. The same station under more than'
                             . ' one account is usually either a mistake in the configuration or'
                             . ' equipment that has moved.',
-                        h($connectionHistory->station_id),
+                        h($historicalConnection->station_id),
                     ) ?></p>
                 <div class="table-responsive">
                     <table>
@@ -148,7 +148,7 @@
                         <tbody>
                             <?php foreach ($relatedStations as $interval) : ?>
                             <tr>
-                                <td><?= $this->element('ConnectionHistory/first_seen', [
+                                <td><?= $this->element('HistoricalConnections/first_seen', [
                                     'interval' => $interval,
                                 ]) ?></td>
                                 <td><?= h($interval->last_seen) ?></td>
@@ -162,15 +162,15 @@
                                         ],
                                     ) : '' ?></td>
                                 <td><?=
-                                    $this->element('ConnectionHistory/source_reference', [
+                                    $this->element('HistoricalConnections/source_reference', [
                                         'interval' => $interval,
                                     ]) ?></td>
                                 <td><?=
-                                    $this->element('ConnectionHistory/access_point', [
+                                    $this->element('HistoricalConnections/access_point', [
                                         'interval' => $interval,
                                     ]) ?></td>
                                 <td><?=
-                                    $this->element('ConnectionHistory/routeros_device', [
+                                    $this->element('HistoricalConnections/routeros_device', [
                                         'interval' => $interval,
                                     ]) ?></td>
                                 <td><?= h($interval->nas_ip_address) ?></td>

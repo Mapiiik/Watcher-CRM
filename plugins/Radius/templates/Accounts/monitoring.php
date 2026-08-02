@@ -40,10 +40,10 @@ use Cake\Routing\Router;
             <br>
             <?php // the filter has to be a query parameter, a bare key is swallowed by the route ?>
             <?= $this->AuthLink->link(
-                __d('radius', 'List Connection History'),
+                __d('radius', 'List Historical Connections'),
                 [
                     'plugin' => null,
-                    'controller' => 'ConnectionHistory',
+                    'controller' => 'HistoricalConnections',
                     'action' => 'index',
                     '?' => ['source_reference' => $account->username],
                 ],

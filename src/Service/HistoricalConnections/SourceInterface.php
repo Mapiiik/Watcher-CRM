@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\ConnectionHistory;
+namespace App\Service\HistoricalConnections;
 
-use App\Model\Enum\ConnectionHistorySource;
+use App\Model\Enum\HistoricalConnectionSource;
 
 /**
  * A system able to tell where accounts have been connected over time.
@@ -17,9 +17,9 @@ interface SourceInterface
     /**
      * Which source the returned intervals belong to.
      *
-     * @return \App\Model\Enum\ConnectionHistorySource
+     * @return \App\Model\Enum\HistoricalConnectionSource
      */
-    public function getSource(): ConnectionHistorySource;
+    public function getSource(): HistoricalConnectionSource;
 
     /**
      * Intervals derived from everything the source still holds.
@@ -27,7 +27,7 @@ interface SourceInterface
      * Ordered by account and then chronologically, which is what the updater
      * relies on when it walks them against the stored history.
      *
-     * @return iterable<\App\Service\ConnectionHistory\ConnectionInterval>
+     * @return iterable<\App\Service\HistoricalConnections\ConnectionInterval>
      */
     public function getIntervals(): iterable;
 

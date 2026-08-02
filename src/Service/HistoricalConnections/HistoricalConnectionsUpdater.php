@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\ConnectionHistory;
+namespace App\Service\HistoricalConnections;
 
 use App\Messages\Messages;
-use App\Model\Entity\ConnectionHistory;
+use App\Model\Entity\HistoricalConnection;
 use App\Model\Enum\FirstSeenSource;
-use App\Model\Table\ConnectionHistoryTable;
+use App\Model\Table\HistoricalConnectionsTable;
 use App\NMS\ApiClient as NMSApiClient;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\DateTime;
@@ -15,7 +15,7 @@ use Cake\ORM\Locator\LocatorAwareTrait;
 use Throwable;
 
 /**
- * Connection History Updater
+ * Historical Connections Updater
  *
  * Reconciles the intervals a source can still derive with the history already
  * recorded, and fills in what the NMS knows about the place.
@@ -25,7 +25,7 @@ use Throwable;
  * treated as the older and better evidence: the update extends and appends, it
  * never rewrites or inserts into the middle of what is there.
  */
-class ConnectionHistoryUpdater
+class HistoricalConnectionsUpdater
 {
     use LocatorAwareTrait;
 
@@ -35,9 +35,9 @@ class ConnectionHistoryUpdater
     public Messages $Messages;
 
     /**
-     * Connection History Table
+     * Historical Connections Table
      */
-    protected ConnectionHistoryTable $ConnectionHistory;
+    protected HistoricalConnectionsTable $HistoricalConnections;
 
     /**
      * Constructor
@@ -46,16 +46,16 @@ class ConnectionHistoryUpdater
     {
         $this->Messages = new Messages();
 
-        /** @var \App\Model\Table\ConnectionHistoryTable $connectionHistory */
-        $connectionHistory = $this->fetchTable('ConnectionHistory');
-        $this->ConnectionHistory = $connectionHistory;
+        /** @var \App\Model\Table\HistoricalConnectionsTable $historicalConnections */
+        $historicalConnections = $this->fetchTable('HistoricalConnections');
+        $this->HistoricalConnections = $historicalConnections;
     }
 
     /**
      * Bring the history up to date from the given sources.
      *
-     * @param array<\App\Service\ConnectionHistory\SourceInterface> $sources Sources to read.
-     * @return \App\Service\ConnectionHistory\UpdateSummary
+     * @param array<\App\Service\HistoricalConnections\SourceInterface> $sources Sources to read.
+     * @return \App\Service\HistoricalConnections\UpdateSummary
      */
     public function update(array $sources): UpdateSummary
     {
@@ -68,7 +68,7 @@ class ConnectionHistoryUpdater
                 $summary->unavailableSources[] = $source->getSource()->value;
 
                 $this->Messages->warning(__(
-                    'The {0} connection history source could not be reached and was skipped.',
+                    'The {0} historical connections source could not be reached and was skipped.',
                     $source->getSource()->label(),
                 ));
 
@@ -86,8 +86,8 @@ class ConnectionHistoryUpdater
     /**
      * Walk one source, account by account.
      *
-     * @param \App\Service\ConnectionHistory\SourceInterface $source Source to read.
-     * @param \App\Service\ConnectionHistory\UpdateSummary $summary Running summary.
+     * @param \App\Service\HistoricalConnections\SourceInterface $source Source to read.
+     * @param \App\Service\HistoricalConnections\UpdateSummary $summary Running summary.
      * @return void
      */
     protected function mergeSource(SourceInterface $source, UpdateSummary $summary): void
@@ -115,8 +115,8 @@ class ConnectionHistoryUpdater
     /**
      * Reconcile the intervals of a single account with what is recorded.
      *
-     * @param array<\App\Service\ConnectionHistory\ConnectionInterval> $intervals Intervals, in order.
-     * @param \App\Service\ConnectionHistory\UpdateSummary $summary Running summary.
+     * @param array<\App\Service\HistoricalConnections\ConnectionInterval> $intervals Intervals, in order.
+     * @param \App\Service\HistoricalConnections\UpdateSummary $summary Running summary.
      * @return void
      */
     protected function mergeAccount(array $intervals, UpdateSummary $summary): void
@@ -128,7 +128,7 @@ class ConnectionHistoryUpdater
 
         $summary->accounts++;
 
-        $latest = $this->ConnectionHistory->getLatestForAccount($first->source, $first->sourceReference);
+        $latest = $this->HistoricalConnections->getLatestForAccount($first->source, $first->sourceReference);
 
         // nothing recorded yet, so the earliest interval only tells us the
         // account was already connected by then, not that it started there
@@ -178,16 +178,16 @@ class ConnectionHistoryUpdater
      * source reports now. The moment is taken from when the account was last
      * edited where that is plausible, and from the run itself otherwise.
      *
-     * @param \App\Model\Entity\ConnectionHistory $latest Running interval.
-     * @param \App\Service\ConnectionHistory\ConnectionInterval $interval Any interval of the account.
-     * @param \App\Service\ConnectionHistory\UpdateSummary $summary Running summary.
-     * @return \App\Model\Entity\ConnectionHistory The interval that is running after the change.
+     * @param \App\Model\Entity\HistoricalConnection $latest Running interval.
+     * @param \App\Service\HistoricalConnections\ConnectionInterval $interval Any interval of the account.
+     * @param \App\Service\HistoricalConnections\UpdateSummary $summary Running summary.
+     * @return \App\Model\Entity\HistoricalConnection The interval that is running after the change.
      */
     protected function applyPlacementChange(
-        ConnectionHistory $latest,
+        HistoricalConnection $latest,
         ConnectionInterval $interval,
         UpdateSummary $summary,
-    ): ConnectionHistory {
+    ): HistoricalConnection {
         if (
             $latest->customer_id === $interval->customerId
             && $latest->contract_id === $interval->contractId
@@ -234,19 +234,19 @@ class ConnectionHistoryUpdater
     /**
      * Record a new interval.
      *
-     * @param \App\Service\ConnectionHistory\ConnectionInterval $interval Interval to record.
+     * @param \App\Service\HistoricalConnections\ConnectionInterval $interval Interval to record.
      * @param \App\Model\Enum\FirstSeenSource $firstSeenSource How accurate its start is.
-     * @param \App\Service\ConnectionHistory\UpdateSummary $summary Running summary.
-     * @param \App\Model\Entity\ConnectionHistory|null $carryPlace Interval to copy the resolved place from.
-     * @return \App\Model\Entity\ConnectionHistory
+     * @param \App\Service\HistoricalConnections\UpdateSummary $summary Running summary.
+     * @param \App\Model\Entity\HistoricalConnection|null $carryPlace Interval to copy the resolved place from.
+     * @return \App\Model\Entity\HistoricalConnection
      */
     protected function open(
         ConnectionInterval $interval,
         FirstSeenSource $firstSeenSource,
         UpdateSummary $summary,
-        ?ConnectionHistory $carryPlace = null,
-    ): ConnectionHistory {
-        $entity = $this->ConnectionHistory->newEmptyEntity();
+        ?HistoricalConnection $carryPlace = null,
+    ): HistoricalConnection {
+        $entity = $this->HistoricalConnections->newEmptyEntity();
 
         $entity->source = $interval->source;
         $entity->source_reference = $interval->sourceReference;
@@ -272,15 +272,15 @@ class ConnectionHistoryUpdater
             $entity->enriched = $carryPlace->enriched;
         }
 
-        if ($this->ConnectionHistory->save($entity) === false) {
+        if ($this->HistoricalConnections->save($entity) === false) {
             $this->Messages->error(__(
-                'The connection history interval for {0} starting {1} could not be saved.',
+                'The historical connection for {0} starting {1} could not be saved.',
                 $interval->sourceReference,
                 $interval->firstSeen->nice(),
             ));
 
             Log::error(
-                'Connection history interval could not be saved: '
+                'Historical connection could not be saved: '
                     . json_encode($entity->getErrors()),
             );
 
@@ -295,12 +295,12 @@ class ConnectionHistoryUpdater
     /**
      * Push the end of a running interval forward.
      *
-     * @param \App\Model\Entity\ConnectionHistory $entity Running interval.
+     * @param \App\Model\Entity\HistoricalConnection $entity Running interval.
      * @param \Cake\I18n\DateTime $lastSeen Newly observed end.
-     * @param \App\Service\ConnectionHistory\UpdateSummary $summary Running summary.
+     * @param \App\Service\HistoricalConnections\UpdateSummary $summary Running summary.
      * @return void
      */
-    protected function extend(ConnectionHistory $entity, DateTime $lastSeen, UpdateSummary $summary): void
+    protected function extend(HistoricalConnection $entity, DateTime $lastSeen, UpdateSummary $summary): void
     {
         if ($lastSeen <= $entity->last_seen) {
             $summary->skipped++;
@@ -310,9 +310,9 @@ class ConnectionHistoryUpdater
 
         $entity->last_seen = $lastSeen;
 
-        if ($this->ConnectionHistory->save($entity) === false) {
+        if ($this->HistoricalConnections->save($entity) === false) {
             $this->Messages->error(__(
-                'The connection history interval for {0} could not be extended.',
+                'The historical connection for {0} could not be extended.',
                 $entity->source_reference,
             ));
 
@@ -329,12 +329,12 @@ class ConnectionHistoryUpdater
      * kept as written at the time so a later rename or removal in the NMS does
      * not quietly rewrite history.
      *
-     * @param \App\Service\ConnectionHistory\UpdateSummary $summary Running summary.
+     * @param \App\Service\HistoricalConnections\UpdateSummary $summary Running summary.
      * @return void
      */
     protected function enrich(UpdateSummary $summary): void
     {
-        $pending = $this->ConnectionHistory->find()
+        $pending = $this->HistoricalConnections->find()
             ->where([
                 'enriched IS' => null,
                 'nas_ip_address IS NOT' => null,
@@ -370,7 +370,7 @@ class ConnectionHistoryUpdater
                 $entity->routeros_device_name = $place['routeros_device_name'];
                 $entity->enriched = DateTime::now();
 
-                if ($this->ConnectionHistory->save($entity) !== false) {
+                if ($this->HistoricalConnections->save($entity) !== false) {
                     $summary->enriched++;
                 }
             }

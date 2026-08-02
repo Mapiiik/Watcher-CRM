@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Service\ConnectionHistory;
+namespace App\Test\TestCase\Service\HistoricalConnections;
 
-use App\Model\Enum\ConnectionHistorySource;
-use App\Service\ConnectionHistory\SourceInterface;
+use App\Model\Enum\HistoricalConnectionSource;
+use App\Service\HistoricalConnections\SourceInterface;
 use Override;
 
 /**
@@ -17,7 +17,7 @@ use Override;
 class StubSource implements SourceInterface
 {
     /**
-     * @param array<\App\Service\ConnectionHistory\ConnectionInterval> $intervals Intervals to report.
+     * @param array<\App\Service\HistoricalConnections\ConnectionInterval> $intervals Intervals to report.
      * @param bool $available Whether the source claims to be reachable.
      */
     public function __construct(
@@ -30,9 +30,9 @@ class StubSource implements SourceInterface
      * @inheritDoc
      */
     #[Override]
-    public function getSource(): ConnectionHistorySource
+    public function getSource(): HistoricalConnectionSource
     {
-        return ConnectionHistorySource::Radius;
+        return HistoricalConnectionSource::Radius;
     }
 
     /**

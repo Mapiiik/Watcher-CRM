@@ -76,7 +76,7 @@ class AccountsControllerTest extends TestCase
     }
 
     /**
-     * The connection history of the account is a click away, narrowed down to
+     * The historical connections of the account is a click away, narrowed down to
      * it rather than opening on everything ever recorded.
      *
      * The filter has to travel as a query parameter: a bare key in the URL
@@ -84,14 +84,14 @@ class AccountsControllerTest extends TestCase
      *
      * @return void
      */
-    public function testViewLinksToTheConnectionHistoryOfTheAccount(): void
+    public function testViewLinksToTheHistoricalConnectionsOfTheAccount(): void
     {
         $this->login();
 
         $this->get('/radius/accounts/view/' . self::ACCOUNT_ID);
 
         $this->assertResponseOk();
-        $this->assertResponseContains('/connection-history?source_reference=');
+        $this->assertResponseContains('/historical-connections?source_reference=');
     }
 
     /**
@@ -99,14 +99,14 @@ class AccountsControllerTest extends TestCase
      *
      * @return void
      */
-    public function testMonitoringLinksToTheConnectionHistoryOfTheAccount(): void
+    public function testMonitoringLinksToTheHistoricalConnectionsOfTheAccount(): void
     {
         $this->login();
 
         $this->get('/radius/accounts/monitoring/' . self::ACCOUNT_ID);
 
         $this->assertResponseOk();
-        $this->assertResponseContains('/connection-history?source_reference=');
+        $this->assertResponseContains('/historical-connections?source_reference=');
     }
 
     /**

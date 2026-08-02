@@ -12,14 +12,14 @@
  * reader is allowed to open it.
  *
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ConnectionHistory $interval
+ * @var \App\Model\Entity\HistoricalConnection $interval
  */
 
-use App\Model\Enum\ConnectionHistorySource;
+use App\Model\Enum\HistoricalConnectionSource;
 
 $reference = h($interval->source_reference);
 
-if ($interval->source === ConnectionHistorySource::Radius && $interval->account_id !== null) {
+if ($interval->source === HistoricalConnectionSource::Radius && $interval->account_id !== null) {
     $link = $this->AuthLink->link(
         $interval->source_reference,
         [

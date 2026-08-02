@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\ConnectionHistory;
+namespace App\Service\HistoricalConnections;
 
 /**
- * What one run of the connection history update did.
+ * What one run of the historical connections update did.
  */
 class UpdateSummary
 {

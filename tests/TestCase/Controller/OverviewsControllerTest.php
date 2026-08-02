@@ -72,9 +72,9 @@ class OverviewsControllerTest extends TestCase
         $this->get('/overviews');
 
         $this->assertResponseOk();
-        // the whole table of connection history is reachable from here, there is
+        // the whole table of historical connections is reachable from here, there is
         // nowhere else to get at it outside a single customer or contract
-        $this->assertResponseContains('/connection-history');
+        $this->assertResponseContains('/historical-connections');
     }
 
     /**

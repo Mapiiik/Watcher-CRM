@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\Service\ConnectionHistory\ConnectionInterval;
+use App\Service\HistoricalConnections\ConnectionInterval;
 
 /**
- * ConnectionHistory Entity
+ * HistoricalConnection Entity
  *
  * One continuous period during which an account stayed on a single connection
  * point.
  *
- * @property \App\Model\Enum\ConnectionHistorySource $source
+ * @property \App\Model\Enum\HistoricalConnectionSource $source
  * @property string $source_reference
  * @property string|null $account_id
  * @property string|null $customer_id
@@ -36,7 +36,7 @@ use App\Service\ConnectionHistory\ConnectionInterval;
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
  */
-class ConnectionHistory extends AppEntity
+class HistoricalConnection extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -74,7 +74,7 @@ class ConnectionHistory extends AppEntity
     /**
      * The tuple that identifies the connection point.
      *
-     * Kept in step with {@see \App\Service\ConnectionHistory\ConnectionInterval::pointKey()},
+     * Kept in step with {@see \App\Service\HistoricalConnections\ConnectionInterval::pointKey()},
      * the two are compared against each other on every update.
      *
      * @return array<string, string|null>
@@ -96,7 +96,7 @@ class ConnectionHistory extends AppEntity
      * Whether this record describes the same connection point as an interval
      * reported by a source.
      *
-     * @param \App\Service\ConnectionHistory\ConnectionInterval $interval Interval to compare with.
+     * @param \App\Service\HistoricalConnections\ConnectionInterval $interval Interval to compare with.
      * @return bool
      */
     public function isSamePointAs(ConnectionInterval $interval): bool

@@ -132,8 +132,8 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Connection History'),
-                    ['controller' => 'ConnectionHistory', 'action' => 'index', 'plugin' => null],
+                    __('List Historical Connections'),
+                    ['controller' => 'HistoricalConnections', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
                 ) ?>
             </div>
