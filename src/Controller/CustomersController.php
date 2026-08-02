@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Database\Expression\CustomersFulltextSearchExpression;
 use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerPrintType;
 use App\Service\CustomerPrint\CustomerPrintData;
@@ -17,111 +18,6 @@ use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Override;
 use ValueError;
-
-// filter for fulltext search
-const CUSTOMERS_FULLTEXT_SEARCH_FILTER = <<<SQL
-    SELECT
-        Customers.id
-    FROM
-        Customers
-        LEFT JOIN (
-            SELECT
-                Contracts.customer_id,
-                STRING_AGG(
-                    CONCAT_WS(
-                        ' ',
-                        Contracts.number,
-                        Contracts.subscriber_verification_code
-                    ),
-                    ' '
-                ) AS txt
-            FROM
-                Contracts
-            GROUP BY
-                1
-        ) Contracts ON (
-            Contracts.customer_id = Customers.id
-        ) 
-        LEFT JOIN (
-            SELECT 
-                Addresses.customer_id, 
-                STRING_AGG(
-                    CONCAT_WS(
-                        ' ',
-                        Addresses.first_name,
-                        Addresses.last_name,
-                        Addresses.company,
-                        Addresses.street, 
-                        Addresses.number,
-                        Addresses.city,
-                        Addresses.zip
-                    ), 
-                    ' '
-                ) AS txt 
-            FROM 
-                Addresses 
-            GROUP BY 
-                1
-        ) Addresses ON (
-            Addresses.customer_id = Customers.id
-        ) 
-        LEFT JOIN (
-            SELECT 
-                Emails.customer_id, 
-                STRING_AGG(Emails.email, ' ') AS txt 
-            FROM 
-                Emails 
-            GROUP BY 
-                1
-        ) Emails ON (
-            Emails.customer_id = Customers.id
-        ) 
-        LEFT JOIN (
-            SELECT 
-                Phones.customer_id, 
-                STRING_AGG(Phones.phone, ' ') AS txt_1,
-                STRING_AGG(REPLACE(Phones.phone, ' ', ''), ' ') AS txt_2,
-                STRING_AGG(REGEXP_REPLACE(REGEXP_REPLACE(Phones.phone, '\+\d+', ''), '\s', '', 'g'), ' ') AS txt_3
-            FROM 
-                Phones 
-            GROUP BY 
-                1
-        ) Phones ON (
-            Phones.customer_id = Customers.id
-        ) 
-        LEFT JOIN (
-            SELECT 
-            Ip_Addresses.customer_id, 
-                STRING_AGG(Ip_Addresses.ip_address :: character varying, ' ') AS txt 
-            FROM 
-                Ip_Addresses
-            GROUP BY 
-                1
-        ) Ip_Addresses ON (
-            Ip_Addresses.customer_id = Customers.id
-        ) 
-    WHERE 
-        to_tsvector (
-            CONCAT_WS(
-                ' ',
-                Customers.nid + :customer_series,
-                Customers.identity_number,
-                Customers.vat_number,
-                Customers.first_name, 
-                Customers.last_name,
-                Customers.company, 
-                Contracts.txt,
-                Addresses.txt,
-                Emails.txt,
-                Phones.txt_1,
-                Phones.txt_2,
-                Phones.txt_3,
-                Ip_Addresses.txt
-            )
-        ) @@ websearch_to_tsquery(:search) 
-    GROUP BY 
-        Customers.id
-    SQL;
 
 /**
  * Customers Controller
@@ -239,11 +135,9 @@ class CustomersController extends AppController
                     'Customers.company ILIKE' => '%' . trim($search) . '%',
                     'Customers.first_name ILIKE' => '%' . trim($search) . '%',
                     'Customers.last_name ILIKE' => '%' . trim($search) . '%',
-                    'Customers.id IN (' . CUSTOMERS_FULLTEXT_SEARCH_FILTER . ')',
+                    new CustomersFulltextSearchExpression(trim($search), (int)env('CUSTOMER_SERIES', '0')),
                 ],
             ]);
-            $customersQuery->bind(':customer_series', (int)env('CUSTOMER_SERIES', '0'), 'integer');
-            $customersQuery->bind(':search', trim($search), 'string');
         } elseif (ctype_digit($search) && strlen($search) <= 10) { // strlen($search) <= 19 for BIGINT
             // search by customer number
             $customersQuery->where([

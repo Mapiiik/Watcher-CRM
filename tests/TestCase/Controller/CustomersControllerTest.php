@@ -133,12 +133,29 @@ class CustomersControllerTest extends TestCase
     /**
      * Test index method
      *
+     * The advanced search carries its parameters in the condition expression rather than binding
+     * them on the query, so that they survive the derived table the eager loader builds for the
+     * contained associations. Without that the contracts fetch runs with unbound placeholders.
+     *
      * @return void
      * @link \App\Controller\CustomersController::index()
      */
     public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->login();
+        $this->get('/customers?advanced_search=1&search=Lorem');
+
+        $this->assertResponseOk();
+
+        /** @var iterable<\App\Model\Entity\Customer> $customers */
+        $customers = $this->viewVariable('customers');
+        $found = [];
+        foreach ($customers as $customer) {
+            $found[] = $customer->id;
+            $this->assertNotNull($customer->contracts);
+        }
+
+        $this->assertContains(self::CUSTOMER_ID, $found);
     }
 
     /**
