@@ -6,11 +6,13 @@ namespace Bookkeeping\Test\TestCase\Command;
 use Bookkeeping\Command\SendIssuedInvoicesCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
- * Bookkeeping\Command\SendInvoicesCommand Test Case
+ * Bookkeeping\Command\SendIssuedInvoicesCommand Test Case
+ *
+ * The command mails out the invoices that have not gone out yet. The fixture invoice already has,
+ * so a run over it sends nothing - which is what makes the run safe to make here at all.
  */
 #[UsesClass(SendIssuedInvoicesCommand::class)]
 class SendIssuedInvoicesCommandTest extends TestCase
@@ -18,35 +20,49 @@ class SendIssuedInvoicesCommandTest extends TestCase
     use ConsoleIntegrationTestTrait;
 
     /**
-     * setUp method
+     * Fixtures
      *
-     * @return void
+     * @var array<string>
      */
-    #[Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
+    protected array $fixtures = [
+        'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Emails',
+        'plugin.Bookkeeping.Invoices',
+    ];
 
     /**
-     * Test buildOptionParser method
+     * The option a cron entry names is still there. It caps how many invoices go out in one run,
+     * so losing it would turn a paced send into all of them at once.
      *
      * @return void
      * @link \Bookkeeping\Command\SendIssuedInvoicesCommand::buildOptionParser()
      */
     public function testBuildOptionParser(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->exec('send_issued_invoices --help');
+
+        $this->assertExitSuccess();
+        $this->assertOutputContains('--limit');
+        $this->assertOutputContains(SendIssuedInvoicesCommand::getDescription());
     }
 
     /**
-     * Test execute method
+     * An invoice that has already been mailed is not mailed again, so the run reports it is sending
+     * and leaves with nothing sent.
      *
      * @return void
      * @link \Bookkeeping\Command\SendIssuedInvoicesCommand::execute()
      */
-    public function testExecute(): void
+    public function testExecuteLeavesAnAlreadySentInvoice(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $invoices = $this->getTableLocator()->get('Bookkeeping.Invoices');
+        $sentAt = $invoices->find()->firstOrFail()->get('email_sent');
+
+        $this->exec('send_issued_invoices');
+
+        $this->assertExitSuccess();
+        $this->assertEquals($sentAt, $invoices->find()->firstOrFail()->get('email_sent'));
     }
 }
