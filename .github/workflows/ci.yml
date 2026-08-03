@@ -79,13 +79,43 @@ jobs:
         if: ${{ matrix.dependencies != 'locked' }}
         run: composer run-script post-install-cmd --no-interaction
 
+      # Coverage is measured on one combination of the matrix only. It is the same code whichever
+      # PHP runs it, and measuring it six times would cost six times as long for one answer.
       - name: Test with phpunit
-        run: vendor/bin/phpunit
+        run: |
+          if [ "${{ matrix.php-version }}" = "8.4" ] && [ "${{ matrix.dependencies }}" = "locked" ]; then
+            vendor/bin/phpunit --coverage-text=coverage.txt --coverage-html coverage-html
+            {
+              echo '## Code coverage'
+              echo
+              echo '```'
+              # the report is written with the colours the suite is configured for, which read as
+              # escape codes rather than as colour anywhere but a terminal
+              sed -n '/Summary:/,/^ *$/p' coverage.txt | sed 's/\x1b\[[0-9;]*m//g'
+              echo '```'
+              echo
+              echo 'Line coverage counts what ran, not what was asserted - the controller tests'
+              echo 'request every action once, so they carry a lot of lines without holding them'
+              echo 'to anything. Read it as an upper bound.'
+              echo
+              echo 'The report per class is in the `coverage-html` artifact of this run.'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            vendor/bin/phpunit
+          fi
         env:
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
           DATABASE_TEST_URL: postgres://postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/watcher_crm_test
           DATABASE_TEST_RADIUS_URL: postgres://postgres@127.0.0.1:${{ job.services['postgres-radius'].ports['5432'] }}/watcher_crm_test_radius
           DEBUG: 'true'
+
+      - name: Keep the coverage report
+        if: ${{ matrix.php-version == '8.4' && matrix.dependencies == 'locked' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: coverage-html
+          retention-days: 14
 
   coding-standard:
     name: Coding Standard & Static Analysis
