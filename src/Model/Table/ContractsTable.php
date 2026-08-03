@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Contract;
+use App\Model\Entity\ServiceType;
 use App\Model\Validation\ContractStateValidator;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
@@ -296,7 +297,12 @@ class ContractsTable extends AppTable
         $rules->add(
             function ($entity, $_options): bool {
                 // load service type
-                $service_type = $this->ServiceTypes->get($entity->service_type_id);
+                $service_type = $this->findServiceType($entity);
+                // a type that is not there is for existsIn above to report, not for this rule
+                if ($service_type === null) {
+                    return true;
+                }
+
                 // check if installation adress required for this service type
                 if ($service_type->installation_address_required) {
                     return !empty($entity->installation_address_id);
@@ -314,7 +320,12 @@ class ContractsTable extends AppTable
         $rules->add(
             function ($entity, $_options): bool {
                 // load service type
-                $service_type = $this->ServiceTypes->get($entity->service_type_id);
+                $service_type = $this->findServiceType($entity);
+                // a type that is not there is for existsIn above to report, not for this rule
+                if ($service_type === null) {
+                    return true;
+                }
+
                 // check if access point required for this service type
                 if ($service_type->access_point_required) {
                     return !empty($entity->access_point_id);
@@ -342,6 +353,32 @@ class ContractsTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('CustomerLabels'));
 
         return $rules;
+    }
+
+    /**
+     * The service type a contract names, or null where it names none or one that is not there.
+     *
+     * The rules asking what a service type requires run whatever the `existsIn` above made of the
+     * same field - a checker runs every rule it holds rather than stopping at the first one to
+     * fail. Reading the type with `get()` therefore threw out of the rules rather than failing
+     * them, and a caller waiting for a `false` got an exception instead.
+     *
+     * @param \Cake\Datasource\EntityInterface $entity The contract being saved.
+     * @return \App\Model\Entity\ServiceType|null
+     */
+    private function findServiceType(EntityInterface $entity): ?ServiceType
+    {
+        $service_type_id = $entity->get('service_type_id');
+        if ($service_type_id === null) {
+            return null;
+        }
+
+        /** @var \App\Model\Entity\ServiceType|null $service_type */
+        $service_type = $this->ServiceTypes->find()
+            ->where(['ServiceTypes.id' => $service_type_id])
+            ->first();
+
+        return $service_type;
     }
 
     /**

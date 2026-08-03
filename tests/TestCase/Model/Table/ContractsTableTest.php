@@ -101,11 +101,6 @@ class ContractsTableTest extends TestCase
      */
     public function testBuildRules(): void
     {
-        $this->markTestSkipped(
-            'A service type that is not there throws out of the rules instead of failing them.',
-        );
-
-        // @phpstan-ignore-next-line deadCode.unreachable
         $this->assertDanglingReferencesAreRefused($this->Contracts);
     }
 }

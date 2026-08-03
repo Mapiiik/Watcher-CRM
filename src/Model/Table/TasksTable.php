@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\TaskType;
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -157,7 +159,12 @@ class TasksTable extends AppTable
         $rules->add(
             function ($entity, $_options): bool {
                 // load task type
-                $task_type = $this->TaskTypes->get($entity->task_type_id);
+                $task_type = $this->findTaskType($entity);
+                // a type that is not there is for existsIn above to report, not for this rule
+                if ($task_type === null) {
+                    return true;
+                }
+
                 // check if customer required for this task type
                 if ($task_type->customer_required) {
                     return !empty($entity->customer_id);
@@ -175,7 +182,12 @@ class TasksTable extends AppTable
         $rules->add(
             function ($entity, $_options): bool {
                 // load task type
-                $task_type = $this->TaskTypes->get($entity->task_type_id);
+                $task_type = $this->findTaskType($entity);
+                // a type that is not there is for existsIn above to report, not for this rule
+                if ($task_type === null) {
+                    return true;
+                }
+
                 // check if contract required for this task type
                 if ($task_type->contract_required) {
                     return !empty($entity->contract_id);
@@ -191,5 +203,31 @@ class TasksTable extends AppTable
         );
 
         return $rules;
+    }
+
+    /**
+     * The task type a task names, or null where it names none or one that is not there.
+     *
+     * The rules asking what a task type requires run whatever the `existsIn` above made of the same
+     * field - a checker runs every rule it holds rather than stopping at the first one to fail.
+     * Reading the type with `get()` therefore threw out of the rules rather than failing them, and
+     * a caller waiting for a `false` got an exception instead.
+     *
+     * @param \Cake\Datasource\EntityInterface $entity The task being saved.
+     * @return \App\Model\Entity\TaskType|null
+     */
+    private function findTaskType(EntityInterface $entity): ?TaskType
+    {
+        $task_type_id = $entity->get('task_type_id');
+        if ($task_type_id === null) {
+            return null;
+        }
+
+        /** @var \App\Model\Entity\TaskType|null $task_type */
+        $task_type = $this->TaskTypes->find()
+            ->where(['TaskTypes.id' => $task_type_id])
+            ->first();
+
+        return $task_type;
     }
 }
