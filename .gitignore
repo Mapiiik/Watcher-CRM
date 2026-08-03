@@ -31,6 +31,8 @@ compose.yaml
 .phpunit.cache
 .phpunit.result.cache
 tests.sqlite
+coverage.txt
+coverage-html/
 # vim
 *~
 *.swp
