@@ -29,6 +29,14 @@ class CustomersControllerTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
+     * Accounting profile from the AccountingProfiles fixture. Every customer belongs to one - the
+     * column is not nullable - so a customer written here has to name it.
+     *
+     * @var string
+     */
+    private const ACCOUNTING_PROFILE_ID = 'ab05963c-1531-4677-a9ee-80cecde25124';
+
+    /**
      * Contract from the Contracts fixture.
      *
      * @var string
@@ -241,6 +249,72 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * A customer filled in on the form is really stored, and the operator is sent to the record
+     * they just made.
+     *
+     * Rendering the form proves the page is there; this proves the way through it works. Everything
+     * between the two - marshalling, validation, the application rules and the save - only ever
+     * runs on a request that carries data, and a controller test that never posts one leaves the
+     * whole of it unasked.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddStoresACustomer(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        // the fixtures write the identity column with the values they carry, which leaves the
+        // identity itself where it started
+        $this->advanceIdentity('customers', 'nid');
+
+        $this->post('/customers/add', [
+            'last_name' => 'Smith',
+            'first_name' => 'John',
+            'dealer' => CustomerDealer::Never->value,
+            'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
+            'accounting_profile_id' => self::ACCOUNTING_PROFILE_ID,
+        ]);
+
+        $this->assertRedirect();
+        $customers = $this->getTableLocator()->get('Customers');
+        /** @var \App\Model\Entity\Customer $stored */
+        $stored = $customers->find()->where(['last_name' => 'Smith'])->firstOrFail();
+        $this->assertSame('John', $stored->first_name);
+        $this->assertRedirectContains('/customers/' . $stored->id);
+    }
+
+    /**
+     * A customer the rules refuse is not stored, and the operator is given the form back rather
+     * than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddRefusesACustomerTheRulesRejects(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->advanceIdentity('customers', 'nid');
+
+        $customers = $this->getTableLocator()->get('Customers');
+        $before = $customers->find()->count();
+
+        // an accounting profile that is not there - the rules have to catch it
+        $this->post('/customers/add', [
+            'last_name' => 'Smith',
+            'dealer' => CustomerDealer::Never->value,
+            'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
+            'accounting_profile_id' => '3f2b1a0c-0000-4000-8000-000000000000',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $customers->find()->count());
+    }
+
+    /**
      * A customer submitted without an accounting profile is given the form back with the field
      * marked, rather than an error page.
      *
@@ -256,8 +330,6 @@ class CustomersControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        // the fixtures write the identity column with the values they carry, which leaves the
-        // identity itself where it started
         $this->advanceIdentity('customers', 'nid');
 
         $customers = $this->getTableLocator()->get('Customers');
@@ -271,6 +343,68 @@ class CustomersControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertSame($before, $customers->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/' . self::CUSTOMER_ID . '/edit', ['last_name' => 'Brown']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Brown',
+            $this->getTableLocator()->get('Customers')->get(self::CUSTOMER_ID)->last_name,
+        );
+    }
+
+    /**
+     * A role that is not admin does not get to add a customer.
+     *
+     * Every other test here logs in as admin, which `config/permissions.php` lets through
+     * everything - so none of them can tell a controller that is guarded from one that is not. This
+     * asks the authorization layer the only question that matters about it: does a refusal really
+     * happen.
+     *
+     * A refusal is a redirect away rather than a status in the 400s - the middleware sends whoever
+     * is not allowed somewhere they are - so what this holds on to is that they do not arrive at
+     * the form.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddIsRefusedToANonAdminRole(): void
+    {
+        $this->login('api');
+
+        $this->get('/customers/add');
+
+        $this->assertRedirect('/');
+    }
+
+    /**
+     * The same role does get to list customers, which every role is allowed. Without this the test
+     * above would pass just as well on a role that is refused everything, and would be saying
+     * nothing about the permissions at all.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::index()
+     */
+    public function testIndexIsAllowedToANonAdminRole(): void
+    {
+        $this->login('api');
+
+        $this->get('/customers');
+
+        $this->assertResponseOk();
     }
 
     /**

@@ -132,6 +132,119 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * Put a usable subscriber verification code format on the given service type.
+     *
+     * The controller builds the code by selecting the format as a SQL expression, so the column
+     * holds a fragment of SQL rather than a template. What the fixture carries there is the baker's
+     * placeholder prose, which the database refuses to parse - a contract of that service type
+     * cannot be added at all until the column says something a query can be built from.
+     *
+     * @param string $serviceTypeId Service type the contract under test belongs to.
+     * @return void
+     */
+    private function giveTheServiceTypeAUsableCodeFormat(string $serviceTypeId): void
+    {
+        $serviceTypes = $this->getTableLocator()->get('ServiceTypes');
+        $serviceType = $serviceTypes->get($serviceTypeId);
+        $serviceType->set('subscriber_verification_code_format', "'CODE-' || nid");
+        $serviceTypes->saveOrFail($serviceType);
+    }
+
+    /**
+     * A contract filled in on the form is really stored.
+     *
+     * Rendering the form proves the page is there; this proves the way through it works.
+     * Marshalling, validation, the application rules and the save only ever run on a request that
+     * carries data, and the rules of this table are where a service type is asked what it requires.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::add()
+     */
+    public function testAddStoresAContract(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        // the fixtures write the identity column with the values they carry, which leaves the
+        // identity itself where it started
+        $this->advanceIdentity('contracts', 'nid');
+
+        /** @var \App\Model\Entity\Contract $existing */
+        $existing = $this->getTableLocator()->get('Contracts')->get($this->firstId('Contracts'));
+        $this->giveTheServiceTypeAUsableCodeFormat((string)$existing->service_type_id);
+
+        $this->post('/contracts/add', [
+            'number' => 'S-2026-0001',
+            'customer_id' => $existing->customer_id,
+            'service_type_id' => $existing->service_type_id,
+            'contract_state_id' => $existing->contract_state_id,
+            // the service type in the fixtures requires both of these, which is what the rules
+            // asking it are for
+            'installation_address_id' => $existing->installation_address_id,
+            'access_point_id' => $existing->access_point_id,
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\Contract $stored */
+        $stored = $this->getTableLocator()->get('Contracts')
+            ->find()
+            ->where(['number' => 'S-2026-0001'])
+            ->firstOrFail();
+        $this->assertSame($existing->customer_id, $stored->customer_id);
+    }
+
+    /**
+     * A service type that requires an installation address refuses a contract without one, and the
+     * operator is given the form back rather than a redirect suggesting it went through.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::add()
+     */
+    public function testAddRefusesAContractMissingWhatTheServiceTypeRequires(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->advanceIdentity('contracts', 'nid');
+
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $existing = $contracts->get($this->firstId('Contracts'));
+        $before = $contracts->find()->count();
+
+        $this->post('/contracts/add', [
+            'number' => 'S-2026-0002',
+            'customer_id' => $existing->customer_id,
+            'service_type_id' => $existing->service_type_id,
+            'contract_state_id' => $existing->contract_state_id,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $contracts->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $contractId = $this->firstId('Contracts');
+        $this->post('/contracts/edit/' . $contractId, ['number' => 'S-2026-0003']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'S-2026-0003',
+            $this->getTableLocator()->get('Contracts')->get($contractId)->number,
+        );
+    }
+
+    /**
      * The delete action runs and redirects. Whether the contract really goes depends on what else
      * still references it, which is the application rules' business rather than this test's.
      *

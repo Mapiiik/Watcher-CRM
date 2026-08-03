@@ -134,6 +134,105 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * A task filled in on the form is really stored.
+     *
+     * Rendering the form proves the page is there; this proves the way through it works. The rules
+     * of this table ask the task type what it requires, and those rules only ever run on a request
+     * that carries data.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::add()
+     */
+    public function testAddStoresATask(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        // the fixtures write the identity column with the values they carry, which leaves the
+        // identity itself where it started
+        $this->advanceIdentity('tasks', 'nid');
+
+        /** @var \App\Model\Entity\Task $existing */
+        $existing = $this->getTableLocator()->get('Tasks')->get($this->firstId('Tasks'));
+
+        $this->post('/tasks/add', [
+            'subject' => 'Fault call-out',
+            'task_type_id' => $existing->task_type_id,
+            'task_state_id' => $existing->task_state_id,
+            // the task type in the fixtures requires both of these, which is what the rules
+            // asking it are for
+            'customer_id' => $existing->customer_id,
+            'contract_id' => $this->firstId('Contracts'),
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\Task $stored */
+        $stored = $this->getTableLocator()->get('Tasks')
+            ->find()
+            ->where(['subject' => 'Fault call-out'])
+            ->firstOrFail();
+        $this->assertSame($existing->task_type_id, $stored->task_type_id);
+    }
+
+    /**
+     * A task type that requires a customer refuses a task without one, and the operator is given
+     * the form back rather than a redirect suggesting it went through.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::add()
+     */
+    public function testAddRefusesATaskMissingWhatTheTypeRequires(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->advanceIdentity('tasks', 'nid');
+
+        $tasks = $this->getTableLocator()->get('Tasks');
+        /** @var \App\Model\Entity\Task $existing */
+        $existing = $tasks->get($this->firstId('Tasks'));
+        $before = $tasks->find()->count();
+
+        $this->post('/tasks/add', [
+            'subject' => 'Signal check',
+            'task_type_id' => $existing->task_type_id,
+            'task_state_id' => $existing->task_state_id,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $tasks->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * The contract goes with it because the fixture leaves the task without one while its type
+     * requires one - the record as the fixture writes it cannot be saved again at all, whatever is
+     * being changed about it.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $taskId = $this->firstId('Tasks');
+        $this->post('/tasks/edit/' . $taskId, [
+            'subject' => 'Antenna replacement',
+            'contract_id' => $this->firstId('Contracts'),
+        ]);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Antenna replacement',
+            $this->getTableLocator()->get('Tasks')->get($taskId)->subject,
+        );
+    }
+
+    /**
      * The delete action runs and redirects. Whether the task really goes depends on what else still
      * references it, which is the application rules' business rather than this test's.
      *
