@@ -530,7 +530,11 @@ class OverviewsController extends AppController
                                             implode(', ', $contractsWithInvalidRuianGid),
                                         ));
                                     } else {
+                                        // The registry said nothing at all - the reference the
+                                        // address carries is all there is to show, and there is no
+                                        // address text to go with it.
                                         $address->ruian_gid = explode('|', $key, limit: 2)[1] ?? null;
+                                        $address->ruian_address = null;
                                     }
 
                                     $address->cto_category = $cto_category;
