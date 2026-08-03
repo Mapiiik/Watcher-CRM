@@ -79,6 +79,16 @@ class DealerCommissionsTable extends AppTable
             ->allowEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
+        $validator
+            ->uuid('commission_id')
+            ->requirePresence('commission_id', 'create')
+            ->notEmptyString('commission_id');
+
+        $validator
+            ->uuid('dealer_id')
+            ->requirePresence('dealer_id', 'create')
+            ->notEmptyString('dealer_id');
+
         return $validator;
     }
 

@@ -108,6 +108,11 @@ class LoginsTable extends AppTable
             ->maxLength('last_denied_ip', 39)
             ->allowEmptyString('last_denied_ip');
 
+        $validator
+            ->uuid('customer_id')
+            ->requirePresence('customer_id', 'create')
+            ->notEmptyString('customer_id');
+
         return $validator;
     }
 

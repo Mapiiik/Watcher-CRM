@@ -130,10 +130,12 @@ class TasksTable extends AppTable
 
         $validator
             ->uuid('task_type_id')
+            ->requirePresence('task_type_id', 'create')
             ->notEmptyString('task_type_id');
 
         $validator
             ->uuid('task_state_id')
+            ->requirePresence('task_state_id', 'create')
             ->notEmptyString('task_state_id');
 
         return $validator;
