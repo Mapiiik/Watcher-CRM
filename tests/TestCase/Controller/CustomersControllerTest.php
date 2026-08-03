@@ -7,10 +7,16 @@ use App\Controller\CustomersController;
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Database\Connection;
+use Cake\Database\Log\LoggedQuery;
+use Cake\Datasource\ConnectionManager;
 use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Psr\Log\AbstractLogger;
+use Psr\Log\NullLogger;
+use Stringable;
 
 /**
  * App\Controller\CustomersController Test Case
@@ -149,6 +155,61 @@ class CustomersControllerTest extends TestCase
         }
 
         $this->assertContains(self::CUSTOMER_ID, $found);
+    }
+
+    /**
+     * The advanced search is answered no more than twice per page - once for the listing and once
+     * for the count that pages it.
+     *
+     * It builds a text document out of five aggregated tables and can be answered by no index, so
+     * it costs roughly the whole database each time it is run: about 180 ms over 7500 customers.
+     * The `subquery` strategy CakePHP 5.4 made the default for hasMany filters its fetch by joining
+     * the listing in as a derived table, which runs the search again for every contained
+     * association - four of them here, so six runs where there should be two.
+     *
+     * The strategy is therefore pinned in the contain, and this is what notices when a hasMany is
+     * added to it without one.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::index()
+     */
+    public function testIndexAnswersTheAdvancedSearchTwiceAtMost(): void
+    {
+        $connection = ConnectionManager::get('test');
+        assert($connection instanceof Connection);
+
+        $searches = 0;
+        $connection->getDriver()->setLogger(new class ($searches) extends AbstractLogger {
+            /**
+             * @param int $searches Times the search has been answered.
+             */
+            public function __construct(private int &$searches)
+            {
+            }
+
+            /**
+             * @inheritDoc
+             */
+            public function log($level, string|Stringable $message, array $context = []): void
+            {
+                $query = $context['query'] ?? null;
+                if (!$query instanceof LoggedQuery) {
+                    return;
+                }
+
+                if (str_contains((string)($query->jsonSerialize()['query'] ?? ''), 'websearch_to_tsquery')) {
+                    $this->searches++;
+                }
+            }
+        });
+
+        $this->login();
+        $this->get('/customers?advanced_search=1&search=Lorem');
+
+        $connection->getDriver()->setLogger(new NullLogger());
+
+        $this->assertResponseOk();
+        $this->assertLessThanOrEqual(2, $searches, 'The advanced search is being answered more than once per query.');
     }
 
     /**
