@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\CustomersController;
+use App\Model\Enum\CustomerDealer;
+use App\Model\Enum\CustomerInvoiceDeliveryType;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -236,6 +238,39 @@ class CustomersControllerTest extends TestCase
         $this->get('/customers/' . self::CUSTOMER_ID . '/edit');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * A customer submitted without an accounting profile is given the form back with the field
+     * marked, rather than an error page.
+     *
+     * Every customer is billed under a profile and the column says so, but nothing used to ask for
+     * one before the save - so a form submitted without it reached the database and came back as a
+     * not-null violation, which the operator sees as a 500.
+     *
+     * @return void
+     * @link \App\Model\Table\CustomersTable::validationDefault()
+     */
+    public function testAddRefusesACustomerWithoutAnAccountingProfile(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        // the fixtures write the identity column with the values they carry, which leaves the
+        // identity itself where it started
+        $this->advanceIdentity('customers', 'nid');
+
+        $customers = $this->getTableLocator()->get('Customers');
+        $before = $customers->find()->count();
+
+        $this->post('/customers/add', [
+            'last_name' => 'Smith',
+            'dealer' => CustomerDealer::Never->value,
+            'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $customers->find()->count());
     }
 
     /**

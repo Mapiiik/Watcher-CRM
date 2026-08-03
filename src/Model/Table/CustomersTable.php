@@ -298,6 +298,14 @@ class CustomersTable extends AppTable
             ->boolean('agree_mailing_billing')
             ->allowEmptyString('agree_mailing_billing');
 
+        // every customer is billed under an accounting profile and the column says so, so a record
+        // without one has to be refused here - left to the database it is an error page rather than
+        // a field the operator can see is missing
+        $validator
+            ->uuid('accounting_profile_id')
+            ->requirePresence('accounting_profile_id', 'create')
+            ->notEmptyString('accounting_profile_id');
+
         return $validator;
     }
 
