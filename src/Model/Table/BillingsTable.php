@@ -98,12 +98,10 @@ class BillingsTable extends AppTable
 
         $validator
             ->uuid('customer_id')
-            ->requirePresence('customer_id', 'create')
             ->notEmptyString('customer_id');
 
         $validator
             ->uuid('contract_id')
-            ->requirePresence('contract_id', 'create')
             ->notEmptyString('contract_id');
 
         $validator
@@ -123,9 +121,7 @@ class BillingsTable extends AppTable
             ->allowEmptyString('percentage_discount');
 
         $validator
-            ->date('billing_from')
-            ->requirePresence('billing_from', 'create')
-            ->notEmptyDate('billing_from');
+            ->date('billing_from');
 
         $validator
             ->scalar('note')

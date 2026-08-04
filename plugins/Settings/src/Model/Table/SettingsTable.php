@@ -65,12 +65,6 @@ class SettingsTable extends AppTable
             ->requirePresence('key', 'create')
             ->notEmptyString('key');
 
-        // an overlay carrying nothing is a record that means the same as no record, which the
-        // service deletes rather than stores
-        $validator
-            ->requirePresence('value', 'create')
-            ->notEmptyArray('value');
-
         return $validator;
     }
 

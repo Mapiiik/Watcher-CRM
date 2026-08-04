@@ -73,7 +73,6 @@ class CustomerLabelsTable extends AppTable
     {
         $validator
             ->uuid('customer_id')
-            ->requirePresence('customer_id', 'create')
             ->notEmptyString('customer_id');
 
         $validator
@@ -88,11 +87,6 @@ class CustomerLabelsTable extends AppTable
             ->uuid('id')
             ->allowEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->uuid('label_id')
-            ->requirePresence('label_id', 'create')
-            ->notEmptyString('label_id');
 
         return $validator;
     }

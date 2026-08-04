@@ -88,7 +88,6 @@ class CustomerMessagesTable extends AppTable
     {
         $validator
             ->uuid('customer_id')
-            ->requirePresence('customer_id', 'create')
             ->notEmptyString('customer_id');
 
         $validator

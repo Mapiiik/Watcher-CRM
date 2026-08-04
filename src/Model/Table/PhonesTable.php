@@ -91,11 +91,6 @@ class PhonesTable extends AppTable
             ->scalar('note')
             ->allowEmptyString('note');
 
-        $validator
-            ->uuid('customer_id')
-            ->requirePresence('customer_id', 'create')
-            ->notEmptyString('customer_id');
-
         return $validator;
     }
 

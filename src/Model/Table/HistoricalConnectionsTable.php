@@ -79,7 +79,6 @@ class HistoricalConnectionsTable extends AppTable
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->requirePresence('source', 'create')
             ->notEmptyString('source');
 
         $validator
@@ -154,7 +153,6 @@ class HistoricalConnectionsTable extends AppTable
             ->notEmptyDateTime('first_seen');
 
         $validator
-            ->requirePresence('first_seen_source', 'create')
             ->notEmptyString('first_seen_source');
 
         $validator

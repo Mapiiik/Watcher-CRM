@@ -179,7 +179,6 @@ class ContractsTable extends AppTable
     {
         $validator
             ->uuid('customer_id')
-            ->requirePresence('customer_id', 'create')
             ->notEmptyString('customer_id');
 
         $validator
@@ -200,7 +199,6 @@ class ContractsTable extends AppTable
 
         $validator
             ->uuid('service_type_id')
-            ->requirePresence('service_type_id', 'create')
             ->notEmptyString('service_type_id');
 
         $validator
@@ -253,7 +251,6 @@ class ContractsTable extends AppTable
 
         $validator
             ->uuid('contract_state_id')
-            ->requirePresence('contract_state_id', 'create')
             ->notEmptyString('contract_state_id');
 
         return $validator;

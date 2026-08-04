@@ -87,12 +87,10 @@ class InvoicesTable extends Table
 
         $validator
             ->date('creation_date')
-            ->requirePresence('creation_date', 'create')
             ->notEmptyDate('creation_date');
 
         $validator
             ->date('due_date')
-            ->requirePresence('due_date', 'create')
             ->notEmptyDate('due_date');
 
         $validator
@@ -101,12 +99,10 @@ class InvoicesTable extends Table
 
         $validator
             ->decimal('total')
-            ->requirePresence('total', 'create')
             ->notEmptyString('total');
 
         $validator
             ->decimal('debt')
-            ->requirePresence('debt', 'create')
             ->notEmptyString('debt');
 
         $validator
