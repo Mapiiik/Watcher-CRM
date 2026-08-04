@@ -134,6 +134,29 @@ class OverviewsControllerTest extends TestCase
         $this->get('/overviews/overview-of-czech-customer-connection-speeds');
 
         $this->assertResponseOk();
+
+        $connection_points = [];
+        foreach ($this->viewVariable('cto_categories') as $category_points) {
+            foreach ($category_points as $connection_point) {
+                $connection_points[] = $connection_point;
+            }
+        }
+
+        $this->assertNotEmpty($connection_points, 'the fixtures have to reach the overview at all');
+
+        // the template reads every speed bucket as a property, which an ArrayObject
+        // only permits with ARRAY_AS_PROPS - without the flag the counts silently
+        // render as empty cells instead of failing
+        foreach ($connection_points as $connection_point) {
+            foreach (['advertised_speeds', 'advertised_speeds_nonbusiness'] as $buckets) {
+                foreach (array_keys($connection_point->{$buckets}->getArrayCopy()) as $speed) {
+                    $this->assertTrue(
+                        isset($connection_point->{$buckets}->{$speed}),
+                        sprintf('%s.%s is unreachable as a property', $buckets, $speed),
+                    );
+                }
+            }
+        }
     }
 
     /**

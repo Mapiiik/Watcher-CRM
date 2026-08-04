@@ -743,6 +743,7 @@ class OverviewsController extends AppController
                                                 );
                                             })
                                             ->toArray(),
+                                        ArrayObject::ARRAY_AS_PROPS,
                                     );
 
                                     return $address;
