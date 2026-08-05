@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\Traits;
 
 use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\HasMany;
 use Cake\ORM\Table;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
@@ -11,12 +12,60 @@ use Cake\Validation\Validation;
 /**
  * Shared assertions for the table test cases.
  *
- * The two methods the baker leaves a stub for - `validationDefault` and `buildRules` - are hard to
- * test without restating the rules, which proves nothing. These ask something the rules do not say
- * by themselves instead.
+ * The methods the baker leaves a stub for - `initialize`, `validationDefault` and `buildRules` -
+ * are hard to test without restating what they declare, which proves nothing. These ask something
+ * the declarations do not say by themselves instead.
  */
 trait TableTestTrait
 {
+    /**
+     * Every association has to name a column that is really there.
+     *
+     * An association is a claim about two schemas, and nothing checks it until something reads the
+     * association - a renamed or dropped column leaves it pointing at nothing, and the page that
+     * contains it is the one that finds out.
+     *
+     * @param \Cake\ORM\Table $table Table to check.
+     * @return void
+     */
+    protected function assertAssociationsMatchTheSchema(Table $table): void
+    {
+        $checked = 0;
+
+        foreach ($table->associations() as $association) {
+            // for a belongsTo the key is on this table, for a hasMany on the other one
+            if ($association instanceof BelongsTo) {
+                $columns = $table->getSchema()->columns();
+            } elseif ($association instanceof HasMany) {
+                $columns = $association->getTarget()->getSchema()->columns();
+            } else {
+                continue;
+            }
+
+            foreach ((array)$association->getForeignKey() as $field) {
+                // an association can say it has no key of its own
+                if (!is_string($field)) {
+                    continue;
+                }
+
+                $this->assertContains(
+                    $field,
+                    $columns,
+                    sprintf(
+                        'The %s association of %s names a column that is not there.',
+                        $association->getName(),
+                        $table->getAlias(),
+                    ),
+                );
+                $checked++;
+            }
+        }
+
+        if ($checked === 0) {
+            $this->markTestSkipped(sprintf('%s stands on its own.', $table->getAlias()));
+        }
+    }
+
     /**
      * A new record has to be refused when nothing is filled in.
      *
