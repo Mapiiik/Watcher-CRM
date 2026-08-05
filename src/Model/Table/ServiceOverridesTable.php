@@ -77,6 +77,7 @@ class ServiceOverridesTable extends AppTable
 
         $validator
             ->uuid('service_id')
+            ->requirePresence('service_id', 'create')
             ->notEmptyString('service_id');
 
         $validator

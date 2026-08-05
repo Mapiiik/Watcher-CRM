@@ -86,6 +86,7 @@ class BorrowedEquipmentsTable extends AppTable
 
         $validator
             ->uuid('equipment_type_id')
+            ->requirePresence('equipment_type_id', 'create')
             ->notEmptyString('equipment_type_id');
 
         $validator

@@ -121,7 +121,9 @@ class BillingsTable extends AppTable
             ->allowEmptyString('percentage_discount');
 
         $validator
-            ->date('billing_from');
+            ->date('billing_from')
+            ->requirePresence('billing_from', 'create')
+            ->notEmptyDate('billing_from');
 
         $validator
             ->scalar('note')
