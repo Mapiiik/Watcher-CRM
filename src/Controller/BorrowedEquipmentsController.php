@@ -95,8 +95,10 @@ class BorrowedEquipmentsController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $borrowedEquipment = $this->BorrowedEquipments
-                ->patchEntity($borrowedEquipment, $this->getRequest()->getData());
+            $borrowedEquipment = $this->BorrowedEquipments->patchEntity(
+                $borrowedEquipment,
+                $this->dataWithAdditionalParameters($this->BorrowedEquipments, $this->getRequest()->getData()),
+            );
 
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {
                 $this->Flash->success(__('The borrowed equipment has been saved.'));

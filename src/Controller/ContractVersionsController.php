@@ -90,7 +90,10 @@ class ContractVersionsController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $contractVersion = $this->ContractVersions->patchEntity($contractVersion, $this->getRequest()->getData());
+            $contractVersion = $this->ContractVersions->patchEntity(
+                $contractVersion,
+                $this->dataWithAdditionalParameters($this->ContractVersions, $this->getRequest()->getData()),
+            );
             if ($this->ContractVersions->save($contractVersion)) {
                 $this->Flash->success(__('The contract version has been saved.'));
 

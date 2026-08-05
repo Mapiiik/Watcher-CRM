@@ -95,8 +95,10 @@ class SoldEquipmentsController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $soldEquipment = $this->SoldEquipments
-                ->patchEntity($soldEquipment, $this->getRequest()->getData());
+            $soldEquipment = $this->SoldEquipments->patchEntity(
+                $soldEquipment,
+                $this->dataWithAdditionalParameters($this->SoldEquipments, $this->getRequest()->getData()),
+            );
 
             if ($this->SoldEquipments->save($soldEquipment)) {
                 $this->Flash->success(__('The sold equipment has been saved.'));

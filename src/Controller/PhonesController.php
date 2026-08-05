@@ -89,7 +89,10 @@ class PhonesController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $phone = $this->Phones->patchEntity($phone, $this->getRequest()->getData());
+            $phone = $this->Phones->patchEntity(
+                $phone,
+                $this->dataWithAdditionalParameters($this->Phones, $this->getRequest()->getData()),
+            );
             if ($this->Phones->save($phone)) {
                 $this->Flash->success(__('The phone has been saved.'));
 

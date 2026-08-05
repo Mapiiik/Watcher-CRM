@@ -96,7 +96,7 @@ class RemovedIpAddressesController extends AppController
         if ($this->getRequest()->is('post')) {
             $removedIpAddress = $this->RemovedIpAddresses->patchEntity(
                 $removedIpAddress,
-                $this->getRequest()->getData(),
+                $this->dataWithAdditionalParameters($this->RemovedIpAddresses, $this->getRequest()->getData()),
             );
 
             // TODO - add who and when deleted this

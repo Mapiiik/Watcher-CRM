@@ -351,7 +351,10 @@ class TasksController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
+            $task = $this->Tasks->patchEntity(
+                $task,
+                $this->dataWithAdditionalParameters($this->Tasks, $this->getRequest()->getData()),
+            );
 
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh

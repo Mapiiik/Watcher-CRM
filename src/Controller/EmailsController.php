@@ -83,7 +83,10 @@ class EmailsController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $email = $this->Emails->patchEntity($email, $this->getRequest()->getData());
+            $email = $this->Emails->patchEntity(
+                $email,
+                $this->dataWithAdditionalParameters($this->Emails, $this->getRequest()->getData()),
+            );
             if ($this->Emails->save($email)) {
                 $this->Flash->success(__('The email has been saved.'));
 

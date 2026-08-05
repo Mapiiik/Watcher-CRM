@@ -84,7 +84,10 @@ class LoginsController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $login = $this->Logins->patchEntity($login, $this->getRequest()->getData());
+            $login = $this->Logins->patchEntity(
+                $login,
+                $this->dataWithAdditionalParameters($this->Logins, $this->getRequest()->getData()),
+            );
             if ($this->Logins->save($login)) {
                 $this->Flash->success(__('The login has been saved.'));
 

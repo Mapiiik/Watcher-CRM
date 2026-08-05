@@ -153,7 +153,10 @@ class AccountsController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $account = $this->Accounts->patchEntity($account, $this->getRequest()->getData());
+            $account = $this->Accounts->patchEntity(
+                $account,
+                $this->dataWithAdditionalParameters($this->Accounts, $this->getRequest()->getData()),
+            );
 
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh

@@ -93,7 +93,10 @@ class AccessCredentialsController extends AppController
         }
 
         if ($this->request->is('post')) {
-            $accessCredential = $this->AccessCredentials->patchEntity($accessCredential, $this->request->getData());
+            $accessCredential = $this->AccessCredentials->patchEntity(
+                $accessCredential,
+                $this->dataWithAdditionalParameters($this->AccessCredentials, $this->request->getData()),
+            );
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } else {

@@ -102,7 +102,10 @@ class AddressesController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
+            $address = $this->Addresses->patchEntity(
+                $address,
+                $this->dataWithAdditionalParameters($this->Addresses, $this->getRequest()->getData()),
+            );
 
             if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
                 // only refresh

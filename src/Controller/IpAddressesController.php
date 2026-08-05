@@ -102,7 +102,10 @@ class IpAddressesController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $ipAddress = $this->IpAddresses->patchEntity($ipAddress, $this->getRequest()->getData());
+            $ipAddress = $this->IpAddresses->patchEntity(
+                $ipAddress,
+                $this->dataWithAdditionalParameters($this->IpAddresses, $this->getRequest()->getData()),
+            );
             if ($this->IpAddresses->save($ipAddress)) {
                 $this->Flash->success(__('The IP address has been saved.'));
 
