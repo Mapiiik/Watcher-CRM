@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\ServiceOverridesController;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -21,6 +22,20 @@ class ServiceOverridesControllerTest extends TestCase
 {
     use ControllerTestTrait;
     use IntegrationTestTrait;
+
+    /**
+     * Customer the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
+     * Contract the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
      * Fixtures
@@ -128,5 +143,35 @@ class ServiceOverridesControllerTest extends TestCase
         $this->post('/service-overrides/delete/' . $this->firstId('ServiceOverrides'));
 
         $this->assertRedirect();
+    }
+
+    /**
+     * Added under its contract, the record is filed under them without the form saying so.
+     *
+     * The form under a contract leaves those fields out - the route already says which record it is,
+     * and the controller fills them in. Posting them in the body instead, as a test reaching the
+     * flat route does, asks a different question and leaves this one unasked.
+     *
+     * @return void
+     * @link \App\Controller\ServiceOverridesController::add()
+     */
+    public function testAddUnderTheRouteFilesItUnderTheRoute(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('ServiceOverrides');
+        $this->post('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/service-overrides/add', [
+            'service_id' => $this->firstId('Services'),
+            // the period is constrained to start today and to run no longer than a few days
+            'valid_from' => Date::today()->toDateString(),
+            'valid_until' => Date::today()->addDays(2)->toDateString(),
+            'reason' => 'Nested override',
+        ]);
+
+        $this->assertRedirect();
+        $added = $this->addedRecord('ServiceOverrides', $before);
+        $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
 }

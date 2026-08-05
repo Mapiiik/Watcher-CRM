@@ -23,6 +23,20 @@ class BorrowedEquipmentsControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
+     * Customer the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
+     * Contract the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -127,5 +141,32 @@ class BorrowedEquipmentsControllerTest extends TestCase
         $this->post('/borrowed-equipments/delete/' . $this->firstId('BorrowedEquipments'));
 
         $this->assertRedirect();
+    }
+
+    /**
+     * Added under its customer and the contract, the record is filed under them without the form saying so.
+     *
+     * The form under a customer and the contract leaves those fields out - the route already says which record it is,
+     * and the controller fills them in. Posting them in the body instead, as a test reaching the
+     * flat route does, asks a different question and leaves this one unasked.
+     *
+     * @return void
+     * @link \App\Controller\BorrowedEquipmentsController::add()
+     */
+    public function testAddUnderTheRouteFilesItUnderTheRoute(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('BorrowedEquipments');
+        $this->post('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/borrowed-equipments/add', [
+            'equipment_type_id' => $this->firstId('EquipmentTypes'),
+        ]);
+
+        $this->assertRedirect();
+        $added = $this->addedRecord('BorrowedEquipments', $before);
+        $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
+        $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
 }

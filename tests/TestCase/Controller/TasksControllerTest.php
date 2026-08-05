@@ -26,6 +26,13 @@ class TasksControllerTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
+     * Contract the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -247,5 +254,34 @@ class TasksControllerTest extends TestCase
         $this->post('/tasks/delete/' . $this->firstId('Tasks'));
 
         $this->assertRedirect();
+    }
+
+    /**
+     * Added under its customer and the contract, the record is filed under them without the form saying so.
+     *
+     * The form under a customer and the contract leaves those fields out - the route already says which record it is,
+     * and the controller fills them in. Posting them in the body instead, as a test reaching the
+     * flat route does, asks a different question and leaves this one unasked.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::add()
+     */
+    public function testAddUnderTheRouteFilesItUnderTheRoute(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('Tasks');
+        $this->post('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/tasks/add', [
+            'task_state_id' => $this->firstId('TaskStates'),
+            'task_type_id' => $this->firstId('TaskTypes'),
+            'subject' => 'Nested task',
+        ]);
+
+        $this->assertRedirect();
+        $added = $this->addedRecord('Tasks', $before);
+        $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
+        $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
 }

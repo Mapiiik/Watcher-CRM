@@ -23,6 +23,13 @@ class LoginsControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
+     * Customer the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -120,5 +127,32 @@ class LoginsControllerTest extends TestCase
         $this->post('/logins/delete/' . $this->firstId('Logins'));
 
         $this->assertRedirect();
+    }
+
+    /**
+     * Added under its customer, the record is filed under them without the form saying so.
+     *
+     * The form under a customer leaves those fields out - the route already says which record it is,
+     * and the controller fills them in. Posting them in the body instead, as a test reaching the
+     * flat route does, asks a different question and leaves this one unasked.
+     *
+     * @return void
+     * @link \App\Controller\LoginsController::add()
+     */
+    public function testAddUnderTheRouteFilesItUnderTheRoute(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('Logins');
+        $this->post('/customers/' . self::CUSTOMER_ID . '/logins/add', [
+            'login' => 'nested-login',
+            'password' => 'secret-password',
+        ]);
+
+        $this->assertRedirect();
+        $added = $this->addedRecord('Logins', $before);
+        $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
     }
 }

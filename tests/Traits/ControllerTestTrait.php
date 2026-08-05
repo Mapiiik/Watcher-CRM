@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\Traits;
 
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 
 /**
  * Shared setup for the controller integration tests.
@@ -38,6 +39,41 @@ trait ControllerTestTrait
         $user->active = true;
 
         $this->session(['Auth' => $user]);
+    }
+
+    /**
+     * The ids a table holds, to be handed to {@see addedRecord()} afterwards.
+     *
+     * @param string $table Table alias.
+     * @return array<string>
+     */
+    protected function idsIn(string $table): array
+    {
+        /** @var array<string> $ids */
+        $ids = $this->getTableLocator()->get($table)->find()->all()->extract('id')->toList();
+
+        return $ids;
+    }
+
+    /**
+     * The record an action has just added, found by not having been there before.
+     *
+     * Asking for it by a value the request carried would only work where the table has a field
+     * distinctive enough to search by, and would say nothing about tables whose every column is
+     * shared with the fixtures.
+     *
+     * @param string $table Table alias.
+     * @param array<string> $idsBefore What {@see idsIn()} returned before the action.
+     * @return \Cake\Datasource\EntityInterface
+     */
+    protected function addedRecord(string $table, array $idsBefore): EntityInterface
+    {
+        $query = $this->getTableLocator()->get($table)->find();
+        if ($idsBefore !== []) {
+            $query->where(['id NOT IN' => $idsBefore]);
+        }
+
+        return $query->firstOrFail();
     }
 
     /**

@@ -23,6 +23,20 @@ class ContractVersionsControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
+     * Customer the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
+     * Contract the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -126,5 +140,34 @@ class ContractVersionsControllerTest extends TestCase
         $this->post('/contract-versions/delete/' . $this->firstId('ContractVersions'));
 
         $this->assertRedirect();
+    }
+
+    /**
+     * Added under its contract, the record is filed under them without the form saying so.
+     *
+     * The form under a customer and the contract leaves those fields out - the route already says which record it is,
+     * and the controller fills them in. Posting them in the body instead, as a test reaching the
+     * flat route does, asks a different question and leaves this one unasked.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::add()
+     */
+    public function testAddUnderTheRouteFilesItUnderTheRoute(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('ContractVersions');
+        $this->post('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/contract-versions/add', [
+            'valid_from' => '2026-08-05',
+            'obligations_settled' => false,
+            'number_of_amendments' => 0,
+        ]);
+
+        $this->assertRedirect();
+        $added = $this->addedRecord('ContractVersions', $before);
+        // a contract version hangs off the contract alone and has no customer of its own
+        $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
 }
