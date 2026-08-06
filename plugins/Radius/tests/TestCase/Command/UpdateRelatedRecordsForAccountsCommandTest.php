@@ -46,6 +46,21 @@ class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
     ];
 
     /**
+     * The name a cron entry calls the command by. It is spelled out rather than derived from the
+     * class, so nothing but this would notice it changing.
+     *
+     * @return void
+     * @link \Radius\Command\UpdateRelatedRecordsForAccountsCommand::defaultName()
+     */
+    public function testDefaultName(): void
+    {
+        $this->assertSame(
+            'radius accounts update_related_records',
+            UpdateRelatedRecordsForAccountsCommand::defaultName(),
+        );
+    }
+
+    /**
      * Every option a cron entry might name is still there. Which records get touched is chosen by
      * option, so a renamed one silently narrows what a scheduled run does.
      *
@@ -66,7 +81,10 @@ class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
     }
 
     /**
-     * A run over the accounts goes through and leaves with a success.
+     * A run over the accounts goes through and says what it did with them.
+     *
+     * The summary is the whole of what an operator sees of a scheduled run, so a run that reported
+     * nothing would be one nobody could tell had done anything.
      *
      * @return void
      * @link \Radius\Command\UpdateRelatedRecordsForAccountsCommand::execute()
@@ -76,5 +94,7 @@ class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
         $this->exec('radius accounts update_related_records');
 
         $this->assertExitSuccess();
+        $this->assertOutputContains('RADIUS Username');
+        $this->assertOutputContains('RADIUS Checks');
     }
 }

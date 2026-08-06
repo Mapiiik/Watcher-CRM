@@ -33,6 +33,33 @@ class SendIssuedInvoicesCommandTest extends TestCase
     ];
 
     /**
+     * The name a cron entry calls the command by.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\SendIssuedInvoicesCommand::defaultName()
+     */
+    public function testDefaultName(): void
+    {
+        $this->assertSame('send_issued_invoices', SendIssuedInvoicesCommand::defaultName());
+    }
+
+    /**
+     * The command says what it does in the list of commands, which is where an operator looks.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\SendIssuedInvoicesCommand::getDescription()
+     */
+    public function testGetDescription(): void
+    {
+        $this->assertNotEmpty(SendIssuedInvoicesCommand::getDescription());
+
+        $this->exec('send_issued_invoices --help');
+
+        $this->assertExitSuccess();
+        $this->assertOutputContains(SendIssuedInvoicesCommand::getDescription());
+    }
+
+    /**
      * The option a cron entry names is still there. It caps how many invoices go out in one run,
      * so losing it would turn a paced send into all of them at once.
      *

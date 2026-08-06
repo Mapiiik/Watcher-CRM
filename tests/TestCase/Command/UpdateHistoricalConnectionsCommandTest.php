@@ -7,7 +7,6 @@ use App\Command\UpdateHistoricalConnectionsCommand;
 use App\Model\Enum\HistoricalConnectionSource;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\Core\Configure;
-use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -49,13 +48,6 @@ class UpdateHistoricalConnectionsCommandTest extends TestCase
     private mixed $sourcesBefore = null;
 
     /**
-     * The language the suite runs in, to be put back.
-     *
-     * @var string
-     */
-    private string $localeBefore = '';
-
-    /**
      * setUp method
      *
      * @return void
@@ -66,11 +58,6 @@ class UpdateHistoricalConnectionsCommandTest extends TestCase
         parent::setUp();
 
         $this->sourcesBefore = Configure::read('HistoricalConnections.sources');
-
-        // the suite runs in Czech, and what these tests read the run's output for is what the
-        // source says rather than what a translator made of it
-        $this->localeBefore = I18n::getLocale();
-        I18n::setLocale('en_US');
     }
 
     /**
@@ -82,7 +69,6 @@ class UpdateHistoricalConnectionsCommandTest extends TestCase
     protected function tearDown(): void
     {
         Configure::write('HistoricalConnections.sources', $this->sourcesBefore);
-        I18n::setLocale($this->localeBefore);
 
         parent::tearDown();
     }

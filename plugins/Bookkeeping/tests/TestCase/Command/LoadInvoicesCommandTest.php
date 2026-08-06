@@ -52,14 +52,20 @@ class LoadInvoicesCommandTest extends TestCase
     }
 
     /**
-     * Not covered: the command talks to the accounting system, and a test is no place to find out
-     * whether it answers. What it does with what comes back belongs to a test of the loader.
+     * A run is told how far back to sync from, and one it cannot read that from does not start.
+     *
+     * Going ahead with a date it could not make out would mean asking the accounting system for a
+     * span nobody chose - either a sliver, and invoices quietly missed, or everything there has
+     * ever been. The reach for the accounting system itself is what a test is no place for, and
+     * what the loader makes of what comes back belongs to a test of the loader.
      *
      * @return void
      * @link \Bookkeeping\Command\LoadInvoicesCommand::execute()
      */
-    public function testExecute(): void
+    public function testExecuteWillNotStartFromADateItCannotRead(): void
     {
-        $this->markTestSkipped('Running the command reaches the accounting system.');
+        $this->exec('load_invoices --last_changes yesterday-ish');
+
+        $this->assertExitError();
     }
 }

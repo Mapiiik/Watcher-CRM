@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Test\TestCase\Command;
 
 use Bookkeeping\Command\IssueInvoicesCommand;
+use Cake\Chronos\Chronos;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -76,11 +77,28 @@ class IssueInvoicesCommandTest extends TestCase
      * them. What it decides to invoice belongs to a test of the generator rather than of the
      * command that schedules it.
      *
+     * On a day it is not due, the run issues nothing.
+     *
+     * The schedule is what keeps a run that fires every night from invoicing every night, and it is
+     * checked before anything is issued - so this is the one thing about running the command that
+     * can be asked without invoices being raised, handed to the accounting system and mailed out.
+     *
      * @return void
      * @link \Bookkeeping\Command\IssueInvoicesCommand::execute()
      */
-    public function testExecute(): void
+    public function testExecuteIssuesNothingOnADayItIsNotDue(): void
     {
-        $this->markTestSkipped('Running the command issues invoices, and reaches the accounting system and mail.');
+        $nowBefore = Chronos::getTestNow();
+        // the middle of a month is neither the first day nor the last
+        Chronos::setTestNow(new Chronos('2026-08-14 03:00:00'));
+
+        try {
+            $this->exec('issue_invoices');
+
+            $this->assertExitSuccess();
+            $this->assertOutputContains('skipping');
+        } finally {
+            Chronos::setTestNow($nowBefore);
+        }
     }
 }
