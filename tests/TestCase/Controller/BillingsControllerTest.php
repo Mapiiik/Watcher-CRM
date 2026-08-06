@@ -194,23 +194,79 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
-     * Both ids the route carries are read, not only the outer one.
+     * A wrong outer id is corrected while a right inner one is left standing.
      *
      * @return void
      * @link \App\Controller\AppController::beforeFilter()
      */
-    public function testViewUnderAnotherContractRedirectsToItsOwn(): void
+    public function testViewUnderAnotherCustomerKeepsTheContractItDoesBelongTo(): void
     {
         $id = $this->firstId('Billings');
         $this->login();
         $this->get(
-            '/customers/' . self::CUSTOMER_ID
-            . '/contracts/00000000-0000-4000-8000-000000000000/billings/view/' . $id,
+            '/customers/ae128a49-82fd-4b80-921f-f11af75fd113/contracts/' . self::CONTRACT_ID
+            . '/billings/view/' . $id,
         );
 
         $this->assertRedirect(
             '/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/billings/view/' . $id,
         );
+    }
+
+    /**
+     * The form for a new record under a contract that is not there drops the nesting.
+     *
+     * This is what a bookmark turns into once the contract behind it is deleted. Left alone, the
+     * form would fill the dead id in and the save fail on `existsIn`, complaining about a field the
+     * form does not render - which reads as no reason at all.
+     *
+     * @return void
+     * @link \App\Controller\AppController::beforeFilter()
+     */
+    public function testAddUnderAContractThatIsGoneDropsTheNesting(): void
+    {
+        $this->login();
+        $this->get(
+            '/customers/' . self::CUSTOMER_ID
+            . '/contracts/00000000-0000-4000-8000-000000000000/billings/add',
+        );
+
+        $this->assertRedirect('/customers/' . self::CUSTOMER_ID . '/billings/add');
+    }
+
+    /**
+     * A customer that is not there takes the contract nested under it along.
+     *
+     * There is no route reaching a contract without its customer, so keeping the inner id would
+     * name an address that does not exist.
+     *
+     * @return void
+     * @link \App\Controller\AppController::beforeFilter()
+     */
+    public function testAddUnderACustomerThatIsGoneDropsTheNestingWhole(): void
+    {
+        $this->login();
+        $this->get(
+            '/customers/00000000-0000-4000-8000-000000000000/contracts/' . self::CONTRACT_ID
+            . '/billings/add',
+        );
+
+        $this->assertRedirect('/billings/add');
+    }
+
+    /**
+     * The listing under a customer that is not there drops the nesting as well - it is the address
+     * that is wrong, not the action asked for.
+     *
+     * @return void
+     * @link \App\Controller\AppController::beforeFilter()
+     */
+    public function testIndexUnderACustomerThatIsGoneDropsTheNesting(): void
+    {
+        $this->login();
+        $this->get('/customers/00000000-0000-4000-8000-000000000000/billings');
+
+        $this->assertRedirect('/billings');
     }
 
     /**

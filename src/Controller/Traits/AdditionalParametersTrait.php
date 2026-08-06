@@ -9,9 +9,23 @@ use Cake\ORM\Table;
 /**
  * @psalm-require-extends \Cake\Controller\Controller
  * @method \Cake\Http\ServerRequest getRequest()
+ * @property \Cake\Controller\Component\FlashComponent $Flash
  */
 trait AdditionalParametersTrait
 {
+    /**
+     * The nesting the routes carry, outermost first, and the table each id names.
+     *
+     * The order is what says that a contract cannot be reached without its customer, so an id that
+     * turns out to name nothing takes the ones nested under it with it.
+     *
+     * @var array<string, string>
+     */
+    private const NESTING = [
+        'customer_id' => 'Customers',
+        'contract_id' => 'Contracts',
+    ];
+
     /*
      * Customer ID
      */
@@ -39,18 +53,24 @@ trait AdditionalParametersTrait
     }
 
     /**
-     * Send a request whose route names a customer or a contract the record does not belong to on to
-     * the URL the record does answer to.
+     * Send a request whose route does not hold up on to the URL that does.
      *
-     * The nested routes match any id against any record: `/customers/{stranger}/billings/view/{id}`
-     * answers with the billing all the same, under a heading naming a customer it has nothing to do
-     * with. A hand-written or gone-stale URL should not be an error - the record exists and the
-     * caller is welcome to it - so it is answered where it belongs instead.
+     * Two things can be wrong with a nested URL, and neither of them deserves an error page - what
+     * the caller asked for is there, only somewhere else:
+     *
+     * - The route names a customer or a contract the record does not belong to. The nested routes
+     *   match any id against any record, so `/customers/{stranger}/billings/view/{id}` answers with
+     *   the billing all the same, under a heading naming a customer it has nothing to do with. The
+     *   record says who it belongs to and is answered there.
+     * - The route names a customer or a contract that is not there at all, which is what a bookmark
+     *   turns into once the contract behind it is deleted. Nothing can be nested under it, so the
+     *   nesting is dropped and the caller lands on the same action without it. That matters most for
+     *   `add`, where the form would otherwise fill a dead id in and the save fail on `existsIn` -
+     *   with the complaint on a field the form does not render, which reads as nothing at all.
      *
      * Only reading is redirected. A `delete` arrives as a POST and would come back as a GET, which
-     * would leave the record standing and say it was removed; and a submitted `edit` carries the
-     * form, which a redirect would drop. Neither reads the route's ids anyway - what belongs to what
-     * is the record's own to say - so both are left to go on with the record they were given.
+     * would leave the record standing and say it was removed; and a submitted `edit` or `add`
+     * carries the form, which a redirect would drop.
      *
      * @return \Cake\Http\Response|null
      */
@@ -58,27 +78,83 @@ trait AdditionalParametersTrait
     {
         $request = $this->getRequest();
 
-        if (!$request->is('get') || !in_array($request->getParam('action'), ['view', 'edit'], true)) {
+        if (!$request->is('get')) {
             return null;
         }
 
         $id = $request->getParam('pass.0');
-        $parameters = array_filter([
-            'customer_id' => $this->customer_id,
-            'contract_id' => $this->contract_id,
-        ], fn(?string $value): bool => $value !== null);
+        $id = is_string($id) ? $id : null;
+        $owner = $this->ownerOfTheRecordAsked($id);
+        $corrections = [];
+        $gone = false;
 
-        if (!is_string($id) || $parameters === []) {
+        foreach (self::NESTING as $field => $alias) {
+            $named = $this->{$field};
+
+            // the action is about that very record, and whether it is there is its own to answer
+            if ($named === null || $named === $id) {
+                continue;
+            }
+
+            if ($gone) {
+                // an outer nesting that went leaves this one nowhere to hang
+                $corrections[$field] = null;
+                continue;
+            }
+
+            if (array_key_exists($field, $owner) && $owner[$field] !== $named) {
+                $corrections[$field] = $owner[$field];
+                continue;
+            }
+
+            $table = $this->fetchTable($alias);
+            $primaryKey = $table->getPrimaryKey();
+
+            if (is_string($primaryKey) && !$table->exists([$primaryKey => $named])) {
+                $corrections[$field] = null;
+                $gone = true;
+            }
+        }
+
+        if ($corrections === []) {
             return null;
         }
 
+        if ($gone) {
+            $this->Flash->info(__('The record the address was filed under is no longer there.'));
+        }
+
+        $url = ['action' => $request->getParam('action')];
+        foreach ((array)$request->getParam('pass') as $passed) {
+            $url[] = $passed;
+        }
+
+        return $this->redirect($url + $corrections);
+    }
+
+    /**
+     * Who the record the action was asked for belongs to, as far as the route's nesting goes.
+     *
+     * Only `view` and `edit` are asked: they are the actions whose first passed argument is this
+     * table's own id. Elsewhere it can be anything at all, and looking it up as a key would be a
+     * type error rather than a miss.
+     *
+     * @param string|null $id Id the action was handed.
+     * @return array<string, string|null> Empty when there is no record to ask.
+     */
+    private function ownerOfTheRecordAsked(?string $id): array
+    {
+        if ($id === null || !in_array($this->getRequest()->getParam('action'), ['view', 'edit'], true)) {
+            return [];
+        }
+
         $table = $this->fetchTable();
-        $fields = array_intersect(array_keys($parameters), $table->getSchema()->columns());
+        $fields = array_intersect(array_keys(self::NESTING), $table->getSchema()->columns());
         $primaryKey = $table->getPrimaryKey();
 
         // a key of several columns is not something one passed id names
         if ($fields === [] || !is_string($primaryKey)) {
-            return null;
+            return [];
         }
 
         $record = $table->find()
@@ -89,14 +165,7 @@ trait AdditionalParametersTrait
 
         // a record the route cannot name is a record the action will not find either, and saying so
         // is its business rather than this one's
-        if (!is_array($record) || $record == array_intersect_key($parameters, $record)) {
-            return null;
-        }
-
-        return $this->redirect([
-            'action' => $request->getParam('action'),
-            $id,
-        ] + $record);
+        return is_array($record) ? $record : [];
     }
 
     /**
