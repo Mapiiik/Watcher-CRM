@@ -253,11 +253,15 @@ return function (RouteBuilder $routes): void {
     });
 
     //the filter reads the request it is generating a URL under, and a console
-    //run has none to read - every branch below asks for something a bare
-    //request does not carry, so it comes to nothing there on its own. It used
-    //to be skipped outright when PHP_SAPI was cli, which also skipped it under
-    //the test runner and built different URLs there than in a browser.
-    Router::addUrlFilter(function (array $params, ServerRequest $request) {
+    //run has none - `Router::getRequest()` answers null there and hands that
+    //straight over, so the filter has to take it and step aside. It used to be
+    //left unregistered when PHP_SAPI was cli instead, which also left it out
+    //under the test runner and built different URLs there than in a browser.
+    Router::addUrlFilter(function (array $params, ?ServerRequest $request) {
+        if ($request === null) {
+            return $params;
+        }
+
         // persistent win-link, unless the caller asked for something else -
         // passing null opts out, for links meant to be followed outside the
         // popup window. Note isset() would not see that null.
