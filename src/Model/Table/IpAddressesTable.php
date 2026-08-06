@@ -54,6 +54,8 @@ class IpAddressesTable extends AppTable
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
+        // the customer's search document is built from these records
+        $this->addBehavior('FulltextSearchCustomers');
 
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Database\Expression\CustomersFulltextSearchExpression;
+use App\Database\Expression\FulltextSearchCustomersExpression;
 use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerPrintType;
 use App\Service\CustomerPrint\CustomerPrintData;
@@ -136,7 +136,7 @@ class CustomersController extends AppController
                     'Customers.company ILIKE' => '%' . trim($search) . '%',
                     'Customers.first_name ILIKE' => '%' . trim($search) . '%',
                     'Customers.last_name ILIKE' => '%' . trim($search) . '%',
-                    new CustomersFulltextSearchExpression(trim($search), (int)env('CUSTOMER_SERIES', '0')),
+                    new FulltextSearchCustomersExpression(trim($search)),
                 ],
             ]);
         } elseif (ctype_digit($search) && strlen($search) <= 10) { // strlen($search) <= 19 for BIGINT

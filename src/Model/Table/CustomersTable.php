@@ -77,6 +77,10 @@ class CustomersTable extends AppTable
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
+        // the customer's own fields are part of their search document
+        $this->addBehavior('FulltextSearchCustomers', [
+            'customerField' => 'id',
+        ]);
 
         $this->belongsTo('AccountingProfiles', [
             'foreignKey' => 'accounting_profile_id',
