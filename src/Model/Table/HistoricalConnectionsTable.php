@@ -78,7 +78,10 @@ class HistoricalConnectionsTable extends AppTable
     #[Override]
     public function validationDefault(Validator $validator): Validator
     {
+        // where the record came from is not null in the database, so it is asked for here rather
+        // than left to the insert to refuse with an error page
         $validator
+            ->requirePresence('source', 'create')
             ->notEmptyString('source');
 
         $validator
@@ -153,6 +156,7 @@ class HistoricalConnectionsTable extends AppTable
             ->notEmptyDateTime('first_seen');
 
         $validator
+            ->requirePresence('first_seen_source', 'create')
             ->notEmptyString('first_seen_source');
 
         $validator

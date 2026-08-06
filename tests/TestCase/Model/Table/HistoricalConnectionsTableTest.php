@@ -136,6 +136,43 @@ class HistoricalConnectionsTableTest extends TestCase
     }
 
     /**
+     * A record that says nothing about where it came from is refused before the database has to.
+     *
+     * Both columns are `NOT NULL`, and the validator only forbade them being filled in empty - a
+     * marshal leaving the key out altogether went through and the insert was what failed, which is
+     * an error page rather than a word about a field. Nothing marshals this table today, the
+     * updater assigns to the entity and never goes past the validator at all, so this is the guard
+     * standing in for a form that does not exist yet.
+     *
+     * @return void
+     * @link \App\Model\Table\HistoricalConnectionsTable::validationDefault()
+     */
+    public function testValidationDefaultRequiresWhereTheRecordCameFrom(): void
+    {
+        $firstSeen = new DateTime('2026-01-01 10:00:00');
+        $complete = [
+            'source' => HistoricalConnectionSource::Radius->value,
+            'source_reference' => 'account-1',
+            'first_seen' => $firstSeen,
+            'first_seen_source' => FirstSeenSource::Session->value,
+            'last_seen' => $firstSeen->addHours(2),
+        ];
+
+        $this->assertEmpty($this->HistoricalConnections->newEntity($complete)->getErrors());
+
+        foreach (['source', 'first_seen_source'] as $field) {
+            $without = $complete;
+            unset($without[$field]);
+
+            $this->assertArrayHasKey(
+                $field,
+                $this->HistoricalConnections->newEntity($without)->getErrors(),
+                $field . ' is not null in the database and has to be asked for before it gets there',
+            );
+        }
+    }
+
+    /**
      * The rules refuse a record whose references point nowhere - see the trait for why that is the
      * question worth asking here. The record it repoints is written here, because the fixture holds
      * none.
