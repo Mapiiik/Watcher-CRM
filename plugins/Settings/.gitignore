@@ -1,0 +1,5 @@
+# `migrations dump` writes the whole schema of whichever connection the plugin
+# runs on, which is the application's rather than the plugin's. The dump is read
+# by nothing but `bake migration_diff`, and there it would answer with every
+# table the application has - so the plugin carries none.
+config/Migrations/schema-dump-*.lock
