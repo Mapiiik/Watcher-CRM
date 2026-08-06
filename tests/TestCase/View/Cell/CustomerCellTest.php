@@ -86,7 +86,8 @@ class CustomerCellTest extends TestCase
 
     /**
      * In the popup window the header goes compact and drops the contracts the reader is not on -
-     * there is nowhere to navigate to from a window opened on one thing.
+     * there is nowhere to navigate to from a window opened on one thing. What is left to follow
+     * stays inside the window, which is what the URL filter carries `win-link` along for.
      *
      * @return void
      * @link \App\View\Cell\CustomerCell::display()
@@ -96,7 +97,7 @@ class CustomerCellTest extends TestCase
         $this->get('/customers/' . self::CUSTOMER_ID . '/emails?win-link=true');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('/customers/' . self::CUSTOMER_ID . '"');
+        $this->assertResponseContains('/customers/' . self::CUSTOMER_ID . '?win-link=true"');
         $this->assertResponseNotContains('/contracts/' . self::CONTRACT_ID);
     }
 

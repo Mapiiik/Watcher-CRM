@@ -252,47 +252,49 @@ return function (RouteBuilder $routes): void {
         ]);
     });
 
-    //apply URL filters only if not called from console
-    if (PHP_SAPI !== 'cli') {
-        Router::addUrlFilter(function (array $params, ServerRequest $request) {
-            // persistent win-link, unless the caller asked for something else -
-            // passing null opts out, for links meant to be followed outside the
-            // popup window. Note isset() would not see that null.
-            if (
-                $request->getQuery('win-link') == 'true'
-                && !array_key_exists('win-link', $params['?'] ?? [])
-            ) {
-                $params['?']['win-link'] = 'true';
-            }
+    //the filter reads the request it is generating a URL under, and a console
+    //run has none to read - every branch below asks for something a bare
+    //request does not carry, so it comes to nothing there on its own. It used
+    //to be skipped outright when PHP_SAPI was cli, which also skipped it under
+    //the test runner and built different URLs there than in a browser.
+    Router::addUrlFilter(function (array $params, ServerRequest $request) {
+        // persistent win-link, unless the caller asked for something else -
+        // passing null opts out, for links meant to be followed outside the
+        // popup window. Note isset() would not see that null.
+        if (
+            $request->getQuery('win-link') == 'true'
+            && !array_key_exists('win-link', $params['?'] ?? [])
+        ) {
+            $params['?']['win-link'] = 'true';
+        }
 
-            //inject customer_id and contract_id, unless the caller asked for
-            //something else - passing null opts out, for links meant to leave
-            //the nesting behind. Note isset() would not see that null.
-            foreach (['customer_id', 'contract_id'] as $nesting) {
-                if ($request->getParam($nesting) && !array_key_exists($nesting, $params)) {
-                    $params[$nesting] = $request->getParam($nesting);
-                }
-                if (array_key_exists($nesting, $params) && $params[$nesting] === null) {
-                    unset($params[$nesting]);
-                }
+        //inject customer_id and contract_id, unless the caller asked for
+        //something else - passing null opts out, for links meant to leave
+        //the nesting behind. Note isset() would not see that null.
+        foreach (['customer_id', 'contract_id'] as $nesting) {
+            if ($request->getParam($nesting) && !array_key_exists($nesting, $params)) {
+                $params[$nesting] = $request->getParam($nesting);
             }
+            if (array_key_exists($nesting, $params) && $params[$nesting] === null) {
+                unset($params[$nesting]);
+            }
+        }
 
-            //remove for self (because of duplicating nesting)
-            if (isset($params['controller']) && $params['controller'] == 'Customers') {
-                unset($params['customer_id']);
-            }
-            if (!isset($params['controller']) && $request->getParam('controller') == 'Customers') {
-                unset($params['customer_id']);
-            }
+        //remove for self (because of duplicating nesting)
+        if (isset($params['controller']) && $params['controller'] == 'Customers') {
+            unset($params['customer_id']);
+        }
+        if (!isset($params['controller']) && $request->getParam('controller') == 'Customers') {
+            unset($params['customer_id']);
+        }
 
-            if (isset($params['controller']) && $params['controller'] == 'Contracts') {
-                unset($params['contract_id']);
-            }
-            if (!isset($params['controller']) && $request->getParam('controller') == 'Contracts') {
-                unset($params['contract_id']);
-            }
+        if (isset($params['controller']) && $params['controller'] == 'Contracts') {
+            unset($params['contract_id']);
+        }
+        if (!isset($params['controller']) && $request->getParam('controller') == 'Contracts') {
+            unset($params['contract_id']);
+        }
 
-            return $params;
-        });
-    }
+        return $params;
+    });
 };
