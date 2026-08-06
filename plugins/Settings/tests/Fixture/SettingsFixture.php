@@ -24,9 +24,9 @@ class SettingsFixture extends TestFixture
                 'key' => 'Lorem ipsum dolor sit amet',
                 'value' => ['network' => 'M-Net'],
                 'created' => 1761497620,
-                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'modified' => 1761497620,
-                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                // who wrote an overlay is nullable, and the users are an application's own - the
+                // plugin travels between them and names none of them
             ],
         ];
         parent::init();

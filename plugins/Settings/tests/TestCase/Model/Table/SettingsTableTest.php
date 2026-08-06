@@ -72,6 +72,32 @@ class SettingsTableTest extends TestCase
     }
 
     /**
+     * An overlay carrying nothing is refused.
+     *
+     * A record with a plugin and a key but no value says the same as no record at all, and the
+     * service deletes such an overlay rather than storing it. Nothing should reach the table by
+     * another way and leave one behind.
+     *
+     * @return void
+     * @link \Settings\Model\Table\SettingsTable::validationDefault()
+     */
+    public function testValidationDefaultRefusesAnOverlayWithoutAValue(): void
+    {
+        $withoutValue = $this->Settings->newEntity([
+            'plugin' => 'watcher_test',
+            'key' => 'block',
+        ]);
+        $this->assertArrayHasKey('value', $withoutValue->getErrors());
+
+        $withAnEmptyValue = $this->Settings->newEntity([
+            'plugin' => 'watcher_test',
+            'key' => 'block',
+            'value' => [],
+        ]);
+        $this->assertArrayHasKey('value', $withAnEmptyValue->getErrors());
+    }
+
+    /**
      * The rules refuse a record whose references point nowhere - see the trait for why that is
      * the question worth asking here.
      *
