@@ -265,13 +265,16 @@ return function (RouteBuilder $routes): void {
                 $params['?']['win-link'] = 'true';
             }
 
-            //inject customer_id
-            if ($request->getParam('customer_id') && !isset($params['customer_id'])) {
-                $params['customer_id'] = $request->getParam('customer_id');
-            }
-            //inject contract_id
-            if ($request->getParam('contract_id') && !isset($params['contract_id'])) {
-                $params['contract_id'] = $request->getParam('contract_id');
+            //inject customer_id and contract_id, unless the caller asked for
+            //something else - passing null opts out, for links meant to leave
+            //the nesting behind. Note isset() would not see that null.
+            foreach (['customer_id', 'contract_id'] as $nesting) {
+                if ($request->getParam($nesting) && !array_key_exists($nesting, $params)) {
+                    $params[$nesting] = $request->getParam($nesting);
+                }
+                if (array_key_exists($nesting, $params) && $params[$nesting] === null) {
+                    unset($params[$nesting]);
+                }
             }
 
             //remove for self (because of duplicating nesting)

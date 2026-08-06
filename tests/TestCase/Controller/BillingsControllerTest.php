@@ -172,4 +172,61 @@ class BillingsControllerTest extends TestCase
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * Asked for under a customer the record does not belong to, it is answered under the one it
+     * does.
+     *
+     * The nested routes match any id against any record, so such a URL used to render the record
+     * under a heading naming a customer it has nothing to do with. It is not an error - the record
+     * exists and the caller is welcome to it - so the caller is sent to it.
+     *
+     * @return void
+     * @link \App\Controller\AppController::beforeFilter()
+     */
+    public function testViewUnderAnotherCustomerRedirectsToItsOwn(): void
+    {
+        $id = $this->firstId('Billings');
+        $this->login();
+        $this->get('/customers/ae128a49-82fd-4b80-921f-f11af75fd113/billings/view/' . $id);
+
+        $this->assertRedirect('/customers/' . self::CUSTOMER_ID . '/billings/view/' . $id);
+    }
+
+    /**
+     * Both ids the route carries are read, not only the outer one.
+     *
+     * @return void
+     * @link \App\Controller\AppController::beforeFilter()
+     */
+    public function testViewUnderAnotherContractRedirectsToItsOwn(): void
+    {
+        $id = $this->firstId('Billings');
+        $this->login();
+        $this->get(
+            '/customers/' . self::CUSTOMER_ID
+            . '/contracts/00000000-0000-4000-8000-000000000000/billings/view/' . $id,
+        );
+
+        $this->assertRedirect(
+            '/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/billings/view/' . $id,
+        );
+    }
+
+    /**
+     * Asked for under the customer and contract it belongs to, the record is answered there.
+     *
+     * @return void
+     * @link \App\Controller\AppController::beforeFilter()
+     */
+    public function testViewUnderItsOwnRouteIsAnsweredThere(): void
+    {
+        $this->login();
+        $this->get(
+            '/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/billings/view/'
+            . $this->firstId('Billings'),
+        );
+
+        $this->assertResponseOk();
+    }
 }

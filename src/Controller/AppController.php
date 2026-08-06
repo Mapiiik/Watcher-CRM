@@ -205,6 +205,14 @@ class AppController extends Controller
         }
 
         parent::beforeFilter($event);
+
+        # Answer a record asked for under a customer or contract it does not belong to where it does
+        $redirect = $this->redirectIfTheRouteNamesAnother();
+        if ($redirect !== null) {
+            // the result of `Controller.initialize` is what stands in for the action, and returning
+            // it from a listener has been deprecated since 5.2
+            $event->setResult($redirect);
+        }
     }
 
     /**
