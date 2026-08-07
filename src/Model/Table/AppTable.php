@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use ArrayObject;
 use AuditStash\Persister\TablePersister;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\ORM\Association;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Association\HasMany;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
-use Closure;
 use Override;
-use Psr\SimpleCache\CacheInterface;
 
 /**
  * Single database table
@@ -80,60 +81,77 @@ class AppTable extends Table
     }
 
     /**
-     * @inheritDoc
+     * A query after a single record fetches what it contains with the `select` strategy.
+     *
+     * `subquery`, the CakePHP 5.4 default for hasMany, filters its fetch by joining the source
+     * query back in as a derived table. Over one record that is nothing but work - the key to
+     * filter by is already in hand, which is what `select` uses. It is also what loses the
+     * filtering: the derived table is joined in under the alias of the source table, so a contain
+     * reaching an association of the same name overwrites it and the fetch comes back unfiltered.
+     *
+     * The limit is what says the query is after one record, and `get()`, `first()` and
+     * `firstOrFail()` all set it. Listings keep the default, where the derived table earns its
+     * keep once a page grows past a couple of thousand rows.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query
+     * @param \ArrayObject<string, mixed> $options Options
+     * @param bool $primary Whether this is the query the results are read from
+     * @psalm-suppress PossiblyUnusedParam
+     * @return void
      */
-    #[Override]
-    public function get(
-        mixed $primaryKey,
-        array|string $finder = 'all',
-        CacheInterface|string|null $cache = null,
-        Closure|string|null $cacheKey = null,
-        mixed ...$args,
-    ): EntityInterface {
-        if (isset($args['contain'])) {
-            $args['contain'] = $this->withSelectStrategy((array)$args['contain'], $this);
+    public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options, bool $primary): void
+    {
+        if (!$primary || $query->clause('limit') !== 1) {
+            return;
         }
 
-        return parent::get($primaryKey, $finder, $cache, $cacheKey, ...$args);
+        $strategies = $this->selectStrategies($query->getContain(), $this);
+
+        if ($strategies !== []) {
+            // merged into the loader rather than set on the query: `SelectQuery::contain()` with
+            // an override clears the contain first, and clearing marks the query dirty - which is
+            // not something to do to a query while it is running
+            $query->getEagerLoader()->contain($strategies);
+        }
     }
 
     /**
-     * Says that the contained hasMany and belongsToMany are to be fetched with the `select`
-     * strategy, wherever the caller has not said otherwise.
+     * The contained hasMany and belongsToMany that have not been given a strategy of their own,
+     * as a contain saying `select` and nothing else.
      *
-     * `subquery`, the CakePHP 5.4 default, filters its fetch by joining the source query back in
-     * as a derived table. Under `get()` that query returns one record, so `select` filters over a
-     * key already in hand and the derived table is nothing but work. It also cannot be joined in
-     * under an alias a contain of the same name then overwrites, which silently loses the
-     * filtering and fetches the whole table.
-     *
-     * @param array<mixed> $contain Contain to rewrite.
+     * @param array<mixed> $contain Contain to read.
      * @param \Cake\ORM\Table $table Table the contain is read against.
      * @return array<mixed>
      */
-    protected function withSelectStrategy(array $contain, Table $table): array
+    protected function selectStrategies(array $contain, Table $table): array
     {
-        $rewritten = [];
+        $strategies = [];
 
         foreach ($contain as $key => $options) {
             $name = is_int($key) ? $options : $key;
 
             if (!is_string($name) || !$table->hasAssociation($name)) {
-                $rewritten[$key] = $options;
                 continue;
             }
 
             $association = $table->getAssociation($name);
             $options = is_array($options) ? $options : [];
+            $nested = $this->selectStrategies($options, $association->getTarget());
 
-            if ($association instanceof HasMany || $association instanceof BelongsToMany) {
-                $options += ['strategy' => Association::STRATEGY_SELECT];
+            if (
+                !array_key_exists('strategy', $options)
+                && ($association instanceof HasMany || $association instanceof BelongsToMany)
+            ) {
+                $nested['strategy'] = Association::STRATEGY_SELECT;
             }
 
-            $rewritten[$name] = $this->withSelectStrategy($options, $association->getTarget());
+            if ($nested !== []) {
+                $strategies[$name] = $nested;
+            }
         }
 
-        return $rewritten;
+        return $strategies;
     }
 
     /**
