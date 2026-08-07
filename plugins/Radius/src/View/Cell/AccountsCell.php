@@ -46,21 +46,9 @@ class AccountsCell extends Cell
     public function display(array $conditions = []): void
     {
         $contain = [
-            // Only the latest session of each account is shown, and it is read straight out of
-            // `radacct_user_start_idx` over the accounts in hand: the index leads with the
-            // username and descends by the start time, so the first row of each account is the
-            // one wanted.
-            //
-            // What stood here asked instead for the latest session of every username there has
-            // ever been - `GROUP BY username` over the whole of `radacct` - and joined that back
-            // to the three or four rows it needed. Over 422 000 sessions the page paid 780 ms for
-            // it against 5 ms this way, and the old cost grew with the table while this one does
-            // not. See the 2004 runbook for the index and the numbers.
-            //
-            // Where the two part is sessions that begin at the same instant, which the accounting
-            // data does carry: the old form returned every session tied for the latest start,
-            // this one returns a single row per account. The template only ever reads the first,
-            // so the page is the same and the rest were fetched for nothing.
+            // One row per account, its latest session, read out of `radacct_user_start_idx` for
+            // the accounts in hand. Aggregating the whole of `radacct` instead costs the page
+            // more the longer the accounting data gets. Needs the 2004 runbook.
             'Radacct' => fn(SelectQuery $query): SelectQuery => $query
                 ->distinct(['Radacct.username'])
                 ->orderBy([

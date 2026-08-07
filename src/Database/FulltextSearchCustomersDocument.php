@@ -4,37 +4,25 @@ declare(strict_types=1);
 namespace App\Database;
 
 /**
- * The text document the advanced customer search is answered from.
+ * The text document the advanced customer search is answered from: the customer, its contracts,
+ * addresses, e-mails, phone numbers and IP addresses, tokenised and stored once per customer.
  *
- * It is the same text the search used to build on the fly: the customer, its contracts, addresses,
- * e-mails, phone numbers and IP addresses concatenated and tokenised. Building it costs about
- * 180 ms over 7500 customers and no index can help with that, because what is indexed is an
- * expression that lives in no table. Stored once per customer and indexed with GIN, the same
- * search is answered in 0.4 ms.
- *
- * This is the only place the document is defined. A document written by one path and searched
- * through another has to agree on every detail, down to the text search configuration, so both
- * the writers - `FulltextSearchCustomersTable` and the migration that first fills the table - and the
- * reader, `FulltextSearchCustomersExpression`, take it from here.
+ * This is the only place it is defined. A document written by one path and searched through
+ * another has to agree on every detail, down to the text search configuration, so the writers
+ * - `FulltextSearchCustomersTable` and the migrations - and the reader,
+ * `FulltextSearchCustomersExpression`, all take it from here.
  */
 final class FulltextSearchCustomersDocument
 {
     /**
      * The text search configuration to tokenise with, named rather than left to the server's
-     * `default_text_search_config`.
+     * `default_text_search_config` - a stored document and a search that disagree on it would
+     * quietly stop being the same language, and nothing would say so.
      *
-     * Naming it stops being optional once the document is stored: were that setting ever to
-     * change, what sits in the table and what a search asks for would quietly stop being the
-     * same language, and nothing would say so.
-     *
-     * It is not what the server default does today - that is `english`, which stems Czech words
-     * by English rules to no purpose and, worse, drops `a`, `i`, `to`, `on` and `by` as stop
-     * words. Those are Czech words somebody may well be searching for.
-     *
-     * `simple_unaccent` is `simple` - fold the case, do nothing else - with the accents folded
-     * away as well, on both sides: `patocka` finds `Patočka`, and `Němec` finds the `Nemec`
-     * somebody typed without one. It is still a whole word rather than a fuzzy one; `patocce`
-     * finds nothing. See the migration that defines it.
+     * `simple_unaccent` folds the case and the accents and does nothing else, on both sides:
+     * `patocka` finds `Patočka` and the other way round. Still a whole word, not a fuzzy one.
+     * The server default, `english`, drops `a`, `i`, `to`, `on` and `by` as stop words, which
+     * are Czech words somebody may be searching for. Defined in the migration.
      *
      * @var string
      */
@@ -43,10 +31,9 @@ final class FulltextSearchCustomersDocument
     /**
      * Builds the document of every customer the filter lets through and stores it.
      *
-     * The related records are read through correlated subqueries rather than aggregated joins so
-     * that the statement costs what it is asked for: refreshing one customer reads that customer's
-     * records over their foreign key indexes instead of grouping all five tables to throw the rest
-     * away.
+     * The related records are read through correlated subqueries rather than aggregated joins, so
+     * that refreshing one customer reads that customer's records over their foreign key indexes
+     * instead of grouping all five tables to throw the rest away.
      *
      * The first parameter is the customer series; any further ones are the customer ids.
      *
@@ -147,9 +134,8 @@ final class FulltextSearchCustomersDocument
     /**
      * The statement that stores the document of every customer there is.
      *
-     * The configuration can be named rather than left to the current one, which is what the
-     * migrations do: a migration has to go on meaning what it meant when it was written, and the
-     * application's idea of the configuration moves on. One that took today's would, on a database
+     * The migrations name the configuration instead of taking the current one: a migration has to
+     * go on meaning what it meant when it was written. One taking today's would, on a database
      * built from scratch, ask for a configuration a later migration has not created yet.
      *
      * @param string $configuration Text search configuration to tokenise with.

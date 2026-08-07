@@ -113,9 +113,7 @@ class FulltextSearchCustomersBehaviorTest extends TestCase
     /**
      * A saved record can be searched for straight away, with nothing else run in between.
      *
-     * The number is searched for without its spaces, which is a form that appears nowhere in the
-     * database - the document carries it because that is how people type a number they are looking
-     * for.
+     * The number is searched for without its spaces, a form that appears nowhere in the database.
      *
      * @return void
      * @link \App\Model\Behavior\FulltextSearchCustomersBehavior::afterSave()
@@ -175,12 +173,8 @@ class FulltextSearchCustomersBehaviorTest extends TestCase
     }
 
     /**
-     * A name is found whether or not the accents are typed - in the search or in the record.
-     *
-     * Both halves matter. Somebody looking for `Patočka` on a keyboard that is not theirs has to
-     * find them, and so does somebody looking for `Patočka` properly when the name was entered
-     * without the accents in the first place. What must not follow from that is a search that
-     * finds words merely resembling the term, which is why the second assertion is here.
+     * A name is found whether or not the accents are typed. What must not follow from that is a
+     * search finding words that merely resemble the term, which is the last assertion.
      *
      * @return void
      * @link \App\Database\FulltextSearchCustomersDocument::CONFIGURATION

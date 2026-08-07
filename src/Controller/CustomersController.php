@@ -236,15 +236,10 @@ class CustomersController extends AppController
         // contain related data
         //
         // Each of these is fetched with the `select` strategy rather than the `subquery` one
-        // CakePHP 5.4 made the default for hasMany. That strategy filters its fetch by joining the
-        // listing query in as a derived table - the whole query, not the ids it returned - so the
-        // listing is run again for every association, four times over per page here.
-        //
-        // Measured over 7500 customers, a page of 20 takes 6-7 ms this way against 26-30 ms, and
-        // that holds whether the search finds two customers or two thousand: what a page costs to
-        // fetch depends on the page, not on how much the search matched. `subquery` only comes out
-        // ahead past roughly 2000 rows on one page, where the list of ids grows longer than the
-        // four repeats cost - more rows than the page size can be set to.
+        // CakePHP 5.4 made the default for hasMany. That strategy joins the listing query in as a
+        // derived table - the whole query, not the ids it returned - so the listing is run again
+        // for every association, and it is several times slower here at any page size the page
+        // size selector offers.
         $customersQuery->contain([
             'Contracts' => [
                 'ContractStates',

@@ -12,10 +12,9 @@ use Closure;
  * Fulltext search over customers and everything reachable from them — contracts, addresses,
  * e-mails, phone numbers and IP addresses.
  *
- * What is searched is the document stored for each customer in `fulltext_search_customers`, kept up to
- * date by `FulltextSearchCustomersBehavior`; see `FulltextSearchCustomersDocument` for what goes into it. The
- * search itself used to build that document for every customer on every run, which cost about
- * 180 ms over 7500 of them and could be helped by no index.
+ * What is searched is the document stored for each customer in `fulltext_search_customers`, kept
+ * up to date by `FulltextSearchCustomersBehavior`; `FulltextSearchCustomersDocument` says what
+ * goes into it.
  *
  * The search term is bound into the value binder the expression is compiled with, instead of into
  * the binder of the query the condition is added to. Binding it on the query itself would not

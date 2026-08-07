@@ -105,11 +105,9 @@ class AccountsCellTest extends TestCase
     }
 
     /**
-     * The session shown for an account is its latest one, and only that one.
+     * The session shown for an account is its latest one.
      *
-     * The cell renders `radacct[0]`, so what the query puts first is what the operator reads as
-     * "where this account was last seen". A second session is recorded here later than the fixture
-     * one and from somewhere else, and it is the later one that has to be on the page.
+     * The cell renders `radacct[0]`, so what the query puts first is what is read as "last seen".
      *
      * @return void
      * @link \Radius\View\Cell\AccountsCell::display()
@@ -123,8 +121,8 @@ class AccountsCellTest extends TestCase
         foreach ($session->toArray() as $field => $value) {
             $later->set($field, $value);
         }
-        // the fixture inserts its own key without moving the sequence on, so the next one it
-        // hands out is the one already taken
+        // the fixture inserts its key without moving the sequence on, so the next one it hands
+        // out is taken
         $later->set('radacctid', 1000);
         $later->set('acctuniqueid', 'the later session');
         $later->set('acctstarttime', $session->get('acctstarttime')->addDays(1));

@@ -160,11 +160,7 @@ class CustomersControllerTest extends TestCase
 
     /**
      * The listing finds a customer by what their related records say, which is what the advanced
-     * search is for - the address is on no column of the customer.
-     *
-     * The documents are built here rather than carried by a fixture: what the search reads has to
-     * be what the application would have written, and a `tsvector` written out by hand would only
-     * ever agree with its source by accident.
+     * search is for - the address searched for is on no column of the customer.
      *
      * @return void
      * @link \App\Controller\CustomersController::index()
@@ -192,16 +188,9 @@ class CustomersControllerTest extends TestCase
      * The advanced search is answered no more than twice per page - once for the listing and once
      * for the count that pages it.
      *
-     * The `subquery` strategy CakePHP 5.4 made the default for hasMany filters its fetch by joining
-     * the listing in as a derived table, which runs the whole listing query again for every
-     * contained association - four of them here, so six runs where there should be two. That is
-     * how the search came to be answered six times per page while it still built its document on
-     * the fly, at about 180 ms a run over 7500 customers.
-     *
-     * The document is stored now and a run costs a fraction of a millisecond, but the multiplier
-     * is still there and would fall on whatever expensive condition the listing is given next.
-     * The strategy is therefore pinned in the contain, and this is what notices when a hasMany is
-     * added to it without one.
+     * The `subquery` strategy CakePHP 5.4 made the default for hasMany runs the whole listing
+     * query again for every contained association, four of them here. The strategy is pinned in
+     * the contain against that, and this is what notices a hasMany added without one.
      *
      * @return void
      * @link \App\Controller\CustomersController::index()

@@ -126,11 +126,8 @@ class FulltextSearchCustomersTableTest extends TestCase
     }
 
     /**
-     * The customer number is stored as it is shown, with the series added to it.
-     *
-     * Nobody searches for the number in the column - what is on the invoice is the number plus the
-     * series - so the document has to carry the sum, and a change to the series is a reason to
-     * build every document again.
+     * The customer number is stored as it is shown, with the series added to it - what is on the
+     * invoice is the sum, not the number in the column.
      *
      * @return void
      * @link \App\Model\Table\FulltextSearchCustomersTable::rebuild()

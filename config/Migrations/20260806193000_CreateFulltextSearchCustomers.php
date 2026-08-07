@@ -29,13 +29,10 @@ class CreateFulltextSearchCustomers extends BaseMigration
             . ' ON fulltext_search_customers USING gin (document)',
         );
 
-        // Fill it here rather than leave it to the command that keeps it fresh: from the moment
-        // the search reads this table, a customer without a document is a customer the search
-        // cannot find, and nothing about that would look like an error.
-        //
-        // The configuration is named as it was named here, not taken from what the application
-        // uses today - a later migration may replace that one, and on a database built from
-        // scratch this step runs before it exists.
+        // Filled here rather than left to the command: from the moment the search reads this
+        // table, a customer without a document is a customer it cannot find, and nothing about
+        // that would look like an error. The configuration is named as it was named here - see
+        // `FulltextSearchCustomersDocument::forEveryCustomer()`.
         $this->execute(
             FulltextSearchCustomersDocument::forEveryCustomer('simple'),
             [(int)env('CUSTOMER_SERIES', '0')],

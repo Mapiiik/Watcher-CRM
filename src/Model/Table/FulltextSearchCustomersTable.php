@@ -39,10 +39,9 @@ class FulltextSearchCustomersTable extends Table
     /**
      * Rebuilds the documents of the given customers.
      *
-     * Costs about 0.15 ms per customer, so it is meant to be called from wherever anything the
-     * document is built from has been saved - see `FulltextSearchCustomersBehavior`. Ids of customers that
-     * no longer exist are not an error: they simply have no document to build, and the row they
-     * had went with them.
+     * Meant to be called wherever anything the document is built from has been saved - see
+     * `FulltextSearchCustomersBehavior`. Ids of customers that no longer exist are not an error:
+     * they have no document to build, and the row they had went with them.
      *
      * @param array<string> $customerIds Ids of the customers to rebuild.
      * @return int The number of documents written.
@@ -65,10 +64,9 @@ class FulltextSearchCustomersTable extends Table
     /**
      * Rebuilds the documents of every customer.
      *
-     * Costs about 226 ms over 7500 customers. It is what puts the table right again after anything
-     * that wrote to the database without going through the application, and after the customer
-     * series has been changed - the customer number is part of the document, so every document
-     * built before the change is answering to a number nobody has any more.
+     * Puts the table right after anything that wrote to the database without going through the
+     * application, and after `CUSTOMER_SERIES` has been changed - the customer number is part of
+     * the document, so documents built before such a change answer to a number nobody has.
      *
      * @return int The number of documents written.
      */

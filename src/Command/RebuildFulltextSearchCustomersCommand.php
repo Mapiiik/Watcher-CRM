@@ -15,16 +15,13 @@ use Throwable;
 /**
  * Rebuild fulltext search customers command.
  *
- * Builds every customer's search document again from scratch. The application keeps them up to
- * date as it saves (see `FulltextSearchCustomersBehavior`), so this is the safety net rather
- * than the mechanism: it is what puts the table right after a write that never went through the ORM,
- * after a restore, and after `CUSTOMER_SERIES` has been changed - the customer number is part
- * of the document, so every document built before such a change answers to a number nobody has
- * any more.
+ * Builds every customer's search document again. The application keeps them up to date as it
+ * saves (see `FulltextSearchCustomersBehavior`), so this is the safety net rather than the
+ * mechanism: for a write that never went through the ORM, for a restore, and for a change to
+ * `CUSTOMER_SERIES`, which is part of the document.
  *
- * Costs about 226 ms over 7500 customers and is safe to run at any time - it writes the same
- * documents the application would have written, so a run that fails changes nothing and the
- * next one puts it right.
+ * Safe to run at any time - it writes the same documents the application would have, so a run
+ * that fails changes nothing and the next one puts it right.
  */
 class RebuildFulltextSearchCustomersCommand extends Command
 {

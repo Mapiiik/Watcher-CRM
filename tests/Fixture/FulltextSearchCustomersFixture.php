@@ -9,9 +9,8 @@ use Override;
 /**
  * FulltextSearchCustomersFixture
  *
- * Left empty. A search document is never anything but what the customer data already says, so
- * a test that needs one lets it be built - by saving, or by rebuilding the table - rather than
- * stating a `tsvector` here that nothing would ever check against its source.
+ * Left empty. A test that needs a document lets it be built - by saving, or by rebuilding the
+ * table - rather than stating a `tsvector` here that nothing would check against its source.
  */
 class FulltextSearchCustomersFixture extends TestFixture
 {

@@ -6,11 +6,8 @@ namespace App\Test\Traits;
 use App\Database\Expression\FulltextSearchCustomersExpression;
 
 /**
- * Asks the advanced search what it finds, the way the listing asks it.
- *
- * The stored document is worth nothing on its own - what matters is whether the search reads back
- * what was written into it - so the tests go through the same expression the listing uses rather
- * than reading the `tsvector` and judging it themselves.
+ * Asks the advanced search what it finds, through the same expression the listing uses - what
+ * matters is that the search reads back what was written, not what the `tsvector` looks like.
  */
 trait FulltextSearchCustomersTestTrait
 {

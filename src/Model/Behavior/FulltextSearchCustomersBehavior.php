@@ -16,10 +16,9 @@ use Cake\ORM\Locator\LocatorAwareTrait;
  * every table the document is built from - the customer itself and its contracts, addresses,
  * e-mails, phone numbers and IP addresses - and nowhere else.
  *
- * Rebuilding one customer costs about 0.15 ms and happens inside the save's transaction, so a
- * document is never a step behind what it describes. What it cannot see is a write that never
- * came through the ORM; `bin/cake fulltext_search_customers rebuild` is what puts the table right after
- * one of those.
+ * The rebuild runs inside the save's transaction, so a document is never a step behind what it
+ * describes. What it cannot see is a write that never came through the ORM;
+ * `bin/cake fulltext_search_customers rebuild` is what puts the table right after one of those.
  */
 class FulltextSearchCustomersBehavior extends Behavior
 {
