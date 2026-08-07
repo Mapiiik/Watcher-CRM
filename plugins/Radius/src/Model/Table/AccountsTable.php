@@ -5,6 +5,7 @@ namespace Radius\Model\Table;
 
 use App\Model\Table\AppTable;
 use Cake\Database\Type\EnumType;
+use Cake\ORM\Association;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -62,12 +63,12 @@ class AccountsTable extends AppTable
         $this->addBehavior('StringModifications');
 
         $this->belongsTo('Customers', [
+            'strategy' => Association::STRATEGY_SELECT,
             'foreignKey' => 'customer_id',
-            'strategy' => 'select',
         ]);
         $this->belongsTo('Contracts', [
+            'strategy' => Association::STRATEGY_SELECT,
             'foreignKey' => 'contract_id',
-            'strategy' => 'select',
         ]);
         $this->hasMany('Radius.Radcheck', [
             'foreignKey' => 'username',
@@ -100,8 +101,8 @@ class AccountsTable extends AppTable
         ]);
 
         // set the association strategy to "select" for Creators/Modifiers
-        $this->getAssociation('Creators')->setStrategy('select');
-        $this->getAssociation('Modifiers')->setStrategy('select');
+        $this->getAssociation('Creators')->setStrategy(Association::STRATEGY_SELECT);
+        $this->getAssociation('Modifiers')->setStrategy(Association::STRATEGY_SELECT);
     }
 
     /**

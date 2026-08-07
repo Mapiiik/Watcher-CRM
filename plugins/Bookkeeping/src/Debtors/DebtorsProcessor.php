@@ -14,6 +14,7 @@ use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
+use Cake\ORM\Association;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use InvalidArgumentException;
 use RouterOS\Client;
@@ -109,7 +110,7 @@ class DebtorsProcessor
             ->find()
             ->contain([
                 'Customers' => [
-                    'strategy' => 'select',
+                    'strategy' => Association::STRATEGY_SELECT,
                     'Contracts' => [
                         'ContractStates',
                     ],

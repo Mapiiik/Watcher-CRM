@@ -242,10 +242,11 @@ class CustomersController extends AppController
         // size selector offers.
         $customersQuery->contain([
             'Contracts' => [
-                'ContractStates',
                 'strategy' => Association::STRATEGY_SELECT,
+                'ContractStates',
             ],
             'CustomerLabels' => [
+                'strategy' => Association::STRATEGY_SELECT,
                 'Labels',
                 'sort' => [
                     'Labels.name',
@@ -253,15 +254,14 @@ class CustomersController extends AppController
                 'conditions' => [
                     'CustomerLabels.contract_id IS' => null,
                 ],
-                'strategy' => Association::STRATEGY_SELECT,
             ],
             'IpAddresses' => [
-                'Contracts',
                 'strategy' => Association::STRATEGY_SELECT,
+                'Contracts',
             ],
             'IpNetworks' => [
-                'Contracts',
                 'strategy' => Association::STRATEGY_SELECT,
+                'Contracts',
             ],
             'AccountingProfiles',
         ]);
