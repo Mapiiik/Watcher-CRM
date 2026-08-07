@@ -130,6 +130,7 @@ $radiusRunbooks = ROOT . DS . 'plugins' . DS . 'Radius' . DS . 'config' . DS . '
         $radiusRunbooks . '2001_PreMigrateRelatedKeysToUuidOnAccounts.sql',
         $radiusRunbooks . '2002_PostMigrateRelatedKeysToUuidOnAccounts.sql',
         $radiusRunbooks . '2003_MigratePrimaryKeyToUuidOnAccounts.sql',
+        $radiusRunbooks . '2004_AddUserStartIndexOnRadacct.sql',
     ],
     'test_radius',
 );

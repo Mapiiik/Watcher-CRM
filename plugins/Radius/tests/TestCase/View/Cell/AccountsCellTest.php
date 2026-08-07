@@ -105,6 +105,42 @@ class AccountsCellTest extends TestCase
     }
 
     /**
+     * The session shown for an account is its latest one, and only that one.
+     *
+     * The cell renders `radacct[0]`, so what the query puts first is what the operator reads as
+     * "where this account was last seen". A second session is recorded here later than the fixture
+     * one and from somewhere else, and it is the later one that has to be on the page.
+     *
+     * @return void
+     * @link \Radius\View\Cell\AccountsCell::display()
+     */
+    public function testDisplayShowsTheLatestSessionOfEachAccount(): void
+    {
+        $radacct = $this->getTableLocator()->get('Radius.Radacct');
+        $session = $radacct->find()->firstOrFail();
+
+        $later = $radacct->newEmptyEntity();
+        foreach ($session->toArray() as $field => $value) {
+            $later->set($field, $value);
+        }
+        // the fixture inserts its own key without moving the sequence on, so the next one it
+        // hands out is the one already taken
+        $later->set('radacctid', 1000);
+        $later->set('acctuniqueid', 'the later session');
+        $later->set('acctstarttime', $session->get('acctstarttime')->addDays(1));
+        $later->set('nasipaddress', '172.16.99.1');
+        $later->set('framedipaddress', '172.16.99.11');
+        $radacct->saveOrFail($later);
+
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('172.16.99.1');
+        // the fixture session, which is now the older one - and its framed address with it
+        $this->assertResponseNotContains('10.10.10.1');
+    }
+
+    /**
      * A customer with no RADIUS account gets no table rather than an empty one.
      *
      * @return void
