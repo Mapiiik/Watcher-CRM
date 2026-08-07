@@ -8,9 +8,11 @@ use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
+use App\Test\Traits\EnvironmentTestTrait;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -25,6 +27,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class ProcessSmsCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
+    use EnvironmentTestTrait;
 
     /**
      * The customer the fixtures carry.
@@ -47,6 +50,35 @@ class ProcessSmsCommandTest extends TestCase
         'app.Commissions',
         'app.CustomerMessages',
     ];
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // The run stops before it looks at anything when the gateway has no password, so a test
+        // of which messages it picks up needs one said. Left to the environment it is whatever
+        // the developer's `.env` holds and nothing at all on CI.
+        $this->withEnvironment(['ANDROID_SMS_GATEWAY_PASSWORD' => 'not a real password']);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        $this->restoreEnvironment();
+
+        parent::tearDown();
+    }
 
     /**
      * Write an SMS in the state asked for.

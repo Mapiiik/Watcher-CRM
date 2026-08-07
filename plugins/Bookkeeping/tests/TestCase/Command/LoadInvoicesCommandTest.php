@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Command;
 
+use App\Test\Traits\EnvironmentTestTrait;
 use Bookkeeping\Command\LoadInvoicesCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -18,6 +20,36 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class LoadInvoicesCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
+    use EnvironmentTestTrait;
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // A run that cannot start reports it by mail, so a test of that path needs somebody to
+        // report it to. Left to the environment it is whatever the developer's `.env` says and
+        // nothing at all on CI, where the report then fails instead of the run.
+        $this->withEnvironment(['REPORT_EMAILS' => 'nobody@example.com']);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        $this->restoreEnvironment();
+
+        parent::tearDown();
+    }
 
     /**
      * The command says what it does in the list of commands, which is where an operator looks.
