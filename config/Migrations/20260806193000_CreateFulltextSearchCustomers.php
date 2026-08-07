@@ -32,8 +32,12 @@ class CreateFulltextSearchCustomers extends BaseMigration
         // Fill it here rather than leave it to the command that keeps it fresh: from the moment
         // the search reads this table, a customer without a document is a customer the search
         // cannot find, and nothing about that would look like an error.
+        //
+        // The configuration is named as it was named here, not taken from what the application
+        // uses today - a later migration may replace that one, and on a database built from
+        // scratch this step runs before it exists.
         $this->execute(
-            FulltextSearchCustomersDocument::forEveryCustomer(),
+            FulltextSearchCustomersDocument::forEveryCustomer('simple'),
             [(int)env('CUSTOMER_SERIES', '0')],
         );
     }

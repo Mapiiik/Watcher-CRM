@@ -175,6 +175,43 @@ class FulltextSearchCustomersBehaviorTest extends TestCase
     }
 
     /**
+     * A name is found whether or not the accents are typed - in the search or in the record.
+     *
+     * Both halves matter. Somebody looking for `Patočka` on a keyboard that is not theirs has to
+     * find them, and so does somebody looking for `Patočka` properly when the name was entered
+     * without the accents in the first place. What must not follow from that is a search that
+     * finds words merely resembling the term, which is why the second assertion is here.
+     *
+     * @return void
+     * @link \App\Database\FulltextSearchCustomersDocument::CONFIGURATION
+     */
+    public function testACustomerIsFoundWhicheverWayTheAccentsAreTyped(): void
+    {
+        $customer = $this->Customers->get(self::CUSTOMER_ID);
+        $customer->set('company', 'Patočka');
+        $this->Customers->saveOrFail($customer);
+
+        $this->assertSame([self::CUSTOMER_ID], $this->customersFoundBy('patocka'));
+        $this->assertSame([self::CUSTOMER_ID], $this->customersFoundBy('Patočka'));
+        $this->assertSame([], $this->customersFoundBy('patocce'));
+    }
+
+    /**
+     * The other way round: what is stored without the accents is found with them.
+     *
+     * @return void
+     * @link \App\Database\FulltextSearchCustomersDocument::CONFIGURATION
+     */
+    public function testACustomerEnteredWithoutAccentsIsFoundWithThem(): void
+    {
+        $customer = $this->Customers->get(self::CUSTOMER_ID);
+        $customer->set('company', 'Nemec');
+        $this->Customers->saveOrFail($customer);
+
+        $this->assertSame([self::CUSTOMER_ID], $this->customersFoundBy('Němec'));
+    }
+
+    /**
      * Record a phone number for a customer.
      *
      * @param string $customerId Customer the number belongs to.
