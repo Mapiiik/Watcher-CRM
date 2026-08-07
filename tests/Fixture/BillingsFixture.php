@@ -58,6 +58,26 @@ class BillingsFixture extends TestFixture
                 'fixed_discount' => 0,
                 'percentage_discount' => 0,
             ],
+            // open, and on the other contract - a page showing one contract's billings has no
+            // reason to read this one, and reading it is what a lost filter looks like
+            [
+                'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
+                'text' => 'On the other contract',
+                'price' => 3,
+                'billing_from' => '2022-01-01',
+                'note' => null,
+                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'modified' => 1636113486,
+                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'created' => 1636113486,
+                'billing_until' => null,
+                'separate_invoice' => 0,
+                'service_id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2',
+                'quantity' => 1,
+                'contract_id' => '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90',
+                'fixed_discount' => 0,
+                'percentage_discount' => 0,
+            ],
         ];
         parent::init();
     }

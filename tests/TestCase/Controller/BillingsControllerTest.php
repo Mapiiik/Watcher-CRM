@@ -277,10 +277,19 @@ class BillingsControllerTest extends TestCase
      */
     public function testViewUnderItsOwnRouteIsAnsweredThere(): void
     {
+        // a billing of that contract rather than whichever comes first: the fixtures carry
+        // billings on more than one contract, and one filed elsewhere is redirected away from
+        // this address rather than answered at it
+        $billingId = $this->getTableLocator()->get('Billings')
+            ->find()
+            ->where(['Billings.contract_id' => self::CONTRACT_ID])
+            ->firstOrFail()
+            ->get('id');
+
         $this->login();
         $this->get(
             '/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/billings/view/'
-            . $this->firstId('Billings'),
+            . $billingId,
         );
 
         $this->assertResponseOk();

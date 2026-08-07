@@ -5,9 +5,15 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractsController;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Database\Connection;
+use Cake\Database\Log\LoggedQuery;
+use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Psr\Log\AbstractLogger;
+use Psr\Log\NullLogger;
+use Stringable;
 
 /**
  * App\Controller\ContractsController Test Case
@@ -101,6 +107,69 @@ class ContractsControllerTest extends TestCase
         $this->get('/customers/' . $customerId . '/contracts/' . $contractId);
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * The detail fetches the contract's own billings and nobody else's.
+     *
+     * The `subquery` strategy joins its filtering derived table in under the alias of the source
+     * table, so this contain reaching `Contracts` again overwrites it and every billing there is
+     * gets fetched. It comes back with the right ones grouped, so nothing looks wrong - what
+     * gives it away is how much was read to get there, which is what this counts.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::view()
+     */
+    public function testViewFetchesOnlyTheContractsOwnBillings(): void
+    {
+        $contractId = $this->firstId('Contracts');
+        // counted through the finder the detail uses, so that the number is what it should read
+        // and not what the contract has altogether
+        $own = $this->getTableLocator()->get('Billings')
+            ->find('activeOrFuture')
+            ->where(['Billings.contract_id' => $contractId])
+            ->count();
+
+        $connection = ConnectionManager::get('test');
+        assert($connection instanceof Connection);
+
+        $rows = 0;
+        $connection->getDriver()->setLogger(new class ($rows) extends AbstractLogger {
+            /**
+             * @param int $rows Rows read from the billings table.
+             */
+            public function __construct(private int &$rows)
+            {
+            }
+
+            /**
+             * @inheritDoc
+             */
+            public function log($level, string|Stringable $message, array $context = []): void
+            {
+                $query = $context['query'] ?? null;
+                if (!$query instanceof LoggedQuery) {
+                    return;
+                }
+
+                $data = $query->jsonSerialize();
+                if (str_contains((string)($data['query'] ?? ''), 'FROM billings')) {
+                    $this->rows += (int)($data['numRows'] ?? 0);
+                }
+            }
+        });
+
+        $this->login();
+        $this->get('/contracts/view/' . $contractId);
+
+        $connection->getDriver()->setLogger(new NullLogger());
+
+        $this->assertResponseOk();
+        $this->assertLessThanOrEqual(
+            $own,
+            $rows,
+            'The contract detail is reading billings that belong to other contracts.',
+        );
     }
 
     /**

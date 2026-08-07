@@ -5,8 +5,13 @@ namespace App\Model\Table;
 
 use AuditStash\Persister\TablePersister;
 use Cake\Datasource\EntityInterface;
+use Cake\ORM\Association;
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Association\HasMany;
 use Cake\ORM\Table;
+use Closure;
 use Override;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Single database table
@@ -72,6 +77,63 @@ class AppTable extends Table
                 'foreignKey' => 'archived_by',
             ]);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function get(
+        mixed $primaryKey,
+        array|string $finder = 'all',
+        CacheInterface|string|null $cache = null,
+        Closure|string|null $cacheKey = null,
+        mixed ...$args,
+    ): EntityInterface {
+        if (isset($args['contain'])) {
+            $args['contain'] = $this->withSelectStrategy((array)$args['contain'], $this);
+        }
+
+        return parent::get($primaryKey, $finder, $cache, $cacheKey, ...$args);
+    }
+
+    /**
+     * Says that the contained hasMany and belongsToMany are to be fetched with the `select`
+     * strategy, wherever the caller has not said otherwise.
+     *
+     * `subquery`, the CakePHP 5.4 default, filters its fetch by joining the source query back in
+     * as a derived table. Under `get()` that query returns one record, so `select` filters over a
+     * key already in hand and the derived table is nothing but work. It also cannot be joined in
+     * under an alias a contain of the same name then overwrites, which silently loses the
+     * filtering and fetches the whole table.
+     *
+     * @param array<mixed> $contain Contain to rewrite.
+     * @param \Cake\ORM\Table $table Table the contain is read against.
+     * @return array<mixed>
+     */
+    protected function withSelectStrategy(array $contain, Table $table): array
+    {
+        $rewritten = [];
+
+        foreach ($contain as $key => $options) {
+            $name = is_int($key) ? $options : $key;
+
+            if (!is_string($name) || !$table->hasAssociation($name)) {
+                $rewritten[$key] = $options;
+                continue;
+            }
+
+            $association = $table->getAssociation($name);
+            $options = is_array($options) ? $options : [];
+
+            if ($association instanceof HasMany || $association instanceof BelongsToMany) {
+                $options += ['strategy' => Association::STRATEGY_SELECT];
+            }
+
+            $rewritten[$name] = $this->withSelectStrategy($options, $association->getTarget());
+        }
+
+        return $rewritten;
     }
 
     /**
