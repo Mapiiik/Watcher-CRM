@@ -5,9 +5,9 @@ namespace Bookkeeping\Controller;
 
 use App\Controller\Traits\MessageHandlerTrait;
 use Bookkeeping\Debtors\DebtorsProcessor;
-use Cake\Core\Configure;
 use Cake\Form\Form;
 use Cake\Http\Response;
+use Settings\Utility\Settings;
 
 /**
  * Invoices Controller
@@ -27,11 +27,11 @@ class DebtorsController extends AppController
     {
         $allowed_payment_delay = is_numeric($this->getRequest()->getQuery('allowed_payment_delay')) ?
             (int)$this->getRequest()->getQuery('allowed_payment_delay') :
-            (int)Configure::read('Bookkeeping.debtors.allowedPaymentDelay');
+            (int)Settings::get('bookkeeping.debtors.thresholds.allowed_payment_delay');
 
         $allowed_total_overdue_debt = is_numeric($this->getRequest()->getQuery('allowed_total_overdue_debt')) ?
             (float)$this->getRequest()->getQuery('allowed_total_overdue_debt') :
-            (float)Configure::read('Bookkeeping.debtors.allowedTotalOverdueDebt');
+            (float)Settings::get('bookkeeping.debtors.thresholds.allowed_total_overdue_debt');
 
         // filter form
         $filterForm = new Form();
@@ -62,8 +62,10 @@ class DebtorsController extends AppController
         $this->getRequest()->allowMethod(['post']);
 
         $debtorsProcessor = new DebtorsProcessor(
-            allowed_payment_delay: (int)Configure::read('Bookkeeping.debtors.allowedPaymentDelay'),
-            allowed_total_overdue_debt: (float)Configure::read('Bookkeeping.debtors.allowedTotalOverdueDebt'),
+            allowed_payment_delay: (int)Settings::get('bookkeeping.debtors.thresholds.allowed_payment_delay'),
+            allowed_total_overdue_debt: (float)Settings::get(
+                'bookkeeping.debtors.thresholds.allowed_total_overdue_debt',
+            ),
         );
 
         $debtorsProcessor->blockingUpdate();

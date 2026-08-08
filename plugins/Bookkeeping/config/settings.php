@@ -162,8 +162,22 @@ return [
         ],
 
         'debtors' => [
+            // Who is a debtor at all: how long a payment may be late, and how small a debt is
+            // passed over.
+            'thresholds' => [
+                'allowed_payment_delay' => (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
+                'allowed_total_overdue_debt' => (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
+            ],
+
             'notifications' => [
                 'enabled' => true, // global kill‑switch
+
+                // days before the due date a debtor is warned on
+                'days' => array_map(
+                    intval(...),
+                    array_filter(explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10'))),
+                ),
+
                 'channels' => [
                     'email' => [
                         'enabled' => true,
@@ -186,12 +200,19 @@ return [
             ],
             'blocking' => [
                 'enabled' => true, // global kill‑switch
+
+                // the label a blocked customer is given; nothing named leaves them unlabelled
+                'blocked_label_id' => (string)env('DEBTORS_BLOCKED_LABEL_ID', ''),
+
                 'services' => [
                     'sledovani_tv' => [
                         'enabled' => true,
                     ],
                     'routers' => [
                         'enabled' => true,
+
+                        // the firewall address list the blocked addresses are written into
+                        'address_list' => (string)env('DEBTORS_ADDRESS_LIST', ''),
                     ],
                 ],
             ],

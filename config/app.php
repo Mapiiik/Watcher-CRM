@@ -354,17 +354,8 @@ return [
      */
     'Bookkeeping' => [
         'debtors' => [
-            // days before the due date a debtor is warned on
-            'notifyDays' => array_map(
-                intval(...),
-                array_filter(explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10'))),
-            ),
-            'allowedPaymentDelay' => (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
-            'allowedTotalOverdueDebt' => (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
-            // nothing named means debtors are not labelled at all
-            'blockedLabelId' => (string)env('DEBTORS_BLOCKED_LABEL_ID', ''),
+            // where the blocking is carried out, and what it signs in with
             'routersIpAddresses' => (string)env('DEBTORS_ROUTERS_IP_ADDRESSES', ''),
-            'addressList' => (string)env('DEBTORS_ADDRESS_LIST', ''),
             'routersUsername' => (string)env('DEBTORS_ROUTERS_USERNAME', 'admin'),
             'routersPassword' => (string)env('DEBTORS_ROUTERS_PASSWORD', ''),
         ],

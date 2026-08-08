@@ -518,7 +518,7 @@ class DebtorsProcessor
     private function addLabel(string $id): CustomerLabel|false
     {
         // check that the label is configured
-        $labelId = (string)Configure::read('Bookkeeping.debtors.blockedLabelId');
+        $labelId = Settings::getString('bookkeeping.debtors.blocking.blocked_label_id');
         if ($labelId === '') {
             return false;
         }
@@ -549,7 +549,7 @@ class DebtorsProcessor
     private function removeLabel(string $id): iterable|false
     {
         // check that the label is configured
-        $labelId = (string)Configure::read('Bookkeeping.debtors.blockedLabelId');
+        $labelId = Settings::getString('bookkeeping.debtors.blocking.blocked_label_id');
         if ($labelId === '') {
             return false;
         }
@@ -581,7 +581,7 @@ class DebtorsProcessor
     private function clearLabel(DateTime $older_than): iterable|false
     {
         // check that the label is configured
-        $labelId = (string)Configure::read('Bookkeeping.debtors.blockedLabelId');
+        $labelId = Settings::getString('bookkeeping.debtors.blocking.blocked_label_id');
         if ($labelId === '') {
             return false;
         }
@@ -697,7 +697,7 @@ class DebtorsProcessor
             throw new InvalidArgumentException('No routers are configured to block debtors on.');
         }
 
-        $addressList = (string)Configure::read('Bookkeeping.debtors.addressList');
+        $addressList = Settings::getString('bookkeeping.debtors.blocking.services.routers.address_list');
         if ($addressList === '') {
             throw new InvalidArgumentException('No firewall address list is configured for debtors.');
         }
