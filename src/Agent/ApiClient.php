@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Agent;
 
+use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use Radius\Model\Entity\Radacct;
@@ -20,8 +21,8 @@ class ApiClient
      */
     private static function postRequest(string $function, array $data = [], int $timeout = 30): Response
     {
-        $agentUrl = rtrim((string)env('WATCHER_AGENT_URL'), '/');
-        $agentToken = (string)env('WATCHER_AGENT_TOKEN');
+        $agentUrl = (string)Configure::read('Agent.url');
+        $agentToken = (string)Configure::read('Agent.token');
 
         if ($agentUrl === '' || $agentToken === '') {
             throw new RuntimeException(__('Watcher Agent is not configured.'));
@@ -110,7 +111,7 @@ class ApiClient
                 data: [
                     'nas_ip' => $session->nasipaddress,
                     'port' => 1700,
-                    'secret' => env('RADIUS_SECRET'),
+                    'secret' => Configure::read('Agent.radiusSecret'),
                     'timeout_ms' => 3000, // 3 seconds
 
                     'username' => $session->username,

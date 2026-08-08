@@ -316,6 +316,34 @@ return [
     ],
 
     /*
+     * The services this one talks to. An empty address or key is not configured, and every client
+     * says so in its own way rather than reaching out with nothing.
+     */
+    'Nms' => [
+        'url' => (string)env('WATCHER_NMS_URL', ''),
+        'key' => (string)env('WATCHER_NMS_KEY', ''),
+    ],
+
+    'Agent' => [
+        'url' => rtrim((string)env('WATCHER_AGENT_URL', ''), '/'),
+        'token' => (string)env('WATCHER_AGENT_TOKEN', ''),
+        // what the RADIUS server expects of whoever asks it to drop a session
+        'radiusSecret' => (string)env('RADIUS_SECRET', ''),
+    ],
+
+    'Addresses' => [
+        'url' => rtrim((string)env('ADDRESSES_API_URL', ''), '/'),
+        'key' => (string)env('ADDRESSES_API_KEY', ''),
+    ],
+
+    'Sms' => [
+        'url' => (string)env('ANDROID_SMS_GATEWAY_URL', ''),
+        'login' => (string)env('ANDROID_SMS_GATEWAY_LOGIN', ''),
+        'password' => (string)env('ANDROID_SMS_GATEWAY_PASSWORD', ''),
+        'passphrase' => (string)env('ANDROID_SMS_GATEWAY_PASSPHRASE', ''),
+    ],
+
+    /*
      * Email delivery profiles
      *
      * Delivery profiles allow you to predefine various properties about email

@@ -20,6 +20,7 @@ use ArrayObject;
 use Cake\Cache\Cache;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\Core\Configure;
 use Cake\Http\Client;
 
 /**
@@ -34,10 +35,10 @@ class ApiClient
      */
     public static function fetchAccessPoints(): ?CollectionInterface
     {
-        if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
-            $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
+        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
+            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
             $response = $http->get('/api/access-points.json', [
-                'api_key' => env('WATCHER_NMS_KEY'),
+                'api_key' => Configure::read('Nms.key'),
             ]);
 
             $json = $response->getJson();
@@ -100,10 +101,10 @@ class ApiClient
      */
     public static function fetchAccessPoint(string $id): ?ArrayObject
     {
-        if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
-            $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
+        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
+            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
             $response = $http->get('/api/access-points/' . $id . '.json', [
-                'api_key' => env('WATCHER_NMS_KEY'),
+                'api_key' => Configure::read('Nms.key'),
             ]);
 
             $json = $response->getJson();
@@ -140,10 +141,10 @@ class ApiClient
      */
     public static function searchAccessPoints(array $search): ?CollectionInterface
     {
-        if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
-            $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
+        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
+            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
             $response = $http->get('/api/access-points/search.json', [
-                'api_key' => env('WATCHER_NMS_KEY'),
+                'api_key' => Configure::read('Nms.key'),
             ] + $search);
 
             $json = $response->getJson();
@@ -180,10 +181,10 @@ class ApiClient
      */
     public static function fetchIpAddressRanges(): ?CollectionInterface
     {
-        if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
-            $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
+        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
+            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
             $response = $http->get('/api/ip-address-ranges.json', [
-                'api_key' => env('WATCHER_NMS_KEY'),
+                'api_key' => Configure::read('Nms.key'),
             ]);
 
             $json = $response->getJson();
@@ -220,10 +221,10 @@ class ApiClient
      */
     public static function fetchIpAddressRange(string $id): ?ArrayObject
     {
-        if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
-            $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
+        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
+            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
             $response = $http->get('/api/ip-address-ranges/' . $id . '.json', [
-                'api_key' => env('WATCHER_NMS_KEY'),
+                'api_key' => Configure::read('Nms.key'),
             ]);
 
             $json = $response->getJson();
@@ -261,10 +262,10 @@ class ApiClient
      */
     public static function searchIpAddressRanges(array $search): ?CollectionInterface
     {
-        if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
-            $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
+        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
+            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
             $response = $http->get('/api/ip-address-ranges/search.json', [
-                'api_key' => env('WATCHER_NMS_KEY'),
+                'api_key' => Configure::read('Nms.key'),
             ] + $search);
 
             $json = $response->getJson();
@@ -301,10 +302,10 @@ class ApiClient
      */
     public static function searchRouterosDevices(array $search): ?CollectionInterface
     {
-        if (env('WATCHER_NMS_URL') && env('WATCHER_NMS_KEY')) {
-            $http = Client::createFromUrl((string)env('WATCHER_NMS_URL'));
+        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
+            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
             $response = $http->get('/api/routeros-devices/search.json', [
-                'api_key' => env('WATCHER_NMS_KEY'),
+                'api_key' => Configure::read('Nms.key'),
             ] + $search);
 
             $json = $response->getJson();

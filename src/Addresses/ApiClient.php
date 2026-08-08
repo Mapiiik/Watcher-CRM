@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Addresses;
 
 use Cake\Cache\Cache;
+use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use RuntimeException;
@@ -18,7 +19,7 @@ class ApiClient
     {
         $headers = ['Accept' => 'application/json'];
 
-        $apiKey = (string)env('ADDRESSES_API_KEY');
+        $apiKey = (string)Configure::read('Addresses.key');
         if ($apiKey !== '') {
             $headers['X-API-Key'] = $apiKey;
         }
@@ -30,11 +31,11 @@ class ApiClient
     }
 
     /**
-     * Resolve a relative API path against ADDRESSES_API_URL.
+     * Resolve a relative API path against the configured address of the API.
      */
     private static function url(string $path): string
     {
-        $apiUrl = rtrim((string)env('ADDRESSES_API_URL'), '/');
+        $apiUrl = (string)Configure::read('Addresses.url');
         if ($apiUrl === '') {
             throw new RuntimeException(__('Addresses API is not configured.'));
         }

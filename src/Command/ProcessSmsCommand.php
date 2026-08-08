@@ -18,6 +18,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Core\Configure;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use InvalidArgumentException;
@@ -128,22 +129,18 @@ class ProcessSmsCommand extends Command
 
         $io->info(__('Processing SMS messages:'));
 
-        $login = env('ANDROID_SMS_GATEWAY_LOGIN');
-        $login = is_string($login) ? $login : null;
+        $login = (string)Configure::read('Sms.login');
 
-        $password = env('ANDROID_SMS_GATEWAY_PASSWORD');
-        if (!is_string($password) || ($password === '' || $password === '0')) {
-            $io->abort(__('ANDROID_SMS_GATEWAY_PASSWORD is not set in environment variables.'));
+        $password = (string)Configure::read('Sms.password');
+        if ($password === '') {
+            $io->abort(__('No password is configured for the SMS gateway.'));
         }
 
-        $passphrase = env('ANDROID_SMS_GATEWAY_PASSPHRASE');
-        $passphrase = is_string($passphrase) ? $passphrase : null;
-
-        $serverUrl = env('ANDROID_SMS_GATEWAY_URL');
-        $serverUrl = is_string($serverUrl) ? $serverUrl : Client::DEFAULT_URL;
+        $passphrase = (string)Configure::read('Sms.passphrase');
+        $serverUrl = (string)Configure::read('Sms.url') ?: Client::DEFAULT_URL;
 
         // Prepare encryption if passphrase is set
-        $encryptor = in_array($passphrase, [null, '', '0'], true) ? null : new Encryptor($passphrase);
+        $encryptor = $passphrase === '' ? null : new Encryptor($passphrase);
 
         // Android SMS Gateway Client
         $client = new Client(
