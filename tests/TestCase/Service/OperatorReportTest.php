@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Service;
 
 use App\Service\OperatorReport;
-use Cake\Core\Configure;
+use App\Test\Traits\ConfigureTestTrait;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -19,27 +19,8 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(OperatorReport::class)]
 class OperatorReportTest extends TestCase
 {
+    use ConfigureTestTrait;
     use EmailTrait;
-
-    /**
-     * What the application was configured to report to.
-     *
-     * @var mixed
-     */
-    private mixed $before = null;
-
-    /**
-     * setUp method
-     *
-     * @return void
-     */
-    #[Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->before = Configure::read('Report.emails');
-    }
 
     /**
      * tearDown method
@@ -49,7 +30,7 @@ class OperatorReportTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        Configure::write('Report.emails', $this->before);
+        $this->restoreConfigure();
 
         parent::tearDown();
     }
@@ -62,7 +43,7 @@ class OperatorReportTest extends TestCase
      */
     public function testSendReachesEverybodyConfigured(): void
     {
-        Configure::write('Report.emails', ['first@example.com', 'second@example.com']);
+        $this->withConfigure(['Report.emails' => ['first@example.com', 'second@example.com']]);
 
         $this->assertTrue(OperatorReport::send('Something failed', 'This is what is known about it.'));
 
@@ -80,7 +61,7 @@ class OperatorReportTest extends TestCase
      */
     public function testSendWithNobodyConfiguredIsNotAFailure(): void
     {
-        Configure::write('Report.emails', []);
+        $this->withConfigure(['Report.emails' => []]);
 
         $this->assertFalse(OperatorReport::send('Something failed', 'This is what is known about it.'));
 
@@ -96,7 +77,7 @@ class OperatorReportTest extends TestCase
      */
     public function testRecipientsComeFromTheConfiguration(): void
     {
-        Configure::write('Report.emails', ['first@example.com']);
+        $this->withConfigure(['Report.emails' => ['first@example.com']]);
 
         $this->assertSame(['first@example.com'], OperatorReport::recipients());
     }

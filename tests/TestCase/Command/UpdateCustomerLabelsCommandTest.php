@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Command;
 
 use App\Command\UpdateCustomerLabelsCommand;
+use App\Test\Traits\ConfigureTestTrait;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
-use Cake\Core\Configure;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -21,15 +21,9 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(UpdateCustomerLabelsCommand::class)]
 class UpdateCustomerLabelsCommandTest extends TestCase
 {
+    use ConfigureTestTrait;
     use ConsoleIntegrationTestTrait;
     use EmailTrait;
-
-    /**
-     * What the application was configured to report to.
-     *
-     * @var mixed
-     */
-    private mixed $reportEmailsBefore = null;
 
     /**
      * The customer the fixtures carry.
@@ -55,19 +49,6 @@ class UpdateCustomerLabelsCommandTest extends TestCase
     ];
 
     /**
-     * setUp method
-     *
-     * @return void
-     */
-    #[Override]
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->reportEmailsBefore = Configure::read('Report.emails');
-    }
-
-    /**
      * tearDown method
      *
      * @return void
@@ -75,7 +56,7 @@ class UpdateCustomerLabelsCommandTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        Configure::write('Report.emails', $this->reportEmailsBefore);
+        $this->restoreConfigure();
 
         parent::tearDown();
     }
@@ -171,7 +152,7 @@ class UpdateCustomerLabelsCommandTest extends TestCase
      */
     public function testExecuteStopsOnALabelWhoseQueryWillNotRun(): void
     {
-        Configure::write('Report.emails', ['labels@example.com']);
+        $this->withConfigure(['Report.emails' => ['labels@example.com']]);
         $label = $this->dynamicLabel('SELECT this is not a query');
 
         $this->exec('update_customer_labels ' . $label);

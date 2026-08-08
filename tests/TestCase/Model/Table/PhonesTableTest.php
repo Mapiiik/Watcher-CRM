@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\PhonesTable;
+use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\TableTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -13,14 +14,8 @@ use Override;
  */
 class PhonesTableTest extends TestCase
 {
+    use ConfigureTestTrait;
     use TableTestTrait;
-
-    /**
-     * The environment variable the table reads the region off.
-     *
-     * @var string
-     */
-    private const PHONE_REGION_VARIABLE = 'APP_DEFAULT_PHONE_REGION';
 
     /**
      * The region the tests that name one are read against.
@@ -35,13 +30,6 @@ class PhonesTableTest extends TestCase
      * @var \App\Model\Table\PhonesTable
      */
     protected $Phones;
-
-    /**
-     * What the environment said about the region before setUp took it away.
-     *
-     * @var string|null
-     */
-    private ?string $phone_region_before = null;
 
     /**
      * Fixtures
@@ -67,13 +55,10 @@ class PhonesTableTest extends TestCase
         $config = $this->getTableLocator()->exists('Phones') ? [] : ['className' => PhonesTable::class];
         $this->Phones = $this->getTableLocator()->get('Phones', $config);
 
-        // A deployment sets the region in its environment, a development machine in config/.env and
-        // CI in neither. Whichever of those the suite is running on, the tests start from no region
-        // at all and the ones that mean to be read against a region say so themselves.
-        $before = env(self::PHONE_REGION_VARIABLE);
-        $this->phone_region_before = is_string($before) ? $before : null;
-
-        $this->setPhoneRegion(null);
+        // A deployment names a region, a development machine names one in config/.env and CI names
+        // none. Whichever of those the suite is running on, the tests start from no region at all
+        // and the ones that mean to be read against a region say so themselves.
+        $this->withConfigure(['Phones.defaultRegion' => null]);
     }
 
     /**
@@ -84,33 +69,12 @@ class PhonesTableTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        $this->setPhoneRegion($this->phone_region_before);
+        $this->restoreConfigure();
 
         /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->Phones);
 
         parent::tearDown();
-    }
-
-    /**
-     * Put the region everywhere `env()` looks for it, or take it away again when there was nothing
-     * to put back. Setting one of the three places would leave the other two saying something else.
-     *
-     * @param string|null $region The region to read local numbers against.
-     * @return void
-     */
-    private function setPhoneRegion(?string $region): void
-    {
-        if ($region === null) {
-            unset($_ENV[self::PHONE_REGION_VARIABLE], $_SERVER[self::PHONE_REGION_VARIABLE]);
-            putenv(self::PHONE_REGION_VARIABLE);
-
-            return;
-        }
-
-        $_ENV[self::PHONE_REGION_VARIABLE] = $region;
-        $_SERVER[self::PHONE_REGION_VARIABLE] = $region;
-        putenv(self::PHONE_REGION_VARIABLE . '=' . $region);
     }
 
     /**
@@ -165,7 +129,7 @@ class PhonesTableTest extends TestCase
      */
     public function testBeforeMarshalFormatsAnInternationalNumberAgainstTheRegion(): void
     {
-        $this->setPhoneRegion(self::PHONE_REGION);
+        $this->withConfigure(['Phones.defaultRegion' => self::PHONE_REGION]);
 
         $phone = $this->Phones->newEntity(['phone' => '+420601234567']);
 
@@ -185,7 +149,7 @@ class PhonesTableTest extends TestCase
      */
     public function testBeforeMarshalFormatsANumberFromAnotherCountryAgainstTheRegion(): void
     {
-        $this->setPhoneRegion(self::PHONE_REGION);
+        $this->withConfigure(['Phones.defaultRegion' => self::PHONE_REGION]);
 
         $phone = $this->Phones->newEntity(['phone' => '+16502530000']);
 
@@ -201,7 +165,7 @@ class PhonesTableTest extends TestCase
      */
     public function testBeforeMarshalReadsALocalNumberAgainstTheRegion(): void
     {
-        $this->setPhoneRegion(self::PHONE_REGION);
+        $this->withConfigure(['Phones.defaultRegion' => self::PHONE_REGION]);
 
         $phone = $this->Phones->newEntity(['phone' => '601 234 567']);
 

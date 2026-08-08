@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\FulltextSearchCustomersTable;
+use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\FulltextSearchCustomersTestTrait;
-use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Text;
 use Override;
@@ -19,6 +19,7 @@ use Override;
  */
 class FulltextSearchCustomersTableTest extends TestCase
 {
+    use ConfigureTestTrait;
     use FulltextSearchCustomersTestTrait;
 
     /**
@@ -41,13 +42,6 @@ class FulltextSearchCustomersTableTest extends TestCase
      * @var \App\Model\Table\FulltextSearchCustomersTable
      */
     protected $FulltextSearchCustomers;
-
-    /**
-     * The series in force before a test named its own.
-     *
-     * @var mixed
-     */
-    private mixed $seriesBefore = null;
 
     /**
      * Fixtures
@@ -80,8 +74,6 @@ class FulltextSearchCustomersTableTest extends TestCase
     {
         parent::setUp();
 
-        $this->seriesBefore = Configure::read('Customers.series');
-
         $config = $this->getTableLocator()->exists('FulltextSearchCustomers')
             ? []
             : ['className' => FulltextSearchCustomersTable::class];
@@ -96,7 +88,7 @@ class FulltextSearchCustomersTableTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        Configure::write('Customers.series', $this->seriesBefore);
+        $this->restoreConfigure();
 
         /** @phpstan-ignore unset.possiblyHookedProperty */
         unset($this->FulltextSearchCustomers);
@@ -142,7 +134,7 @@ class FulltextSearchCustomersTableTest extends TestCase
      */
     public function testRebuildStoresTheCustomerNumberAsItIsShown(): void
     {
-        Configure::write('Customers.series', 550000);
+        $this->withConfigure(['Customers.series' => 550000]);
 
         $this->FulltextSearchCustomers->rebuild();
 
