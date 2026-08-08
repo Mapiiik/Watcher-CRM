@@ -5,13 +5,13 @@ namespace Bookkeeping\Command;
 
 use App\Model\Entity\Customer;
 use App\Model\Table\CustomersTable;
+use App\Service\OperatorReport;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
 use Throwable;
 
 /**
@@ -195,25 +195,10 @@ class SendPartnersCommand extends Command
                 $e->getMessage(),
             ));
 
-            // try to send a notification of the problem to mail (if it fails it will crash)
-            $errorMailer = new Mailer('default');
-
-            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                $errorMailer->addTo($email);
-            }
-
-            $errorMailer->setSubject(__d(
-                'bookkeeping',
-                'Error when sending partners',
-            ));
-
-            $errorMailer->deliver(__d(
-                'bookkeeping',
-                'Error when sending partners: {0}',
-                $e->getMessage(),
-            ));
-
-            unset($errorMailer);
+            OperatorReport::send(
+                __d('bookkeeping', 'Error when sending partners'),
+                __d('bookkeeping', 'Error when sending partners: {0}', $e->getMessage()),
+            );
 
             return Command::CODE_ERROR;
         }

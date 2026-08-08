@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace Radius\Command;
 
 use App\Command\Traits\MessageHandlerTrait;
+use App\Service\OperatorReport;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
 use Override;
 use Radius\Updater\AccountsUpdater;
 use Throwable;
@@ -122,26 +122,15 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
                 $e->getMessage(),
             ));
 
-            // notify by email (if it fails, let it crash)
-            $errorMailer = new Mailer('default');
-
-            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                $errorMailer->addTo($email);
-            }
-
-            $errorMailer->setSubject(__d(
-                'radius',
-                'RADIUS accounts update failed',
-            ));
-
-            $errorMailer->deliver(__d(
-                'radius',
-                'RADIUS accounts update failed.' . PHP_EOL . PHP_EOL
-                . 'Error: {0}',
-                [$e->getMessage()],
-            ));
-
-            unset($errorMailer);
+            OperatorReport::send(
+                __d('radius', 'RADIUS accounts update failed'),
+                __d(
+                    'radius',
+                    'RADIUS accounts update failed.' . PHP_EOL . PHP_EOL
+                    . 'Error: {0}',
+                    [$e->getMessage()],
+                ),
+            );
 
             return static::CODE_ERROR;
         }

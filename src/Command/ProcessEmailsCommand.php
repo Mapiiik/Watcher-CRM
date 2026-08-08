@@ -8,6 +8,7 @@ use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
+use App\Service\OperatorReport;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -178,22 +179,14 @@ class ProcessEmailsCommand extends Command
                     Log::error('Error sending email message with ID ' . $emailMessage->id . ': ' . $e->getMessage());
                     $io->error(__('Error sending message with ID {0}: {1}', $emailMessage->id, $e->getMessage()));
 
-                    // try to send a notification of the problem to mail (if it fails it will crash)
-                    $errorMailer = new Mailer('default');
-
-                    foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                        $errorMailer->addTo($email);
-                    }
-
-                    $errorMailer->setSubject(__('Error sending email message with ID {0}', $emailMessage->id));
-
-                    $errorMailer->deliver(__(
-                        'Error sending message with ID {0}: {1}',
-                        $emailMessage->id,
-                        $e->getMessage(),
-                    ));
-
-                    unset($errorMailer);
+                    OperatorReport::send(
+                        __('Error sending email message with ID {0}', $emailMessage->id),
+                        __(
+                            'Error sending message with ID {0}: {1}',
+                            $emailMessage->id,
+                            $e->getMessage(),
+                        ),
+                    );
                 }
 
                 // sleep for a while to slow down the sending

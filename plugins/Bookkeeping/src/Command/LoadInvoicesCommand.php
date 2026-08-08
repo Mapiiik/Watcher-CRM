@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Command;
 
+use App\Service\OperatorReport;
 use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
@@ -11,7 +12,6 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
 use Override;
 use RuntimeException;
 use Throwable;
@@ -140,33 +140,22 @@ class LoadInvoicesCommand extends Command
                 [$e->getMessage()],
             ));
 
-            // notify by email (if it fails, let it crash)
-            $errorMailer = new Mailer('default');
-
-            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                $errorMailer->addTo($email);
-            }
-
-            $errorMailer->setSubject(__d(
-                'bookkeeping',
-                'Invoice synchronization failed',
-            ));
-
-            $errorMailer->deliver(__d(
-                'bookkeeping',
-                'Invoice synchronization failed.' . PHP_EOL
-                . PHP_EOL
-                . 'Mode: {0}' . PHP_EOL
-                . 'Last changes: {1}' . PHP_EOL
-                . 'Error: {2}',
-                [
-                    $mode->value,
-                    $lastChanges?->format('Y-m-d H:i:s') ?? 'N/A',
-                    $e->getMessage(),
-                ],
-            ));
-
-            unset($errorMailer);
+            OperatorReport::send(
+                __d('bookkeeping', 'Invoice synchronization failed'),
+                __d(
+                    'bookkeeping',
+                    'Invoice synchronization failed.' . PHP_EOL
+                    . PHP_EOL
+                    . 'Mode: {0}' . PHP_EOL
+                    . 'Last changes: {1}' . PHP_EOL
+                    . 'Error: {2}',
+                    [
+                        $mode->value,
+                        $lastChanges?->format('Y-m-d H:i:s') ?? 'N/A',
+                        $e->getMessage(),
+                    ],
+                ),
+            );
 
             return static::CODE_ERROR;
         }

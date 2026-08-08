@@ -17,6 +17,7 @@ use App\Model\Enum\CustomerMessagePurpose;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Enum\ServiceCriticalityLevel;
 use App\NMS\ApiClient as NMSApiClient;
+use App\Service\OperatorReport;
 use Cake\Http\Response;
 use Cake\Http\Session;
 use Cake\Log\Log;
@@ -624,9 +625,8 @@ class CustomerMessagesController extends AppController
             $addresses[] = $operator;
         }
 
-        foreach (explode(' ', (string)env('REPORT_EMAILS')) as $address) {
-            $address = trim($address);
-            if ($address !== '' && !in_array($address, $addresses, true)) {
+        foreach (OperatorReport::recipients() as $address) {
+            if (!in_array($address, $addresses, true)) {
                 $addresses[] = $address;
             }
         }

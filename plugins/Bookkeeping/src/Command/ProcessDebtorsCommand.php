@@ -10,6 +10,7 @@ use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
+use App\Service\OperatorReport;
 use Bookkeeping\Debtors\Debtor;
 use Bookkeeping\Debtors\DebtorsProcessor;
 use Bookkeeping\Service\BookkeepingService;
@@ -20,7 +21,6 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
 use Override;
 use Settings\Utility\Settings;
 use Throwable;
@@ -325,26 +325,15 @@ class ProcessDebtorsCommand extends Command
                 $e->getMessage(),
             ));
 
-            // notify by email (if it fails, let it crash)
-            $errorMailer = new Mailer('default');
-
-            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                $errorMailer->addTo($email);
-            }
-
-            $errorMailer->setSubject(__d(
-                'bookkeeping',
-                'Debtor processing failed',
-            ));
-
-            $errorMailer->deliver(__d(
-                'bookkeeping',
-                'Debtor processing failed.' . PHP_EOL . PHP_EOL
-                . 'Error: {0}',
-                [$e->getMessage()],
-            ));
-
-            unset($errorMailer);
+            OperatorReport::send(
+                __d('bookkeeping', 'Debtor processing failed'),
+                __d(
+                    'bookkeeping',
+                    'Debtor processing failed.' . PHP_EOL . PHP_EOL
+                    . 'Error: {0}',
+                    [$e->getMessage()],
+                ),
+            );
 
             return static::CODE_ERROR;
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Command;
 
 use App\Model\Enum\CustomerInvoiceDeliveryType;
+use App\Service\OperatorReport;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
@@ -208,27 +209,19 @@ class SendIssuedInvoicesCommand extends Command
                         $e->getMessage(),
                     ));
 
-                    // try to send a notification of the problem to mail (if it fails it will crash)
-                    $errorMailer = new Mailer('default');
-
-                    foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                        $errorMailer->addTo($email);
-                    }
-
-                    $errorMailer->setSubject(__d(
-                        'bookkeeping',
-                        'Error sending email message with issued invoice ID {0}',
-                        $invoice->id,
-                    ));
-
-                    $errorMailer->deliver(__d(
-                        'bookkeeping',
-                        'Error sending email message with issued invoice ID {0}: {1}',
-                        $invoice->id,
-                        $e->getMessage(),
-                    ));
-
-                    unset($errorMailer);
+                    OperatorReport::send(
+                        __d(
+                            'bookkeeping',
+                            'Error sending email message with issued invoice ID {0}',
+                            $invoice->id,
+                        ),
+                        __d(
+                            'bookkeeping',
+                            'Error sending email message with issued invoice ID {0}: {1}',
+                            $invoice->id,
+                            $e->getMessage(),
+                        ),
+                    );
                 }
 
                 // clean mailer

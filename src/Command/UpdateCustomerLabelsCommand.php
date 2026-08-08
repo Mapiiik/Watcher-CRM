@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Model\Table\LabelsTable;
+use App\Service\OperatorReport;
 use Cake\Collection\Collection;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -12,7 +13,6 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
 use Cake\Utility\Text;
 use Override;
 use PDO;
@@ -216,22 +216,14 @@ class UpdateCustomerLabelsCommand extends Command
                 $e->getMessage(),
             ));
 
-            // notify by email (if it fails, let it crash)
-            $errorMailer = new Mailer('default');
-
-            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                $errorMailer->addTo($email);
-            }
-
-            $errorMailer->setSubject(__('Customer labels update failed'));
-
-            $errorMailer->deliver(__(
-                'Customer labels update failed.' . PHP_EOL . PHP_EOL
-                . 'Error: {0}',
-                [$e->getMessage()],
-            ));
-
-            unset($errorMailer);
+            OperatorReport::send(
+                __('Customer labels update failed'),
+                __(
+                    'Customer labels update failed.' . PHP_EOL . PHP_EOL
+                    . 'Error: {0}',
+                    [$e->getMessage()],
+                ),
+            );
 
             return static::CODE_ERROR;
         }

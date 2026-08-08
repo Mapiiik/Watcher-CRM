@@ -5,6 +5,7 @@ namespace Bookkeeping\Command;
 
 use App\Model\Table\AccountingProfilesTable;
 use App\Model\Table\CustomersTable;
+use App\Service\OperatorReport;
 use Bookkeeping\Service\BookkeepingService;
 use Bookkeeping\Service\InvoiceGenerationService;
 use Cake\Command\Command;
@@ -13,7 +14,6 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
 use RuntimeException;
 use Throwable;
 
@@ -299,25 +299,10 @@ class IssueInvoicesCommand extends Command
                 $e->getMessage(),
             ));
 
-            // try to send a notification of the problem to mail (if it fails it will crash)
-            $errorMailer = new Mailer('default');
-
-            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                $errorMailer->addTo($email);
-            }
-
-            $errorMailer->setSubject(__d(
-                'bookkeeping',
-                'Error when issuing invoices',
-            ));
-
-            $errorMailer->deliver(__d(
-                'bookkeeping',
-                'Error when issuing invoices: {0}',
-                $e->getMessage(),
-            ));
-
-            unset($errorMailer);
+            OperatorReport::send(
+                __d('bookkeeping', 'Error when issuing invoices'),
+                __d('bookkeeping', 'Error when issuing invoices: {0}', $e->getMessage()),
+            );
 
             return Command::CODE_ERROR;
         }

@@ -13,13 +13,13 @@ use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
+use App\Service\OperatorReport;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
 use InvalidArgumentException;
 use Override;
 use Throwable;
@@ -191,22 +191,14 @@ class ProcessSmsCommand extends Command
                     // log error
                     Log::error('Error sending SMS message with ID ' . $smsMessage->id . ': ' . $e->getMessage());
 
-                    // try to send a notification of the problem to mail (if it fails it will crash)
-                    $errorMailer = new Mailer('default');
-
-                    foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                        $errorMailer->addTo($email);
-                    }
-
-                    $errorMailer->setSubject(__('Error sending SMS message with ID {0}', $smsMessage->id));
-
-                    $errorMailer->deliver(__(
-                        'Error sending message with ID {0}: {1}',
-                        $smsMessage->id,
-                        $e->getMessage(),
-                    ));
-
-                    unset($errorMailer);
+                    OperatorReport::send(
+                        __('Error sending SMS message with ID {0}', $smsMessage->id),
+                        __(
+                            'Error sending message with ID {0}: {1}',
+                            $smsMessage->id,
+                            $e->getMessage(),
+                        ),
+                    );
 
                     // abort processing
                     $io->abort(__('Error sending message with ID {0}: {1}', $smsMessage->id, $e->getMessage()));
@@ -233,22 +225,14 @@ class ProcessSmsCommand extends Command
                 // log error
                 Log::error('Error getting SMS message status with ID ' . $smsMessage->id . ': ' . $e->getMessage());
 
-                // try to send a notification of the problem to mail (if it fails it will crash)
-                $errorMailer = new Mailer('default');
-
-                foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                    $errorMailer->addTo($email);
-                }
-
-                $errorMailer->setSubject(__('Error getting SMS message status with ID {0}', $smsMessage->id));
-
-                $errorMailer->deliver(__(
-                    'Error getting message status with ID {0}: {1}',
-                    $smsMessage->id,
-                    $e->getMessage(),
-                ));
-
-                unset($errorMailer);
+                OperatorReport::send(
+                    __('Error getting SMS message status with ID {0}', $smsMessage->id),
+                    __(
+                        'Error getting message status with ID {0}: {1}',
+                        $smsMessage->id,
+                        $e->getMessage(),
+                    ),
+                );
 
                 // abort processing
                 $io->abort(__('Error getting message status with ID {0}: {1}', $smsMessage->id, $e->getMessage()));

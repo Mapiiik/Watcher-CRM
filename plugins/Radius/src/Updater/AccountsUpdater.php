@@ -10,6 +10,7 @@ use App\Model\Enum\IpNetworkTypeOfUse;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ServiceOverridesTable;
+use App\Service\OperatorReport;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
@@ -235,11 +236,17 @@ class AccountsUpdater
         );
 
         // send change log by email
-        if ($options['send_change_log_by_email'] == true) {
+        $recipients = $options['send_change_log_by_email'] == true ? OperatorReport::recipients() : [];
+
+        if ($options['send_change_log_by_email'] == true && $recipients === []) {
+            Log::write('debug', 'Nobody is configured to be told about the automatic RADIUS account changes.');
+        }
+
+        if ($recipients !== []) {
             $mailer = new Mailer('default');
 
-            foreach (explode(' ', (string)env('REPORT_EMAILS')) as $email) {
-                $mailer->addTo($email);
+            foreach ($recipients as $recipient) {
+                $mailer->addTo($recipient);
             }
 
             $mailer->setSubject(

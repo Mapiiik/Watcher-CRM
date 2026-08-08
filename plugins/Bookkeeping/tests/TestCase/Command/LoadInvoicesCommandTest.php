@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Command;
 
-use App\Test\Traits\EnvironmentTestTrait;
 use Bookkeeping\Command\LoadInvoicesCommand;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\Core\Configure;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -20,7 +21,14 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class LoadInvoicesCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
-    use EnvironmentTestTrait;
+    use EmailTrait;
+
+    /**
+     * What the application was configured to report to.
+     *
+     * @var mixed
+     */
+    private mixed $reportEmailsBefore = null;
 
     /**
      * setUp method
@@ -33,9 +41,9 @@ class LoadInvoicesCommandTest extends TestCase
         parent::setUp();
 
         // A run that cannot start reports it by mail, so a test of that path needs somebody to
-        // report it to. Left to the environment it is whatever the developer's `.env` says and
-        // nothing at all on CI, where the report then fails instead of the run.
-        $this->withEnvironment(['REPORT_EMAILS' => 'nobody@example.com']);
+        // report it to - said here rather than left to whatever the environment was built with.
+        $this->reportEmailsBefore = Configure::read('Report.emails');
+        Configure::write('Report.emails', ['nobody@example.com']);
     }
 
     /**
@@ -46,7 +54,7 @@ class LoadInvoicesCommandTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        $this->restoreEnvironment();
+        Configure::write('Report.emails', $this->reportEmailsBefore);
 
         parent::tearDown();
     }
@@ -99,5 +107,6 @@ class LoadInvoicesCommandTest extends TestCase
         $this->exec('load_invoices --last_changes yesterday-ish');
 
         $this->assertExitError();
+        $this->assertMailCount(1);
     }
 }

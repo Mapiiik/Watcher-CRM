@@ -267,6 +267,17 @@ return [
     ],
 
     /*
+     * Who is told when something that runs unattended fails.
+     *
+     * Read from the environment here and nowhere else, so that the day it comes from somewhere
+     * else - the database, a vault - one line changes. Empty is a deployment saying nobody is to
+     * be told, which is allowed: the failure is logged and printed either way.
+     */
+    'Report' => [
+        'emails' => preg_split('/\s+/', trim((string)env('REPORT_EMAILS', '')), -1, PREG_SPLIT_NO_EMPTY) ?: [],
+    ],
+
+    /*
      * Email delivery profiles
      *
      * Delivery profiles allow you to predefine various properties about email

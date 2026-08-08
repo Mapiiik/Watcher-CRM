@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Command;
 
 use App\Command\UpdateCustomerLabelsCommand;
-use App\Test\Traits\EnvironmentTestTrait;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\Core\Configure;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -23,7 +23,13 @@ class UpdateCustomerLabelsCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
     use EmailTrait;
-    use EnvironmentTestTrait;
+
+    /**
+     * What the application was configured to report to.
+     *
+     * @var mixed
+     */
+    private mixed $reportEmailsBefore = null;
 
     /**
      * The customer the fixtures carry.
@@ -49,6 +55,19 @@ class UpdateCustomerLabelsCommandTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->reportEmailsBefore = Configure::read('Report.emails');
+    }
+
+    /**
      * tearDown method
      *
      * @return void
@@ -56,7 +75,7 @@ class UpdateCustomerLabelsCommandTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        $this->restoreEnvironment();
+        Configure::write('Report.emails', $this->reportEmailsBefore);
 
         parent::tearDown();
     }
@@ -144,15 +163,15 @@ class UpdateCustomerLabelsCommandTest extends TestCase
      * A query that will not run stops the run and says which label it was.
      *
      * Carrying on would take the label to have selected nobody, and a label nobody carries reads
-     * the same whether the query said so or could not be asked. Whoever the environment names is
-     * told, a nightly run that fails quietly being the one that goes unnoticed longest.
+     * the same whether the query said so or could not be asked. Whoever is configured is told,
+     * a nightly run that fails quietly being the one that goes unnoticed longest.
      *
      * @return void
      * @link \App\Command\UpdateCustomerLabelsCommand::execute()
      */
     public function testExecuteStopsOnALabelWhoseQueryWillNotRun(): void
     {
-        $this->withEnvironment(['REPORT_EMAILS' => 'labels@example.com']);
+        Configure::write('Report.emails', ['labels@example.com']);
         $label = $this->dynamicLabel('SELECT this is not a query');
 
         $this->exec('update_customer_labels ' . $label);
