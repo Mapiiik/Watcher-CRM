@@ -343,6 +343,53 @@ return [
         'passphrase' => (string)env('ANDROID_SMS_GATEWAY_PASSPHRASE', ''),
     ],
 
+    'SledovaniTv' => [
+        'username' => (string)env('DEBTORS_SLEDOVANITV_USERNAME', ''),
+        'password' => (string)env('DEBTORS_SLEDOVANITV_PASSWORD', ''),
+    ],
+
+    /*
+     * What the plugins are told about this installation. Named after the plugin so it is plain
+     * whose it is, and read here so a plugin does not reach into the environment of its own.
+     */
+    'Bookkeeping' => [
+        'debtors' => [
+            // days before the due date a debtor is warned on
+            'notifyDays' => array_map(
+                intval(...),
+                array_filter(explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10'))),
+            ),
+            'allowedPaymentDelay' => (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
+            'allowedTotalOverdueDebt' => (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
+            // nothing named means debtors are not labelled at all
+            'blockedLabelId' => (string)env('DEBTORS_BLOCKED_LABEL_ID', ''),
+            'routersIpAddresses' => (string)env('DEBTORS_ROUTERS_IP_ADDRESSES', ''),
+            'addressList' => (string)env('DEBTORS_ADDRESS_LIST', ''),
+            'routersUsername' => (string)env('DEBTORS_ROUTERS_USERNAME', 'admin'),
+            'routersPassword' => (string)env('DEBTORS_ROUTERS_PASSWORD', ''),
+        ],
+        'eurofaktura' => [
+            'username' => (string)env('EUROFAKTURA_USERNAME', ''),
+            'secretKey' => (string)env('EUROFAKTURA_SECRET_KEY', ''),
+            'token' => (string)env('EUROFAKTURA_TOKEN', ''),
+            // a separate account for issuing keeps the writes off the sync's rate limit
+            'invoicesUsername' => (string)env('EUROFAKTURA_INVOICES_USERNAME', env('EUROFAKTURA_USERNAME', '')),
+            'invoicesSecretKey' => (string)env('EUROFAKTURA_INVOICES_SECRET_KEY', env('EUROFAKTURA_SECRET_KEY', '')),
+            'invoicesToken' => (string)env('EUROFAKTURA_INVOICES_TOKEN', env('EUROFAKTURA_TOKEN', '')),
+        ],
+        'pohoda' => [
+            'username' => (string)env('POHODA_USERNAME', ''),
+            'password' => (string)env('POHODA_PASSWORD', ''),
+        ],
+    ],
+
+    'Radius' => [
+        // nothing named leaves an account's group alone
+        'defaultUserGroup' => (string)env('RADIUS_DEFAULT_USER_GROUP', ''),
+        'routerosUsername' => (string)env('ROUTEROS_USERNAME', 'admin'),
+        'routerosPassword' => (string)env('ROUTEROS_PASSWORD', ''),
+    ],
+
     /*
      * Email delivery profiles
      *

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Pohoda;
 
+use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use RuntimeException;
@@ -26,8 +27,8 @@ class HttpClient
     public function send(string $xml): Response
     {
         try {
-            $username = (string)env('POHODA_USERNAME', '');
-            $password = (string)env('POHODA_PASSWORD', '');
+            $username = (string)Configure::read('Bookkeeping.pohoda.username');
+            $password = (string)Configure::read('Bookkeeping.pohoda.password');
             $url = Settings::getString(
                 PohodaProvider::SETTINGS_ROOT . '.api.url',
                 'http://localhost:44444',

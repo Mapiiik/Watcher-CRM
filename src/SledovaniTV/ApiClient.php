@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\SledovaniTV;
 
+use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Client\Response;
 use Cake\Log\Log;
@@ -23,8 +24,8 @@ class ApiClient
         $response = $http->post(
             'https://sledovanitv.cz/partner/api/' . $function,
             [
-                'partner' => env('DEBTORS_SLEDOVANITV_USERNAME', ''),
-                'password' => env('DEBTORS_SLEDOVANITV_PASSWORD', ''),
+                'partner' => Configure::read('SledovaniTv.username'),
+                'password' => Configure::read('SledovaniTv.password'),
             ] + $data,
             [
                 'type' => 'application/x-www-form-urlencoded',

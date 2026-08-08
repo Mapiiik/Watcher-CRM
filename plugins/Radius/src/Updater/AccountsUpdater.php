@@ -11,6 +11,7 @@ use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ServiceOverridesTable;
 use App\Service\OperatorReport;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
@@ -562,12 +563,12 @@ class AccountsUpdater
             Log::warning('The RADIUS user groups for ' . $account->username . ' could not be found automatically.');
         }
 
-        if (empty($radusergroup) && env('RADIUS_DEFAULT_USER_GROUP')) {
+        if (empty($radusergroup) && Configure::read('Radius.defaultUserGroup')) {
             // return radusergroup record with default user group if set in configuration
             $radusergroup[] = $this->Radusergroup
                 ->findOrNewEntity([
                     'username' => $account->username,
-                    'groupname' => env('RADIUS_DEFAULT_USER_GROUP'),
+                    'groupname' => Configure::read('Radius.defaultUserGroup'),
                     'priority' => 0,
                 ]);
         }

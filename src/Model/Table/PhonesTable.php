@@ -152,10 +152,7 @@ class PhonesTable extends AppTable
         if (isset($data['phone']) && is_string($data['phone']) && ($data['phone'] !== '')) {
             $phoneUtil = PhoneNumberUtil::getInstance();
 
-            $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
-            $phoneRegion = is_string($phoneRegion) && ($phoneRegion !== '' && $phoneRegion !== '0') ?
-                $phoneRegion
-                : null;
+            $phoneRegion = Configure::read('Phones.defaultRegion');
 
             try {
                 $phoneNumber = $phoneUtil->parse($data['phone'], $phoneRegion);

@@ -5,6 +5,7 @@ namespace Radius\Controller;
 
 use App\Controller\Traits\MessageHandlerTrait;
 use App\Utility\Strings;
+use Cake\Core\Configure;
 use Cake\Http\Response;
 use Radius\Model\Entity\Radacct;
 use Radius\Updater\AccountsUpdater;
@@ -382,8 +383,8 @@ class AccountsController extends AppController
             try {
                 $client = new Client([
                     'host' => $session->nasipaddress,
-                    'user' => env('ROUTEROS_USERNAME', 'admin'),
-                    'pass' => env('ROUTEROS_PASSWORD', ''),
+                    'user' => Configure::read('Radius.routerosUsername'),
+                    'pass' => Configure::read('Radius.routerosPassword'),
                 ]);
             } catch (ClientException $e) {
                 $this->Flash->error(__d(

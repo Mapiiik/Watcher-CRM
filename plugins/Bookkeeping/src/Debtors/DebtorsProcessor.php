@@ -11,6 +11,7 @@ use App\SledovaniTV\ApiClient as SledovaniTVApiClient;
 use App\Utility\Strings;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Cake\Collection\CollectionInterface;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
@@ -516,11 +517,9 @@ class DebtorsProcessor
      */
     private function addLabel(string $id): CustomerLabel|false
     {
-        // check if label is configured
-        $labelId = env('DEBTORS_BLOCKED_LABEL_ID');
-
         // check that the label is configured
-        if (empty($labelId)) {
+        $labelId = (string)Configure::read('Bookkeeping.debtors.blockedLabelId');
+        if ($labelId === '') {
             return false;
         }
         /** @var \App\Model\Table\CustomerLabelsTable $customerLabelsTable */
@@ -549,11 +548,9 @@ class DebtorsProcessor
      */
     private function removeLabel(string $id): iterable|false
     {
-        // check if label is configured
-        $labelId = env('DEBTORS_BLOCKED_LABEL_ID');
-
         // check that the label is configured
-        if (empty($labelId)) {
+        $labelId = (string)Configure::read('Bookkeeping.debtors.blockedLabelId');
+        if ($labelId === '') {
             return false;
         }
         /** @var \App\Model\Table\CustomerLabelsTable $customerLabelsTable */
@@ -583,11 +580,9 @@ class DebtorsProcessor
      */
     private function clearLabel(DateTime $older_than): iterable|false
     {
-        // check if label is configured
-        $labelId = env('DEBTORS_BLOCKED_LABEL_ID');
-
         // check that the label is configured
-        if (empty($labelId)) {
+        $labelId = (string)Configure::read('Bookkeeping.debtors.blockedLabelId');
+        if ($labelId === '') {
             return false;
         }
         /** @var \App\Model\Table\CustomerLabelsTable $customerLabelsTable */
@@ -697,18 +692,14 @@ class DebtorsProcessor
         }
         $result = '';
 
-        $routersIpAddresses = env('DEBTORS_ROUTERS_IP_ADDRESSES');
-        if (!is_string($routersIpAddresses) || ($routersIpAddresses === '' || $routersIpAddresses === '0')) {
-            throw new InvalidArgumentException(
-                'DEBTORS_ROUTERS_IP_ADDRESSES environment variable is not set or is not a string.',
-            );
+        $routersIpAddresses = (string)Configure::read('Bookkeeping.debtors.routersIpAddresses');
+        if ($routersIpAddresses === '') {
+            throw new InvalidArgumentException('No routers are configured to block debtors on.');
         }
 
-        $addressList = env('DEBTORS_ADDRESS_LIST');
-        if (!is_string($addressList) || ($addressList === '' || $addressList === '0')) {
-            throw new InvalidArgumentException(
-                'DEBTORS_ADDRESS_LIST environment variable is not set or is not a string.',
-            );
+        $addressList = (string)Configure::read('Bookkeeping.debtors.addressList');
+        if ($addressList === '') {
+            throw new InvalidArgumentException('No firewall address list is configured for debtors.');
         }
 
         $routers = explode(' ', $routersIpAddresses);
@@ -750,8 +741,8 @@ class DebtorsProcessor
 
         $client = new Client([
             'host' => $router,
-            'user' => env('DEBTORS_ROUTERS_USERNAME', 'admin'),
-            'pass' => env('DEBTORS_ROUTERS_PASSWORD', ''),
+            'user' => Configure::read('Bookkeeping.debtors.routersUsername'),
+            'pass' => Configure::read('Bookkeeping.debtors.routersPassword'),
         ]);
 
         // process IPv4 firewall address list

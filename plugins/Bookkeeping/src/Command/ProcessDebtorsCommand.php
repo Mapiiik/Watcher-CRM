@@ -18,6 +18,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
@@ -159,16 +160,12 @@ class ProcessDebtorsCommand extends Command
 
             $today = Date::now();
 
-            $notifyDays = array_map(
-                intval(...),
-                array_filter(
-                    explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10')),
-                ),
-            );
+            /** @var array<int> $notifyDays */
+            $notifyDays = Configure::read('Bookkeeping.debtors.notifyDays');
 
             $debtorsProcessor = new DebtorsProcessor(
-                allowed_payment_delay: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
-                allowed_total_overdue_debt: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
+                allowed_payment_delay: (int)Configure::read('Bookkeeping.debtors.allowedPaymentDelay'),
+                allowed_total_overdue_debt: (float)Configure::read('Bookkeeping.debtors.allowedTotalOverdueDebt'),
             );
 
             // automatically update the blocking of debtors in systems, if requested

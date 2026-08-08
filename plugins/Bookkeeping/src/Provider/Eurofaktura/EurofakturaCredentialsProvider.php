@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Eurofaktura;
 
+use Cake\Core\Configure;
+
 /**
  * Provider responsible for supplying authentication credentials
  * for the Eurofaktura / E-racuni API.
@@ -45,9 +47,9 @@ final class EurofakturaCredentialsProvider
     public function getDefault(): EurofakturaCredentials
     {
         return new EurofakturaCredentials(
-            (string)env('EUROFAKTURA_USERNAME', ''),
-            (string)env('EUROFAKTURA_SECRET_KEY', ''),
-            (string)env('EUROFAKTURA_TOKEN', ''),
+            (string)Configure::read('Bookkeeping.eurofaktura.username'),
+            (string)Configure::read('Bookkeeping.eurofaktura.secretKey'),
+            (string)Configure::read('Bookkeeping.eurofaktura.token'),
         );
     }
 
@@ -71,9 +73,9 @@ final class EurofakturaCredentialsProvider
     public function getForInvoiceIssuing(): EurofakturaCredentials
     {
         return new EurofakturaCredentials(
-            (string)env('EUROFAKTURA_INVOICES_USERNAME', env('EUROFAKTURA_USERNAME', '')),
-            (string)env('EUROFAKTURA_INVOICES_SECRET_KEY', env('EUROFAKTURA_SECRET_KEY', '')),
-            (string)env('EUROFAKTURA_INVOICES_TOKEN', env('EUROFAKTURA_TOKEN', '')),
+            (string)Configure::read('Bookkeeping.eurofaktura.invoicesUsername'),
+            (string)Configure::read('Bookkeeping.eurofaktura.invoicesSecretKey'),
+            (string)Configure::read('Bookkeeping.eurofaktura.invoicesToken'),
         );
     }
 }
