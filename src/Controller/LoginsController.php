@@ -144,8 +144,8 @@ class LoginsController extends AppController
         $login = $this->Logins->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             // change password if is set new
-            if ((string)$this->getRequest()->getData()['new_password'] !== '') {
-                $login->password = $this->getRequest()->getData()['new_password'];
+            if ((string)$this->getRequest()->getData('new_password', '') !== '') {
+                $login->password = $this->getRequest()->getData('new_password');
             }
 
             $login = $this->Logins->patchEntity($login, $this->getRequest()->getData());

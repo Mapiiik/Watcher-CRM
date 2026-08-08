@@ -658,26 +658,26 @@ class TasksController extends AppController
             'Modifiers',
         ]);
 
-        $mailer = new Mailer('default');
-
-        foreach ($task->dealer->emails as $email) {
-            $mailer->addTo($email->email, $task->dealer->name);
-        }
-
-        $title = $new ?
-            __('You have a new task # {0}', $task->number)
-            : __('You have changes in task # {0}', $task->number);
-
-        $mailer->setSubject($title . ' - ' . $task->summary_text);
-        $mailer->setEmailFormat('html');
-
-        $mailer->viewBuilder()
-            ->setLayout('default')
-            ->setTemplate('task-notification');
-
-        $mailer->setViewVars(['title' => $title, 'task' => $task]);
-
         try {
+            $mailer = new Mailer('default');
+
+            foreach ($task->dealer->emails as $email) {
+                $mailer->addTo($email->email, $task->dealer->name);
+            }
+
+            $title = $new ?
+                __('You have a new task # {0}', $task->number)
+                : __('You have changes in task # {0}', $task->number);
+
+            $mailer->setSubject($title . ' - ' . $task->summary_text);
+            $mailer->setEmailFormat('html');
+
+            $mailer->viewBuilder()
+                ->setLayout('default')
+                ->setTemplate('task-notification');
+
+            $mailer->setViewVars(['title' => $title, 'task' => $task]);
+
             $mailer->deliver();
             $this->Flash->success(__('Notification email sent.') . ' (' . $task->dealer->email . ')');
 
