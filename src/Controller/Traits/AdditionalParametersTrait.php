@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Traits;
 
+use Cake\Core\App;
 use Cake\Http\Response;
 use Cake\ORM\Table;
 
@@ -145,6 +146,14 @@ trait AdditionalParametersTrait
     private function ownerOfTheRecordAsked(?string $id): array
     {
         if ($id === null || !in_array($this->getRequest()->getParam('action'), ['view', 'edit'], true)) {
+            return [];
+        }
+
+        // A controller need not be named after a table - the settings and the pages are named
+        // after what they show - and in the web an alias no class answers to is an error rather
+        // than an empty answer, so it is asked for only once there is one to ask for.
+        $alias = (string)$this->defaultTable;
+        if ($alias === '' || App::className($alias, 'Model/Table', 'Table') === null) {
             return [];
         }
 
