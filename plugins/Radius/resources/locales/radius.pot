@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-02 09:19+0200\n"
+"POT-Creation-Date: 2026-08-08 15:59+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -98,58 +98,58 @@ msgstr ""
 msgid "Error during RADIUS accounts update: {0}"
 msgstr ""
 
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:132
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:126
 msgid "RADIUS accounts update failed"
 msgstr ""
 
-#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:137
+#: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:127
 msgid "RADIUS accounts update failed."
-msgstr ""
-
-#: ./plugins/Radius/src/Controller/AccountsController.php:175
-#: ./plugins/Radius/src/Controller/AccountsController.php:286
-msgid "The RADIUS account has been saved."
 msgstr ""
 
 #: ./plugins/Radius/src/Controller/AccountsController.php:179
 #: ./plugins/Radius/src/Controller/AccountsController.php:290
+msgid "The RADIUS account has been saved."
+msgstr ""
+
+#: ./plugins/Radius/src/Controller/AccountsController.php:183
+#: ./plugins/Radius/src/Controller/AccountsController.php:294
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:337
+#: ./plugins/Radius/src/Controller/AccountsController.php:341
 msgid "The RADIUS account has been deleted."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:340
+#: ./plugins/Radius/src/Controller/AccountsController.php:344
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:365
+#: ./plugins/Radius/src/Controller/AccountsController.php:369
 msgid "No RADIUS session for {0} found."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:386
+#: ./plugins/Radius/src/Controller/AccountsController.php:390
 msgid "Problem connecting to an access point: {0}"
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:410
+#: ./plugins/Radius/src/Controller/AccountsController.php:414
 msgid "Removed MAC address entry {0} on interface {1} from router {2}."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:421
+#: ./plugins/Radius/src/Controller/AccountsController.php:425
 msgid "Access point updated."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:422
+#: ./plugins/Radius/src/Controller/AccountsController.php:426
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:426
+#: ./plugins/Radius/src/Controller/AccountsController.php:430
 msgid "Invalid RADIUS session for {0}."
 msgstr ""
 
-#: ./plugins/Radius/src/Controller/AccountsController.php:457
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:198
+#: ./plugins/Radius/src/Controller/AccountsController.php:461
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:200
 msgid "No active RADIUS session for {0} found."
 msgstr ""
 
@@ -301,55 +301,55 @@ msgstr ""
 msgid "PPPoE"
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:94
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:96
 msgid "The RADIUS account has been updated."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:98
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:100
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:133
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:135
 msgid "Nothing has been selected for update."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:175
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:177
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:222
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:224
 msgid "Related entries for {0} RADIUS accounts were processed, {1} accounts were updated, and {2} accounts failed to update."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:246
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:254
 msgid "Automatic RADIUS account changes"
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:255
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:263
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:262
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:270
 msgid "Automatic RADIUS account changes have been reported."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:268
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:276
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:427
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:435
 msgid "The RADIUS replies for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:433
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:441
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:543
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:551
 msgid "The RADIUS user groups for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:549
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:557
 msgid "The billings for the contract for the current or upcoming period are probably not set correctly."
 msgstr ""
 

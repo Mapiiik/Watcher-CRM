@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-07-22 12:25+0200\n"
-"PO-Revision-Date: 2026-07-22 12:27+0200\n"
+"POT-Creation-Date: 2026-08-08 15:59+0200\n"
+"PO-Revision-Date: 2026-08-08 16:07+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -100,15 +100,15 @@ msgid "Invoices successfully sent to accounting system."
 msgstr "Faktury byly úspěšně odeslány do účetního systému."
 
 #: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:296
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:314
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:304
 msgid "Error when issuing invoices: {0}"
 msgstr "Chyba při vystavování faktur: {0}"
 
-#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:309
+#: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:303
 msgid "Error when issuing invoices"
 msgstr "Chyba při vystavování faktur"
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:61
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:62
 msgid ""
 "Override the saved date and time of the last synchronisation. Only invoices "
 "changed after this date and time of change will be retrieved. Format: YYYY-"
@@ -120,62 +120,62 @@ msgstr ""
 "(např. 2024-10-28 15:45:00). Pokud není zadáno, použije se datum z poslední "
 "úspěšné synchronizace."
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:71
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:72
 msgid "Synchronization mode"
 msgstr "Režim synchronizace"
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:94
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:95
 msgid "Running invoice sync in mode: {0}"
 msgstr "Synchronizace faktur v režimu: {0}"
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:103
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:104
 msgid "Unable to resolve last synchronization timestamp."
 msgstr "Nelze určit časové razítko poslední synchronizace."
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:109
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:110
 msgid "Using last changes time: {0}"
 msgstr "Použití času posledních změn: {0}"
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:120
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:121
 msgid ""
 "Successfully imported {0} invoices. Created {1}, modified {2}, skipped {3}."
 msgstr ""
 "Úspěšně importováno {0} faktur. Vytvořeno {1}, upraveno {2}, přeskočeno {3}."
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:137
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:138
 msgid "Error during invoice synchronization: {0}"
 msgstr "Chyba při synchronizaci faktur: {0}"
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:150
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:145
 msgid "Invoice synchronization failed"
 msgstr "Synchronizace faktur se nezdařila"
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:155
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:146
 msgid "Invoice synchronization failed."
 msgstr "Synchronizace faktur se nezdařila."
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:188
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:178
 msgid "Invalid date format. Use YYYY-MM-DD HH:MM:SS."
 msgstr "Neplatný formát data. Použijte formát RRRR-MM-DD HH:MM:SS."
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:199
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:189
 msgid "No previous synchronization found. Using default value."
 msgstr ""
 "Nebyla nalezena žádná předchozí synchronizace. Používá se výchozí hodnota."
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:224
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:214
 msgid "Error reading last synchronization time from file: {0}"
 msgstr "Chyba při čtení času poslední synchronizace ze souboru: {0}"
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:236
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:226
 msgid "Error parsing last synchronization time from file: {0}"
 msgstr "Chyba při interpretaci času poslední synchronizace ze souboru: {0}"
 
-#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:256
+#: plugins/Bookkeeping/src/Command/LoadInvoicesCommand.php:246
 msgid "Error saving last synchronization time to file: {0}"
 msgstr "Chyba při ukládání času poslední synchronizace do souboru: {0}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:103
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:104
 msgid ""
 "Send only a notification of an overdue claims (within the allowed payment "
 "delay)."
@@ -183,7 +183,7 @@ msgstr ""
 "Odeslat pouze oznámení o pohledávce po splatnosti (v rámci povoleného "
 "zpoždění platby)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:111
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:112
 msgid ""
 "Send only a notification of blocking (or continuing debt for services no "
 "longer active) for overdue claims (after an allowed delay in payment)."
@@ -192,7 +192,7 @@ msgstr ""
 "již nejsou aktivní) u pohledávek po splatnosti (po povoleném zpoždění "
 "platby)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:120
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:121
 msgid ""
 "Automatically update the blocking of debtors in systems (routers, firewalls, "
 "IPTV, ...)."
@@ -200,19 +200,19 @@ msgstr ""
 "Automatická aktualizace blokování dlužníků v systémech (routery, firewally, "
 "IPTV, ...)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:128
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:129
 msgid "Do not send emails, the operation will be skipped."
 msgstr "Neodesílat e-maily, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:133
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:134
 msgid "Do not send SMS, the operation will be skipped."
 msgstr "Neodesílat SMS, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:153
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:154
 msgid "Debtor notifications are globally disabled by settings."
 msgstr "Oznámení dlužníkům jsou globálně deaktivována v nastavení."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:213
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:210
 msgid ""
 "Notification email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -220,7 +220,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:233
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:230
 msgid ""
 "Notification SMS has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -228,7 +228,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:260
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:257
 msgid ""
 "Blocking email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -236,7 +236,7 @@ msgstr ""
 "Byl vygenerován blokovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:271
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:268
 msgid ""
 "Notification email has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -244,7 +244,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:292
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:289
 msgid ""
 "Blocking SMS has been generated for customer {customer_number}, recipients: "
 "{recipients}"
@@ -252,7 +252,7 @@ msgstr ""
 "Byla vygenerována blokovací SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:303
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:300
 msgid ""
 "Notification SMS has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -260,45 +260,45 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:316
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:245
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:313
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:238
 msgid "Done"
 msgstr "Hotovo"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:322
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:319
 msgid "Error during debtor processing: {0}"
 msgstr "Chyba při zpracování dlužníků: {0}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:335
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:326
 msgid "Debtor processing failed"
 msgstr "Zpracování dlužníků se nezdařilo"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:340
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:327
 msgid "Debtor processing failed."
 msgstr "Zpracování dlužníků se nezdařilo."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:99
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:100
 msgid "Number of emails to process."
 msgstr "Počet e-mailů ke zpracování."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:133
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:134
 msgid "Sending invoices:"
 msgstr "Odesílání faktur:"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:144
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:145
 msgid "Invoice - {0} - {1}"
 msgstr "Faktura - {0} - {1}"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:196
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:197
 msgid "Email was successfully sent."
 msgstr "E-mail byl úspěšně odeslán."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:204
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:224
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:205
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:218
 msgid "Error sending email message with issued invoice ID {0}: {1}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}: {1}"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:218
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:213
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}"
 
@@ -323,11 +323,11 @@ msgid "Customers successfully sent to accounting system."
 msgstr "Zákazníci byli úspěšně odesláni do účetního systému."
 
 #: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:192
-#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:210
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:200
 msgid "Error when sending partners: {0}"
 msgstr "Chyba při odesílání partnerů: {0}"
 
-#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:205
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:199
 msgid "Error when sending partners"
 msgstr "Chyba při odesílání partnerů"
 
@@ -385,27 +385,27 @@ msgstr[0] "Faktura k odeslání ve frontě, zbývá {0} e-mail."
 msgstr[1] "Faktury k odeslání ve frontě, zbývají {0} e-maily."
 msgstr[2] "Faktury k odeslání ve frontě, zbývá {0} e-mailů."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:74
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:76
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:86
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:88
 msgid "{0} failed"
 msgstr "{0} selhala"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:95
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:97
 msgid "Unknown error."
 msgstr "Neznámá chyba."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:161
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:163
 msgid "Debtors data is not available."
 msgstr "Údaje o dlužnících nejsou k dispozici."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:250
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:304
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:359
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:411
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:461
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:252
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:306
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:361
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:413
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:463
 msgid ""
 "Debtor blocking is globally disabled by settings. No external systems were "
 "modified."
@@ -413,24 +413,24 @@ msgstr ""
 "Blokování dlužníků je globálně deaktivováno v nastavení. Žádné externí "
 "systémy nebyly upraveny."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:259
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:313
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:261
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:315
 msgid "Customer ID of the debtor must be provided."
 msgstr "Je nutné uvést identifikační číslo dlužníka."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:278
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:332
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:384
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:436
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:494
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:280
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:334
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:386
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:438
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:496
 msgid "SledovaniTV blocking update"
 msgstr "Aktualizace blokace SledovaniTV"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:289
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:343
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:395
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:447
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:505
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:291
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:345
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:397
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:449
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:507
 msgid "Routers blocking update"
 msgstr "Aktualizace blokace routerů"
 
@@ -438,34 +438,34 @@ msgstr "Aktualizace blokace routerů"
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:719
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:711
 msgid "RouterOS device {0}: {1}"
 msgstr "RouterOS zařízení {0}: {1}"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:773
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:801
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:765
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:793
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:822
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:814
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:850
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:878
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:842
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:870
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:899
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:891
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:946
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:938
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:956
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:966
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:948
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:958
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
@@ -487,45 +487,45 @@ msgstr "Synchronizace delta"
 msgid "Full Synchronization"
 msgstr "Plná synchronizace"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:88
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:111
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:89
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:112
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:50
 msgid "Unknown error"
 msgstr "Neznámá chyba"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:92
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:93
 msgid "Eurofaktura API error ({0}, {1})"
 msgstr "Chyba API Eurofaktura ({0}, {1})"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:108
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:109
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
 msgid "Eurofaktura API error: {0}"
 msgstr "Chyba API Eurofaktura: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:277
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:278
 msgid "Failed to send invoice for customer {0}: {1}"
 msgstr "Nepodařilo se odeslat fakturu pro zákazníka {0}: {1}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:281
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:339
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:282
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:340
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:335
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:336
 msgid "Failed to send partner for customer {0}: {1}"
 msgstr "Nepodařilo se odeslat partnera pro zákazníka {0}: {1}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:371
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:393
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:415
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:372
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:394
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:416
 msgid "Not implemented in Eurofaktura Provider."
 msgstr "Není implementováno v Eurofaktura Provider."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:470
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:471
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr "Neplatná data PDF přijatá z rozhraní API Eurofaktura."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:485
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:486
 msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr "Faktura ve formátu PDF nebyla nalezena nebo ji nelze stáhnout: {0}"
 
@@ -569,30 +569,30 @@ msgstr "Nepodařilo se zapsat záznam DBF pro fakturu {0}."
 msgid "Unable to open DBF file."
 msgstr "Nelze otevřít soubor DBF."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:52
+#: plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:53
 msgid "Error connecting to Pohoda mServer: {0}"
 msgstr "Chyba při připojení k Pohoda mServer: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:77
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:165
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:78
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:166
 msgid "Invalid response from Pohoda mServer ({0})"
 msgstr "Neplatná odpověď od Pohoda mServer ({0})"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:88
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:176
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:89
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:177
 msgid "Invalid XML response from Pohoda mServer."
 msgstr "Neplatná odpověď XML od Pohoda mServer."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:101
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:189
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:102
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:190
 msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
 msgstr "Pohoda mServer vrátil chybovou odpověď (STATE: {0}, NOTE: {1})"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:156
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:157
 msgid "Failed to read generated XML file."
 msgstr "Nepodařilo se načíst vygenerovaný soubor XML."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:215
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:216
 msgid "Partner synchronization is not implemented in Pohoda Provider."
 msgstr "Synchronizace partnerů není v Pohoda Provider implementována."
 
