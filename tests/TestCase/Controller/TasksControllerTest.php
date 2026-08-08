@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\TasksController;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -15,7 +16,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(TasksController::class)]
 class TasksControllerTest extends TestCase
 {
+    // saving a task mails whoever watches it; without this the message is left behind for
+    // whichever test asks about mail next
     use ControllerTestTrait;
+    use EmailTrait;
     use IntegrationTestTrait;
 
     /**

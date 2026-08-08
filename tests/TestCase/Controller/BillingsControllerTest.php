@@ -201,7 +201,14 @@ class BillingsControllerTest extends TestCase
      */
     public function testViewUnderAnotherCustomerKeepsTheContractItDoesBelongTo(): void
     {
-        $id = $this->firstId('Billings');
+        // a billing of that contract rather than whichever comes first: the contract in the URL is
+        // the one the redirect is expected to keep, so it has to be the record's own
+        $id = $this->getTableLocator()->get('Billings')
+            ->find()
+            ->where(['Billings.contract_id' => self::CONTRACT_ID])
+            ->firstOrFail()
+            ->get('id');
+
         $this->login();
         $this->get(
             '/customers/ae128a49-82fd-4b80-921f-f11af75fd113/contracts/' . self::CONTRACT_ID
