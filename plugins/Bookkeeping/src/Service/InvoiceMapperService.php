@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Service;
 
 use Bookkeeping\Model\Table\InvoicesTable;
+use Cake\Core\Configure;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
@@ -47,7 +48,7 @@ class InvoiceMapperService
 
             // Validate customer number range
             $customerNumber = (int)$draft->customerNumber;
-            $series = (int)env('CUSTOMER_SERIES', '0');
+            $series = (int)Configure::read('Customers.series');
 
             if (!($series < $customerNumber && $customerNumber < $series + 50000)) {
                 // Skip invoices outside customer variable symbol range

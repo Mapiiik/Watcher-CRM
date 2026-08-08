@@ -10,6 +10,7 @@ use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Provider\AccountingProviderInterface;
+use Cake\Core\Configure;
 use Cake\Http\Client\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
@@ -431,7 +432,7 @@ class EurofakturaProvider implements AccountingProviderInterface
      */
     public function getInvoicePdfPath(Invoice $invoice): string
     {
-        $filepath = env('DATA_ROOT', ROOT . DS . 'data')
+        $filepath = Configure::read('Data.root')
             . DS . 'invoices'
             . DS . 'Invoice_' . strtr($invoice->number, '/', '-')
             . '_' . $invoice->creation_date->format('Y-m-d') . '.pdf';

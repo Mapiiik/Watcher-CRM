@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\Utility\Text;
 use libphonenumber\NumberParseException;
@@ -185,8 +186,7 @@ class PhonesController extends AppController
 
         $phoneUtil = PhoneNumberUtil::getInstance();
 
-        $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
-        $phoneRegion = is_string($phoneRegion) && ($phoneRegion !== '' && $phoneRegion !== '0') ? $phoneRegion : null;
+        $phoneRegion = Configure::read('Phones.defaultRegion');
 
         // check the formatting of the phone number and update it if necessary
         foreach ($phones as $phone) {

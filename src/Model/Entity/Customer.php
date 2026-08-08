@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Model\Enum\AddressType;
+use Cake\Core\Configure;
 use RuntimeException;
 
 /**
@@ -225,7 +226,7 @@ class Customer extends AppEntity
      */
     protected function _getNumber(): string
     {
-        return strval($this->nid + (int)env('CUSTOMER_SERIES', '0'));
+        return strval($this->nid + (int)Configure::read('Customers.series'));
     }
 
     /**

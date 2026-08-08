@@ -278,6 +278,44 @@ return [
     ],
 
     /*
+     * What the installation is, as opposed to how it is wired up.
+     *
+     * The environment is read here and nowhere else, so a value has one spelling, one default and
+     * one place to change. Anything read straight from `env()` further in has the default written
+     * out again wherever it is read, which is how two of them come to disagree.
+     */
+    'Customers' => [
+        // added to the customer's `nid` to get the number written on invoices
+        'series' => (int)env('CUSTOMER_SERIES', '0'),
+    ],
+
+    'Data' => [
+        'root' => (string)env('DATA_ROOT', ROOT . DS . 'data'),
+    ],
+
+    'Phones' => [
+        // the region numbers without a country prefix are read as; nothing named means none assumed
+        'defaultRegion' => trim((string)env('APP_DEFAULT_PHONE_REGION', '')) ?: null,
+        'stripPrefixForSummary' => filter_var(
+            env('STRIP_PHONE_PREFIX_FOR_SUMMARY_TEXT', false),
+            FILTER_VALIDATE_BOOLEAN,
+        ),
+    ],
+
+    'Billings' => [
+        'roundingPlaces' => (int)env('BILLING_PERIOD_ROUNDING_PLACES', '2'),
+        'roundingType' => (string)env('BILLING_PERIOD_ROUNDING_TYPE', 'HALF_UP'),
+    ],
+
+    'IpAddresses' => [
+        'minimumDaysSinceLastUse' => (int)env(
+            'MINIMUM_NUMBER_OF_DAYS_SINCE_LAST_USE_FOR_AVAILABLE_IP_ADDRESSES',
+            '365',
+        ),
+        'firstAvailableOffset' => (int)env('OFFSET_OF_FIRST_AVAILABLE_IP_ADDRESS', '1'),
+    ],
+
+    /*
      * Email delivery profiles
      *
      * Delivery profiles allow you to predefine various properties about email

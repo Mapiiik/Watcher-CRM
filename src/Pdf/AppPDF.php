@@ -5,13 +5,14 @@ namespace App\Pdf;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Override;
 use Settings\Utility\Settings;
 use TCPDF;
 
 //set image path for TCPDF
-define('K_PATH_IMAGES', env('DATA_ROOT', ROOT . DS . 'data') . DS . 'images' . DS);
+define('K_PATH_IMAGES', Configure::read('Data.root') . DS . 'images' . DS);
 
 class AppPDF extends TCPDF
 {

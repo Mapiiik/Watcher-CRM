@@ -10,6 +10,7 @@ use App\Service\CustomerPrint\CustomerPrintData;
 use App\Service\CustomerPrint\CustomerPrintPdfOutput;
 use App\Service\CustomerPrint\CustomerPrintValidator;
 use App\View\PdfView;
+use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Form\Form;
 use Cake\Http\Response;
@@ -143,7 +144,7 @@ class CustomersController extends AppController
             // search by customer number
             $customersQuery->where([
                 'OR' => [
-                    '(Customers.nid + ' . (int)env('CUSTOMER_SERIES', '0') . ') =' => (int)trim($search),
+                    '(Customers.nid + ' . (int)Configure::read('Customers.series') . ') =' => (int)trim($search),
                     'Customers.identity_number' => trim($search),
                 ],
             ]);

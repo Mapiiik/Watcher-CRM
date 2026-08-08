@@ -9,6 +9,7 @@ use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Provider\AccountingProviderInterface;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use RuntimeException;
@@ -296,7 +297,7 @@ class PohodaProvider implements AccountingProviderInterface
      */
     public function getInvoicePdfPath(Invoice $invoice): string
     {
-        return env('DATA_ROOT', ROOT . DS . 'data')
+        return Configure::read('Data.root')
             . DS . 'invoices'
             . DS . 'Faktura_' . $invoice->number . '.pdf';
     }

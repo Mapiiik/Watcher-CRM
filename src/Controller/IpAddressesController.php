@@ -8,6 +8,7 @@ use App\Model\Entity\IpAddress;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Table\RemovedIpAddressesTable;
 use App\NMS\ApiClient as NMSApiClient;
+use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
 use Cake\Validation\Validation;
@@ -486,7 +487,7 @@ class IpAddressesController extends AppController
                         /** @var array<int, string> $availableIpAddresses */
                         $availableIpAddresses = array_keys($this->loadAvailableIpAddresses(
                             $ipAddressRange,
-                            (int)env('MINIMUM_NUMBER_OF_DAYS_SINCE_LAST_USE_FOR_AVAILABLE_IP_ADDRESSES', '365'),
+                            (int)Configure::read('IpAddresses.minimumDaysSinceLastUse'),
                         ));
 
                         foreach ($ipAddresses as $ipAddressToProcess) {
@@ -592,7 +593,7 @@ class IpAddressesController extends AppController
             ->toArray();
 
         // test all IP addresses in range for availability
-        for ($i = (int)env('OFFSET_OF_FIRST_AVAILABLE_IP_ADDRESS', '1'); $i < (int)$rangeSize - 1; $i++) {
+        for ($i = (int)Configure::read('IpAddresses.firstAvailableOffset'); $i < (int)$rangeSize - 1; $i++) {
             $ipFromRange = $range->getAddressAtOffset($i);
             // skip invalid IP addresses
             if ($ipFromRange === null) {

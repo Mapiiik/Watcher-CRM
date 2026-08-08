@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Database\FulltextSearchCustomersDocument;
+use Cake\Core\Configure;
 use Cake\ORM\Table;
 use Override;
 
@@ -87,6 +88,6 @@ class FulltextSearchCustomersTable extends Table
      */
     protected function customerSeries(): int
     {
-        return (int)env('CUSTOMER_SERIES', '0');
+        return (int)Configure::read('Customers.series');
     }
 }

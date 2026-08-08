@@ -150,7 +150,7 @@ class Task extends AppEntity
         }
 
         if (isset($this->phone)) {
-            if (filter_var(env('STRIP_PHONE_PREFIX_FOR_SUMMARY_TEXT', false), FILTER_VALIDATE_BOOLEAN)) {
+            if (Configure::read('Phones.stripPrefixForSummary') === true) {
                 // Replace "+" and following numbers with an empty string
                 $phoneNumber = preg_replace('/\+\d+/', '', $this->phone) ?? $this->phone;
                 // Remove all spaces and then add spaces after the commas

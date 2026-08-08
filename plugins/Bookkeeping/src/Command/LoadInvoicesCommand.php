@@ -10,6 +10,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Core\Configure;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Override;
@@ -201,7 +202,7 @@ class LoadInvoicesCommand extends Command
      */
     private function loadLastSynchronizationTime(): ?DateTime
     {
-        $file = env('DATA_ROOT', ROOT . DS . 'data')
+        $file = Configure::read('Data.root')
             . DS . 'invoices' . DS . 'last_sync.txt';
 
         if (!file_exists($file)) {
@@ -237,7 +238,7 @@ class LoadInvoicesCommand extends Command
      */
     private function saveLastSynchronizationTime(DateTime $dateTime): void
     {
-        $file = env('DATA_ROOT', ROOT . DS . 'data')
+        $file = Configure::read('Data.root')
             . DS . 'invoices' . DS . 'last_sync.txt';
 
         $result = file_put_contents($file, $dateTime->format('Y-m-d H:i:s'));

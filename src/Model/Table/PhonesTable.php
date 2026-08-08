@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use ArrayObject;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -117,10 +118,7 @@ class PhonesTable extends AppTable
             function ($entity, $_options): bool {
                 $phoneUtil = PhoneNumberUtil::getInstance();
 
-                $phoneRegion = env('APP_DEFAULT_PHONE_REGION');
-                $phoneRegion = is_string($phoneRegion) && ($phoneRegion !== '' && $phoneRegion !== '0') ?
-                    $phoneRegion
-                    : null;
+                $phoneRegion = Configure::read('Phones.defaultRegion');
 
                 try {
                     $phoneNumber = $phoneUtil->parse($entity->phone, $phoneRegion);

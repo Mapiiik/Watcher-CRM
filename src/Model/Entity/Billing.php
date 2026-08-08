@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use InvalidArgumentException;
 use PhpCollective\DecimalObject\Decimal;
@@ -247,8 +248,8 @@ class Billing extends AppEntity
     {
         /*
         return $price->round(
-            (int)env('BILLING_PERIOD_ROUNDING_PLACES', '2'),
-            match (env('BILLING_PERIOD_ROUNDING_TYPE', 'HALF_UP')) {
+            (int)Configure::read('Billings.roundingPlaces'),
+            match (Configure::read('Billings.roundingType')) {
                 'HALF_UP' => Decimal::ROUND_HALF_UP,
                 'CEIL' => Decimal::ROUND_CEIL,
                 'FLOOR' => Decimal::ROUND_FLOOR,
@@ -259,8 +260,8 @@ class Billing extends AppEntity
 
         return self::decimalRoundV2(
             $price,
-            (int)env('BILLING_PERIOD_ROUNDING_PLACES', '2'),
-            match (env('BILLING_PERIOD_ROUNDING_TYPE', 'HALF_UP')) {
+            (int)Configure::read('Billings.roundingPlaces'),
+            match (Configure::read('Billings.roundingType')) {
                 'HALF_UP' => Decimal::ROUND_HALF_UP,
                 'CEIL' => Decimal::ROUND_CEIL,
                 'FLOOR' => Decimal::ROUND_FLOOR,
