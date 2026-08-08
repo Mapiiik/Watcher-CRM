@@ -170,4 +170,26 @@ class RemovedIpAddressesControllerTest extends TestCase
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\RemovedIpAddressesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $removedIpAddressId = $this->firstId('RemovedIpAddresses');
+        $this->post('/removed-ip-addresses/edit/' . $removedIpAddressId, ['note' => 'Freed on request.']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Freed on request.',
+            $this->getTableLocator()->get('RemovedIpAddresses')->get($removedIpAddressId)->note,
+        );
+    }
 }

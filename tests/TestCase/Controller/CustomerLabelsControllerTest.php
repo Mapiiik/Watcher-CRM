@@ -155,4 +155,26 @@ class CustomerLabelsControllerTest extends TestCase
         $added = $this->addedRecord('CustomerLabels', $before);
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\CustomerLabelsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $customerLabelId = $this->firstId('CustomerLabels');
+        $this->post('/customer-labels/edit/' . $customerLabelId, ['note' => 'Set by hand.']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Set by hand.',
+            $this->getTableLocator()->get('CustomerLabels')->get($customerLabelId)->note,
+        );
+    }
 }

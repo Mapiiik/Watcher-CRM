@@ -169,4 +169,26 @@ class BorrowedEquipmentsControllerTest extends TestCase
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\BorrowedEquipmentsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $borrowedEquipmentId = $this->firstId('BorrowedEquipments');
+        $this->post('/borrowed-equipments/edit/' . $borrowedEquipmentId, ['serial_number' => 'SN-4711']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'SN-4711',
+            $this->getTableLocator()->get('BorrowedEquipments')->get($borrowedEquipmentId)->serial_number,
+        );
+    }
 }

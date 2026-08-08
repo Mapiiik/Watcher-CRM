@@ -174,4 +174,26 @@ class ServiceOverridesControllerTest extends TestCase
         $added = $this->addedRecord('ServiceOverrides', $before);
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\ServiceOverridesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $serviceOverrideId = $this->firstId('ServiceOverrides');
+        $this->post('/service-overrides/edit/' . $serviceOverrideId, ['reason' => 'Renamed override']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed override',
+            $this->getTableLocator()->get('ServiceOverrides')->get($serviceOverrideId)->reason,
+        );
+    }
 }

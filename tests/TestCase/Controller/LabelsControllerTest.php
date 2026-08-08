@@ -122,4 +122,82 @@ class LabelsControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A label filled in on the form is really stored. Rendering the form proves the page is there;
+     * marshalling, validation, the application rules and the save only ever run on a request that
+     * carries data.
+     *
+     * @return void
+     * @link \App\Controller\LabelsController::add()
+     */
+    public function testAddStoresALabel(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/labels/add', [
+            'name' => 'Debtor',
+            'caption' => 'Owes for more than a month',
+            'color' => '#336699',
+            'validity' => '30',
+            'dynamic' => '0',
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\Label $stored */
+        $stored = $this->getTableLocator()->get('Labels')
+            ->find()
+            ->where(['name' => 'Debtor'])
+            ->firstOrFail();
+        $this->assertSame('#336699', $stored->color);
+    }
+
+    /**
+     * A label that leaves the dynamic switch empty is not stored, and the operator is given the
+     * form back rather than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\LabelsController::add()
+     */
+    public function testAddRefusesALabelWithAnEmptyDynamicSwitch(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $labels = $this->getTableLocator()->get('Labels');
+        $before = $labels->find()->count();
+
+        $this->post('/labels/add', [
+            'name' => 'Debtor',
+            'dynamic' => '',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $labels->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\LabelsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $labelId = $this->firstId('Labels');
+        $this->post('/labels/edit/' . $labelId, ['name' => 'Renamed label']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed label',
+            $this->getTableLocator()->get('Labels')->get($labelId)->name,
+        );
+    }
 }

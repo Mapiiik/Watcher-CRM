@@ -169,4 +169,26 @@ class SoldEquipmentsControllerTest extends TestCase
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\SoldEquipmentsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $soldEquipmentId = $this->firstId('SoldEquipments');
+        $this->post('/sold-equipments/edit/' . $soldEquipmentId, ['serial_number' => 'SN-4711']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'SN-4711',
+            $this->getTableLocator()->get('SoldEquipments')->get($soldEquipmentId)->serial_number,
+        );
+    }
 }

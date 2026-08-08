@@ -129,4 +129,81 @@ class TaskStatesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A state filled in on the form is really stored. Rendering the form proves the page is there;
+     * marshalling, validation, the application rules and the save only ever run on a request that
+     * carries data.
+     *
+     * @return void
+     * @link \App\Controller\TaskStatesController::add()
+     */
+    public function testAddStoresAState(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/task-states/add', [
+            'name' => 'Waiting for the customer',
+            'color' => '#336699',
+            'priority' => '30',
+            'completed' => '0',
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\TaskState $stored */
+        $stored = $this->getTableLocator()->get('TaskStates')
+            ->find()
+            ->where(['name' => 'Waiting for the customer'])
+            ->firstOrFail();
+        $this->assertSame(30, $stored->priority);
+    }
+
+    /**
+     * A state without a priority is not stored, and the operator is given the form back rather than
+     * a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\TaskStatesController::add()
+     */
+    public function testAddRefusesAStateWithoutAPriority(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $taskStates = $this->getTableLocator()->get('TaskStates');
+        $before = $taskStates->find()->count();
+
+        $this->post('/task-states/add', [
+            'name' => 'Waiting for the customer',
+            'priority' => '',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $taskStates->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\TaskStatesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $taskStateId = $this->firstId('TaskStates');
+        $this->post('/task-states/edit/' . $taskStateId, ['name' => 'Renamed state']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed state',
+            $this->getTableLocator()->get('TaskStates')->get($taskStateId)->name,
+        );
+    }
 }

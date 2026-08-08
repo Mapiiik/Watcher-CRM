@@ -129,4 +129,76 @@ class EquipmentTypesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A type filled in on the form is really stored. Rendering the form proves the page is there;
+     * marshalling, validation, the application rules and the save only ever run on a request that
+     * carries data.
+     *
+     * @return void
+     * @link \App\Controller\EquipmentTypesController::add()
+     */
+    public function testAddStoresAType(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('EquipmentTypes');
+        $this->post('/equipment-types/add', [
+            'name' => 'Outdoor unit',
+            'price' => '1500',
+            'price_with_obligation' => '1',
+        ]);
+
+        $this->assertRedirect();
+        $this->assertSame('Outdoor unit', $this->addedRecord('EquipmentTypes', $before)->get('name'));
+    }
+
+    /**
+     * A type without a name is not stored, and the operator is given the form back rather than a
+     * redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\EquipmentTypesController::add()
+     */
+    public function testAddRefusesATypeWithoutAName(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $equipmentTypes = $this->getTableLocator()->get('EquipmentTypes');
+        $before = $equipmentTypes->find()->count();
+
+        $this->post('/equipment-types/add', [
+            'name' => '',
+            'price' => '1500',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $equipmentTypes->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\EquipmentTypesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $equipmentTypeId = $this->firstId('EquipmentTypes');
+        $this->post('/equipment-types/edit/' . $equipmentTypeId, ['name' => 'Renamed type']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed type',
+            $this->getTableLocator()->get('EquipmentTypes')->get($equipmentTypeId)->name,
+        );
+    }
 }

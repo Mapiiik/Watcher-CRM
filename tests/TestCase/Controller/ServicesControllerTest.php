@@ -129,4 +129,84 @@ class ServicesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A service filled in on the form is really stored. Rendering the form proves the page is
+     * there; marshalling, validation, the application rules and the save only ever run on a request
+     * that carries data.
+     *
+     * @return void
+     * @link \App\Controller\ServicesController::add()
+     */
+    public function testAddStoresAService(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/services/add', [
+            'name' => 'Fibre 250',
+            'price' => '450',
+            'service_type_id' => $this->firstId('ServiceTypes'),
+            'queue_id' => $this->firstId('Queues'),
+            'not_for_new_customers' => '0',
+            'criticality_level' => '10',
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\Service $stored */
+        $stored = $this->getTableLocator()->get('Services')
+            ->find()
+            ->where(['name' => 'Fibre 250'])
+            ->firstOrFail();
+        $this->assertSame($this->firstId('ServiceTypes'), $stored->service_type_id);
+    }
+
+    /**
+     * A service of a type that is not there is not stored, and the operator is given the form back
+     * rather than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\ServicesController::add()
+     */
+    public function testAddRefusesAServiceOfATypeThatIsNotThere(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $services = $this->getTableLocator()->get('Services');
+        $before = $services->find()->count();
+
+        $this->post('/services/add', [
+            'name' => 'Fibre 250',
+            'service_type_id' => '3f2b1a0c-0000-4000-8000-000000000000',
+            'criticality_level' => '10',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $services->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\ServicesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $serviceId = $this->firstId('Services');
+        $this->post('/services/edit/' . $serviceId, ['name' => 'Renamed service']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed service',
+            $this->getTableLocator()->get('Services')->get($serviceId)->name,
+        );
+    }
 }

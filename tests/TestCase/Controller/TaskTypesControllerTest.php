@@ -129,4 +129,80 @@ class TaskTypesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A type filled in on the form is really stored. Rendering the form proves the page is there;
+     * marshalling, validation, the application rules and the save only ever run on a request that
+     * carries data.
+     *
+     * @return void
+     * @link \App\Controller\TaskTypesController::add()
+     */
+    public function testAddStoresAType(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/task-types/add', [
+            'name' => 'Installation',
+            'customer_required' => '1',
+            'contract_required' => '1',
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\TaskType $stored */
+        $stored = $this->getTableLocator()->get('TaskTypes')
+            ->find()
+            ->where(['name' => 'Installation'])
+            ->firstOrFail();
+        $this->assertTrue($stored->customer_required);
+    }
+
+    /**
+     * A type that leaves the customer switch empty is not stored, and the operator is given the
+     * form back rather than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\TaskTypesController::add()
+     */
+    public function testAddRefusesATypeWithAnEmptyCustomerSwitch(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $taskTypes = $this->getTableLocator()->get('TaskTypes');
+        $before = $taskTypes->find()->count();
+
+        $this->post('/task-types/add', [
+            'name' => 'Installation',
+            'customer_required' => '',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $taskTypes->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\TaskTypesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $taskTypeId = $this->firstId('TaskTypes');
+        $this->post('/task-types/edit/' . $taskTypeId, ['name' => 'Renamed type']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed type',
+            $this->getTableLocator()->get('TaskTypes')->get($taskTypeId)->name,
+        );
+    }
 }

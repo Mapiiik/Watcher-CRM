@@ -128,4 +128,82 @@ class ServiceTypesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A type filled in on the form is really stored. Rendering the form proves the page is there;
+     * marshalling, validation, the application rules and the save only ever run on a request that
+     * carries data.
+     *
+     * @return void
+     * @link \App\Controller\ServiceTypesController::add()
+     */
+    public function testAddStoresAType(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/service-types/add', [
+            'name' => 'Fibre',
+            'contract_number_format' => 'F-%d',
+            'invoice_text' => 'Fibre connection',
+            'separate_invoice' => '1',
+            'installation_address_required' => '1',
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\ServiceType $stored */
+        $stored = $this->getTableLocator()->get('ServiceTypes')
+            ->find()
+            ->where(['name' => 'Fibre'])
+            ->firstOrFail();
+        $this->assertTrue($stored->separate_invoice);
+    }
+
+    /**
+     * A type that leaves one of the switches empty is not stored, and the operator is given the
+     * form back rather than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\ServiceTypesController::add()
+     */
+    public function testAddRefusesATypeWithAnEmptySwitch(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $serviceTypes = $this->getTableLocator()->get('ServiceTypes');
+        $before = $serviceTypes->find()->count();
+
+        $this->post('/service-types/add', [
+            'name' => 'Fibre',
+            'separate_invoice' => '',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $serviceTypes->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\ServiceTypesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $serviceTypeId = $this->firstId('ServiceTypes');
+        $this->post('/service-types/edit/' . $serviceTypeId, ['name' => 'Renamed type']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed type',
+            $this->getTableLocator()->get('ServiceTypes')->get($serviceTypeId)->name,
+        );
+    }
 }

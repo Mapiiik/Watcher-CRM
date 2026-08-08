@@ -170,4 +170,26 @@ class ContractVersionsControllerTest extends TestCase
         // a contract version hangs off the contract alone and has no customer of its own
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $contractVersionId = $this->firstId('ContractVersions');
+        $this->post('/contract-versions/edit/' . $contractVersionId, ['note' => 'Signed on paper.']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Signed on paper.',
+            $this->getTableLocator()->get('ContractVersions')->get($contractVersionId)->note,
+        );
+    }
 }

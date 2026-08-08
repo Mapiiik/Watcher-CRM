@@ -157,4 +157,36 @@ class AddressesControllerTest extends TestCase
         $added = $this->addedRecord('Addresses', $before);
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * The whole form goes back, not only the changed field: who the address belongs to is asked for
+     * on every save rather than only on the first one, and the name and the company answer for each
+     * other, so a request carrying one field alone is refused.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $addressId = $this->firstId('Addresses');
+        $this->post('/addresses/edit/' . $addressId, [
+            'type' => 0,
+            'number_type' => 0,
+            'country_id' => $this->firstId('Countries'),
+            'company' => 'NETAIR, s.r.o.',
+            'street' => 'Renamed street',
+        ]);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed street',
+            $this->getTableLocator()->get('Addresses')->get($addressId)->street,
+        );
+    }
 }

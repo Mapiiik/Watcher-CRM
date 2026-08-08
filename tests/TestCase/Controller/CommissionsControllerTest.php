@@ -127,4 +127,50 @@ class CommissionsControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A commission filled in on the form is really stored. Rendering the form proves the page is
+     * there; marshalling, validation, the application rules and the save only ever run on a request
+     * that carries data.
+     *
+     * There is no counterpart refusing a commission, because the model asks nothing of one - see
+     * the note on {@see \App\Test\TestCase\Model\Table\CommissionsTableTest::testValidationDefault()}.
+     *
+     * @return void
+     * @link \App\Controller\CommissionsController::add()
+     */
+    public function testAddStoresACommission(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('Commissions');
+        $this->post('/commissions/add', ['name' => 'Referral bonus']);
+
+        $this->assertRedirect();
+        $this->assertSame('Referral bonus', $this->addedRecord('Commissions', $before)->get('name'));
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\CommissionsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $commissionId = $this->firstId('Commissions');
+        $this->post('/commissions/edit/' . $commissionId, ['name' => 'Renamed commission']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed commission',
+            $this->getTableLocator()->get('Commissions')->get($commissionId)->name,
+        );
+    }
 }

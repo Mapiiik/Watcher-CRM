@@ -169,4 +169,26 @@ class IpAddressesControllerTest extends TestCase
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\IpAddressesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $ipAddressId = $this->firstId('IpAddresses');
+        $this->post('/ip-addresses/edit/' . $ipAddressId, ['note' => 'Reserved for the router.']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Reserved for the router.',
+            $this->getTableLocator()->get('IpAddresses')->get($ipAddressId)->note,
+        );
+    }
 }

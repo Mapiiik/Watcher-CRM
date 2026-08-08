@@ -168,4 +168,26 @@ class AccessCredentialsControllerTest extends TestCase
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\AccessCredentialsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $accessCredentialId = $this->firstId('AccessCredentials');
+        $this->post('/access-credentials/edit/' . $accessCredentialId, ['name' => 'Renamed credentials']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed credentials',
+            $this->getTableLocator()->get('AccessCredentials')->get($accessCredentialId)->name,
+        );
+    }
 }

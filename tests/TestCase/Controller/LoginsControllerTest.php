@@ -155,4 +155,26 @@ class LoginsControllerTest extends TestCase
         $added = $this->addedRecord('Logins', $before);
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\LoginsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $loginId = $this->firstId('Logins');
+        $this->post('/logins/edit/' . $loginId, ['login' => 'renamed-login']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'renamed-login',
+            $this->getTableLocator()->get('Logins')->get($loginId)->login,
+        );
+    }
 }

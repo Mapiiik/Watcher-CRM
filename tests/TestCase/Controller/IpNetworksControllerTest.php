@@ -169,4 +169,26 @@ class IpNetworksControllerTest extends TestCase
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\IpNetworksController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $ipNetworkId = $this->firstId('IpNetworks');
+        $this->post('/ip-networks/edit/' . $ipNetworkId, ['note' => 'Routed to the customer.']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Routed to the customer.',
+            $this->getTableLocator()->get('IpNetworks')->get($ipNetworkId)->note,
+        );
+    }
 }

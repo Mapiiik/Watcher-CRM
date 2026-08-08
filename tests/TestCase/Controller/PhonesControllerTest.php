@@ -154,4 +154,26 @@ class PhonesControllerTest extends TestCase
         $added = $this->addedRecord('Phones', $before);
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\PhonesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $phoneId = $this->firstId('Phones');
+        $this->post('/phones/edit/' . $phoneId, ['note' => 'Reaches the caretaker.']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Reaches the caretaker.',
+            $this->getTableLocator()->get('Phones')->get($phoneId)->note,
+        );
+    }
 }

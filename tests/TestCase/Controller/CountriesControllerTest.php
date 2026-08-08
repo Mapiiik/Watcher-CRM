@@ -122,4 +122,79 @@ class CountriesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A country filled in on the form is really stored. Rendering the form proves the page is
+     * there; marshalling, validation, the application rules and the save only ever run on a request
+     * that carries data.
+     *
+     * @return void
+     * @link \App\Controller\CountriesController::add()
+     */
+    public function testAddStoresACountry(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/countries/add', [
+            'name' => 'Slovakia',
+            'code' => 'SK',
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\Country $stored */
+        $stored = $this->getTableLocator()->get('Countries')
+            ->find()
+            ->where(['name' => 'Slovakia'])
+            ->firstOrFail();
+        $this->assertSame('SK', $stored->code);
+    }
+
+    /**
+     * A country whose code is longer than the two letters the column takes is not stored, and the
+     * operator is given the form back rather than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\CountriesController::add()
+     */
+    public function testAddRefusesACountryWithATooLongCode(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $countries = $this->getTableLocator()->get('Countries');
+        $before = $countries->find()->count();
+
+        $this->post('/countries/add', [
+            'name' => 'Slovakia',
+            'code' => 'SVK',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $countries->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\CountriesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $countryId = $this->firstId('Countries');
+        $this->post('/countries/edit/' . $countryId, ['name' => 'Renamed country']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed country',
+            $this->getTableLocator()->get('Countries')->get($countryId)->name,
+        );
+    }
 }

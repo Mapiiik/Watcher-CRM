@@ -120,4 +120,81 @@ class AccountingProfilesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A profile filled in on the form is really stored. Rendering the form proves the page is
+     * there; marshalling, validation, the application rules and the save only ever run on a request
+     * that carries data.
+     *
+     * @return void
+     * @link \App\Controller\AccountingProfilesController::add()
+     */
+    public function testAddStoresAProfile(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/accounting-profiles/add', [
+            'name' => 'Reduced rate',
+            'vat_rate' => '12',
+            'reverse_charge' => '0',
+            'invoice_with_items' => '1',
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\AccountingProfile $stored */
+        $stored = $this->getTableLocator()->get('AccountingProfiles')
+            ->find()
+            ->where(['name' => 'Reduced rate'])
+            ->firstOrFail();
+        $this->assertSame(12.0, $stored->vat_rate);
+    }
+
+    /**
+     * A profile without a VAT rate is not stored, and the operator is given the form back rather
+     * than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\AccountingProfilesController::add()
+     */
+    public function testAddRefusesAProfileWithoutAVatRate(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $accountingProfiles = $this->getTableLocator()->get('AccountingProfiles');
+        $before = $accountingProfiles->find()->count();
+
+        $this->post('/accounting-profiles/add', [
+            'name' => 'Reduced rate',
+            'vat_rate' => '',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $accountingProfiles->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\AccountingProfilesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $accountingProfileId = $this->firstId('AccountingProfiles');
+        $this->post('/accounting-profiles/edit/' . $accountingProfileId, ['name' => 'Renamed profile']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed profile',
+            $this->getTableLocator()->get('AccountingProfiles')->get($accountingProfileId)->name,
+        );
+    }
 }

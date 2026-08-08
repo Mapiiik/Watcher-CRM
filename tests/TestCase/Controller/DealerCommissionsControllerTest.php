@@ -122,4 +122,85 @@ class DealerCommissionsControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A commission filled in on the form is really stored. Rendering the form proves the page is
+     * there; marshalling, validation, the application rules and the save only ever run on a request
+     * that carries data.
+     *
+     * The dealer and the commission are taken from the record the fixtures carry, because only a
+     * customer the association counts as a dealer will pass the rules.
+     *
+     * @return void
+     * @link \App\Controller\DealerCommissionsController::add()
+     */
+    public function testAddStoresACommission(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $dealerCommissions = $this->getTableLocator()->get('DealerCommissions');
+        $existing = $dealerCommissions->find()->firstOrFail();
+
+        $before = $this->idsIn('DealerCommissions');
+        $this->post('/dealer-commissions/add', [
+            'dealer_id' => $existing->get('dealer_id'),
+            'commission_id' => $existing->get('commission_id'),
+            'fixed' => '250',
+            'percentage' => '5',
+        ]);
+
+        $this->assertRedirect();
+        $this->assertSame(250.0, $this->addedRecord('DealerCommissions', $before)->get('fixed'));
+    }
+
+    /**
+     * A commission for a dealer that is not there is not stored, and the operator is given the form
+     * back rather than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\DealerCommissionsController::add()
+     */
+    public function testAddRefusesACommissionForADealerThatIsNotThere(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $dealerCommissions = $this->getTableLocator()->get('DealerCommissions');
+        $existing = $dealerCommissions->find()->firstOrFail();
+        $before = $dealerCommissions->find()->count();
+
+        $this->post('/dealer-commissions/add', [
+            'dealer_id' => '3f2b1a0c-0000-4000-8000-000000000000',
+            'commission_id' => $existing->get('commission_id'),
+            'fixed' => '250',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $dealerCommissions->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\DealerCommissionsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $dealerCommissionId = $this->firstId('DealerCommissions');
+        $this->post('/dealer-commissions/edit/' . $dealerCommissionId, ['fixed' => '333']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            333.0,
+            $this->getTableLocator()->get('DealerCommissions')->get($dealerCommissionId)->fixed,
+        );
+    }
 }

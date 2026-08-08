@@ -126,4 +126,84 @@ class ContractStatesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A state filled in on the form is really stored. Rendering the form proves the page is there;
+     * marshalling, validation, the application rules and the save only ever run on a request that
+     * carries data.
+     *
+     * @return void
+     * @link \App\Controller\ContractStatesController::add()
+     */
+    public function testAddStoresAState(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/contract-states/add', [
+            'name' => 'Awaiting installation',
+            'color' => '#336699',
+            'active_services' => '0',
+            'billed' => '0',
+            'blocked' => '0',
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\ContractState $stored */
+        $stored = $this->getTableLocator()->get('ContractStates')
+            ->find()
+            ->where(['name' => 'Awaiting installation'])
+            ->firstOrFail();
+        $this->assertSame('#336699', $stored->color);
+    }
+
+    /**
+     * A state that leaves out one of the switches a new state has to carry is not stored, and the
+     * operator is given the form back rather than a redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\ContractStatesController::add()
+     */
+    public function testAddRefusesAStateWithoutTheSwitchesItHasToCarry(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $contractStates = $this->getTableLocator()->get('ContractStates');
+        $before = $contractStates->find()->count();
+
+        $this->post('/contract-states/add', [
+            'name' => 'Awaiting installation',
+            'color' => '#336699',
+            'active_services' => '0',
+            'billed' => '0',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $contractStates->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\ContractStatesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $contractStateId = $this->firstId('ContractStates');
+        $this->post('/contract-states/edit/' . $contractStateId, ['name' => 'Renamed state']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed state',
+            $this->getTableLocator()->get('ContractStates')->get($contractStateId)->name,
+        );
+    }
 }

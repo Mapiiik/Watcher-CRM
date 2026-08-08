@@ -121,4 +121,81 @@ class QueuesControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A queue filled in on the form is really stored. Rendering the form proves the page is there;
+     * marshalling, validation, the application rules and the save only ever run on a request that
+     * carries data.
+     *
+     * @return void
+     * @link \App\Controller\QueuesController::add()
+     */
+    public function testAddStoresAQueue(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/queues/add', [
+            'name' => 'Basic 50',
+            'caption' => '50/50 Mbit',
+            'fup_limit' => '100000',
+            'service_type_id' => $this->firstId('ServiceTypes'),
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\Queue $stored */
+        $stored = $this->getTableLocator()->get('Queues')
+            ->find()
+            ->where(['name' => 'Basic 50'])
+            ->firstOrFail();
+        $this->assertSame(100000, $stored->fup_limit);
+    }
+
+    /**
+     * A queue without a name is not stored, and the operator is given the form back rather than a
+     * redirect that would suggest it went through.
+     *
+     * @return void
+     * @link \App\Controller\QueuesController::add()
+     */
+    public function testAddRefusesAQueueWithoutAName(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $queues = $this->getTableLocator()->get('Queues');
+        $before = $queues->find()->count();
+
+        $this->post('/queues/add', [
+            'name' => '',
+            'caption' => '50/50 Mbit',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame($before, $queues->find()->count());
+    }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\QueuesController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $queueId = $this->firstId('Queues');
+        $this->post('/queues/edit/' . $queueId, ['name' => 'Renamed queue']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed queue',
+            $this->getTableLocator()->get('Queues')->get($queueId)->name,
+        );
+    }
 }

@@ -301,4 +301,26 @@ class BillingsControllerTest extends TestCase
 
         $this->assertResponseOk();
     }
+
+    /**
+     * A change made on the form reaches the record.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::edit()
+     */
+    public function testEditStoresTheChange(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $billingId = $this->firstId('Billings');
+        $this->post('/billings/edit/' . $billingId, ['text' => 'Renamed item']);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            'Renamed item',
+            $this->getTableLocator()->get('Billings')->get($billingId)->text,
+        );
+    }
 }

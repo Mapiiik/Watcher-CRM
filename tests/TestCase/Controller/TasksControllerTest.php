@@ -37,6 +37,14 @@ class TasksControllerTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * Dealer the task from the Tasks fixture is assigned to, and whom the notification is addressed
+     * to.
+     *
+     * @var string
+     */
+    private const DEALER_ID = 'ae128a49-82fd-4b80-921f-f11af75fd113';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -51,6 +59,7 @@ class TasksControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
+        'app.Emails',
         'app.TaskStates',
         'app.TaskTypes',
         'app.Tasks',
@@ -287,5 +296,55 @@ class TasksControllerTest extends TestCase
         $added = $this->addedRecord('Tasks', $before);
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
+    }
+
+    /**
+     * A change to a dealer's task tells them about it, at every address they are reachable at.
+     *
+     * The person acting is logged in without a customer of their own, so the task counts as being
+     * somebody else's - which is what the notification hangs on.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::edit()
+     */
+    public function testEditNotifiesTheDealerTheTaskBelongsTo(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->addressToReachTheDealerAt('dealer@example.com');
+
+        $taskId = $this->firstId('Tasks');
+        $this->post('/tasks/edit/' . $taskId, [
+            'subject' => 'Antenna replacement',
+            'contract_id' => $this->firstId('Contracts'),
+        ]);
+
+        $this->assertRedirect();
+        $this->assertMailCount(1);
+        $this->assertMailSentTo('dealer@example.com');
+        $this->assertMailSubjectContains('You have changes in task');
+        $this->assertMailContainsHtml('Antenna replacement');
+    }
+
+    /**
+     * Record an address the dealer of the fixture task can be reached at. The fixtures put the one
+     * address they carry on another customer.
+     *
+     * @param string $address Address to record.
+     * @return void
+     */
+    private function addressToReachTheDealerAt(string $address): void
+    {
+        $emails = $this->getTableLocator()->get('Emails');
+
+        $emails->saveOrFail($emails->newEntity([
+            'customer_id' => self::DEALER_ID,
+            'email' => $address,
+            'use_for_billing' => false,
+            'use_for_outages' => false,
+            'use_for_commercial' => false,
+        ]));
     }
 }
