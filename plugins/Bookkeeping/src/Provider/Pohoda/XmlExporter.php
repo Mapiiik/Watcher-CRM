@@ -40,7 +40,7 @@ class XmlExporter
 
         $pohoda = new Pohoda(
             Settings::getString(
-                PohodaProvider::SETTINGS_ROOT . '.issuer.identity_number',
+                PohodaProvider::SETTINGS_ROOT . '.api.accounting_unit',
                 '00000000',
             ),
         );

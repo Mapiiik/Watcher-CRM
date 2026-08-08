@@ -49,13 +49,14 @@ return [
                     // Class name
                     'class' => PohodaProvider::class,
 
-                    // Issuer metadata
-                    'issuer' => [
-                        'identity_number' => (string)env('POHODA_COMPANY_ID', '00000000'),
-                    ],
                     // API
                     'api' => [
                         'url' => (string)env('POHODA_MSERVER_URL', 'http://localhost:44444'),
+
+                        // which accounting unit mServer is to answer for, named by its
+                        // identity number - a test file is reached by naming a different one
+                        'accounting_unit' => (string)env('POHODA_COMPANY_ID', '00000000'),
+
                         'timeout' => 3600,
                     ],
                 ],
