@@ -8,6 +8,7 @@ use Cake\TestSuite\TestCase;
 use Override;
 use Settings\Exception\SettingValueException;
 use Settings\Service\SettingsService;
+use Settings\ValueObject\SettingType;
 use Settings\ValueObject\Type\BoolType;
 use Settings\ValueObject\Type\ListType;
 
@@ -107,6 +108,9 @@ class SettingsServiceTest extends TestCase
      * The defaults an installation ships are read off its own configuration file. Everything below
      * hands the service its defaults instead, so this is what says the real ones are picked up.
      *
+     * A declared type stands in the file where its value belongs, and reading the defaults is what
+     * puts the value back, so the two are compared with that already done.
+     *
      * @return void
      * @link \Settings\Service\SettingsService::__construct()
      */
@@ -125,9 +129,28 @@ class SettingsServiceTest extends TestCase
         $this->assertNotNull($key, 'the installation ships a namespace with nothing in it');
 
         $this->assertSame(
-            $shipped[$plugin][$key],
+            $this->valuesOf($shipped[$plugin][$key]),
             (new SettingsService())->getDefault($plugin . '.' . $key),
         );
+    }
+
+    /**
+     * A shipped block with every declared type replaced by the value it declares.
+     *
+     * @param mixed $shipped A shipped value, or a branch of them.
+     * @return mixed
+     */
+    private function valuesOf(mixed $shipped): mixed
+    {
+        if ($shipped instanceof SettingType) {
+            return $shipped->default();
+        }
+
+        if (!is_array($shipped)) {
+            return $shipped;
+        }
+
+        return array_map($this->valuesOf(...), $shipped);
     }
 
     /**
