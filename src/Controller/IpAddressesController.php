@@ -163,7 +163,10 @@ class IpAddressesController extends AppController
         }
 
         if ($this->getRequest()->is('post')) {
-            $ipAddress = $this->IpAddresses->patchEntity($ipAddress, $this->getRequest()->getData());
+            $ipAddress = $this->IpAddresses->patchEntity(
+                $ipAddress,
+                $this->dataWithAdditionalParameters($this->IpAddresses, $this->getRequest()->getData()),
+            );
 
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
