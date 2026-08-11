@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-11 09:29+0200\n"
+"POT-Creation-Date: 2026-08-11 09:44+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -13,6 +13,23 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Bookkeeping/config/settings.php:68
+#: ./plugins/Bookkeeping/config/settings.php:136
+msgid "How long to wait for the accounting API, in seconds."
+msgstr ""
+
+#: ./plugins/Bookkeeping/config/settings.php:183
+msgid "How many days a payment may be late before it counts."
+msgstr ""
+
+#: ./plugins/Bookkeeping/config/settings.php:188
+msgid "How small an overdue debt is passed over."
+msgstr ""
+
+#: ./plugins/Bookkeeping/config/settings.php:200
+msgid "How many days before the due date a debtor is warned on. An empty list [] warns on none."
+msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:84
 msgid "Invoiced month (YYYY-MM). Overrides schedule and runs immediately."

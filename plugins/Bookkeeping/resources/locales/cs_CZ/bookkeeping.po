@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-08 15:59+0200\n"
-"PO-Revision-Date: 2026-08-08 16:07+0200\n"
+"POT-Creation-Date: 2026-08-11 09:44+0200\n"
+"PO-Revision-Date: 2026-08-11 09:46+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -14,6 +14,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
+
+#: plugins/Bookkeeping/config/settings.php:68
+#: plugins/Bookkeeping/config/settings.php:136
+msgid "How long to wait for the accounting API, in seconds."
+msgstr "Jak dlouho je třeba čekat na účetní API (v sekundách)."
+
+#: plugins/Bookkeeping/config/settings.php:183
+msgid "How many days a payment may be late before it counts."
+msgstr "O kolik dní se může platba opozdit, než se to začne počítat."
+
+#: plugins/Bookkeeping/config/settings.php:188
+msgid "How small an overdue debt is passed over."
+msgstr "Jak malá částka splatného dluhu se přehlíží."
+
+#: plugins/Bookkeeping/config/settings.php:200
+msgid ""
+"How many days before the due date a debtor is warned on. An empty list [] "
+"warns on none."
+msgstr ""
+"Kolik dní před termínem splatnosti je dlužník upozorněn. Prázdný seznam [] "
+"znamená, že není zasláno žádné upozornění."
 
 #: plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:84
 msgid "Invoiced month (YYYY-MM). Overrides schedule and runs immediately."
@@ -175,7 +196,7 @@ msgstr "Chyba při interpretaci času poslední synchronizace ze souboru: {0}"
 msgid "Error saving last synchronization time to file: {0}"
 msgstr "Chyba při ukládání času poslední synchronizace do souboru: {0}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:104
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:103
 msgid ""
 "Send only a notification of an overdue claims (within the allowed payment "
 "delay)."
@@ -183,7 +204,7 @@ msgstr ""
 "Odeslat pouze oznámení o pohledávce po splatnosti (v rámci povoleného "
 "zpoždění platby)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:112
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:111
 msgid ""
 "Send only a notification of blocking (or continuing debt for services no "
 "longer active) for overdue claims (after an allowed delay in payment)."
@@ -192,7 +213,7 @@ msgstr ""
 "již nejsou aktivní) u pohledávek po splatnosti (po povoleném zpoždění "
 "platby)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:121
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:120
 msgid ""
 "Automatically update the blocking of debtors in systems (routers, firewalls, "
 "IPTV, ...)."
@@ -200,19 +221,19 @@ msgstr ""
 "Automatická aktualizace blokování dlužníků v systémech (routery, firewally, "
 "IPTV, ...)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:129
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:128
 msgid "Do not send emails, the operation will be skipped."
 msgstr "Neodesílat e-maily, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:134
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:133
 msgid "Do not send SMS, the operation will be skipped."
 msgstr "Neodesílat SMS, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:154
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:153
 msgid "Debtor notifications are globally disabled by settings."
 msgstr "Oznámení dlužníkům jsou globálně deaktivována v nastavení."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:210
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:211
 msgid ""
 "Notification email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -220,7 +241,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:230
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:231
 msgid ""
 "Notification SMS has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -228,7 +249,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:257
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:258
 msgid ""
 "Blocking email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -236,7 +257,7 @@ msgstr ""
 "Byl vygenerován blokovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:268
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:269
 msgid ""
 "Notification email has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -244,7 +265,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:289
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:290
 msgid ""
 "Blocking SMS has been generated for customer {customer_number}, recipients: "
 "{recipients}"
@@ -252,7 +273,7 @@ msgstr ""
 "Byla vygenerována blokovací SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:300
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:301
 msgid ""
 "Notification SMS has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -260,20 +281,20 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:313
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:314
 #: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:238
 msgid "Done"
 msgstr "Hotovo"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:319
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:320
 msgid "Error during debtor processing: {0}"
 msgstr "Chyba při zpracování dlužníků: {0}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:326
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:327
 msgid "Debtor processing failed"
 msgstr "Zpracování dlužníků se nezdařilo"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:327
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:328
 msgid "Debtor processing failed."
 msgstr "Zpracování dlužníků se nezdařilo."
 

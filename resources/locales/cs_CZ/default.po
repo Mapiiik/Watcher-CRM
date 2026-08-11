@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-11 09:29+0200\n"
-"PO-Revision-Date: 2026-08-11 09:32+0200\n"
+"POT-Creation-Date: 2026-08-11 09:44+0200\n"
+"PO-Revision-Date: 2026-08-11 09:47+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -14,6 +14,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
+
+#: config/settings.php:100
+msgid "The suggestions offered under the access description on a contract."
+msgstr "Návrhy uvedené v části „Popis přístupu“ na smlouvě."
 
 #: src/Addresses/ApiClient.php:40
 msgid "Addresses API is not configured."
