@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-08 15:59+0200\n"
+"POT-Creation-Date: 2026-08-11 09:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1275,11 +1275,11 @@ msgstr ""
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:668
+#: ./src/Controller/TasksController.php:669
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:669
+#: ./src/Controller/TasksController.php:670
 msgid "You have changes in task # {0}"
 msgstr ""
 
@@ -1297,7 +1297,7 @@ msgid_plural "There were {0} unfinished tasks found that do not have a dealer as
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Controller/Traits/AdditionalParametersTrait.php:124
+#: ./src/Controller/Traits/AdditionalParametersTrait.php:125
 msgid "The record the address was filed under is no longer there."
 msgstr ""
 
@@ -1553,6 +1553,7 @@ msgstr ""
 #: ./templates/element/Contracts/Billings.php:72
 #: ./templates/element/Contracts/Billings.php:73
 #: ./templates/element/Contracts/ContractVersions.php:35
+#: ./templates/element/Settings/FormFields.php:34
 msgid "No"
 msgstr ""
 
@@ -1673,6 +1674,7 @@ msgstr ""
 #: ./templates/element/Contracts/Billings.php:72
 #: ./templates/element/Contracts/Billings.php:73
 #: ./templates/element/Contracts/ContractVersions.php:35
+#: ./templates/element/Settings/FormFields.php:34
 msgid "Yes"
 msgstr ""
 
@@ -2191,7 +2193,7 @@ msgstr ""
 #: ./templates/Services/index.php:33
 #: ./templates/Services/view.php:14
 #: ./templates/Services/view.php:97
-#: ./templates/Settings/edit.php:13
+#: ./templates/Settings/edit.php:15
 #: ./templates/SoldEquipments/add.php:13
 #: ./templates/SoldEquipments/edit.php:13
 #: ./templates/SoldEquipments/index.php:36
@@ -2312,7 +2314,7 @@ msgstr ""
 #: ./templates/ServiceTypes/edit.php:48
 #: ./templates/Services/add.php:31
 #: ./templates/Services/edit.php:36
-#: ./templates/Settings/edit.php:38
+#: ./templates/Settings/edit.php:42
 #: ./templates/SoldEquipments/add.php:38
 #: ./templates/SoldEquipments/edit.php:46
 #: ./templates/TaskStates/add.php:26
@@ -5923,20 +5925,20 @@ msgstr ""
 msgid "Total sum of active"
 msgstr ""
 
-#: ./templates/Settings/edit.php:14
+#: ./templates/Settings/edit.php:16
 msgid "List Settings"
 msgstr ""
 
-#: ./templates/Settings/edit.php:21
+#: ./templates/Settings/edit.php:23
 msgid "Edit Setting"
 msgstr ""
 
-#: ./templates/Settings/edit.php:22
+#: ./templates/Settings/edit.php:24
 msgid "If you leave the field blank, it will not be saved in the DB and the default value will be used."
 msgstr ""
 
-#: ./templates/Settings/edit.php:28
-#: ./templates/element/Settings/FormFields.php:22
+#: ./templates/Settings/edit.php:30
+#: ./templates/element/Settings/FormFields.php:82
 msgid "Setting: {path}"
 msgstr ""
 
@@ -6276,7 +6278,13 @@ msgstr ""
 msgid "OpenStreetMap"
 msgstr ""
 
-#: ./templates/element/Settings/FormFields.php:48
+#: ./templates/element/Settings/FormFields.php:34
+#: ./templates/layout/default.php:220
+msgid "Default"
+msgstr ""
+
+#: ./templates/element/Settings/FormFields.php:71
+#: ./templates/element/Settings/FormFields.php:110
 msgid "Default value:"
 msgstr ""
 
@@ -6350,10 +6358,6 @@ msgstr ""
 
 #: ./templates/layout/default.php:192
 msgid "Network Management System"
-msgstr ""
-
-#: ./templates/layout/default.php:220
-msgid "Default"
 msgstr ""
 
 #: ./templates/layout/default.php:251

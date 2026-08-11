@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-08 15:59+0200\n"
+"POT-Creation-Date: 2026-08-11 09:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -151,68 +151,68 @@ msgstr ""
 msgid "Error saving last synchronization time to file: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:104
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:103
 msgid "Send only a notification of an overdue claims (within the allowed payment delay)."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:112
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:111
 msgid "Send only a notification of blocking (or continuing debt for services no longer active) for overdue claims (after an allowed delay in payment)."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:121
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:120
 msgid "Automatically update the blocking of debtors in systems (routers, firewalls, IPTV, ...)."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:129
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:128
 msgid "Do not send emails, the operation will be skipped."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:134
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:133
 msgid "Do not send SMS, the operation will be skipped."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:154
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:153
 msgid "Debtor notifications are globally disabled by settings."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:210
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:211
 msgid "Notification email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:230
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:231
 msgid "Notification SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:257
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:258
 msgid "Blocking email has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:268
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:269
 msgid "Notification email has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:289
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:290
 msgid "Blocking SMS has been generated for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:300
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:301
 msgid "Notification SMS has been generated for inactive services for customer {customer_number}, recipients: {recipients}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:313
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:314
 #: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:238
 msgid "Done"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:319
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:320
 msgid "Error during debtor processing: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:326
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:327
 msgid "Debtor processing failed"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:327
+#: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:328
 msgid "Debtor processing failed."
 msgstr ""
 

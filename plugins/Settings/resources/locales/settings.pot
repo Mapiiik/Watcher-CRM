@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-12-24 19:55+0100\n"
+"POT-Creation-Date: 2026-08-11 09:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,19 +14,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:29
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:30
 msgid "Invalid settings path: {path}"
 msgstr ""
 
-#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:38
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:39
 msgid "Unknown settings block: {path}"
 msgstr ""
 
-#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:48
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:55
 msgid "The setting has been saved."
 msgstr ""
 
-#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:56
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:63
 msgid "The setting could not be saved. Please, try again."
+msgstr ""
+
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:72
+msgid "The setting {path} could not be saved: {reason}"
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:150
+msgid "A list was expected."
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:163
+msgid "The list is not valid JSON: {reason}"
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:170
+msgid "A list was expected, not a single value."
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:187
+msgid "A list of items was expected, but the value is keyed."
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:197
+msgid "Item {position} of the list is not of type {type}."
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/NumberType.php:165
+msgid "A number was expected."
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/NumberType.php:172
+msgid "A whole number was expected."
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/NumberType.php:179
+msgid "At most {scale} decimal places were expected."
 msgstr ""
 
