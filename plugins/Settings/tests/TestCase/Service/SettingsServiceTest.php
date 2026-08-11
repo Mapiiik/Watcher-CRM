@@ -6,7 +6,10 @@ namespace Settings\Test\TestCase\Service;
 use Cake\Cache\Cache;
 use Cake\TestSuite\TestCase;
 use Override;
+use Settings\Exception\SettingValueException;
 use Settings\Service\SettingsService;
+use Settings\ValueObject\Type\BoolType;
+use Settings\ValueObject\Type\ListType;
 
 /**
  * Settings\Service\SettingsService Test Case
@@ -93,7 +96,9 @@ class SettingsServiceTest extends TestCase
             {
                 parent::__construct();
 
-                $this->defaults = ['watcher_test' => ['block' => $blockDefaults]];
+                // the same reading the constructor gives the shipped file, so a block handed over
+                // here may declare types just as a real one does
+                $this->defaults = $this->harvestTypes(['watcher_test' => ['block' => $blockDefaults]], '');
             }
         };
     }
@@ -225,6 +230,160 @@ class SettingsServiceTest extends TestCase
         $settings->set(self::BLOCK . '.only', '');
 
         $this->assertSame(0, $settingsTable->find()->where(['plugin' => self::PLUGIN])->count());
+    }
+
+    /**
+     * A stored list is taken whole. Laying it over the shipped one item by item would leave the
+     * tail of the longer one behind, which is to say a list could be lengthened but never shortened.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::get()
+     */
+    public function testAStoredListReplacesTheShippedOneWhole(): void
+    {
+        $settings = $this->serviceShipping([
+            'items' => ListType::ofStrings(['first', 'second', 'third']),
+        ]);
+
+        $settings->set(self::BLOCK . '.items', '["only"]');
+
+        $this->assertSame(['only'], $settings->get(self::BLOCK . '.items'));
+    }
+
+    /**
+     * A list with no items in it is stored as one, rather than read as an emptied field and sent
+     * back to the default.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::set()
+     */
+    public function testAListCanBeStoredWithNoItemsInIt(): void
+    {
+        $settings = $this->serviceShipping([
+            'items' => ListType::ofStrings(['shipped']),
+        ]);
+
+        $settings->set(self::BLOCK . '.items', '[]');
+
+        $this->assertSame([], $settings->get(self::BLOCK . '.items'));
+    }
+
+    /**
+     * Leaving the field blank still means what it means everywhere else in the form.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::set()
+     */
+    public function testAnEmptyListFieldRevertsToTheDefault(): void
+    {
+        $settings = $this->serviceShipping([
+            'items' => ListType::ofStrings(['shipped']),
+        ]);
+        $settings->set(self::BLOCK . '.items', '["stored"]');
+
+        $settings->set(self::BLOCK . '.items', '');
+
+        $this->assertNull($settings->getOverlay(self::BLOCK . '.items'));
+        $this->assertSame(['shipped'], $settings->get(self::BLOCK . '.items'));
+    }
+
+    /**
+     * A value that agrees with what was shipped is stored all the same. Submitting it is how an
+     * installation says it wants this value in particular, rather than whatever a later version
+     * decides to ship in its place - and that is the whole use of writing it down.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::set()
+     */
+    public function testAValueAgreeingWithTheDefaultIsStoredAllTheSame(): void
+    {
+        $settings = $this->serviceShipping([
+            'switch' => new BoolType(true),
+            'items' => ListType::ofStrings(['shipped']),
+        ]);
+
+        $settings->set(self::BLOCK . '.switch', '1');
+        $settings->set(self::BLOCK . '.items', '["shipped"]');
+
+        $this->assertTrue($settings->getOverlay(self::BLOCK . '.switch'));
+        $this->assertSame(['shipped'], $settings->getOverlay(self::BLOCK . '.items'));
+    }
+
+    /**
+     * Turning a switch off has to survive the round trip to the database. Undeclared, it was stored
+     * as text, and every value a text field holds that is not empty comes back as true.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::set()
+     */
+    public function testASwitchTurnedOffStaysOff(): void
+    {
+        $settings = $this->serviceShipping([
+            'switch' => new BoolType(true),
+        ]);
+
+        $settings->set(self::BLOCK . '.switch', '0');
+
+        $this->assertFalse($settings->get(self::BLOCK . '.switch'));
+    }
+
+    /**
+     * A switch can be handed back to the defaults, the way an emptied text field is. Off is an
+     * answer of its own, so it cannot be the one that does this - which is why the form offers the
+     * shipped value as a third answer rather than as a box left unticked.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::set()
+     */
+    public function testASwitchCanBeHandedBackToTheDefault(): void
+    {
+        $settings = $this->serviceShipping([
+            'switch' => new BoolType(true),
+        ]);
+        $settings->set(self::BLOCK . '.switch', '0');
+
+        $settings->set(self::BLOCK . '.switch', '');
+
+        $this->assertNull($settings->getOverlay(self::BLOCK . '.switch'));
+        $this->assertTrue($settings->get(self::BLOCK . '.switch'));
+    }
+
+    /**
+     * A value that does not fit what its setting was declared as is refused rather than stored in
+     * some shape the application would later have to make sense of.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::set()
+     */
+    public function testAValueThatDoesNotFitItsTypeIsRefused(): void
+    {
+        $settings = $this->serviceShipping([
+            'items' => ListType::ofInts([5]),
+        ]);
+
+        $this->expectException(SettingValueException::class);
+
+        $settings->set(self::BLOCK . '.items', '["not a number"]');
+    }
+
+    /**
+     * Declaring one setting in a block says nothing about the rest of it: a group beside it is
+     * still laid over key by key, so an overlay only has to carry what it changes.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::get()
+     */
+    public function testAGroupBesideADeclaredSettingIsStillMergedKeyByKey(): void
+    {
+        $settings = $this->serviceShipping([
+            'items' => ListType::ofStrings(['shipped']),
+            'group' => ['name' => 'shipped', 'other' => 'kept'],
+        ]);
+
+        $settings->set(self::BLOCK . '.group.name', 'overlaid');
+
+        $this->assertSame('overlaid', $settings->get(self::BLOCK . '.group.name'));
+        $this->assertSame('kept', $settings->get(self::BLOCK . '.group.other'));
     }
 
     /**

@@ -34,10 +34,16 @@
  * Notes:
  * - Secrets and credentials belong in environment variables, not in the database.
  * - This file is a declarative source of truth for default values only.
- * - List (sequential) arrays are merged by index when overlaid: when overriding a
- *   list via the DB, store the whole list, not a partial one, to avoid leftover
- *   items from the default tail.
+ * - A value that is not a plain scalar says what it is: wrap it in a SettingType
+ *   (ListType, BoolType, ...). A declared setting is drawn accordingly in the
+ *   settings UI, is checked before it is stored, and is overlaid whole rather
+ *   than merged into item by item.
+ * - Declare them with named arguments (default:, hint:, ...), so what each value
+ *   is for can be read off the line it stands on.
  */
+
+use Settings\ValueObject\Type\ListType;
+use Settings\ValueObject\Type\NumberType;
 
 return [
     'core' => [
@@ -83,16 +89,19 @@ return [
         ],
 
         'contracts' => [
-            'access_descriptions_list' => [
-                'žebřík není potřeba',
-                'skládačka 3,6m',
-                'žebřík 6m',
-                'žebřík 8m',
-                'žebřík 11m',
-            ],
+            'access_descriptions_list' => ListType::ofStrings(
+                default: [
+                    'žebřík není potřeba',
+                    'skládačka 3,6m',
+                    'žebřík 6m',
+                    'žebřík 8m',
+                    'žebřík 11m',
+                ],
+                hint: __('The suggestions offered under the access description on a contract.'),
+            ),
             'service_overrides' => [
-                'max_duration_days' => 5,
-                'max_start_offset_days' => 5,
+                'max_duration_days' => NumberType::ofInt(default: 5),
+                'max_start_offset_days' => NumberType::ofInt(default: 5),
             ],
         ],
 

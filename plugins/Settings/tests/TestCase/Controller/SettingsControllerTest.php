@@ -7,8 +7,10 @@ use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 use Override;
 use Settings\Service\SettingsService;
+use Settings\ValueObject\SettingWidget;
 
 /**
  * Settings\Controller\Trait\SettingsControllerTrait Test Case
@@ -149,6 +151,150 @@ class SettingsControllerTest extends TestCase
         foreach ($inForce as $setting => $value) {
             $this->assertEquals($value, $stored[$setting] ?? null);
         }
+    }
+
+    /**
+     * A setting this installation declares as edited in the given way, if it declares one at all.
+     *
+     * Which settings are declared is a deployment's business, so this asks rather than names one.
+     *
+     * @param \Settings\ValueObject\SettingWidget $widget How the setting is edited.
+     * @return string|null The full path of the setting, or null when none is declared.
+     */
+    private function aShippedSettingEditedAs(SettingWidget $widget): ?string
+    {
+        $types = (new class extends SettingsService {
+            /**
+             * @return array<string, \Settings\ValueObject\SettingType>
+             */
+            public function declared(): array
+            {
+                return $this->types;
+            }
+        })->declared();
+
+        foreach ($types as $path => $type) {
+            if ($type->widget() === $widget) {
+                return $path;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * A block holding a declared list renders, with the list shown as its type asks.
+     *
+     * The block the other tests reach for is whichever comes first, which need not declare
+     * anything - so the form drawing a declared setting at all is asked for separately.
+     *
+     * @return void
+     * @link \Settings\Controller\Trait\SettingsControllerTrait::edit()
+     */
+    public function testEditDrawsADeclaredSetting(): void
+    {
+        $path = $this->aShippedSettingEditedAs(SettingWidget::Json);
+
+        if ($path === null) {
+            $this->markTestSkipped('this installation declares no list setting');
+        }
+
+        $this->login();
+        $this->get('/settings/edit/' . $this->blockOf($path));
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<textarea name="' . $this->fieldNameOf($path) . '"');
+    }
+
+    /**
+     * A switch is offered with the shipped value among its answers, so it can be handed back to the
+     * defaults the way an emptied text field is.
+     *
+     * @return void
+     * @link \Settings\Controller\Trait\SettingsControllerTrait::edit()
+     */
+    public function testEditOffersTheShippedValueAsAnAnswerToASwitch(): void
+    {
+        $path = $this->aShippedSettingEditedAs(SettingWidget::TriState);
+
+        if ($path === null) {
+            $this->markTestSkipped('this installation declares no switch');
+        }
+
+        $this->login();
+        $this->get('/settings/edit/' . $this->blockOf($path));
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<select name="' . $this->fieldNameOf($path) . '"');
+
+        // with nothing stored, that is the answer standing - the shipped value, not one of its own
+        $this->assertResponseContains('<option value="" selected="selected">');
+    }
+
+    /**
+     * A value the form cannot make sense of comes back to be corrected, with what was typed still
+     * in the field. Storing it was never an option, and neither was throwing the edit away.
+     *
+     * @return void
+     * @link \Settings\Controller\Trait\SettingsControllerTrait::edit()
+     */
+    public function testEditHandsBackAListItCannotRead(): void
+    {
+        $path = $this->aShippedSettingEditedAs(SettingWidget::Json);
+
+        if ($path === null) {
+            $this->markTestSkipped('this installation declares no list setting');
+        }
+
+        $block = $this->blockOf($path);
+        $submitted = '["unclosed",';
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/settings/edit/' . $block, [
+            'overlay' => Hash::insert([], substr($path, strlen($block) + 1), $submitted),
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('has been saved');
+        $this->assertResponseContains(h($submitted));
+
+        // the refusal is put where the value was typed, not only at the top of a form long enough
+        // to have scrolled the field out of sight
+        $this->assertResponseContains('<div class="error-message">');
+        $this->assertResponseContains($path);
+
+        Cache::clear('default');
+        $this->assertNull((new SettingsService())->getOverlay($path));
+    }
+
+    /**
+     * The block a setting belongs to.
+     *
+     * @param string $path Full path of a setting.
+     * @return string
+     */
+    private function blockOf(string $path): string
+    {
+        return implode('.', array_slice(explode('.', $path), 0, 2));
+    }
+
+    /**
+     * The name the form gives a setting's field.
+     *
+     * Naming it is what tells the assertions apart from the selects and boxes the layout puts on
+     * the page for its own reasons.
+     *
+     * @param string $path Full path of a setting.
+     * @return string
+     */
+    private function fieldNameOf(string $path): string
+    {
+        $below = explode('.', substr($path, strlen($this->blockOf($path)) + 1));
+
+        return 'overlay[' . implode('][', $below) . ']';
     }
 
     /**

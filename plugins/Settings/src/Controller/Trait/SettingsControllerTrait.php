@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Settings\Controller\Trait;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Settings\Exception\SettingValueException;
 use Settings\Service\SettingsService;
 use Settings\ValueObject\SettingsPath;
 
@@ -41,19 +42,42 @@ trait SettingsControllerTrait
         // Overlay from DB
         $overlay = $settingsService->getOverlay($path);
 
+        // refusals, by the full path of the setting they belong to
+        $errors = [];
+
         if ($this->request->is(['post', 'put'])) {
+            // what was submitted answers for the overlay from here on, so a refused form comes
+            // back with what was typed into it rather than with what is stored
             $overlay = $this->request->getData('overlay');
 
-            if ($settingsService->set($path, $overlay)) {
-                $this->Flash->success(__d('settings', 'The setting has been saved.'));
+            try {
+                if ($settingsService->set($path, $overlay)) {
+                    $this->Flash->success(__d('settings', 'The setting has been saved.'));
 
-                return $this->redirect([
-                    'action' => 'edit',
-                    $path,
-                ]);
+                    return $this->redirect([
+                        'action' => 'edit',
+                        $path,
+                    ]);
+                }
+
+                $this->Flash->error(__d('settings', 'The setting could not be saved. Please, try again.'));
+            } catch (SettingValueException $exception) {
+                $refused = $exception->getPath();
+
+                // the message goes to the field it belongs to, and a form long enough to scroll
+                // needs saying so at the top as well
+                if ($refused !== null) {
+                    $errors[$refused] = $exception->getMessage();
+
+                    $this->Flash->error(__d(
+                        'settings',
+                        'The setting {path} could not be saved: {reason}',
+                        ['path' => $refused, 'reason' => $exception->getMessage()],
+                    ));
+                } else {
+                    $this->Flash->error($exception->getMessage());
+                }
             }
-
-            $this->Flash->error(__d('settings', 'The setting could not be saved. Please, try again.'));
         }
 
         $this->set([
@@ -61,6 +85,8 @@ trait SettingsControllerTrait
             'settingsPath' => $settingsPath,
             'default' => $default,
             'overlay' => $overlay,
+            'types' => $settingsService->getTypes($path),
+            'errors' => $errors,
         ]);
     }
 }

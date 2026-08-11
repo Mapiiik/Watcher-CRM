@@ -24,13 +24,19 @@
  * Notes:
  * - Secrets and credentials belong in environment variables, not in the database.
  * - This file is a declarative source of truth for default values only.
- * - List (sequential) arrays are merged by index when overlaid: when overriding a
- *   list via the DB, store the whole list, not a partial one, to avoid leftover
- *   items from the default tail.
+ * - A value that is not a plain scalar says what it is: wrap it in a SettingType
+ *   (ListType, BoolType, ...). A declared setting is drawn accordingly in the
+ *   settings UI, is checked before it is stored, and is overlaid whole rather
+ *   than merged into item by item.
+ * - Declare them with named arguments (default:, hint:, ...), so what each value
+ *   is for can be read off the line it stands on.
  */
 
 use Bookkeeping\Provider\Eurofaktura\EurofakturaProvider;
 use Bookkeeping\Provider\Pohoda\PohodaProvider;
+use Settings\ValueObject\Type\BoolType;
+use Settings\ValueObject\Type\ListType;
+use Settings\ValueObject\Type\NumberType;
 
 return [
     'bookkeeping' => [
@@ -57,7 +63,10 @@ return [
                         // identity number - a test file is reached by naming a different one
                         'accounting_unit' => (string)env('POHODA_COMPANY_ID', '00000000'),
 
-                        'timeout' => 3600,
+                        'timeout' => NumberType::ofInt(
+                            default: 3600,
+                            hint: __d('bookkeeping', 'How long to wait for the accounting API, in seconds.'),
+                        ),
                     ],
                 ],
 
@@ -78,7 +87,7 @@ return [
                     // Invoices
                     'invoice' => [
                         'status' => 'Draft', // or 'IssuedInvoice'
-                        'send_issued_invoice_by_email' => false,
+                        'send_issued_invoice_by_email' => new BoolType(default: false),
                     ],
 
                     // Invoice items
@@ -115,14 +124,17 @@ return [
 
                     // Customers (sync)
                     'customers' => [
-                        'use_buyer_code' => false,
+                        'use_buyer_code' => new BoolType(default: false),
                         'code_prefix' => '',
                     ],
 
                     // API
                     'api' => [
                         'url' => (string)env('EUROFAKTURA_API_URL', 'https://e-racuni.com/H7i/API'),
-                        'timeout' => 3600,
+                        'timeout' => NumberType::ofInt(
+                            default: 3600,
+                            hint: __d('bookkeeping', 'How long to wait for the accounting API, in seconds.'),
+                        ),
                     ],
                 ],
             ],
@@ -166,51 +178,63 @@ return [
             // Who is a debtor at all: how long a payment may be late, and how small a debt is
             // passed over.
             'thresholds' => [
-                'allowed_payment_delay' => (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
-                'allowed_total_overdue_debt' => (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
+                'allowed_payment_delay' => NumberType::ofInt(
+                    default: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
+                    hint: __d('bookkeeping', 'How many days a payment may be late before it counts.'),
+                ),
+                'allowed_total_overdue_debt' => NumberType::ofDecimal(
+                    default: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
+                    scale: 2,
+                    hint: __d('bookkeeping', 'How small an overdue debt is passed over.'),
+                ),
             ],
 
             'notifications' => [
-                'enabled' => true, // global kill‑switch
+                'enabled' => new BoolType(default: true), // global kill‑switch
 
-                // days before the due date a debtor is warned on
-                'days' => array_map(
-                    intval(...),
-                    array_filter(explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10'))),
+                'days' => ListType::ofInts(
+                    default: array_map(
+                        intval(...),
+                        array_filter(explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10'))),
+                    ),
+                    hint: __d(
+                        'bookkeeping',
+                        'How many days before the due date a debtor is warned on. An empty list [] warns on none.',
+                    ),
                 ),
 
                 'channels' => [
                     'email' => [
-                        'enabled' => true,
+                        'enabled' => new BoolType(default: true),
                     ],
                     'sms' => [
-                        'enabled' => true,
+                        'enabled' => new BoolType(default: true),
                     ],
                 ],
                 'types' => [
                     'notify' => [
-                        'enabled' => true,
+                        'enabled' => new BoolType(default: true),
                     ],
                     'block' => [
-                        'enabled' => true,
+                        'enabled' => new BoolType(default: true),
                     ],
                     'inactive' => [
-                        'enabled' => true,
+                        'enabled' => new BoolType(default: true),
                     ],
                 ],
             ],
             'blocking' => [
-                'enabled' => true, // global kill‑switch
+                'enabled' => new BoolType(default: true), // global kill‑switch
 
                 // the label a blocked customer is given; nothing named leaves them unlabelled
                 'blocked_label_id' => (string)env('DEBTORS_BLOCKED_LABEL_ID', ''),
 
                 'services' => [
                     'sledovani_tv' => [
-                        'enabled' => true,
+                        'enabled' => new BoolType(default: true),
                     ],
                     'routers' => [
-                        'enabled' => true,
+                        'enabled' => new BoolType(default: true),
 
                         // the firewall address list the blocked addresses are written into
                         'address_list' => (string)env('DEBTORS_ADDRESS_LIST', ''),

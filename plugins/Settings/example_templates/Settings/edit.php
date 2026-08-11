@@ -7,6 +7,8 @@ declare(strict_types=1);
  * @var \Settings\ValueObject\SettingsPath $settingsPath
  * @var array<mixed> $default
  * @var array<mixed> $overlay
+ * @var array<string, \Settings\ValueObject\SettingType> $types
+ * @var array<string, string> $errors
  */
 ?>
 <div class="row">
@@ -32,6 +34,8 @@ declare(strict_types=1);
                 <?= $this->element('Settings/FormFields', [
                     'default' => $default,
                     'overlay' => $overlay ?? [],
+                    'types' => $types,
+                    'errors' => $errors,
                     'path' => '',
                     'fullPath' => $path,
                 ]) ?>
