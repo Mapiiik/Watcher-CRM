@@ -3,12 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Core\Configure;
+use App\Phones\Formatter as PhoneFormatter;
 use Cake\Http\Response;
 use Cake\Utility\Text;
-use libphonenumber\NumberParseException;
-use libphonenumber\PhoneNumberFormat;
-use libphonenumber\PhoneNumberUtil;
 use SplObjectStorage;
 
 /**
@@ -18,6 +15,13 @@ use SplObjectStorage;
  */
 class PhonesController extends AppController
 {
+    /**
+     * How many of the numbers that could not be read are named in the message about them.
+     *
+     * @var int
+     */
+    private const REFUSED_SHOWN = 20;
+
     /**
      * Index method
      *
@@ -184,33 +188,29 @@ class PhonesController extends AppController
         /** @var \Cake\Datasource\ResultSetInterface<array-key, \App\Model\Entity\Phone> $phones */
         $phones = $this->Phones->find()->all();
 
-        $phoneUtil = PhoneNumberUtil::getInstance();
+        $refused = [];
 
-        $phoneRegion = Configure::read('Phones.defaultRegion');
-
-        // check the formatting of the phone number and update it if necessary
         foreach ($phones as $phone) {
-            try {
-                $phoneNumber = $phoneUtil->parse($phone->phone, $phoneRegion);
+            $formatted = PhoneFormatter::toInternational($phone->phone);
 
-                if ($phoneUtil->isValidNumber($phoneNumber)) {
-                    // The phone number is fine, formatting...
-                    $phoneString = $phoneUtil->format($phoneNumber, PhoneNumberFormat::INTERNATIONAL);
-
-                    // If the phone number format is different, update the record
-                    if ($phone->phone !== $phoneString) {
-                        $phone->phone = $phoneString;
-                    }
-                } else {
-                    $this->Flash->error(
-                        __('The phone number is invalid: {0}', $phone->phone),
-                    );
-                }
-            } catch (NumberParseException) {
-                $this->Flash->error(
-                    __('The phone number is invalid: {0}', $phone->phone),
-                );
+            if ($formatted === null) {
+                $refused[] = $phone->phone;
+                continue;
             }
+
+            // an entity assigned what it already holds stays clean, so an unchanged record is
+            // not saved again
+            $phone->phone = $formatted;
+        }
+
+        if ($refused !== []) {
+            // one message however many there are - a flash apiece buries the outcome under them
+            // and carries the whole lot in the session
+            $this->Flash->error(__(
+                'Phone numbers that could not be read were left as they are ({0}): {1}',
+                count($refused),
+                implode(', ', array_slice($refused, 0, self::REFUSED_SHOWN)),
+            ));
         }
 
         // save all changes
