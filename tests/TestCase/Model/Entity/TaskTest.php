@@ -31,6 +31,9 @@ class TaskTest extends TestCase
         parent::setUp();
 
         Configure::write('Phones.stripPrefixForSummary', false);
+        // a deployment names a region, a development machine names one in config/.env and CI names
+        // none - the tests that read numbers against one say so themselves
+        Configure::write('Phones.defaultRegion', 'CZ');
         // the customer number is built from the nid and the configured series
         Configure::write('Customers.series', 0);
     }
@@ -173,9 +176,45 @@ class TaskTest extends TestCase
 
         $task = new Task([
             'subject' => 'Connection outage',
-            'phone' => '+420 111 222 333,+420 444 555 666',
+            'phone' => '+420 601 234 567,+420 602 345 678',
         ]);
 
-        $this->assertSame('Connection outage, 111222333, 444555666', $task->summary_text);
+        $this->assertSame('Connection outage, 601234567, 602345678', $task->summary_text);
+    }
+
+    /**
+     * Test that a number stored without spaces survives the stripping.
+     *
+     * @return void
+     * @link \App\Model\Entity\Task::_getSummaryText()
+     */
+    public function testSummaryTextKeepsAPhoneStoredWithoutSpaces(): void
+    {
+        Configure::write('Phones.stripPrefixForSummary', true);
+
+        $task = new Task([
+            'subject' => 'Connection outage',
+            'phone' => '+420601234567',
+        ]);
+
+        $this->assertSame('Connection outage, 601234567', $task->summary_text);
+    }
+
+    /**
+     * Test that a foreign number keeps the prefix it cannot be dialled without.
+     *
+     * @return void
+     * @link \App\Model\Entity\Task::_getSummaryText()
+     */
+    public function testSummaryTextKeepsThePrefixOfAForeignPhone(): void
+    {
+        Configure::write('Phones.stripPrefixForSummary', true);
+
+        $task = new Task([
+            'subject' => 'Connection outage',
+            'phone' => '+1 650-253-0000',
+        ]);
+
+        $this->assertSame('Connection outage, +1 650-253-0000', $task->summary_text);
     }
 }

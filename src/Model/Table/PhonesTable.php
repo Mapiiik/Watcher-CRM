@@ -3,14 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Phones\Formatter as PhoneFormatter;
 use ArrayObject;
-use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
-use libphonenumber\NumberParseException;
-use libphonenumber\PhoneNumberFormat;
-use libphonenumber\PhoneNumberUtil;
 use Override;
 
 /**
@@ -115,19 +112,7 @@ class PhonesTable extends AppTable
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
 
         $rules->add(
-            function ($entity, $_options): bool {
-                $phoneUtil = PhoneNumberUtil::getInstance();
-
-                $phoneRegion = Configure::read('Phones.defaultRegion');
-
-                try {
-                    $phoneNumber = $phoneUtil->parse($entity->phone, $phoneRegion);
-
-                    return $phoneUtil->isValidNumber($phoneNumber);
-                } catch (NumberParseException) {
-                    return false;
-                }
-            },
+            fn($entity, $_options): bool => PhoneFormatter::isValid((string)$entity->phone),
             'isPhoneNumberValid',
             [
                 'errorField' => 'phone',
@@ -150,20 +135,9 @@ class PhonesTable extends AppTable
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
         if (isset($data['phone']) && is_string($data['phone']) && ($data['phone'] !== '')) {
-            $phoneUtil = PhoneNumberUtil::getInstance();
-
-            $phoneRegion = Configure::read('Phones.defaultRegion');
-
-            try {
-                $phoneNumber = $phoneUtil->parse($data['phone'], $phoneRegion);
-
-                if ($phoneUtil->isValidNumber($phoneNumber)) {
-                    // The phone number is fine, formatting...
-                    $data['phone'] = $phoneUtil->format($phoneNumber, PhoneNumberFormat::INTERNATIONAL);
-                }
-            } catch (NumberParseException) {
-                // The problem will be caught by the "isPhoneNumberValid" validator
-            }
+            // A value that cannot be read is left as it was entered - the "isPhoneNumberValid"
+            // rule is the one that reports it.
+            $data['phone'] = PhoneFormatter::toInternational($data['phone']) ?? $data['phone'];
         }
     }
 }

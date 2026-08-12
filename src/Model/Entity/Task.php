@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use App\Colors\ColorThemeSelector;
 use App\NMS\ApiClient as NMSApiClient;
+use App\Phones\Formatter as PhoneFormatter;
 use ArrayObject;
 use Cake\Core\Configure;
 
@@ -129,10 +130,7 @@ class Task extends AppEntity
     {
         $phoneNumber = $this->phone;
         if (isset($phoneNumber) && Configure::read('Phones.stripPrefixForSummary') === true) {
-            // Replace "+" and following numbers with an empty string
-            $phoneNumber = preg_replace('/\+\d+/', '', $phoneNumber) ?? $phoneNumber;
-            // Remove all spaces and then add spaces after the commas
-            $phoneNumber = str_replace([' ', ','], ['', ', '], $phoneNumber);
+            $phoneNumber = PhoneFormatter::toLocal($phoneNumber);
         }
 
         // The contract's address wins over the customer's one.
