@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-07-20 14:57+0200\n"
-"PO-Revision-Date: 2026-07-20 15:17+0200\n"
+"POT-Creation-Date: 2026-08-12 20:30+0200\n"
+"PO-Revision-Date: 2026-08-12 20:36+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: hr_HR\n"
@@ -16,18 +16,18 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: src/Model/Entity/Address.php:171 src/Model/Entity/Address.php:192
+#: src/Model/Entity/Address.php:148
 msgid "Reg. No."
 msgstr "reg. br."
 
-#: src/Model/Entity/Address.php:172 src/Model/Entity/Address.php:193
+#: src/Model/Entity/Address.php:150
 msgid "No."
 msgstr "br."
 
-#: src/Model/Entity/Address.php:254
+#: src/Model/Entity/Address.php:215
 msgid "entrance"
 msgstr "ulaz"
 
-#: src/Model/Entity/Address.php:258
+#: src/Model/Entity/Address.php:219
 msgid "unit"
 msgstr "stan"

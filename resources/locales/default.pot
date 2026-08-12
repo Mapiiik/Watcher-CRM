@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-11 09:44+0200\n"
+"POT-Creation-Date: 2026-08-12 20:30+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -878,63 +878,63 @@ msgid "The equipment type could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/IpAddressesController.php:111
-#: ./src/Controller/IpAddressesController.php:172
-#: ./src/Controller/IpAddressesController.php:304
-#: ./src/Controller/IpAddressesController.php:537
+#: ./src/Controller/IpAddressesController.php:175
+#: ./src/Controller/IpAddressesController.php:307
+#: ./src/Controller/IpAddressesController.php:540
 msgid "The IP address has been saved."
 msgstr ""
 
 #: ./src/Controller/IpAddressesController.php:115
-#: ./src/Controller/IpAddressesController.php:176
-#: ./src/Controller/IpAddressesController.php:308
-#: ./src/Controller/IpAddressesController.php:541
+#: ./src/Controller/IpAddressesController.php:179
+#: ./src/Controller/IpAddressesController.php:311
+#: ./src/Controller/IpAddressesController.php:544
 msgid "The IP address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:259
-#: ./src/Controller/IpAddressesController.php:468
+#: ./src/Controller/IpAddressesController.php:262
+#: ./src/Controller/IpAddressesController.php:471
 msgid "The IP address ranges list could not be loaded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:353
-#: ./src/Controller/IpAddressesController.php:522
+#: ./src/Controller/IpAddressesController.php:356
+#: ./src/Controller/IpAddressesController.php:525
 msgid "The IP address has been deleted."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:356
-#: ./src/Controller/IpAddressesController.php:547
+#: ./src/Controller/IpAddressesController.php:359
+#: ./src/Controller/IpAddressesController.php:550
 msgid "The IP address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:384
+#: ./src/Controller/IpAddressesController.php:387
 #: ./src/Controller/RemovedIpAddressesController.php:107
 #: ./src/Controller/RemovedIpAddressesController.php:163
 msgid "The removed IP address has been saved."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:390
+#: ./src/Controller/IpAddressesController.php:393
 #: ./src/Controller/RemovedIpAddressesController.php:111
 #: ./src/Controller/RemovedIpAddressesController.php:167
 msgid "The removed IP address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:515
+#: ./src/Controller/IpAddressesController.php:518
 msgid "No available IP addresses for reassignment."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:556
+#: ./src/Controller/IpAddressesController.php:559
 msgid "Processing completed."
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:580
+#: ./src/Controller/IpAddressesController.php:583
 msgid "Invalid IP address range CIDR: {0}"
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:639
+#: ./src/Controller/IpAddressesController.php:642
 msgid "last used until {0} by {1}"
 msgstr ""
 
-#: ./src/Controller/IpAddressesController.php:644
+#: ./src/Controller/IpAddressesController.php:647
 msgid "unknown customer"
 msgstr ""
 
@@ -1038,27 +1038,26 @@ msgstr ""
 msgid "unknown dealer"
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:98
-#: ./src/Controller/PhonesController.php:132
+#: ./src/Controller/PhonesController.php:102
+#: ./src/Controller/PhonesController.php:136
 msgid "The phone has been saved."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:102
-#: ./src/Controller/PhonesController.php:136
+#: ./src/Controller/PhonesController.php:106
+#: ./src/Controller/PhonesController.php:140
 msgid "The phone could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:165
+#: ./src/Controller/PhonesController.php:169
 msgid "The phone has been deleted."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:168
+#: ./src/Controller/PhonesController.php:172
 msgid "The phone could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/PhonesController.php:206
-#: ./src/Controller/PhonesController.php:211
-msgid "The phone number is invalid: {0}"
+#: ./src/Controller/PhonesController.php:209
+msgid "Phone numbers that could not be read were left as they are ({0}): {1}"
 msgstr ""
 
 #: ./src/Controller/PhonesController.php:231
@@ -1355,45 +1354,45 @@ msgstr ""
 msgid "Contract data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:251
-#: ./src/Model/Entity/Contract.php:266
-#: ./src/Model/Entity/Contract.php:281
+#: ./src/Model/Entity/Contract.php:253
+#: ./src/Model/Entity/Contract.php:268
+#: ./src/Model/Entity/Contract.php:283
 msgid "Contract state data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:296
-#: ./src/Model/Entity/Contract.php:311
-#: ./src/Model/Entity/Contract.php:326
+#: ./src/Model/Entity/Contract.php:298
+#: ./src/Model/Entity/Contract.php:313
+#: ./src/Model/Entity/Contract.php:328
 msgid "Service type data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:338
+#: ./src/Model/Entity/Contract.php:340
 msgid "Contract versions data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Customer.php:504
-#: ./src/Model/Entity/Customer.php:526
+#: ./src/Model/Entity/Customer.php:458
+#: ./src/Model/Entity/Customer.php:480
 msgid "Contracts data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Customer.php:541
+#: ./src/Model/Entity/Customer.php:495
 msgid "Accounting profile data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:206
+#: ./src/Model/Entity/Task.php:188
 msgid "Low"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:207
+#: ./src/Model/Entity/Task.php:189
 #: ./src/Model/Enum/ServiceCriticalityLevel.php:25
 msgid "Normal"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:208
+#: ./src/Model/Entity/Task.php:190
 msgid "High"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:209
+#: ./src/Model/Entity/Task.php:191
 msgid "Urgent"
 msgstr ""
 
@@ -1877,7 +1876,7 @@ msgstr ""
 msgid "This IP network is already in use."
 msgstr ""
 
-#: ./src/Model/Table/PhonesTable.php:134
+#: ./src/Model/Table/PhonesTable.php:119
 msgid "The phone number is not valid."
 msgstr ""
 

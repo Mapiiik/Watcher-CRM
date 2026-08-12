@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-07-20 14:57+0200\n"
+"POT-Creation-Date: 2026-08-12 20:30+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,21 +14,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./src/Model/Entity/Address.php:171
-#: ./src/Model/Entity/Address.php:192
+#: ./src/Model/Entity/Address.php:148
 msgid "Reg. No."
 msgstr ""
 
-#: ./src/Model/Entity/Address.php:172
-#: ./src/Model/Entity/Address.php:193
+#: ./src/Model/Entity/Address.php:150
 msgid "No."
 msgstr ""
 
-#: ./src/Model/Entity/Address.php:254
+#: ./src/Model/Entity/Address.php:215
 msgid "entrance"
 msgstr ""
 
-#: ./src/Model/Entity/Address.php:258
+#: ./src/Model/Entity/Address.php:219
 msgid "unit"
 msgstr ""
 
