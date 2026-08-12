@@ -130,31 +130,12 @@ class Customer extends AppEntity
      */
     protected function _getFullName(): string
     {
-        $name = '';
-
-        if (isset($this->title)) {
-            $name .= $this->title;
-        }
-        if (isset($this->first_name)) {
-            if ($name !== '') {
-                $name .= ' ';
-            }
-            $name .= $this->first_name;
-        }
-        if (isset($this->last_name)) {
-            if ($name !== '') {
-                $name .= ' ';
-            }
-            $name .= $this->last_name;
-        }
-        if (isset($this->suffix)) {
-            if ($name !== '') {
-                $name .= ' ';
-            }
-            $name .= $this->suffix;
-        }
-
-        return $name;
+        return implode(' ', array_filter([
+            $this->title,
+            $this->first_name,
+            $this->last_name,
+            $this->suffix,
+        ]));
     }
 
     /**
@@ -164,19 +145,10 @@ class Customer extends AppEntity
      */
     protected function _getName(): string
     {
-        $name = '';
-
-        if (isset($this->company)) {
-            $name .= '[' . $this->company . ']';
-        }
-        if ($this->full_name != '') {
-            if ($name !== '') {
-                $name .= ' ';
-            }
-            $name .= $this->full_name;
-        }
-
-        return $name;
+        return implode(' ', array_filter([
+            !empty($this->company) ? '[' . $this->company . ']' : null,
+            $this->full_name,
+        ]));
     }
 
     /**
@@ -186,35 +158,17 @@ class Customer extends AppEntity
      */
     protected function _getNameForLists(): string
     {
-        $name = '';
-
-        if (isset($this->company)) {
-            $name .= '[' . $this->company . ']';
-        }
-        if (isset($this->last_name)) {
-            if ($name !== '') {
-                $name .= ' ';
-            }
-            $name .= $this->last_name;
-        }
-        if (isset($this->first_name)) {
-            if ($name !== '') {
-                $name .= ' ';
-            }
-            $name .= $this->first_name;
-        }
-        if (isset($this->title)) {
-            if ($name !== '') {
-                $name .= ', ';
-            }
-            $name .= $this->title;
-        }
-        if (isset($this->suffix)) {
-            if ($name !== '') {
-                $name .= ', ';
-            }
-            $name .= $this->suffix;
-        }
+        // Company and the person's name form one block, the degrees follow it
+        // behind a comma.
+        $name = implode(', ', array_filter([
+            implode(' ', array_filter([
+                !empty($this->company) ? '[' . $this->company . ']' : null,
+                $this->last_name,
+                $this->first_name,
+            ])),
+            $this->title,
+            $this->suffix,
+        ]));
 
         return $name . ' (' . $this->number . ')';
     }

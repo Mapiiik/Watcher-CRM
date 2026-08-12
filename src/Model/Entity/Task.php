@@ -127,49 +127,33 @@ class Task extends AppEntity
      */
     protected function _getSummaryText(): string
     {
-        $summary_text = $this->subject ?? $this->task_type->name ?? '';
-
-        if (isset($this->customer)) {
-            $summary_text .= ' - ' . ($this->customer->company ?? $this->customer->last_name ?? '');
+        $phoneNumber = $this->phone;
+        if (isset($phoneNumber) && Configure::read('Phones.stripPrefixForSummary') === true) {
+            // Replace "+" and following numbers with an empty string
+            $phoneNumber = preg_replace('/\+\d+/', '', $phoneNumber) ?? $phoneNumber;
+            // Remove all spaces and then add spaces after the commas
+            $phoneNumber = str_replace([' ', ','], ['', ', '], $phoneNumber);
         }
 
-        if (isset($this->contract->installation_address)) {
-            $summary_text .=
-                ', '
-                . $this->contract->installation_address->street_and_number
-                . ', '
-                . $this->contract->installation_address->city;
-        } elseif (isset($this->customer->installation_address)) {
-            $summary_text .=
-                ', '
-                . $this->customer->installation_address->street_and_number
-                . ', '
-                . $this->customer->installation_address->city;
-        } else {
-            // nothing
-        }
+        // The contract's address wins over the customer's one.
+        $address = $this->contract->installation_address
+            ?? $this->customer->installation_address
+            ?? null;
 
-        if (isset($this->phone)) {
-            if (Configure::read('Phones.stripPrefixForSummary') === true) {
-                // Replace "+" and following numbers with an empty string
-                $phoneNumber = preg_replace('/\+\d+/', '', $this->phone) ?? $this->phone;
-                // Remove all spaces and then add spaces after the commas
-                $phoneNumber = str_replace([' ', ','], ['', ', '], $phoneNumber);
+        // The subject and the customer head the line, the rest follows behind commas.
+        $summary_text = implode(', ', array_filter([
+            implode(' - ', array_filter([
+                $this->subject ?? $this->task_type->name ?? null,
+                $this->customer->company ?? $this->customer->last_name ?? null,
+            ])),
+            $address?->street_and_number,
+            $address?->city,
+            $phoneNumber,
+        ]));
 
-                $summary_text .= ', ' . $phoneNumber;
-                unset($phoneNumber);
-            } else {
-                $summary_text .= ', ' . $this->phone;
-            }
-        }
+        $number = $this->contract->number ?? $this->customer->number ?? null;
 
-        if (isset($this->contract->number) || isset($this->customer->number)) {
-            $summary_text .= ' (';
-            $summary_text .= $this->contract->number ?? $this->customer->number;
-            $summary_text .= ')';
-        }
-
-        return $summary_text;
+        return $number !== null ? $summary_text . ' (' . $number . ')' : $summary_text;
     }
 
     /**

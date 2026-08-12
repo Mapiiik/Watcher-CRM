@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Entity;
 
+use App\Model\Entity\Address;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
+use App\Model\Entity\ServiceType;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -34,6 +36,62 @@ class ContractTest extends TestCase
         return new Contract([
             'contract_versions' => $contractVersions,
         ]);
+    }
+
+    /**
+     * Test that the name is built from the number, the service and the address.
+     *
+     * @return void
+     * @link \App\Model\Entity\Contract::_getName()
+     */
+    public function testNameJoinsAllParts(): void
+    {
+        $contract = new Contract([
+            'number' => 'A458',
+            'service_type' => new ServiceType([
+                'name' => 'Internet 100',
+            ]),
+            'installation_address' => new Address([
+                'street' => 'Studentska',
+                'number' => '1903/14a',
+                'zip' => '11000',
+                'city' => 'Praha',
+            ]),
+        ]);
+
+        $this->assertSame('A458 - Internet 100 - Studentska 1903/14a, 110 00 Praha', $contract->name);
+    }
+
+    /**
+     * Test that a contract without a service and an address is just its number.
+     *
+     * @return void
+     * @link \App\Model\Entity\Contract::_getName()
+     */
+    public function testNameWithNumberOnly(): void
+    {
+        $contract = new Contract([
+            'number' => 'A458',
+        ]);
+
+        $this->assertSame('A458', $contract->name);
+    }
+
+    /**
+     * Test that a contract without a number does not start with a separator.
+     *
+     * @return void
+     * @link \App\Model\Entity\Contract::_getName()
+     */
+    public function testNameWithoutNumberHasNoLeadingSeparator(): void
+    {
+        $contract = new Contract([
+            'service_type' => new ServiceType([
+                'name' => 'Internet 100',
+            ]),
+        ]);
+
+        $this->assertSame('Internet 100', $contract->name);
     }
 
     /**

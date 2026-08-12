@@ -177,9 +177,11 @@ class Contract extends AppEntity
      */
     protected function _getName(): string
     {
-        return $this->number .
-            ($this->service_type !== null ? ' - ' . $this->service_type->name : '') .
-            ($this->installation_address !== null ? ' - ' . $this->installation_address->address : '');
+        return implode(' - ', array_filter([
+            $this->number,
+            $this->service_type?->name,
+            $this->installation_address?->address,
+        ]));
     }
 
     /**
