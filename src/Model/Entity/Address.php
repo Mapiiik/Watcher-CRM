@@ -91,31 +91,12 @@ class Address extends AppEntity
      */
     protected function _getFullName(): string
     {
-        $full_name = '';
-
-        if (isset($this->title)) {
-            $full_name .= $this->title;
-        }
-        if (isset($this->first_name)) {
-            if ($full_name !== '') {
-                $full_name .= ' ';
-            }
-            $full_name .= $this->first_name;
-        }
-        if (isset($this->last_name)) {
-            if ($full_name !== '') {
-                $full_name .= ' ';
-            }
-            $full_name .= $this->last_name;
-        }
-        if (isset($this->suffix)) {
-            if ($full_name !== '') {
-                $full_name .= ' ';
-            }
-            $full_name .= $this->suffix;
-        }
-
-        return $full_name;
+        return implode(' ', array_filter([
+            $this->title,
+            $this->first_name,
+            $this->last_name,
+            $this->suffix,
+        ]));
     }
 
     /**
@@ -125,19 +106,10 @@ class Address extends AppEntity
      */
     protected function _getName(): string
     {
-        $name = '';
-
-        if (isset($this->company)) {
-            $name .= '[' . $this->company . ']';
-        }
-        if ($this->full_name != '') {
-            if ($name !== '') {
-                $name .= ' ';
-            }
-            $name .= $this->full_name;
-        }
-
-        return $name;
+        return implode(' ', array_filter([
+            !empty($this->company) ? '[' . $this->company . ']' : null,
+            $this->full_name,
+        ]));
     }
 
     /**
@@ -147,11 +119,12 @@ class Address extends AppEntity
      */
     protected function _getAddress(): string
     {
-        $address = '';
-
-        $address .= $this->street_and_number_extra;
-
-        return $address . ', ' . $this->zip_and_city;
+        // An object located by coordinates alone has no street line at all,
+        // so the parts are joined rather than concatenated.
+        return implode(', ', array_filter([
+            $this->street_and_number_extra,
+            $this->zip_and_city,
+        ]));
     }
 
     /**
@@ -161,18 +134,26 @@ class Address extends AppEntity
      */
     protected function _getStreetAndNumber(): string
     {
-        $street_and_number = '';
+        $parts = [];
 
         if (isset($this->street)) {
-            $street_and_number .= $this->street . ' ' . $this->number;
-        } elseif (isset($this->number)) {
-            $street_and_number .=
-                $this->number_type == AddressNumberType::Registration
-                    ? __d('addresses', 'Reg. No.') . ' ' . $this->number
-                    : __d('addresses', 'No.') . ' ' . $this->number;
+            $parts[] = $this->street;
         }
 
-        return $street_and_number;
+        if (isset($this->number)) {
+            // A registration number is always marked as such, otherwise it reads
+            // as a house number and points at a different building. A house
+            // number is only marked when there is no street to carry it.
+            if ($this->number_type === AddressNumberType::Registration) {
+                $parts[] = __d('addresses', 'Reg. No.');
+            } elseif (!isset($this->street)) {
+                $parts[] = __d('addresses', 'No.');
+            }
+
+            $parts[] = $this->number;
+        }
+
+        return implode(' ', $parts);
     }
 
     /**
@@ -182,18 +163,7 @@ class Address extends AppEntity
      */
     protected function _getStreetAndNumberExtra(): string
     {
-        $street_and_number = '';
-
-        if (isset($this->street)) {
-            $street_and_number .= $this->street . ' ' . $this->number;
-        } elseif (isset($this->number)) {
-            $street_and_number .=
-                $this->number_type == AddressNumberType::Registration
-                    ? __d('addresses', 'Reg. No.') . ' ' . $this->number
-                    : __d('addresses', 'No.') . ' ' . $this->number;
-        }
-
-        return $street_and_number . $this->getEntranceAndUnit();
+        return $this->street_and_number . $this->getEntranceAndUnit();
     }
 
     /**
@@ -203,17 +173,10 @@ class Address extends AppEntity
      */
     protected function _getZipAndCity(): string
     {
-        $zip_and_city = '';
-
-        if (isset($this->zip)) {
-            $zip_and_city .= substr($this->zip, 0, 3) . ' ' . substr($this->zip, 3, 2);
-        }
-
-        if (isset($this->city)) {
-            $zip_and_city .= ' ' . $this->city;
-        }
-
-        return $zip_and_city;
+        return implode(' ', array_filter([
+            isset($this->zip) ? substr($this->zip, 0, 3) . ' ' . substr($this->zip, 3, 2) : null,
+            $this->city,
+        ]));
     }
 
     /**
@@ -223,12 +186,10 @@ class Address extends AppEntity
      */
     protected function _getFullAddress(): string
     {
-        $address = '';
-
-        $address .= $this->name;
-        $address .= ', ';
-
-        return $address . $this->address;
+        return implode(', ', array_filter([
+            $this->name,
+            $this->address,
+        ]));
     }
 
     /**
