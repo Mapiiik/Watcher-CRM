@@ -9,7 +9,7 @@ use App\Model\Entity\Customer;
 use App\Model\Entity\Task;
 use App\Model\Entity\TaskType;
 use App\Model\Enum\AddressType;
-use Cake\Core\Configure;
+use App\Test\Traits\ConfigureTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -20,6 +20,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(Task::class)]
 class TaskTest extends TestCase
 {
+    use ConfigureTestTrait;
+
     /**
      * setUp method
      *
@@ -30,12 +32,27 @@ class TaskTest extends TestCase
     {
         parent::setUp();
 
-        Configure::write('Phones.stripPrefixForSummary', false);
-        // a deployment names a region, a development machine names one in config/.env and CI names
-        // none - the tests that read numbers against one say so themselves
-        Configure::write('Phones.defaultRegion', 'CZ');
-        // the customer number is built from the nid and the configured series
-        Configure::write('Customers.series', 0);
+        $this->withConfigure([
+            'Phones.stripPrefixForSummary' => false,
+            // a deployment names a region, a development machine names one in config/.env and CI
+            // names none - the tests that read numbers against one say so themselves
+            'Phones.defaultRegion' => 'CZ',
+            // the customer number is built from the nid and the configured series
+            'Customers.series' => 0,
+        ]);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    public function tearDown(): void
+    {
+        $this->restoreConfigure();
+
+        parent::tearDown();
     }
 
     /**
@@ -172,7 +189,7 @@ class TaskTest extends TestCase
      */
     public function testSummaryTextStripsThePhonePrefixWhenConfigured(): void
     {
-        Configure::write('Phones.stripPrefixForSummary', true);
+        $this->withConfigure(['Phones.stripPrefixForSummary' => true]);
 
         $task = new Task([
             'subject' => 'Connection outage',
@@ -190,7 +207,7 @@ class TaskTest extends TestCase
      */
     public function testSummaryTextKeepsAPhoneStoredWithoutSpaces(): void
     {
-        Configure::write('Phones.stripPrefixForSummary', true);
+        $this->withConfigure(['Phones.stripPrefixForSummary' => true]);
 
         $task = new Task([
             'subject' => 'Connection outage',
@@ -208,7 +225,7 @@ class TaskTest extends TestCase
      */
     public function testSummaryTextKeepsThePrefixOfAForeignPhone(): void
     {
-        Configure::write('Phones.stripPrefixForSummary', true);
+        $this->withConfigure(['Phones.stripPrefixForSummary' => true]);
 
         $task = new Task([
             'subject' => 'Connection outage',

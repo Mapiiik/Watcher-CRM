@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Phones;
 
 use App\Phones\Formatter;
-use Cake\Core\Configure;
+use App\Test\Traits\ConfigureTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -15,6 +15,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(Formatter::class)]
 class FormatterTest extends TestCase
 {
+    use ConfigureTestTrait;
+
     /**
      * The region a deployment names, a development machine names in config/.env and CI names not at
      * all. The tests say for themselves which region they are to be read against.
@@ -33,7 +35,20 @@ class FormatterTest extends TestCase
     {
         parent::setUp();
 
-        Configure::write('Phones.defaultRegion', self::PHONE_REGION);
+        $this->withConfigure(['Phones.defaultRegion' => self::PHONE_REGION]);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    public function tearDown(): void
+    {
+        $this->restoreConfigure();
+
+        parent::tearDown();
     }
 
     /**
@@ -118,7 +133,7 @@ class FormatterTest extends TestCase
      */
     public function testWithoutARegionNothingIsShortened(): void
     {
-        Configure::write('Phones.defaultRegion', null);
+        $this->withConfigure(['Phones.defaultRegion' => null]);
 
         $this->assertSame('+420 601 234 567', Formatter::toLocal('+420 601 234 567'));
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Entity;
 
 use App\Model\Entity\Customer;
-use Cake\Core\Configure;
+use App\Test\Traits\ConfigureTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -15,6 +15,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(Customer::class)]
 class CustomerTest extends TestCase
 {
+    use ConfigureTestTrait;
+
     /**
      * setUp method
      *
@@ -26,7 +28,20 @@ class CustomerTest extends TestCase
         parent::setUp();
 
         // the customer number is built from the nid and the configured series
-        Configure::write('Customers.series', 0);
+        $this->withConfigure(['Customers.series' => 0]);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    public function tearDown(): void
+    {
+        $this->restoreConfigure();
+
+        parent::tearDown();
     }
 
     /**
@@ -157,7 +172,7 @@ class CustomerTest extends TestCase
      */
     public function testNumberAddsTheConfiguredSeries(): void
     {
-        Configure::write('Customers.series', 100000);
+        $this->withConfigure(['Customers.series' => 100000]);
 
         $customer = new Customer([
             'nid' => 1234,
