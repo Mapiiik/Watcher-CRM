@@ -28,13 +28,13 @@ class AresOfficerTest extends TestCase
     }
 
     /**
-     * One person still sitting is who the company is represented by, and the register writes the
-     * name in capitals where a contract wants it written as a name.
+     * A sitting member comes back with the name in parts, and the register writes it in capitals
+     * where a contract wants it written as a name.
      *
      * @return void
-     * @link \App\BusinessRegister\Source\AresSource::readSoleOfficer()
+     * @link \App\BusinessRegister\Source\AresSource::readOfficers()
      */
-    public function testASoleSittingMemberIsRead(): void
+    public function testASittingMemberIsRead(): void
     {
         $record = $this->record([
             [
@@ -49,6 +49,9 @@ class AresOfficerTest extends TestCase
             ],
         ]);
 
+        $officers = AresSource::readOfficers($record);
+
+        $this->assertCount(1, $officers);
         $this->assertSame(
             [
                 'title' => 'Ing.',
@@ -57,15 +60,16 @@ class AresOfficerTest extends TestCase
                 'suffix' => 'MBA',
                 'date_of_birth' => '1970-05-31',
             ],
-            AresSource::readSoleOfficer($record),
+            array_diff_key($officers[0], ['key' => null]),
         );
+        $this->assertNotSame('', $officers[0]['key']);
     }
 
     /**
      * Diacritics survive being put back into the case a name is written in.
      *
      * @return void
-     * @link \App\BusinessRegister\Source\AresSource::readSoleOfficer()
+     * @link \App\BusinessRegister\Source\AresSource::readOfficers()
      */
     public function testDiacriticsSurviveTheCasing(): void
     {
@@ -73,14 +77,14 @@ class AresOfficerTest extends TestCase
             ['datumVymazu' => null, 'fyzickaOsoba' => ['jmeno' => 'MICHAELA', 'prijmeni' => 'CHALOUPKOVÁ']],
         ]);
 
-        $this->assertSame('Chaloupková', AresSource::readSoleOfficer($record)['last_name']);
+        $this->assertSame('Chaloupková', AresSource::readOfficers($record)[0]['last_name']);
     }
 
     /**
      * A member the register has written out is no longer who the company is represented by.
      *
      * @return void
-     * @link \App\BusinessRegister\Source\AresSource::readSoleOfficer()
+     * @link \App\BusinessRegister\Source\AresSource::readOfficers()
      */
     public function testAMemberWrittenOutIsPassedOver(): void
     {
@@ -89,40 +93,34 @@ class AresOfficerTest extends TestCase
             ['datumVymazu' => null, 'fyzickaOsoba' => ['jmeno' => 'MARKO', 'prijmeni' => 'JUJNOVIĆ']],
         ]);
 
-        $this->assertSame('Jujnović', AresSource::readSoleOfficer($record)['last_name']);
+        $this->assertSame('Jujnović', AresSource::readOfficers($record)[0]['last_name']);
     }
 
     /**
-     * With more than one member still sitting, none is offered - putting one of them on a
-     * contract would be saying something the register does not.
+     * Everyone still sitting comes back, each under a key of their own - which of them the
+     * company is represented by is not the register's to say.
      *
      * @return void
-     * @link \App\BusinessRegister\Source\AresSource::readSoleOfficer()
+     * @link \App\BusinessRegister\Source\AresSource::readOfficers()
      */
-    public function testSeveralSittingMembersNameNobody(): void
+    public function testEveryoneStillSittingComesBack(): void
     {
         $record = $this->record([
             ['datumVymazu' => null, 'fyzickaOsoba' => ['jmeno' => 'MARKO', 'prijmeni' => 'JUJNOVIĆ']],
             ['datumVymazu' => null, 'fyzickaOsoba' => ['jmeno' => 'JANA', 'prijmeni' => 'JANATOVÁ']],
         ]);
 
-        $this->assertSame(
-            [
-                'title' => null,
-                'first_name' => null,
-                'last_name' => null,
-                'suffix' => null,
-                'date_of_birth' => null,
-            ],
-            AresSource::readSoleOfficer($record),
-        );
+        $officers = AresSource::readOfficers($record);
+
+        $this->assertSame(['Jujnović', 'Janatová'], array_column($officers, 'last_name'));
+        $this->assertCount(2, array_unique(array_column($officers, 'key')));
     }
 
     /**
      * The same person written down under several records of the company is still one person.
      *
      * @return void
-     * @link \App\BusinessRegister\Source\AresSource::readSoleOfficer()
+     * @link \App\BusinessRegister\Source\AresSource::readOfficers()
      */
     public function testThePersonIsCountedOnceAcrossRecords(): void
     {
@@ -142,7 +140,7 @@ class AresOfficerTest extends TestCase
             ],
         ];
 
-        $this->assertSame('Jujnović', AresSource::readSoleOfficer($record)['last_name']);
+        $this->assertSame('Jujnović', AresSource::readOfficers($record)[0]['last_name']);
     }
 
     /**
@@ -190,19 +188,11 @@ class AresOfficerTest extends TestCase
      * A company the register holds nothing about, and one whose body is empty, name nobody.
      *
      * @return void
-     * @link \App\BusinessRegister\Source\AresSource::readSoleOfficer()
+     * @link \App\BusinessRegister\Source\AresSource::readOfficers()
      */
     public function testNothingToReadNamesNobody(): void
     {
-        $nobody = [
-            'title' => null,
-            'first_name' => null,
-            'last_name' => null,
-            'suffix' => null,
-            'date_of_birth' => null,
-        ];
-
-        $this->assertSame($nobody, AresSource::readSoleOfficer(null));
-        $this->assertSame($nobody, AresSource::readSoleOfficer($this->record([])));
+        $this->assertSame([], AresSource::readOfficers(null));
+        $this->assertSame([], AresSource::readOfficers($this->record([])));
     }
 }

@@ -18,11 +18,17 @@ namespace App\BusinessRegister\Source;
  *         'last_name'       => null,                           // null for a company
  *         'suffix'          => null,
  *         'date_of_birth'   => null,                           // a person's, never a company's
+ *         'officers'        => [],                             // who sits in the statutory body
  *         'identity_number' => '27074358',
  *         'vat_number'      => 'CZ27074358',                   // null when the register has none
  *         'address'         => 'Budějovická 778/3a, Praha 4',  // only ever a label, never stored
  *         'address_key'     => 'cz|41405609',                  // the seat in the address registry
  *     ]
+ *
+ * `officers` are the people sitting in a company's statutory body, each with the same name parts
+ * and a `key` naming them. A register that cannot say leaves it empty, and so does a search - it
+ * is only worth asking about an entry that was actually picked. Where exactly one sits, the name
+ * fields carry them as well, there being nothing to choose.
  *
  * A sole trader trades under their own name, so a register writes a person where it otherwise
  * writes a company. Such an entry fills the name fields and leaves `company` empty, which is how

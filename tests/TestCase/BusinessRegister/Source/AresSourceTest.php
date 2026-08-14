@@ -58,6 +58,7 @@ class AresSourceTest extends TestCase
                 'last_name' => null,
                 'suffix' => null,
                 'date_of_birth' => null,
+                'officers' => [],
                 'identity_number' => '27074358',
                 'vat_number' => 'CZ27074358',
                 'address' => 'Budějovická 778/3a, Michle, 14000 Praha 4',

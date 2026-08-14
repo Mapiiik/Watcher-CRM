@@ -442,11 +442,15 @@ class CustomersController extends AppController
             trim(Settings::getString('core.business_register.default_source')) ?: null,
         );
 
+        // what the form is working from, so a second submit still knows which company it was
+        $businessRegisterSelection = $this->businessRegisterSelection();
+
         $this->set(compact(
             'customer',
             'accountingProfiles',
             'businessRegisterSources',
             'businessRegisterDefaultSource',
+            'businessRegisterSelection',
         ));
 
         return null;
@@ -489,11 +493,15 @@ class CustomersController extends AppController
             trim(Settings::getString('core.business_register.default_source')) ?: null,
         );
 
+        // what the form is working from, so a second submit still knows which company it was
+        $businessRegisterSelection = $this->businessRegisterSelection();
+
         $this->set(compact(
             'customer',
             'accountingProfiles',
             'businessRegisterSources',
             'businessRegisterDefaultSource',
+            'businessRegisterSelection',
         ));
 
         return null;
@@ -515,10 +523,15 @@ class CustomersController extends AppController
             return;
         }
 
+        $officerKey = $this->getRequest()->getData('business_register_officer');
+
         try {
             $this->Customers->patchEntity(
                 $customer,
-                $this->loadPatchDataFromBusinessRegister($businessRegisterKey),
+                $this->loadPatchDataFromBusinessRegister(
+                    $businessRegisterKey,
+                    is_string($officerKey) && $officerKey !== '' ? $officerKey : null,
+                ),
                 ['validate' => false],
             );
         } catch (RuntimeException $e) {
@@ -530,13 +543,54 @@ class CustomersController extends AppController
     }
 
     /**
-     * Loads patch data from a business register based on the provided key.
+     * What the form is working from: the entry that was picked, what to call it, and who the
+     * company may be represented by.
+     *
+     * The picked entry has to come back with the form. The search field is filled in by the
+     * script as it is searched, so a form rendered again knows nothing of it - and a second
+     * submit, which is what choosing a person is, would arrive without the company.
+     *
+     * The entry has been read once already by then, so this is a cache read rather than another
+     * request to the register.
+     *
+     * @return array{key: ?string, label: ?string, officer: ?string, officers: list<array<string, string|null>>}
+     */
+    private function businessRegisterSelection(): array
+    {
+        $nothing = ['key' => null, 'label' => null, 'officer' => null, 'officers' => []];
+
+        $businessRegisterKey = $this->getRequest()->getData('business_register_search');
+        if (empty($businessRegisterKey) || !is_string($businessRegisterKey)) {
+            return $nothing;
+        }
+
+        try {
+            $subject = $this->subjectFromBusinessRegister($businessRegisterKey);
+        } catch (RuntimeException) {
+            // the form already says what went wrong, and it was said once
+            return $nothing;
+        }
+
+        $officers = is_array($subject['officers'] ?? null) ? array_values($subject['officers']) : [];
+        $officerKey = $this->getRequest()->getData('business_register_officer');
+        $officerKey = in_array($officerKey, array_column($officers, 'key'), true) ? $officerKey : null;
+
+        return [
+            'key' => $businessRegisterKey,
+            'label' => trim((string)($subject['name'] ?? '')) ?: $businessRegisterKey,
+            'officer' => $officerKey,
+            'officers' => $officers,
+        ];
+    }
+
+    /**
+     * The entry a business register holds under the provided key.
      *
      * @param string $businessRegisterKey Expected format: "source|reference" (e.g., "ares|27074358").
-     * @return array The patch data for the customer.
-     * @throws \RuntimeException If the register cannot be reached or refuses the request.
+     * @return array The entry as the register answered it.
+     * @throws \RuntimeException If the key makes no sense, or the register no longer holds it.
      */
-    private function loadPatchDataFromBusinessRegister(string $businessRegisterKey): array
+    private function subjectFromBusinessRegister(string $businessRegisterKey): array
     {
         // expect format "source|reference", e.g. "ares|27074358"
         [
@@ -555,6 +609,34 @@ class CustomersController extends AppController
 
         if ($subject === null) {
             throw new RuntimeException(__('The company is no longer held by the register.'));
+        }
+
+        return $subject;
+    }
+
+    /**
+     * Loads patch data from a business register based on the provided key.
+     *
+     * @param string $businessRegisterKey Expected format: "source|reference" (e.g., "ares|27074358").
+     * @param string|null $officerKey The person the company is to be represented by, of those the
+     *      register named, or null to take the entry as it stands.
+     * @return array The patch data for the customer.
+     * @throws \RuntimeException If the register cannot be reached or refuses the request.
+     */
+    private function loadPatchDataFromBusinessRegister(
+        string $businessRegisterKey,
+        ?string $officerKey = null,
+    ): array {
+        $subject = $this->subjectFromBusinessRegister($businessRegisterKey);
+
+        // The company may be represented by any of several people, and which one is the operator's
+        // choice. A key naming nobody here is one left over from a company picked before this one,
+        // and what the entry says of itself stands instead.
+        foreach ($officerKey === null ? [] : (array)($subject['officers'] ?? []) as $officer) {
+            if (is_array($officer) && ($officer['key'] ?? null) === $officerKey) {
+                $subject = array_diff_key($officer, ['key' => null]) + $subject;
+                break;
+            }
         }
 
         // every field is handed over, nulls included: a sole trader picked after a company has to

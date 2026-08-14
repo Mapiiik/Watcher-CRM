@@ -46,6 +46,7 @@ class SudregSourceTest extends TestCase
                 'last_name' => null,
                 'suffix' => null,
                 'date_of_birth' => null,
+                'officers' => [],
                 'identity_number' => '80625159724',
                 'vat_number' => 'HR80625159724',
                 'address' => 'Ilica 1, Zagreb',

@@ -619,6 +619,173 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * A company with an entry like NETAIR's, which two people sit in the statutory body of.
+     *
+     * @return void
+     */
+    private function givenACompanyWithTwoOfficers(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '27496139',
+                'name' => 'NETAIR, s.r.o.',
+                'company' => 'NETAIR, s.r.o.',
+                'identity_number' => '27496139',
+                'officers' => [
+                    [
+                        'key' => 'marko',
+                        'title' => null,
+                        'first_name' => 'Marko',
+                        'last_name' => 'Jujnović',
+                        'suffix' => null,
+                        'date_of_birth' => '1970-05-31',
+                    ],
+                    [
+                        'key' => 'jana',
+                        'title' => null,
+                        'first_name' => 'Jana',
+                        'last_name' => 'Janatová',
+                        'suffix' => null,
+                        'date_of_birth' => '1983-08-17',
+                    ],
+                ],
+            ],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+    }
+
+    /**
+     * Where several people sit in the statutory body, the form offers them and fills in nobody of
+     * its own accord - the name goes onto a contract as who the company was represented by.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddOffersTheOfficersOfACompanyRepresentedBySeveral(): void
+    {
+        $this->givenACompanyWithTwoOfficers();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|27496139',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="business_register_officer"');
+        $this->assertResponseContains('Jujnović');
+        $this->assertResponseContains('Janatová');
+        // the picked company has to come back with the form, or the next submit loses it
+        $this->assertResponseContains('value="stub|27496139"');
+    }
+
+    /**
+     * Choosing one of them fills their name in, and still does not store the customer.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddFillsInTheChosenOfficer(): void
+    {
+        $this->givenACompanyWithTwoOfficers();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $customers = $this->getTableLocator()->get('Customers');
+        $before = $customers->find()->count();
+
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|27496139',
+            'business_register_officer' => 'jana',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('value="Jana"');
+        $this->assertResponseContains('value="Janatová"');
+        $this->assertResponseContains('1983-08-17');
+        $this->assertSame($before, $customers->find()->count());
+    }
+
+    /**
+     * A choice left over from a company picked before this one names nobody here, so what the
+     * entry says of itself stands - which for a company of several is no name at all.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddIgnoresAnOfficerTheCompanyDoesNotHave(): void
+    {
+        $this->givenACompanyWithTwoOfficers();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|27496139',
+            'business_register_officer' => 'somebody-from-another-company',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('value="Jana"');
+        $this->assertResponseNotContains('value="Marko"');
+    }
+
+    /**
+     * One person sitting is already filled in, so there is nothing to choose and no list to show.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddOffersNoChoiceWhereOnlyOneSits(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '28992121',
+                'name' => 'Statek Polánka s.r.o.',
+                'company' => 'Statek Polánka s.r.o.',
+                'first_name' => 'Marek',
+                'last_name' => 'Zbořil',
+                'officers' => [
+                    [
+                        'key' => 'marek',
+                        'title' => 'Ing.',
+                        'first_name' => 'Marek',
+                        'last_name' => 'Zbořil',
+                        'suffix' => null,
+                        'date_of_birth' => '1973-10-31',
+                    ],
+                ],
+            ],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|28992121',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('name="business_register_officer"');
+        $this->assertResponseContains('value="Zbořil"');
+    }
+
+    /**
      * A reference the register no longer holds is said out loud rather than quietly filling the
      * form in with nothing.
      *

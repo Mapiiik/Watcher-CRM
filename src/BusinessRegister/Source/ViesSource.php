@@ -160,6 +160,7 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
             'last_name' => null,
             'suffix' => null,
             'date_of_birth' => null,
+            'officers' => [],
             'identity_number' => $identityNumber,
             'vat_number' => $memberState . $number,
             'address' => $address,

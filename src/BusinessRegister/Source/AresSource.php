@@ -109,13 +109,22 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             return null;
         }
 
-        // Who a company is represented by, and how a sole trader's name comes apart, are both
-        // held by a register of their own that the basic record does not carry. Each is worth a
-        // second request, but only for an entry that was actually picked - a search asks for
-        // none of this, and would otherwise fire a request per line of the suggestion list.
-        $mapped = $mapped['company'] !== null
-            ? self::readSoleOfficer($this->fetchRegisterRecord($mapped['reference'])) + $mapped
-            : self::readTrader($this->fetchTradesRecord($mapped['reference'])) + $mapped;
+        // Who sits in a company's statutory body, and how a sole trader's name comes apart, are
+        // both held by a register of their own that the basic record does not carry. Each is
+        // worth a second request, but only for an entry that was actually picked - a search asks
+        // for none of this, and would otherwise fire a request per line of the suggestion list.
+        if ($mapped['company'] === null) {
+            return self::readTrader($this->fetchTradesRecord($mapped['reference'])) + $mapped;
+        }
+
+        $mapped['officers'] = self::readOfficers($this->fetchRegisterRecord($mapped['reference']));
+
+        // One member sitting is who the company is represented by, with nothing to choose. Where
+        // several sit, none is filled in: the name goes onto a contract as who the company was
+        // represented by, and picking one of them is the operator's to do rather than ours.
+        if (count($mapped['officers']) === 1) {
+            $mapped = array_diff_key($mapped['officers'][0], ['key' => null]) + $mapped;
+        }
 
         return $mapped;
     }
@@ -221,6 +230,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             'last_name' => null,
             'suffix' => null,
             'date_of_birth' => null,
+            'officers' => [],
             'identity_number' => $ico !== '' ? $ico : null,
             'vat_number' => $vatNumber !== '' ? $vatNumber : null,
             'address' => $address !== '' ? $address : null,
@@ -263,29 +273,23 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
     }
 
     /**
-     * The one person a company is represented by, where there is only one.
+     * Everyone still sitting in the company's statutory body.
      *
-     * The register keeps everyone who ever sat in a statutory body; a member still sitting is one
-     * the register has not written out, which is what an empty deletion date means. Where more
-     * than one is still sitting, none is offered: the name goes onto a contract as who the company
-     * was represented by, and picking one of several would be saying something the register does
-     * not.
+     * The register keeps everyone who ever sat in one; a member still sitting is one the register
+     * has not written out, which is what an empty deletion date means.
+     *
+     * Which of them a company is represented by is not the register's to say, so all of them come
+     * back and the choice is left to whoever is filling the form in. Each carries a `key` the form
+     * hands back to name the one that was chosen.
      *
      * @param array<int|string, mixed>|null $record The record as the register of companies
      *      returned it, null when there is none.
-     * @return array{title: ?string, first_name: ?string, last_name: ?string, suffix: ?string}
+     * @return list<array<string, string|null>>
      */
-    public static function readSoleOfficer(?array $record): array
+    public static function readOfficers(?array $record): array
     {
-        $nobody = [
-            'title' => null,
-            'first_name' => null,
-            'last_name' => null,
-            'suffix' => null,
-            'date_of_birth' => null,
-        ];
         if ($record === null) {
-            return $nobody;
+            return [];
         }
 
         $sitting = [];
@@ -299,30 +303,27 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
 
                     // The same person is written down once per record they appear in, and the
                     // entry carries their address as well - which may have changed between two
-                    // of them, so it is the name and date of birth that say who they are.
-                    $key = implode('|', [
+                    // of them, so it is the name and date of birth that say who they are. The
+                    // same three make the key the form hands back, so a choice survives the
+                    // entry being read again.
+                    $identity = implode('|', [
                         (string)($person['jmeno'] ?? ''),
                         (string)($person['prijmeni'] ?? ''),
                         (string)($person['datumNarozeni'] ?? ''),
                     ]);
-                    $sitting[$key] = $person;
+                    $sitting[$identity] = [
+                        'key' => md5($identity),
+                        'title' => self::officerValue($person['titulPredJmenem'] ?? null),
+                        'first_name' => self::officerName($person['jmeno'] ?? null),
+                        'last_name' => self::officerName($person['prijmeni'] ?? null),
+                        'suffix' => self::officerValue($person['titulZaJmenem'] ?? null),
+                        'date_of_birth' => self::officerValue($person['datumNarozeni'] ?? null),
+                    ];
                 }
             }
         }
 
-        if (count($sitting) !== 1) {
-            return $nobody;
-        }
-
-        $person = reset($sitting);
-
-        return [
-            'title' => self::officerValue($person['titulPredJmenem'] ?? null),
-            'first_name' => self::officerName($person['jmeno'] ?? null),
-            'last_name' => self::officerName($person['prijmeni'] ?? null),
-            'suffix' => self::officerValue($person['titulZaJmenem'] ?? null),
-            'date_of_birth' => self::officerValue($person['datumNarozeni'] ?? null),
-        ];
+        return array_values($sitting);
     }
 
     /**

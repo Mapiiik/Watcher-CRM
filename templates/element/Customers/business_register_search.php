@@ -4,11 +4,17 @@
  *
  * Picking a suggestion submits the form with a `refresh` field, which the controller answers by
  * filling the entity in instead of saving it - the same round trip the address search makes.
+ * Choosing who a company is represented by takes that road a second time, which is why the
+ * company already picked is rendered back into the search field: the script fills that field in
+ * as it is searched, so a form rendered again would otherwise arrive without it.
  *
  * @var \App\View\AppView $this
  * @var array<string, string> $businessRegisterSources
  * @var string|null $businessRegisterDefaultSource
+ * @var array{key: ?string, label: ?string, officer: ?string, officers: list<array<string, string|null>>} $businessRegisterSelection
  */
+
+use Cake\I18n\Date;
 
 // nothing to offer when no register is configured
 if ($businessRegisterSources === []) {
@@ -30,4 +36,39 @@ echo $this->Form->control('business_register_search', [
     'id' => 'business-register-search',
     'label' => __('Search Business Register'),
     'data-placeholder' => __('Search by name or identification number…'),
+    'options' => $businessRegisterSelection['key'] === null
+        ? []
+        : [$businessRegisterSelection['key'] => $businessRegisterSelection['label']],
+    'value' => $businessRegisterSelection['key'],
 ]);
+
+// One person sitting in the statutory body is already filled in, with nothing to choose; several
+// are offered, because which of them a company is represented by is not the register's to say.
+if (count($businessRegisterSelection['officers']) > 1) {
+    $officerOptions = [];
+    foreach ($businessRegisterSelection['officers'] as $officer) {
+        $name = implode(' ', array_filter([
+            $officer['title'] ?? null,
+            $officer['first_name'] ?? null,
+            $officer['last_name'] ?? null,
+        ]));
+        if (!empty($officer['suffix'])) {
+            $name .= ', ' . $officer['suffix'];
+        }
+        // the date tells two people of one name apart, and is stored with them anyway
+        if (!empty($officer['date_of_birth'])) {
+            $name .= ' (' . Date::parseDate($officer['date_of_birth'], 'yyyy-MM-dd')?->nice() . ')';
+        }
+
+        $officerOptions[(string)$officer['key']] = $name;
+    }
+
+    echo $this->Form->control('business_register_officer', [
+        'type' => 'select',
+        'id' => 'business-register-officer',
+        'label' => __('Represented By'),
+        'options' => $officerOptions,
+        'value' => $businessRegisterSelection['officer'],
+        'empty' => true,
+    ]);
+}

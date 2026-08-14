@@ -229,6 +229,7 @@ class SudregSource extends BaseSource
             'last_name' => null,
             'suffix' => null,
             'date_of_birth' => null,
+            'officers' => [],
             'identity_number' => $oib !== '' ? $oib : null,
             'vat_number' => $oib !== '' ? 'HR' . $oib : null,
             'address' => self::readAddress($subject),

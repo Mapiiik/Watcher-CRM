@@ -41,6 +41,18 @@ $(function () {
         $form.submit();
     });
 
+    // Autorefresh after the represented person is chosen
+    $('#business-register-officer').on('change', function () {
+        // Add hidden input to indicate that the form should be refreshed (without saving)
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'refresh',
+            value: 'refresh'
+        }).appendTo($form);
+
+        $form.submit();
+    });
+
     // Clear the suggestions after the register changes - they belong to the previous one
     $source.on('change', function () {
         $search.val(null).trigger('change');
