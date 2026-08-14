@@ -1,6 +1,8 @@
 $(function () {
+    var $search = $('#address-registry-search');
+
     // Select2 search for addresses
-    $('#address-registry-search').select2({
+    $search.select2({
         width: '100%',
         ajax: {
             url: '/api/addresses-bridge/search.json',
@@ -8,7 +10,7 @@ $(function () {
             delay: 250,
             data: function (params) {
                 return {
-                    country_code: $('#address-registry-search').data('country-code'),
+                    country_code: $search.data('country-code'),
                     query: params.term,
                     page: params.page || 1
                 };
@@ -21,7 +23,7 @@ $(function () {
             }
         },
         minimumInputLength: 3,
-        placeholder: 'Search address…'
+        placeholder: $search.data('placeholder')
     });
 
     var $form = $('#address-registry-search').closest('form');
