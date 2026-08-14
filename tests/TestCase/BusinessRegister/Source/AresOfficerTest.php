@@ -185,6 +185,82 @@ class AresOfficerTest extends TestCase
     }
 
     /**
+     * A town is a legal entity the register of companies has never heard of, so its statutory
+     * body is read from the register of persons - which wraps each value in a note on how sure of
+     * it it is, and writes the name in capitals.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\AresSource::readPersonRegisterOfficers()
+     */
+    public function testATownsStatutoryBodyIsReadFromThePersonRegister(): void
+    {
+        $record = ['zaznamy' => [['statutarniOrgany' => [
+            ['osobaFyzicka' => ['osobaRob' => [
+                'jmeno' => ['hodnota' => 'LENA', 'platnostUdajeRob' => 'spravny'],
+                'prijmeni' => ['hodnota' => 'MLEJNKOVÁ', 'platnostUdajeRob' => 'spravny'],
+                'datumNarozeni' => ['datum' => '1974-11-15', 'platnostUdajeRob' => 'spravny'],
+            ]]],
+        ]]]];
+
+        $officers = AresSource::readPersonRegisterOfficers($record);
+
+        $this->assertCount(1, $officers);
+        $this->assertSame(
+            [
+                'title' => null,
+                'first_name' => 'Lena',
+                'last_name' => 'Mlejnková',
+                'suffix' => null,
+                'date_of_birth' => '1974-11-15',
+            ],
+            array_diff_key($officers[0], ['key' => null]),
+        );
+    }
+
+    /**
+     * Several people sit in a statutory body there as readily as in a company's, and each gets a
+     * key of their own to be chosen by.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\AresSource::readPersonRegisterOfficers()
+     */
+    public function testThePersonRegisterCarriesSeveralOfThemToo(): void
+    {
+        $record = ['zaznamy' => [['statutarniOrgany' => [
+            ['osobaFyzicka' => ['osobaRob' => [
+                'jmeno' => ['hodnota' => 'MARKO'],
+                'prijmeni' => ['hodnota' => 'JUJNOVIĆ'],
+                'datumNarozeni' => ['datum' => '1970-05-31'],
+            ]]],
+            ['osobaFyzicka' => ['osobaRob' => [
+                'jmeno' => ['hodnota' => 'JANA'],
+                'prijmeni' => ['hodnota' => 'JANATOVÁ'],
+                'datumNarozeni' => ['datum' => '1983-08-17'],
+            ]]],
+        ]]]];
+
+        $officers = AresSource::readPersonRegisterOfficers($record);
+
+        $this->assertSame(['Jujnović', 'Janatová'], array_column($officers, 'last_name'));
+        $this->assertCount(2, array_unique(array_column($officers, 'key')));
+    }
+
+    /**
+     * A body the register of persons holds only as a legal entity names no person, and neither
+     * does one it holds nothing about.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\AresSource::readPersonRegisterOfficers()
+     */
+    public function testThePersonRegisterNamesNobodyWhereThereIsNoPerson(): void
+    {
+        $this->assertSame([], AresSource::readPersonRegisterOfficers(null));
+        $this->assertSame([], AresSource::readPersonRegisterOfficers(
+            ['zaznamy' => [['statutarniOrgany' => [['osobaPravnicka' => ['platnostUdajeRos' => 'spravny']]]]]],
+        ));
+    }
+
+    /**
      * A company the register holds nothing about, and one whose body is empty, name nobody.
      *
      * @return void

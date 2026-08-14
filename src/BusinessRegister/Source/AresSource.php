@@ -109,15 +109,20 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             return null;
         }
 
-        // Who sits in a company's statutory body, and how a sole trader's name comes apart, are
-        // both held by a register of their own that the basic record does not carry. Each is
-        // worth a second request, but only for an entry that was actually picked - a search asks
-        // for none of this, and would otherwise fire a request per line of the suggestion list.
+        // Who sits in a statutory body, and how a sole trader's name comes apart, are both held by
+        // a register of their own that the basic record does not carry. Each is worth a second
+        // request, but only for an entry that was actually picked - a search asks for none of
+        // this, and would otherwise fire a request per line of the suggestion list.
         if ($mapped['company'] === null) {
             return self::readTrader($this->fetchTradesRecord($mapped['reference'])) + $mapped;
         }
 
-        $mapped['officers'] = self::readOfficers($this->fetchRegisterRecord($mapped['reference']));
+        // A town, a school, a public body - a legal entity all the same, but not one the register
+        // of companies holds. The basic record says which of the two to ask, so neither is asked
+        // in vain.
+        $mapped['officers'] = self::isInCompanyRegister($subject)
+            ? self::readOfficers($this->fetchRegisterRecord($mapped['reference']))
+            : self::readPersonRegisterOfficers($this->fetchPersonRecord($mapped['reference']));
 
         // One member sitting is who the company is represented by, with nothing to choose. Where
         // several sit, none is filled in: the name goes onto a contract as who the company was
@@ -270,6 +275,107 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             'suffix' => self::officerValue($trader['titulZaJmenem'] ?? null),
             'date_of_birth' => self::officerValue($trader['datumNarozeni'] ?? null),
         ];
+    }
+
+    /**
+     * Whether the register of companies holds the subject at all.
+     *
+     * Only what is entered in it is: a town, a region, a public body or a school is a legal entity
+     * without ever appearing there. The basic record says as much, which saves asking a register
+     * that would only answer that it has never heard of them.
+     *
+     * @param array<int|string, mixed> $subject The subject as ARES returned it.
+     * @return bool
+     */
+    private static function isInCompanyRegister(array $subject): bool
+    {
+        $registrations = is_array($subject['seznamRegistraci'] ?? null) ? $subject['seznamRegistraci'] : [];
+
+        return ($registrations['stavZdrojeVr'] ?? null) === self::ACTIVE;
+    }
+
+    /**
+     * Everyone in the statutory body as the register of persons holds them.
+     *
+     * It holds the standing of every legal entity, which is what makes it the one to ask about a
+     * town or a school. It keeps only what stands now, so there is nothing to filter, and it wraps
+     * each value in a note on how sure of it it is - which is what the reading below unwraps. It
+     * carries no degrees, so a name arrives without them.
+     *
+     * @param array<int|string, mixed>|null $record The record as the register of persons returned
+     *      it, null when it holds none.
+     * @return list<array<string, string|null>>
+     */
+    public static function readPersonRegisterOfficers(?array $record): array
+    {
+        if ($record === null) {
+            return [];
+        }
+
+        $sitting = [];
+        foreach ((array)($record['zaznamy'] ?? []) as $entry) {
+            foreach ((array)($entry['statutarniOrgany'] ?? []) as $body) {
+                $person = $body['osobaFyzicka']['osobaRob'] ?? null;
+                if (!is_array($person) || $person === []) {
+                    continue;
+                }
+
+                $firstName = self::personRegisterValue($person['jmeno'] ?? null, 'hodnota');
+                $lastName = self::personRegisterValue($person['prijmeni'] ?? null, 'hodnota');
+                $dateOfBirth = self::personRegisterValue($person['datumNarozeni'] ?? null, 'datum');
+                if ($firstName === null && $lastName === null) {
+                    continue;
+                }
+
+                $identity = implode('|', [(string)$firstName, (string)$lastName, (string)$dateOfBirth]);
+                $sitting[$identity] = [
+                    'key' => md5($identity),
+                    'title' => null,
+                    'first_name' => self::officerName($firstName),
+                    'last_name' => self::officerName($lastName),
+                    'suffix' => null,
+                    'date_of_birth' => $dateOfBirth,
+                ];
+            }
+        }
+
+        return array_values($sitting);
+    }
+
+    /**
+     * Unwrap one value of the register of persons, which writes each with a note on how sure of
+     * it it is.
+     *
+     * @param mixed $value The value as the register returned it.
+     * @param string $held The key the value itself is held under.
+     * @return string|null
+     */
+    private static function personRegisterValue(mixed $value, string $held): ?string
+    {
+        return is_array($value) ? self::officerValue($value[$held] ?? null) : null;
+    }
+
+    /**
+     * The record the register of persons holds, null when it holds none.
+     *
+     * @param string $identityNumber The identification number to ask about.
+     * @return array<int|string, mixed>|null
+     */
+    private function fetchPersonRecord(string $identityNumber): ?array
+    {
+        try {
+            $response = $this->http()->get(
+                $this->endpoint('ekonomicke-subjekty-ros/' . urlencode($identityNumber)),
+            );
+        } catch (Throwable $e) {
+            throw $this->unreachable($e);
+        }
+
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
+
+        return $this->decodeOrThrow($response);
     }
 
     /**
