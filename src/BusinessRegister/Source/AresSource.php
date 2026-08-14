@@ -201,7 +201,11 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
     private function fetch(string $identityNumber): ?array
     {
         $identityNumber = self::withoutWhitespace($identityNumber);
-        if ($identityNumber === '') {
+
+        // ARES answers to a Czech identification number and refuses anything else outright - a
+        // Croatian one is eleven digits and comes back a bad request, not an empty answer. Asking
+        // at all would turn "this is not ours" into a register that could not be reached.
+        if (!IdentityNumber::isValidCzech($identityNumber)) {
             return null;
         }
 

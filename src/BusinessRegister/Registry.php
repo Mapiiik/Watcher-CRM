@@ -154,14 +154,17 @@ class Registry
             return null;
         }
 
+        $answered = false;
         foreach ($keys as $key) {
             try {
                 $subject = self::byReferenceFromCache($key, $identityNumber);
             } catch (RuntimeException $e) {
+                // one register being down is not the others' answer, so the rest are still asked
                 Log::error('Could not look the identification number up: ' . $e->getMessage());
-
-                return null;
+                continue;
             }
+
+            $answered = true;
 
             $company = trim((string)($subject['name'] ?? ''));
             if ($company !== '') {
@@ -175,8 +178,9 @@ class Registry
             }
         }
 
-        // every register was asked and none holds it, which is an answer of its own
-        return new IdentityNumberCheck(IdentityNumberStatus::NotFound);
+        // Every register was asked and none holds it, which is an answer of its own - but only if
+        // they were all actually asked. Where none could be, nobody has said anything.
+        return $answered ? new IdentityNumberCheck(IdentityNumberStatus::NotFound) : null;
     }
 
     /**
@@ -219,9 +223,9 @@ class Registry
             try {
                 $check = $source->vatNumberCheck($vatNumber);
             } catch (RuntimeException $e) {
+                // one register being down is not the others' answer, so the rest are still asked
                 Log::error('Could not check the VAT number: ' . $e->getMessage());
-
-                return null;
+                continue;
             }
 
             // the register has nothing to say about this number - the next one may

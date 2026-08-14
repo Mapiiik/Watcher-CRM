@@ -7,6 +7,7 @@ use App\BusinessRegister\IdentityNumberStatus;
 use App\BusinessRegister\Registry;
 use App\BusinessRegister\VatNumberCheck;
 use App\BusinessRegister\VatNumberStatus;
+use App\Test\TestCase\BusinessRegister\Source\BrokenSource;
 use App\Test\TestCase\BusinessRegister\Source\StubSource;
 use App\Test\Traits\ConfigureTestTrait;
 use Cake\Cache\Cache;
@@ -237,6 +238,44 @@ class RegistryTest extends TestCase
         ];
 
         $this->assertSame([], Registry::identityNumberCheck('27496139')?->addresses);
+    }
+
+    /**
+     * A register that could not be reached is not the others' answer - the rest are still asked,
+     * so one being down does not silence a register that would have known.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberCheck()
+     */
+    public function testARegisterThatIsDownDoesNotSilenceTheOthers(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => [
+            'broken' => BrokenSource::class,
+            'stub' => StubSource::class,
+        ]]);
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
+        ];
+
+        $check = Registry::identityNumberCheck('27496139');
+
+        $this->assertNotNull($check);
+        $this->assertSame(IdentityNumberStatus::Found, $check->status);
+        $this->assertSame('NETAIR, s.r.o.', $check->company);
+    }
+
+    /**
+     * Where no register could be reached at all, nobody has said anything - which is not the same
+     * as every one of them saying the number is held by nobody.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberCheck()
+     */
+    public function testNoRegisterReachedSaysNothingRatherThanNotFound(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => ['broken' => BrokenSource::class]]);
+
+        $this->assertNull(Registry::identityNumberCheck('27496139'));
     }
 
     /**
