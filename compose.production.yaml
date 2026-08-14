@@ -24,6 +24,7 @@ services:
       CACHE_CAKEMODEL_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_cake_model_&duration=${CACHE_DURATION:-+10 days}"
       CACHE_APICLIENT_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_api_client_&duration=${CACHE_DURATION:-+10 minutes}"
       CACHE_ADDRESSES_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_api_addresses_&duration=${CACHE_DURATION:-+10 days}"
+      CACHE_BUSINESS_REGISTER_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_business_register_&duration=${CACHE_DURATION:-+10 days}"
       SERVER_NAME: ${APP_NAME:-localhost} # Set to your domain in production (for ACME certificate issuance)
     env_file:
       - ./config/.env

@@ -27,6 +27,7 @@ services:
       CACHE_CAKEMODEL_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_cake_model_&duration=${CACHE_DURATION:-+2 minutes}"
       CACHE_APICLIENT_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_api_client_&duration=${CACHE_DURATION:-+2 minutes}"
       CACHE_ADDRESSES_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_api_addresses_&duration=${CACHE_DURATION:-+2 minutes}"
+      CACHE_BUSINESS_REGISTER_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_business_register_&duration=${CACHE_DURATION:-+2 minutes}"
     ports:
       - 80:80/tcp
 
