@@ -383,6 +383,49 @@ class Customer extends AppEntity
     }
 
     /**
+     * Whether a register calling the customer this is calling them what the CRM does.
+     *
+     * A number that checks out but belongs to somebody else is a mistake no check digit can
+     * catch, and the register's name is what shows it - but only if the two are read for what
+     * they say. Case, spacing and the dots a legal form is written with differ between one
+     * register and another without the company being a different one.
+     *
+     * The name is measured against both what the customer trades as and what they are called,
+     * because a register writes a company where the CRM holds a company and a person where it
+     * holds a person.
+     *
+     * @param string|null $registerName The name as a register wrote it, null when it named none.
+     * @return bool
+     */
+    public function isKnownAs(?string $registerName): bool
+    {
+        $registerName = self::comparableName($registerName);
+        if ($registerName === '') {
+            // a register that named nobody disagrees with nothing
+            return true;
+        }
+
+        return in_array($registerName, array_filter([
+            self::comparableName($this->company),
+            self::comparableName($this->full_name),
+        ]), true);
+    }
+
+    /**
+     * A name reduced to what it says, so that two ways of writing one name read alike.
+     *
+     * @param string|null $name The name as it was written.
+     * @return string
+     */
+    private static function comparableName(?string $name): string
+    {
+        // punctuation is how a legal form is abbreviated, not what tells two companies apart
+        $name = preg_replace('/[^\p{L}\p{N}]+/u', ' ', mb_strtolower(trim((string)$name)));
+
+        return trim((string)$name);
+    }
+
+    /**
      * Where the identification number can be looked up by hand, null when it is not a number any
      * register named here takes.
      *

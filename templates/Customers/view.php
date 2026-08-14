@@ -201,7 +201,8 @@ $remark = function (string $note, bool $wrong = false): string {
                                         : $remark(__('Invalid'), wrong: true))
                                     . ($identityNumberCheck !== null ? $remark(
                                         $identityNumberCheck->note(),
-                                        wrong: $identityNumberCheck->status === IdentityNumberStatus::NotFound,
+                                        wrong: $identityNumberCheck->status === IdentityNumberStatus::NotFound
+                                            || !$customer->isKnownAs($identityNumberCheck->company),
                                     ) : '')
                             ) : '' ?>
                                 <?= $customer->identityNumberPortalUrl() !== null ? $this->Html->link(
@@ -219,7 +220,10 @@ $remark = function (string $note, bool $wrong = false): string {
                                     wrong: $vatNumberCheck->status === VatNumberStatus::Invalid,
                                 )
                                     . ($vatNumberCheck->company !== null
-                                        ? $remark($vatNumberCheck->company)
+                                        ? $remark(
+                                            $vatNumberCheck->company,
+                                            wrong: !$customer->isKnownAs($vatNumberCheck->company),
+                                        )
                                         : '')
                                 : '' ?></td>
                         </tr>

@@ -249,6 +249,71 @@ class CustomerTest extends TestCase
     }
 
     /**
+     * A register writing the name a little differently is still the same company - the dots a
+     * legal form is abbreviated with, and the case it is written in, are not what tells two
+     * companies apart.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::isKnownAs()
+     */
+    public function testANameWrittenDifferentlyIsStillTheSameName(): void
+    {
+        $customer = new Customer(['company' => 'NETAIR, s.r.o.']);
+
+        $this->assertTrue($customer->isKnownAs('NETAIR, s.r.o.'));
+        $this->assertTrue($customer->isKnownAs('NETAIR s. r. o.'));
+        $this->assertTrue($customer->isKnownAs('  netair   s.r.o.  '));
+    }
+
+    /**
+     * A different company is a different company, which is the mistake worth showing: a number
+     * that checks out can still belong to somebody else.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::isKnownAs()
+     */
+    public function testADifferentNameIsNoticed(): void
+    {
+        $customer = new Customer(['company' => 'NETAIR, s.r.o.']);
+
+        $this->assertFalse($customer->isKnownAs('Asseco Central Europe, a.s.'));
+        $this->assertFalse($customer->isKnownAs('NETAIR CZ, s.r.o.'));
+    }
+
+    /**
+     * A sole trader is held under their own name rather than a company, and that is what the
+     * register writes for them too.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::isKnownAs()
+     */
+    public function testASoleTraderIsMeasuredAgainstTheirName(): void
+    {
+        $customer = new Customer([
+            'title' => 'Ing.',
+            'first_name' => 'Marek',
+            'last_name' => 'Zbořil',
+        ]);
+
+        $this->assertTrue($customer->isKnownAs('Ing. Marek Zbořil'));
+        $this->assertFalse($customer->isKnownAs('Marek Novák'));
+    }
+
+    /**
+     * A register that named nobody has said nothing to disagree with.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::isKnownAs()
+     */
+    public function testARegisterThatNamedNobodyDisagreesWithNothing(): void
+    {
+        $customer = new Customer(['company' => 'NETAIR, s.r.o.']);
+
+        $this->assertTrue($customer->isKnownAs(null));
+        $this->assertTrue($customer->isKnownAs('   '));
+    }
+
+    /**
      * A number that fails its own check digit is not asked about at all - no register holds it,
      * and the check digit already said so without anyone being asked.
      *

@@ -619,6 +619,63 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * A register naming somebody else under the customer's identification number is marked as the
+     * mistake it is - the number checks out, so nothing else would show it.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewMarksARegisterNamingSomebodyElse(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'Somebody Else, a.s.'],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+
+        $customers = $this->getTableLocator()->get('Customers');
+        /** @var \App\Model\Entity\Customer $customer */
+        $customer = $customers->get(self::CUSTOMER_ID);
+        $customer->company = 'NETAIR, s.r.o.';
+        $customer->identity_number = '27496139';
+        $customers->saveOrFail($customer);
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<span class="error-text"> (Somebody Else, a.s.)</span>');
+    }
+
+    /**
+     * The same name written the way another register writes it is not a mistake, so it is left
+     * alone - a legal form abbreviated differently is the same company.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewLeavesAMatchingNameUnmarked(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR s. r. o.'],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+
+        $customers = $this->getTableLocator()->get('Customers');
+        /** @var \App\Model\Entity\Customer $customer */
+        $customer = $customers->get(self::CUSTOMER_ID);
+        $customer->company = 'NETAIR, s.r.o.';
+        $customer->identity_number = '27496139';
+        $customers->saveOrFail($customer);
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(' (NETAIR s. r. o.)');
+        $this->assertResponseNotContains('<span class="error-text"> (NETAIR s. r. o.)</span>');
+    }
+
+    /**
      * A company with an entry like NETAIR's, which two people sit in the statutory body of.
      *
      * @return void
