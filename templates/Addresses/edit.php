@@ -5,6 +5,7 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $countries
  * @var string|null $searchCountryCode
+ * @var string|null $registeredSeatKey
  */
 
 $this->Html->script('addresses.js', ['block' => true]);
@@ -46,13 +47,6 @@ $this->Html->script('addresses.js', ['block' => true]);
                     </div>
                     <div class="column">
                         <?php
-                        echo $this->Form->control('address_registry_search', [
-                            'type' => 'select',
-                            'id' => 'address-registry-search',
-                            'label' => __('Search Address'),
-                            'disabled' => $searchCountryCode === null, // disable search if no country code is available
-                            'data-country-code' => $searchCountryCode,
-                        ]);
                         echo $this->Form->control('street');
                         ?>
                         <div class="row">
@@ -95,6 +89,32 @@ $this->Html->script('addresses.js', ['block' => true]);
                     echo $this->Form->control('gps_x');
                 }
                 ?>
+            </fieldset>
+            <fieldset>
+                <legend><?= __('Address Register Search') ?></legend>
+                <div class="row">
+                    <div class="column">
+                        <?php
+                        // the seat is offered only where a business register named one - it is
+                        // rarely where the service is installed, so it is asked for and never assumed
+                        if ($registeredSeatKey !== null) {
+                            echo $this->Form->button(__('Fill In the Registered Seat'), [
+                                'type' => 'submit',
+                                'name' => 'registered_seat',
+                                'value' => '1',
+                                'class' => 'button button-small button-outline float-right',
+                            ]);
+                        }
+                        echo $this->Form->control('address_registry_search', [
+                            'type' => 'select',
+                            'id' => 'address-registry-search',
+                            'label' => __('Search Address'),
+                            'disabled' => $searchCountryCode === null, // disable search if no country code is available
+                            'data-country-code' => $searchCountryCode,
+                        ]);
+                        ?>
+                    </div>
+                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

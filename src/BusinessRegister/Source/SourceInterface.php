@@ -15,7 +15,14 @@ namespace App\BusinessRegister\Source;
  *         'identity_number' => '27074358',
  *         'vat_number'      => 'CZ27074358',                   // null when the register has none
  *         'address'         => 'Budějovická 778/3a, Praha 4',  // only ever a label, never stored
+ *         'address_key'     => 'cz|41405609',                  // the seat in the address registry
  *     ]
+ *
+ * The `address_key` is what the national address registry knows the seat by, in the
+ * "source|reference" form the address form is filled in from. Only a register that hands over
+ * such a reference can offer it - the address is then read from the address registry rather than
+ * copied out of the business register, so it arrives parsed and standardised. Null everywhere
+ * else, including for a company whose seat is abroad.
  */
 interface SourceInterface
 {

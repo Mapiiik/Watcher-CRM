@@ -32,6 +32,8 @@ class AresSourceTest extends TestCase
                 'kodStatu' => 'CZ',
                 'nazevObce' => 'Praha',
                 'psc' => 14000,
+                'kodAdresnihoMista' => 41405609,
+                'standardizaceAdresy' => true,
                 'textovaAdresa' => 'Budějovická 778/3a, Michle, 14000 Praha 4',
             ],
             'pravniForma' => '121',
@@ -53,9 +55,38 @@ class AresSourceTest extends TestCase
                 'identity_number' => '27074358',
                 'vat_number' => 'CZ27074358',
                 'address' => 'Budějovická 778/3a, Michle, 14000 Praha 4',
+                'address_key' => 'cz|41405609',
             ],
             AresSource::mapSubject($this->subject()),
         );
+    }
+
+    /**
+     * The seat comes with the RÚIAN code the national address registry answers to, so an address
+     * form is filled in from the registry rather than from what the business register wrote down.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\AresSource::mapSubject()
+     */
+    public function testTheSeatCarriesTheAddressRegistryReference(): void
+    {
+        $this->assertSame('cz|41405609', AresSource::mapSubject($this->subject())['address_key']);
+    }
+
+    /**
+     * A seat ARES did not standardise has no such code - that is what a company registered
+     * abroad looks like, and there is nothing for the address registry to be asked.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\AresSource::mapSubject()
+     */
+    public function testASeatAresDidNotStandardiseHasNoAddressRegistryReference(): void
+    {
+        $abroad = $this->subject();
+        $abroad['sidlo']['standardizaceAdresy'] = false;
+        unset($abroad['sidlo']['kodAdresnihoMista']);
+
+        $this->assertNull(AresSource::mapSubject($abroad)['address_key']);
     }
 
     /**

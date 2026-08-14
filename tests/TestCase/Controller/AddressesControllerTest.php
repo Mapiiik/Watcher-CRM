@@ -4,9 +4,13 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\AddressesController;
+use App\Test\TestCase\BusinessRegister\Source\StubSource;
+use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Cache\Cache;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -15,8 +19,38 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(AddressesController::class)]
 class AddressesControllerTest extends TestCase
 {
+    use ConfigureTestTrait;
     use ControllerTestTrait;
     use IntegrationTestTrait;
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        StubSource::reset();
+        Cache::clear('business_register');
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    public function tearDown(): void
+    {
+        $this->restoreConfigure();
+        Cache::clear('business_register');
+        StubSource::reset();
+
+        parent::tearDown();
+    }
 
     /**
      * Customer the nested routes hang off.
@@ -96,6 +130,114 @@ class AddressesControllerTest extends TestCase
         $this->get('/addresses/add');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * Under a customer whose seat a business register knows, the form offers to fill it in.
+     *
+     * The seat is rarely where the service is installed, so it is offered rather than assumed -
+     * which is what this asks about, not what filling it in then produces. That last step goes to
+     * the national address registry over the network and is left alone here for the same reason
+     * the address search is.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::add()
+     */
+    public function testAddOffersTheRegisteredSeatOfACustomerARegisterKnows(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '27496139',
+                'company' => 'NETAIR, s.r.o.',
+                'address_key' => 'cz|16903153',
+            ],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        $this->givenCustomerIdentityNumber('27496139');
+
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/addresses/add');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="registered_seat"');
+    }
+
+    /**
+     * With no register able to name a seat, nothing is offered - an empty button would only
+     * promise something it could not deliver.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::add()
+     */
+    public function testAddOffersNoSeatWhenNoRegisterNamesOne(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        $this->givenCustomerIdentityNumber('27496139');
+
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/addresses/add');
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('name="registered_seat"');
+    }
+
+    /**
+     * The button posts a field of its own, and `Form->button()` locks none - so the form has to
+     * say the field is unlocked, or the security check blackholes the very submit that was meant
+     * to fill the seat in.
+     *
+     * The rendered token is what a browser would send back, so that is what is read here rather
+     * than posting a token the test built for itself - one of those matches whatever it is given
+     * and would pass either way.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::add()
+     * @link \App\Controller\AddressesController::edit()
+     */
+    public function testTheSeatButtonIsUnlockedForTheFormSecurityCheck(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '27496139',
+                'company' => 'NETAIR, s.r.o.',
+                'address_key' => 'cz|16903153',
+            ],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        $this->givenCustomerIdentityNumber('27496139');
+
+        $this->login();
+
+        $urls = [
+            '/customers/' . self::CUSTOMER_ID . '/addresses/add',
+            '/addresses/edit/' . $this->firstId('Addresses'),
+        ];
+
+        foreach ($urls as $url) {
+            $this->get($url);
+
+            $this->assertResponseOk();
+            $this->assertResponseContains('name="registered_seat"');
+            $this->assertMatchesRegularExpression(
+                '/name="_Token\[unlocked\]"[^>]*value="[^"]*registered_seat[^"]*"/',
+                (string)$this->_response?->getBody(),
+                'The seat button posts a field the form security check would refuse: ' . $url,
+            );
+        }
+    }
+
+    /**
+     * Gives the fixture customer an identification number to be looked up by.
+     *
+     * @param string $identityNumber The number to give them.
+     * @return void
+     */
+    private function givenCustomerIdentityNumber(string $identityNumber): void
+    {
+        $customers = $this->getTableLocator()->get('Customers');
+        $customer = $customers->get(self::CUSTOMER_ID);
+        $customer->identity_number = $identityNumber;
+        $customers->saveOrFail($customer);
     }
 
     /**

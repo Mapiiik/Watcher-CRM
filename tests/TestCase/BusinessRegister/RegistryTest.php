@@ -200,6 +200,43 @@ class RegistryTest extends TestCase
     }
 
     /**
+     * Where the register also says which address the seat is, that comes along with the answer -
+     * an address form is then filled in from the address registry rather than from what the
+     * business register wrote down.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberCheck()
+     */
+    public function testTheSeatComesAlongWithTheAnswer(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '27496139',
+                'company' => 'NETAIR, s.r.o.',
+                'address_key' => 'cz|16903153',
+            ],
+        ];
+
+        $this->assertSame('cz|16903153', Registry::identityNumberCheck('27496139')?->addressKey);
+    }
+
+    /**
+     * A register with no such reference to give leaves the seat unnamed, which is what a company
+     * registered abroad looks like.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberCheck()
+     */
+    public function testASeatTheRegisterCannotPointAtIsLeftUnnamed(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'company' => 'NETAIR, s.r.o.'],
+        ];
+
+        $this->assertNull(Registry::identityNumberCheck('27496139')?->addressKey);
+    }
+
+    /**
      * Every register having been asked and none holding the number is an answer of its own, and
      * a useful one - the check digit cannot notice a number nobody was ever given.
      *

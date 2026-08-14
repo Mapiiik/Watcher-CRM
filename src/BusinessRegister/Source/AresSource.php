@@ -198,6 +198,29 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             'identity_number' => $ico !== '' ? $ico : null,
             'vat_number' => $vatNumber !== '' ? $vatNumber : null,
             'address' => $address !== '' ? $address : null,
+            'address_key' => self::readAddressKey($sidlo),
         ];
+    }
+
+    /**
+     * The seat as the national address registry knows it.
+     *
+     * ARES carries the RÚIAN address place code, which is what the address registry answers to
+     * for the Czech Republic - so the address itself is read from there rather than taken apart
+     * here. A seat ARES did not standardise has no such code, which is what a company registered
+     * abroad looks like.
+     *
+     * @param array<int|string, mixed> $seat The `sidlo` as ARES returned it.
+     * @return string|null
+     */
+    private static function readAddressKey(array $seat): ?string
+    {
+        if (($seat['standardizaceAdresy'] ?? false) !== true) {
+            return null;
+        }
+
+        $code = trim((string)($seat['kodAdresnihoMista'] ?? ''));
+
+        return $code !== '' ? 'cz|' . $code : null;
     }
 }

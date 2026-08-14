@@ -101,17 +101,31 @@ class AddressesController extends AppController
             $address->customer_id = $customer->id;
         }
 
+        // the registered seat of the customer this address belongs to, as the address registry
+        // knows it - null when there is no customer, no company, or a seat the registry has
+        // nothing to say about
+        $registeredSeatKey = isset($customer) ? $customer->identityNumberCheck()?->addressKey : null;
+
         if ($this->getRequest()->is('post')) {
             $address = $this->Addresses->patchEntity(
                 $address,
                 $this->dataWithAdditionalParameters($this->Addresses, $this->getRequest()->getData()),
             );
 
-            if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
+            $registeredSeatAsked = $this->getRequest()->getData('registered_seat') !== null;
+
+            if (
+                $this->getRequest()->getData('refresh') == 'refresh'
+                || $registeredSeatAsked
+                || $address->hasErrors()
+            ) {
                 // only refresh
 
-                // perform a lookup to pre-fill the address fields based on the selected address registry entry
-                $addressRegistryKey = $this->getRequest()->getData('address_registry_search');
+                // perform a lookup to pre-fill the address fields based on the selected address registry entry,
+                // or on the registered seat when that is what was asked for
+                $addressRegistryKey = $registeredSeatAsked
+                    ? $registeredSeatKey
+                    : $this->getRequest()->getData('address_registry_search');
                 if (!empty($addressRegistryKey) && is_string($addressRegistryKey)) {
                     try {
                         $address = $this->Addresses->patchEntity(
@@ -160,7 +174,7 @@ class AddressesController extends AppController
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        $this->set(compact('address', 'customers', 'countries', 'searchCountryCode'));
+        $this->set(compact('address', 'customers', 'countries', 'searchCountryCode', 'registeredSeatKey'));
 
         return null;
     }
@@ -174,16 +188,29 @@ class AddressesController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $address = $this->Addresses->get($id);
+        $address = $this->Addresses->get($id, contain: ['Customers']);
+
+        // the registered seat of the customer this address belongs to, as the address registry
+        // knows it - null when there is no company, or a seat the registry has nothing to say about
+        $registeredSeatKey = $address->customer?->identityNumberCheck()?->addressKey;
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
 
-            if ($this->getRequest()->getData('refresh') == 'refresh' || $address->hasErrors()) {
+            $registeredSeatAsked = $this->getRequest()->getData('registered_seat') !== null;
+
+            if (
+                $this->getRequest()->getData('refresh') == 'refresh'
+                || $registeredSeatAsked
+                || $address->hasErrors()
+            ) {
                 // only refresh
 
-                // perform a lookup to pre-fill the address fields based on the selected address registry entry
-                $addressRegistryKey = $this->getRequest()->getData('address_registry_search');
+                // perform a lookup to pre-fill the address fields based on the selected address registry entry,
+                // or on the registered seat when that is what was asked for
+                $addressRegistryKey = $registeredSeatAsked
+                    ? $registeredSeatKey
+                    : $this->getRequest()->getData('address_registry_search');
                 if (!empty($addressRegistryKey) && is_string($addressRegistryKey)) {
                     try {
                         $address = $this->Addresses->patchEntity(
@@ -232,7 +259,7 @@ class AddressesController extends AppController
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        $this->set(compact('address', 'customers', 'countries', 'searchCountryCode'));
+        $this->set(compact('address', 'customers', 'countries', 'searchCountryCode', 'registeredSeatKey'));
 
         return null;
     }
