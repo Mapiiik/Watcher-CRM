@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-12 20:30+0200\n"
-"PO-Revision-Date: 2026-08-12 20:35+0200\n"
+"POT-Creation-Date: 2026-08-14 14:50+0200\n"
+"PO-Revision-Date: 2026-08-14 14:50+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -15,7 +15,27 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: config/settings.php:100
+#: config/settings.php:99
+msgid "The Czech business register. It is public and asks for no credentials."
+msgstr ""
+"Český obchodní rejstřík. Je veřejně přístupný a nevyžaduje žádné "
+"přihlašovací údaje."
+
+#: config/settings.php:106
+msgid ""
+"The Croatian court register. It only answers with the credentials issued at "
+"sudreg-data.gov.hr."
+msgstr ""
+"Chorvatský soudní rejstřík. Odpovídá pouze na dotazy podané pomocí "
+"přihlašovacích údajů vydaných na stránkách sudreg-data.gov.hr."
+
+#: config/settings.php:115
+msgid "The European VAT number check. It answers to a number, never to a name."
+msgstr ""
+"Ověření evropského čísla pro účely DPH. Vždy se vztahuje k číslu, nikdy k "
+"jménu."
+
+#: config/settings.php:130
 msgid "The suggestions offered under the access description on a contract."
 msgstr "Návrhy uvedené v části „Popis přístupu“ na smlouvě."
 
@@ -129,6 +149,65 @@ msgstr "Služby (fakturované)"
 #: src/BulkMessages/Filter/ServicesFilter.php:120
 msgid "Without a service type"
 msgstr "Bez typu služby"
+
+#: src/BusinessRegister/IdentityNumberStatus.php:28
+msgid "in the register"
+msgstr "v registru"
+
+#: src/BusinessRegister/IdentityNumberStatus.php:29
+msgid "not in the register"
+msgstr "není v registru"
+
+#: src/BusinessRegister/Source/AresSource.php:43
+msgid "CZ - ARES"
+msgstr "CZ – ARES"
+
+#: src/BusinessRegister/Source/BaseSource.php:79
+msgid "The {0} register is not configured."
+msgstr "Registr {0} není nakonfigurován."
+
+#: src/BusinessRegister/Source/BaseSource.php:109
+msgid "The {0} register returned HTTP {1}."
+msgstr "Registr {0} vrátil HTTP {1}."
+
+#: src/BusinessRegister/Source/BaseSource.php:118
+msgid "The {0} register returned an invalid response."
+msgstr "Registr {0} vrátil neplatnou odpověď."
+
+#: src/BusinessRegister/Source/BaseSource.php:133
+msgid "The {0} register is unreachable: {1}"
+msgstr "Registr {0} je nedostupný: {1}"
+
+#: src/BusinessRegister/Source/SudregSource.php:42
+msgid "HR - Sudski registar"
+msgstr "HR - Sudski registar"
+
+#: src/BusinessRegister/Source/SudregSource.php:187
+msgid "The {0} register did not issue a token."
+msgstr "Registr {0} nevydal token."
+
+#: src/BusinessRegister/Source/ViesSource.php:39
+msgid "EU - VIES (by VAT number only)"
+msgstr "EU – VIES (pouze podle DIČ)"
+
+#: src/BusinessRegister/VatNumberStatus.php:33
+#: src/BusinessRegister/VatNumberStatus.php:34 templates/Customers/print.php:67
+#: templates/Customers/view.php:200
+msgid "OK"
+msgstr "OK"
+
+#: src/BusinessRegister/VatNumberStatus.php:33
+msgid "VAT payer"
+msgstr "plátce DPH"
+
+#: src/BusinessRegister/VatNumberStatus.php:34
+msgid "not a VAT payer"
+msgstr "není plátcem DPH"
+
+#: src/BusinessRegister/VatNumberStatus.php:35 templates/Customers/print.php:67
+#: templates/Customers/view.php:201
+msgid "Invalid"
+msgstr "Neplatné"
 
 #: src/Command/ProcessEmailsCommand.php:43
 msgid "Number of emails to process."
@@ -354,34 +433,34 @@ msgstr "Účetní profil byl smazán."
 msgid "The accounting profile could not be deleted. Please, try again."
 msgstr "Účetní profil nelze smazat. Zkuste to prosím znovu."
 
-#: src/Controller/AddressesController.php:123
-#: src/Controller/AddressesController.php:195
+#: src/Controller/AddressesController.php:137
+#: src/Controller/AddressesController.php:222
 msgid "Could not retrieve address from national address registry: {0}"
 msgstr "Nepodařilo se načíst adresu z národního adresního registru: {0}"
 
-#: src/Controller/AddressesController.php:140
-#: src/Controller/AddressesController.php:212
+#: src/Controller/AddressesController.php:154
+#: src/Controller/AddressesController.php:239
 msgid "The address has been saved."
 msgstr "Adresa byla uložena."
 
-#: src/Controller/AddressesController.php:144
-#: src/Controller/AddressesController.php:216
+#: src/Controller/AddressesController.php:158
+#: src/Controller/AddressesController.php:243
 msgid "The address could not be saved. Please, try again."
 msgstr "Adresu nelze uložit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:252
+#: src/Controller/AddressesController.php:279
 msgid "The address has been deleted."
 msgstr "Adresa byla odstraněna."
 
-#: src/Controller/AddressesController.php:255
+#: src/Controller/AddressesController.php:282
 msgid "The address could not be deleted. Please, try again."
 msgstr "Adresu nelze odstranit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:298
+#: src/Controller/AddressesController.php:325
 msgid "Could not retrieve national address registry metadata: {0}"
 msgstr "Nelze načíst metadata z národního registru adres: {0}"
 
-#: src/Controller/AddressesController.php:307
+#: src/Controller/AddressesController.php:334
 msgid ""
 "National address registry lookup is not available. Could not retrieve "
 "supported countries list."
@@ -389,33 +468,33 @@ msgstr ""
 "Vyhledávání v národním registru adres není k dispozici. Nepodařilo se načíst "
 "seznam podporovaných zemí."
 
-#: src/Controller/AddressesController.php:390
+#: src/Controller/AddressesController.php:417
 msgid "Country code is not defined for the address country."
 msgstr "Pro zemi adresy není zadán kód země."
 
-#: src/Controller/AddressesController.php:402
+#: src/Controller/AddressesController.php:429
 msgid ""
 "National address registry lookup is not supported for country code: {0}."
 msgstr ""
 "Vyhledávání v národním registru adres není pro kód země {0} podporováno."
 
-#: src/Controller/AddressesController.php:423
+#: src/Controller/AddressesController.php:450
 msgid "Multiple ({0}) addresses found in national ({1}) address registry."
 msgstr "V národním registru adres ({1}) bylo nalezeno více adres ({0})."
 
-#: src/Controller/AddressesController.php:432
+#: src/Controller/AddressesController.php:459
 msgid "Address found in national ({0}) address registry."
 msgstr "Adresa nalezena v národním ({0}) registru adres."
 
-#: src/Controller/AddressesController.php:445
+#: src/Controller/AddressesController.php:472
 msgid "Error during national ({0}) address registry lookup: {1}"
 msgstr "Chyba při vyhledávání v národním registru adres ({0}): {1}"
 
-#: src/Controller/AddressesController.php:455
+#: src/Controller/AddressesController.php:482
 msgid "Address could not be found in national ({0}) address registry."
 msgstr "Adresu se nepodařilo najít v národním ({0}) registru adres."
 
-#: src/Controller/AddressesController.php:618
+#: src/Controller/AddressesController.php:645
 msgid ""
 "Addresses updated from national address registries: {0} updated, {1} "
 "unchanged, {2} skipped, {3} failed."
@@ -424,12 +503,17 @@ msgstr ""
 "beze změny, {2} přeskočeno, {3} selhalo."
 
 #: src/Controller/Api/AddressesBridgeController.php:52
+#: src/Controller/Api/BusinessRegisterBridgeController.php:49
 msgid "Invalid request parameters"
 msgstr "Neplatné parametry požadavku"
 
 #: src/Controller/Api/AgentBridgeController.php:39
 msgid "Invalid IP address"
 msgstr "Neplatná IP adresa"
+
+#: src/Controller/Api/BusinessRegisterBridgeController.php:54
+msgid "Unknown business register."
+msgstr "Neznámý obchodní rejstřík."
 
 #: src/Controller/AppController.php:97
 msgid "Unable to find results on page {0}. Redirect to page 1."
@@ -648,8 +732,8 @@ msgstr "Nastavte prosím datum, do kterého je smlouva platná."
 
 #: src/Controller/ContractsController.php:801
 #: templates/AccountingProfiles/view.php:88 templates/Contracts/index.php:33
-#: templates/Customers/index.php:74 templates/Customers/view.php:95
-#: templates/Customers/view.php:516
+#: templates/Customers/index.php:74 templates/Customers/view.php:115
+#: templates/Customers/view.php:556
 msgid "Contracts"
 msgstr "Smlouvy"
 
@@ -663,7 +747,7 @@ msgid "indefinitely"
 msgstr "na dobu neurčitou"
 
 #: src/Controller/ContractsController.php:880
-#: src/Controller/CustomersController.php:533
+#: src/Controller/CustomersController.php:646
 msgid "Invalid type of document."
 msgstr "Neplatný typ dokumentu."
 
@@ -829,7 +913,7 @@ msgstr "Zpráva pro zákazníka byla smazána."
 msgid "The customer message could not be deleted. Please, try again."
 msgstr "Zprávu pro zákazníka nebylo možné odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/CustomersController.php:153
+#: src/Controller/CustomersController.php:156
 msgid ""
 "Please use the customer number or company identification number in the "
 "search."
@@ -837,21 +921,33 @@ msgstr ""
 "Při vyhledávání prosím použijte zákaznické číslo nebo identifikační číslo "
 "společnosti."
 
-#: src/Controller/CustomersController.php:418
-#: src/Controller/CustomersController.php:446
+#: src/Controller/CustomersController.php:428
+#: src/Controller/CustomersController.php:475
 msgid "The customer has been saved."
 msgstr "Zákazník byl uložen."
 
-#: src/Controller/CustomersController.php:422
-#: src/Controller/CustomersController.php:450
+#: src/Controller/CustomersController.php:432
+#: src/Controller/CustomersController.php:479
 msgid "The customer could not be saved. Please, try again."
 msgstr "Zákazníka nelze uložit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:473
+#: src/Controller/CustomersController.php:525
+msgid "Could not retrieve the company from the business register: {0}"
+msgstr "Společnost se nepodařilo vyhledat v obchodním rejstříku: {0}"
+
+#: src/Controller/CustomersController.php:548
+msgid "Invalid business register reference."
+msgstr "Neplatný odkaz na obchodní rejstřík."
+
+#: src/Controller/CustomersController.php:557
+msgid "The company is no longer held by the register."
+msgstr "Společnost již není vedena v rejstříku."
+
+#: src/Controller/CustomersController.php:586
 msgid "The customer has been deleted."
 msgstr "Zákazník byl odstraněn."
 
-#: src/Controller/CustomersController.php:476
+#: src/Controller/CustomersController.php:589
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
 
@@ -1061,7 +1157,7 @@ msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 #: templates/Addresses/index.php:87 templates/Addresses/view.php:116
 #: templates/Addresses/view.php:128 templates/Contracts/view.php:186
 #: templates/Countries/view.php:93 templates/Countries/view.php:100
-#: templates/Customers/view.php:475 templates/Customers/view.php:482
+#: templates/Customers/view.php:515 templates/Customers/view.php:522
 msgid "unknown"
 msgstr "neznámé"
 
@@ -1273,14 +1369,14 @@ msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 #: src/Controller/TasksController.php:456 src/Model/Enum/AddressType.php:26
 #: templates/Commissions/view.php:100 templates/ContractStates/view.php:183
 #: templates/Contracts/print.php:76 templates/Contracts/view.php:172
-#: templates/Customers/view.php:524 templates/ServiceTypes/view.php:165
+#: templates/Customers/view.php:564 templates/ServiceTypes/view.php:165
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
 #: src/Controller/TasksController.php:469
 #: src/Model/Enum/CustomerMessageType.php:27
 #: src/Utility/ServiceChangeMessageBuilder.php:163
-#: templates/Customers/view.php:289 templates/Emails/view.php:43
+#: templates/Customers/view.php:329 templates/Emails/view.php:43
 #: templates/TaskStates/view.php:65 templates/TaskTypes/view.php:61
 #: templates/Tasks/view.php:63 templates/email/html/task_notification.php:52
 msgid "Email"
@@ -1288,7 +1384,7 @@ msgstr "E-mail"
 
 #: src/Controller/TasksController.php:470
 #: src/Utility/ServiceChangeMessageBuilder.php:164
-#: templates/Customers/view.php:338 templates/Phones/view.php:43
+#: templates/Customers/view.php:378 templates/Phones/view.php:43
 #: templates/TaskStates/view.php:66 templates/TaskTypes/view.php:62
 #: templates/Tasks/view.php:67 templates/email/html/task_notification.php:56
 msgid "Phone"
@@ -1396,11 +1492,11 @@ msgstr "Údaje o typu služby nejsou k dispozici."
 msgid "Contract versions data not available."
 msgstr "Údaje o verzích smluv nejsou k dispozici."
 
-#: src/Model/Entity/Customer.php:458 src/Model/Entity/Customer.php:480
+#: src/Model/Entity/Customer.php:450 src/Model/Entity/Customer.php:472
 msgid "Contracts data not available."
 msgstr "Údaje o smlouvách nejsou k dispozici."
 
-#: src/Model/Entity/Customer.php:495
+#: src/Model/Entity/Customer.php:487
 msgid "Accounting profile data not available."
 msgstr "Údaje o účetním profilu nejsou k dispozici."
 
@@ -1492,12 +1588,12 @@ msgstr "Předávací protokol - Deinstalace připojení k internetu"
 #: templates/Contracts/print.php:102 templates/Contracts/view.php:212
 #: templates/Customers/print.php:128 templates/Customers/print.php:132
 #: templates/Customers/print.php:136 templates/Customers/print.php:140
-#: templates/Customers/view.php:240 templates/Customers/view.php:244
-#: templates/Customers/view.php:248 templates/Customers/view.php:252
-#: templates/Customers/view.php:299 templates/Customers/view.php:300
-#: templates/Customers/view.php:301 templates/Customers/view.php:348
-#: templates/Customers/view.php:349 templates/Customers/view.php:350
-#: templates/Customers/view.php:400 templates/Customers/view.php:543
+#: templates/Customers/view.php:280 templates/Customers/view.php:284
+#: templates/Customers/view.php:288 templates/Customers/view.php:292
+#: templates/Customers/view.php:339 templates/Customers/view.php:340
+#: templates/Customers/view.php:341 templates/Customers/view.php:388
+#: templates/Customers/view.php:389 templates/Customers/view.php:390
+#: templates/Customers/view.php:440 templates/Customers/view.php:583
 #: templates/Emails/index.php:46 templates/Emails/index.php:47
 #: templates/Emails/index.php:48 templates/Emails/view.php:48
 #: templates/Emails/view.php:52 templates/Emails/view.php:56
@@ -1559,12 +1655,12 @@ msgstr "Ne"
 #: templates/Contracts/print.php:102 templates/Contracts/view.php:212
 #: templates/Customers/print.php:128 templates/Customers/print.php:132
 #: templates/Customers/print.php:136 templates/Customers/print.php:140
-#: templates/Customers/view.php:240 templates/Customers/view.php:244
-#: templates/Customers/view.php:248 templates/Customers/view.php:252
-#: templates/Customers/view.php:299 templates/Customers/view.php:300
-#: templates/Customers/view.php:301 templates/Customers/view.php:348
-#: templates/Customers/view.php:349 templates/Customers/view.php:350
-#: templates/Customers/view.php:400 templates/Customers/view.php:543
+#: templates/Customers/view.php:280 templates/Customers/view.php:284
+#: templates/Customers/view.php:288 templates/Customers/view.php:292
+#: templates/Customers/view.php:339 templates/Customers/view.php:340
+#: templates/Customers/view.php:341 templates/Customers/view.php:388
+#: templates/Customers/view.php:389 templates/Customers/view.php:390
+#: templates/Customers/view.php:440 templates/Customers/view.php:583
 #: templates/Emails/index.php:46 templates/Emails/index.php:47
 #: templates/Emails/index.php:48 templates/Emails/view.php:48
 #: templates/Emails/view.php:52 templates/Emails/view.php:56
@@ -2030,8 +2126,8 @@ msgstr "Není nainstalováno přes Git"
 #: templates/AccountingProfiles/edit.php:10
 #: templates/AccountingProfiles/index.php:37
 #: templates/AccountingProfiles/view.php:10
-#: templates/AccountingProfiles/view.php:90 templates/Addresses/add.php:15
-#: templates/Addresses/edit.php:15 templates/Addresses/index.php:46
+#: templates/AccountingProfiles/view.php:90 templates/Addresses/add.php:16
+#: templates/Addresses/edit.php:16 templates/Addresses/index.php:46
 #: templates/Addresses/view.php:10 templates/Billings/add.php:13
 #: templates/Billings/bulk_service_change.php:15 templates/Billings/edit.php:13
 #: templates/Billings/index.php:40 templates/Billings/service_change.php:11
@@ -2061,14 +2157,14 @@ msgstr "Není nainstalováno přes Git"
 #: templates/CustomerMessages/add_bulk/step_purpose.php:12
 #: templates/CustomerMessages/edit.php:11
 #: templates/CustomerMessages/index.php:46
-#: templates/CustomerMessages/view.php:10 templates/Customers/add.php:11
-#: templates/Customers/edit.php:11
+#: templates/CustomerMessages/view.php:10 templates/Customers/add.php:15
+#: templates/Customers/edit.php:15
 #: templates/Customers/identity_number_check.php:20
 #: templates/Customers/index.php:79 templates/Customers/print.php:13
-#: templates/Customers/view.php:11 templates/Customers/view.php:294
-#: templates/Customers/view.php:343 templates/Customers/view.php:394
-#: templates/Customers/view.php:454 templates/Customers/view.php:533
-#: templates/Customers/view.php:788 templates/DealerCommissions/add.php:12
+#: templates/Customers/view.php:31 templates/Customers/view.php:334
+#: templates/Customers/view.php:383 templates/Customers/view.php:434
+#: templates/Customers/view.php:494 templates/Customers/view.php:573
+#: templates/Customers/view.php:828 templates/DealerCommissions/add.php:12
 #: templates/DealerCommissions/edit.php:12
 #: templates/DealerCommissions/index.php:34
 #: templates/DealerCommissions/view.php:10 templates/Emails/add.php:11
@@ -2143,7 +2239,7 @@ msgstr "Akce"
 #: templates/AccessCredentials/add.php:14
 #: templates/AccessCredentials/edit.php:22
 #: templates/AccessCredentials/view.php:25 templates/Contracts/view.php:37
-#: templates/Customers/view.php:37 templates/Overviews/index.php:74
+#: templates/Customers/view.php:57 templates/Overviews/index.php:74
 msgid "List Access Credentials"
 msgstr "Seznam přístupových oprávnění"
 
@@ -2170,8 +2266,8 @@ msgstr "IP adresa"
 #: templates/AccessCredentials/add.php:64
 #: templates/AccessCredentials/edit.php:72
 #: templates/AccountingProfiles/add.php:33
-#: templates/AccountingProfiles/edit.php:41 templates/Addresses/add.php:95
-#: templates/Addresses/edit.php:99 templates/Billings/add.php:63
+#: templates/AccountingProfiles/edit.php:41 templates/Addresses/add.php:100
+#: templates/Addresses/edit.php:104 templates/Billings/add.php:63
 #: templates/Billings/bulk_service_change.php:136
 #: templates/Billings/edit.php:68 templates/Billings/service_change.php:168
 #: templates/BorrowedEquipments/add.php:39
@@ -2182,8 +2278,8 @@ msgstr "IP adresa"
 #: templates/Contracts/edit.php:135 templates/Countries/add.php:24
 #: templates/Countries/edit.php:29 templates/CustomerLabels/add.php:47
 #: templates/CustomerLabels/edit.php:55 templates/CustomerMessages/add.php:37
-#: templates/CustomerMessages/edit.php:45 templates/Customers/add.php:68
-#: templates/Customers/edit.php:73 templates/DealerCommissions/add.php:32
+#: templates/CustomerMessages/edit.php:45 templates/Customers/add.php:87
+#: templates/Customers/edit.php:92 templates/DealerCommissions/add.php:32
 #: templates/DealerCommissions/edit.php:40 templates/Emails/add.php:31
 #: templates/Emails/edit.php:36 templates/EquipmentTypes/add.php:29
 #: templates/EquipmentTypes/edit.php:37 templates/IpAddresses/add.php:33
@@ -2213,7 +2309,7 @@ msgstr "Potvrdit"
 #: templates/AccessCredentials/index.php:84
 #: templates/AccountingProfiles/edit.php:12
 #: templates/AccountingProfiles/index.php:58
-#: templates/AccountingProfiles/view.php:121 templates/Addresses/edit.php:17
+#: templates/AccountingProfiles/view.php:121 templates/Addresses/edit.php:18
 #: templates/Addresses/index.php:101 templates/Billings/edit.php:15
 #: templates/Billings/index.php:91 templates/BorrowedEquipments/edit.php:15
 #: templates/BorrowedEquipments/index.php:84 templates/Commissions/edit.php:12
@@ -2227,10 +2323,10 @@ msgstr "Potvrdit"
 #: templates/Countries/index.php:44 templates/Countries/view.php:117
 #: templates/CustomerLabels/edit.php:15 templates/CustomerLabels/index.php:73
 #: templates/CustomerMessages/edit.php:13
-#: templates/CustomerMessages/index.php:80 templates/Customers/edit.php:13
-#: templates/Customers/view.php:314 templates/Customers/view.php:363
-#: templates/Customers/view.php:416 templates/Customers/view.php:499
-#: templates/Customers/view.php:568 templates/Customers/view.php:822
+#: templates/CustomerMessages/index.php:80 templates/Customers/edit.php:17
+#: templates/Customers/view.php:354 templates/Customers/view.php:403
+#: templates/Customers/view.php:456 templates/Customers/view.php:539
+#: templates/Customers/view.php:608 templates/Customers/view.php:862
 #: templates/DealerCommissions/edit.php:14
 #: templates/DealerCommissions/index.php:64 templates/Emails/edit.php:13
 #: templates/Emails/index.php:57 templates/EquipmentTypes/edit.php:12
@@ -2272,7 +2368,7 @@ msgstr "Odstranit"
 #: templates/AccountingProfiles/edit.php:15
 #: templates/AccountingProfiles/index.php:60
 #: templates/AccountingProfiles/view.php:20
-#: templates/AccountingProfiles/view.php:123 templates/Addresses/edit.php:19
+#: templates/AccountingProfiles/view.php:123 templates/Addresses/edit.php:20
 #: templates/Addresses/index.php:103 templates/Addresses/view.php:19
 #: templates/Billings/edit.php:17 templates/Billings/index.php:93
 #: templates/Billings/service_change.php:20 templates/Billings/view.php:21
@@ -2293,11 +2389,11 @@ msgstr "Odstranit"
 #: templates/CustomerLabels/edit.php:18 templates/CustomerLabels/index.php:75
 #: templates/CustomerLabels/view.php:20 templates/CustomerMessages/edit.php:16
 #: templates/CustomerMessages/index.php:82
-#: templates/CustomerMessages/view.php:20 templates/Customers/edit.php:15
-#: templates/Customers/view.php:20 templates/Customers/view.php:316
-#: templates/Customers/view.php:365 templates/Customers/view.php:418
-#: templates/Customers/view.php:501 templates/Customers/view.php:570
-#: templates/Customers/view.php:824 templates/DealerCommissions/edit.php:17
+#: templates/CustomerMessages/view.php:20 templates/Customers/edit.php:19
+#: templates/Customers/view.php:40 templates/Customers/view.php:356
+#: templates/Customers/view.php:405 templates/Customers/view.php:458
+#: templates/Customers/view.php:541 templates/Customers/view.php:610
+#: templates/Customers/view.php:864 templates/DealerCommissions/edit.php:17
 #: templates/DealerCommissions/index.php:66
 #: templates/DealerCommissions/view.php:20 templates/Emails/edit.php:15
 #: templates/Emails/index.php:59 templates/Emails/view.php:19
@@ -2426,10 +2522,10 @@ msgstr "Číslo zákazníka"
 #: templates/CustomerLabels/index.php:66
 #: templates/CustomerMessages/index.php:71
 #: templates/Customers/identity_number_check.php:35
-#: templates/Customers/index.php:138 templates/Customers/view.php:305
-#: templates/Customers/view.php:354 templates/Customers/view.php:407
-#: templates/Customers/view.php:490 templates/Customers/view.php:559
-#: templates/Customers/view.php:813 templates/DealerCommissions/index.php:57
+#: templates/Customers/index.php:138 templates/Customers/view.php:345
+#: templates/Customers/view.php:394 templates/Customers/view.php:447
+#: templates/Customers/view.php:530 templates/Customers/view.php:599
+#: templates/Customers/view.php:853 templates/DealerCommissions/index.php:57
 #: templates/Emails/index.php:50 templates/EquipmentTypes/index.php:45
 #: templates/EquipmentTypes/view.php:101 templates/EquipmentTypes/view.php:161
 #: templates/HistoricalConnections/index.php:89
@@ -2474,10 +2570,10 @@ msgstr "Zobrazit"
 #: templates/CustomerLabels/index.php:68
 #: templates/CustomerMessages/index.php:75
 #: templates/Customers/identity_number_check.php:39
-#: templates/Customers/index.php:142 templates/Customers/view.php:309
-#: templates/Customers/view.php:358 templates/Customers/view.php:411
-#: templates/Customers/view.php:494 templates/Customers/view.php:563
-#: templates/Customers/view.php:817 templates/DealerCommissions/index.php:59
+#: templates/Customers/index.php:142 templates/Customers/view.php:349
+#: templates/Customers/view.php:398 templates/Customers/view.php:451
+#: templates/Customers/view.php:534 templates/Customers/view.php:603
+#: templates/Customers/view.php:857 templates/DealerCommissions/index.php:59
 #: templates/Emails/index.php:52 templates/EquipmentTypes/index.php:47
 #: templates/EquipmentTypes/view.php:105 templates/EquipmentTypes/view.php:165
 #: templates/IpAddresses/index.php:60 templates/IpNetworks/index.php:65
@@ -2636,7 +2732,7 @@ msgstr "Odstranit přístupové oprávnění"
 #: templates/CustomerMessages/add_bulk/step_compose.php:155
 #: templates/CustomerMessages/add_bulk/step_done.php:104
 #: templates/CustomerMessages/add_bulk/step_done.php:152
-#: templates/CustomerMessages/view.php:48 templates/Customers/view.php:80
+#: templates/CustomerMessages/view.php:48 templates/Customers/view.php:100
 #: templates/Emails/view.php:32 templates/EquipmentTypes/view.php:68
 #: templates/EquipmentTypes/view.php:131
 #: templates/HistoricalConnections/index.php:35
@@ -2661,7 +2757,7 @@ msgstr "Zákazník"
 #: templates/BorrowedEquipments/view.php:56
 #: templates/ContractVersions/view.php:59 templates/Contracts/view.php:80
 #: templates/Contracts/view.php:593 templates/CustomerLabels/view.php:55
-#: templates/Customers/view.php:786 templates/EquipmentTypes/view.php:70
+#: templates/Customers/view.php:826 templates/EquipmentTypes/view.php:70
 #: templates/EquipmentTypes/view.php:133
 #: templates/HistoricalConnections/index.php:38
 #: templates/HistoricalConnections/view.php:46
@@ -2714,9 +2810,9 @@ msgstr "Port"
 #: templates/Billings/service_change.php:116 templates/Billings/view.php:122
 #: templates/ContractStates/view.php:168
 #: templates/ContractVersions/view.php:103 templates/Contracts/view.php:287
-#: templates/CustomerLabels/view.php:80 templates/Customers/view.php:261
-#: templates/Customers/view.php:293 templates/Customers/view.php:342
-#: templates/Customers/view.php:451 templates/Customers/view.php:532
+#: templates/CustomerLabels/view.php:80 templates/Customers/view.php:301
+#: templates/Customers/view.php:333 templates/Customers/view.php:382
+#: templates/Customers/view.php:491 templates/Customers/view.php:572
 #: templates/Emails/view.php:65 templates/IpAddresses/view.php:106
 #: templates/IpNetworks/view.php:101 templates/Labels/view.php:91
 #: templates/Phones/view.php:65 templates/RemovedIpAddresses/view.php:103
@@ -2792,8 +2888,8 @@ msgstr "Související zákazníci"
 #: templates/Contracts/view.php:542 templates/Contracts/view.php:588
 #: templates/Countries/view.php:60
 #: templates/Customers/identity_number_check.php:13
-#: templates/Customers/index.php:68 templates/Customers/view.php:445
-#: templates/Customers/view.php:521 templates/Customers/view.php:781
+#: templates/Customers/index.php:68 templates/Customers/view.php:485
+#: templates/Customers/view.php:561 templates/Customers/view.php:821
 #: templates/ServiceTypes/view.php:163 templates/TaskStates/view.php:59
 #: templates/TaskTypes/view.php:55 templates/Tasks/index.php:65
 msgid "Number"
@@ -2802,86 +2898,86 @@ msgstr "Číslo"
 #: templates/AccountingProfiles/view.php:83 templates/Addresses/view.php:47
 #: templates/Countries/view.php:54
 #: templates/Customers/identity_number_check.php:14
-#: templates/Customers/print.php:34 templates/Customers/view.php:146
-#: templates/Customers/view.php:439
+#: templates/Customers/print.php:34 templates/Customers/view.php:166
+#: templates/Customers/view.php:479
 msgid "Company"
 msgstr "Společnost"
 
 #: templates/AccountingProfiles/view.php:84 templates/Addresses/view.php:51
 #: templates/Countries/view.php:55
 #: templates/Customers/identity_number_check.php:15
-#: templates/Customers/print.php:38 templates/Customers/view.php:150
-#: templates/Customers/view.php:440
+#: templates/Customers/print.php:38 templates/Customers/view.php:170
+#: templates/Customers/view.php:480
 msgid "Title"
 msgstr "Titul"
 
 #: templates/AccountingProfiles/view.php:85 templates/Addresses/view.php:55
 #: templates/Countries/view.php:56
 #: templates/Customers/identity_number_check.php:16
-#: templates/Customers/print.php:42 templates/Customers/view.php:154
-#: templates/Customers/view.php:441
+#: templates/Customers/print.php:42 templates/Customers/view.php:174
+#: templates/Customers/view.php:481
 msgid "First Name"
 msgstr "Jméno"
 
 #: templates/AccountingProfiles/view.php:86 templates/Addresses/view.php:59
 #: templates/Countries/view.php:57
 #: templates/Customers/identity_number_check.php:17
-#: templates/Customers/print.php:46 templates/Customers/view.php:158
-#: templates/Customers/view.php:442
+#: templates/Customers/print.php:46 templates/Customers/view.php:178
+#: templates/Customers/view.php:482
 msgid "Last Name"
 msgstr "Příjmení"
 
 #: templates/AccountingProfiles/view.php:87 templates/Addresses/view.php:63
 #: templates/Countries/view.php:58
 #: templates/Customers/identity_number_check.php:18
-#: templates/Customers/print.php:50 templates/Customers/view.php:162
-#: templates/Customers/view.php:443
+#: templates/Customers/print.php:50 templates/Customers/view.php:182
+#: templates/Customers/view.php:483
 msgid "Suffix"
 msgstr "Přípona"
 
 #: templates/AccountingProfiles/view.php:89 templates/Contracts/view.php:100
 #: templates/Contracts/view.php:410 templates/Customers/index.php:75
-#: templates/Customers/view.php:110
+#: templates/Customers/view.php:130
 #: templates/IpAddresses/bulk_reassignment.php:65
 #: templates/IpAddresses/index.php:21
 msgid "IP Addresses"
 msgstr "IP adresy"
 
-#: templates/Addresses/add.php:16 templates/Addresses/edit.php:21
+#: templates/Addresses/add.php:17 templates/Addresses/edit.php:22
 #: templates/Addresses/view.php:21 templates/Overviews/index.php:59
 msgid "List Addresses"
 msgstr "Seznam adres"
 
-#: templates/Addresses/add.php:25
+#: templates/Addresses/add.php:26 templates/Addresses/edit.php:94
+msgid "Address Register Search"
+msgstr "Vyhledávání v registru adres"
+
+#: templates/Addresses/add.php:37
 msgid "Add Address"
 msgstr "Přidat adresu"
 
-#: templates/Addresses/add.php:47 templates/Addresses/edit.php:52
-msgid "Search Address"
-msgstr "Hledat adresu"
-
-#: templates/Addresses/edit.php:30 templates/Addresses/view.php:12
+#: templates/Addresses/edit.php:31 templates/Addresses/view.php:12
 msgid "Edit Address"
 msgstr "Upravit adresu"
 
 #: templates/Addresses/index.php:20 templates/Addresses/view.php:22
-#: templates/Customers/view.php:429
+#: templates/Customers/view.php:469
 msgid "New Address"
 msgstr "Nová adresa"
 
-#: templates/Addresses/index.php:21 templates/Customers/view.php:90
-#: templates/Customers/view.php:433
+#: templates/Addresses/index.php:21 templates/Customers/view.php:110
+#: templates/Customers/view.php:473
 msgid "Addresses"
 msgstr "Adresy"
 
 #: templates/Addresses/index.php:43 templates/Addresses/view.php:124
-#: templates/Countries/view.php:65 templates/Customers/view.php:452
+#: templates/Countries/view.php:65 templates/Customers/view.php:492
 msgid "Address Registry Reference"
 msgstr "Odkaz na adresář adres"
 
 #: templates/Addresses/index.php:45 templates/Addresses/view.php:113
 #: templates/Contracts/view.php:181 templates/Countries/view.php:66
-#: templates/Customers/view.php:453
+#: templates/Customers/view.php:493
 msgid "Map location"
 msgstr "Umístění na mapě"
 
@@ -2890,12 +2986,12 @@ msgid "Delete Address"
 msgstr "Odstranit adresu"
 
 #: templates/Addresses/view.php:43 templates/Countries/view.php:53
-#: templates/CustomerMessages/view.php:64 templates/Customers/view.php:438
+#: templates/CustomerMessages/view.php:64 templates/Customers/view.php:478
 msgid "Type"
 msgstr "Typ"
 
 #: templates/Addresses/view.php:71 templates/Countries/view.php:59
-#: templates/Customers/view.php:444
+#: templates/Customers/view.php:484
 msgid "Street"
 msgstr "Ulice"
 
@@ -2904,27 +3000,27 @@ msgid "Number Type"
 msgstr "Typ čísla"
 
 #: templates/Addresses/view.php:83 templates/Countries/view.php:61
-#: templates/Customers/view.php:446
+#: templates/Customers/view.php:486
 msgid "Entrance"
 msgstr "Vchod"
 
 #: templates/Addresses/view.php:87 templates/Countries/view.php:62
-#: templates/Customers/view.php:447
+#: templates/Customers/view.php:487
 msgid "Unit"
 msgstr "Byt"
 
 #: templates/Addresses/view.php:91 templates/Countries/view.php:63
-#: templates/Customers/view.php:448
+#: templates/Customers/view.php:488
 #: templates/Overviews/overview_of_czech_customer_connection_speeds.php:40
 msgid "City"
 msgstr "Město"
 
 #: templates/Addresses/view.php:95 templates/Countries/view.php:64
-#: templates/Customers/view.php:449
+#: templates/Customers/view.php:489
 msgid "Zip"
 msgstr "PSČ"
 
-#: templates/Addresses/view.php:99 templates/Customers/view.php:450
+#: templates/Addresses/view.php:99 templates/Customers/view.php:490
 msgid "Country"
 msgstr "Země"
 
@@ -2945,7 +3041,7 @@ msgstr "GPS X"
 #: templates/Billings/bulk_service_change.php:47
 #: templates/Commissions/view.php:102 templates/ContractStates/view.php:185
 #: templates/Contracts/print.php:89 templates/Contracts/view.php:199
-#: templates/Customers/view.php:526
+#: templates/Customers/view.php:566
 #: templates/HistoricalConnections/index.php:41
 #: templates/HistoricalConnections/view.php:82
 #: templates/HistoricalConnections/view.php:141
@@ -3082,7 +3178,7 @@ msgstr ""
 
 #: templates/Billings/bulk_service_change.php:148
 #: templates/Billings/index.php:21 templates/Contracts/view.php:90
-#: templates/Contracts/view.php:329 templates/Customers/view.php:100
+#: templates/Contracts/view.php:329 templates/Customers/view.php:120
 #: templates/Overviews/overview_of_active_services.php:67
 msgid "Billings"
 msgstr "Fakturace"
@@ -3099,7 +3195,7 @@ msgstr "Upravit fakturaci"
 
 #: templates/Billings/index.php:20 templates/Billings/service_change.php:23
 #: templates/Billings/view.php:24 templates/Contracts/view.php:312
-#: templates/Customers/view.php:582
+#: templates/Customers/view.php:622
 msgid "New Billing"
 msgstr "Nová fakturace"
 
@@ -3109,7 +3205,7 @@ msgstr "Odstranit fakturaci"
 
 #: templates/Billings/service_change.php:63 templates/Billings/view.php:69
 #: templates/Contracts/view.php:546 templates/Contracts/view.php:592
-#: templates/Customers/view.php:785 templates/Services/view.php:86
+#: templates/Customers/view.php:825 templates/Services/view.php:86
 #: templates/TaskStates/view.php:64 templates/TaskTypes/view.php:60
 #: templates/Tasks/view.php:136 templates/element/Contracts/Billings.php:24
 #: templates/email/html/task_notification.php:147
@@ -3203,7 +3299,7 @@ msgstr "Upravit zapůjčené zařízení"
 
 #: templates/BorrowedEquipments/index.php:21
 #: templates/BorrowedEquipments/view.php:30 templates/Contracts/view.php:351
-#: templates/Customers/view.php:608
+#: templates/Customers/view.php:648
 msgid "New Borrowed Equipment"
 msgstr "Nové zapůjčené zařízení"
 
@@ -3273,7 +3369,7 @@ msgstr "Související provize dealerů"
 
 #: templates/Commissions/view.php:50 templates/Contracts/view.php:547
 #: templates/Contracts/view.php:594 templates/Customers/print.php:108
-#: templates/Customers/view.php:220 templates/Customers/view.php:787
+#: templates/Customers/view.php:260 templates/Customers/view.php:827
 #: templates/DealerCommissions/view.php:43 templates/TaskStates/view.php:62
 #: templates/TaskTypes/view.php:58 templates/Tasks/view.php:54
 #: templates/email/html/task_notification.php:48
@@ -3296,7 +3392,7 @@ msgid "Related Contracts"
 msgstr "Související smlouvy"
 
 #: templates/Commissions/view.php:98 templates/Contracts/print.php:54
-#: templates/Contracts/view.php:150 templates/Customers/view.php:522
+#: templates/Contracts/view.php:150 templates/Customers/view.php:562
 #: templates/Overviews/overview_of_dealer_commissions.php:61
 #: templates/ServiceTypes/view.php:164
 msgid "Contract State"
@@ -3304,7 +3400,7 @@ msgstr "Stav smlouvy"
 
 #: templates/Commissions/view.php:99 templates/ContractStates/view.php:182
 #: templates/Contracts/print.php:61 templates/Contracts/view.php:157
-#: templates/Customers/view.php:523
+#: templates/Customers/view.php:563
 #: templates/Overviews/overview_of_active_services.php:64
 #: templates/Queues/view.php:83 templates/Services/view.php:40
 msgid "Service Type"
@@ -3312,14 +3408,14 @@ msgstr "Typ služby"
 
 #: templates/Commissions/view.php:101 templates/ContractStates/view.php:184
 #: templates/Contracts/print.php:101 templates/Contracts/view.php:211
-#: templates/Customers/view.php:525 templates/ServiceTypes/view.php:166
+#: templates/Customers/view.php:565 templates/ServiceTypes/view.php:166
 msgid "Vip"
 msgstr "VIP"
 
 #: templates/Commissions/view.php:103 templates/ContractStates/view.php:186
 #: templates/Contracts/edit.php:74 templates/Contracts/index.php:46
 #: templates/Contracts/print.php:125 templates/Contracts/view.php:235
-#: templates/Customers/view.php:527
+#: templates/Customers/view.php:567
 #: templates/Overviews/overview_of_contracts.php:81
 #: templates/ServiceTypes/view.php:168
 msgid "Installation/Establishment Date"
@@ -3334,7 +3430,7 @@ msgstr "Instalační technik"
 #: templates/Commissions/view.php:105 templates/ContractStates/view.php:188
 #: templates/Contracts/edit.php:100 templates/Contracts/index.php:50
 #: templates/Contracts/print.php:141 templates/Contracts/view.php:251
-#: templates/Customers/view.php:528
+#: templates/Customers/view.php:568
 #: templates/Overviews/overview_of_contracts.php:86
 #: templates/ServiceTypes/view.php:170
 msgid "Uninstallation/Cancellation Date"
@@ -3349,7 +3445,7 @@ msgstr "Technik pro deinstalaci"
 #: templates/Commissions/view.php:107 templates/ContractStates/view.php:190
 #: templates/Contracts/edit.php:126 templates/Contracts/index.php:53
 #: templates/Contracts/print.php:157 templates/Contracts/view.php:267
-#: templates/Customers/view.php:529
+#: templates/Customers/view.php:569
 #: templates/Overviews/overview_of_contracts.php:91
 #: templates/ServiceTypes/view.php:172
 msgid "Date of Termination of Services"
@@ -3528,7 +3624,7 @@ msgstr "Platnost od"
 msgid "Valid Until"
 msgstr "Platnost do"
 
-#: templates/ContractVersions/view.php:79 templates/Customers/view.php:530
+#: templates/ContractVersions/view.php:79 templates/Customers/view.php:570
 #: templates/element/Contracts/ContractVersions.php:16
 msgid "Obligation Until"
 msgstr "Závazek do"
@@ -3564,7 +3660,7 @@ msgid "Edit Contract"
 msgstr "Upravit smlouvu"
 
 #: templates/Contracts/index.php:32 templates/Contracts/view.php:23
-#: templates/Customers/view.php:512
+#: templates/Customers/view.php:552
 msgid "New Contract"
 msgstr "Nová smlouva"
 
@@ -3573,7 +3669,7 @@ msgid "View Contract"
 msgstr "Zobrazit smlouvu"
 
 #: templates/Contracts/print.php:72 templates/Contracts/view.php:168
-#: templates/Customers/view.php:531
+#: templates/Customers/view.php:571
 msgid "Subscriber Verification Code"
 msgstr "Ověřovací kód účastníka"
 
@@ -3629,7 +3725,7 @@ msgstr "Datum účinnosti dodatku"
 
 #: templates/Contracts/print.php:288 templates/Contracts/view.php:26
 #: templates/Contracts/view.php:125 templates/Customers/print.php:176
-#: templates/Customers/view.php:26 templates/Customers/view.php:135
+#: templates/Customers/view.php:46 templates/Customers/view.php:155
 msgid "Print to PDF"
 msgstr "Tisk do PDF"
 
@@ -3643,54 +3739,54 @@ msgstr "Odstranit smlouvu"
 #: templates/CustomerMessages/add_bulk/step_filters.php:27
 #: templates/CustomerMessages/add_bulk/step_purpose.php:14
 #: templates/CustomerMessages/edit.php:21
-#: templates/CustomerMessages/view.php:25 templates/Customers/view.php:32
+#: templates/CustomerMessages/view.php:25 templates/Customers/view.php:52
 #: templates/Overviews/index.php:69
 msgid "List Customer Messages"
 msgstr "Seznam zpráv pro zákazníky"
 
-#: templates/Contracts/view.php:42 templates/Customers/view.php:42
+#: templates/Contracts/view.php:42 templates/Customers/view.php:62
 #: templates/Overviews/index.php:100 templates/ServiceOverrides/add.php:17
 #: templates/ServiceOverrides/edit.php:36
 #: templates/ServiceOverrides/view.php:37
 msgid "List Service Overrides"
 msgstr "Seznam dočasných úprav služby"
 
-#: templates/Contracts/view.php:47 templates/Customers/view.php:47
+#: templates/Contracts/view.php:47 templates/Customers/view.php:67
 #: templates/HistoricalConnections/view.php:13
 #: templates/Overviews/index.php:135
 msgid "List Historical Connections"
 msgstr "Seznam historických připojení"
 
-#: templates/Contracts/view.php:54 templates/Customers/view.php:54
+#: templates/Contracts/view.php:54 templates/Customers/view.php:74
 #: templates/Labels/index.php:33
 msgid "Labels"
 msgstr "Štítky"
 
 #: templates/Contracts/view.php:71 templates/CustomerLabels/index.php:21
-#: templates/CustomerLabels/view.php:30 templates/Customers/view.php:71
+#: templates/CustomerLabels/view.php:30 templates/Customers/view.php:91
 msgid "New Customer Label"
 msgstr "Nový štítek zákazníka"
 
-#: templates/Contracts/view.php:78 templates/Customers/view.php:78
+#: templates/Contracts/view.php:78 templates/Customers/view.php:98
 msgid "Sections"
 msgstr "Sekce"
 
-#: templates/Contracts/view.php:95 templates/Customers/view.php:105
+#: templates/Contracts/view.php:95 templates/Customers/view.php:125
 msgid "Equipments"
 msgstr "Zařízení"
 
 #: templates/Contracts/view.php:105 templates/Contracts/view.php:488
-#: templates/Customers/view.php:115
+#: templates/Customers/view.php:135
 msgid "RADIUS Accounts"
 msgstr "Účty RADIUS"
 
 #: templates/Contracts/view.php:110 templates/Contracts/view.php:524
-#: templates/Customers/view.php:120 templates/Customers/view.php:763
+#: templates/Customers/view.php:140 templates/Customers/view.php:803
 msgid "Invoices"
 msgstr "Faktury"
 
 #: templates/Contracts/view.php:115 templates/Contracts/view.php:537
-#: templates/Customers/view.php:125 templates/Customers/view.php:776
+#: templates/Customers/view.php:145 templates/Customers/view.php:816
 #: templates/Tasks/index.php:60 templates/layout/default.php:134
 msgid "Tasks"
 msgstr "Úkoly"
@@ -3719,7 +3815,7 @@ msgstr ""
 "Opravdu chcete nastavit datumy pro související zapůjčená zařízení pro "
 "smlouvu č. {0}?"
 
-#: templates/Contracts/view.php:384 templates/Customers/view.php:624
+#: templates/Contracts/view.php:384 templates/Customers/view.php:664
 #: templates/SoldEquipments/index.php:21 templates/SoldEquipments/view.php:30
 msgid "New Sold Equipment"
 msgstr "Nové prodané zařízení"
@@ -3728,24 +3824,24 @@ msgstr "Nové prodané zařízení"
 msgid "Sold Equipments"
 msgstr "Prodaná zařízení"
 
-#: templates/Contracts/view.php:401 templates/Customers/view.php:640
+#: templates/Contracts/view.php:401 templates/Customers/view.php:680
 #: templates/IpAddresses/index.php:20 templates/IpAddresses/view.php:22
 msgid "New IP Address"
 msgstr "Nová IP adresa"
 
-#: templates/Contracts/view.php:406 templates/Customers/view.php:645
+#: templates/Contracts/view.php:406 templates/Customers/view.php:685
 msgid "New IP Address From Range"
 msgstr "Nová IP adresa z rozsahu"
 
 #: templates/Contracts/view.php:417 templates/Contracts/view.php:440
-#: templates/Customers/view.php:657 templates/Customers/view.php:682
+#: templates/Customers/view.php:697 templates/Customers/view.php:722
 #: templates/element/Contracts/Billings.php:102
 #: templates/element/Contracts/BorrowedEquipments.php:85
 #: templates/element/Contracts/ContractVersions.php:64
 msgid "Show historical records"
 msgstr "Zobrazit historické záznamy"
 
-#: templates/Contracts/view.php:429 templates/Customers/view.php:669
+#: templates/Contracts/view.php:429 templates/Customers/view.php:709
 #: templates/IpNetworks/index.php:21 templates/IpNetworks/view.php:27
 msgid "New IP Network"
 msgstr "Nová IP síť"
@@ -3754,7 +3850,7 @@ msgstr "Nová IP síť"
 msgid "IP Networks"
 msgstr "IP sítě"
 
-#: templates/Contracts/view.php:455 templates/Customers/view.php:696
+#: templates/Contracts/view.php:455 templates/Customers/view.php:736
 #: templates/RemovedIpAddresses/index.php:21
 #: templates/RemovedIpAddresses/view.php:30
 msgid "New Removed IP Address"
@@ -3764,7 +3860,7 @@ msgstr "Nová odstraněná IP adresa"
 msgid "Removed IP Addresses"
 msgstr "Odebrané IP adresy"
 
-#: templates/Contracts/view.php:468 templates/Customers/view.php:710
+#: templates/Contracts/view.php:468 templates/Customers/view.php:750
 #: templates/RemovedIpNetworks/index.php:21
 #: templates/RemovedIpNetworks/view.php:30
 msgid "New Removed IP Network"
@@ -3774,46 +3870,46 @@ msgstr "Nová odebraná IP síť"
 msgid "Removed IP Networks"
 msgstr "Odebrané IP sítě"
 
-#: templates/Contracts/view.php:484 templates/Customers/view.php:725
+#: templates/Contracts/view.php:484 templates/Customers/view.php:765
 msgid "New RADIUS Account"
 msgstr "Nový účet RADIUS"
 
-#: templates/Contracts/view.php:499 templates/Customers/view.php:738
+#: templates/Contracts/view.php:499 templates/Customers/view.php:778
 msgid "Unblock Debtor"
 msgstr "Odblokovat dlužníka"
 
-#: templates/Contracts/view.php:508 templates/Customers/view.php:747
+#: templates/Contracts/view.php:508 templates/Customers/view.php:787
 msgid "Are you sure you want to unblock # {0}?"
 msgstr "Opravdu chcete odblokovat # {0}?"
 
-#: templates/Contracts/view.php:512 templates/Customers/view.php:751
+#: templates/Contracts/view.php:512 templates/Customers/view.php:791
 msgid "Block Debtor"
 msgstr "Blokovat dlužníka"
 
-#: templates/Contracts/view.php:521 templates/Customers/view.php:760
+#: templates/Contracts/view.php:521 templates/Customers/view.php:800
 msgid "Are you sure you want to block # {0}?"
 msgstr "Opravdu chcete blokovat # {0}?"
 
-#: templates/Contracts/view.php:533 templates/Customers/view.php:772
+#: templates/Contracts/view.php:533 templates/Customers/view.php:812
 #: templates/Tasks/index.php:59 templates/Tasks/view.php:18
 msgid "New Task"
 msgstr "Nový úkol"
 
 #: templates/Contracts/view.php:543 templates/Contracts/view.php:589
-#: templates/Customers/view.php:782 templates/TaskStates/view.php:60
+#: templates/Customers/view.php:822 templates/TaskStates/view.php:60
 #: templates/Tasks/view.php:36 templates/email/html/task_notification.php:36
 msgid "Task Type"
 msgstr "Typ úkolu"
 
 #: templates/Contracts/view.php:544 templates/Contracts/view.php:590
-#: templates/Customers/view.php:783 templates/TaskTypes/view.php:57
+#: templates/Customers/view.php:823 templates/TaskTypes/view.php:57
 #: templates/Tasks/index.php:68 templates/Tasks/view.php:47
 #: templates/email/html/task_notification.php:44
 msgid "Task State"
 msgstr "Stav úkolu"
 
 #: templates/Contracts/view.php:545 templates/Contracts/view.php:591
-#: templates/CustomerMessages/view.php:60 templates/Customers/view.php:784
+#: templates/CustomerMessages/view.php:60 templates/Customers/view.php:824
 #: templates/TaskStates/view.php:63 templates/TaskTypes/view.php:59
 #: templates/Tasks/view.php:126 templates/email/html/task_notification.php:137
 msgid "Subject"
@@ -4001,14 +4097,14 @@ msgstr "Příznaky"
 
 #: templates/CustomerMessages/add_bulk/step_compose.php:160
 #: templates/CustomerMessages/add_bulk/step_done.php:108
-#: templates/Customers/view.php:284 templates/Emails/index.php:21
+#: templates/Customers/view.php:324 templates/Emails/index.php:21
 #: templates/Overviews/overview_of_contracts.php:93
 msgid "Emails"
 msgstr "E-maily"
 
 #: templates/CustomerMessages/add_bulk/step_compose.php:161
 #: templates/CustomerMessages/add_bulk/step_done.php:108
-#: templates/Customers/view.php:333
+#: templates/Customers/view.php:373
 #: templates/Overviews/overview_of_contracts.php:94
 #: templates/Phones/index.php:21
 msgid "Phones"
@@ -4180,51 +4276,55 @@ msgstr "Tělo"
 msgid "Attachments"
 msgstr "Přílohy"
 
-#: templates/Customers/add.php:12 templates/Customers/edit.php:17
-#: templates/Customers/view.php:22
+#: templates/Customers/add.php:16 templates/Customers/edit.php:21
+#: templates/Customers/view.php:42
 msgid "List Customers"
 msgstr "Seznam zákazníků"
 
-#: templates/Customers/add.php:19
+#: templates/Customers/add.php:25 templates/Customers/edit.php:80
+msgid "Business Register Search"
+msgstr "Vyhledávání v obchodním rejstříku"
+
+#: templates/Customers/add.php:38
 msgid "Add Customer"
 msgstr "Přidat zákazníka"
 
-#: templates/Customers/add.php:31 templates/Customers/edit.php:36
-#: templates/Customers/print.php:71 templates/Customers/view.php:183
+#: templates/Customers/add.php:50 templates/Customers/edit.php:42
+#: templates/Customers/print.php:71 templates/Customers/view.php:215
 msgid "VAT Number"
 msgstr "DIČ"
 
-#: templates/Customers/add.php:46 templates/Customers/edit.php:51
-#: templates/Customers/print.php:116 templates/Customers/view.php:228
+#: templates/Customers/add.php:65 templates/Customers/edit.php:57
+#: templates/Customers/print.php:116 templates/Customers/view.php:268
 msgid "Individual Maturity Period"
 msgstr "Individuální doba splatnosti"
 
-#: templates/Customers/add.php:46 templates/Customers/edit.php:51
+#: templates/Customers/add.php:65 templates/Customers/edit.php:57
 msgid "days"
 msgstr "dny"
 
-#: templates/Customers/add.php:49 templates/Customers/edit.php:54
-#: templates/Customers/print.php:127 templates/Customers/view.php:239
+#: templates/Customers/add.php:68 templates/Customers/edit.php:60
+#: templates/Customers/print.php:127 templates/Customers/view.php:279
 msgid "Agrees to Processing of Personal Data"
 msgstr "Souhlasí se zpracováním osobních údajů"
 
-#: templates/Customers/add.php:52 templates/Customers/edit.php:57
-#: templates/Customers/print.php:131 templates/Customers/view.php:243
+#: templates/Customers/add.php:71 templates/Customers/edit.php:63
+#: templates/Customers/print.php:131 templates/Customers/view.php:283
 msgid "Agrees to Receive All Correspondence Related to Billing"
 msgstr "Souhlasí se zasíláním veškeré korespondence související s vyúčtováním"
 
-#: templates/Customers/add.php:55 templates/Customers/edit.php:60
-#: templates/Customers/print.php:135 templates/Customers/view.php:247
+#: templates/Customers/add.php:74 templates/Customers/edit.php:66
+#: templates/Customers/print.php:135 templates/Customers/view.php:287
 msgid "Agrees to Receive Information About Outages And Malfunctions"
 msgstr "Souhlasí se zasíláním informací o výpadcích a poruchách"
 
-#: templates/Customers/add.php:58 templates/Customers/edit.php:63
-#: templates/Customers/print.php:139 templates/Customers/view.php:251
+#: templates/Customers/add.php:77 templates/Customers/edit.php:69
+#: templates/Customers/print.php:139 templates/Customers/view.php:291
 msgid "Agrees to Receive Commercial Communications"
 msgstr "Souhlasí se zasíláním obchodních sdělení"
 
-#: templates/Customers/edit.php:24 templates/Customers/print.php:20
-#: templates/Customers/view.php:13
+#: templates/Customers/edit.php:30 templates/Customers/print.php:20
+#: templates/Customers/view.php:33
 msgid "Edit Customer"
 msgstr "Upravit zákazníka"
 
@@ -4238,7 +4338,7 @@ msgid "Invalid Identity Numbers"
 msgstr "Neplatná identifikační čísla"
 
 #: templates/Customers/identity_number_check.php:19
-#: templates/Customers/print.php:64 templates/Customers/view.php:176
+#: templates/Customers/print.php:64 templates/Customers/view.php:196
 msgid "Identity Number"
 msgstr "IČ"
 
@@ -4256,7 +4356,7 @@ msgstr "Vyžadovat štítky"
 msgid "Exclude Labels"
 msgstr "Vyloučit štítky"
 
-#: templates/Customers/index.php:62 templates/Customers/view.php:23
+#: templates/Customers/index.php:62 templates/Customers/view.php:43
 msgid "New Customer"
 msgstr "Nový zákazník"
 
@@ -4264,157 +4364,154 @@ msgstr "Nový zákazník"
 msgid "View Customer"
 msgstr "Zobrazit zákazníka"
 
-#: templates/Customers/print.php:28 templates/Customers/view.php:140
+#: templates/Customers/print.php:28 templates/Customers/view.php:160
 msgid "Customer No."
 msgstr "Zákazník č."
 
-#: templates/Customers/print.php:56 templates/Customers/view.php:168
+#: templates/Customers/print.php:56 templates/Customers/view.php:188
 msgid "Date Of Birth"
 msgstr "Datum narození"
 
-#: templates/Customers/print.php:60 templates/Customers/view.php:172
+#: templates/Customers/print.php:60 templates/Customers/view.php:192
 msgid "Identity Card Number"
 msgstr "Číslo občanského průkazu"
 
-#: templates/Customers/print.php:67 templates/Customers/view.php:179
-msgid "OK"
-msgstr "OK"
-
-#: templates/Customers/print.php:67 templates/Customers/view.php:179
-msgid "Invalid"
-msgstr "Neplatné"
-
-#: templates/Customers/print.php:77 templates/Customers/view.php:189
+#: templates/Customers/print.php:77 templates/Customers/view.php:229
 msgid "Www"
 msgstr "WWW"
 
-#: templates/Customers/print.php:81 templates/Customers/view.php:193
+#: templates/Customers/print.php:81 templates/Customers/view.php:233
 msgid "Bank Account"
 msgstr "Bankovní účet"
 
-#: templates/Customers/print.php:85 templates/Customers/view.php:197
+#: templates/Customers/print.php:85 templates/Customers/view.php:237
 msgid "Bank Code"
 msgstr "Kód banky"
 
-#: templates/Customers/print.php:89 templates/Customers/view.php:201
+#: templates/Customers/print.php:89 templates/Customers/view.php:241
 msgid "Bank Name"
 msgstr "Název banky"
 
-#: templates/Customers/print.php:97 templates/Customers/view.php:209
+#: templates/Customers/print.php:97 templates/Customers/view.php:249
 msgid "Accounting Profile"
 msgstr "Účetní profil"
 
-#: templates/Customers/print.php:112 templates/Customers/view.php:224
+#: templates/Customers/print.php:112 templates/Customers/view.php:264
 msgid "Invoice Delivery Type"
 msgstr "Typ doručení faktury"
 
-#: templates/Customers/print.php:117 templates/Customers/view.php:229
+#: templates/Customers/print.php:117 templates/Customers/view.php:269
 msgid "{0} day"
 msgid_plural "{0} days"
 msgstr[0] "{0} den"
 msgstr[1] "{0} dny"
 msgstr[2] "{0} dnů"
 
-#: templates/Customers/view.php:18
+#: templates/Customers/view.php:38
 msgid "Delete Customer"
 msgstr "Odstranit zákazníka"
 
-#: templates/Customers/view.php:85 templates/Customers/view.php:382
+#: templates/Customers/view.php:105 templates/Customers/view.php:422
 #: templates/Logins/index.php:21
 msgid "Logins"
 msgstr "Přihlášení"
 
-#: templates/Customers/view.php:269
+#: templates/Customers/view.php:208
+#: templates/element/Customers/business_register_search.php:24
+msgid "Register"
+msgstr "Rejstřík"
+
+#: templates/Customers/view.php:309
 msgid "Internal Note"
 msgstr "Interní poznámka"
 
-#: templates/Customers/view.php:280 templates/Emails/index.php:20
+#: templates/Customers/view.php:320 templates/Emails/index.php:20
 #: templates/Emails/view.php:22
 msgid "New Email"
 msgstr "Nový e-mail"
 
-#: templates/Customers/view.php:290 templates/Customers/view.php:339
+#: templates/Customers/view.php:330 templates/Customers/view.php:379
 #: templates/Emails/view.php:47 templates/Phones/view.php:47
 msgid "Use For Billing"
 msgstr "Použít pro fakturaci"
 
-#: templates/Customers/view.php:291 templates/Customers/view.php:340
+#: templates/Customers/view.php:331 templates/Customers/view.php:380
 #: templates/Emails/view.php:51 templates/Phones/view.php:51
 msgid "Use For Outages"
 msgstr "Použit pro výpadky"
 
-#: templates/Customers/view.php:292 templates/Customers/view.php:341
+#: templates/Customers/view.php:332 templates/Customers/view.php:381
 #: templates/Emails/view.php:55 templates/Phones/view.php:55
 msgid "Use For Commercial"
 msgstr "Použit pro komerční"
 
-#: templates/Customers/view.php:329 templates/Phones/index.php:20
+#: templates/Customers/view.php:369 templates/Phones/index.php:20
 #: templates/Phones/view.php:22
 msgid "New Phone"
 msgstr "Nový telefon"
 
-#: templates/Customers/view.php:378 templates/Logins/index.php:20
+#: templates/Customers/view.php:418 templates/Logins/index.php:20
 #: templates/Logins/view.php:22
 msgid "New Login"
 msgstr "Nové přihlášení"
 
-#: templates/Customers/view.php:387 templates/Logins/view.php:43
+#: templates/Customers/view.php:427 templates/Logins/view.php:43
 msgid "Login"
 msgstr "Přihlášení"
 
-#: templates/Customers/view.php:388 templates/Logins/view.php:47
+#: templates/Customers/view.php:428 templates/Logins/view.php:47
 msgid "Rights"
 msgstr "Práva"
 
-#: templates/Customers/view.php:389 templates/Logins/view.php:51
+#: templates/Customers/view.php:429 templates/Logins/view.php:51
 msgid "Locked"
 msgstr "Zamčený"
 
-#: templates/Customers/view.php:390 templates/Logins/view.php:57
+#: templates/Customers/view.php:430 templates/Logins/view.php:57
 msgid "Last Granted"
 msgstr "Naposledy povoleno"
 
-#: templates/Customers/view.php:391 templates/Logins/view.php:61
+#: templates/Customers/view.php:431 templates/Logins/view.php:61
 msgid "Last Granted IP Address"
 msgstr "Poslední povolená IP adresa"
 
-#: templates/Customers/view.php:392 templates/Logins/view.php:65
+#: templates/Customers/view.php:432 templates/Logins/view.php:65
 msgid "Last Denied"
 msgstr "Naposledy odepřeno"
 
-#: templates/Customers/view.php:393 templates/Logins/view.php:69
+#: templates/Customers/view.php:433 templates/Logins/view.php:69
 msgid "Last Denied IP Address"
 msgstr "Poslední odepřená IP adresa"
 
-#: templates/Customers/view.php:586 templates/Services/view.php:78
+#: templates/Customers/view.php:626 templates/Services/view.php:78
 msgid "Related Billings"
 msgstr "Související fakturace"
 
-#: templates/Customers/view.php:612 templates/EquipmentTypes/view.php:63
+#: templates/Customers/view.php:652 templates/EquipmentTypes/view.php:63
 msgid "Related Borrowed Equipments"
 msgstr "Související zapůjčená zařízení"
 
-#: templates/Customers/view.php:628 templates/EquipmentTypes/view.php:126
+#: templates/Customers/view.php:668 templates/EquipmentTypes/view.php:126
 msgid "Related Sold Equipments"
 msgstr "Související prodaná zařízení"
 
-#: templates/Customers/view.php:649
+#: templates/Customers/view.php:689
 msgid "Related IP Addresses"
 msgstr "Související IP adresy"
 
-#: templates/Customers/view.php:673
+#: templates/Customers/view.php:713
 msgid "Related IP Networks"
 msgstr "Související IP sítě"
 
-#: templates/Customers/view.php:700
+#: templates/Customers/view.php:740
 msgid "Related Removed IP Addresses"
 msgstr "Související odebrané IP adresy"
 
-#: templates/Customers/view.php:714
+#: templates/Customers/view.php:754
 msgid "Related Removed IP Networks"
 msgstr "Související odebrané IP sítě"
 
-#: templates/Customers/view.php:729
+#: templates/Customers/view.php:769
 msgid "Related RADIUS Accounts"
 msgstr "Související účty RADIUS"
 
@@ -5568,6 +5665,18 @@ msgstr "Budoucí dočasné úpravy služby"
 msgid "scheduled from {0} to {1}"
 msgstr "naplánováno od {0} do {1}"
 
+#: templates/element/Addresses/address_register_search.php:22
+msgid "Fill In the Registered Seat"
+msgstr "Vyplnit sídlo společnosti"
+
+#: templates/element/Addresses/address_register_search.php:33
+msgid "Search Address"
+msgstr "Hledat adresu"
+
+#: templates/element/Addresses/address_register_search.php:36
+msgid "Search address…"
+msgstr "Vyhledat adresu…"
+
 #: templates/element/Contracts/IpAddresses.php:20
 msgid "Status"
 msgstr "Stav"
@@ -5583,6 +5692,14 @@ msgstr "Načítání…"
 #: templates/element/common/audit.php:53
 msgid "Removed"
 msgstr "Odstraněno"
+
+#: templates/element/Customers/business_register_search.php:31
+msgid "Search Business Register"
+msgstr "Vyhledat v obchodním rejstříku"
+
+#: templates/element/Customers/business_register_search.php:32
+msgid "Search by name or identification number…"
+msgstr "Vyhledat podle jména nebo identifikačního čísla…"
 
 #: templates/element/HistoricalConnections/first_seen.php:21
 msgid "{0} or earlier"
@@ -5749,11 +5866,6 @@ msgstr "Verze"
 
 #~ msgid "unit"
 #~ msgstr "byt"
-
-#, fuzzy
-#~| msgid "Could not load addresses from national address registry: {0}"
-#~ msgid "Could not retrieve address data from the national registry: {0}"
-#~ msgstr "Nepodařilo se načíst adresy z národního adresního registru: {0}"
 
 #~ msgid "Address found in RUIAN."
 #~ msgstr "Adresa nalezena v RUIAN."
