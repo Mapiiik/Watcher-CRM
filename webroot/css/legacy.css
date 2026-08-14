@@ -278,6 +278,12 @@ tr:hover td {
     background: var(--color-message-error-bg);
     color: var(--color-message-error-text);
 }
+
+/* A remark within a line of text that something is wrong, where a whole message would be too much */
+.error-text {
+    color: var(--color-message-error-text);
+}
+
 /* Arrangement of DIVs */
 .container {
     margin: 0 auto;
