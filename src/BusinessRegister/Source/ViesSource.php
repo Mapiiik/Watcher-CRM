@@ -36,7 +36,7 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
     #[Override]
     public function label(): string
     {
-        return __('EU - VIES (by number only)');
+        return __('EU - VIES (by VAT number only)');
     }
 
     /**

@@ -22,6 +22,19 @@ $this->Html->script('customers.js', ['block' => true]);
                 'valueSources' => ['context'],
             ]) ?>
             <fieldset>
+                <legend><?= __('Business Register Search') ?></legend>
+                <div class="row">
+                    <div class="column">
+                        <?php
+                        echo $this->element('Customers/business_register_search', [
+                            'businessRegisterSources' => $businessRegisterSources,
+                            'businessRegisterDefaultSource' => $businessRegisterDefaultSource,
+                        ]);
+                        ?>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
                 <legend><?= __('Add Customer') ?></legend>
                 <div class="row">
                     <div class="column">
@@ -70,19 +83,6 @@ $this->Html->script('customers.js', ['block' => true]);
                 echo $this->Form->control('note');
                 echo $this->Form->control('internal_note');
                 ?>
-            </fieldset>
-            <fieldset>
-                <legend><?= __('Business Register Search') ?></legend>
-                <div class="row">
-                    <div class="column">
-                        <?php
-                        echo $this->element('Customers/business_register_search', [
-                            'businessRegisterSources' => $businessRegisterSources,
-                            'businessRegisterDefaultSource' => $businessRegisterDefaultSource,
-                        ]);
-                        ?>
-                    </div>
-                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
