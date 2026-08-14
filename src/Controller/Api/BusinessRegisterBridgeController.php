@@ -96,7 +96,7 @@ class BusinessRegisterBridgeController extends AppController
     private static function label(array $item): string
     {
         $parts = array_filter([
-            trim((string)($item['company'] ?? '')),
+            trim((string)($item['name'] ?? '')),
             trim((string)($item['identity_number'] ?? '')),
             trim((string)($item['address'] ?? '')),
         ]);

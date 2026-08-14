@@ -153,7 +153,7 @@ class RegistryTest extends TestCase
     public function testSearchGoesToTheRegisterAskedFor(): void
     {
         StubSource::$entries = [
-            ['reference' => '27496139', 'company' => 'NETAIR, s.r.o.'],
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
 
         $this->assertCount(1, Registry::search('stub', 'netair'));
@@ -169,12 +169,12 @@ class RegistryTest extends TestCase
     public function testEntryIsFetchedBackByItsReference(): void
     {
         StubSource::$entries = [
-            ['reference' => '27496139', 'company' => 'NETAIR, s.r.o.'],
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
 
         $subject = Registry::byReferenceFromCache('stub', '27496139');
 
-        $this->assertSame('NETAIR, s.r.o.', $subject['company'] ?? null);
+        $this->assertSame('NETAIR, s.r.o.', $subject['name'] ?? null);
         $this->assertNull(Registry::byReferenceFromCache('stub', '00000000'));
     }
 
@@ -189,7 +189,7 @@ class RegistryTest extends TestCase
     public function testWhoHoldsTheIdentityNumberIsLookedUp(): void
     {
         StubSource::$entries = [
-            ['reference' => '27496139', 'company' => 'NETAIR, s.r.o.'],
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
 
         $check = Registry::identityNumberCheck('27496139');
@@ -212,7 +212,7 @@ class RegistryTest extends TestCase
         StubSource::$entries = [
             [
                 'reference' => '27496139',
-                'company' => 'NETAIR, s.r.o.',
+                'name' => 'NETAIR, s.r.o.',
                 'address_key' => 'cz|16903153',
             ],
         ];
@@ -230,7 +230,7 @@ class RegistryTest extends TestCase
     public function testASeatTheRegisterCannotPointAtIsLeftUnnamed(): void
     {
         StubSource::$entries = [
-            ['reference' => '27496139', 'company' => 'NETAIR, s.r.o.'],
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
 
         $this->assertNull(Registry::identityNumberCheck('27496139')?->addressKey);

@@ -74,7 +74,7 @@ class BusinessRegisterBridgeControllerTest extends TestCase
         StubSource::$entries = [
             [
                 'reference' => '27496139',
-                'company' => 'NETAIR, s.r.o.',
+                'name' => 'NETAIR, s.r.o.',
                 'identity_number' => '27496139',
                 'address' => 'Jablonec nad Jizerou 299',
             ],

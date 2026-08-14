@@ -105,8 +105,19 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         }
 
         $mapped = self::mapSubject($subject);
+        if ($mapped['reference'] === null) {
+            return null;
+        }
 
-        return $mapped['reference'] === null ? null : $mapped;
+        // Who a company is represented by, and how a sole trader's name comes apart, are both
+        // held by a register of their own that the basic record does not carry. Each is worth a
+        // second request, but only for an entry that was actually picked - a search asks for
+        // none of this, and would otherwise fire a request per line of the suggestion list.
+        $mapped = $mapped['company'] !== null
+            ? self::readSoleOfficer($this->fetchRegisterRecord($mapped['reference'])) + $mapped
+            : self::readTrader($this->fetchTradesRecord($mapped['reference'])) + $mapped;
+
+        return $mapped;
     }
 
     /**
@@ -150,7 +161,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             ? VatNumberStatus::Registered
             : VatNumberStatus::NotRegistered;
 
-        return new VatNumberCheck($status, self::mapSubject($subject)['company'] ?: null);
+        return new VatNumberCheck($status, self::mapSubject($subject)['name'] ?: null);
     }
 
     /**
@@ -191,15 +202,224 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         $sidlo = is_array($subject['sidlo'] ?? null) ? $subject['sidlo'] : [];
         $address = isset($sidlo['textovaAdresa']) ? trim((string)$sidlo['textovaAdresa']) : '';
         $vatNumber = isset($subject['dic']) ? trim((string)$subject['dic']) : '';
+        $name = trim((string)($subject['obchodniJmeno'] ?? ''));
+
+        // A sole trader trades under their own name, so what ARES writes in the name field is a
+        // person rather than a company. The two go to different fields: a filled-in company is
+        // what the CRM reads as a legal entity, so a person put there would be taken for one.
+        //
+        // Who that person is comes from the trades register, which holds the name in parts - the
+        // one line here would only be worth guessing at, and byReference() asks properly.
+        $isPerson = self::isNaturalPerson($subject['pravniForma'] ?? null);
 
         return [
             'reference' => $ico !== '' ? $ico : null,
-            'company' => trim((string)($subject['obchodniJmeno'] ?? '')),
+            'name' => $name,
+            'company' => $isPerson ? null : $name,
+            'title' => null,
+            'first_name' => null,
+            'last_name' => null,
+            'suffix' => null,
+            'date_of_birth' => null,
             'identity_number' => $ico !== '' ? $ico : null,
             'vat_number' => $vatNumber !== '' ? $vatNumber : null,
             'address' => $address !== '' ? $address : null,
             'address_key' => self::readAddressKey($sidlo),
         ];
+    }
+
+    /**
+     * The sole trader behind the entry, as the trades register writes them.
+     *
+     * The trades register holds the name in parts, degrees and all, which is worth asking for:
+     * the basic record has only the one line the name is written on, and taking that apart is a
+     * reading of a convention rather than something certain.
+     *
+     * @param array<int|string, mixed>|null $record The record as the trades register returned it,
+     *      null when it holds none.
+     * @return array<string, string|null> The name in parts, empty when the register holds
+     *      nobody - the entry then names no person at all, rather than one guessed at.
+     */
+    public static function readTrader(?array $record): array
+    {
+        if ($record === null) {
+            return [];
+        }
+
+        $entries = is_array($record['zaznamy'] ?? null) ? $record['zaznamy'] : [];
+        $entry = is_array($entries[0] ?? null) ? $entries[0] : [];
+        $trader = is_array($entry['osobaPodnikatel'] ?? null) ? $entry['osobaPodnikatel'] : [];
+        if ($trader === []) {
+            return [];
+        }
+
+        return [
+            'title' => self::officerValue($trader['titulPredJmenem'] ?? null),
+            'first_name' => self::officerName($trader['jmeno'] ?? null),
+            'last_name' => self::officerName($trader['prijmeni'] ?? null),
+            'suffix' => self::officerValue($trader['titulZaJmenem'] ?? null),
+            'date_of_birth' => self::officerValue($trader['datumNarozeni'] ?? null),
+        ];
+    }
+
+    /**
+     * The one person a company is represented by, where there is only one.
+     *
+     * The register keeps everyone who ever sat in a statutory body; a member still sitting is one
+     * the register has not written out, which is what an empty deletion date means. Where more
+     * than one is still sitting, none is offered: the name goes onto a contract as who the company
+     * was represented by, and picking one of several would be saying something the register does
+     * not.
+     *
+     * @param array<int|string, mixed>|null $record The record as the register of companies
+     *      returned it, null when there is none.
+     * @return array{title: ?string, first_name: ?string, last_name: ?string, suffix: ?string}
+     */
+    public static function readSoleOfficer(?array $record): array
+    {
+        $nobody = [
+            'title' => null,
+            'first_name' => null,
+            'last_name' => null,
+            'suffix' => null,
+            'date_of_birth' => null,
+        ];
+        if ($record === null) {
+            return $nobody;
+        }
+
+        $sitting = [];
+        foreach ((array)($record['zaznamy'] ?? []) as $entry) {
+            foreach ((array)($entry['statutarniOrgany'] ?? []) as $body) {
+                foreach ((array)($body['clenoveOrganu'] ?? []) as $member) {
+                    $person = is_array($member['fyzickaOsoba'] ?? null) ? $member['fyzickaOsoba'] : [];
+                    if (($member['datumVymazu'] ?? null) !== null || $person === []) {
+                        continue;
+                    }
+
+                    // The same person is written down once per record they appear in, and the
+                    // entry carries their address as well - which may have changed between two
+                    // of them, so it is the name and date of birth that say who they are.
+                    $key = implode('|', [
+                        (string)($person['jmeno'] ?? ''),
+                        (string)($person['prijmeni'] ?? ''),
+                        (string)($person['datumNarozeni'] ?? ''),
+                    ]);
+                    $sitting[$key] = $person;
+                }
+            }
+        }
+
+        if (count($sitting) !== 1) {
+            return $nobody;
+        }
+
+        $person = reset($sitting);
+
+        return [
+            'title' => self::officerValue($person['titulPredJmenem'] ?? null),
+            'first_name' => self::officerName($person['jmeno'] ?? null),
+            'last_name' => self::officerName($person['prijmeni'] ?? null),
+            'suffix' => self::officerValue($person['titulZaJmenem'] ?? null),
+            'date_of_birth' => self::officerValue($person['datumNarozeni'] ?? null),
+        ];
+    }
+
+    /**
+     * A name the register writes in capitals throughout, put back the way a name is written.
+     *
+     * Only a value that is capitals all the way through is touched - anything else is left as it
+     * was written, since a name is nobody's to tidy up.
+     *
+     * @param mixed $value The value as the register returned it.
+     * @return string|null
+     */
+    private static function officerName(mixed $value): ?string
+    {
+        $value = self::officerValue($value);
+        if ($value === null || mb_strtoupper($value) !== $value) {
+            return $value;
+        }
+
+        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+    }
+
+    /**
+     * The value where there is one, null where the register left it empty.
+     *
+     * @param mixed $value The value as the register returned it.
+     * @return string|null
+     */
+    private static function officerValue(mixed $value): ?string
+    {
+        $value = trim((string)$value);
+
+        return $value !== '' ? $value : null;
+    }
+
+    /**
+     * The record the trades register holds, null when it holds none.
+     *
+     * @param string $identityNumber The identification number to ask about.
+     * @return array<int|string, mixed>|null
+     */
+    private function fetchTradesRecord(string $identityNumber): ?array
+    {
+        try {
+            $response = $this->http()->get(
+                $this->endpoint('ekonomicke-subjekty-rzp/' . urlencode($identityNumber)),
+            );
+        } catch (Throwable $e) {
+            throw $this->unreachable($e);
+        }
+
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
+
+        return $this->decodeOrThrow($response);
+    }
+
+    /**
+     * The record the register of companies holds, null when it holds none.
+     *
+     * @param string $identityNumber The identification number to ask about.
+     * @return array<int|string, mixed>|null
+     */
+    private function fetchRegisterRecord(string $identityNumber): ?array
+    {
+        try {
+            $response = $this->http()->get(
+                $this->endpoint('ekonomicke-subjekty-vr/' . urlencode($identityNumber)),
+            );
+        } catch (Throwable $e) {
+            throw $this->unreachable($e);
+        }
+
+        if ($response->getStatusCode() === 404) {
+            return null;
+        }
+
+        return $this->decodeOrThrow($response);
+    }
+
+    /**
+     * Whether the legal form is one a person carries rather than a company.
+     *
+     * The codes run 100 to 108 for a natural person - a sole trader under the trades act, a
+     * farmer, a person trading under some other act - and from 111 up for the legal entities.
+     *
+     * @param mixed $legalForm The `pravniForma` as ARES returned it.
+     * @return bool
+     */
+    private static function isNaturalPerson(mixed $legalForm): bool
+    {
+        $legalForm = trim((string)$legalForm);
+        if (!ctype_digit($legalForm)) {
+            return false;
+        }
+
+        return (int)$legalForm >= 100 && (int)$legalForm <= 108;
     }
 
     /**

@@ -34,7 +34,13 @@ class ViesSourceTest extends TestCase
         $this->assertSame(
             [
                 'reference' => 'CZ27074358',
+                'name' => 'Asseco Central Europe, a.s.',
                 'company' => 'Asseco Central Europe, a.s.',
+                'title' => null,
+                'first_name' => null,
+                'last_name' => null,
+                'suffix' => null,
+                'date_of_birth' => null,
                 'identity_number' => '27074358',
                 'vat_number' => 'CZ27074358',
                 'address' => 'Budějovická 778/3a, PRAHA 4 - MICHLE, 140 00  PRAHA 4',

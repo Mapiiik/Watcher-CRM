@@ -557,8 +557,15 @@ class CustomersController extends AppController
             throw new RuntimeException(__('The company is no longer held by the register.'));
         }
 
+        // every field is handed over, nulls included: a sole trader picked after a company has to
+        // clear the company out, or the CRM would go on reading them as a legal entity
         return [
             'company' => $subject['company'] ?? null,
+            'title' => $subject['title'] ?? null,
+            'first_name' => $subject['first_name'] ?? null,
+            'last_name' => $subject['last_name'] ?? null,
+            'suffix' => $subject['suffix'] ?? null,
+            'date_of_birth' => $subject['date_of_birth'] ?? null,
             'identity_number' => $subject['identity_number'] ?? null,
             'vat_number' => $subject['vat_number'] ?? null,
         ];

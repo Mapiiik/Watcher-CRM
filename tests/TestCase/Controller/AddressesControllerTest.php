@@ -148,7 +148,7 @@ class AddressesControllerTest extends TestCase
         StubSource::$entries = [
             [
                 'reference' => '27496139',
-                'company' => 'NETAIR, s.r.o.',
+                'name' => 'NETAIR, s.r.o.',
                 'address_key' => 'cz|16903153',
             ],
         ];
@@ -199,7 +199,7 @@ class AddressesControllerTest extends TestCase
         StubSource::$entries = [
             [
                 'reference' => '27496139',
-                'company' => 'NETAIR, s.r.o.',
+                'name' => 'NETAIR, s.r.o.',
                 'address_key' => 'cz|16903153',
             ],
         ];

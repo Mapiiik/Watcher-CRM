@@ -222,7 +222,13 @@ class SudregSource extends BaseSource
 
         return [
             'reference' => $oib !== '' ? $oib : null,
+            'name' => self::readName($subject),
             'company' => self::readName($subject),
+            'title' => null,
+            'first_name' => null,
+            'last_name' => null,
+            'suffix' => null,
+            'date_of_birth' => null,
             'identity_number' => $oib !== '' ? $oib : null,
             'vat_number' => $oib !== '' ? 'HR' . $oib : null,
             'address' => self::readAddress($subject),

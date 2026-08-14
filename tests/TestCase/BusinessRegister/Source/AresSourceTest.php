@@ -51,7 +51,13 @@ class AresSourceTest extends TestCase
         $this->assertSame(
             [
                 'reference' => '27074358',
+                'name' => 'Asseco Central Europe, a.s.',
                 'company' => 'Asseco Central Europe, a.s.',
+                'title' => null,
+                'first_name' => null,
+                'last_name' => null,
+                'suffix' => null,
+                'date_of_birth' => null,
                 'identity_number' => '27074358',
                 'vat_number' => 'CZ27074358',
                 'address' => 'Budějovická 778/3a, Michle, 14000 Praha 4',

@@ -39,7 +39,13 @@ class SudregSourceTest extends TestCase
         $this->assertSame(
             [
                 'reference' => '80625159724',
+                'name' => 'Primjer d.o.o.',
                 'company' => 'Primjer d.o.o.',
+                'title' => null,
+                'first_name' => null,
+                'last_name' => null,
+                'suffix' => null,
+                'date_of_birth' => null,
                 'identity_number' => '80625159724',
                 'vat_number' => 'HR80625159724',
                 'address' => 'Ilica 1, Zagreb',

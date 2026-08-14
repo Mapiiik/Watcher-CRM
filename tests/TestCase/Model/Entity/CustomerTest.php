@@ -235,7 +235,7 @@ class CustomerTest extends TestCase
     public function testTheCustomerAsksTheRegistersAboutTheirOwnNumbers(): void
     {
         StubSource::$entries = [
-            ['reference' => '27496139', 'company' => 'NETAIR, s.r.o.'],
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
         StubSource::$vatNumberCheck = new VatNumberCheck(VatNumberStatus::Registered, 'NETAIR, s.r.o.');
 

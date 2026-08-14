@@ -163,7 +163,7 @@ class Registry
                 return null;
             }
 
-            $company = trim((string)($subject['company'] ?? ''));
+            $company = trim((string)($subject['name'] ?? ''));
             if ($company !== '') {
                 $addressKey = trim((string)($subject['address_key'] ?? ''));
 

@@ -11,12 +11,23 @@ namespace App\BusinessRegister\Source;
  *
  *     [
  *         'reference'       => '27074358',                     // what byReference() is asked with
- *         'company'         => 'Asseco Central Europe, a.s.',
+ *         'name'            => 'Asseco Central Europe, a.s.',  // what the register calls it
+ *         'company'         => 'Asseco Central Europe, a.s.',  // null for a sole trader
+ *         'title'           => null,                           // the four below are a sole
+ *         'first_name'      => null,                           // trader's name taken apart, and
+ *         'last_name'       => null,                           // null for a company
+ *         'suffix'          => null,
+ *         'date_of_birth'   => null,                           // a person's, never a company's
  *         'identity_number' => '27074358',
  *         'vat_number'      => 'CZ27074358',                   // null when the register has none
  *         'address'         => 'Budějovická 778/3a, Praha 4',  // only ever a label, never stored
  *         'address_key'     => 'cz|41405609',                  // the seat in the address registry
  *     ]
+ *
+ * A sole trader trades under their own name, so a register writes a person where it otherwise
+ * writes a company. Such an entry fills the name fields and leaves `company` empty, which is how
+ * the CRM tells a person trading from a legal entity. `name` is what the register calls the
+ * entry either way, and is what a suggestion list and a customer's detail show.
  *
  * The `address_key` is what the national address registry knows the seat by, in the
  * "source|reference" form the address form is filled in from. Only a register that hands over

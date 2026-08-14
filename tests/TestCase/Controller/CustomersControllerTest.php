@@ -591,6 +591,7 @@ class CustomersControllerTest extends TestCase
         StubSource::$entries = [
             [
                 'reference' => '27496139',
+                'name' => 'NETAIR, s.r.o.',
                 'company' => 'NETAIR, s.r.o.',
                 'identity_number' => '27496139',
                 'vat_number' => 'CZ27496139',
