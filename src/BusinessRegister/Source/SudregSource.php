@@ -234,7 +234,7 @@ class SudregSource extends BaseSource
             'vat_number' => $oib !== '' ? 'HR' . $oib : null,
             'address' => self::readAddress($subject),
             // the register gives the seat as text and no reference the address registry knows
-            'address_key' => null,
+            'addresses' => [],
         ];
     }
 

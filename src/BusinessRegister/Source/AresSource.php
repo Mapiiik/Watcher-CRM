@@ -109,20 +109,34 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             return null;
         }
 
-        // Who sits in a statutory body, and how a sole trader's name comes apart, are both held by
-        // a register of their own that the basic record does not carry. Each is worth a second
-        // request, but only for an entry that was actually picked - a search asks for none of
-        // this, and would otherwise fire a request per line of the suggestion list.
+        // Where a subject does business besides its seat, who sits in its statutory body, and how
+        // a sole trader's name comes apart, are all held by registers of their own that the basic
+        // record does not carry. Each is worth a further request, but only for an entry that was
+        // actually picked - a search asks for none of it, and would otherwise fire a handful of
+        // requests per line of the suggestion list.
+        //
+        // The register of persons holds the establishments of anyone at all, so it is asked
+        // whoever the subject is.
+        $personRecord = $this->fetchPersonRecord($mapped['reference']);
+
+        // an establishment may well be at the seat, and the seat is named as such
+        foreach (self::readEstablishments($personRecord) as $establishment) {
+            if (!in_array($establishment['key'], array_column($mapped['addresses'], 'key'), true)) {
+                $mapped['addresses'][] = $establishment;
+            }
+        }
+
         if ($mapped['company'] === null) {
             return self::readTrader($this->fetchTradesRecord($mapped['reference'])) + $mapped;
         }
 
         // A town, a school, a public body - a legal entity all the same, but not one the register
-        // of companies holds. The basic record says which of the two to ask, so neither is asked
-        // in vain.
+        // of companies holds. The basic record says whether it is worth asking, so it is not asked
+        // in vain, and the register of persons has already answered for anyone it has never heard
+        // of.
         $mapped['officers'] = self::isInCompanyRegister($subject)
             ? self::readOfficers($this->fetchRegisterRecord($mapped['reference']))
-            : self::readPersonRegisterOfficers($this->fetchPersonRecord($mapped['reference']));
+            : self::readPersonRegisterOfficers($personRecord);
 
         // One member sitting is who the company is represented by, with nothing to choose. Where
         // several sit, none is filled in: the name goes onto a contract as who the company was
@@ -217,6 +231,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         $address = isset($sidlo['textovaAdresa']) ? trim((string)$sidlo['textovaAdresa']) : '';
         $vatNumber = isset($subject['dic']) ? trim((string)$subject['dic']) : '';
         $name = trim((string)($subject['obchodniJmeno'] ?? ''));
+        $seatKey = self::readAddressKey($sidlo);
 
         // A sole trader trades under their own name, so what ARES writes in the name field is a
         // person rather than a company. The two go to different fields: a filled-in company is
@@ -239,7 +254,11 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             'identity_number' => $ico !== '' ? $ico : null,
             'vat_number' => $vatNumber !== '' ? $vatNumber : null,
             'address' => $address !== '' ? $address : null,
-            'address_key' => self::readAddressKey($sidlo),
+            'addresses' => $seatKey === null ? [] : [[
+                'key' => $seatKey,
+                'label' => $address,
+                'seat' => true,
+            ]],
         ];
     }
 
@@ -549,5 +568,50 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         $code = trim((string)($seat['kodAdresnihoMista'] ?? ''));
 
         return $code !== '' ? 'cz|' . $code : null;
+    }
+
+    /**
+     * Where the subject does business, besides the seat it is registered at.
+     *
+     * The register of persons keeps every establishment ever opened, so the ones closed since are
+     * left out - an establishment still open is one with no closing date. Each carries the same
+     * RÚIAN code the seat does, which is what an address form is filled in from.
+     *
+     * @param array<int|string, mixed>|null $record The record as the register of persons returned
+     *      it, null when it holds none.
+     * @return list<array{key: string, label: string, seat: bool}>
+     */
+    public static function readEstablishments(?array $record): array
+    {
+        if ($record === null) {
+            return [];
+        }
+
+        $open = [];
+        foreach ((array)($record['zaznamy'] ?? []) as $entry) {
+            foreach ((array)($entry['provozovny'] ?? []) as $establishment) {
+                $closed = $establishment['datumUkonceniCinnosti'] ?? null;
+                if (is_array($closed) && ($closed['datum'] ?? null) !== null) {
+                    continue;
+                }
+
+                $address = is_array($establishment['adresaProvozovny'] ?? null)
+                    ? $establishment['adresaProvozovny']
+                    : [];
+                $key = self::readAddressKey($address);
+                if ($key === null) {
+                    continue;
+                }
+
+                // two establishments may share an address, and one of them may be the seat
+                $open[$key] = [
+                    'key' => $key,
+                    'label' => trim((string)($address['textovaAdresa'] ?? '')),
+                    'seat' => false,
+                ];
+            }
+        }
+
+        return array_values($open);
     }
 }

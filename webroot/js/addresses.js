@@ -40,6 +40,18 @@ $(function () {
         $form.submit();
     });
 
+    // Autorefresh after an address known to a business register is chosen
+    $('#business-register-address').on('change', function () {
+        // Add hidden input to indicate that the form should be refreshed (without saving)
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'refresh',
+            value: 'refresh'
+        }).appendTo($form);
+
+        $form.submit();
+    });
+
     // Autorefresh after country_id changes and clear address fields
     $('#country-id').on('change', function () {
 

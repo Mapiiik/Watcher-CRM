@@ -101,10 +101,12 @@ class AddressesController extends AppController
             $address->customer_id = $customer->id;
         }
 
-        // the registered seat of the customer this address belongs to, as the address registry
-        // knows it - null when there is no customer, no company, or a seat the registry has
-        // nothing to say about
-        $registeredSeatKey = isset($customer) ? $customer->identityNumberCheck()?->addressKey : null;
+        // where a business register says this customer is registered - its seat and wherever
+        // else it does business - empty when there is no customer, no company, or nothing the
+        // address registry has a reference for
+        $businessRegisterAddresses = isset($customer)
+            ? $customer->identityNumberCheck()->addresses ?? []
+            : [];
 
         if ($this->getRequest()->is('post')) {
             $address = $this->Addresses->patchEntity(
@@ -112,7 +114,12 @@ class AddressesController extends AppController
                 $this->dataWithAdditionalParameters($this->Addresses, $this->getRequest()->getData()),
             );
 
-            $registeredSeatAsked = $this->getRequest()->getData('registered_seat') !== null;
+            // a key that was never offered is not one to look up
+            $registeredSeatAsked = in_array(
+                $this->getRequest()->getData('business_register_address'),
+                array_column($businessRegisterAddresses, 'key'),
+                true,
+            );
 
             if (
                 $this->getRequest()->getData('refresh') == 'refresh'
@@ -124,7 +131,7 @@ class AddressesController extends AppController
                 // perform a lookup to pre-fill the address fields based on the selected address registry entry,
                 // or on the registered seat when that is what was asked for
                 $addressRegistryKey = $registeredSeatAsked
-                    ? $registeredSeatKey
+                    ? $this->getRequest()->getData('business_register_address')
                     : $this->getRequest()->getData('address_registry_search');
                 if (!empty($addressRegistryKey) && is_string($addressRegistryKey)) {
                     try {
@@ -174,7 +181,13 @@ class AddressesController extends AppController
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        $this->set(compact('address', 'customers', 'countries', 'searchCountryCode', 'registeredSeatKey'));
+        $this->set(compact(
+            'address',
+            'customers',
+            'countries',
+            'searchCountryCode',
+            'businessRegisterAddresses',
+        ));
 
         return null;
     }
@@ -190,14 +203,20 @@ class AddressesController extends AppController
     {
         $address = $this->Addresses->get($id, contain: ['Customers']);
 
-        // the registered seat of the customer this address belongs to, as the address registry
-        // knows it - null when there is no company, or a seat the registry has nothing to say about
-        $registeredSeatKey = $address->customer?->identityNumberCheck()?->addressKey;
+        // where a business register says this customer is registered - its seat and wherever
+        // else it does business - empty when there is no company, or nothing the address registry
+        // has a reference for
+        $businessRegisterAddresses = $address->customer?->identityNumberCheck()->addresses ?? [];
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $address = $this->Addresses->patchEntity($address, $this->getRequest()->getData());
 
-            $registeredSeatAsked = $this->getRequest()->getData('registered_seat') !== null;
+            // a key that was never offered is not one to look up
+            $registeredSeatAsked = in_array(
+                $this->getRequest()->getData('business_register_address'),
+                array_column($businessRegisterAddresses, 'key'),
+                true,
+            );
 
             if (
                 $this->getRequest()->getData('refresh') == 'refresh'
@@ -209,7 +228,7 @@ class AddressesController extends AppController
                 // perform a lookup to pre-fill the address fields based on the selected address registry entry,
                 // or on the registered seat when that is what was asked for
                 $addressRegistryKey = $registeredSeatAsked
-                    ? $registeredSeatKey
+                    ? $this->getRequest()->getData('business_register_address')
                     : $this->getRequest()->getData('address_registry_search');
                 if (!empty($addressRegistryKey) && is_string($addressRegistryKey)) {
                     try {
@@ -259,7 +278,13 @@ class AddressesController extends AppController
             $customers->where(['Customers.id' => $this->customer_id]);
         }
 
-        $this->set(compact('address', 'customers', 'countries', 'searchCountryCode', 'registeredSeatKey'));
+        $this->set(compact(
+            'address',
+            'customers',
+            'countries',
+            'searchCountryCode',
+            'businessRegisterAddresses',
+        ));
 
         return null;
     }

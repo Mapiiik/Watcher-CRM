@@ -51,7 +51,7 @@ class SudregSourceTest extends TestCase
                 'vat_number' => 'HR80625159724',
                 'address' => 'Ilica 1, Zagreb',
                 // the register gives the seat as text, so there is nothing to fill a form in from
-                'address_key' => null,
+                'addresses' => [],
             ],
             SudregSource::mapSubject($subject),
         );

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-14 14:50+0200\n"
-"PO-Revision-Date: 2026-08-14 14:50+0200\n"
+"POT-Creation-Date: 2026-08-14 21:51+0200\n"
+"PO-Revision-Date: 2026-08-14 21:55+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -433,34 +433,34 @@ msgstr "Účetní profil byl smazán."
 msgid "The accounting profile could not be deleted. Please, try again."
 msgstr "Účetní profil nelze smazat. Zkuste to prosím znovu."
 
-#: src/Controller/AddressesController.php:137
-#: src/Controller/AddressesController.php:222
+#: src/Controller/AddressesController.php:144
+#: src/Controller/AddressesController.php:241
 msgid "Could not retrieve address from national address registry: {0}"
 msgstr "Nepodařilo se načíst adresu z národního adresního registru: {0}"
 
-#: src/Controller/AddressesController.php:154
-#: src/Controller/AddressesController.php:239
+#: src/Controller/AddressesController.php:161
+#: src/Controller/AddressesController.php:258
 msgid "The address has been saved."
 msgstr "Adresa byla uložena."
 
-#: src/Controller/AddressesController.php:158
-#: src/Controller/AddressesController.php:243
+#: src/Controller/AddressesController.php:165
+#: src/Controller/AddressesController.php:262
 msgid "The address could not be saved. Please, try again."
 msgstr "Adresu nelze uložit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:279
+#: src/Controller/AddressesController.php:304
 msgid "The address has been deleted."
 msgstr "Adresa byla odstraněna."
 
-#: src/Controller/AddressesController.php:282
+#: src/Controller/AddressesController.php:307
 msgid "The address could not be deleted. Please, try again."
 msgstr "Adresu nelze odstranit. Opakujte akci."
 
-#: src/Controller/AddressesController.php:325
+#: src/Controller/AddressesController.php:350
 msgid "Could not retrieve national address registry metadata: {0}"
 msgstr "Nelze načíst metadata z národního registru adres: {0}"
 
-#: src/Controller/AddressesController.php:334
+#: src/Controller/AddressesController.php:359
 msgid ""
 "National address registry lookup is not available. Could not retrieve "
 "supported countries list."
@@ -468,33 +468,33 @@ msgstr ""
 "Vyhledávání v národním registru adres není k dispozici. Nepodařilo se načíst "
 "seznam podporovaných zemí."
 
-#: src/Controller/AddressesController.php:417
+#: src/Controller/AddressesController.php:442
 msgid "Country code is not defined for the address country."
 msgstr "Pro zemi adresy není zadán kód země."
 
-#: src/Controller/AddressesController.php:429
+#: src/Controller/AddressesController.php:454
 msgid ""
 "National address registry lookup is not supported for country code: {0}."
 msgstr ""
 "Vyhledávání v národním registru adres není pro kód země {0} podporováno."
 
-#: src/Controller/AddressesController.php:450
+#: src/Controller/AddressesController.php:475
 msgid "Multiple ({0}) addresses found in national ({1}) address registry."
 msgstr "V národním registru adres ({1}) bylo nalezeno více adres ({0})."
 
-#: src/Controller/AddressesController.php:459
+#: src/Controller/AddressesController.php:484
 msgid "Address found in national ({0}) address registry."
 msgstr "Adresa nalezena v národním ({0}) registru adres."
 
-#: src/Controller/AddressesController.php:472
+#: src/Controller/AddressesController.php:497
 msgid "Error during national ({0}) address registry lookup: {1}"
 msgstr "Chyba při vyhledávání v národním registru adres ({0}): {1}"
 
-#: src/Controller/AddressesController.php:482
+#: src/Controller/AddressesController.php:507
 msgid "Address could not be found in national ({0}) address registry."
 msgstr "Adresu se nepodařilo najít v národním ({0}) registru adres."
 
-#: src/Controller/AddressesController.php:645
+#: src/Controller/AddressesController.php:670
 msgid ""
 "Addresses updated from national address registries: {0} updated, {1} "
 "unchanged, {2} skipped, {3} failed."
@@ -747,7 +747,7 @@ msgid "indefinitely"
 msgstr "na dobu neurčitou"
 
 #: src/Controller/ContractsController.php:880
-#: src/Controller/CustomersController.php:646
+#: src/Controller/CustomersController.php:728
 msgid "Invalid type of document."
 msgstr "Neplatný typ dokumentu."
 
@@ -922,32 +922,32 @@ msgstr ""
 "společnosti."
 
 #: src/Controller/CustomersController.php:428
-#: src/Controller/CustomersController.php:475
+#: src/Controller/CustomersController.php:479
 msgid "The customer has been saved."
 msgstr "Zákazník byl uložen."
 
 #: src/Controller/CustomersController.php:432
-#: src/Controller/CustomersController.php:479
+#: src/Controller/CustomersController.php:483
 msgid "The customer could not be saved. Please, try again."
 msgstr "Zákazníka nelze uložit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:525
+#: src/Controller/CustomersController.php:538
 msgid "Could not retrieve the company from the business register: {0}"
 msgstr "Společnost se nepodařilo vyhledat v obchodním rejstříku: {0}"
 
-#: src/Controller/CustomersController.php:548
+#: src/Controller/CustomersController.php:602
 msgid "Invalid business register reference."
 msgstr "Neplatný odkaz na obchodní rejstřík."
 
-#: src/Controller/CustomersController.php:557
+#: src/Controller/CustomersController.php:611
 msgid "The company is no longer held by the register."
 msgstr "Společnost již není vedena v rejstříku."
 
-#: src/Controller/CustomersController.php:586
+#: src/Controller/CustomersController.php:668
 msgid "The customer has been deleted."
 msgstr "Zákazník byl odstraněn."
 
-#: src/Controller/CustomersController.php:589
+#: src/Controller/CustomersController.php:671
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
 
@@ -4417,7 +4417,7 @@ msgid "Logins"
 msgstr "Přihlášení"
 
 #: templates/Customers/view.php:208
-#: templates/element/Customers/business_register_search.php:24
+#: templates/element/Customers/business_register_search.php:30
 msgid "Register"
 msgstr "Rejstřík"
 
@@ -5665,15 +5665,23 @@ msgstr "Budoucí dočasné úpravy služby"
 msgid "scheduled from {0} to {1}"
 msgstr "naplánováno od {0} do {1}"
 
-#: templates/element/Addresses/address_register_search.php:22
-msgid "Fill In the Registered Seat"
-msgstr "Vyplnit sídlo společnosti"
+#: templates/element/Addresses/address_register_search.php:26
+msgid "Registered seat"
+msgstr "Sídlo společnosti"
+
+#: templates/element/Addresses/address_register_search.php:27
+msgid "Establishment"
+msgstr "Provozovna"
 
 #: templates/element/Addresses/address_register_search.php:33
+msgid "Address From the Business Register"
+msgstr "Adresa podle obchodního rejstříku"
+
+#: templates/element/Addresses/address_register_search.php:42
 msgid "Search Address"
 msgstr "Hledat adresu"
 
-#: templates/element/Addresses/address_register_search.php:36
+#: templates/element/Addresses/address_register_search.php:45
 msgid "Search address…"
 msgstr "Vyhledat adresu…"
 
@@ -5693,13 +5701,17 @@ msgstr "Načítání…"
 msgid "Removed"
 msgstr "Odstraněno"
 
-#: templates/element/Customers/business_register_search.php:31
+#: templates/element/Customers/business_register_search.php:37
 msgid "Search Business Register"
 msgstr "Vyhledat v obchodním rejstříku"
 
-#: templates/element/Customers/business_register_search.php:32
+#: templates/element/Customers/business_register_search.php:38
 msgid "Search by name or identification number…"
 msgstr "Vyhledat podle jména nebo identifikačního čísla…"
+
+#: templates/element/Customers/business_register_search.php:69
+msgid "Represented By"
+msgstr "Zastoupená"
 
 #: templates/element/HistoricalConnections/first_seen.php:21
 msgid "{0} or earlier"
@@ -5813,6 +5825,9 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:277
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Fill In the Registered Seat"
+#~ msgstr "Vyplnit sídlo společnosti"
 
 #~ msgid "The phone number is invalid: {0}"
 #~ msgstr "Telefonní číslo je neplatné: {0}"

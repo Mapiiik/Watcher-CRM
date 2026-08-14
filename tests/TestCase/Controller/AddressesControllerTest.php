@@ -149,7 +149,10 @@ class AddressesControllerTest extends TestCase
             [
                 'reference' => '27496139',
                 'name' => 'NETAIR, s.r.o.',
-                'address_key' => 'cz|16903153',
+                'addresses' => [
+                    ['key' => 'cz|16903153', 'label' => 'č.p. 299, 51243 Jablonec nad Jizerou', 'seat' => true],
+                    ['key' => 'cz|16903382', 'label' => 'č.p. 322, 51243 Jablonec nad Jizerou', 'seat' => false],
+                ],
             ],
         ];
         $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
@@ -159,7 +162,9 @@ class AddressesControllerTest extends TestCase
         $this->get('/customers/' . self::CUSTOMER_ID . '/addresses/add');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('name="registered_seat"');
+        $this->assertResponseContains('name="business_register_address"');
+        $this->assertResponseContains('č.p. 299, 51243 Jablonec nad Jizerou');
+        $this->assertResponseContains('č.p. 322, 51243 Jablonec nad Jizerou');
     }
 
     /**
@@ -178,52 +183,69 @@ class AddressesControllerTest extends TestCase
         $this->get('/customers/' . self::CUSTOMER_ID . '/addresses/add');
 
         $this->assertResponseOk();
-        $this->assertResponseNotContains('name="registered_seat"');
+        $this->assertResponseNotContains('name="business_register_address"');
     }
 
     /**
-     * The button posts a field of its own, and `Form->button()` locks none - so the form has to
-     * say the field is unlocked, or the security check blackholes the very submit that was meant
-     * to fill the seat in.
-     *
-     * The rendered token is what a browser would send back, so that is what is read here rather
-     * than posting a token the test built for itself - one of those matches whatever it is given
-     * and would pass either way.
+     * The form offers the same addresses when an existing one is being changed, so a record put
+     * under the wrong one of them can be moved without typing it out.
      *
      * @return void
-     * @link \App\Controller\AddressesController::add()
      * @link \App\Controller\AddressesController::edit()
      */
-    public function testTheSeatButtonIsUnlockedForTheFormSecurityCheck(): void
+    public function testEditOffersTheSameAddresses(): void
     {
         StubSource::$entries = [
             [
                 'reference' => '27496139',
                 'name' => 'NETAIR, s.r.o.',
-                'address_key' => 'cz|16903153',
+                'addresses' => [
+                    ['key' => 'cz|16903153', 'label' => 'č.p. 299, 51243 Jablonec nad Jizerou', 'seat' => true],
+                    ['key' => 'cz|16903382', 'label' => 'č.p. 322, 51243 Jablonec nad Jizerou', 'seat' => false],
+                ],
             ],
         ];
         $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
         $this->givenCustomerIdentityNumber('27496139');
 
         $this->login();
+        $this->get('/addresses/edit/' . $this->firstId('Addresses'));
 
-        $urls = [
-            '/customers/' . self::CUSTOMER_ID . '/addresses/add',
-            '/addresses/edit/' . $this->firstId('Addresses'),
-        ];
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="business_register_address"');
+    }
 
-        foreach ($urls as $url) {
-            $this->get($url);
+    /**
+     * An address key the register never offered is not one to look up - it is refused rather than
+     * fetched, so nothing arrives from a key somebody made up.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::add()
+     */
+    public function testAddRefusesAnAddressThatWasNeverOffered(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        $this->givenCustomerIdentityNumber('27496139');
 
-            $this->assertResponseOk();
-            $this->assertResponseContains('name="registered_seat"');
-            $this->assertMatchesRegularExpression(
-                '/name="_Token\[unlocked\]"[^>]*value="[^"]*registered_seat[^"]*"/',
-                (string)$this->_response?->getBody(),
-                'The seat button posts a field the form security check would refuse: ' . $url,
-            );
-        }
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/' . self::CUSTOMER_ID . '/addresses/add', [
+            'type' => 0,
+            'number_type' => 0,
+            'country_id' => $this->firstId('Countries'),
+            'street' => 'Typed by hand',
+            'business_register_address' => 'cz|99999999',
+        ]);
+
+        // the made-up key changed nothing: the address saved as it was typed, rather than the
+        // form going off to the registry with a key nobody offered
+        $this->assertRedirect();
+        $this->assertSame(
+            1,
+            $this->getTableLocator()->get('Addresses')->find()->where(['street' => 'Typed by hand'])->count(),
+        );
     }
 
     /**

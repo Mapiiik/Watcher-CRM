@@ -45,7 +45,7 @@ class ViesSourceTest extends TestCase
                 'identity_number' => '27074358',
                 'vat_number' => 'CZ27074358',
                 'address' => 'Budějovická 778/3a, PRAHA 4 - MICHLE, 140 00  PRAHA 4',
-                'address_key' => null,
+                'addresses' => [],
             ],
             ViesSource::mapSubject($subject, 'CZ', '27074358'),
         );

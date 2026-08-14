@@ -213,11 +213,14 @@ class RegistryTest extends TestCase
             [
                 'reference' => '27496139',
                 'name' => 'NETAIR, s.r.o.',
-                'address_key' => 'cz|16903153',
+                'addresses' => [['key' => 'cz|16903153', 'label' => 'č.p. 299', 'seat' => true]],
             ],
         ];
 
-        $this->assertSame('cz|16903153', Registry::identityNumberCheck('27496139')?->addressKey);
+        $this->assertSame(
+            'cz|16903153',
+            Registry::identityNumberCheck('27496139')?->addresses[0]['key'] ?? null,
+        );
     }
 
     /**
@@ -233,7 +236,7 @@ class RegistryTest extends TestCase
             ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
 
-        $this->assertNull(Registry::identityNumberCheck('27496139')?->addressKey);
+        $this->assertSame([], Registry::identityNumberCheck('27496139')?->addresses);
     }
 
     /**

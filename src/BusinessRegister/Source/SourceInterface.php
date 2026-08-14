@@ -22,7 +22,7 @@ namespace App\BusinessRegister\Source;
  *         'identity_number' => '27074358',
  *         'vat_number'      => 'CZ27074358',                   // null when the register has none
  *         'address'         => 'Budějovická 778/3a, Praha 4',  // only ever a label, never stored
- *         'address_key'     => 'cz|41405609',                  // the seat in the address registry
+ *         'addresses'       => [],                             // the seat and where it trades
  *     ]
  *
  * `officers` are the people sitting in a company's statutory body, each with the same name parts
@@ -35,11 +35,12 @@ namespace App\BusinessRegister\Source;
  * the CRM tells a person trading from a legal entity. `name` is what the register calls the
  * entry either way, and is what a suggestion list and a customer's detail show.
  *
- * The `address_key` is what the national address registry knows the seat by, in the
- * "source|reference" form the address form is filled in from. Only a register that hands over
- * such a reference can offer it - the address is then read from the address registry rather than
- * copied out of the business register, so it arrives parsed and standardised. Null everywhere
- * else, including for a company whose seat is abroad.
+ * `addresses` are the places the subject is registered at - its seat, marked as such, and wherever
+ * else it does business. Each carries a `key` naming it in the national address registry, in the
+ * "source|reference" form an address form is filled in from, so the address is read from the
+ * address registry rather than copied out of the business register and arrives parsed and
+ * standardised. Only a register that hands over such a reference can offer any, which leaves the
+ * list empty for a seat abroad as readily as for a register that knows of no such thing.
  */
 interface SourceInterface
 {

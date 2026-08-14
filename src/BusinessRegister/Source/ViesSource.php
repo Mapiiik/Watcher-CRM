@@ -165,7 +165,7 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
             'vat_number' => $memberState . $number,
             'address' => $address,
             // VIES gives the address as one line and no reference to anything
-            'address_key' => null,
+            'addresses' => [],
         ];
     }
 

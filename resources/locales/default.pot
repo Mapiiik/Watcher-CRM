@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-14 14:50+0200\n"
+"POT-Creation-Date: 2026-08-14 21:51+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -423,62 +423,62 @@ msgstr ""
 msgid "The accounting profile could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:137
-#: ./src/Controller/AddressesController.php:222
+#: ./src/Controller/AddressesController.php:144
+#: ./src/Controller/AddressesController.php:241
 msgid "Could not retrieve address from national address registry: {0}"
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:154
-#: ./src/Controller/AddressesController.php:239
+#: ./src/Controller/AddressesController.php:161
+#: ./src/Controller/AddressesController.php:258
 msgid "The address has been saved."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:158
-#: ./src/Controller/AddressesController.php:243
+#: ./src/Controller/AddressesController.php:165
+#: ./src/Controller/AddressesController.php:262
 msgid "The address could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:279
+#: ./src/Controller/AddressesController.php:304
 msgid "The address has been deleted."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:282
+#: ./src/Controller/AddressesController.php:307
 msgid "The address could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:325
+#: ./src/Controller/AddressesController.php:350
 msgid "Could not retrieve national address registry metadata: {0}"
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:334
+#: ./src/Controller/AddressesController.php:359
 msgid "National address registry lookup is not available. Could not retrieve supported countries list."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:417
+#: ./src/Controller/AddressesController.php:442
 msgid "Country code is not defined for the address country."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:429
+#: ./src/Controller/AddressesController.php:454
 msgid "National address registry lookup is not supported for country code: {0}."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:450
+#: ./src/Controller/AddressesController.php:475
 msgid "Multiple ({0}) addresses found in national ({1}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:459
+#: ./src/Controller/AddressesController.php:484
 msgid "Address found in national ({0}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:472
+#: ./src/Controller/AddressesController.php:497
 msgid "Error during national ({0}) address registry lookup: {1}"
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:482
+#: ./src/Controller/AddressesController.php:507
 msgid "Address could not be found in national ({0}) address registry."
 msgstr ""
 
-#: ./src/Controller/AddressesController.php:645
+#: ./src/Controller/AddressesController.php:670
 msgid "Addresses updated from national address registries: {0} updated, {1} unchanged, {2} skipped, {3} failed."
 msgstr ""
 
@@ -717,7 +717,7 @@ msgid "indefinitely"
 msgstr ""
 
 #: ./src/Controller/ContractsController.php:880
-#: ./src/Controller/CustomersController.php:646
+#: ./src/Controller/CustomersController.php:728
 msgid "Invalid type of document."
 msgstr ""
 
@@ -884,32 +884,32 @@ msgid "Please use the customer number or company identification number in the se
 msgstr ""
 
 #: ./src/Controller/CustomersController.php:428
-#: ./src/Controller/CustomersController.php:475
+#: ./src/Controller/CustomersController.php:479
 msgid "The customer has been saved."
 msgstr ""
 
 #: ./src/Controller/CustomersController.php:432
-#: ./src/Controller/CustomersController.php:479
+#: ./src/Controller/CustomersController.php:483
 msgid "The customer could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:525
+#: ./src/Controller/CustomersController.php:538
 msgid "Could not retrieve the company from the business register: {0}"
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:548
+#: ./src/Controller/CustomersController.php:602
 msgid "Invalid business register reference."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:557
+#: ./src/Controller/CustomersController.php:611
 msgid "The company is no longer held by the register."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:586
+#: ./src/Controller/CustomersController.php:668
 msgid "The customer has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:589
+#: ./src/Controller/CustomersController.php:671
 msgid "The customer could not be deleted. Please, try again."
 msgstr ""
 
@@ -4998,7 +4998,7 @@ msgid "Logins"
 msgstr ""
 
 #: ./templates/Customers/view.php:208
-#: ./templates/element/Customers/business_register_search.php:24
+#: ./templates/element/Customers/business_register_search.php:30
 msgid "Register"
 msgstr ""
 
@@ -6339,15 +6339,23 @@ msgstr ""
 msgid "scheduled from {0} to {1}"
 msgstr ""
 
-#: ./templates/element/Addresses/address_register_search.php:22
-msgid "Fill In the Registered Seat"
+#: ./templates/element/Addresses/address_register_search.php:26
+msgid "Registered seat"
+msgstr ""
+
+#: ./templates/element/Addresses/address_register_search.php:27
+msgid "Establishment"
 msgstr ""
 
 #: ./templates/element/Addresses/address_register_search.php:33
+msgid "Address From the Business Register"
+msgstr ""
+
+#: ./templates/element/Addresses/address_register_search.php:42
 msgid "Search Address"
 msgstr ""
 
-#: ./templates/element/Addresses/address_register_search.php:36
+#: ./templates/element/Addresses/address_register_search.php:45
 msgid "Search address…"
 msgstr ""
 
@@ -6367,12 +6375,16 @@ msgstr ""
 msgid "Removed"
 msgstr ""
 
-#: ./templates/element/Customers/business_register_search.php:31
+#: ./templates/element/Customers/business_register_search.php:37
 msgid "Search Business Register"
 msgstr ""
 
-#: ./templates/element/Customers/business_register_search.php:32
+#: ./templates/element/Customers/business_register_search.php:38
 msgid "Search by name or identification number…"
+msgstr ""
+
+#: ./templates/element/Customers/business_register_search.php:69
+msgid "Represented By"
 msgstr ""
 
 #: ./templates/element/HistoricalConnections/first_seen.php:21

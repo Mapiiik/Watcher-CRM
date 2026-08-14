@@ -14,14 +14,15 @@ final readonly class IdentityNumberCheck
     /**
      * @param \App\BusinessRegister\IdentityNumberStatus $status Whether any register holds it.
      * @param string|null $company Who holds it, as the register writes the name.
-     * @param string|null $addressKey The registered seat as the national address registry knows
-     *      it, in the "source|reference" form an address form is filled in from. Null where the
-     *      register hands over no such reference, a seat abroad included.
+     * @param list<array{key: string, label: string, seat: bool}> $addresses Where the holder is
+     *      registered - its seat and wherever else it does business - each as the national
+     *      address registry knows it, in the "source|reference" form an address form is filled in
+     *      from. Empty where the register hands over no such reference, a seat abroad included.
      */
     public function __construct(
         public IdentityNumberStatus $status,
         public ?string $company = null,
-        public ?string $addressKey = null,
+        public array $addresses = [],
     ) {
     }
 

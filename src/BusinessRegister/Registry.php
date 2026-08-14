@@ -165,12 +165,12 @@ class Registry
 
             $company = trim((string)($subject['name'] ?? ''));
             if ($company !== '') {
-                $addressKey = trim((string)($subject['address_key'] ?? ''));
+                $addresses = $subject['addresses'] ?? [];
 
                 return new IdentityNumberCheck(
                     IdentityNumberStatus::Found,
                     $company,
-                    $addressKey !== '' ? $addressKey : null,
+                    is_array($addresses) ? array_values($addresses) : [],
                 );
             }
         }

@@ -62,7 +62,11 @@ class AresSourceTest extends TestCase
                 'identity_number' => '27074358',
                 'vat_number' => 'CZ27074358',
                 'address' => 'Budějovická 778/3a, Michle, 14000 Praha 4',
-                'address_key' => 'cz|41405609',
+                'addresses' => [[
+                    'key' => 'cz|41405609',
+                    'label' => 'Budějovická 778/3a, Michle, 14000 Praha 4',
+                    'seat' => true,
+                ]],
             ],
             AresSource::mapSubject($this->subject()),
         );
@@ -77,7 +81,7 @@ class AresSourceTest extends TestCase
      */
     public function testTheSeatCarriesTheAddressRegistryReference(): void
     {
-        $this->assertSame('cz|41405609', AresSource::mapSubject($this->subject())['address_key']);
+        $this->assertSame('cz|41405609', AresSource::mapSubject($this->subject())['addresses'][0]['key']);
     }
 
     /**
@@ -93,7 +97,7 @@ class AresSourceTest extends TestCase
         $abroad['sidlo']['standardizaceAdresy'] = false;
         unset($abroad['sidlo']['kodAdresnihoMista']);
 
-        $this->assertNull(AresSource::mapSubject($abroad)['address_key']);
+        $this->assertSame([], AresSource::mapSubject($abroad)['addresses']);
     }
 
     /**

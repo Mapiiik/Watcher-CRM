@@ -5,7 +5,7 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $countries
  * @var string|null $searchCountryCode
- * @var string|null $registeredSeatKey
+ * @var list<array{key: string, label: string, seat: bool}> $businessRegisterAddresses
  */
 
 $this->Html->script('addresses.js', ['block' => true]);
@@ -28,7 +28,7 @@ $this->Html->script('addresses.js', ['block' => true]);
                     <div class="column">
                         <?= $this->element('Addresses/address_register_search', [
                             'searchCountryCode' => $searchCountryCode,
-                            'registeredSeatKey' => $registeredSeatKey,
+                            'businessRegisterAddresses' => $businessRegisterAddresses,
                         ]) ?>
                     </div>
                 </div>

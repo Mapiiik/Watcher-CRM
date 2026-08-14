@@ -3,27 +3,36 @@
  * Looks an address up in the national address registry and fills the form in from what it says.
  *
  * Picking a suggestion submits the form with a `refresh` field, which the controller answers by
- * filling the entity in instead of saving it. The registered seat of the customer takes the same
- * road, only with the entry already settled - a business register named it.
+ * filling the entity in instead of saving it. The addresses a business register knows the customer
+ * by take the same road, only with the entry already settled - the register named it.
  *
  * @var \App\View\AppView $this
  * @var string|null $searchCountryCode Lowercase country code the registry is asked for, null when
  *      the address is in a country it does not cover.
- * @var string|null $registeredSeatKey The customer's registered seat as the registry knows it,
- *      null when no business register named one.
+ * @var list<array{key: string, label: string, seat: bool}> $businessRegisterAddresses Where a
+ *      business register says the customer is registered, empty when none named anywhere.
  */
 
 // the field is added by the script, so the form security check knows nothing about it
 $this->Form->unlockField('refresh');
 
-// the seat is offered only where a business register named one - it is rarely where the service
-// is installed, so it is asked for and never assumed
-if ($registeredSeatKey !== null) {
-    echo $this->Form->button(__('Fill In the Registered Seat'), [
-        'type' => 'submit',
-        'name' => 'registered_seat',
-        'value' => '1',
-        'class' => 'button button-small button-outline float-right',
+// A company is registered at its seat and does business wherever it has an establishment, and any
+// of them may be the one being written down here. None is assumed: the seat is rarely where the
+// service is installed, and neither is any one establishment.
+if ($businessRegisterAddresses !== []) {
+    $addressOptions = [];
+    foreach ($businessRegisterAddresses as $registerAddress) {
+        $addressOptions[$registerAddress['key']] = ($registerAddress['seat']
+            ? __('Registered seat')
+            : __('Establishment')) . ': ' . $registerAddress['label'];
+    }
+
+    echo $this->Form->control('business_register_address', [
+        'type' => 'select',
+        'id' => 'business-register-address',
+        'label' => __('Address From the Business Register'),
+        'options' => $addressOptions,
+        'empty' => true,
     ]);
 }
 
