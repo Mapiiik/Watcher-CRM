@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\BusinessRegister\Registry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
 use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerPrintType;
@@ -19,6 +20,8 @@ use Cake\ORM\Association;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Override;
+use RuntimeException;
+use Settings\Utility\Settings;
 use ValueError;
 
 /**
@@ -414,18 +417,37 @@ class CustomersController extends AppController
         $customer = $this->Customers->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
-            if ($this->Customers->save($customer)) {
-                $this->Flash->success(__('The customer has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'view', $customer->id]);
+            if ($this->getRequest()->getData('refresh') == 'refresh' || $customer->hasErrors()) {
+                // only refresh
+
+                // perform a lookup to pre-fill the customer fields based on the selected register entry
+                $this->patchFromBusinessRegister($customer);
+            } else {
+                if ($this->Customers->save($customer)) {
+                    $this->Flash->success(__('The customer has been saved.'));
+
+                    return $this->afterAddRedirect(['action' => 'view', $customer->id]);
+                }
+                $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
         $accountingProfiles = $this->Customers->AccountingProfiles->find('list', order: [
             'name',
         ]);
 
-        $this->set(compact('customer', 'accountingProfiles'));
+        // set the registers offered by the company search widget (Select2)
+        $businessRegisterSources = Registry::options();
+        $businessRegisterDefaultSource = Registry::defaultKey(
+            trim(Settings::getString('core.business_register.default_source')) ?: null,
+        );
+
+        $this->set(compact(
+            'customer',
+            'accountingProfiles',
+            'businessRegisterSources',
+            'businessRegisterDefaultSource',
+        ));
 
         return null;
     }
@@ -442,20 +464,104 @@ class CustomersController extends AppController
         $customer = $this->Customers->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->getRequest()->getData());
-            if ($this->Customers->save($customer)) {
-                $this->Flash->success(__('The customer has been saved.'));
 
-                return $this->afterEditRedirect(['action' => 'view', $customer->id]);
+            if ($this->getRequest()->getData('refresh') == 'refresh' || $customer->hasErrors()) {
+                // only refresh
+
+                // perform a lookup to pre-fill the customer fields based on the selected register entry
+                $this->patchFromBusinessRegister($customer);
+            } else {
+                if ($this->Customers->save($customer)) {
+                    $this->Flash->success(__('The customer has been saved.'));
+
+                    return $this->afterEditRedirect(['action' => 'view', $customer->id]);
+                }
+                $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
         $accountingProfiles = $this->Customers->AccountingProfiles->find('list', order: [
             'name',
         ]);
 
-        $this->set(compact('customer', 'accountingProfiles'));
+        // set the registers offered by the company search widget (Select2)
+        $businessRegisterSources = Registry::options();
+        $businessRegisterDefaultSource = Registry::defaultKey(
+            trim(Settings::getString('core.business_register.default_source')) ?: null,
+        );
+
+        $this->set(compact(
+            'customer',
+            'accountingProfiles',
+            'businessRegisterSources',
+            'businessRegisterDefaultSource',
+        ));
 
         return null;
+    }
+
+    /**
+     * Fills the customer in from the register entry the operator picked, if they picked one.
+     *
+     * Validation is skipped on the way in: an identification number that does not hold up is
+     * still what the register says, and the operator is the one to decide what to do about it.
+     *
+     * @param \App\Model\Entity\Customer $customer The customer being added or edited.
+     * @return void
+     */
+    private function patchFromBusinessRegister(Customer $customer): void
+    {
+        $businessRegisterKey = $this->getRequest()->getData('business_register_search');
+        if (empty($businessRegisterKey) || !is_string($businessRegisterKey)) {
+            return;
+        }
+
+        try {
+            $this->Customers->patchEntity(
+                $customer,
+                $this->loadPatchDataFromBusinessRegister($businessRegisterKey),
+                ['validate' => false],
+            );
+        } catch (RuntimeException $e) {
+            $this->Flash->error(__(
+                'Could not retrieve the company from the business register: {0}',
+                $e->getMessage(),
+            ));
+        }
+    }
+
+    /**
+     * Loads patch data from a business register based on the provided key.
+     *
+     * @param string $businessRegisterKey Expected format: "source|reference" (e.g., "ares|27074358").
+     * @return array The patch data for the customer.
+     * @throws \RuntimeException If the register cannot be reached or refuses the request.
+     */
+    private function loadPatchDataFromBusinessRegister(string $businessRegisterKey): array
+    {
+        // expect format "source|reference", e.g. "ares|27074358"
+        [
+            $businessRegisterSource,
+            $businessRegisterReference,
+        ] = explode('|', $businessRegisterKey, limit: 2) + [null, null];
+
+        if (empty($businessRegisterSource) || empty($businessRegisterReference)) {
+            throw new RuntimeException(__('Invalid business register reference.'));
+        }
+
+        $subject = Registry::byReferenceFromCache(
+            key: $businessRegisterSource,
+            reference: $businessRegisterReference,
+        );
+
+        if ($subject === null) {
+            throw new RuntimeException(__('The company is no longer held by the register.'));
+        }
+
+        return [
+            'company' => $subject['company'] ?? null,
+            'identity_number' => $subject['identity_number'] ?? null,
+            'vat_number' => $subject['vat_number'] ?? null,
+        ];
     }
 
     /**

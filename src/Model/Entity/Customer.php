@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\BusinessRegister\IdentityNumber;
+use App\BusinessRegister\IdentityNumberCheck;
+use App\BusinessRegister\PortalLinks;
+use App\BusinessRegister\Registry;
+use App\BusinessRegister\VatNumberCheck;
 use App\Model\Enum\AddressType;
 use Cake\Core\Configure;
 use RuntimeException;
@@ -352,12 +357,7 @@ class Customer extends AppEntity
      */
     public function verifyIdentityNumber(): bool
     {
-        $identityNumber = (string)$this->identity_number;
-        if ($this->verifyIdentityNumberCzech($identityNumber)) {
-            return true;
-        }
-
-        return $this->verifyIdentityNumberCroatian($identityNumber);
+        return IdentityNumber::isValid($this->identity_number);
     }
 
     /**
@@ -368,33 +368,7 @@ class Customer extends AppEntity
      */
     public function verifyIdentityNumberCzech(string $ic): bool
     {
-        // normalize input – remove any whitespace
-        $ic = preg_replace('/\s+/', '', $ic);
-        if (!is_string($ic)) {
-            return false;
-        }
-
-        // must be exactly 8 digits
-        if (!preg_match('/^\d{8}$/', $ic)) {
-            return false;
-        }
-
-        // calculate checksum using weights 8–2 for the first 7 digits
-        $sum = 0;
-        for ($i = 0; $i < 7; $i++) {
-            $sum += (int)$ic[$i] * (8 - $i);
-        }
-
-        // determine check digit based on modulo 11
-        $mod = $sum % 11;
-        $checkDigit = match ($mod) {
-            0 => 1,
-            1 => 0,
-            default => 11 - $mod,
-        };
-
-        // last digit must equal the calculated check digit
-        return (int)$ic[7] === $checkDigit;
+        return IdentityNumber::isValidCzech($ic);
     }
 
     /**
@@ -405,35 +379,53 @@ class Customer extends AppEntity
      */
     public function verifyIdentityNumberCroatian(string $oib): bool
     {
-        // normalize input – remove whitespace
-        $oib = preg_replace('/\s+/', '', $oib);
-        if (!is_string($oib)) {
-            return false;
+        return IdentityNumber::isValidCroatian($oib);
+    }
+
+    /**
+     * Where the identification number can be looked up by hand, null when it is not a number any
+     * register named here takes.
+     *
+     * @return string|null
+     */
+    public function identityNumberPortalUrl(): ?string
+    {
+        return PortalLinks::forIdentityNumber($this->identity_number);
+    }
+
+    /**
+     * What the business registers say about the identification number, null when none of them
+     * could say - none is configured, or the one that covers the number could not be reached.
+     *
+     * A number that fails its own check digit is not asked about at all: no register holds it,
+     * and `verifyIdentityNumber()` already says so without anyone being asked.
+     *
+     * This reaches a register over the network. Answers are kept for as long as the
+     * `business_register` cache says, so asking about the same customer again is cheap - but a
+     * listing that asked for every row would still be a request per row on a cold cache.
+     *
+     * @return \App\BusinessRegister\IdentityNumberCheck|null
+     */
+    public function identityNumberCheck(): ?IdentityNumberCheck
+    {
+        if (!$this->verifyIdentityNumber()) {
+            return null;
         }
 
-        // must be exactly 11 digits
-        if (!preg_match('/^\d{11}$/', $oib)) {
-            return false;
-        }
+        return Registry::identityNumberCheck($this->identity_number);
+    }
 
-        // ISO 7064 Mod 11,10 algorithm
-        $control = 10;
-        for ($i = 0; $i < 10; $i++) {
-            $digit = (int)$oib[$i];
-            $control = ($control + $digit) % 10;
-            if ($control === 0) {
-                $control = 10;
-            }
-            $control = ($control * 2) % 11;
-        }
-
-        $checkDigit = 11 - $control;
-        if ($checkDigit === 10) {
-            $checkDigit = 0;
-        }
-
-        // last digit must equal the calculated check digit
-        return (int)$oib[10] === $checkDigit;
+    /**
+     * What the business registers say about the VAT number, null when none of them could say.
+     *
+     * Reaches a register over the network under the same terms as
+     * {@see \App\Model\Entity\Customer::identityNumberCheck()}.
+     *
+     * @return \App\BusinessRegister\VatNumberCheck|null
+     */
+    public function vatNumberCheck(): ?VatNumberCheck
+    {
+        return Registry::vatNumberCheck($this->vat_number);
     }
 
     /**

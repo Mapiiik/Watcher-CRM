@@ -42,6 +42,7 @@
  *   is for can be read off the line it stands on.
  */
 
+use Settings\ValueObject\Type\BoolType;
 use Settings\ValueObject\Type\ListType;
 use Settings\ValueObject\Type\NumberType;
 
@@ -85,6 +86,35 @@ return [
                 'phone' => '+420 488 572 513',
                 'mobile' => '+420 604 553 444',
                 'email' => 'podpora@netair.cz',
+            ],
+        ],
+
+        'business_register' => [
+            // the register the customer form offers first, as long as it is available
+            'default_source' => 'ares',
+
+            'ares' => [
+                'enabled' => new BoolType(
+                    default: true,
+                    hint: __('The Czech business register. It is public and asks for no credentials.'),
+                ),
+                'url' => 'https://ares.gov.cz/ekonomicke-subjekty-v-be/rest',
+            ],
+            'sudreg' => [
+                'enabled' => new BoolType(
+                    default: false,
+                    hint: __('The Croatian court register. It only answers with the credentials issued at sudreg-data.gov.hr.'),
+                ),
+                'url' => 'https://sudreg-data.gov.hr/api',
+                'client_id' => '',
+                'client_secret' => '',
+            ],
+            'vies' => [
+                'enabled' => new BoolType(
+                    default: true,
+                    hint: __('The European VAT number check. It answers to a number, never to a name.'),
+                ),
+                'url' => 'https://ec.europa.eu/taxation_customs/vies/rest-api',
             ],
         ],
 

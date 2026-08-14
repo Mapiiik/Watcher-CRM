@@ -6,13 +6,17 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\CustomersController;
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
+use App\Test\TestCase\BusinessRegister\Source\StubSource;
+use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Cache\Cache;
 use Cake\Database\Connection;
 use Cake\Database\Log\LoggedQuery;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
@@ -24,6 +28,7 @@ use Stringable;
 #[UsesClass(CustomersController::class)]
 class CustomersControllerTest extends TestCase
 {
+    use ConfigureTestTrait;
     use ControllerTestTrait;
     use IntegrationTestTrait;
 
@@ -94,6 +99,21 @@ class CustomersControllerTest extends TestCase
         'app.DealerCommissions',
         'app.FulltextSearchCustomers',
     ];
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    public function tearDown(): void
+    {
+        $this->restoreConfigure();
+        Cache::clear('business_register');
+        StubSource::reset();
+
+        parent::tearDown();
+    }
 
     /**
      * Adds a contract version with the given obligation date to the fixture contract.
@@ -519,5 +539,108 @@ class CustomersControllerTest extends TestCase
         $this->get('/customers/' . self::CUSTOMER_ID . '/print');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * An identification number that fails its own check digit is marked as the mistake it is,
+     * rather than being left to be read off a bracket among the others.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewMarksAnInvalidIdentityNumberAsAnError(): void
+    {
+        $customers = $this->getTableLocator()->get('Customers');
+        /** @var \App\Model\Entity\Customer $customer */
+        $customer = $customers->get(self::CUSTOMER_ID);
+        $customer->identity_number = '12345678'; // eight digits, wrong check digit
+        $customers->saveOrFail($customer, ['checkRules' => false]);
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<span class="error-text"> (Invalid)</span>');
+    }
+
+    /**
+     * A number that holds up is not dressed as a mistake.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewLeavesAValidIdentityNumberUnmarked(): void
+    {
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(' (OK)');
+        $this->assertResponseNotContains('<span class="error-text"> (Invalid)</span>');
+    }
+
+    /**
+     * Picking a company in the register fills the form in and hands it back, without storing
+     * anything - the operator has not said to save yet, only which company they meant.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddFillsTheFormInFromTheRegisterWithoutStoring(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '27496139',
+                'company' => 'NETAIR, s.r.o.',
+                'identity_number' => '27496139',
+                'vat_number' => 'CZ27496139',
+            ],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $customers = $this->getTableLocator()->get('Customers');
+        $before = $customers->find()->count();
+
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|27496139',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('NETAIR, s.r.o.');
+        $this->assertResponseContains('CZ27496139');
+        $this->assertSame($before, $customers->find()->count());
+    }
+
+    /**
+     * A reference the register no longer holds is said out loud rather than quietly filling the
+     * form in with nothing.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddSaysSoWhenTheRegisterNoLongerHoldsTheCompany(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|00000000',
+        ]);
+
+        $this->assertResponseOk();
+        // the form is rendered rather than redirected to, so the message is shown on the way out
+        // instead of waiting in the session
+        $this->assertResponseContains('The company is no longer held by the register.');
     }
 }

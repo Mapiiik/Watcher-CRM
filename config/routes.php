@@ -218,6 +218,17 @@ return function (RouteBuilder $routes): void {
                 ],
             ],
         ]);
+        $builder->resources('BusinessRegisterBridge', [
+            'only' => [
+                'search',
+            ],
+            'map' => [
+                'search' => [
+                    'action' => 'search',
+                    'method' => 'GET',
+                ],
+            ],
+        ]);
         $builder->resources('AgentBridge', [
             'only' => [
                 'ping/{ip_address}',

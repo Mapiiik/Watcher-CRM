@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Entity;
 
+use App\BusinessRegister\VatNumberCheck;
+use App\BusinessRegister\VatNumberStatus;
 use App\Model\Entity\Customer;
+use App\Test\TestCase\BusinessRegister\Source\StubSource;
 use App\Test\Traits\ConfigureTestTrait;
+use Cake\Cache\Cache;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -27,8 +31,15 @@ class CustomerTest extends TestCase
     {
         parent::setUp();
 
-        // the customer number is built from the nid and the configured series
-        $this->withConfigure(['Customers.series' => 0]);
+        StubSource::reset();
+        Cache::clear('business_register');
+
+        $this->withConfigure([
+            // the customer number is built from the nid and the configured series
+            'Customers.series' => 0,
+            // the registers are stood in for, so nothing here reaches the network
+            'BusinessRegister.sources' => ['stub' => StubSource::class],
+        ]);
     }
 
     /**
@@ -40,6 +51,8 @@ class CustomerTest extends TestCase
     public function tearDown(): void
     {
         $this->restoreConfigure();
+        Cache::clear('business_register');
+        StubSource::reset();
 
         parent::tearDown();
     }
@@ -179,5 +192,75 @@ class CustomerTest extends TestCase
         ]);
 
         $this->assertSame('101234', $customer->number);
+    }
+
+    /**
+     * The customer knows where their own number can be looked up, so a template asking for the
+     * link does not have to know which register that is.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::identityNumberPortalUrl()
+     */
+    public function testIdentityNumberPortalUrlIsOfferedForANumberThatHoldsUp(): void
+    {
+        $customer = new Customer(['identity_number' => '27496139']);
+
+        $this->assertSame(
+            'https://ares.gov.cz/ekonomicke-subjekty?ico=27496139',
+            $customer->identityNumberPortalUrl(),
+        );
+    }
+
+    /**
+     * A number that does not hold up, and a customer without one, get no link - following one
+     * would only land on an empty result.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::identityNumberPortalUrl()
+     */
+    public function testIdentityNumberPortalUrlIsNotOfferedWithoutAValidNumber(): void
+    {
+        $this->assertNull((new Customer(['identity_number' => '12345678']))->identityNumberPortalUrl());
+        $this->assertNull((new Customer())->identityNumberPortalUrl());
+    }
+
+    /**
+     * The customer asks the registers about their own numbers, so a template, a command or a
+     * report can all get the same answer without knowing which register that is.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::identityNumberCheck()
+     * @link \App\Model\Entity\Customer::vatNumberCheck()
+     */
+    public function testTheCustomerAsksTheRegistersAboutTheirOwnNumbers(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'company' => 'NETAIR, s.r.o.'],
+        ];
+        StubSource::$vatNumberCheck = new VatNumberCheck(VatNumberStatus::Registered, 'NETAIR, s.r.o.');
+
+        $customer = new Customer([
+            'identity_number' => '27496139',
+            'vat_number' => 'CZ27496139',
+        ]);
+
+        $this->assertSame('NETAIR, s.r.o.', $customer->identityNumberCheck()?->company);
+        $this->assertSame(VatNumberStatus::Registered, $customer->vatNumberCheck()?->status);
+    }
+
+    /**
+     * A number that fails its own check digit is not asked about at all - no register holds it,
+     * and the check digit already said so without anyone being asked.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::identityNumberCheck()
+     */
+    public function testANumberThatFailsItsCheckDigitIsNotAskedAbout(): void
+    {
+        StubSource::$unreachableOnReference = true;
+
+        $customer = new Customer(['identity_number' => '12345678']);
+
+        $this->assertNull($customer->identityNumberCheck());
     }
 }

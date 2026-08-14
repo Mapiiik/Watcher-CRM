@@ -1,5 +1,8 @@
 <?php
 
+use App\BusinessRegister\Source\AresSource;
+use App\BusinessRegister\Source\SudregSource;
+use App\BusinessRegister\Source\ViesSource;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Postgres;
@@ -156,6 +159,14 @@ return [
             'serialize' => true,
             'duration' => '+1 day',
             'url' => env('CACHE_ADDRESSES_URL', null),
+        ],
+        'business_register' => [
+            'className' => FileEngine::class,
+            'prefix' => 'business_register_',
+            'path' => CACHE . 'business_register' . DS,
+            'serialize' => true,
+            'duration' => '+1 day',
+            'url' => env('CACHE_BUSINESS_REGISTER_URL', null),
         ],
     ],
 
@@ -684,6 +695,21 @@ return [
     'HistoricalConnections' => [
         'sources' => [
             RadiusSource::class,
+        ],
+    ],
+
+    /*
+     * Business Register
+     *
+     * The registers a company may be looked up in. Each entry is a class implementing
+     * \App\BusinessRegister\SourceInterface, keyed by the name its settings live under.
+     * Whether a register is offered is decided in the settings, not here.
+     */
+    'BusinessRegister' => [
+        'sources' => [
+            'ares' => AresSource::class,
+            'sudreg' => SudregSource::class,
+            'vies' => ViesSource::class,
         ],
     ],
 ];

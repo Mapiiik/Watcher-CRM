@@ -225,6 +225,7 @@ $permissions = [
             'plugin' => null,
             'controller' => [
                 'AddressesBridge',
+                'BusinessRegisterBridge',
             ],
             'action' => [
                 'search',

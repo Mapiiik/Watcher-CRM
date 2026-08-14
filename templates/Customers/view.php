@@ -4,6 +4,26 @@
  * @var \App\Model\Entity\Customer $customer
  * @var bool $show_historical_records
  */
+
+use App\BusinessRegister\IdentityNumberStatus;
+use App\BusinessRegister\VatNumberStatus;
+
+// each reaches a register, so ask once and read the answer twice
+$identityNumberCheck = $customer->identityNumberCheck();
+$vatNumberCheck = $customer->vatNumberCheck();
+
+/**
+ * A remark in brackets after a number, marked as an error where it is one.
+ *
+ * @param string $note What to say.
+ * @param bool $wrong Whether it is something wrong rather than something to know.
+ * @return string
+ */
+$remark = function (string $note, bool $wrong = false): string {
+    $note = ' (' . h($note) . ')';
+
+    return $wrong ? '<span class="error-text">' . $note . '</span>' : $note;
+};
 ?>
 <div class="row">
     <aside class="column">
@@ -176,12 +196,32 @@
                             <th><?= __('Identity Number') ?></th>
                             <td><?= $customer->identity_number !== null ? (
                                 h($customer->identity_number)
-                                    . ' (' . ($customer->verifyIdentityNumber() ? __('OK') : __('Invalid')) . ')'
-                            ) : '' ?></td>
+                                    . ($customer->verifyIdentityNumber()
+                                        ? $remark(__('OK'))
+                                        : $remark(__('Invalid'), wrong: true))
+                                    . ($identityNumberCheck !== null ? $remark(
+                                        $identityNumberCheck->note(),
+                                        wrong: $identityNumberCheck->status === IdentityNumberStatus::NotFound,
+                                    ) : '')
+                            ) : '' ?>
+                                <?= $customer->identityNumberPortalUrl() !== null ? $this->Html->link(
+                                    __('Register'),
+                                    $customer->identityNumberPortalUrl(),
+                                    ['target' => '_blank', 'rel' => 'noopener'],
+                                ) : '' ?>
+                            </td>
                         </tr>
                         <tr>
                             <th><?= __('VAT Number') ?></th>
-                            <td><?= h($customer->vat_number) ?></td>
+                            <td><?= h($customer->vat_number) ?><?= $vatNumberCheck !== null
+                                ? $remark(
+                                    $vatNumberCheck->status->label(),
+                                    wrong: $vatNumberCheck->status === VatNumberStatus::Invalid,
+                                )
+                                    . ($vatNumberCheck->company !== null
+                                        ? $remark($vatNumberCheck->company)
+                                        : '')
+                                : '' ?></td>
                         </tr>
                     </table>
                     <table>

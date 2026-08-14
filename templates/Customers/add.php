@@ -3,7 +3,11 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accountingProfiles
+ * @var array<string, string> $businessRegisterSources
+ * @var string|null $businessRegisterDefaultSource
  */
+
+$this->Html->script('customers.js', ['block' => true]);
 ?>
 <div class="row">
     <aside class="column">
@@ -14,7 +18,9 @@
     </aside>
     <div class="column column-90">
         <div class="customers form content">
-            <?= $this->Form->create($customer) ?>
+            <?= $this->Form->create($customer, [
+                'valueSources' => ['context'],
+            ]) ?>
             <fieldset>
                 <legend><?= __('Add Customer') ?></legend>
                 <div class="row">
@@ -64,6 +70,19 @@
                 echo $this->Form->control('note');
                 echo $this->Form->control('internal_note');
                 ?>
+            </fieldset>
+            <fieldset>
+                <legend><?= __('Business Register Search') ?></legend>
+                <div class="row">
+                    <div class="column">
+                        <?php
+                        echo $this->element('Customers/business_register_search', [
+                            'businessRegisterSources' => $businessRegisterSources,
+                            'businessRegisterDefaultSource' => $businessRegisterDefaultSource,
+                        ]);
+                        ?>
+                    </div>
+                </div>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
