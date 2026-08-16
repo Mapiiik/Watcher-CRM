@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\TasksController;
+use App\Model\Entity\Task;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -346,5 +349,112 @@ class TasksControllerTest extends TestCase
             'use_for_outages' => false,
             'use_for_commercial' => false,
         ]));
+    }
+
+    /**
+     * The listing can be narrowed to what wants attention: a deadline near or past, or an
+     * urgent mark whatever the date says.
+     *
+     * The fixture task is finished and dated years back, so the tasks this asks about are
+     * written here - a deadline counted from today cannot be put in a fixture.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testIndexNarrowedToPressingTasks(): void
+    {
+        $pressing = $this->openTask(['critical_date' => Date::today()->addDays(2)]);
+        $urgent = $this->openTask(['priority' => Task::PRIORITY_URGENT]);
+        $quiet = $this->openTask(['critical_date' => Date::today()->addDays(400)]);
+
+        $this->login();
+        $this->get('/tasks?pressing=1&stale=0&show_completed=0&dealer_id=');
+
+        $this->assertResponseOk();
+
+        $numbers = $this->listedTaskIds();
+        $this->assertContains($pressing->id, $numbers);
+        $this->assertContains($urgent->id, $numbers, 'urgent counts whatever its date says');
+        $this->assertNotContains($quiet->id, $numbers);
+    }
+
+    /**
+     * The listing can be narrowed to what has lain untouched. Nothing brings a forgotten
+     * task back on its own, so this is what stands in for that.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testIndexNarrowedToStaleTasks(): void
+    {
+        $stale = $this->openTask([]);
+        $fresh = $this->openTask([]);
+
+        // the timestamp behavior writes `modified` on save, so it is set aside afterwards
+        $this->getTableLocator()->get('Tasks')->updateAll(
+            ['modified' => DateTime::now()->subDays(90)],
+            ['id' => $stale->id],
+        );
+
+        $this->login();
+        $this->get('/tasks?pressing=0&stale=1&show_completed=0&dealer_id=');
+
+        $this->assertResponseOk();
+
+        $numbers = $this->listedTaskIds();
+        $this->assertContains($stale->id, $numbers);
+        $this->assertNotContains($fresh->id, $numbers);
+    }
+
+    /**
+     * An unfinished task, in a state that counts as unfinished.
+     *
+     * @param array<string, mixed> $data What this task differs by.
+     * @return \App\Model\Entity\Task
+     */
+    private function openTask(array $data): Task
+    {
+        $states = $this->getTableLocator()->get('TaskStates');
+        $open = $states->find()->where(['completed' => false])->first();
+        if ($open === null) {
+            $open = $states->saveOrFail($states->newEntity([
+                'name' => 'Open',
+                'color' => '#ffffff',
+                'completed' => false,
+                'priority' => 1,
+            ]));
+        }
+
+        $tasks = $this->getTableLocator()->get('Tasks');
+
+        /** @var \App\Model\Entity\Task $task */
+        $task = $tasks->saveOrFail($tasks->newEntity($data + [
+            'task_type_id' => $this->firstId('TaskTypes'),
+            'task_state_id' => $open->get('id'),
+            'subject' => 'Written by the test',
+            'priority' => Task::PRIORITY_NORMAL,
+            // the fixture task type asks for both
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+        ]));
+
+        return $task;
+    }
+
+    /**
+     * The ids of the tasks the listing came back with.
+     *
+     * @return list<string>
+     */
+    private function listedTaskIds(): array
+    {
+        $ids = [];
+        /** @var iterable<\App\Model\Entity\Task> $tasks */
+        $tasks = $this->viewVariable('tasks');
+        foreach ($tasks as $task) {
+            $ids[] = $task->id;
+        }
+
+        return $ids;
     }
 }

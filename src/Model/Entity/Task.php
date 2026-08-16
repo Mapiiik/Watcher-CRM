@@ -44,6 +44,14 @@ use Cake\Core\Configure;
 class Task extends AppEntity
 {
     /**
+     * The priorities a task is offered, ordered from the least to the most pressing.
+     */
+    public const PRIORITY_LOW = -10;
+    public const PRIORITY_NORMAL = 0;
+    public const PRIORITY_HIGH = 10;
+    public const PRIORITY_URGENT = 50;
+
+    /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * Note that when '*' is set to true, this allows all unspecified fields to
@@ -185,10 +193,10 @@ class Task extends AppEntity
     public function getPriorityOptions(): array
     {
         return [
-            -10 => __('Low'),
-            0 => __('Normal'),
-            10 => __('High'),
-            50 => __('Urgent'),
+            self::PRIORITY_LOW => __('Low'),
+            self::PRIORITY_NORMAL => __('Normal'),
+            self::PRIORITY_HIGH => __('High'),
+            self::PRIORITY_URGENT => __('Urgent'),
         ];
     }
 

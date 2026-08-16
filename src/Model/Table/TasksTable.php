@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Task;
 use App\Model\Entity\TaskType;
 use Cake\Datasource\EntityInterface;
+use Cake\I18n\Date;
+use Cake\I18n\DateTime;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -72,6 +76,78 @@ class TasksTable extends AppTable
             'foreignKey' => 'task_state_id',
             'joinType' => 'INNER',
         ]);
+    }
+
+    /**
+     * Tasks nobody has finished yet.
+     *
+     * Whether a task is done is a property of its state, not of the task, so the state
+     * is joined in rather than left to the caller.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
+     */
+    public function findActive(SelectQuery $query): SelectQuery
+    {
+        return $query
+            ->contain(['TaskStates'])
+            ->where(['TaskStates.completed' => false]);
+    }
+
+    /**
+     * Tasks a dealer is holding.
+     *
+     * Tasks are assigned to a dealer rather than to a user, so the caller passes the
+     * `customer_id` of the identity it asks on behalf of.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
+     * @param string $dealer_id The dealer the tasks belong to.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
+     */
+    public function findForDealer(SelectQuery $query, string $dealer_id): SelectQuery
+    {
+        return $query->where(['Tasks.dealer_id' => $dealer_id]);
+    }
+
+    /**
+     * Tasks nobody holds.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
+     */
+    public function findUnassigned(SelectQuery $query): SelectQuery
+    {
+        return $query->where(['Tasks.dealer_id IS' => null]);
+    }
+
+    /**
+     * Tasks that want attention - either their deadline is near or past, or they are
+     * marked urgent whatever their date says.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
+     * @param int $within_days How far ahead a deadline still counts as pressing.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
+     */
+    public function findPressing(SelectQuery $query, int $within_days): SelectQuery
+    {
+        return $query->where([
+            'OR' => [
+                'Tasks.critical_date <=' => Date::today()->addDays($within_days),
+                'Tasks.priority >=' => Task::PRIORITY_URGENT,
+            ],
+        ]);
+    }
+
+    /**
+     * Tasks that have lain untouched for a while.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
+     * @param int $days How long a task may lie before it counts as stale.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
+     */
+    public function findStale(SelectQuery $query, int $days): SelectQuery
+    {
+        return $query->where(['Tasks.modified <' => DateTime::now()->subDays($days)]);
     }
 
     /**

@@ -16,11 +16,6 @@ $this->Html->script('expandable-text.js', ['block' => true]);
             'empty' => true,
             'onchange' => 'this.form.submit();',
         ]) ?>
-        <?= $this->Form->control('show_completed', [
-            'label' => __('Show Completed'),
-            'type' => 'checkbox',
-            'onchange' => 'this.form.submit();',
-        ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('task_type_id', [
@@ -46,6 +41,33 @@ $this->Html->script('expandable-text.js', ['block' => true]);
             'type' => 'search',
             'onchange' => 'this.form.submit();',
         ]) ?>
+    </div>
+</div>
+<div class="row">
+    <div class="column">
+        <?= $this->Form->control('show_completed', [
+            'label' => __('Show Completed'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('pressing', [
+            'label' => __('Urgent or Overdue Only'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('stale', [
+            'label' => __('Untouched for a While Only'),
+            'type' => 'checkbox',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+    </div>
+    <div class="column">
+    </div>
+    <div class="column">
         <?= $this->Form->control('expandable_text', [
             'label' => __('Expandable Text'),
             'type' => 'checkbox',
