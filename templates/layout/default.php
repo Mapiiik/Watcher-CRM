@@ -59,7 +59,6 @@ $urlWithQuery = function ($query = []) use ($request) {
     <?= $this->Html->script([
         'https://code.jquery.com/jquery.min.js',
         'links.js',
-        'lazy-load.js',
     ]) ?>
 
     <?php if (filter_var(env('ENABLE_SELECT2', false), FILTER_VALIDATE_BOOLEAN)) : ?>

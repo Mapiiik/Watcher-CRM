@@ -8,6 +8,10 @@
 use App\BusinessRegister\IdentityNumberStatus;
 use App\BusinessRegister\VatNumberStatus;
 
+// The RADIUS accounts below are drawn by a cell, and a cell renders in a view of its own, so
+// a block it asked for would never reach this page's layout - the script is asked for here.
+$this->Html->script('lazy-load.js', ['block' => true]);
+
 // each reaches a register, so ask once and read the answer twice
 $identityNumberCheck = $customer->identityNumberCheck();
 $vatNumberCheck = $customer->vatNumberCheck();

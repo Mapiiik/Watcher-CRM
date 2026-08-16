@@ -4,6 +4,10 @@
  * @var \App\Model\Entity\Contract $contract
  * @var bool $show_historical_records
  */
+
+// The RADIUS accounts below are drawn by a cell, and a cell renders in a view of its own, so
+// a block it asked for would never reach this page's layout - the script is asked for here.
+$this->Html->script('lazy-load.js', ['block' => true]);
 ?>
 <div class="row">
     <aside class="column">

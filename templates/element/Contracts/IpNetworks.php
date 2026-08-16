@@ -6,6 +6,8 @@ use Cake\Routing\Router;
  * @var iterable<\App\Model\Entity\IpNetwork> $ip_networks
  * @var bool $contract_column
  */
+
+$this->Html->script('lazy-load.js', ['block' => true]);
 ?>
 <?php if (!empty($ip_networks)) : ?>
 <div class="table-responsive">

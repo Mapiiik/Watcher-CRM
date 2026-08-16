@@ -107,6 +107,11 @@ class ContractsControllerTest extends TestCase
         $this->get('/customers/' . $customerId . '/contracts/' . $contractId);
 
         $this->assertResponseOk();
+
+        // The addresses, the networks and the RADIUS accounts here all fetch themselves. The
+        // accounts are drawn by a cell, which renders in a view of its own and so cannot ask
+        // for the script - this page has to, and only opening it says whether it did.
+        $this->assertResponseContains('js/lazy-load.js');
     }
 
     /**

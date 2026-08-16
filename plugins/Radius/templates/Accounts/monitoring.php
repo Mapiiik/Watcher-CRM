@@ -9,6 +9,8 @@ use Cake\Routing\Router;
  * @var \Cake\Datasource\Paging\PaginatedResultSet<int, \Radius\Model\Entity\Radpostauth> $radpostauths
  * @var bool $details
  */
+
+$this->Html->script('lazy-load.js', ['block' => true]);
 ?>
 <div class="row">
     <aside class="column">
