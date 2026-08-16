@@ -23,7 +23,9 @@
                             ['style' => $label->style],
                         ) ?>
                         <?php if ($label->caption !== null) : ?>
-                            <br><small><?= h($label->caption) ?></small>
+                            <br><small class="dashboard-hint" title="<?= h($label->caption) ?>">
+                                <?= h($label->caption) ?>
+                            </small>
                         <?php endif ?>
                     </td>
                     <td><?= h((string)($counts[$label->id] ?? 0)) ?></td>

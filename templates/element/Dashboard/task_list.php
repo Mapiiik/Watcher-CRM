@@ -1,4 +1,6 @@
 <?php
+use App\Model\Entity\Task;
+
 /**
  * The rows every task card is drawn as.
  *
@@ -10,6 +12,17 @@
  */
 
 $shown = 0;
+
+// The row already carries the colour of the task's state, so a pressing priority is marked
+// out as a badge of its own rather than by tinting the cell, which would have to win against
+// whatever colour the row happens to be.
+$priorityClass = function (Task $task): string {
+    return match (true) {
+        $task->priority >= Task::PRIORITY_URGENT => 'dashboard-priority-urgent',
+        $task->priority >= Task::PRIORITY_HIGH => 'dashboard-priority-high',
+        default => 'dashboard-priority-plain',
+    };
+};
 ?>
 <?php if ($total === 0) : ?>
     <p><?= h($empty) ?></p>
@@ -28,8 +41,21 @@ $shown = 0;
                             <br><small><?= h($task->customer->name) ?></small>
                         <?php endif ?>
                     </td>
-                    <td><?= h($task->getPriorityName()) ?></td>
-                    <td><?= $task->critical_date !== null ? h($task->critical_date) : '' ?></td>
+                    <td>
+                        <span class="dashboard-priority <?= $priorityClass($task) ?>">
+                            <?= h($task->getPriorityName()) ?>
+                        </span>
+                        <?php if ($task->critical_date !== null) : ?>
+                            <br><?= h($task->critical_date) ?>
+                        <?php elseif ($task->estimated_date !== null) : ?>
+                            <?php // in brackets and muted, as an estimate slipping is a
+                                  // softer thing than a promise being broken ?>
+                            <br><span
+                                class="dashboard-date-estimated"
+                                title="<?= h(__('Estimated Date')) ?>"
+                            >(<?= h($task->estimated_date) ?>)</span>
+                        <?php endif ?>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dashboard\Card;
 
 use App\Model\Table\TasksTable;
+use Cake\Database\Expression\FunctionExpression;
 use Cake\ORM\Query\SelectQuery;
 
 /**
@@ -108,13 +109,20 @@ abstract class AbstractTaskListCard extends AbstractDashboardCard
         /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query */
         $query = $this->tasks
             ->find('active')
-            ->contain(['TaskTypes', 'Customers'])
-            ->orderBy([
-                'Tasks.priority' => 'DESC',
-                'Tasks.critical_date' => 'ASC',
-                'Tasks.nid' => 'DESC',
-            ]);
+            ->contain(['TaskTypes', 'Customers']);
 
-        return $query;
+        // Whichever of the two dates comes first is the one a task is waiting on, so that is
+        // what it is ordered by - ordering by the critical date alone would drop every task
+        // that only carries an estimate to the bottom. PostgreSQL's `LEAST` passes over
+        // nulls, which is what leaves a task with one date sorting by that one.
+        $due = new FunctionExpression('LEAST', [
+            'Tasks.critical_date' => 'identifier',
+            'Tasks.estimated_date' => 'identifier',
+        ]);
+
+        return $query
+            ->orderByDesc('Tasks.priority')
+            ->orderByAsc($due)
+            ->orderByDesc('Tasks.nid');
     }
 }

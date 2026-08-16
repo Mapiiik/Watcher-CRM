@@ -16,6 +16,11 @@
                     <td>
                         <span class="dashboard-swatch" style="background-color: <?= h($state->color) ?>;"></span>
                         <?= $this->Html->link($state->name, $urls[$state->id]) ?>
+                        <?php if ($state->note !== null) : ?>
+                            <br><small class="dashboard-hint" title="<?= h($state->note) ?>">
+                                <?= h($state->note) ?>
+                            </small>
+                        <?php endif ?>
                     </td>
                     <td><?= h((string)($counts[$state->id] ?? 0)) ?></td>
                 </tr>

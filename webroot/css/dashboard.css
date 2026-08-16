@@ -76,3 +76,50 @@
     vertical-align: baseline;
     margin-right: 0.4rem;
 }
+
+/*
+ * The caption of a label or the note of a contract state, saying what the row is about.
+ * Some of them run to a paragraph, so it is cut to two lines here and carried whole on the
+ * element's title, where hovering brings it out.
+ */
+.dashboard-hint {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    /* muted by transparency rather than by a colour of its own, so it holds up in every theme */
+    opacity: 0.75;
+}
+
+/*
+ * The priority of a task. The ordinary one is said quietly, as most tasks carry it; the two
+ * that ask for attention are set in a badge of their own, which has to read against the
+ * colour the row already carries from the task's state.
+ */
+.dashboard-priority-plain {
+    opacity: 0.7;
+}
+
+.dashboard-priority-high,
+.dashboard-priority-urgent {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.3rem;
+    font-weight: bold;
+}
+
+.dashboard-priority-high {
+    background-color: var(--color-message-warning-bg);
+    color: var(--color-message-warning-text);
+}
+
+.dashboard-priority-urgent {
+    background-color: var(--color-message-error-bg);
+    color: var(--color-message-error-text);
+}
+
+/* An expected date, which is a plan rather than a promise and is said more quietly. */
+.dashboard-date-estimated {
+    opacity: 0.7;
+}

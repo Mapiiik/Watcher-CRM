@@ -121,8 +121,12 @@ class TasksTable extends AppTable
     }
 
     /**
-     * Tasks that want attention - either their deadline is near or past, or they are
-     * marked urgent whatever their date says.
+     * Tasks that want attention: a deadline near or past, an expected date already gone
+     * by, or an urgent mark whatever the dates say.
+     *
+     * The two dates are asked differently on purpose. A critical date is what was promised,
+     * so it is worth raising before it is missed. An expected date is only a plan, and a
+     * plan for next week is not news - it becomes news once it has slipped.
      *
      * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
      * @param int $within_days How far ahead a deadline still counts as pressing.
@@ -132,7 +136,11 @@ class TasksTable extends AppTable
     {
         return $query->where([
             'OR' => [
+                // a deadline is a promise, so it is raised before it is broken
                 'Tasks.critical_date <=' => Date::today()->addDays($within_days),
+                // an estimate is a plan; planning something for next week is not news,
+                // the plan having slipped is
+                'Tasks.estimated_date <' => Date::today(),
                 'Tasks.priority >=' => Task::PRIORITY_URGENT,
             ],
         ]);

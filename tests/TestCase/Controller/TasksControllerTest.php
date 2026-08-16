@@ -366,6 +366,9 @@ class TasksControllerTest extends TestCase
         $pressing = $this->openTask(['critical_date' => Date::today()->addDays(2)]);
         $urgent = $this->openTask(['priority' => Task::PRIORITY_URGENT]);
         $quiet = $this->openTask(['critical_date' => Date::today()->addDays(400)]);
+        // an estimate is a plan: gone by, it is news; still ahead, it is not
+        $slipped = $this->openTask(['estimated_date' => Date::today()->subDays(3)]);
+        $planned = $this->openTask(['estimated_date' => Date::today()->addDays(30)]);
 
         $this->login();
         $this->get('/tasks?pressing=1&stale=0&show_completed=0&dealer_id=');
@@ -376,6 +379,8 @@ class TasksControllerTest extends TestCase
         $this->assertContains($pressing->id, $numbers);
         $this->assertContains($urgent->id, $numbers, 'urgent counts whatever its date says');
         $this->assertNotContains($quiet->id, $numbers);
+        $this->assertContains($slipped->id, $numbers, 'the plan has slipped');
+        $this->assertNotContains($planned->id, $numbers, 'a plan for later is not news yet');
     }
 
     /**
