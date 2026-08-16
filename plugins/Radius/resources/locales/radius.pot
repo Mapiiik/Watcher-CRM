@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-08 15:59+0200\n"
+"POT-Creation-Date: 2026-08-16 11:01+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -42,7 +42,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/add.php:30
 #: ./plugins/Radius/templates/Accounts/edit.php:36
 #: ./plugins/Radius/templates/Accounts/index.php:35
-#: ./plugins/Radius/templates/Accounts/monitoring.php:87
+#: ./plugins/Radius/templates/Accounts/monitoring.php:89
 #: ./plugins/Radius/templates/Accounts/view.php:68
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:12
 msgid "Customer"
@@ -52,7 +52,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/add.php:45
 #: ./plugins/Radius/templates/Accounts/edit.php:50
 #: ./plugins/Radius/templates/Accounts/index.php:37
-#: ./plugins/Radius/templates/Accounts/monitoring.php:103
+#: ./plugins/Radius/templates/Accounts/monitoring.php:105
 #: ./plugins/Radius/templates/Accounts/view.php:84
 #: ./plugins/Radius/templates/cell/Accounts/display.php:15
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:13
@@ -365,9 +365,9 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/add.php:14
 #: ./plugins/Radius/templates/Accounts/edit.php:12
 #: ./plugins/Radius/templates/Accounts/index.php:44
-#: ./plugins/Radius/templates/Accounts/monitoring.php:16
-#: ./plugins/Radius/templates/Accounts/monitoring.php:226
-#: ./plugins/Radius/templates/Accounts/monitoring.php:350
+#: ./plugins/Radius/templates/Accounts/monitoring.php:18
+#: ./plugins/Radius/templates/Accounts/monitoring.php:228
+#: ./plugins/Radius/templates/Accounts/monitoring.php:352
 #: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:10
 #: ./plugins/Radius/templates/Accounts/view.php:10
 #: ./plugins/Radius/templates/Accounts/view.php:132
@@ -415,7 +415,7 @@ msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/add.php:16
 #: ./plugins/Radius/templates/Accounts/edit.php:22
-#: ./plugins/Radius/templates/Accounts/monitoring.php:31
+#: ./plugins/Radius/templates/Accounts/monitoring.php:33
 #: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:12
 #: ./plugins/Radius/templates/Accounts/view.php:25
 #: ./plugins/Radius/templates/Settings/index.php:24
@@ -429,8 +429,8 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/add.php:61
 #: ./plugins/Radius/templates/Accounts/edit.php:66
 #: ./plugins/Radius/templates/Accounts/index.php:38
-#: ./plugins/Radius/templates/Accounts/monitoring.php:116
-#: ./plugins/Radius/templates/Accounts/monitoring.php:333
+#: ./plugins/Radius/templates/Accounts/monitoring.php:118
+#: ./plugins/Radius/templates/Accounts/monitoring.php:335
 #: ./plugins/Radius/templates/Accounts/view.php:97
 #: ./plugins/Radius/templates/Radacct/view.php:41
 #: ./plugins/Radius/templates/Radcheck/view.php:41
@@ -446,7 +446,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/add.php:66
 #: ./plugins/Radius/templates/Accounts/edit.php:71
 #: ./plugins/Radius/templates/Accounts/index.php:39
-#: ./plugins/Radius/templates/Accounts/monitoring.php:120
+#: ./plugins/Radius/templates/Accounts/monitoring.php:122
 #: ./plugins/Radius/templates/Accounts/view.php:101
 #: ./plugins/Radius/templates/cell/Accounts/display.php:18
 msgid "Password"
@@ -455,7 +455,7 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/add.php:70
 #: ./plugins/Radius/templates/Accounts/edit.php:74
 #: ./plugins/Radius/templates/Accounts/index.php:40
-#: ./plugins/Radius/templates/Accounts/monitoring.php:128
+#: ./plugins/Radius/templates/Accounts/monitoring.php:130
 #: ./plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:29
 #: ./plugins/Radius/templates/Accounts/view.php:109
 #: ./plugins/Radius/templates/cell/Accounts/display.php:19
@@ -485,16 +485,16 @@ msgid "Submit"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/edit.php:14
-#: ./plugins/Radius/templates/Accounts/monitoring.php:23
+#: ./plugins/Radius/templates/Accounts/monitoring.php:25
 #: ./plugins/Radius/templates/Accounts/view.php:17
 msgid "Delete RADIUS Account"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/edit.php:17
 #: ./plugins/Radius/templates/Accounts/index.php:89
-#: ./plugins/Radius/templates/Accounts/monitoring.php:26
-#: ./plugins/Radius/templates/Accounts/monitoring.php:293
-#: ./plugins/Radius/templates/Accounts/monitoring.php:374
+#: ./plugins/Radius/templates/Accounts/monitoring.php:28
+#: ./plugins/Radius/templates/Accounts/monitoring.php:295
+#: ./plugins/Radius/templates/Accounts/monitoring.php:376
 #: ./plugins/Radius/templates/Accounts/view.php:20
 #: ./plugins/Radius/templates/Accounts/view.php:152
 #: ./plugins/Radius/templates/Accounts/view.php:199
@@ -532,7 +532,7 @@ msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/edit.php:32
-#: ./plugins/Radius/templates/Accounts/monitoring.php:18
+#: ./plugins/Radius/templates/Accounts/monitoring.php:20
 #: ./plugins/Radius/templates/Accounts/view.php:12
 msgid "Edit RADIUS Account"
 msgstr ""
@@ -546,7 +546,7 @@ msgid "Settings"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:26
-#: ./plugins/Radius/templates/Accounts/monitoring.php:36
+#: ./plugins/Radius/templates/Accounts/monitoring.php:38
 #: ./plugins/Radius/templates/Accounts/view.php:30
 msgid "New RADIUS Account"
 msgstr ""
@@ -556,13 +556,13 @@ msgid "RADIUS Accounts"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:36
-#: ./plugins/Radius/templates/Accounts/monitoring.php:99
+#: ./plugins/Radius/templates/Accounts/monitoring.php:101
 #: ./plugins/Radius/templates/Accounts/view.php:80
 msgid "Customer Number"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:41
-#: ./plugins/Radius/templates/Accounts/monitoring.php:124
+#: ./plugins/Radius/templates/Accounts/monitoring.php:126
 #: ./plugins/Radius/templates/Accounts/view.php:105
 #: ./plugins/Radius/templates/Nas/view.php:62
 msgid "Type"
@@ -573,14 +573,14 @@ msgid "Created"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:71
-#: ./plugins/Radius/templates/Accounts/monitoring.php:129
+#: ./plugins/Radius/templates/Accounts/monitoring.php:131
 #: ./plugins/Radius/templates/Accounts/view.php:110
 #: ./plugins/Radius/templates/cell/Accounts/display.php:47
 msgid "Yes"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:71
-#: ./plugins/Radius/templates/Accounts/monitoring.php:129
+#: ./plugins/Radius/templates/Accounts/monitoring.php:131
 #: ./plugins/Radius/templates/Accounts/view.php:110
 #: ./plugins/Radius/templates/cell/Accounts/display.php:47
 msgid "No"
@@ -592,8 +592,8 @@ msgid "Monitoring"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:80
-#: ./plugins/Radius/templates/Accounts/monitoring.php:282
-#: ./plugins/Radius/templates/Accounts/monitoring.php:363
+#: ./plugins/Radius/templates/Accounts/monitoring.php:284
+#: ./plugins/Radius/templates/Accounts/monitoring.php:365
 #: ./plugins/Radius/templates/Accounts/view.php:141
 #: ./plugins/Radius/templates/Accounts/view.php:188
 #: ./plugins/Radius/templates/Accounts/view.php:233
@@ -614,8 +614,8 @@ msgid "View"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:82
-#: ./plugins/Radius/templates/Accounts/monitoring.php:286
-#: ./plugins/Radius/templates/Accounts/monitoring.php:367
+#: ./plugins/Radius/templates/Accounts/monitoring.php:288
+#: ./plugins/Radius/templates/Accounts/monitoring.php:369
 #: ./plugins/Radius/templates/Accounts/view.php:145
 #: ./plugins/Radius/templates/Accounts/view.php:192
 #: ./plugins/Radius/templates/Accounts/view.php:237
@@ -636,8 +636,8 @@ msgid "Edit"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:87
-#: ./plugins/Radius/templates/Accounts/monitoring.php:291
-#: ./plugins/Radius/templates/Accounts/monitoring.php:372
+#: ./plugins/Radius/templates/Accounts/monitoring.php:293
+#: ./plugins/Radius/templates/Accounts/monitoring.php:374
 #: ./plugins/Radius/templates/Accounts/view.php:150
 #: ./plugins/Radius/templates/Accounts/view.php:197
 #: ./plugins/Radius/templates/Accounts/view.php:242
@@ -658,8 +658,8 @@ msgid "Delete"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:99
-#: ./plugins/Radius/templates/Accounts/monitoring.php:306
-#: ./plugins/Radius/templates/Accounts/monitoring.php:387
+#: ./plugins/Radius/templates/Accounts/monitoring.php:308
+#: ./plugins/Radius/templates/Accounts/monitoring.php:389
 #: ./plugins/Radius/templates/Nas/index.php:60
 #: ./plugins/Radius/templates/Radacct/index.php:102
 #: ./plugins/Radius/templates/Radcheck/index.php:57
@@ -672,8 +672,8 @@ msgid "first"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:100
-#: ./plugins/Radius/templates/Accounts/monitoring.php:307
-#: ./plugins/Radius/templates/Accounts/monitoring.php:388
+#: ./plugins/Radius/templates/Accounts/monitoring.php:309
+#: ./plugins/Radius/templates/Accounts/monitoring.php:390
 #: ./plugins/Radius/templates/Nas/index.php:61
 #: ./plugins/Radius/templates/Radacct/index.php:103
 #: ./plugins/Radius/templates/Radcheck/index.php:58
@@ -686,8 +686,8 @@ msgid "previous"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:102
-#: ./plugins/Radius/templates/Accounts/monitoring.php:309
-#: ./plugins/Radius/templates/Accounts/monitoring.php:390
+#: ./plugins/Radius/templates/Accounts/monitoring.php:311
+#: ./plugins/Radius/templates/Accounts/monitoring.php:392
 #: ./plugins/Radius/templates/Nas/index.php:63
 #: ./plugins/Radius/templates/Radacct/index.php:105
 #: ./plugins/Radius/templates/Radcheck/index.php:60
@@ -700,8 +700,8 @@ msgid "next"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:103
-#: ./plugins/Radius/templates/Accounts/monitoring.php:310
-#: ./plugins/Radius/templates/Accounts/monitoring.php:391
+#: ./plugins/Radius/templates/Accounts/monitoring.php:312
+#: ./plugins/Radius/templates/Accounts/monitoring.php:393
 #: ./plugins/Radius/templates/Nas/index.php:64
 #: ./plugins/Radius/templates/Radacct/index.php:106
 #: ./plugins/Radius/templates/Radcheck/index.php:61
@@ -714,8 +714,8 @@ msgid "last"
 msgstr ""
 
 #: ./plugins/Radius/templates/Accounts/index.php:106
-#: ./plugins/Radius/templates/Accounts/monitoring.php:314
-#: ./plugins/Radius/templates/Accounts/monitoring.php:395
+#: ./plugins/Radius/templates/Accounts/monitoring.php:316
+#: ./plugins/Radius/templates/Accounts/monitoring.php:397
 #: ./plugins/Radius/templates/Nas/index.php:67
 #: ./plugins/Radius/templates/Radacct/index.php:109
 #: ./plugins/Radius/templates/Radcheck/index.php:64
@@ -727,160 +727,160 @@ msgstr ""
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:43
+#: ./plugins/Radius/templates/Accounts/monitoring.php:45
 #: ./plugins/Radius/templates/Accounts/view.php:37
 msgid "List Historical Connections"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:57
+#: ./plugins/Radius/templates/Accounts/monitoring.php:59
 msgid "View RADIUS Account"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:62
+#: ./plugins/Radius/templates/Accounts/monitoring.php:64
 msgid "Remove MAC address"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:65
+#: ./plugins/Radius/templates/Accounts/monitoring.php:67
 msgid "Are you sure you want to remove the last active MAC address from the access list on the access point for account {0}?"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:75
+#: ./plugins/Radius/templates/Accounts/monitoring.php:77
 msgid "RADIUS Disconnect Request"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:78
+#: ./plugins/Radius/templates/Accounts/monitoring.php:80
 #: ./plugins/Radius/templates/cell/Accounts/display.php:145
 msgid "Are you sure you want to disconnect {0}?"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:141
+#: ./plugins/Radius/templates/Accounts/monitoring.php:143
 msgid "Show Details"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:147
+#: ./plugins/Radius/templates/Accounts/monitoring.php:149
 msgid "Related RADIUS Accountings"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:155
+#: ./plugins/Radius/templates/Accounts/monitoring.php:157
 #: ./plugins/Radius/templates/Radacct/view.php:170
 msgid "Service Type"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:158
+#: ./plugins/Radius/templates/Accounts/monitoring.php:160
 #: ./plugins/Radius/templates/Radacct/view.php:176
 msgid "Framed Protocol"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:161
-#: ./plugins/Radius/templates/Accounts/monitoring.php:342
+#: ./plugins/Radius/templates/Accounts/monitoring.php:163
+#: ./plugins/Radius/templates/Accounts/monitoring.php:344
 #: ./plugins/Radius/templates/Radacct/view.php:152
 #: ./plugins/Radius/templates/Radpostauth/view.php:69
 msgid "Called Station ID"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:165
-#: ./plugins/Radius/templates/Accounts/monitoring.php:345
+#: ./plugins/Radius/templates/Accounts/monitoring.php:167
+#: ./plugins/Radius/templates/Accounts/monitoring.php:347
 #: ./plugins/Radius/templates/Radacct/view.php:158
 #: ./plugins/Radius/templates/Radpostauth/view.php:75
 msgid "Calling Station ID"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:168
+#: ./plugins/Radius/templates/Accounts/monitoring.php:170
 #: ./plugins/Radius/templates/Radacct/view.php:52
 msgid "Framed IP Address"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:171
+#: ./plugins/Radius/templates/Accounts/monitoring.php:173
 #: ./plugins/Radius/templates/Radacct/view.php:56
 msgid "Framed IPv6 Address"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:174
+#: ./plugins/Radius/templates/Accounts/monitoring.php:176
 #: ./plugins/Radius/templates/Radacct/view.php:60
 msgid "Framed IPv6 Prefix"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:177
+#: ./plugins/Radius/templates/Accounts/monitoring.php:179
 #: ./plugins/Radius/templates/Radacct/view.php:64
 msgid "Delegated IPv6 Prefix"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:181
+#: ./plugins/Radius/templates/Accounts/monitoring.php:183
 #: ./plugins/Radius/templates/Radacct/view.php:182
 msgid "Framed Interface ID"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:185
+#: ./plugins/Radius/templates/Accounts/monitoring.php:187
 #: ./plugins/Radius/templates/Radacct/view.php:48
 #: ./plugins/Radius/templates/cell/Accounts/display.php:23
 msgid "NAS IP Address"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:188
+#: ./plugins/Radius/templates/Accounts/monitoring.php:190
 #: ./plugins/Radius/templates/Radacct/view.php:122
 msgid "NAS Port ID"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:192
+#: ./plugins/Radius/templates/Accounts/monitoring.php:194
 #: ./plugins/Radius/templates/Radacct/view.php:128
 msgid "NAS Port Type"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:196
+#: ./plugins/Radius/templates/Accounts/monitoring.php:198
 #: ./plugins/Radius/templates/cell/Accounts/display.php:24
 msgid "Network Access Server"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:199
+#: ./plugins/Radius/templates/Accounts/monitoring.php:201
 #: ./plugins/Radius/templates/Radacct/view.php:78
 msgid "Start Time"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:203
+#: ./plugins/Radius/templates/Accounts/monitoring.php:205
 #: ./plugins/Radius/templates/Radacct/view.php:82
 msgid "Update Time"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:206
+#: ./plugins/Radius/templates/Accounts/monitoring.php:208
 #: ./plugins/Radius/templates/Radacct/view.php:86
 msgid "Update Interval"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:210
+#: ./plugins/Radius/templates/Accounts/monitoring.php:212
 #: ./plugins/Radius/templates/Radacct/view.php:90
 msgid "Stop Time"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:214
+#: ./plugins/Radius/templates/Accounts/monitoring.php:216
 #: ./plugins/Radius/templates/Radacct/view.php:164
 msgid "Termination Cause"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:218
+#: ./plugins/Radius/templates/Accounts/monitoring.php:220
 #: ./plugins/Radius/templates/Radacct/view.php:94
 msgid "Session Time"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:221
+#: ./plugins/Radius/templates/Accounts/monitoring.php:223
 #: ./plugins/Radius/templates/Radacct/view.php:68
 msgid "Uploaded"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:224
+#: ./plugins/Radius/templates/Accounts/monitoring.php:226
 #: ./plugins/Radius/templates/Radacct/view.php:73
 msgid "Downloaded"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:259
+#: ./plugins/Radius/templates/Accounts/monitoring.php:261
 #: ./plugins/Radius/templates/cell/Accounts/display.php:81
 msgid "Loading..."
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:323
+#: ./plugins/Radius/templates/Accounts/monitoring.php:325
 msgid "Related RADIUS Post Authentications"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:330
+#: ./plugins/Radius/templates/Accounts/monitoring.php:332
 #: ./plugins/Radius/templates/Nas/view.php:45
 #: ./plugins/Radius/templates/Radcheck/view.php:60
 #: ./plugins/Radius/templates/Radgroupcheck/view.php:57
@@ -891,17 +891,17 @@ msgstr ""
 msgid "Id"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:336
+#: ./plugins/Radius/templates/Accounts/monitoring.php:338
 #: ./plugins/Radius/templates/Radpostauth/view.php:57
 msgid "Pass"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:339
+#: ./plugins/Radius/templates/Accounts/monitoring.php:341
 #: ./plugins/Radius/templates/Radpostauth/view.php:63
 msgid "Reply"
 msgstr ""
 
-#: ./plugins/Radius/templates/Accounts/monitoring.php:348
+#: ./plugins/Radius/templates/Accounts/monitoring.php:350
 #: ./plugins/Radius/templates/Radpostauth/view.php:48
 msgid "Authentication Date"
 msgstr ""
