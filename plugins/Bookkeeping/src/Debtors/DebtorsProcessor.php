@@ -12,11 +12,14 @@ use App\Utility\Strings;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
+use Cake\Database\Expression\IdentifierExpression;
+use Cake\Database\Expression\QueryExpression;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\ORM\Association;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Query\SelectQuery;
 use InvalidArgumentException;
 use RouterOS\Client;
 use RouterOS\Query;
@@ -204,6 +207,62 @@ class DebtorsProcessor
                         && $debtor->getTotalOverdueDebtForDate($date) > $this->allowed_total_overdue_debt;
                 },
             );
+    }
+
+    /**
+     * The same debtors {@see self::getFilteredOverdueDebtors()} yields, as a query over
+     * their customer ids and overdue amounts rather than as hydrated invoices.
+     *
+     * Reading them the usual way loads every unpaid invoice with its customer, contracts,
+     * e-mails and phones, which is far too much for a dashboard card that only wants a
+     * number. The thresholds are the same ones, expressed in SQL - keep the two in step.
+     *
+     * @return \Cake\ORM\Query\SelectQuery<array<string, mixed>>
+     */
+    public function findFilteredOverdueDebtorIds(): SelectQuery
+    {
+        // virtual day in the past to allow for payment delays
+        $date = Date::now()->subDays($this->allowed_payment_delay);
+
+        $query = $this->fetchTable(InvoicesTable::class)->find();
+
+        // The date is typed by hand rather than left to the schema: read as a subquery the
+        // type map does not reach it, and an untyped date is bound as the locale writes
+        // it, which PostgreSQL rejects.
+        $overdue_debt = $query->func()->sum(
+            $query->expr()
+                ->case()
+                ->when(['Invoices.due_date <' => $date], ['Invoices.due_date' => 'date'])
+                ->then(new IdentifierExpression('Invoices.debt'))
+                ->else(0),
+        );
+
+        return $query
+            ->disableHydration()
+            ->select([
+                'customer_id' => 'Invoices.customer_id',
+                'overdue_debt' => $overdue_debt,
+            ])
+            ->where([
+                'Invoices.debt >' => 0,
+                'Invoices.customer_id IS NOT NULL',
+            ])
+            ->groupBy('Invoices.customer_id')
+            ->having(
+                fn(QueryExpression $exp): QueryExpression => $exp
+                    ->lt($query->func()->min('Invoices.due_date'), $date, 'date')
+                    ->gt($overdue_debt, $this->allowed_total_overdue_debt, 'decimal'),
+            );
+    }
+
+    /**
+     * How many debtors {@see self::getFilteredOverdueDebtors()} would yield.
+     *
+     * @return int
+     */
+    public function countFilteredOverdueDebtors(): int
+    {
+        return $this->findFilteredOverdueDebtorIds()->count();
     }
 
     /**
