@@ -509,6 +509,48 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
+     * The second line of a task row is the summary without the subject, which the heading
+     * above it already carries. Reading it needs the contract and an address per customer
+     * while the rows are ordered by columns of the task, and left to the `subquery` strategy
+     * PostgreSQL refuses that - so this asks with a task actually in hand, which is the only
+     * way the eager loading runs at all.
+     *
+     * @return void
+     * @link \App\Model\Entity\Task::getSummaryText()
+     */
+    public function testATaskRowCarriesItsSummary(): void
+    {
+        $states = $this->getTableLocator()->get('TaskStates');
+        $open = $states->find()->where(['completed' => false])->first();
+        if ($open === null) {
+            $open = $states->saveOrFail($states->newEntity([
+                'name' => 'Open',
+                'color' => '#ffffff',
+                'completed' => false,
+                'priority' => 1,
+            ]));
+        }
+
+        $tasks = $this->getTableLocator()->get('Tasks');
+        $tasks->saveOrFail($tasks->newEntity([
+            'task_type_id' => $this->firstId('TaskTypes'),
+            'task_state_id' => $open->get('id'),
+            'subject' => 'A subject of its own',
+            'priority' => 0,
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => '7f76dc3f-a11b-4109-958b-4b0382545a66',
+        ]));
+
+        $this->login();
+        $this->get('/dashboard/card/unassigned_tasks');
+
+        $this->assertResponseOk();
+        // the heading carries the subject, so the line below it must not repeat it
+        $this->assertResponseContains('A subject of its own');
+        $this->assertResponseContains('class="dashboard-hint"');
+    }
+
+    /**
      * A card nobody registered is not a page.
      *
      * @return void

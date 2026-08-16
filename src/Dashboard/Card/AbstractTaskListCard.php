@@ -5,6 +5,7 @@ namespace App\Dashboard\Card;
 
 use App\Model\Table\TasksTable;
 use Cake\Database\Expression\FunctionExpression;
+use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 
 /**
@@ -109,7 +110,17 @@ abstract class AbstractTaskListCard extends AbstractDashboardCard
         /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query */
         $query = $this->tasks
             ->find('active')
-            ->contain(['TaskTypes', 'Customers']);
+            ->contain([
+                'TaskTypes',
+                'Contracts' => ['InstallationAddresses'],
+                // The summary line reads an address per customer while the rows are ordered
+                // by columns of the task. Left to the `subquery` strategy that becomes a
+                // `GROUP BY` over an order PostgreSQL will not accept - the same reason the
+                // task listing spells this out.
+                'Customers' => [
+                    'Addresses' => ['strategy' => Association::STRATEGY_SELECT],
+                ],
+            ]);
 
         // Whichever of the two dates comes first is the one a task is waiting on, so that is
         // what it is ordered by - ordering by the critical date alone would drop every task
