@@ -60,10 +60,20 @@
     vertical-align: top;
 }
 
-/* The date and the priority only need the room they take. */
+/* The date, the priority and the count only need the room they take. */
 .dashboard-table td + td {
     width: 1%;
     white-space: nowrap;
+}
+
+/*
+ * A second cell carrying words rather than a number or a date. Held to the width it asks
+ * for, a name the length of a sentence pushes the card sideways and crushes the column
+ * beside it, so this one wraps instead.
+ */
+.dashboard-table td.dashboard-wrap {
+    width: auto;
+    white-space: normal;
 }
 
 /* The colour a contract state is drawn in elsewhere, beside its name. */
@@ -78,9 +88,9 @@
 }
 
 /*
- * The caption of a label or the note of a contract state, saying what the row is about.
- * Some of them run to a paragraph, so it is cut to two lines here and carried whole on the
- * element's title, where hovering brings it out.
+ * The line under a heading saying what the row is about - a task's summary, a label's
+ * caption, the note on a contract state. Some of them run to a paragraph, so it is cut to
+ * two lines here and carried whole on the element's title, where hovering brings it out.
  */
 .dashboard-hint {
     display: -webkit-box;

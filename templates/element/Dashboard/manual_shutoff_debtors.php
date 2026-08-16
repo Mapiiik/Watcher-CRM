@@ -30,7 +30,9 @@ $shown = 0;
                             <br><small><?= h($contract->customer->name) ?></small>
                         <?php endif ?>
                     </td>
-                    <td><?= $contract->service_type !== null ? h($contract->service_type->name) : '' ?></td>
+                    <td class="dashboard-wrap">
+                        <?= $contract->service_type !== null ? h($contract->service_type->name) : '' ?>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>
