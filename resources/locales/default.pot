@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-16 14:29+0200\n"
+"POT-Creation-Date: 2026-08-16 20:26+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -612,21 +612,21 @@ msgstr ""
 msgid "The contract state could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:114
-#: ./src/Controller/ContractVersionsController.php:156
+#: ./src/Controller/ContractVersionsController.php:112
+#: ./src/Controller/ContractVersionsController.php:154
 msgid "The contract version has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:118
-#: ./src/Controller/ContractVersionsController.php:160
+#: ./src/Controller/ContractVersionsController.php:116
+#: ./src/Controller/ContractVersionsController.php:158
 msgid "The contract version could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:197
+#: ./src/Controller/ContractVersionsController.php:195
 msgid "The contract version has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:200
+#: ./src/Controller/ContractVersionsController.php:198
 msgid "The contract version could not be deleted. Please, try again."
 msgstr ""
 
@@ -927,10 +927,6 @@ msgstr ""
 
 #: ./src/Controller/CustomersController.php:671
 msgid "The customer could not be deleted. Please, try again."
-msgstr ""
-
-#: ./src/Controller/DashboardController.php:41
-msgid "There is no such card."
 msgstr ""
 
 #: ./src/Controller/DealerCommissionsController.php:85
@@ -5231,20 +5227,6 @@ msgstr ""
 msgid "Related RADIUS Accounts"
 msgstr ""
 
-#: ./templates/Dashboard/index.php:7
-#: ./templates/Dashboard/index.php:14
-#: ./templates/layout/default.php:128
-msgid "Dashboard"
-msgstr ""
-
-#: ./templates/Dashboard/index.php:17
-msgid "There is nothing on the dashboard for your role yet."
-msgstr ""
-
-#: ./templates/Dashboard/index.php:28
-msgid "Loading…"
-msgstr ""
-
 #: ./templates/DealerCommissions/add.php:14
 #: ./templates/DealerCommissions/edit.php:22
 #: ./templates/DealerCommissions/view.php:25
@@ -6552,7 +6534,7 @@ msgid "No obligation runs out within {0} days."
 msgstr ""
 
 #: ./templates/element/Dashboard/ending_obligations.php:43
-#: ./templates/element/Dashboard/manual_shutoff_debtors.php:40
+#: ./templates/element/Dashboard/manual_shutoff_debtors.php:42
 #: ./templates/element/Dashboard/task_list.php:68
 msgid "and {0} more"
 msgstr ""
@@ -6655,6 +6637,10 @@ msgstr ""
 
 #: ./templates/email/html/task_notification.php:133
 msgid "View Task"
+msgstr ""
+
+#: ./templates/layout/default.php:128
+msgid "Dashboard"
 msgstr ""
 
 #: ./templates/layout/default.php:143

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-16 14:29+0200\n"
-"PO-Revision-Date: 2026-08-16 14:34+0200\n"
+"POT-Creation-Date: 2026-08-16 20:26+0200\n"
+"PO-Revision-Date: 2026-08-16 20:34+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -636,21 +636,21 @@ msgstr "Stav smlouvy byl odstraněn."
 msgid "The contract state could not be deleted. Please, try again."
 msgstr "Stav smlouvy nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/ContractVersionsController.php:114
-#: src/Controller/ContractVersionsController.php:156
+#: src/Controller/ContractVersionsController.php:112
+#: src/Controller/ContractVersionsController.php:154
 msgid "The contract version has been saved."
 msgstr "Verze smlouvy byla uložena."
 
-#: src/Controller/ContractVersionsController.php:118
-#: src/Controller/ContractVersionsController.php:160
+#: src/Controller/ContractVersionsController.php:116
+#: src/Controller/ContractVersionsController.php:158
 msgid "The contract version could not be saved. Please, try again."
 msgstr "Verzi smlouvy nebylo možné uložit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractVersionsController.php:197
+#: src/Controller/ContractVersionsController.php:195
 msgid "The contract version has been deleted."
 msgstr "Verze smlouvy byla odstraněna."
 
-#: src/Controller/ContractVersionsController.php:200
+#: src/Controller/ContractVersionsController.php:198
 msgid "The contract version could not be deleted. Please, try again."
 msgstr "Verzi smlouvy nebylo možné odstranit. Zkuste to prosím znovu."
 
@@ -970,10 +970,6 @@ msgstr "Zákazník byl odstraněn."
 #: src/Controller/CustomersController.php:671
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
-
-#: src/Controller/DashboardController.php:41
-msgid "There is no such card."
-msgstr "Taková karta neexistuje."
 
 #: src/Controller/DealerCommissionsController.php:85
 #: src/Controller/DealerCommissionsController.php:133
@@ -4622,19 +4618,6 @@ msgstr "Související odebrané IP sítě"
 msgid "Related RADIUS Accounts"
 msgstr "Související účty RADIUS"
 
-#: templates/Dashboard/index.php:7 templates/Dashboard/index.php:14
-#: templates/layout/default.php:128
-msgid "Dashboard"
-msgstr "Nástěnka"
-
-#: templates/Dashboard/index.php:17
-msgid "There is nothing on the dashboard for your role yet."
-msgstr "Na nástěnce zatím není pro vaši roli nic k dispozici."
-
-#: templates/Dashboard/index.php:28
-msgid "Loading…"
-msgstr "Načítání…"
-
 #: templates/DealerCommissions/add.php:14
 #: templates/DealerCommissions/edit.php:22
 #: templates/DealerCommissions/view.php:25 templates/Settings/index.php:283
@@ -5867,7 +5850,7 @@ msgid "No obligation runs out within {0} days."
 msgstr "V následujících {0} dnech nekončí žádný závazek."
 
 #: templates/element/Dashboard/ending_obligations.php:43
-#: templates/element/Dashboard/manual_shutoff_debtors.php:40
+#: templates/element/Dashboard/manual_shutoff_debtors.php:42
 #: templates/element/Dashboard/task_list.php:68
 msgid "and {0} more"
 msgstr "a {0} dalších"
@@ -5972,6 +5955,10 @@ msgstr "méně"
 msgid "View Task"
 msgstr "Zobrazit úkol"
 
+#: templates/layout/default.php:128
+msgid "Dashboard"
+msgstr "Nástěnka"
+
 #: templates/layout/default.php:143
 msgid "Bookkeeping"
 msgstr "Účetnictví"
@@ -6000,6 +5987,15 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:281
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "There is no such card."
+#~ msgstr "Taková karta neexistuje."
+
+#~ msgid "There is nothing on the dashboard for your role yet."
+#~ msgstr "Na nástěnce zatím není pro vaši roli nic k dispozici."
+
+#~ msgid "Loading…"
+#~ msgstr "Načítání…"
 
 #~ msgid "Fill In the Registered Seat"
 #~ msgstr "Vyplnit sídlo společnosti"

@@ -108,6 +108,7 @@
         "test": "phpunit --colors=always",
         "translations-update": [
             "bin/cake i18n extract --extract-core no --overwrite -p Bookkeeping --paths plugins/Bookkeeping/src/,plugins/Bookkeeping/templates/,plugins/Bookkeeping/config/",
+            "bin/cake i18n extract --extract-core no --overwrite -p Dashboard",
             "bin/cake i18n extract --extract-core no --overwrite -p Radius",
             "bin/cake i18n extract --extract-core no --overwrite -p Settings",
             "bin/cake i18n extract --extract-core yes --overwrite --paths src/,templates/,config/ --output resources/locales/"
