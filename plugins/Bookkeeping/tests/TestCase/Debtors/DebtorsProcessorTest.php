@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Debtors;
 
+use App\Model\Enum\IpAddressTypeOfUse;
+use App\Model\Enum\IpNetworkTypeOfUse;
 use Bookkeeping\Debtors\Debtor;
 use Bookkeeping\Debtors\DebtorsProcessor;
 use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
+use ReflectionMethod;
 
 /**
  * Bookkeeping\Debtors\DebtorsProcessor Test Case
@@ -30,6 +33,13 @@ class DebtorsProcessorTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
+     * Contract the addresses from the fixtures hang on.
+     *
+     * @var string
+     */
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -46,6 +56,8 @@ class DebtorsProcessorTest extends TestCase
         'app.Contracts',
         'app.Emails',
         'app.Phones',
+        'app.IpAddresses',
+        'app.IpNetworks',
         'plugin.Bookkeeping.Invoices',
     ];
 
@@ -122,5 +134,42 @@ class DebtorsProcessorTest extends TestCase
 
         $this->assertSame(0, $tolerant->countFilteredOverdueDebtors());
         $this->assertSame(1, $strict->countFilteredOverdueDebtors());
+    }
+
+    /**
+     * Blocking writes addresses into a firewall list, and a technology address is our own
+     * equipment held under the customer. Writing one would cut off the device rather than
+     * the service, so only what is the customer's may come out.
+     *
+     * VIP is switched off here so that the fixture's contracts, which are VIP, do not hide
+     * what is being asked about.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::getCustomerIps()
+     */
+    public function testOnlyTheCustomersOwnAddressesAreBlocked(): void
+    {
+        $addresses = $this->fetchTable('IpAddresses');
+        $addresses->saveOrFail($addresses->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+            'ip_address' => '192.168.99.99',
+            'type_of_use' => IpAddressTypeOfUse::TechnologyManually,
+        ]));
+
+        $networks = $this->fetchTable('IpNetworks');
+        $networks->saveOrFail($networks->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+            'ip_network' => '172.16.0.0/24',
+            'type_of_use' => IpNetworkTypeOfUse::TechnologyManually,
+        ]));
+
+        $method = new ReflectionMethod(DebtorsProcessor::class, 'getCustomerIps');
+        /** @var array{ipv4: array<string, string>, ipv6: array<string, string>} $ips */
+        $ips = $method->invoke(new DebtorsProcessor(), self::CUSTOMER_ID, '', false);
+
+        $this->assertSame(['192.168.11.11', '10.0.0.0/8'], array_keys($ips['ipv4']));
+        $this->assertSame([], $ips['ipv6']);
     }
 }

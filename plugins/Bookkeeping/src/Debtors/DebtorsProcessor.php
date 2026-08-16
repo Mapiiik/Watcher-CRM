@@ -664,6 +664,9 @@ class DebtorsProcessor
     /**
      * Get Customer IPs
      *
+     * Only what is the customer's own. A technology address is our equipment rather than
+     * theirs, so blocking it would cut off the device instead of the service.
+     *
      * Return example: ['ipv4' => ['0.0.0.0' => 'comment'], 'ipv6' => ['0::1/128' => 'comment']]
      *
      * @param string|null $id Customer ID.
@@ -688,6 +691,10 @@ class DebtorsProcessor
 
         // IP addresses
         foreach ($customer->ip_addresses as $ipAddress) {
+            // skip our own equipment
+            if (!$ipAddress->type_of_use->isCustomer()) {
+                continue;
+            }
             // skip VIP contracts
             if ($skip_vip && $ipAddress->contract->vip === true) {
                 continue;
@@ -707,6 +714,10 @@ class DebtorsProcessor
         }
         // IP networks
         foreach ($customer->ip_networks as $ipNetwork) {
+            // skip our own equipment
+            if (!$ipNetwork->type_of_use->isCustomer()) {
+                continue;
+            }
             // skip VIP contracts
             if ($skip_vip && $ipNetwork->contract->vip === true) {
                 continue;
