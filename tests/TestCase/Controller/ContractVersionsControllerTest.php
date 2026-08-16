@@ -5,6 +5,8 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractVersionsController;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Datasource\EntityInterface;
+use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -191,5 +193,98 @@ class ContractVersionsControllerTest extends TestCase
             'Signed on paper.',
             $this->getTableLocator()->get('ContractVersions')->get($contractVersionId)->note,
         );
+    }
+
+    /**
+     * The listing can be narrowed to the minimum terms about to run out.
+     *
+     * Nothing else in the application looks ahead at a date - every other listing asks what
+     * is current or past - and a term counted from today cannot be put in a fixture, so the
+     * versions this asks about are written here.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::index()
+     */
+    public function testIndexNarrowedToObligationsEndingSoon(): void
+    {
+        $ending = $this->contractVersion([
+            'obligation_until' => Date::today()->addDays(14),
+            'obligations_settled' => false,
+        ]);
+        $distant = $this->contractVersion([
+            'obligation_until' => Date::today()->addDays(400),
+            'obligations_settled' => false,
+        ]);
+        $settled = $this->contractVersion([
+            'obligation_until' => Date::today()->addDays(14),
+            'obligations_settled' => true,
+        ]);
+        $past = $this->contractVersion([
+            'obligation_until' => Date::today()->subDays(14),
+            'obligations_settled' => false,
+        ]);
+
+        $this->login();
+        $this->get('/contract-versions?obligations_ending=1');
+
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('obligations_ending'));
+
+        $ids = [];
+        /** @var iterable<\App\Model\Entity\ContractVersion> $versions */
+        $versions = $this->viewVariable('contractVersions');
+        foreach ($versions as $version) {
+            $ids[] = $version->id;
+        }
+
+        $this->assertContains($ending->get('id'), $ids);
+        $this->assertNotContains($distant->get('id'), $ids);
+        $this->assertNotContains($settled->get('id'), $ids, 'a settled term wants nothing');
+        $this->assertNotContains($past->get('id'), $ids, 'a term already gone is not ending');
+    }
+
+    /**
+     * Without the filter the listing is the whole of it, sorted as it always was.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::index()
+     */
+    public function testIndexWithoutTheObligationFilter(): void
+    {
+        $distant = $this->contractVersion([
+            'obligation_until' => Date::today()->addDays(400),
+            'obligations_settled' => false,
+        ]);
+
+        $this->login();
+        $this->get('/contract-versions');
+
+        $this->assertResponseOk();
+        $this->assertFalse($this->viewVariable('obligations_ending'));
+
+        $ids = [];
+        /** @var iterable<\App\Model\Entity\ContractVersion> $versions */
+        $versions = $this->viewVariable('contractVersions');
+        foreach ($versions as $version) {
+            $ids[] = $version->id;
+        }
+
+        $this->assertContains($distant->get('id'), $ids);
+    }
+
+    /**
+     * A contract version of the fixture contract, differing by what it is asked for.
+     *
+     * @param array<string, mixed> $data What this version differs by.
+     * @return \Cake\Datasource\EntityInterface
+     */
+    private function contractVersion(array $data): EntityInterface
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+
+        return $versions->saveOrFail($versions->newEntity($data + [
+            'contract_id' => self::CONTRACT_ID,
+            'valid_from' => Date::today()->subDays(30),
+        ]));
     }
 }

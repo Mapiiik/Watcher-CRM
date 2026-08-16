@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\ContractVersion> $contractVersions
+ * @var bool $obligations_ending
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -10,6 +11,12 @@
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+        <?= $this->Form->control('obligations_ending', [
+            'label' => __('Obligations Ending Soon Only'),
+            'type' => 'checkbox',
+            'checked' => $obligations_ending,
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
