@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Dashboard\Card;
 
+use Dashboard\Card\AbstractDashboardCard;
+
 /**
  * Shared ground for the cards that count customers and point at the customer listing.
  */

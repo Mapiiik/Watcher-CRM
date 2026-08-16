@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dashboard\Card;
 
 use App\Model\Table\ContractVersionsTable;
+use Dashboard\Card\AbstractDashboardCard;
 use Override;
 
 /**

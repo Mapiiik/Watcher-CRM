@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dashboard\Card;
 
 use Bookkeeping\Debtors\DebtorsProcessor;
+use Dashboard\Card\AbstractDashboardCard;
 use Override;
 use Settings\Utility\Settings;
 

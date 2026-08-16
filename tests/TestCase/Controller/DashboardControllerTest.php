@@ -85,7 +85,8 @@ class DashboardControllerTest extends TestCase
         $this->assertResponseContains('class="dashboard index content"');
         $this->assertResponseContains('class="dashboard-cards"');
         $this->assertResponseContains('class="related"');
-        $this->assertResponseContains('css/dashboard.css');
+        // served out of the plugin, so the path says which one it came from
+        $this->assertResponseContains('/dashboard/css/dashboard.css');
         // the deferred cards are the only thing that fetches itself, so the script comes with
         // this page rather than with every page
         $this->assertResponseContains('js/lazy-load.js');
@@ -153,7 +154,7 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
 
-        /** @var list<\App\Dashboard\Card\DashboardCardInterface> $cards */
+        /** @var list<\Dashboard\Card\DashboardCardInterface> $cards */
         $cards = $this->viewVariable('cards');
         $ids = array_map(fn($card): string => $card->id(), $cards);
 
@@ -210,7 +211,7 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
 
-        /** @var \App\Dashboard\Card\DashboardCardInterface $card */
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
         $card = $this->viewVariable('card');
         $query = $card->data()['url']['?'];
 
@@ -255,7 +256,7 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
 
-        /** @var \App\Dashboard\Card\DashboardCardInterface $card */
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
         $card = $this->viewVariable('card');
         $this->assertSame(1, $card->data()['url']['?']['obligations_ending']);
 
@@ -307,7 +308,7 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
 
-        /** @var \App\Dashboard\Card\DashboardCardInterface $card */
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
         $card = $this->viewVariable('card');
         $query = $card->data()['urls'][$label->get('id')]['?'];
 
@@ -321,7 +322,7 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
 
-        /** @var \App\Dashboard\Card\DashboardCardInterface $card */
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
         $card = $this->viewVariable('card');
         $query = $card->data()['urls'][$state->get('id')]['?'];
 
@@ -348,14 +349,14 @@ class DashboardControllerTest extends TestCase
             $this->login('bookkeeper');
             $this->get('/dashboard/card/' . $card);
             $this->assertResponseOk();
-            /** @var \App\Dashboard\Card\DashboardCardInterface $offered */
+            /** @var \Dashboard\Card\DashboardCardInterface $offered */
             $offered = $this->viewVariable('card');
             $this->assertNotSame([], $offered->data()['urls'], $alias . ' for the role it names');
 
             $this->login('sales-manager');
             $this->get('/dashboard/card/' . $card);
             $this->assertResponseOk();
-            /** @var \App\Dashboard\Card\DashboardCardInterface $withheld */
+            /** @var \Dashboard\Card\DashboardCardInterface $withheld */
             $withheld = $this->viewVariable('card');
             $this->assertSame([], $withheld->data()['urls'], $alias . ' for a role it does not name');
 
@@ -365,7 +366,7 @@ class DashboardControllerTest extends TestCase
 
             $this->get('/dashboard/card/' . $card);
             $this->assertResponseOk();
-            /** @var \App\Dashboard\Card\DashboardCardInterface $forAll */
+            /** @var \Dashboard\Card\DashboardCardInterface $forAll */
             $forAll = $this->viewVariable('card');
             $this->assertNotSame([], $forAll->data()['urls'], $alias . ' naming no role');
         }
@@ -457,7 +458,7 @@ class DashboardControllerTest extends TestCase
         $this->assertResponseOk();
 
         $ids = [];
-        /** @var \App\Dashboard\Card\DashboardCardInterface $card */
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
         $card = $this->viewVariable('card');
         /** @var iterable<\App\Model\Entity\Contract> $rows */
         $rows = $card->data()['contracts'];
@@ -498,7 +499,7 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
 
-        /** @var \App\Dashboard\Card\DashboardCardInterface $card */
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
         $card = $this->viewVariable('card');
         $data = $card->data();
         $ids = array_map(fn($label): string => $label->id, $data['labels']);

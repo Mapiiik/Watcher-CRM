@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Dashboard\Card;
+namespace Dashboard\Card;
 
 /**
  * A single card on the dashboard.
@@ -9,7 +9,7 @@ namespace App\Dashboard\Card;
  * A card owns a logical id (its registry key and the URL it is fetched under), the
  * roles it is meant for, and the data its template renders. Permissions in
  * `config/permissions.php` are granted per action rather than per card, so who may
- * see a card is decided here and enforced by {@see \App\Dashboard\DashboardCardRegistry},
+ * see a card is decided here and enforced by {@see \Dashboard\Card\CardRegistryInterface},
  * not by the rule set.
  *
  * A card that cannot answer cheaply says so through {@see self::deferred()} and is then

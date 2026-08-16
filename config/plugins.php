@@ -41,6 +41,9 @@ return [
     // Bookkeeping
     'Bookkeeping' => [],
 
+    // Dashboard
+    'Dashboard' => [],
+
     // RADIUS
     'Radius' => [],
 ];

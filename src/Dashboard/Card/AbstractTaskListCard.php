@@ -7,6 +7,7 @@ use App\Model\Table\TasksTable;
 use Cake\Database\Expression\FunctionExpression;
 use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
+use Dashboard\Card\AbstractDashboardCard;
 
 /**
  * Shared ground for the cards that list tasks.

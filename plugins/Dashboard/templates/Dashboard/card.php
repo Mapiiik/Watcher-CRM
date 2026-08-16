@@ -4,7 +4,7 @@
  * the page, so only what goes below it is rendered here.
  *
  * @var \App\View\AppView $this
- * @var \App\Dashboard\Card\DashboardCardInterface $card
+ * @var \Dashboard\Card\DashboardCardInterface $card
  */
 ?>
 <?= $this->element('Dashboard/' . $card->template(), $card->data());

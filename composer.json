@@ -55,6 +55,7 @@
         "psr-4": {
             "App\\": "src/",
             "Bookkeeping\\": "plugins/Bookkeeping/src/",
+            "Dashboard\\": "plugins/Dashboard/src/",
             "Radius\\": "plugins/Radius/src/",
             "Settings\\": "plugins/Settings/src/"
         }
@@ -63,6 +64,7 @@
         "psr-4": {
             "App\\Test\\": "tests/",
             "Bookkeeping\\Test\\": "plugins/Bookkeeping/tests/",
+            "Dashboard\\Test\\": "plugins/Dashboard/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "Radius\\Test\\": "plugins/Radius/tests/",
             "Settings\\Test\\": "plugins/Settings/tests/"
