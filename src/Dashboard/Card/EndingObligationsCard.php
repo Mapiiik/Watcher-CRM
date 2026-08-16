@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Dashboard\Card;
 
 use App\Model\Table\ContractVersionsTable;
-use Cake\I18n\Date;
 use Override;
 
 /**
@@ -57,16 +56,10 @@ class EndingObligationsCard extends AbstractDashboardCard
     public function data(): array
     {
         $within_days = $this->days('contracts.obligation_within_days', 60);
-        $today = Date::today();
 
         $query = $this->contract_versions
-            ->find()
+            ->find('obligationsEnding', within_days: $within_days)
             ->contain(['Contracts' => ['Customers']])
-            ->where([
-                'ContractVersions.obligations_settled' => false,
-                'ContractVersions.obligation_until >=' => $today,
-                'ContractVersions.obligation_until <=' => $today->addDays($within_days),
-            ])
             ->orderBy(['ContractVersions.obligation_until' => 'ASC']);
 
         $total = $query->count();

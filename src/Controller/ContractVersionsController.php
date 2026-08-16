@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Http\Response;
-use Cake\I18n\Date;
 use Settings\Utility\Settings;
 
 /**
@@ -41,32 +40,31 @@ class ContractVersionsController extends AppController
             ];
         }
 
-        // obligations running out shortly - the same reading the dashboard card is drawn
-        // from, so the card and the listing it points at hold the same versions
         $obligations_ending = toBool($this->getRequest()->getQuery('obligations_ending')) ?? false;
-        if ($obligations_ending) {
-            $today = Date::today();
-            $conditions[] = [
-                'ContractVersions.obligations_settled' => false,
-                'ContractVersions.obligation_until >=' => $today,
-                'ContractVersions.obligation_until <=' => $today->addDays(
-                    (int)Settings::get('core.dashboard.contracts.obligation_within_days', 60),
-                ),
-            ];
-        }
 
         $this->paginate = [
             'order' => $obligations_ending
                 ? ['obligation_until' => 'ASC']
                 : ['valid_from' => 'DESC'],
         ];
-        $contractVersions = $this->paginate($this->ContractVersions->find(
+        $query = $this->ContractVersions->find(
             'all',
             contain: [
                 'Contracts',
             ],
             conditions: $conditions,
-        ));
+        );
+
+        // the same reading the dashboard card is drawn from, so the card and the listing it
+        // points at hold the same versions
+        if ($obligations_ending) {
+            $query->find('obligationsEnding', within_days: (int)Settings::get(
+                'core.dashboard.contracts.obligation_within_days',
+                60,
+            ));
+        }
+
+        $contractVersions = $this->paginate($query);
 
         $this->set(compact('contractVersions', 'obligations_ending'));
     }

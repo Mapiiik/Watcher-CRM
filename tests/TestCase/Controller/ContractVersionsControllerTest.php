@@ -273,6 +273,58 @@ class ContractVersionsControllerTest extends TestCase
     }
 
     /**
+     * A term on a version that a later one has replaced binds nobody: the customer was
+     * re-signed over and the term that holds is the new version's. Its own is often left
+     * unsettled on record, so being unsettled is not enough to raise it.
+     *
+     * What stays is a version whose validity has run out with no later one behind it - a
+     * contract that ended while its term runs on, which is the case most worth seeing.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractVersionsTable::findObligationsEnding()
+     */
+    public function testIndexLeavesOutATermADeplacedVersionCarries(): void
+    {
+        // ended, nothing after it: the contract is over and the term runs on. On the other
+        // contract of the fixtures, so the versions written below do not stand behind it.
+        $ended = $this->contractVersion([
+            'contract_id' => '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90',
+            'valid_from' => Date::today()->subDays(400),
+            'valid_until' => Date::today()->subDays(30),
+            'obligation_until' => Date::today()->addDays(14),
+            'obligations_settled' => false,
+        ]);
+
+        // the same, but re-signed over since - the newer version carries the term that binds
+        $replaced = $this->contractVersion([
+            'valid_from' => Date::today()->subDays(300),
+            'valid_until' => Date::today()->subDays(20),
+            'obligation_until' => Date::today()->addDays(14),
+            'obligations_settled' => false,
+        ]);
+        $this->contractVersion([
+            'valid_from' => Date::today()->subDays(10),
+            'obligation_until' => Date::today()->addDays(900),
+            'obligations_settled' => false,
+        ]);
+
+        $this->login();
+        $this->get('/contract-versions?obligations_ending=1');
+
+        $this->assertResponseOk();
+
+        $ids = [];
+        /** @var iterable<\App\Model\Entity\ContractVersion> $versions */
+        $versions = $this->viewVariable('contractVersions');
+        foreach ($versions as $version) {
+            $ids[] = $version->id;
+        }
+
+        $this->assertContains($ended->get('id'), $ids, 'ended, with nothing after it');
+        $this->assertNotContains($replaced->get('id'), $ids, 'a later version carries the term now');
+    }
+
+    /**
      * A contract version of the fixture contract, differing by what it is asked for.
      *
      * @param array<string, mixed> $data What this version differs by.

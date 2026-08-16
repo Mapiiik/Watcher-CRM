@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\Database\Expression\IdentifierExpression;
+use Cake\Database\Expression\QueryExpression;
+use Cake\I18n\Date;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -51,6 +55,44 @@ class ContractVersionsTable extends AppTable
             'foreignKey' => 'contract_id',
             'joinType' => 'INNER',
         ]);
+    }
+
+    /**
+     * Versions whose minimum term runs out shortly and still binds anybody.
+     *
+     * A version that a later one has replaced is left out. Its term is on record and often
+     * still unsettled, because nobody goes back to tick a version that has been re-signed
+     * over - but the term that binds the customer is the one on the version that replaced
+     * it, and raising the old one asks somebody to act on nothing.
+     *
+     * What is not left out is a version whose validity has run out with no later one behind
+     * it. That is a contract that has ended while its term runs on, which is the case most
+     * worth seeing here.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersion> $query The query to scope.
+     * @param int $within_days How far ahead the end of a term is looked for.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersion>
+     */
+    public function findObligationsEnding(SelectQuery $query, int $within_days): SelectQuery
+    {
+        $today = Date::today();
+
+        $replaced = $this->getConnection()
+            ->selectQuery()
+            ->select(1)
+            ->from(['LaterVersions' => 'contract_versions'])
+            ->where([
+                'LaterVersions.contract_id' => new IdentifierExpression('ContractVersions.contract_id'),
+                'LaterVersions.valid_from >' => new IdentifierExpression('ContractVersions.valid_from'),
+            ]);
+
+        return $query
+            ->where([
+                'ContractVersions.obligations_settled' => false,
+                'ContractVersions.obligation_until >=' => $today,
+                'ContractVersions.obligation_until <=' => $today->addDays($within_days),
+            ])
+            ->where(fn(QueryExpression $exp): QueryExpression => $exp->notExists($replaced));
     }
 
     /**
