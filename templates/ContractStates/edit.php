@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractState $contractState
+ * @var array<string, string> $roles
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $requiresOpenTaskTypes
  */
 ?>
@@ -41,6 +42,16 @@
                         echo $this->Form->control('active_services');
                         echo $this->Form->control('billed');
                         echo $this->Form->control('blocked');
+                        echo $this->Form->control('show_on_dashboard', [
+                            'label' => __('Show on Dashboard'),
+                        ]);
+                        echo $this->Form->control('dashboard_roles', [
+                            'type' => 'select',
+                            'multiple' => true,
+                            'options' => $roles,
+                            'label' => __('Dashboard Roles'),
+                            'title' => __('Leave empty to show the state to everybody.'),
+                        ]);
                         ?>
                     </div>
 

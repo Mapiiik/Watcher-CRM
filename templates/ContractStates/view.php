@@ -66,6 +66,16 @@
                             <th><?= __('Blocked') ?></th>
                             <td><?= $contractState->blocked ? __('Yes') : __('No') ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Show on Dashboard') ?></th>
+                            <td><?= $contractState->show_on_dashboard ? __('Yes') : __('No') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Dashboard Roles') ?></th>
+                            <td><?= empty($contractState->dashboard_roles)
+                                ? __('All')
+                                : h(implode(', ', $contractState->dashboard_role_names)) ?></td>
+                        </tr>
                     </table>
                 </div>
 

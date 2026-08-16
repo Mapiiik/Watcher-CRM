@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\AppUser;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -93,6 +94,24 @@ class ContractStatesTable extends AppTable
             ->boolean('blocked')
             ->requirePresence('blocked', 'create')
             ->notEmptyString('blocked');
+
+        $validator
+            ->boolean('show_on_dashboard')
+            ->notEmptyString('show_on_dashboard');
+
+        $validator
+            ->allowEmptyArray('dashboard_roles')
+            ->add('dashboard_roles', 'validRoles', [
+                'rule' => function ($value): bool {
+                    if (!is_array($value)) {
+                        return false;
+                    }
+                    $roles = array_keys((new AppUser())->getRoleOptions());
+
+                    return array_diff($value, $roles) === [];
+                },
+                'message' => __('One of the roles named is not a role.'),
+            ]);
 
         $validator
             ->scalar('note')

@@ -33,6 +33,7 @@
                     <th><?= $this->Paginator->sort('active_services') ?></th>
                     <th><?= $this->Paginator->sort('billed') ?></th>
                     <th><?= $this->Paginator->sort('blocked') ?></th>
+                    <th><?= $this->Paginator->sort('show_on_dashboard', __('Show on Dashboard')) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -45,6 +46,12 @@
                     <td><?= $contractState->active_services ? __('Yes') : __('No'); ?></td>
                     <td><?= $contractState->billed ? __('Yes') : __('No'); ?></td>
                     <td><?= $contractState->blocked ? __('Yes') : __('No'); ?></td>
+                    <td>
+                        <?= $contractState->show_on_dashboard ? __('Yes') : __('No'); ?>
+                        <?php if ($contractState->show_on_dashboard && !empty($contractState->dashboard_roles)) : ?>
+                            <br><small><?= h(implode(', ', $contractState->dashboard_role_names)) ?></small>
+                        <?php endif ?>
+                    </td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),

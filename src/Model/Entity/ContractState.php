@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Model\Entity\Trait\DashboardVisibilityTrait;
+
 /**
  * ContractState Entity
  *
@@ -13,6 +15,9 @@ namespace App\Model\Entity;
  * @property bool $billed
  * @property bool $blocked
  * @property string|null $note
+ * @property bool $show_on_dashboard
+ * @property list<string>|null $dashboard_roles
+ * @property list<string> $dashboard_role_names
  *
  * // New contract availability
  * @property bool $usable_for_new_contract
@@ -53,6 +58,8 @@ namespace App\Model\Entity;
  */
 class ContractState extends AppEntity
 {
+    use DashboardVisibilityTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -69,6 +76,8 @@ class ContractState extends AppEntity
         'billed' => true,
         'blocked' => true,
         'note' => true,
+        'show_on_dashboard' => true,
+        'dashboard_roles' => true,
 
         // New contract availability
         'usable_for_new_contract' => true,
