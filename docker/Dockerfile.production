@@ -28,6 +28,10 @@ RUN cat <<'EOF' >> /opt/docker/provision/entrypoint.d/99-composer.sh
 # Composer operations
 gosu "${APPLICATION_USER}" composer run-script migrations -d /app
 gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app
+# Link the plugins' assets into the webroot, so the web server serves them itself rather
+# than every request for them going through PHP. Here rather than at build time, alongside
+# the others, because this is where the application has its environment.
+gosu "${APPLICATION_USER}" composer run-script plugin-assets -d /app
 EOF
 RUN chmod +x /opt/docker/provision/entrypoint.d/99-composer.sh
 

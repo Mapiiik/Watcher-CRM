@@ -9,6 +9,15 @@
 /vendor/*
 /webroot/legacy/*
 
+# Plugin assets, linked into the webroot by `bin/cake plugin assets symlink` so the web
+# server serves them itself. They are made from the plugins and belong to nobody's history.
+/webroot/bookkeeping
+/webroot/cake_d_c
+/webroot/dashboard
+/webroot/debug_kit
+/webroot/radius
+/webroot/settings
+
 # OS generated files #
 ######################
 .DS_Store

@@ -101,6 +101,9 @@
             "bin/cake migrations migrate --plugin Bookkeeping",
             "bin/cake migrations migrate --plugin Settings"
         ],
+        "plugin-assets": [
+            "bin/cake plugin assets symlink"
+        ],
         "schema-cache": [
             "bin/cake schema_cache build"
         ],
