@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\DashboardController;
+use App\Model\Enum\IpAddressTypeOfUse;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -18,6 +20,13 @@ class DashboardControllerTest extends TestCase
 {
     use ControllerTestTrait;
     use IntegrationTestTrait;
+
+    /**
+     * Customer the invoice and the contracts of the fixtures belong to.
+     *
+     * @var string
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
      * Fixtures
@@ -35,6 +44,8 @@ class DashboardControllerTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.IpAddresses',
+        'app.IpNetworks',
         'app.Labels',
         'app.CustomerLabels',
         'app.TaskStates',
@@ -379,6 +390,82 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertNotEmpty($this->viewVariable('customers'));
+    }
+
+    /**
+     * What puts a debtor's contract beyond the automatic blocking is what is assigned to
+     * it, not what its service type usually carries. Blocking writes the customer's
+     * addresses into a firewall list, so a contract with one is reached and a contract
+     * with only a technology address - our own equipment terminating the circuit - is not.
+     * A contract marked VIP is passed over whatever it carries.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\ManualShutoffDebtorsCard::data()
+     */
+    public function testDebtsBeyondBlockingGoByTheAddressesAssigned(): void
+    {
+        // the tolerances are configurable and this installation allows a fortnight and a
+        // small sum, so the debt is written here rather than leant on from the fixtures
+        $invoices = $this->getTableLocator()->get('Bookkeeping.Invoices');
+        $invoices->saveOrFail($invoices->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'number' => '9/TEST/2026',
+            'creation_date' => Date::today()->subDays(400),
+            'due_date' => Date::today()->subDays(365),
+            'total' => 100000.0,
+            'debt' => 100000.0,
+            'accounting_identifier' => 'test-beyond-blocking',
+        ]));
+
+        $contracts = $this->getTableLocator()->get('Contracts');
+        // the fixtures mark both VIP, which would answer the question before it is asked
+        $contracts->updateAll(['vip' => false], []);
+
+        // the fixtures give this one a customer address, and the other one none at all
+        $reachable = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+        $beyond = '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90';
+
+        $this->login();
+        $this->assertNotContains($reachable, $this->beyondBlocking(), 'has a customer address');
+        $this->assertContains($beyond, $this->beyondBlocking(), 'has no address at all');
+
+        // an address of our own equipment is not the customer's, so it changes nothing
+        $addresses = $this->getTableLocator()->get('IpAddresses');
+        $addresses->saveOrFail($addresses->newEntity([
+            'ip_address' => '10.0.0.1',
+            'type_of_use' => IpAddressTypeOfUse::TechnologyManually,
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => $beyond,
+        ]));
+
+        $this->assertContains($beyond, $this->beyondBlocking(), 'a technology address is ours, not theirs');
+
+        // the nightly run passes VIP contracts over, addresses or not
+        $contracts->updateAll(['vip' => true], ['id' => $reachable]);
+
+        $this->assertContains($reachable, $this->beyondBlocking(), 'VIP is passed over');
+    }
+
+    /**
+     * The contract ids the "beyond automatic blocking" card comes back with.
+     *
+     * @return list<string>
+     */
+    private function beyondBlocking(): array
+    {
+        $this->get('/dashboard/card/manual_shutoff_debtors');
+        $this->assertResponseOk();
+
+        $ids = [];
+        /** @var \App\Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+        /** @var iterable<\App\Model\Entity\Contract> $rows */
+        $rows = $card->data()['contracts'];
+        foreach ($rows as $row) {
+            $ids[] = $row->id;
+        }
+
+        return $ids;
     }
 
     /**

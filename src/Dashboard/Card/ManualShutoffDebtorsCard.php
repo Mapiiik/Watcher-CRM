@@ -3,16 +3,23 @@ declare(strict_types=1);
 
 namespace App\Dashboard\Card;
 
+use App\Model\Enum\IpAddressTypeOfUse;
+use App\Model\Enum\IpNetworkTypeOfUse;
 use App\Model\Table\ContractsTable;
 use Override;
 
 /**
  * Running services of debtors that the automatic blocking cannot reach.
  *
- * Blocking works by writing a customer's addresses into a router's firewall list, so it
- * only bites where the service type keeps RADIUS accounts. Anything else - a service
- * billed but not carried over our own network - keeps running until somebody switches it
- * off by hand, and that is what this card lists.
+ * Blocking works by writing the customer's addresses into a firewall list, so it only
+ * bites where the contract has an address of the customer's to write. A layer two circuit
+ * has none - at most a technology address, and that is our own device rather than the
+ * customer's - so nothing the automation does would stop the service. A contract marked
+ * VIP is passed over by the nightly run whatever addresses it has, which leaves it in the
+ * same place.
+ *
+ * The service type is deliberately not asked. What decides this is what is assigned to the
+ * contract, not what the type says it usually carries.
  */
 class ManualShutoffDebtorsCard extends AbstractDebtorCard
 {
@@ -62,13 +69,33 @@ class ManualShutoffDebtorsCard extends AbstractDebtorCard
             ->findFilteredOverdueDebtorIds()
             ->select(['customer_id' => 'Invoices.customer_id'], true);
 
+        $with_address = $this->contracts->IpAddresses
+            ->find()
+            ->select(['IpAddresses.contract_id'])
+            ->where(['IpAddresses.type_of_use IN' => IpAddressTypeOfUse::customerCases()]);
+
+        $with_network = $this->contracts->IpNetworks
+            ->find()
+            ->select(['IpNetworks.contract_id'])
+            ->where(['IpNetworks.type_of_use IN' => IpNetworkTypeOfUse::customerCases()]);
+
         $query = $this->contracts
             ->find()
             ->contain(['Customers', 'ServiceTypes', 'ContractStates'])
             ->where([
                 'Contracts.customer_id IN' => $debtor_ids,
-                'ServiceTypes.have_radius_accounts' => false,
                 'ContractStates.active_services' => true,
+            ])
+            ->where([
+                // nothing of the customer's to write into the firewall, or a contract the
+                // nightly run passes over anyway
+                'OR' => [
+                    'AND' => [
+                        ['Contracts.id NOT IN' => $with_address],
+                        ['Contracts.id NOT IN' => $with_network],
+                    ],
+                    'Contracts.vip' => true,
+                ],
             ])
             ->orderBy(['Contracts.nid' => 'DESC']);
 
