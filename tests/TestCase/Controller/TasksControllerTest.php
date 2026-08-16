@@ -407,6 +407,28 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * The two filters reach the form as booleans even where the request named neither.
+     * `toBool()` answers `null` to a parameter that is not there, and the checkbox that
+     * reads it back is declared as a plain bool.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testTheAttentionFiltersAreAlwaysBooleans(): void
+    {
+        $this->login();
+        $this->get('/tasks');
+
+        $this->assertResponseOk();
+
+        /** @var \Cake\Form\Form $filterForm */
+        $filterForm = $this->viewVariable('filterForm');
+
+        $this->assertFalse($filterForm->getData('pressing'));
+        $this->assertFalse($filterForm->getData('stale'));
+    }
+
+    /**
      * An unfinished task, in a state that counts as unfinished.
      *
      * @param array<string, mixed> $data What this task differs by.

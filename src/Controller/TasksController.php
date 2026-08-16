@@ -130,8 +130,8 @@ class TasksController extends AppController
 
         // filter by what wants attention - the same reading the dashboard cards are drawn
         // from, so a card and the listing it points at hold the same tasks
-        $pressing = toBool($filter['pressing'] ?? null);
-        $stale = toBool($filter['stale'] ?? null);
+        $pressing = toBool($filter['pressing'] ?? null) ?? false;
+        $stale = toBool($filter['stale'] ?? null) ?? false;
 
         // filter by dealer
         if (Hash::get($this->user_settings, 'tasks.all_by_default', false)) {
