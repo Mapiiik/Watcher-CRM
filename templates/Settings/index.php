@@ -45,6 +45,11 @@
                     ['controller' => 'Settings', 'action' => 'edit', 'core.emails'],
                     ['class' => 'side-nav-item'],
                 ) ?>
+                <?= $this->AuthLink->link(
+                    __('Dashboard Configuration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core.dashboard'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
             </div>
         </div>
 

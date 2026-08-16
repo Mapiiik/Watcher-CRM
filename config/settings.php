@@ -135,6 +135,31 @@ return [
             ],
         ],
 
+        'dashboard' => [
+            'max_rows_per_card' => NumberType::ofInt(
+                default: 10,
+                hint: __('How many rows a card lists before it only says how many more there are.'),
+            ),
+
+            'tasks' => [
+                'critical_within_days' => NumberType::ofInt(
+                    default: 7,
+                    hint: __('How far ahead a task deadline is already counted as pressing.'),
+                ),
+                'stale_after_days' => NumberType::ofInt(
+                    default: 30,
+                    hint: __('How long an unfinished task may lie untouched before it is pointed out.'),
+                ),
+            ],
+
+            'contracts' => [
+                'obligation_within_days' => NumberType::ofInt(
+                    default: 60,
+                    hint: __('How far ahead the end of a minimum term is pointed out.'),
+                ),
+            ],
+        ],
+
         'documents' => [
             'locale' => 'cs_CZ',
 

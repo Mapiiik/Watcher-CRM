@@ -78,4 +78,25 @@ class SettingsControllerTest extends TestCase
 
         $this->assertResponseOk();
     }
+
+    /**
+     * The dashboard block opens under the path the settings page links it by. A link naming a
+     * path nothing declares answers with a not-found rather than a page, and nothing but opening
+     * it says whether the two agree.
+     *
+     * @return void
+     * @link \Settings\Controller\Trait\SettingsControllerTrait::edit()
+     */
+    public function testTheDashboardBlockOpens(): void
+    {
+        $this->login();
+        $this->get('/settings/edit/core.dashboard');
+
+        $this->assertResponseOk();
+
+        // a block within the block opens on its own too
+        $this->get('/settings/edit/core.dashboard.tasks');
+
+        $this->assertResponseOk();
+    }
 }
