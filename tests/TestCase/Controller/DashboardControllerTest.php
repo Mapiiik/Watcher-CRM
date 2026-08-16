@@ -6,7 +6,9 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\DashboardController;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
+use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -64,6 +66,35 @@ class DashboardControllerTest extends TestCase
     {
         $this->login();
         $this->get('/');
+
+        $this->assertResponseOk();
+        $this->assertNotEmpty($this->viewVariable('cards'));
+    }
+
+    /**
+     * Signing in has to land on the dashboard's own route rather than on the fallback
+     * `/dashboard`. A plugin's assets are linked into the webroot under the plugin's own
+     * name, and this plugin is named after the page it draws - so that path is a directory
+     * the web server answers itself, before the router is ever asked.
+     *
+     * @return void
+     */
+    public function testTheLoginLandsOnTheDashboardsOwnRoute(): void
+    {
+        // the plugin that owns this setting merges it in as the application boots, which a
+        // request is what brings about
+        $this->login();
+        $this->get('/');
+        $this->assertResponseOk();
+
+        $redirect = (string)Configure::read('Auth.AuthenticationComponent.loginRedirect');
+
+        $this->assertSame(
+            Router::url(['controller' => 'Dashboard', 'action' => 'index', 'plugin' => null]),
+            $redirect,
+        );
+
+        $this->get($redirect);
 
         $this->assertResponseOk();
         $this->assertNotEmpty($this->viewVariable('cards'));
