@@ -59,6 +59,16 @@ use Doctrine\SqlFormatter\SqlFormatter;
                             <th><?= __('Dynamic') ?></th>
                             <td><?= $label->dynamic ? __('Yes') : __('No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Show on Dashboard') ?></th>
+                            <td><?= $label->show_on_dashboard ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Dashboard Roles') ?></th>
+                            <td><?= empty($label->dashboard_roles)
+                                ? __('All')
+                                : h(implode(', ', $label->dashboard_role_names)) ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column">

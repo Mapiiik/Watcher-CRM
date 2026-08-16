@@ -5,6 +5,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Label $label
+ * @var array<string, string> $roles
  */
 ?>
 <div class="row">
@@ -27,6 +28,14 @@ use Doctrine\SqlFormatter\SqlFormatter;
                 echo $this->Form->control('dynamic');
                 echo $this->Form->control('dynamic_sql', [
                     'value' => (new SqlFormatter(new NullHighlighter()))->format($label->dynamic_sql ?? ''),
+                ]);
+                echo $this->Form->control('show_on_dashboard');
+                echo $this->Form->control('dashboard_roles', [
+                    'type' => 'select',
+                    'multiple' => true,
+                    'options' => $roles,
+                    'label' => __('Dashboard Roles'),
+                    'title' => __('Leave empty to show the label to everybody.'),
                 ]);
                 ?>
             </fieldset>

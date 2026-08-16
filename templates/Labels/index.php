@@ -40,6 +40,7 @@
                     <th><?= $this->Paginator->sort('color') ?></th>
                     <th><?= $this->Paginator->sort('validity') ?></th>
                     <th><?= $this->Paginator->sort('dynamic') ?></th>
+                    <th><?= $this->Paginator->sort('show_on_dashboard', __('Show on Dashboard')) ?></th>
                     <th><?= __('Number Of Uses') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -52,6 +53,12 @@
                     <td style="background-color: <?= h($label->color) ?>;"><?= h($label->color) ?></td>
                     <td><?= h($label->validity) ?></td>
                     <td><?= $label->dynamic ? __('Yes') : __('No'); ?></td>
+                    <td>
+                        <?= $label->show_on_dashboard ? __('Yes') : __('No'); ?>
+                        <?php if ($label->show_on_dashboard && !empty($label->dashboard_roles)) : ?>
+                            <br><small><?= h(implode(', ', $label->dashboard_role_names)) ?></small>
+                        <?php endif ?>
+                    </td>
                     <td>
                         <?= $this->Number->format(count($label->customer_labels)) ?>
                         <br>

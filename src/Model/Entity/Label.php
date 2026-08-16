@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use App\Colors\ColorThemeSelector;
 use App\Colors\ColorTransformer;
+use App\Model\Entity\Trait\DashboardVisibilityTrait;
 use Cake\Core\Configure;
 
 /**
@@ -18,12 +19,17 @@ use Cake\Core\Configure;
  * @property int|null $validity
  * @property bool $dynamic
  * @property string|null $dynamic_sql
+ * @property bool $show_on_dashboard
+ * @property list<string>|null $dashboard_roles
+ * @property list<string> $dashboard_role_names
  * @property string $style
  *
  * @property \App\Model\Entity\CustomerLabel[] $customer_labels
  */
 class Label extends AppEntity
 {
+    use DashboardVisibilityTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -44,6 +50,8 @@ class Label extends AppEntity
         'validity' => true,
         'dynamic' => true,
         'dynamic_sql' => true,
+        'show_on_dashboard' => true,
+        'dashboard_roles' => true,
         'customer_labels' => true,
     ];
 
