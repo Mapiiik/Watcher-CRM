@@ -125,6 +125,11 @@ $urlWithQuery = function ($query = []) use ($request) {
         <?php if (!($request->getQuery('win-link') == 'true')) : ?>
         <div class="top-nav-links">
             <?= $this->AuthLink->link(
+                __('Dashboard'),
+                ['controller' => 'Dashboard', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
+                ['class' => 'button button-small' . $buttonSelected(['Dashboard'])],
+            ) ?>
+            <?= $this->AuthLink->link(
                 __('Customers'),
                 ['controller' => 'Customers', 'action' => 'index', 'plugin' => null],
                 ['class' => 'button button-small' . $buttonSelected(['Customers'])],

@@ -152,8 +152,8 @@ return function (RouteBuilder $routes): void {
                 'customer_id' => RouteBuilder::UUID,
             ]);
 
-        // Default redirect
-        $builder->redirect('/', ['controller' => 'Customers', 'action' => 'index'], ['status' => 303]);
+        // The landing page
+        $builder->connect('/', ['controller' => 'Dashboard', 'action' => 'index']);
 
         /*
         * ...and connect the rest of 'Pages' controller's URLs.

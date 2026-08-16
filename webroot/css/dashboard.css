@@ -1,0 +1,78 @@
+/*
+ * The dashboard grid.
+ *
+ * The cards sit on the same panel every other index page uses and are drawn as the
+ * grouped `.related` blocks are, so only the grid and the rows below are new here.
+ * Colors come from the theme variables the other stylesheets define.
+ */
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+    gap: 1.5rem;
+    /* cards in a row end level with each other rather than each stopping at its own rows */
+    align-items: stretch;
+}
+
+/*
+ * Each card is set off from the page panel it sits on by a background of its own, sitting
+ * between the panel and the tables. `.related` spaces itself vertically; inside the grid
+ * the gap already does.
+ */
+.dashboard-cards .related {
+    margin-top: 0;
+    padding: 1rem 1.5rem;
+    background-color: var(--color-card-bg, var(--color-table-bg));
+    border-radius: 0.4rem;
+    overflow-x: auto;
+}
+
+.dashboard-cards .loading {
+    opacity: 0.5;
+}
+
+/* A single number the card exists to report. */
+.dashboard-figure {
+    font-size: 3.2rem;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 0;
+    color: var(--color-headings);
+}
+
+/*
+ * The themes leave a few pixels of side margin beside a table so its shadow has room -
+ * `cake.css` pairs `calc(100% - 3px)` with a right margin, `legacy.css` a left one. Taking
+ * the full width back without dropping that margin pushed the table past the card, and the
+ * card scrolled sideways over a gap nobody could see. Inside a card the card is the
+ * surface, so the margin goes.
+ */
+.dashboard-table {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1rem;
+}
+
+.dashboard-table td {
+    padding: 0.6rem 0.8rem 0.6rem 0.4rem;
+    border-bottom: 1px solid var(--color-table-borders);
+    vertical-align: top;
+}
+
+/* The date and the priority only need the room they take. */
+.dashboard-table td + td {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* The colour a contract state is drawn in elsewhere, beside its name. */
+.dashboard-swatch {
+    display: inline-block;
+    width: 0.9rem;
+    height: 0.9rem;
+    border: 1px solid var(--color-table-borders);
+    border-radius: 0.2rem;
+    vertical-align: baseline;
+    margin-right: 0.4rem;
+}

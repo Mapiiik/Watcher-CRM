@@ -136,6 +136,18 @@ $permissions = [
             'controller' => 'Pages',
             'action' => 'display',
         ],
+        //the dashboard is the landing page, so every role has to get through it -
+        //which cards it then draws is decided per role by the card registry
+        [
+            'role' => '*',
+            'prefix' => false,
+            'plugin' => null,
+            'controller' => 'Dashboard',
+            'action' => [
+                'index',
+                'card',
+            ],
+        ],
         //always allow access to DebugKit
         [
             'role' => '*',
