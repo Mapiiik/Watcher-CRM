@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-16 11:01+0200\n"
+"POT-Creation-Date: 2026-08-16 14:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1443,7 +1443,7 @@ msgstr ""
 msgid "Labels"
 msgstr ""
 
-#: ./src/Dashboard/Card/ManualShutoffDebtorsCard.php:41
+#: ./src/Dashboard/Card/ManualShutoffDebtorsCard.php:48
 msgid "Debts Beyond Automatic Blocking"
 msgstr ""
 
@@ -1549,20 +1549,20 @@ msgstr ""
 msgid "Accounting profile data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:196
+#: ./src/Model/Entity/Task.php:211
 msgid "Low"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:197
+#: ./src/Model/Entity/Task.php:212
 #: ./src/Model/Enum/ServiceCriticalityLevel.php:25
 msgid "Normal"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:198
+#: ./src/Model/Entity/Task.php:213
 msgid "High"
 msgstr ""
 
-#: ./src/Model/Entity/Task.php:199
+#: ./src/Model/Entity/Task.php:214
 msgid "Urgent"
 msgstr ""
 
@@ -1969,27 +1969,27 @@ msgstr ""
 msgid "RADIUS Account"
 msgstr ""
 
-#: ./src/Model/Enum/IpAddressTypeOfUse.php:25
+#: ./src/Model/Enum/IpAddressTypeOfUse.php:68
 msgid "Customer address set via RADIUS"
 msgstr ""
 
-#: ./src/Model/Enum/IpAddressTypeOfUse.php:26
+#: ./src/Model/Enum/IpAddressTypeOfUse.php:69
 msgid "Customer address set manually"
 msgstr ""
 
-#: ./src/Model/Enum/IpAddressTypeOfUse.php:27
+#: ./src/Model/Enum/IpAddressTypeOfUse.php:70
 msgid "Technology address set manually"
 msgstr ""
 
-#: ./src/Model/Enum/IpNetworkTypeOfUse.php:25
+#: ./src/Model/Enum/IpNetworkTypeOfUse.php:68
 msgid "Customer network set via RADIUS"
 msgstr ""
 
-#: ./src/Model/Enum/IpNetworkTypeOfUse.php:26
+#: ./src/Model/Enum/IpNetworkTypeOfUse.php:69
 msgid "Customer network set manually"
 msgstr ""
 
-#: ./src/Model/Enum/IpNetworkTypeOfUse.php:27
+#: ./src/Model/Enum/IpNetworkTypeOfUse.php:70
 msgid "Technology network set manually"
 msgstr ""
 
@@ -2087,11 +2087,11 @@ msgid_plural "The override duration must not exceed {0} days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Model/Table/TasksTable.php:256
+#: ./src/Model/Table/TasksTable.php:264
 msgid "The specified task type requires the assignment of an customer."
 msgstr ""
 
-#: ./src/Model/Table/TasksTable.php:279
+#: ./src/Model/Table/TasksTable.php:287
 msgid "The specified task type requires the assignment of an contract."
 msgstr ""
 
@@ -6369,6 +6369,7 @@ msgstr ""
 #: ./templates/TaskStates/view.php:71
 #: ./templates/TaskTypes/view.php:67
 #: ./templates/Tasks/view.php:110
+#: ./templates/element/Dashboard/task_list.php:58
 #: ./templates/email/html/task_notification.php:97
 msgid "Estimated Date"
 msgstr ""
@@ -6552,11 +6553,15 @@ msgstr ""
 
 #: ./templates/element/Dashboard/ending_obligations.php:43
 #: ./templates/element/Dashboard/manual_shutoff_debtors.php:40
-#: ./templates/element/Dashboard/task_list.php:39
+#: ./templates/element/Dashboard/task_list.php:68
 msgid "and {0} more"
 msgstr ""
 
-#: ./templates/element/Dashboard/labels.php:10
+#: ./templates/element/Dashboard/labels.php:12
+msgid "No label has found anything."
+msgstr ""
+
+#: ./templates/element/Dashboard/labels.php:13
 msgid "No label is set to show here."
 msgstr ""
 

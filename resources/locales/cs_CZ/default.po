@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-16 11:01+0200\n"
-"PO-Revision-Date: 2026-08-16 11:29+0200\n"
+"POT-Creation-Date: 2026-08-16 14:29+0200\n"
+"PO-Revision-Date: 2026-08-16 14:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -1480,7 +1480,7 @@ msgstr "Končící závazky"
 msgid "Labels"
 msgstr "Štítky"
 
-#: src/Dashboard/Card/ManualShutoffDebtorsCard.php:41
+#: src/Dashboard/Card/ManualShutoffDebtorsCard.php:48
 msgid "Debts Beyond Automatic Blocking"
 msgstr "Dluhy mimo dosah automatického blokování"
 
@@ -1582,19 +1582,19 @@ msgstr "Údaje o smlouvách nejsou k dispozici."
 msgid "Accounting profile data not available."
 msgstr "Údaje o účetním profilu nejsou k dispozici."
 
-#: src/Model/Entity/Task.php:196
+#: src/Model/Entity/Task.php:211
 msgid "Low"
 msgstr "Nízká"
 
-#: src/Model/Entity/Task.php:197 src/Model/Enum/ServiceCriticalityLevel.php:25
+#: src/Model/Entity/Task.php:212 src/Model/Enum/ServiceCriticalityLevel.php:25
 msgid "Normal"
 msgstr "Normální"
 
-#: src/Model/Entity/Task.php:198
+#: src/Model/Entity/Task.php:213
 msgid "High"
 msgstr "Vysoká"
 
-#: src/Model/Entity/Task.php:199
+#: src/Model/Entity/Task.php:214
 msgid "Urgent"
 msgstr "Naléhavé"
 
@@ -1892,27 +1892,27 @@ msgstr "RADIUS"
 msgid "RADIUS Account"
 msgstr "Účet RADIUS"
 
-#: src/Model/Enum/IpAddressTypeOfUse.php:25
+#: src/Model/Enum/IpAddressTypeOfUse.php:68
 msgid "Customer address set via RADIUS"
 msgstr "Adresa zákazníka nastavená přes RADIUS"
 
-#: src/Model/Enum/IpAddressTypeOfUse.php:26
+#: src/Model/Enum/IpAddressTypeOfUse.php:69
 msgid "Customer address set manually"
 msgstr "Adresa zákazníka nastavená ručně"
 
-#: src/Model/Enum/IpAddressTypeOfUse.php:27
+#: src/Model/Enum/IpAddressTypeOfUse.php:70
 msgid "Technology address set manually"
 msgstr "Adresa technologie nastavená ručně"
 
-#: src/Model/Enum/IpNetworkTypeOfUse.php:25
+#: src/Model/Enum/IpNetworkTypeOfUse.php:68
 msgid "Customer network set via RADIUS"
 msgstr "Síť zákazníka nastavená přes RADIUS"
 
-#: src/Model/Enum/IpNetworkTypeOfUse.php:26
+#: src/Model/Enum/IpNetworkTypeOfUse.php:69
 msgid "Customer network set manually"
 msgstr "Síť zákazníka nastavená ručně"
 
-#: src/Model/Enum/IpNetworkTypeOfUse.php:27
+#: src/Model/Enum/IpNetworkTypeOfUse.php:70
 msgid "Technology network set manually"
 msgstr "Síť technologie nastavená ručně"
 
@@ -2017,11 +2017,11 @@ msgstr[0] "Doba trvání dočasné úpravy nesmí přesáhnout {0} den."
 msgstr[1] "Doba trvání dočasné úpravy nesmí přesáhnout {0} dny."
 msgstr[2] "Doba trvání dočasné úpravy nesmí přesáhnout {0} dní."
 
-#: src/Model/Table/TasksTable.php:256
+#: src/Model/Table/TasksTable.php:264
 msgid "The specified task type requires the assignment of an customer."
 msgstr "Zadaný typ úkolu vyžaduje přiřazení zákazníka."
 
-#: src/Model/Table/TasksTable.php:279
+#: src/Model/Table/TasksTable.php:287
 msgid "The specified task type requires the assignment of an contract."
 msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 
@@ -5693,7 +5693,8 @@ msgid "Start Date"
 msgstr "Datum přijetí"
 
 #: templates/TaskStates/view.php:71 templates/TaskTypes/view.php:67
-#: templates/Tasks/view.php:110 templates/email/html/task_notification.php:97
+#: templates/Tasks/view.php:110 templates/element/Dashboard/task_list.php:58
+#: templates/email/html/task_notification.php:97
 msgid "Estimated Date"
 msgstr "Přepokládaný datum řešení"
 
@@ -5867,11 +5868,15 @@ msgstr "V následujících {0} dnech nekončí žádný závazek."
 
 #: templates/element/Dashboard/ending_obligations.php:43
 #: templates/element/Dashboard/manual_shutoff_debtors.php:40
-#: templates/element/Dashboard/task_list.php:39
+#: templates/element/Dashboard/task_list.php:68
 msgid "and {0} more"
 msgstr "a {0} dalších"
 
-#: templates/element/Dashboard/labels.php:10
+#: templates/element/Dashboard/labels.php:12
+msgid "No label has found anything."
+msgstr "Žádný štítek nic nenašel."
+
+#: templates/element/Dashboard/labels.php:13
 msgid "No label is set to show here."
 msgstr "Žádný štítek není nastaven k zobrazení."
 
