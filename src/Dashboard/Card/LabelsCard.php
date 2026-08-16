@@ -57,8 +57,12 @@ class LabelsCard extends AbstractCustomerListingCard
             ->filter(fn(Label $label): bool => $label->isOnDashboardFor($this->role))
             ->toList();
 
-        if ($labels === []) {
-            return ['labels' => [], 'counts' => [], 'urls' => []];
+        // whether any label is meant for this card at all, as against every one of them
+        // having nothing to report - the two read the same on screen otherwise
+        $configured = $labels !== [];
+
+        if (!$configured) {
+            return ['labels' => [], 'counts' => [], 'urls' => [], 'configured' => false];
         }
 
         $counts = $this->labels->CustomerLabels->find();
@@ -74,6 +78,14 @@ class LabelsCard extends AbstractCustomerListingCard
             ->combine('label_id', 'total')
             ->toArray();
 
+        // A label earns a line by having found something. Most of the checking ones sit at
+        // zero most of the time, and a column of zeroes is where the one that is not zero
+        // goes unread. The grouped count already leaves them out, so this only follows it.
+        $labels = array_values(array_filter(
+            $labels,
+            fn(Label $label): bool => ($counts[$label->id] ?? 0) > 0,
+        ));
+
         $urls = [];
         foreach ($labels as $label) {
             $urls[$label->id] = $this->customerListingUrl(['label_ids' => [$label->id]]);
@@ -83,6 +95,7 @@ class LabelsCard extends AbstractCustomerListingCard
             'labels' => $labels,
             'counts' => $counts,
             'urls' => $urls,
+            'configured' => true,
         ];
     }
 }

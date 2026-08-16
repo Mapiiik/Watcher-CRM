@@ -469,6 +469,46 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
+     * A label earns its line by having found something. The checking labels sit at zero
+     * most of the time, and a column of zeroes is where the one that is not zero would go
+     * unread.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\LabelsCard::data()
+     */
+    public function testLabelsAreDrawnOnlyWhereTheyFoundSomething(): void
+    {
+        $labels = $this->getTableLocator()->get('Labels');
+
+        // the fixture label is carried by a customer, so it has something to report
+        $found = $labels->find()->firstOrFail();
+        $found->set('show_on_dashboard', true);
+        $labels->saveOrFail($found);
+
+        // a second one nobody carries, which is what a checking label looks like at rest
+        $quiet = $labels->saveOrFail($labels->newEntity([
+            'name' => 'Nothing to report',
+            'color' => '#ffffff',
+            'dynamic' => false,
+            'show_on_dashboard' => true,
+        ]));
+
+        $this->login();
+        $this->get('/dashboard/card/labels');
+
+        $this->assertResponseOk();
+
+        /** @var \App\Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+        $data = $card->data();
+        $ids = array_map(fn($label): string => $label->id, $data['labels']);
+
+        $this->assertContains($found->get('id'), $ids);
+        $this->assertNotContains($quiet->get('id'), $ids, 'nothing found, so nothing to say');
+        $this->assertTrue($data['configured'], 'labels are set for the card, they just found nothing');
+    }
+
+    /**
      * A card nobody registered is not a page.
      *
      * @return void

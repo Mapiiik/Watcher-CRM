@@ -4,10 +4,13 @@
  * @var list<\App\Model\Entity\Label> $labels
  * @var array<string, int> $counts
  * @var array<string, array<string, mixed>> $urls
+ * @var bool $configured
  */
 ?>
 <?php if ($labels === []) : ?>
-    <p><?= __('No label is set to show here.') ?></p>
+    <p><?= $configured
+        ? __('No label has found anything.')
+        : __('No label is set to show here.') ?></p>
 <?php else : ?>
     <table class="dashboard-table">
         <tbody>
