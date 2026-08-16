@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2026-08-16 14:29+0200\n"
-"PO-Revision-Date: 2026-08-16 14:30+0200\n"
+"PO-Revision-Date: 2026-08-16 14:34+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -5696,7 +5696,7 @@ msgstr "Datum přijetí"
 #: templates/Tasks/view.php:110 templates/element/Dashboard/task_list.php:58
 #: templates/email/html/task_notification.php:97
 msgid "Estimated Date"
-msgstr "Přepokládaný datum řešení"
+msgstr "Předpokládaný datum řešení"
 
 #: templates/TaskStates/view.php:72 templates/TaskTypes/view.php:68
 #: templates/Tasks/view.php:114 templates/email/html/task_notification.php:101
