@@ -80,12 +80,9 @@ class ManualShutoffDebtorsCard extends AbstractDebtorCard
             ->where(['IpNetworks.type_of_use IN' => IpNetworkTypeOfUse::customerCases()]);
 
         $query = $this->contracts
-            ->find()
-            ->contain(['Customers', 'ServiceTypes', 'ContractStates'])
-            ->where([
-                'Contracts.customer_id IN' => $debtor_ids,
-                'ContractStates.active_services' => true,
-            ])
+            ->find('withActiveServices')
+            ->contain(['Customers', 'ServiceTypes'])
+            ->where(['Contracts.customer_id IN' => $debtor_ids])
             ->where([
                 // nothing of the customer's to write into the firewall, or a contract the
                 // nightly run passes over anyway

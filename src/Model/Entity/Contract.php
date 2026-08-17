@@ -241,6 +241,9 @@ class Contract extends AppEntity
     /**
      * getter for active_services
      *
+     * In a query the same decision is
+     * {@see \App\Model\Table\ContractsTable::findWithActiveServices()}.
+     *
      * @return bool
      * @throws \RuntimeException When contract state data not available.
      */

@@ -461,6 +461,9 @@ class Customer extends AppEntity
     /**
      * getter for active_services
      *
+     * True where any of the customer's contracts is running. In a query the same decision is
+     * {@see \App\Model\Table\ContractsTable::findWithActiveServices()}.
+     *
      * @return bool
      * @throws \RuntimeException When contracts data not available.
      */

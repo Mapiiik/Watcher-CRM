@@ -276,6 +276,9 @@ class ContractsTable extends AppTable
      * The state is joined rather than contained, so a query that wants to show the state as
      * well should contain it and take the ids from here as a subquery instead.
      *
+     * The same decision over an entity already in hand is
+     * {@see \App\Model\Entity\Contract::_getActiveServices()}.
+     *
      * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query Query to narrow.
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
      */
