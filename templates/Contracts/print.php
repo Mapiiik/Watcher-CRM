@@ -6,6 +6,7 @@
  * @var \App\Model\Entity\Contract $contract
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contractVersions
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $documentTypes
+ * @var array<string> $contractNumbers
  */
 ?>
 <div class="row">
@@ -187,6 +188,11 @@
             ]) ?>
             <fieldset>
                 <legend><?= __('Print Documents') ?></legend>
+                <datalist id="contract-numbers-to-be-terminated">
+                    <?php foreach ($contractNumbers as $contractNumber) : ?>
+                        <option value="<?= h($contractNumber) ?>">
+                    <?php endforeach; ?>
+                </datalist>
                 <div class="row">
                     <div class="column">
                         <?php
@@ -255,6 +261,7 @@
                                 'label' => __('Contract number to be terminated'),
                                 'empty' => true,
                                 'required' => true,
+                                'list' => 'contract-numbers-to-be-terminated',
                                 'onchange' => 'this.form.submit();',
                             ]);
                         }

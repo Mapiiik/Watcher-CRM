@@ -856,6 +856,13 @@ class ContractsController extends AppController
             ];
         })->toArray();
 
+        // prepare suggestions for the number of the contract to be terminated - contracts concluded
+        // before the renumbering carry the customer number, one contract to a customer
+        $contractNumbers = array_values(array_unique(array_filter([
+            $contract->number,
+            $contract->customer->number ?? null,
+        ])));
+
         // load query parameters from the request
         $query = $this->getRequest()->getQuery();
 
@@ -956,6 +963,7 @@ class ContractsController extends AppController
             'printType',
             'contract',
             'contractVersions',
+            'contractNumbers',
         ));
 
         return null;

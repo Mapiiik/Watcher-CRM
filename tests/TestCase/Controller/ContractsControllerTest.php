@@ -349,4 +349,25 @@ class ContractsControllerTest extends TestCase
 
         $this->assertResponseOk();
     }
+
+    /**
+     * The number of the contract to be terminated is typed by hand, because a contract concluded
+     * before the renumbering carries a different one than the record does. Both numbers it could
+     * be are offered.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::print()
+     */
+    public function testPrintSuggestsNumbersForTheContractToBeTerminated(): void
+    {
+        $contract = $this->fetchTable('Contracts')->get($this->firstId('Contracts'), contain: ['Customers']);
+
+        $this->login();
+        $this->get('/contracts/print/' . $contract->id);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<datalist id="contract-numbers-to-be-terminated">');
+        $this->assertResponseContains('<option value="' . h($contract->number) . '">');
+        $this->assertResponseContains('<option value="' . h($contract->customer->number) . '">');
+    }
 }
