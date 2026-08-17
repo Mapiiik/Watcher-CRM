@@ -32,8 +32,9 @@ class UnclearBillingAddressCheck extends AbstractAddressCheck
 {
     /**
      * @param \App\Model\Table\CustomersTable $customers Customers table.
+     * @param bool $ignore_inactive Whether to pass over customers with nothing running.
      */
-    public function __construct(private CustomersTable $customers)
+    public function __construct(private CustomersTable $customers, private bool $ignore_inactive = true)
     {
     }
 
@@ -108,6 +109,10 @@ class UnclearBillingAddressCheck extends AbstractAddressCheck
 
         $missing = $query->expr()->and($exhausted);
         $reasons[] = $missing;
+
+        if ($this->ignore_inactive) {
+            $query->where(['Customers.id IN' => $this->activeCustomerIds()]);
+        }
 
         return $query
             ->where($query->expr()->or($reasons))

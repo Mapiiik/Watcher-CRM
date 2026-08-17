@@ -33,6 +33,10 @@ class UnclearBillingAddressCheckTest extends TestCase
         'app.Customers',
         'app.Countries',
         'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
     ];
 
     /**
@@ -65,7 +69,11 @@ class UnclearBillingAddressCheckTest extends TestCase
         /** @var \App\Model\Table\CustomersTable $customers */
         $customers = $this->fetchTable(CustomersTable::class);
         $this->Customers = $customers;
-        $this->check = new UnclearBillingAddressCheck($this->Customers);
+
+        // The fallback is what these cases are about, so they are not also made to have a
+        // running service. Whether the check passes over the ones that have none is asked
+        // separately, below.
+        $this->check = new UnclearBillingAddressCheck($this->Customers, false);
     }
 
     /**
@@ -157,6 +165,60 @@ class UnclearBillingAddressCheckTest extends TestCase
                 sprintf('The getter and the check disagree about "%s".', $name),
             );
         }
+    }
+
+    /**
+     * A customer we no longer serve has no invoice to address, so nothing about their
+     * addresses is work. The same customer with something running is reported.
+     *
+     * @return void
+     * @link \App\Addresses\Check\UnclearBillingAddressCheck::find()
+     */
+    public function testPassesOverCustomersWithNothingRunning(): void
+    {
+        $dormant = $this->customerWith([AddressType::Installation, AddressType::Installation]);
+        $running = $this->customerWith([AddressType::Installation, AddressType::Installation]);
+        $this->giveActiveContract($running);
+
+        $ignoring = (new UnclearBillingAddressCheck($this->Customers))
+            ->find()->all()->extract('id')->toList();
+
+        $this->assertNotContains($dormant->id, $ignoring);
+        $this->assertContains($running->id, $ignoring);
+
+        // and with the filter lifted, both of them are there
+        $all = (new UnclearBillingAddressCheck($this->Customers, false))
+            ->find()->all()->extract('id')->toList();
+
+        $this->assertContains($dormant->id, $all);
+        $this->assertContains($running->id, $all);
+    }
+
+    /**
+     * A contract in a state that provides services.
+     *
+     * @param \App\Model\Entity\Customer $customer Customer to give it to.
+     * @return void
+     */
+    private function giveActiveContract(Customer $customer): void
+    {
+        $contracts = $this->Customers->Contracts;
+
+        // The rules would ask this contract for an installation address and an access point,
+        // which is exactly what it is here not to have - all this contract is for is to say
+        // that the customer still has something running.
+        $contracts->saveOrFail(
+            $contracts->newEntity(
+                [
+                    'customer_id' => $customer->id,
+                    // the fixture state has active_services set
+                    'contract_state_id' => '3fc51c92-5dbb-4bd4-9a47-237169c2755c',
+                    'service_type_id' => '907cbc5c-af88-43b6-b535-959b4fa2ce3d',
+                ],
+                ['validate' => false],
+            ),
+            ['checkRules' => false],
+        );
     }
 
     /**

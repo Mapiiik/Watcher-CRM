@@ -94,6 +94,38 @@ class AddressCheckRegistryTest extends TestCase
     }
 
     /**
+     * Every check has to answer to the filter, including the ones whose subject is the
+     * address rather than the customer - those are the ones where the history is longest,
+     * and a check that quietly ignored it would report today's work under a heading that
+     * says otherwise.
+     *
+     * @return void
+     * @link \App\Addresses\Check\AddressCheckRegistry::__construct()
+     */
+    public function testEveryCheckAnswersToTheFilter(): void
+    {
+        $running = new AddressCheckRegistry(true);
+        $everything = new AddressCheckRegistry(false);
+
+        foreach ($running->all() as $check) {
+            $lifted = $everything->get($check->id());
+
+            $this->assertNotNull($lifted);
+            $this->assertLessThanOrEqual(
+                $lifted->count(),
+                $check->count(),
+                sprintf('%s reports more when the filter is on than when it is lifted.', $check->id()),
+            );
+
+            $this->assertNotSame(
+                $check->find()->sql(),
+                $lifted->find()->sql(),
+                sprintf('%s asks the same thing either way, so the filter passes it by.', $check->id()),
+            );
+        }
+    }
+
+    /**
      * Asking twice gives the same instance, so that counting a check and then listing it
      * does not build it again.
      *

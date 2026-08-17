@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var list<\App\Addresses\Check\AddressCheckInterface> $checks
  * @var array<string, bool> $shown
+ * @var bool $ignore_inactive
  * @var array<string, \Cake\Datasource\ResultSetInterface<int, \Cake\Datasource\EntityInterface>> $results
  */
 ?>
@@ -11,6 +12,14 @@
 
     <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => 'query']) ?>
     <fieldset>
+        <?= $this->Form->control('ignore_inactive', [
+            'type' => 'checkbox',
+            'label' => __('Ignore what is no longer running'),
+            'checked' => $ignore_inactive,
+            'value' => 1,
+            'onchange' => 'this.form.submit();',
+        ]) ?>
+        <hr />
         <?php foreach ($checks as $check) : ?>
             <?= $this->Form->control('checks.' . $check->id(), [
                 'type' => 'checkbox',

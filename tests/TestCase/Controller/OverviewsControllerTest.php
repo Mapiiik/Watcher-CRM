@@ -203,6 +203,33 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
+     * Customers with nothing running are passed over unless somebody asks for them, and the
+     * tick that lifts that is read the same way as the ones beside it.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfAddressProblems()
+     */
+    public function testOverviewOfAddressProblemsIgnoresTheDormantByDefault(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-address-problems');
+
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('ignore_inactive'));
+        $this->assertResponseContains('name="ignore_inactive" value="0"');
+
+        $this->get('/overviews/overview-of-address-problems?ignore_inactive=0');
+
+        $this->assertResponseOk();
+        $this->assertFalse($this->viewVariable('ignore_inactive'));
+
+        // and lifting it leaves the per-check ticks where they were
+        $this->assertTrue($this->viewVariable('shown')['unclear_billing_address']);
+        $this->assertFalse($this->viewVariable('shown')['several_contracts_at_one_address']);
+    }
+
+    /**
      * The reading of the query string rests on an unticked box saying so rather than saying
      * nothing, which is the hidden zero `FormHelper` puts beside every checkbox. Without it
      * the form could only ever switch checks on.

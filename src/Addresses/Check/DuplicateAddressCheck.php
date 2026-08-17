@@ -25,8 +25,9 @@ class DuplicateAddressCheck extends AbstractAddressCheck
 {
     /**
      * @param \App\Model\Table\AddressesTable $addresses Addresses table.
+     * @param bool $ignore_inactive Whether to pass over customers with nothing running.
      */
-    public function __construct(private AddressesTable $addresses)
+    public function __construct(private AddressesTable $addresses, private bool $ignore_inactive = true)
     {
     }
 
@@ -66,6 +67,12 @@ class DuplicateAddressCheck extends AbstractAddressCheck
     public function find(): SelectQuery
     {
         $query = $this->addresses->find();
+
+        if ($this->ignore_inactive) {
+            $query->where([
+                'Addresses.customer_id IN' => $this->activeCustomerIds(),
+            ]);
+        }
 
         $parts = ['street', 'number', 'city'];
 

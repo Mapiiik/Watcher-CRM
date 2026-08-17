@@ -10,6 +10,7 @@ use App\Model\Validation\ContractStateValidator;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -262,6 +263,27 @@ class ContractsTable extends AppTable
             ->notEmptyString('contract_state_id');
 
         return $validator;
+    }
+
+    /**
+     * Contracts that are providing services, by the flag on the state they are in.
+     *
+     * Said here once rather than at each place that asks. Whether a contract counts as live
+     * is a decision about the states, and something that reads it wants the same answer as
+     * everything else - it is the difference between a customer we serve and one we merely
+     * still have on record.
+     *
+     * The state is joined rather than contained, so a query that wants to show the state as
+     * well should contain it and take the ids from here as a subquery instead.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query Query to narrow.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    public function findWithActiveServices(SelectQuery $query): SelectQuery
+    {
+        return $query
+            ->innerJoinWith('ContractStates')
+            ->where(['ContractStates.active_services' => true]);
     }
 
     /**

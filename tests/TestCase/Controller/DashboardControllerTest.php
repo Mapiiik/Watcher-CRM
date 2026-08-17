@@ -669,6 +669,10 @@ class DashboardControllerTest extends TestCase
 
             $this->assertSame([1], array_values(array_unique(array_filter($checks))));
             $this->assertGreaterThan(1, count($checks), 'The other checks have to be named as off.');
+
+            // the card counts only what is running, so the overview it leads to has to as
+            // well - the same finding under two different numbers reads as a fault
+            $this->assertSame(1, $row['url']['?']['ignore_inactive']);
         }
     }
 

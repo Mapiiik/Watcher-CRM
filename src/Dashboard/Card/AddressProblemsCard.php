@@ -118,7 +118,10 @@ class AddressProblemsCard extends AbstractDashboardCard
             'controller' => 'Overviews',
             'action' => 'overviewOfAddressProblems',
             'customer_id' => false,
-            '?' => ['checks' => $checks],
+            // The card counts only what is running, so the link has to say so - arriving at
+            // an overview holding a different number than the card that led there reads as
+            // one of the two being wrong.
+            '?' => ['checks' => $checks, 'ignore_inactive' => 1],
         ];
     }
 }

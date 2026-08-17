@@ -876,7 +876,13 @@ class OverviewsController extends AppController
      */
     public function overviewOfAddressProblems(): void
     {
-        $registry = new AddressCheckRegistry();
+        // Read the same way as the ticks below, and on by default: an address says nothing
+        // about somebody we no longer serve, and most of what these checks would otherwise
+        // report about them is not work anybody is going to do.
+        $ignore_inactive = $this->getRequest()->getQuery('ignore_inactive') === null
+            || filter_var($this->getRequest()->getQuery('ignore_inactive'), FILTER_VALIDATE_BOOLEAN);
+
+        $registry = new AddressCheckRegistry($ignore_inactive);
         $asked = (array)$this->getRequest()->getQuery('checks', []);
 
         $shown = [];
@@ -897,7 +903,7 @@ class OverviewsController extends AppController
 
         $checks = $registry->all();
 
-        $this->set(compact('checks', 'shown', 'results'));
+        $this->set(compact('checks', 'shown', 'results', 'ignore_inactive'));
     }
 
     /**

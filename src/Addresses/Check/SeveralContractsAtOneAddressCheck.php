@@ -29,8 +29,9 @@ class SeveralContractsAtOneAddressCheck extends AbstractAddressCheck
 {
     /**
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
+     * @param bool $ignore_inactive Whether to count only the contracts that are running.
      */
-    public function __construct(private ContractsTable $contracts)
+    public function __construct(private ContractsTable $contracts, private bool $ignore_inactive = true)
     {
     }
 
@@ -87,7 +88,10 @@ class SeveralContractsAtOneAddressCheck extends AbstractAddressCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $query = $this->contracts->find();
+        // With the filter lifted the ended contracts count too, which is the ordinary way a
+        // place picks up a second contract - the old one and the one that replaced it. That
+        // is history rather than a fault, and worth seeing only when history is the subject.
+        $query = $this->contracts->find($this->ignore_inactive ? 'withActiveServices' : 'all');
 
         return $query
             ->select([
@@ -99,9 +103,7 @@ class SeveralContractsAtOneAddressCheck extends AbstractAddressCheck
             ->select($this->contracts->Customers)
             ->select($this->contracts->InstallationAddresses)
             ->contain(['Customers', 'InstallationAddresses'])
-            ->innerJoinWith('ContractStates')
             ->where([
-                'ContractStates.active_services' => true,
                 // Contracts with no installation address would otherwise gather into a
                 // group of their own per customer, all of them sharing a null, and be
                 // reported as sitting at one address when they sit at none. That is what

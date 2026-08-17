@@ -3,11 +3,38 @@ declare(strict_types=1);
 
 namespace App\Addresses\Check;
 
+use App\Model\Table\ContractsTable;
+use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Query\SelectQuery;
+
 /**
  * Shared ground for address checks - the defaults a check only overrides where it differs.
  */
 abstract class AbstractAddressCheck implements AddressCheckInterface
 {
+    use LocatorAwareTrait;
+
+    /**
+     * The customers of contracts that are providing services.
+     *
+     * For the checks whose subject is the customer rather than the service: an address is
+     * only worth anything about somebody we still serve, and a customer left on record with
+     * nothing running is not somebody an invoice goes to. What counts as live is
+     * {@see \App\Model\Table\ContractsTable::findWithActiveServices()} and nothing else, so
+     * that every check gives the same answer about the same customer.
+     *
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     */
+    protected function activeCustomerIds(): SelectQuery
+    {
+        /** @var \App\Model\Table\ContractsTable $contracts */
+        $contracts = $this->fetchTable(ContractsTable::class);
+
+        return $contracts
+            ->find('withActiveServices')
+            ->select(['Contracts.customer_id'], true);
+    }
+
     /**
      * The template is named after the check unless it says otherwise.
      *

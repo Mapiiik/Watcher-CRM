@@ -25,8 +25,9 @@ abstract class AbstractRegistryReferenceCheck extends AbstractAddressCheck
 {
     /**
      * @param \App\Model\Table\AddressesTable $addresses Addresses table.
+     * @param bool $ignore_inactive Whether to keep to addresses something is running at.
      */
-    public function __construct(protected AddressesTable $addresses)
+    public function __construct(protected AddressesTable $addresses, protected bool $ignore_inactive = true)
     {
     }
 
@@ -43,30 +44,29 @@ abstract class AbstractRegistryReferenceCheck extends AbstractAddressCheck
     }
 
     /**
-     * Addresses a contract with running services sits at, and which have no reference into
-     * the registry.
+     * Addresses a contract sits at and which have no reference into the registry.
      *
-     * The live contracts are asked for as a subquery rather than joined, so that an address
-     * with several contracts on it stays one row.
+     * The contracts are asked for as a subquery rather than joined, so that an address with
+     * several contracts on it stays one row.
      *
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
     protected function unregistered(): SelectQuery
     {
-        $live = $this->addresses->Contracts
-            ->find()
-            ->select(['Contracts.installation_address_id'])
-            ->innerJoinWith('ContractStates')
-            ->where([
-                'ContractStates.active_services' => true,
-                'Contracts.installation_address_id IS NOT' => null,
-            ]);
+        // Asked of the address rather than of its customer: what belongs in a report is a
+        // connection that is live here, not one the customer happens to have elsewhere.
+        // With the filter lifted, every address a contract was ever installed at is in -
+        // which is the list for putting the history straight rather than today's work.
+        $installed = $this->addresses->Contracts
+            ->find($this->ignore_inactive ? 'withActiveServices' : 'all')
+            ->select(['Contracts.installation_address_id'], true)
+            ->where(['Contracts.installation_address_id IS NOT' => null]);
 
         return $this->addresses
             ->find()
             ->contain(['Customers'])
             ->where([
-                'Addresses.id IN' => $live,
+                'Addresses.id IN' => $installed,
                 'Addresses.address_registry_reference IS' => null,
             ])
             ->orderBy(['Addresses.city' => 'ASC', 'Addresses.street' => 'ASC']);

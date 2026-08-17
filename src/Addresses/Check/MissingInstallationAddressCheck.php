@@ -29,8 +29,9 @@ class MissingInstallationAddressCheck extends AbstractAddressCheck
 {
     /**
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
+     * @param bool $ignore_inactive Whether to pass over contracts with nothing running.
      */
-    public function __construct(private ContractsTable $contracts)
+    public function __construct(private ContractsTable $contracts, private bool $ignore_inactive = true)
     {
     }
 
@@ -78,6 +79,16 @@ class MissingInstallationAddressCheck extends AbstractAddressCheck
                 ['AnyInstallationAddress.id' => new IdentifierExpression('Contracts.installation_address_id')],
             )
             ->where(['ServiceTypes.installation_address_required' => true]);
+
+        if ($this->ignore_inactive) {
+            // The state is contained for the listing to show, so the live ones are asked for
+            // as ids rather than by joining the state a second time under the same alias.
+            $query->where([
+                'Contracts.id IN' => $this->contracts
+                    ->find('withActiveServices')
+                    ->select(['Contracts.id'], true),
+            ]);
+        }
 
         return $query
             ->where([
