@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-16 20:26+0200\n"
+"POT-Creation-Date: 2026-08-17 15:22+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -77,6 +77,54 @@ msgstr ""
 msgid "Addresses API is unreachable: {0}"
 msgstr ""
 
+#: ./src/Addresses/Check/DuplicateAddressCheck.php:48
+msgid "The Same Address More Than Once"
+msgstr ""
+
+#: ./src/Addresses/Check/DuplicateAddressCheck.php:57
+msgid "No customer has the same address on record more than once."
+msgstr ""
+
+#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:52
+msgid "Contract Without an Installation Address"
+msgstr ""
+
+#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:61
+msgid "Every contract that needs an installation address has one."
+msgstr ""
+
+#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:52
+msgid "Several Contracts at One Address"
+msgstr ""
+
+#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:61
+msgid "No customer runs more than one contract at the same address."
+msgstr ""
+
+#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:55
+msgid "Unclear Billing Address"
+msgstr ""
+
+#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:64
+msgid "Every customer has one address an invoice can be sent to."
+msgstr ""
+
+#: ./src/Addresses/Check/UnlocatedInstallationAddressCheck.php:40
+msgid "Installation Address of Unknown Position"
+msgstr ""
+
+#: ./src/Addresses/Check/UnlocatedInstallationAddressCheck.php:49
+msgid "Every running service sits at an address we can point at."
+msgstr ""
+
+#: ./src/Addresses/Check/UnregisteredInstallationAddressCheck.php:34
+msgid "Installation Address Not in the Address Registry"
+msgstr ""
+
+#: ./src/Addresses/Check/UnregisteredInstallationAddressCheck.php:43
+msgid "Every running service sits at an address known to the registry."
+msgstr ""
+
 #: ./src/Agent/ApiClient.php:28
 msgid "Watcher Agent is not configured."
 msgstr ""
@@ -139,8 +187,8 @@ msgstr ""
 
 #: ./src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: ./src/Controller/Api/CustomersController.php:193
-#: ./src/Controller/OverviewsController.php:77
-#: ./src/Controller/OverviewsController.php:471
+#: ./src/Controller/OverviewsController.php:78
+#: ./src/Controller/OverviewsController.php:472
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr ""
 
@@ -720,6 +768,7 @@ msgstr ""
 #: ./templates/Customers/index.php:74
 #: ./templates/Customers/view.php:119
 #: ./templates/Customers/view.php:564
+#: ./templates/element/AddressChecks/several_contracts_at_one_address.php:15
 msgid "Contracts"
 msgstr ""
 
@@ -1123,11 +1172,11 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:527
+#: ./src/Controller/OverviewsController.php:528
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:529
+#: ./src/Controller/OverviewsController.php:530
 #: ./templates/Addresses/index.php:80
 #: ./templates/Addresses/index.php:87
 #: ./templates/Addresses/view.php:116
@@ -1140,7 +1189,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:810
+#: ./src/Controller/OverviewsController.php:811
 msgid "unknown dealer"
 msgstr ""
 
@@ -1343,13 +1392,14 @@ msgid "The task could not be saved. Please, try again."
 msgstr ""
 
 #: ./src/Controller/TasksController.php:488
-#: ./src/Model/Enum/AddressType.php:26
+#: ./src/Model/Enum/AddressType.php:41
 #: ./templates/Commissions/view.php:100
 #: ./templates/ContractStates/view.php:193
 #: ./templates/Contracts/print.php:76
 #: ./templates/Contracts/view.php:176
 #: ./templates/Customers/view.php:572
 #: ./templates/ServiceTypes/view.php:165
+#: ./templates/element/AddressChecks/several_contracts_at_one_address.php:14
 msgid "Installation Address"
 msgstr ""
 
@@ -1417,6 +1467,12 @@ msgstr ""
 #: ./src/Controller/Traits/ErrorFormatterTrait.php:35
 #: ./templates/CustomerMessages/add_bulk/step_compose.php:82
 msgid "Errors"
+msgstr ""
+
+#: ./src/Dashboard/Card/AddressProblemsCard.php:45
+#: ./templates/Overviews/index.php:39
+#: ./templates/Overviews/overview_of_address_problems.php:10
+msgid "Address Problems"
 msgstr ""
 
 #: ./src/Dashboard/Card/ContractStatesCard.php:42
@@ -1536,12 +1592,12 @@ msgstr ""
 msgid "Contract versions data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Customer.php:493
-#: ./src/Model/Entity/Customer.php:515
+#: ./src/Model/Entity/Customer.php:480
+#: ./src/Model/Entity/Customer.php:502
 msgid "Contracts data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Customer.php:530
+#: ./src/Model/Entity/Customer.php:517
 msgid "Accounting profile data not available."
 msgstr ""
 
@@ -1570,16 +1626,33 @@ msgstr ""
 msgid "Registration Number"
 msgstr ""
 
-#: ./src/Model/Enum/AddressType.php:27
+#: ./src/Model/Enum/AddressType.php:42
+#: ./templates/element/AddressChecks/unclear_billing_address.php:12
 msgid "Billing Address"
 msgstr ""
 
-#: ./src/Model/Enum/AddressType.php:28
+#: ./src/Model/Enum/AddressType.php:43
 msgid "Delivery Address"
 msgstr ""
 
-#: ./src/Model/Enum/AddressType.php:29
+#: ./src/Model/Enum/AddressType.php:44
 msgid "Permanent Address"
+msgstr ""
+
+#: ./src/Model/Enum/BillingAddressProblem.php:46
+msgid "No address to invoice to"
+msgstr ""
+
+#: ./src/Model/Enum/BillingAddressProblem.php:47
+msgid "Several billing addresses"
+msgstr ""
+
+#: ./src/Model/Enum/BillingAddressProblem.php:48
+msgid "Several permanent addresses"
+msgstr ""
+
+#: ./src/Model/Enum/BillingAddressProblem.php:49
+msgid "Several installation addresses"
 msgstr ""
 
 #: ./src/Model/Enum/ContractPrintType.php:32
@@ -1723,6 +1796,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:147
 #: ./templates/TaskTypes/view.php:148
 #: ./templates/TaskTypes/view.php:149
+#: ./templates/element/AddressChecks/installation_address.php:42
 #: ./templates/element/Contracts/Billings.php:72
 #: ./templates/element/Contracts/Billings.php:73
 #: ./templates/element/Contracts/ContractVersions.php:35
@@ -1848,6 +1922,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:147
 #: ./templates/TaskTypes/view.php:148
 #: ./templates/TaskTypes/view.php:149
+#: ./templates/element/AddressChecks/installation_address.php:42
 #: ./templates/element/Contracts/Billings.php:72
 #: ./templates/element/Contracts/Billings.php:73
 #: ./templates/element/Contracts/ContractVersions.php:35
@@ -2013,12 +2088,12 @@ msgstr ""
 msgid "Critical"
 msgstr ""
 
-#: ./src/Model/Table/AddressesTable.php:116
-#: ./src/Model/Table/AddressesTable.php:124
+#: ./src/Model/Table/AddressesTable.php:117
+#: ./src/Model/Table/AddressesTable.php:125
 msgid "First name and last name are required when company is not filled in."
 msgstr ""
 
-#: ./src/Model/Table/AddressesTable.php:136
+#: ./src/Model/Table/AddressesTable.php:137
 msgid "Company is required when first and last name are not filled in."
 msgstr ""
 
@@ -2027,11 +2102,11 @@ msgstr ""
 msgid "One of the roles named is not a role."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:321
+#: ./src/Model/Table/ContractsTable.php:324
 msgid "The specified service type requires the assignment of an installation address."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:344
+#: ./src/Model/Table/ContractsTable.php:347
 msgid "The specified service type requires the assignment of an access point."
 msgstr ""
 
@@ -2411,7 +2486,7 @@ msgstr ""
 #: ./templates/AccessCredentials/view.php:25
 #: ./templates/Contracts/view.php:41
 #: ./templates/Customers/view.php:61
-#: ./templates/Overviews/index.php:74
+#: ./templates/Overviews/index.php:79
 msgid "List Access Credentials"
 msgstr ""
 
@@ -3188,6 +3263,11 @@ msgstr ""
 #: ./templates/TaskStates/view.php:67
 #: ./templates/TaskTypes/view.php:63
 #: ./templates/Tasks/view.php:75
+#: ./templates/element/AddressChecks/duplicate_address.php:11
+#: ./templates/element/AddressChecks/installation_address.php:11
+#: ./templates/element/AddressChecks/missing_installation_address.php:11
+#: ./templates/element/AddressChecks/several_contracts_at_one_address.php:13
+#: ./templates/element/AddressChecks/unclear_billing_address.php:10
 #: ./templates/element/Contracts/Billings.php:17
 #: ./templates/email/html/task_notification.php:64
 msgid "Customer"
@@ -3219,6 +3299,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:90
 #: ./templates/cell/ServiceOverridesStatus/display.php:22
 #: ./templates/cell/ServiceOverridesStatus/display.php:45
+#: ./templates/element/AddressChecks/missing_installation_address.php:10
 #: ./templates/element/Contracts/Billings.php:21
 #: ./templates/element/Contracts/BorrowedEquipments.php:15
 #: ./templates/element/Contracts/IpAddresses.php:17
@@ -3433,7 +3514,7 @@ msgstr ""
 #: ./templates/Addresses/add.php:17
 #: ./templates/Addresses/edit.php:22
 #: ./templates/Addresses/view.php:21
-#: ./templates/Overviews/index.php:59
+#: ./templates/Overviews/index.php:64
 msgid "List Addresses"
 msgstr ""
 
@@ -3486,6 +3567,7 @@ msgstr ""
 #: ./templates/Countries/view.php:53
 #: ./templates/CustomerMessages/view.php:64
 #: ./templates/Customers/view.php:486
+#: ./templates/element/AddressChecks/duplicate_address.php:12
 msgid "Type"
 msgstr ""
 
@@ -3597,7 +3679,7 @@ msgstr ""
 #: ./templates/Billings/edit.php:19
 #: ./templates/Billings/service_change.php:22
 #: ./templates/Billings/view.php:23
-#: ./templates/Overviews/index.php:95
+#: ./templates/Overviews/index.php:100
 msgid "List Billings"
 msgstr ""
 
@@ -3833,7 +3915,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/add.php:15
 #: ./templates/BorrowedEquipments/edit.php:23
 #: ./templates/BorrowedEquipments/view.php:25
-#: ./templates/Overviews/index.php:105
+#: ./templates/Overviews/index.php:110
 msgid "List Borrowed Equipments"
 msgstr ""
 
@@ -3961,6 +4043,7 @@ msgstr ""
 #: ./templates/Customers/view.php:570
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
 #: ./templates/ServiceTypes/view.php:164
+#: ./templates/element/AddressChecks/missing_installation_address.php:13
 msgid "Contract State"
 msgstr ""
 
@@ -3972,6 +4055,7 @@ msgstr ""
 #: ./templates/Overviews/overview_of_active_services.php:64
 #: ./templates/Queues/view.php:83
 #: ./templates/Services/view.php:40
+#: ./templates/element/AddressChecks/missing_installation_address.php:12
 msgid "Service Type"
 msgstr ""
 
@@ -4148,6 +4232,7 @@ msgid "Requires Open Task Type"
 msgstr ""
 
 #: ./templates/ContractStates/view.php:94
+#: ./templates/element/AddressChecks/unclear_billing_address.php:27
 msgid "None"
 msgstr ""
 
@@ -4202,7 +4287,7 @@ msgstr ""
 #: ./templates/ContractVersions/add.php:15
 #: ./templates/ContractVersions/edit.php:21
 #: ./templates/ContractVersions/view.php:25
-#: ./templates/Overviews/index.php:90
+#: ./templates/Overviews/index.php:95
 msgid "List Contract Versions"
 msgstr ""
 
@@ -4287,7 +4372,7 @@ msgstr ""
 #: ./templates/Contracts/edit.php:27
 #: ./templates/Contracts/print.php:26
 #: ./templates/Contracts/view.php:26
-#: ./templates/Overviews/index.php:64
+#: ./templates/Overviews/index.php:69
 msgid "List Contracts"
 msgstr ""
 
@@ -4393,13 +4478,13 @@ msgstr ""
 #: ./templates/CustomerMessages/edit.php:21
 #: ./templates/CustomerMessages/view.php:25
 #: ./templates/Customers/view.php:56
-#: ./templates/Overviews/index.php:69
+#: ./templates/Overviews/index.php:74
 msgid "List Customer Messages"
 msgstr ""
 
 #: ./templates/Contracts/view.php:46
 #: ./templates/Customers/view.php:66
-#: ./templates/Overviews/index.php:100
+#: ./templates/Overviews/index.php:105
 #: ./templates/ServiceOverrides/add.php:17
 #: ./templates/ServiceOverrides/edit.php:36
 #: ./templates/ServiceOverrides/view.php:37
@@ -4409,7 +4494,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:51
 #: ./templates/Customers/view.php:71
 #: ./templates/HistoricalConnections/view.php:13
-#: ./templates/Overviews/index.php:135
+#: ./templates/Overviews/index.php:140
 msgid "List Historical Connections"
 msgstr ""
 
@@ -4648,7 +4733,7 @@ msgstr ""
 #: ./templates/CustomerLabels/add.php:15
 #: ./templates/CustomerLabels/edit.php:23
 #: ./templates/CustomerLabels/view.php:25
-#: ./templates/Overviews/index.php:39
+#: ./templates/Overviews/index.php:44
 msgid "List Customer Labels"
 msgstr ""
 
@@ -5259,7 +5344,7 @@ msgstr ""
 #: ./templates/Emails/add.php:12
 #: ./templates/Emails/edit.php:17
 #: ./templates/Emails/view.php:21
-#: ./templates/Overviews/index.php:44
+#: ./templates/Overviews/index.php:49
 msgid "List Emails"
 msgstr ""
 
@@ -5391,7 +5476,7 @@ msgstr ""
 #: ./templates/IpAddresses/bulk_reassignment.php:16
 #: ./templates/IpAddresses/edit.php:18
 #: ./templates/IpAddresses/view.php:21
-#: ./templates/Overviews/index.php:115
+#: ./templates/Overviews/index.php:120
 msgid "List IP Addresses"
 msgstr ""
 
@@ -5456,7 +5541,7 @@ msgstr ""
 #: ./templates/IpNetworks/add.php:14
 #: ./templates/IpNetworks/edit.php:19
 #: ./templates/IpNetworks/view.php:22
-#: ./templates/Overviews/index.php:120
+#: ./templates/Overviews/index.php:125
 msgid "List IP Networks"
 msgstr ""
 
@@ -5561,7 +5646,7 @@ msgstr ""
 #: ./templates/Logins/add.php:14
 #: ./templates/Logins/edit.php:17
 #: ./templates/Logins/view.php:21
-#: ./templates/Overviews/index.php:54
+#: ./templates/Overviews/index.php:59
 msgid "List Logins"
 msgstr ""
 
@@ -5619,38 +5704,38 @@ msgstr ""
 msgid "Customer Related"
 msgstr ""
 
-#: ./templates/Overviews/index.php:49
+#: ./templates/Overviews/index.php:54
 #: ./templates/Phones/add.php:12
 #: ./templates/Phones/edit.php:17
 #: ./templates/Phones/view.php:21
 msgid "List Phones"
 msgstr ""
 
-#: ./templates/Overviews/index.php:82
+#: ./templates/Overviews/index.php:87
 #: ./templates/Settings/index.php:222
 msgid "Contract Related"
 msgstr ""
 
-#: ./templates/Overviews/index.php:85
+#: ./templates/Overviews/index.php:90
 #: ./templates/Overviews/overview_of_contracts.php:19
 msgid "Overview of Contracts"
 msgstr ""
 
-#: ./templates/Overviews/index.php:110
+#: ./templates/Overviews/index.php:115
 #: ./templates/SoldEquipments/add.php:15
 #: ./templates/SoldEquipments/edit.php:23
 #: ./templates/SoldEquipments/view.php:25
 msgid "List Sold Equipments"
 msgstr ""
 
-#: ./templates/Overviews/index.php:125
+#: ./templates/Overviews/index.php:130
 #: ./templates/RemovedIpAddresses/add.php:14
 #: ./templates/RemovedIpAddresses/edit.php:22
 #: ./templates/RemovedIpAddresses/view.php:25
 msgid "List Removed IP Addresses"
 msgstr ""
 
-#: ./templates/Overviews/index.php:130
+#: ./templates/Overviews/index.php:135
 #: ./templates/RemovedIpNetworks/add.php:14
 #: ./templates/RemovedIpNetworks/edit.php:22
 #: ./templates/RemovedIpNetworks/view.php:25
@@ -5789,6 +5874,8 @@ msgid "VHCN Network Category"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_czech_customer_connection_points.php:63
+#: ./templates/element/AddressChecks/duplicate_address.php:13
+#: ./templates/element/AddressChecks/installation_address.php:10
 msgid "Address"
 msgstr ""
 
@@ -6465,6 +6552,26 @@ msgstr ""
 msgid "scheduled from {0} to {1}"
 msgstr ""
 
+#: ./templates/element/AddressChecks/duplicate_address.php:7
+msgid "One row per place recorded more than once, not per address."
+msgstr ""
+
+#: ./templates/element/AddressChecks/duplicate_address.php:14
+msgid "Times"
+msgstr ""
+
+#: ./templates/element/AddressChecks/installation_address.php:12
+msgid "Coordinates Set by Hand"
+msgstr ""
+
+#: ./templates/element/AddressChecks/several_contracts_at_one_address.php:8
+msgid "Not always a fault. Usually a wrong installation address, picked by mistake or left by an import."
+msgstr ""
+
+#: ./templates/element/AddressChecks/unclear_billing_address.php:11
+msgid "Problem"
+msgstr ""
+
 #: ./templates/element/Addresses/address_register_search.php:26
 msgid "Registered seat"
 msgstr ""
@@ -6511,6 +6618,14 @@ msgstr ""
 
 #: ./templates/element/Customers/business_register_search.php:69
 msgid "Represented By"
+msgstr ""
+
+#: ./templates/element/Dashboard/address_problems.php:9
+msgid "Nothing is wrong with the addresses on record."
+msgstr ""
+
+#: ./templates/element/Dashboard/address_problems.php:22
+msgid "Show all address checks"
 msgstr ""
 
 #: ./templates/element/Dashboard/contract_states.php:10
