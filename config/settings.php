@@ -234,6 +234,7 @@ return [
                     'indefinite' => 'na dobu neurčitou',
                     'indefinite_with_min_month' => 'na dobu neurčitou s minimální dobou plnění v trvání {duration} měsíce',
                     'indefinite_with_min_months' => 'na dobu neurčitou s minimální dobou plnění v trvání {duration} měsíců',
+                    'definite' => 'na dobu určitou do {valid_until}',
                 ],
 
                 'billing' => [
@@ -267,6 +268,7 @@ return [
                         'termination_final' => 'Tato dohoda je vyhotovena ve dvou stejnopisech.',
 
                         'new_intro' => 'Smlouva je uzavřena {minimum_duration}.',
+                        'new_definite_note' => 'Sjednaná doba trvání smlouvy je zároveň minimální dobou plnění.',
                         'new_start_date' => 'Datum zahájení poskytování služeb: {valid_from}.',
 
                         'new_x_intro' => 'Smluvní strany zároveň ujednávají, že předchozí smlouva o poskytování služeb č. {contract_number} ze dne {old_conclusion_date} (ve znění případných pozdějších dodatků) zaniká ke dni {termination_date}.',

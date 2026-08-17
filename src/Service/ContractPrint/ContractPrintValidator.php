@@ -67,7 +67,7 @@ final class ContractPrintValidator
 
         match ($data->type) {
             ContractPrintType::ContractNew =>
-                $this->validateContractNew($data),
+                $this->validateContractNew($data, $query),
 
             ContractPrintType::ContractNewX =>
                 $this->validateContractNewX($data, $query),
@@ -128,6 +128,52 @@ final class ContractPrintValidator
         }
 
         return true;
+    }
+
+    /**
+     * Requires the operator to acknowledge that a contract version with an end date
+     * is meant to be printed as a fixed-term contract.
+     *
+     * An end date on a contract version does not say by itself that the contract is
+     * for a fixed term - it is also how a superseded or ended version is recorded.
+     * A fixed term is its own minimum period of performance, so the obligation has
+     * to reach the end of the contract for the activation fee and its clause to come
+     * out right.
+     */
+    private function requireFixedTermAcknowledgement(
+        ContractVersion $contractVersion,
+        array $query,
+    ): void {
+        if ($contractVersion->valid_until === null) {
+            return;
+        }
+
+        if (empty($query['fixed_term'])) {
+            $this->setError(
+                'fixed_term',
+                __(
+                    'The contract version to be executed ends on a given date,'
+                    . ' so the document will be printed as a fixed-term contract.'
+                    . ' Please confirm that this is intended.',
+                ),
+            );
+
+            return;
+        }
+
+        if (
+            $contractVersion->obligation_until === null
+            || !$contractVersion->obligation_until->equals($contractVersion->valid_until)
+        ) {
+            $this->setError(
+                'fixed_term',
+                __(
+                    'A fixed-term contract is its own minimum period of performance.'
+                    . ' Please set the obligation of the contract version to be executed'
+                    . ' to the date until which it is valid.',
+                ),
+            );
+        }
     }
 
     /**
@@ -219,9 +265,13 @@ final class ContractPrintValidator
      */
     private function validateContractNew(
         ContractPrintData $data,
+        array $query,
     ): void {
         if (!$this->requireContractVersionToBeExecuted($data)) {
+            return;
         }
+
+        $this->requireFixedTermAcknowledgement($data->contractVersionToBeExecuted, $query);
     }
 
     /**
@@ -234,6 +284,8 @@ final class ContractPrintValidator
         if (!$this->requireContractVersionToBeExecuted($data)) {
             return;
         }
+
+        $this->requireFixedTermAcknowledgement($data->contractVersionToBeExecuted, $query);
 
         if (!$this->requireContractVersionToBeTerminated($data)) {
             return;

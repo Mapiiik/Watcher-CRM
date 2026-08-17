@@ -221,6 +221,11 @@
                             'type' => 'checkbox',
                             'onchange' => 'this.form.submit();',
                         ]);
+                        echo $this->Form->control('fixed_term', [
+                            'label' => __('Allow generating a fixed-term contract'),
+                            'type' => 'checkbox',
+                            'onchange' => 'this.form.submit();',
+                        ]);
                         ?>
                     </div>
                     <div class="column">

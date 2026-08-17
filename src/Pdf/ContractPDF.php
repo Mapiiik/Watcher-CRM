@@ -47,11 +47,23 @@ class ContractPDF extends AppPDF
     /**
      * Getter for contract duration text - long.
      *
-     * @param int|null $duration Duration in months
+     * An end date makes the contract a fixed-term one; the print validator sees to it
+     * that the obligation reaches the same date, so nothing is left unsaid by naming
+     * only the end.
+     *
+     * @param \App\Model\Entity\ContractVersion $contract_version Contract version being executed
      * @return string
      */
-    private function contractDuration(?int $duration): string
+    private function contractDuration(ContractVersion $contract_version): string
     {
+        if ($contract_version->valid_until !== null) {
+            return strtr(Settings::getString('core.documents.contracts.duration.definite'), [
+                '{valid_until}' => (string)$contract_version->valid_until,
+            ]);
+        }
+
+        $duration = $contract_version->minimum_duration;
+
         if ($duration <= 0) {
             return Settings::getString('core.documents.contracts.duration.indefinite');
         }
@@ -1408,10 +1420,19 @@ class ContractPDF extends AppPDF
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.new_intro'), [
-                    '{minimum_duration}' => $this->contractDuration($contract_version_to_be_executed->minimum_duration),
+                    '{minimum_duration}' => $this->contractDuration($contract_version_to_be_executed),
                 ]),
             );
             $this->Ln();
+
+            if ($contract_version_to_be_executed->valid_until !== null) {
+                $this->Write(
+                    4,
+                    Settings::getString('core.documents.contracts.contract.texts.new_definite_note'),
+                );
+                $this->Ln();
+            }
+
             $this->Write(
                 4,
                 strtr(Settings::getString('core.documents.contracts.contract.texts.new_start_date'), [
