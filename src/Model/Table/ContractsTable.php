@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\ServiceType;
+use App\Model\Enum\AddressType;
 use App\Model\Validation\ContractStateValidator;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
@@ -75,10 +76,12 @@ class ContractsTable extends AppTable
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',
         ]);
+        // An address that stops being of this type quietly stops being contained here, and
+        // the contract reads as having none. `MissingInstallationAddressCheck` reports that.
         $this->belongsTo('InstallationAddresses', [
             'className' => 'Addresses',
             'foreignKey' => 'installation_address_id',
-            'conditions' => ['InstallationAddresses.type' => 0],
+            'conditions' => ['InstallationAddresses.type' => AddressType::Installation],
         ]);
         $this->belongsTo('ServiceTypes', [
             'foreignKey' => 'service_type_id',

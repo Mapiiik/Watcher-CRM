@@ -47,6 +47,7 @@ use RuntimeException;
  * @property string $number
  * @property bool $active_services
  * @property bool $billed
+ * @property \App\Model\Enum\BillingAddressProblem|null $billing_address_problem
  *
  * @property \App\Model\Entity\AccountingProfile $accounting_profile
  * @property \App\Model\Entity\Address[] $addresses
@@ -263,51 +264,55 @@ class Customer extends AppEntity
     }
 
     /**
+     * get last address of the given type
+     *
+     * @param \App\Model\Enum\AddressType $type The type to look for.
+     * @return \App\Model\Entity\Address|null
+     */
+    private function lastAddressOfType(AddressType $type): ?Address
+    {
+        $found = null;
+
+        foreach ($this->addresses as $address) {
+            if ($address->type == $type) {
+                $found = $address;
+            }
+        }
+
+        return $found;
+    }
+
+    /**
      * get last installation address
      *
      * @return \App\Model\Entity\Address|null
      */
     protected function _getInstallationAddress(): ?Address
     {
-        $installation_address = null;
-
-        // take last installation address
-        foreach ($this->addresses as $address) {
-            if ($address->type == AddressType::Installation) {
-                $installation_address = $address;
-            }
-        }
-
-        return $installation_address;
+        return $this->lastAddressOfType(AddressType::Installation);
     }
 
     /**
      * get last billing address or alternative for billing
      *
+     * Falls through {@see \App\Model\Enum\AddressType::billingFallback()} and takes the
+     * first type the customer has an address of. Where a type has more than one, the last
+     * one wins, which is arbitrary - `AddressCheckRegistry` reports those customers so
+     * somebody can say which address is meant.
+     *
      * @return \App\Model\Entity\Address|null
      */
     protected function _getBillingAddress(): ?Address
     {
-        $billing_address = null;
+        foreach (AddressType::billingFallback() as $type) {
+            $address = $this->lastAddressOfType($type);
 
-        // take last billing address
-        foreach ($this->addresses as $address) {
-            if ($address->type == AddressType::Billing) {
-                $billing_address = $address;
+            if ($address !== null) {
+                return $address;
             }
         }
 
-        // if there is no billing address take permanent address
-        if (!isset($billing_address) && isset($this->permanent_address)) {
-            $billing_address = $this->permanent_address;
-        }
-
-        // if there is no billing address take installation address
-        if (!isset($billing_address) && isset($this->installation_address)) {
-            return $this->installation_address;
-        }
-
-        return $billing_address;
+        return null;
     }
 
     /**
@@ -317,16 +322,7 @@ class Customer extends AppEntity
      */
     protected function _getDeliveryAddress(): ?Address
     {
-        $delivery_address = null;
-
-        // take last delivery address
-        foreach ($this->addresses as $address) {
-            if ($address->type == AddressType::Delivery) {
-                $delivery_address = $address;
-            }
-        }
-
-        return $delivery_address;
+        return $this->lastAddressOfType(AddressType::Delivery);
     }
 
     /**
@@ -336,16 +332,7 @@ class Customer extends AppEntity
      */
     protected function _getPermanentAddress(): ?Address
     {
-        $permanent_address = null;
-
-        // take last permanent address
-        foreach ($this->addresses as $address) {
-            if ($address->type == AddressType::Permanent) {
-                $permanent_address = $address;
-            }
-        }
-
-        return $permanent_address;
+        return $this->lastAddressOfType(AddressType::Permanent);
     }
 
     /**

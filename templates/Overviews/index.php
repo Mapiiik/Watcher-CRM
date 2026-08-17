@@ -36,6 +36,11 @@
             <h4><?= __('Customer Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
+                    __('Address Problems'),
+                    ['action' => 'overviewOfAddressProblems'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('List Customer Labels'),
                     ['controller' => 'CustomerLabels', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],

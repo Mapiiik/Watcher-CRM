@@ -1,0 +1,42 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var list<\App\Addresses\Check\AddressCheckInterface> $checks
+ * @var array<string, bool> $shown
+ * @var array<string, \Cake\Datasource\ResultSetInterface<int, \Cake\Datasource\EntityInterface>> $results
+ */
+?>
+<div class="overviews index content">
+    <h3><?= __('Address Problems') ?></h3>
+
+    <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => 'query']) ?>
+    <fieldset>
+        <?php foreach ($checks as $check) : ?>
+            <?= $this->Form->control('checks.' . $check->id(), [
+                'type' => 'checkbox',
+                'label' => $check->title(),
+                'checked' => $shown[$check->id()],
+                'value' => 1,
+                'onchange' => 'this.form.submit();',
+            ]) ?>
+        <?php endforeach ?>
+    </fieldset>
+    <?= $this->Form->end() ?>
+
+    <div class="table-responsive">
+        <?php foreach ($checks as $check) : ?>
+            <?php if (!$shown[$check->id()]) : ?>
+                <?php continue ?>
+            <?php endif ?>
+            <?php $records = $results[$check->id()] ?>
+            <div class="related" id="<?= h($check->id()) ?>">
+                <h4><?= h($check->title()) ?> (<?= h((string)count($records)) ?>)</h4>
+                <?php if (count($records) === 0) : ?>
+                    <p><?= h($check->emptyMessage()) ?></p>
+                <?php else : ?>
+                    <?= $this->element('AddressChecks/' . $check->template(), ['records' => $records]) ?>
+                <?php endif ?>
+            </div>
+        <?php endforeach ?>
+    </div>
+</div>

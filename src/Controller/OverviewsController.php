@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Addresses\Check\AddressCheckRegistry;
 use App\Addresses\Resolver as AddressesResolver;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\Billing;
@@ -859,6 +860,44 @@ class OverviewsController extends AppController
             $speed >= 102400 => '100_300',
             default => '30_100',
         };
+    }
+
+    /**
+     * Overview of what is wrong with the addresses on record
+     *
+     * Each check has a tick of its own, so that whoever is working through one of them is
+     * not made to load the others. What arrives in the query string decides: a check named
+     * there is whatever it was named as, a check absent from it is at its default. That
+     * distinction is what makes the ticks work at all - an unticked box sends nothing, and
+     * `FormHelper` puts a hidden zero beside each one so that a submitted form says
+     * something about every check rather than only the ticked ones.
+     *
+     * @return void Renders view
+     */
+    public function overviewOfAddressProblems(): void
+    {
+        $registry = new AddressCheckRegistry();
+        $asked = (array)$this->getRequest()->getQuery('checks', []);
+
+        $shown = [];
+        foreach ($registry->all() as $check) {
+            $shown[$check->id()] = array_key_exists($check->id(), $asked)
+                ? filter_var($asked[$check->id()], FILTER_VALIDATE_BOOLEAN)
+                : !$check->optional();
+        }
+
+        // A check nobody asked for does not run. Counting them all and drawing some of them
+        // would make the ticks cost exactly what they are there to save.
+        $results = [];
+        foreach ($registry->all() as $check) {
+            if ($shown[$check->id()]) {
+                $results[$check->id()] = $check->find()->all();
+            }
+        }
+
+        $checks = $registry->all();
+
+        $this->set(compact('checks', 'shown', 'results'));
     }
 
     /**

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Dashboard;
 
+use App\Addresses\Check\AddressCheckRegistry;
+use App\Dashboard\Card\AddressProblemsCard;
 use App\Dashboard\Card\ContractStatesCard;
 use App\Dashboard\Card\DebtorsCard;
 use App\Dashboard\Card\EndingObligationsCard;
@@ -54,16 +56,6 @@ final class DashboardCardRegistry implements CardRegistryInterface
             'stale_tasks' => fn(): DashboardCardInterface => new StaleTasksCard($tasks),
         ];
 
-        // The debtor cards read the accounting records, which only exist with the plugin.
-        if (Plugin::isLoaded('Bookkeeping')) {
-            /** @var \App\Model\Table\ContractsTable $contracts */
-            $contracts = $this->fetchTable(ContractsTable::class);
-
-            $this->factories['debtors'] = fn(): DashboardCardInterface => new DebtorsCard();
-            $this->factories['manual_shutoff_debtors'] =
-                fn(): DashboardCardInterface => new ManualShutoffDebtorsCard($contracts);
-        }
-
         /** @var \App\Model\Table\LabelsTable $labels */
         $labels = $this->fetchTable(LabelsTable::class);
         /** @var \App\Model\Table\ContractVersionsTable $contract_versions */
@@ -76,6 +68,20 @@ final class DashboardCardRegistry implements CardRegistryInterface
             fn(): DashboardCardInterface => new ContractStatesCard($contract_states, $this->role);
         $this->factories['ending_obligations'] =
             fn(): DashboardCardInterface => new EndingObligationsCard($contract_versions);
+        $this->factories['address_problems'] =
+            fn(): DashboardCardInterface => new AddressProblemsCard(new AddressCheckRegistry());
+
+        // The debtor cards read the accounting records, which only exist with the plugin.
+        // They come last, so that what the whole office looks at stands ahead of what only
+        // the bookkeepers do.
+        if (Plugin::isLoaded('Bookkeeping')) {
+            /** @var \App\Model\Table\ContractsTable $contracts */
+            $contracts = $this->fetchTable(ContractsTable::class);
+
+            $this->factories['debtors'] = fn(): DashboardCardInterface => new DebtorsCard();
+            $this->factories['manual_shutoff_debtors'] =
+                fn(): DashboardCardInterface => new ManualShutoffDebtorsCard($contracts);
+        }
     }
 
     /**

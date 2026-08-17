@@ -610,4 +610,87 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseCode(404);
     }
+
+    /**
+     * The address checks are drawn for the roles that deal with customers end to end, and
+     * for nobody else.
+     *
+     * @param string $role Role to sign in as.
+     * @param bool $offered Whether that role is offered the card.
+     * @return void
+     * @link \App\Dashboard\Card\AddressProblemsCard::roles()
+     */
+    #[DataProvider('addressProblemRoles')]
+    public function testAddressProblemsCardIsOfferedToTheCustomerRoles(string $role, bool $offered): void
+    {
+        $this->login($role);
+        $this->get('/dashboard/card/address_problems');
+
+        $this->assertResponseCode($offered ? 200 : 404);
+    }
+
+    /**
+     * @return array<string, array{string, bool}>
+     */
+    public static function addressProblemRoles(): array
+    {
+        return [
+            'bookkeeper' => ['bookkeeper', true],
+            'sales manager' => ['sales-manager', true],
+            'sales representative' => ['sales-representative', true],
+            'admin' => ['admin', true],
+            'network technician' => ['network-technician', false],
+        ];
+    }
+
+    /**
+     * A count on the card links into the overview with that check alone switched on, and
+     * every other check switched off by name. A check left out of the query string is read
+     * as being at its default, so naming only the one would arrive with the rest beside it.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\AddressProblemsCard::data()
+     */
+    public function testAddressProblemsCardLinksToOneCheckAtATime(): void
+    {
+        $this->login('bookkeeper');
+        $this->get('/dashboard/card/address_problems');
+
+        $this->assertResponseOk();
+
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+        $data = $card->data();
+
+        $this->assertNotEmpty($data['rows'], 'The fixtures hold a customer with no address at all.');
+
+        foreach ($data['rows'] as $row) {
+            $checks = $row['url']['?']['checks'];
+
+            $this->assertSame([1], array_values(array_unique(array_filter($checks))));
+            $this->assertGreaterThan(1, count($checks), 'The other checks have to be named as off.');
+        }
+    }
+
+    /**
+     * A check that found nothing does not get a line - a column of zeroes is where the one
+     * that is not zero goes unread.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\AddressProblemsCard::data()
+     */
+    public function testAddressProblemsCardLeavesOutWhatFoundNothing(): void
+    {
+        $this->login('bookkeeper');
+        $this->get('/dashboard/card/address_problems');
+
+        $this->assertResponseOk();
+
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+
+        foreach ($card->data()['rows'] as $row) {
+            $this->assertGreaterThan(0, $row['total']);
+        }
+    }
 }

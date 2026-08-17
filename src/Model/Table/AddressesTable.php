@@ -15,6 +15,7 @@ use Override;
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\CountriesTable&\Cake\ORM\Association\BelongsTo $Countries
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
  * @method \App\Model\Entity\Address newEmptyEntity()
  * @method \App\Model\Entity\Address newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Address[] newEntities(array $data, array $options = [])

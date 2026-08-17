@@ -451,6 +451,22 @@ $permissions = [
             ],
             'action' => '*',
         ],
+        //the address checks are offered on the dashboard to roles that are otherwise not
+        //let into the overviews, so the one they link to is opened to them by name - not
+        //the index beside it, which would hand them the whole rack of overviews
+        [
+            'role' => [
+                'bookkeeper',
+                'sales-representative',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Overviews',
+            ],
+            'action' => [
+                'overviewOfAddressProblems',
+            ],
+        ],
         //enable customer message sending for network managers and sales managers
         [
             'role' => [
