@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-17 16:34+0200\n"
-"PO-Revision-Date: 2026-08-17 16:55+0200\n"
+"POT-Creation-Date: 2026-08-17 19:48+0200\n"
+"PO-Revision-Date: 2026-08-17 19:55+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -192,7 +192,7 @@ msgid "Installation Address (registry)"
 msgstr "Adresa instalace (registr)"
 
 #: src/BulkMessages/Filter/RegistryAddressFilter.php:136
-#: src/Controller/Api/CustomersController.php:193
+#: src/Controller/Api/CustomersController.php:189
 #: src/Controller/OverviewsController.php:78
 #: src/Controller/OverviewsController.php:472
 msgid "Could not retrieve addresses from national address registry: {0}"
@@ -1612,25 +1612,25 @@ msgstr "API"
 msgid "Contract data not available."
 msgstr "Údaje o smlouvě nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:253 src/Model/Entity/Contract.php:268
-#: src/Model/Entity/Contract.php:283
+#: src/Model/Entity/Contract.php:256 src/Model/Entity/Contract.php:271
+#: src/Model/Entity/Contract.php:286
 msgid "Contract state data not available."
 msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:298 src/Model/Entity/Contract.php:313
-#: src/Model/Entity/Contract.php:328
+#: src/Model/Entity/Contract.php:301 src/Model/Entity/Contract.php:316
+#: src/Model/Entity/Contract.php:331
 msgid "Service type data not available."
 msgstr "Údaje o typu služby nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:340
+#: src/Model/Entity/Contract.php:343
 msgid "Contract versions data not available."
 msgstr "Údaje o verzích smluv nejsou k dispozici."
 
-#: src/Model/Entity/Customer.php:480 src/Model/Entity/Customer.php:502
+#: src/Model/Entity/Customer.php:483 src/Model/Entity/Customer.php:505
 msgid "Contracts data not available."
 msgstr "Údaje o smlouvách nejsou k dispozici."
 
-#: src/Model/Entity/Customer.php:517
+#: src/Model/Entity/Customer.php:520
 msgid "Accounting profile data not available."
 msgstr "Údaje o účetním profilu nejsou k dispozici."
 
@@ -2027,13 +2027,13 @@ msgstr "Jméno společnosti je povinné, pokud není vyplněno jméno a příjme
 msgid "One of the roles named is not a role."
 msgstr "Některá z uvedených rolí neexistuje."
 
-#: src/Model/Table/ContractsTable.php:346
+#: src/Model/Table/ContractsTable.php:349
 msgid ""
 "The specified service type requires the assignment of an installation "
 "address."
 msgstr "Zadaný typ služby vyžaduje přiřazení instalační adresy."
 
-#: src/Model/Table/ContractsTable.php:369
+#: src/Model/Table/ContractsTable.php:372
 msgid "The specified service type requires the assignment of an access point."
 msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 
@@ -2197,7 +2197,27 @@ msgstr "Vyberte prosím verzi smlouvy, kterou chcete uzavřít."
 msgid "Please select the contract version to be terminated."
 msgstr "Vyberte prosím verzi smlouvy, kterou chcete ukončit."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:149
+#: src/Service/ContractPrint/ContractPrintValidator.php:154
+msgid ""
+"The contract version to be executed ends on a given date, so the document "
+"will be printed as a fixed-term contract. Please confirm that this is "
+"intended."
+msgstr ""
+"Verze smlouvy, která má být uzavřena, má vyplněnou platnost do, takže se "
+"dokument vytiskne jako smlouva na dobu určitou. Potvrďte prosím, že je to "
+"záměr."
+
+#: src/Service/ContractPrint/ContractPrintValidator.php:170
+msgid ""
+"A fixed-term contract is its own minimum period of performance. Please set "
+"the obligation of the contract version to be executed to the date until "
+"which it is valid."
+msgstr ""
+"Smlouva na dobu určitou je zároveň svou minimální dobou plnění. Nastavte "
+"prosím u verze smlouvy, která má být uzavřena, závazek do na stejné datum "
+"jako platnost do."
+
+#: src/Service/ContractPrint/ContractPrintValidator.php:195
 msgid ""
 "A borrowed equipment is not assigned, although it should normally be for "
 "this type of service. Please confirm that the customer has their own "
@@ -2206,7 +2226,7 @@ msgstr ""
 "Zapůjčené zařízení není přiděleno, ačkoli by normálně mělo být pro tento typ "
 "služby. Potvrďte prosím, že zákazník má vlastní zařízení, nebo jej přidejte."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:176
+#: src/Service/ContractPrint/ContractPrintValidator.php:222
 msgid ""
 "IP addresses are not assigned, although they usually should be for this type "
 "of service. Please confirm that the customer does not use IP addresses or "
@@ -2215,7 +2235,7 @@ msgstr ""
 "IP adresy nejsou přiřazeny, přestože by pro tento typ služby obvykle měly "
 "být. Potvrďte prosím, že zákazník IP adresy nepoužívá, nebo je doplňte."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:206
+#: src/Service/ContractPrint/ContractPrintValidator.php:252
 msgid ""
 "RADIUS accounts are not assigned, although they usually should be for this "
 "type of service. Please confirm that the customer does not use RADIUS "
@@ -2224,7 +2244,7 @@ msgstr ""
 "RADIUS účty nejsou přiřazeny, přestože by pro tento typ služby obvykle měly "
 "být. Potvrďte prosím, že zákazník RADIUS účty nepoužívá, nebo je doplňte."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:245
+#: src/Service/ContractPrint/ContractPrintValidator.php:297
 msgid ""
 "The contract version to be terminated must differ from the contract version "
 "to be executed."
@@ -2232,28 +2252,28 @@ msgstr ""
 "Verze smlouvy, která má být ukončena, se musí lišit od verze smlouvy, která "
 "má být uzavřena."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:256
-#: src/Service/ContractPrint/ContractPrintValidator.php:321
+#: src/Service/ContractPrint/ContractPrintValidator.php:308
+#: src/Service/ContractPrint/ContractPrintValidator.php:373
 msgid ""
 "Please set the conclusion date of the contract version to be terminated."
 msgstr "Nastavte prosím datum uzavření verze smlouvy, která má být ukončena."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:263
-#: src/Service/ContractPrint/ContractPrintValidator.php:328
-#: src/Service/ContractPrint/ContractPrintValidator.php:367
+#: src/Service/ContractPrint/ContractPrintValidator.php:315
+#: src/Service/ContractPrint/ContractPrintValidator.php:380
+#: src/Service/ContractPrint/ContractPrintValidator.php:419
 msgid "Please enter the contract number to be terminated."
 msgstr "Zadejte prosím číslo smlouvy, kterou chcete ukončit."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:285
+#: src/Service/ContractPrint/ContractPrintValidator.php:337
 msgid "Please enter the effective date of the amendment."
 msgstr "Zadejte prosím datum účinnosti dodatku."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:295
+#: src/Service/ContractPrint/ContractPrintValidator.php:347
 msgid "Please set the conclusion date of the contract version to be executed."
 msgstr "Nastavte prosím datum uzavření verze smlouvy, která má být uzavřena."
 
-#: src/Service/ContractPrint/ContractPrintValidator.php:314
-#: src/Service/ContractPrint/ContractPrintValidator.php:360
+#: src/Service/ContractPrint/ContractPrintValidator.php:366
+#: src/Service/ContractPrint/ContractPrintValidator.php:412
 msgid ""
 "Please set the date until which the contract version to be terminated is "
 "valid."
@@ -3903,23 +3923,27 @@ msgstr "Zákazník nepoužívá IP adresy"
 msgid "The customer does not use RADIUS accounts"
 msgstr "Zákazník nepoužívá účty RADIUS"
 
-#: templates/Contracts/print.php:230
+#: templates/Contracts/print.php:225
+msgid "Allow generating a fixed-term contract"
+msgstr "Povolit vygenerování smlouvy na dobu určitou"
+
+#: templates/Contracts/print.php:235
 msgid "Contract version to be executed"
 msgstr "Verze smlouvy, která má být uzavřena"
 
-#: templates/Contracts/print.php:240
+#: templates/Contracts/print.php:245
 msgid "Contract version to be terminated"
 msgstr "Verze smlouvy, která má být ukončena"
 
-#: templates/Contracts/print.php:250
+#: templates/Contracts/print.php:255
 msgid "Contract number to be terminated"
 msgstr "Číslo smlouvy, která má být ukončena"
 
-#: templates/Contracts/print.php:259
+#: templates/Contracts/print.php:264
 msgid "Effective date of the amendment"
 msgstr "Datum účinnosti dodatku"
 
-#: templates/Contracts/print.php:288 templates/Contracts/view.php:30
+#: templates/Contracts/print.php:293 templates/Contracts/view.php:30
 #: templates/Contracts/view.php:129 templates/Customers/print.php:176
 #: templates/Customers/view.php:50 templates/Customers/view.php:159
 msgid "Print to PDF"

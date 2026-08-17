@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-16 11:01+0200\n"
-"PO-Revision-Date: 2026-08-16 11:03+0200\n"
+"POT-Creation-Date: 2026-08-17 19:48+0200\n"
+"PO-Revision-Date: 2026-08-17 19:56+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -459,34 +459,34 @@ msgstr "Aktualizace blokace routerů"
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:770
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:781
 msgid "RouterOS device {0}: {1}"
 msgstr "RouterOS zařízení {0}: {1}"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:824
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:852
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:835
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:863
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:873
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:884
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:901
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:929
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:912
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:940
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:950
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:961
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:997
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1008
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1007
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1017
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1018
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1028
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
