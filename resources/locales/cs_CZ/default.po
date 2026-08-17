@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-17 15:22+0200\n"
-"PO-Revision-Date: 2026-08-17 15:36+0200\n"
+"POT-Creation-Date: 2026-08-17 16:34+0200\n"
+"PO-Revision-Date: 2026-08-17 16:55+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -84,35 +84,35 @@ msgstr "Rozhraní API adres vrátilo neplatnou odpověď."
 msgid "Addresses API is unreachable: {0}"
 msgstr "Rozhraní API adres není dostupné: {0}"
 
-#: src/Addresses/Check/DuplicateAddressCheck.php:48
+#: src/Addresses/Check/DuplicateAddressCheck.php:49
 msgid "The Same Address More Than Once"
 msgstr "Stejná adresa vícekrát"
 
-#: src/Addresses/Check/DuplicateAddressCheck.php:57
+#: src/Addresses/Check/DuplicateAddressCheck.php:58
 msgid "No customer has the same address on record more than once."
 msgstr "Žádný zákazník nemá stejnou adresu zapsanou vícekrát."
 
-#: src/Addresses/Check/MissingInstallationAddressCheck.php:52
+#: src/Addresses/Check/MissingInstallationAddressCheck.php:53
 msgid "Contract Without an Installation Address"
 msgstr "Smlouva bez instalační adresy"
 
-#: src/Addresses/Check/MissingInstallationAddressCheck.php:61
+#: src/Addresses/Check/MissingInstallationAddressCheck.php:62
 msgid "Every contract that needs an installation address has one."
 msgstr "Každá smlouva, která instalační adresu potřebuje, ji má."
 
-#: src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:52
+#: src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:53
 msgid "Several Contracts at One Address"
 msgstr "Více smluv na jedné adrese"
 
-#: src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:61
+#: src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:62
 msgid "No customer runs more than one contract at the same address."
 msgstr "Žádný zákazník nemá více smluv na téže adrese."
 
-#: src/Addresses/Check/UnclearBillingAddressCheck.php:55
+#: src/Addresses/Check/UnclearBillingAddressCheck.php:56
 msgid "Unclear Billing Address"
 msgstr "Nejednoznačná fakturační adresa"
 
-#: src/Addresses/Check/UnclearBillingAddressCheck.php:64
+#: src/Addresses/Check/UnclearBillingAddressCheck.php:65
 msgid "Every customer has one address an invoice can be sent to."
 msgstr "Každý zákazník má jednu adresu, na kterou lze poslat fakturu."
 
@@ -1510,7 +1510,7 @@ msgstr "Chyby"
 
 #: src/Dashboard/Card/AddressProblemsCard.php:45
 #: templates/Overviews/index.php:39
-#: templates/Overviews/overview_of_address_problems.php:10
+#: templates/Overviews/overview_of_address_problems.php:11
 msgid "Address Problems"
 msgstr "Problémy s adresami"
 
@@ -2027,13 +2027,13 @@ msgstr "Jméno společnosti je povinné, pokud není vyplněno jméno a příjme
 msgid "One of the roles named is not a role."
 msgstr "Některá z uvedených rolí neexistuje."
 
-#: src/Model/Table/ContractsTable.php:324
+#: src/Model/Table/ContractsTable.php:346
 msgid ""
 "The specified service type requires the assignment of an installation "
 "address."
 msgstr "Zadaný typ služby vyžaduje přiřazení instalační adresy."
 
-#: src/Model/Table/ContractsTable.php:347
+#: src/Model/Table/ContractsTable.php:369
 msgid "The specified service type requires the assignment of an access point."
 msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 
@@ -5169,6 +5169,10 @@ msgstr "Celkový součet (nefakturováno)"
 #: templates/Overviews/overview_of_active_services.php:141
 msgid "Total Number of Uses"
 msgstr "Celkový počet použití"
+
+#: templates/Overviews/overview_of_address_problems.php:17
+msgid "Ignore what is no longer running"
+msgstr "Ignorovat, co už neběží"
 
 #: templates/Overviews/overview_of_contracts.php:64
 msgid "Selected Contracts"

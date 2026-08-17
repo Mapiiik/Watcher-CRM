@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-17 15:22+0200\n"
+"POT-Creation-Date: 2026-08-17 16:34+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -77,35 +77,35 @@ msgstr ""
 msgid "Addresses API is unreachable: {0}"
 msgstr ""
 
-#: ./src/Addresses/Check/DuplicateAddressCheck.php:48
+#: ./src/Addresses/Check/DuplicateAddressCheck.php:49
 msgid "The Same Address More Than Once"
 msgstr ""
 
-#: ./src/Addresses/Check/DuplicateAddressCheck.php:57
+#: ./src/Addresses/Check/DuplicateAddressCheck.php:58
 msgid "No customer has the same address on record more than once."
 msgstr ""
 
-#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:52
+#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:53
 msgid "Contract Without an Installation Address"
 msgstr ""
 
-#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:61
+#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:62
 msgid "Every contract that needs an installation address has one."
 msgstr ""
 
-#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:52
+#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:53
 msgid "Several Contracts at One Address"
 msgstr ""
 
-#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:61
+#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:62
 msgid "No customer runs more than one contract at the same address."
 msgstr ""
 
-#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:55
+#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:56
 msgid "Unclear Billing Address"
 msgstr ""
 
-#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:64
+#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:65
 msgid "Every customer has one address an invoice can be sent to."
 msgstr ""
 
@@ -1471,7 +1471,7 @@ msgstr ""
 
 #: ./src/Dashboard/Card/AddressProblemsCard.php:45
 #: ./templates/Overviews/index.php:39
-#: ./templates/Overviews/overview_of_address_problems.php:10
+#: ./templates/Overviews/overview_of_address_problems.php:11
 msgid "Address Problems"
 msgstr ""
 
@@ -2102,11 +2102,11 @@ msgstr ""
 msgid "One of the roles named is not a role."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:324
+#: ./src/Model/Table/ContractsTable.php:346
 msgid "The specified service type requires the assignment of an installation address."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:347
+#: ./src/Model/Table/ContractsTable.php:369
 msgid "The specified service type requires the assignment of an access point."
 msgstr ""
 
@@ -5809,6 +5809,10 @@ msgstr ""
 
 #: ./templates/Overviews/overview_of_active_services.php:141
 msgid "Total Number of Uses"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_address_problems.php:17
+msgid "Ignore what is no longer running"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_contracts.php:64
