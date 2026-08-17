@@ -47,16 +47,27 @@ class ContractPDF extends AppPDF
     /**
      * Getter for contract duration text - long.
      *
-     * An end date makes the contract a fixed-term one; the print validator sees to it
-     * that the obligation reaches the same date, so nothing is left unsaid by naming
-     * only the end.
+     * An end date makes the contract a fixed-term one, and a fixed term is its own minimum
+     * period of performance. The activation fee and its clause are decided by the obligation
+     * alone, so an obligation that does not reach the end would charge the fee as if nothing
+     * had been promised while the document claims otherwise.
      *
      * @param \App\Model\Entity\ContractVersion $contract_version Contract version being executed
      * @return string
+     * @throws \InvalidArgumentException If a fixed term is not matched by the obligation
      */
     private function contractDuration(ContractVersion $contract_version): string
     {
         if ($contract_version->valid_until !== null) {
+            if (
+                $contract_version->obligation_until === null
+                || !$contract_version->obligation_until->equals($contract_version->valid_until)
+            ) {
+                throw new InvalidArgumentException(
+                    'The obligation must last until the end of a fixed-term contract',
+                );
+            }
+
             return strtr(Settings::getString('core.documents.contracts.duration.definite'), [
                 '{valid_until}' => (string)$contract_version->valid_until,
             ]);
