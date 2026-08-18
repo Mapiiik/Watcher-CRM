@@ -842,7 +842,7 @@ $remark = function (string $note, bool $wrong = false): string {
                             <td><?= $task->task_state !== null ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
                             <td style="overflow-wrap: break-word; max-width: 600px;">
-                                <?= nl2br($task->text ?? '') ?>
+                                <?= nl2br(h($task->text ?? '')) ?>
                             </td>
                             <td><?=
                                 $task->contract !== null ? $this->Html->link(

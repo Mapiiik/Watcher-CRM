@@ -132,10 +132,10 @@ $this->Html->script('lazy-load.js', ['block' => true]);
             ) ?>
             <a id="contract"></a>
             <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
-            <h5><?=
-                ($contract->service_type !== null ? $contract->service_type->name : '') .
-                ($contract->installation_address !== null ? ' - ' . $contract->installation_address->address : '')
-            ?></h5>
+            <h5><?= h(
+                ($contract->service_type !== null ? $contract->service_type->name : '')
+                . ($contract->installation_address !== null ? ' - ' . $contract->installation_address->address : ''),
+            ) ?></h5>
             <div class="row">
                 <div class="column">
                     <table style="<?= $contract->style ?>">
@@ -563,7 +563,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                             <td><?= $task->task_state !== null ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
                             <td style="overflow-wrap: break-word; max-width: 600px;">
-                                <?= nl2br($task->text ?? '') ?>
+                                <?= nl2br(h($task->text ?? '')) ?>
                             </td>
                             <td><?= $task->dealer !== null ? h($task->dealer->name) : '' ?></td>
                             <td class="actions">
@@ -610,7 +610,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                             <td><?= $task->task_state !== null ? h($task->task_state->name) : '' ?></td>
                             <td><?= h($task->subject) ?></td>
                             <td style="overflow-wrap: break-word; max-width: 600px;">
-                                <?= nl2br($task->text ?? '') ?>
+                                <?= nl2br(h($task->text ?? '')) ?>
                             </td>
                             <td><?=
                                 $task->contract !== null ? $this->Html->link(
