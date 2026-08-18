@@ -56,6 +56,7 @@
             "App\\": "src/",
             "Bookkeeping\\": "plugins/Bookkeeping/src/",
             "Dashboard\\": "plugins/Dashboard/src/",
+            "Maps\\": "plugins/Maps/src/",
             "Radius\\": "plugins/Radius/src/",
             "Settings\\": "plugins/Settings/src/"
         }
@@ -65,6 +66,7 @@
             "App\\Test\\": "tests/",
             "Bookkeeping\\Test\\": "plugins/Bookkeeping/tests/",
             "Dashboard\\Test\\": "plugins/Dashboard/tests/",
+            "Maps\\Test\\": "plugins/Maps/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "Radius\\Test\\": "plugins/Radius/tests/",
             "Settings\\Test\\": "plugins/Settings/tests/"
@@ -112,6 +114,7 @@
         "translations-update": [
             "bin/cake i18n extract --extract-core no --overwrite -p Bookkeeping --paths plugins/Bookkeeping/src/,plugins/Bookkeeping/templates/,plugins/Bookkeeping/config/",
             "bin/cake i18n extract --extract-core no --overwrite -p Dashboard",
+            "bin/cake i18n extract --extract-core no --overwrite -p Maps",
             "bin/cake i18n extract --extract-core no --overwrite -p Radius",
             "bin/cake i18n extract --extract-core no --overwrite -p Settings",
             "bin/cake i18n extract --extract-core yes --overwrite --paths src/,templates/,config/ --output resources/locales/"

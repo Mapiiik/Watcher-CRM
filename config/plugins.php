@@ -44,6 +44,9 @@ return [
     // Dashboard
     'Dashboard' => [],
 
+    // Maps
+    'Maps' => [],
+
     // RADIUS
     'Radius' => [],
 ];

@@ -207,6 +207,17 @@ return function (RouteBuilder $routes): void {
         ]);
 
         // Bridge controllers for external API integrations
+        $builder->resources('GeocoderBridge', [
+            'only' => [
+                'search',
+            ],
+            'map' => [
+                'search' => [
+                    'action' => 'search',
+                    'method' => 'GET',
+                ],
+            ],
+        ]);
         $builder->resources('AddressesBridge', [
             'only' => [
                 'search',

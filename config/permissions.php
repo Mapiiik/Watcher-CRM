@@ -238,6 +238,7 @@ $permissions = [
             'controller' => [
                 'AddressesBridge',
                 'BusinessRegisterBridge',
+                'GeocoderBridge',
             ],
             'action' => [
                 'search',

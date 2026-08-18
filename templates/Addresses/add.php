@@ -94,6 +94,11 @@ $this->Html->script('addresses.js', ['block' => true]);
                 if ($address->manual_coordinate_setting) {
                     echo $this->Form->control('gps_y');
                     echo $this->Form->control('gps_x');
+                    echo $this->element('Maps.Maps/point-picker', [
+                        'lat' => $address->gps_y,
+                        'lng' => $address->gps_x,
+                        'country' => $searchCountryCode,
+                    ]);
                 }
                 ?>
             </fieldset>

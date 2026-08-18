@@ -1,0 +1,80 @@
+/* Styles for the Leaflet based maps. */
+
+/*
+ * The map fills the width it is given. Without saying so it shrinks beside a floated element,
+ * which is what a page usually puts above it.
+ */
+.maps-map {
+    width: 100%;
+}
+
+/*
+ * Leaflet draws a white box around a divIcon by default, which would frame the
+ * coloured pin SVG.
+ */
+.maps-pin {
+    background: none;
+    border: 0;
+}
+
+/*
+ * Fullscreen control. The map div carries its height as an inline style, which
+ * would otherwise keep it at its usual size once the browser hands it the whole
+ * screen.
+ */
+.leaflet-container:fullscreen,
+.leaflet-container:-webkit-full-screen {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/*
+ * Leaflet's default popup content font size is 1.08333em, which is too small for our
+ * map popups.
+ */
+.leaflet-popup-content {
+	font-size: 13px;
+}
+
+/*
+ * The button keeps Leaflet's own box - block level, fixed size, centred line box
+ * - so it matches the zoom buttons above it, including the larger size Leaflet
+ * switches to on touch devices. Only the inline icon needs aligning.
+ */
+.leaflet-control-fullscreen-button svg {
+    vertical-align: middle;
+}
+
+/* Address search dropdown */
+.maps-search-results {
+    position: absolute;
+    z-index: 1000;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    max-width: 40rem;
+    color: #fff;
+    background: #7f7f7f;
+    border: 1px solid #d1d1d1;
+    border-radius: 0.4rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.maps-search-results li {
+    margin: 0;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1.4;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.maps-search-results li:last-child {
+    border-bottom: 0;
+}
+
+.maps-search-results li:hover {
+    background: #6f6f6f;
+}

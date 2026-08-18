@@ -188,7 +188,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                                     <?php $address = $contract->installation_address ?>
                                     <?= $address->gps_x !== null && $address->gps_y !== null ?
                                         '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
-                                    <?= $this->element('Maps/links', [
+                                    <?= $this->element('Maps.Maps/links', [
                                         'lat' => $address->gps_y,
                                         'lng' => $address->gps_x,
                                     ]) ?>

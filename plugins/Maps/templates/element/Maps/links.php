@@ -19,17 +19,17 @@ $separator = $separator ?? ' ';
 
 echo implode($separator, [
     $this->Html->link(
-        __('Google Maps'),
+        __d('maps', 'Google Maps'),
         'https://maps.google.com/maps?q=' . h("{$lat},{$lng}"),
         ['target' => '_blank'],
     ),
     $this->Html->link(
-        __('Mapy.cz'),
+        __d('maps', 'Mapy.cz'),
         'https://mapy.cz/zakladni?source=coor&id=' . h("{$lng},{$lat}"),
         ['target' => '_blank'],
     ),
     $this->Html->link(
-        __('OpenStreetMap'),
+        __d('maps', 'OpenStreetMap'),
         'https://www.openstreetmap.org/?zoom=17&mlat=' . h("{$lat}") . '&mlon=' . h("{$lng}"),
         ['target' => '_blank'],
     ),

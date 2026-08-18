@@ -8,6 +8,7 @@ use Cake\Database\Connection;
 use Cake\Database\Driver\Postgres;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
+use Maps\Geocoder\AddressRegistryGeocoder;
 use Radius\HistoricalConnections\RadiusSource;
 use function Cake\Core\env;
 
@@ -345,6 +346,27 @@ return [
     'Addresses' => [
         'url' => rtrim((string)env('ADDRESSES_API_URL', ''), '/'),
         'key' => (string)env('ADDRESSES_API_KEY', ''),
+    ],
+
+    /*
+     * Maps
+     *
+     * `provider` selects the mapping stack, `geocoder` the class the address search asks - here the
+     * national address registry this application already matches its addresses against.
+     *
+     * Everything the plugin can decide for itself - the base layers, the default view, what the map
+     * lets the user do - lives in plugins/Maps/config/maps.php. Name a key here to override it.
+     */
+    'Maps' => [
+        'provider' => env('MAP_PROVIDER', 'osm'),
+        'geocoder' => AddressRegistryGeocoder::class,
+        'addressRegistry' => [
+            'url' => rtrim((string)env('ADDRESSES_API_URL', ''), '/'),
+            'key' => (string)env('ADDRESSES_API_KEY', ''),
+        ],
+        'nominatim' => [
+            'userAgent' => env('NOMINATIM_USER_AGENT', 'Watcher CRM'),
+        ],
     ],
 
     'Sms' => [
