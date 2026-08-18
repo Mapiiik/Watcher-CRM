@@ -49,7 +49,22 @@ Two come with the plugin, and an application may bring its own:
   Needs nothing but a way out to the internet. Configured under `Maps.photon` and `Maps.nominatim`.
 - `\Maps\Geocoder\AddressRegistryGeocoder` - a national address registry, which is official data
   rather than a crowd sourced map, and knows one country at a time. Configured under
-  `Maps.addressRegistry`; the picker must be told which `country` to search.
+  `Maps.addressRegistry`; the caller says which `country` to search, or
+  `Maps.addressRegistry.defaultCountries` names the ones to ask for an application whose points
+  carry no country of their own. Asked without a country it searches every one of them and puts
+  the answers back in one order, by the score each registry gave them.
+
+Naming several asks each in turn and takes the first answer:
+
+```php
+'geocoder' => [
+    \Maps\Geocoder\AddressRegistryGeocoder::class,
+    \Maps\Geocoder\OpenStreetMapGeocoder::class,
+],
+```
+
+which is how a registry that knows one country exactly is put in front of a map that knows the
+world roughly. One that fails is passed over rather than ending the search.
 
 The browser never asks the geocoder itself - it asks the application, so that a geocoder reached
 with a key can be used without the key leaving the server. The application answers with a controller

@@ -386,6 +386,7 @@ class ContractsControllerTest extends TestCase
         $this->assertResponseContains('<option value="' . h($contract->number) . '">');
         $this->assertResponseContains('<option value="' . h($contract->customer->number) . '">');
     }
+
     /**
      * The map draws both ends of the service, the line between them, and how far that is.
      *

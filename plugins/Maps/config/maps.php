@@ -41,11 +41,14 @@ return [
         ],
 
         /*
-         * The national address registry, which AddressRegistryGeocoder asks.
+         * The national address registry, which AddressRegistryGeocoder asks. Each registry knows
+         * one country, so `defaultCountries` names the ones to ask when the caller does not know
+         * which - every country the installation works in.
          */
         'addressRegistry' => [
             'url' => null,
             'key' => null,
+            'defaultCountries' => [],
         ],
 
         /*

@@ -9,6 +9,7 @@ use Cake\Database\Driver\Postgres;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 use Maps\Geocoder\AddressRegistryGeocoder;
+use Maps\Geocoder\OpenStreetMapGeocoder;
 use Radius\HistoricalConnections\RadiusSource;
 use function Cake\Core\env;
 
@@ -359,10 +360,18 @@ return [
      */
     'Maps' => [
         'provider' => env('MAP_PROVIDER', 'osm'),
-        'geocoder' => AddressRegistryGeocoder::class,
+        // The registry knows this country's addresses exactly; OpenStreetMap answers for the
+        // addresses it does not carry at all.
+        'geocoder' => [
+            AddressRegistryGeocoder::class,
+            OpenStreetMapGeocoder::class,
+        ],
         'addressRegistry' => [
             'url' => rtrim((string)env('ADDRESSES_API_URL', ''), '/'),
             'key' => (string)env('ADDRESSES_API_KEY', ''),
+            // An address says which country it is in and that is the one asked. This is for
+            // whoever asks about no address in particular.
+            'defaultCountries' => env('ADDRESSES_API_COUNTRIES', 'cz,hr'),
         ],
         'nominatim' => [
             'userAgent' => env('NOMINATIM_USER_AGENT', 'Watcher CRM'),

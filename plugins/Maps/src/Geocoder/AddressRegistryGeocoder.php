@@ -27,27 +27,30 @@ class AddressRegistryGeocoder implements GeocoderInterface
     #[Override]
     public function search(string $query, ?string $country = null, int $limit = 5): array
     {
-        if ($country === null || $country === '') {
-            return [];
-        }
+        $scored = [];
 
-        $matches = $this->ask('v1/search', [
-            'country' => strtolower($country),
-            'q' => $query,
-            'limit' => $limit,
-        ]);
+        foreach ($this->countries($country) as $inCountry) {
+            $matches = $this->ask('v1/search', [
+                'country' => $inCountry,
+                'q' => $query,
+                'limit' => $limit,
+            ]);
 
-        $suggestions = [];
+            foreach ($matches as $match) {
+                $match = is_array($match) ? $match : [];
+                $suggestion = $this->suggestionFrom($match);
 
-        foreach ($matches as $match) {
-            $suggestion = $this->suggestionFrom(is_array($match) ? $match : []);
-
-            if ($suggestion !== null) {
-                $suggestions[] = $suggestion;
+                if ($suggestion !== null) {
+                    $scored[] = [is_numeric($match['score'] ?? null) ? (float)$match['score'] : 0.0, $suggestion];
+                }
             }
         }
 
-        return $suggestions;
+        // Each registry scores its own matches, so what came from two of them is put back in one
+        // order rather than one country's worth after the other's.
+        usort($scored, fn(array $a, array $b): int => $b[0] <=> $a[0]);
+
+        return array_slice(array_column($scored, 1), 0, $limit);
     }
 
     /**
@@ -56,20 +59,59 @@ class AddressRegistryGeocoder implements GeocoderInterface
     #[Override]
     public function reverse(Position $position, ?string $country = null): ?Suggestion
     {
-        if ($country === null || $country === '') {
-            return null;
+        // A point lies in one country, so the registries are asked in turn until one places it.
+        foreach ($this->countries($country) as $inCountry) {
+            $matches = $this->ask('v1/reverse', [
+                'country' => $inCountry,
+                'lat' => $position->lat,
+                'lon' => $position->lng,
+                'limit' => 1,
+            ]);
+
+            $match = $matches[0] ?? null;
+            $suggestion = is_array($match) ? $this->suggestionFrom($match) : null;
+
+            if ($suggestion !== null) {
+                return $suggestion;
+            }
         }
 
-        $matches = $this->ask('v1/reverse', [
-            'country' => strtolower($country),
-            'lat' => $position->lat,
-            'lon' => $position->lng,
-            'limit' => 1,
-        ]);
+        return null;
+    }
 
-        $match = $matches[0] ?? null;
+    /**
+     * Which registries to ask.
+     *
+     * A caller that knows the country says which, and then that is the only one asked. One that
+     * does not - a map of our own masts, say - has every country the installation works in asked,
+     * because a registry knows one country and an operator may work in several.
+     *
+     * @return list<string>
+     */
+    protected function countries(?string $country): array
+    {
+        if ($country !== null && $country !== '') {
+            return [strtolower($country)];
+        }
 
-        return is_array($match) ? $this->suggestionFrom($match) : null;
+        $configured = Configure::read('Maps.addressRegistry.defaultCountries');
+        $configured = is_string($configured) ? explode(',', $configured) : $configured;
+
+        if (!is_array($configured)) {
+            return [];
+        }
+
+        $countries = [];
+
+        foreach ($configured as $one) {
+            $one = is_string($one) ? strtolower(trim($one)) : '';
+
+            if ($one !== '') {
+                $countries[] = $one;
+            }
+        }
+
+        return array_values(array_unique($countries));
     }
 
     /**
@@ -83,6 +125,10 @@ class AddressRegistryGeocoder implements GeocoderInterface
         $url = Configure::read('Maps.addressRegistry.url');
 
         if (!is_string($url) || $url === '') {
+            // Named as the geocoder but never given a registry, which is worth saying out loud -
+            // the search would otherwise just answer nothing, over and over.
+            Log::warning('`Maps.geocoder` names the address registry, but `Maps.addressRegistry.url` is empty.');
+
             return [];
         }
 
