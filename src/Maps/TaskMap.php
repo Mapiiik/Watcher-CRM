@@ -7,6 +7,7 @@ use App\Model\Entity\Task;
 use ArrayObject;
 use Cake\ORM\Association;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\Utility\Text;
 use Cake\View\Helper\HtmlHelper;
 use Maps\DrawnMap;
 use Maps\Marker;
@@ -37,6 +38,12 @@ final class TaskMap
      * @var array<string, string>
      */
     private const LINK_OPTIONS = ['target' => '_blank'];
+
+    /**
+     * How much of a task's text a bubble shows.
+     */
+    private const TEXT_LINES = 10;
+    private const TEXT_LENGTH = 1000;
 
     /**
      * @param \Cake\View\Helper\HtmlHelper $html What the bubbles are written with.
@@ -89,7 +96,12 @@ final class TaskMap
                 // A customer is read per task while the tasks are ordered by columns of their
                 // own, which the subquery strategy turns into a grouping PostgreSQL will not
                 // accept - the task listing spells this out for the same reason.
-                'Customers' => ['strategy' => Association::STRATEGY_SELECT],
+                // The summary line falls back to the customer's own address when the contract
+                // has none.
+                'Customers' => [
+                    'Addresses' => ['strategy' => Association::STRATEGY_SELECT],
+                    'strategy' => Association::STRATEGY_SELECT,
+                ],
             ]);
 
         return $query
@@ -142,21 +154,84 @@ final class TaskMap
 
     /**
      * What the marker's bubble says.
+     *
+     * The number heads it, the state stands beside it, and the summary says who the task is for
+     * and where - the same line the listing carries. The beginning of the text follows, for the
+     * ones that carry one.
      */
     private function bubble(Task $task): string
     {
-        $lines = [
-            '<strong>' . $this->html->link(
+        $heading = '<div class="maps-bubble-heading">'
+            . $this->html->link(
                 $task->number,
                 ['controller' => 'Tasks', 'action' => 'view', $task->id],
                 self::LINK_OPTIONS,
-            ) . '</strong>',
-            h($task->subject),
-            h($task->task_type->name ?? null),
-            h($task->customer?->name),
-            h($task->task_state->name ?? null),
+            )
+            . '<span class="maps-bubble-state">' . h($task->task_state->name ?? null) . '</span>'
+            . '</div>';
+
+        $lines = [
+            $heading,
+            $this->paragraph('maps-bubble-lead', $task->subject ?? $task->task_type->name ?? null),
+            $this->paragraph('maps-bubble-meta', $task->getSummaryText(with_subject: false)),
+            $this->paragraph('maps-bubble-text', $this->opening($task->text), keepLineBreaks: true),
         ];
 
-        return implode('<br>', array_filter($lines));
+        return '<div class="maps-bubble" style="border-left-color: ' . h($this->colorOf($task)) . '">'
+            . implode('', array_filter($lines))
+            . '</div>';
+    }
+
+    /**
+     * One part of a bubble, or nothing at all when there is nothing to say.
+     *
+     * Line breaks are written out as markup rather than left to a white-space rule, so that the
+     * map can measure the text on one line and give the bubble the width its longest line asks
+     * for - a row of dashes written as a separator, most of all.
+     */
+    private function paragraph(string $class, ?string $text, bool $keepLineBreaks = false): string
+    {
+        $text = trim((string)$text);
+
+        if ($text === '') {
+            return '';
+        }
+
+        $written = h($text);
+
+        return '<p class="' . $class . '">'
+            . ($keepLineBreaks ? nl2br($written, false) : $written)
+            . '</p>';
+    }
+
+    /**
+     * As much of a task's text as a bubble can carry.
+     *
+     * Counted in lines rather than in characters, because these texts are written in lines - a
+     * separator, a name, a date - and cutting one in half reads worse than stopping at its end.
+     * The length is a backstop for a text written as one very long line.
+     */
+    private function opening(?string $text): ?string
+    {
+        $text = trim((string)$text);
+
+        if ($text === '') {
+            return null;
+        }
+
+        $lines = preg_split('/\R/', $text) ?: [];
+        $opening = implode("\n", array_slice($lines, 0, self::TEXT_LINES));
+        $shortened = count($lines) > self::TEXT_LINES;
+
+        if (mb_strlen($opening) > self::TEXT_LENGTH) {
+            $opening = Text::truncate($opening, self::TEXT_LENGTH, ['ellipsis' => '', 'exact' => false]);
+            $shortened = true;
+        }
+
+        // Whatever the cut landed on - a blank line, a space between words - the mark that there
+        // is more belongs against the text rather than adrift after it.
+        $opening = rtrim($opening);
+
+        return $shortened ? $opening . '…' : $opening;
     }
 }

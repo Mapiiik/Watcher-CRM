@@ -33,7 +33,60 @@
  * map popups.
  */
 .leaflet-popup-content {
-	font-size: 13px;
+    font-size: 13px;
+}
+
+/*
+ * A bubble. What is in one is the application's to decide; this only says how the parts sit -
+ * a heading that names the thing, a line or two about it, and the beginning of whatever text it
+ * carries. The coloured edge is set by whoever writes the bubble, so it can match the marker.
+ */
+.maps-bubble {
+    border-left: 4px solid transparent;
+    padding-left: 8px;
+}
+
+.maps-bubble-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+/* Leaflet gives everything in a popup a wide margin, which a stack of short lines cannot afford. */
+.maps-bubble p {
+    margin: 0 0 4px;
+}
+
+.maps-bubble-state {
+    font-weight: 400;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0.75;
+}
+
+.maps-bubble-lead {
+    font-weight: 700;
+}
+
+.maps-bubble-meta {
+    opacity: 0.8;
+}
+
+/*
+ * The beginning of a longer text, set apart from the lines above it so the eye can skip it.
+ *
+ * Its line breaks arrive as markup rather than as a white-space rule on purpose: Leaflet sizes a
+ * popup by holding its content on one line and measuring it, and anything here that wraps during
+ * that measurement is measured as narrow.
+ */
+.maps-bubble-text {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(127, 127, 127, 0.3);
 }
 
 /*

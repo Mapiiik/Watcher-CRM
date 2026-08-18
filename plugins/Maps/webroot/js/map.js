@@ -69,7 +69,12 @@
             }).addTo(map);
 
             if (one.content) {
-                marker.bindPopup(one.content);
+                // Leaflet sizes a popup to its content, which turns a short bubble into a tall
+                // sliver and gives a long one only 300px. Both ends are held instead, the upper
+                // one wide enough that a row of dashes written as a separator stays one row -
+                // a browser may break a line after any of them. A tall bubble is given a scroll
+                // bar rather than being allowed to run off the map.
+                marker.bindPopup(one.content, { minWidth: 240, maxWidth: 480, maxHeight: 360 });
             }
 
             return marker;
