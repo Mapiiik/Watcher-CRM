@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Maps\TaskMap;
 use App\Model\Enum\AddressType;
 use App\Model\Enum\CustomerDealer;
 use Cake\Form\Form;
@@ -27,6 +28,21 @@ use Settings\Utility\Settings;
 class TasksController extends AppController
 {
     use CommonViewVarListsTrait;
+
+    /**
+     * Map method
+     *
+     * The open tasks drawn where they are to be done, which is what planning a round asks for.
+     *
+     * @return void Renders view
+     */
+    public function map(): void
+    {
+        $map = (new TaskMap(new HtmlHelper(new View())))->draw();
+
+        $this->set('mapMarkers', $map->markers);
+        $this->set('mapPolylines', $map->polylines);
+    }
 
     /**
      * Index method

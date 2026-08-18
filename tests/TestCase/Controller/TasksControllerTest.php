@@ -11,6 +11,7 @@ use Cake\I18n\DateTime;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Maps\Marker;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -483,5 +484,73 @@ class TasksControllerTest extends TestCase
         }
 
         return $ids;
+    }
+
+    /**
+     * A task hangs on the map where its contract is installed, in its state's colour.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::map()
+     */
+    public function testMapDrawsAnOpenTaskWhereItsContractIs(): void
+    {
+        // The helper makes the open state, and gives it this colour, because the fixtures carry
+        // only a finished one.
+        $this->openTask([]);
+
+        $this->login();
+        $this->get('/tasks/map');
+
+        $this->assertResponseOk();
+
+        /** @var array<string, \Maps\Marker> $markers */
+        $markers = $this->viewVariable('mapMarkers');
+        $this->assertCount(1, $markers);
+
+        $marker = reset($markers);
+        $this->assertInstanceOf(Marker::class, $marker);
+        // The installation address the fixtures place at 1, 1.
+        $this->assertSame(1.0, $marker->position->lat);
+        $this->assertSame(1.0, $marker->position->lng);
+        $this->assertSame('#ffffff', $marker->color);
+        $this->assertStringContainsString('Written by the test', $marker->content);
+    }
+
+    /**
+     * A task whose address was never located is left off rather than drawn at nought.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::map()
+     */
+    public function testMapLeavesOffATaskWithNoPlace(): void
+    {
+        $addresses = $this->getTableLocator()->get('Addresses');
+        $address = $addresses->get('ab4bab00-9fe8-48b1-beef-3832a4f933a8');
+        $address->set('gps_y', null);
+        $address->set('gps_x', null);
+        $addresses->saveOrFail($address);
+
+        $this->openTask([]);
+
+        $this->login();
+        $this->get('/tasks/map');
+
+        $this->assertResponseOk();
+        $this->assertSame([], $this->viewVariable('mapMarkers'));
+    }
+
+    /**
+     * The finished ones are not what a round is planned around.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::map()
+     */
+    public function testMapLeavesOffACompletedTask(): void
+    {
+        $this->login();
+        $this->get('/tasks/map');
+
+        $this->assertResponseOk();
+        $this->assertSame([], $this->viewVariable('mapMarkers'));
     }
 }

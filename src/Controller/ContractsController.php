@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Maps\ContractMap;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\CustomerDealer;
 use App\Service\ContractPrint\ContractPrintData;
@@ -212,6 +213,30 @@ class ContractsController extends AppController
 
         $contract = $this->Contracts->get($id, contain: $contain);
 
+        $this->set(compact('contract'));
+    }
+
+    /**
+     * Map method
+     *
+     * Where the customer is and where the access point serving them stands, and how far that is.
+     *
+     * @param string|null $id Contract id.
+     * @return void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function map(?string $id = null): void
+    {
+        $contract = $this->Contracts->get($id, contain: [
+            'Customers',
+            'InstallationAddresses',
+        ]);
+
+        $connection = (new ContractMap())->draw($contract);
+
+        $this->set('mapMarkers', $connection->map->markers);
+        $this->set('mapPolylines', $connection->map->polylines);
+        $this->set('mapDistance', $connection->distance);
         $this->set(compact('contract'));
     }
 

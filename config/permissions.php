@@ -320,6 +320,23 @@ $permissions = [
                 return !empty($request->getParam('customer_id'));
             },
         ],
+        //the maps are another way of looking, so whoever may look at a contract or a task may map it
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Contracts',
+                'Tasks',
+            ],
+            'action' => [
+                'map',
+            ],
+        ],
         //allow all indexes and views for sales-managers and network-managers
         [
             'role' => [

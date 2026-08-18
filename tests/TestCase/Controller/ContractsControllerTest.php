@@ -5,6 +5,8 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractsController;
 use App\Test\Traits\ControllerTestTrait;
+use ArrayObject;
+use Cake\Cache\Cache;
 use Cake\Database\Connection;
 use Cake\Database\Log\LoggedQuery;
 use Cake\Datasource\ConnectionManager;
@@ -27,6 +29,20 @@ class ContractsControllerTest extends TestCase
 {
     use ControllerTestTrait;
     use IntegrationTestTrait;
+
+    /**
+     * The contract the fixtures carry, whose installation address has coordinates.
+     *
+     * @var string
+     */
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
+     * The access point that contract names, which lives in the other application.
+     *
+     * @var string
+     */
+    private const ACCESS_POINT_ID = 'feedb343-cea8-423f-a409-de4331354217';
 
     /**
      * Fixtures
@@ -369,5 +385,64 @@ class ContractsControllerTest extends TestCase
         $this->assertResponseContains('<datalist id="contract-numbers-to-be-terminated">');
         $this->assertResponseContains('<option value="' . h($contract->number) . '">');
         $this->assertResponseContains('<option value="' . h($contract->customer->number) . '">');
+    }
+    /**
+     * The map draws both ends of the service, the line between them, and how far that is.
+     *
+     * The access point lives in the other application and is read through a cache, so the test
+     * says what it would have answered rather than reaching for it.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::map()
+     */
+    public function testMapDrawsBothEndsAndMeasuresThem(): void
+    {
+        // A degree of latitude north of the installation address the fixtures place at 1, 1.
+        Cache::write(
+            'access_point_' . self::ACCESS_POINT_ID,
+            new ArrayObject(['name' => 'Mast', 'gps_y' => 2.0, 'gps_x' => 1.0]),
+            'api_client',
+        );
+
+        try {
+            $this->login();
+            $this->get('/contracts/map/' . self::CONTRACT_ID);
+
+            $this->assertResponseOk();
+
+            /** @var array<string, \Maps\Marker> $markers */
+            $markers = $this->viewVariable('mapMarkers');
+            $this->assertArrayHasKey('customer', $markers);
+            $this->assertArrayHasKey('access_point', $markers);
+
+            $this->assertCount(1, (array)$this->viewVariable('mapPolylines'));
+            $this->assertEqualsWithDelta(111194.93, $this->viewVariable('mapDistance'), 0.01);
+        } finally {
+            Cache::delete('access_point_' . self::ACCESS_POINT_ID, 'api_client');
+        }
+    }
+
+    /**
+     * An access point the other application does not know about leaves the customer on the map
+     * alone, and nothing to measure against.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::map()
+     */
+    public function testMapDrawsTheCustomerWithoutTheAccessPoint(): void
+    {
+        Cache::write('access_point_' . self::ACCESS_POINT_ID, null, 'api_client');
+
+        try {
+            $this->login();
+            $this->get('/contracts/map/' . self::CONTRACT_ID);
+
+            $this->assertResponseOk();
+            $this->assertSame(['customer'], array_keys((array)$this->viewVariable('mapMarkers')));
+            $this->assertSame([], $this->viewVariable('mapPolylines'));
+            $this->assertNull($this->viewVariable('mapDistance'));
+        } finally {
+            Cache::delete('access_point_' . self::ACCESS_POINT_ID, 'api_client');
+        }
     }
 }
