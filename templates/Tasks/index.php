@@ -79,7 +79,7 @@ $this->Html->script('expandable-text.js', ['block' => true]);
 
 <div class="tasks index content">
     <?= $this->AuthLink->link(__('New Task'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <?= $this->AuthLink->link(__('Map'), ['action' => 'map'], ['class' => 'button float-right win-link']) ?>
+    <?= $this->AuthLink->link(__('Map'), ['action' => 'map'], ['class' => 'button float-right']) ?>
     <h3><?= __('Tasks') ?></h3>
     <div class="table-responsive">
         <table>
