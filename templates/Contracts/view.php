@@ -193,7 +193,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                                         'lng' => $address->gps_x,
                                     ]) ?>
                                     <?= $this->AuthLink->link(
-                                        __('Map'),
+                                        __('Network Map'),
                                         ['action' => 'map', $contract->id],
                                         ['class' => 'win-link'],
                                     ) ?>

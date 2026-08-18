@@ -20,6 +20,8 @@ use Cake\I18n\Number;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
+use Cake\View\Helper\HtmlHelper;
+use Cake\View\View;
 use Override;
 use ValueError;
 
@@ -232,7 +234,7 @@ class ContractsController extends AppController
             'InstallationAddresses',
         ]);
 
-        $connection = (new ContractMap())->draw($contract);
+        $connection = (new ContractMap(new HtmlHelper(new View())))->draw($contract);
 
         $this->set('mapMarkers', $connection->map->markers);
         $this->set('mapPolylines', $connection->map->polylines);

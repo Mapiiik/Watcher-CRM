@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Maps;
 
 use App\Model\Entity\Contract;
+use App\NMS\Links;
 use ArrayObject;
+use Cake\View\Helper\HtmlHelper;
 use Maps\DrawnMap;
 use Maps\Marker;
 use Maps\Polyline;
@@ -21,6 +23,13 @@ use Maps\Position;
 final class ContractMap
 {
     /**
+     * A bubble is read while the map is still wanted, so what it points at opens beside it.
+     *
+     * @var array<string, string>
+     */
+    private const LINK_OPTIONS = ['target' => '_blank'];
+
+    /**
      * What marks each end. The same colours the network map uses, so that a place looks the same
      * in both applications.
      */
@@ -33,6 +42,13 @@ final class ContractMap
     private const LINE_COLOR = '#0066ff';
     private const LINE_WEIGHT = 2;
     private const LINE_OPACITY = 0.7;
+
+    /**
+     * @param \Cake\View\Helper\HtmlHelper $html What the bubbles are written with.
+     */
+    public function __construct(private readonly HtmlHelper $html)
+    {
+    }
 
     /**
      * Draws the contract.
@@ -134,9 +150,20 @@ final class ContractMap
 
     /**
      * What the access point's marker says.
+     *
+     * The point itself is the other application's, so the name leads there rather than anywhere
+     * here. Without an address for that application there is nothing to lead to, and the name is
+     * written plainly.
      */
     private function accessPointBubble(Contract $contract): string
     {
-        return '<strong>' . h($contract->access_point_name) . '</strong>';
+        $name = (string)$contract->access_point_name;
+        $url = $contract->access_point_id === null ? null : Links::accessPoint($contract->access_point_id);
+
+        if ($url === null) {
+            return '<strong>' . h($name) . '</strong>';
+        }
+
+        return '<strong>' . $this->html->link($name, $url, self::LINK_OPTIONS) . '</strong>';
     }
 }

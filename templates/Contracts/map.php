@@ -8,7 +8,7 @@
  */
 ?>
 <div class="contracts map content">
-    <h3><?= h($contract->number) ?></h3>
+    <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
     <?php if ($mapDistance !== null) : ?>
         <p>
             <?= __('Distance') ?>:

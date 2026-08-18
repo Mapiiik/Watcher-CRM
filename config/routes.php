@@ -93,7 +93,8 @@ return function (RouteBuilder $routes): void {
                 'controller' => 'Contracts',
             ])
             ->setPatterns([
-                'action' => 'edit|delete|print|set-dates-for-related-borrowed-equipments|terminate-related-billings',
+                'action' => 'edit|delete|print|map'
+                    . '|set-dates-for-related-borrowed-equipments|terminate-related-billings',
                 'customer_id' => RouteBuilder::UUID,
                 'contract_id' => RouteBuilder::UUID,
             ])

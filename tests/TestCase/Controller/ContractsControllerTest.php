@@ -7,6 +7,7 @@ use App\Controller\ContractsController;
 use App\Test\Traits\ControllerTestTrait;
 use ArrayObject;
 use Cake\Cache\Cache;
+use Cake\Core\Configure;
 use Cake\Database\Connection;
 use Cake\Database\Log\LoggedQuery;
 use Cake\Datasource\ConnectionManager;
@@ -405,6 +406,9 @@ class ContractsControllerTest extends TestCase
             'api_client',
         );
 
+        // Said here rather than read from the environment, which the CI has none of.
+        Configure::write('Nms.url', 'https://nms.example.com');
+
         try {
             $this->login();
             $this->get('/contracts/map/' . self::CONTRACT_ID);
@@ -418,6 +422,12 @@ class ContractsControllerTest extends TestCase
 
             $this->assertCount(1, (array)$this->viewVariable('mapPolylines'));
             $this->assertEqualsWithDelta(111194.93, $this->viewVariable('mapDistance'), 0.01);
+
+            // The access point is the other application's, so its bubble leads there.
+            $this->assertStringContainsString(
+                'https://nms.example.com/access-points/view/' . self::ACCESS_POINT_ID,
+                $markers['access_point']->content,
+            );
         } finally {
             Cache::delete('access_point_' . self::ACCESS_POINT_ID, 'api_client');
         }
