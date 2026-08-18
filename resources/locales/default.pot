@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-17 19:48+0200\n"
+"POT-Creation-Date: 2026-08-18 15:03+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -577,14 +577,14 @@ msgstr ""
 #: ./src/Controller/BillingsController.php:219
 #: ./src/Controller/BillingsController.php:318
 #: ./src/Controller/BillingsController.php:449
-#: ./src/Controller/ContractsController.php:773
+#: ./src/Controller/ContractsController.php:798
 msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:141
 #: ./src/Controller/BillingsController.php:223
 #: ./src/Controller/BillingsController.php:518
-#: ./src/Controller/ContractsController.php:777
+#: ./src/Controller/ContractsController.php:802
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
@@ -604,15 +604,15 @@ msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:104
 #: ./src/Controller/BorrowedEquipmentsController.php:161
-#: ./src/Controller/ContractsController.php:699
-#: ./src/Controller/ContractsController.php:725
+#: ./src/Controller/ContractsController.php:724
+#: ./src/Controller/ContractsController.php:750
 msgid "The borrowed equipment has been saved."
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:108
 #: ./src/Controller/BorrowedEquipmentsController.php:165
-#: ./src/Controller/ContractsController.php:705
-#: ./src/Controller/ContractsController.php:731
+#: ./src/Controller/ContractsController.php:730
+#: ./src/Controller/ContractsController.php:756
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr ""
 
@@ -678,91 +678,91 @@ msgstr ""
 msgid "The contract version could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:237
-#: ./src/Controller/ContractsController.php:350
+#: ./src/Controller/ContractsController.php:262
+#: ./src/Controller/ContractsController.php:375
 msgid "The contract has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:248
-#: ./src/Controller/ContractsController.php:361
+#: ./src/Controller/ContractsController.php:273
+#: ./src/Controller/ContractsController.php:386
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:454
+#: ./src/Controller/ContractsController.php:479
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:457
+#: ./src/Controller/ContractsController.php:482
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:498
+#: ./src/Controller/ContractsController.php:523
 msgid "The contract number could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:516
+#: ./src/Controller/ContractsController.php:541
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:524
+#: ./src/Controller/ContractsController.php:549
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:552
+#: ./src/Controller/ContractsController.php:577
 msgid "The contract numbers could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:560
+#: ./src/Controller/ContractsController.php:585
 msgid "The contract numbers have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:597
+#: ./src/Controller/ContractsController.php:622
 msgid "The subscriber verification code could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:614
+#: ./src/Controller/ContractsController.php:639
 msgid "The subscriber verification code has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:622
+#: ./src/Controller/ContractsController.php:647
 msgid "The subscriber verification code could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:650
+#: ./src/Controller/ContractsController.php:675
 msgid "The subscriber verification codes could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:658
+#: ./src/Controller/ContractsController.php:683
 msgid "The subscriber verification codes have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:688
+#: ./src/Controller/ContractsController.php:713
 msgid "No related borrowed equipments to install."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:697
-#: ./src/Controller/ContractsController.php:703
+#: ./src/Controller/ContractsController.php:722
+#: ./src/Controller/ContractsController.php:728
 msgid "Installation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:714
+#: ./src/Controller/ContractsController.php:739
 msgid "No related borrowed equipments to uninstall."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:723
-#: ./src/Controller/ContractsController.php:729
+#: ./src/Controller/ContractsController.php:748
+#: ./src/Controller/ContractsController.php:754
 msgid "Uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:764
+#: ./src/Controller/ContractsController.php:789
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:783
+#: ./src/Controller/ContractsController.php:808
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:801
+#: ./src/Controller/ContractsController.php:826
 #: ./templates/AccountingProfiles/view.php:88
 #: ./templates/Contracts/index.php:33
 #: ./templates/Customers/index.php:74
@@ -772,25 +772,25 @@ msgstr ""
 msgid "Contracts"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:807
+#: ./src/Controller/ContractsController.php:832
 msgid "Handover Protocols"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:855
+#: ./src/Controller/ContractsController.php:880
 #: ./templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:880
+#: ./src/Controller/ContractsController.php:912
 #: ./src/Controller/CustomersController.php:728
 msgid "Invalid type of document."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:893
+#: ./src/Controller/ContractsController.php:925
 msgid "Invalid contract version to be executed."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:907
+#: ./src/Controller/ContractsController.php:939
 msgid "Invalid contract version to be terminated."
 msgstr ""
 
@@ -1377,25 +1377,25 @@ msgstr ""
 msgid "The task type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:289
+#: ./src/Controller/TasksController.php:305
 msgid "none"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:403
-#: ./src/Controller/TasksController.php:559
+#: ./src/Controller/TasksController.php:419
+#: ./src/Controller/TasksController.php:575
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:407
-#: ./src/Controller/TasksController.php:563
+#: ./src/Controller/TasksController.php:423
+#: ./src/Controller/TasksController.php:579
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:488
+#: ./src/Controller/TasksController.php:504
 #: ./src/Model/Enum/AddressType.php:41
 #: ./templates/Commissions/view.php:100
 #: ./templates/ContractStates/view.php:193
-#: ./templates/Contracts/print.php:76
+#: ./templates/Contracts/print.php:77
 #: ./templates/Contracts/view.php:176
 #: ./templates/Customers/view.php:572
 #: ./templates/ServiceTypes/view.php:165
@@ -1403,7 +1403,7 @@ msgstr ""
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:501
+#: ./src/Controller/TasksController.php:517
 #: ./src/Model/Enum/CustomerMessageType.php:27
 #: ./src/Utility/ServiceChangeMessageBuilder.php:163
 #: ./templates/Customers/view.php:337
@@ -1415,7 +1415,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:502
+#: ./src/Controller/TasksController.php:518
 #: ./src/Utility/ServiceChangeMessageBuilder.php:164
 #: ./templates/Customers/view.php:386
 #: ./templates/Phones/view.php:43
@@ -1426,31 +1426,31 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:641
+#: ./src/Controller/TasksController.php:657
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:644
+#: ./src/Controller/TasksController.php:660
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:701
+#: ./src/Controller/TasksController.php:717
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:702
+#: ./src/Controller/TasksController.php:718
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:714
+#: ./src/Controller/TasksController.php:730
 msgid "Notification email sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:718
+#: ./src/Controller/TasksController.php:734
 msgid "The notification email could not be sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:309
+#: ./src/Controller/TasksController.php:325
 msgid "There was {0} unfinished task found that does not have a dealer assigned."
 msgid_plural "There were {0} unfinished tasks found that do not have a dealer assigned."
 msgstr[0] ""
@@ -1720,8 +1720,8 @@ msgstr ""
 #: ./templates/ContractVersions/index.php:64
 #: ./templates/ContractVersions/view.php:85
 #: ./templates/Contracts/index.php:84
-#: ./templates/Contracts/print.php:102
-#: ./templates/Contracts/view.php:216
+#: ./templates/Contracts/print.php:103
+#: ./templates/Contracts/view.php:221
 #: ./templates/Customers/print.php:128
 #: ./templates/Customers/print.php:132
 #: ./templates/Customers/print.php:136
@@ -1846,8 +1846,8 @@ msgstr ""
 #: ./templates/ContractVersions/index.php:64
 #: ./templates/ContractVersions/view.php:85
 #: ./templates/Contracts/index.php:84
-#: ./templates/Contracts/print.php:102
-#: ./templates/Contracts/view.php:216
+#: ./templates/Contracts/print.php:103
+#: ./templates/Contracts/view.php:221
 #: ./templates/Customers/print.php:128
 #: ./templates/Customers/print.php:132
 #: ./templates/Customers/print.php:136
@@ -2348,10 +2348,10 @@ msgstr ""
 #: ./templates/Contracts/add.php:19
 #: ./templates/Contracts/edit.php:21
 #: ./templates/Contracts/index.php:56
-#: ./templates/Contracts/print.php:14
+#: ./templates/Contracts/print.php:15
 #: ./templates/Contracts/view.php:15
-#: ./templates/Contracts/view.php:552
-#: ./templates/Contracts/view.php:599
+#: ./templates/Contracts/view.php:557
+#: ./templates/Contracts/view.php:604
 #: ./templates/Countries/add.php:10
 #: ./templates/Countries/edit.php:10
 #: ./templates/Countries/index.php:28
@@ -2476,7 +2476,7 @@ msgstr ""
 #: ./templates/TaskTypes/view.php:140
 #: ./templates/Tasks/add.php:16
 #: ./templates/Tasks/edit.php:16
-#: ./templates/Tasks/index.php:102
+#: ./templates/Tasks/index.php:103
 #: ./templates/Tasks/view.php:10
 #: ./templates/element/Contracts/Billings.php:36
 #: ./templates/element/Contracts/BorrowedEquipments.php:21
@@ -2525,8 +2525,8 @@ msgstr ""
 #: ./templates/AccessCredentials/edit.php:72
 #: ./templates/AccountingProfiles/add.php:33
 #: ./templates/AccountingProfiles/edit.php:41
-#: ./templates/Addresses/add.php:100
-#: ./templates/Addresses/edit.php:104
+#: ./templates/Addresses/add.php:105
+#: ./templates/Addresses/edit.php:109
 #: ./templates/Billings/add.php:63
 #: ./templates/Billings/bulk_service_change.php:136
 #: ./templates/Billings/edit.php:68
@@ -2613,8 +2613,8 @@ msgstr ""
 #: ./templates/ContractVersions/index.php:78
 #: ./templates/Contracts/edit.php:23
 #: ./templates/Contracts/index.php:119
-#: ./templates/Contracts/view.php:575
-#: ./templates/Contracts/view.php:633
+#: ./templates/Contracts/view.php:580
+#: ./templates/Contracts/view.php:638
 #: ./templates/Countries/edit.php:12
 #: ./templates/Countries/index.php:44
 #: ./templates/Countries/view.php:117
@@ -2716,8 +2716,8 @@ msgstr ""
 #: ./templates/Contracts/edit.php:25
 #: ./templates/Contracts/index.php:121
 #: ./templates/Contracts/view.php:24
-#: ./templates/Contracts/view.php:577
-#: ./templates/Contracts/view.php:635
+#: ./templates/Contracts/view.php:582
+#: ./templates/Contracts/view.php:640
 #: ./templates/Countries/edit.php:14
 #: ./templates/Countries/index.php:46
 #: ./templates/Countries/view.php:19
@@ -2869,7 +2869,7 @@ msgstr ""
 #: ./templates/Commissions/view.php:96
 #: ./templates/ContractStates/view.php:190
 #: ./templates/Contracts/index.php:39
-#: ./templates/Contracts/print.php:50
+#: ./templates/Contracts/print.php:51
 #: ./templates/Contracts/view.php:150
 #: ./templates/Countries/view.php:52
 #: ./templates/CustomerLabels/index.php:31
@@ -2904,7 +2904,7 @@ msgstr ""
 #: ./templates/SoldEquipments/view.php:50
 #: ./templates/TaskStates/view.php:68
 #: ./templates/TaskTypes/view.php:64
-#: ./templates/Tasks/index.php:95
+#: ./templates/Tasks/index.php:96
 #: ./templates/Tasks/view.php:86
 #: ./templates/element/Contracts/Billings.php:18
 msgid "Customer Number"
@@ -2923,8 +2923,8 @@ msgstr ""
 #: ./templates/ContractStates/view.php:264
 #: ./templates/ContractVersions/index.php:69
 #: ./templates/Contracts/index.php:112
-#: ./templates/Contracts/view.php:566
-#: ./templates/Contracts/view.php:624
+#: ./templates/Contracts/view.php:571
+#: ./templates/Contracts/view.php:629
 #: ./templates/Countries/index.php:37
 #: ./templates/Countries/view.php:108
 #: ./templates/CustomerLabels/index.php:66
@@ -2969,7 +2969,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:39
 #: ./templates/TaskTypes/view.php:108
 #: ./templates/TaskTypes/view.php:152
-#: ./templates/Tasks/index.php:165
+#: ./templates/Tasks/index.php:166
 #: ./templates/element/Contracts/Billings.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:45
 #: ./templates/element/Contracts/ContractVersions.php:41
@@ -2995,8 +2995,8 @@ msgstr ""
 #: ./templates/ContractStates/view.php:273
 #: ./templates/ContractVersions/index.php:73
 #: ./templates/Contracts/index.php:114
-#: ./templates/Contracts/view.php:570
-#: ./templates/Contracts/view.php:628
+#: ./templates/Contracts/view.php:575
+#: ./templates/Contracts/view.php:633
 #: ./templates/Countries/index.php:39
 #: ./templates/Countries/view.php:112
 #: ./templates/CustomerLabels/index.php:68
@@ -3036,7 +3036,7 @@ msgstr ""
 #: ./templates/TaskTypes/index.php:41
 #: ./templates/TaskTypes/view.php:112
 #: ./templates/TaskTypes/view.php:156
-#: ./templates/Tasks/index.php:169
+#: ./templates/Tasks/index.php:170
 #: ./templates/element/Contracts/Billings.php:82
 #: ./templates/element/Contracts/BorrowedEquipments.php:53
 #: ./templates/element/Contracts/ContractVersions.php:45
@@ -3080,7 +3080,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:88
 #: ./templates/TaskStates/index.php:60
 #: ./templates/TaskTypes/index.php:58
-#: ./templates/Tasks/index.php:181
+#: ./templates/Tasks/index.php:182
 msgid "first"
 msgstr ""
 
@@ -3116,7 +3116,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:89
 #: ./templates/TaskStates/index.php:61
 #: ./templates/TaskTypes/index.php:59
-#: ./templates/Tasks/index.php:182
+#: ./templates/Tasks/index.php:183
 msgid "previous"
 msgstr ""
 
@@ -3152,7 +3152,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:91
 #: ./templates/TaskStates/index.php:63
 #: ./templates/TaskTypes/index.php:61
-#: ./templates/Tasks/index.php:184
+#: ./templates/Tasks/index.php:185
 msgid "next"
 msgstr ""
 
@@ -3188,7 +3188,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:92
 #: ./templates/TaskStates/index.php:64
 #: ./templates/TaskTypes/index.php:62
-#: ./templates/Tasks/index.php:185
+#: ./templates/Tasks/index.php:186
 msgid "last"
 msgstr ""
 
@@ -3224,7 +3224,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:95
 #: ./templates/TaskStates/index.php:67
 #: ./templates/TaskTypes/index.php:65
-#: ./templates/Tasks/index.php:188
+#: ./templates/Tasks/index.php:189
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
@@ -3239,7 +3239,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:43
 #: ./templates/Commissions/view.php:95
 #: ./templates/ContractStates/view.php:189
-#: ./templates/Contracts/print.php:43
+#: ./templates/Contracts/print.php:44
 #: ./templates/Contracts/view.php:143
 #: ./templates/Countries/view.php:51
 #: ./templates/CustomerLabels/view.php:43
@@ -3287,7 +3287,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:56
 #: ./templates/ContractVersions/view.php:59
 #: ./templates/Contracts/view.php:84
-#: ./templates/Contracts/view.php:597
+#: ./templates/Contracts/view.php:602
 #: ./templates/CustomerLabels/view.php:55
 #: ./templates/Customers/view.php:834
 #: ./templates/EquipmentTypes/view.php:70
@@ -3356,7 +3356,7 @@ msgstr ""
 #: ./templates/Billings/view.php:122
 #: ./templates/ContractStates/view.php:178
 #: ./templates/ContractVersions/view.php:103
-#: ./templates/Contracts/view.php:291
+#: ./templates/Contracts/view.php:296
 #: ./templates/CustomerLabels/view.php:80
 #: ./templates/Customers/view.php:309
 #: ./templates/Customers/view.php:341
@@ -3442,10 +3442,10 @@ msgstr ""
 #: ./templates/Addresses/view.php:75
 #: ./templates/Commissions/view.php:97
 #: ./templates/ContractStates/view.php:191
-#: ./templates/Contracts/print.php:68
+#: ./templates/Contracts/print.php:69
 #: ./templates/Contracts/view.php:168
-#: ./templates/Contracts/view.php:546
-#: ./templates/Contracts/view.php:592
+#: ./templates/Contracts/view.php:551
+#: ./templates/Contracts/view.php:597
 #: ./templates/Countries/view.php:60
 #: ./templates/Customers/identity_number_check.php:13
 #: ./templates/Customers/index.php:68
@@ -3455,7 +3455,7 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:163
 #: ./templates/TaskStates/view.php:59
 #: ./templates/TaskTypes/view.php:55
-#: ./templates/Tasks/index.php:87
+#: ./templates/Tasks/index.php:88
 msgid "Number"
 msgstr ""
 
@@ -3511,7 +3511,7 @@ msgstr ""
 
 #: ./templates/AccountingProfiles/view.php:89
 #: ./templates/Contracts/view.php:104
-#: ./templates/Contracts/view.php:414
+#: ./templates/Contracts/view.php:419
 #: ./templates/Customers/index.php:75
 #: ./templates/Customers/view.php:134
 #: ./templates/IpAddresses/bulk_reassignment.php:65
@@ -3527,7 +3527,7 @@ msgid "List Addresses"
 msgstr ""
 
 #: ./templates/Addresses/add.php:26
-#: ./templates/Addresses/edit.php:94
+#: ./templates/Addresses/edit.php:99
 msgid "Address Register Search"
 msgstr ""
 
@@ -3636,8 +3636,8 @@ msgstr ""
 #: ./templates/Billings/bulk_service_change.php:47
 #: ./templates/Commissions/view.php:102
 #: ./templates/ContractStates/view.php:195
-#: ./templates/Contracts/print.php:89
-#: ./templates/Contracts/view.php:203
+#: ./templates/Contracts/print.php:90
+#: ./templates/Contracts/view.php:208
 #: ./templates/Customers/view.php:574
 #: ./templates/HistoricalConnections/index.php:41
 #: ./templates/HistoricalConnections/view.php:82
@@ -3795,7 +3795,7 @@ msgstr ""
 #: ./templates/Billings/bulk_service_change.php:148
 #: ./templates/Billings/index.php:21
 #: ./templates/Contracts/view.php:94
-#: ./templates/Contracts/view.php:333
+#: ./templates/Contracts/view.php:338
 #: ./templates/Customers/view.php:124
 #: ./templates/Overviews/overview_of_active_services.php:67
 msgid "Billings"
@@ -3815,7 +3815,7 @@ msgstr ""
 #: ./templates/Billings/index.php:20
 #: ./templates/Billings/service_change.php:23
 #: ./templates/Billings/view.php:24
-#: ./templates/Contracts/view.php:316
+#: ./templates/Contracts/view.php:321
 #: ./templates/Customers/view.php:630
 msgid "New Billing"
 msgstr ""
@@ -3827,8 +3827,8 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:63
 #: ./templates/Billings/view.php:69
-#: ./templates/Contracts/view.php:550
-#: ./templates/Contracts/view.php:596
+#: ./templates/Contracts/view.php:555
+#: ./templates/Contracts/view.php:601
 #: ./templates/Customers/view.php:833
 #: ./templates/Services/view.php:86
 #: ./templates/TaskStates/view.php:64
@@ -3938,13 +3938,13 @@ msgstr ""
 
 #: ./templates/BorrowedEquipments/index.php:21
 #: ./templates/BorrowedEquipments/view.php:30
-#: ./templates/Contracts/view.php:355
+#: ./templates/Contracts/view.php:360
 #: ./templates/Customers/view.php:656
 msgid "New Borrowed Equipment"
 msgstr ""
 
 #: ./templates/BorrowedEquipments/index.php:25
-#: ./templates/Contracts/view.php:377
+#: ./templates/Contracts/view.php:382
 msgid "Borrowed Equipments"
 msgstr ""
 
@@ -4014,8 +4014,8 @@ msgid "Related Dealer Commissions"
 msgstr ""
 
 #: ./templates/Commissions/view.php:50
-#: ./templates/Contracts/view.php:551
-#: ./templates/Contracts/view.php:598
+#: ./templates/Contracts/view.php:556
+#: ./templates/Contracts/view.php:603
 #: ./templates/Customers/print.php:108
 #: ./templates/Customers/view.php:268
 #: ./templates/Customers/view.php:835
@@ -4046,7 +4046,7 @@ msgid "Related Contracts"
 msgstr ""
 
 #: ./templates/Commissions/view.php:98
-#: ./templates/Contracts/print.php:54
+#: ./templates/Contracts/print.php:55
 #: ./templates/Contracts/view.php:154
 #: ./templates/Customers/view.php:570
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
@@ -4057,7 +4057,7 @@ msgstr ""
 
 #: ./templates/Commissions/view.php:99
 #: ./templates/ContractStates/view.php:192
-#: ./templates/Contracts/print.php:61
+#: ./templates/Contracts/print.php:62
 #: ./templates/Contracts/view.php:161
 #: ./templates/Customers/view.php:571
 #: ./templates/Overviews/overview_of_active_services.php:64
@@ -4069,8 +4069,8 @@ msgstr ""
 
 #: ./templates/Commissions/view.php:101
 #: ./templates/ContractStates/view.php:194
-#: ./templates/Contracts/print.php:101
-#: ./templates/Contracts/view.php:215
+#: ./templates/Contracts/print.php:102
+#: ./templates/Contracts/view.php:220
 #: ./templates/Customers/view.php:573
 #: ./templates/ServiceTypes/view.php:166
 msgid "Vip"
@@ -4080,8 +4080,8 @@ msgstr ""
 #: ./templates/ContractStates/view.php:196
 #: ./templates/Contracts/edit.php:74
 #: ./templates/Contracts/index.php:46
-#: ./templates/Contracts/print.php:125
-#: ./templates/Contracts/view.php:239
+#: ./templates/Contracts/print.php:126
+#: ./templates/Contracts/view.php:244
 #: ./templates/Customers/view.php:575
 #: ./templates/Overviews/overview_of_contracts.php:81
 #: ./templates/ServiceTypes/view.php:168
@@ -4090,8 +4090,8 @@ msgstr ""
 
 #: ./templates/Commissions/view.php:104
 #: ./templates/ContractStates/view.php:197
-#: ./templates/Contracts/print.php:129
-#: ./templates/Contracts/view.php:243
+#: ./templates/Contracts/print.php:130
+#: ./templates/Contracts/view.php:248
 #: ./templates/ServiceTypes/view.php:169
 msgid "Installation Technician"
 msgstr ""
@@ -4100,8 +4100,8 @@ msgstr ""
 #: ./templates/ContractStates/view.php:198
 #: ./templates/Contracts/edit.php:100
 #: ./templates/Contracts/index.php:50
-#: ./templates/Contracts/print.php:141
-#: ./templates/Contracts/view.php:255
+#: ./templates/Contracts/print.php:142
+#: ./templates/Contracts/view.php:260
 #: ./templates/Customers/view.php:576
 #: ./templates/Overviews/overview_of_contracts.php:86
 #: ./templates/ServiceTypes/view.php:170
@@ -4110,8 +4110,8 @@ msgstr ""
 
 #: ./templates/Commissions/view.php:106
 #: ./templates/ContractStates/view.php:199
-#: ./templates/Contracts/print.php:145
-#: ./templates/Contracts/view.php:259
+#: ./templates/Contracts/print.php:146
+#: ./templates/Contracts/view.php:264
 #: ./templates/ServiceTypes/view.php:171
 msgid "Uninstallation Technician"
 msgstr ""
@@ -4120,8 +4120,8 @@ msgstr ""
 #: ./templates/ContractStates/view.php:200
 #: ./templates/Contracts/edit.php:126
 #: ./templates/Contracts/index.php:53
-#: ./templates/Contracts/print.php:157
-#: ./templates/Contracts/view.php:271
+#: ./templates/Contracts/print.php:158
+#: ./templates/Contracts/view.php:276
 #: ./templates/Customers/view.php:577
 #: ./templates/Overviews/overview_of_contracts.php:91
 #: ./templates/ServiceTypes/view.php:172
@@ -4285,8 +4285,8 @@ msgid "Requires No Active Obligations"
 msgstr ""
 
 #: ./templates/ContractStates/view.php:201
-#: ./templates/Contracts/print.php:94
-#: ./templates/Contracts/view.php:208
+#: ./templates/Contracts/print.php:95
+#: ./templates/Contracts/view.php:213
 #: ./templates/DealerCommissions/view.php:50
 #: ./templates/ServiceTypes/view.php:173
 msgid "Commission"
@@ -4314,15 +4314,15 @@ msgstr ""
 
 #: ./templates/ContractVersions/index.php:28
 #: ./templates/ContractVersions/view.php:30
-#: ./templates/Contracts/print.php:169
-#: ./templates/Contracts/view.php:301
+#: ./templates/Contracts/print.php:170
+#: ./templates/Contracts/view.php:306
 msgid "New Contract Version"
 msgstr ""
 
 #: ./templates/ContractVersions/index.php:32
-#: ./templates/Contracts/print.php:173
+#: ./templates/Contracts/print.php:174
 #: ./templates/Contracts/view.php:89
-#: ./templates/Contracts/view.php:305
+#: ./templates/Contracts/view.php:310
 msgid "Contract Versions"
 msgstr ""
 
@@ -4331,7 +4331,7 @@ msgid "Delete Contract Version"
 msgstr ""
 
 #: ./templates/ContractVersions/view.php:38
-#: ./templates/Contracts/print.php:34
+#: ./templates/Contracts/print.php:35
 #: ./templates/Contracts/view.php:134
 #: ./templates/ServiceOverrides/view.php:61
 msgid "Contract No."
@@ -4378,7 +4378,7 @@ msgstr ""
 
 #: ./templates/Contracts/add.php:20
 #: ./templates/Contracts/edit.php:27
-#: ./templates/Contracts/print.php:26
+#: ./templates/Contracts/print.php:27
 #: ./templates/Contracts/view.php:26
 #: ./templates/Overviews/index.php:69
 msgid "List Contracts"
@@ -4389,7 +4389,7 @@ msgid "Add Contract"
 msgstr ""
 
 #: ./templates/Contracts/edit.php:34
-#: ./templates/Contracts/print.php:21
+#: ./templates/Contracts/print.php:22
 #: ./templates/Contracts/view.php:17
 msgid "Edit Contract"
 msgstr ""
@@ -4400,75 +4400,91 @@ msgstr ""
 msgid "New Contract"
 msgstr ""
 
-#: ./templates/Contracts/print.php:16
+#: ./templates/Contracts/map.php:14
+msgid "Distance"
+msgstr ""
+
+#: ./templates/Contracts/map.php:16
+msgid "{0} km"
+msgstr ""
+
+#: ./templates/Contracts/map.php:17
+msgid "{0} m"
+msgstr ""
+
+#: ./templates/Contracts/map.php:21
+msgid "Neither end of this contract has coordinates."
+msgstr ""
+
+#: ./templates/Contracts/print.php:17
 msgid "View Contract"
 msgstr ""
 
-#: ./templates/Contracts/print.php:72
+#: ./templates/Contracts/print.php:73
 #: ./templates/Contracts/view.php:172
 #: ./templates/Customers/view.php:579
 msgid "Subscriber Verification Code"
 msgstr ""
 
-#: ./templates/Contracts/print.php:105
-#: ./templates/Contracts/view.php:219
+#: ./templates/Contracts/print.php:106
+#: ./templates/Contracts/view.php:224
 #: ./templates/ServiceTypes/view.php:47
 msgid "Activation Fee"
 msgstr ""
 
-#: ./templates/Contracts/print.php:110
-#: ./templates/Contracts/view.php:224
+#: ./templates/Contracts/print.php:111
+#: ./templates/Contracts/view.php:229
 #: ./templates/ServiceTypes/view.php:51
 msgid "Activation Fee With Obligation"
 msgstr ""
 
-#: ./templates/Contracts/print.php:189
+#: ./templates/Contracts/print.php:190
 #: ./templates/Customers/print.php:156
 msgid "Print Documents"
 msgstr ""
 
-#: ./templates/Contracts/print.php:194
+#: ./templates/Contracts/print.php:200
 #: ./templates/Customers/print.php:161
 msgid "Document Type"
 msgstr ""
 
-#: ./templates/Contracts/print.php:202
+#: ./templates/Contracts/print.php:208
 msgid "Signed"
 msgstr ""
 
-#: ./templates/Contracts/print.php:210
+#: ./templates/Contracts/print.php:216
 msgid "The customer has his own equipment"
 msgstr ""
 
-#: ./templates/Contracts/print.php:215
+#: ./templates/Contracts/print.php:221
 msgid "The customer does not use IP addresses"
 msgstr ""
 
-#: ./templates/Contracts/print.php:220
+#: ./templates/Contracts/print.php:226
 msgid "The customer does not use RADIUS accounts"
 msgstr ""
 
-#: ./templates/Contracts/print.php:225
+#: ./templates/Contracts/print.php:231
 msgid "Allow generating a fixed-term contract"
 msgstr ""
 
-#: ./templates/Contracts/print.php:235
+#: ./templates/Contracts/print.php:241
 msgid "Contract version to be executed"
 msgstr ""
 
-#: ./templates/Contracts/print.php:245
+#: ./templates/Contracts/print.php:251
 msgid "Contract version to be terminated"
 msgstr ""
 
-#: ./templates/Contracts/print.php:255
+#: ./templates/Contracts/print.php:261
 msgid "Contract number to be terminated"
 msgstr ""
 
-#: ./templates/Contracts/print.php:264
+#: ./templates/Contracts/print.php:271
 msgid "Effective date of the amendment"
 msgstr ""
 
-#: ./templates/Contracts/print.php:293
+#: ./templates/Contracts/print.php:300
 #: ./templates/Contracts/view.php:30
 #: ./templates/Contracts/view.php:129
 #: ./templates/Customers/print.php:176
@@ -4528,73 +4544,79 @@ msgid "Equipments"
 msgstr ""
 
 #: ./templates/Contracts/view.php:109
-#: ./templates/Contracts/view.php:492
+#: ./templates/Contracts/view.php:497
 #: ./templates/Customers/view.php:139
 msgid "RADIUS Accounts"
 msgstr ""
 
 #: ./templates/Contracts/view.php:114
-#: ./templates/Contracts/view.php:528
+#: ./templates/Contracts/view.php:533
 #: ./templates/Customers/view.php:144
 #: ./templates/Customers/view.php:811
 msgid "Invoices"
 msgstr ""
 
 #: ./templates/Contracts/view.php:119
-#: ./templates/Contracts/view.php:541
+#: ./templates/Contracts/view.php:546
 #: ./templates/Customers/view.php:149
 #: ./templates/Customers/view.php:824
-#: ./templates/Tasks/index.php:82
+#: ./templates/Tasks/index.php:83
+#: ./templates/Tasks/map.php:10
 #: ./templates/layout/default.php:138
 msgid "Tasks"
 msgstr ""
 
-#: ./templates/Contracts/view.php:283
+#: ./templates/Contracts/view.php:196
+#: ./templates/Tasks/index.php:82
+msgid "Map"
+msgstr ""
+
+#: ./templates/Contracts/view.php:288
 msgid "Access Description"
 msgstr ""
 
-#: ./templates/Contracts/view.php:322
+#: ./templates/Contracts/view.php:327
 msgid "Terminate Related Billings"
 msgstr ""
 
-#: ./templates/Contracts/view.php:325
+#: ./templates/Contracts/view.php:330
 msgid "Are you sure you want to terminate related billings for contract # {0}?"
 msgstr ""
 
-#: ./templates/Contracts/view.php:365
+#: ./templates/Contracts/view.php:370
 msgid "Set Dates Automatically"
 msgstr ""
 
-#: ./templates/Contracts/view.php:368
+#: ./templates/Contracts/view.php:373
 msgid "Are you sure you want to set dates for related borrowed equipments for contract # {0}?"
 msgstr ""
 
-#: ./templates/Contracts/view.php:388
+#: ./templates/Contracts/view.php:393
 #: ./templates/Customers/view.php:672
 #: ./templates/SoldEquipments/index.php:21
 #: ./templates/SoldEquipments/view.php:30
 msgid "New Sold Equipment"
 msgstr ""
 
-#: ./templates/Contracts/view.php:392
+#: ./templates/Contracts/view.php:397
 #: ./templates/SoldEquipments/index.php:25
 msgid "Sold Equipments"
 msgstr ""
 
-#: ./templates/Contracts/view.php:405
+#: ./templates/Contracts/view.php:410
 #: ./templates/Customers/view.php:688
 #: ./templates/IpAddresses/index.php:20
 #: ./templates/IpAddresses/view.php:22
 msgid "New IP Address"
 msgstr ""
 
-#: ./templates/Contracts/view.php:410
+#: ./templates/Contracts/view.php:415
 #: ./templates/Customers/view.php:693
 msgid "New IP Address From Range"
 msgstr ""
 
-#: ./templates/Contracts/view.php:421
-#: ./templates/Contracts/view.php:444
+#: ./templates/Contracts/view.php:426
+#: ./templates/Contracts/view.php:449
 #: ./templates/Customers/view.php:705
 #: ./templates/Customers/view.php:730
 #: ./templates/element/Contracts/Billings.php:102
@@ -4603,76 +4625,76 @@ msgstr ""
 msgid "Show historical records"
 msgstr ""
 
-#: ./templates/Contracts/view.php:433
+#: ./templates/Contracts/view.php:438
 #: ./templates/Customers/view.php:717
 #: ./templates/IpNetworks/index.php:21
 #: ./templates/IpNetworks/view.php:27
 msgid "New IP Network"
 msgstr ""
 
-#: ./templates/Contracts/view.php:437
+#: ./templates/Contracts/view.php:442
 #: ./templates/IpNetworks/index.php:25
 msgid "IP Networks"
 msgstr ""
 
-#: ./templates/Contracts/view.php:459
+#: ./templates/Contracts/view.php:464
 #: ./templates/Customers/view.php:744
 #: ./templates/RemovedIpAddresses/index.php:21
 #: ./templates/RemovedIpAddresses/view.php:30
 msgid "New Removed IP Address"
 msgstr ""
 
-#: ./templates/Contracts/view.php:463
+#: ./templates/Contracts/view.php:468
 #: ./templates/RemovedIpAddresses/index.php:25
 msgid "Removed IP Addresses"
 msgstr ""
 
-#: ./templates/Contracts/view.php:472
+#: ./templates/Contracts/view.php:477
 #: ./templates/Customers/view.php:758
 #: ./templates/RemovedIpNetworks/index.php:21
 #: ./templates/RemovedIpNetworks/view.php:30
 msgid "New Removed IP Network"
 msgstr ""
 
-#: ./templates/Contracts/view.php:476
+#: ./templates/Contracts/view.php:481
 #: ./templates/RemovedIpNetworks/index.php:25
 msgid "Removed IP Networks"
 msgstr ""
 
-#: ./templates/Contracts/view.php:488
+#: ./templates/Contracts/view.php:493
 #: ./templates/Customers/view.php:773
 msgid "New RADIUS Account"
 msgstr ""
 
-#: ./templates/Contracts/view.php:503
+#: ./templates/Contracts/view.php:508
 #: ./templates/Customers/view.php:786
 msgid "Unblock Debtor"
 msgstr ""
 
-#: ./templates/Contracts/view.php:512
+#: ./templates/Contracts/view.php:517
 #: ./templates/Customers/view.php:795
 msgid "Are you sure you want to unblock # {0}?"
 msgstr ""
 
-#: ./templates/Contracts/view.php:516
+#: ./templates/Contracts/view.php:521
 #: ./templates/Customers/view.php:799
 msgid "Block Debtor"
 msgstr ""
 
-#: ./templates/Contracts/view.php:525
+#: ./templates/Contracts/view.php:530
 #: ./templates/Customers/view.php:808
 msgid "Are you sure you want to block # {0}?"
 msgstr ""
 
-#: ./templates/Contracts/view.php:537
+#: ./templates/Contracts/view.php:542
 #: ./templates/Customers/view.php:820
 #: ./templates/Tasks/index.php:81
 #: ./templates/Tasks/view.php:18
 msgid "New Task"
 msgstr ""
 
-#: ./templates/Contracts/view.php:547
-#: ./templates/Contracts/view.php:593
+#: ./templates/Contracts/view.php:552
+#: ./templates/Contracts/view.php:598
 #: ./templates/Customers/view.php:830
 #: ./templates/TaskStates/view.php:60
 #: ./templates/Tasks/view.php:36
@@ -4680,18 +4702,18 @@ msgstr ""
 msgid "Task Type"
 msgstr ""
 
-#: ./templates/Contracts/view.php:548
-#: ./templates/Contracts/view.php:594
+#: ./templates/Contracts/view.php:553
+#: ./templates/Contracts/view.php:599
 #: ./templates/Customers/view.php:831
 #: ./templates/TaskTypes/view.php:57
-#: ./templates/Tasks/index.php:90
+#: ./templates/Tasks/index.php:91
 #: ./templates/Tasks/view.php:47
 #: ./templates/email/html/task_notification.php:44
 msgid "Task State"
 msgstr ""
 
-#: ./templates/Contracts/view.php:549
-#: ./templates/Contracts/view.php:595
+#: ./templates/Contracts/view.php:554
+#: ./templates/Contracts/view.php:600
 #: ./templates/CustomerMessages/view.php:60
 #: ./templates/Customers/view.php:832
 #: ./templates/TaskStates/view.php:63
@@ -4701,7 +4723,7 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: ./templates/Contracts/view.php:587
+#: ./templates/Contracts/view.php:592
 msgid "Other Customer Tasks"
 msgstr ""
 
@@ -6509,6 +6531,7 @@ msgstr ""
 
 #: ./templates/Tasks/add.php:17
 #: ./templates/Tasks/edit.php:22
+#: ./templates/Tasks/map.php:9
 #: ./templates/Tasks/view.php:17
 msgid "List Tasks"
 msgstr ""
@@ -6538,10 +6561,14 @@ msgstr ""
 msgid "Expandable Text"
 msgstr ""
 
-#: ./templates/Tasks/index.php:92
+#: ./templates/Tasks/index.php:93
 #: ./templates/Tasks/view.php:130
 #: ./templates/email/html/task_notification.php:141
 msgid "Summary Text"
+msgstr ""
+
+#: ./templates/Tasks/map.php:12
+msgid "No open task has a place on the map."
 msgstr ""
 
 #: ./templates/Tasks/view.php:13
@@ -6688,18 +6715,6 @@ msgstr ""
 
 #: ./templates/element/HistoricalConnections/first_seen.php:21
 msgid "{0} or earlier"
-msgstr ""
-
-#: ./templates/element/Maps/links.php:22
-msgid "Google Maps"
-msgstr ""
-
-#: ./templates/element/Maps/links.php:27
-msgid "Mapy.cz"
-msgstr ""
-
-#: ./templates/element/Maps/links.php:32
-msgid "OpenStreetMap"
 msgstr ""
 
 #: ./templates/element/Settings/FormFields.php:34

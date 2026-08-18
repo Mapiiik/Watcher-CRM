@@ -1,0 +1,42 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-08-18 15:01+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Maps/templates/element/Maps/leaflet/overview.php:29
+#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:37
+msgid "Fullscreen"
+msgstr ""
+
+#: ./plugins/Maps/templates/element/Maps/leaflet/overview.php:30
+#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:38
+msgid "Exit Fullscreen"
+msgstr ""
+
+#: ./plugins/Maps/templates/element/Maps/leaflet/point-picker.php:67
+msgid "Search on the Map"
+msgstr ""
+
+#: ./plugins/Maps/templates/element/Maps/links.php:22
+msgid "Google Maps"
+msgstr ""
+
+#: ./plugins/Maps/templates/element/Maps/links.php:27
+msgid "Mapy.cz"
+msgstr ""
+
+#: ./plugins/Maps/templates/element/Maps/links.php:32
+msgid "OpenStreetMap"
+msgstr ""
+

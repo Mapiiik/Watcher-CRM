@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-17 19:48+0200\n"
-"PO-Revision-Date: 2026-08-17 19:55+0200\n"
+"POT-Creation-Date: 2026-08-18 15:03+0200\n"
+"PO-Revision-Date: 2026-08-18 15:10+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -15,58 +15,58 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: src/Pdf/ContractPDF.php:376 src/Pdf/ContractPDF.php:1315
+#: src/Pdf/ContractPDF.php:387 src/Pdf/ContractPDF.php:1326
 msgid "Billing Address"
 msgstr "Fakturační adresa"
 
-#: src/Pdf/ContractPDF.php:447 src/Pdf/ContractPDF.php:1386
+#: src/Pdf/ContractPDF.php:458 src/Pdf/ContractPDF.php:1397
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
-#: src/Pdf/ContractPDF.php:451 src/Pdf/ContractPDF.php:1390
+#: src/Pdf/ContractPDF.php:462 src/Pdf/ContractPDF.php:1401
 msgid "Delivery Address"
 msgstr "Doručovací adresa"
 
-#: src/Pdf/ContractPDF.php:455 src/Pdf/ContractPDF.php:1394
+#: src/Pdf/ContractPDF.php:466 src/Pdf/ContractPDF.php:1405
 msgid "Permanent Address"
 msgstr "Adresa trvalého bydliště"
 
-#: src/Pdf/ContractPDF.php:477
+#: src/Pdf/ContractPDF.php:488
 msgid "Username"
 msgstr "Uživatelské jméno"
 
-#: src/Pdf/ContractPDF.php:478
+#: src/Pdf/ContractPDF.php:489
 msgid "Password"
 msgstr "Heslo"
 
-#: src/Pdf/ContractPDF.php:492
+#: src/Pdf/ContractPDF.php:503
 msgid "Assigned IP Addresses"
 msgstr "Přidělené IP adresy"
 
-#: src/Pdf/ContractPDF.php:497
+#: src/Pdf/ContractPDF.php:508
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: src/Pdf/ContractPDF.php:498 src/Pdf/ContractPDF.php:552
+#: src/Pdf/ContractPDF.php:509 src/Pdf/ContractPDF.php:563
 msgid "IP Network"
 msgstr "IP síť"
 
-#: src/Pdf/ContractPDF.php:499 src/Pdf/ContractPDF.php:553
+#: src/Pdf/ContractPDF.php:510 src/Pdf/ContractPDF.php:564
 msgid "IP Gateway"
 msgstr "IP brána"
 
-#: src/Pdf/ContractPDF.php:529
+#: src/Pdf/ContractPDF.php:540
 msgid "Assigned IP Networks"
 msgstr "Přidělené IP sítě"
 
-#: src/Pdf/ContractPDF.php:554
+#: src/Pdf/ContractPDF.php:565
 msgid "DNS Servers"
 msgstr "DNS servery"
 
-#: src/Pdf/ContractPDF.php:586
+#: src/Pdf/ContractPDF.php:597
 msgid "WiFi - SSID"
 msgstr "WiFi - SSID"
 
-#: src/Pdf/ContractPDF.php:587
+#: src/Pdf/ContractPDF.php:598
 msgid "WiFi - Password"
 msgstr "WiFi - Heslo"
