@@ -15,14 +15,16 @@
  * @var \App\Model\Entity\HistoricalConnection $interval
  */
 
+use App\NMS\Links;
+
 if ($interval->access_point_name === null) {
     return;
 }
 
-$nmsUrl = (string)env('WATCHER_NMS_URL');
+$url = $interval->access_point_id === null ? null : Links::accessPoint($interval->access_point_id);
 
-echo $interval->access_point_id !== null && $nmsUrl !== '' ? $this->Html->link(
+echo $url !== null ? $this->Html->link(
     $interval->access_point_name,
-    $nmsUrl . '/access-points/view/' . $interval->access_point_id,
+    $url,
     ['target' => '_blank'],
 ) : h($interval->access_point_name);

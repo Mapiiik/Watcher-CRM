@@ -10,14 +10,16 @@
  * @var \App\Model\Entity\HistoricalConnection $interval
  */
 
+use App\NMS\Links;
+
 if ($interval->routeros_device_name === null) {
     return;
 }
 
-$nmsUrl = (string)env('WATCHER_NMS_URL');
+$url = $interval->routeros_device_id === null ? null : Links::routerosDevice($interval->routeros_device_id);
 
-echo $interval->routeros_device_id !== null && $nmsUrl !== '' ? $this->Html->link(
+echo $url !== null ? $this->Html->link(
     $interval->routeros_device_name,
-    $nmsUrl . '/routeros-devices/view/' . $interval->routeros_device_id,
+    $url,
     ['target' => '_blank'],
 ) : h($interval->routeros_device_name);

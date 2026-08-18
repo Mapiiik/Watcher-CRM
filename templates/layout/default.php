@@ -13,6 +13,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+use App\NMS\Links;
 use App\Versioning;
 use Cake\Core\Configure;
 
@@ -191,10 +192,10 @@ $urlWithQuery = function ($query = []) use ($request) {
                 <?php } ?>
             <?php endif; ?>
 
-            <?= env('WATCHER_NMS_URL') ?
+            <?= Links::home() !== null ?
                 $this->Html->link(
                     __('Network Management System'),
-                    (string)env('WATCHER_NMS_URL'),
+                    Links::home(),
                     ['class' => 'button button-small'],
                 ) : '' ?>
 

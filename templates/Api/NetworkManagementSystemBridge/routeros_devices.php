@@ -4,12 +4,15 @@
  * \Cake\Collection\CollectionInterface|null $routerosDevices RouterOS Devices
  */
 
+use App\NMS\Links;
+
 if (isset($routerosDevices)) {
     $device = $routerosDevices->first();
-    echo isset($device['id']) ?
+    $deviceUrl = isset($device['id']) ? Links::routerosDevice((string)$device['id']) : null;
+    echo $deviceUrl !== null ?
         $this->Html->link(
             $device['system_description'],
-            (string)env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+            $deviceUrl,
             ['target' => '_blank'],
         ) . '<br>' : '';
     unset($device);

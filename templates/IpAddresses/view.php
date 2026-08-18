@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\IpAddress $ipAddress
  */
+
+use App\NMS\Links;
 ?>
 <div class="row">
     <aside class="column">
@@ -64,10 +66,11 @@
                             <td><?php
                             if (isset($ipAddress->routeros_devices)) {
                                 $device = $ipAddress->routeros_devices->first();
-                                echo isset($device['id']) ?
+                                $deviceUrl = isset($device['id']) ? Links::routerosDevice((string)$device['id']) : null;
+                                echo $deviceUrl !== null ?
                                     $this->Html->link(
                                         $device['system_description'],
-                                        (string)env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+                                        $deviceUrl,
                                         ['target' => '_blank'],
                                     ) . '<br>' : '';
                                 unset($device);
@@ -79,17 +82,20 @@
                             <td><?php
                             if (isset($ipAddress->ip_address_ranges)) {
                                 $range = $ipAddress->ip_address_ranges->first();
-                                echo isset($range['access_point']['id']) ?
+                                $accessPointUrl = isset($range['access_point']['id'])
+                                    ? Links::accessPoint((string)$range['access_point']['id'])
+                                    : null;
+                                echo $accessPointUrl !== null ?
                                     __('Access Point') . ': ' . $this->Html->link(
                                         $range['access_point']['name'],
-                                        (string)env('WATCHER_NMS_URL')
-                                            . '/access-points/view/' . $range['access_point']['id'],
+                                        $accessPointUrl,
                                         ['target' => '_blank'],
                                     ) . '<br>' : '';
-                                echo isset($range['id']) ?
+                                $rangeUrl = isset($range['id']) ? Links::ipAddressRange((string)$range['id']) : null;
+                                echo $rangeUrl !== null ?
                                     __('Range') . ': ' . $this->Html->link(
                                         $range['name'],
-                                        (string)env('WATCHER_NMS_URL') . '/ip-address-ranges/view/' . $range['id'],
+                                        $rangeUrl,
                                         ['target' => '_blank'],
                                     ) . '<br>' : '';
                                     unset($range);

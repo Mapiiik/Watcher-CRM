@@ -4,18 +4,24 @@
  * \Cake\Collection\CollectionInterface|null $routerosDevices RouterOS Devices
  */
 
+use App\NMS\Links;
+
 if (isset($routerosDevices)) {
     $device = $routerosDevices->first();
-    echo isset($device['access_point']['id']) ?
+    $accessPointUrl = isset($device['access_point']['id'])
+        ? Links::accessPoint((string)$device['access_point']['id'])
+        : null;
+    echo $accessPointUrl !== null ?
         __('Access Point') . ': ' . $this->Html->link(
             $device['access_point']['name'],
-            (string)env('WATCHER_NMS_URL') . '/access-points/view/' . $device['access_point']['id'],
+            $accessPointUrl,
             ['target' => '_blank'],
         ) . '<br>' : '';
-    echo isset($device['id']) ?
+    $deviceUrl = isset($device['id']) ? Links::routerosDevice((string)$device['id']) : null;
+    echo $deviceUrl !== null ?
         $this->Html->link(
             $device['name'],
-            (string)env('WATCHER_NMS_URL') . '/routeros-devices/view/' . $device['id'],
+            $deviceUrl,
             ['target' => '_blank'],
         ) . '<br>' : '';
     unset($device);
