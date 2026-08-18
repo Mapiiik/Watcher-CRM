@@ -62,17 +62,20 @@ class Application extends BaseApplication
         // CakeDC/users
         Configure::write('Users.config', ['users']);
 
-        // Set time and date format if specified in environment
-        if (is_string(env('APP_TIME_FORMAT'))) {
-            DateTime::setToStringFormat(env('APP_TIME_FORMAT'));
+        // Set time and date format where the configuration names one
+        $timeFormat = Configure::read('App.timeFormat');
+        if (is_string($timeFormat)) {
+            DateTime::setToStringFormat($timeFormat);
         }
-        if (is_string(env('APP_DATE_FORMAT'))) {
-            Date::setToStringFormat(env('APP_DATE_FORMAT'));
+        $dateFormat = Configure::read('App.dateFormat');
+        if (is_string($dateFormat)) {
+            Date::setToStringFormat($dateFormat);
         }
 
-        // Set default currency if specified in environment
-        if (is_string(env('APP_DEFAULT_CURRENCY'))) {
-            Number::setDefaultCurrency(env('APP_DEFAULT_CURRENCY'));
+        // Set default currency where the configuration names one
+        $defaultCurrency = Configure::read('App.defaultCurrency');
+        if (is_string($defaultCurrency)) {
+            Number::setDefaultCurrency($defaultCurrency);
         }
     }
 

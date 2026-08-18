@@ -60,6 +60,11 @@ return [
         'encoding' => env('APP_ENCODING', 'UTF-8'),
         'defaultLocale' => env('APP_DEFAULT_LOCALE', 'en_US'),
         'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'UTC'),
+        // Who the installation belongs to, and how it writes dates, times and money.
+        'company' => env('APP_COMPANY', 'ISP'),
+        'timeFormat' => env('APP_TIME_FORMAT', null),
+        'dateFormat' => env('APP_DATE_FORMAT', null),
+        'defaultCurrency' => env('APP_DEFAULT_CURRENCY', null),
         'base' => false,
         'dir' => 'src',
         'webroot' => 'webroot',
@@ -704,6 +709,14 @@ return [
     'TestSuite' => [
         'errorLevel' => null,
         'fixtureStrategy' => null,
+    ],
+
+    /*
+     * What the pages offer. The rest of `UI` is written per request from the user's own
+     * settings; this is only what the installation decides once.
+     */
+    'UI' => [
+        'select2' => filter_var(env('ENABLE_SELECT2', false), FILTER_VALIDATE_BOOLEAN),
     ],
 
     /*

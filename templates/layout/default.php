@@ -23,7 +23,7 @@ use Cake\Core\Configure;
  * @psalm-scope-this \App\View\AppView
  */
 
-$cakeDescription = 'Watcher CRM | ' . (string)env('APP_COMPANY', 'ISP');
+$cakeDescription = 'Watcher CRM | ' . (string)Configure::read('App.company');
 
 $request = $this->getRequest();
 
@@ -62,7 +62,7 @@ $urlWithQuery = function ($query = []) use ($request) {
         'links.js',
     ]) ?>
 
-    <?php if (filter_var(env('ENABLE_SELECT2', false), FILTER_VALIDATE_BOOLEAN)) : ?>
+    <?php if (Configure::read('UI.select2')) : ?>
         <?= $this->Html->css(['https://cdn.jsdelivr.net/npm/select2@4.0/dist/css/select2.min.css']) ?>
         <?= $this->Html->script([
             'https://cdn.jsdelivr.net/npm/select2@4.0/dist/js/select2.min.js',
