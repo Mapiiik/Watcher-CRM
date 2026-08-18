@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-18 15:03+0200\n"
+"POT-Creation-Date: 2026-08-18 23:17+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -577,14 +577,14 @@ msgstr ""
 #: ./src/Controller/BillingsController.php:219
 #: ./src/Controller/BillingsController.php:318
 #: ./src/Controller/BillingsController.php:449
-#: ./src/Controller/ContractsController.php:798
+#: ./src/Controller/ContractsController.php:800
 msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:141
 #: ./src/Controller/BillingsController.php:223
 #: ./src/Controller/BillingsController.php:518
-#: ./src/Controller/ContractsController.php:802
+#: ./src/Controller/ContractsController.php:804
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
@@ -604,15 +604,15 @@ msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:104
 #: ./src/Controller/BorrowedEquipmentsController.php:161
-#: ./src/Controller/ContractsController.php:724
-#: ./src/Controller/ContractsController.php:750
+#: ./src/Controller/ContractsController.php:726
+#: ./src/Controller/ContractsController.php:752
 msgid "The borrowed equipment has been saved."
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:108
 #: ./src/Controller/BorrowedEquipmentsController.php:165
-#: ./src/Controller/ContractsController.php:730
-#: ./src/Controller/ContractsController.php:756
+#: ./src/Controller/ContractsController.php:732
+#: ./src/Controller/ContractsController.php:758
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr ""
 
@@ -678,91 +678,91 @@ msgstr ""
 msgid "The contract version could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:262
-#: ./src/Controller/ContractsController.php:375
+#: ./src/Controller/ContractsController.php:264
+#: ./src/Controller/ContractsController.php:377
 msgid "The contract has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:273
-#: ./src/Controller/ContractsController.php:386
+#: ./src/Controller/ContractsController.php:275
+#: ./src/Controller/ContractsController.php:388
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:479
+#: ./src/Controller/ContractsController.php:481
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:482
+#: ./src/Controller/ContractsController.php:484
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:523
+#: ./src/Controller/ContractsController.php:525
 msgid "The contract number could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:541
+#: ./src/Controller/ContractsController.php:543
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:549
+#: ./src/Controller/ContractsController.php:551
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:577
+#: ./src/Controller/ContractsController.php:579
 msgid "The contract numbers could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:585
+#: ./src/Controller/ContractsController.php:587
 msgid "The contract numbers have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:622
+#: ./src/Controller/ContractsController.php:624
 msgid "The subscriber verification code could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:639
+#: ./src/Controller/ContractsController.php:641
 msgid "The subscriber verification code has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:647
+#: ./src/Controller/ContractsController.php:649
 msgid "The subscriber verification code could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:675
+#: ./src/Controller/ContractsController.php:677
 msgid "The subscriber verification codes could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:683
+#: ./src/Controller/ContractsController.php:685
 msgid "The subscriber verification codes have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:713
+#: ./src/Controller/ContractsController.php:715
 msgid "No related borrowed equipments to install."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:722
-#: ./src/Controller/ContractsController.php:728
+#: ./src/Controller/ContractsController.php:724
+#: ./src/Controller/ContractsController.php:730
 msgid "Installation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:739
+#: ./src/Controller/ContractsController.php:741
 msgid "No related borrowed equipments to uninstall."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:748
-#: ./src/Controller/ContractsController.php:754
+#: ./src/Controller/ContractsController.php:750
+#: ./src/Controller/ContractsController.php:756
 msgid "Uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:789
+#: ./src/Controller/ContractsController.php:791
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:808
+#: ./src/Controller/ContractsController.php:810
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:826
+#: ./src/Controller/ContractsController.php:828
 #: ./templates/AccountingProfiles/view.php:88
 #: ./templates/Contracts/index.php:33
 #: ./templates/Customers/index.php:74
@@ -772,25 +772,25 @@ msgstr ""
 msgid "Contracts"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:832
+#: ./src/Controller/ContractsController.php:834
 msgid "Handover Protocols"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:880
+#: ./src/Controller/ContractsController.php:882
 #: ./templates/ContractVersions/view.php:40
 msgid "indefinitely"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:912
+#: ./src/Controller/ContractsController.php:914
 #: ./src/Controller/CustomersController.php:728
 msgid "Invalid type of document."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:925
+#: ./src/Controller/ContractsController.php:927
 msgid "Invalid contract version to be executed."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:939
+#: ./src/Controller/ContractsController.php:941
 msgid "Invalid contract version to be terminated."
 msgstr ""
 
@@ -1377,21 +1377,21 @@ msgstr ""
 msgid "The task type could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:305
+#: ./src/Controller/TasksController.php:335
 msgid "none"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:419
-#: ./src/Controller/TasksController.php:575
+#: ./src/Controller/TasksController.php:449
+#: ./src/Controller/TasksController.php:605
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:423
-#: ./src/Controller/TasksController.php:579
+#: ./src/Controller/TasksController.php:453
+#: ./src/Controller/TasksController.php:609
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:504
+#: ./src/Controller/TasksController.php:534
 #: ./src/Model/Enum/AddressType.php:41
 #: ./templates/Commissions/view.php:100
 #: ./templates/ContractStates/view.php:193
@@ -1403,7 +1403,7 @@ msgstr ""
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:517
+#: ./src/Controller/TasksController.php:547
 #: ./src/Model/Enum/CustomerMessageType.php:27
 #: ./src/Utility/ServiceChangeMessageBuilder.php:163
 #: ./templates/Customers/view.php:337
@@ -1415,7 +1415,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:518
+#: ./src/Controller/TasksController.php:548
 #: ./src/Utility/ServiceChangeMessageBuilder.php:164
 #: ./templates/Customers/view.php:386
 #: ./templates/Phones/view.php:43
@@ -1426,31 +1426,31 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:657
+#: ./src/Controller/TasksController.php:687
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:660
+#: ./src/Controller/TasksController.php:690
 msgid "The task could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:717
+#: ./src/Controller/TasksController.php:747
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:718
+#: ./src/Controller/TasksController.php:748
 msgid "You have changes in task # {0}"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:730
+#: ./src/Controller/TasksController.php:760
 msgid "Notification email sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:734
+#: ./src/Controller/TasksController.php:764
 msgid "The notification email could not be sent."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:325
+#: ./src/Controller/TasksController.php:355
 msgid "There was {0} unfinished task found that does not have a dealer assigned."
 msgid_plural "There were {0} unfinished tasks found that do not have a dealer assigned."
 msgstr[0] ""
@@ -2032,7 +2032,7 @@ msgid "Account change"
 msgstr ""
 
 #: ./src/Model/Enum/HistoricalConnectionSource.php:30
-#: ./templates/layout/default.php:148
+#: ./templates/layout/default.php:149
 msgid "RADIUS"
 msgstr ""
 
@@ -2404,11 +2404,11 @@ msgstr ""
 #: ./templates/IpAddresses/bulk_reassignment.php:76
 #: ./templates/IpAddresses/edit.php:12
 #: ./templates/IpAddresses/index.php:31
-#: ./templates/IpAddresses/view.php:10
+#: ./templates/IpAddresses/view.php:12
 #: ./templates/IpNetworks/add.php:12
 #: ./templates/IpNetworks/edit.php:12
 #: ./templates/IpNetworks/index.php:35
-#: ./templates/IpNetworks/view.php:10
+#: ./templates/IpNetworks/view.php:12
 #: ./templates/Labels/add.php:14
 #: ./templates/Labels/edit.php:14
 #: ./templates/Labels/index.php:45
@@ -2438,11 +2438,11 @@ msgstr ""
 #: ./templates/RemovedIpAddresses/add.php:12
 #: ./templates/RemovedIpAddresses/edit.php:12
 #: ./templates/RemovedIpAddresses/index.php:36
-#: ./templates/RemovedIpAddresses/view.php:10
+#: ./templates/RemovedIpAddresses/view.php:12
 #: ./templates/RemovedIpNetworks/add.php:12
 #: ./templates/RemovedIpNetworks/edit.php:12
 #: ./templates/RemovedIpNetworks/index.php:36
-#: ./templates/RemovedIpNetworks/view.php:10
+#: ./templates/RemovedIpNetworks/view.php:12
 #: ./templates/ServiceOverrides/add.php:15
 #: ./templates/ServiceOverrides/edit.php:14
 #: ./templates/ServiceOverrides/index.php:65
@@ -2511,11 +2511,11 @@ msgstr ""
 #: ./templates/IpAddresses/bulk_reassignment.php:73
 #: ./templates/IpAddresses/edit.php:33
 #: ./templates/IpAddresses/index.php:29
-#: ./templates/IpAddresses/view.php:55
+#: ./templates/IpAddresses/view.php:57
 #: ./templates/RemovedIpAddresses/add.php:32
 #: ./templates/RemovedIpAddresses/edit.php:40
 #: ./templates/RemovedIpAddresses/index.php:33
-#: ./templates/RemovedIpAddresses/view.php:67
+#: ./templates/RemovedIpAddresses/view.php:69
 #: ./templates/element/Contracts/IpAddresses.php:19
 #: ./templates/element/Contracts/RemovedIpAddresses.php:15
 msgid "IP Address"
@@ -2749,10 +2749,10 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:172
 #: ./templates/IpAddresses/edit.php:16
 #: ./templates/IpAddresses/index.php:67
-#: ./templates/IpAddresses/view.php:19
+#: ./templates/IpAddresses/view.php:21
 #: ./templates/IpNetworks/edit.php:16
 #: ./templates/IpNetworks/index.php:72
-#: ./templates/IpNetworks/view.php:19
+#: ./templates/IpNetworks/view.php:21
 #: ./templates/Labels/edit.php:18
 #: ./templates/Labels/index.php:84
 #: ./templates/Labels/view.php:22
@@ -2769,10 +2769,10 @@ msgstr ""
 #: ./templates/Queues/view.php:112
 #: ./templates/RemovedIpAddresses/edit.php:17
 #: ./templates/RemovedIpAddresses/index.php:73
-#: ./templates/RemovedIpAddresses/view.php:20
+#: ./templates/RemovedIpAddresses/view.php:22
 #: ./templates/RemovedIpNetworks/edit.php:17
 #: ./templates/RemovedIpNetworks/index.php:71
-#: ./templates/RemovedIpNetworks/view.php:20
+#: ./templates/RemovedIpNetworks/view.php:22
 #: ./templates/ServiceOverrides/edit.php:31
 #: ./templates/ServiceOverrides/index.php:117
 #: ./templates/ServiceOverrides/view.php:32
@@ -2884,9 +2884,9 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:132
 #: ./templates/IpAddresses/bulk_reassignment.php:71
 #: ./templates/IpAddresses/index.php:27
-#: ./templates/IpAddresses/view.php:39
+#: ./templates/IpAddresses/view.php:41
 #: ./templates/IpNetworks/index.php:31
-#: ./templates/IpNetworks/view.php:48
+#: ./templates/IpNetworks/view.php:50
 #: ./templates/Labels/view.php:99
 #: ./templates/Logins/index.php:27
 #: ./templates/Logins/view.php:39
@@ -2895,9 +2895,9 @@ msgstr ""
 #: ./templates/Phones/index.php:27
 #: ./templates/Phones/view.php:39
 #: ./templates/RemovedIpAddresses/index.php:31
-#: ./templates/RemovedIpAddresses/view.php:50
+#: ./templates/RemovedIpAddresses/view.php:52
 #: ./templates/RemovedIpNetworks/index.php:31
-#: ./templates/RemovedIpNetworks/view.php:51
+#: ./templates/RemovedIpNetworks/view.php:53
 #: ./templates/ServiceTypes/view.php:162
 #: ./templates/Services/view.php:84
 #: ./templates/SoldEquipments/index.php:31
@@ -3256,15 +3256,15 @@ msgstr ""
 #: ./templates/HistoricalConnections/view.php:35
 #: ./templates/HistoricalConnections/view.php:139
 #: ./templates/IpAddresses/bulk_reassignment.php:70
-#: ./templates/IpAddresses/view.php:32
-#: ./templates/IpNetworks/view.php:40
+#: ./templates/IpAddresses/view.php:34
+#: ./templates/IpNetworks/view.php:42
 #: ./templates/Labels/view.php:98
 #: ./templates/Logins/view.php:32
 #: ./templates/Overviews/overview_of_contracts.php:70
 #: ./templates/Overviews/overview_of_dealer_commissions.php:58
 #: ./templates/Phones/view.php:32
-#: ./templates/RemovedIpAddresses/view.php:43
-#: ./templates/RemovedIpNetworks/view.php:43
+#: ./templates/RemovedIpAddresses/view.php:45
+#: ./templates/RemovedIpNetworks/view.php:45
 #: ./templates/ServiceTypes/view.php:161
 #: ./templates/Services/view.php:83
 #: ./templates/SoldEquipments/view.php:43
@@ -3295,12 +3295,12 @@ msgstr ""
 #: ./templates/HistoricalConnections/index.php:38
 #: ./templates/HistoricalConnections/view.php:46
 #: ./templates/IpAddresses/bulk_reassignment.php:72
-#: ./templates/IpAddresses/view.php:43
-#: ./templates/IpNetworks/view.php:52
+#: ./templates/IpAddresses/view.php:45
+#: ./templates/IpNetworks/view.php:54
 #: ./templates/Labels/view.php:100
 #: ./templates/Overviews/overview_of_dealer_commissions.php:60
-#: ./templates/RemovedIpAddresses/view.php:55
-#: ./templates/RemovedIpNetworks/view.php:57
+#: ./templates/RemovedIpAddresses/view.php:57
+#: ./templates/RemovedIpNetworks/view.php:59
 #: ./templates/ServiceOverrides/view.php:73
 #: ./templates/Services/view.php:85
 #: ./templates/SoldEquipments/view.php:55
@@ -3364,12 +3364,12 @@ msgstr ""
 #: ./templates/Customers/view.php:499
 #: ./templates/Customers/view.php:580
 #: ./templates/Emails/view.php:65
-#: ./templates/IpAddresses/view.php:106
-#: ./templates/IpNetworks/view.php:101
+#: ./templates/IpAddresses/view.php:112
+#: ./templates/IpNetworks/view.php:106
 #: ./templates/Labels/view.php:101
 #: ./templates/Phones/view.php:65
-#: ./templates/RemovedIpAddresses/view.php:103
-#: ./templates/RemovedIpNetworks/view.php:106
+#: ./templates/RemovedIpAddresses/view.php:108
+#: ./templates/RemovedIpNetworks/view.php:111
 #: ./templates/Services/view.php:96
 #: ./templates/element/Contracts/Billings.php:34
 #: ./templates/element/Contracts/ContractVersions.php:20
@@ -3631,8 +3631,8 @@ msgstr ""
 msgid "Gps X"
 msgstr ""
 
-#: ./templates/Api/NetworkManagementSystemBridge/access_points.php:10
-#: ./templates/Api/NetworkManagementSystemBridge/ip_address_ranges.php:10
+#: ./templates/Api/NetworkManagementSystemBridge/access_points.php:15
+#: ./templates/Api/NetworkManagementSystemBridge/ip_address_ranges.php:15
 #: ./templates/Billings/bulk_service_change.php:47
 #: ./templates/Commissions/view.php:102
 #: ./templates/ContractStates/view.php:195
@@ -3642,10 +3642,10 @@ msgstr ""
 #: ./templates/HistoricalConnections/index.php:41
 #: ./templates/HistoricalConnections/view.php:82
 #: ./templates/HistoricalConnections/view.php:141
-#: ./templates/IpAddresses/view.php:83
-#: ./templates/IpNetworks/view.php:78
-#: ./templates/RemovedIpAddresses/view.php:80
-#: ./templates/RemovedIpNetworks/view.php:83
+#: ./templates/IpAddresses/view.php:89
+#: ./templates/IpNetworks/view.php:83
+#: ./templates/RemovedIpAddresses/view.php:85
+#: ./templates/RemovedIpNetworks/view.php:88
 #: ./templates/ServiceTypes/view.php:167
 #: ./templates/TaskStates/view.php:69
 #: ./templates/TaskTypes/view.php:65
@@ -3654,31 +3654,31 @@ msgstr ""
 msgid "Access Point"
 msgstr ""
 
-#: ./templates/Api/NetworkManagementSystemBridge/ip_address_ranges.php:17
-#: ./templates/IpAddresses/view.php:90
-#: ./templates/IpNetworks/view.php:85
-#: ./templates/RemovedIpAddresses/view.php:87
-#: ./templates/RemovedIpNetworks/view.php:90
+#: ./templates/Api/NetworkManagementSystemBridge/ip_address_ranges.php:22
+#: ./templates/IpAddresses/view.php:96
+#: ./templates/IpNetworks/view.php:90
+#: ./templates/RemovedIpAddresses/view.php:92
+#: ./templates/RemovedIpNetworks/view.php:95
 msgid "Range"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:53
-#: ./templates/layout/default.php:226
+#: ./templates/layout/default.php:227
 msgid "Light"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:54
-#: ./templates/layout/default.php:227
+#: ./templates/layout/default.php:228
 msgid "Dark"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:55
-#: ./templates/layout/default.php:228
+#: ./templates/layout/default.php:229
 msgid "Contrast"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:56
-#: ./templates/layout/default.php:229
+#: ./templates/layout/default.php:230
 msgid "Legacy"
 msgstr ""
 
@@ -3697,7 +3697,7 @@ msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:17
 #: ./templates/Settings/index.php:7
-#: ./templates/layout/default.php:168
+#: ./templates/layout/default.php:169
 msgid "Settings"
 msgstr ""
 
@@ -4331,6 +4331,7 @@ msgid "Delete Contract Version"
 msgstr ""
 
 #: ./templates/ContractVersions/view.php:38
+#: ./templates/Contracts/map.php:11
 #: ./templates/Contracts/print.php:35
 #: ./templates/Contracts/view.php:134
 #: ./templates/ServiceOverrides/view.php:61
@@ -4561,14 +4562,13 @@ msgstr ""
 #: ./templates/Customers/view.php:149
 #: ./templates/Customers/view.php:824
 #: ./templates/Tasks/index.php:83
-#: ./templates/Tasks/map.php:10
-#: ./templates/layout/default.php:138
+#: ./templates/Tasks/map.php:30
+#: ./templates/layout/default.php:139
 msgid "Tasks"
 msgstr ""
 
 #: ./templates/Contracts/view.php:196
-#: ./templates/Tasks/index.php:82
-msgid "Map"
+msgid "Network Map"
 msgstr ""
 
 #: ./templates/Contracts/view.php:288
@@ -4606,7 +4606,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:410
 #: ./templates/Customers/view.php:688
 #: ./templates/IpAddresses/index.php:20
-#: ./templates/IpAddresses/view.php:22
+#: ./templates/IpAddresses/view.php:24
 msgid "New IP Address"
 msgstr ""
 
@@ -4628,7 +4628,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:438
 #: ./templates/Customers/view.php:717
 #: ./templates/IpNetworks/index.php:21
-#: ./templates/IpNetworks/view.php:27
+#: ./templates/IpNetworks/view.php:29
 msgid "New IP Network"
 msgstr ""
 
@@ -4640,7 +4640,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:464
 #: ./templates/Customers/view.php:744
 #: ./templates/RemovedIpAddresses/index.php:21
-#: ./templates/RemovedIpAddresses/view.php:30
+#: ./templates/RemovedIpAddresses/view.php:32
 msgid "New Removed IP Address"
 msgstr ""
 
@@ -4652,7 +4652,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:477
 #: ./templates/Customers/view.php:758
 #: ./templates/RemovedIpNetworks/index.php:21
-#: ./templates/RemovedIpNetworks/view.php:30
+#: ./templates/RemovedIpNetworks/view.php:32
 msgid "New Removed IP Network"
 msgstr ""
 
@@ -5129,7 +5129,7 @@ msgstr ""
 
 #: ./templates/Customers/identity_number_check.php:8
 #: ./templates/Customers/index.php:63
-#: ./templates/layout/default.php:133
+#: ./templates/layout/default.php:134
 msgid "Customers"
 msgstr ""
 
@@ -5509,7 +5509,7 @@ msgstr ""
 #: ./templates/IpAddresses/add_from_range.php:14
 #: ./templates/IpAddresses/bulk_reassignment.php:16
 #: ./templates/IpAddresses/edit.php:18
-#: ./templates/IpAddresses/view.php:21
+#: ./templates/IpAddresses/view.php:23
 #: ./templates/Overviews/index.php:120
 msgid "List IP Addresses"
 msgstr ""
@@ -5524,10 +5524,10 @@ msgstr ""
 
 #: ./templates/IpAddresses/add_from_range.php:62
 #: ./templates/IpAddresses/bulk_reassignment.php:47
-#: ./templates/IpAddresses/view.php:78
-#: ./templates/IpNetworks/view.php:73
-#: ./templates/RemovedIpAddresses/view.php:75
-#: ./templates/RemovedIpNetworks/view.php:78
+#: ./templates/IpAddresses/view.php:81
+#: ./templates/IpNetworks/view.php:75
+#: ./templates/RemovedIpAddresses/view.php:77
+#: ./templates/RemovedIpNetworks/view.php:80
 #: ./templates/element/Contracts/IpAddresses.php:24
 #: ./templates/element/Contracts/IpNetworks.php:22
 msgid "IP Address Range"
@@ -5543,10 +5543,10 @@ msgid "Reassigned IP Address"
 msgstr ""
 
 #: ./templates/IpAddresses/bulk_reassignment.php:75
-#: ./templates/IpAddresses/view.php:59
-#: ./templates/IpNetworks/view.php:69
-#: ./templates/RemovedIpAddresses/view.php:71
-#: ./templates/RemovedIpNetworks/view.php:74
+#: ./templates/IpAddresses/view.php:61
+#: ./templates/IpNetworks/view.php:71
+#: ./templates/RemovedIpAddresses/view.php:73
+#: ./templates/RemovedIpNetworks/view.php:76
 #: ./templates/element/Contracts/IpAddresses.php:20
 #: ./templates/element/Contracts/IpNetworks.php:20
 #: ./templates/element/Contracts/RemovedIpAddresses.php:16
@@ -5559,22 +5559,22 @@ msgid "Reassign IP Address"
 msgstr ""
 
 #: ./templates/IpAddresses/edit.php:25
-#: ./templates/IpAddresses/view.php:12
+#: ./templates/IpAddresses/view.php:14
 msgid "Edit IP Address"
 msgstr ""
 
-#: ./templates/IpAddresses/view.php:17
+#: ./templates/IpAddresses/view.php:19
 msgid "Delete IP Address"
 msgstr ""
 
-#: ./templates/IpAddresses/view.php:63
+#: ./templates/IpAddresses/view.php:65
 #: ./templates/element/Contracts/IpAddresses.php:23
 msgid "Device"
 msgstr ""
 
 #: ./templates/IpNetworks/add.php:14
 #: ./templates/IpNetworks/edit.php:19
-#: ./templates/IpNetworks/view.php:22
+#: ./templates/IpNetworks/view.php:24
 #: ./templates/Overviews/index.php:125
 msgid "List IP Networks"
 msgstr ""
@@ -5586,22 +5586,22 @@ msgstr ""
 #: ./templates/IpNetworks/add.php:32
 #: ./templates/IpNetworks/edit.php:37
 #: ./templates/IpNetworks/index.php:33
-#: ./templates/IpNetworks/view.php:65
+#: ./templates/IpNetworks/view.php:67
 #: ./templates/RemovedIpNetworks/add.php:32
 #: ./templates/RemovedIpNetworks/edit.php:40
 #: ./templates/RemovedIpNetworks/index.php:33
-#: ./templates/RemovedIpNetworks/view.php:70
+#: ./templates/RemovedIpNetworks/view.php:72
 #: ./templates/element/Contracts/IpNetworks.php:19
 #: ./templates/element/Contracts/RemovedIpNetworks.php:15
 msgid "IP Network"
 msgstr ""
 
 #: ./templates/IpNetworks/edit.php:29
-#: ./templates/IpNetworks/view.php:12
+#: ./templates/IpNetworks/view.php:14
 msgid "Edit IP Network"
 msgstr ""
 
-#: ./templates/IpNetworks/view.php:17
+#: ./templates/IpNetworks/view.php:19
 msgid "Delete IP Network"
 msgstr ""
 
@@ -5702,7 +5702,7 @@ msgid "Delete Login"
 msgstr ""
 
 #: ./templates/Overviews/index.php:7
-#: ./templates/layout/default.php:163
+#: ./templates/layout/default.php:164
 msgid "Overviews"
 msgstr ""
 
@@ -5765,14 +5765,14 @@ msgstr ""
 #: ./templates/Overviews/index.php:130
 #: ./templates/RemovedIpAddresses/add.php:14
 #: ./templates/RemovedIpAddresses/edit.php:22
-#: ./templates/RemovedIpAddresses/view.php:25
+#: ./templates/RemovedIpAddresses/view.php:27
 msgid "List Removed IP Addresses"
 msgstr ""
 
 #: ./templates/Overviews/index.php:135
 #: ./templates/RemovedIpNetworks/add.php:14
 #: ./templates/RemovedIpNetworks/edit.php:22
-#: ./templates/RemovedIpNetworks/view.php:25
+#: ./templates/RemovedIpNetworks/view.php:27
 msgid "List Removed IP Networks"
 msgstr ""
 
@@ -6054,11 +6054,11 @@ msgid "Add Removed IP Address"
 msgstr ""
 
 #: ./templates/RemovedIpAddresses/edit.php:32
-#: ./templates/RemovedIpAddresses/view.php:12
+#: ./templates/RemovedIpAddresses/view.php:14
 msgid "Edit Removed IP Address"
 msgstr ""
 
-#: ./templates/RemovedIpAddresses/view.php:17
+#: ./templates/RemovedIpAddresses/view.php:19
 msgid "Delete Removed IP Address"
 msgstr ""
 
@@ -6067,11 +6067,11 @@ msgid "Add Removed IP Network"
 msgstr ""
 
 #: ./templates/RemovedIpNetworks/edit.php:32
-#: ./templates/RemovedIpNetworks/view.php:12
+#: ./templates/RemovedIpNetworks/view.php:14
 msgid "Edit Removed IP Network"
 msgstr ""
 
-#: ./templates/RemovedIpNetworks/view.php:17
+#: ./templates/RemovedIpNetworks/view.php:19
 msgid "Delete Removed IP Network"
 msgstr ""
 
@@ -6531,7 +6531,7 @@ msgstr ""
 
 #: ./templates/Tasks/add.php:17
 #: ./templates/Tasks/edit.php:22
-#: ./templates/Tasks/map.php:9
+#: ./templates/Tasks/map.php:29
 #: ./templates/Tasks/view.php:17
 msgid "List Tasks"
 msgstr ""
@@ -6561,13 +6561,17 @@ msgstr ""
 msgid "Expandable Text"
 msgstr ""
 
+#: ./templates/Tasks/index.php:82
+msgid "Map"
+msgstr ""
+
 #: ./templates/Tasks/index.php:93
 #: ./templates/Tasks/view.php:130
 #: ./templates/email/html/task_notification.php:141
 msgid "Summary Text"
 msgstr ""
 
-#: ./templates/Tasks/map.php:12
+#: ./templates/Tasks/map.php:32
 msgid "No open task has a place on the map."
 msgstr ""
 
@@ -6718,7 +6722,7 @@ msgid "{0} or earlier"
 msgstr ""
 
 #: ./templates/element/Settings/FormFields.php:34
-#: ./templates/layout/default.php:224
+#: ./templates/layout/default.php:225
 msgid "Default"
 msgstr ""
 
@@ -6785,37 +6789,37 @@ msgstr ""
 msgid "View Task"
 msgstr ""
 
-#: ./templates/layout/default.php:128
+#: ./templates/layout/default.php:129
 msgid "Dashboard"
 msgstr ""
 
-#: ./templates/layout/default.php:143
+#: ./templates/layout/default.php:144
 msgid "Bookkeeping"
 msgstr ""
 
-#: ./templates/layout/default.php:179
-#: ./templates/layout/default.php:185
-#: ./templates/layout/default.php:190
+#: ./templates/layout/default.php:180
+#: ./templates/layout/default.php:186
+#: ./templates/layout/default.php:191
 msgid "Old NMS"
 msgstr ""
 
-#: ./templates/layout/default.php:196
+#: ./templates/layout/default.php:197
 msgid "Network Management System"
 msgstr ""
 
-#: ./templates/layout/default.php:255
+#: ./templates/layout/default.php:256
 msgid "Logout"
 msgstr ""
 
-#: ./templates/layout/default.php:278
+#: ./templates/layout/default.php:279
 msgid "Changelog"
 msgstr ""
 
-#: ./templates/layout/default.php:279
+#: ./templates/layout/default.php:280
 msgid "Source Code"
 msgstr ""
 
-#: ./templates/layout/default.php:281
+#: ./templates/layout/default.php:282
 msgid "Version"
 msgstr ""
 
