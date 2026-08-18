@@ -55,13 +55,15 @@ final class TaskMap
     /**
      * Draws the tasks still waiting to be done.
      *
+     * @param string|null $taskTypeId Only tasks of this type, when one is named.
+     * @param string|null $taskStateId Only tasks in this state, when one is named.
      * @return \Maps\DrawnMap
      */
-    public function draw(): DrawnMap
+    public function draw(?string $taskTypeId = null, ?string $taskStateId = null): DrawnMap
     {
         $markers = [];
 
-        foreach ($this->tasks() as $task) {
+        foreach ($this->tasks($taskTypeId, $taskStateId) as $task) {
             $position = $this->positionOf($task);
 
             if ($position === null) {
@@ -83,9 +85,11 @@ final class TaskMap
     /**
      * The open tasks, most pressing first, with everything a bubble reads.
      *
+     * @param string|null $taskTypeId Only tasks of this type, when one is named.
+     * @param string|null $taskStateId Only tasks in this state, when one is named.
      * @return iterable<\App\Model\Entity\Task>
      */
-    private function tasks(): iterable
+    private function tasks(?string $taskTypeId, ?string $taskStateId): iterable
     {
         /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query */
         $query = $this->fetchTable('Tasks')
@@ -103,6 +107,14 @@ final class TaskMap
                     'strategy' => Association::STRATEGY_SELECT,
                 ],
             ]);
+
+        if ($taskTypeId !== null) {
+            $query->where(['Tasks.task_type_id' => $taskTypeId]);
+        }
+
+        if ($taskStateId !== null) {
+            $query->where(['Tasks.task_state_id' => $taskStateId]);
+        }
 
         return $query
             ->orderByDesc('Tasks.priority')

@@ -553,4 +553,72 @@ class TasksControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertSame([], $this->viewVariable('mapMarkers'));
     }
+
+    /**
+     * The map can be narrowed the way the listing can, so a round is planned around one kind of
+     * task rather than around all of them at once.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::map()
+     */
+    public function testMapNarrowsToOneTaskType(): void
+    {
+        // The one the fixtures carry is written first, because the helper takes whichever type it
+        // finds and there must still be only one to find.
+        $first = $this->openTask([]);
+
+        $types = $this->getTableLocator()->get('TaskTypes');
+        $other = $types->saveOrFail($types->newEntity([
+            'name' => 'Something else',
+            'customer_required' => true,
+            'contract_required' => true,
+        ]));
+        $this->openTask(['task_type_id' => $other->get('id')]);
+
+        $this->assertNotSame($first->get('task_type_id'), $other->get('id'));
+
+        $this->login();
+        $this->get('/tasks/map');
+
+        $this->assertResponseOk();
+        $this->assertCount(2, (array)$this->viewVariable('mapMarkers'), 'Both are drawn unasked.');
+
+        $this->get('/tasks/map?task_type_id=' . $other->get('id'));
+
+        $this->assertResponseOk();
+        $this->assertCount(1, (array)$this->viewVariable('mapMarkers'));
+    }
+
+    /**
+     * A finished state is not offered on the map, because the map draws what is still waiting and
+     * picking one could only ever answer with an empty map.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::map()
+     */
+    public function testMapOffersOnlyTheStatesItCanDraw(): void
+    {
+        $states = $this->getTableLocator()->get('TaskStates');
+        $waiting = $states->saveOrFail($states->newEntity([
+            'name' => 'Waiting',
+            'color' => '#ff8800',
+            'completed' => false,
+            'priority' => 1,
+        ]));
+        $finished = $states->saveOrFail($states->newEntity([
+            'name' => 'Done',
+            'color' => '#cccccc',
+            'completed' => true,
+            'priority' => 1,
+        ]));
+
+        $this->login();
+        $this->get('/tasks/map');
+
+        $this->assertResponseOk();
+
+        $offered = array_keys((array)$this->viewVariable('taskStates')->toArray());
+        $this->assertContains($waiting->get('id'), $offered);
+        $this->assertNotContains($finished->get('id'), $offered);
+    }
 }

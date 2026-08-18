@@ -38,10 +38,40 @@ class TasksController extends AppController
      */
     public function map(): void
     {
-        $map = (new TaskMap(new HtmlHelper(new View())))->draw();
+        $taskTypeId = $this->askedFor('task_type_id');
+        $taskStateId = $this->askedFor('task_state_id');
+
+        $map = (new TaskMap(new HtmlHelper(new View())))->draw($taskTypeId, $taskStateId);
+
+        // The same form the listing carries, cut down to what a map can be narrowed by.
+        $filterForm = new Form();
+        $filterForm->setData([
+            'task_type_id' => $taskTypeId,
+            'task_state_id' => $taskStateId,
+        ]);
+
+        $taskTypes = $this->Tasks->TaskTypes->find('list', order: ['name']);
+        // A finished state is not offered: the map draws what is still waiting, so picking one
+        // could only ever answer with an empty map.
+        $taskStates = $this->Tasks->TaskStates->find('list', order: ['name'])
+            ->where(['TaskStates.completed' => false]);
 
         $this->set('mapMarkers', $map->markers);
         $this->set('mapPolylines', $map->polylines);
+        $this->set(compact('filterForm', 'taskTypes', 'taskStates'));
+    }
+
+    /**
+     * What the query asks the map to be narrowed by, where it asks for something that could be.
+     *
+     * @param string $field Name of the query parameter.
+     * @return string|null
+     */
+    private function askedFor(string $field): ?string
+    {
+        $asked = $this->getRequest()->getQuery($field);
+
+        return is_string($asked) && Validation::uuid($asked) ? $asked : null;
     }
 
     /**
