@@ -39,6 +39,7 @@ class AppUsersFixture extends TestFixture
                 'activation_date' => 1698515383,
                 'tos_date' => 1698515383,
                 'active' => 1,
+                'holds_tasks' => 1,
                 'is_superuser' => 1,
                 'role' => 'Lorem ipsum dolor sit amet',
                 'created' => 1698515383,

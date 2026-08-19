@@ -143,6 +143,37 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * An account that does not take work on is not offered as somebody to hand a task to.
+     *
+     * Being able to sign in is a different question from being somebody a task can belong to: an
+     * integration signs in too, and offering it here is only ever a way to lose a task.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::add()
+     */
+    public function testAddDoesNotOfferAnAccountThatHoldsNoTasks(): void
+    {
+        $users = $this->getTableLocator()->get('AppUsers');
+        /** @var \App\Model\Entity\AppUser $integration */
+        $integration = $users->get($this->firstId('AppUsers'));
+        $users->saveOrFail($users->patchEntity($integration, ['holds_tasks' => false]));
+
+        $this->login();
+        $this->get('/tasks/add');
+
+        $this->assertResponseOk();
+
+        /** @var iterable<array<string, mixed>> $offered */
+        $offered = $this->viewVariable('users');
+        $offeredIds = [];
+        foreach ($offered as $option) {
+            $offeredIds[] = $option['value'];
+        }
+
+        $this->assertNotContains($integration->id, $offeredIds);
+    }
+
+    /**
      * The form of an existing task renders.
      *
      * @return void

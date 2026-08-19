@@ -458,7 +458,10 @@ class TasksController extends AppController
         $users = $this->Tasks->Users
             ->find()
             ->where([
-                'active' => true, // only active users
+                // somebody a task can be handed to: one who can still sign in, and whose account
+                // is one that takes work on rather than one an integration signs in as
+                'active' => true,
+                'holds_tasks' => true,
             ])
             ->orderBy([
                 'active' => 'DESC',

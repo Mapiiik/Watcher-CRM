@@ -12,6 +12,7 @@ use CakeDC\Users\Model\Entity\User;
  * @property string|null $first_name
  * @property string|null $last_name
  * @property bool $active
+ * @property bool $holds_tasks
  * @property \Cake\I18n\Date|null $activation_date
  * @property \Cake\I18n\Date|null $tos_date
  * @property string|null $secret

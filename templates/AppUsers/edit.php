@@ -41,6 +41,7 @@ $user = ${$tableAlias};
                         echo $this->Form->control('role', ['options' => $user->getRoleOptions()]);
                         echo $this->Form->control('customer_id', ['type' => 'text']);
                         echo $this->Form->control('active');
+                        echo $this->Form->control('holds_tasks');
                     ?>
                     </div>
                     <div class="column">

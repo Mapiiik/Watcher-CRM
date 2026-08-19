@@ -74,6 +74,10 @@ $user = ${$tableAlias};
                             <th><?= __d('app_users', 'Active') ?></th>
                             <td><?= $user->active ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __d('app_users', 'Holds Tasks') ?></th>
+                            <td><?= $user->holds_tasks ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column">
