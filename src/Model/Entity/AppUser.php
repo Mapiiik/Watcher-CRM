@@ -40,7 +40,12 @@ class AppUser extends User
     ];
 
     /**
-     * getter for name of user
+     * What the person is called.
+     *
+     * The account name belongs to {@see _getNameForLists()} rather than here. A list has to tell
+     * two people of the same name apart, and says which account each one is; a cell standing in a
+     * row that is already about one task has nothing to tell apart, and the brackets only get in
+     * the way of reading it.
      *
      * @return string
      */
@@ -51,11 +56,14 @@ class AppUser extends User
             $this->last_name,
         ]));
 
-        return $name . ' (' . $this->username . ')';
+        // An account with no name filled in still has to read as somebody rather than as an empty
+        // cell, and the only thing left to call it by is the account itself.
+        return $name !== '' ? $name : (string)$this->username;
     }
 
     /**
-     * getter for full name with company and with customer number for lists
+     * What the person is called, surname first and with the account named, for picking one out
+     * of a list.
      *
      * @return string
      */
