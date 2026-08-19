@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-19 14:01+0200\n"
+"POT-Creation-Date: 2026-08-19 20:03+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1341,42 +1341,6 @@ msgstr ""
 msgid "The sold equipment could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TaskStatesController.php:83
-#: ./src/Controller/TaskStatesController.php:107
-msgid "The task state has been saved."
-msgstr ""
-
-#: ./src/Controller/TaskStatesController.php:87
-#: ./src/Controller/TaskStatesController.php:111
-msgid "The task state could not be saved. Please, try again."
-msgstr ""
-
-#: ./src/Controller/TaskStatesController.php:130
-msgid "The task state has been deleted."
-msgstr ""
-
-#: ./src/Controller/TaskStatesController.php:133
-msgid "The task state could not be deleted. Please, try again."
-msgstr ""
-
-#: ./src/Controller/TaskTypesController.php:79
-#: ./src/Controller/TaskTypesController.php:103
-msgid "The task type has been saved."
-msgstr ""
-
-#: ./src/Controller/TaskTypesController.php:83
-#: ./src/Controller/TaskTypesController.php:107
-msgid "The task type could not be saved. Please, try again."
-msgstr ""
-
-#: ./src/Controller/TaskTypesController.php:126
-msgid "The task type has been deleted."
-msgstr ""
-
-#: ./src/Controller/TaskTypesController.php:129
-msgid "The task type could not be deleted. Please, try again."
-msgstr ""
-
 #: ./src/Controller/TasksController.php:337
 msgid "none"
 msgstr ""
@@ -1408,8 +1372,6 @@ msgstr ""
 #: ./src/Utility/ServiceChangeMessageBuilder.php:163
 #: ./templates/Customers/view.php:337
 #: ./templates/Emails/view.php:43
-#: ./templates/TaskStates/view.php:65
-#: ./templates/TaskTypes/view.php:61
 #: ./templates/Tasks/view.php:63
 #: ./templates/email/html/task_notification.php:52
 msgid "Email"
@@ -1419,8 +1381,6 @@ msgstr ""
 #: ./src/Utility/ServiceChangeMessageBuilder.php:164
 #: ./templates/Customers/view.php:386
 #: ./templates/Phones/view.php:43
-#: ./templates/TaskStates/view.php:66
-#: ./templates/TaskTypes/view.php:62
 #: ./templates/Tasks/view.php:67
 #: ./templates/email/html/task_notification.php:56
 msgid "Phone"
@@ -1503,80 +1463,45 @@ msgstr ""
 msgid "Debts Beyond Automatic Blocking"
 msgstr ""
 
-#: ./src/Dashboard/Card/MyTasksCard.php:38
-msgid "My Tasks"
-msgstr ""
-
-#: ./src/Dashboard/Card/MyTasksCard.php:61
-#: ./src/Dashboard/Card/MyTasksCard.php:68
-msgid "You are holding no unfinished tasks."
-msgstr ""
-
-#: ./src/Dashboard/Card/PressingTasksCard.php:31
-msgid "Urgent and Overdue Tasks"
-msgstr ""
-
-#: ./src/Dashboard/Card/PressingTasksCard.php:54
-msgid "Nothing is urgent or running late."
-msgstr ""
-
-#: ./src/Dashboard/Card/StaleTasksCard.php:31
-msgid "Stale Tasks"
-msgstr ""
-
-#: ./src/Dashboard/Card/StaleTasksCard.php:54
-msgid "Nothing has been left lying around."
-msgstr ""
-
-#: ./src/Dashboard/Card/UnassignedTasksCard.php:28
-msgid "Unassigned Tasks"
-msgstr ""
-
-#: ./src/Dashboard/Card/UnassignedTasksCard.php:49
-msgid "Every unfinished task has somebody holding it."
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:80
+#: ./src/Model/Entity/AppUser.php:88
 #: ./src/Model/Enum/LoginRights.php:28
 #: ./templates/Contracts/view.php:556
 #: ./templates/Contracts/view.php:603
 #: ./templates/Customers/view.php:835
-#: ./templates/TaskStates/view.php:62
-#: ./templates/TaskTypes/view.php:58
 #: ./templates/Tasks/view.php:54
 #: ./templates/email/html/task_notification.php:48
 msgid "User"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:81
+#: ./src/Model/Entity/AppUser.php:89
 msgid "Customer Service Technician"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:82
+#: ./src/Model/Entity/AppUser.php:90
 msgid "Network Technician"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:83
+#: ./src/Model/Entity/AppUser.php:91
 msgid "Network Manager"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:84
+#: ./src/Model/Entity/AppUser.php:92
 msgid "Sales Representative"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:85
+#: ./src/Model/Entity/AppUser.php:93
 msgid "Sales Manager"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:86
+#: ./src/Model/Entity/AppUser.php:94
 msgid "Bookkeeper"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:87
+#: ./src/Model/Entity/AppUser.php:95
 msgid "Admin"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:88
+#: ./src/Model/Entity/AppUser.php:96
 msgid "API"
 msgstr ""
 
@@ -1607,23 +1532,6 @@ msgstr ""
 
 #: ./src/Model/Entity/Customer.php:520
 msgid "Accounting profile data not available."
-msgstr ""
-
-#: ./src/Model/Entity/Task.php:211
-msgid "Low"
-msgstr ""
-
-#: ./src/Model/Entity/Task.php:212
-#: ./src/Model/Enum/ServiceCriticalityLevel.php:25
-msgid "Normal"
-msgstr ""
-
-#: ./src/Model/Entity/Task.php:213
-msgid "High"
-msgstr ""
-
-#: ./src/Model/Entity/Task.php:214
-msgid "Urgent"
 msgstr ""
 
 #: ./src/Model/Enum/AddressNumberType.php:24
@@ -1794,16 +1702,6 @@ msgstr ""
 #: ./templates/Services/view.php:69
 #: ./templates/Services/view.php:126
 #: ./templates/Services/view.php:127
-#: ./templates/TaskStates/index.php:39
-#: ./templates/TaskStates/view.php:45
-#: ./templates/TaskTypes/index.php:36
-#: ./templates/TaskTypes/index.php:37
-#: ./templates/TaskTypes/view.php:37
-#: ./templates/TaskTypes/view.php:41
-#: ./templates/TaskTypes/view.php:146
-#: ./templates/TaskTypes/view.php:147
-#: ./templates/TaskTypes/view.php:148
-#: ./templates/TaskTypes/view.php:149
 #: ./templates/element/AddressChecks/installation_address.php:42
 #: ./templates/element/Contracts/Billings.php:72
 #: ./templates/element/Contracts/Billings.php:73
@@ -1920,16 +1818,6 @@ msgstr ""
 #: ./templates/Services/view.php:69
 #: ./templates/Services/view.php:126
 #: ./templates/Services/view.php:127
-#: ./templates/TaskStates/index.php:39
-#: ./templates/TaskStates/view.php:45
-#: ./templates/TaskTypes/index.php:36
-#: ./templates/TaskTypes/index.php:37
-#: ./templates/TaskTypes/view.php:37
-#: ./templates/TaskTypes/view.php:41
-#: ./templates/TaskTypes/view.php:146
-#: ./templates/TaskTypes/view.php:147
-#: ./templates/TaskTypes/view.php:148
-#: ./templates/TaskTypes/view.php:149
 #: ./templates/element/AddressChecks/installation_address.php:42
 #: ./templates/element/Contracts/Billings.php:72
 #: ./templates/element/Contracts/Billings.php:73
@@ -2088,6 +1976,10 @@ msgstr ""
 msgid "Specialist"
 msgstr ""
 
+#: ./src/Model/Enum/ServiceCriticalityLevel.php:25
+msgid "Normal"
+msgstr ""
+
 #: ./src/Model/Enum/ServiceCriticalityLevel.php:26
 msgid "Important"
 msgstr ""
@@ -2170,11 +2062,11 @@ msgid_plural "The override duration must not exceed {0} days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Model/Table/TasksTable.php:260
+#: ./src/Model/Table/TasksTable.php:101
 msgid "The specified task type requires the assignment of an customer."
 msgstr ""
 
-#: ./src/Model/Table/TasksTable.php:283
+#: ./src/Model/Table/TasksTable.php:110
 msgid "The specified task type requires the assignment of an contract."
 msgstr ""
 
@@ -2475,17 +2367,6 @@ msgstr ""
 #: ./templates/SoldEquipments/edit.php:13
 #: ./templates/SoldEquipments/index.php:36
 #: ./templates/SoldEquipments/view.php:10
-#: ./templates/TaskStates/add.php:10
-#: ./templates/TaskStates/edit.php:10
-#: ./templates/TaskStates/index.php:30
-#: ./templates/TaskStates/view.php:10
-#: ./templates/TaskStates/view.php:74
-#: ./templates/TaskTypes/add.php:10
-#: ./templates/TaskTypes/edit.php:10
-#: ./templates/TaskTypes/index.php:29
-#: ./templates/TaskTypes/view.php:10
-#: ./templates/TaskTypes/view.php:70
-#: ./templates/TaskTypes/view.php:140
 #: ./templates/Tasks/add.php:16
 #: ./templates/Tasks/edit.php:16
 #: ./templates/Tasks/index.php:103
@@ -2594,10 +2475,6 @@ msgstr ""
 #: ./templates/Settings/edit.php:42
 #: ./templates/SoldEquipments/add.php:38
 #: ./templates/SoldEquipments/edit.php:46
-#: ./templates/TaskStates/add.php:26
-#: ./templates/TaskStates/edit.php:31
-#: ./templates/TaskTypes/add.php:25
-#: ./templates/TaskTypes/edit.php:30
 #: ./templates/Tasks/add.php:88
 #: ./templates/Tasks/edit.php:102
 msgid "Submit"
@@ -2678,12 +2555,6 @@ msgstr ""
 #: ./templates/Services/view.php:140
 #: ./templates/SoldEquipments/edit.php:15
 #: ./templates/SoldEquipments/index.php:76
-#: ./templates/TaskStates/edit.php:12
-#: ./templates/TaskStates/index.php:48
-#: ./templates/TaskStates/view.php:121
-#: ./templates/TaskTypes/edit.php:12
-#: ./templates/TaskTypes/index.php:46
-#: ./templates/TaskTypes/view.php:117
 #: ./templates/Tasks/edit.php:18
 #: ./templates/element/Contracts/Billings.php:87
 #: ./templates/element/Contracts/BorrowedEquipments.php:62
@@ -2800,14 +2671,6 @@ msgstr ""
 #: ./templates/SoldEquipments/edit.php:18
 #: ./templates/SoldEquipments/index.php:78
 #: ./templates/SoldEquipments/view.php:20
-#: ./templates/TaskStates/edit.php:14
-#: ./templates/TaskStates/index.php:50
-#: ./templates/TaskStates/view.php:19
-#: ./templates/TaskStates/view.php:123
-#: ./templates/TaskTypes/edit.php:14
-#: ./templates/TaskTypes/index.php:48
-#: ./templates/TaskTypes/view.php:19
-#: ./templates/TaskTypes/view.php:119
 #: ./templates/Tasks/edit.php:20
 #: ./templates/Tasks/view.php:15
 #: ./templates/element/Contracts/Billings.php:89
@@ -2855,8 +2718,6 @@ msgstr ""
 #: ./templates/ServiceTypes/index.php:11
 #: ./templates/Services/index.php:11
 #: ./templates/SoldEquipments/index.php:11
-#: ./templates/TaskStates/index.php:11
-#: ./templates/TaskTypes/index.php:11
 #: ./templates/Tasks/index.php:40
 msgid "Search"
 msgstr ""
@@ -2914,8 +2775,6 @@ msgstr ""
 #: ./templates/Services/view.php:84
 #: ./templates/SoldEquipments/index.php:31
 #: ./templates/SoldEquipments/view.php:50
-#: ./templates/TaskStates/view.php:68
-#: ./templates/TaskTypes/view.php:64
 #: ./templates/Tasks/index.php:96
 #: ./templates/Tasks/view.php:86
 #: ./templates/element/Contracts/Billings.php:18
@@ -2976,11 +2835,6 @@ msgstr ""
 #: ./templates/Services/index.php:58
 #: ./templates/Services/view.php:131
 #: ./templates/SoldEquipments/index.php:69
-#: ./templates/TaskStates/index.php:41
-#: ./templates/TaskStates/view.php:112
-#: ./templates/TaskTypes/index.php:39
-#: ./templates/TaskTypes/view.php:108
-#: ./templates/TaskTypes/view.php:152
 #: ./templates/Tasks/index.php:166
 #: ./templates/element/Contracts/Billings.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:45
@@ -3043,11 +2897,6 @@ msgstr ""
 #: ./templates/Services/index.php:60
 #: ./templates/Services/view.php:135
 #: ./templates/SoldEquipments/index.php:71
-#: ./templates/TaskStates/index.php:43
-#: ./templates/TaskStates/view.php:116
-#: ./templates/TaskTypes/index.php:41
-#: ./templates/TaskTypes/view.php:112
-#: ./templates/TaskTypes/view.php:156
 #: ./templates/Tasks/index.php:170
 #: ./templates/element/Contracts/Billings.php:82
 #: ./templates/element/Contracts/BorrowedEquipments.php:53
@@ -3090,8 +2939,6 @@ msgstr ""
 #: ./templates/ServiceTypes/index.php:91
 #: ./templates/Services/index.php:77
 #: ./templates/SoldEquipments/index.php:88
-#: ./templates/TaskStates/index.php:60
-#: ./templates/TaskTypes/index.php:58
 #: ./templates/Tasks/index.php:182
 msgid "first"
 msgstr ""
@@ -3126,8 +2973,6 @@ msgstr ""
 #: ./templates/ServiceTypes/index.php:92
 #: ./templates/Services/index.php:78
 #: ./templates/SoldEquipments/index.php:89
-#: ./templates/TaskStates/index.php:61
-#: ./templates/TaskTypes/index.php:59
 #: ./templates/Tasks/index.php:183
 msgid "previous"
 msgstr ""
@@ -3162,8 +3007,6 @@ msgstr ""
 #: ./templates/ServiceTypes/index.php:94
 #: ./templates/Services/index.php:80
 #: ./templates/SoldEquipments/index.php:91
-#: ./templates/TaskStates/index.php:63
-#: ./templates/TaskTypes/index.php:61
 #: ./templates/Tasks/index.php:185
 msgid "next"
 msgstr ""
@@ -3198,8 +3041,6 @@ msgstr ""
 #: ./templates/ServiceTypes/index.php:95
 #: ./templates/Services/index.php:81
 #: ./templates/SoldEquipments/index.php:92
-#: ./templates/TaskStates/index.php:64
-#: ./templates/TaskTypes/index.php:62
 #: ./templates/Tasks/index.php:186
 msgid "last"
 msgstr ""
@@ -3234,8 +3075,6 @@ msgstr ""
 #: ./templates/ServiceTypes/index.php:98
 #: ./templates/Services/index.php:84
 #: ./templates/SoldEquipments/index.php:95
-#: ./templates/TaskStates/index.php:67
-#: ./templates/TaskTypes/index.php:65
 #: ./templates/Tasks/index.php:189
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
@@ -3280,8 +3119,6 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:161
 #: ./templates/Services/view.php:83
 #: ./templates/SoldEquipments/view.php:43
-#: ./templates/TaskStates/view.php:67
-#: ./templates/TaskTypes/view.php:63
 #: ./templates/Tasks/view.php:75
 #: ./templates/element/AddressChecks/duplicate_address.php:11
 #: ./templates/element/AddressChecks/installation_address.php:11
@@ -3344,9 +3181,6 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:35
 #: ./templates/ServiceTypes/view.php:110
 #: ./templates/Services/view.php:36
-#: ./templates/TaskStates/view.php:32
-#: ./templates/TaskTypes/view.php:32
-#: ./templates/TaskTypes/view.php:135
 msgid "Name"
 msgstr ""
 
@@ -3465,8 +3299,6 @@ msgstr ""
 #: ./templates/Customers/view.php:569
 #: ./templates/Customers/view.php:829
 #: ./templates/ServiceTypes/view.php:163
-#: ./templates/TaskStates/view.php:59
-#: ./templates/TaskTypes/view.php:55
 #: ./templates/Tasks/index.php:88
 msgid "Number"
 msgstr ""
@@ -3659,8 +3491,6 @@ msgstr ""
 #: ./templates/RemovedIpAddresses/view.php:85
 #: ./templates/RemovedIpNetworks/view.php:88
 #: ./templates/ServiceTypes/view.php:167
-#: ./templates/TaskStates/view.php:69
-#: ./templates/TaskTypes/view.php:65
 #: ./templates/Tasks/view.php:71
 #: ./templates/email/html/task_notification.php:60
 msgid "Access Point"
@@ -3843,8 +3673,6 @@ msgstr ""
 #: ./templates/Contracts/view.php:601
 #: ./templates/Customers/view.php:833
 #: ./templates/Services/view.php:86
-#: ./templates/TaskStates/view.php:64
-#: ./templates/TaskTypes/view.php:60
 #: ./templates/Tasks/view.php:136
 #: ./templates/element/Contracts/Billings.php:24
 #: ./templates/email/html/task_notification.php:147
@@ -4148,7 +3976,6 @@ msgstr ""
 #: ./templates/ContractStates/edit.php:40
 #: ./templates/ContractStates/index.php:32
 #: ./templates/ContractStates/view.php:54
-#: ./templates/TaskTypes/view.php:136
 msgid "Usable for New Contracts"
 msgstr ""
 
@@ -4215,22 +4042,18 @@ msgstr ""
 
 #: ./templates/ContractStates/view.php:48
 #: ./templates/Labels/view.php:51
-#: ./templates/TaskStates/view.php:36
 msgid "Color"
 msgstr ""
 
 #: ./templates/ContractStates/view.php:58
-#: ./templates/TaskTypes/view.php:137
 msgid "Active Services"
 msgstr ""
 
 #: ./templates/ContractStates/view.php:62
-#: ./templates/TaskTypes/view.php:138
 msgid "Billed"
 msgstr ""
 
 #: ./templates/ContractStates/view.php:66
-#: ./templates/TaskTypes/view.php:139
 msgid "Blocked"
 msgstr ""
 
@@ -4701,7 +4524,6 @@ msgstr ""
 #: ./templates/Contracts/view.php:552
 #: ./templates/Contracts/view.php:598
 #: ./templates/Customers/view.php:830
-#: ./templates/TaskStates/view.php:60
 #: ./templates/Tasks/view.php:36
 #: ./templates/email/html/task_notification.php:36
 msgid "Task Type"
@@ -4710,7 +4532,6 @@ msgstr ""
 #: ./templates/Contracts/view.php:553
 #: ./templates/Contracts/view.php:599
 #: ./templates/Customers/view.php:831
-#: ./templates/TaskTypes/view.php:57
 #: ./templates/Tasks/index.php:91
 #: ./templates/Tasks/view.php:47
 #: ./templates/email/html/task_notification.php:44
@@ -4721,8 +4542,6 @@ msgstr ""
 #: ./templates/Contracts/view.php:600
 #: ./templates/CustomerMessages/view.php:60
 #: ./templates/Customers/view.php:832
-#: ./templates/TaskStates/view.php:63
-#: ./templates/TaskTypes/view.php:59
 #: ./templates/Tasks/view.php:126
 #: ./templates/email/html/task_notification.php:137
 msgid "Subject"
@@ -6402,16 +6221,10 @@ msgid "Task Related"
 msgstr ""
 
 #: ./templates/Settings/index.php:262
-#: ./templates/TaskStates/add.php:11
-#: ./templates/TaskStates/edit.php:16
-#: ./templates/TaskStates/view.php:21
 msgid "List Task States"
 msgstr ""
 
 #: ./templates/Settings/index.php:267
-#: ./templates/TaskTypes/add.php:11
-#: ./templates/TaskTypes/edit.php:16
-#: ./templates/TaskTypes/view.php:21
 msgid "List Task Types"
 msgstr ""
 
@@ -6430,108 +6243,6 @@ msgstr ""
 
 #: ./templates/SoldEquipments/view.php:17
 msgid "Delete Sold Equipment"
-msgstr ""
-
-#: ./templates/TaskStates/add.php:18
-msgid "Add Task State"
-msgstr ""
-
-#: ./templates/TaskStates/edit.php:23
-#: ./templates/TaskStates/view.php:12
-msgid "Edit Task State"
-msgstr ""
-
-#: ./templates/TaskStates/index.php:20
-#: ./templates/TaskStates/view.php:22
-msgid "New Task State"
-msgstr ""
-
-#: ./templates/TaskStates/index.php:21
-msgid "Task States"
-msgstr ""
-
-#: ./templates/TaskStates/view.php:17
-msgid "Delete Task State"
-msgstr ""
-
-#: ./templates/TaskStates/view.php:40
-#: ./templates/TaskStates/view.php:61
-#: ./templates/TaskTypes/view.php:56
-#: ./templates/Tasks/view.php:43
-#: ./templates/email/html/task_notification.php:40
-msgid "Priority"
-msgstr ""
-
-#: ./templates/TaskStates/view.php:44
-msgid "Completed"
-msgstr ""
-
-#: ./templates/TaskStates/view.php:54
-#: ./templates/TaskTypes/view.php:50
-msgid "Related Tasks"
-msgstr ""
-
-#: ./templates/TaskStates/view.php:70
-#: ./templates/TaskTypes/view.php:66
-#: ./templates/Tasks/view.php:106
-#: ./templates/email/html/task_notification.php:93
-msgid "Start Date"
-msgstr ""
-
-#: ./templates/TaskStates/view.php:71
-#: ./templates/TaskTypes/view.php:67
-#: ./templates/Tasks/view.php:110
-#: ./templates/element/Dashboard/task_list.php:58
-#: ./templates/email/html/task_notification.php:97
-msgid "Estimated Date"
-msgstr ""
-
-#: ./templates/TaskStates/view.php:72
-#: ./templates/TaskTypes/view.php:68
-#: ./templates/Tasks/view.php:114
-#: ./templates/email/html/task_notification.php:101
-msgid "Critical Date"
-msgstr ""
-
-#: ./templates/TaskStates/view.php:73
-#: ./templates/TaskTypes/view.php:69
-#: ./templates/Tasks/view.php:118
-#: ./templates/email/html/task_notification.php:105
-msgid "Finish Date"
-msgstr ""
-
-#: ./templates/TaskTypes/add.php:18
-msgid "Add Task Type"
-msgstr ""
-
-#: ./templates/TaskTypes/edit.php:23
-#: ./templates/TaskTypes/view.php:12
-msgid "Edit Task Type"
-msgstr ""
-
-#: ./templates/TaskTypes/index.php:20
-#: ./templates/TaskTypes/view.php:22
-msgid "New Task Type"
-msgstr ""
-
-#: ./templates/TaskTypes/index.php:21
-msgid "Task Types"
-msgstr ""
-
-#: ./templates/TaskTypes/view.php:17
-msgid "Delete Task Type"
-msgstr ""
-
-#: ./templates/TaskTypes/view.php:36
-msgid "Customer Required"
-msgstr ""
-
-#: ./templates/TaskTypes/view.php:40
-msgid "Contract Required"
-msgstr ""
-
-#: ./templates/TaskTypes/view.php:129
-msgid "Related Contract States"
 msgstr ""
 
 #: ./templates/Tasks/add.php:17
@@ -6586,6 +6297,32 @@ msgstr ""
 
 #: ./templates/Tasks/view.php:31
 msgid "Task No."
+msgstr ""
+
+#: ./templates/Tasks/view.php:43
+#: ./templates/email/html/task_notification.php:40
+msgid "Priority"
+msgstr ""
+
+#: ./templates/Tasks/view.php:106
+#: ./templates/email/html/task_notification.php:93
+msgid "Start Date"
+msgstr ""
+
+#: ./templates/Tasks/view.php:110
+#: ./templates/element/Dashboard/task_list.php:58
+#: ./templates/email/html/task_notification.php:97
+msgid "Estimated Date"
+msgstr ""
+
+#: ./templates/Tasks/view.php:114
+#: ./templates/email/html/task_notification.php:101
+msgid "Critical Date"
+msgstr ""
+
+#: ./templates/Tasks/view.php:118
+#: ./templates/email/html/task_notification.php:105
+msgid "Finish Date"
 msgstr ""
 
 #: ./templates/cell/ServiceOverridesStatus/display.php:17

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-19 16:57+0200\n"
+"POT-Creation-Date: 2026-08-19 20:03+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -101,35 +101,35 @@ msgstr ""
 
 #: ./plugins/Tasks/templates/TaskStates/add.php:10
 #: ./plugins/Tasks/templates/TaskStates/edit.php:10
-#: ./plugins/Tasks/templates/TaskStates/index.php:30
+#: ./plugins/Tasks/templates/TaskStates/index.php:34
 msgid "Actions"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/add.php:11
-#: ./plugins/Tasks/templates/TaskStates/edit.php:16
+#: ./plugins/Tasks/templates/TaskStates/add.php:12
+#: ./plugins/Tasks/templates/TaskStates/edit.php:20
 msgid "List Task States"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/add.php:18
+#: ./plugins/Tasks/templates/TaskStates/add.php:22
 msgid "Add Task State"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/add.php:26
-#: ./plugins/Tasks/templates/TaskStates/edit.php:31
+#: ./plugins/Tasks/templates/TaskStates/add.php:30
+#: ./plugins/Tasks/templates/TaskStates/edit.php:38
 msgid "Submit"
 msgstr ""
 
 #: ./plugins/Tasks/templates/TaskStates/edit.php:12
-#: ./plugins/Tasks/templates/TaskStates/index.php:48
+#: ./plugins/Tasks/templates/TaskStates/index.php:52
 msgid "Delete"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/edit.php:14
-#: ./plugins/Tasks/templates/TaskStates/index.php:50
+#: ./plugins/Tasks/templates/TaskStates/edit.php:15
+#: ./plugins/Tasks/templates/TaskStates/index.php:54
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/edit.php:23
+#: ./plugins/Tasks/templates/TaskStates/edit.php:30
 msgid "Edit Task State"
 msgstr ""
 
@@ -137,47 +137,47 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:20
+#: ./plugins/Tasks/templates/TaskStates/index.php:21
 msgid "New Task State"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:21
+#: ./plugins/Tasks/templates/TaskStates/index.php:25
 msgid "Task States"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:39
+#: ./plugins/Tasks/templates/TaskStates/index.php:43
 msgid "Yes"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:39
+#: ./plugins/Tasks/templates/TaskStates/index.php:43
 msgid "No"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:41
+#: ./plugins/Tasks/templates/TaskStates/index.php:45
 msgid "View"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:43
+#: ./plugins/Tasks/templates/TaskStates/index.php:47
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:60
+#: ./plugins/Tasks/templates/TaskStates/index.php:64
 msgid "first"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:61
+#: ./plugins/Tasks/templates/TaskStates/index.php:65
 msgid "previous"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:63
+#: ./plugins/Tasks/templates/TaskStates/index.php:67
 msgid "next"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:64
+#: ./plugins/Tasks/templates/TaskStates/index.php:68
 msgid "last"
 msgstr ""
 
-#: ./plugins/Tasks/templates/TaskStates/index.php:67
+#: ./plugins/Tasks/templates/TaskStates/index.php:71
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
