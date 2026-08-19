@@ -38,16 +38,16 @@ class TasksController extends AppController
      */
     public function map(): void
     {
-        $taskTypeId = $this->askedFor('task_type_id');
-        $taskStateId = $this->askedFor('task_state_id');
+        $taskTypeIds = $this->askedFor('task_type_ids');
+        $taskStateIds = $this->askedFor('task_state_ids');
 
-        $map = (new TaskMap(new HtmlHelper(new View())))->draw($taskTypeId, $taskStateId);
+        $map = (new TaskMap(new HtmlHelper(new View())))->draw($taskTypeIds, $taskStateIds);
 
         // The same form the listing carries, cut down to what a map can be narrowed by.
         $filterForm = new Form();
         $filterForm->setData([
-            'task_type_id' => $taskTypeId,
-            'task_state_id' => $taskStateId,
+            'task_type_ids' => $taskTypeIds,
+            'task_state_ids' => $taskStateIds,
         ]);
 
         $taskTypes = $this->Tasks->TaskTypes->find('list', order: ['name']);
@@ -65,13 +65,33 @@ class TasksController extends AppController
      * What the query asks the map to be narrowed by, where it asks for something that could be.
      *
      * @param string $field Name of the query parameter.
-     * @return string|null
+     * @return array<string> Identifiers, empty where nothing narrows the map.
      */
-    private function askedFor(string $field): ?string
+    private function askedFor(string $field): array
     {
-        $asked = $this->getRequest()->getQuery($field);
+        return $this->identifiers($this->getRequest()->getQuery($field));
+    }
 
-        return is_string($asked) && Validation::uuid($asked) ? $asked : null;
+    /**
+     * The identifiers among what was asked for, and nothing else.
+     *
+     * A filter holding several answers and one holding a single answer are read the same way,
+     * and whatever is not an identifier is dropped.
+     *
+     * @param mixed $asked What was asked for.
+     * @return array<string>
+     */
+    private function identifiers(mixed $asked): array
+    {
+        $identifiers = [];
+
+        foreach ((array)$asked as $identifier) {
+            if (is_string($identifier) && Validation::uuid($identifier)) {
+                $identifiers[] = $identifier;
+            }
+        }
+
+        return $identifiers;
     }
 
     /**
@@ -123,16 +143,16 @@ class TasksController extends AppController
                 $this->getRequest()->getQuery('user_id'),
             );
         }
-        if (!is_null($this->getRequest()->getQuery('task_type_id'))) {
+        if (!is_null($this->getRequest()->getQuery('task_type_ids'))) {
             $this->getRequest()->getSession()->write(
-                'Config.Tasks.filter.task_type_id',
-                $this->getRequest()->getQuery('task_type_id'),
+                'Config.Tasks.filter.task_type_ids',
+                $this->identifiers($this->getRequest()->getQuery('task_type_ids')),
             );
         }
-        if (!is_null($this->getRequest()->getQuery('task_state_id'))) {
+        if (!is_null($this->getRequest()->getQuery('task_state_ids'))) {
             $this->getRequest()->getSession()->write(
-                'Config.Tasks.filter.task_state_id',
-                $this->getRequest()->getQuery('task_state_id'),
+                'Config.Tasks.filter.task_state_ids',
+                $this->identifiers($this->getRequest()->getQuery('task_state_ids')),
             );
         }
         if (!is_null($this->getRequest()->getQuery('access_point_id'))) {
@@ -198,18 +218,18 @@ class TasksController extends AppController
         }
 
         // filter by task type
-        $task_type_id = $filter['task_type_id'] ?? null;
-        if (is_string($task_type_id) && Validation::uuid($task_type_id)) {
+        $task_type_ids = $this->identifiers($filter['task_type_ids'] ?? null);
+        if ($task_type_ids !== []) {
             $conditions[] = [
-                'Tasks.task_type_id' => $task_type_id,
+                'Tasks.task_type_id IN' => $task_type_ids,
             ];
         }
 
         // filter by task state
-        $task_state_id = $filter['task_state_id'] ?? null;
-        if (is_string($task_state_id) && Validation::uuid($task_state_id)) {
+        $task_state_ids = $this->identifiers($filter['task_state_ids'] ?? null);
+        if ($task_state_ids !== []) {
             $conditions[] = [
-                'Tasks.task_state_id' => $task_state_id,
+                'Tasks.task_state_id IN' => $task_state_ids,
             ];
         }
 
@@ -246,8 +266,8 @@ class TasksController extends AppController
             'pressing' => $pressing,
             'stale' => $stale,
             'user_id' => $user_id,
-            'task_type_id' => $task_type_id,
-            'task_state_id' => $task_state_id,
+            'task_type_ids' => $task_type_ids,
+            'task_state_ids' => $task_state_ids,
             'access_point_id' => $access_point_id,
             'search' => $search,
         ]);
@@ -362,8 +382,8 @@ class TasksController extends AppController
                     ),
                     ['?' => [
                         'user_id' => 'none',
-                        'task_type_id' => '',
-                        'task_state_id' => '',
+                        'task_type_ids' => '',
+                        'task_state_ids' => '',
                         'access_point_id' => '',
                         'show_completed' => 0,
                     ]],

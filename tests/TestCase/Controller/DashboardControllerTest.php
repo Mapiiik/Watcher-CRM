@@ -251,7 +251,7 @@ class DashboardControllerTest extends TestCase
         $this->assertSame(0, $query['show_completed']);
         // a filter the operator last used must not still be narrowing the listing
         $this->assertSame('', $query['user_id']);
-        $this->assertSame('', $query['task_state_id']);
+        $this->assertSame('', $query['task_state_ids']);
         $this->assertSame('', $query['search']);
     }
 

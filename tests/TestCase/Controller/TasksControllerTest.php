@@ -427,6 +427,63 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * The listing narrows to the types asked for, however many of them there are.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testIndexNarrowsToTheTaskTypesAsked(): void
+    {
+        $first = $this->openTask([]);
+        $other = $this->taskType('Something else');
+        $third = $this->taskType('Something else again');
+
+        $second = $this->openTask(['task_type_id' => $other]);
+        $fourth = $this->openTask(['task_type_id' => $third]);
+
+        $this->login();
+        $this->get('/tasks?user_id=&task_type_ids[]=' . $other . '&task_type_ids[]=' . $third);
+
+        $this->assertResponseOk();
+
+        $listed = $this->listedTaskIds();
+        $this->assertNotContains($first->id, $listed);
+        $this->assertContains($second->id, $listed);
+        $this->assertContains($fourth->id, $listed);
+    }
+
+    /**
+     * A filter cleared by hand asks for everything, and is remembered as such. An empty selection
+     * arrives as the parameter with nothing in it, which is what the hidden field beside the list
+     * submits - without it there would be no way back from a filter once set.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testIndexClearedOfItsTaskTypeFilterListsThemAll(): void
+    {
+        $first = $this->openTask([]);
+        $second = $this->openTask(['task_type_id' => $this->taskType('Something else')]);
+
+        // what the operator asked for the last time they were here
+        $this->session(['Config.Tasks.filter' => [
+            'user_id' => '',
+            'task_type_ids' => [$second->get('task_type_id')],
+        ]]);
+
+        $this->login();
+        $this->get('/tasks');
+
+        $this->assertResponseOk();
+        $this->assertNotContains($first->id, $this->listedTaskIds());
+
+        $this->get('/tasks?task_type_ids=');
+
+        $this->assertResponseOk();
+        $this->assertContains($first->id, $this->listedTaskIds());
+    }
+
+    /**
      * The two filters reach the form as booleans even where the request named neither.
      * `toBool()` answers `null` to a parameter that is not there, and the checkbox that
      * reads it back is declared as a plain bool.
@@ -481,6 +538,24 @@ class TasksControllerTest extends TestCase
         ]));
 
         return $task;
+    }
+
+    /**
+     * Another type of task, one the fixtures do not carry.
+     *
+     * @param string $name What it is called.
+     * @return string The identifier it was written under.
+     */
+    private function taskType(string $name): string
+    {
+        $types = $this->getTableLocator()->get('TaskTypes');
+
+        return $types->saveOrFail($types->newEntity([
+            'name' => $name,
+            // the tasks written by these tests name both
+            'customer_required' => true,
+            'contract_required' => true,
+        ]))->get('id');
     }
 
     /**
@@ -569,38 +644,60 @@ class TasksControllerTest extends TestCase
     }
 
     /**
-     * The map can be narrowed the way the listing can, so a round is planned around one kind of
-     * task rather than around all of them at once.
+     * The map can be narrowed the way the listing can, and to more than one kind of task at
+     * once - a round is planned around the work that goes together, which is seldom all of one
+     * type and nothing else.
      *
      * @return void
      * @link \App\Controller\TasksController::map()
      */
-    public function testMapNarrowsToOneTaskType(): void
+    public function testMapNarrowsToTheTaskTypesAsked(): void
     {
         // The one the fixtures carry is written first, because the helper takes whichever type it
         // finds and there must still be only one to find.
         $first = $this->openTask([]);
+        $other = $this->taskType('Something else');
+        $third = $this->taskType('Something else again');
 
-        $types = $this->getTableLocator()->get('TaskTypes');
-        $other = $types->saveOrFail($types->newEntity([
-            'name' => 'Something else',
-            'customer_required' => true,
-            'contract_required' => true,
-        ]));
-        $this->openTask(['task_type_id' => $other->get('id')]);
+        $this->openTask(['task_type_id' => $other]);
+        $this->openTask(['task_type_id' => $third]);
 
-        $this->assertNotSame($first->get('task_type_id'), $other->get('id'));
+        $this->assertNotSame($first->get('task_type_id'), $other);
 
         $this->login();
         $this->get('/tasks/map');
 
         $this->assertResponseOk();
-        $this->assertCount(2, (array)$this->viewVariable('mapMarkers'), 'Both are drawn unasked.');
+        $this->assertCount(3, (array)$this->viewVariable('mapMarkers'), 'All are drawn unasked.');
 
-        $this->get('/tasks/map?task_type_id=' . $other->get('id'));
+        $this->get('/tasks/map?task_type_ids[]=' . $other);
 
         $this->assertResponseOk();
         $this->assertCount(1, (array)$this->viewVariable('mapMarkers'));
+
+        $this->get('/tasks/map?task_type_ids[]=' . $other . '&task_type_ids[]=' . $third);
+
+        $this->assertResponseOk();
+        $this->assertCount(2, (array)$this->viewVariable('mapMarkers'));
+    }
+
+    /**
+     * A filter cleared by hand asks for everything. An empty selection reaches the map as the
+     * parameter with nothing in it, which is what the hidden field beside the list submits.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::map()
+     */
+    public function testMapClearedOfItsFilterDrawsEverything(): void
+    {
+        $this->openTask([]);
+        $this->openTask(['task_type_id' => $this->taskType('Something else')]);
+
+        $this->login();
+        $this->get('/tasks/map?task_type_ids=&task_state_ids=');
+
+        $this->assertResponseOk();
+        $this->assertCount(2, (array)$this->viewVariable('mapMarkers'));
     }
 
     /**

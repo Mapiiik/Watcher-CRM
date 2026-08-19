@@ -28,12 +28,12 @@ final class TaskMap extends TasksTaskMap
      * In no particular order: a marker is placed by its position and kept under its own key,
      * so nothing about the map depends on which task came first.
      *
-     * @param string|null $taskTypeId Only tasks of this type, when one is named.
-     * @param string|null $taskStateId Only tasks in this state, when one is named.
+     * @param array<string> $taskTypeIds Only tasks of these types, where any are named.
+     * @param array<string> $taskStateIds Only tasks in these states, where any are named.
      * @return iterable<\App\Model\Entity\Task>
      */
     #[Override]
-    protected function tasks(?string $taskTypeId, ?string $taskStateId): iterable
+    protected function tasks(array $taskTypeIds, array $taskStateIds): iterable
     {
         /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query */
         $query = $this->fetchTable('Tasks')
@@ -52,12 +52,12 @@ final class TaskMap extends TasksTaskMap
                 ],
             ]);
 
-        if ($taskTypeId !== null) {
-            $query->where(['Tasks.task_type_id' => $taskTypeId]);
+        if ($taskTypeIds !== []) {
+            $query->where(['Tasks.task_type_id IN' => $taskTypeIds]);
         }
 
-        if ($taskStateId !== null) {
-            $query->where(['Tasks.task_state_id' => $taskStateId]);
+        if ($taskStateIds !== []) {
+            $query->where(['Tasks.task_state_id IN' => $taskStateIds]);
         }
 
         return $query->all();

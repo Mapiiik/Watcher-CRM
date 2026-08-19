@@ -54,15 +54,15 @@ abstract class TaskMap
     /**
      * Draws the tasks still waiting to be done.
      *
-     * @param string|null $taskTypeId Only tasks of this type, when one is named.
-     * @param string|null $taskStateId Only tasks in this state, when one is named.
+     * @param array<string> $taskTypeIds Only tasks of these types, where any are named.
+     * @param array<string> $taskStateIds Only tasks in these states, where any are named.
      * @return \Maps\DrawnMap
      */
-    public function draw(?string $taskTypeId = null, ?string $taskStateId = null): DrawnMap
+    public function draw(array $taskTypeIds = [], array $taskStateIds = []): DrawnMap
     {
         $markers = [];
 
-        foreach ($this->tasks($taskTypeId, $taskStateId) as $task) {
+        foreach ($this->tasks($taskTypeIds, $taskStateIds) as $task) {
             $position = $this->positionOf($task);
 
             if ($position === null) {
@@ -87,11 +87,11 @@ abstract class TaskMap
      * In no particular order: a marker is placed by its position and kept under its own key,
      * so nothing about the map depends on which task came first.
      *
-     * @param string|null $taskTypeId Only tasks of this type, when one is named.
-     * @param string|null $taskStateId Only tasks in this state, when one is named.
+     * @param array<string> $taskTypeIds Only tasks of these types, where any are named.
+     * @param array<string> $taskStateIds Only tasks in these states, where any are named.
      * @return iterable<\App\Model\Entity\Task>
      */
-    abstract protected function tasks(?string $taskTypeId, ?string $taskStateId): iterable;
+    abstract protected function tasks(array $taskTypeIds, array $taskStateIds): iterable;
 
     /**
      * Where the task is to be done, or null where it cannot be put on a map at all.

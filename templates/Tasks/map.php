@@ -11,14 +11,20 @@
 <?= $this->Form->create($filterForm, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
     <div class="column">
-        <?= $this->Form->control('task_type_id', [
-            'empty' => true,
+        <?= $this->Form->control('task_type_ids', [
+            'label' => __('Task Type'),
+            'options' => $taskTypes,
+            'multiple' => 'multiple',
+            'style' => 'height: 100px;',
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
     <div class="column">
-        <?= $this->Form->control('task_state_id', [
-            'empty' => true,
+        <?= $this->Form->control('task_state_ids', [
+            'label' => __('Task State'),
+            'options' => $taskStates,
+            'multiple' => 'multiple',
+            'style' => 'height: 100px;',
             'onchange' => 'this.form.submit();',
         ]) ?>
     </div>
