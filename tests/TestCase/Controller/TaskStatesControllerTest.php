@@ -86,6 +86,27 @@ class TaskStatesControllerTest extends TestCase
     }
 
     /**
+     * The tasks in the state are listed on its card - the same table the task type card carries,
+     * each leaving out the column that would say the same thing on every row.
+     *
+     * @return void
+     * @link \App\Controller\TaskStatesController::view()
+     */
+    public function testViewListsTheTasksInTheState(): void
+    {
+        /** @var \App\Model\Entity\Task $task */
+        $task = $this->getTableLocator()->get('Tasks')->find()->firstOrFail();
+
+        $this->login();
+        $this->get('/task-states/view/' . $task->task_state_id);
+
+        $this->assertResponseOk();
+        // by identifier rather than by number: a task is numbered from one, and a page carries
+        // plenty of small numbers that say nothing about tasks
+        $this->assertResponseContains($task->id);
+    }
+
+    /**
      * The form for a new record renders.
      *
      * @return void

@@ -86,6 +86,27 @@ class TaskTypesControllerTest extends TestCase
     }
 
     /**
+     * The tasks of the type are listed on its card - the same table the task state card carries,
+     * each leaving out the column that would say the same thing on every row.
+     *
+     * @return void
+     * @link \App\Controller\TaskTypesController::view()
+     */
+    public function testViewListsTheTasksOfTheType(): void
+    {
+        /** @var \App\Model\Entity\Task $task */
+        $task = $this->getTableLocator()->get('Tasks')->find()->firstOrFail();
+
+        $this->login();
+        $this->get('/task-types/view/' . $task->task_type_id);
+
+        $this->assertResponseOk();
+        // by identifier rather than by number: a task is numbered from one, and a page carries
+        // plenty of small numbers that say nothing about tasks
+        $this->assertResponseContains($task->id);
+    }
+
+    /**
      * The form for a new record renders.
      *
      * @return void
