@@ -7,17 +7,17 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __d('tasks', 'Actions') ?></h4>
+            <h4 class="heading"><?= __d('app_tasks', 'Actions') ?></h4>
             <?= $this->AuthLink->postLink(
-                __d('tasks', 'Delete'),
+                __d('app_tasks', 'Delete'),
                 ['action' => 'delete', $taskType->id],
                 [
-                    'confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $taskType->id),
+                    'confirm' => __d('app_tasks', 'Are you sure you want to delete # {0}?', $taskType->id),
                     'class' => 'side-nav-item',
                 ],
             ) ?>
             <?= $this->AuthLink->link(
-                __d('tasks', 'List Task Types'),
+                __d('app_tasks', 'List Task Types'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
@@ -27,14 +27,14 @@
         <div class="taskTypes form content">
             <?= $this->Form->create($taskType) ?>
             <fieldset>
-                <legend><?= __d('tasks', 'Edit Task Type') ?></legend>
+                <legend><?= __d('app_tasks', 'Edit Task Type') ?></legend>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('customer_required');
                     echo $this->Form->control('contract_required');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__d('tasks', 'Submit')) ?>
+            <?= $this->Form->button(__d('app_tasks', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

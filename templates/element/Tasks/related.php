@@ -15,27 +15,27 @@
 <div class="table-responsive">
     <table>
         <tr>
-            <th><?= __d('tasks', 'Number') ?></th>
+            <th><?= __d('app_tasks', 'Number') ?></th>
             <?php if (!empty($task_type_column)) : ?>
-            <th><?= __d('tasks', 'Task Type') ?></th>
+            <th><?= __d('app_tasks', 'Task Type') ?></th>
             <?php endif; ?>
             <?php if (!empty($task_state_column)) : ?>
-            <th><?= __d('tasks', 'Task State') ?></th>
+            <th><?= __d('app_tasks', 'Task State') ?></th>
             <?php endif; ?>
-            <th><?= __d('tasks', 'Priority') ?></th>
-            <th><?= __d('tasks', 'User') ?></th>
-            <th><?= __d('tasks', 'Subject') ?></th>
-            <th><?= __d('tasks', 'Text') ?></th>
-            <th><?= __d('tasks', 'Email') ?></th>
-            <th><?= __d('tasks', 'Phone') ?></th>
-            <th><?= __d('tasks', 'Customer') ?></th>
-            <th><?= __d('tasks', 'Customer Number') ?></th>
-            <th><?= __d('tasks', 'Access Point') ?></th>
-            <th><?= __d('tasks', 'Start Date') ?></th>
-            <th><?= __d('tasks', 'Estimated Date') ?></th>
-            <th><?= __d('tasks', 'Critical Date') ?></th>
-            <th><?= __d('tasks', 'Finish Date') ?></th>
-            <th class="actions"><?= __d('tasks', 'Actions') ?></th>
+            <th><?= __d('app_tasks', 'Priority') ?></th>
+            <th><?= __d('app_tasks', 'User') ?></th>
+            <th><?= __d('app_tasks', 'Subject') ?></th>
+            <th><?= __d('app_tasks', 'Text') ?></th>
+            <th><?= __d('app_tasks', 'Email') ?></th>
+            <th><?= __d('app_tasks', 'Phone') ?></th>
+            <th><?= __d('app_tasks', 'Customer') ?></th>
+            <th><?= __d('app_tasks', 'Customer Number') ?></th>
+            <th><?= __d('app_tasks', 'Access Point') ?></th>
+            <th><?= __d('app_tasks', 'Start Date') ?></th>
+            <th><?= __d('app_tasks', 'Estimated Date') ?></th>
+            <th><?= __d('app_tasks', 'Critical Date') ?></th>
+            <th><?= __d('app_tasks', 'Finish Date') ?></th>
+            <th class="actions"><?= __d('app_tasks', 'Actions') ?></th>
         </tr>
         <?php foreach ($tasks as $task) : ?>
         <tr style="<?= $task->style ?>">
@@ -83,20 +83,20 @@
             <td><?= h($task->finish_date) ?></td>
             <td class="actions">
                 <?= $this->AuthLink->link(
-                    __d('tasks', 'View'),
+                    __d('app_tasks', 'View'),
                     ['controller' => 'Tasks', 'action' => 'view', $task->id],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __d('tasks', 'Edit'),
+                    __d('app_tasks', 'Edit'),
                     ['controller' => 'Tasks', 'action' => 'edit', $task->id],
                     ['class' => 'win-link'],
                 ) ?>
                 <?= $this->AuthLink->postLink(
-                    __d('tasks', 'Delete'),
+                    __d('app_tasks', 'Delete'),
                     ['controller' => 'Tasks', 'action' => 'delete', $task->id],
                     [
                         'confirm' => __d(
-                            'tasks',
+                            'app_tasks',
                             'Are you sure you want to delete # {0}?',
                             $task->number,
                         ),
