@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\TasksTable;
 use App\Test\Traits\TableTestTrait;
+use Cake\Datasource\EntityInterface;
 use Cake\TestSuite\TestCase;
 use Override;
 
@@ -21,6 +22,13 @@ class TasksTableTest extends TestCase
      * @var \App\Model\Table\TasksTable
      */
     protected $Tasks;
+
+    /**
+     * The customer the fixtures carry.
+     *
+     * @var string
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
      * Fixtures
@@ -91,5 +99,84 @@ class TasksTableTest extends TestCase
     public function testBuildRules(): void
     {
         $this->assertDanglingReferencesAreRefused($this->Tasks);
+    }
+
+    /**
+     * A type that insists on a customer refuses a task that names none, and takes the same task
+     * once it does.
+     *
+     * @return void
+     * @link \Tasks\Model\Rule\RequiredLinkRule::__invoke()
+     */
+    public function testATypeDemandingACustomerRefusesATaskWithoutOne(): void
+    {
+        $type = $this->taskType(['customer_required' => true, 'contract_required' => false]);
+
+        $refused = $this->Tasks->newEntity($this->task($type) + ['customer_id' => null]);
+        $this->assertFalse((bool)$this->Tasks->save($refused));
+        $this->assertArrayHasKey('isRequiredCustomerFilled', $refused->getError('customer_id'));
+
+        $taken = $this->Tasks->newEntity($this->task($type) + ['customer_id' => self::CUSTOMER_ID]);
+        $this->assertNotFalse($this->Tasks->save($taken), 'The link it asked for is there.');
+    }
+
+    /**
+     * The same for a contract, which is the second pair this application names.
+     *
+     * @return void
+     * @link \Tasks\Model\Rule\RequiredLinkRule::__invoke()
+     */
+    public function testATypeDemandingAContractRefusesATaskWithoutOne(): void
+    {
+        $type = $this->taskType(['customer_required' => false, 'contract_required' => true]);
+
+        $refused = $this->Tasks->newEntity($this->task($type) + ['contract_id' => null]);
+        $this->assertFalse((bool)$this->Tasks->save($refused));
+        $this->assertArrayHasKey('isRequiredContractFilled', $refused->getError('contract_id'));
+    }
+
+    /**
+     * A type that insists on nothing takes a task that names nothing, which is the branch that
+     * would quietly refuse everything if the flag were read the wrong way round.
+     *
+     * @return void
+     * @link \Tasks\Model\Rule\RequiredLinkRule::__invoke()
+     */
+    public function testATypeDemandingNothingTakesATaskWithNoLinks(): void
+    {
+        $type = $this->taskType(['customer_required' => false, 'contract_required' => false]);
+
+        $task = $this->Tasks->newEntity($this->task($type));
+        $this->assertNotFalse($this->Tasks->save($task));
+    }
+
+    /**
+     * A task type asking for exactly what it is given.
+     *
+     * @param array<string, mixed> $flags What this type insists on.
+     */
+    private function taskType(array $flags): EntityInterface
+    {
+        $types = $this->getTableLocator()->get('TaskTypes');
+
+        return $types->saveOrFail($types->newEntity($flags + ['name' => 'Written by the test']));
+    }
+
+    /**
+     * The least a task needs to be saved at all, so that what refuses it is the rule under test.
+     *
+     * @param \Cake\Datasource\EntityInterface $type The type it is filed under.
+     * @return array<string, mixed>
+     */
+    private function task(EntityInterface $type): array
+    {
+        $states = $this->getTableLocator()->get('TaskStates');
+
+        return [
+            'task_type_id' => $type->get('id'),
+            'task_state_id' => $states->find()->firstOrFail()->get('id'),
+            'subject' => 'Written by the test',
+            'priority' => 1,
+        ];
     }
 }
