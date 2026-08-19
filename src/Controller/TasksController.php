@@ -314,8 +314,11 @@ class TasksController extends AppController
 
         $tasks = $this->paginate($query);
 
+        // An account that holds no tasks can be named on none, so offering it could only ever
+        // answer with nothing. The ones greyed out below are the accounts that do hold tasks but
+        // can no longer be signed in to.
         $users = $this->Tasks->Users
-            ->find()
+            ->find('holdingTasks')
             ->orderBy([
                 'active' => 'DESC',
                 'last_name',
@@ -455,14 +458,11 @@ class TasksController extends AppController
             'first_name',
         ]);
         $contracts = [];
+        // Somebody a task can be handed to for the first time: one who can still sign in, and
+        // whose account is one that takes work on rather than one an integration signs in as.
         $users = $this->Tasks->Users
-            ->find()
-            ->where([
-                // somebody a task can be handed to: one who can still sign in, and whose account
-                // is one that takes work on rather than one an integration signs in as
-                'active' => true,
-                'holds_tasks' => true,
-            ])
+            ->find('active')
+            ->find('holdingTasks')
             ->orderBy([
                 'active' => 'DESC',
                 'last_name',
@@ -609,8 +609,11 @@ class TasksController extends AppController
             'first_name',
         ]);
         $contracts = [];
+        // An account that holds no tasks can be named on none, so offering it could only ever
+        // answer with nothing. The ones greyed out below are the accounts that do hold tasks but
+        // can no longer be signed in to.
         $users = $this->Tasks->Users
-            ->find()
+            ->find('holdingTasks')
             ->orderBy([
                 'active' => 'DESC',
                 'last_name',

@@ -29,6 +29,17 @@ class AppUsersTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
+        'app.TaskStates',
+        'app.TaskTypes',
+        'app.Tasks',
     ];
 
     /**
@@ -68,5 +79,68 @@ class AppUsersTableTest extends TestCase
     public function testValidationDefault(): void
     {
         $this->assertEmptyRecordIsRefused($this->AppUsers);
+    }
+
+    /**
+     * An account tasks still name cannot stop being one that holds them.
+     *
+     * The answer to "whose work was this" lives in the task, and it is read through the account. An
+     * account switched off while tasks still point at it leaves that answer half told, so the switch
+     * waits until the tasks have been moved.
+     *
+     * @return void
+     * @link \App\Model\Table\AppUsersTable::buildRules()
+     */
+    public function testHoldsTasksCannotBeTurnedOffWhileTasksNameTheAccount(): void
+    {
+        /** @var \App\Model\Entity\AppUser $user */
+        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+
+        $saved = $this->AppUsers->save($this->AppUsers->patchEntity($user, ['holds_tasks' => false]));
+
+        $this->assertFalse($saved);
+        $this->assertArrayHasKey('holdsNoTasks', $user->getError('holds_tasks'));
+    }
+
+    /**
+     * Once no task names it any more, the switch goes off.
+     *
+     * This is the other half of the rule above, and it is what the message asks for: move the tasks
+     * elsewhere first.
+     *
+     * @return void
+     * @link \App\Model\Table\AppUsersTable::buildRules()
+     */
+    public function testHoldsTasksGoesOffOnceNoTaskNamesTheAccount(): void
+    {
+        /** @var \App\Model\Entity\AppUser $user */
+        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+
+        $tasks = $this->getTableLocator()->get('Tasks');
+        $tasks->updateAll(['user_id' => null], ['user_id' => $user->id]);
+
+        $saved = $this->AppUsers->save($this->AppUsers->patchEntity($user, ['holds_tasks' => false]));
+
+        $this->assertNotFalse($saved);
+        $this->assertFalse($this->AppUsers->get($user->id)->holds_tasks);
+    }
+
+    /**
+     * Saving an account for any other reason is not the rule's business.
+     *
+     * Signing in writes the time back to the account, so a rule that asked about tasks on every
+     * save would lock out everybody who holds one.
+     *
+     * @return void
+     * @link \App\Model\Table\AppUsersTable::buildRules()
+     */
+    public function testAnAccountThatHoldsTasksCanStillBeSavedForOtherReasons(): void
+    {
+        /** @var \App\Model\Entity\AppUser $user */
+        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+
+        $saved = $this->AppUsers->save($this->AppUsers->patchEntity($user, ['first_name' => 'Renamed']));
+
+        $this->assertNotFalse($saved);
     }
 }

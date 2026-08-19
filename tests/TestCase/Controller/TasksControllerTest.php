@@ -156,6 +156,11 @@ class TasksControllerTest extends TestCase
         $users = $this->getTableLocator()->get('AppUsers');
         /** @var \App\Model\Entity\AppUser $integration */
         $integration = $users->get($this->firstId('AppUsers'));
+
+        // the switch only goes off once no task names the account, which is the rule the form
+        // itself enforces - so the tasks are moved away first, exactly as it asks
+        $this->getTableLocator()->get('Tasks')
+            ->updateAll(['user_id' => null], ['user_id' => $integration->id]);
         $users->saveOrFail($users->patchEntity($integration, ['holds_tasks' => false]));
 
         $this->login();
