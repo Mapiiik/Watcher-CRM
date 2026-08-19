@@ -14,12 +14,13 @@ use Maps\Position;
 /**
  * The open tasks drawn where they are to be done.
  *
- * A task is done at the installation address of its contract; a task holding an access point
- * instead is done at the access point. One holding neither cannot be put on a map and is left off,
- * the same way the network map passes over a place without coordinates.
+ * Where that is differs between the applications - one files a task under a place of the network,
+ * another under an address of a customer's - so this does not decide it: the application says
+ * which tasks to draw and where each one stands. A task it cannot place is left off, the same way
+ * the network map passes over a place without coordinates.
  *
  * The bubbles are written here rather than in the template because a marker carries its own, and
- * one is built out of the task, its customer and its contract at once.
+ * because what a bubble says is the same wherever the task is drawn.
  */
 abstract class TaskMap
 {
