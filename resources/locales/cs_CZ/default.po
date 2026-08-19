@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-18 23:17+0200\n"
-"PO-Revision-Date: 2026-08-18 23:19+0200\n"
+"POT-Creation-Date: 2026-08-19 12:22+0200\n"
+"PO-Revision-Date: 2026-08-19 13:32+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -1421,21 +1421,21 @@ msgstr "Typ úkolu byl odstraněn."
 msgid "The task type could not be deleted. Please, try again."
 msgstr "Typ úkolu nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:335
+#: src/Controller/TasksController.php:334
 msgid "none"
 msgstr "žádný"
 
-#: src/Controller/TasksController.php:449
-#: src/Controller/TasksController.php:605
+#: src/Controller/TasksController.php:444
+#: src/Controller/TasksController.php:598
 msgid "The task has been saved."
 msgstr "Úkol byl uložen."
 
-#: src/Controller/TasksController.php:453
-#: src/Controller/TasksController.php:609
+#: src/Controller/TasksController.php:448
+#: src/Controller/TasksController.php:602
 msgid "The task could not be saved. Please, try again."
 msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:534 src/Model/Enum/AddressType.php:41
+#: src/Controller/TasksController.php:527 src/Model/Enum/AddressType.php:41
 #: templates/Commissions/view.php:100 templates/ContractStates/view.php:193
 #: templates/Contracts/print.php:77 templates/Contracts/view.php:176
 #: templates/Customers/view.php:572 templates/ServiceTypes/view.php:165
@@ -1443,7 +1443,7 @@ msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
-#: src/Controller/TasksController.php:547
+#: src/Controller/TasksController.php:540
 #: src/Model/Enum/CustomerMessageType.php:27
 #: src/Utility/ServiceChangeMessageBuilder.php:163
 #: templates/Customers/view.php:337 templates/Emails/view.php:43
@@ -1452,7 +1452,7 @@ msgstr "Adresa instalace"
 msgid "Email"
 msgstr "E-mail"
 
-#: src/Controller/TasksController.php:548
+#: src/Controller/TasksController.php:541
 #: src/Utility/ServiceChangeMessageBuilder.php:164
 #: templates/Customers/view.php:386 templates/Phones/view.php:43
 #: templates/TaskStates/view.php:66 templates/TaskTypes/view.php:62
@@ -1460,40 +1460,47 @@ msgstr "E-mail"
 msgid "Phone"
 msgstr "Telefon"
 
-#: src/Controller/TasksController.php:687
+#: src/Controller/TasksController.php:675
 msgid "The task has been deleted."
 msgstr "Úkol byl odstraněn."
 
-#: src/Controller/TasksController.php:690
+#: src/Controller/TasksController.php:678
 msgid "The task could not be deleted. Please, try again."
 msgstr "Úkol nelze odstranit. Prosím, zkuste to znovu."
 
-#: src/Controller/TasksController.php:747
+#: src/Controller/TasksController.php:728
+msgid ""
+"The notification email could not be sent because the user does not have an "
+"email address."
+msgstr ""
+"Oznamovací e-mail nebylo možné odeslat, protože uživatel nemá e-mailovou "
+"adresu."
+
+#: src/Controller/TasksController.php:741
 msgid "You have a new task # {0}"
 msgstr "Máte nový úkol č. {0}"
 
-#: src/Controller/TasksController.php:748
+#: src/Controller/TasksController.php:742
 msgid "You have changes in task # {0}"
 msgstr "Máte změny v úkolu č. {0}"
 
-#: src/Controller/TasksController.php:760
+#: src/Controller/TasksController.php:754
 msgid "Notification email sent."
 msgstr "E-mail s oznámením odeslán."
 
-#: src/Controller/TasksController.php:764
+#: src/Controller/TasksController.php:758
 msgid "The notification email could not be sent."
 msgstr "E-mail s oznámením se nepodařilo odeslat."
 
-#: src/Controller/TasksController.php:355
-msgid ""
-"There was {0} unfinished task found that does not have a dealer assigned."
+#: src/Controller/TasksController.php:354
+msgid "There was {0} unfinished task found that does not have a user assigned."
 msgid_plural ""
-"There were {0} unfinished tasks found that do not have a dealer assigned."
-msgstr[0] "Byl nalezen {0} nedokončený úkol, který nemá přiřazeného dealera."
+"There were {0} unfinished tasks found that do not have a user assigned."
+msgstr[0] "Byl nalezen {0} nedokončený úkol, který nemá přiřazeného uživatele."
 msgstr[1] ""
-"Byly nalezeny {0} nedokončené úkoly, které nemají přiřazeného dealera."
+"Byly nalezeny {0} nedokončené úkoly, které nemají přiřazeného uživatele."
 msgstr[2] ""
-"Bylo nalezeno {0} nedokončených úkolů, které nemají přiřazeného dealera."
+"Bylo nalezeno {0} nedokončených úkolů, které nemají přiřazeného uživatele."
 
 #: src/Controller/Traits/AdditionalParametersTrait.php:125
 msgid "The record the address was filed under is no longer there."
@@ -1536,15 +1543,11 @@ msgstr "Štítky"
 msgid "Debts Beyond Automatic Blocking"
 msgstr "Dluhy mimo dosah automatického blokování"
 
-#: src/Dashboard/Card/MyTasksCard.php:41
+#: src/Dashboard/Card/MyTasksCard.php:38
 msgid "My Tasks"
 msgstr "Moje úkoly"
 
-#: src/Dashboard/Card/MyTasksCard.php:64
-msgid "Your account stands for no dealer, so it holds no tasks."
-msgstr "Váš účet nezastupuje žádného dealera, takže nemá žádné úkoly."
-
-#: src/Dashboard/Card/MyTasksCard.php:71
+#: src/Dashboard/Card/MyTasksCard.php:61 src/Dashboard/Card/MyTasksCard.php:68
 msgid "You are holding no unfinished tasks."
 msgstr "Nemáte žádné nedokončené úkoly."
 
@@ -1572,39 +1575,43 @@ msgstr "Nepřiřazené úkoly"
 msgid "Every unfinished task has somebody holding it."
 msgstr "Za každým nedokončeným úkolem stojí někdo, kdo ho má na starosti."
 
-#: src/Model/Entity/AppUser.php:47 src/Model/Enum/LoginRights.php:28
+#: src/Model/Entity/AppUser.php:80 src/Model/Enum/LoginRights.php:28
+#: templates/Contracts/view.php:556 templates/Contracts/view.php:603
+#: templates/Customers/view.php:835 templates/TaskStates/view.php:62
+#: templates/TaskTypes/view.php:58 templates/Tasks/view.php:54
+#: templates/email/html/task_notification.php:48
 msgid "User"
 msgstr "Uživatel"
 
-#: src/Model/Entity/AppUser.php:48
+#: src/Model/Entity/AppUser.php:81
 msgid "Customer Service Technician"
 msgstr "Technik zákaznického servisu"
 
-#: src/Model/Entity/AppUser.php:49
+#: src/Model/Entity/AppUser.php:82
 msgid "Network Technician"
 msgstr "Síťový technik"
 
-#: src/Model/Entity/AppUser.php:50
+#: src/Model/Entity/AppUser.php:83
 msgid "Network Manager"
 msgstr "Správce sítě"
 
-#: src/Model/Entity/AppUser.php:51
+#: src/Model/Entity/AppUser.php:84
 msgid "Sales Representative"
 msgstr "Obchodní zástupce"
 
-#: src/Model/Entity/AppUser.php:52
+#: src/Model/Entity/AppUser.php:85
 msgid "Sales Manager"
 msgstr "Manažer prodeje"
 
-#: src/Model/Entity/AppUser.php:53
+#: src/Model/Entity/AppUser.php:86
 msgid "Bookkeeper"
 msgstr "Účetní"
 
-#: src/Model/Entity/AppUser.php:54
+#: src/Model/Entity/AppUser.php:87
 msgid "Admin"
 msgstr "Admin"
 
-#: src/Model/Entity/AppUser.php:55
+#: src/Model/Entity/AppUser.php:88
 msgid "API"
 msgstr "API"
 
@@ -2090,11 +2097,11 @@ msgstr[0] "Doba trvání dočasné úpravy nesmí přesáhnout {0} den."
 msgstr[1] "Doba trvání dočasné úpravy nesmí přesáhnout {0} dny."
 msgstr[2] "Doba trvání dočasné úpravy nesmí přesáhnout {0} dní."
 
-#: src/Model/Table/TasksTable.php:264
+#: src/Model/Table/TasksTable.php:260
 msgid "The specified task type requires the assignment of an customer."
 msgstr "Zadaný typ úkolu vyžaduje přiřazení zákazníka."
 
-#: src/Model/Table/TasksTable.php:287
+#: src/Model/Table/TasksTable.php:283
 msgid "The specified task type requires the assignment of an contract."
 msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 
@@ -3559,12 +3566,8 @@ msgstr "Smazat provizi"
 msgid "Related Dealer Commissions"
 msgstr "Související provize dealerů"
 
-#: templates/Commissions/view.php:50 templates/Contracts/view.php:556
-#: templates/Contracts/view.php:603 templates/Customers/print.php:108
-#: templates/Customers/view.php:268 templates/Customers/view.php:835
-#: templates/DealerCommissions/view.php:43 templates/TaskStates/view.php:62
-#: templates/TaskTypes/view.php:58 templates/Tasks/view.php:54
-#: templates/email/html/task_notification.php:48
+#: templates/Commissions/view.php:50 templates/Customers/print.php:108
+#: templates/Customers/view.php:268 templates/DealerCommissions/view.php:43
 msgid "Dealer"
 msgstr "Dealer"
 

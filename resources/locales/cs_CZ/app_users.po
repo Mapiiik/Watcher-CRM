@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2026-07-20 14:57+0200\n"
-"PO-Revision-Date: 2026-07-20 15:16+0200\n"
+"POT-Creation-Date: 2026-08-19 12:22+0200\n"
+"PO-Revision-Date: 2026-08-19 13:31+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
 "Language: cs_CZ\n"
@@ -28,9 +28,9 @@ msgid "The user settings could not be saved. Please, try again."
 msgstr "Nastavení uživatele se nepodařilo uložit. Zkuste to prosím znovu."
 
 #: templates/AppUsers/add.php:13 templates/AppUsers/change_password.php:12
-#: templates/AppUsers/edit.php:13 templates/AppUsers/index.php:32
+#: templates/AppUsers/edit.php:13 templates/AppUsers/index.php:33
 #: templates/AppUsers/profile.php:11 templates/AppUsers/user_settings.php:11
-#: templates/AppUsers/view.php:13 templates/AppUsers/view.php:148
+#: templates/AppUsers/view.php:13 templates/AppUsers/view.php:152
 msgid "Actions"
 msgstr "Akce"
 
@@ -44,8 +44,8 @@ msgstr "Seznam uživatelů"
 msgid "Add User"
 msgstr "Přidat uživatele"
 
-#: templates/AppUsers/add.php:37 templates/AppUsers/change_password.php:50
-#: templates/AppUsers/edit.php:60 templates/AppUsers/register.php:35
+#: templates/AppUsers/add.php:38 templates/AppUsers/change_password.php:50
+#: templates/AppUsers/edit.php:61 templates/AppUsers/register.php:35
 #: templates/AppUsers/request_reset_password.php:15
 #: templates/AppUsers/resend_token_validation.php:16
 #: templates/AppUsers/social_email.php:14
@@ -74,13 +74,13 @@ msgstr "Nové heslo"
 msgid "Confirm password"
 msgstr "Potvrďte heslo"
 
-#: templates/AppUsers/edit.php:15 templates/AppUsers/index.php:60
-#: templates/AppUsers/view.php:176
+#: templates/AppUsers/edit.php:15 templates/AppUsers/index.php:62
+#: templates/AppUsers/view.php:180
 msgid "Delete"
 msgstr "Odstranit"
 
-#: templates/AppUsers/edit.php:18 templates/AppUsers/index.php:62
-#: templates/AppUsers/view.php:23 templates/AppUsers/view.php:179
+#: templates/AppUsers/edit.php:18 templates/AppUsers/index.php:64
+#: templates/AppUsers/view.php:23 templates/AppUsers/view.php:183
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
 
@@ -96,51 +96,53 @@ msgstr "Nový uživatel"
 msgid "Users"
 msgstr "Uživatelé"
 
-#: templates/AppUsers/index.php:42 templates/AppUsers/index.php:43
-#: templates/AppUsers/view.php:67 templates/AppUsers/view.php:75
-#: templates/AppUsers/view.php:107
+#: templates/AppUsers/index.php:43 templates/AppUsers/index.php:44
+#: templates/AppUsers/index.php:45 templates/AppUsers/view.php:67
+#: templates/AppUsers/view.php:75 templates/AppUsers/view.php:79
+#: templates/AppUsers/view.php:111
 msgid "Yes"
 msgstr "Ano"
 
-#: templates/AppUsers/index.php:42 templates/AppUsers/index.php:43
-#: templates/AppUsers/view.php:67 templates/AppUsers/view.php:75
-#: templates/AppUsers/view.php:107
+#: templates/AppUsers/index.php:43 templates/AppUsers/index.php:44
+#: templates/AppUsers/index.php:45 templates/AppUsers/view.php:67
+#: templates/AppUsers/view.php:75 templates/AppUsers/view.php:79
+#: templates/AppUsers/view.php:111
 msgid "No"
 msgstr "Ne"
 
-#: templates/AppUsers/index.php:51 templates/AppUsers/view.php:168
+#: templates/AppUsers/index.php:53 templates/AppUsers/view.php:172
 msgid "View"
 msgstr "Zobrazit"
 
-#: templates/AppUsers/index.php:55 templates/AppUsers/view.php:172
+#: templates/AppUsers/index.php:57 templates/AppUsers/view.php:176
 msgid "Edit"
 msgstr "Upravit"
 
-#: templates/AppUsers/index.php:65 templates/AppUsers/profile.php:13
+#: templates/AppUsers/index.php:67 templates/AppUsers/profile.php:13
 msgid "Change Password"
 msgstr "Změnit heslo"
 
-#: templates/AppUsers/index.php:70 templates/AppUsers/profile.php:18
+#: templates/AppUsers/index.php:72 templates/AppUsers/profile.php:18
 msgid "User Settings"
 msgstr "Uživatelské nastavení"
 
-#: templates/AppUsers/index.php:82
+#: templates/AppUsers/index.php:84
 msgid "first"
 msgstr "první"
 
-#: templates/AppUsers/index.php:83
+#: templates/AppUsers/index.php:85
 msgid "previous"
 msgstr "předchozí"
 
-#: templates/AppUsers/index.php:85
+#: templates/AppUsers/index.php:87
 msgid "next"
 msgstr "další"
 
-#: templates/AppUsers/index.php:86
+#: templates/AppUsers/index.php:88
 msgid "last"
 msgstr "poslední"
 
-#: templates/AppUsers/index.php:89
+#: templates/AppUsers/index.php:91
 msgid ""
 "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
 "total"
@@ -154,7 +156,7 @@ msgstr "Zadejte prosím své uživatelské jméno a heslo"
 
 #: templates/AppUsers/login.php:13 templates/AppUsers/profile.php:41
 #: templates/AppUsers/register.php:13 templates/AppUsers/view.php:46
-#: templates/AppUsers/view.php:136
+#: templates/AppUsers/view.php:140
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -195,15 +197,15 @@ msgstr "Role"
 msgid "Social Accounts"
 msgstr "Sociální účty"
 
-#: templates/AppUsers/profile.php:55 templates/AppUsers/view.php:139
+#: templates/AppUsers/profile.php:55 templates/AppUsers/view.php:143
 msgid "Avatar"
 msgstr "Profilový obrázek"
 
-#: templates/AppUsers/profile.php:56 templates/AppUsers/view.php:135
+#: templates/AppUsers/profile.php:56 templates/AppUsers/view.php:139
 msgid "Provider"
 msgstr "Poskytovatel"
 
-#: templates/AppUsers/profile.php:57 templates/AppUsers/view.php:141
+#: templates/AppUsers/profile.php:57 templates/AppUsers/view.php:145
 msgid "Link"
 msgstr "Odkaz"
 
@@ -362,75 +364,79 @@ msgstr "Je superuživatel"
 msgid "Customer Id"
 msgstr "ID zákazníka"
 
-#: templates/AppUsers/view.php:74 templates/AppUsers/view.php:137
+#: templates/AppUsers/view.php:74 templates/AppUsers/view.php:141
 msgid "Active"
 msgstr "Aktivní"
 
-#: templates/AppUsers/view.php:82
+#: templates/AppUsers/view.php:78
+msgid "Holds Tasks"
+msgstr "Přijímá úkoly"
+
+#: templates/AppUsers/view.php:86
 msgid "Api Token"
 msgstr "Token rozhraní API"
 
-#: templates/AppUsers/view.php:86 templates/AppUsers/view.php:142
+#: templates/AppUsers/view.php:90 templates/AppUsers/view.php:146
 msgid "Token"
 msgstr "Token"
 
-#: templates/AppUsers/view.php:90 templates/AppUsers/view.php:144
+#: templates/AppUsers/view.php:94 templates/AppUsers/view.php:148
 msgid "Token Expires"
 msgstr "Platnost tokenu vyprší"
 
-#: templates/AppUsers/view.php:94
+#: templates/AppUsers/view.php:98
 msgid "Activation Date"
 msgstr "Datum aktivace"
 
-#: templates/AppUsers/view.php:98
+#: templates/AppUsers/view.php:102
 msgid "Tos Date"
 msgstr "Datum TOS"
 
-#: templates/AppUsers/view.php:102
+#: templates/AppUsers/view.php:106
 msgid "Secret"
 msgstr "Tajemství"
 
-#: templates/AppUsers/view.php:106
+#: templates/AppUsers/view.php:110
 msgid "Secret Verified"
 msgstr "Tajemství ověřeno"
 
-#: templates/AppUsers/view.php:110
+#: templates/AppUsers/view.php:114
 msgid "Additional Data"
 msgstr "Doplňující údaje"
 
-#: templates/AppUsers/view.php:114
+#: templates/AppUsers/view.php:118
 msgid "Last Login"
 msgstr "Poslední přihlášení"
 
-#: templates/AppUsers/view.php:118 templates/AppUsers/view.php:146
+#: templates/AppUsers/view.php:122 templates/AppUsers/view.php:150
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: templates/AppUsers/view.php:122 templates/AppUsers/view.php:147
+#: templates/AppUsers/view.php:126 templates/AppUsers/view.php:151
 msgid "Modified"
 msgstr "Upraveno"
 
-#: templates/AppUsers/view.php:129
+#: templates/AppUsers/view.php:133
 msgid "Related Social Accounts"
 msgstr "Související sociální účty"
 
-#: templates/AppUsers/view.php:134
+#: templates/AppUsers/view.php:138
 msgid "Id"
 msgstr "ID"
 
-#: templates/AppUsers/view.php:138
+#: templates/AppUsers/view.php:142
 msgid "Reference"
 msgstr "Reference"
 
-#: templates/AppUsers/view.php:140
+#: templates/AppUsers/view.php:144
 msgid "Description"
 msgstr "Popis"
 
-#: templates/AppUsers/view.php:143
+#: templates/AppUsers/view.php:147
 msgid "Token Secret"
 msgstr "Tajemství tokenu"
 
-#: templates/AppUsers/view.php:145
+#: templates/AppUsers/view.php:149
 msgid "Data"
 msgstr "Data"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-07-20 14:57+0200\n"
+"POT-Creation-Date: 2026-08-19 12:22+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -29,11 +29,11 @@ msgstr ""
 #: ./templates/AppUsers/add.php:13
 #: ./templates/AppUsers/change_password.php:12
 #: ./templates/AppUsers/edit.php:13
-#: ./templates/AppUsers/index.php:32
+#: ./templates/AppUsers/index.php:33
 #: ./templates/AppUsers/profile.php:11
 #: ./templates/AppUsers/user_settings.php:11
 #: ./templates/AppUsers/view.php:13
-#: ./templates/AppUsers/view.php:148
+#: ./templates/AppUsers/view.php:152
 msgid "Actions"
 msgstr ""
 
@@ -50,9 +50,9 @@ msgstr ""
 msgid "Add User"
 msgstr ""
 
-#: ./templates/AppUsers/add.php:37
+#: ./templates/AppUsers/add.php:38
 #: ./templates/AppUsers/change_password.php:50
-#: ./templates/AppUsers/edit.php:60
+#: ./templates/AppUsers/edit.php:61
 #: ./templates/AppUsers/register.php:35
 #: ./templates/AppUsers/request_reset_password.php:15
 #: ./templates/AppUsers/resend_token_validation.php:16
@@ -84,15 +84,15 @@ msgid "Confirm password"
 msgstr ""
 
 #: ./templates/AppUsers/edit.php:15
-#: ./templates/AppUsers/index.php:60
-#: ./templates/AppUsers/view.php:176
+#: ./templates/AppUsers/index.php:62
+#: ./templates/AppUsers/view.php:180
 msgid "Delete"
 msgstr ""
 
 #: ./templates/AppUsers/edit.php:18
-#: ./templates/AppUsers/index.php:62
+#: ./templates/AppUsers/index.php:64
 #: ./templates/AppUsers/view.php:23
-#: ./templates/AppUsers/view.php:179
+#: ./templates/AppUsers/view.php:183
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
@@ -110,59 +110,63 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:42
 #: ./templates/AppUsers/index.php:43
+#: ./templates/AppUsers/index.php:44
+#: ./templates/AppUsers/index.php:45
 #: ./templates/AppUsers/view.php:67
 #: ./templates/AppUsers/view.php:75
-#: ./templates/AppUsers/view.php:107
+#: ./templates/AppUsers/view.php:79
+#: ./templates/AppUsers/view.php:111
 msgid "Yes"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:42
 #: ./templates/AppUsers/index.php:43
+#: ./templates/AppUsers/index.php:44
+#: ./templates/AppUsers/index.php:45
 #: ./templates/AppUsers/view.php:67
 #: ./templates/AppUsers/view.php:75
-#: ./templates/AppUsers/view.php:107
+#: ./templates/AppUsers/view.php:79
+#: ./templates/AppUsers/view.php:111
 msgid "No"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:51
-#: ./templates/AppUsers/view.php:168
+#: ./templates/AppUsers/index.php:53
+#: ./templates/AppUsers/view.php:172
 msgid "View"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:55
-#: ./templates/AppUsers/view.php:172
+#: ./templates/AppUsers/index.php:57
+#: ./templates/AppUsers/view.php:176
 msgid "Edit"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:65
+#: ./templates/AppUsers/index.php:67
 #: ./templates/AppUsers/profile.php:13
 msgid "Change Password"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:70
+#: ./templates/AppUsers/index.php:72
 #: ./templates/AppUsers/profile.php:18
 msgid "User Settings"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:82
+#: ./templates/AppUsers/index.php:84
 msgid "first"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:83
+#: ./templates/AppUsers/index.php:85
 msgid "previous"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:85
+#: ./templates/AppUsers/index.php:87
 msgid "next"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:86
+#: ./templates/AppUsers/index.php:88
 msgid "last"
 msgstr ""
 
-#: ./templates/AppUsers/index.php:89
+#: ./templates/AppUsers/index.php:91
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
@@ -174,7 +178,7 @@ msgstr ""
 #: ./templates/AppUsers/profile.php:41
 #: ./templates/AppUsers/register.php:13
 #: ./templates/AppUsers/view.php:46
-#: ./templates/AppUsers/view.php:136
+#: ./templates/AppUsers/view.php:140
 msgid "Username"
 msgstr ""
 
@@ -219,17 +223,17 @@ msgid "Social Accounts"
 msgstr ""
 
 #: ./templates/AppUsers/profile.php:55
-#: ./templates/AppUsers/view.php:139
+#: ./templates/AppUsers/view.php:143
 msgid "Avatar"
 msgstr ""
 
 #: ./templates/AppUsers/profile.php:56
-#: ./templates/AppUsers/view.php:135
+#: ./templates/AppUsers/view.php:139
 msgid "Provider"
 msgstr ""
 
 #: ./templates/AppUsers/profile.php:57
-#: ./templates/AppUsers/view.php:141
+#: ./templates/AppUsers/view.php:145
 msgid "Link"
 msgstr ""
 
@@ -381,79 +385,83 @@ msgid "Customer Id"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:74
-#: ./templates/AppUsers/view.php:137
+#: ./templates/AppUsers/view.php:141
 msgid "Active"
 msgstr ""
 
-#: ./templates/AppUsers/view.php:82
-msgid "Api Token"
+#: ./templates/AppUsers/view.php:78
+msgid "Holds Tasks"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:86
-#: ./templates/AppUsers/view.php:142
-msgid "Token"
+msgid "Api Token"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:90
-#: ./templates/AppUsers/view.php:144
-msgid "Token Expires"
+#: ./templates/AppUsers/view.php:146
+msgid "Token"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:94
-msgid "Activation Date"
+#: ./templates/AppUsers/view.php:148
+msgid "Token Expires"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:98
-msgid "Tos Date"
+msgid "Activation Date"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:102
-msgid "Secret"
+msgid "Tos Date"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:106
-msgid "Secret Verified"
+msgid "Secret"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:110
-msgid "Additional Data"
+msgid "Secret Verified"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:114
-msgid "Last Login"
+msgid "Additional Data"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:118
-#: ./templates/AppUsers/view.php:146
-msgid "Created"
+msgid "Last Login"
 msgstr ""
 
 #: ./templates/AppUsers/view.php:122
-#: ./templates/AppUsers/view.php:147
+#: ./templates/AppUsers/view.php:150
+msgid "Created"
+msgstr ""
+
+#: ./templates/AppUsers/view.php:126
+#: ./templates/AppUsers/view.php:151
 msgid "Modified"
 msgstr ""
 
-#: ./templates/AppUsers/view.php:129
+#: ./templates/AppUsers/view.php:133
 msgid "Related Social Accounts"
 msgstr ""
 
-#: ./templates/AppUsers/view.php:134
+#: ./templates/AppUsers/view.php:138
 msgid "Id"
 msgstr ""
 
-#: ./templates/AppUsers/view.php:138
+#: ./templates/AppUsers/view.php:142
 msgid "Reference"
 msgstr ""
 
-#: ./templates/AppUsers/view.php:140
+#: ./templates/AppUsers/view.php:144
 msgid "Description"
 msgstr ""
 
-#: ./templates/AppUsers/view.php:143
+#: ./templates/AppUsers/view.php:147
 msgid "Token Secret"
 msgstr ""
 
-#: ./templates/AppUsers/view.php:145
+#: ./templates/AppUsers/view.php:149
 msgid "Data"
 msgstr ""
 
