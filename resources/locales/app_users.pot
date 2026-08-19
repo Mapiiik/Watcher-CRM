@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-19 12:22+0200\n"
+"POT-Creation-Date: 2026-08-19 21:41+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -31,7 +31,7 @@ msgstr ""
 #: ./templates/AppUsers/edit.php:13
 #: ./templates/AppUsers/index.php:33
 #: ./templates/AppUsers/profile.php:11
-#: ./templates/AppUsers/user_settings.php:11
+#: ./templates/AppUsers/user_settings.php:13
 #: ./templates/AppUsers/view.php:13
 #: ./templates/AppUsers/view.php:152
 msgid "Actions"
@@ -40,7 +40,7 @@ msgstr ""
 #: ./templates/AppUsers/add.php:15
 #: ./templates/AppUsers/change_password.php:14
 #: ./templates/AppUsers/edit.php:23
-#: ./templates/AppUsers/user_settings.php:13
+#: ./templates/AppUsers/user_settings.php:15
 #: ./templates/AppUsers/view.php:28
 msgid "List Users"
 msgstr ""
@@ -57,12 +57,12 @@ msgstr ""
 #: ./templates/AppUsers/request_reset_password.php:15
 #: ./templates/AppUsers/resend_token_validation.php:16
 #: ./templates/AppUsers/social_email.php:14
-#: ./templates/AppUsers/user_settings.php:89
+#: ./templates/AppUsers/user_settings.php:111
 msgid "Submit"
 msgstr ""
 
 #: ./templates/AppUsers/change_password.php:19
-#: ./templates/AppUsers/user_settings.php:18
+#: ./templates/AppUsers/user_settings.php:20
 msgid "User Profile"
 msgstr ""
 
@@ -314,46 +314,56 @@ msgstr ""
 msgid "In order to enable your YubiKey the first step is to perform a registration."
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:28
+#: ./templates/AppUsers/user_settings.php:30
 msgid "Edit User Settings"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:31
+#: ./templates/AppUsers/user_settings.php:33
 msgid "Language"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:39
+#: ./templates/AppUsers/user_settings.php:41
 msgid "Number of Rows per Page"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:51
+#: ./templates/AppUsers/user_settings.php:53
 msgid "Theme"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:61
-#: ./templates/AppUsers/user_settings.php:67
+#: ./templates/AppUsers/user_settings.php:63
+#: ./templates/AppUsers/user_settings.php:69
 msgid "Customers"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:62
+#: ./templates/AppUsers/user_settings.php:64
 msgid "Advanced Search by Default"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:68
+#: ./templates/AppUsers/user_settings.php:70
 msgid "Show Historical Records by Default"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:73
-#: ./templates/AppUsers/user_settings.php:81
+#: ./templates/AppUsers/user_settings.php:75
+#: ./templates/AppUsers/user_settings.php:83
+#: ./templates/AppUsers/user_settings.php:91
+#: ./templates/AppUsers/user_settings.php:101
 msgid "Tasks"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:75
+#: ./templates/AppUsers/user_settings.php:77
 msgid "Show Tasks for All Users by Default"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:83
+#: ./templates/AppUsers/user_settings.php:85
 msgid "Use Expandable Text by Default"
+msgstr ""
+
+#: ./templates/AppUsers/user_settings.php:93
+msgid "Show Only These Task Types by Default"
+msgstr ""
+
+#: ./templates/AppUsers/user_settings.php:103
+msgid "Show Only These Task States by Default"
 msgstr ""
 
 #: ./templates/AppUsers/verify.php:21
