@@ -8,7 +8,11 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('tasks', 'Actions') ?></h4>
-            <?= $this->AuthLink->link(__d('tasks', 'List Task Types'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __d('tasks', 'List Task Types'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">

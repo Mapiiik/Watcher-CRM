@@ -16,10 +16,21 @@
             <?= $this->AuthLink->postLink(
                 __d('tasks', 'Delete Task Type'),
                 ['action' => 'delete', $taskType->id],
-                ['confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $taskType->id), 'class' => 'side-nav-item'],
+                [
+                    'confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $taskType->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
-            <?= $this->AuthLink->link(__d('tasks', 'List Task Types'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__d('tasks', 'New Task Type'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __d('tasks', 'List Task Types'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __d('tasks', 'New Task Type'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
@@ -116,7 +127,13 @@
                                 <?= $this->AuthLink->postLink(
                                     __d('tasks', 'Delete'),
                                     ['controller' => 'Tasks', 'action' => 'delete', $task->id],
-                                    ['confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $task->number)],
+                                    [
+                                        'confirm' => __d(
+                                            'tasks',
+                                            'Are you sure you want to delete # {0}?',
+                                            $task->number,
+                                        ),
+                                    ],
                                 ) ?>
                             </td>
                         </tr>
@@ -143,8 +160,12 @@
                             <?php foreach ($taskType->contract_states as $contractState) : ?>
                             <tr>
                                 <td><?= h($contractState->name) ?></td>
-                                <td><?= $contractState->usable_for_new_contract ? __d('tasks', 'Yes') : __d('tasks', 'No') ?></td>
-                                <td><?= $contractState->active_services ? __d('tasks', 'Yes') : __d('tasks', 'No') ?></td>
+                                <td><?= $contractState->usable_for_new_contract
+                                    ? __d('tasks', 'Yes')
+                                    : __d('tasks', 'No') ?></td>
+                                <td><?= $contractState->active_services
+                                    ? __d('tasks', 'Yes')
+                                    : __d('tasks', 'No') ?></td>
                                 <td><?= $contractState->billed ? __d('tasks', 'Yes') : __d('tasks', 'No') ?></td>
                                 <td><?= $contractState->blocked ? __d('tasks', 'Yes') : __d('tasks', 'No') ?></td>
                                 <td class="actions">

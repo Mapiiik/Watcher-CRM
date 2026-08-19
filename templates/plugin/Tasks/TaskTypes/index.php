@@ -17,7 +17,11 @@
 <?= $this->Form->end() ?>
 
 <div class="taskTypes index content">
-    <?= $this->AuthLink->link(__d('tasks', 'New Task Type'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <?= $this->AuthLink->link(
+        __d('tasks', 'New Task Type'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link'],
+    ) ?>
     <h3><?= __d('tasks', 'Task Types') ?></h3>
     <div class="table-responsive">
         <table>

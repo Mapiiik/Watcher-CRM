@@ -16,10 +16,21 @@
             <?= $this->AuthLink->postLink(
                 __d('tasks', 'Delete Task State'),
                 ['action' => 'delete', $taskState->id],
-                ['confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $taskState->id), 'class' => 'side-nav-item'],
+                [
+                    'confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $taskState->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
-            <?= $this->AuthLink->link(__d('tasks', 'List Task States'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__d('tasks', 'New Task State'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __d('tasks', 'List Task States'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __d('tasks', 'New Task State'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
@@ -120,7 +131,13 @@
                                 <?= $this->AuthLink->postLink(
                                     __d('tasks', 'Delete'),
                                     ['controller' => 'Tasks', 'action' => 'delete', $task->id],
-                                    ['confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $task->number)],
+                                    [
+                                        'confirm' => __d(
+                                            'tasks',
+                                            'Are you sure you want to delete # {0}?',
+                                            $task->number,
+                                        ),
+                                    ],
                                 ) ?>
                             </td>
                         </tr>

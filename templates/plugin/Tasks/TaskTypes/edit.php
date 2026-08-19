@@ -11,9 +11,16 @@
             <?= $this->AuthLink->postLink(
                 __d('tasks', 'Delete'),
                 ['action' => 'delete', $taskType->id],
-                ['confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $taskType->id), 'class' => 'side-nav-item'],
+                [
+                    'confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $taskType->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
-            <?= $this->AuthLink->link(__d('tasks', 'List Task Types'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __d('tasks', 'List Task Types'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
