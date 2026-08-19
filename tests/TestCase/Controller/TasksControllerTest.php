@@ -484,6 +484,106 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * The listing opens on the work the operator usually asks for, the same default the map
+     * opens on - it is one answer to one question, asked in two places.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testIndexOpensOnWhatTheOperatorUsuallyAsksFor(): void
+    {
+        $first = $this->openTask([]);
+        $other = $this->taskType('Something else');
+        $second = $this->openTask(['task_type_id' => $other]);
+
+        $this->login('admin', ['tasks' => ['task_type_ids' => [$other]]]);
+        $this->get('/tasks?user_id=');
+
+        $this->assertResponseOk();
+
+        $listed = $this->listedTaskIds();
+        $this->assertNotContains($first->id, $listed);
+        $this->assertContains($second->id, $listed);
+
+        $this->get('/tasks?user_id=&task_type_ids=');
+
+        $this->assertResponseOk();
+        $this->assertContains($first->id, $this->listedTaskIds(), 'Cleared by hand asks for all.');
+    }
+
+    /**
+     * The settings are chosen from the lists the filters offer, and a finished state is not
+     * among them - a default that hid everything still waiting would be a filter nobody meant
+     * to set.
+     *
+     * @return void
+     * @link \App\Controller\Traits\UserSettingsTrait::userSettings()
+     */
+    public function testTheSettingsOfferTheStatesWorthDefaultingTo(): void
+    {
+        $states = $this->getTableLocator()->get('TaskStates');
+        $waiting = $states->saveOrFail($states->newEntity([
+            'name' => 'Waiting for the settings',
+            'color' => '#ff8800',
+            'completed' => false,
+            'priority' => 1,
+        ]));
+        $finished = $states->saveOrFail($states->newEntity([
+            'name' => 'Done for the settings',
+            'color' => '#cccccc',
+            'completed' => true,
+            'priority' => 1,
+        ]));
+
+        // the settings belong to a user, so the one signed in has to be one the table holds
+        $users = $this->getTableLocator()->get('AppUsers');
+        $user = $users->find()->firstOrFail();
+        $user->set('role', 'admin');
+        $this->session(['Auth' => $user]);
+
+        $this->get('/app-users/user-settings');
+
+        $this->assertResponseOk();
+
+        $offered = array_keys((array)$this->viewVariable('taskStates')->toArray());
+        $this->assertContains($waiting->get('id'), $offered);
+        $this->assertNotContains($finished->get('id'), $offered);
+
+        $this->assertNotEmpty((array)$this->viewVariable('taskTypes')->toArray());
+    }
+
+    /**
+     * What is chosen in the settings really is stored, nested where the filters read it from.
+     *
+     * @return void
+     * @link \App\Controller\Traits\UserSettingsTrait::userSettings()
+     */
+    public function testTheSettingsRememberTheTaskTypesChosen(): void
+    {
+        $users = $this->getTableLocator()->get('AppUsers');
+        $user = $users->find()->firstOrFail();
+        $user->set('role', 'admin');
+        $this->session(['Auth' => $user]);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $chosen = $this->firstId('TaskTypes');
+
+        $this->post('/app-users/user-settings', [
+            'user_settings' => [
+                'tasks' => [
+                    'task_type_ids' => [$chosen],
+                ],
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        $stored = $users->get($user->get('id'));
+        $this->assertSame([$chosen], $stored->get('user_settings')['tasks']['task_type_ids']);
+    }
+
+    /**
      * The two filters reach the form as booleans even where the request named neither.
      * `toBool()` answers `null` to a parameter that is not there, and the checkbox that
      * reads it back is declared as a plain bool.
@@ -698,6 +798,32 @@ class TasksControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertCount(2, (array)$this->viewVariable('mapMarkers'));
+    }
+
+    /**
+     * The map opens on the work the operator usually asks for. What they settled on stands until
+     * they say otherwise on the page itself - clearing the filter by hand asks for everything,
+     * default or no default.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::map()
+     */
+    public function testMapOpensOnWhatTheOperatorUsuallyAsksFor(): void
+    {
+        $this->openTask([]);
+        $other = $this->taskType('Something else');
+        $this->openTask(['task_type_id' => $other]);
+
+        $this->login('admin', ['tasks' => ['task_type_ids' => [$other]]]);
+        $this->get('/tasks/map');
+
+        $this->assertResponseOk();
+        $this->assertCount(1, (array)$this->viewVariable('mapMarkers'));
+
+        $this->get('/tasks/map?task_type_ids=');
+
+        $this->assertResponseOk();
+        $this->assertCount(2, (array)$this->viewVariable('mapMarkers'), 'Cleared by hand asks for all.');
     }
 
     /**

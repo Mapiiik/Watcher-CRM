@@ -38,8 +38,8 @@ class TasksController extends AppController
      */
     public function map(): void
     {
-        $taskTypeIds = $this->askedFor('task_type_ids');
-        $taskStateIds = $this->askedFor('task_state_ids');
+        $taskTypeIds = $this->askedFor('task_type_ids', 'tasks.task_type_ids');
+        $taskStateIds = $this->askedFor('task_state_ids', 'tasks.task_state_ids');
 
         $map = (new TaskMap(new HtmlHelper(new View())))->draw($taskTypeIds, $taskStateIds);
 
@@ -64,12 +64,18 @@ class TasksController extends AppController
     /**
      * What the query asks the map to be narrowed by, where it asks for something that could be.
      *
+     * A filter that was never named is not the same as one cleared by hand: the first leaves the
+     * operator's own default standing, the second asks for everything.
+     *
      * @param string $field Name of the query parameter.
+     * @param string $setting Where the operator's settings hold the default for it.
      * @return array<string> Identifiers, empty where nothing narrows the map.
      */
-    private function askedFor(string $field): array
+    private function askedFor(string $field, string $setting): array
     {
-        return $this->identifiers($this->getRequest()->getQuery($field));
+        $asked = $this->getRequest()->getQuery($field);
+
+        return $this->identifiers($asked ?? Hash::get($this->user_settings, $setting));
     }
 
     /**
@@ -218,7 +224,9 @@ class TasksController extends AppController
         }
 
         // filter by task type
-        $task_type_ids = $this->identifiers($filter['task_type_ids'] ?? null);
+        $task_type_ids = $this->identifiers(
+            $filter['task_type_ids'] ?? Hash::get($this->user_settings, 'tasks.task_type_ids'),
+        );
         if ($task_type_ids !== []) {
             $conditions[] = [
                 'Tasks.task_type_id IN' => $task_type_ids,
@@ -226,7 +234,9 @@ class TasksController extends AppController
         }
 
         // filter by task state
-        $task_state_ids = $this->identifiers($filter['task_state_ids'] ?? null);
+        $task_state_ids = $this->identifiers(
+            $filter['task_state_ids'] ?? Hash::get($this->user_settings, 'tasks.task_state_ids'),
+        );
         if ($task_state_ids !== []) {
             $conditions[] = [
                 'Tasks.task_state_id IN' => $task_state_ids,

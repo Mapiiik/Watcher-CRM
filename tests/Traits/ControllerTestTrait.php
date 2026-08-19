@@ -26,9 +26,10 @@ trait ControllerTestTrait
      * with.
      *
      * @param string $role Role to act as; the default sees everything.
+     * @param array<string, mixed> $userSettings What this user has settled on for themselves.
      * @return void
      */
-    protected function login(string $role = 'admin'): void
+    protected function login(string $role = 'admin', array $userSettings = []): void
     {
         /** @var \App\Model\Table\AppUsersTable $usersTable */
         $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'AppUsers'));
@@ -37,6 +38,7 @@ trait ControllerTestTrait
         $user->username = 'tester';
         $user->role = $role;
         $user->active = true;
+        $user->user_settings = $userSettings;
 
         $this->session(['Auth' => $user]);
     }

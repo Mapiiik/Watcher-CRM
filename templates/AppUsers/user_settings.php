@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\AppUser $user
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taskTypes
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taskStates
  */
 
 ?>
@@ -83,6 +85,26 @@
                         . __d('app_users', 'Use Expandable Text by Default')
                     ,
                     'type' => 'checkbox',
+                ]);
+                echo $this->Form->control('user_settings.tasks.task_type_ids', [
+                    'label' =>
+                        __d('app_users', 'Tasks')
+                        . ' - '
+                        . __d('app_users', 'Show Only These Task Types by Default')
+                    ,
+                    'options' => $taskTypes,
+                    'multiple' => 'multiple',
+                    'style' => 'height: 100px;',
+                ]);
+                echo $this->Form->control('user_settings.tasks.task_state_ids', [
+                    'label' =>
+                        __d('app_users', 'Tasks')
+                        . ' - '
+                        . __d('app_users', 'Show Only These Task States by Default')
+                    ,
+                    'options' => $taskStates,
+                    'multiple' => 'multiple',
+                    'style' => 'height: 100px;',
                 ]);
                 ?>
             </fieldset>

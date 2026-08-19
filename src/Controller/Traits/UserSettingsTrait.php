@@ -74,6 +74,13 @@ trait UserSettingsTrait
             $this->Flash->error(__d('app_users', 'The user settings could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('user'));
+        // What the task settings are chosen from. A finished state is not offered: a default
+        // that hid everything still waiting would be a filter nobody meant to set.
+        $taskTypes = $this->fetchTable('TaskTypes')->find('list', order: ['name'])->all();
+        $taskStates = $this->fetchTable('TaskStates')->find('list', order: ['name'])
+            ->where(['TaskStates.completed' => false])
+            ->all();
+
+        $this->set(compact('user', 'taskTypes', 'taskStates'));
     }
 }
