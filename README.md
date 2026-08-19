@@ -71,6 +71,17 @@ composer run-script schema-cache
 Point your webserver's document root at the `webroot/` directory. Install the
 PECL `dbase` extension if you plan to use the POHODA invoice export in dBASE format.
 
+Later updates of such an installation are one script:
+
+```bash
+./update.sh
+```
+
+It refuses to run on a tree with local changes, then pulls, installs, migrates,
+relinks the plugin assets and clears the caches. Where opcache is configured not to
+check file timestamps, set `PHP_FPM_SERVICE` to the service name and the script
+reloads the pool at the end.
+
 ## Configuration
 
 Runtime settings live in `config/.env` (or are passed in as environment
