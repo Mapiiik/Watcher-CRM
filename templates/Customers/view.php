@@ -832,7 +832,7 @@ $remark = function (string $note, bool $wrong = false): string {
                             <th><?= __('Subject') ?></th>
                             <th><?= __('Text') ?></th>
                             <th><?= __('Contract') ?></th>
-                            <th><?= __('Dealer') ?></th>
+                            <th><?= __('User') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($customer->tasks as $task) : ?>
@@ -855,7 +855,7 @@ $remark = function (string $note, bool $wrong = false): string {
                                     ],
                                 ) : '' ?>
                             </td>
-                            <td><?= $task->dealer !== null ? h($task->dealer->name) : '' ?></td>
+                            <td><?= $task->user !== null ? h($task->user->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

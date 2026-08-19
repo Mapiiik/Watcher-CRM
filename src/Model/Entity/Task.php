@@ -21,7 +21,7 @@ use Cake\Core\Configure;
  * @property int $priority
  * @property string|null $customer_id
  * @property string|null $contract_id
- * @property string|null $dealer_id
+ * @property string|null $user_id
  * @property string|null $email
  * @property string|null $phone
  * @property \Cake\I18n\Date|null $start_date
@@ -37,7 +37,7 @@ use Cake\Core\Configure;
  * @property \App\Model\Entity\TaskType $task_type
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \App\Model\Entity\Customer $dealer
+ * @property \App\Model\Entity\AppUser|null $user
  * @property \ArrayObject<string, mixed>|null $access_point
  * @property string|null $access_point_name
  */
@@ -72,7 +72,7 @@ class Task extends AppEntity
         'priority' => true,
         'customer_id' => true,
         'contract_id' => true,
-        'dealer_id' => true,
+        'user_id' => true,
         'email' => true,
         'phone' => true,
         'start_date' => true,
@@ -84,7 +84,7 @@ class Task extends AppEntity
         'task_type' => true,
         'customer' => true,
         'contract' => true,
-        'dealer' => true,
+        'user' => true,
         'access_point' => true,
     ];
 

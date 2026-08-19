@@ -6,7 +6,7 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taskStates
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
- * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $dealers
+ * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $users
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $accessPoints
  */
 ?>
@@ -42,7 +42,7 @@
                         echo $this->Form->control('task_type_id', ['options' => $taskTypes]);
                         echo $this->Form->control('priority', ['options' => $task->getPriorityOptions()]);
                         echo $this->Form->control('task_state_id', ['options' => $taskStates]);
-                        echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
+                        echo $this->Form->control('user_id', ['options' => $users, 'empty' => true]);
                         ?>
                     </div>
                     <div class="column">

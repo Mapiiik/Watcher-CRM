@@ -250,9 +250,32 @@ class DashboardControllerTest extends TestCase
         $this->assertSame(0, $query['stale']);
         $this->assertSame(0, $query['show_completed']);
         // a filter the operator last used must not still be narrowing the listing
-        $this->assertSame('', $query['dealer_id']);
+        $this->assertSame('', $query['user_id']);
         $this->assertSame('', $query['task_state_id']);
         $this->assertSame('', $query['search']);
+    }
+
+    /**
+     * A card that stands for a filter of its own puts that filter in its link, rather than the
+     * blank the others clear theirs to.
+     *
+     * The unassigned card is the one that does, and it is what says the key the card writes and the
+     * key the listing reads are still the same word.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\UnassignedTasksCard::data()
+     */
+    public function testTheUnassignedCardLinksToTheTasksNobodyHolds(): void
+    {
+        $this->login();
+        $this->get('/dashboard/card/unassigned_tasks');
+
+        $this->assertResponseOk();
+
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+
+        $this->assertSame('none', $card->data()['url']['?']['user_id']);
     }
 
     /**
@@ -264,11 +287,11 @@ class DashboardControllerTest extends TestCase
     public function testTheListingUnderstandsTheCardFilters(): void
     {
         $this->login();
-        $this->get('/tasks?pressing=1&stale=0&show_completed=0&dealer_id=');
+        $this->get('/tasks?pressing=1&stale=0&show_completed=0&user_id=');
 
         $this->assertResponseOk();
 
-        $this->get('/tasks?pressing=0&stale=1&show_completed=0&dealer_id=');
+        $this->get('/tasks?pressing=0&stale=1&show_completed=0&user_id=');
 
         $this->assertResponseOk();
     }

@@ -21,8 +21,8 @@ class DashboardController extends AppController
     /**
      * The registry, built for whoever is signed in.
      *
-     * Tasks here are held by a dealer rather than by a user, so the identity's customer is
-     * what a card asking "mine" is given.
+     * Tasks here are held by a user, so the identity itself is what a card asking "mine" is
+     * given.
      *
      * @return \Dashboard\Card\CardRegistryInterface
      */
@@ -32,11 +32,11 @@ class DashboardController extends AppController
         $identity = $this->getRequest()->getAttribute('identity');
 
         $role = $identity['role'] ?? null;
-        $customer_id = $identity['customer_id'] ?? null;
+        $user_id = $identity['id'] ?? null;
 
         return new DashboardCardRegistry(
             role: is_string($role) ? $role : null,
-            customer_id: is_string($customer_id) ? $customer_id : null,
+            user_id: is_string($user_id) ? $user_id : null,
         );
     }
 }

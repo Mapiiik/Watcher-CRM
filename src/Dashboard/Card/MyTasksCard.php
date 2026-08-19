@@ -8,17 +8,14 @@ use Override;
 
 /**
  * The unfinished tasks the signed-in operator is holding.
- *
- * Tasks are assigned to a dealer rather than to a user, so an identity without a customer
- * behind it holds nothing and the card says so instead of listing everybody's work.
  */
 class MyTasksCard extends AbstractTaskListCard
 {
     /**
      * @param \App\Model\Table\TasksTable $tasks Tasks table.
-     * @param string|null $dealer_id The dealer the signed-in operator stands for.
+     * @param string|null $user_id The signed-in operator.
      */
-    public function __construct(TasksTable $tasks, private ?string $dealer_id)
+    public function __construct(TasksTable $tasks, private ?string $user_id)
     {
         parent::__construct($tasks);
     }
@@ -56,18 +53,18 @@ class MyTasksCard extends AbstractTaskListCard
     #[Override]
     public function data(): array
     {
-        if ($this->dealer_id === null) {
+        if ($this->user_id === null) {
             return [
                 'tasks' => [],
                 'total' => 0,
                 'url' => $this->listingUrl([]),
-                'empty' => __('Your account stands for no dealer, so it holds no tasks.'),
+                'empty' => __('You are holding no unfinished tasks.'),
             ];
         }
 
         return $this->payload(
-            $this->activeTasks()->find('forDealer', dealer_id: $this->dealer_id),
-            ['dealer_id' => $this->dealer_id],
+            $this->activeTasks()->find('forUser', user_id: $this->user_id),
+            ['user_id' => $this->user_id],
             ['empty' => __('You are holding no unfinished tasks.')],
         );
     }

@@ -98,7 +98,7 @@ class CustomersController extends AppController
             'Tasks' => [
                 'TaskTypes',
                 'TaskStates',
-                'Dealers',
+                'Users',
             ],
             'AccountingProfiles',
         ]);

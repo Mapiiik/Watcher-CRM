@@ -18,9 +18,9 @@ use Override;
  *
  * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $TaskTypes
+ * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
- * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Dealers
  * @method \App\Model\Entity\Task newEmptyEntity()
  * @method \App\Model\Entity\Task newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Task[] newEntities(array $data, array $options = [])
@@ -65,16 +65,15 @@ class TasksTable extends AppTable
             'foreignKey' => 'task_type_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsTo('Users', [
+            'className' => 'AppUsers',
+            'foreignKey' => 'user_id',
+        ]);
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
         ]);
         $this->belongsTo('Contracts', [
             'foreignKey' => 'contract_id',
-        ]);
-        $this->belongsTo('Dealers', [
-            'className' => 'Customers',
-            'foreignKey' => 'dealer_id',
-            'conditions' => ['Dealers.dealer IN' => [1, 2]],
         ]);
     }
 
@@ -95,18 +94,15 @@ class TasksTable extends AppTable
     }
 
     /**
-     * Tasks a dealer is holding.
-     *
-     * Tasks are assigned to a dealer rather than to a user, so the caller passes the
-     * `customer_id` of the identity it asks on behalf of.
+     * Tasks a user is holding.
      *
      * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
-     * @param string $dealer_id The dealer the tasks belong to.
+     * @param string $user_id The user the tasks belong to.
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
      */
-    public function findForDealer(SelectQuery $query, string $dealer_id): SelectQuery
+    public function findForUser(SelectQuery $query, string $user_id): SelectQuery
     {
-        return $query->where(['Tasks.dealer_id' => $dealer_id]);
+        return $query->where(['Tasks.user_id' => $user_id]);
     }
 
     /**
@@ -117,7 +113,7 @@ class TasksTable extends AppTable
      */
     public function findUnassigned(SelectQuery $query): SelectQuery
     {
-        return $query->where(['Tasks.dealer_id IS' => null]);
+        return $query->where(['Tasks.user_id IS' => null]);
     }
 
     /**
@@ -238,9 +234,9 @@ class TasksTable extends AppTable
         $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
         $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
         $rules->add($rules->existsIn(['task_type_id'], 'TaskTypes'), ['errorField' => 'task_type_id']);
+        $rules->add($rules->existsIn(['user_id'], 'Users'), ['errorField' => 'user_id']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
-        $rules->add($rules->existsIn(['dealer_id'], 'Dealers'), ['errorField' => 'dealer_id']);
 
         $rules->add(
             function ($entity, $_options): bool {

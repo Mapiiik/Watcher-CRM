@@ -56,7 +56,7 @@ class TaskTypesController extends AppController
     public function view(?string $id = null): void
     {
         $taskType = $this->TaskTypes->get($id, contain: [
-            'Tasks' => ['Customers', 'Dealers', 'TaskStates'],
+            'Tasks' => ['Customers', 'TaskStates', 'Users'],
             'ContractStates',
             'Creators',
             'Modifiers',

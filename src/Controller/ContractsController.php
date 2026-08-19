@@ -177,9 +177,9 @@ class ContractsController extends AppController
                 ],
                 'Tasks' => [
                     'Contracts',
-                    'Dealers',
                     'TaskStates',
                     'TaskTypes',
+                    'Users',
                     'conditions' => [
                         'OR' => [
                             'Tasks.contract_id !=' => $id,
@@ -196,7 +196,7 @@ class ContractsController extends AppController
             'Tasks' => [
                 'TaskTypes',
                 'TaskStates',
-                'Dealers',
+                'Users',
             ],
             'SoldEquipments' => [
                 'EquipmentTypes',

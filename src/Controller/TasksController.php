@@ -6,7 +6,6 @@ namespace App\Controller;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Maps\TaskMap;
 use App\Model\Enum\AddressType;
-use App\Model\Enum\CustomerDealer;
 use Cake\Form\Form;
 use Cake\Http\Response;
 use Cake\I18n\Date;
@@ -118,10 +117,10 @@ class TasksController extends AppController
                 $this->getRequest()->getQuery('stale'),
             );
         }
-        if (!is_null($this->getRequest()->getQuery('dealer_id'))) {
+        if (!is_null($this->getRequest()->getQuery('user_id'))) {
             $this->getRequest()->getSession()->write(
-                'Config.Tasks.filter.dealer_id',
-                $this->getRequest()->getQuery('dealer_id'),
+                'Config.Tasks.filter.user_id',
+                $this->getRequest()->getQuery('user_id'),
             );
         }
         if (!is_null($this->getRequest()->getQuery('task_type_id'))) {
@@ -180,20 +179,20 @@ class TasksController extends AppController
             ];
         }
 
-        // filter by dealer
+        // filter by user
         if (Hash::get($this->user_settings, 'tasks.all_by_default', false)) {
-            $dealer_id = $filter['dealer_id'] ?? null;
+            $user_id = $filter['user_id'] ?? null;
         } else {
-            $dealer_id = $filter['dealer_id'] ?? $this->getRequest()->getAttribute('identity')['customer_id'] ?? null;
+            $user_id = $filter['user_id'] ?? $this->getRequest()->getAttribute('identity')['id'] ?? null;
         }
-        if (!empty($dealer_id)) {
-            if ($dealer_id === 'none') {
+        if (!empty($user_id)) {
+            if ($user_id === 'none') {
                 $conditions[] = [
-                    'Dealers.id IS' => null,
+                    'Users.id IS' => null,
                 ];
-            } elseif (is_string($dealer_id) && Validation::uuid($dealer_id)) {
+            } elseif (is_string($user_id) && Validation::uuid($user_id)) {
                 $conditions[] = [
-                    'Dealers.id' => $dealer_id,
+                    'Users.id' => $user_id,
                 ];
             }
         }
@@ -246,7 +245,7 @@ class TasksController extends AppController
             'show_completed' => $show_completed,
             'pressing' => $pressing,
             'stale' => $stale,
-            'dealer_id' => $dealer_id,
+            'user_id' => $user_id,
             'task_type_id' => $task_type_id,
             'task_state_id' => $task_state_id,
             'access_point_id' => $access_point_id,
@@ -261,7 +260,7 @@ class TasksController extends AppController
                 'task_type_id',
                 'priority',
                 'TaskStates.priority',
-                'dealer_id',
+                'user_id',
                 'subject',
                 'text',
                 'customer_id',
@@ -296,7 +295,7 @@ class TasksController extends AppController
                         'strategy' => Association::STRATEGY_SELECT,
                     ],
                 ],
-                'Dealers',
+                'Users',
                 'TaskStates',
                 'TaskTypes',
             ],
@@ -315,20 +314,19 @@ class TasksController extends AppController
 
         $tasks = $this->paginate($query);
 
-        $dealers = $this->Tasks->Dealers
+        $users = $this->Tasks->Users
             ->find()
             ->orderBy([
-                'dealer',
-                'company',
+                'active' => 'DESC',
                 'last_name',
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer): array {
+            ->map(function ($user): array {
                 return [
-                    'value' => $dealer->id,
-                    'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
+                    'value' => $user->id,
+                    'text' => $user->name_for_lists,
+                    'style' => $user->active ? null : 'color: darkgray;',
                 ];
             })
             ->prependItem([
@@ -346,7 +344,7 @@ class TasksController extends AppController
                     'TaskStates.completed' => false,
                 ]);
             })
-            ->notMatching('Dealers')
+            ->notMatching('Users')
             ->count();
 
         // show warning if there are some unassigned tasks
@@ -354,13 +352,13 @@ class TasksController extends AppController
             $this->Flash->warning(
                 (new HtmlHelper(new View($this->getRequest())))->link(
                     __n(
-                        'There was {0} unfinished task found that does not have a dealer assigned.',
-                        'There were {0} unfinished tasks found that do not have a dealer assigned.',
+                        'There was {0} unfinished task found that does not have a user assigned.',
+                        'There were {0} unfinished tasks found that do not have a user assigned.',
                         $number_of_unassigned_tasks,
                         $number_of_unassigned_tasks,
                     ),
                     ['?' => [
-                        'dealer_id' => 'none',
+                        'user_id' => 'none',
                         'task_type_id' => '',
                         'task_state_id' => '',
                         'access_point_id' => '',
@@ -376,7 +374,7 @@ class TasksController extends AppController
         $taskTypes = $this->Tasks->TaskTypes->find('list', order: ['name'])->all();
         $taskStates = $this->Tasks->TaskStates->find('list', order: ['name'])->all();
 
-        $this->set(compact('tasks', 'taskTypes', 'taskStates', 'dealers'));
+        $this->set(compact('tasks', 'taskTypes', 'taskStates', 'users'));
 
         // load access points from NMS if possible
         $this->setAccessPointsViewVarList(onlyActive: false);
@@ -399,7 +397,7 @@ class TasksController extends AppController
             'Contracts' => [
                 'InstallationAddresses',
             ],
-            'Dealers',
+            'Users',
             'TaskStates',
             'Creators',
             'Modifiers',
@@ -437,8 +435,8 @@ class TasksController extends AppController
                 if ($this->Tasks->save($task)) {
                     // send email notification
                     if (
-                        $task->dealer_id !== null
-                        && $task->dealer_id != ($this->getRequest()->getAttribute('identity')['customer_id'] ?? null)
+                        $task->user_id !== null
+                        && $task->user_id != ($this->getRequest()->getAttribute('identity')['id'] ?? null)
                     ) {
                         $this->sendNotificationEmail($task->id, true);
                     }
@@ -457,23 +455,22 @@ class TasksController extends AppController
             'first_name',
         ]);
         $contracts = [];
-        $dealers = $this->Tasks->Dealers
+        $users = $this->Tasks->Users
             ->find()
             ->where([
-                'dealer' => 1, // only current dealers
+                'active' => true, // only active users
             ])
             ->orderBy([
-                'dealer',
-                'company',
+                'active' => 'DESC',
                 'last_name',
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer): array {
+            ->map(function ($user): array {
                 return [
-                    'value' => $dealer->id,
-                    'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
+                    'value' => $user->id,
+                    'text' => $user->name_for_lists,
+                    'style' => $user->active ? null : 'color: darkgray;',
                 ];
             });
         $taskStates = $this->Tasks->TaskStates->find('list', order: ['name'])->all();
@@ -554,15 +551,15 @@ class TasksController extends AppController
         if (empty($task->start_date)) {
             $task->start_date = Date::now();
         }
-        // preset dealer
-        if (empty($task->dealer_id)) {
-            $task->dealer_id = $this->getRequest()->getAttribute('identity')['customer_id'] ?? null;
+        // preset user
+        if (empty($task->user_id)) {
+            $task->user_id = $this->getRequest()->getAttribute('identity')['id'] ?? null;
         }
 
         // add task text header
         $task->text .= $this->taskTextHeader();
 
-        $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'dealers', 'taskStates'));
+        $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'users', 'taskStates'));
 
         // load access points from NMS if possible (only active)
         $this->setAccessPointsViewVarList(onlyActive: true);
@@ -589,8 +586,8 @@ class TasksController extends AppController
                 if ($this->Tasks->save($task)) {
                     // send email notification
                     if (
-                        $task->dealer_id !== null
-                        && $task->dealer_id != ($this->getRequest()->getAttribute('identity')['customer_id'] ?? null)
+                        $task->user_id !== null
+                        && $task->user_id != ($this->getRequest()->getAttribute('identity')['id'] ?? null)
                     ) {
                         $this->sendNotificationEmail($task->id, false);
                     }
@@ -609,20 +606,19 @@ class TasksController extends AppController
             'first_name',
         ]);
         $contracts = [];
-        $dealers = $this->Tasks->Dealers
+        $users = $this->Tasks->Users
             ->find()
             ->orderBy([
-                'dealer',
-                'company',
+                'active' => 'DESC',
                 'last_name',
                 'first_name',
             ])
             ->all()
-            ->map(function ($dealer): array {
+            ->map(function ($user): array {
                 return [
-                    'value' => $dealer->id,
-                    'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
+                    'value' => $user->id,
+                    'text' => $user->name_for_lists,
+                    'style' => $user->active ? null : 'color: darkgray;',
                 ];
             });
         $taskStates = $this->Tasks->TaskStates->find('list', order: ['name'])->all();
@@ -653,7 +649,7 @@ class TasksController extends AppController
         }
         $task->text .= $this->taskTextHeader();
 
-        $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'dealers', 'taskStates'));
+        $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'users', 'taskStates'));
 
         // load access points from NMS if possible
         $this->setAccessPointsViewVarList(onlyActive: false);
@@ -720,17 +716,23 @@ class TasksController extends AppController
             'Contracts' => [
                 'InstallationAddresses',
             ],
-            'Dealers' => ['Emails'],
+            'Users',
             'Creators',
             'Modifiers',
         ]);
 
+        if (!is_object($task->user) || empty($task->user->email)) {
+            $this->Flash->error(__(
+                'The notification email could not be sent because the user does not have an email address.',
+            ));
+
+            return false;
+        }
+
         try {
             $mailer = new Mailer('default');
 
-            foreach ($task->dealer->emails as $email) {
-                $mailer->addTo($email->email, $task->dealer->name);
-            }
+            $mailer->setTo($task->user->email, $task->user->name);
 
             $title = $new ?
                 __('You have a new task # {0}', $task->number)
@@ -746,7 +748,7 @@ class TasksController extends AppController
             $mailer->setViewVars(['title' => $title, 'task' => $task]);
 
             $mailer->deliver();
-            $this->Flash->success(__('Notification email sent.') . ' (' . $task->dealer->email . ')');
+            $this->Flash->success(__('Notification email sent.') . ' (' . $task->user->email . ')');
 
             return true;
         } catch (Exception $e) {

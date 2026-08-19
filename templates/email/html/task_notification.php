@@ -45,8 +45,8 @@ table {
                     <td><?= $task->task_state !== null ? h($task->task_state->name) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Dealer') ?></th>
-                    <td><?= $task->dealer !== null ? h($task->dealer->name) : '' ?></td>
+                    <th><?= __('User') ?></th>
+                    <td><?= $task->user !== null ? h($task->user->name) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Email') ?></th>

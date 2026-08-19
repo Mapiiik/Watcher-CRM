@@ -45,7 +45,7 @@ class UnassignedTasksCard extends AbstractTaskListCard
     {
         return $this->payload(
             $this->activeTasks()->find('unassigned'),
-            ['dealer_id' => 'none'],
+            ['user_id' => 'none'],
             ['empty' => __('Every unfinished task has somebody holding it.')],
         );
     }

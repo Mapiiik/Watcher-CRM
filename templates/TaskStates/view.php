@@ -59,7 +59,7 @@
                             <th><?= __('Number') ?></th>
                             <th><?= __('Task Type') ?></th>
                             <th><?= __('Priority') ?></th>
-                            <th><?= __('Dealer') ?></th>
+                            <th><?= __('User') ?></th>
                             <th><?= __('Subject') ?></th>
                             <th><?= __('Text') ?></th>
                             <th><?= __('Email') ?></th>
@@ -83,10 +83,10 @@
                                 ) : '' ?>
                             </td>
                             <td><?= h($task->getPriorityName()) ?></td>
-                            <td><?= $task->dealer !== null ?
+                            <td><?= $task->user !== null ?
                                 $this->Html->link(
-                                    $task->dealer->name ?? '(' . $task->dealer->id . ')',
-                                    ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
+                                    $task->user->name ?? '(' . $task->user->id . ')',
+                                    ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
                                 ) : '' ?>
                             </td>
                             <td><?= h($task->subject) ?></td>

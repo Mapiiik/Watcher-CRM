@@ -51,10 +51,10 @@
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Dealer') ?></th>
-                            <td><?= $task->dealer !== null ? $this->Html->link(
-                                $task->dealer->name ?? '(' . $task->dealer->id . ')',
-                                ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
+                            <th><?= __('User') ?></th>
+                            <td><?= $task->user !== null ? $this->Html->link(
+                                $task->user->name ?? '(' . $task->user->id . ')',
+                                ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
                             ) : '' ?></td>
                         </tr>
                     </table>

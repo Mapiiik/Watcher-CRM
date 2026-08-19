@@ -42,16 +42,16 @@ final class DashboardCardRegistry implements CardRegistryInterface
 
     /**
      * @param string|null $role The role of the signed-in operator.
-     * @param string|null $customer_id The customer the signed-in operator stands for.
+     * @param string|null $user_id The signed-in operator.
      */
-    public function __construct(private ?string $role, ?string $customer_id)
+    public function __construct(private ?string $role, ?string $user_id)
     {
         /** @var \App\Model\Table\TasksTable $tasks */
         $tasks = $this->fetchTable(TasksTable::class);
 
         $this->factories = [
             'pressing_tasks' => fn(): DashboardCardInterface => new PressingTasksCard($tasks),
-            'my_tasks' => fn(): DashboardCardInterface => new MyTasksCard($tasks, $customer_id),
+            'my_tasks' => fn(): DashboardCardInterface => new MyTasksCard($tasks, $user_id),
             'unassigned_tasks' => fn(): DashboardCardInterface => new UnassignedTasksCard($tasks),
             'stale_tasks' => fn(): DashboardCardInterface => new StaleTasksCard($tasks),
         ];

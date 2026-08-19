@@ -60,9 +60,9 @@ class TaskStatesController extends AppController
             'Modifiers',
             'Tasks' => [
                 'Customers',
-                'Dealers',
                 'TaskStates',
                 'TaskTypes',
+                'Users',
             ],
         ]);
 

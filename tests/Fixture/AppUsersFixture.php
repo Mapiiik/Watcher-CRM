@@ -27,7 +27,9 @@ class AppUsersFixture extends TestFixture
         $this->records = [
             [
                 'username' => 'Lorem ipsum dolor sit amet',
-                'email' => 'Lorem ipsum dolor sit amet',
+                // a real address rather than filler text: the task notification hands it straight to
+                // a mailer, which refuses anything that is not one
+                'email' => 'operator@example.com',
                 'password' => 'Lorem ipsum dolor sit amet',
                 'first_name' => 'Lorem ipsum dolor sit amet',
                 'last_name' => 'Lorem ipsum dolor sit amet',

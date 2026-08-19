@@ -368,7 +368,7 @@ class CustomersController extends AppController
                 'Contracts',
                 'TaskTypes',
                 'TaskStates',
-                'Dealers',
+                'Users',
             ],
             'AccountingProfiles',
             'IpAddresses' => [

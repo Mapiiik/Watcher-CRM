@@ -21,6 +21,8 @@ use CakeDC\Users\Model\Entity\User;
  * @property \Cake\I18n\Date $modified
  * @property string $customer_id
  * @property array|null $user_settings
+ * @property string $name
+ * @property string $name_for_lists
  */
 class AppUser extends User
 {
@@ -35,6 +37,36 @@ class AppUser extends User
         'is_superuser' => false,
         'role' => true,
     ];
+
+    /**
+     * getter for name of user
+     *
+     * @return string
+     */
+    protected function _getName(): string
+    {
+        $name = implode(' ', array_filter([
+            $this->first_name,
+            $this->last_name,
+        ]));
+
+        return $name . ' (' . $this->username . ')';
+    }
+
+    /**
+     * getter for full name with company and with customer number for lists
+     *
+     * @return string
+     */
+    protected function _getNameForLists(): string
+    {
+        $name = implode(' ', array_filter([
+            $this->last_name,
+            $this->first_name,
+        ]));
+
+        return $name . ' (' . $this->username . ')';
+    }
 
     /**
      * Get role options method

@@ -12,7 +12,7 @@ $this->Html->script('expandable-text.js', ['block' => true]);
 <?= $this->Form->create($filterForm, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
     <div class="column">
-        <?= $this->Form->control('dealer_id', [
+        <?= $this->Form->control('user_id', [
             'empty' => true,
             'onchange' => 'this.form.submit();',
         ]) ?>
@@ -89,7 +89,7 @@ $this->Html->script('expandable-text.js', ['block' => true]);
                     <th><?= $this->Paginator->sort('task_type_id') ?></th>
                     <th><?= $this->Paginator->sort('priority') ?></th>
                     <th><?= $this->Paginator->sort('TaskStates.priority', __('Task State')) ?></th>
-                    <th><?= $this->Paginator->sort('dealer_id') ?></th>
+                    <th><?= $this->Paginator->sort('user_id') ?></th>
                     <th><?= $this->Paginator->sort('subject') ?> / <i><?= __('Summary Text') ?></i></th>
                     <th><?= $this->Paginator->sort('text') ?></th>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
@@ -121,9 +121,9 @@ $this->Html->script('expandable-text.js', ['block' => true]);
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $task->dealer !== null ? $this->Html->link(
-                            $task->dealer->name ?? '(' . $task->dealer->id . ')',
-                            ['controller' => 'Customers', 'action' => 'view', $task->dealer->id],
+                        <?= $task->user !== null ? $this->Html->link(
+                            $task->user->name ?? '(' . $task->user->id . ')',
+                            ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
                         ) : '' ?>
                     </td>
                     <td>

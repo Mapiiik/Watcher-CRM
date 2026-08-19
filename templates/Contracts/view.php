@@ -553,7 +553,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                             <th><?= __('Task State') ?></th>
                             <th><?= __('Subject') ?></th>
                             <th><?= __('Text') ?></th>
-                            <th><?= __('Dealer') ?></th>
+                            <th><?= __('User') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($contract->tasks as $task) : ?>
@@ -565,7 +565,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                             <td style="overflow-wrap: break-word; max-width: 600px;">
                                 <?= nl2br(h($task->text ?? '')) ?>
                             </td>
-                            <td><?= $task->dealer !== null ? h($task->dealer->name) : '' ?></td>
+                            <td><?= $task->user !== null ? h($task->user->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
@@ -600,7 +600,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                             <th><?= __('Subject') ?></th>
                             <th><?= __('Text') ?></th>
                             <th><?= __('Contract') ?></th>
-                            <th><?= __('Dealer') ?></th>
+                            <th><?= __('User') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($contract->customer->tasks as $task) : ?>
@@ -623,7 +623,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                                     ],
                                 ) : '' ?>
                             </td>
-                            <td><?= $task->dealer !== null ? h($task->dealer->name) : '' ?></td>
+                            <td><?= $task->user !== null ? h($task->user->name) : '' ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),
