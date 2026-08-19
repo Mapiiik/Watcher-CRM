@@ -143,4 +143,23 @@ class AppUsersTableTest extends TestCase
 
         $this->assertNotFalse($saved);
     }
+
+    /**
+     * An account tasks name cannot be deleted.
+     *
+     * The database refuses this as well, its foreign key being `NO ACTION` - but it refuses by
+     * raising, which reaches the operator as an error page. Asked as a rule, the delete simply
+     * comes back false and the controller says so.
+     *
+     * @return void
+     * @link \App\Model\Table\AppUsersTable::buildRules()
+     */
+    public function testAnAccountTasksNameCannotBeDeleted(): void
+    {
+        /** @var \App\Model\Entity\AppUser $user */
+        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+
+        $this->assertFalse($this->AppUsers->delete($user));
+        $this->assertNotEmpty($this->AppUsers->get($user->id));
+    }
 }

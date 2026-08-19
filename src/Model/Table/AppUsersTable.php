@@ -107,6 +107,11 @@ class AppUsersTable extends UsersTable
             ],
         );
 
+        // The database refuses this too - the foreign key is `NO ACTION` - but it refuses it by
+        // raising, which reaches the operator as an error page rather than as an answer. Asked
+        // here, it is an answer.
+        $rules->addDelete($rules->isNotLinkedTo('Tasks'));
+
         return $rules;
     }
 }
