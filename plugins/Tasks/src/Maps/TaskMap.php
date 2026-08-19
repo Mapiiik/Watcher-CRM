@@ -81,7 +81,10 @@ abstract class TaskMap
     }
 
     /**
-     * The open tasks, most pressing first, with everything a bubble reads.
+     * The open tasks, with everything a bubble reads.
+     *
+     * In no particular order: a marker is placed by its position and kept under its own key,
+     * so nothing about the map depends on which task came first.
      *
      * @param string|null $taskTypeId Only tasks of this type, when one is named.
      * @param string|null $taskStateId Only tasks in this state, when one is named.
