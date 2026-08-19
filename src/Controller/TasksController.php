@@ -9,6 +9,7 @@ use App\Model\Enum\AddressType;
 use App\Model\Enum\CustomerDealer;
 use Cake\Form\Form;
 use Cake\Http\Response;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\Mailer\Mailer;
 use Cake\ORM\Association;
@@ -166,6 +167,11 @@ class TasksController extends AppController
             ];
         }
 
+        // filter by what wants attention - the same reading the dashboard cards are drawn
+        // from, so a card and the listing it points at hold the same tasks
+        $pressing = toBool($filter['pressing'] ?? null) ?? false;
+        $stale = toBool($filter['stale'] ?? null) ?? false;
+
         // filter by completed
         $show_completed = $filter['show_completed'] ?? null;
         if (empty($show_completed)) {
@@ -173,11 +179,6 @@ class TasksController extends AppController
                 'TaskStates.completed' => 0,
             ];
         }
-
-        // filter by what wants attention - the same reading the dashboard cards are drawn
-        // from, so a card and the listing it points at hold the same tasks
-        $pressing = toBool($filter['pressing'] ?? null) ?? false;
-        $stale = toBool($filter['stale'] ?? null) ?? false;
 
         // filter by dealer
         if (Hash::get($this->user_settings, 'tasks.all_by_default', false)) {
@@ -372,12 +373,8 @@ class TasksController extends AppController
             );
         }
 
-        $taskTypes = $this->Tasks->TaskTypes->find('list', order: [
-            'name',
-        ]);
-        $taskStates = $this->Tasks->TaskStates->find('list', order: [
-            'name',
-        ]);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', order: ['name'])->all();
+        $taskStates = $this->Tasks->TaskStates->find('list', order: ['name'])->all();
 
         $this->set(compact('tasks', 'taskTypes', 'taskStates', 'dealers'));
 
@@ -453,9 +450,7 @@ class TasksController extends AppController
                 $this->Flash->error(__('The task could not be saved. Please, try again.'));
             }
         }
-        $taskTypes = $this->Tasks->TaskTypes->find('list', order: [
-            'name',
-        ]);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', order: ['name'])->all();
         $customers = $this->Tasks->Customers->find('list', order: [
             'company',
             'last_name',
@@ -481,9 +476,7 @@ class TasksController extends AppController
                     'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
-        $taskStates = $this->Tasks->TaskStates->find('list', order: [
-            'name',
-        ]);
+        $taskStates = $this->Tasks->TaskStates->find('list', order: ['name'])->all();
 
         // load customer data
         if (isset($task->customer_id)) {
@@ -559,7 +552,7 @@ class TasksController extends AppController
 
         // preset start date
         if (empty($task->start_date)) {
-            $task->start_date = DateTime::now();
+            $task->start_date = Date::now();
         }
         // preset dealer
         if (empty($task->dealer_id)) {
@@ -609,9 +602,7 @@ class TasksController extends AppController
                 $this->Flash->error(__('The task could not be saved. Please, try again.'));
             }
         }
-        $taskTypes = $this->Tasks->TaskTypes->find('list', order: [
-            'name',
-        ]);
+        $taskTypes = $this->Tasks->TaskTypes->find('list', order: ['name'])->all();
         $customers = $this->Tasks->Customers->find('list', order: [
             'company',
             'last_name',
@@ -634,9 +625,7 @@ class TasksController extends AppController
                     'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
                 ];
             });
-        $taskStates = $this->Tasks->TaskStates->find('list', order: [
-            'name',
-        ]);
+        $taskStates = $this->Tasks->TaskStates->find('list', order: ['name'])->all();
 
         if (isset($task->customer_id)) {
             $contracts = $this->Tasks->Contracts->find(

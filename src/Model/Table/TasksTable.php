@@ -16,11 +16,11 @@ use Override;
 /**
  * Tasks Model
  *
+ * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $TaskTypes
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Dealers
- * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @method \App\Model\Entity\Task newEmptyEntity()
  * @method \App\Model\Entity\Task newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Task[] newEntities(array $data, array $options = [])
@@ -57,6 +57,10 @@ class TasksTable extends AppTable
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
+        $this->belongsTo('TaskStates', [
+            'foreignKey' => 'task_state_id',
+            'joinType' => 'INNER',
+        ]);
         $this->belongsTo('TaskTypes', [
             'foreignKey' => 'task_type_id',
             'joinType' => 'INNER',
@@ -71,10 +75,6 @@ class TasksTable extends AppTable
             'className' => 'Customers',
             'foreignKey' => 'dealer_id',
             'conditions' => ['Dealers.dealer IN' => [1, 2]],
-        ]);
-        $this->belongsTo('TaskStates', [
-            'foreignKey' => 'task_state_id',
-            'joinType' => 'INNER',
         ]);
     }
 
@@ -173,6 +173,16 @@ class TasksTable extends AppTable
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
+            ->uuid('task_state_id')
+            ->requirePresence('task_state_id', 'create')
+            ->notEmptyString('task_state_id');
+
+        $validator
+            ->uuid('task_type_id')
+            ->requirePresence('task_type_id', 'create')
+            ->notEmptyString('task_type_id');
+
+        $validator
             ->scalar('subject')
             ->allowEmptyString('subject');
 
@@ -193,12 +203,12 @@ class TasksTable extends AppTable
             ->allowEmptyString('phone');
 
         $validator
-            ->date('finish_date')
-            ->allowEmptyDate('finish_date');
-
-        $validator
             ->date('start_date')
             ->allowEmptyDate('start_date');
+
+        $validator
+            ->date('finish_date')
+            ->allowEmptyDate('finish_date');
 
         $validator
             ->date('estimated_date')
@@ -211,16 +221,6 @@ class TasksTable extends AppTable
         $validator
             ->uuid('access_point_id')
             ->allowEmptyString('access_point_id');
-
-        $validator
-            ->uuid('task_type_id')
-            ->requirePresence('task_type_id', 'create')
-            ->notEmptyString('task_type_id');
-
-        $validator
-            ->uuid('task_state_id')
-            ->requirePresence('task_state_id', 'create')
-            ->notEmptyString('task_state_id');
 
         return $validator;
     }
@@ -236,11 +236,11 @@ class TasksTable extends AppTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
+        $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
         $rules->add($rules->existsIn(['task_type_id'], 'TaskTypes'), ['errorField' => 'task_type_id']);
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
         $rules->add($rules->existsIn(['dealer_id'], 'Dealers'), ['errorField' => 'dealer_id']);
-        $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
 
         $rules->add(
             function ($entity, $_options): bool {

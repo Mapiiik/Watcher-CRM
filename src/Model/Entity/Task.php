@@ -14,30 +14,30 @@ use Cake\Core\Configure;
  *
  * @property string $id
  * @property int $nid
- * @property int $task_type_id
+ * @property string $task_state_id
+ * @property string $task_type_id
  * @property string|null $subject
  * @property string|null $text
  * @property int $priority
  * @property string|null $customer_id
  * @property string|null $contract_id
- * @property int|null $dealer_id
+ * @property string|null $dealer_id
  * @property string|null $email
  * @property string|null $phone
- * @property int $task_state_id
- * @property \Cake\I18n\DateTime|null $finish_date
- * @property \Cake\I18n\DateTime|null $start_date
- * @property \Cake\I18n\DateTime|null $estimated_date
- * @property \Cake\I18n\DateTime|null $critical_date
+ * @property \Cake\I18n\Date|null $start_date
+ * @property \Cake\I18n\Date|null $finish_date
+ * @property \Cake\I18n\Date|null $estimated_date
+ * @property \Cake\I18n\Date|null $critical_date
  * @property string|null $access_point_id
  * @property string $number
  * @property string $summary_text
  * @property string $style
  *
+ * @property \App\Model\Entity\TaskState $task_state
  * @property \App\Model\Entity\TaskType $task_type
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
  * @property \App\Model\Entity\Customer $dealer
- * @property \App\Model\Entity\TaskState $task_state
  * @property \ArrayObject<string, mixed>|null $access_point
  * @property string|null $access_point_name
  */
@@ -65,6 +65,7 @@ class Task extends AppEntity
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'task_state_id' => true,
         'task_type_id' => true,
         'subject' => true,
         'text' => true,
@@ -74,17 +75,16 @@ class Task extends AppEntity
         'dealer_id' => true,
         'email' => true,
         'phone' => true,
-        'task_state_id' => true,
-        'finish_date' => true,
         'start_date' => true,
+        'finish_date' => true,
         'estimated_date' => true,
         'critical_date' => true,
+        'access_point_id' => true,
+        'task_state' => true,
         'task_type' => true,
         'customer' => true,
         'contract' => true,
         'dealer' => true,
-        'task_state' => true,
-        'access_point_id' => true,
         'access_point' => true,
     ];
 
