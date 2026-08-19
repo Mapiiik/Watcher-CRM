@@ -3,18 +3,17 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Model\Entity\Task;
-use App\Model\Entity\TaskType;
-use Cake\Datasource\EntityInterface;
-use Cake\I18n\Date;
-use Cake\I18n\DateTime;
-use Cake\ORM\Query\SelectQuery;
+use Cake\ORM\Association;
 use Cake\ORM\RulesChecker;
-use Cake\Validation\Validator;
 use Override;
+use Tasks\Model\Rule\RequiredLinkRule;
+use Tasks\Model\Table\TasksTable as TasksTasksTable;
 
 /**
  * Tasks Model
+ *
+ * On top of the shared task: what this application files a task under - a customer and a
+ * contract - and what a task type may insist on before a task filed under it can be saved.
  *
  * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $TaskTypes
@@ -36,7 +35,7 @@ use Override;
  * @method iterable<\App\Model\Entity\Task> deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TasksTable extends AppTable
+class TasksTable extends TasksTasksTable
 {
     /**
      * Initialize method
@@ -49,26 +48,6 @@ class TasksTable extends AppTable
     {
         parent::initialize($config);
 
-        $this->setTable('tasks');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
-        $this->addBehavior('Footprint');
-        $this->addBehavior('StringModifications');
-
-        $this->belongsTo('TaskStates', [
-            'foreignKey' => 'task_state_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('TaskTypes', [
-            'foreignKey' => 'task_type_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Users', [
-            'className' => 'AppUsers',
-            'foreignKey' => 'user_id',
-        ]);
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
         ]);
@@ -78,147 +57,25 @@ class TasksTable extends AppTable
     }
 
     /**
-     * Tasks nobody has finished yet.
+     * A task's summary line reads its customer and the address of its contract, so both have to
+     * come with it.
      *
-     * Whether a task is done is a property of its state, not of the task, so the state
-     * is joined in rather than left to the caller.
+     * The addresses are read per customer while the rows are ordered by columns of the task, which
+     * the `subquery` strategy turns into a `GROUP BY` over an order PostgreSQL will not accept -
+     * the task listing spells this out for the same reason.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
-     */
-    public function findActive(SelectQuery $query): SelectQuery
-    {
-        return $query
-            ->contain(['TaskStates'])
-            ->where(['TaskStates.completed' => false]);
-    }
-
-    /**
-     * Tasks a user is holding.
-     *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
-     * @param string $user_id The user the tasks belong to.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
-     */
-    public function findForUser(SelectQuery $query, string $user_id): SelectQuery
-    {
-        return $query->where(['Tasks.user_id' => $user_id]);
-    }
-
-    /**
-     * Tasks nobody holds.
-     *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
-     */
-    public function findUnassigned(SelectQuery $query): SelectQuery
-    {
-        return $query->where(['Tasks.user_id IS' => null]);
-    }
-
-    /**
-     * Tasks that want attention: a deadline near or past, an expected date already gone
-     * by, or an urgent mark whatever the dates say.
-     *
-     * The two dates are asked differently on purpose. A critical date is what was promised,
-     * so it is worth raising before it is missed. An expected date is only a plan, and a
-     * plan for next week is not news - it becomes news once it has slipped.
-     *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
-     * @param int $within_days How far ahead a deadline still counts as pressing.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
-     */
-    public function findPressing(SelectQuery $query, int $within_days): SelectQuery
-    {
-        return $query->where([
-            'OR' => [
-                // a deadline is a promise, so it is raised before it is broken
-                'Tasks.critical_date <=' => Date::today()->addDays($within_days),
-                // an estimate is a plan; planning something for next week is not news,
-                // the plan having slipped is
-                'Tasks.estimated_date <' => Date::today(),
-                'Tasks.priority >=' => Task::PRIORITY_URGENT,
-            ],
-        ]);
-    }
-
-    /**
-     * Tasks that have lain untouched for a while.
-     *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task> $query The query to scope.
-     * @param int $days How long a task may lie before it counts as stale.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>
-     */
-    public function findStale(SelectQuery $query, int $days): SelectQuery
-    {
-        return $query->where(['Tasks.modified <' => DateTime::now()->subDays($days)]);
-    }
-
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @return array<mixed>
      */
     #[Override]
-    public function validationDefault(Validator $validator): Validator
+    public function summaryContain(): array
     {
-        $validator
-            ->uuid('id')
-            ->allowEmptyString('id', null, 'create')
-            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
-        $validator
-            ->uuid('task_state_id')
-            ->requirePresence('task_state_id', 'create')
-            ->notEmptyString('task_state_id');
-
-        $validator
-            ->uuid('task_type_id')
-            ->requirePresence('task_type_id', 'create')
-            ->notEmptyString('task_type_id');
-
-        $validator
-            ->scalar('subject')
-            ->allowEmptyString('subject');
-
-        $validator
-            ->scalar('text')
-            ->allowEmptyString('text');
-
-        $validator
-            ->integer('priority')
-            ->notEmptyString('priority');
-
-        $validator
-            ->scalar('email')
-            ->allowEmptyString('email');
-
-        $validator
-            ->scalar('phone')
-            ->allowEmptyString('phone');
-
-        $validator
-            ->date('start_date')
-            ->allowEmptyDate('start_date');
-
-        $validator
-            ->date('finish_date')
-            ->allowEmptyDate('finish_date');
-
-        $validator
-            ->date('estimated_date')
-            ->allowEmptyDate('estimated_date');
-
-        $validator
-            ->date('critical_date')
-            ->allowEmptyDate('critical_date');
-
-        $validator
-            ->uuid('access_point_id')
-            ->allowEmptyString('access_point_id');
-
-        return $validator;
+        return [
+            'TaskTypes',
+            'Contracts' => ['InstallationAddresses'],
+            'Customers' => [
+                'Addresses' => ['strategy' => Association::STRATEGY_SELECT],
+            ],
+        ];
     }
 
     /**
@@ -231,29 +88,13 @@ class TasksTable extends AppTable
     #[Override]
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['id']), ['errorField' => 'id']);
-        $rules->add($rules->existsIn(['task_state_id'], 'TaskStates'), ['errorField' => 'task_state_id']);
-        $rules->add($rules->existsIn(['task_type_id'], 'TaskTypes'), ['errorField' => 'task_type_id']);
-        $rules->add($rules->existsIn(['user_id'], 'Users'), ['errorField' => 'user_id']);
+        $rules = parent::buildRules($rules);
+
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 
         $rules->add(
-            function ($entity, $_options): bool {
-                // load task type
-                $task_type = $this->findTaskType($entity);
-                // a type that is not there is for existsIn above to report, not for this rule
-                if ($task_type === null) {
-                    return true;
-                }
-
-                // check if customer required for this task type
-                if ($task_type->customer_required) {
-                    return !empty($entity->customer_id);
-                }
-
-                return true;
-            },
+            new RequiredLinkRule('customer_required', 'customer_id'),
             'isRequiredCustomerFilled',
             [
                 'errorField' => 'customer_id',
@@ -262,21 +103,7 @@ class TasksTable extends AppTable
         );
 
         $rules->add(
-            function ($entity, $_options): bool {
-                // load task type
-                $task_type = $this->findTaskType($entity);
-                // a type that is not there is for existsIn above to report, not for this rule
-                if ($task_type === null) {
-                    return true;
-                }
-
-                // check if contract required for this task type
-                if ($task_type->contract_required) {
-                    return !empty($entity->contract_id);
-                }
-
-                return true;
-            },
+            new RequiredLinkRule('contract_required', 'contract_id'),
             'isRequiredContractFilled',
             [
                 'errorField' => 'contract_id',
@@ -285,31 +112,5 @@ class TasksTable extends AppTable
         );
 
         return $rules;
-    }
-
-    /**
-     * The task type a task names, or null where it names none or one that is not there.
-     *
-     * The rules asking what a task type requires run whatever the `existsIn` above made of the same
-     * field - a checker runs every rule it holds rather than stopping at the first one to fail.
-     * Reading the type with `get()` therefore threw out of the rules rather than failing them, and
-     * a caller waiting for a `false` got an exception instead.
-     *
-     * @param \Cake\Datasource\EntityInterface $entity The task being saved.
-     * @return \App\Model\Entity\TaskType|null
-     */
-    private function findTaskType(EntityInterface $entity): ?TaskType
-    {
-        $task_type_id = $entity->get('task_type_id');
-        if ($task_type_id === null) {
-            return null;
-        }
-
-        /** @var \App\Model\Entity\TaskType|null $task_type */
-        $task_type = $this->TaskTypes->find()
-            ->where(['TaskTypes.id' => $task_type_id])
-            ->first();
-
-        return $task_type;
     }
 }

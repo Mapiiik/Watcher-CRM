@@ -1,0 +1,227 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Tasks\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: cs_CZ\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+
+msgid "The task state has been saved."
+msgstr "Stav úkolu byl uložen."
+
+msgid "The task state could not be saved. Please, try again."
+msgstr "Stav úkolu nelze uložit. Prosím, zkuste to znovu."
+
+msgid "The task state has been deleted."
+msgstr "Stav úkolu byl odstraněn."
+
+msgid "The task state could not be deleted. Please, try again."
+msgstr "Stav úkolu nelze odstranit. Prosím, zkuste to znovu."
+
+msgid "The task type has been saved."
+msgstr "Typ úkolu byl uložen."
+
+msgid "The task type could not be saved. Please, try again."
+msgstr "Typ úkolu nelze uložit. Prosím, zkuste to znovu."
+
+msgid "The task type has been deleted."
+msgstr "Typ úkolu byl odstraněn."
+
+msgid "The task type could not be deleted. Please, try again."
+msgstr "Typ úkolu nelze odstranit. Prosím, zkuste to znovu."
+
+msgid "My Tasks"
+msgstr "Moje úkoly"
+
+msgid "You are holding no unfinished tasks."
+msgstr "Nemáte žádné nedokončené úkoly."
+
+msgid "Urgent and Overdue Tasks"
+msgstr "Naléhavé a zpožděné úkoly"
+
+msgid "Nothing is urgent or running late."
+msgstr "Nic není naléhavé ani zpožděné."
+
+msgid "Stale Tasks"
+msgstr "Zaseknuté úkoly"
+
+msgid "Nothing has been left lying around."
+msgstr "Nic tu nezůstalo ležet."
+
+msgid "Unassigned Tasks"
+msgstr "Nepřiřazené úkoly"
+
+msgid "Every unfinished task has somebody holding it."
+msgstr "Za každým nedokončeným úkolem stojí někdo, kdo ho má na starosti."
+
+msgid "Low"
+msgstr "Nízká"
+
+msgid "Normal"
+msgstr "Normální"
+
+msgid "High"
+msgstr "Vysoká"
+
+msgid "Urgent"
+msgstr "Naléhavé"
+
+msgid "Actions"
+msgstr "Akce"
+
+msgid "List Task States"
+msgstr "Seznam stavů úkolů"
+
+msgid "Add Task State"
+msgstr "Přidat stav úkolu"
+
+msgid "Submit"
+msgstr "Potvrdit"
+
+msgid "Delete"
+msgstr "Odstranit"
+
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Opravdu chcete odstranit # {0}?"
+
+msgid "Edit Task State"
+msgstr "Upravit stav úkolu"
+
+msgid "Search"
+msgstr "Hledat"
+
+msgid "New Task State"
+msgstr "Nový stav úkolu"
+
+msgid "Task States"
+msgstr "Stavy úkolů"
+
+msgid "Yes"
+msgstr "Ano"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "View"
+msgstr "Zobrazit"
+
+msgid "Edit"
+msgstr "Upravit"
+
+msgid "first"
+msgstr "první"
+
+msgid "previous"
+msgstr "předchozí"
+
+msgid "next"
+msgstr "další"
+
+msgid "last"
+msgstr "poslední"
+
+msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
+msgstr "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového počtu {{count}}"
+
+msgid "Delete Task State"
+msgstr "Odstranit stav úkolu"
+
+msgid "Name"
+msgstr "Jméno"
+
+msgid "Color"
+msgstr "Barva"
+
+msgid "Priority"
+msgstr "Priorita"
+
+msgid "Completed"
+msgstr "Dokončeno"
+
+msgid "Related Tasks"
+msgstr "Související úkoly"
+
+msgid "Number"
+msgstr "Číslo"
+
+msgid "Task Type"
+msgstr "Typ úkolu"
+
+msgid "User"
+msgstr "Uživatel"
+
+msgid "Subject"
+msgstr "Předmět"
+
+msgid "Text"
+msgstr "Text"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Customer"
+msgstr "Zákazník"
+
+msgid "Customer Number"
+msgstr "Číslo zákazníka"
+
+msgid "Access Point"
+msgstr "Přístupový bod"
+
+msgid "Start Date"
+msgstr "Datum přijetí"
+
+msgid "Estimated Date"
+msgstr "Předpokládaný datum řešení"
+
+msgid "Critical Date"
+msgstr "Nutné dořešit do"
+
+msgid "Finish Date"
+msgstr "Datum vyřízení"
+
+msgid "List Task Types"
+msgstr "Seznam typů úkolů"
+
+msgid "Add Task Type"
+msgstr "Přidat typ úkolu"
+
+msgid "Edit Task Type"
+msgstr "Upravit typ úkolu"
+
+msgid "New Task Type"
+msgstr "Nový typ úkolu"
+
+msgid "Task Types"
+msgstr "Typy úkolů"
+
+msgid "Delete Task Type"
+msgstr "Odstranit typ úkolu"
+
+msgid "Customer Required"
+msgstr "Požadovaný zákazník"
+
+msgid "Contract Required"
+msgstr "Požadovaná smlouva"
+
+msgid "Task State"
+msgstr "Stav úkolu"
+
+msgid "Related Contract States"
+msgstr "Související stavy smlouvy"
+
+msgid "Usable for New Contracts"
+msgstr "Použitelné pro nové smlouvy"
+
+msgid "Active Services"
+msgstr "Aktivní služby"
+
+msgid "Billed"
+msgstr "Fakturováno"
+
+msgid "Blocked"
+msgstr "Blokováno"

@@ -6,9 +6,13 @@ namespace App\Model\Table;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
+use Tasks\Model\Table\TaskTypesTable as TasksTaskTypesTable;
 
 /**
  * TaskTypes Model
+ *
+ * On top of the shared type: what this application lets a type require of a task, and the contract
+ * states that name a type as the one they wait for.
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
  * @property \App\Model\Table\ContractStatesTable&\Cake\ORM\Association\HasMany $ContractStates
@@ -25,8 +29,9 @@ use Override;
  * @method iterable<\App\Model\Entity\TaskType> saveManyOrFail(iterable $entities, $options = [])
  * @method iterable<\App\Model\Entity\TaskType>|false deleteMany(iterable $entities, $options = [])
  * @method iterable<\App\Model\Entity\TaskType> deleteManyOrFail(iterable $entities, $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TaskTypesTable extends AppTable
+class TaskTypesTable extends TasksTaskTypesTable
 {
     /**
      * Initialize method
@@ -38,23 +43,6 @@ class TaskTypesTable extends AppTable
     public function initialize(array $config): void
     {
         parent::initialize($config);
-
-        $this->setTable('task_types');
-        $this->setDisplayField('name');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
-        $this->addBehavior('Footprint');
-        $this->addBehavior('StringModifications');
-
-        $this->hasMany('Tasks', [
-            'foreignKey' => 'task_type_id',
-            'sort' => [
-                'TaskStates.priority' => 'DESC',
-                'Tasks.priority' => 'DESC',
-                'Tasks.nid' => 'DESC',
-            ],
-        ]);
 
         $this->hasMany('ContractStates', [
             'foreignKey' => 'requires_open_task_type_id',
@@ -70,13 +58,7 @@ class TaskTypesTable extends AppTable
     #[Override]
     public function validationDefault(Validator $validator): Validator
     {
-        $validator
-            ->uuid('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
-            ->scalar('name')
-            ->allowEmptyString('name');
+        $validator = parent::validationDefault($validator);
 
         $validator
             ->boolean('customer_required')
@@ -99,7 +81,8 @@ class TaskTypesTable extends AppTable
     #[Override]
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->addDelete($rules->isNotLinkedTo('Tasks'));
+        $rules = parent::buildRules($rules);
+
         $rules->addDelete($rules->isNotLinkedTo('ContractStates'));
 
         return $rules;

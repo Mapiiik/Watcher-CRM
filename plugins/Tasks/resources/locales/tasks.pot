@@ -1,0 +1,183 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-08-19 16:57+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:95
+#: ./plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:121
+msgid "The task state has been saved."
+msgstr ""
+
+#: ./plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:99
+#: ./plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:125
+msgid "The task state could not be saved. Please, try again."
+msgstr ""
+
+#: ./plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:146
+msgid "The task state has been deleted."
+msgstr ""
+
+#: ./plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:149
+msgid "The task state could not be deleted. Please, try again."
+msgstr ""
+
+#: ./plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:95
+#: ./plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:121
+msgid "The task type has been saved."
+msgstr ""
+
+#: ./plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:99
+#: ./plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:125
+msgid "The task type could not be saved. Please, try again."
+msgstr ""
+
+#: ./plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:146
+msgid "The task type has been deleted."
+msgstr ""
+
+#: ./plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:149
+msgid "The task type could not be deleted. Please, try again."
+msgstr ""
+
+#: ./plugins/Tasks/src/Dashboard/Card/MyTasksCard.php:38
+msgid "My Tasks"
+msgstr ""
+
+#: ./plugins/Tasks/src/Dashboard/Card/MyTasksCard.php:61
+#: ./plugins/Tasks/src/Dashboard/Card/MyTasksCard.php:68
+msgid "You are holding no unfinished tasks."
+msgstr ""
+
+#: ./plugins/Tasks/src/Dashboard/Card/PressingTasksCard.php:31
+msgid "Urgent and Overdue Tasks"
+msgstr ""
+
+#: ./plugins/Tasks/src/Dashboard/Card/PressingTasksCard.php:54
+msgid "Nothing is urgent or running late."
+msgstr ""
+
+#: ./plugins/Tasks/src/Dashboard/Card/StaleTasksCard.php:31
+msgid "Stale Tasks"
+msgstr ""
+
+#: ./plugins/Tasks/src/Dashboard/Card/StaleTasksCard.php:54
+msgid "Nothing has been left lying around."
+msgstr ""
+
+#: ./plugins/Tasks/src/Dashboard/Card/UnassignedTasksCard.php:28
+msgid "Unassigned Tasks"
+msgstr ""
+
+#: ./plugins/Tasks/src/Dashboard/Card/UnassignedTasksCard.php:49
+msgid "Every unfinished task has somebody holding it."
+msgstr ""
+
+#: ./plugins/Tasks/src/Model/Entity/Task.php:114
+msgid "Low"
+msgstr ""
+
+#: ./plugins/Tasks/src/Model/Entity/Task.php:115
+msgid "Normal"
+msgstr ""
+
+#: ./plugins/Tasks/src/Model/Entity/Task.php:116
+msgid "High"
+msgstr ""
+
+#: ./plugins/Tasks/src/Model/Entity/Task.php:117
+msgid "Urgent"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/add.php:10
+#: ./plugins/Tasks/templates/TaskStates/edit.php:10
+#: ./plugins/Tasks/templates/TaskStates/index.php:30
+msgid "Actions"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/add.php:11
+#: ./plugins/Tasks/templates/TaskStates/edit.php:16
+msgid "List Task States"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/add.php:18
+msgid "Add Task State"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/add.php:26
+#: ./plugins/Tasks/templates/TaskStates/edit.php:31
+msgid "Submit"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/edit.php:12
+#: ./plugins/Tasks/templates/TaskStates/index.php:48
+msgid "Delete"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/edit.php:14
+#: ./plugins/Tasks/templates/TaskStates/index.php:50
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/edit.php:23
+msgid "Edit Task State"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:11
+msgid "Search"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:20
+msgid "New Task State"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:21
+msgid "Task States"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:39
+msgid "Yes"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:39
+msgid "No"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:41
+msgid "View"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:43
+msgid "Edit"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:60
+msgid "first"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:61
+msgid "previous"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:63
+msgid "next"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:64
+msgid "last"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/index.php:67
+msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
+msgstr ""
+

@@ -7,20 +7,20 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('tasks', 'Actions') ?></h4>
             <?= $this->AuthLink->postLink(
-                __('Delete'),
+                __d('tasks', 'Delete'),
                 ['action' => 'delete', $taskState->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $taskState->id), 'class' => 'side-nav-item'],
+                ['confirm' => __d('tasks', 'Are you sure you want to delete # {0}?', $taskState->id), 'class' => 'side-nav-item'],
             ) ?>
-            <?= $this->AuthLink->link(__('List Task States'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(__d('tasks', 'List Task States'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column column-90">
         <div class="taskStates form content">
             <?= $this->Form->create($taskState) ?>
             <fieldset>
-                <legend><?= __('Edit Task State') ?></legend>
+                <legend><?= __d('tasks', 'Edit Task State') ?></legend>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('color', ['type' => 'color']);
@@ -28,7 +28,7 @@
                     echo $this->Form->control('completed');
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('tasks', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

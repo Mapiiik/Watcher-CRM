@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Dashboard\Card;
+namespace Tasks\Dashboard\Card;
 
 use Override;
 
@@ -25,7 +25,7 @@ class UnassignedTasksCard extends AbstractTaskListCard
     #[Override]
     public function title(): string
     {
-        return __('Unassigned Tasks');
+        return __d('tasks', 'Unassigned Tasks');
     }
 
     /**
@@ -46,7 +46,7 @@ class UnassignedTasksCard extends AbstractTaskListCard
         return $this->payload(
             $this->activeTasks()->find('unassigned'),
             ['user_id' => 'none'],
-            ['empty' => __('Every unfinished task has somebody holding it.')],
+            ['empty' => __d('tasks', 'Every unfinished task has somebody holding it.')],
         );
     }
 }

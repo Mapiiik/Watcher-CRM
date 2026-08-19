@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Dashboard\Card;
+namespace Tasks\Dashboard\Card;
 
 use Override;
 
@@ -28,7 +28,7 @@ class StaleTasksCard extends AbstractTaskListCard
     #[Override]
     public function title(): string
     {
-        return __('Stale Tasks');
+        return __d('tasks', 'Stale Tasks');
     }
 
     /**
@@ -51,7 +51,7 @@ class StaleTasksCard extends AbstractTaskListCard
         return $this->payload(
             $this->activeTasks()->find('stale', days: $days),
             ['stale' => 1],
-            ['empty' => __('Nothing has been left lying around.')],
+            ['empty' => __d('tasks', 'Nothing has been left lying around.')],
         );
     }
 }

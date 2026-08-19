@@ -3,60 +3,32 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\Colors\ColorThemeSelector;
 use App\NMS\ApiClient as NMSApiClient;
 use App\Phones\Formatter as PhoneFormatter;
 use ArrayObject;
 use Cake\Core\Configure;
+use Override;
+use Tasks\Model\Entity\Task as TasksTask;
 
 /**
  * Task Entity
  *
- * @property string $id
- * @property int $nid
- * @property string $task_state_id
- * @property string $task_type_id
- * @property string|null $subject
- * @property string|null $text
- * @property int $priority
+ * On top of the shared task: what this application files a task under, and the line that reads
+ * it out.
+ *
  * @property string|null $customer_id
  * @property string|null $contract_id
- * @property string|null $user_id
- * @property string|null $email
- * @property string|null $phone
- * @property \Cake\I18n\Date|null $start_date
- * @property \Cake\I18n\Date|null $finish_date
- * @property \Cake\I18n\Date|null $estimated_date
- * @property \Cake\I18n\Date|null $critical_date
  * @property string|null $access_point_id
- * @property string $number
- * @property string $summary_text
- * @property string $style
  *
- * @property \App\Model\Entity\TaskState $task_state
- * @property \App\Model\Entity\TaskType $task_type
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \App\Model\Entity\AppUser|null $user
  * @property \ArrayObject<string, mixed>|null $access_point
  * @property string|null $access_point_name
  */
-class Task extends AppEntity
+class Task extends TasksTask
 {
     /**
-     * The priorities a task is offered, ordered from the least to the most pressing.
-     */
-    public const PRIORITY_LOW = -10;
-    public const PRIORITY_NORMAL = 0;
-    public const PRIORITY_HIGH = 10;
-    public const PRIORITY_URGENT = 50;
-
-    /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * Note that when '*' is set to true, this allows all unspecified fields to
-     * be mass assigned. For security purposes, it is advised to set '*' to false
-     * (or remove it), and explicitly make individual fields accessible as needed.
      *
      * @var array<string, bool>
      */
@@ -87,16 +59,6 @@ class Task extends AppEntity
         'user' => true,
         'access_point' => true,
     ];
-
-    /**
-     * getter for task number
-     *
-     * @return string
-     */
-    protected function _getNumber(): string
-    {
-        return strval($this->nid);
-    }
 
     /**
      * getter for acess point (try to load via ApiClient)
@@ -130,16 +92,6 @@ class Task extends AppEntity
     }
 
     /**
-     * getter for summary text
-     *
-     * @return string
-     */
-    protected function _getSummaryText(): string
-    {
-        return $this->getSummaryText();
-    }
-
-    /**
      * The one line that says what a task is about: who it is for, where, and how to reach
      * them.
      *
@@ -149,6 +101,7 @@ class Task extends AppEntity
      * @param bool $with_subject Whether the subject heads the line.
      * @return string
      */
+    #[Override]
     public function getSummaryText(bool $with_subject = true): string
     {
         $phoneNumber = $this->phone;
@@ -175,53 +128,5 @@ class Task extends AppEntity
         $number = $this->contract->number ?? $this->customer->number ?? null;
 
         return $number !== null ? $summary_text . ' (' . $number . ')' : $summary_text;
-    }
-
-    /**
-     * getter for style
-     *
-     * @return string
-     */
-    protected function _getStyle(): string
-    {
-        if (!isset($this->task_state->color)) {
-            // no dynamic style
-            return '';
-        }
-
-        $theme = Configure::read('UI.theme');
-        $theme = is_string($theme) ? $theme : null;
-
-        $backgroundColor = ColorThemeSelector::forTheme(
-            $this->task_state->color,
-            $theme,
-        );
-
-        return 'background-color: ' . $backgroundColor . ';';
-    }
-
-    /**
-     * Get task priority options method
-     *
-     * @return array<int, string>
-     */
-    public function getPriorityOptions(): array
-    {
-        return [
-            self::PRIORITY_LOW => __('Low'),
-            self::PRIORITY_NORMAL => __('Normal'),
-            self::PRIORITY_HIGH => __('High'),
-            self::PRIORITY_URGENT => __('Urgent'),
-        ];
-    }
-
-    /**
-     * Get task priority name method
-     *
-     * @return string
-     */
-    public function getPriorityName(): string
-    {
-        return $this->getPriorityOptions()[$this->priority] ?? (string)$this->priority;
     }
 }

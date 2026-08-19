@@ -58,7 +58,8 @@
             "Dashboard\\": "plugins/Dashboard/src/",
             "Maps\\": "plugins/Maps/src/",
             "Radius\\": "plugins/Radius/src/",
-            "Settings\\": "plugins/Settings/src/"
+            "Settings\\": "plugins/Settings/src/",
+            "Tasks\\": "plugins/Tasks/src/"
         }
     },
     "autoload-dev": {
@@ -69,7 +70,8 @@
             "Maps\\Test\\": "plugins/Maps/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "Radius\\Test\\": "plugins/Radius/tests/",
-            "Settings\\Test\\": "plugins/Settings/tests/"
+            "Settings\\Test\\": "plugins/Settings/tests/",
+            "Tasks\\Test\\": "plugins/Tasks/tests/"
         }
     },
     "config": {
@@ -120,6 +122,7 @@
             "bin/cake i18n extract --extract-core no --overwrite -p Maps",
             "bin/cake i18n extract --extract-core no --overwrite -p Radius",
             "bin/cake i18n extract --extract-core no --overwrite -p Settings",
+            "bin/cake i18n extract --extract-core no --overwrite -p Tasks",
             "bin/cake i18n extract --extract-core yes --overwrite --paths src/,templates/,config/ --output resources/locales/"
         ]
     },

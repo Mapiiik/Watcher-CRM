@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\RulesChecker;
-use Cake\Validation\Validator;
-use Override;
+use Tasks\Model\Table\TaskStatesTable as TasksTaskStatesTable;
 
 /**
  * TaskStates Model
+ *
+ * A task state is the same thing in both applications, so the whole of it lives in the plugin.
+ * This stands here because the table locator resolves an alias without a plugin prefix into this
+ * namespace, which is what every association naming `TaskStates` goes through.
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
  * @method \App\Model\Entity\TaskState newEmptyEntity()
@@ -24,73 +26,8 @@ use Override;
  * @method iterable<\App\Model\Entity\TaskState> saveManyOrFail(iterable $entities, $options = [])
  * @method iterable<\App\Model\Entity\TaskState>|false deleteMany(iterable $entities, $options = [])
  * @method iterable<\App\Model\Entity\TaskState> deleteManyOrFail(iterable $entities, $options = [])
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TaskStatesTable extends AppTable
+class TaskStatesTable extends TasksTaskStatesTable
 {
-    /**
-     * Initialize method
-     *
-     * @param array<string, mixed> $config The configuration for the Table.
-     * @return void
-     */
-    #[Override]
-    public function initialize(array $config): void
-    {
-        parent::initialize($config);
-
-        $this->setTable('task_states');
-        $this->setDisplayField('name');
-        $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
-        $this->addBehavior('Footprint');
-        $this->addBehavior('StringModifications');
-
-        $this->hasMany('Tasks', [
-            'foreignKey' => 'task_state_id',
-            'sort' => [
-                'Tasks.priority' => 'DESC',
-                'Tasks.nid' => 'DESC',
-            ],
-        ]);
-    }
-
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
-    #[Override]
-    public function validationDefault(Validator $validator): Validator
-    {
-        $validator
-            ->uuid('id')
-            ->allowEmptyString('id', null, 'create');
-
-        $validator
-            ->scalar('name')
-            ->allowEmptyString('name');
-
-        $validator
-            ->integer('priority')
-            ->notEmptyString('priority');
-
-        return $validator;
-    }
-
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    #[Override]
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->addDelete($rules->isNotLinkedTo('Tasks'));
-
-        return $rules;
-    }
 }

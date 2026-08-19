@@ -10,10 +10,6 @@ use App\Dashboard\Card\DebtorsCard;
 use App\Dashboard\Card\EndingObligationsCard;
 use App\Dashboard\Card\LabelsCard;
 use App\Dashboard\Card\ManualShutoffDebtorsCard;
-use App\Dashboard\Card\MyTasksCard;
-use App\Dashboard\Card\PressingTasksCard;
-use App\Dashboard\Card\StaleTasksCard;
-use App\Dashboard\Card\UnassignedTasksCard;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractStatesTable;
 use App\Model\Table\ContractVersionsTable;
@@ -23,6 +19,10 @@ use Cake\Core\Plugin;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Dashboard\Card\CardRegistryInterface;
 use Dashboard\Card\DashboardCardInterface;
+use Tasks\Dashboard\Card\MyTasksCard;
+use Tasks\Dashboard\Card\PressingTasksCard;
+use Tasks\Dashboard\Card\StaleTasksCard;
+use Tasks\Dashboard\Card\UnassignedTasksCard;
 
 /**
  * Registry of the cards the dashboard can draw.

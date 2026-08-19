@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Dashboard\Card;
+namespace Tasks\Dashboard\Card;
 
 use Override;
 
@@ -28,7 +28,7 @@ class PressingTasksCard extends AbstractTaskListCard
     #[Override]
     public function title(): string
     {
-        return __('Urgent and Overdue Tasks');
+        return __d('tasks', 'Urgent and Overdue Tasks');
     }
 
     /**
@@ -51,7 +51,7 @@ class PressingTasksCard extends AbstractTaskListCard
         return $this->payload(
             $this->activeTasks()->find('pressing', within_days: $within_days),
             ['pressing' => 1],
-            ['empty' => __('Nothing is urgent or running late.')],
+            ['empty' => __d('tasks', 'Nothing is urgent or running late.')],
         );
     }
 }

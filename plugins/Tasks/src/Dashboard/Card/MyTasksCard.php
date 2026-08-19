@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Dashboard\Card;
+namespace Tasks\Dashboard\Card;
 
 use App\Model\Table\TasksTable;
 use Override;
@@ -35,7 +35,7 @@ class MyTasksCard extends AbstractTaskListCard
     #[Override]
     public function title(): string
     {
-        return __('My Tasks');
+        return __d('tasks', 'My Tasks');
     }
 
     /**
@@ -58,14 +58,14 @@ class MyTasksCard extends AbstractTaskListCard
                 'tasks' => [],
                 'total' => 0,
                 'url' => $this->listingUrl([]),
-                'empty' => __('You are holding no unfinished tasks.'),
+                'empty' => __d('tasks', 'You are holding no unfinished tasks.'),
             ];
         }
 
         return $this->payload(
             $this->activeTasks()->find('forUser', user_id: $this->user_id),
             ['user_id' => $this->user_id],
-            ['empty' => __('You are holding no unfinished tasks.')],
+            ['empty' => __d('tasks', 'You are holding no unfinished tasks.')],
         );
     }
 }
