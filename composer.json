@@ -110,7 +110,10 @@
             "bin/cake schema_cache build"
         ],
         "stan": "phpstan analyse",
-        "test": "phpunit --colors=always",
+        "test": [
+            "bin/cake schema_cache clear --connection test",
+            "phpunit --colors=always"
+        ],
         "translations-update": [
             "bin/cake i18n extract --extract-core no --overwrite -p Bookkeeping --paths plugins/Bookkeeping/src/,plugins/Bookkeeping/templates/,plugins/Bookkeeping/config/",
             "bin/cake i18n extract --extract-core no --overwrite -p Dashboard",
