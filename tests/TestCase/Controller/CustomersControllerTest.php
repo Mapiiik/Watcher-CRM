@@ -270,6 +270,30 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * The tasks filed under the customer are listed on their card - one table written once and
+     * shown wherever tasks stand beside a record.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewListsTheTasksFiledUnderTheCustomer(): void
+    {
+        /** @var \App\Model\Entity\Task $task */
+        $task = $this->getTableLocator()->get('Tasks')
+            ->find()
+            ->where(['Tasks.customer_id' => self::CUSTOMER_ID])
+            ->firstOrFail();
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        // by identifier rather than by number: a task is numbered from one, and a page carries
+        // plenty of small numbers that say nothing about tasks
+        $this->assertResponseContains($task->id);
+    }
+
+    /**
      * Test that the related contracts show the latest obligation date of their contract versions.
      *
      * @return void

@@ -544,107 +544,16 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                     ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4 id="tasks"><?= __('Tasks') ?></h4>
-                <?php if (!empty($contract->tasks)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Number') ?></th>
-                            <th><?= __('Task Type') ?></th>
-                            <th><?= __('Task State') ?></th>
-                            <th><?= __('Subject') ?></th>
-                            <th><?= __('Text') ?></th>
-                            <th><?= __('User') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->tasks as $task) : ?>
-                        <tr style="<?= $task->style ?>">
-                            <td><?= h($task->number) ?></td>
-                            <td><?= $task->task_type !== null ? h($task->task_type->name) : '' ?></td>
-                            <td><?= $task->task_state !== null ? h($task->task_state->name) : '' ?></td>
-                            <td><?= h($task->subject) ?></td>
-                            <td style="overflow-wrap: break-word; max-width: 600px;">
-                                <?= nl2br(h($task->text ?? '')) ?>
-                            </td>
-                            <td><?= $task->user !== null ? h($task->user->name) : '' ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'Tasks', 'action' => 'view', $task->id],
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'Tasks', 'action' => 'edit', $task->id],
-                                    ['class' => 'win-link'],
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'Tasks', 'action' => 'delete', $task->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->number)],
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                <?= $this->element('Contracts/Tasks', [
+                    'tasks' => $contract->tasks,
+                ]) ?>
             </div>
             <div class="related">
                 <h4><?= __('Other Customer Tasks') ?></h4>
-                <?php if (!empty($contract->customer->tasks)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Number') ?></th>
-                            <th><?= __('Task Type') ?></th>
-                            <th><?= __('Task State') ?></th>
-                            <th><?= __('Subject') ?></th>
-                            <th><?= __('Text') ?></th>
-                            <th><?= __('Contract') ?></th>
-                            <th><?= __('User') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($contract->customer->tasks as $task) : ?>
-                        <tr style="<?= $task->style ?>">
-                            <td><?= h($task->number) ?></td>
-                            <td><?= $task->task_type !== null ? h($task->task_type->name) : '' ?></td>
-                            <td><?= $task->task_state !== null ? h($task->task_state->name) : '' ?></td>
-                            <td><?= h($task->subject) ?></td>
-                            <td style="overflow-wrap: break-word; max-width: 600px;">
-                                <?= nl2br(h($task->text ?? '')) ?>
-                            </td>
-                            <td><?=
-                                $task->contract !== null ? $this->Html->link(
-                                    $task->contract->name ?? '(' . $task->contract->id . ')',
-                                    [
-                                        'controller' => 'Contracts',
-                                        'action' => 'view',
-                                        $task->contract->id,
-                                        'customer_id' => $task->contract->customer_id,
-                                    ],
-                                ) : '' ?>
-                            </td>
-                            <td><?= $task->user !== null ? h($task->user->name) : '' ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['controller' => 'Tasks', 'action' => 'view', $task->id],
-                                ) ?>
-                                <?= $this->AuthLink->link(
-                                    __('Edit'),
-                                    ['controller' => 'Tasks', 'action' => 'edit', $task->id],
-                                    ['class' => 'win-link'],
-                                ) ?>
-                                <?= $this->AuthLink->postLink(
-                                    __('Delete'),
-                                    ['controller' => 'Tasks', 'action' => 'delete', $task->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $task->number)],
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
+                <?= $this->element('Contracts/Tasks', [
+                    'tasks' => $contract->customer->tasks,
+                    'contract_column' => true,
+                ]) ?>
             </div>
         </div>
     </div>

@@ -132,6 +132,46 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * The card carries two task tables: the ones filed under this contract, and the customer's
+     * others. Only the second names a contract per row - on the first it would say the same
+     * thing every time.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::view()
+     */
+    public function testViewListsTheTasksOfTheContractAndTheCustomersOthers(): void
+    {
+        $tasks = $this->getTableLocator()->get('Tasks');
+
+        // the one the fixtures carry is filed under the customer without naming a contract
+        /** @var \App\Model\Entity\Task $elsewhere */
+        $elsewhere = $tasks->find()->firstOrFail();
+
+        // the fixtures write the identity column with the values they carry, which leaves the
+        // identity itself where it started
+        $this->advanceIdentity('tasks', 'nid');
+
+        /** @var \App\Model\Entity\Task $own */
+        $own = $tasks->saveOrFail($tasks->newEntity([
+            'task_type_id' => $this->firstId('TaskTypes'),
+            'task_state_id' => $this->firstId('TaskStates'),
+            'subject' => 'Written by the test',
+            'priority' => 0,
+            'customer_id' => $elsewhere->customer_id,
+            'contract_id' => self::CONTRACT_ID,
+        ]));
+
+        $this->login();
+        $this->get('/contracts/view/' . self::CONTRACT_ID);
+
+        $this->assertResponseOk();
+        // by identifier rather than by number: a task is numbered from one, and a page carries
+        // plenty of small numbers that say nothing about tasks
+        $this->assertResponseContains($own->id);
+        $this->assertResponseContains($elsewhere->id);
+    }
+
+    /**
      * The detail fetches the contract's own billings and nobody else's.
      *
      * The `subquery` strategy joins its filtering derived table in under the alias of the source
