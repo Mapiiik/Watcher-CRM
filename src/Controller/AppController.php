@@ -131,7 +131,10 @@ class AppController extends Controller
         $identity = $this->getRequest()->getAttribute('identity');
 
         # Load user settings
-        $this->user_settings = $identity['user_settings'] ?? [];
+        // The column is filled by the settings form and holds nothing until somebody opens it,
+        // so anything that is not a set of settings is read as none.
+        $settings = $identity['user_settings'] ?? [];
+        $this->user_settings = is_array($settings) ? $settings : [];
 
         # Load additional parameters
         $this->loadAdditionalParameters();
