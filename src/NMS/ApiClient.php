@@ -134,47 +134,6 @@ class ApiClient
     }
 
     /**
-     * Search access point method
-     *
-     * @param array<string> $search access point condidions.
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
-     */
-    public static function searchAccessPoints(array $search): ?CollectionInterface
-    {
-        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
-            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
-            $response = $http->get('/api/access-points/search.json', [
-                'api_key' => Configure::read('Nms.key'),
-            ] + $search);
-
-            $json = $response->getJson();
-            if (isset($json['accessPoints'])) {
-                return new Collection($json['accessPoints']);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get access points for IP method
-     *
-     * @param string $ipAddress IP address.
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API or from cache if valid
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public static function getAccessPointsForIp(string $ipAddress): ?CollectionInterface
-    {
-        return Cache::remember(
-            'access_points_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ipAddress): ?CollectionInterface {
-                return self::searchAccessPoints(['ip_address' => $ipAddress]);
-            },
-            'api_client',
-        );
-    }
-
-    /**
      * Fetch IP address ranges method
      *
      * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
