@@ -79,16 +79,5 @@ $users = ${$tableAlias};
             </tbody>
         </table>
     </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __d('app_users', 'first')) ?>
-            <?= $this->Paginator->prev('< ' . __d('app_users', 'previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__d('app_users', 'next') . ' >') ?>
-            <?= $this->Paginator->last(__d('app_users', 'last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(
-            __d('app_users', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
-        ) ?></p>
-    </div>
+    <?= $this->element('common/paginator') ?>
 </div>
