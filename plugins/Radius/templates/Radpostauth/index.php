@@ -51,16 +51,5 @@
             </tbody>
         </table>
     </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __d('radius', 'first')) ?>
-            <?= $this->Paginator->prev('< ' . __d('radius', 'previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__d('radius', 'next') . ' >') ?>
-            <?= $this->Paginator->last(__d('radius', 'last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(
-            __d('radius', 'Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total'),
-        ) ?></p>
-    </div>
+    <?= $this->element('Radius.common/paginator') ?>
 </div>
