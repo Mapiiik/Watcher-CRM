@@ -24,37 +24,16 @@
                 <?php
                 echo $this->Form->control('access_point_id', [
                     'empty' => true,
-                    'onchange' => '
-                        var refresh = document.createElement("input");
-                        refresh.type = "hidden";
-                        refresh.name = "refresh";
-                        refresh.value = "refresh";
-                        this.form.appendChild(refresh);
-                        this.form.submit();
-                    ',
+                    'onchange' => $this::REFRESH_ON_CHANGE,
                 ]);
                 echo $this->Form->control('type_of_use', [
-                    'onchange' => '
-                        var refresh = document.createElement("input");
-                        refresh.type = "hidden";
-                        refresh.name = "refresh";
-                        refresh.value = "refresh";
-                        this.form.appendChild(refresh);
-                        this.form.submit();
-                    ',
+                    'onchange' => $this::REFRESH_ON_CHANGE,
                 ]);
                 echo $this->Form->control('ip_address_range', [
                     'label' => __('IP Address Range'),
                     'empty' => true,
                     'required' => true,
-                    'onchange' => '
-                        var refresh = document.createElement("input");
-                        refresh.type = "hidden";
-                        refresh.name = "refresh";
-                        refresh.value = "refresh";
-                        this.form.appendChild(refresh);
-                        this.form.submit();
-                    ',
+                    'onchange' => $this::REFRESH_ON_CHANGE,
                 ]);
                 $this->Form->unlockField('refresh'); //disable form security check
                 ?>

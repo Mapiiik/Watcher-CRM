@@ -30,14 +30,7 @@ use Cake\I18n\Date;
                     echo $this->Form->control('contract_id', [
                         'options' => $contracts,
                         'empty' => true,
-                        'onchange' => <<<JS
-                            var refresh = document.createElement("input");
-                            refresh.type = "hidden";
-                            refresh.name = "refresh";
-                            refresh.value = "refresh";
-                            this.form.appendChild(refresh);
-                            this.form.submit();
-                            JS,
+                        'onchange' => $this::REFRESH_ON_CHANGE,
                     ]);
                     $this->Form->unlockField('refresh'); //disable form security check
                 }

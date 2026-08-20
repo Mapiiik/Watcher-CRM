@@ -29,14 +29,7 @@
                     echo $this->Form->control('customer_id', [
                         'options' => $customers,
                         'empty' => true,
-                        'onchange' => '
-                            var refresh = document.createElement("input");
-                            refresh.type = "hidden";
-                            refresh.name = "refresh";
-                            refresh.value = "refresh";
-                            this.form.appendChild(refresh);
-                            this.form.submit();
-                        ',
+                        'onchange' => $this::REFRESH_ON_CHANGE,
                     ]);
                     $this->Form->unlockField('refresh'); //disable form security check
                 }

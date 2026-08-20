@@ -29,6 +29,26 @@ use Override;
 class AppView extends View
 {
     /**
+     * What a control puts on its `onchange` when choosing narrows the controls below it.
+     *
+     * The form has to say that it is only refreshing rather than being submitted in earnest, and
+     * the controller reads that as a field - so the field is added on the way out instead of
+     * sitting in the markup, where the browser would send it on a real submit as well. Form
+     * protection knows nothing of a field that appears this late, so whoever asks for this has to
+     * follow it with `$this->Form->unlockField('refresh')`.
+     *
+     * Templates reach it as `$this::REFRESH_ON_CHANGE`, `$this` being this class.
+     *
+     * @var string
+     */
+    public const REFRESH_ON_CHANGE = 'var refresh = document.createElement("input"); '
+        . 'refresh.type = "hidden"; '
+        . 'refresh.name = "refresh"; '
+        . 'refresh.value = "refresh"; '
+        . 'this.form.appendChild(refresh); '
+        . 'this.form.submit();';
+
+    /**
      * Initialization hook method.
      *
      * Use this method to add common initialization code like adding helpers.

@@ -80,14 +80,7 @@ $this->Html->script('addresses.js', ['block' => true]);
                 <?php
                 echo $this->Form->control('note');
                 echo $this->Form->control('manual_coordinate_setting', [
-                    'onchange' => '
-                        var refresh = document.createElement("input");
-                        refresh.type = "hidden";
-                        refresh.name = "refresh";
-                        refresh.value = "refresh";
-                        this.form.appendChild(refresh);
-                        this.form.submit();
-                    ',
+                    'onchange' => $this::REFRESH_ON_CHANGE,
                 ]);
                 $this->Form->unlockField('refresh'); //disable form security check
 
