@@ -10,19 +10,19 @@
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('contract_state_id', [
             'empty' => true,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('service_type_id', [
             'empty' => true,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>

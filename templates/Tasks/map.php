@@ -16,7 +16,7 @@
             'options' => $taskTypes,
             'multiple' => 'multiple',
             'style' => 'height: 100px;',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
@@ -25,7 +25,7 @@
             'options' => $taskStates,
             'multiple' => 'multiple',
             'style' => 'height: 100px;',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>

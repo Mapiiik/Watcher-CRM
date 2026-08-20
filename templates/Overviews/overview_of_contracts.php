@@ -22,39 +22,39 @@
             <fieldset>
                 <?= $this->Form->control('contract_state_id', [
                     'empty' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('service_type_id', [
                     'empty' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('label_ids', [
                     'label' => __('Require Labels'),
                     'options' => $labels,
                     'multiple' => 'multiple',
                     'style' => 'height: 100px;',
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('not_label_ids', [
                     'label' => __('Exclude Labels'),
                     'options' => $labels,
                     'multiple' => 'multiple',
                     'style' => 'height: 100px;',
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('access_point_id', [
                     'options' => $accessPoints,
                     'empty' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('cto_category', [
                     'empty' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('registry_address_id', [
                     'options' => $registryAddresses,
                     'empty' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
             </fieldset>
             <?= $this->Form->end() ?>

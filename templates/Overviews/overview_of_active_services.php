@@ -26,30 +26,30 @@
                         'label' => __('Month To Display'),
                         'placeholder' => __('YYYY-MM'),
                         'type' => 'month',
-                        'onchange' => 'this.form.submit();',
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
                     ]) ?>
                     <?= $this->Form->control('show_billings', [
                         'label' => __('Show Billings'),
                         'type' => 'checkbox',
-                        'onchange' => 'this.form.submit();',
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
                     ]) ?>
                 </div>
                 <div class="column">
                     <?= $this->Form->control('service_type_id', [
                         'empty' => true,
-                        'onchange' => 'this.form.submit();',
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
                     ]) ?>
                 </div>
                 <div class="column">
                     <?= $this->Form->control('cto_category', [
                         'empty' => true,
-                        'onchange' => 'this.form.submit();',
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
                     ]) ?>
                 </div>
                 <div class="column">
                     <?= $this->Form->control('access_point_id', [
                         'empty' => true,
-                        'onchange' => 'this.form.submit();',
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
                     ]) ?>
                 </div>
             </div>

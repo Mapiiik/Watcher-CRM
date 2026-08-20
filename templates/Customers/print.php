@@ -162,7 +162,7 @@
                             'options' => $documentTypes,
                             'empty' => true,
                             'required' => true,
-                            'onchange' => 'this.form.submit();',
+                            'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
                         ?>
                     </div>

@@ -203,13 +203,13 @@
                             'options' => $documentTypes,
                             'empty' => true,
                             'required' => true,
-                            'onchange' => 'this.form.submit();',
+                            'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
 
                         echo $this->Form->control('signed', [
                             'label' => __('Signed'),
                             'type' => 'checkbox',
-                            'onchange' => 'this.form.submit();',
+                            'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
                         ?>
                         <br>
@@ -217,22 +217,22 @@
                         echo $this->Form->control('own_equipment', [
                             'label' => __('The customer has his own equipment'),
                             'type' => 'checkbox',
-                            'onchange' => 'this.form.submit();',
+                            'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
                         echo $this->Form->control('does_not_use_ip_addresses', [
                             'label' => __('The customer does not use IP addresses'),
                             'type' => 'checkbox',
-                            'onchange' => 'this.form.submit();',
+                            'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
                         echo $this->Form->control('does_not_use_radius', [
                             'label' => __('The customer does not use RADIUS accounts'),
                             'type' => 'checkbox',
-                            'onchange' => 'this.form.submit();',
+                            'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
                         echo $this->Form->control('fixed_term', [
                             'label' => __('Allow generating a fixed-term contract'),
                             'type' => 'checkbox',
-                            'onchange' => 'this.form.submit();',
+                            'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
                         ?>
                     </div>
@@ -244,7 +244,7 @@
                                 'options' => $contractVersions,
                                 'empty' => true,
                                 'required' => true,
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]);
                         }
 
@@ -254,7 +254,7 @@
                                 'options' => $contractVersions,
                                 'empty' => true,
                                 'required' => true,
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]);
                         }
 
@@ -264,7 +264,7 @@
                                 'empty' => true,
                                 'required' => true,
                                 'list' => 'contract-numbers-to-be-terminated',
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]);
                         }
 
@@ -274,22 +274,22 @@
                                 'type' => 'date',
                                 'empty' => true,
                                 'required' => true,
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]);
                         }
 
                         if ($printType?->isHandoverProtocol()) {
                             echo $this->Form->control('access_point', [
                                 'empty' => true,
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]);
                             echo $this->Form->control('radius_username', [
                                 'empty' => true,
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]);
                             echo $this->Form->control('radius_password', [
                                 'empty' => true,
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]);
                         }
                         ?>

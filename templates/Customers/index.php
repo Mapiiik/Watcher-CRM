@@ -15,25 +15,25 @@
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
         <?= $allow_advanced_search ? $this->Form->control('advanced_search', [
             'label' => __('Advanced Search'),
             'type' => 'checkbox',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) : '' ?>
     </div>
     <?php if ($allow_advanced_search) : ?>
     <div class="column">
         <?= $this->Form->control('contract_state_id', [
             'empty' => true,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('service_type_id', [
             'empty' => true,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
@@ -42,7 +42,7 @@
             'options' => $labels,
             'multiple' => 'multiple',
             'style' => 'height: 100px;',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
@@ -51,7 +51,7 @@
             'options' => $labels,
             'multiple' => 'multiple',
             'style' => 'height: 100px;',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <?php endif; ?>

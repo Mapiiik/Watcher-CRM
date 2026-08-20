@@ -16,7 +16,7 @@ $this->Html->script('expandable-text.js', ['block' => true]);
     <div class="column">
         <?= $this->Form->control('user_id', [
             'empty' => true,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
@@ -25,7 +25,7 @@ $this->Html->script('expandable-text.js', ['block' => true]);
             'options' => $taskTypes,
             'multiple' => 'multiple',
             'style' => 'height: 100px;',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
@@ -34,20 +34,20 @@ $this->Html->script('expandable-text.js', ['block' => true]);
             'options' => $taskStates,
             'multiple' => 'multiple',
             'style' => 'height: 100px;',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('access_point_id', [
             'empty' => true,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>
@@ -56,21 +56,21 @@ $this->Html->script('expandable-text.js', ['block' => true]);
         <?= $this->Form->control('show_completed', [
             'label' => __('Show Completed'),
             'type' => 'checkbox',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('pressing', [
             'label' => __('Urgent or Overdue Only'),
             'type' => 'checkbox',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('stale', [
             'label' => __('Untouched for a While Only'),
             'type' => 'checkbox',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
@@ -79,7 +79,7 @@ $this->Html->script('expandable-text.js', ['block' => true]);
         <?= $this->Form->control('expandable_text', [
             'label' => __('Expandable Text'),
             'type' => 'checkbox',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>

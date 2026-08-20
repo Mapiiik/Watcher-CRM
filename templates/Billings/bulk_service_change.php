@@ -35,55 +35,55 @@ use App\Model\Entity\Billing;
                     'options' => $services,
                     'empty' => true,
                     'required' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('active_on_date', [
                     'label' => __('Active on Date'),
                     'type' => 'date',
                     'required' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('access_point_id', [
                     'label' => __('Access Point'),
                     'options' => $accessPoints,
                     'empty' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('processing_limit', [
                     'label' => __('Processing Limit'),
                     'type' => 'number',
                     'default' => 100,
                     'required' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('standard_prices_only', [
                     'label' => __('Standard Prices Only'),
                     'type' => 'checkbox',
                     'default' => true,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
             </fieldset>
             <fieldset>
                 <?= $this->Form->control('price', [
                     'label' => __('Price'),
                     'type' => 'number',
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('fixed_discount', [
                     'label' => __('Fixed Discount'),
                     'type' => 'number',
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('percentage_discount', [
                     'label' => __('Percentage Discount'),
                     'type' => 'number',
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
                 <?= $this->Form->control('empty_is_null', [
                     'label' => __('Empty field means only unset values'),
                     'type' => 'checkbox',
                     'default' => false,
-                    'onchange' => 'this.form.submit();',
+                    'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
             </fieldset>
             <?= $this->Form->end() ?>

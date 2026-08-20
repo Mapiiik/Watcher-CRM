@@ -17,7 +17,7 @@
             'label' => __('Ignore what is no longer running'),
             'checked' => $ignore_inactive,
             'value' => 1,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
         <hr />
         <?php foreach ($checks as $check) : ?>
@@ -26,7 +26,7 @@
                 'label' => $check->title(),
                 'checked' => $shown[$check->id()],
                 'value' => 1,
-                'onchange' => 'this.form.submit();',
+                'onchange' => $this::SUBMIT_ON_CHANGE,
             ]) ?>
         <?php endforeach ?>
     </fieldset>

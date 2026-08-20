@@ -12,7 +12,7 @@
         <?= $this->Form->control('search', [
             'label' => __d('bookkeeping', 'Search'),
             'type' => 'search',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>

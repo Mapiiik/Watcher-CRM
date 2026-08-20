@@ -13,14 +13,14 @@ use Bookkeeping\Debtors\Debtor;
         <?= $this->Form->control('allowed_payment_delay', [
             'label' => __d('bookkeeping', 'Allowed Payment Delay'),
             'type' => 'number',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('allowed_total_overdue_debt', [
             'label' => __d('bookkeeping', 'Allowed Total Overdue Debt'),
             'type' => 'number',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>

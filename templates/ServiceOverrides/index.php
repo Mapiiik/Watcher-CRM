@@ -13,7 +13,7 @@
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>
@@ -23,7 +23,7 @@
             'label' => __('Include Future'),
             'type' => 'checkbox',
             'checked' => $includeFuture,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
@@ -31,7 +31,7 @@
             'label' => __('Include Past'),
             'type' => 'checkbox',
             'checked' => $includePast,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
@@ -39,7 +39,7 @@
             'label' => __('Include Revoked'),
             'type' => 'checkbox',
             'checked' => $includeRevoked,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>

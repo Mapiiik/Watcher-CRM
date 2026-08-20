@@ -428,7 +428,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                                 'label' => __('Show historical records'),
                                 'type' => 'checkbox',
                                 'checked' => $show_historical_records,
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]) ?>
                             <?= $this->Form->end() ?>
                         </div>
@@ -451,7 +451,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                                 'label' => __('Show historical records'),
                                 'type' => 'checkbox',
                                 'checked' => $show_historical_records,
-                                'onchange' => 'this.form.submit();',
+                                'onchange' => $this::SUBMIT_ON_CHANGE,
                             ]) ?>
                             <?= $this->Form->end() ?>
                         </div>

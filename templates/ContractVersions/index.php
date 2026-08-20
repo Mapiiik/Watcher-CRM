@@ -11,13 +11,13 @@
         <?= $this->Form->control('search', [
             'label' => __('Search'),
             'type' => 'search',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
         <?= $this->Form->control('obligations_ending', [
             'label' => __('Obligations Ending Soon Only'),
             'type' => 'checkbox',
             'checked' => $obligations_ending,
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
 </div>

@@ -142,7 +142,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                     <?= $this->Form->control('show_details', [
                         'label' => __d('radius', 'Show Details'),
                         'type' => 'checkbox',
-                        'onchange' => 'this.form.submit();',
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
                     ]) ?>
                     <?= $this->Form->end() ?>
                 </div>

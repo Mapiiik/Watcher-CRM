@@ -70,7 +70,7 @@ use Cake\I18n\Date;
         <?= $this->Form->control('show_also_paid_invoices', [
             'label' => __d('bookkeeping', 'Show also paid invoices'),
             'type' => 'checkbox',
-            'onchange' => 'this.form.submit();',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
         <?= $this->Form->end() ?>
     </div>

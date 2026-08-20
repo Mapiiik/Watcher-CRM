@@ -36,7 +36,7 @@
                         'label' => __('Month To Display'),
                         'placeholder' => __('YYYY-MM'),
                         'type' => 'month',
-                        'onchange' => 'this.form.submit();',
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
                     ]) ?>
                 </div>
             </div>

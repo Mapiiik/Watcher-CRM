@@ -29,6 +29,17 @@ use Override;
 class AppView extends View
 {
     /**
+     * What a control puts on its `onchange` when choosing is the whole of the asking.
+     *
+     * A filter above a listing works this way: there is nothing to press, the choice is the
+     * request. Kept here beside the longer one below so that a change of mind about how forms
+     * answer to a choice has one place to happen.
+     *
+     * @var string
+     */
+    public const SUBMIT_ON_CHANGE = 'this.form.submit();';
+
+    /**
      * What a control puts on its `onchange` when choosing narrows the controls below it.
      *
      * The form has to say that it is only refreshing rather than being submitted in earnest, and
