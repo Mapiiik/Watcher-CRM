@@ -52,12 +52,14 @@ class AppView extends View
      *
      * @var string
      */
-    public const REFRESH_ON_CHANGE = 'var refresh = document.createElement("input"); '
-        . 'refresh.type = "hidden"; '
-        . 'refresh.name = "refresh"; '
-        . 'refresh.value = "refresh"; '
-        . 'this.form.appendChild(refresh); '
-        . 'this.form.submit();';
+    public const REFRESH_ON_CHANGE = <<<JS
+        var refresh = document.createElement("input");
+        refresh.type = "hidden";
+        refresh.name = "refresh";
+        refresh.value = "refresh";
+        this.form.appendChild(refresh);
+        this.form.submit();
+        JS;
 
     /**
      * Initialization hook method.
