@@ -15,16 +15,7 @@
  * @var \App\Model\Entity\HistoricalConnection $interval
  */
 
-use App\NMS\Links;
-
-if ($interval->access_point_name === null) {
-    return;
-}
-
-$url = $interval->access_point_id === null ? null : Links::accessPoint($interval->access_point_id);
-
-echo $url !== null ? $this->Html->link(
-    $interval->access_point_name,
-    $url,
-    ['target' => '_blank'],
-) : h($interval->access_point_name);
+echo $this->element('AccessPoints/link', [
+    'id' => $interval->access_point_id,
+    'name' => $interval->access_point_name,
+]);

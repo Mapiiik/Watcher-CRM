@@ -229,8 +229,10 @@
                                     ],
                                 ) : '' ?></td>
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                            <td><?= $contract->access_point_name !== null ?
-                                h($contract->access_point_name) : '' ?></td>
+                            <td><?= $this->element('AccessPoints/link', [
+                                'id' => $contract->access_point_id,
+                                'name' => $contract->access_point_name,
+                                ]) ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td><?=
                                 $contract->installation_technician !== null ? $this->Html->link(

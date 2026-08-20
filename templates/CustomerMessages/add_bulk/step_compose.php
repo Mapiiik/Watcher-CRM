@@ -147,7 +147,10 @@
 
                 <?php foreach ($apGroups as $group) : ?>
                     <div class="related">
-                        <h5><?= h($group['ap_name']) ?> (<?= count($group['rows']) ?>)</h5>
+                        <h5><?= $this->element('AccessPoints/link', [
+                            'id' => $group['ap_id'],
+                            'name' => $group['ap_name'],
+                        ]) ?> (<?= count($group['rows']) ?>)</h5>
                         <div class="table-responsive">
                             <table>
                                 <tr>

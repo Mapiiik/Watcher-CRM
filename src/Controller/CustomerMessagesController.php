@@ -50,6 +50,7 @@ use Throwable;
  *     ignored_customer_consent: bool,
  *     ignored_contact_use: bool,
  *     groups: list<array{
+ *         ap_id: string|null,
  *         ap_name: string,
  *         customers: list<array{
  *             number: string|null,
@@ -558,6 +559,7 @@ class CustomerMessagesController extends AppController
             }
 
             $groups[] = [
+                'ap_id' => $group['ap_id'],
                 'ap_name' => $group['ap_name'],
                 'customers' => $customers,
             ];

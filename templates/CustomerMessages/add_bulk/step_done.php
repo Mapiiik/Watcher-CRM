@@ -15,7 +15,7 @@
  *     filters: list<string>,
  *     ignored_customer_consent: bool,
  *     ignored_contact_use: bool,
- *     groups: list<array{ap_name: string, customers: list<array{number: string|null, name: string, contract_number: string|null, services: list<string>, vip: bool, criticality: string|null, recipients: list<string>}>}>,
+ *     groups: list<array{ap_id: string|null, ap_name: string, customers: list<array{number: string|null, name: string, contract_number: string|null, services: list<string>, vip: bool, criticality: string|null, recipients: list<string>}>}>,
  *     skipped: list<array{id: string, number: string|null, name: string}>,
  *     dropped: list<array{number: string|null, name: string}>,
  *     flagged: array{vip: int, critical: int},
@@ -96,7 +96,10 @@
             <h4><?= __('Recipients') ?></h4>
             <?php foreach ($result['groups'] as $group) : ?>
                 <div class="related">
-                    <h5><?= h($group['ap_name']) ?> (<?= count($group['customers']) ?>)</h5>
+                    <h5><?= $this->element('AccessPoints/link', [
+                        'id' => $group['ap_id'],
+                        'name' => $group['ap_name'],
+                    ]) ?> (<?= count($group['customers']) ?>)</h5>
                     <div class="table-responsive">
                         <table>
                             <tr>

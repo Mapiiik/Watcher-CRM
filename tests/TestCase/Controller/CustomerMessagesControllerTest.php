@@ -519,6 +519,7 @@ class CustomerMessagesControllerTest extends TestCase
             'ignored_contact_use' => true,
             'groups' => [
                 [
+                    'ap_id' => '11111111-1111-1111-1111-111111111111',
                     'ap_name' => 'Hilltop',
                     'customers' => [
                         [

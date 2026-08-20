@@ -206,8 +206,10 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                     <table>
                         <tr>
                             <th><?= __('Access Point') ?></th>
-                            <td><?= $contract->access_point_name !== null ?
-                                h($contract->access_point_name) : '' ?></td>
+                            <td><?= $this->element('AccessPoints/link', [
+                                'id' => $contract->access_point_id,
+                                'name' => $contract->access_point_name,
+                            ]) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Commission') ?></th>

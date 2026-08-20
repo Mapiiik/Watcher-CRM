@@ -29,7 +29,7 @@ class Links
      */
     public static function accessPoint(string $id): ?string
     {
-        return self::to('/access-points/view/' . $id);
+        return self::to('/access-points/' . $id);
     }
 
     /**

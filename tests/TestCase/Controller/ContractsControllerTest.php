@@ -465,7 +465,7 @@ class ContractsControllerTest extends TestCase
 
             // The access point is the other application's, so its bubble leads there.
             $this->assertStringContainsString(
-                'https://nms.example.com/access-points/view/' . self::ACCESS_POINT_ID,
+                'https://nms.example.com/access-points/' . self::ACCESS_POINT_ID,
                 $markers['access_point']->content,
             );
         } finally {

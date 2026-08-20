@@ -58,7 +58,10 @@ table {
                 </tr>
                 <tr>
                     <th><?= __('Access Point') ?></th>
-                    <td><?= $task->access_point_name !== null ? h($task->access_point_name) : '' ?></td>
+                    <td><?= $this->element('AccessPoints/link', [
+                        'id' => $task->access_point_id,
+                        'name' => $task->access_point_name,
+                    ]) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Customer') ?></th>
