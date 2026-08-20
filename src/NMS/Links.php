@@ -26,6 +26,9 @@ class Links
 
     /**
      * An access point.
+     *
+     * The short form is a route the other application names; the two below have none and reach
+     * their page through its fallbacks, which is why they read differently.
      */
     public static function accessPoint(string $id): ?string
     {

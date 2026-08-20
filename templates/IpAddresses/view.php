@@ -3,8 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\IpAddress $ipAddress
  */
-
-use App\NMS\Links;
 ?>
 <div class="row">
     <aside class="column">
@@ -66,13 +64,13 @@ use App\NMS\Links;
                             <td><?php
                             if (isset($ipAddress->routeros_devices)) {
                                 $device = $ipAddress->routeros_devices->first();
-                                $deviceUrl = isset($device['id']) ? Links::routerosDevice((string)$device['id']) : null;
-                                echo $deviceUrl !== null ?
-                                    $this->Html->link(
-                                        $device['system_description'],
-                                        $deviceUrl,
-                                        ['target' => '_blank'],
-                                    ) . '<br>' : '';
+                                $deviceLink = $this->element('RouterosDevices/link', [
+                                    'id' => isset($device['id']) ? (string)$device['id'] : null,
+                                    'name' => isset($device['system_description'])
+                                        ? (string)$device['system_description']
+                                        : null,
+                                ]);
+                                echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
                                 unset($device);
                             }
                             ?></td>
@@ -81,24 +79,9 @@ use App\NMS\Links;
                             <th><?= __('IP Address Range') ?></th>
                             <td><?php
                             if (isset($ipAddress->ip_address_ranges)) {
-                                $range = $ipAddress->ip_address_ranges->first();
-                                $accessPointUrl = isset($range['access_point']['id'])
-                                    ? Links::accessPoint((string)$range['access_point']['id'])
-                                    : null;
-                                echo $accessPointUrl !== null ?
-                                    __('Access Point') . ': ' . $this->Html->link(
-                                        $range['access_point']['name'],
-                                        $accessPointUrl,
-                                        ['target' => '_blank'],
-                                    ) . '<br>' : '';
-                                $rangeUrl = isset($range['id']) ? Links::ipAddressRange((string)$range['id']) : null;
-                                echo $rangeUrl !== null ?
-                                    __('Range') . ': ' . $this->Html->link(
-                                        $range['name'],
-                                        $rangeUrl,
-                                        ['target' => '_blank'],
-                                    ) . '<br>' : '';
-                                    unset($range);
+                                echo $this->element('IpAddressRanges/summary', [
+                                    'range' => $ipAddress->ip_address_ranges->first(),
+                                ]);
                             }
                             ?></td>
                         </tr>

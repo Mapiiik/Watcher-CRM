@@ -10,16 +10,7 @@
  * @var \App\Model\Entity\HistoricalConnection $interval
  */
 
-use App\NMS\Links;
-
-if ($interval->routeros_device_name === null) {
-    return;
-}
-
-$url = $interval->routeros_device_id === null ? null : Links::routerosDevice($interval->routeros_device_id);
-
-echo $url !== null ? $this->Html->link(
-    $interval->routeros_device_name,
-    $url,
-    ['target' => '_blank'],
-) : h($interval->routeros_device_name);
+echo $this->element('RouterosDevices/link', [
+    'id' => $interval->routeros_device_id,
+    'name' => $interval->routeros_device_name,
+]);

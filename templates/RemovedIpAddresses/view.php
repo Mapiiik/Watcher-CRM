@@ -3,8 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\RemovedIpAddress $removedIpAddress
  */
-
-use App\NMS\Links;
 ?>
 <div class="row">
     <aside class="column">
@@ -77,24 +75,9 @@ use App\NMS\Links;
                             <th><?= __('IP Address Range') ?></th>
                             <td><?php
                             if (isset($removedIpAddress->ip_address_ranges)) {
-                                $range = $removedIpAddress->ip_address_ranges->first();
-                                $accessPointUrl = isset($range['access_point']['id'])
-                                    ? Links::accessPoint((string)$range['access_point']['id'])
-                                    : null;
-                                echo $accessPointUrl !== null ?
-                                    __('Access Point') . ': ' . $this->Html->link(
-                                        $range['access_point']['name'],
-                                        $accessPointUrl,
-                                        ['target' => '_blank'],
-                                    ) . '<br>' : '';
-                                $rangeUrl = isset($range['id']) ? Links::ipAddressRange((string)$range['id']) : null;
-                                echo $rangeUrl !== null ?
-                                    __('Range') . ': ' . $this->Html->link(
-                                        $range['name'],
-                                        $rangeUrl,
-                                        ['target' => '_blank'],
-                                    ) . '<br>' : '';
-                                    unset($range);
+                                echo $this->element('IpAddressRanges/summary', [
+                                    'range' => $removedIpAddress->ip_address_ranges->first(),
+                                ]);
                             }
                             ?></td>
                         </tr>

@@ -5,6 +5,9 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\IpAddressesController;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Cache\Cache;
+use Cake\Collection\Collection;
+use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -35,6 +38,23 @@ class IpAddressesControllerTest extends TestCase
      * @var string
      */
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
+     * Things of the NMS's, which has a database of its own - these stand for what it would answer.
+     *
+     * @var string
+     */
+    private const RANGE_ID = '2a1b6c4d-0e5f-4a3b-9c8d-7e6f5a4b3c2d';
+
+    /**
+     * @var string
+     */
+    private const ACCESS_POINT_ID = '3b2c7d5e-1f6a-4b4c-8d9e-6f5a4b3c2d1e';
+
+    /**
+     * @var string
+     */
+    private const ROUTEROS_DEVICE_ID = '4c3d8e6f-2a7b-4c5d-9e8f-5a4b3c2d1e0f';
 
     /**
      * Fixtures
@@ -190,5 +210,92 @@ class IpAddressesControllerTest extends TestCase
             'Reserved for the router.',
             $this->getTableLocator()->get('IpAddresses')->get($ipAddressId)->note,
         );
+    }
+
+    /**
+     * What the NMS knows about the address is named and led back to, rather than only described.
+     *
+     * The range, the point it hangs off and the device serving it are three separate links built
+     * from three separate identifiers, and the page draws them through shared elements - so one
+     * request over a seeded answer covers every page that shows the same thing.
+     *
+     * @return void
+     * @link \App\Controller\IpAddressesController::view()
+     */
+    public function testViewLeadsBackToWhatTheNmsKnows(): void
+    {
+        // Said here rather than read from the environment, which the CI has none of.
+        $nmsUrl = Configure::read('Nms.url');
+        Configure::write('Nms.url', 'https://nms.example.com');
+
+        Cache::write(
+            'ip_address_ranges_for_ip_192-168-11-11',
+            new Collection([[
+                'id' => self::RANGE_ID,
+                'name' => 'Hilltop customers',
+                'access_point' => ['id' => self::ACCESS_POINT_ID, 'name' => 'Hilltop'],
+            ]]),
+            'api_client',
+        );
+        Cache::write(
+            'routeros_devices_for_ip_192-168-11-11',
+            new Collection([[
+                'id' => self::ROUTEROS_DEVICE_ID,
+                'system_description' => 'RB5009 at Hilltop',
+            ]]),
+            'api_client',
+        );
+
+        try {
+            $this->login();
+            $this->get('/ip-addresses/view/' . $this->firstId('IpAddresses'));
+
+            $this->assertResponseOk();
+            $this->assertResponseContains('https://nms.example.com/ip-address-ranges/view/' . self::RANGE_ID);
+            $this->assertResponseContains('https://nms.example.com/access-points/' . self::ACCESS_POINT_ID);
+            $this->assertResponseContains(
+                'https://nms.example.com/routeros-devices/view/' . self::ROUTEROS_DEVICE_ID,
+            );
+            $this->assertResponseContains('Hilltop customers');
+            $this->assertResponseContains('RB5009 at Hilltop');
+        } finally {
+            Cache::delete('ip_address_ranges_for_ip_192-168-11-11', 'api_client');
+            Cache::delete('routeros_devices_for_ip_192-168-11-11', 'api_client');
+            Configure::write('Nms.url', $nmsUrl);
+        }
+    }
+
+    /**
+     * Without an NMS to point at, the same page still says what it knows - it just says it plainly.
+     *
+     * @return void
+     * @link \App\Controller\IpAddressesController::view()
+     */
+    public function testViewNamesWhatItCannotLinkTo(): void
+    {
+        $nmsUrl = Configure::read('Nms.url');
+        Configure::write('Nms.url', '');
+
+        Cache::write(
+            'ip_address_ranges_for_ip_192-168-11-11',
+            new Collection([[
+                'id' => self::RANGE_ID,
+                'name' => 'Hilltop customers',
+                'access_point' => ['id' => self::ACCESS_POINT_ID, 'name' => 'Hilltop'],
+            ]]),
+            'api_client',
+        );
+
+        try {
+            $this->login();
+            $this->get('/ip-addresses/view/' . $this->firstId('IpAddresses'));
+
+            $this->assertResponseOk();
+            $this->assertResponseContains('Hilltop customers');
+            $this->assertResponseNotContains('/ip-address-ranges/view/' . self::RANGE_ID);
+        } finally {
+            Cache::delete('ip_address_ranges_for_ip_192-168-11-11', 'api_client');
+            Configure::write('Nms.url', $nmsUrl);
+        }
     }
 }

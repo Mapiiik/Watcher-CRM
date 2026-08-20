@@ -4,16 +4,12 @@
  * \Cake\Collection\CollectionInterface|null $routerosDevices RouterOS Devices
  */
 
-use App\NMS\Links;
-
 if (isset($routerosDevices)) {
     $device = $routerosDevices->first();
-    $deviceUrl = isset($device['id']) ? Links::routerosDevice((string)$device['id']) : null;
-    echo $deviceUrl !== null ?
-        $this->Html->link(
-            $device['system_description'],
-            $deviceUrl,
-            ['target' => '_blank'],
-        ) . '<br>' : '';
+    $deviceLink = $this->element('RouterosDevices/link', [
+        'id' => isset($device['id']) ? (string)$device['id'] : null,
+        'name' => isset($device['system_description']) ? (string)$device['system_description'] : null,
+    ]);
+    echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
     unset($device);
 }

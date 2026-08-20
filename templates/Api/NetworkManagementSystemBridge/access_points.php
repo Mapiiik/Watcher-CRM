@@ -4,25 +4,20 @@
  * \Cake\Collection\CollectionInterface|null $routerosDevices RouterOS Devices
  */
 
-use App\NMS\Links;
-
 if (isset($routerosDevices)) {
     $device = $routerosDevices->first();
-    $accessPointUrl = isset($device['access_point']['id'])
-        ? Links::accessPoint((string)$device['access_point']['id'])
-        : null;
-    echo $accessPointUrl !== null ?
-        __('Access Point') . ': ' . $this->Html->link(
-            $device['access_point']['name'],
-            $accessPointUrl,
-            ['target' => '_blank'],
-        ) . '<br>' : '';
-    $deviceUrl = isset($device['id']) ? Links::routerosDevice((string)$device['id']) : null;
-    echo $deviceUrl !== null ?
-        $this->Html->link(
-            $device['name'],
-            $deviceUrl,
-            ['target' => '_blank'],
-        ) . '<br>' : '';
+
+    $accessPoint = $this->element('AccessPoints/link', [
+        'id' => isset($device['access_point']['id']) ? (string)$device['access_point']['id'] : null,
+        'name' => isset($device['access_point']['name']) ? (string)$device['access_point']['name'] : null,
+    ]);
+    echo $accessPoint !== '' ? __('Access Point') . ': ' . $accessPoint . '<br>' : '';
+
+    $deviceLink = $this->element('RouterosDevices/link', [
+        'id' => isset($device['id']) ? (string)$device['id'] : null,
+        'name' => isset($device['name']) ? (string)$device['name'] : null,
+    ]);
+    echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
+
     unset($device);
 }
