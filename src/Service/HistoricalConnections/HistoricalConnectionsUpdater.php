@@ -281,7 +281,7 @@ class HistoricalConnectionsUpdater
             $this->Messages->error(__(
                 'The historical connection for {0} starting {1} could not be saved.',
                 $interval->sourceReference,
-                $interval->firstSeen->nice(),
+                (string)$interval->firstSeen,
             ));
 
             Log::error(

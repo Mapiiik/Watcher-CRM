@@ -57,7 +57,7 @@ if (count($businessRegisterSelection['officers']) > 1) {
         }
         // the date tells two people of one name apart, and is stored with them anyway
         if (!empty($officer['date_of_birth'])) {
-            $name .= ' (' . Date::parseDate($officer['date_of_birth'], 'yyyy-MM-dd')?->nice() . ')';
+            $name .= ' (' . h(Date::parseDate($officer['date_of_birth'], 'yyyy-MM-dd')) . ')';
         }
 
         $officerOptions[(string)$officer['key']] = $name;
