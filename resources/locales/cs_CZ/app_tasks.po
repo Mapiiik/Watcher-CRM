@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Watcher CRM\n"
-"POT-Creation-Date: 2026-08-19 22:08+0200\n"
-"PO-Revision-Date: 2026-08-19 22:10+0200\n"
+"POT-Creation-Date: 2026-08-21 11:29+0200\n"
+"PO-Revision-Date: 2026-08-21 11:31+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -90,25 +90,25 @@ msgstr "Datum vyřízení"
 msgid "Actions"
 msgstr "Akce"
 
-#: templates/element/Tasks/related.php:86
+#: templates/element/Tasks/related.php:89
 #: templates/plugin/Tasks/TaskTypes/index.php:43
 #: templates/plugin/Tasks/TaskTypes/view.php:103
 msgid "View"
 msgstr "Zobrazit"
 
-#: templates/element/Tasks/related.php:90
+#: templates/element/Tasks/related.php:93
 #: templates/plugin/Tasks/TaskTypes/index.php:45
 #: templates/plugin/Tasks/TaskTypes/view.php:107
 msgid "Edit"
 msgstr "Upravit"
 
-#: templates/element/Tasks/related.php:95
+#: templates/element/Tasks/related.php:98
 #: templates/plugin/Tasks/TaskTypes/edit.php:12
 #: templates/plugin/Tasks/TaskTypes/index.php:50
 msgid "Delete"
 msgstr "Odstranit"
 
-#: templates/element/Tasks/related.php:98
+#: templates/element/Tasks/related.php:101
 #: templates/plugin/Tasks/TaskStates/view.php:20
 #: templates/plugin/Tasks/TaskTypes/edit.php:15
 #: templates/plugin/Tasks/TaskTypes/index.php:52
@@ -208,30 +208,6 @@ msgstr "Nový typ úkolu"
 msgid "Task Types"
 msgstr "Typy úkolů"
 
-#: templates/plugin/Tasks/TaskTypes/index.php:62
-msgid "first"
-msgstr "první"
-
-#: templates/plugin/Tasks/TaskTypes/index.php:63
-msgid "previous"
-msgstr "předchozí"
-
-#: templates/plugin/Tasks/TaskTypes/index.php:65
-msgid "next"
-msgstr "další"
-
-#: templates/plugin/Tasks/TaskTypes/index.php:66
-msgid "last"
-msgstr "poslední"
-
-#: templates/plugin/Tasks/TaskTypes/index.php:69
-msgid ""
-"Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
-"total"
-msgstr ""
-"Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
-"počtu {{count}}"
-
 #: templates/plugin/Tasks/TaskTypes/view.php:17
 msgid "Delete Task Type"
 msgstr "Odstranit typ úkolu"
@@ -263,3 +239,18 @@ msgstr "Fakturováno"
 #: templates/plugin/Tasks/TaskTypes/view.php:82
 msgid "Blocked"
 msgstr "Blokováno"
+
+#~ msgid "first"
+#~ msgstr "první"
+
+#~ msgid "previous"
+#~ msgstr "předchozí"
+
+#~ msgid "next"
+#~ msgstr "další"
+
+#~ msgid "last"
+#~ msgstr "poslední"
+
+#~ msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
+#~ msgstr "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového počtu {{count}}"

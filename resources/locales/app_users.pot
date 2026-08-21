@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-19 21:41+0200\n"
+"POT-Creation-Date: 2026-08-21 11:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -148,26 +148,6 @@ msgstr ""
 #: ./templates/AppUsers/index.php:72
 #: ./templates/AppUsers/profile.php:18
 msgid "User Settings"
-msgstr ""
-
-#: ./templates/AppUsers/index.php:84
-msgid "first"
-msgstr ""
-
-#: ./templates/AppUsers/index.php:85
-msgid "previous"
-msgstr ""
-
-#: ./templates/AppUsers/index.php:87
-msgid "next"
-msgstr ""
-
-#: ./templates/AppUsers/index.php:88
-msgid "last"
-msgstr ""
-
-#: ./templates/AppUsers/index.php:91
-msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
 #: ./templates/AppUsers/login.php:12

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2026-08-19 21:41+0200\n"
-"PO-Revision-Date: 2026-08-19 22:10+0200\n"
+"POT-Creation-Date: 2026-08-21 11:29+0200\n"
+"PO-Revision-Date: 2026-08-21 11:32+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
 "Language: cs_CZ\n"
@@ -125,30 +125,6 @@ msgstr "Změnit heslo"
 #: templates/AppUsers/index.php:72 templates/AppUsers/profile.php:18
 msgid "User Settings"
 msgstr "Uživatelské nastavení"
-
-#: templates/AppUsers/index.php:84
-msgid "first"
-msgstr "první"
-
-#: templates/AppUsers/index.php:85
-msgid "previous"
-msgstr "předchozí"
-
-#: templates/AppUsers/index.php:87
-msgid "next"
-msgstr "další"
-
-#: templates/AppUsers/index.php:88
-msgid "last"
-msgstr "poslední"
-
-#: templates/AppUsers/index.php:91
-msgid ""
-"Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
-"total"
-msgstr ""
-"Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
-"počtu {{count}}"
 
 #: templates/AppUsers/login.php:12
 msgid "Please enter your username and password"
@@ -453,6 +429,25 @@ msgstr "Data"
 #: templates/AppUsers/webauthn2fa.php:9
 msgid "Two-factor authentication"
 msgstr "Dvoufaktorové ověření"
+
+#~ msgid "first"
+#~ msgstr "první"
+
+#~ msgid "previous"
+#~ msgstr "předchozí"
+
+#~ msgid "next"
+#~ msgstr "další"
+
+#~ msgid "last"
+#~ msgstr "poslední"
+
+#~ msgid ""
+#~ "Page {{page}} of {{pages}}, showing {{current}} record(s) out of "
+#~ "{{count}} total"
+#~ msgstr ""
+#~ "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
+#~ "počtu {{count}}"
 
 #~ msgid "High Contrast"
 #~ msgstr "Vysoký kontrast"
