@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 17:08+0200\n"
+"POT-Creation-Date: 2026-08-22 17:57+0200\n"
 "PO-Revision-Date: 2026-08-22 17:21+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -328,22 +328,21 @@ msgstr "dynamický"
 msgid ""
 "The related dynamic customer labels could not be saved. Please, try again."
 msgstr ""
-"Související dynamické štítky zákazníků nebylo možné uložit. Zkuste to prosím "
-"znovu."
+"Související dynamické štítky zákazníků nelze uložit. Zkuste to prosím znovu."
 
 #: src/Command/UpdateCustomerLabelsCommand.php:186
 msgid ""
 "The related dynamic customer labels could not be deleted. Please, try again."
 msgstr ""
-"Související dynamické štítky zákazníků nebylo možné odstranit. Zkuste to "
-"prosím znovu."
+"Související dynamické štítky zákazníků nelze odstranit. Zkuste to prosím "
+"znovu."
 
 #: src/Command/UpdateCustomerLabelsCommand.php:202
 msgid ""
 "The related static customer labels could not be deleted. Please, try again."
 msgstr ""
-"Související statické štítky zákazníků nebylo možné odstranit. Zkuste to "
-"prosím znovu."
+"Související statické štítky zákazníků nelze odstranit. Zkuste to prosím "
+"znovu."
 
 #: src/Command/UpdateCustomerLabelsCommand.php:214
 msgid "Error during customer labels update: {0}"
@@ -416,7 +415,7 @@ msgstr "Přístupové oprávnění bylo uloženo."
 #: src/Controller/AccessCredentialsController.php:108
 #: src/Controller/AccessCredentialsController.php:168
 msgid "The access credential could not be saved. Please, try again."
-msgstr "Přístupové oprávnění se nepodařilo uložit. Zkuste to prosím znovu."
+msgstr "Přístupové oprávnění nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/AccessCredentialsController.php:220
 msgid "The access credential has been deleted."
@@ -424,7 +423,7 @@ msgstr "Přístupové pověření bylo odstraněno."
 
 #: src/Controller/AccessCredentialsController.php:222
 msgid "The access credential could not be deleted. Please, try again."
-msgstr "Přístupové oprávnění se nepodařilo odstranit. Zkuste to prosím znovu."
+msgstr "Přístupové oprávnění nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/AccountingProfilesController.php:85
 #: src/Controller/AccountingProfilesController.php:110
@@ -442,7 +441,7 @@ msgstr "Účetní profil byl smazán."
 
 #: src/Controller/AccountingProfilesController.php:136
 msgid "The accounting profile could not be deleted. Please, try again."
-msgstr "Účetní profil nelze smazat. Zkuste to prosím znovu."
+msgstr "Účetní profil nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/AddressesController.php:144
 #: src/Controller/AddressesController.php:241
@@ -611,7 +610,7 @@ msgstr "Provize byla uložena."
 #: src/Controller/CommissionsController.php:90
 #: src/Controller/CommissionsController.php:114
 msgid "The commission could not be saved. Please, try again."
-msgstr "Provizi se nepodařilo uložit. Prosím zkuste to znovu."
+msgstr "Provizi nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/CommissionsController.php:133
 msgid "The commission has been deleted."
@@ -619,7 +618,7 @@ msgstr "Provize byla smazána."
 
 #: src/Controller/CommissionsController.php:136
 msgid "The commission could not be deleted. Please, try again."
-msgstr "Provizi se nepodařilo smazat. Prosím zkuste to znovu."
+msgstr "Provizi nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractStatesController.php:87
 #: src/Controller/ContractStatesController.php:117
@@ -629,7 +628,7 @@ msgstr "Stav smlouvy byl uložen."
 #: src/Controller/ContractStatesController.php:91
 #: src/Controller/ContractStatesController.php:121
 msgid "The contract state could not be saved. Please, try again."
-msgstr "Stav smlouvy nelze uložit. Prosím, zkuste to znovu."
+msgstr "Stav smlouvy nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractStatesController.php:146
 msgid "The contract state has been deleted."
@@ -637,7 +636,7 @@ msgstr "Stav smlouvy byl odstraněn."
 
 #: src/Controller/ContractStatesController.php:149
 msgid "The contract state could not be deleted. Please, try again."
-msgstr "Stav smlouvy nelze odstranit. Prosím, zkuste to znovu."
+msgstr "Stav smlouvy nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractVersionsController.php:112
 #: src/Controller/ContractVersionsController.php:154
@@ -647,7 +646,7 @@ msgstr "Verze smlouvy byla uložena."
 #: src/Controller/ContractVersionsController.php:116
 #: src/Controller/ContractVersionsController.php:158
 msgid "The contract version could not be saved. Please, try again."
-msgstr "Verzi smlouvy nebylo možné uložit. Zkuste to prosím znovu."
+msgstr "Verzi smlouvy nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractVersionsController.php:195
 msgid "The contract version has been deleted."
@@ -655,7 +654,7 @@ msgstr "Verze smlouvy byla odstraněna."
 
 #: src/Controller/ContractVersionsController.php:198
 msgid "The contract version could not be deleted. Please, try again."
-msgstr "Verzi smlouvy nebylo možné odstranit. Zkuste to prosím znovu."
+msgstr "Verzi smlouvy nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractsController.php:264
 #: src/Controller/ContractsController.php:377
@@ -689,11 +688,11 @@ msgstr "Číslo smlouvy bylo aktualizováno."
 
 #: src/Controller/ContractsController.php:551
 msgid "The contract number could not be updated. Please, try again."
-msgstr "Číslo smlouvy nebylo možné aktualizovat. Zkuste to prosím znovu."
+msgstr "Číslo smlouvy nelze aktualizovat. Zkuste to prosím znovu."
 
 #: src/Controller/ContractsController.php:579
 msgid "The contract numbers could not be updated. Please, try again."
-msgstr "Čísla smluv nebylo možné aktualizovat. Zkuste to prosím znovu."
+msgstr "Čísla smluv nelze aktualizovat. Zkuste to prosím znovu."
 
 #: src/Controller/ContractsController.php:587
 msgid "The contract numbers have been updated."
@@ -714,14 +713,12 @@ msgstr "Ověřovací kód účastníka byl aktualizován."
 #: src/Controller/ContractsController.php:649
 msgid ""
 "The subscriber verification code could not be updated. Please, try again."
-msgstr ""
-"Ověřovací kód účastníka se nepodařilo aktualizovat. Zkuste to prosím znovu."
+msgstr "Ověřovací kód účastníka nelze aktualizovat. Zkuste to prosím znovu."
 
 #: src/Controller/ContractsController.php:677
 msgid ""
 "The subscriber verification codes could not be updated. Please, try again."
-msgstr ""
-"Ověřovací kódy účastníků nebylo možné aktualizovat. Zkuste to prosím znovu."
+msgstr "Ověřovací kódy účastníků nelze aktualizovat. Zkuste to prosím znovu."
 
 #: src/Controller/ContractsController.php:685
 msgid "The subscriber verification codes have been updated."
@@ -827,7 +824,7 @@ msgstr "Zpráva pro zákazníka byla uložena."
 #: src/Controller/CustomerMessagesController.php:160
 #: src/Controller/CustomerMessagesController.php:1214
 msgid "The customer message could not be saved. Please, try again."
-msgstr "Zprávu pro zákazníka se nepodařilo uložit. Zkuste to prosím znovu."
+msgstr "Zprávu pro zákazníka nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/CustomerMessagesController.php:274
 msgid "Please select a message purpose."
@@ -847,7 +844,7 @@ msgstr "Nebyli nalezeni žádní příjemci s platnými kontaktními údaji."
 
 #: src/Controller/CustomerMessagesController.php:441
 msgid "The customer messages could not be saved. Please, try again."
-msgstr "Zprávy pro zákazníky se nepodařilo uložit. Zkuste to prosím znovu."
+msgstr "Zprávy pro zákazníky nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/CustomerMessagesController.php:638
 msgid ""
@@ -935,7 +932,7 @@ msgstr "Zpráva pro zákazníka byla smazána."
 
 #: src/Controller/CustomerMessagesController.php:1241
 msgid "The customer message could not be deleted. Please, try again."
-msgstr "Zprávu pro zákazníka nebylo možné odstranit. Zkuste to prosím znovu."
+msgstr "Zprávu pro zákazníka nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/CustomersController.php:157
 msgid ""
@@ -983,7 +980,7 @@ msgstr "Provize dealera byla uložena."
 #: src/Controller/DealerCommissionsController.php:89
 #: src/Controller/DealerCommissionsController.php:137
 msgid "The dealer commission could not be saved. Please, try again."
-msgstr "Provizi dealera se nepodařilo uložit. Prosím zkuste to znovu."
+msgstr "Provizi dealera nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/DealerCommissionsController.php:175
 msgid "The dealer commission has been deleted."
@@ -991,7 +988,7 @@ msgstr "Provize dealera byla smazána."
 
 #: src/Controller/DealerCommissionsController.php:178
 msgid "The dealer commission could not be deleted. Please, try again."
-msgstr "Provizi dealera nelze smazat. Prosím zkuste to znovu."
+msgstr "Provizi dealera nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/EmailsController.php:91
 #: src/Controller/EmailsController.php:125
@@ -1041,7 +1038,7 @@ msgstr "IP adresa byla uložena."
 #: src/Controller/IpAddressesController.php:307
 #: src/Controller/IpAddressesController.php:535
 msgid "The IP address could not be saved. Please, try again."
-msgstr "IP adresu se nepodařilo uložit. Zkuste to prosím znovu."
+msgstr "IP adresu nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/IpAddressesController.php:260
 #: src/Controller/IpAddressesController.php:464
@@ -1056,7 +1053,7 @@ msgstr "IP adresa byla odstraněna."
 #: src/Controller/IpAddressesController.php:355
 #: src/Controller/IpAddressesController.php:541
 msgid "The IP address could not be deleted. Please, try again."
-msgstr "IP adresu nebylo možné odstranit. Zkuste to prosím znovu."
+msgstr "IP adresu nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/IpAddressesController.php:383
 #: src/Controller/RemovedIpAddressesController.php:107
@@ -1152,8 +1149,7 @@ msgstr "Související štítky zákazníků byly aktualizovány."
 #: src/Controller/LabelsController.php:211
 msgid "The related customer labels could not be updated. Please, try again."
 msgstr ""
-"Související štítky zákazníků nebylo možné aktualizovat. Zkuste to prosím "
-"znovu."
+"Související štítky zákazníků nelze aktualizovat. Zkuste to prosím znovu."
 
 #: src/Controller/LoginsController.php:92
 #: src/Controller/LoginsController.php:153
@@ -1163,7 +1159,7 @@ msgstr "Přihlášení bylo uloženo."
 #: src/Controller/LoginsController.php:96
 #: src/Controller/LoginsController.php:157
 msgid "The login could not be saved. Please, try again."
-msgstr "Přihlášení nelze uložit. Prosím, zkuste to znovu."
+msgstr "Přihlášení nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/LoginsController.php:186
 msgid "The login has been deleted."
@@ -1171,7 +1167,7 @@ msgstr "Přihlášení bylo odstraněno."
 
 #: src/Controller/LoginsController.php:189
 msgid "The login could not be deleted. Please, try again."
-msgstr "Přihlášení nelze odstranit. Prosím, zkuste to znovu."
+msgstr "Přihlášení nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/OverviewsController.php:528
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
@@ -1215,7 +1211,7 @@ msgstr ""
 
 #: src/Controller/PhonesController.php:231
 msgid "The phones could not be updated. Please, try again."
-msgstr "Telefony nebylo možné aktualizovat. Zkuste to prosím znovu."
+msgstr "Telefony nelze aktualizovat. Zkuste to prosím znovu."
 
 #: src/Controller/PhonesController.php:235
 msgid "The phones have been updated."
@@ -1263,7 +1259,7 @@ msgstr "Dočasná úprava služby byla uložena."
 #: src/Controller/ServiceOverridesController.php:131
 #: src/Controller/ServiceOverridesController.php:212
 msgid "The service override could not be saved. Please, try again."
-msgstr "Dočasnou úpravu služby se nepodařilo uložit. Zkuste to prosím znovu."
+msgstr "Dočasnou úpravu služby nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/ServiceOverridesController.php:258
 msgid "The service override has been deleted."
@@ -1271,8 +1267,7 @@ msgstr "Dočasná úprava služby byla odstraněna."
 
 #: src/Controller/ServiceOverridesController.php:261
 msgid "The service override could not be deleted. Please, try again."
-msgstr ""
-"Dočasnou úpravu služby se nepodařilo odstranit. Zkuste to prosím znovu."
+msgstr "Dočasnou úpravu služby nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ServiceOverridesController.php:282
 msgid "This service override is already revoked."
@@ -1352,7 +1347,7 @@ msgstr "Úkol byl uložen."
 #: src/Controller/TasksController.php:481
 #: src/Controller/TasksController.php:632
 msgid "The task could not be saved. Please, try again."
-msgstr "Úkol nelze uložit. Prosím, zkuste to znovu."
+msgstr "Úkol nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/TasksController.php:557 src/Model/Enum/AddressType.php:41
 #: templates/Contracts/print.php:77 templates/Contracts/view.php:176
@@ -1383,7 +1378,7 @@ msgstr "Úkol byl odstraněn."
 
 #: src/Controller/TasksController.php:711
 msgid "The task could not be deleted. Please, try again."
-msgstr "Úkol nelze odstranit. Prosím, zkuste to znovu."
+msgstr "Úkol nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/TasksController.php:761
 msgid ""
@@ -3380,11 +3375,6 @@ msgstr "Všechny"
 msgid "Requires Open Task Type"
 msgstr "Vyžaduje otevřený úkol typu"
 
-#: templates/ContractStates/view.php:94
-#: templates/element/AddressChecks/unclear_billing_address.php:27
-msgid "None"
-msgstr "Žádný"
-
 #: templates/ContractStates/view.php:97
 msgid "Requires No Open Tasks"
 msgstr "Vyžaduje žádné otevřené úkoly"
@@ -3424,6 +3414,16 @@ msgstr "Vyžaduje aktivní verzi smlouvy"
 #: templates/ContractStates/view.php:164
 msgid "Requires No Active Obligations"
 msgstr "Vyžaduje žádné aktivní závazky"
+
+#: templates/ContractStates/view.php:94
+msgctxt "task type"
+msgid "None"
+msgstr "Žádný"
+
+#: templates/element/AddressChecks/unclear_billing_address.php:27
+msgctxt "address"
+msgid "None"
+msgstr "Žádná"
 
 #: templates/ContractVersions/add.php:15 templates/ContractVersions/edit.php:21
 #: templates/ContractVersions/view.php:25 templates/Overviews/index.php:95
@@ -5022,7 +5022,7 @@ msgstr "(neobchodní)"
 
 #: templates/Overviews/overview_of_dealer_commissions.php:88
 msgid "Unknown"
-msgstr "Neznámý"
+msgstr "Neznámé"
 
 #: templates/Phones/add.php:19
 msgid "Add Phone"
@@ -5536,7 +5536,7 @@ msgstr "Datum přijetí"
 #: templates/Tasks/view.php:114 templates/element/Dashboard/task_list.php:58
 #: templates/email/html/task_notification.php:102
 msgid "Estimated Date"
-msgstr "Předpokládaný datum řešení"
+msgstr "Předpokládané datum řešení"
 
 #: templates/Tasks/view.php:118 templates/email/html/task_notification.php:106
 msgid "Critical Date"

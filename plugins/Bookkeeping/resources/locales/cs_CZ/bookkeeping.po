@@ -532,7 +532,7 @@ msgstr "Nepodařilo se odeslat fakturu pro zákazníka {0}: {1}"
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:259
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:317
 msgid "Unknown"
-msgstr "Neznámý"
+msgstr "Neznámé"
 
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:313
 msgid "Failed to send partner for customer {0}: {1}"
@@ -809,7 +809,7 @@ msgstr "Odeslat e-mailem"
 #: plugins/Bookkeeping/templates/Invoices/view.php:100
 #: plugins/Bookkeeping/templates/cell/Invoices/display.php:29
 msgid "Email Sent"
-msgstr "Email odeslán"
+msgstr "E-mail odeslán"
 
 #: plugins/Bookkeeping/templates/Debtors/index.php:96
 #: plugins/Bookkeeping/templates/Invoices/add.php:11

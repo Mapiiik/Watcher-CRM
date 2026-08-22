@@ -316,7 +316,7 @@ msgstr "Nic nebylo vybráno k aktualizaci."
 
 #: plugins/Radius/src/Updater/AccountsUpdater.php:177
 msgid "The RADIUS account {0} could not be updated. Please, try again."
-msgstr "Účet RADIUS {0} se nepodařilo aktualizovat. Zkuste to prosím znovu."
+msgstr "Účet RADIUS {0} nelze aktualizovat. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Updater/AccountsUpdater.php:224
 msgid ""

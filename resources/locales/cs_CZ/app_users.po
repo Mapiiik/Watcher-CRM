@@ -25,7 +25,7 @@ msgstr "Nastavení uživatele bylo uloženo."
 
 #: src/Controller/Traits/UserSettingsTrait.php:74
 msgid "The user settings could not be saved. Please, try again."
-msgstr "Nastavení uživatele se nepodařilo uložit. Zkuste to prosím znovu."
+msgstr "Nastavení uživatele nelze uložit. Zkuste to prosím znovu."
 
 #: templates/AppUsers/add.php:13 templates/AppUsers/change_password.php:12
 #: templates/AppUsers/edit.php:13 templates/AppUsers/index.php:33

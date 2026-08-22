@@ -29,7 +29,7 @@ msgstr "Nastavení bylo uloženo."
 
 #: plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:63
 msgid "The setting could not be saved. Please, try again."
-msgstr "Nastavení nebylo možné uložit. Zkuste to prosím znovu."
+msgstr "Nastavení nelze uložit. Zkuste to prosím znovu."
 
 #: plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:72
 msgid "The setting {path} could not be saved: {reason}"

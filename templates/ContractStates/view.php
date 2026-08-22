@@ -91,7 +91,7 @@
                                     'action' => 'view',
                                     $contractState->requires_open_task_type->id,
                                 ],
-                            ) : __('None') ?></td>
+                            ) : __x('task type', 'None') ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Requires No Open Tasks') ?></th>

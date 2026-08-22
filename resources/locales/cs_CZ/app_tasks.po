@@ -70,7 +70,7 @@ msgstr "Datum přijetí"
 
 #: templates/element/Tasks/related.php:35
 msgid "Estimated Date"
-msgstr "Předpokládaný datum řešení"
+msgstr "Předpokládané datum řešení"
 
 #: templates/element/Tasks/related.php:36
 msgid "Critical Date"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 17:08+0200\n"
+"POT-Creation-Date: 2026-08-22 17:57+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -3711,11 +3711,6 @@ msgstr ""
 msgid "Requires Open Task Type"
 msgstr ""
 
-#: ./templates/ContractStates/view.php:94
-#: ./templates/element/AddressChecks/unclear_billing_address.php:27
-msgid "None"
-msgstr ""
-
 #: ./templates/ContractStates/view.php:97
 msgid "Requires No Open Tasks"
 msgstr ""
@@ -3754,6 +3749,16 @@ msgstr ""
 
 #: ./templates/ContractStates/view.php:164
 msgid "Requires No Active Obligations"
+msgstr ""
+
+#: ./templates/ContractStates/view.php:94
+msgctxt "task type"
+msgid "None"
+msgstr ""
+
+#: ./templates/element/AddressChecks/unclear_billing_address.php:27
+msgctxt "address"
+msgid "None"
 msgstr ""
 
 #: ./templates/ContractVersions/add.php:15

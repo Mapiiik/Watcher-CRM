@@ -11,25 +11,25 @@ msgid "The task state has been saved."
 msgstr "Stav úkolu byl uložen."
 
 msgid "The task state could not be saved. Please, try again."
-msgstr "Stav úkolu nelze uložit. Prosím, zkuste to znovu."
+msgstr "Stav úkolu nelze uložit. Zkuste to prosím znovu."
 
 msgid "The task state has been deleted."
 msgstr "Stav úkolu byl odstraněn."
 
 msgid "The task state could not be deleted. Please, try again."
-msgstr "Stav úkolu nelze odstranit. Prosím, zkuste to znovu."
+msgstr "Stav úkolu nelze odstranit. Zkuste to prosím znovu."
 
 msgid "The task type has been saved."
 msgstr "Typ úkolu byl uložen."
 
 msgid "The task type could not be saved. Please, try again."
-msgstr "Typ úkolu nelze uložit. Prosím, zkuste to znovu."
+msgstr "Typ úkolu nelze uložit. Zkuste to prosím znovu."
 
 msgid "The task type has been deleted."
 msgstr "Typ úkolu byl odstraněn."
 
 msgid "The task type could not be deleted. Please, try again."
-msgstr "Typ úkolu nelze odstranit. Prosím, zkuste to znovu."
+msgstr "Typ úkolu nelze odstranit. Zkuste to prosím znovu."
 
 msgid "My Tasks"
 msgstr "Moje úkoly"
@@ -176,7 +176,7 @@ msgid "Start Date"
 msgstr "Datum přijetí"
 
 msgid "Estimated Date"
-msgstr "Předpokládaný datum řešení"
+msgstr "Předpokládané datum řešení"
 
 msgid "Critical Date"
 msgstr "Nutné dořešit do"

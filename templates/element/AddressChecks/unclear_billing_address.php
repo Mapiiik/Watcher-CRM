@@ -24,7 +24,7 @@
                 <td><?= h($customer->billing_address_problem?->label()) ?></td>
                 <td class="dashboard-wrap">
                     <?php if ($customer->billing_address_problem?->isMissing()) : ?>
-                        <em><?= __('None') ?></em>
+                        <em><?= __x('address', 'None') ?></em>
                     <?php else : ?>
                         <?= h($customer->billing_address?->full_address) ?>
                     <?php endif ?>
