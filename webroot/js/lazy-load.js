@@ -6,7 +6,12 @@ function initLazyLoad(root = document) {
     fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
       .then(resp => resp.text())
       .then(html => { el.innerHTML = html; })
-      .catch(err => { el.innerHTML = "⚠️ Error"; console.error(err); })
+      // The same mark the server draws when it cannot answer, so a cell that stayed empty looks
+      // the same whichever end of the wire gave up.
+      .catch(err => {
+        el.innerHTML = '<span class="warning-text" title="' + (el.getAttribute("data-error") || "") + '">⚠</span>';
+        console.error(err);
+      })
       .finally(() => el.classList.remove("loading"));
   };
 

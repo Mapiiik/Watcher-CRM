@@ -49,6 +49,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                         'ip_network' => strtr($ipNetwork->ip_network, ['/' => '-mask-']),
                         '_ext' => 'ajax',
                     ]) ?>"
+                    data-error="<?= h(__('Data from Watcher NMS could not be loaded.')) ?>"
                     data-trigger="load"><?= __('Loading...') ?></div>
             </td>
             <td class="actions">

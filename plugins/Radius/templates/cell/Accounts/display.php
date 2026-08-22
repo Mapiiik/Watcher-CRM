@@ -78,6 +78,7 @@ use Cake\Routing\Router;
                         'ip_address' => $account->radacct[0]->nasipaddress,
                         '_ext' => 'ajax',
                     ]) ?>"
+                    data-error="<?= h(__d('radius', 'Data from Watcher NMS could not be loaded.')) ?>"
                     data-trigger="load"><?= __d('radius', 'Loading...') ?></div>
                 <?php endif; ?>
             </td>

@@ -24,6 +24,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                         <div
                             class="lazy-load"
                             data-url="<?= $this->Url->build(['action' => 'card', $card->id()]) ?>"
+                            data-error="<?= h(__d('dashboard', 'The card could not be loaded.')) ?>"
                             data-trigger="visible"
                         ><p><?= __d('dashboard', 'Loading…') ?></p></div>
                     </div>

@@ -51,6 +51,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                         'ip_address' => $ipAddress->ip_address,
                         '_ext' => 'ajax',
                     ]) ?>"
+                    data-error="<?= h(__('The status could not be loaded.')) ?>"
                     data-trigger="load-refresh-click">
                         <?= $this->Html->image('ping/unknown.png', ['class' => 'ping-status']) ?>
                 </div>
@@ -65,6 +66,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                         'ip_address' => $ipAddress->ip_address,
                         '_ext' => 'ajax',
                     ]) ?>"
+                    data-error="<?= h(__('Data from Watcher NMS could not be loaded.')) ?>"
                     data-trigger="load"><?= __('Loading...') ?></div>
             </td>
             <td>
@@ -77,6 +79,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                         'ip_network' => $ipAddress->ip_address,
                         '_ext' => 'ajax',
                     ]) ?>"
+                    data-error="<?= h(__('Data from Watcher NMS could not be loaded.')) ?>"
                     data-trigger="load"><?= __('Loading...') ?></div>
             </td>
             <td class="actions">

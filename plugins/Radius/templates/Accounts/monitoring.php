@@ -258,6 +258,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                                         'ip_address' => $radacct->nasipaddress,
                                         '_ext' => 'ajax',
                                     ]) ?>"
+                                    data-error="<?= h(__d('radius', 'Data from Watcher NMS could not be loaded.')) ?>"
                                     data-trigger="load"><?= __d('radius', 'Loading...') ?></div>
                             </td>
                             <td><?= h($radacct->acctstarttime) ?></td>
