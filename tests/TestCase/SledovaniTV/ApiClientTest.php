@@ -11,7 +11,6 @@ use Cake\TestSuite\LogTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
-use RuntimeException;
 
 /**
  * App\SledovaniTV\ApiClient Test Case
@@ -54,10 +53,10 @@ class ApiClientTest extends TestCase
             'users' => [['id' => '1', 'partnerid' => '2024001', 'active' => 1, 'suspended' => 0]],
         ]));
 
-        $this->assertSame(
-            [['id' => '1', 'partnerid' => '2024001', 'active' => 1, 'suspended' => 0]],
-            ApiClient::getUsers(),
-        );
+        $viewer = ApiClient::getUsers()->data->first();
+
+        $this->assertSame('2024001', $viewer->partnerNumber);
+        $this->assertTrue($viewer->canBeSuspended());
     }
 
     /**
@@ -70,7 +69,7 @@ class ApiClientTest extends TestCase
     {
         $this->mock('get-users', $this->jsonResponse(['error' => 'Invalid partner']));
 
-        $this->assertSame([], ApiClient::getUsers());
+        $this->assertTrue(ApiClient::getUsers()->data->isEmpty());
         $this->assertLogMessageContains('warning', 'without a list of users in it');
     }
 
@@ -86,8 +85,8 @@ class ApiClientTest extends TestCase
         $this->mock('suspend-user', $this->jsonResponse(['suspended' => true]));
         $this->mock('suspend-user', $this->jsonResponse(['error' => 'No such user']));
 
-        $this->assertTrue(ApiClient::suspendUser(1));
-        $this->assertFalse(ApiClient::suspendUser(1));
+        $this->assertTrue(ApiClient::suspendUser('1')->data);
+        $this->assertFalse(ApiClient::suspendUser('1')->data);
     }
 
     /**
@@ -101,8 +100,8 @@ class ApiClientTest extends TestCase
         $this->mock('unsuspend-user', $this->jsonResponse(['activated' => true]));
         $this->mock('unsuspend-user', $this->jsonResponse(['error' => 'No such user']));
 
-        $this->assertTrue(ApiClient::unsuspendUser(1));
-        $this->assertFalse(ApiClient::unsuspendUser(1));
+        $this->assertTrue(ApiClient::unsuspendUser('1')->data);
+        $this->assertFalse(ApiClient::unsuspendUser('1')->data);
     }
 
     /**
@@ -116,13 +115,8 @@ class ApiClientTest extends TestCase
     {
         $this->mock('get-users', $this->newClientResponse(500, [], 'Service unavailable'));
 
-        $this->expectException(RuntimeException::class);
-
-        try {
-            ApiClient::getUsers();
-        } finally {
-            $this->assertLogMessageContains('error', 'Invalid response from SledovaniTV API');
-        }
+        $this->assertTrue(ApiClient::getUsers()->unanswered());
+        $this->assertLogMessageContains('error', 'Invalid response from SledovaniTV API');
     }
 
     /**
@@ -136,10 +130,10 @@ class ApiClientTest extends TestCase
     {
         $this->mock('somewhere-else', $this->jsonResponse([]));
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageMatches('/unreachable/');
+        $answer = ApiClient::getUsers();
 
-        ApiClient::getUsers();
+        $this->assertTrue($answer->unanswered());
+        $this->assertStringContainsString('unreachable', (string)$answer->failure);
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Model\Entity\CustomerLabel;
 use App\Model\Table\CustomerLabelsTable;
 use App\Model\Table\CustomersTable;
 use App\SledovaniTV\ApiClient as SledovaniTVApiClient;
+use App\SledovaniTV\Dto\TvUser;
 use App\Utility\Strings;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Cake\Collection\CollectionInterface;
@@ -984,7 +985,12 @@ class DebtorsProcessor
      */
     private function updateSledovaniTV(array $ids, bool $block = false, bool $clear = false): string
     {
-        $tvUsers = SledovaniTVApiClient::getUsers();
+        // A service that would not answer must leave every viewer as it found them: an empty list
+        // read as "nobody is registered" would put back everyone the blocking had switched off.
+        /** @var \Cake\Collection\CollectionInterface<int, \App\SledovaniTV\Dto\TvUser> $tvUsers */
+        $tvUsers = SledovaniTVApiClient::getUsers()->orFail(
+            __d('bookkeeping', 'SledovaniTV is not configured.'),
+        );
 
         $customers = $this->fetchTable(CustomersTable::class)
             ->find(
@@ -998,43 +1004,57 @@ class DebtorsProcessor
         $result = '';
 
         foreach ($tvUsers as $tvUser) {
-            if (in_array($tvUser['partnerid'], $customers)) {
-                // block = true and not suspended => block
-                if (
-                    $block && $tvUser['active'] == 1
-                    && $tvUser['suspended'] == 0
-                    && SledovaniTVApiClient::suspendUser($tvUser['id'])
-                ) {
-                    $result .= __d(
-                        'bookkeeping',
-                        'SledovaniTV - Suspended user with ID: {0} (partner ID: {1}).',
-                        $tvUser['id'],
-                        $tvUser['partnerid'],
-                    ) . PHP_EOL;
-                }
+            $ours = in_array($tvUser->partnerNumber, $customers);
 
-                // block = false and suspended => unblock
-                if (!$block && $tvUser['suspended'] == 1 && SledovaniTVApiClient::unsuspendUser($tvUser['id'])) {
-                    $result .= __d(
-                        'bookkeeping',
-                        'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
-                        $tvUser['id'],
-                        $tvUser['partnerid'],
-                    ) . PHP_EOL;
-                }
-            } elseif ($clear) {
-                // suspended and not on the list + clear called => unblock
-                if ($tvUser['suspended'] == 1 && SledovaniTVApiClient::unsuspendUser($tvUser['id'])) {
-                    $result .= __d(
-                        'bookkeeping',
-                        'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
-                        $tvUser['id'],
-                        $tvUser['partnerid'],
-                    ) . PHP_EOL;
-                }
+            // block = true and not suspended => block
+            if ($ours && $block && $tvUser->canBeSuspended() && $this->switchTv($tvUser, suspend: true)) {
+                $result .= $this->tvChangeNote($tvUser, suspended: true);
+                continue;
+            }
+
+            // ours and to be unblocked, or suspended and no longer on the list at all
+            $unblock = $tvUser->suspended && ($ours ? !$block : $clear);
+
+            if ($unblock && $this->switchTv($tvUser, suspend: false)) {
+                $result .= $this->tvChangeNote($tvUser, suspended: false);
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Switch one viewer off or back on.
+     *
+     * @param \App\SledovaniTV\Dto\TvUser $tvUser The viewer to switch.
+     * @param bool $suspend Whether to switch them off rather than back on.
+     * @return bool Whether the service says it did.
+     */
+    private function switchTv(TvUser $tvUser, bool $suspend): bool
+    {
+        $answer = $suspend
+            ? SledovaniTVApiClient::suspendUser($tvUser->id)
+            : SledovaniTVApiClient::unsuspendUser($tvUser->id);
+
+        return $answer->or(false);
+    }
+
+    /**
+     * What was done to one viewer, for the report the operator reads.
+     *
+     * @param \App\SledovaniTV\Dto\TvUser $tvUser The viewer that was switched.
+     * @param bool $suspended Whether they were switched off rather than back on.
+     * @return string
+     */
+    private function tvChangeNote(TvUser $tvUser, bool $suspended): string
+    {
+        return __d(
+            'bookkeeping',
+            $suspended
+                ? 'SledovaniTV - Suspended user with ID: {0} (partner ID: {1}).'
+                : 'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
+            $tvUser->id,
+            $tvUser->partnerNumber,
+        ) . PHP_EOL;
     }
 }

@@ -3,13 +3,23 @@ declare(strict_types=1);
 
 namespace App\SledovaniTV;
 
+use App\Http\Answer;
+use App\SledovaniTV\Provider\TvUserPayloadNormalizer;
+use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Client;
-use Cake\Http\Client\Response;
 use Cake\Log\Log;
-use RuntimeException;
 use Throwable;
 
+/**
+ * Talking to the television service.
+ *
+ * Every reading comes back as an {@see \App\Http\Answer}. The one caller runs over every viewer
+ * the service holds and turns some of them off, so it needs to tell a service that would not
+ * answer from one that answered nothing: the first must leave the viewers alone, the second means
+ * there are none.
+ */
 class ApiClient
 {
     /**
@@ -18,20 +28,29 @@ class ApiClient
     private const TIMEOUT = 30;
 
     /**
-     * POST request to SledovaniTV
+     * Ask the television service to do one thing.
      *
-     * @return \Cake\Http\Client\Response
-     * @throws \RuntimeException When data cannot be retrieved from the SledovaniTV API.
+     * @param string $function What to ask for.
+     * @param array<string, mixed> $data What to ask it with.
+     * @return \App\Http\Answer Answering with the body as it arrived.
      */
-    private static function postRequest(string $function, array $data = []): Response
+    private static function ask(string $function, array $data = []): Answer
     {
+        $partner = (string)Configure::read('SledovaniTv.username');
+
+        // Not being configured is a state, not a failure - an installation that sells no
+        // television says so by leaving the account empty, and nobody asked.
+        if ($partner === '') {
+            return Answer::notAsked();
+        }
+
         $http = new Client(['timeout' => self::TIMEOUT]);
 
         try {
             $response = $http->post(
                 'https://sledovanitv.cz/partner/api/' . $function,
                 [
-                    'partner' => Configure::read('SledovaniTv.username'),
+                    'partner' => $partner,
                     'password' => Configure::read('SledovaniTv.password'),
                 ] + $data,
                 [
@@ -39,78 +58,77 @@ class ApiClient
                 ],
             );
         } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('The SledovaniTV API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
+            return Answer::failed(__('The SledovaniTV API is unreachable: {0}', $e->getMessage()));
         }
 
-        if ($response->isOk()) {
-            return $response;
+        if (!$response->isOk()) {
+            // The headers are left out on purpose: they carry the session cookie, and a log is
+            // read by more people than a password is.
+            Log::error(
+                'Invalid response from SledovaniTV API: '
+                    . json_encode(
+                        [
+                            'status' => $response->getStatusCode(),
+                            'reason' => $response->getReasonPhrase(),
+                            'body' => $response->getStringBody(),
+                        ],
+                        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
+                    ),
+            );
+
+            return Answer::failed(__('Error while communicating with the SledovaniTV API.'));
         }
-        // The headers are left out on purpose: they carry the session cookie, and a log is read by
-        // more people than a password is.
-        Log::error(
-            'Invalid response from SledovaniTV API: '
-                . json_encode(
-                    [
-                        'status' => $response->getStatusCode(),
-                        'reason' => $response->getReasonPhrase(),
-                        'body' => $response->getStringBody(),
-                    ],
-                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
-                ),
+
+        $body = $response->getJson();
+
+        return is_array($body) ? Answer::of($body) : Answer::failed(
+            __('The SledovaniTV API returned an invalid response.'),
         );
-        throw new RuntimeException('Error while communicating with the SledovaniTV API.');
     }
 
     /**
      * Load SledovaniTV users
      *
-     * @return array<int, mixed> List of SledovaniTV users
+     * @return \App\Http\Answer Answering with {@see \App\SledovaniTV\Dto\TvUser} viewers.
      */
-    public static function getUsers(): array
+    public static function getUsers(): Answer
     {
-        $response = self::postRequest('get-users');
-        $data = $response->getJson();
+        return self::ask('get-users')->map(function (array $body): CollectionInterface {
+            // An answer with a status of 200 still need not be the list - a refused login is
+            // reported that way - so what is not the list is read as nobody.
+            $users = $body['users'] ?? null;
 
-        // An answer with a status of 200 still need not be the list - a refused login is reported
-        // that way - so what is not the list is read as nobody rather than taken apart.
-        if (is_array($data) && isset($data['users']) && is_array($data['users'])) {
-            return $data['users'];
-        }
+            if (!is_array($users)) {
+                Log::warning('The SledovaniTV API answered `get-users` without a list of users in it.');
 
-        Log::warning('The SledovaniTV API answered `get-users` without a list of users in it.');
+                return new Collection([]);
+            }
 
-        return [];
+            return TvUserPayloadNormalizer::users($users);
+        });
     }
 
     /**
      * Suspend user
      *
-     * @param int $id User ID
-     * @return bool True if succesfully suspended
+     * @param string $id User ID
+     * @return \App\Http\Answer Answering with whether the viewer was suspended.
      */
-    public static function suspendUser(int $id): bool
+    public static function suspendUser(string $id): Answer
     {
-        $response = self::postRequest('suspend-user', ['userId' => $id]);
-        $data = $response->getJson();
-
-        return is_array($data) && (bool)($data['suspended'] ?? false);
+        return self::ask('suspend-user', ['userId' => $id])
+            ->map(fn(array $body): bool => (bool)($body['suspended'] ?? false));
     }
 
     /**
      * Unsuspend user
      *
-     * @param int $id User ID
-     * @return bool True if succesfully activated
+     * @param string $id User ID
+     * @return \App\Http\Answer Answering with whether the viewer was put back.
      */
-    public static function unsuspendUser(int $id): bool
+    public static function unsuspendUser(string $id): Answer
     {
-        $response = self::postRequest('unsuspend-user', ['userId' => $id]);
-        $data = $response->getJson();
-
-        return is_array($data) && (bool)($data['activated'] ?? false);
+        return self::ask('unsuspend-user', ['userId' => $id])
+            ->map(fn(array $body): bool => (bool)($body['activated'] ?? false));
     }
 }
