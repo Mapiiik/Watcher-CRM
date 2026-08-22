@@ -5,7 +5,7 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $countries
  * @var string|null $searchCountryCode
- * @var list<array{key: string, label: string, seat: bool}> $businessRegisterAddresses
+ * @var list<\App\BusinessRegister\Dto\RegisteredAddress> $businessRegisterAddresses
  */
 
 $this->Html->script('addresses.js', ['block' => true]);

@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace App\BusinessRegister\Source;
 
+use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\IdentityNumber;
 use App\BusinessRegister\VatNumberCheck;
 use App\BusinessRegister\VatNumberStatus;
+use App\Http\Answer;
+use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
+use Cake\Http\Client\Response;
 use Override;
-use Throwable;
 
 /**
  * The European VAT number check (VIES).
@@ -43,27 +47,24 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
      * @inheritDoc
      */
     #[Override]
-    public function search(string $query, int $limit = 25): array
+    public function search(string $query, int $limit = 25): Answer
     {
-        $subject = $this->byReference($query);
-
-        return $subject === null ? [] : [$subject];
+        return $this->byReference($query)->map(
+            fn(?Subject $subject): CollectionInterface => new Collection($subject === null ? [] : [$subject]),
+        );
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function byReference(string $reference): ?array
+    public function byReference(string $reference): Answer
     {
-        $asked = $this->ask($reference);
-        if ($asked === null) {
-            return null;
-        }
-
-        [$memberState, $number, $answer] = $asked;
-
-        return self::mapSubject($answer, $memberState, $number);
+        return $this->ask($reference)->map(
+            fn(?array $asked): ?Subject => $asked === null
+                ? null
+                : self::toSubject(self::mapSubject($asked[2], $asked[0], $asked[1])),
+        );
     }
 
     /**
@@ -74,53 +75,47 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
      * @inheritDoc
      */
     #[Override]
-    public function vatNumberCheck(string $vatNumber): ?VatNumberCheck
+    public function vatNumberCheck(string $vatNumber): Answer
     {
-        $asked = $this->ask($vatNumber);
-        if ($asked === null) {
-            return null;
-        }
+        return $this->ask($vatNumber)->map(function (?array $asked): ?VatNumberCheck {
+            if ($asked === null) {
+                return null;
+            }
 
-        $answer = $asked[2];
+            $answer = $asked[2];
 
-        if (($answer['isValid'] ?? false) !== true) {
-            return new VatNumberCheck(VatNumberStatus::Invalid);
-        }
+            if (($answer['isValid'] ?? false) !== true) {
+                return new VatNumberCheck(VatNumberStatus::Invalid);
+            }
 
-        return new VatNumberCheck(VatNumberStatus::Registered, self::readValue($answer['name'] ?? null));
+            return new VatNumberCheck(VatNumberStatus::Registered, self::readValue($answer['name'] ?? null));
+        });
     }
 
     /**
      * Ask VIES about a number, null when it is not a number VIES can be asked about.
      *
      * @param string $vatNumber The number as it was given, prefix included.
-     * @return array{0: string, 1: string, 2: array<int|string, mixed>}|null
-     *      The member state, the number without it, and what VIES answered.
+     * @return \App\Http\Answer Answering with the member state, the number without it, and what
+     *      VIES said - or with null where this is not a number VIES can be asked about.
      */
-    private function ask(string $vatNumber): ?array
+    private function ask(string $vatNumber): Answer
     {
         $vatNumber = strtoupper(self::withoutWhitespace($vatNumber));
         if (!preg_match('/^([A-Z]{2})([0-9A-Z]{2,12})$/', $vatNumber, $matches)) {
-            return null;
+            return Answer::of(null);
         }
 
         [, $memberState, $number] = $matches;
 
-        try {
-            $response = $this->http()->get($this->endpoint(sprintf(
+        return $this->read(
+            fn(): Response => $this->http()->get($this->endpoint(sprintf(
                 'ms/%s/vat/%s',
                 urlencode($memberState),
                 urlencode($number),
-            )));
-        } catch (Throwable $e) {
-            throw $this->unreachable($e);
-        }
-
-        if ($response->getStatusCode() === 404) {
-            return null;
-        }
-
-        return [$memberState, $number, $this->decodeOrThrow($response)];
+            ))),
+            missingIsAnAnswer: true,
+        )->map(fn(?array $answer): ?array => $answer === null ? null : [$memberState, $number, $answer]);
     }
 
     /**

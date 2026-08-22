@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\BusinessRegister;
 
+use App\BusinessRegister\Provider\SubjectPayloadNormalizer;
 use App\BusinessRegister\Source\SourceInterface;
 use App\BusinessRegister\Source\VatNumberCheckInterface;
+use App\Http\Answer;
 use Cake\Cache\Cache;
+use Cake\Collection\Collection;
 use Cake\Core\Configure;
 use Cake\Log\Log;
-use RuntimeException;
 
 /**
  * The registers this installation can look a company up in.
@@ -97,11 +99,11 @@ class Registry
      * @param string $key The name the register is known by.
      * @param string $query What was typed into the search field.
      * @param int $limit How many entries to ask for.
-     * @return list<array<string, mixed>>
+     * @return \App\Http\Answer Answering with {@see \App\BusinessRegister\Dto\Subject} entries.
      */
-    public static function search(string $key, string $query, int $limit = 25): array
+    public static function search(string $key, string $query, int $limit = 25): Answer
     {
-        return self::get($key)?->search($query, $limit) ?? [];
+        return self::get($key)?->search($query, $limit) ?? Answer::of(new Collection([]));
     }
 
     /**
@@ -110,25 +112,30 @@ class Registry
      *
      * @param string $key The name the register is known by.
      * @param string $reference The reference a search result carried.
-     * @return array<string, mixed>|null
+     * @return \App\Http\Answer Answering with a {@see \App\BusinessRegister\Dto\Subject} or null.
      */
-    public static function byReferenceFromCache(string $key, string $reference): ?array
+    public static function byReferenceFromCache(string $key, string $reference): Answer
     {
         // A register not holding the reference is an answer too, and is kept as one - `false`
         // rather than null, which a cache cannot tell from having nothing.
         $cacheKey = sprintf('subject_%s_%s', $key, md5($reference));
         $cached = Cache::read($cacheKey, 'business_register');
         if (is_array($cached)) {
-            return $cached;
+            return Answer::of(SubjectPayloadNormalizer::subject($cached));
         }
         if ($cached === false) {
-            return null;
+            return Answer::of(null);
         }
 
-        $subject = self::get($key)?->byReference($reference);
-        Cache::write($cacheKey, $subject ?? false, 'business_register');
+        $answer = self::get($key)?->byReference($reference) ?? Answer::notAsked();
 
-        return $subject;
+        // What goes into the cache is the entry in the shape the registers share, never the
+        // subject read out of it - and an answer that never came is not kept at all.
+        if ($answer->ok()) {
+            Cache::write($cacheKey, $answer->data->raw ?? false, 'business_register');
+        }
+
+        return $answer;
     }
 
     /**
@@ -156,24 +163,25 @@ class Registry
 
         $answered = false;
         foreach ($keys as $key) {
-            try {
-                $subject = self::byReferenceFromCache($key, $identityNumber);
-            } catch (RuntimeException $e) {
+            $answer = self::byReferenceFromCache($key, $identityNumber);
+
+            if (!$answer->ok()) {
                 // one register being down is not the others' answer, so the rest are still asked
-                Log::error('Could not look the identification number up: ' . $e->getMessage());
+                if ($answer->unanswered()) {
+                    Log::error('Could not look the identification number up: ' . $answer->failure);
+                }
+
                 continue;
             }
 
             $answered = true;
 
-            $company = trim((string)($subject['name'] ?? ''));
+            $company = trim((string)$answer->data?->name);
             if ($company !== '') {
-                $addresses = $subject['addresses'] ?? [];
-
                 return new IdentityNumberCheck(
                     IdentityNumberStatus::Found,
                     $company,
-                    is_array($addresses) ? array_values($addresses) : [],
+                    $answer->data->addresses,
                 );
             }
         }
@@ -220,13 +228,19 @@ class Registry
                 continue;
             }
 
-            try {
-                $check = $source->vatNumberCheck($vatNumber);
-            } catch (RuntimeException $e) {
+            $answer = $source->vatNumberCheck($vatNumber);
+
+            if (!$answer->ok()) {
                 // one register being down is not the others' answer, so the rest are still asked
-                Log::error('Could not check the VAT number: ' . $e->getMessage());
+                if ($answer->unanswered()) {
+                    Log::error('Could not check the VAT number: ' . $answer->failure);
+                }
+
                 continue;
             }
+
+            /** @var \App\BusinessRegister\VatNumberCheck|null $check */
+            $check = $answer->data;
 
             // the register has nothing to say about this number - the next one may
             if ($check === null) {

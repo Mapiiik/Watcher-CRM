@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\Registry;
 use App\Controller\AppController;
 use Cake\Http\Exception\BadRequestException;
@@ -10,7 +11,6 @@ use Cake\Log\Log;
 use Cake\View\JsonView;
 use Override;
 use RuntimeException;
-use Throwable;
 
 /**
  * Business Register Bridge Controller
@@ -60,27 +60,25 @@ class BusinessRegisterBridgeController extends AppController
         // but the "pagination" key is included for future compatibility with Select2.
         $pagination = ['more' => false];
 
-        try {
-            $searchResult = Registry::search(
-                key: (string)$source,
-                query: (string)$query,
-                limit: 25,
-            );
+        $answer = Registry::search(
+            key: (string)$source,
+            query: (string)$query,
+            limit: 25,
+        );
 
-            // Map business register → Select2
-            foreach ($searchResult as $item) {
-                $results[] = [
-                    'id' => $source . '|' . $item['reference'],
-                    'text' => self::label($item),
-                ];
-            }
-        } catch (Throwable $e) {
-            Log::error('Error when searching the business register: ' . $e->getMessage());
-            throw new RuntimeException(
-                'Error when searching the business register: ' . $e->getMessage(),
-                $e->getCode(),
-                previous: $e,
-            );
+        if (!$answer->ok()) {
+            $failure = $answer->failure ?? __('The business register is not configured.');
+            Log::error('Error when searching the business register: ' . $failure);
+
+            throw new RuntimeException('Error when searching the business register: ' . $failure);
+        }
+
+        // Map business register → Select2
+        foreach ($answer->data as $item) {
+            $results[] = [
+                'id' => $source . '|' . $item->reference,
+                'text' => self::label($item),
+            ];
         }
 
         $this->set(compact('results', 'pagination'));
@@ -90,15 +88,15 @@ class BusinessRegisterBridgeController extends AppController
     /**
      * One entry as a single line, so two companies of the same name can still be told apart.
      *
-     * @param array<string, mixed> $item The entry as the register answered it.
+     * @param \App\BusinessRegister\Dto\Subject $item The entry as the register answered it.
      * @return string
      */
-    private static function label(array $item): string
+    private static function label(Subject $item): string
     {
         $parts = array_filter([
-            trim((string)($item['name'] ?? '')),
-            trim((string)($item['identity_number'] ?? '')),
-            trim((string)($item['address'] ?? '')),
+            trim((string)$item->name),
+            trim((string)$item->identityNumber),
+            trim((string)$item->address),
         ]);
 
         return $parts === [] ? '—' : implode(', ', $parts);

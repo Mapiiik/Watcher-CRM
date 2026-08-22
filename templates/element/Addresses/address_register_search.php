@@ -9,7 +9,7 @@
  * @var \App\View\AppView $this
  * @var string|null $searchCountryCode Lowercase country code the registry is asked for, null when
  *      the address is in a country it does not cover.
- * @var list<array{key: string, label: string, seat: bool}> $businessRegisterAddresses Where a
+ * @var list<\App\BusinessRegister\Dto\RegisteredAddress> $businessRegisterAddresses Where a
  *      business register says the customer is registered, empty when none named anywhere.
  */
 
@@ -22,9 +22,9 @@ $this->Form->unlockField('refresh');
 if ($businessRegisterAddresses !== []) {
     $addressOptions = [];
     foreach ($businessRegisterAddresses as $registerAddress) {
-        $addressOptions[$registerAddress['key']] = ($registerAddress['seat']
+        $addressOptions[$registerAddress->key] = ($registerAddress->seat
             ? __('Registered seat')
-            : __('Establishment')) . ': ' . $registerAddress['label'];
+            : __('Establishment')) . ': ' . $registerAddress->label;
     }
 
     echo $this->Form->control('business_register_address', [

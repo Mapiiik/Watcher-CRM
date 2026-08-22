@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\Registry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
 use App\Model\Entity\Customer;
@@ -553,7 +554,7 @@ class CustomersController extends AppController
      * The entry has been read once already by then, so this is a cache read rather than another
      * request to the register.
      *
-     * @return array{key: ?string, label: ?string, officer: ?string, officers: list<array<string, string|null>>}
+     * @return array{key: ?string, label: ?string, officer: ?string, officers: list<\App\BusinessRegister\Dto\Officer>}
      */
     private function businessRegisterSelection(): array
     {
@@ -571,15 +572,14 @@ class CustomersController extends AppController
             return $nothing;
         }
 
-        $officers = is_array($subject['officers'] ?? null) ? array_values($subject['officers']) : [];
         $officerKey = $this->getRequest()->getData('business_register_officer');
-        $officerKey = in_array($officerKey, array_column($officers, 'key'), true) ? $officerKey : null;
+        $officerKey = is_string($officerKey) && $subject->officer($officerKey) !== null ? $officerKey : null;
 
         return [
             'key' => $businessRegisterKey,
-            'label' => trim((string)($subject['name'] ?? '')) ?: $businessRegisterKey,
+            'label' => trim((string)$subject->name) ?: $businessRegisterKey,
             'officer' => $officerKey,
-            'officers' => $officers,
+            'officers' => $subject->officers,
         ];
     }
 
@@ -587,10 +587,10 @@ class CustomersController extends AppController
      * The entry a business register holds under the provided key.
      *
      * @param string $businessRegisterKey Expected format: "source|reference" (e.g., "ares|27074358").
-     * @return array The entry as the register answered it.
+     * @return \App\BusinessRegister\Dto\Subject The entry as the register answered it.
      * @throws \RuntimeException If the key makes no sense, or the register no longer holds it.
      */
-    private function subjectFromBusinessRegister(string $businessRegisterKey): array
+    private function subjectFromBusinessRegister(string $businessRegisterKey): Subject
     {
         // expect format "source|reference", e.g. "ares|27074358"
         [
@@ -602,10 +602,11 @@ class CustomersController extends AppController
             throw new RuntimeException(__('Invalid business register reference.'));
         }
 
+        /** @var \App\BusinessRegister\Dto\Subject|null $subject */
         $subject = Registry::byReferenceFromCache(
             key: $businessRegisterSource,
             reference: $businessRegisterReference,
-        );
+        )->orFail(__('The business register is not configured.'));
 
         if ($subject === null) {
             throw new RuntimeException(__('The company is no longer held by the register.'));
@@ -627,29 +628,22 @@ class CustomersController extends AppController
         string $businessRegisterKey,
         ?string $officerKey = null,
     ): array {
-        $subject = $this->subjectFromBusinessRegister($businessRegisterKey);
-
         // The company may be represented by any of several people, and which one is the operator's
-        // choice. A key naming nobody here is one left over from a company picked before this one,
-        // and what the entry says of itself stands instead.
-        foreach ($officerKey === null ? [] : (array)($subject['officers'] ?? []) as $officer) {
-            if (is_array($officer) && ($officer['key'] ?? null) === $officerKey) {
-                $subject = array_diff_key($officer, ['key' => null]) + $subject;
-                break;
-            }
-        }
+        // choice. A key naming nobody is one left over from a company picked before this one, and
+        // what the entry says of itself stands instead.
+        $subject = $this->subjectFromBusinessRegister($businessRegisterKey)->representedBy($officerKey);
 
         // every field is handed over, nulls included: a sole trader picked after a company has to
         // clear the company out, or the CRM would go on reading them as a legal entity
         return [
-            'company' => $subject['company'] ?? null,
-            'title' => $subject['title'] ?? null,
-            'first_name' => $subject['first_name'] ?? null,
-            'last_name' => $subject['last_name'] ?? null,
-            'suffix' => $subject['suffix'] ?? null,
-            'date_of_birth' => $subject['date_of_birth'] ?? null,
-            'identity_number' => $subject['identity_number'] ?? null,
-            'vat_number' => $subject['vat_number'] ?? null,
+            'company' => $subject->company,
+            'title' => $subject->title,
+            'first_name' => $subject->firstName,
+            'last_name' => $subject->lastName,
+            'suffix' => $subject->suffix,
+            'date_of_birth' => $subject->dateOfBirth,
+            'identity_number' => $subject->identityNumber,
+            'vat_number' => $subject->vatNumber,
         ];
     }
 

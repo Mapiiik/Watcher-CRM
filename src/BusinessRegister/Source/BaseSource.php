@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace App\BusinessRegister\Source;
 
+use App\BusinessRegister\Dto\Subject;
+use App\BusinessRegister\Provider\SubjectPayloadNormalizer;
+use App\Http\Answer;
+use Cake\Collection\CollectionInterface;
 use Cake\Http\Client;
-use Cake\Http\Client\Response;
-use RuntimeException;
+use Closure;
 use Settings\Utility\Settings;
 use Throwable;
 
@@ -74,12 +77,7 @@ abstract class BaseSource implements SourceInterface
      */
     protected function endpoint(string $path): string
     {
-        $url = $this->url();
-        if ($url === '') {
-            throw new RuntimeException(__('The {0} register is not configured.', $this->label()));
-        }
-
-        return $url . '/' . ltrim($path, '/');
+        return $this->url() . '/' . ltrim($path, '/');
     }
 
     /**
@@ -98,15 +96,37 @@ abstract class BaseSource implements SourceInterface
     }
 
     /**
-     * The decoded body, or an exception naming the register that refused.
+     * Ask the register one thing.
      *
-     * @param \Cake\Http\Client\Response $response The response to read.
-     * @return array<int|string, mixed>
+     * Not being configured is a state, not a failure - a register that was never given an address
+     * was not asked, and saying it went wrong would put an outage where there is none.
+     *
+     * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @param bool $missingIsAnAnswer Whether a 404 means the register holds no such entry.
+     * @return \App\Http\Answer Answering with the body as it arrived.
      */
-    protected function decodeOrThrow(Response $response): array
+    protected function read(Closure $ask, bool $missingIsAnAnswer = false): Answer
     {
+        if ($this->url() === '') {
+            return Answer::notAsked();
+        }
+
+        try {
+            $response = $ask();
+        } catch (Throwable $e) {
+            return Answer::failed(__(
+                'The {0} register is unreachable: {1}',
+                $this->label(),
+                $e->getMessage(),
+            ));
+        }
+
+        if ($missingIsAnAnswer && $response->getStatusCode() === 404) {
+            return Answer::of(null);
+        }
+
         if (!$response->isOk()) {
-            throw new RuntimeException(__(
+            return Answer::failed(__(
                 'The {0} register returned HTTP {1}.',
                 $this->label(),
                 $response->getStatusCode(),
@@ -115,25 +135,32 @@ abstract class BaseSource implements SourceInterface
 
         $data = $response->getJson();
         if (!is_array($data)) {
-            throw new RuntimeException(__('The {0} register returned an invalid response.', $this->label()));
+            return Answer::failed(__('The {0} register returned an invalid response.', $this->label()));
         }
 
-        return $data;
+        return Answer::of($data);
     }
 
     /**
-     * Turn whatever went wrong on the way into one exception the caller can show.
+     * An entry read into the shape every register answers in.
      *
-     * @param \Throwable $e What the transport threw.
-     * @return \RuntimeException
+     * @param array<string, mixed>|null $mapped The entry as this register mapped it.
+     * @return \App\BusinessRegister\Dto\Subject|null
      */
-    protected function unreachable(Throwable $e): RuntimeException
+    protected static function toSubject(?array $mapped): ?Subject
     {
-        return new RuntimeException(
-            __('The {0} register is unreachable: {1}', $this->label(), $e->getMessage()),
-            $e->getCode(),
-            previous: $e,
-        );
+        return $mapped === null ? null : SubjectPayloadNormalizer::subject($mapped);
+    }
+
+    /**
+     * Several entries read into that shape.
+     *
+     * @param list<array<string, mixed>> $mapped The entries as this register mapped them.
+     * @return \Cake\Collection\CollectionInterface<int, \App\BusinessRegister\Dto\Subject>
+     */
+    protected static function toSubjects(array $mapped): CollectionInterface
+    {
+        return SubjectPayloadNormalizer::subjects($mapped);
     }
 
     /**

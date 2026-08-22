@@ -157,8 +157,8 @@ class RegistryTest extends TestCase
             ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
 
-        $this->assertCount(1, Registry::search('stub', 'netair'));
-        $this->assertSame([], Registry::search('nowhere', 'netair'));
+        $this->assertSame(1, Registry::search('stub', 'netair')->data->count());
+        $this->assertTrue(Registry::search('nowhere', 'netair')->data->isEmpty());
     }
 
     /**
@@ -173,10 +173,10 @@ class RegistryTest extends TestCase
             ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
 
-        $subject = Registry::byReferenceFromCache('stub', '27496139');
+        $subject = Registry::byReferenceFromCache('stub', '27496139')->data;
 
-        $this->assertSame('NETAIR, s.r.o.', $subject['name'] ?? null);
-        $this->assertNull(Registry::byReferenceFromCache('stub', '00000000'));
+        $this->assertSame('NETAIR, s.r.o.', $subject?->name);
+        $this->assertNull(Registry::byReferenceFromCache('stub', '00000000')->data);
     }
 
     /**
@@ -220,7 +220,7 @@ class RegistryTest extends TestCase
 
         $this->assertSame(
             'cz|16903153',
-            Registry::identityNumberCheck('27496139')?->addresses[0]['key'] ?? null,
+            Registry::identityNumberCheck('27496139')?->addresses[0]->key,
         );
     }
 
@@ -333,11 +333,11 @@ class RegistryTest extends TestCase
      */
     public function testNotHoldingANumberIsKeptAsAnAnswer(): void
     {
-        $this->assertNull(Registry::byReferenceFromCache('stub', '00000000'));
+        $this->assertNull(Registry::byReferenceFromCache('stub', '00000000')->data);
 
         // the register is now down, but it is not asked again
         StubSource::$unreachableOnReference = true;
-        $this->assertNull(Registry::byReferenceFromCache('stub', '00000000'));
+        $this->assertNull(Registry::byReferenceFromCache('stub', '00000000')->data);
     }
 
     /**

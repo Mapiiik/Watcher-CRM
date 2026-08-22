@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\BusinessRegister\Source;
 
-use App\BusinessRegister\VatNumberCheck;
+use App\Http\Answer;
 
 /**
  * A register that can also say what a VAT number is and who holds it.
@@ -22,8 +22,9 @@ interface VatNumberCheckInterface
      * saying the number is invalid.
      *
      * @param string $vatNumber The number as it is stored, prefix included.
-     * @return \App\BusinessRegister\VatNumberCheck|null
+     * @return \App\Http\Answer Answering with a {@see \App\BusinessRegister\VatNumberCheck},
+     *      or with null where this is not a number the register can be asked about.
      * @throws \RuntimeException When the register cannot be reached or refuses the request.
      */
-    public function vatNumberCheck(string $vatNumber): ?VatNumberCheck;
+    public function vatNumberCheck(string $vatNumber): Answer;
 }

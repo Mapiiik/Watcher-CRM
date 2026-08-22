@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace App\BusinessRegister\Source;
 
+use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\IdentityNumber;
 use App\BusinessRegister\VatNumberCheck;
 use App\BusinessRegister\VatNumberStatus;
+use App\Http\Answer;
+use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
+use Cake\Http\Client\Response;
 use Override;
-use Throwable;
 
 /**
  * The Czech business register (ARES).
@@ -47,66 +51,57 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * @inheritDoc
      */
     #[Override]
-    public function search(string $query, int $limit = 25): array
+    public function search(string $query, int $limit = 25): Answer
     {
         $query = trim($query);
         if ($query === '') {
-            return [];
+            return Answer::of(new Collection([]));
         }
 
         // A number is the entry itself, and asking for it by name would only find it by accident.
         $number = self::withoutWhitespace($query);
         if (IdentityNumber::isValidCzech($number)) {
-            $subject = $this->byReference($number);
-
-            return $subject === null ? [] : [$subject];
+            return $this->byReference($number)
+                ->map(fn(?Subject $subject): array => $subject === null ? [] : [$subject])
+                ->map(fn(array $subjects): CollectionInterface => new Collection($subjects));
         }
 
-        try {
-            $response = $this->http()->post(
-                $this->endpoint('ekonomicke-subjekty/vyhledat'),
-                ['obchodniJmeno' => $query, 'pocet' => $limit, 'start' => 0],
-                ['type' => 'json'],
-            );
-        } catch (Throwable $e) {
-            throw $this->unreachable($e);
-        }
+        return $this->read(fn(): Response => $this->http()->post(
+            $this->endpoint('ekonomicke-subjekty/vyhledat'),
+            ['obchodniJmeno' => $query, 'pocet' => $limit, 'start' => 0],
+            ['type' => 'json'],
+        ))->map(function (array $data): CollectionInterface {
+            $subjects = $data['ekonomickeSubjekty'] ?? [];
+            $mapped = [];
 
-        $data = $this->decodeOrThrow($response);
-        $subjects = $data['ekonomickeSubjekty'] ?? [];
-        if (!is_array($subjects)) {
-            return [];
-        }
-
-        $results = [];
-        foreach ($subjects as $subject) {
-            if (!is_array($subject)) {
-                continue;
+            foreach (is_array($subjects) ? $subjects : [] as $subject) {
+                if (is_array($subject)) {
+                    $mapped[] = self::mapSubject($subject);
+                }
             }
 
-            $mapped = self::mapSubject($subject);
-            if ($mapped['reference'] !== null) {
-                $results[] = $mapped;
-            }
-        }
-
-        return $results;
+            return self::toSubjects($mapped);
+        });
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function byReference(string $reference): ?array
+    public function byReference(string $reference): Answer
     {
-        $subject = $this->fetch($reference);
-        if ($subject === null) {
-            return null;
+        $basic = $this->fetch($reference);
+        if (!$basic->ok() || $basic->data === null) {
+            // a failure and a register that holds nothing both travel out as they came
+            return $basic;
         }
+
+        /** @var array<int|string, mixed> $subject */
+        $subject = $basic->data;
 
         $mapped = self::mapSubject($subject);
         if ($mapped['reference'] === null) {
-            return null;
+            return Answer::of(null);
         }
 
         // Where a subject does business besides its seat, who sits in its statutory body, and how
@@ -117,7 +112,13 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         //
         // The register of persons holds the establishments of anyone at all, so it is asked
         // whoever the subject is.
-        $personRecord = $this->fetchPersonRecord($mapped['reference']);
+        $person = $this->fetchPersonRecord($mapped['reference']);
+        if (!$person->ok()) {
+            return $person;
+        }
+
+        /** @var array<int|string, mixed>|null $personRecord */
+        $personRecord = $person->data;
 
         // an establishment may well be at the seat, and the seat is named as such
         foreach (self::readEstablishments($personRecord) as $establishment) {
@@ -127,16 +128,27 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         }
 
         if ($mapped['company'] === null) {
-            return self::readTrader($this->fetchTradesRecord($mapped['reference'])) + $mapped;
+            $trades = $this->fetchTradesRecord($mapped['reference']);
+
+            return $trades->ok()
+                ? Answer::of(self::toSubject(self::readTrader($trades->data) + $mapped))
+                : $trades;
         }
 
         // A town, a school, a public body - a legal entity all the same, but not one the register
         // of companies holds. The basic record says whether it is worth asking, so it is not asked
         // in vain, and the register of persons has already answered for anyone it has never heard
         // of.
-        $mapped['officers'] = self::isInCompanyRegister($subject)
-            ? self::readOfficers($this->fetchRegisterRecord($mapped['reference']))
-            : self::readPersonRegisterOfficers($personRecord);
+        if (self::isInCompanyRegister($subject)) {
+            $companyRecord = $this->fetchRegisterRecord($mapped['reference']);
+            if (!$companyRecord->ok()) {
+                return $companyRecord;
+            }
+
+            $mapped['officers'] = self::readOfficers($companyRecord->data);
+        } else {
+            $mapped['officers'] = self::readPersonRegisterOfficers($personRecord);
+        }
 
         // One member sitting is who the company is represented by, with nothing to choose. Where
         // several sit, none is filled in: the name goes onto a contract as who the company was
@@ -145,7 +157,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             $mapped = array_diff_key($mapped['officers'][0], ['key' => null]) + $mapped;
         }
 
-        return $mapped;
+        return Answer::of(self::toSubject($mapped));
     }
 
     /**
@@ -156,19 +168,21 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * @inheritDoc
      */
     #[Override]
-    public function vatNumberCheck(string $vatNumber): ?VatNumberCheck
+    public function vatNumberCheck(string $vatNumber): Answer
     {
         $vatNumber = strtoupper(self::withoutWhitespace($vatNumber));
         if (!preg_match('/^CZ(\d{8})$/', $vatNumber, $matches)) {
-            return null;
+            // not a number ARES is asked about, which is an answer of nothing rather than a
+            // failure - the next register may know it
+            return Answer::of(null);
         }
 
         [, $identityNumber] = $matches;
         if (!IdentityNumber::isValidCzech($identityNumber)) {
-            return new VatNumberCheck(VatNumberStatus::Invalid);
+            return Answer::of(new VatNumberCheck(VatNumberStatus::Invalid));
         }
 
-        return self::readVatNumberCheck($this->fetch($identityNumber));
+        return $this->fetch($identityNumber)->map(self::readVatNumberCheck(...));
     }
 
     /**
@@ -196,9 +210,9 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * One subject as ARES returned it, null when ARES holds no such company.
      *
      * @param string $identityNumber The identification number to ask about.
-     * @return array<int|string, mixed>|null
+     * @return \App\Http\Answer Answering with the record, or null where ARES holds none.
      */
-    private function fetch(string $identityNumber): ?array
+    private function fetch(string $identityNumber): Answer
     {
         $identityNumber = self::withoutWhitespace($identityNumber);
 
@@ -206,20 +220,24 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         // Croatian one is eleven digits and comes back a bad request, not an empty answer. Asking
         // at all would turn "this is not ours" into a register that could not be reached.
         if (!IdentityNumber::isValidCzech($identityNumber)) {
-            return null;
+            return Answer::of(null);
         }
 
-        try {
-            $response = $this->http()->get($this->endpoint('ekonomicke-subjekty/' . urlencode($identityNumber)));
-        } catch (Throwable $e) {
-            throw $this->unreachable($e);
-        }
+        return $this->record('ekonomicke-subjekty/' . urlencode($identityNumber));
+    }
 
-        if ($response->getStatusCode() === 404) {
-            return null;
-        }
-
-        return $this->decodeOrThrow($response);
+    /**
+     * One of the records ARES keeps, or null where it keeps none.
+     *
+     * @param string $path The record below the register's address.
+     * @return \App\Http\Answer
+     */
+    private function record(string $path): Answer
+    {
+        return $this->read(
+            fn(): Response => $this->http()->get($this->endpoint($path)),
+            missingIsAnAnswer: true,
+        );
     }
 
     /**
@@ -382,23 +400,11 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * The record the register of persons holds, null when it holds none.
      *
      * @param string $identityNumber The identification number to ask about.
-     * @return array<int|string, mixed>|null
+     * @return \App\Http\Answer Answering with the record, or null where ARES keeps none.
      */
-    private function fetchPersonRecord(string $identityNumber): ?array
+    private function fetchPersonRecord(string $identityNumber): Answer
     {
-        try {
-            $response = $this->http()->get(
-                $this->endpoint('ekonomicke-subjekty-ros/' . urlencode($identityNumber)),
-            );
-        } catch (Throwable $e) {
-            throw $this->unreachable($e);
-        }
-
-        if ($response->getStatusCode() === 404) {
-            return null;
-        }
-
-        return $this->decodeOrThrow($response);
+        return $this->record('ekonomicke-subjekty-ros/' . urlencode($identityNumber));
     }
 
     /**
@@ -491,46 +497,22 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * The record the trades register holds, null when it holds none.
      *
      * @param string $identityNumber The identification number to ask about.
-     * @return array<int|string, mixed>|null
+     * @return \App\Http\Answer Answering with the record, or null where ARES keeps none.
      */
-    private function fetchTradesRecord(string $identityNumber): ?array
+    private function fetchTradesRecord(string $identityNumber): Answer
     {
-        try {
-            $response = $this->http()->get(
-                $this->endpoint('ekonomicke-subjekty-rzp/' . urlencode($identityNumber)),
-            );
-        } catch (Throwable $e) {
-            throw $this->unreachable($e);
-        }
-
-        if ($response->getStatusCode() === 404) {
-            return null;
-        }
-
-        return $this->decodeOrThrow($response);
+        return $this->record('ekonomicke-subjekty-rzp/' . urlencode($identityNumber));
     }
 
     /**
      * The record the register of companies holds, null when it holds none.
      *
      * @param string $identityNumber The identification number to ask about.
-     * @return array<int|string, mixed>|null
+     * @return \App\Http\Answer Answering with the record, or null where ARES keeps none.
      */
-    private function fetchRegisterRecord(string $identityNumber): ?array
+    private function fetchRegisterRecord(string $identityNumber): Answer
     {
-        try {
-            $response = $this->http()->get(
-                $this->endpoint('ekonomicke-subjekty-vr/' . urlencode($identityNumber)),
-            );
-        } catch (Throwable $e) {
-            throw $this->unreachable($e);
-        }
-
-        if ($response->getStatusCode() === 404) {
-            return null;
-        }
-
-        return $this->decodeOrThrow($response);
+        return $this->record('ekonomicke-subjekty-vr/' . urlencode($identityNumber));
     }
 
     /**

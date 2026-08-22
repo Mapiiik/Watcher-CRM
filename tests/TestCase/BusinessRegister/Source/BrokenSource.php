@@ -5,9 +5,8 @@ namespace App\Test\TestCase\BusinessRegister\Source;
 
 use App\BusinessRegister\Source\SourceInterface;
 use App\BusinessRegister\Source\VatNumberCheckInterface;
-use App\BusinessRegister\VatNumberCheck;
+use App\Http\Answer;
 use Override;
-use RuntimeException;
 
 /**
  * A register that is never reachable.
@@ -48,26 +47,26 @@ class BrokenSource implements SourceInterface, VatNumberCheckInterface
      * @inheritDoc
      */
     #[Override]
-    public function search(string $query, int $limit = 25): array
+    public function search(string $query, int $limit = 25): Answer
     {
-        throw new RuntimeException('The broken register is unreachable.');
+        return Answer::failed('The broken register is unreachable.');
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function byReference(string $reference): ?array
+    public function byReference(string $reference): Answer
     {
-        throw new RuntimeException('The broken register is unreachable.');
+        return Answer::failed('The broken register is unreachable.');
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function vatNumberCheck(string $vatNumber): ?VatNumberCheck
+    public function vatNumberCheck(string $vatNumber): Answer
     {
-        throw new RuntimeException('The broken register is unreachable.');
+        return Answer::failed('The broken register is unreachable.');
     }
 }

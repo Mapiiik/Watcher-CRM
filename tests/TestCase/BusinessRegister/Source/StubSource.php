@@ -3,11 +3,12 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\BusinessRegister\Source;
 
+use App\BusinessRegister\Provider\SubjectPayloadNormalizer;
 use App\BusinessRegister\Source\SourceInterface;
 use App\BusinessRegister\Source\VatNumberCheckInterface;
 use App\BusinessRegister\VatNumberCheck;
+use App\Http\Answer;
 use Override;
-use RuntimeException;
 
 /**
  * A register that answers whatever the test told it to.
@@ -99,40 +100,40 @@ class StubSource implements SourceInterface, VatNumberCheckInterface
      * @inheritDoc
      */
     #[Override]
-    public function search(string $query, int $limit = 25): array
+    public function search(string $query, int $limit = 25): Answer
     {
-        return array_slice(self::$entries, 0, $limit);
+        return Answer::of(SubjectPayloadNormalizer::subjects(array_slice(self::$entries, 0, $limit)));
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function byReference(string $reference): ?array
+    public function byReference(string $reference): Answer
     {
         if (self::$unreachableOnReference) {
-            throw new RuntimeException('The stub register is unreachable.');
+            return Answer::failed('The stub register is unreachable.');
         }
 
         foreach (self::$entries as $entry) {
             if (($entry['reference'] ?? null) === $reference) {
-                return $entry;
+                return Answer::of(SubjectPayloadNormalizer::subject($entry));
             }
         }
 
-        return null;
+        return Answer::of(null);
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function vatNumberCheck(string $vatNumber): ?VatNumberCheck
+    public function vatNumberCheck(string $vatNumber): Answer
     {
         if (self::$unreachable) {
-            throw new RuntimeException('The stub register is unreachable.');
+            return Answer::failed('The stub register is unreachable.');
         }
 
-        return self::$vatNumberCheck;
+        return Answer::of(self::$vatNumberCheck);
     }
 }

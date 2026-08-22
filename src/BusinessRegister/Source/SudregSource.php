@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace App\BusinessRegister\Source;
 
+use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\IdentityNumber;
+use App\Http\Answer;
 use Cake\Cache\Cache;
+use Cake\Collection\Collection;
+use Cake\Collection\CollectionInterface;
 use Cake\Http\Client\FormData;
+use Cake\Http\Client\Response;
 use Override;
-use RuntimeException;
-use Throwable;
 
 /**
  * The Croatian court register (Sudski registar).
@@ -59,73 +62,67 @@ class SudregSource extends BaseSource
      * @inheritDoc
      */
     #[Override]
-    public function search(string $query, int $limit = 25): array
+    public function search(string $query, int $limit = 25): Answer
     {
         $query = trim($query);
         if ($query === '') {
-            return [];
+            return Answer::of(new Collection([]));
         }
 
         // A number is the entry itself, and asking for it by name would only find it by accident.
         $number = self::withoutWhitespace($query);
         if (IdentityNumber::isValidCroatian($number)) {
-            $subject = $this->byReference($number);
-
-            return $subject === null ? [] : [$subject];
+            return $this->byReference($number)->map(
+                fn(?Subject $subject): CollectionInterface => new Collection($subject ? [$subject] : []),
+            );
         }
 
-        $data = $this->get('javni/subjekti', [
+        return $this->get('javni/subjekti', [
             'tvrtka_naziv' => $query,
             'offset' => 0,
             'limit' => $limit,
             'only_active' => 'true',
             'expand_relations' => 'true',
-        ]);
+        ])->map(function (array $data): CollectionInterface {
+            $mapped = [];
 
-        $results = [];
-        foreach ($data as $subject) {
-            if (!is_array($subject)) {
-                continue;
+            foreach ($data as $subject) {
+                if (is_array($subject)) {
+                    $mapped[] = self::mapSubject($subject);
+                }
             }
 
-            $mapped = self::mapSubject($subject);
-            if ($mapped['reference'] !== null) {
-                $results[] = $mapped;
-            }
-        }
-
-        return $results;
+            return self::toSubjects($mapped);
+        });
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function byReference(string $reference): ?array
+    public function byReference(string $reference): Answer
     {
         $reference = self::withoutWhitespace($reference);
         if ($reference === '') {
-            return null;
+            return Answer::of(null);
         }
 
-        $data = $this->get('javni/detalji_subjekta', [
+        return $this->get('javni/detalji_subjekta', [
             'tip_identifikatora' => 'oib',
             'identifikator' => $reference,
             'expand_relations' => 'true',
-        ]);
+        ])->map(function (array $data): ?Subject {
+            // The register answers a single subject either on its own or as a list of one.
+            if (array_is_list($data)) {
+                $data = $data === [] ? [] : $data[0];
+            }
 
-        // The register answers a single subject either on its own or as a list of one.
-        if (array_is_list($data)) {
-            $data = $data === [] ? [] : $data[0];
-        }
+            if (!is_array($data) || $data === []) {
+                return null;
+            }
 
-        if (!is_array($data) || $data === []) {
-            return null;
-        }
-
-        $mapped = self::mapSubject($data);
-
-        return $mapped['reference'] === null ? null : $mapped;
+            return self::toSubject(self::mapSubject($data));
+        });
     }
 
     /**
@@ -133,30 +130,29 @@ class SudregSource extends BaseSource
      *
      * @param string $path The path below the register's address.
      * @param array<string, mixed> $query What to ask for.
-     * @return array<int|string, mixed>
+     * @return \App\Http\Answer Answering with the body as it arrived.
      */
-    private function get(string $path, array $query): array
+    private function get(string $path, array $query): Answer
     {
-        try {
-            $response = $this->http(['Authorization' => 'Bearer ' . $this->token()])
-                ->get($this->endpoint($path), $query);
-        } catch (Throwable $e) {
-            throw $this->unreachable($e);
+        $token = $this->token();
+
+        if (!$token->ok()) {
+            return $token;
         }
 
-        if ($response->getStatusCode() === 404) {
-            return [];
-        }
-
-        return $this->decodeOrThrow($response);
+        return $this->read(
+            fn(): Response => $this->http(['Authorization' => 'Bearer ' . $token->data])
+                ->get($this->endpoint($path), $query),
+            missingIsAnAnswer: true,
+        )->map(fn(?array $data): array => $data ?? []);
     }
 
     /**
      * A token that has not run out, asking for a new one when it has.
      *
-     * @return string
+     * @return \App\Http\Answer Answering with the token itself.
      */
-    private function token(): string
+    private function token(): Answer
     {
         $cached = Cache::read($this->tokenCacheKey(), 'business_register');
         if (
@@ -165,26 +161,27 @@ class SudregSource extends BaseSource
             && is_int($cached['expires'] ?? null)
             && $cached['expires'] > time() + self::TOKEN_MARGIN
         ) {
-            return $cached['token'];
+            return Answer::of($cached['token']);
         }
 
-        try {
-            $body = new FormData();
-            $body->add('grant_type', 'client_credentials');
+        $body = new FormData();
+        $body->add('grant_type', 'client_credentials');
 
-            $response = $this->http([
-                'Authorization' => 'Basic ' . base64_encode(
-                    $this->setting('client_id') . ':' . $this->setting('client_secret'),
-                ),
-            ])->post($this->endpoint('oauth/token'), (string)$body, ['type' => $body->contentType()]);
-        } catch (Throwable $e) {
-            throw $this->unreachable($e);
+        $answer = $this->read(fn(): Response => $this->http([
+            'Authorization' => 'Basic ' . base64_encode(
+                $this->setting('client_id') . ':' . $this->setting('client_secret'),
+            ),
+        ])->post($this->endpoint('oauth/token'), (string)$body, ['type' => $body->contentType()]));
+
+        if (!$answer->ok()) {
+            return $answer;
         }
 
-        $data = $this->decodeOrThrow($response);
+        /** @var array<string, mixed> $data */
+        $data = $answer->data;
         $token = $data['access_token'] ?? null;
         if (!is_string($token) || $token === '') {
-            throw new RuntimeException(__('The {0} register did not issue a token.', $this->label()));
+            return Answer::failed(__('The {0} register did not issue a token.', $this->label()));
         }
 
         Cache::write(
@@ -193,7 +190,7 @@ class SudregSource extends BaseSource
             'business_register',
         );
 
-        return $token;
+        return Answer::of($token);
     }
 
     /**

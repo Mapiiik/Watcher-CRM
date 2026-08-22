@@ -11,7 +11,7 @@
  * @var \App\View\AppView $this
  * @var array<string, string> $businessRegisterSources
  * @var string|null $businessRegisterDefaultSource
- * @var array{key: ?string, label: ?string, officer: ?string, officers: list<array<string, string|null>>} $businessRegisterSelection
+ * @var array{key: ?string, label: ?string, officer: ?string, officers: list<\App\BusinessRegister\Dto\Officer>} $businessRegisterSelection
  */
 
 use Cake\I18n\Date;
@@ -48,19 +48,19 @@ if (count($businessRegisterSelection['officers']) > 1) {
     $officerOptions = [];
     foreach ($businessRegisterSelection['officers'] as $officer) {
         $name = implode(' ', array_filter([
-            $officer['title'] ?? null,
-            $officer['first_name'] ?? null,
-            $officer['last_name'] ?? null,
+            $officer->title,
+            $officer->firstName,
+            $officer->lastName,
         ]));
-        if (!empty($officer['suffix'])) {
-            $name .= ', ' . $officer['suffix'];
+        if ($officer->suffix !== null) {
+            $name .= ', ' . $officer->suffix;
         }
         // the date tells two people of one name apart, and is stored with them anyway
-        if (!empty($officer['date_of_birth'])) {
-            $name .= ' (' . h(Date::parseDate($officer['date_of_birth'], 'yyyy-MM-dd')) . ')';
+        if ($officer->dateOfBirth !== null) {
+            $name .= ' (' . h(Date::parseDate($officer->dateOfBirth, 'yyyy-MM-dd')) . ')';
         }
 
-        $officerOptions[(string)$officer['key']] = $name;
+        $officerOptions[$officer->key] = $name;
     }
 
     echo $this->Form->control('business_register_officer', [
