@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Agent\ApiClient as AgentApiClient;
+use App\Agent\Dto\PingResult;
 use App\Controller\AppController;
 use App\View\AjaxView;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Log\Log;
 use Cake\View\JsonView;
 use Override;
-use Throwable;
 
 /**
  * Network Management System Bridge Controller
@@ -39,16 +39,16 @@ class AgentBridgeController extends AppController
             throw new BadRequestException(__('Invalid IP address'));
         }
 
-        try {
-            $pingResults = AgentApiClient::ping($ip_address);
-            $pingImage = $this->AgentPingImage($pingResults);
-        } catch (Throwable $e) {
-            Log::error('Error pinging host via Watcher Agent: ' . $e->getMessage());
-            $pingResults = [];
-            $pingImage = 'unknown.png';
+        $ping = AgentApiClient::ping($ip_address);
+
+        if ($ping->unanswered()) {
+            Log::error('Error pinging host via Watcher Agent: ' . $ping->failure);
         }
 
-        $this->set('pingResults', $pingResults);
+        // The answer goes out as it arrived, so whatever reads this endpoint as JSON keeps
+        // reading what the agent said rather than what this application made of it.
+        $this->set('pingResults', $ping->data->raw ?? []);
+        $pingImage = $this->AgentPingImage($ping->data);
         $this->set('pingImage', $pingImage);
         $this->viewBuilder()->setOption('serialize', ['pingResults', 'pingImage']);
     }
@@ -56,19 +56,22 @@ class AgentBridgeController extends AppController
     /**
      * Returns the appropriate ping image based on the ping results
      *
-     * @param array $pingResults The ping results
+     * A host nobody could ask about is not a host that is down: the first says the agent did not
+     * answer, the second that the host did not, and an operator acts on them differently.
+     *
+     * @param \App\Agent\Dto\PingResult|null $ping What came of the ping, where anything did.
      * @return string The path to the ping image
      */
-    private function AgentPingImage(array $pingResults): string
+    private function AgentPingImage(?PingResult $ping): string
     {
-        if (!empty($pingResults['reachable']) && ($pingResults['loss_pct'] ?? 100) === 0) {
+        if ($ping === null) {
+            return 'unknown.png';
+        }
+
+        if ($ping->isHealthy()) {
             return 'up.png';
         }
 
-        if (!empty($pingResults['reachable'])) {
-            return 'bad.png';
-        }
-
-        return 'down.png';
+        return $ping->reachable ? 'bad.png' : 'down.png';
     }
 }

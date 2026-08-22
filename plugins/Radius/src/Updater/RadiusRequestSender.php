@@ -6,7 +6,6 @@ namespace Radius\Updater;
 use App\Agent\ApiClient as AgentApiClient;
 use App\Messages\Messages;
 use Radius\Model\Entity\Radacct;
-use Throwable;
 use UnexpectedValueException;
 
 /**
@@ -47,32 +46,32 @@ class RadiusRequestSender
      */
     private function sendDisconnectRequestViaAgent(Radacct $session): bool
     {
-        try {
-            $data = AgentApiClient::radiusDisconnect($session);
-        } catch (Throwable $e) {
+        $answer = AgentApiClient::radiusDisconnect($session);
+
+        if (!$answer->ok()) {
             $this->Messages->error(__d(
                 'radius',
                 'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
                 $session->username,
                 $session->acctstarttime,
-                $e->getMessage(),
+                $answer->failure ?? __d('radius', 'Watcher Agent is not configured.'),
             ));
 
             // skip further processing and return false
             return false;
         }
 
-        $error = $this->formatDisconnectErrors(
-            $data['error_causes'] ?? [],
-        );
+        /** @var \App\Agent\Dto\DisconnectResult $result */
+        $result = $answer->data;
+        $error = $this->formatDisconnectErrors($result->errorCauses);
 
-        if ($data['success']) {
+        if ($result->success) {
             $this->Messages->success(__d(
                 'radius',
                 'The RADIUS session for {0} started on {1} has been disconnected ({2}).',
                 $session->username,
                 $session->acctstarttime,
-                trim(($data['result'] ?? 'OK') . ($error ? ' - ' . $error : '')),
+                trim(($result->result ?? 'OK') . ($error ? ' - ' . $error : '')),
             ));
 
             return true;
@@ -83,7 +82,7 @@ class RadiusRequestSender
             'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
             $session->username,
             $session->acctstarttime,
-            trim(($data['result'] ?? 'Error') . ($error ? ' - ' . $error : '')),
+            trim(($result->result ?? 'Error') . ($error ? ' - ' . $error : '')),
         ));
 
         return false;
