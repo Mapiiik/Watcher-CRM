@@ -77,21 +77,18 @@ class HttpClient
         }
 
         $body = $response->getJson();
-        $body = is_array($body) ? $body : [];
 
-        // The accounting system explains a refusal inside the answer rather than in the status,
-        // so what it said travels out with the status it said it under.
-        if (!$response->isOk()) {
-            $description = $body['response']['description'] ?? null;
-
-            return self::refused(
-                self::SERVICE,
-                $url,
-                $response->getStatusCode(),
-                str_replace(["\r", "\n"], ' ', (string)$description),
-            );
+        // The accounting system answers a question it did not care for with a 500 and the reason
+        // inside the body - "no documents found" among them, which is an answer and not a failure.
+        // So the body is the verdict here, and the status only speaks when none came with it.
+        if (is_array($body)) {
+            return Answer::of($body);
         }
 
-        return Answer::of($body);
+        if (!$response->isOk()) {
+            return self::refused(self::SERVICE, $url, $response->getStatusCode());
+        }
+
+        return self::unexpected(self::SERVICE, $url, 'not an object');
     }
 }

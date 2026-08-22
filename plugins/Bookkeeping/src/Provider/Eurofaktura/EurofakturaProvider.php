@@ -62,12 +62,30 @@ class EurofakturaProvider implements AccountingProviderInterface
     }
 
     /**
-     * The body of a valid Eurofaktura answer.
+     * Whatever the accounting system said, once it is known that it said something.
      *
-     * Two things can go wrong and they are told apart nowhere else: the asking itself, which the
-     * client reports, and the accounting system refusing what was asked, which it explains inside
-     * an answer it calls successful. Both end the run - a sync that read half the invoices would
-     * look like the accounting system having lost the rest.
+     * Only the asking itself can fail here. A refusal is left to be read further on, because a
+     * listing that matched nothing is refused in exactly the same words as one that went wrong,
+     * and telling those two apart is the parser's job.
+     *
+     * @param \App\Http\Answer<array<mixed>> $answer What came of the asking.
+     * @return array<string, mixed> What it answered.
+     * @throws \RuntimeException When the asking failed.
+     */
+    private function body(Answer $answer): array
+    {
+        /** @var array<string, mixed> $data */
+        $data = $answer->orFail(__d('bookkeeping', 'Eurofaktura / E-racuni is not configured.'));
+
+        return $data;
+    }
+
+    /**
+     * The body of an answer that also has to have gone the way it was asked to.
+     *
+     * For everything that is not a listing: nothing further reads these answers closely enough to
+     * notice a refusal, so it is noticed here. A run that carried on past one would look like the
+     * accounting system having lost what it was sent.
      *
      * @param \App\Http\Answer<array<mixed>> $answer What came of the asking.
      * @return array<string, mixed> The body, once it is one worth reading.
@@ -75,8 +93,20 @@ class EurofakturaProvider implements AccountingProviderInterface
      */
     private function validBody(Answer $answer): array
     {
-        /** @var array<string, mixed> $data */
-        $data = $answer->orFail(__d('bookkeeping', 'Eurofaktura / E-racuni is not configured.'));
+        $data = $this->body($answer);
+        $response = $data['response'] ?? null;
+
+        if (is_array($response) && ($response['status'] ?? null) !== 'ok') {
+            $description = (string)($response['description'] ?? __d('bookkeeping', 'Unknown error'));
+
+            throw new RuntimeException(
+                __d(
+                    'bookkeeping',
+                    'Eurofaktura API error: {0}',
+                    [str_replace(["\r", "\n"], ' ', $description)],
+                ),
+            );
+        }
 
         // API-level error handling
         if (!empty($data['error'])) {
@@ -127,7 +157,7 @@ class EurofakturaProvider implements AccountingProviderInterface
             ],
         );
 
-        $drafts = $this->jsonParser->parseSalesInvoiceList($this->validBody($answer));
+        $drafts = $this->jsonParser->parseSalesInvoiceList($this->body($answer));
 
         // Eurofaktura rate limit
         sleep(1);
@@ -142,7 +172,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
         return array_merge(
             $drafts,
-            $this->jsonParser->parseSalesInvoiceList($this->validBody($answer)),
+            $this->jsonParser->parseSalesInvoiceList($this->body($answer)),
         );
     }
 
@@ -183,7 +213,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
             $drafts = array_merge(
                 $drafts,
-                $this->jsonParser->parseSalesInvoiceList($this->validBody($answer)),
+                $this->jsonParser->parseSalesInvoiceList($this->body($answer)),
             );
 
             // Eurofaktura rate limit
