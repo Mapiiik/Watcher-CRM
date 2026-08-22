@@ -69,7 +69,7 @@ class EurofakturaProvider implements AccountingProviderInterface
      * an answer it calls successful. Both end the run - a sync that read half the invoices would
      * look like the accounting system having lost the rest.
      *
-     * @param \App\Http\Answer $answer What came of the asking.
+     * @param \App\Http\Answer<array<mixed>> $answer What came of the asking.
      * @return array<string, mixed> The body, once it is one worth reading.
      * @throws \RuntimeException When the asking failed or the accounting system refused.
      */

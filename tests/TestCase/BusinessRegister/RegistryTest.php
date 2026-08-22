@@ -157,8 +157,8 @@ class RegistryTest extends TestCase
             ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
         ];
 
-        $this->assertSame(1, Registry::search('stub', 'netair')->data->count());
-        $this->assertTrue(Registry::search('nowhere', 'netair')->data->isEmpty());
+        $this->assertSame(1, Registry::search('stub', 'netair')->orFail()->count());
+        $this->assertTrue(Registry::search('nowhere', 'netair')->orFail()->isEmpty());
     }
 
     /**

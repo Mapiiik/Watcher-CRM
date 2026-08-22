@@ -55,7 +55,7 @@ class ApiClient
     /**
      * The access points Watcher NMS keeps.
      *
-     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\AccessPoint}.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\AccessPoint>>
      */
     public static function getAccessPoints(): Answer
     {
@@ -70,7 +70,7 @@ class ApiClient
      * a few hundred masts that many times over is work nobody sees.
      *
      * @param bool $onlyActive Whether to leave out the points that have been put out of use.
-     * @return \App\Http\Answer Answering with an array of names, keyed by number.
+     * @return \App\Http\Answer<array<string, string>>
      */
     public static function getAccessPointsList(bool $onlyActive = false): Answer
     {
@@ -81,6 +81,7 @@ class ApiClient
             return Answer::of($cached);
         }
 
+        /** @var \App\Http\Answer<array<string, string>> $answer */
         $answer = self::getAccessPoints()->map(
             fn(CollectionInterface $accessPoints): array => $accessPoints
                 ->filter(fn(AccessPoint $accessPoint): bool => !$onlyActive || !$accessPoint->isArchived())
@@ -102,7 +103,7 @@ class ApiClient
     /**
      * The ranges of addresses Watcher NMS keeps.
      *
-     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange>>
      * @psalm-suppress PossiblyUnusedMethod
      */
     public static function getIpAddressRanges(): Answer
@@ -115,7 +116,7 @@ class ApiClient
      * One range of addresses.
      *
      * @param string $id The number Watcher NMS keeps the range under.
-     * @return \App\Http\Answer Answering with an {@see \App\NMS\Dto\IpAddressRange} or null.
+     * @return \App\Http\Answer<\App\NMS\Dto\IpAddressRange|null>
      * @psalm-suppress PossiblyUnusedMethod
      */
     public static function getIpAddressRange(string $id): Answer
@@ -134,7 +135,7 @@ class ApiClient
      * now rather than what was there a few minutes ago.
      *
      * @param array<string, mixed> $search What to match the ranges on.
-     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange>>
      */
     public static function searchIpAddressRanges(array $search): Answer
     {
@@ -146,7 +147,7 @@ class ApiClient
      * The ranges an address falls in.
      *
      * @param string $ipAddress The address or network to look for.
-     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange>>
      */
     public static function getIpAddressRangesForIp(string $ipAddress): Answer
     {
@@ -162,7 +163,7 @@ class ApiClient
      * The devices matching what is asked about them.
      *
      * @param array<string, mixed> $search What to match the devices on.
-     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\RouterosDevice}.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\RouterosDevice>>
      * @psalm-suppress PossiblyUnusedMethod
      */
     public static function searchRouterosDevices(array $search): Answer
@@ -175,7 +176,7 @@ class ApiClient
      * The devices answering at an address.
      *
      * @param string $ipAddress The address to look for.
-     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\RouterosDevice}.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\RouterosDevice>>
      */
     public static function getRouterosDevicesForIp(string $ipAddress): Answer
     {
@@ -200,7 +201,7 @@ class ApiClient
      * @param string $path What to read.
      * @param string $answerKey What Watcher NMS calls the answer.
      * @param array<string, mixed> $query Anything to ask for beyond the path.
-     * @return \App\Http\Answer
+     * @return \App\Http\Answer<array<int|string, mixed>>
      */
     private static function read(string $key, string $path, string $answerKey, array $query = []): Answer
     {
@@ -227,7 +228,7 @@ class ApiClient
      * @param string $path What to read.
      * @param string $answerKey What Watcher NMS calls the answer.
      * @param array<string, mixed> $query Anything to ask for beyond the path.
-     * @return \App\Http\Answer Answering with the payload as it arrived.
+     * @return \App\Http\Answer<array<mixed>>
      */
     private static function ask(string $path, string $answerKey, array $query = []): Answer
     {
@@ -279,7 +280,7 @@ class ApiClient
      *
      * @param string $why What went wrong.
      * @param string $level How loudly to say it.
-     * @return \App\Http\Answer
+     * @return \App\Http\Answer<never>
      */
     private static function unanswered(string $why, string $level = 'error'): Answer
     {

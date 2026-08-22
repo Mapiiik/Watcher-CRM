@@ -32,7 +32,7 @@ class ApiClient
      *
      * @param string $function What to ask for.
      * @param array<string, mixed> $data What to ask it with.
-     * @return \App\Http\Answer Answering with the body as it arrived.
+     * @return \App\Http\Answer<array<int|string, mixed>>
      */
     private static function ask(string $function, array $data = []): Answer
     {
@@ -89,7 +89,7 @@ class ApiClient
     /**
      * Load SledovaniTV users
      *
-     * @return \App\Http\Answer Answering with {@see \App\SledovaniTV\Dto\TvUser} viewers.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\SledovaniTV\Dto\TvUser>>
      */
     public static function getUsers(): Answer
     {
@@ -112,7 +112,7 @@ class ApiClient
      * Suspend user
      *
      * @param string $id User ID
-     * @return \App\Http\Answer Answering with whether the viewer was suspended.
+     * @return \App\Http\Answer<bool>
      */
     public static function suspendUser(string $id): Answer
     {
@@ -124,7 +124,7 @@ class ApiClient
      * Unsuspend user
      *
      * @param string $id User ID
-     * @return \App\Http\Answer Answering with whether the viewer was put back.
+     * @return \App\Http\Answer<bool>
      */
     public static function unsuspendUser(string $id): Answer
     {

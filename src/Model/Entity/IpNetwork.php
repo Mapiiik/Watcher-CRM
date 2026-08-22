@@ -20,7 +20,7 @@ use App\NMS\ApiClient as NMSApiClient;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \App\Http\Answer $ip_address_ranges
+ * @property \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange>> $ip_address_ranges
  */
 class IpNetwork extends AppEntity
 {
@@ -66,7 +66,7 @@ class IpNetwork extends AppEntity
     /**
      * getter for IP address ranges (try to load via ApiClient)
      *
-     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange>>
      */
     protected function _getIpAddressRanges(): Answer
     {

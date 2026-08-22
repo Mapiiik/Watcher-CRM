@@ -99,7 +99,7 @@ class Registry
      * @param string $key The name the register is known by.
      * @param string $query What was typed into the search field.
      * @param int $limit How many entries to ask for.
-     * @return \App\Http\Answer Answering with {@see \App\BusinessRegister\Dto\Subject} entries.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\BusinessRegister\Dto\Subject>>
      */
     public static function search(string $key, string $query, int $limit = 25): Answer
     {
@@ -112,7 +112,7 @@ class Registry
      *
      * @param string $key The name the register is known by.
      * @param string $reference The reference a search result carried.
-     * @return \App\Http\Answer Answering with a {@see \App\BusinessRegister\Dto\Subject} or null.
+     * @return \App\Http\Answer<\App\BusinessRegister\Dto\Subject|null>
      */
     public static function byReferenceFromCache(string $key, string $reference): Answer
     {
@@ -176,12 +176,13 @@ class Registry
 
             $answered = true;
 
-            $company = trim((string)$answer->data?->name);
-            if ($company !== '') {
+            $subject = $answer->data;
+            $company = trim((string)$subject?->name);
+            if ($subject !== null && $company !== '') {
                 return new IdentityNumberCheck(
                     IdentityNumberStatus::Found,
                     $company,
-                    $answer->data->addresses,
+                    $subject->addresses,
                 );
             }
         }

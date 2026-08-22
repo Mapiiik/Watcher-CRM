@@ -53,9 +53,9 @@ class ApiClientTest extends TestCase
             'users' => [['id' => '1', 'partnerid' => '2024001', 'active' => 1, 'suspended' => 0]],
         ]));
 
-        $viewer = ApiClient::getUsers()->data->first();
+        $viewer = ApiClient::getUsers()->orFail()->first();
 
-        $this->assertSame('2024001', $viewer->partnerNumber);
+        $this->assertSame('2024001', $viewer?->partnerNumber);
         $this->assertTrue($viewer->canBeSuspended());
     }
 
@@ -69,7 +69,7 @@ class ApiClientTest extends TestCase
     {
         $this->mock('get-users', $this->jsonResponse(['error' => 'Invalid partner']));
 
-        $this->assertTrue(ApiClient::getUsers()->data->isEmpty());
+        $this->assertTrue(ApiClient::getUsers()->orFail()->isEmpty());
         $this->assertLogMessageContains('warning', 'without a list of users in it');
     }
 

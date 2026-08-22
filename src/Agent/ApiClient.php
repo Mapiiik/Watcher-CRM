@@ -26,7 +26,7 @@ class ApiClient
      * @param array<string, mixed> $data Data to send in the request body
      * @param int $timeout Timeout in seconds
      * @param string $expect The field the answer must carry to be one at all.
-     * @return \App\Http\Answer Answering with the body as it arrived.
+     * @return \App\Http\Answer<array<int|string, mixed>>
      */
     private static function ask(string $function, array $data = [], int $timeout = 30, string $expect = ''): Answer
     {
@@ -81,7 +81,7 @@ class ApiClient
      * Ping a host
      *
      * @param string $ipAddress IP address to ping
-     * @return \App\Http\Answer Answering with a {@see \App\Agent\Dto\PingResult}.
+     * @return \App\Http\Answer<\App\Agent\Dto\PingResult>
      */
     public static function ping(string $ipAddress): Answer
     {
@@ -101,7 +101,7 @@ class ApiClient
      * RADIUS disconnect
      *
      * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
-     * @return \App\Http\Answer Answering with a {@see \App\Agent\Dto\DisconnectResult}.
+     * @return \App\Http\Answer<\App\Agent\Dto\DisconnectResult>
      */
     public static function radiusDisconnect(Radacct $session): Answer
     {

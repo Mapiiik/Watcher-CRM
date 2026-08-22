@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Http\Answer $ipAddressRanges What Watcher NMS said about the ranges the address falls in.
+ * @var \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange>> $ipAddressRanges
  */
 
 $range = $ipAddressRanges->data?->first();

@@ -25,7 +25,7 @@ class HttpClient
      * @param \Bookkeeping\Provider\Eurofaktura\EurofakturaCredentials $credentials Authentication credentials.
      * @param string $method API method name (e.g. SalesInvoiceCreate)
      * @param array $parameters Method parameters
-     * @return \App\Http\Answer Answering with the body as it arrived.
+     * @return \App\Http\Answer<array<mixed>>
      */
     public function send(
         EurofakturaCredentials $credentials,

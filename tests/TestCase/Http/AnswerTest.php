@@ -136,11 +136,17 @@ class AnswerTest extends TestCase
         $read = Answer::of(['1', '2'])->map(fn(array $rows): int => count($rows));
         $this->assertSame(2, $read->data);
 
-        $failed = Answer::failed('down')->map(fn(array $rows): int => count($rows));
+        // an answer that came to nothing stands in for one of any shape, which is what lets a
+        // client hand the same failure back whatever it was going to answer with
+        /** @var \App\Http\Answer<list<string>> $down */
+        $down = Answer::failed('down');
+        $failed = $down->map(fn(array $rows): int => count($rows));
         $this->assertTrue($failed->unanswered());
         $this->assertSame('down', $failed->failure);
 
-        $notAsked = Answer::notAsked()->map(fn(array $rows): int => count($rows));
+        /** @var \App\Http\Answer<list<string>> $never */
+        $never = Answer::notAsked();
+        $notAsked = $never->map(fn(array $rows): int => count($rows));
         $this->assertFalse($notAsked->asked);
     }
 }

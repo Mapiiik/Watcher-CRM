@@ -112,7 +112,7 @@ class ApiClientTest extends TestCase
             'accessPoints' => [['name' => 'Nameless'], ['id' => '1', 'name' => 'Hilltop']],
         ]));
 
-        $this->assertSame(1, ApiClient::getAccessPoints()->data->count());
+        $this->assertSame(1, ApiClient::getAccessPoints()->orFail()->count());
     }
 
     /**
@@ -293,9 +293,9 @@ class ApiClientTest extends TestCase
             ['some_ip_address' => '10.0.0.1'],
         );
 
-        $device = ApiClient::getRouterosDevicesForIp('10.0.0.1')->data->first();
+        $device = ApiClient::getRouterosDevicesForIp('10.0.0.1')->orFail()->first();
 
-        $this->assertSame('RB5009', $device->systemDescription);
+        $this->assertSame('RB5009', $device?->systemDescription);
         $this->assertSame('Hilltop', $device->accessPoint?->name);
     }
 

@@ -14,7 +14,7 @@
  * @var \App\View\AppView $this
  * @var string|null $id
  * @var string|null $name
- * @var \App\Http\Answer|null $answer What came of looking the name up, where it was looked up.
+ * @var \App\Http\Answer<mixed>|null $answer What came of looking the name up, where it was looked up.
  */
 
 use App\NMS\Links;

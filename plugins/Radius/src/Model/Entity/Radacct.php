@@ -40,7 +40,7 @@ use Cake\ORM\Entity;
  * @property string|null $delegatedipv6prefix
  *
  * @property \Radius\Model\Entity\Account $account
- * @property \App\Http\Answer $routeros_devices_for_nas
+ * @property \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\RouterosDevice>> $routeros_devices_for_nas
  */
 class Radacct extends Entity
 {
@@ -87,7 +87,7 @@ class Radacct extends Entity
     /**
      * getter for RouterOS devices for NAS (try to load via ApiClient)
      *
-     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\RouterosDevice}.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\RouterosDevice>>
      */
     protected function _getRouterosDevicesForNas(): Answer
     {

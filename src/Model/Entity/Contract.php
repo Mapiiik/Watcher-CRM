@@ -63,7 +63,7 @@ use RuntimeException;
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
- * @property \App\Http\Answer $access_point
+ * @property \App\Http\Answer<\App\NMS\Dto\AccessPoint|null> $access_point
  */
 class Contract extends AppEntity
 {
@@ -192,7 +192,7 @@ class Contract extends AppEntity
      * shows many rows and that reading is fetched once for all of them, where a point apiece would
      * be a request apiece - and the same reading already stands behind the lists a form picks from.
      *
-     * @return \App\Http\Answer Answering with an {@see \App\NMS\Dto\AccessPoint} or null.
+     * @return \App\Http\Answer<\App\NMS\Dto\AccessPoint|null>
      */
     protected function _getAccessPoint(): Answer
     {

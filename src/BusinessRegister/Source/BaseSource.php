@@ -103,9 +103,9 @@ abstract class BaseSource implements SourceInterface
      *
      * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
      * @param bool $missingIsAnAnswer Whether a 404 means the register holds no such entry.
-     * @return \App\Http\Answer Answering with the body as it arrived.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
-    protected function read(Closure $ask, bool $missingIsAnAnswer = false): Answer
+    private function ask(Closure $ask, bool $missingIsAnAnswer = false): Answer
     {
         if ($this->url() === '') {
             return Answer::notAsked();
@@ -139,6 +139,34 @@ abstract class BaseSource implements SourceInterface
         }
 
         return Answer::of($data);
+    }
+
+    /**
+     * Read one thing that the other side either holds or does not.
+     *
+     * A 404 is then an answer rather than a failure: it says there is no such thing, which is what
+     * the caller asked to find out.
+     *
+     * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
+     */
+    protected function readOrMissing(Closure $ask): Answer
+    {
+        return $this->ask($ask, missingIsAnAnswer: true);
+    }
+
+    /**
+     * Read one thing the other side is expected to hold.
+     *
+     * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @return \App\Http\Answer<array<int|string, mixed>>
+     */
+    protected function read(Closure $ask): Answer
+    {
+        /** @var \App\Http\Answer<array<int|string, mixed>> $answer */
+        $answer = $this->ask($ask, missingIsAnAnswer: false);
+
+        return $answer;
     }
 
     /**

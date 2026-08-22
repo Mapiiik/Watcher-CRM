@@ -8,7 +8,7 @@
  * from becoming furniture and lets it mean something the one time it appears.
  *
  * @var \App\View\AppView $this
- * @var \App\Http\Answer $answer What came of the reading this cell was to be filled from.
+ * @var \App\Http\Answer<mixed> $answer What came of the reading this cell was to be filled from.
  */
 
 if (!$answer->unanswered()) {

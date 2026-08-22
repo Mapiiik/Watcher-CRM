@@ -51,7 +51,7 @@ interface SourceInterface
      *
      * @param string $query What was typed into the search field.
      * @param int $limit How many entries to ask for.
-     * @return \App\Http\Answer Answering with {@see \App\BusinessRegister\Dto\Subject} entries.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\BusinessRegister\Dto\Subject>>
      */
     public function search(string $query, int $limit = 25): Answer;
 
@@ -59,7 +59,7 @@ interface SourceInterface
      * A single entry, or null when the register does not hold it.
      *
      * @param string $reference The reference a search result carried.
-     * @return \App\Http\Answer Answering with a {@see \App\BusinessRegister\Dto\Subject} or null.
+     * @return \App\Http\Answer<\App\BusinessRegister\Dto\Subject|null>
      */
     public function byReference(string $reference): Answer;
 }

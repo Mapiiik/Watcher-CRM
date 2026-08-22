@@ -21,10 +21,11 @@ interface VatNumberCheckInterface
      * country, or a country the register does not cover - which is not the same as the register
      * saying the number is invalid.
      *
+     * A number the register cannot be asked about at all is answered with nothing rather than
+     * refused: the next register may know it.
+     *
      * @param string $vatNumber The number as it is stored, prefix included.
-     * @return \App\Http\Answer Answering with a {@see \App\BusinessRegister\VatNumberCheck},
-     *      or with null where this is not a number the register can be asked about.
-     * @throws \RuntimeException When the register cannot be reached or refuses the request.
+     * @return \App\Http\Answer<\App\BusinessRegister\VatNumberCheck|null>
      */
     public function vatNumberCheck(string $vatNumber): Answer;
 }

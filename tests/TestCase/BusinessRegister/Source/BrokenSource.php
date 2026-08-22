@@ -62,6 +62,7 @@ class BrokenSource implements SourceInterface, VatNumberCheckInterface
     }
 
     /**
+     * @return \App\Http\Answer<\App\BusinessRegister\VatNumberCheck|null>
      * @inheritDoc
      */
     #[Override]

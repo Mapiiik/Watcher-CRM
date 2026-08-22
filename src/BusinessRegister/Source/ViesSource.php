@@ -72,6 +72,7 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
      * say invalid - it has no way of telling a company that never registered from one that does
      * not exist.
      *
+     * @return \App\Http\Answer<\App\BusinessRegister\VatNumberCheck|null>
      * @inheritDoc
      */
     #[Override]
@@ -98,6 +99,7 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
      * @param string $vatNumber The number as it was given, prefix included.
      * @return \App\Http\Answer Answering with the member state, the number without it, and what
      *      VIES said - or with null where this is not a number VIES can be asked about.
+     * @return \App\Http\Answer<array{0: string, 1: string, 2: array<int|string, mixed>}|null>
      */
     private function ask(string $vatNumber): Answer
     {
@@ -108,13 +110,12 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
 
         [, $memberState, $number] = $matches;
 
-        return $this->read(
+        return $this->readOrMissing(
             fn(): Response => $this->http()->get($this->endpoint(sprintf(
                 'ms/%s/vat/%s',
                 urlencode($memberState),
                 urlencode($number),
             ))),
-            missingIsAnAnswer: true,
         )->map(fn(?array $answer): ?array => $answer === null ? null : [$memberState, $number, $answer]);
     }
 

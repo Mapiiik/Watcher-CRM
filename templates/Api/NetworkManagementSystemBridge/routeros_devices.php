@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Http\Answer $routerosDevices What Watcher NMS said about the devices at the address.
+ * @var \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\RouterosDevice>> $routerosDevices
  */
 
 $device = $routerosDevices->data?->first();

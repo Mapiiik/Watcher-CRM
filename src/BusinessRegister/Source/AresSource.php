@@ -91,9 +91,13 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
     public function byReference(string $reference): Answer
     {
         $basic = $this->fetch($reference);
-        if (!$basic->ok() || $basic->data === null) {
-            // a failure and a register that holds nothing both travel out as they came
-            return $basic;
+        if (!$basic->ok()) {
+            return Answer::sameFailure($basic);
+        }
+
+        // a register that holds nothing has answered, and answered nothing
+        if ($basic->data === null) {
+            return Answer::of(null);
         }
 
         /** @var array<int|string, mixed> $subject */
@@ -114,7 +118,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         // whoever the subject is.
         $person = $this->fetchPersonRecord($mapped['reference']);
         if (!$person->ok()) {
-            return $person;
+            return Answer::sameFailure($person);
         }
 
         /** @var array<int|string, mixed>|null $personRecord */
@@ -132,7 +136,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
 
             return $trades->ok()
                 ? Answer::of(self::toSubject(self::readTrader($trades->data) + $mapped))
-                : $trades;
+                : Answer::sameFailure($trades);
         }
 
         // A town, a school, a public body - a legal entity all the same, but not one the register
@@ -142,7 +146,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         if (self::isInCompanyRegister($subject)) {
             $companyRecord = $this->fetchRegisterRecord($mapped['reference']);
             if (!$companyRecord->ok()) {
-                return $companyRecord;
+                return Answer::sameFailure($companyRecord);
             }
 
             $mapped['officers'] = self::readOfficers($companyRecord->data);
@@ -165,6 +169,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * company that never registered from a number nobody holds. A Czech VAT number is the
      * identification number with a prefix, and anything else is not ARES's to answer.
      *
+     * @return \App\Http\Answer<\App\BusinessRegister\VatNumberCheck|null>
      * @inheritDoc
      */
     #[Override]
@@ -210,7 +215,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * One subject as ARES returned it, null when ARES holds no such company.
      *
      * @param string $identityNumber The identification number to ask about.
-     * @return \App\Http\Answer Answering with the record, or null where ARES holds none.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
     private function fetch(string $identityNumber): Answer
     {
@@ -230,13 +235,12 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * One of the records ARES keeps, or null where it keeps none.
      *
      * @param string $path The record below the register's address.
-     * @return \App\Http\Answer
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
     private function record(string $path): Answer
     {
-        return $this->read(
+        return $this->readOrMissing(
             fn(): Response => $this->http()->get($this->endpoint($path)),
-            missingIsAnAnswer: true,
         );
     }
 
@@ -400,7 +404,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * The record the register of persons holds, null when it holds none.
      *
      * @param string $identityNumber The identification number to ask about.
-     * @return \App\Http\Answer Answering with the record, or null where ARES keeps none.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
     private function fetchPersonRecord(string $identityNumber): Answer
     {
@@ -497,7 +501,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * The record the trades register holds, null when it holds none.
      *
      * @param string $identityNumber The identification number to ask about.
-     * @return \App\Http\Answer Answering with the record, or null where ARES keeps none.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
     private function fetchTradesRecord(string $identityNumber): Answer
     {
@@ -508,7 +512,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      * The record the register of companies holds, null when it holds none.
      *
      * @param string $identityNumber The identification number to ask about.
-     * @return \App\Http\Answer Answering with the record, or null where ARES keeps none.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
     private function fetchRegisterRecord(string $identityNumber): Answer
     {

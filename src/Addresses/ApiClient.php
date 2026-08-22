@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Addresses;
 
 use App\Addresses\Dto\Address;
+use App\Addresses\Dto\Batch;
 use App\Addresses\Provider\AddressPayloadNormalizer;
 use App\Http\Answer;
 use Cake\Cache\Cache;
@@ -80,9 +81,9 @@ class ApiClient
      *
      * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
      * @param bool $missingIsAnAnswer Whether a 404 means the registry knows of no such thing.
-     * @return \App\Http\Answer Answering with the body as it arrived.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
-    private static function read(Closure $ask, bool $missingIsAnAnswer = false): Answer
+    private static function ask(Closure $ask, bool $missingIsAnAnswer = false): Answer
     {
         if ((string)Configure::read('Addresses.url') === '') {
             return Answer::notAsked();
@@ -116,14 +117,43 @@ class ApiClient
     }
 
     /**
+     * Read one thing that the other side either holds or does not.
+     *
+     * A 404 is then an answer rather than a failure: it says there is no such thing, which is what
+     * the caller asked to find out.
+     *
+     * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
+     */
+    private static function readOrMissing(Closure $ask): Answer
+    {
+        return self::ask($ask, missingIsAnAnswer: true);
+    }
+
+    /**
+     * Read one thing the other side is expected to hold.
+     *
+     * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @return \App\Http\Answer<array<int|string, mixed>>
+     */
+    private static function read(Closure $ask): Answer
+    {
+        /** @var \App\Http\Answer<array<int|string, mixed>> $answer */
+        $answer = self::ask($ask, missingIsAnAnswer: false);
+
+        return $answer;
+    }
+
+    /**
      * What is kept, or what the registry says now.
      *
      * The body as it arrived is what goes into the cache, never the addresses read out of it, and
      * an answer that never came is not kept at all.
      *
+     * @template TKept
      * @param string $key Where the answer is kept.
-     * @param \Closure(): \App\Http\Answer $ask How to ask, when there is nothing kept.
-     * @return \App\Http\Answer
+     * @param \Closure(): \App\Http\Answer<TKept> $ask How to ask, when there is nothing kept.
+     * @return \App\Http\Answer<TKept>
      */
     private static function remember(string $key, Closure $ask): Answer
     {
@@ -168,7 +198,7 @@ class ApiClient
     /**
      * Liveness/readiness probe.
      *
-     * @return \App\Http\Answer Answering with { status: "ok"|"degraded", db: "up"|"down" }.
+     * @return \App\Http\Answer<array<int|string, mixed>>
      * @psalm-suppress PossiblyUnusedMethod
      */
     public static function health(): Answer
@@ -179,7 +209,7 @@ class ApiClient
     /**
      * Dataset metadata — row counts and last-refresh timestamps per table.
      *
-     * @return \App\Http\Answer Answering with the metadata as the registry wrote it.
+     * @return \App\Http\Answer<array<int|string, mixed>>
      */
     public static function meta(): Answer
     {
@@ -189,7 +219,7 @@ class ApiClient
     /**
      * Cached variant of meta(). TTL is governed by the `addresses_api` cache config.
      *
-     * @return \App\Http\Answer Answering with the metadata as the registry wrote it.
+     * @return \App\Http\Answer<array<int|string, mixed>>
      */
     public static function metaFromCache(): Answer
     {
@@ -201,7 +231,7 @@ class ApiClient
      * ogc_fid for HR). Returns null if the id is not present.
      *
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return \App\Http\Answer Answering with an {@see \App\Addresses\Dto\Address} or null.
+     * @return \App\Http\Answer<\App\Addresses\Dto\Address|null>
      */
     public static function byId(string $source, string $registryId, array $include = []): Answer
     {
@@ -213,7 +243,7 @@ class ApiClient
      * Cached variant of byId(). TTL is governed by the `addresses_api` cache config.
      *
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return \App\Http\Answer Answering with an {@see \App\Addresses\Dto\Address} or null.
+     * @return \App\Http\Answer<\App\Addresses\Dto\Address|null>
      */
     public static function byIdFromCache(string $source, string $registryId, array $include = []): Answer
     {
@@ -236,18 +266,17 @@ class ApiClient
      * @param string $source Which registry to ask.
      * @param string $registryId The number that registry keeps the address under.
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return \App\Http\Answer
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
     private static function rawById(string $source, string $registryId, array $include): Answer
     {
         $query = $include !== [] ? ['include' => implode(',', $include)] : [];
 
-        return self::read(
+        return self::readOrMissing(
             fn(): Response => self::getRequest(
                 path: sprintf('v1/addresses/%s/%s', $source, $registryId),
                 query: $query,
             ),
-            missingIsAnAnswer: true,
         );
     }
 
@@ -261,11 +290,12 @@ class ApiClient
      *
      * @param array<int, array{source: string, registry_id: string}> $items
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return \App\Http\Answer Answering with a {@see \App\Addresses\Dto\Batch}.
+     * @return \App\Http\Answer<\App\Addresses\Dto\Batch>
      */
     public static function byIdBatch(array $items, array $include = []): Answer
     {
-        return self::rawByIdBatch($items, $include)->map(AddressPayloadNormalizer::batch(...));
+        return self::rawByIdBatch($items, $include)
+            ->map(fn(?array $body): Batch => AddressPayloadNormalizer::batch($body ?? []));
     }
 
     /**
@@ -273,7 +303,7 @@ class ApiClient
      *
      * @param array<int, array{source: string, registry_id: string}> $items What to ask about.
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return \App\Http\Answer
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
     private static function rawByIdBatch(array $items, array $include): Answer
     {
@@ -295,7 +325,10 @@ class ApiClient
      *
      * For one-off lookups prefer byIdBatch directly (or byId for single ids).
      *
-     * @param array<int, array{source: string, registry_id: string}> $items
+     * @param array<int, array<string, string>> $items What to ask about, as source and id.
+     * @param array<string> $include Optional ?include= values, e.g. ['raw']
+     * @return \App\Http\Answer<\App\Addresses\Dto\Batch>
+     * @phpstan-param array<int, array{source: string, registry_id: string}> $items
      */
     public static function byIdBatchFromCache(array $items, array $include = []): Answer
     {
@@ -312,7 +345,7 @@ class ApiClient
         $key = 'addresses_batch_' . md5(serialize([$canonical, $include]));
 
         return self::remember($key, fn(): Answer => self::rawByIdBatch($items, $include))
-            ->map(AddressPayloadNormalizer::batch(...));
+            ->map(fn(?array $body): Batch => AddressPayloadNormalizer::batch($body ?? []));
     }
 
     /**
@@ -326,7 +359,7 @@ class ApiClient
      *
      * @param array<string, mixed> $payload
      * @param array<string> $include
-     * @return \App\Http\Answer Answering with a {@see \App\Addresses\Dto\Lookup}.
+     * @return \App\Http\Answer<\App\Addresses\Dto\Lookup>
      */
     public static function lookup(array $payload, array $include = []): Answer
     {
@@ -341,7 +374,7 @@ class ApiClient
      *
      * @param array<int, array<string, mixed>> $items
      * @param array<string> $include
-     * @return \App\Http\Answer Answering with one {@see \App\Addresses\Dto\Lookup} per item asked.
+     * @return \App\Http\Answer<list<\App\Addresses\Dto\Lookup>>
      */
     public static function lookupBatch(array $items, array $include = []): Answer
     {
@@ -356,7 +389,7 @@ class ApiClient
      * Reverse geocoding — nearest addresses to a WGS84 coordinate.
      *
      * @param array<string> $include
-     * @return \App\Http\Answer Answering with addresses, nearest first.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\Addresses\Dto\Address>>
      * @psalm-suppress PossiblyUnusedMethod
      */
     public static function reverse(
@@ -388,7 +421,7 @@ class ApiClient
      * field in [0, 1] for client-side thresholding.
      *
      * @param array<string> $include
-     * @return \App\Http\Answer Answering with addresses, best match first.
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\Addresses\Dto\Address>>
      */
     public static function search(
         string $country,

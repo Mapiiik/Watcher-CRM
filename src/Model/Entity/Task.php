@@ -24,7 +24,7 @@ use Tasks\Model\Entity\Task as TasksTask;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \App\Http\Answer $access_point
+ * @property \App\Http\Answer<\App\NMS\Dto\AccessPoint|null> $access_point
  */
 class Task extends TasksTask
 {
@@ -68,7 +68,7 @@ class Task extends TasksTask
      * shows many rows and that reading is fetched once for all of them, where a point apiece would
      * be a request apiece - and the same reading already stands behind the lists a form picks from.
      *
-     * @return \App\Http\Answer Answering with an {@see \App\NMS\Dto\AccessPoint} or null.
+     * @return \App\Http\Answer<\App\NMS\Dto\AccessPoint|null>
      */
     protected function _getAccessPoint(): Answer
     {

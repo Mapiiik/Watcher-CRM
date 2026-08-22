@@ -83,10 +83,10 @@ class SudregSource extends BaseSource
             'limit' => $limit,
             'only_active' => 'true',
             'expand_relations' => 'true',
-        ])->map(function (array $data): CollectionInterface {
+        ])->map(function (?array $data): CollectionInterface {
             $mapped = [];
 
-            foreach ($data as $subject) {
+            foreach ($data ?? [] as $subject) {
                 if (is_array($subject)) {
                     $mapped[] = self::mapSubject($subject);
                 }
@@ -111,7 +111,9 @@ class SudregSource extends BaseSource
             'tip_identifikatora' => 'oib',
             'identifikator' => $reference,
             'expand_relations' => 'true',
-        ])->map(function (array $data): ?Subject {
+        ])->map(function (?array $data): ?Subject {
+            $data ??= [];
+
             // The register answers a single subject either on its own or as a list of one.
             if (array_is_list($data)) {
                 $data = $data === [] ? [] : $data[0];
@@ -130,27 +132,26 @@ class SudregSource extends BaseSource
      *
      * @param string $path The path below the register's address.
      * @param array<string, mixed> $query What to ask for.
-     * @return \App\Http\Answer Answering with the body as it arrived.
+     * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
     private function get(string $path, array $query): Answer
     {
         $token = $this->token();
 
         if (!$token->ok()) {
-            return $token;
+            return Answer::sameFailure($token);
         }
 
-        return $this->read(
+        return $this->readOrMissing(
             fn(): Response => $this->http(['Authorization' => 'Bearer ' . $token->data])
                 ->get($this->endpoint($path), $query),
-            missingIsAnAnswer: true,
         )->map(fn(?array $data): array => $data ?? []);
     }
 
     /**
      * A token that has not run out, asking for a new one when it has.
      *
-     * @return \App\Http\Answer Answering with the token itself.
+     * @return \App\Http\Answer<string>
      */
     private function token(): Answer
     {
@@ -174,7 +175,7 @@ class SudregSource extends BaseSource
         ])->post($this->endpoint('oauth/token'), (string)$body, ['type' => $body->contentType()]));
 
         if (!$answer->ok()) {
-            return $answer;
+            return Answer::sameFailure($answer);
         }
 
         /** @var array<string, mixed> $data */

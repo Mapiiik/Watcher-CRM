@@ -26,7 +26,7 @@ class HttpClient
      * Send XML request to Pohoda mServer.
      *
      * @param string $xml XML request body.
-     * @return \App\Http\Answer Answering with the XML mServer replied with.
+     * @return \App\Http\Answer<\SimpleXMLElement>
      */
     public function send(string $xml): Answer
     {
