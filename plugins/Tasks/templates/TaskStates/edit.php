@@ -29,10 +29,10 @@
             <fieldset>
                 <legend><?= __d('tasks', 'Edit Task State') ?></legend>
                 <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('color', ['type' => 'color']);
-                    echo $this->Form->control('priority');
-                    echo $this->Form->control('completed');
+                    echo $this->Form->control('name', ['label' => __d('tasks', 'Name')]);
+                    echo $this->Form->control('color', ['type' => 'color', 'label' => __d('tasks', 'Color')]);
+                    echo $this->Form->control('priority', ['label' => __d('tasks', 'Priority')]);
+                    echo $this->Form->control('completed', ['label' => __d('tasks', 'Completed')]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('tasks', 'Submit')) ?>

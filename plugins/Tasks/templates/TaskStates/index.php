@@ -27,10 +27,10 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('color') ?></th>
-                    <th><?= $this->Paginator->sort('priority') ?></th>
-                    <th><?= $this->Paginator->sort('completed') ?></th>
+                    <th><?= $this->Paginator->sort('name', __d('tasks', 'Name')) ?></th>
+                    <th><?= $this->Paginator->sort('color', __d('tasks', 'Color')) ?></th>
+                    <th><?= $this->Paginator->sort('priority', __d('tasks', 'Priority')) ?></th>
+                    <th><?= $this->Paginator->sort('completed', __d('tasks', 'Completed')) ?></th>
                     <th class="actions"><?= __d('tasks', 'Actions') ?></th>
                 </tr>
             </thead>
