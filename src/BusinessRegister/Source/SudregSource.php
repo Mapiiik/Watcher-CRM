@@ -145,6 +145,7 @@ class SudregSource extends BaseSource
         return $this->readOrMissing(
             fn(): Response => $this->http(['Authorization' => 'Bearer ' . $token->data])
                 ->get($this->endpoint($path), $query),
+            $path,
         )->map(fn(?array $data): array => $data ?? []);
     }
 
@@ -172,7 +173,7 @@ class SudregSource extends BaseSource
             'Authorization' => 'Basic ' . base64_encode(
                 $this->setting('client_id') . ':' . $this->setting('client_secret'),
             ),
-        ])->post($this->endpoint('oauth/token'), (string)$body, ['type' => $body->contentType()]));
+        ])->post($this->endpoint('oauth/token'), (string)$body, ['type' => $body->contentType()]), 'oauth/token');
 
         if (!$answer->ok()) {
             return Answer::sameFailure($answer);

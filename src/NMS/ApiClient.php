@@ -55,6 +55,11 @@ class ApiClient
     private const TIMEOUT = 10;
 
     /**
+     * What this service is called in the log.
+     */
+    private const SERVICE = 'Watcher NMS';
+
+    /**
      * The access points Watcher NMS keeps.
      *
      * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\AccessPoint>>
@@ -241,35 +246,31 @@ class ApiClient
             return Answer::notAsked();
         }
 
+        // The address it was asked at and never the question: the key is asked for as a query
+        // parameter, and a log is read by more people than a configuration file is.
+        $where = rtrim((string)Configure::read('Nms.url'), '/') . $path;
+
         try {
             $client = Client::createFromUrl((string)Configure::read('Nms.url'));
             $client->setConfig('timeout', self::TIMEOUT);
 
             $response = $client->get($path, ['api_key' => Configure::read('Nms.key')] + $query);
         } catch (Throwable $e) {
-            // The path and never the query: the API key is asked for as a query parameter, and a
-            // log is read by more people than a configuration file is.
-            return self::unanswered(sprintf(
-                'Watcher NMS could not be asked about %s: %s',
-                $path,
-                $e->getMessage(),
-            ));
+            return self::unreachable(self::SERVICE, $where, $e->getMessage());
         }
 
         if (!$response->isOk()) {
-            return self::unanswered(sprintf(
-                'Watcher NMS answered %d asking about %s.',
-                $response->getStatusCode(),
-                $path,
-            ));
+            return self::refused(self::SERVICE, $where, $response->getStatusCode());
         }
 
         $body = $response->getJson();
 
         if (!is_array($body) || !isset($body[$answerKey]) || !is_array($body[$answerKey])) {
             // Not an outage but a misunderstanding: something answered, it just was not this.
-            return self::unanswered(
-                sprintf('Watcher NMS answered %s without `%s` in it.', $path, $answerKey),
+            return self::unexpected(
+                self::SERVICE,
+                $where,
+                sprintf('no `%s` in it', $answerKey),
                 'warning',
             );
         }

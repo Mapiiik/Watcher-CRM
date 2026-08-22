@@ -116,7 +116,7 @@ class ApiClientTest extends TestCase
         $this->mock('get-users', $this->newClientResponse(500, [], 'Service unavailable'));
 
         $this->assertTrue(ApiClient::getUsers()->unanswered());
-        $this->assertLogMessageContains('error', 'Invalid response from SledovaniTV API');
+        $this->assertLogMessageContains('error', 'The SledovaniTV API answered 500');
     }
 
     /**

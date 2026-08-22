@@ -27,6 +27,11 @@ class ApiClient
     use WritesDownFailuresTrait;
 
     /**
+     * What this service is called in the log.
+     */
+    private const SERVICE = 'The Addresses API';
+
+    /**
      * Build the configured Cake HTTP client.
      */
     private static function http(int $timeout = 30): Client
@@ -83,19 +88,22 @@ class ApiClient
      * says so by leaving the address empty, and nobody asked.
      *
      * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @param string $path What is being read, for the message.
      * @param bool $missingIsAnAnswer Whether a 404 means the registry knows of no such thing.
      * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
-    private static function ask(Closure $ask, bool $missingIsAnAnswer = false): Answer
+    private static function ask(Closure $ask, string $path, bool $missingIsAnAnswer = false): Answer
     {
         if ((string)Configure::read('Addresses.url') === '') {
             return Answer::notAsked();
         }
 
+        $where = self::url($path);
+
         try {
             $response = $ask();
         } catch (Throwable $e) {
-            return self::unanswered(__('Addresses API is unreachable: {0}', $e->getMessage()));
+            return self::unreachable(self::SERVICE, $where, $e->getMessage());
         }
 
         if ($missingIsAnAnswer && $response->getStatusCode() === 404) {
@@ -105,15 +113,11 @@ class ApiClient
         $data = $response->getJson();
 
         if (!$response->isOk()) {
-            return self::unanswered(__(
-                'Addresses API returned HTTP {0} ({1})',
-                $response->getStatusCode(),
-                self::extractError($data) ?? __('Unknown error'),
-            ));
+            return self::refused(self::SERVICE, $where, $response->getStatusCode(), self::extractError($data));
         }
 
         if (!is_array($data)) {
-            return self::unanswered(__('Addresses API returned an invalid response.'));
+            return self::unexpected(self::SERVICE, $where, 'not an object');
         }
 
         return Answer::of($data);
@@ -126,23 +130,25 @@ class ApiClient
      * the caller asked to find out.
      *
      * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @param string $path What is being read, for the message.
      * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
-    private static function readOrMissing(Closure $ask): Answer
+    private static function readOrMissing(Closure $ask, string $path): Answer
     {
-        return self::ask($ask, missingIsAnAnswer: true);
+        return self::ask($ask, $path, missingIsAnAnswer: true);
     }
 
     /**
      * Read one thing the other side is expected to hold.
      *
      * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @param string $path What is being read, for the message.
      * @return \App\Http\Answer<array<int|string, mixed>>
      */
-    private static function read(Closure $ask): Answer
+    private static function read(Closure $ask, string $path): Answer
     {
         /** @var \App\Http\Answer<array<int|string, mixed>> $answer */
-        $answer = self::ask($ask, missingIsAnAnswer: false);
+        $answer = self::ask($ask, $path, missingIsAnAnswer: false);
 
         return $answer;
     }
@@ -206,7 +212,7 @@ class ApiClient
      */
     public static function health(): Answer
     {
-        return self::read(fn(): Response => self::getRequest(path: 'v1/health', timeout: 5));
+        return self::read(fn(): Response => self::getRequest(path: 'v1/health', timeout: 5), 'v1/health');
     }
 
     /**
@@ -216,7 +222,7 @@ class ApiClient
      */
     public static function meta(): Answer
     {
-        return self::read(fn(): Response => self::getRequest(path: 'v1/meta', timeout: 5));
+        return self::read(fn(): Response => self::getRequest(path: 'v1/meta', timeout: 5), 'v1/meta');
     }
 
     /**
@@ -275,11 +281,11 @@ class ApiClient
     {
         $query = $include !== [] ? ['include' => implode(',', $include)] : [];
 
+        $path = sprintf('v1/addresses/%s/%s', $source, $registryId);
+
         return self::readOrMissing(
-            fn(): Response => self::getRequest(
-                path: sprintf('v1/addresses/%s/%s', $source, $registryId),
-                query: $query,
-            ),
+            fn(): Response => self::getRequest(path: $path, query: $query),
+            $path,
         );
     }
 
@@ -314,7 +320,7 @@ class ApiClient
             path: self::withInclude('v1/addresses/batch', $include),
             data: ['items' => $items],
             timeout: 60,
-        ));
+        ), 'v1/addresses/batch');
     }
 
     /**
@@ -369,7 +375,7 @@ class ApiClient
         return self::read(fn(): Response => self::postRequest(
             path: self::withInclude('v1/lookup', $include),
             data: $payload,
-        ))->map(AddressPayloadNormalizer::lookup(...));
+        ), 'v1/lookup')->map(AddressPayloadNormalizer::lookup(...));
     }
 
     /**
@@ -385,7 +391,7 @@ class ApiClient
             path: self::withInclude('v1/lookup/batch', $include),
             data: ['items' => $items],
             timeout: 60,
-        ))->map(AddressPayloadNormalizer::lookups(...));
+        ), 'v1/lookup/batch')->map(AddressPayloadNormalizer::lookups(...));
     }
 
     /**
@@ -414,7 +420,7 @@ class ApiClient
             $query['include'] = implode(',', $include);
         }
 
-        return self::read(fn(): Response => self::getRequest(path: 'v1/reverse', query: $query))
+        return self::read(fn(): Response => self::getRequest(path: 'v1/reverse', query: $query), 'v1/reverse')
             ->map(AddressPayloadNormalizer::addresses(...));
     }
 
@@ -437,7 +443,7 @@ class ApiClient
             $query['include'] = implode(',', $include);
         }
 
-        return self::read(fn(): Response => self::getRequest(path: 'v1/search', query: $query))
+        return self::read(fn(): Response => self::getRequest(path: 'v1/search', query: $query), 'v1/search')
             ->map(AddressPayloadNormalizer::addresses(...));
     }
 

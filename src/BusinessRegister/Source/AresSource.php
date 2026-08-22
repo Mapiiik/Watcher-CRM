@@ -70,7 +70,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             $this->endpoint('ekonomicke-subjekty/vyhledat'),
             ['obchodniJmeno' => $query, 'pocet' => $limit, 'start' => 0],
             ['type' => 'json'],
-        ))->map(function (array $data): CollectionInterface {
+        ), 'ekonomicke-subjekty/vyhledat')->map(function (array $data): CollectionInterface {
             $subjects = $data['ekonomickeSubjekty'] ?? [];
             $mapped = [];
 
@@ -239,9 +239,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
      */
     private function record(string $path): Answer
     {
-        return $this->readOrMissing(
-            fn(): Response => $this->http()->get($this->endpoint($path)),
-        );
+        return $this->readOrMissing(fn(): Response => $this->http()->get($this->endpoint($path)), $path);
     }
 
     /**

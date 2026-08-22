@@ -23,6 +23,11 @@ class HttpClient
     use WritesDownFailuresTrait;
 
     /**
+     * What this service is called in the log.
+     */
+    private const SERVICE = 'The Eurofaktura API';
+
+    /**
      * Send request to Eurofaktura / E-racuni API.
      *
      * @param \Bookkeeping\Provider\Eurofaktura\EurofakturaCredentials $credentials Authentication credentials.
@@ -68,26 +73,23 @@ class HttpClient
 
             $response = $http->post($url, json_encode($payload, JSON_THROW_ON_ERROR));
         } catch (Throwable $e) {
-            return self::unanswered(__d(
-                'bookkeeping',
-                'Error connecting to Eurofaktura / E-racuni API: {0}',
-                [$e->getMessage()],
-            ));
+            return self::unreachable(self::SERVICE, $url, $e->getMessage());
         }
 
         $body = $response->getJson();
         $body = is_array($body) ? $body : [];
 
-        // The transport-level verdict travels with the body: the accounting system explains a
-        // refusal inside the answer, and the caller wants both to say what went wrong.
+        // The accounting system explains a refusal inside the answer rather than in the status,
+        // so what it said travels out with the status it said it under.
         if (!$response->isOk()) {
-            $description = $body['response']['description'] ?? __d('bookkeeping', 'Unknown error');
+            $description = $body['response']['description'] ?? null;
 
-            return self::unanswered(__d(
-                'bookkeeping',
-                'Eurofaktura API error ({0}, {1})',
-                [$response->getStatusCode(), str_replace(["\r", "\n"], ' ', (string)$description)],
-            ));
+            return self::refused(
+                self::SERVICE,
+                $url,
+                $response->getStatusCode(),
+                str_replace(["\r", "\n"], ' ', (string)$description),
+            );
         }
 
         return Answer::of($body);

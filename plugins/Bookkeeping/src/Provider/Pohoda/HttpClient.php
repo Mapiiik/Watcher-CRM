@@ -26,6 +26,11 @@ class HttpClient
     use WritesDownFailuresTrait;
 
     /**
+     * What this service is called in the log.
+     */
+    private const SERVICE = 'Pohoda mServer';
+
+    /**
      * Send XML request to Pohoda mServer.
      *
      * @param string $xml XML request body.
@@ -41,6 +46,8 @@ class HttpClient
         if ($url === '') {
             return Answer::notAsked();
         }
+
+        $where = $url . '/xml';
 
         try {
             $username = (string)Configure::read('Bookkeeping.pohoda.username');
@@ -60,27 +67,24 @@ class HttpClient
                 'timeout' => $timeout,
             ]);
 
-            $response = $http->post($url . '/xml', $xml);
+            $response = $http->post($where, $xml);
         } catch (Throwable $e) {
-            return self::unanswered(__d(
-                'bookkeeping',
-                'Error connecting to Pohoda mServer: {0}',
-                [$e->getMessage()],
-            ));
+            return self::unreachable(self::SERVICE, $where, $e->getMessage());
         }
 
         if (!$response->isOk()) {
-            return self::unanswered(__d(
-                'bookkeeping',
-                'Invalid response from Pohoda mServer ({0})',
-                [$response->getReasonPhrase()],
-            ));
+            return self::refused(
+                self::SERVICE,
+                $where,
+                $response->getStatusCode(),
+                $response->getReasonPhrase(),
+            );
         }
 
         $body = $response->getXml();
 
         if (!$body instanceof SimpleXMLElement) {
-            return self::unanswered(__d('bookkeeping', 'Invalid XML response from Pohoda mServer.'));
+            return self::unexpected(self::SERVICE, $where, 'not XML');
         }
 
         return Answer::of($body);

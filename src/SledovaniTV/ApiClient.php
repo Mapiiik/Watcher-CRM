@@ -31,6 +31,11 @@ class ApiClient
     private const TIMEOUT = 30;
 
     /**
+     * What this service is called in the log.
+     */
+    private const SERVICE = 'The SledovaniTV API';
+
+    /**
      * Ask the television service to do one thing.
      *
      * @param string $function What to ask for.
@@ -48,10 +53,11 @@ class ApiClient
         }
 
         $http = new Client(['timeout' => self::TIMEOUT]);
+        $where = 'https://sledovanitv.cz/partner/api/' . $function;
 
         try {
             $response = $http->post(
-                'https://sledovanitv.cz/partner/api/' . $function,
+                $where,
                 [
                     'partner' => $partner,
                     'password' => Configure::read('SledovaniTv.password'),
@@ -61,32 +67,25 @@ class ApiClient
                 ],
             );
         } catch (Throwable $e) {
-            return self::unanswered(__('The SledovaniTV API is unreachable: {0}', $e->getMessage()));
+            return self::unreachable(self::SERVICE, $where, $e->getMessage());
         }
 
         if (!$response->isOk()) {
-            // The headers are left out on purpose: they carry the session cookie, and a log is
-            // read by more people than a password is.
-            Log::error(
-                'Invalid response from SledovaniTV API: '
-                    . json_encode(
-                        [
-                            'status' => $response->getStatusCode(),
-                            'reason' => $response->getReasonPhrase(),
-                            'body' => $response->getStringBody(),
-                        ],
-                        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
-                    ),
+            // The body says more than the status does and the headers say nothing worth having:
+            // they carry the session cookie, and a log is read by more people than a password is.
+            return self::refused(
+                self::SERVICE,
+                $where,
+                $response->getStatusCode(),
+                trim($response->getReasonPhrase() . ' ' . $response->getStringBody()),
             );
-
-            return self::unanswered(__('Error while communicating with the SledovaniTV API.'));
         }
 
         $body = $response->getJson();
 
-        return is_array($body) ? Answer::of($body) : self::unanswered(
-            __('The SledovaniTV API returned an invalid response.'),
-        );
+        return is_array($body)
+            ? Answer::of($body)
+            : self::unexpected(self::SERVICE, $where, 'not an object');
     }
 
     /**

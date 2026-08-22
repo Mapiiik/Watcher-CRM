@@ -183,7 +183,10 @@ class ApiClientTest extends TestCase
 
         $this->assertTrue($answer->unanswered());
         $this->assertNull($answer->data);
-        $this->assertLogMessageContains('error', 'Watcher NMS answered 500 asking about /api/access-points.json');
+        $this->assertLogMessageContains(
+            'error',
+            'Watcher NMS answered 500 (https://nms.example.com/api/access-points.json)',
+        );
     }
 
     /**
@@ -198,7 +201,8 @@ class ApiClientTest extends TestCase
         $this->mock('/api/access-points.json', $this->jsonResponse(['error' => 'Invalid API key']));
 
         $this->assertTrue(ApiClient::getAccessPoints()->unanswered());
-        $this->assertLogMessageContains('warning', 'without `accessPoints` in it');
+        $this->assertLogMessageContains('warning', 'answered something unexpected');
+        $this->assertLogMessageContains('warning', 'no `accessPoints` in it');
     }
 
     /**
@@ -232,7 +236,10 @@ class ApiClientTest extends TestCase
 
         $this->assertTrue(ApiClient::getAccessPoints()->unanswered());
         $this->assertSame(0, $this->asked);
-        $this->assertLogMessageContains('error', 'Watcher NMS could not be asked about /api/access-points.json');
+        $this->assertLogMessageContains(
+            'error',
+            'Watcher NMS is unreachable (https://nms.example.com/api/access-points.json)',
+        );
     }
 
     /**

@@ -23,6 +23,11 @@ class ApiClient
     use WritesDownFailuresTrait;
 
     /**
+     * What this service is called in the log.
+     */
+    private const SERVICE = 'Watcher Agent';
+
+    /**
      * Ask the agent to do one thing.
      *
      * @param string $function API function to call (e.g., 'radius/disconnect')
@@ -50,10 +55,12 @@ class ApiClient
             'timeout' => $timeout,
         ]);
 
+        $where = $agentUrl . '/api/' . $function;
+
         try {
-            $response = $http->post($agentUrl . '/api/' . $function, $data, ['type' => 'json']);
+            $response = $http->post($where, $data, ['type' => 'json']);
         } catch (Throwable $e) {
-            return self::unanswered(__('Watcher Agent is unreachable: {0}', $e->getMessage()));
+            return self::unreachable(self::SERVICE, $where, $e->getMessage());
         }
 
         $body = $response->getJson();
@@ -61,20 +68,17 @@ class ApiClient
         $message = is_scalar($message) ? (string)$message : null;
 
         if (!$response->isOk()) {
-            return self::unanswered(__(
-                'Watcher Agent returned HTTP {0} ({1})',
-                $response->getStatusCode(),
-                $message ?? __('Unknown error'),
-            ));
+            return self::refused(self::SERVICE, $where, $response->getStatusCode(), $message);
         }
 
         // An answer with no verdict in it is not a verdict of no; it is an answer to a different
         // question, and reading it as one would report a host as unreachable that was never asked.
         if (!is_array($body) || ($expect !== '' && !isset($body[$expect]))) {
-            return self::unanswered(__(
-                'Watcher Agent returned an unexpected response: {0}',
-                $message ?? __('Unknown error'),
-            ));
+            return self::unexpected(
+                self::SERVICE,
+                $where,
+                $message ?? sprintf('no `%s` in it', $expect),
+            );
         }
 
         return Answer::of($body);

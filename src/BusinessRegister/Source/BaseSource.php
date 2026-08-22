@@ -105,23 +105,23 @@ abstract class BaseSource implements SourceInterface
      * was not asked, and saying it went wrong would put an outage where there is none.
      *
      * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @param string $path What is being read, for the message.
      * @param bool $missingIsAnAnswer Whether a 404 means the register holds no such entry.
      * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
-    private function ask(Closure $ask, bool $missingIsAnAnswer = false): Answer
+    private function ask(Closure $ask, string $path, bool $missingIsAnAnswer = false): Answer
     {
         if ($this->url() === '') {
             return Answer::notAsked();
         }
 
+        $service = $this->service();
+        $where = $this->endpoint($path);
+
         try {
             $response = $ask();
         } catch (Throwable $e) {
-            return self::unanswered(__(
-                'The {0} register is unreachable: {1}',
-                $this->label(),
-                $e->getMessage(),
-            ));
+            return self::unreachable($service, $where, $e->getMessage());
         }
 
         if ($missingIsAnAnswer && $response->getStatusCode() === 404) {
@@ -129,19 +129,25 @@ abstract class BaseSource implements SourceInterface
         }
 
         if (!$response->isOk()) {
-            return self::unanswered(__(
-                'The {0} register returned HTTP {1}.',
-                $this->label(),
-                $response->getStatusCode(),
-            ));
+            return self::refused($service, $where, $response->getStatusCode());
         }
 
         $data = $response->getJson();
         if (!is_array($data)) {
-            return self::unanswered(__('The {0} register returned an invalid response.', $this->label()));
+            return self::unexpected($service, $where, 'not an object');
         }
 
         return Answer::of($data);
+    }
+
+    /**
+     * What this register is called in the log.
+     *
+     * @return string
+     */
+    protected function service(): string
+    {
+        return sprintf('The %s register', $this->label());
     }
 
     /**
@@ -151,23 +157,25 @@ abstract class BaseSource implements SourceInterface
      * the caller asked to find out.
      *
      * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @param string $path What is being read, for the message.
      * @return \App\Http\Answer<array<int|string, mixed>|null>
      */
-    protected function readOrMissing(Closure $ask): Answer
+    protected function readOrMissing(Closure $ask, string $path): Answer
     {
-        return $this->ask($ask, missingIsAnAnswer: true);
+        return $this->ask($ask, $path, missingIsAnAnswer: true);
     }
 
     /**
      * Read one thing the other side is expected to hold.
      *
      * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @param string $path What is being read, for the message.
      * @return \App\Http\Answer<array<int|string, mixed>>
      */
-    protected function read(Closure $ask): Answer
+    protected function read(Closure $ask, string $path): Answer
     {
         /** @var \App\Http\Answer<array<int|string, mixed>> $answer */
-        $answer = $this->ask($ask, missingIsAnAnswer: false);
+        $answer = $this->ask($ask, $path, missingIsAnAnswer: false);
 
         return $answer;
     }

@@ -110,13 +110,10 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
 
         [, $memberState, $number] = $matches;
 
-        return $this->readOrMissing(
-            fn(): Response => $this->http()->get($this->endpoint(sprintf(
-                'ms/%s/vat/%s',
-                urlencode($memberState),
-                urlencode($number),
-            ))),
-        )->map(fn(?array $answer): ?array => $answer === null ? null : [$memberState, $number, $answer]);
+        $path = sprintf('ms/%s/vat/%s', urlencode($memberState), urlencode($number));
+
+        return $this->readOrMissing(fn(): Response => $this->http()->get($this->endpoint($path)), $path)
+            ->map(fn(?array $answer): ?array => $answer === null ? null : [$memberState, $number, $answer]);
     }
 
     /**
