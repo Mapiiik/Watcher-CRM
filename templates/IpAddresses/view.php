@@ -72,6 +72,8 @@
                                 ]);
                                 echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
                                 unset($device);
+                            } else {
+                                echo $this->element('NMS/unavailable');
                             }
                             ?></td>
                         </tr>
@@ -82,6 +84,8 @@
                                 echo $this->element('IpAddressRanges/summary', [
                                     'range' => $ipAddress->ip_address_ranges->first(),
                                 ]);
+                            } else {
+                                echo $this->element('NMS/unavailable');
                             }
                             ?></td>
                         </tr>

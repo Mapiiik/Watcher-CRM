@@ -61,6 +61,9 @@ table {
                     <td><?= $this->element('AccessPoints/link', [
                         'id' => $task->access_point_id,
                         'name' => $task->access_point_name,
+                        // an e-mail is read away from the page and long after it was sent, where a
+                        // remark about the network management system means nothing to anybody
+                        'quiet' => true,
                     ]) ?></td>
                 </tr>
                 <tr>

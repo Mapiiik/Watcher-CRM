@@ -6,4 +6,6 @@
 
 if (isset($ipAddressRanges)) {
     echo $this->element('IpAddressRanges/summary', ['range' => $ipAddressRanges->first()]);
+} else {
+    echo $this->element('NMS/unavailable');
 }

@@ -76,6 +76,8 @@
                                 echo $this->element('IpAddressRanges/summary', [
                                     'range' => $ipNetwork->ip_address_ranges->first(),
                                 ]);
+                            } else {
+                                echo $this->element('NMS/unavailable');
                             }
                             ?></td>
                         </tr>

@@ -20,4 +20,6 @@ if (isset($routerosDevices)) {
     echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
 
     unset($device);
+} else {
+    echo $this->element('NMS/unavailable');
 }

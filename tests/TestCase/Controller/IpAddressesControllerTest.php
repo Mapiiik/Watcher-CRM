@@ -4,13 +4,16 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\IpAddressesController;
+use App\NMS\ApiClient as NMSApiClient;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
 use Cake\Collection\Collection;
 use Cake\Core\Configure;
+use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
+use ReflectionProperty;
 
 /**
  * App\Controller\IpAddressesController Test Case
@@ -23,6 +26,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class IpAddressesControllerTest extends TestCase
 {
     use ControllerTestTrait;
+    use HttpClientTrait;
     use IntegrationTestTrait;
 
     /**
@@ -296,6 +300,59 @@ class IpAddressesControllerTest extends TestCase
         } finally {
             Cache::delete('ip_address_ranges_for_ip_192-168-11-11', 'api_client');
             Configure::write('Nms.url', $nmsUrl);
+        }
+    }
+
+    /**
+     * A page the NMS did not answer for says so, rather than showing the rows empty as though the
+     * address sat in no range and behind no device.
+     *
+     * @return void
+     * @link \App\Controller\IpAddressesController::view()
+     */
+    public function testViewSaysWhenTheNmsDidNotAnswer(): void
+    {
+        $nmsUrl = Configure::read('Nms.url');
+        $nmsKey = Configure::read('Nms.key');
+        Configure::write('Nms.url', 'https://nms.example.com');
+        Configure::write('Nms.key', 'secret');
+
+        $this->mockClientGet('https://nms.example.com/*', $this->newClientResponse(500));
+
+        try {
+            $this->login();
+            $this->get('/ip-addresses/view/' . $this->firstId('IpAddresses'));
+
+            $this->assertResponseOk();
+            $this->assertResponseContains('warning-text');
+        } finally {
+            Configure::write('Nms.url', $nmsUrl);
+            Configure::write('Nms.key', $nmsKey);
+            (new ReflectionProperty(NMSApiClient::class, 'answered'))->setValue(null, null);
+        }
+    }
+
+    /**
+     * An installation with no NMS shows the same page without a word about it - the rows are empty
+     * because there is nothing to put in them, and that is not worth remarking on.
+     *
+     * @return void
+     * @link \App\Controller\IpAddressesController::view()
+     */
+    public function testViewWithoutAnNmsSaysNothingAboutIt(): void
+    {
+        $nmsUrl = Configure::read('Nms.url');
+        Configure::write('Nms.url', '');
+
+        try {
+            $this->login();
+            $this->get('/ip-addresses/view/' . $this->firstId('IpAddresses'));
+
+            $this->assertResponseOk();
+            $this->assertResponseNotContains('warning-text');
+        } finally {
+            Configure::write('Nms.url', $nmsUrl);
+            (new ReflectionProperty(NMSApiClient::class, 'answered'))->setValue(null, null);
         }
     }
 }

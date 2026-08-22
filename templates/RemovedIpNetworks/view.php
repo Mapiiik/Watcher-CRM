@@ -81,6 +81,8 @@
                                 echo $this->element('IpAddressRanges/summary', [
                                     'range' => $removedIpNetwork->ip_address_ranges->first(),
                                 ]);
+                            } else {
+                                echo $this->element('NMS/unavailable');
                             }
                             ?></td>
                         </tr>

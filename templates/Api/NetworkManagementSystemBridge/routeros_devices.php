@@ -12,4 +12,8 @@ if (isset($routerosDevices)) {
     ]);
     echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
     unset($device);
+} else {
+    // The cell was filled in from here, so leaving it blank would read as an address no device
+    // answers for rather than as a question nobody answered.
+    echo $this->element('NMS/unavailable');
 }
