@@ -345,7 +345,10 @@ class AddressesController extends AppController
     private function loadSupportedCountriesForAddressRegistry(): array
     {
         try {
-            $addressesMeta = AddressesApiClient::metaFromCache();
+            /** @var array<string, mixed> $addressesMeta */
+            $addressesMeta = AddressesApiClient::metaFromCache()->orFail(
+                __('The national address registry is not configured.'),
+            );
         } catch (RuntimeException $e) {
             $this->Flash->error(__(
                 'Could not retrieve national address registry metadata: {0}',
@@ -389,23 +392,24 @@ class AddressesController extends AppController
             throw new RuntimeException('Invalid address registry key format: ' . $addressRegistryKey);
         }
 
+        /** @var \App\Addresses\Dto\Address|null $addressRegistryData */
         $addressRegistryData = AddressesApiClient::byIdFromCache(
             source: $addressRegistrySource,
             registryId: $addressRegistryReference,
-        );
+        )->orFail(__('The national address registry is not configured.'));
 
-        if ($addressRegistryData == null) {
+        if ($addressRegistryData === null) {
             throw new RuntimeException('Empty response from address registry API for ID: ' . $addressRegistryKey);
         }
 
         return [
-            'street' => $addressRegistryData['street'] ?? null,
-            'number' => $addressRegistryData['house_number'] ?? null,
-            'number_type' => $addressRegistryData['number_type'] === 'registration'
+            'street' => $addressRegistryData->street,
+            'number' => $addressRegistryData->houseNumber,
+            'number_type' => $addressRegistryData->hasRegistrationNumber()
                 ? AddressNumberType::Registration->value
                 : AddressNumberType::House->value,
-            'city' => $addressRegistryData['city'] ?? null,
-            'zip' => $addressRegistryData['postal_code'] ?? null,
+            'city' => $addressRegistryData->city,
+            'zip' => $addressRegistryData->postalCode,
         ];
     }
 
@@ -461,7 +465,8 @@ class AddressesController extends AppController
 
         // do the lookup
         try {
-            $response = AddressesApiClient::lookup([
+            /** @var \App\Addresses\Dto\Lookup $lookup */
+            $lookup = AddressesApiClient::lookup([
                 'country' => strtolower($countryCode),
                 'street' => $address->street,
                 'number' => $address->number,
@@ -469,28 +474,28 @@ class AddressesController extends AppController
                     ? 'registration' : 'house',
                 'city' => $address->city,
                 'postal_code' => $address->zip,
-            ]);
+            ])->orFail(__('The national address registry is not configured.'));
 
-            if ($response['ambiguous']) {
+            if ($lookup->ambiguous) {
                 $this->Flash->info(__(
                     'Multiple ({0}) addresses found in national ({1}) address registry.',
-                    count($response['matches']),
+                    $lookup->matches->count(),
                     $countryCode,
                 ));
             }
 
-            if (count($response['matches']) === 1) {
-                $match = $response['matches'][0];
+            $match = $lookup->only();
+            if ($match !== null) {
                 $this->Flash->info(__(
                     'Address found in national ({0}) address registry.',
                     $countryCode,
                 ));
 
                 return [
-                    'address_registry_reference' => $match['registry_ref'],
-                    'address_registry_source' => $match['source'],
-                    'gps_y' => $match['geometry']['coordinates'][1], // lat
-                    'gps_x' => $match['geometry']['coordinates'][0], // lon
+                    'address_registry_reference' => $match->registryReference,
+                    'address_registry_source' => $match->source,
+                    'gps_y' => $match->latitude,
+                    'gps_x' => $match->longitude,
                 ];
             }
         } catch (RuntimeException $e) {
@@ -627,21 +632,17 @@ class AddressesController extends AppController
         $chunkSize = 50;
         $offset = 0;
         foreach (array_chunk($batchItems, $chunkSize) as $chunk) {
-            try {
-                $response = AddressesApiClient::lookupBatch($chunk);
-            } catch (RuntimeException) {
+            $answer = AddressesApiClient::lookupBatch($chunk);
+
+            if (!$answer->ok()) {
                 // transient failure for this chunk → keep existing data
                 $skipped += count($chunk);
                 $offset += count($chunk);
                 continue;
             }
 
-            $results = $response['results'] ?? null;
-            if (!is_array($results)) {
-                $skipped += count($chunk);
-                $offset += count($chunk);
-                continue;
-            }
+            /** @var list<\App\Addresses\Dto\Lookup> $results */
+            $results = $answer->data;
 
             foreach ($results as $i => $result) {
                 $address = $lookupQueue[$offset + $i] ?? null;
@@ -649,14 +650,13 @@ class AddressesController extends AppController
                     continue;
                 }
 
-                $matches = $result['matches'] ?? [];
-                if (count($matches) === 1) {
-                    $match = $matches[0];
+                $match = $result->only();
+                if ($match !== null) {
                     $applyResult($address, [
-                        'address_registry_reference' => $match['registry_ref'],
-                        'address_registry_source' => $match['source'],
-                        'gps_y' => $match['geometry']['coordinates'][1], // lat
-                        'gps_x' => $match['geometry']['coordinates'][0], // lon
+                        'address_registry_reference' => $match->registryReference,
+                        'address_registry_source' => $match->source,
+                        'gps_y' => $match->latitude,
+                        'gps_x' => $match->longitude,
                     ]);
                 } else {
                     // 0 matches or ambiguous → registry has nothing definitive, clear refs

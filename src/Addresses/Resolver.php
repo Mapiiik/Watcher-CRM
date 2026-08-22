@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Addresses;
 
+use App\Addresses\Dto\Address;
+
 /**
  * Higher-level helpers that bridge CRM-side address entities and the
  * geo-addresses-postgis API via ApiClient.
@@ -27,7 +29,7 @@ class Resolver
      * silently absent from the result.
      *
      * @param iterable<\App\Model\Entity\Address> $addresses
-     * @return array<string, array<string, mixed>>  Map: "source|registry_ref" => match object
+     * @return array<string, \App\Addresses\Dto\Address>  Map: "source|registry_ref" => address
      * @throws \RuntimeException  On transport/API errors (bubbled from ApiClient)
      */
     public static function matchMap(iterable $addresses): array
@@ -37,17 +39,10 @@ class Resolver
             return [];
         }
 
-        $response = ApiClient::byIdBatchFromCache($items);
-        /** @var array<string, array<string, mixed>> $matches */
-        $matches = $response['matches'];
+        /** @var \App\Addresses\Dto\Batch $batch */
+        $batch = ApiClient::byIdBatchFromCache($items)->orFail();
 
-        /** @var \Cake\Collection\CollectionInterface<string, mixed> $return */
-        $return = collection($matches)
-            ->indexBy(
-                fn(array $match): string => $match['source'] . '|' . $match['registry_ref'],
-            );
-
-        return $return->toArray();
+        return $batch->byKey();
     }
 
     /**
@@ -74,21 +69,22 @@ class Resolver
             return [];
         }
 
-        /** @var \Cake\Collection\CollectionInterface<string, string> $return */
+        /** @var array<string, string> $return */
         $return = collection($matches)
             ->sortBy(
-                fn(array $match): string => ($match['city'] ?? '')
-                    . '|' . ($match['street'] ?? '')
-                    . '|' . str_pad((string)($match['house_number'] ?? ''), 8, '0', STR_PAD_LEFT),
+                fn(Address $match): string => ($match->city ?? '')
+                    . '|' . ($match->street ?? '')
+                    . '|' . str_pad((string)$match->houseNumber, 8, '0', STR_PAD_LEFT),
                 SORT_ASC,
                 SORT_NATURAL,
             )
             ->combine(
-                fn(array $match): string => $match['source'] . '|' . $match['registry_ref'],
-                'formatted_address',
-            );
+                fn(Address $match): string => $match->key(),
+                fn(Address $match): string => (string)$match->formattedAddress,
+            )
+            ->toArray();
 
-        return $return->toArray();
+        return $return;
     }
 
     /**

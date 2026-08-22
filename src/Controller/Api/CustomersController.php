@@ -215,13 +215,13 @@ class CustomersController extends AppController
                         if ($addressRegistryMatch !== null) {
                             // Authoritative data from the national address registry.
                             return [
-                                'name' => $addressRegistryMatch['formatted_address'],
-                                'gps_y' => $addressRegistryMatch['geometry']['coordinates'][1],
-                                'gps_x' => $addressRegistryMatch['geometry']['coordinates'][0],
+                                'name' => $addressRegistryMatch->formattedAddress,
+                                'gps_y' => $addressRegistryMatch->latitude,
+                                'gps_x' => $addressRegistryMatch->longitude,
                                 'note' => sprintf(
                                     '%s: %s',
-                                    strtoupper((string)$addressRegistryMatch['source']),
-                                    $addressRegistryMatch['registry_ref'],
+                                    strtoupper($addressRegistryMatch->source),
+                                    $addressRegistryMatch->registryReference,
                                 ),
                                 'CustomerConnections' => $this->buildCustomerConnections($contracts),
                             ];

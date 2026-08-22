@@ -514,8 +514,8 @@ class OverviewsController extends AppController
 
                                     if ($addressRegistryMatch !== null) {
                                         // Authoritative data from the national address registry.
-                                        $address->ruian_gid = $addressRegistryMatch['registry_ref'];
-                                        $address->ruian_address = $addressRegistryMatch['formatted_address'];
+                                        $address->ruian_gid = $addressRegistryMatch->registryReference;
+                                        $address->ruian_address = $addressRegistryMatch->formattedAddress;
                                     } elseif ($addressRegistryMatches !== []) {
                                         $address->ruian_gid = null;
                                         $address->ruian_address = null;

@@ -3,13 +3,23 @@ declare(strict_types=1);
 
 namespace App\Addresses;
 
+use App\Addresses\Dto\Address;
+use App\Addresses\Provider\AddressPayloadNormalizer;
+use App\Http\Answer;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Http\Client\Response;
-use RuntimeException;
+use Closure;
 use Throwable;
 
+/**
+ * Talking to the address registries.
+ *
+ * Every reading comes back as an {@see \App\Http\Answer}, so the caller says what a failure is
+ * worth rather than the client deciding for it - a form asks for `orFail()` and shows what went
+ * wrong, a bulk run passes over the chunk and keeps the addresses it already had.
+ */
 class ApiClient
 {
     /**
@@ -35,12 +45,7 @@ class ApiClient
      */
     private static function url(string $path): string
     {
-        $apiUrl = (string)Configure::read('Addresses.url');
-        if ($apiUrl === '') {
-            throw new RuntimeException(__('Addresses API is not configured.'));
-        }
-
-        return $apiUrl . '/' . ltrim($path, '/');
+        return (string)Configure::read('Addresses.url') . '/' . ltrim($path, '/');
     }
 
     /**
@@ -68,30 +73,72 @@ class ApiClient
     }
 
     /**
-     * Validate the response and return the decoded JSON. Throws with the
-     * server's `detail` field on non-2xx responses.
+     * Read one thing from the registry.
      *
-     * @return array<int|string, mixed>
+     * Not being configured is a state, not a failure - an installation without an address registry
+     * says so by leaving the address empty, and nobody asked.
+     *
+     * @param \Closure(): \Cake\Http\Client\Response $ask How to ask.
+     * @param bool $missingIsAnAnswer Whether a 404 means the registry knows of no such thing.
+     * @return \App\Http\Answer Answering with the body as it arrived.
      */
-    private static function decodeOrThrow(Response $response): array
+    private static function read(Closure $ask, bool $missingIsAnAnswer = false): Answer
     {
+        if ((string)Configure::read('Addresses.url') === '') {
+            return Answer::notAsked();
+        }
+
+        try {
+            $response = $ask();
+        } catch (Throwable $e) {
+            return Answer::failed(__('Addresses API is unreachable: {0}', $e->getMessage()));
+        }
+
+        if ($missingIsAnAnswer && $response->getStatusCode() === 404) {
+            return Answer::of(null);
+        }
+
         $data = $response->getJson();
 
         if (!$response->isOk()) {
-            throw new RuntimeException(
-                __(
-                    'Addresses API returned HTTP {0} ({1})',
-                    $response->getStatusCode(),
-                    self::extractError($data) ?? __('Unknown error'),
-                ),
-            );
+            return Answer::failed(__(
+                'Addresses API returned HTTP {0} ({1})',
+                $response->getStatusCode(),
+                self::extractError($data) ?? __('Unknown error'),
+            ));
         }
 
         if (!is_array($data)) {
-            throw new RuntimeException(__('Addresses API returned an invalid response.'));
+            return Answer::failed(__('Addresses API returned an invalid response.'));
         }
 
-        return $data;
+        return Answer::of($data);
+    }
+
+    /**
+     * What is kept, or what the registry says now.
+     *
+     * The body as it arrived is what goes into the cache, never the addresses read out of it, and
+     * an answer that never came is not kept at all.
+     *
+     * @param string $key Where the answer is kept.
+     * @param \Closure(): \App\Http\Answer $ask How to ask, when there is nothing kept.
+     * @return \App\Http\Answer
+     */
+    private static function remember(string $key, Closure $ask): Answer
+    {
+        $cached = Cache::read($key, 'addresses_api');
+        if ($cached !== null) {
+            return Answer::of($cached);
+        }
+
+        $answer = $ask();
+
+        if ($answer->ok() && $answer->data !== null) {
+            Cache::write($key, $answer->data, 'addresses_api');
+        }
+
+        return $answer;
     }
 
     /**
@@ -121,57 +168,32 @@ class ApiClient
     /**
      * Liveness/readiness probe.
      *
-     * @return array<string, mixed> { status: "ok"|"degraded", db: "up"|"down" }
+     * @return \App\Http\Answer Answering with { status: "ok"|"degraded", db: "up"|"down" }.
+     * @psalm-suppress PossiblyUnusedMethod
      */
-    public static function health(): array
+    public static function health(): Answer
     {
-        try {
-            $response = self::getRequest(path: 'v1/health', timeout: 5);
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('Addresses API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
-        }
-
-        /** @var array<string, mixed> */
-        return self::decodeOrThrow($response);
+        return self::read(fn(): Response => self::getRequest(path: 'v1/health', timeout: 5));
     }
 
     /**
      * Dataset metadata — row counts and last-refresh timestamps per table.
      *
-     * @return array<string, mixed>
+     * @return \App\Http\Answer Answering with the metadata as the registry wrote it.
      */
-    public static function meta(): array
+    public static function meta(): Answer
     {
-        try {
-            $response = self::getRequest(path: 'v1/meta', timeout: 5);
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('Addresses API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
-        }
-
-        /** @var array<string, mixed> */
-        return self::decodeOrThrow($response);
+        return self::read(fn(): Response => self::getRequest(path: 'v1/meta', timeout: 5));
     }
 
     /**
      * Cached variant of meta(). TTL is governed by the `addresses_api` cache config.
      *
-     * @return array<string, mixed>
+     * @return \App\Http\Answer Answering with the metadata as the registry wrote it.
      */
-    public static function metaFromCache(): array
+    public static function metaFromCache(): Answer
     {
-        return Cache::remember(
-            'addresses_meta',
-            fn(): array => self::meta(),
-            'addresses_api',
-        );
+        return self::remember('addresses_meta', self::meta(...));
     }
 
     /**
@@ -179,40 +201,21 @@ class ApiClient
      * ogc_fid for HR). Returns null if the id is not present.
      *
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return array<string, mixed>|null
+     * @return \App\Http\Answer Answering with an {@see \App\Addresses\Dto\Address} or null.
      */
-    public static function byId(string $source, string $registryId, array $include = []): ?array
+    public static function byId(string $source, string $registryId, array $include = []): Answer
     {
-        $query = $include !== [] ? ['include' => implode(',', $include)] : [];
-
-        try {
-            $response = self::getRequest(
-                path: sprintf('v1/addresses/%s/%s', $source, $registryId),
-                query: $query,
-            );
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('Addresses API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
-        }
-
-        if ($response->getStatusCode() === 404) {
-            return null;
-        }
-
-        /** @var array<string, mixed> */
-        return self::decodeOrThrow($response);
+        return self::rawById($source, $registryId, $include)
+            ->map(fn(?array $body): ?Address => $body === null ? null : AddressPayloadNormalizer::address($body));
     }
 
     /**
      * Cached variant of byId(). TTL is governed by the `addresses_api` cache config.
      *
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return array<string, mixed>|null
+     * @return \App\Http\Answer Answering with an {@see \App\Addresses\Dto\Address} or null.
      */
-    public static function byIdFromCache(string $source, string $registryId, array $include = []): ?array
+    public static function byIdFromCache(string $source, string $registryId, array $include = []): Answer
     {
         // The key includes an `include` so that `?include=raw` does not share the cache with the default call.
         $key = sprintf(
@@ -222,10 +225,29 @@ class ApiClient
             $include === [] ? 'normalized' : md5(implode(',', $include)),
         );
 
-        return Cache::remember(
-            $key,
-            fn(): ?array => self::byId($source, $registryId, $include),
-            'addresses_api',
+        return self::remember($key, fn(): Answer => self::rawById($source, $registryId, $include))
+            ->map(fn(?array $body): ?Address => $body === null ? null : AddressPayloadNormalizer::address($body));
+    }
+
+    /**
+     * The same reading as {@see self::byId()}, stopping at the body so that what is kept is the
+     * answer as it arrived rather than the address read out of it.
+     *
+     * @param string $source Which registry to ask.
+     * @param string $registryId The number that registry keeps the address under.
+     * @param array<string> $include Optional ?include= values, e.g. ['raw']
+     * @return \App\Http\Answer
+     */
+    private static function rawById(string $source, string $registryId, array $include): Answer
+    {
+        $query = $include !== [] ? ['include' => implode(',', $include)] : [];
+
+        return self::read(
+            fn(): Response => self::getRequest(
+                path: sprintf('v1/addresses/%s/%s', $source, $registryId),
+                query: $query,
+            ),
+            missingIsAnAnswer: true,
         );
     }
 
@@ -239,32 +261,27 @@ class ApiClient
      *
      * @param array<int, array{source: string, registry_id: string}> $items
      * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return array<string, mixed> { matches: [...], not_found: [...] }
-     * @throws \RuntimeException if the request fails or returns an error response
+     * @return \App\Http\Answer Answering with a {@see \App\Addresses\Dto\Batch}.
      */
-    public static function byIdBatch(array $items, array $include = []): array
+    public static function byIdBatch(array $items, array $include = []): Answer
     {
-        $path = 'v1/addresses/batch';
-        if ($include !== []) {
-            $path .= '?' . http_build_query(['include' => implode(',', $include)]);
-        }
+        return self::rawByIdBatch($items, $include)->map(AddressPayloadNormalizer::batch(...));
+    }
 
-        try {
-            $response = self::postRequest(
-                path: $path,
-                data: ['items' => $items],
-                timeout: 60,
-            );
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('Addresses API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
-        }
-
-        /** @var array<string, mixed> */
-        return self::decodeOrThrow($response);
+    /**
+     * The same reading as {@see self::byIdBatch()}, stopping at the body.
+     *
+     * @param array<int, array{source: string, registry_id: string}> $items What to ask about.
+     * @param array<string> $include Optional ?include= values, e.g. ['raw']
+     * @return \App\Http\Answer
+     */
+    private static function rawByIdBatch(array $items, array $include): Answer
+    {
+        return self::read(fn(): Response => self::postRequest(
+            path: self::withInclude('v1/addresses/batch', $include),
+            data: ['items' => $items],
+            timeout: 60,
+        ));
     }
 
     /**
@@ -279,11 +296,8 @@ class ApiClient
      * For one-off lookups prefer byIdBatch directly (or byId for single ids).
      *
      * @param array<int, array{source: string, registry_id: string}> $items
-     * @param array<string> $include Optional ?include= values, e.g. ['raw']
-     * @return array<string, mixed> { matches: [...], not_found: [...] }
-     * @throws \RuntimeException if the request fails or returns an error response
      */
-    public static function byIdBatchFromCache(array $items, array $include = []): array
+    public static function byIdBatchFromCache(array $items, array $include = []): Answer
     {
         // Canonical form: sort by (source, registry_id) so equivalent input
         // sets — regardless of original ordering or duplicate entries — share
@@ -297,11 +311,8 @@ class ApiClient
 
         $key = 'addresses_batch_' . md5(serialize([$canonical, $include]));
 
-        return Cache::remember(
-            $key,
-            fn(): array => self::byIdBatch($items, $include),
-            'addresses_api',
-        );
+        return self::remember($key, fn(): Answer => self::rawByIdBatch($items, $include))
+            ->map(AddressPayloadNormalizer::batch(...));
     }
 
     /**
@@ -315,27 +326,14 @@ class ApiClient
      *
      * @param array<string, mixed> $payload
      * @param array<string> $include
-     * @return array<string, mixed> { matches, fallback_step, ambiguous }
+     * @return \App\Http\Answer Answering with a {@see \App\Addresses\Dto\Lookup}.
      */
-    public static function lookup(array $payload, array $include = []): array
+    public static function lookup(array $payload, array $include = []): Answer
     {
-        $path = 'v1/lookup';
-        if ($include !== []) {
-            $path .= '?' . http_build_query(['include' => implode(',', $include)]);
-        }
-
-        try {
-            $response = self::postRequest(path: $path, data: $payload);
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('Addresses API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
-        }
-
-        /** @var array<string, mixed> */
-        return self::decodeOrThrow($response);
+        return self::read(fn(): Response => self::postRequest(
+            path: self::withInclude('v1/lookup', $include),
+            data: $payload,
+        ))->map(AddressPayloadNormalizer::lookup(...));
     }
 
     /**
@@ -343,38 +341,23 @@ class ApiClient
      *
      * @param array<int, array<string, mixed>> $items
      * @param array<string> $include
-     * @return array<string, mixed> { results: [...] }
+     * @return \App\Http\Answer Answering with one {@see \App\Addresses\Dto\Lookup} per item asked.
      */
-    public static function lookupBatch(array $items, array $include = []): array
+    public static function lookupBatch(array $items, array $include = []): Answer
     {
-        $path = 'v1/lookup/batch';
-        if ($include !== []) {
-            $path .= '?' . http_build_query(['include' => implode(',', $include)]);
-        }
-
-        try {
-            $response = self::postRequest(
-                path: $path,
-                data: ['items' => $items],
-                timeout: 60,
-            );
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('Addresses API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
-        }
-
-        /** @var array<string, mixed> */
-        return self::decodeOrThrow($response);
+        return self::read(fn(): Response => self::postRequest(
+            path: self::withInclude('v1/lookup/batch', $include),
+            data: ['items' => $items],
+            timeout: 60,
+        ))->map(AddressPayloadNormalizer::lookups(...));
     }
 
     /**
      * Reverse geocoding — nearest addresses to a WGS84 coordinate.
      *
      * @param array<string> $include
-     * @return list<array<string, mixed>> Sorted by ascending distance_m.
+     * @return \App\Http\Answer Answering with addresses, nearest first.
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public static function reverse(
         string $country,
@@ -383,7 +366,7 @@ class ApiClient
         float $radiusM = 500.0,
         int $limit = 10,
         array $include = [],
-    ): array {
+    ): Answer {
         $query = [
             'country' => $country,
             'lat' => $lat,
@@ -395,18 +378,8 @@ class ApiClient
             $query['include'] = implode(',', $include);
         }
 
-        try {
-            $response = self::getRequest(path: 'v1/reverse', query: $query);
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('Addresses API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
-        }
-
-        /** @var list<array<string, mixed>> */
-        return self::decodeOrThrow($response);
+        return self::read(fn(): Response => self::getRequest(path: 'v1/reverse', query: $query))
+            ->map(AddressPayloadNormalizer::addresses(...));
     }
 
     /**
@@ -415,30 +388,36 @@ class ApiClient
      * field in [0, 1] for client-side thresholding.
      *
      * @param array<string> $include
-     * @return list<array<string, mixed>>
+     * @return \App\Http\Answer Answering with addresses, best match first.
      */
     public static function search(
         string $country,
         string $q,
         int $limit = 10,
         array $include = [],
-    ): array {
+    ): Answer {
         $query = ['country' => $country, 'q' => $q, 'limit' => $limit];
         if ($include !== []) {
             $query['include'] = implode(',', $include);
         }
 
-        try {
-            $response = self::getRequest(path: 'v1/search', query: $query);
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                __('Addresses API is unreachable: {0}', $e->getMessage()),
-                $e->getCode(),
-                previous: $e,
-            );
+        return self::read(fn(): Response => self::getRequest(path: 'v1/search', query: $query))
+            ->map(AddressPayloadNormalizer::addresses(...));
+    }
+
+    /**
+     * A path with the extras the caller asked the registry to carry.
+     *
+     * @param string $path The path itself.
+     * @param array<string> $include What to ask the registry to add.
+     * @return string
+     */
+    private static function withInclude(string $path, array $include): string
+    {
+        if ($include === []) {
+            return $path;
         }
 
-        /** @var list<array<string, mixed>> */
-        return self::decodeOrThrow($response);
+        return $path . '?' . http_build_query(['include' => implode(',', $include)]);
     }
 }

@@ -59,17 +59,18 @@ class AddressesBridgeController extends AppController
         $pagination = ['more' => false];
 
         try {
-            $searchResult = AddressesApiClient::search(
+            /** @var \Cake\Collection\CollectionInterface<int, \App\Addresses\Dto\Address> $found */
+            $found = AddressesApiClient::search(
                 country: strtolower((string)$country),
                 q: $query,
                 limit: 50,
-            );
+            )->orFail(__('The national address registry is not configured.'));
 
             // Map Addresses API → Select2
-            foreach ($searchResult as $item) {
+            foreach ($found as $item) {
                 $results[] = [
-                    'id' => $item['source'] . '|' . $item['registry_ref'],
-                    'text' => $item['formatted_address'] ?? '—',
+                    'id' => $item->key(),
+                    'text' => $item->formattedAddress ?? '—',
                 ];
             }
         } catch (Throwable $e) {
