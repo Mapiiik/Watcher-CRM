@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-16 20:29+0200\n"
+"POT-Creation-Date: 2026-08-22 17:08+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -27,7 +27,11 @@ msgstr ""
 msgid "There is nothing on the dashboard for your role yet."
 msgstr ""
 
-#: ./plugins/Dashboard/templates/Dashboard/index.php:28
+#: ./plugins/Dashboard/templates/Dashboard/index.php:27
+msgid "The card could not be loaded."
+msgstr ""
+
+#: ./plugins/Dashboard/templates/Dashboard/index.php:29
 msgid "Loading…"
 msgstr ""
 

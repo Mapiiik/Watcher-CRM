@@ -1048,13 +1048,22 @@ class DebtorsProcessor
      */
     private function tvChangeNote(TvUser $tvUser, bool $suspended): string
     {
-        return __d(
-            'bookkeeping',
-            $suspended
-                ? 'SledovaniTV - Suspended user with ID: {0} (partner ID: {1}).'
-                : 'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
-            $tvUser->id,
-            $tvUser->partnerNumber,
-        ) . PHP_EOL;
+        // Both sentences are written out in full: the extractor reads the literal it is given
+        // and a message picked inside the call would not reach the catalogue at all.
+        $note = $suspended
+            ? __d(
+                'bookkeeping',
+                'SledovaniTV - Suspended user with ID: {0} (partner ID: {1}).',
+                $tvUser->id,
+                $tvUser->partnerNumber,
+            )
+            : __d(
+                'bookkeeping',
+                'SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1}).',
+                $tvUser->id,
+                $tvUser->partnerNumber,
+            );
+
+        return $note . PHP_EOL;
     }
 }

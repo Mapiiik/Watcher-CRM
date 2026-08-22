@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-17 19:48+0200\n"
+"POT-Creation-Date: 2026-08-22 17:10+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -335,83 +335,86 @@ msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:79
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:80
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:91
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:92
 msgid "{0} failed"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:100
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:101
 msgid "Unknown error."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:166
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:167
 msgid "Debtors data is not available."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:311
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:365
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:420
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:472
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:522
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:312
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:366
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:421
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:473
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:523
 msgid "Debtor blocking is globally disabled by settings. No external systems were modified."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:320
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:374
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:321
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:375
 msgid "Customer ID of the debtor must be provided."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:339
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:393
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:445
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:497
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:555
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:340
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:394
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:446
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:498
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:556
 msgid "SledovaniTV blocking update"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:350
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:404
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:456
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:508
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:566
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:351
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:405
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:457
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:509
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:567
 msgid "Routers blocking update"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:591
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:592
 msgid "debtor"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:781
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:782
 msgid "RouterOS device {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:835
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:863
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:836
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:864
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:884
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:885
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:912
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:940
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:913
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:941
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:961
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:962
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1008
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:992
+msgid "SledovaniTV is not configured."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1054
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1018
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1028
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1060
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
@@ -433,50 +436,45 @@ msgstr ""
 msgid "Full Synchronization"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:89
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:112
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:50
-msgid "Unknown error"
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:79
+msgid "Eurofaktura / E-racuni is not configured."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:93
-msgid "Eurofaktura API error ({0}, {1})"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:109
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:84
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
 msgid "Eurofaktura API error: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:278
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:87
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:50
+msgid "Unknown error"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:255
 msgid "Failed to send invoice for customer {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:282
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:340
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:259
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:317
 msgid "Unknown"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:336
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:313
 msgid "Failed to send partner for customer {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:372
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:394
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:416
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:349
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:371
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:393
 msgid "Not implemented in Eurofaktura Provider."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:471
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:448
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:486
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:463
 msgid "Invoice PDF not found or could not be downloaded: {0}"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/HttpClient.php:60
-msgid "Error connecting to Eurofaktura / E-racuni API: {0}"
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:26
@@ -515,30 +513,26 @@ msgstr ""
 msgid "Unable to open DBF file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/HttpClient.php:53
-msgid "Error connecting to Pohoda mServer: {0}"
-msgstr ""
-
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:78
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:166
-msgid "Invalid response from Pohoda mServer ({0})"
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:160
+msgid "Pohoda mServer is not configured."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:89
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:177
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:84
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:166
 msgid "Invalid XML response from Pohoda mServer."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:102
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:190
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:97
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:179
 msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:157
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:152
 msgid "Failed to read generated XML file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:216
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:205
 msgid "Partner synchronization is not implemented in Pohoda Provider."
 msgstr ""
 
