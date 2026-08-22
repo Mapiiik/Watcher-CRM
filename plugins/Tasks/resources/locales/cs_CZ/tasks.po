@@ -1,227 +1,298 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tasks\n"
+"POT-Creation-Date: 2026-08-22 20:29+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs_CZ\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"X-Generator: Poedit 3.9\n"
 
+#: plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:95
+#: plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:121
 msgid "The task state has been saved."
 msgstr "Stav úkolu byl uložen."
 
+#: plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:99
+#: plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:125
 msgid "The task state could not be saved. Please, try again."
 msgstr "Stav úkolu nelze uložit. Zkuste to prosím znovu."
 
+#: plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:146
 msgid "The task state has been deleted."
 msgstr "Stav úkolu byl odstraněn."
 
+#: plugins/Tasks/src/Controller/Trait/TaskStatesControllerTrait.php:149
 msgid "The task state could not be deleted. Please, try again."
 msgstr "Stav úkolu nelze odstranit. Zkuste to prosím znovu."
 
+#: plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:95
+#: plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:121
 msgid "The task type has been saved."
 msgstr "Typ úkolu byl uložen."
 
+#: plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:99
+#: plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:125
 msgid "The task type could not be saved. Please, try again."
 msgstr "Typ úkolu nelze uložit. Zkuste to prosím znovu."
 
+#: plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:146
 msgid "The task type has been deleted."
 msgstr "Typ úkolu byl odstraněn."
 
+#: plugins/Tasks/src/Controller/Trait/TaskTypesControllerTrait.php:149
 msgid "The task type could not be deleted. Please, try again."
 msgstr "Typ úkolu nelze odstranit. Zkuste to prosím znovu."
 
+#: plugins/Tasks/src/Dashboard/Card/MyTasksCard.php:38
 msgid "My Tasks"
 msgstr "Moje úkoly"
 
+#: plugins/Tasks/src/Dashboard/Card/MyTasksCard.php:61
+#: plugins/Tasks/src/Dashboard/Card/MyTasksCard.php:68
 msgid "You are holding no unfinished tasks."
 msgstr "Nemáte žádné nedokončené úkoly."
 
+#: plugins/Tasks/src/Dashboard/Card/PressingTasksCard.php:31
 msgid "Urgent and Overdue Tasks"
 msgstr "Naléhavé a zpožděné úkoly"
 
+#: plugins/Tasks/src/Dashboard/Card/PressingTasksCard.php:54
 msgid "Nothing is urgent or running late."
 msgstr "Nic není naléhavé ani zpožděné."
 
+#: plugins/Tasks/src/Dashboard/Card/StaleTasksCard.php:31
 msgid "Stale Tasks"
 msgstr "Zaseknuté úkoly"
 
+#: plugins/Tasks/src/Dashboard/Card/StaleTasksCard.php:54
 msgid "Nothing has been left lying around."
 msgstr "Nic tu nezůstalo ležet."
 
+#: plugins/Tasks/src/Dashboard/Card/UnassignedTasksCard.php:28
 msgid "Unassigned Tasks"
 msgstr "Nepřiřazené úkoly"
 
+#: plugins/Tasks/src/Dashboard/Card/UnassignedTasksCard.php:49
 msgid "Every unfinished task has somebody holding it."
 msgstr "Za každým nedokončeným úkolem stojí někdo, kdo ho má na starosti."
 
+#: plugins/Tasks/src/Model/Entity/Task.php:114
 msgid "Low"
 msgstr "Nízká"
 
+#: plugins/Tasks/src/Model/Entity/Task.php:115
 msgid "Normal"
 msgstr "Normální"
 
+#: plugins/Tasks/src/Model/Entity/Task.php:116
 msgid "High"
 msgstr "Vysoká"
 
+#: plugins/Tasks/src/Model/Entity/Task.php:117
 msgid "Urgent"
 msgstr "Naléhavé"
 
+#: plugins/Tasks/templates/TaskStates/add.php:10
+#: plugins/Tasks/templates/TaskStates/edit.php:10
+#: plugins/Tasks/templates/TaskStates/index.php:34
 msgid "Actions"
 msgstr "Akce"
 
+#: plugins/Tasks/templates/TaskStates/add.php:12
+#: plugins/Tasks/templates/TaskStates/edit.php:20
 msgid "List Task States"
 msgstr "Seznam stavů úkolů"
 
+#: plugins/Tasks/templates/TaskStates/add.php:22
 msgid "Add Task State"
 msgstr "Přidat stav úkolu"
 
-msgid "Submit"
-msgstr "Potvrdit"
-
-msgid "Delete"
-msgstr "Odstranit"
-
-msgid "Are you sure you want to delete # {0}?"
-msgstr "Opravdu chcete odstranit # {0}?"
-
-msgid "Edit Task State"
-msgstr "Upravit stav úkolu"
-
-msgid "Search"
-msgstr "Hledat"
-
-msgid "New Task State"
-msgstr "Nový stav úkolu"
-
-msgid "Task States"
-msgstr "Stavy úkolů"
-
-msgid "Yes"
-msgstr "Ano"
-
-msgid "No"
-msgstr "Ne"
-
-msgid "View"
-msgstr "Zobrazit"
-
-msgid "Edit"
-msgstr "Upravit"
-
-msgid "first"
-msgstr "první"
-
-msgid "previous"
-msgstr "předchozí"
-
-msgid "next"
-msgstr "další"
-
-msgid "last"
-msgstr "poslední"
-
-msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
-msgstr "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového počtu {{count}}"
-
-msgid "Delete Task State"
-msgstr "Odstranit stav úkolu"
-
+#: plugins/Tasks/templates/TaskStates/add.php:24
+#: plugins/Tasks/templates/TaskStates/edit.php:32
+#: plugins/Tasks/templates/TaskStates/index.php:30
 msgid "Name"
 msgstr "Jméno"
 
+#: plugins/Tasks/templates/TaskStates/add.php:25
+#: plugins/Tasks/templates/TaskStates/edit.php:33
+#: plugins/Tasks/templates/TaskStates/index.php:31
 msgid "Color"
 msgstr "Barva"
 
+#: plugins/Tasks/templates/TaskStates/add.php:26
+#: plugins/Tasks/templates/TaskStates/edit.php:34
+#: plugins/Tasks/templates/TaskStates/index.php:32
 msgid "Priority"
 msgstr "Priorita"
 
+#: plugins/Tasks/templates/TaskStates/add.php:27
+#: plugins/Tasks/templates/TaskStates/edit.php:35
+#: plugins/Tasks/templates/TaskStates/index.php:33
 msgid "Completed"
 msgstr "Dokončeno"
 
-msgid "Related Tasks"
-msgstr "Související úkoly"
+#: plugins/Tasks/templates/TaskStates/add.php:30
+#: plugins/Tasks/templates/TaskStates/edit.php:38
+msgid "Submit"
+msgstr "Potvrdit"
 
-msgid "Number"
-msgstr "Číslo"
+#: plugins/Tasks/templates/TaskStates/edit.php:12
+#: plugins/Tasks/templates/TaskStates/index.php:52
+msgid "Delete"
+msgstr "Odstranit"
 
-msgid "Task Type"
-msgstr "Typ úkolu"
+#: plugins/Tasks/templates/TaskStates/edit.php:15
+#: plugins/Tasks/templates/TaskStates/index.php:54
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Opravdu chcete odstranit # {0}?"
 
-msgid "User"
-msgstr "Uživatel"
+#: plugins/Tasks/templates/TaskStates/edit.php:30
+msgid "Edit Task State"
+msgstr "Upravit stav úkolu"
 
-msgid "Subject"
-msgstr "Předmět"
+#: plugins/Tasks/templates/TaskStates/index.php:11
+msgid "Search"
+msgstr "Hledat"
 
-msgid "Text"
-msgstr "Text"
+#: plugins/Tasks/templates/TaskStates/index.php:21
+msgid "New Task State"
+msgstr "Nový stav úkolu"
 
-msgid "Email"
-msgstr "E-mail"
+#: plugins/Tasks/templates/TaskStates/index.php:25
+msgid "Task States"
+msgstr "Stavy úkolů"
 
-msgid "Phone"
-msgstr "Telefon"
+#: plugins/Tasks/templates/TaskStates/index.php:43
+msgid "Yes"
+msgstr "Ano"
 
-msgid "Customer"
-msgstr "Zákazník"
+#: plugins/Tasks/templates/TaskStates/index.php:43
+msgid "No"
+msgstr "Ne"
 
-msgid "Customer Number"
-msgstr "Číslo zákazníka"
+#: plugins/Tasks/templates/TaskStates/index.php:45
+msgid "View"
+msgstr "Zobrazit"
 
-msgid "Access Point"
-msgstr "Přístupový bod"
+#: plugins/Tasks/templates/TaskStates/index.php:47
+msgid "Edit"
+msgstr "Upravit"
 
-msgid "Start Date"
-msgstr "Datum přijetí"
+#: plugins/Tasks/templates/TaskStates/index.php:64
+msgid "first"
+msgstr "první"
 
-msgid "Estimated Date"
-msgstr "Předpokládané datum řešení"
+#: plugins/Tasks/templates/TaskStates/index.php:65
+msgid "previous"
+msgstr "předchozí"
 
-msgid "Critical Date"
-msgstr "Nutné dořešit do"
+#: plugins/Tasks/templates/TaskStates/index.php:67
+msgid "next"
+msgstr "další"
 
-msgid "Finish Date"
-msgstr "Datum vyřízení"
+#: plugins/Tasks/templates/TaskStates/index.php:68
+msgid "last"
+msgstr "poslední"
 
-msgid "List Task Types"
-msgstr "Seznam typů úkolů"
+#: plugins/Tasks/templates/TaskStates/index.php:71
+msgid ""
+"Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} "
+"total"
+msgstr ""
+"Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
+"počtu {{count}}"
 
-msgid "Add Task Type"
-msgstr "Přidat typ úkolu"
+#~ msgid "Delete Task State"
+#~ msgstr "Odstranit stav úkolu"
 
-msgid "Edit Task Type"
-msgstr "Upravit typ úkolu"
+#~ msgid "Related Tasks"
+#~ msgstr "Související úkoly"
 
-msgid "New Task Type"
-msgstr "Nový typ úkolu"
+#~ msgid "Number"
+#~ msgstr "Číslo"
 
-msgid "Task Types"
-msgstr "Typy úkolů"
+#~ msgid "Task Type"
+#~ msgstr "Typ úkolu"
 
-msgid "Delete Task Type"
-msgstr "Odstranit typ úkolu"
+#~ msgid "User"
+#~ msgstr "Uživatel"
 
-msgid "Customer Required"
-msgstr "Požadovaný zákazník"
+#~ msgid "Subject"
+#~ msgstr "Předmět"
 
-msgid "Contract Required"
-msgstr "Požadovaná smlouva"
+#~ msgid "Text"
+#~ msgstr "Text"
 
-msgid "Task State"
-msgstr "Stav úkolu"
+#~ msgid "Email"
+#~ msgstr "E-mail"
 
-msgid "Related Contract States"
-msgstr "Související stavy smlouvy"
+#~ msgid "Phone"
+#~ msgstr "Telefon"
 
-msgid "Usable for New Contracts"
-msgstr "Použitelné pro nové smlouvy"
+#~ msgid "Customer"
+#~ msgstr "Zákazník"
 
-msgid "Active Services"
-msgstr "Aktivní služby"
+#~ msgid "Customer Number"
+#~ msgstr "Číslo zákazníka"
 
-msgid "Billed"
-msgstr "Fakturováno"
+#~ msgid "Access Point"
+#~ msgstr "Přístupový bod"
 
-msgid "Blocked"
-msgstr "Blokováno"
+#~ msgid "Start Date"
+#~ msgstr "Datum přijetí"
+
+#~ msgid "Estimated Date"
+#~ msgstr "Předpokládané datum řešení"
+
+#~ msgid "Critical Date"
+#~ msgstr "Nutné dořešit do"
+
+#~ msgid "Finish Date"
+#~ msgstr "Datum vyřízení"
+
+#~ msgid "List Task Types"
+#~ msgstr "Seznam typů úkolů"
+
+#~ msgid "Add Task Type"
+#~ msgstr "Přidat typ úkolu"
+
+#~ msgid "Edit Task Type"
+#~ msgstr "Upravit typ úkolu"
+
+#~ msgid "New Task Type"
+#~ msgstr "Nový typ úkolu"
+
+#~ msgid "Task Types"
+#~ msgstr "Typy úkolů"
+
+#~ msgid "Delete Task Type"
+#~ msgstr "Odstranit typ úkolu"
+
+#~ msgid "Customer Required"
+#~ msgstr "Požadovaný zákazník"
+
+#~ msgid "Contract Required"
+#~ msgstr "Požadovaná smlouva"
+
+#~ msgid "Task State"
+#~ msgstr "Stav úkolu"
+
+#~ msgid "Related Contract States"
+#~ msgstr "Související stavy smlouvy"
+
+#~ msgid "Usable for New Contracts"
+#~ msgstr "Použitelné pro nové smlouvy"
+
+#~ msgid "Active Services"
+#~ msgstr "Aktivní služby"
+
+#~ msgid "Billed"
+#~ msgstr "Fakturováno"
+
+#~ msgid "Blocked"
+#~ msgstr "Blokováno"

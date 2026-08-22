@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 17:08+0200\n"
+"POT-Creation-Date: 2026-08-22 20:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -83,34 +83,34 @@ msgstr ""
 #: ./templates/plugin/Tasks/TaskStates/view.php:10
 #: ./templates/plugin/Tasks/TaskTypes/add.php:10
 #: ./templates/plugin/Tasks/TaskTypes/edit.php:10
-#: ./templates/plugin/Tasks/TaskTypes/index.php:33
+#: ./templates/plugin/Tasks/TaskTypes/index.php:36
 #: ./templates/plugin/Tasks/TaskTypes/view.php:10
-#: ./templates/plugin/Tasks/TaskTypes/view.php:83
+#: ./templates/plugin/Tasks/TaskTypes/view.php:89
 msgid "Actions"
 msgstr ""
 
 #: ./templates/element/Tasks/related.php:90
-#: ./templates/plugin/Tasks/TaskTypes/index.php:43
-#: ./templates/plugin/Tasks/TaskTypes/view.php:103
+#: ./templates/plugin/Tasks/TaskTypes/index.php:49
+#: ./templates/plugin/Tasks/TaskTypes/view.php:109
 msgid "View"
 msgstr ""
 
 #: ./templates/element/Tasks/related.php:94
-#: ./templates/plugin/Tasks/TaskTypes/index.php:45
-#: ./templates/plugin/Tasks/TaskTypes/view.php:107
+#: ./templates/plugin/Tasks/TaskTypes/index.php:51
+#: ./templates/plugin/Tasks/TaskTypes/view.php:113
 msgid "Edit"
 msgstr ""
 
 #: ./templates/element/Tasks/related.php:99
 #: ./templates/plugin/Tasks/TaskTypes/edit.php:12
-#: ./templates/plugin/Tasks/TaskTypes/index.php:50
+#: ./templates/plugin/Tasks/TaskTypes/index.php:56
 msgid "Delete"
 msgstr ""
 
 #: ./templates/element/Tasks/related.php:102
 #: ./templates/plugin/Tasks/TaskStates/view.php:20
 #: ./templates/plugin/Tasks/TaskTypes/edit.php:15
-#: ./templates/plugin/Tasks/TaskTypes/index.php:52
+#: ./templates/plugin/Tasks/TaskTypes/index.php:58
 #: ./templates/plugin/Tasks/TaskTypes/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
@@ -132,8 +132,11 @@ msgid "New Task State"
 msgstr ""
 
 #: ./templates/plugin/Tasks/TaskStates/view.php:43
+#: ./templates/plugin/Tasks/TaskTypes/add.php:24
+#: ./templates/plugin/Tasks/TaskTypes/edit.php:32
+#: ./templates/plugin/Tasks/TaskTypes/index.php:30
 #: ./templates/plugin/Tasks/TaskTypes/view.php:43
-#: ./templates/plugin/Tasks/TaskTypes/view.php:78
+#: ./templates/plugin/Tasks/TaskTypes/view.php:84
 msgid "Name"
 msgstr ""
 
@@ -146,31 +149,35 @@ msgid "Completed"
 msgstr ""
 
 #: ./templates/plugin/Tasks/TaskStates/view.php:56
-#: ./templates/plugin/Tasks/TaskTypes/index.php:40
-#: ./templates/plugin/Tasks/TaskTypes/index.php:41
+#: ./templates/plugin/Tasks/TaskTypes/index.php:43
+#: ./templates/plugin/Tasks/TaskTypes/index.php:44
+#: ./templates/plugin/Tasks/TaskTypes/index.php:46
 #: ./templates/plugin/Tasks/TaskTypes/view.php:49
 #: ./templates/plugin/Tasks/TaskTypes/view.php:55
-#: ./templates/plugin/Tasks/TaskTypes/view.php:90
-#: ./templates/plugin/Tasks/TaskTypes/view.php:93
+#: ./templates/plugin/Tasks/TaskTypes/view.php:61
 #: ./templates/plugin/Tasks/TaskTypes/view.php:96
 #: ./templates/plugin/Tasks/TaskTypes/view.php:99
+#: ./templates/plugin/Tasks/TaskTypes/view.php:102
+#: ./templates/plugin/Tasks/TaskTypes/view.php:105
 msgid "Yes"
 msgstr ""
 
 #: ./templates/plugin/Tasks/TaskStates/view.php:56
-#: ./templates/plugin/Tasks/TaskTypes/index.php:40
-#: ./templates/plugin/Tasks/TaskTypes/index.php:41
+#: ./templates/plugin/Tasks/TaskTypes/index.php:43
+#: ./templates/plugin/Tasks/TaskTypes/index.php:44
+#: ./templates/plugin/Tasks/TaskTypes/index.php:47
 #: ./templates/plugin/Tasks/TaskTypes/view.php:50
 #: ./templates/plugin/Tasks/TaskTypes/view.php:56
-#: ./templates/plugin/Tasks/TaskTypes/view.php:91
-#: ./templates/plugin/Tasks/TaskTypes/view.php:94
+#: ./templates/plugin/Tasks/TaskTypes/view.php:62
 #: ./templates/plugin/Tasks/TaskTypes/view.php:97
 #: ./templates/plugin/Tasks/TaskTypes/view.php:100
+#: ./templates/plugin/Tasks/TaskTypes/view.php:103
+#: ./templates/plugin/Tasks/TaskTypes/view.php:106
 msgid "No"
 msgstr ""
 
 #: ./templates/plugin/Tasks/TaskStates/view.php:65
-#: ./templates/plugin/Tasks/TaskTypes/view.php:65
+#: ./templates/plugin/Tasks/TaskTypes/view.php:71
 msgid "Related Tasks"
 msgstr ""
 
@@ -184,8 +191,29 @@ msgstr ""
 msgid "Add Task Type"
 msgstr ""
 
+#: ./templates/plugin/Tasks/TaskTypes/add.php:25
+#: ./templates/plugin/Tasks/TaskTypes/edit.php:33
+#: ./templates/plugin/Tasks/TaskTypes/index.php:31
+#: ./templates/plugin/Tasks/TaskTypes/view.php:47
+msgid "Customer Required"
+msgstr ""
+
+#: ./templates/plugin/Tasks/TaskTypes/add.php:26
+#: ./templates/plugin/Tasks/TaskTypes/edit.php:34
+#: ./templates/plugin/Tasks/TaskTypes/index.php:32
+#: ./templates/plugin/Tasks/TaskTypes/view.php:53
+msgid "Contract Required"
+msgstr ""
+
 #: ./templates/plugin/Tasks/TaskTypes/add.php:29
 #: ./templates/plugin/Tasks/TaskTypes/edit.php:37
+#: ./templates/plugin/Tasks/TaskTypes/index.php:34
+#: ./templates/plugin/Tasks/TaskTypes/view.php:59
+msgid "Access Point Required"
+msgstr ""
+
+#: ./templates/plugin/Tasks/TaskTypes/add.php:33
+#: ./templates/plugin/Tasks/TaskTypes/edit.php:41
 msgid "Submit"
 msgstr ""
 
@@ -211,31 +239,23 @@ msgstr ""
 msgid "Delete Task Type"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:47
-msgid "Customer Required"
-msgstr ""
-
-#: ./templates/plugin/Tasks/TaskTypes/view.php:53
-msgid "Contract Required"
-msgstr ""
-
-#: ./templates/plugin/Tasks/TaskTypes/view.php:72
+#: ./templates/plugin/Tasks/TaskTypes/view.php:78
 msgid "Related Contract States"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:79
+#: ./templates/plugin/Tasks/TaskTypes/view.php:85
 msgid "Usable for New Contracts"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:80
+#: ./templates/plugin/Tasks/TaskTypes/view.php:86
 msgid "Active Services"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:81
+#: ./templates/plugin/Tasks/TaskTypes/view.php:87
 msgid "Billed"
 msgstr ""
 
-#: ./templates/plugin/Tasks/TaskTypes/view.php:82
+#: ./templates/plugin/Tasks/TaskTypes/view.php:88
 msgid "Blocked"
 msgstr ""
 

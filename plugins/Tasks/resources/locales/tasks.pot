@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-19 20:03+0200\n"
+"POT-Creation-Date: 2026-08-22 20:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -112,6 +112,30 @@ msgstr ""
 
 #: ./plugins/Tasks/templates/TaskStates/add.php:22
 msgid "Add Task State"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/add.php:24
+#: ./plugins/Tasks/templates/TaskStates/edit.php:32
+#: ./plugins/Tasks/templates/TaskStates/index.php:30
+msgid "Name"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/add.php:25
+#: ./plugins/Tasks/templates/TaskStates/edit.php:33
+#: ./plugins/Tasks/templates/TaskStates/index.php:31
+msgid "Color"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/add.php:26
+#: ./plugins/Tasks/templates/TaskStates/edit.php:34
+#: ./plugins/Tasks/templates/TaskStates/index.php:32
+msgid "Priority"
+msgstr ""
+
+#: ./plugins/Tasks/templates/TaskStates/add.php:27
+#: ./plugins/Tasks/templates/TaskStates/edit.php:35
+#: ./plugins/Tasks/templates/TaskStates/index.php:33
+msgid "Completed"
 msgstr ""
 
 #: ./plugins/Tasks/templates/TaskStates/add.php:30

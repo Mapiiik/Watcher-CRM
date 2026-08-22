@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 17:57+0200\n"
+"POT-Creation-Date: 2026-08-22 20:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1316,6 +1316,8 @@ msgstr ""
 #: ./src/Utility/ServiceChangeMessageBuilder.php:163
 #: ./templates/Customers/view.php:337
 #: ./templates/Emails/view.php:43
+#: ./templates/Tasks/add.php:50
+#: ./templates/Tasks/edit.php:63
 #: ./templates/Tasks/view.php:63
 #: ./templates/email/html/task_notification.php:52
 msgid "Email"
@@ -1325,6 +1327,8 @@ msgstr ""
 #: ./src/Utility/ServiceChangeMessageBuilder.php:164
 #: ./templates/Customers/view.php:386
 #: ./templates/Phones/view.php:43
+#: ./templates/Tasks/add.php:51
+#: ./templates/Tasks/edit.php:64
 #: ./templates/Tasks/view.php:67
 #: ./templates/email/html/task_notification.php:56
 msgid "Phone"
@@ -1413,6 +1417,9 @@ msgstr ""
 
 #: ./src/Model/Entity/AppUser.php:88
 #: ./src/Model/Enum/LoginRights.php:28
+#: ./templates/Tasks/add.php:44
+#: ./templates/Tasks/edit.php:57
+#: ./templates/Tasks/index.php:100
 #: ./templates/Tasks/view.php:54
 #: ./templates/element/Contracts/Tasks.php:25
 #: ./templates/email/html/task_notification.php:48
@@ -1455,19 +1462,19 @@ msgstr ""
 msgid "Contract data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:248
-#: ./src/Model/Entity/Contract.php:263
-#: ./src/Model/Entity/Contract.php:278
+#: ./src/Model/Entity/Contract.php:238
+#: ./src/Model/Entity/Contract.php:253
+#: ./src/Model/Entity/Contract.php:268
 msgid "Contract state data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:293
-#: ./src/Model/Entity/Contract.php:308
-#: ./src/Model/Entity/Contract.php:323
+#: ./src/Model/Entity/Contract.php:283
+#: ./src/Model/Entity/Contract.php:298
+#: ./src/Model/Entity/Contract.php:313
 msgid "Service type data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:335
+#: ./src/Model/Entity/Contract.php:325
 msgid "Contract versions data not available."
 msgstr ""
 
@@ -1948,11 +1955,16 @@ msgstr ""
 msgid "One of the roles named is not a role."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:349
+#: ./src/Model/Table/ContractsTable.php:337
+#: ./src/Model/Table/TasksTable.php:104
+msgid "The specified access point is not one Watcher NMS keeps."
+msgstr ""
+
+#: ./src/Model/Table/ContractsTable.php:360
 msgid "The specified service type requires the assignment of an installation address."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:372
+#: ./src/Model/Table/ContractsTable.php:383
 msgid "The specified service type requires the assignment of an access point."
 msgstr ""
 
@@ -2004,12 +2016,16 @@ msgid_plural "The override duration must not exceed {0} days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Model/Table/TasksTable.php:101
+#: ./src/Model/Table/TasksTable.php:113
 msgid "The specified task type requires the assignment of an customer."
 msgstr ""
 
-#: ./src/Model/Table/TasksTable.php:110
+#: ./src/Model/Table/TasksTable.php:122
 msgid "The specified task type requires the assignment of an contract."
+msgstr ""
+
+#: ./src/Model/Table/TasksTable.php:131
+msgid "The specified task type requires the assignment of an access point."
 msgstr ""
 
 #: ./src/Model/Validation/ContractStateValidator.php:103
@@ -2413,8 +2429,8 @@ msgstr ""
 #: ./templates/Settings/edit.php:42
 #: ./templates/SoldEquipments/add.php:38
 #: ./templates/SoldEquipments/edit.php:46
-#: ./templates/Tasks/add.php:74
-#: ./templates/Tasks/edit.php:88
+#: ./templates/Tasks/add.php:94
+#: ./templates/Tasks/edit.php:107
 msgid "Submit"
 msgstr ""
 
@@ -2866,6 +2882,9 @@ msgstr ""
 #: ./templates/RemovedIpNetworks/view.php:43
 #: ./templates/Services/view.php:83
 #: ./templates/SoldEquipments/view.php:43
+#: ./templates/Tasks/add.php:60
+#: ./templates/Tasks/edit.php:73
+#: ./templates/Tasks/index.php:103
 #: ./templates/Tasks/view.php:79
 #: ./templates/element/AddressChecks/duplicate_address.php:11
 #: ./templates/element/AddressChecks/installation_address.php:11
@@ -2899,6 +2918,9 @@ msgstr ""
 #: ./templates/ServiceOverrides/view.php:73
 #: ./templates/Services/view.php:85
 #: ./templates/SoldEquipments/view.php:55
+#: ./templates/Tasks/add.php:67
+#: ./templates/Tasks/edit.php:80
+#: ./templates/Tasks/index.php:105
 #: ./templates/Tasks/view.php:94
 #: ./templates/cell/ServiceOverridesStatus/display.php:22
 #: ./templates/cell/ServiceOverridesStatus/display.php:45
@@ -3226,6 +3248,9 @@ msgstr ""
 #: ./templates/HistoricalConnections/index.php:41
 #: ./templates/HistoricalConnections/view.php:82
 #: ./templates/HistoricalConnections/view.php:141
+#: ./templates/Tasks/add.php:55
+#: ./templates/Tasks/edit.php:68
+#: ./templates/Tasks/index.php:106
 #: ./templates/Tasks/view.php:71
 #: ./templates/element/Contracts/related.php:31
 #: ./templates/element/IpAddressRanges/summary.php:17
@@ -3399,6 +3424,9 @@ msgstr ""
 #: ./templates/Billings/service_change.php:63
 #: ./templates/Billings/view.php:69
 #: ./templates/Services/view.php:86
+#: ./templates/Tasks/add.php:77
+#: ./templates/Tasks/edit.php:90
+#: ./templates/Tasks/index.php:102
 #: ./templates/Tasks/view.php:140
 #: ./templates/element/Contracts/Billings.php:24
 #: ./templates/element/Contracts/Tasks.php:21
@@ -4551,6 +4579,9 @@ msgid "Delete Customer Message"
 msgstr ""
 
 #: ./templates/CustomerMessages/view.php:60
+#: ./templates/Tasks/add.php:76
+#: ./templates/Tasks/edit.php:89
+#: ./templates/Tasks/index.php:101
 #: ./templates/Tasks/view.php:130
 #: ./templates/element/Contracts/Tasks.php:20
 #: ./templates/email/html/task_notification.php:142
@@ -5954,12 +5985,10 @@ msgstr ""
 msgid "Add Task"
 msgstr ""
 
-#: ./templates/Tasks/edit.php:38
-#: ./templates/Tasks/view.php:11
-msgid "Edit Task"
-msgstr ""
-
+#: ./templates/Tasks/add.php:31
+#: ./templates/Tasks/edit.php:44
 #: ./templates/Tasks/index.php:24
+#: ./templates/Tasks/index.php:97
 #: ./templates/Tasks/map.php:15
 #: ./templates/Tasks/view.php:36
 #: ./templates/element/Contracts/Tasks.php:18
@@ -5967,6 +5996,16 @@ msgstr ""
 msgid "Task Type"
 msgstr ""
 
+#: ./templates/Tasks/add.php:35
+#: ./templates/Tasks/edit.php:48
+#: ./templates/Tasks/index.php:98
+#: ./templates/Tasks/view.php:43
+#: ./templates/email/html/task_notification.php:40
+msgid "Priority"
+msgstr ""
+
+#: ./templates/Tasks/add.php:39
+#: ./templates/Tasks/edit.php:52
 #: ./templates/Tasks/index.php:33
 #: ./templates/Tasks/index.php:99
 #: ./templates/Tasks/map.php:24
@@ -5974,6 +6013,44 @@ msgstr ""
 #: ./templates/element/Contracts/Tasks.php:19
 #: ./templates/email/html/task_notification.php:44
 msgid "Task State"
+msgstr ""
+
+#: ./templates/Tasks/add.php:82
+#: ./templates/Tasks/edit.php:95
+#: ./templates/Tasks/index.php:107
+#: ./templates/Tasks/view.php:110
+#: ./templates/email/html/task_notification.php:98
+msgid "Start Date"
+msgstr ""
+
+#: ./templates/Tasks/add.php:83
+#: ./templates/Tasks/edit.php:96
+#: ./templates/Tasks/index.php:108
+#: ./templates/Tasks/view.php:114
+#: ./templates/element/Dashboard/task_list.php:58
+#: ./templates/email/html/task_notification.php:102
+msgid "Estimated Date"
+msgstr ""
+
+#: ./templates/Tasks/add.php:88
+#: ./templates/Tasks/edit.php:101
+#: ./templates/Tasks/index.php:109
+#: ./templates/Tasks/view.php:118
+#: ./templates/email/html/task_notification.php:106
+msgid "Critical Date"
+msgstr ""
+
+#: ./templates/Tasks/add.php:89
+#: ./templates/Tasks/edit.php:102
+#: ./templates/Tasks/index.php:110
+#: ./templates/Tasks/view.php:122
+#: ./templates/email/html/task_notification.php:110
+msgid "Finish Date"
+msgstr ""
+
+#: ./templates/Tasks/edit.php:38
+#: ./templates/Tasks/view.php:11
+msgid "Edit Task"
 msgstr ""
 
 #: ./templates/Tasks/index.php:57
@@ -6012,32 +6089,6 @@ msgstr ""
 
 #: ./templates/Tasks/view.php:31
 msgid "Task No."
-msgstr ""
-
-#: ./templates/Tasks/view.php:43
-#: ./templates/email/html/task_notification.php:40
-msgid "Priority"
-msgstr ""
-
-#: ./templates/Tasks/view.php:110
-#: ./templates/email/html/task_notification.php:98
-msgid "Start Date"
-msgstr ""
-
-#: ./templates/Tasks/view.php:114
-#: ./templates/element/Dashboard/task_list.php:58
-#: ./templates/email/html/task_notification.php:102
-msgid "Estimated Date"
-msgstr ""
-
-#: ./templates/Tasks/view.php:118
-#: ./templates/email/html/task_notification.php:106
-msgid "Critical Date"
-msgstr ""
-
-#: ./templates/Tasks/view.php:122
-#: ./templates/email/html/task_notification.php:110
-msgid "Finish Date"
 msgstr ""
 
 #: ./templates/cell/ServiceOverridesStatus/display.php:17

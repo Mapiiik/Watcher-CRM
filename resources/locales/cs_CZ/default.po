@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 17:57+0200\n"
-"PO-Revision-Date: 2026-08-22 17:21+0200\n"
+"POT-Creation-Date: 2026-08-22 20:29+0200\n"
+"PO-Revision-Date: 2026-08-22 20:38+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -1361,6 +1361,7 @@ msgstr "Adresa instalace"
 #: src/Model/Enum/CustomerMessageType.php:27
 #: src/Utility/ServiceChangeMessageBuilder.php:163
 #: templates/Customers/view.php:337 templates/Emails/view.php:43
+#: templates/Tasks/add.php:50 templates/Tasks/edit.php:63
 #: templates/Tasks/view.php:63 templates/email/html/task_notification.php:52
 msgid "Email"
 msgstr "E-mail"
@@ -1368,6 +1369,7 @@ msgstr "E-mail"
 #: src/Controller/TasksController.php:571
 #: src/Utility/ServiceChangeMessageBuilder.php:164
 #: templates/Customers/view.php:386 templates/Phones/view.php:43
+#: templates/Tasks/add.php:51 templates/Tasks/edit.php:64
 #: templates/Tasks/view.php:67 templates/email/html/task_notification.php:56
 msgid "Phone"
 msgstr "Telefon"
@@ -1460,7 +1462,9 @@ msgid "The service is not configured."
 msgstr "Služba není nakonfigurována."
 
 #: src/Model/Entity/AppUser.php:88 src/Model/Enum/LoginRights.php:28
-#: templates/Tasks/view.php:54 templates/element/Contracts/Tasks.php:25
+#: templates/Tasks/add.php:44 templates/Tasks/edit.php:57
+#: templates/Tasks/index.php:100 templates/Tasks/view.php:54
+#: templates/element/Contracts/Tasks.php:25
 #: templates/email/html/task_notification.php:48
 msgid "User"
 msgstr "Uživatel"
@@ -1501,17 +1505,17 @@ msgstr "API"
 msgid "Contract data not available."
 msgstr "Údaje o smlouvě nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:248 src/Model/Entity/Contract.php:263
-#: src/Model/Entity/Contract.php:278
+#: src/Model/Entity/Contract.php:238 src/Model/Entity/Contract.php:253
+#: src/Model/Entity/Contract.php:268
 msgid "Contract state data not available."
 msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:293 src/Model/Entity/Contract.php:308
-#: src/Model/Entity/Contract.php:323
+#: src/Model/Entity/Contract.php:283 src/Model/Entity/Contract.php:298
+#: src/Model/Entity/Contract.php:313
 msgid "Service type data not available."
 msgstr "Údaje o typu služby nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:335
+#: src/Model/Entity/Contract.php:325
 msgid "Contract versions data not available."
 msgstr "Údaje o verzích smluv nejsou k dispozici."
 
@@ -1897,13 +1901,17 @@ msgstr ""
 msgid "One of the roles named is not a role."
 msgstr "Některá z uvedených rolí neexistuje."
 
-#: src/Model/Table/ContractsTable.php:349
+#: src/Model/Table/ContractsTable.php:337 src/Model/Table/TasksTable.php:104
+msgid "The specified access point is not one Watcher NMS keeps."
+msgstr "Uvedený přístupový bod není součástí databáze systému Watcher NMS."
+
+#: src/Model/Table/ContractsTable.php:360
 msgid ""
 "The specified service type requires the assignment of an installation "
 "address."
 msgstr "Zadaný typ služby vyžaduje přiřazení instalační adresy."
 
-#: src/Model/Table/ContractsTable.php:372
+#: src/Model/Table/ContractsTable.php:383
 msgid "The specified service type requires the assignment of an access point."
 msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 
@@ -1960,13 +1968,17 @@ msgstr[0] "Doba trvání dočasné úpravy nesmí přesáhnout {0} den."
 msgstr[1] "Doba trvání dočasné úpravy nesmí přesáhnout {0} dny."
 msgstr[2] "Doba trvání dočasné úpravy nesmí přesáhnout {0} dní."
 
-#: src/Model/Table/TasksTable.php:101
+#: src/Model/Table/TasksTable.php:113
 msgid "The specified task type requires the assignment of an customer."
 msgstr "Zadaný typ úkolu vyžaduje přiřazení zákazníka."
 
-#: src/Model/Table/TasksTable.php:110
+#: src/Model/Table/TasksTable.php:122
 msgid "The specified task type requires the assignment of an contract."
 msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
+
+#: src/Model/Table/TasksTable.php:131
+msgid "The specified task type requires the assignment of an access point."
+msgstr "Zadaný typ úkolu vyžaduje přiřazení přístupového bodu."
 
 #: src/Model/Validation/ContractStateValidator.php:103
 msgid "The selected contract state cannot be used for new contracts."
@@ -2346,8 +2358,8 @@ msgstr "IP adresa"
 #: templates/ServiceTypes/add.php:40 templates/ServiceTypes/edit.php:48
 #: templates/Services/add.php:31 templates/Services/edit.php:36
 #: templates/Settings/edit.php:42 templates/SoldEquipments/add.php:38
-#: templates/SoldEquipments/edit.php:46 templates/Tasks/add.php:74
-#: templates/Tasks/edit.php:88
+#: templates/SoldEquipments/edit.php:46 templates/Tasks/add.php:94
+#: templates/Tasks/edit.php:107
 msgid "Submit"
 msgstr "Potvrdit"
 
@@ -2654,7 +2666,9 @@ msgstr "Odstranit přístupové oprávnění"
 #: templates/Overviews/overview_of_dealer_commissions.php:58
 #: templates/Phones/view.php:32 templates/RemovedIpAddresses/view.php:43
 #: templates/RemovedIpNetworks/view.php:43 templates/Services/view.php:83
-#: templates/SoldEquipments/view.php:43 templates/Tasks/view.php:79
+#: templates/SoldEquipments/view.php:43 templates/Tasks/add.php:60
+#: templates/Tasks/edit.php:73 templates/Tasks/index.php:103
+#: templates/Tasks/view.php:79
 #: templates/element/AddressChecks/duplicate_address.php:11
 #: templates/element/AddressChecks/installation_address.php:11
 #: templates/element/AddressChecks/missing_installation_address.php:11
@@ -2681,7 +2695,9 @@ msgstr "Zákazník"
 #: templates/RemovedIpAddresses/view.php:55
 #: templates/RemovedIpNetworks/view.php:57
 #: templates/ServiceOverrides/view.php:73 templates/Services/view.php:85
-#: templates/SoldEquipments/view.php:55 templates/Tasks/view.php:94
+#: templates/SoldEquipments/view.php:55 templates/Tasks/add.php:67
+#: templates/Tasks/edit.php:80 templates/Tasks/index.php:105
+#: templates/Tasks/view.php:94
 #: templates/cell/ServiceOverridesStatus/display.php:22
 #: templates/cell/ServiceOverridesStatus/display.php:45
 #: templates/element/AddressChecks/missing_installation_address.php:10
@@ -2955,8 +2971,9 @@ msgstr "GPS X"
 #: templates/Customers/view.php:574
 #: templates/HistoricalConnections/index.php:41
 #: templates/HistoricalConnections/view.php:82
-#: templates/HistoricalConnections/view.php:141 templates/Tasks/view.php:71
-#: templates/element/Contracts/related.php:31
+#: templates/HistoricalConnections/view.php:141 templates/Tasks/add.php:55
+#: templates/Tasks/edit.php:68 templates/Tasks/index.php:106
+#: templates/Tasks/view.php:71 templates/element/Contracts/related.php:31
 #: templates/element/IpAddressRanges/summary.php:17
 #: templates/email/html/task_notification.php:60
 msgid "Access Point"
@@ -3106,8 +3123,9 @@ msgid "Delete Billing"
 msgstr "Odstranit fakturaci"
 
 #: templates/Billings/service_change.php:63 templates/Billings/view.php:69
-#: templates/Services/view.php:86 templates/Tasks/view.php:140
-#: templates/element/Contracts/Billings.php:24
+#: templates/Services/view.php:86 templates/Tasks/add.php:77
+#: templates/Tasks/edit.php:90 templates/Tasks/index.php:102
+#: templates/Tasks/view.php:140 templates/element/Contracts/Billings.php:24
 #: templates/element/Contracts/Tasks.php:21
 #: templates/email/html/task_notification.php:152
 msgid "Text"
@@ -4171,8 +4189,9 @@ msgstr "Zprávy pro zákazníky"
 msgid "Delete Customer Message"
 msgstr "Odstranit zprávu pro zákazníka"
 
-#: templates/CustomerMessages/view.php:60 templates/Tasks/view.php:130
-#: templates/element/Contracts/Tasks.php:20
+#: templates/CustomerMessages/view.php:60 templates/Tasks/add.php:76
+#: templates/Tasks/edit.php:89 templates/Tasks/index.php:101
+#: templates/Tasks/view.php:130 templates/element/Contracts/Tasks.php:20
 #: templates/email/html/task_notification.php:142
 msgid "Subject"
 msgstr "Předmět"
@@ -5471,22 +5490,56 @@ msgstr "Seznam úkolů"
 msgid "Add Task"
 msgstr "Přidat úkol"
 
-#: templates/Tasks/edit.php:38 templates/Tasks/view.php:11
-msgid "Edit Task"
-msgstr "Upravit úkol"
-
-#: templates/Tasks/index.php:24 templates/Tasks/map.php:15
-#: templates/Tasks/view.php:36 templates/element/Contracts/Tasks.php:18
+#: templates/Tasks/add.php:31 templates/Tasks/edit.php:44
+#: templates/Tasks/index.php:24 templates/Tasks/index.php:97
+#: templates/Tasks/map.php:15 templates/Tasks/view.php:36
+#: templates/element/Contracts/Tasks.php:18
 #: templates/email/html/task_notification.php:36
 msgid "Task Type"
 msgstr "Typ úkolu"
 
+#: templates/Tasks/add.php:35 templates/Tasks/edit.php:48
+#: templates/Tasks/index.php:98 templates/Tasks/view.php:43
+#: templates/email/html/task_notification.php:40
+msgid "Priority"
+msgstr "Priorita"
+
+#: templates/Tasks/add.php:39 templates/Tasks/edit.php:52
 #: templates/Tasks/index.php:33 templates/Tasks/index.php:99
 #: templates/Tasks/map.php:24 templates/Tasks/view.php:47
 #: templates/element/Contracts/Tasks.php:19
 #: templates/email/html/task_notification.php:44
 msgid "Task State"
 msgstr "Stav úkolu"
+
+#: templates/Tasks/add.php:82 templates/Tasks/edit.php:95
+#: templates/Tasks/index.php:107 templates/Tasks/view.php:110
+#: templates/email/html/task_notification.php:98
+msgid "Start Date"
+msgstr "Datum přijetí"
+
+#: templates/Tasks/add.php:83 templates/Tasks/edit.php:96
+#: templates/Tasks/index.php:108 templates/Tasks/view.php:114
+#: templates/element/Dashboard/task_list.php:58
+#: templates/email/html/task_notification.php:102
+msgid "Estimated Date"
+msgstr "Předpokládané datum řešení"
+
+#: templates/Tasks/add.php:88 templates/Tasks/edit.php:101
+#: templates/Tasks/index.php:109 templates/Tasks/view.php:118
+#: templates/email/html/task_notification.php:106
+msgid "Critical Date"
+msgstr "Nutné dořešit do"
+
+#: templates/Tasks/add.php:89 templates/Tasks/edit.php:102
+#: templates/Tasks/index.php:110 templates/Tasks/view.php:122
+#: templates/email/html/task_notification.php:110
+msgid "Finish Date"
+msgstr "Datum vyřízení"
+
+#: templates/Tasks/edit.php:38 templates/Tasks/view.php:11
+msgid "Edit Task"
+msgstr "Upravit úkol"
 
 #: templates/Tasks/index.php:57
 msgid "Show Completed"
@@ -5524,27 +5577,6 @@ msgstr "Odstranit úkol"
 #: templates/Tasks/view.php:31
 msgid "Task No."
 msgstr "Úkol č."
-
-#: templates/Tasks/view.php:43 templates/email/html/task_notification.php:40
-msgid "Priority"
-msgstr "Priorita"
-
-#: templates/Tasks/view.php:110 templates/email/html/task_notification.php:98
-msgid "Start Date"
-msgstr "Datum přijetí"
-
-#: templates/Tasks/view.php:114 templates/element/Dashboard/task_list.php:58
-#: templates/email/html/task_notification.php:102
-msgid "Estimated Date"
-msgstr "Předpokládané datum řešení"
-
-#: templates/Tasks/view.php:118 templates/email/html/task_notification.php:106
-msgid "Critical Date"
-msgstr "Nutné dořešit do"
-
-#: templates/Tasks/view.php:122 templates/email/html/task_notification.php:110
-msgid "Finish Date"
-msgstr "Datum vyřízení"
 
 #: templates/cell/ServiceOverridesStatus/display.php:17
 msgid "Active Service Overrides"
