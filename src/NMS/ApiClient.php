@@ -22,12 +22,34 @@ use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Client;
+use Cake\Log\Log;
+use Closure;
+use Throwable;
 
 /**
  * API Client
+ *
+ * Nothing here throws. Watcher NMS is another application that may be down, misconfigured or
+ * answering something unexpected, and none of that is a reason to lose the page - every caller
+ * reads null as "Watcher NMS did not say", falls back to an empty list and tells the operator so.
+ * What a failure must not do is pass for an answer, so it is written down and it is never kept.
  */
 class ApiClient
 {
+    /**
+     * Where answers are kept.
+     */
+    private const CACHE_CONFIG = 'api_client';
+
+    /**
+     * How long to wait for Watcher NMS, in seconds.
+     *
+     * A service of our own on the same network answers in milliseconds. The default of thirty
+     * seconds is not a wait, it is how long a page hangs when Watcher NMS is unreachable - and a
+     * list asks about every row it shows.
+     */
+    private const TIMEOUT = 10;
+
     /**
      * Fetch access points method
      *
@@ -35,19 +57,9 @@ class ApiClient
      */
     public static function fetchAccessPoints(): ?CollectionInterface
     {
-        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
-            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
-            $response = $http->get('/api/access-points.json', [
-                'api_key' => Configure::read('Nms.key'),
-            ]);
+        $accessPoints = self::fetch('/api/access-points.json', 'accessPoints');
 
-            $json = $response->getJson();
-            if (isset($json['accessPoints'])) {
-                return new Collection($json['accessPoints']);
-            }
-        }
-
-        return null;
+        return $accessPoints === null ? null : new Collection($accessPoints);
     }
 
     /**
@@ -57,12 +69,11 @@ class ApiClient
      */
     public static function getAccessPoints(): ?CollectionInterface
     {
-        return Cache::remember(
+        return self::remember(
             'access_points',
             function (): ?CollectionInterface {
                 return self::fetchAccessPoints();
             },
-            'api_client',
         );
     }
 
@@ -73,7 +84,7 @@ class ApiClient
      */
     public static function getAccessPointsList(bool $onlyActive = false): ?array
     {
-        return Cache::remember(
+        return self::remember(
             'access_points_list|' . ($onlyActive ? 'active' : 'all'),
             function () use ($onlyActive): ?array {
                 $accessPoints = self::getAccessPoints();
@@ -89,7 +100,6 @@ class ApiClient
 
                 return null;
             },
-            'api_client',
         );
     }
 
@@ -101,19 +111,9 @@ class ApiClient
      */
     public static function fetchAccessPoint(string $id): ?ArrayObject
     {
-        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
-            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
-            $response = $http->get('/api/access-points/' . $id . '.json', [
-                'api_key' => Configure::read('Nms.key'),
-            ]);
+        $accessPoint = self::fetch('/api/access-points/' . $id . '.json', 'accessPoint');
 
-            $json = $response->getJson();
-            if (isset($json['accessPoint'])) {
-                return new ArrayObject($json['accessPoint'], ArrayObject::ARRAY_AS_PROPS);
-            }
-        }
-
-        return null;
+        return $accessPoint === null ? null : new ArrayObject($accessPoint, ArrayObject::ARRAY_AS_PROPS);
     }
 
     /**
@@ -124,12 +124,11 @@ class ApiClient
      */
     public static function getAccessPoint(string $id): ?ArrayObject
     {
-        return Cache::remember(
+        return self::remember(
             'access_point_' . $id,
             function () use ($id): ?ArrayObject {
                 return self::fetchAccessPoint($id);
             },
-            'api_client',
         );
     }
 
@@ -140,19 +139,9 @@ class ApiClient
      */
     public static function fetchIpAddressRanges(): ?CollectionInterface
     {
-        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
-            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
-            $response = $http->get('/api/ip-address-ranges.json', [
-                'api_key' => Configure::read('Nms.key'),
-            ]);
+        $ipAddressRanges = self::fetch('/api/ip-address-ranges.json', 'ipAddressRanges');
 
-            $json = $response->getJson();
-            if (isset($json['ipAddressRanges'])) {
-                return new Collection($json['ipAddressRanges']);
-            }
-        }
-
-        return null;
+        return $ipAddressRanges === null ? null : new Collection($ipAddressRanges);
     }
 
     /**
@@ -163,12 +152,11 @@ class ApiClient
      */
     public static function getIpAddressRanges(): ?CollectionInterface
     {
-        return Cache::remember(
+        return self::remember(
             'ip_address_ranges',
             function (): ?CollectionInterface {
                 return self::fetchIpAddressRanges();
             },
-            'api_client',
         );
     }
 
@@ -180,19 +168,9 @@ class ApiClient
      */
     public static function fetchIpAddressRange(string $id): ?ArrayObject
     {
-        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
-            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
-            $response = $http->get('/api/ip-address-ranges/' . $id . '.json', [
-                'api_key' => Configure::read('Nms.key'),
-            ]);
+        $ipAddressRange = self::fetch('/api/ip-address-ranges/' . $id . '.json', 'ipAddressRange');
 
-            $json = $response->getJson();
-            if (isset($json['ipAddressRange'])) {
-                return new ArrayObject($json['ipAddressRange'], ArrayObject::ARRAY_AS_PROPS);
-            }
-        }
-
-        return null;
+        return $ipAddressRange === null ? null : new ArrayObject($ipAddressRange, ArrayObject::ARRAY_AS_PROPS);
     }
 
     /**
@@ -204,12 +182,11 @@ class ApiClient
      */
     public static function getIpAddressRange(string $id): ?ArrayObject
     {
-        return Cache::remember(
+        return self::remember(
             'ip_address_range_' . $id,
             function () use ($id): ?ArrayObject {
                 return self::fetchIpAddressRange($id);
             },
-            'api_client',
         );
     }
 
@@ -221,19 +198,9 @@ class ApiClient
      */
     public static function searchIpAddressRanges(array $search): ?CollectionInterface
     {
-        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
-            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
-            $response = $http->get('/api/ip-address-ranges/search.json', [
-                'api_key' => Configure::read('Nms.key'),
-            ] + $search);
+        $ipAddressRanges = self::fetch('/api/ip-address-ranges/search.json', 'ipAddressRanges', $search);
 
-            $json = $response->getJson();
-            if (isset($json['ipAddressRanges'])) {
-                return new Collection($json['ipAddressRanges']);
-            }
-        }
-
-        return null;
+        return $ipAddressRanges === null ? null : new Collection($ipAddressRanges);
     }
 
     /**
@@ -244,12 +211,11 @@ class ApiClient
      */
     public static function getIpAddressRangesForIp(string $ipAddress): ?CollectionInterface
     {
-        return Cache::remember(
+        return self::remember(
             'ip_address_ranges_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ipAddress): ?CollectionInterface {
                 return self::searchIpAddressRanges(['ip_address' => $ipAddress]);
             },
-            'api_client',
         );
     }
 
@@ -261,19 +227,9 @@ class ApiClient
      */
     public static function searchRouterosDevices(array $search): ?CollectionInterface
     {
-        if (Configure::read('Nms.url') && Configure::read('Nms.key')) {
-            $http = Client::createFromUrl((string)Configure::read('Nms.url'));
-            $response = $http->get('/api/routeros-devices/search.json', [
-                'api_key' => Configure::read('Nms.key'),
-            ] + $search);
+        $routerosDevices = self::fetch('/api/routeros-devices/search.json', 'routerosDevices', $search);
 
-            $json = $response->getJson();
-            if (isset($json['routerosDevices'])) {
-                return new Collection($json['routerosDevices']);
-            }
-        }
-
-        return null;
+        return $routerosDevices === null ? null : new Collection($routerosDevices);
     }
 
     /**
@@ -284,12 +240,98 @@ class ApiClient
      */
     public static function getRouterosDevicesForIp(string $ipAddress): ?CollectionInterface
     {
-        return Cache::remember(
+        return self::remember(
             'routeros_devices_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
             function () use ($ipAddress): ?CollectionInterface {
                 return self::searchRouterosDevices(['some_ip_address' => $ipAddress]);
             },
-            'api_client',
         );
+    }
+
+    /**
+     * Whether there is a Watcher NMS to ask at all.
+     *
+     * @return bool
+     */
+    private static function isConfigured(): bool
+    {
+        return (string)Configure::read('Nms.url') !== '' && (string)Configure::read('Nms.key') !== '';
+    }
+
+    /**
+     * Reads one thing from Watcher NMS, and hands back nothing where it was not read.
+     *
+     * The key is the one Watcher NMS wraps its answer in. An answer without it is an answer to a
+     * different question - an error page, a login form, a changed API - and is not read as data.
+     *
+     * @param string $path What to read.
+     * @param string $key What Watcher NMS calls the answer.
+     * @param array<string, mixed> $query Anything to ask for beyond the path.
+     * @return array<mixed>|null
+     */
+    private static function fetch(string $path, string $key, array $query = []): ?array
+    {
+        // Not being configured is a state, not a failure - an installation without a Watcher NMS says
+        // so by leaving the address empty, and saying it again in the log every few minutes
+        // helps nobody.
+        if (!self::isConfigured()) {
+            return null;
+        }
+
+        try {
+            $client = Client::createFromUrl((string)Configure::read('Nms.url'));
+            $client->setConfig('timeout', self::TIMEOUT);
+
+            $response = $client->get($path, ['api_key' => Configure::read('Nms.key')] + $query);
+        } catch (Throwable $e) {
+            // The path and never the query: the API key is asked for as a query parameter, and a
+            // log is read by more people than a configuration file is.
+            Log::error(sprintf('Watcher NMS could not be asked about %s: %s', $path, $e->getMessage()));
+
+            return null;
+        }
+
+        if (!$response->isOk()) {
+            Log::error(sprintf('Watcher NMS answered %d asking about %s.', $response->getStatusCode(), $path));
+
+            return null;
+        }
+
+        $body = $response->getJson();
+
+        if (!is_array($body) || !isset($body[$key]) || !is_array($body[$key])) {
+            Log::warning(sprintf('Watcher NMS answered %s without `%s` in it.', $path, $key));
+
+            return null;
+        }
+
+        return $body[$key];
+    }
+
+    /**
+     * What is kept, or what Watcher NMS says now.
+     *
+     * {@see \Cake\Cache\Cache::remember()} in every respect but one: an answer that was not given
+     * is not written down. Keeping it would hand the next caller a failure dressed as an answer,
+     * and Watcher NMS coming back up would not be noticed until it ran out.
+     *
+     * @template T
+     * @param string $key Where the answer is kept.
+     * @param \Closure(): T $fetch How to ask, when there is nothing kept.
+     * @return T|null
+     */
+    private static function remember(string $key, Closure $fetch): mixed
+    {
+        $cached = Cache::read($key, self::CACHE_CONFIG);
+        if ($cached !== null) {
+            return $cached;
+        }
+
+        $answer = $fetch();
+        if ($answer !== null) {
+            Cache::write($key, $answer, self::CACHE_CONFIG);
+        }
+
+        return $answer;
     }
 }
