@@ -207,6 +207,15 @@ return function (RouteBuilder $routes): void {
             ],
         ]);
 
+        // Watcher NMS asks before it lets a place of the network go: this application names one
+        // without a key to hold it by, so nothing here would stop the place from going.
+        $builder->get(
+            '/access-points/{id}/references',
+            ['controller' => 'AccessPoints', 'action' => 'references'],
+        )
+            ->setPatterns(['id' => '[0-9a-fA-F-]{36}'])
+            ->setPass(['id']);
+
         // Bridge controllers for external API integrations
         $builder->resources('GeocoderBridge', [
             'only' => [

@@ -172,6 +172,20 @@ $permissions = [
                 'customerPoints',
             ],
         ],
+        //what the network management system asks before it lets a place of the network go
+        [
+            'role' => [
+                'api',
+            ],
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
+                'AccessPoints',
+            ],
+            'action' => [
+                'references',
+            ],
+        ],
         //allow invoice download for API
         [
             'role' => [
