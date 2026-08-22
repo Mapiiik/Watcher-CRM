@@ -413,7 +413,10 @@ $this->Html->script('lazy-load.js', ['block' => true]);
                             ['controller' => 'IpAddresses', 'action' => 'add'],
                             ['class' => 'button button-small float-right win-link'],
                         ) ?>
-                        <?= $contract->access_point !== null ? $this->AuthLink->link(
+                        <?php // the recorded point, not the one looked up: a button that quietly
+                        // disappears whenever the network management system is down reads as a
+                        // decision rather than as an outage, and the form behind it says so itself ?>
+                        <?= $contract->access_point_id !== null ? $this->AuthLink->link(
                             __('New IP Address From Range'),
                             ['controller' => 'IpAddresses', 'action' => 'addFromRange'],
                             ['class' => 'button button-small float-right win-link'],
