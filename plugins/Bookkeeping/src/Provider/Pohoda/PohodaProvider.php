@@ -71,19 +71,14 @@ class PohodaProvider implements AccountingProviderInterface
         $xmlRequest = $this->xmlRequestBuilder->buildSyncRequest($lastChanges);
 
         // 2) Send request to Pohoda mServer
-        $response = $this->httpClient->send($xmlRequest);
-
-        // 3) Validate response
-        if (!$response->isOk()) {
-            throw new RuntimeException(__d(
-                'bookkeeping',
-                'Invalid response from Pohoda mServer ({0})',
-                [$response->getReasonPhrase()],
-            ));
-        }
+        // 3) Ask, and let a failure end the run - a sync that read half the invoices would
+        //    look like the accounting system having lost the rest
+        /** @var \SimpleXMLElement $xml */
+        $xml = $this->httpClient->send($xmlRequest)->orFail(
+            __d('bookkeeping', 'Pohoda mServer is not configured.'),
+        );
 
         // 4) Parse XML
-        $xml = $response->getXml();
         if (!$xml instanceof SimpleXMLElement) {
             throw new RuntimeException(
                 __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),
@@ -159,19 +154,13 @@ class PohodaProvider implements AccountingProviderInterface
             }
 
             // 3) Send XML to Pohoda mServer
-            $response = $this->httpClient->send($xml);
-
-            // 4) Validate HTTP response
-            if (!$response->isOk()) {
-                throw new RuntimeException(__d(
-                    'bookkeeping',
-                    'Invalid response from Pohoda mServer ({0})',
-                    [$response->getReasonPhrase()],
-                ));
-            }
+            // 4) Ask, and let a failure end the run
+            /** @var \SimpleXMLElement $responseXml */
+            $responseXml = $this->httpClient->send($xml)->orFail(
+                __d('bookkeeping', 'Pohoda mServer is not configured.'),
+            );
 
             // 5) Validate XML response body
-            $responseXml = $response->getXml();
             if (!$responseXml instanceof SimpleXMLElement) {
                 throw new RuntimeException(
                     __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),

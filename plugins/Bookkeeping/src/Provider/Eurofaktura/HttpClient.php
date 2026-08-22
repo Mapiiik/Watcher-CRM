@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Eurofaktura;
 
+use App\Http\Answer;
 use Cake\Http\Client;
-use Cake\Http\Client\Response;
-use RuntimeException;
 use Settings\Utility\Settings;
 use Throwable;
 
@@ -13,6 +12,10 @@ use Throwable;
  * Class HttpClient
  *
  * Handles HTTP communication with Eurofaktura / E-racuni API.
+ *
+ * The reading comes back as an {@see \App\Http\Answer}, so the caller says what a failure is
+ * worth. Reading the answer itself stays with the parser: what the accounting system says is its
+ * own vocabulary and is none of this class's business.
  */
 class HttpClient
 {
@@ -22,18 +25,23 @@ class HttpClient
      * @param \Bookkeeping\Provider\Eurofaktura\EurofakturaCredentials $credentials Authentication credentials.
      * @param string $method API method name (e.g. SalesInvoiceCreate)
      * @param array $parameters Method parameters
-     * @return \Cake\Http\Client\Response
+     * @return \App\Http\Answer Answering with the body as it arrived.
      */
     public function send(
         EurofakturaCredentials $credentials,
         string $method,
         array $parameters = [],
-    ): Response {
+    ): Answer {
+        $url = Settings::getString(
+            EurofakturaProvider::SETTINGS_ROOT . '.api.url',
+            'https://e-racuni.com/H7i/API',
+        );
+
+        if ($url === '') {
+            return Answer::notAsked();
+        }
+
         try {
-            $url = Settings::getString(
-                EurofakturaProvider::SETTINGS_ROOT . '.api.url',
-                'https://e-racuni.com/H7i/API',
-            );
             $timeout = (int)Settings::get(
                 EurofakturaProvider::SETTINGS_ROOT . '.api.timeout',
                 3600,
@@ -55,13 +63,30 @@ class HttpClient
                 'timeout' => $timeout,
             ]);
 
-            return $http->post($url, json_encode($payload, JSON_THROW_ON_ERROR));
+            $response = $http->post($url, json_encode($payload, JSON_THROW_ON_ERROR));
         } catch (Throwable $e) {
-            throw new RuntimeException(__d(
+            return Answer::failed(__d(
                 'bookkeeping',
                 'Error connecting to Eurofaktura / E-racuni API: {0}',
                 [$e->getMessage()],
-            ), $e->getCode(), previous: $e);
+            ));
         }
+
+        $body = $response->getJson();
+        $body = is_array($body) ? $body : [];
+
+        // The transport-level verdict travels with the body: the accounting system explains a
+        // refusal inside the answer, and the caller wants both to say what went wrong.
+        if (!$response->isOk()) {
+            $description = $body['response']['description'] ?? __d('bookkeeping', 'Unknown error');
+
+            return Answer::failed(__d(
+                'bookkeeping',
+                'Eurofaktura API error ({0}, {1})',
+                [$response->getStatusCode(), str_replace(["\r", "\n"], ' ', (string)$description)],
+            ));
+        }
+
+        return Answer::of($body);
     }
 }

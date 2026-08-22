@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Provider\Eurofaktura;
 
+use App\Http\Answer;
 use App\Model\Entity\AccountingProfile;
 use App\Model\Table\CustomersTable;
 use Bookkeeping\Model\Entity\Invoice;
@@ -11,7 +12,6 @@ use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\Core\Configure;
-use Cake\Http\Client\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -62,46 +62,21 @@ class EurofakturaProvider implements AccountingProviderInterface
     }
 
     /**
-     * Assert that an API response from Eurofaktura is valid.
+     * The body of a valid Eurofaktura answer.
      *
-     * This method performs a unified validation of the API response by checking:
-     * - transport-level success (HTTP status, connectivity)
-     * - API-level errors returned in the response payload
+     * Two things can go wrong and they are told apart nowhere else: the asking itself, which the
+     * client reports, and the accounting system refusing what was asked, which it explains inside
+     * an answer it calls successful. Both end the run - a sync that read half the invoices would
+     * look like the accounting system having lost the rest.
      *
-     * It does NOT:
-     * - return parsed data
-     * - perform any domain-level interpretation
-     *
-     * On failure, a RuntimeException is thrown with a descriptive, localized message.
-     * On success, the method returns silently.
-     *
-     * This helper centralizes error handling logic for all Eurofaktura API calls
-     * and ensures consistent behavior across provider methods.
-     *
-     * @param \Cake\Http\Client\Response $response HTTP API response to validate.
-     * @return void
-     * @throws \RuntimeException When the response indicates a transport or API-level error.
+     * @param \App\Http\Answer $answer What came of the asking.
+     * @return array<string, mixed> The body, once it is one worth reading.
+     * @throws \RuntimeException When the asking failed or the accounting system refused.
      */
-    private function assertValidApiResponse(Response $response): void
+    private function validBody(Answer $answer): array
     {
-        // Transport-level validation
-        if (!$response->isOk()) {
-            $description = $response->getJson()['response']['description'] ?? __d('bookkeeping', 'Unknown error');
-            $description = str_replace(["\r", "\n"], ' ', $description);
-
-            throw new RuntimeException(
-                __d(
-                    'bookkeeping',
-                    'Eurofaktura API error ({0}, {1})',
-                    [
-                        $response->getStatusCode(),
-                        $description,
-                    ],
-                ),
-            );
-        }
-
-        $data = $response->getJson();
+        /** @var array<string, mixed> $data */
+        $data = $answer->orFail(__d('bookkeeping', 'Eurofaktura / E-racuni is not configured.'));
 
         // API-level error handling
         if (!empty($data['error'])) {
@@ -113,6 +88,8 @@ class EurofakturaProvider implements AccountingProviderInterface
                 ),
             );
         }
+
+        return $data;
     }
 
     /**
@@ -140,7 +117,7 @@ class EurofakturaProvider implements AccountingProviderInterface
      */
     private function syncInvoicesDelta(DateTime $lastChanges): array
     {
-        $response = $this->httpClient->send(
+        $answer = $this->httpClient->send(
             $this->credentialsProvider->getDefault(),
             'SalesInvoiceList',
             [
@@ -150,12 +127,12 @@ class EurofakturaProvider implements AccountingProviderInterface
             ],
         );
 
-        $drafts = $this->jsonParser->parseSalesInvoiceList($response->getJson());
+        $drafts = $this->jsonParser->parseSalesInvoiceList($this->validBody($answer));
 
         // Eurofaktura rate limit
         sleep(1);
 
-        $response = $this->httpClient->send(
+        $answer = $this->httpClient->send(
             $this->credentialsProvider->getDefault(),
             'SalesInvoiceList',
             [
@@ -165,7 +142,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
         return array_merge(
             $drafts,
-            $this->jsonParser->parseSalesInvoiceList($response->getJson()),
+            $this->jsonParser->parseSalesInvoiceList($this->validBody($answer)),
         );
     }
 
@@ -196,7 +173,7 @@ class EurofakturaProvider implements AccountingProviderInterface
         foreach ($customers as $customer) {
             $buyerCode = $buyerCodePrefix . $customer->number;
 
-            $response = $this->httpClient->send(
+            $answer = $this->httpClient->send(
                 $this->credentialsProvider->getDefault(),
                 'SalesInvoiceList',
                 [
@@ -206,7 +183,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
             $drafts = array_merge(
                 $drafts,
-                $this->jsonParser->parseSalesInvoiceList($response->getJson()),
+                $this->jsonParser->parseSalesInvoiceList($this->validBody($answer)),
             );
 
             // Eurofaktura rate limit
@@ -263,7 +240,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                 );
 
                 // 3) Send to API
-                $response = $this->httpClient->send(
+                $answer = $this->httpClient->send(
                     $this->credentialsProvider->getForInvoiceIssuing(),
                     'SalesInvoiceCreate',
                     [
@@ -273,7 +250,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                 );
 
                 // 4) Validate response
-                $this->assertValidApiResponse($response);
+                $this->validBody($answer);
             } catch (RuntimeException $e) {
                 throw new RuntimeException(__d(
                     'bookkeeping',
@@ -286,7 +263,7 @@ class EurofakturaProvider implements AccountingProviderInterface
             }
 
             // 5) (Optional) store documentId / external reference
-            // $data = $response->getJson();
+            // $data = $this->validBody($answer);
             // $documentId = $data['result']['id'] ?? null;
 
             // sleep two seconds because of rate limit
@@ -318,7 +295,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                 $partner = $this->jsonRequestBuilder->buildPartner($customer);
 
                 // 2) Send to API
-                $response = $this->httpClient->send(
+                $answer = $this->httpClient->send(
                     $this->credentialsProvider->getForInvoiceIssuing(),
                     'PartnerImport',
                     [
@@ -327,10 +304,10 @@ class EurofakturaProvider implements AccountingProviderInterface
                 );
 
                 // 3) Validate response
-                $this->assertValidApiResponse($response);
+                $this->validBody($answer);
 
                 // 4) (Optional) store documentId / external reference
-                // $data = $response->getJson();
+                // $data = $this->validBody($answer);
                 // $partnerId = $data['result']['id'] ?? null;
             } catch (RuntimeException $e) {
                 throw new RuntimeException(__d(
@@ -448,7 +425,7 @@ class EurofakturaProvider implements AccountingProviderInterface
             sleep(1);
 
             // Attempt to download from Eurofaktura API
-            $response = $this->httpClient->send(
+            $answer = $this->httpClient->send(
                 $this->credentialsProvider->getDefault(),
                 'SalesInvoiceGetPDF',
                 [
@@ -457,10 +434,10 @@ class EurofakturaProvider implements AccountingProviderInterface
             );
 
             // Validate response
-            $this->assertValidApiResponse($response);
+            $this->validBody($answer);
 
             // Check for PDF data
-            $data = $response->getJson();
+            $data = $this->validBody($answer);
 
             if (isset($data['response']['result']['pdfFile'])) {
                 // Decode base64 PDF content
