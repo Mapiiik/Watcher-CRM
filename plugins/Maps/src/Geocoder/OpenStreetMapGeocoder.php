@@ -98,10 +98,15 @@ class OpenStreetMapGeocoder implements GeocoderInterface
         $userAgent = Configure::read('Maps.nominatim.userAgent');
         $referer = Configure::read('Maps.nominatim.referer');
 
-        $client = new Client(['headers' => array_filter([
-            'User-Agent' => is_string($userAgent) && $userAgent !== '' ? $userAgent : null,
-            'Referer' => is_string($referer) && $referer !== '' ? $referer : null,
-        ])]);
+        // Somebody is typing while this is asked, so a service that has stopped answering is given
+        // up on rather than waited out for the half minute a client waits by default.
+        $client = new Client([
+            'headers' => array_filter([
+                'User-Agent' => is_string($userAgent) && $userAgent !== '' ? $userAgent : null,
+                'Referer' => is_string($referer) && $referer !== '' ? $referer : null,
+            ]),
+            'timeout' => 10,
+        ]);
 
         $response = $client->get($url, $parameters);
 

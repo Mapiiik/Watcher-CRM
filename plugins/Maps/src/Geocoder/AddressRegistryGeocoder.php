@@ -134,10 +134,15 @@ class AddressRegistryGeocoder implements GeocoderInterface
 
         $key = Configure::read('Maps.addressRegistry.key');
 
-        $client = new Client(['headers' => array_filter([
-            'Accept' => 'application/json',
-            'X-API-Key' => is_string($key) && $key !== '' ? $key : null,
-        ])]);
+        // Somebody is typing while this is asked, so a registry that has stopped answering is
+        // given up on rather than waited out for the half minute a client waits by default.
+        $client = new Client([
+            'headers' => array_filter([
+                'Accept' => 'application/json',
+                'X-API-Key' => is_string($key) && $key !== '' ? $key : null,
+            ]),
+            'timeout' => 10,
+        ]);
 
         $response = $client->get(rtrim($url, '/') . '/' . $path, $parameters);
 
