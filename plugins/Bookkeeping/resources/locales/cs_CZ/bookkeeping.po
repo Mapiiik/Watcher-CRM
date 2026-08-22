@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 17:10+0200\n"
-"PO-Revision-Date: 2026-08-22 17:19+0200\n"
+"POT-Creation-Date: 2026-08-22 20:47+0200\n"
+"PO-Revision-Date: 2026-08-22 20:51+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -511,44 +511,46 @@ msgstr "Synchronizace delta"
 msgid "Full Synchronization"
 msgstr "Plná synchronizace"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:79
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:78
 msgid "Eurofaktura / E-racuni is not configured."
 msgstr "Eurofaktura / E-racuni není nakonfigurována."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:84
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
-msgid "Eurofaktura API error: {0}"
-msgstr "Chyba API Eurofaktura: {0}"
-
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:87
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:100
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:117
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:50
 msgid "Unknown error"
 msgstr "Neznámá chyba"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:255
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:103
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:114
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
+msgid "Eurofaktura API error: {0}"
+msgstr "Chyba API Eurofaktura: {0}"
+
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:285
 msgid "Failed to send invoice for customer {0}: {1}"
 msgstr "Nepodařilo se odeslat fakturu pro zákazníka {0}: {1}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:259
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:317
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:289
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:347
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:313
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:343
 msgid "Failed to send partner for customer {0}: {1}"
 msgstr "Nepodařilo se odeslat partnera pro zákazníka {0}: {1}"
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:349
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:371
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:393
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:379
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:401
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:423
 msgid "Not implemented in Eurofaktura Provider."
 msgstr "Není implementováno v Eurofaktura Provider."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:448
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:478
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr "Neplatná data PDF přijatá z rozhraní API Eurofaktura."
 
-#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:463
+#: plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:493
 msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr "Faktura ve formátu PDF nebyla nalezena nebo ji nelze stáhnout: {0}"
 
