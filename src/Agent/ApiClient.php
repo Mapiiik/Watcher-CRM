@@ -5,6 +5,7 @@ namespace App\Agent;
 
 use App\Agent\Provider\AgentPayloadNormalizer;
 use App\Http\Answer;
+use App\Http\WritesDownFailuresTrait;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Radius\Model\Entity\Radacct;
@@ -19,6 +20,8 @@ use Throwable;
  */
 class ApiClient
 {
+    use WritesDownFailuresTrait;
+
     /**
      * Ask the agent to do one thing.
      *
@@ -50,7 +53,7 @@ class ApiClient
         try {
             $response = $http->post($agentUrl . '/api/' . $function, $data, ['type' => 'json']);
         } catch (Throwable $e) {
-            return Answer::failed(__('Watcher Agent is unreachable: {0}', $e->getMessage()));
+            return self::unanswered(__('Watcher Agent is unreachable: {0}', $e->getMessage()));
         }
 
         $body = $response->getJson();
@@ -58,7 +61,7 @@ class ApiClient
         $message = is_scalar($message) ? (string)$message : null;
 
         if (!$response->isOk()) {
-            return Answer::failed(__(
+            return self::unanswered(__(
                 'Watcher Agent returned HTTP {0} ({1})',
                 $response->getStatusCode(),
                 $message ?? __('Unknown error'),
@@ -68,7 +71,7 @@ class ApiClient
         // An answer with no verdict in it is not a verdict of no; it is an answer to a different
         // question, and reading it as one would report a host as unreachable that was never asked.
         if (!is_array($body) || ($expect !== '' && !isset($body[$expect]))) {
-            return Answer::failed(__(
+            return self::unanswered(__(
                 'Watcher Agent returned an unexpected response: {0}',
                 $message ?? __('Unknown error'),
             ));

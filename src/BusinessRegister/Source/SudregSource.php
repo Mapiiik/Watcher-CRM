@@ -182,7 +182,7 @@ class SudregSource extends BaseSource
         $data = $answer->data;
         $token = $data['access_token'] ?? null;
         if (!is_string($token) || $token === '') {
-            return Answer::failed(__('The {0} register did not issue a token.', $this->label()));
+            return self::unanswered(__('The {0} register did not issue a token.', $this->label()));
         }
 
         Cache::write(

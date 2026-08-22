@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Http;
 
 use App\Http\Answer;
+use Cake\TestSuite\LogTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
@@ -19,6 +20,8 @@ use RuntimeException;
 #[CoversClass(Answer::class)]
 class AnswerTest extends TestCase
 {
+    use LogTestTrait;
+
     /**
      * An answer is an answer, whatever it says.
      *
@@ -122,6 +125,28 @@ class AnswerTest extends TestCase
     {
         $this->assertSame([], Answer::failed('down')->or([]));
         $this->assertSame([], Answer::notAsked()->or([]));
+    }
+
+    /**
+     * A reading that came to nothing is written down as it goes, because a client reports rather
+     * than throws - the caller may turn the failure into a word to the operator or pass it over
+     * entirely, and either way there would be nothing left of it afterwards.
+     *
+     * @return void
+     * @link \App\Http\WritesDownFailuresTrait::unanswered()
+     */
+    public function testAFailureIsWrittenDownOnTheWayOut(): void
+    {
+        $this->setupLog(['error', 'warning']);
+
+        $answer = FailingClient::readSomething();
+
+        $this->assertTrue($answer->unanswered());
+        $this->assertLogMessageContains('error', 'The other side did not answer.');
+
+        // how loudly is the client's to say: one municipality of forty refusing is a Tuesday
+        FailingClient::readSomethingUnremarkable();
+        $this->assertLogMessageContains('warning', 'Nothing came of that either.');
     }
 
     /**

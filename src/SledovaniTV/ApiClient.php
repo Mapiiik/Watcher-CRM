@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\SledovaniTV;
 
 use App\Http\Answer;
+use App\Http\WritesDownFailuresTrait;
 use App\SledovaniTV\Provider\TvUserPayloadNormalizer;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -22,6 +23,8 @@ use Throwable;
  */
 class ApiClient
 {
+    use WritesDownFailuresTrait;
+
     /**
      * How long to wait for SledovaniTV, in seconds.
      */
@@ -58,7 +61,7 @@ class ApiClient
                 ],
             );
         } catch (Throwable $e) {
-            return Answer::failed(__('The SledovaniTV API is unreachable: {0}', $e->getMessage()));
+            return self::unanswered(__('The SledovaniTV API is unreachable: {0}', $e->getMessage()));
         }
 
         if (!$response->isOk()) {
@@ -76,12 +79,12 @@ class ApiClient
                     ),
             );
 
-            return Answer::failed(__('Error while communicating with the SledovaniTV API.'));
+            return self::unanswered(__('Error while communicating with the SledovaniTV API.'));
         }
 
         $body = $response->getJson();
 
-        return is_array($body) ? Answer::of($body) : Answer::failed(
+        return is_array($body) ? Answer::of($body) : self::unanswered(
             __('The SledovaniTV API returned an invalid response.'),
         );
     }

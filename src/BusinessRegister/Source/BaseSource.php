@@ -6,6 +6,7 @@ namespace App\BusinessRegister\Source;
 use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\Provider\SubjectPayloadNormalizer;
 use App\Http\Answer;
+use App\Http\WritesDownFailuresTrait;
 use Cake\Collection\CollectionInterface;
 use Cake\Http\Client;
 use Closure;
@@ -18,6 +19,8 @@ use Throwable;
  */
 abstract class BaseSource implements SourceInterface
 {
+    use WritesDownFailuresTrait;
+
     /**
      * @inheritDoc
      */
@@ -114,7 +117,7 @@ abstract class BaseSource implements SourceInterface
         try {
             $response = $ask();
         } catch (Throwable $e) {
-            return Answer::failed(__(
+            return self::unanswered(__(
                 'The {0} register is unreachable: {1}',
                 $this->label(),
                 $e->getMessage(),
@@ -126,7 +129,7 @@ abstract class BaseSource implements SourceInterface
         }
 
         if (!$response->isOk()) {
-            return Answer::failed(__(
+            return self::unanswered(__(
                 'The {0} register returned HTTP {1}.',
                 $this->label(),
                 $response->getStatusCode(),
@@ -135,7 +138,7 @@ abstract class BaseSource implements SourceInterface
 
         $data = $response->getJson();
         if (!is_array($data)) {
-            return Answer::failed(__('The {0} register returned an invalid response.', $this->label()));
+            return self::unanswered(__('The {0} register returned an invalid response.', $this->label()));
         }
 
         return Answer::of($data);

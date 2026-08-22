@@ -17,13 +17,13 @@ declare(strict_types=1);
 namespace App\NMS;
 
 use App\Http\Answer;
+use App\Http\WritesDownFailuresTrait;
 use App\NMS\Dto\AccessPoint;
 use App\NMS\Provider\NmsPayloadNormalizer;
 use Cake\Cache\Cache;
 use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Client;
-use Cake\Log\Log;
 use Throwable;
 
 /**
@@ -38,6 +38,8 @@ use Throwable;
  */
 class ApiClient
 {
+    use WritesDownFailuresTrait;
+
     /**
      * Where answers are kept.
      */
@@ -273,20 +275,6 @@ class ApiClient
         }
 
         return Answer::of($body[$answerKey]);
-    }
-
-    /**
-     * A reading that came to nothing, written down on the way out.
-     *
-     * @param string $why What went wrong.
-     * @param string $level How loudly to say it.
-     * @return \App\Http\Answer<never>
-     */
-    private static function unanswered(string $why, string $level = 'error'): Answer
-    {
-        Log::write($level, $why);
-
-        return Answer::failed($why);
     }
 
     /**

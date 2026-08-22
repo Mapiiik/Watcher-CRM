@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Provider\Eurofaktura;
 
 use App\Http\Answer;
+use App\Http\WritesDownFailuresTrait;
 use Cake\Http\Client;
 use Settings\Utility\Settings;
 use Throwable;
@@ -19,6 +20,8 @@ use Throwable;
  */
 class HttpClient
 {
+    use WritesDownFailuresTrait;
+
     /**
      * Send request to Eurofaktura / E-racuni API.
      *
@@ -65,7 +68,7 @@ class HttpClient
 
             $response = $http->post($url, json_encode($payload, JSON_THROW_ON_ERROR));
         } catch (Throwable $e) {
-            return Answer::failed(__d(
+            return self::unanswered(__d(
                 'bookkeeping',
                 'Error connecting to Eurofaktura / E-racuni API: {0}',
                 [$e->getMessage()],
@@ -80,7 +83,7 @@ class HttpClient
         if (!$response->isOk()) {
             $description = $body['response']['description'] ?? __d('bookkeeping', 'Unknown error');
 
-            return Answer::failed(__d(
+            return self::unanswered(__d(
                 'bookkeeping',
                 'Eurofaktura API error ({0}, {1})',
                 [$response->getStatusCode(), str_replace(["\r", "\n"], ' ', (string)$description)],

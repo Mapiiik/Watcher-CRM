@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Provider\Pohoda;
 
 use App\Http\Answer;
+use App\Http\WritesDownFailuresTrait;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Settings\Utility\Settings;
@@ -22,6 +23,8 @@ use Throwable;
  */
 class HttpClient
 {
+    use WritesDownFailuresTrait;
+
     /**
      * Send XML request to Pohoda mServer.
      *
@@ -59,7 +62,7 @@ class HttpClient
 
             $response = $http->post($url . '/xml', $xml);
         } catch (Throwable $e) {
-            return Answer::failed(__d(
+            return self::unanswered(__d(
                 'bookkeeping',
                 'Error connecting to Pohoda mServer: {0}',
                 [$e->getMessage()],
@@ -67,7 +70,7 @@ class HttpClient
         }
 
         if (!$response->isOk()) {
-            return Answer::failed(__d(
+            return self::unanswered(__d(
                 'bookkeeping',
                 'Invalid response from Pohoda mServer ({0})',
                 [$response->getReasonPhrase()],
@@ -77,7 +80,7 @@ class HttpClient
         $body = $response->getXml();
 
         if (!$body instanceof SimpleXMLElement) {
-            return Answer::failed(__d('bookkeeping', 'Invalid XML response from Pohoda mServer.'));
+            return self::unanswered(__d('bookkeeping', 'Invalid XML response from Pohoda mServer.'));
         }
 
         return Answer::of($body);
