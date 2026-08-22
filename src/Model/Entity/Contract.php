@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Colors\ColorThemeSelector;
+use App\Http\Answer;
 use App\NMS\ApiClient as NMSApiClient;
-use ArrayObject;
+use App\NMS\Dto\AccessPoint;
+use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
@@ -61,8 +63,7 @@ use RuntimeException;
  * @property \App\Model\Entity\RemovedIpNetwork[] $removed_ip_networks
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
- * @property \ArrayObject<string, mixed>|null $access_point
- * @property string|null $access_point_name
+ * @property \App\Http\Answer $access_point
  */
 class Contract extends AppEntity
 {
@@ -187,32 +188,23 @@ class Contract extends AppEntity
     /**
      * getter for acess point (try to load via ApiClient)
      *
-     * @return \ArrayObject<string, mixed>|null
-     */
-    protected function _getAccessPoint(): ?ArrayObject
-    {
-        if ($this->access_point_id) {
-            return NMSApiClient::getAccessPoint($this->access_point_id);
-        }
-
-        return null;
-    }
-
-    /**
-     * getter for acess point name (try to load via ApiClient)
+     * Picked out of every point Watcher NMS keeps rather than asked after by itself. A listing
+     * shows many rows and that reading is fetched once for all of them, where a point apiece would
+     * be a request apiece - and the same reading already stands behind the lists a form picks from.
      *
-     * @return string|null
+     * @return \App\Http\Answer Answering with an {@see \App\NMS\Dto\AccessPoint} or null.
      */
-    protected function _getAccessPointName(): ?string
+    protected function _getAccessPoint(): Answer
     {
-        // load access points from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPointsList();
-
-        if ($accessPoints && $this->access_point_id) {
-            return $accessPoints[$this->access_point_id] ?? null;
+        if ($this->access_point_id === null) {
+            return Answer::notAsked();
         }
 
-        return null;
+        return NMSApiClient::getAccessPoints()->map(
+            fn(CollectionInterface $accessPoints): ?AccessPoint => $accessPoints
+                ->filter(fn(AccessPoint $accessPoint): bool => $accessPoint->id === $this->access_point_id)
+                ->first(),
+        );
     }
 
     /**

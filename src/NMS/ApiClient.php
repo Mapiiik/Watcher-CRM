@@ -16,23 +16,25 @@ declare(strict_types=1);
  */
 namespace App\NMS;
 
-use ArrayObject;
+use App\Http\Answer;
+use App\NMS\Dto\AccessPoint;
+use App\NMS\Provider\NmsPayloadNormalizer;
 use Cake\Cache\Cache;
-use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Client;
 use Cake\Log\Log;
-use Closure;
 use Throwable;
 
 /**
  * API Client
  *
  * Nothing here throws. Watcher NMS is another application that may be down, misconfigured or
- * answering something unexpected, and none of that is a reason to lose the page - every caller
- * reads null as "Watcher NMS did not say", falls back to an empty list and tells the operator so.
- * What a failure must not do is pass for an answer, so it is written down and it is never kept.
+ * answering something unexpected, and none of that is a reason to lose the page - so every reading
+ * comes back as an {@see \App\Http\Answer}, and the caller says what a failure is worth. A page
+ * draws itself without the answer and remarks on it; a command asks for `orFail()` and stops.
+ *
+ * What a failure must never do is pass for an answer, so it is written down and it is never kept.
  */
 class ApiClient
 {
@@ -51,254 +53,189 @@ class ApiClient
     private const TIMEOUT = 10;
 
     /**
-     * What came of the asking during this request. {@see self::isAvailable()}
-     */
-    private static ?bool $answered = null;
-
-    /**
-     * Fetch access points method
+     * The access points Watcher NMS keeps.
      *
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\AccessPoint}.
      */
-    public static function fetchAccessPoints(): ?CollectionInterface
+    public static function getAccessPoints(): Answer
     {
-        $accessPoints = self::fetch('/api/access-points.json', 'accessPoints');
-
-        return $accessPoints === null ? null : new Collection($accessPoints);
+        return self::read('access_points', '/api/access-points.json', 'accessPoints')
+            ->map(NmsPayloadNormalizer::accessPoints(...));
     }
 
     /**
-     * Get access points method
+     * The access points as a list to pick from, by number and name.
      *
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API or from cache if valid
+     * Kept of its own beside the points themselves: a listing asks for it once a row, and sorting
+     * a few hundred masts that many times over is work nobody sees.
+     *
+     * @param bool $onlyActive Whether to leave out the points that have been put out of use.
+     * @return \App\Http\Answer Answering with an array of names, keyed by number.
      */
-    public static function getAccessPoints(): ?CollectionInterface
+    public static function getAccessPointsList(bool $onlyActive = false): Answer
     {
-        return self::remember(
-            'access_points',
-            function (): ?CollectionInterface {
-                return self::fetchAccessPoints();
-            },
+        $key = 'access_points_list|' . ($onlyActive ? 'active' : 'all');
+
+        $cached = Cache::read($key, self::CACHE_CONFIG);
+        if ($cached !== null) {
+            return Answer::of($cached);
+        }
+
+        $answer = self::getAccessPoints()->map(
+            fn(CollectionInterface $accessPoints): array => $accessPoints
+                ->filter(fn(AccessPoint $accessPoint): bool => !$onlyActive || !$accessPoint->isArchived())
+                ->sortBy(fn(AccessPoint $accessPoint): string => (string)$accessPoint->name, SORT_ASC, SORT_NATURAL)
+                ->combine(
+                    fn(AccessPoint $accessPoint): string => $accessPoint->id,
+                    fn(AccessPoint $accessPoint): string => (string)$accessPoint->name,
+                )
+                ->toArray(),
         );
+
+        if ($answer->ok()) {
+            Cache::write($key, $answer->data, self::CACHE_CONFIG);
+        }
+
+        return $answer;
     }
 
     /**
-     * Get access points list
+     * The ranges of addresses Watcher NMS keeps.
      *
-     * @return array<string>|null Return result from API or from cache if valid
-     */
-    public static function getAccessPointsList(bool $onlyActive = false): ?array
-    {
-        return self::remember(
-            'access_points_list|' . ($onlyActive ? 'active' : 'all'),
-            function () use ($onlyActive): ?array {
-                $accessPoints = self::getAccessPoints();
-                if ($accessPoints instanceof CollectionInterface) {
-                    $list = $accessPoints->sortBy('name', SORT_ASC, SORT_NATURAL);
-
-                    if ($onlyActive) {
-                        return $list->match(['archived' => null])->combine('id', 'name')->toArray();
-                    }
-
-                    return $list->combine('id', 'name')->toArray();
-                }
-
-                return null;
-            },
-        );
-    }
-
-    /**
-     * Fetch access point method
-     *
-     * @param string $id Access Point id.
-     * @return \ArrayObject<string, mixed>|null Return result from API
-     */
-    public static function fetchAccessPoint(string $id): ?ArrayObject
-    {
-        $accessPoint = self::fetch('/api/access-points/' . $id . '.json', 'accessPoint');
-
-        return $accessPoint === null ? null : new ArrayObject($accessPoint, ArrayObject::ARRAY_AS_PROPS);
-    }
-
-    /**
-     * Get access point method
-     *
-     * @param string $id Access Point id.
-     * @return \ArrayObject<string, mixed>|null Return result from API or from cache if valid
-     */
-    public static function getAccessPoint(string $id): ?ArrayObject
-    {
-        return self::remember(
-            'access_point_' . $id,
-            function () use ($id): ?ArrayObject {
-                return self::fetchAccessPoint($id);
-            },
-        );
-    }
-
-    /**
-     * Fetch IP address ranges method
-     *
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
-     */
-    public static function fetchIpAddressRanges(): ?CollectionInterface
-    {
-        $ipAddressRanges = self::fetch('/api/ip-address-ranges.json', 'ipAddressRanges');
-
-        return $ipAddressRanges === null ? null : new Collection($ipAddressRanges);
-    }
-
-    /**
-     * Get IP address ranges method
-     *
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API or from cache if valid
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
      * @psalm-suppress PossiblyUnusedMethod
      */
-    public static function getIpAddressRanges(): ?CollectionInterface
+    public static function getIpAddressRanges(): Answer
     {
-        return self::remember(
-            'ip_address_ranges',
-            function (): ?CollectionInterface {
-                return self::fetchIpAddressRanges();
-            },
-        );
+        return self::read('ip_address_ranges', '/api/ip-address-ranges.json', 'ipAddressRanges')
+            ->map(NmsPayloadNormalizer::ipAddressRanges(...));
     }
 
     /**
-     * Fetch IP address range method
+     * One range of addresses.
      *
-     * @param string $id IP address range id.
-     * @return \ArrayObject<string, mixed>|null Return result from API
-     */
-    public static function fetchIpAddressRange(string $id): ?ArrayObject
-    {
-        $ipAddressRange = self::fetch('/api/ip-address-ranges/' . $id . '.json', 'ipAddressRange');
-
-        return $ipAddressRange === null ? null : new ArrayObject($ipAddressRange, ArrayObject::ARRAY_AS_PROPS);
-    }
-
-    /**
-     * Get IP address range method
-     *
-     * @param string $id IP address range id.
-     * @return \ArrayObject<string, mixed>|null Return result from API or from cache if valid
+     * @param string $id The number Watcher NMS keeps the range under.
+     * @return \App\Http\Answer Answering with an {@see \App\NMS\Dto\IpAddressRange} or null.
      * @psalm-suppress PossiblyUnusedMethod
      */
-    public static function getIpAddressRange(string $id): ?ArrayObject
+    public static function getIpAddressRange(string $id): Answer
     {
-        return self::remember(
+        return self::read(
             'ip_address_range_' . $id,
-            function () use ($id): ?ArrayObject {
-                return self::fetchIpAddressRange($id);
-            },
-        );
+            '/api/ip-address-ranges/' . $id . '.json',
+            'ipAddressRange',
+        )->map(NmsPayloadNormalizer::ipAddressRange(...));
     }
 
     /**
-     * Search IP address ranges method
+     * The ranges matching what is asked about them.
      *
-     * @param array<string> $search IP address ranges condidions.
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
+     * Not kept: the conditions differ with every form that asks, and a form wants what is there
+     * now rather than what was there a few minutes ago.
+     *
+     * @param array<string, mixed> $search What to match the ranges on.
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
      */
-    public static function searchIpAddressRanges(array $search): ?CollectionInterface
+    public static function searchIpAddressRanges(array $search): Answer
     {
-        $ipAddressRanges = self::fetch('/api/ip-address-ranges/search.json', 'ipAddressRanges', $search);
-
-        return $ipAddressRanges === null ? null : new Collection($ipAddressRanges);
+        return self::ask('/api/ip-address-ranges/search.json', 'ipAddressRanges', $search)
+            ->map(NmsPayloadNormalizer::ipAddressRanges(...));
     }
 
     /**
-     * Get IP address ranges for IP method
+     * The ranges an address falls in.
      *
-     * @param string $ipAddress IP address.
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API or from cache if valid
+     * @param string $ipAddress The address or network to look for.
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
      */
-    public static function getIpAddressRangesForIp(string $ipAddress): ?CollectionInterface
+    public static function getIpAddressRangesForIp(string $ipAddress): Answer
     {
-        return self::remember(
-            'ip_address_ranges_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ipAddress): ?CollectionInterface {
-                return self::searchIpAddressRanges(['ip_address' => $ipAddress]);
-            },
-        );
+        return self::read(
+            'ip_address_ranges_for_ip_' . self::keyFor($ipAddress),
+            '/api/ip-address-ranges/search.json',
+            'ipAddressRanges',
+            ['ip_address' => $ipAddress],
+        )->map(NmsPayloadNormalizer::ipAddressRanges(...));
     }
 
     /**
-     * Search RouterOS Devices method
+     * The devices matching what is asked about them.
      *
-     * @param array<string> $search IP address ranges condidions.
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
+     * @param array<string, mixed> $search What to match the devices on.
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\RouterosDevice}.
+     * @psalm-suppress PossiblyUnusedMethod
      */
-    public static function searchRouterosDevices(array $search): ?CollectionInterface
+    public static function searchRouterosDevices(array $search): Answer
     {
-        $routerosDevices = self::fetch('/api/routeros-devices/search.json', 'routerosDevices', $search);
-
-        return $routerosDevices === null ? null : new Collection($routerosDevices);
+        return self::ask('/api/routeros-devices/search.json', 'routerosDevices', $search)
+            ->map(NmsPayloadNormalizer::routerosDevices(...));
     }
 
     /**
-     * Get RouterOS Device for IP method
+     * The devices answering at an address.
      *
-     * @param string $ipAddress IP address.
-     * @return \Cake\Collection\CollectionInterface<mixed, mixed>|null Return result from API or from cache if valid
+     * @param string $ipAddress The address to look for.
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\RouterosDevice}.
      */
-    public static function getRouterosDevicesForIp(string $ipAddress): ?CollectionInterface
+    public static function getRouterosDevicesForIp(string $ipAddress): Answer
     {
-        return self::remember(
-            'routeros_devices_for_ip_' . strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']),
-            function () use ($ipAddress): ?CollectionInterface {
-                return self::searchRouterosDevices(['some_ip_address' => $ipAddress]);
-            },
-        );
+        return self::read(
+            'routeros_devices_for_ip_' . self::keyFor($ipAddress),
+            '/api/routeros-devices/search.json',
+            'routerosDevices',
+            ['some_ip_address' => $ipAddress],
+        )->map(NmsPayloadNormalizer::routerosDevices(...));
     }
 
     /**
-     * How the asking has gone so far.
+     * What is kept, or what Watcher NMS says now.
      *
-     * Whoever draws the page has to tell a Watcher NMS that did not answer from one that answered
-     * nothing - the first is worth saying out loud, the second is just an empty column. Both arrive
-     * here as null, so what actually happened is remembered rather than asked about again: a page
-     * showing a hundred rows would otherwise wait out the timeout a hundred times over to find out
-     * what the first row already knew.
+     * What goes into the cache is the answer as it arrived, never the things read out of it: a
+     * deploy that changes one of those classes would otherwise be met with whatever the cache
+     * still holds. An answer that was not given is not written down at all - keeping it would hand
+     * the next caller a failure dressed as an answer, and Watcher NMS coming back up would not be
+     * noticed until it ran out.
      *
-     * Kept for one request, which is as long as one page is drawn.
-     *
-     * @return bool|null Null where nothing was asked, false where a question went unanswered.
+     * @param string $key Where the answer is kept.
+     * @param string $path What to read.
+     * @param string $answerKey What Watcher NMS calls the answer.
+     * @param array<string, mixed> $query Anything to ask for beyond the path.
+     * @return \App\Http\Answer
      */
-    public static function isAvailable(): ?bool
+    private static function read(string $key, string $path, string $answerKey, array $query = []): Answer
     {
-        return self::$answered;
+        $cached = Cache::read($key, self::CACHE_CONFIG);
+        if ($cached !== null) {
+            return Answer::of($cached);
+        }
+
+        $answer = self::ask($path, $answerKey, $query);
+
+        if ($answer->ok()) {
+            Cache::write($key, $answer->data, self::CACHE_CONFIG);
+        }
+
+        return $answer;
     }
 
     /**
-     * Whether there is a Watcher NMS to ask at all.
-     *
-     * @return bool
-     */
-    private static function isConfigured(): bool
-    {
-        return (string)Configure::read('Nms.url') !== '' && (string)Configure::read('Nms.key') !== '';
-    }
-
-    /**
-     * Reads one thing from Watcher NMS, and hands back nothing where it was not read.
+     * Reads one thing from Watcher NMS.
      *
      * The key is the one Watcher NMS wraps its answer in. An answer without it is an answer to a
      * different question - an error page, a login form, a changed API - and is not read as data.
      *
      * @param string $path What to read.
-     * @param string $key What Watcher NMS calls the answer.
+     * @param string $answerKey What Watcher NMS calls the answer.
      * @param array<string, mixed> $query Anything to ask for beyond the path.
-     * @return array<mixed>|null
+     * @return \App\Http\Answer Answering with the payload as it arrived.
      */
-    private static function fetch(string $path, string $key, array $query = []): ?array
+    private static function ask(string $path, string $answerKey, array $query = []): Answer
     {
-        // Not being configured is a state, not a failure - an installation without a Watcher NMS says
-        // so by leaving the address empty, and saying it again in the log every few minutes
+        // Not being configured is a state, not a failure - an installation without a Watcher NMS
+        // says so by leaving the address empty, and saying it again in the log every few minutes
         // helps nobody.
-        if (!self::isConfigured()) {
-            return null;
+        if ((string)Configure::read('Nms.url') === '' || (string)Configure::read('Nms.key') === '') {
+            return Answer::notAsked();
         }
 
         try {
@@ -309,59 +246,56 @@ class ApiClient
         } catch (Throwable $e) {
             // The path and never the query: the API key is asked for as a query parameter, and a
             // log is read by more people than a configuration file is.
-            Log::error(sprintf('Watcher NMS could not be asked about %s: %s', $path, $e->getMessage()));
-            self::$answered = false;
-
-            return null;
+            return self::unanswered(sprintf(
+                'Watcher NMS could not be asked about %s: %s',
+                $path,
+                $e->getMessage(),
+            ));
         }
 
         if (!$response->isOk()) {
-            Log::error(sprintf('Watcher NMS answered %d asking about %s.', $response->getStatusCode(), $path));
-            self::$answered = false;
-
-            return null;
+            return self::unanswered(sprintf(
+                'Watcher NMS answered %d asking about %s.',
+                $response->getStatusCode(),
+                $path,
+            ));
         }
 
         $body = $response->getJson();
 
-        if (!is_array($body) || !isset($body[$key]) || !is_array($body[$key])) {
-            Log::warning(sprintf('Watcher NMS answered %s without `%s` in it.', $path, $key));
-            self::$answered = false;
-
-            return null;
+        if (!is_array($body) || !isset($body[$answerKey]) || !is_array($body[$answerKey])) {
+            // Not an outage but a misunderstanding: something answered, it just was not this.
+            return self::unanswered(
+                sprintf('Watcher NMS answered %s without `%s` in it.', $path, $answerKey),
+                'warning',
+            );
         }
 
-        // One answer does not undo another that never came: a page is only as whole as its
-        // emptiest column.
-        self::$answered ??= true;
-
-        return $body[$key];
+        return Answer::of($body[$answerKey]);
     }
 
     /**
-     * What is kept, or what Watcher NMS says now.
+     * A reading that came to nothing, written down on the way out.
      *
-     * {@see \Cake\Cache\Cache::remember()} in every respect but one: an answer that was not given
-     * is not written down. Keeping it would hand the next caller a failure dressed as an answer,
-     * and Watcher NMS coming back up would not be noticed until it ran out.
-     *
-     * @template T
-     * @param string $key Where the answer is kept.
-     * @param \Closure(): T $fetch How to ask, when there is nothing kept.
-     * @return T|null
+     * @param string $why What went wrong.
+     * @param string $level How loudly to say it.
+     * @return \App\Http\Answer
      */
-    private static function remember(string $key, Closure $fetch): mixed
+    private static function unanswered(string $why, string $level = 'error'): Answer
     {
-        $cached = Cache::read($key, self::CACHE_CONFIG);
-        if ($cached !== null) {
-            return $cached;
-        }
+        Log::write($level, $why);
 
-        $answer = $fetch();
-        if ($answer !== null) {
-            Cache::write($key, $answer, self::CACHE_CONFIG);
-        }
+        return Answer::failed($why);
+    }
 
-        return $answer;
+    /**
+     * An address as a cache key may spell it.
+     *
+     * @param string $ipAddress The address or network.
+     * @return string
+     */
+    private static function keyFor(string $ipAddress): string
+    {
+        return strtr($ipAddress, ['.' => '-', ':' => '-', '/' => '-mask-']);
     }
 }

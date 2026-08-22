@@ -591,7 +591,8 @@ $remark = function (string $note, bool $wrong = false): string {
                             <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
                             <td><?= $this->element('AccessPoints/link', [
                                 'id' => $contract->access_point_id,
-                                'name' => $contract->access_point_name,
+                                'name' => $contract->access_point->data?->name,
+                                'answer' => $contract->access_point,
                                 ]) ?></td>
                             <td><?= h($contract->installation_date) ?></td>
                             <td><?= h($contract->uninstallation_date) ?></td>

@@ -6,7 +6,8 @@ namespace App\Controller\Traits;
 use App\Model\Table\QueuesTable;
 use App\Model\Table\ServiceTypesTable;
 use App\NMS\ApiClient as NMSApiClient;
-use Cake\Collection\CollectionInterface;
+use App\NMS\Dto\AccessPoint;
+use App\NMS\Dto\IpAddressRange;
 
 /**
  * @psalm-require-extends \Cake\Controller\Controller
@@ -57,12 +58,11 @@ trait CommonViewVarListsTrait
         // load access points from NMS if possible (only active)
         $accessPoints = NMSApiClient::getAccessPointsList(onlyActive: $onlyActive);
 
-        if ($accessPoints === null) {
+        if (!$accessPoints->ok()) {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $accessPoints = [];
         }
 
-        $this->set('accessPoints', $accessPoints);
+        $this->set('accessPoints', $accessPoints->or([]));
     }
 
     /**
@@ -73,42 +73,43 @@ trait CommonViewVarListsTrait
     protected function setAccessPointsViewVarListWithRanges(bool $onlyActive = false): void
     {
         // load access points with ranges from NMS if possible
-        $accessPoints = NMSApiClient::getAccessPoints();
-        $ipAddressRanges = NMSApiClient::searchIpAddressRanges([]);
+        $accessPointsAnswer = NMSApiClient::getAccessPoints();
+        $rangesAnswer = NMSApiClient::searchIpAddressRanges([]);
 
-        if ($accessPoints instanceof CollectionInterface && $ipAddressRanges instanceof CollectionInterface) {
-            if ($onlyActive) {
-                $accessPoints = $accessPoints->match(['archived' => null]);
-            }
-            $accessPoints = $accessPoints
-                ->map(
-                    function (array $accessPoint) use ($ipAddressRanges): array {
-                        $text = $accessPoint['name']
-                            . ($accessPoint['archived'] === null ? '' : ' (' . __('archived') . ')');
-
-                        $ranges = $ipAddressRanges
-                            ->match(['access_point_id' => $accessPoint['id']])
-                            ->sortBy('name', SORT_ASC, SORT_NATURAL);
-
-                        if (!$ranges->isEmpty()) {
-                            $rangeNames = $ranges->extract('name');
-                            $text .= '     [' . implode(', ', $rangeNames->toArray()) . ']';
-                        }
-
-                        return [
-                            'value' => $accessPoint['id'],
-                            'text' => $text,
-                            'style' => $accessPoint['archived'] === null ? null : 'color: darkgray;',
-                        ];
-                    },
-                )
-                ->sortBy('text', SORT_ASC, SORT_NATURAL)
-                ->toArray();
-        } else {
+        if (!$accessPointsAnswer->ok() || !$rangesAnswer->ok()) {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $accessPoints = [];
+            $this->set('accessPoints', []);
+
+            return;
         }
 
-        $this->set('accessPoints', $accessPoints);
+        /** @var \Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange> $ranges */
+        $ranges = $rangesAnswer->data;
+
+        $this->set('accessPoints', $accessPointsAnswer->data
+            ->filter(fn(AccessPoint $accessPoint): bool => !$onlyActive || !$accessPoint->isArchived())
+            ->map(function (AccessPoint $accessPoint) use ($ranges): array {
+                $text = (string)$accessPoint->name
+                    . ($accessPoint->isArchived() ? ' (' . __('archived') . ')' : '');
+
+                /** @var list<string> $rangeNames */
+                $rangeNames = $ranges
+                    ->filter(fn(IpAddressRange $range): bool => $range->accessPointId === $accessPoint->id)
+                    ->sortBy(fn(IpAddressRange $range): string => (string)$range->name, SORT_ASC, SORT_NATURAL)
+                    ->map(fn(IpAddressRange $range): string => (string)$range->name)
+                    ->toList();
+
+                if ($rangeNames !== []) {
+                    $text .= '     [' . implode(', ', $rangeNames) . ']';
+                }
+
+                return [
+                    'value' => $accessPoint->id,
+                    'text' => $text,
+                    'style' => $accessPoint->isArchived() ? 'color: darkgray;' : null,
+                ];
+            })
+            ->sortBy(fn(array $option): string => $option['text'], SORT_ASC, SORT_NATURAL)
+            ->toList());
     }
 }

@@ -512,12 +512,12 @@ class ContractPDF extends AppPDF
 
                 $this->SetFont('DejaVuSerif', '', 8);
                 foreach ($contract->ip_addresses as $ipAddress) {
+                    // an address the range is not looked up for prints a dash rather than the
+                    // range of whichever address came before it
+                    $range = null;
                     // load range for customer address set manually
-                    if (
-                        $ipAddress->type_of_use == IpAddressTypeOfUse::CustomerManually
-                        && isset($ipAddress->ip_address_ranges)
-                    ) {
-                        $range = $ipAddress->ip_address_ranges->first();
+                    if ($ipAddress->type_of_use == IpAddressTypeOfUse::CustomerManually) {
+                        $range = $ipAddress->ip_address_ranges->data?->first();
                     }
                     // skip processing for technology address set manually
                     if ($ipAddress->type_of_use == IpAddressTypeOfUse::TechnologyManually) {
@@ -525,8 +525,8 @@ class ContractPDF extends AppPDF
                     }
                     $this->Cell(4, 5);
                     $this->Cell(60, 5, $ipAddress->ip_address, border: 1, align: 'C');
-                    $this->Cell(60, 5, $range['ip_network'] ?? '-', border: 1, align: 'C');
-                    $this->Cell(60, 5, $range['ip_gateway'] ?? '-', border: 1, align: 'C');
+                    $this->Cell(60, 5, $range->network ?? '-', border: 1, align: 'C');
+                    $this->Cell(60, 5, $range->gateway ?? '-', border: 1, align: 'C');
                     $this->Ln();
 
                     unset($range);

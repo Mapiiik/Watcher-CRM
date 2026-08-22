@@ -1,19 +1,19 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * \Cake\Collection\CollectionInterface|null $routerosDevices RouterOS Devices
+ * @var \App\Http\Answer $routerosDevices What Watcher NMS said about the devices at the address.
  */
 
-if (isset($routerosDevices)) {
-    $device = $routerosDevices->first();
+$device = $routerosDevices->data?->first();
+
+if ($device !== null) {
     $deviceLink = $this->element('RouterosDevices/link', [
-        'id' => isset($device['id']) ? (string)$device['id'] : null,
-        'name' => isset($device['system_description']) ? (string)$device['system_description'] : null,
+        'id' => $device->id,
+        'name' => $device->systemDescription,
     ]);
     echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
-    unset($device);
-} else {
-    // The cell was filled in from here, so leaving it blank would read as an address no device
-    // answers for rather than as a question nobody answered.
-    echo $this->element('NMS/unavailable');
 }
+
+// The cell was filled in from here, so leaving it blank would read as an address no device answers
+// for rather than as a question nobody answered.
+echo $this->element('NMS/unavailable', ['answer' => $routerosDevices]);

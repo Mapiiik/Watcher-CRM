@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\BulkMessages\Filter;
 
 use App\NMS\ApiClient as NMSApiClient;
-use Cake\Collection\CollectionInterface;
 use Cake\Validation\Validation;
 
 /**
@@ -112,7 +111,7 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter implements Con
         // listing forty descendants would hide what was actually chosen
         $described = $this->describeSelection(
             __('Access Points'),
-            NMSApiClient::getAccessPointsList(onlyActive: false) ?? [],
+            NMSApiClient::getAccessPointsList(onlyActive: false)->or([]),
             array_values(array_filter(
                 $value['ids'],
                 static fn(mixed $id): bool => is_string($id) && Validation::uuid($id),
@@ -161,13 +160,13 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter implements Con
     private function accessPointOptions(): array
     {
         $accessPoints = NMSApiClient::getAccessPointsList(onlyActive: true);
-        if ($accessPoints === null) {
+        if (!$accessPoints->ok()) {
             $this->warning = __('The access points list could not be loaded. Please, try again.');
 
             return [];
         }
 
-        return $accessPoints;
+        return $accessPoints->data;
     }
 
     /**
@@ -184,16 +183,15 @@ final class AccessPointFilter extends AbstractBulkRecipientFilter implements Con
     private function expandSubtree(array $ids): array
     {
         $accessPoints = NMSApiClient::getAccessPoints();
-        if (!$accessPoints instanceof CollectionInterface) {
+        if (!$accessPoints->ok()) {
             return $ids;
         }
 
         // parent id => list of direct child ids
         $childrenByParent = [];
-        foreach ($accessPoints as $accessPoint) {
-            $parentId = $accessPoint['parent_access_point_id'] ?? null;
-            if (is_string($parentId) && isset($accessPoint['id']) && is_string($accessPoint['id'])) {
-                $childrenByParent[$parentId][] = $accessPoint['id'];
+        foreach ($accessPoints->data as $accessPoint) {
+            if ($accessPoint->parentAccessPointId !== null) {
+                $childrenByParent[$accessPoint->parentAccessPointId][] = $accessPoint->id;
             }
         }
 

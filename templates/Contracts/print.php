@@ -90,7 +90,8 @@
                             <th><?= __('Access Point') ?></th>
                             <td><?= $this->element('AccessPoints/link', [
                                 'id' => $contract->access_point_id,
-                                'name' => $contract->access_point_name,
+                                'name' => $contract->access_point->data?->name,
+                                'answer' => $contract->access_point,
                             ]) ?></td>
                         </tr>
                         <tr>

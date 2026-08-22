@@ -8,7 +8,6 @@ use App\Model\Entity\HistoricalConnection;
 use App\Model\Enum\FirstSeenSource;
 use App\Model\Table\HistoricalConnectionsTable;
 use App\NMS\ApiClient as NMSApiClient;
-use Cake\Collection\CollectionInterface;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -393,23 +392,17 @@ class HistoricalConnectionsUpdater
      */
     protected function resolvePlace(string $nasIpAddress): ?array
     {
-        $devices = NMSApiClient::getRouterosDevicesForIp($nasIpAddress);
+        $device = NMSApiClient::getRouterosDevicesForIp($nasIpAddress)->data?->first();
 
-        if (!$devices instanceof CollectionInterface) {
-            return null;
-        }
-
-        $device = $devices->first();
-
-        if (!is_array($device)) {
+        if ($device === null) {
             return null;
         }
 
         return [
-            'access_point_id' => $device['access_point']['id'] ?? null,
-            'access_point_name' => $device['access_point']['name'] ?? null,
-            'routeros_device_id' => $device['id'] ?? null,
-            'routeros_device_name' => $device['name'] ?? null,
+            'access_point_id' => $device->accessPoint?->id,
+            'access_point_name' => $device->accessPoint?->name,
+            'routeros_device_id' => $device->id,
+            'routeros_device_name' => $device->name,
         ];
     }
 }

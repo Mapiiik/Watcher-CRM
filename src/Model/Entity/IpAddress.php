@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Http\Answer;
 use App\NMS\ApiClient as NMSApiClient;
-use Cake\Collection\CollectionInterface;
 
 /**
  * IpAddress Entity
@@ -20,8 +20,8 @@ use Cake\Collection\CollectionInterface;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \Cake\Collection\CollectionInterface<int, mixed>|null $routeros_devices
- * @property \Cake\Collection\CollectionInterface<int, mixed>|null $ip_address_ranges
+ * @property \App\Http\Answer $routeros_devices
+ * @property \App\Http\Answer $ip_address_ranges
  */
 class IpAddress extends AppEntity
 {
@@ -67,9 +67,9 @@ class IpAddress extends AppEntity
     /**
      * getter for RouterOS devices (try to load via ApiClient)
      *
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\RouterosDevice}.
      */
-    protected function _getRouterosDevices(): ?CollectionInterface
+    protected function _getRouterosDevices(): Answer
     {
         return NMSApiClient::getRouterosDevicesForIp($this->ip_address);
     }
@@ -77,9 +77,9 @@ class IpAddress extends AppEntity
     /**
      * getter for IP address ranges (try to load via ApiClient)
      *
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
      */
-    protected function _getIpAddressRanges(): ?CollectionInterface
+    protected function _getIpAddressRanges(): Answer
     {
         return NMSApiClient::getIpAddressRangesForIp($this->ip_address);
     }

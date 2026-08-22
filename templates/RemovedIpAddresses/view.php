@@ -74,13 +74,13 @@
                         <tr>
                             <th><?= __('IP Address Range') ?></th>
                             <td><?php
-                            if (isset($removedIpAddress->ip_address_ranges)) {
-                                echo $this->element('IpAddressRanges/summary', [
-                                    'range' => $removedIpAddress->ip_address_ranges->first(),
-                                ]);
-                            } else {
-                                echo $this->element('NMS/unavailable');
+                            $range = $removedIpAddress->ip_address_ranges->data?->first();
+                            if ($range !== null) {
+                                echo $this->element('IpAddressRanges/summary', ['range' => $range]);
                             }
+                            echo $this->element('NMS/unavailable', [
+                                'answer' => $removedIpAddress->ip_address_ranges,
+                            ]);
                             ?></td>
                         </tr>
                     </table>

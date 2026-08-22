@@ -31,9 +31,8 @@ class NetworkManagementSystemBridgeController extends AppController
     public function routerosDevices(): void
     {
         $ip_address = $this->getRequest()->getParam('ip_address');
-        $routerosDevices = NMSApiClient::getRouterosDevicesForIp($ip_address);
 
-        $this->set('routerosDevices', $routerosDevices);
+        $this->set('routerosDevices', NMSApiClient::getRouterosDevicesForIp($ip_address));
         $this->viewBuilder()->setOption('serialize', ['routerosDevices']);
     }
 
@@ -57,9 +56,7 @@ class NetworkManagementSystemBridgeController extends AppController
         $ip_network = $this->getRequest()->getParam('ip_network');
         $ip_network = strtr($ip_network, ['-mask-' => '/']);
 
-        $ipAddressRanges = NMSApiClient::getIpAddressRangesForIp($ip_network);
-
-        $this->set('ipAddressRanges', $ipAddressRanges);
+        $this->set('ipAddressRanges', NMSApiClient::getIpAddressRangesForIp($ip_network));
         $this->viewBuilder()->setOption('serialize', ['ipAddressRanges']);
     }
 }

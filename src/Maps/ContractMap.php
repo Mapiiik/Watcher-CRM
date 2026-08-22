@@ -5,7 +5,6 @@ namespace App\Maps;
 
 use App\Model\Entity\Contract;
 use App\NMS\Links;
-use ArrayObject;
 use Cake\View\Helper\HtmlHelper;
 use Maps\DrawnMap;
 use Maps\Marker;
@@ -76,7 +75,7 @@ final class ContractMap
         if ($accessPoint !== null) {
             $markers['access_point'] = new Marker(
                 position: $accessPoint,
-                title: (string)$contract->access_point_name,
+                title: (string)$contract->access_point->data?->name,
                 color: self::ACCESS_POINT_COLOR,
                 content: $this->accessPointBubble($contract),
                 locked: true,
@@ -118,20 +117,15 @@ final class ContractMap
      */
     private function accessPointPosition(Contract $contract): ?Position
     {
-        $accessPoint = $contract->access_point;
+        $accessPoint = $contract->access_point->data;
+        $latitude = $accessPoint?->latitude;
+        $longitude = $accessPoint?->longitude;
 
-        if (!$accessPoint instanceof ArrayObject) {
+        if ($latitude === null || $longitude === null) {
             return null;
         }
 
-        $latitude = $accessPoint['gps_y'] ?? null;
-        $longitude = $accessPoint['gps_x'] ?? null;
-
-        if (!is_numeric($latitude) || !is_numeric($longitude)) {
-            return null;
-        }
-
-        return new Position((float)$latitude, (float)$longitude);
+        return new Position($latitude, $longitude);
     }
 
     /**
@@ -157,7 +151,7 @@ final class ContractMap
      */
     private function accessPointBubble(Contract $contract): string
     {
-        $name = (string)$contract->access_point_name;
+        $name = (string)$contract->access_point->data?->name;
         $url = $contract->access_point_id === null ? null : Links::accessPoint($contract->access_point_id);
 
         if ($url === null) {

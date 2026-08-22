@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Maps;
 
 use App\Model\Entity\Task;
-use ArrayObject;
 use Cake\ORM\Association;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Maps\Position;
@@ -78,14 +77,12 @@ final class TaskMap extends TasksTaskMap
             return new Position((float)$address->gps_y, (float)$address->gps_x);
         }
 
-        $accessPoint = $task->access_point;
+        $accessPoint = $task->access_point->data;
+        $latitude = $accessPoint?->latitude;
+        $longitude = $accessPoint?->longitude;
 
-        if (
-            $accessPoint instanceof ArrayObject
-            && is_numeric($accessPoint['gps_y'] ?? null)
-            && is_numeric($accessPoint['gps_x'] ?? null)
-        ) {
-            return new Position((float)$accessPoint['gps_y'], (float)$accessPoint['gps_x']);
+        if ($latitude !== null && $longitude !== null) {
+            return new Position($latitude, $longitude);
         }
 
         return null;

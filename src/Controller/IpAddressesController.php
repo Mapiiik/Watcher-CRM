@@ -8,6 +8,8 @@ use App\Model\Entity\IpAddress;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Table\RemovedIpAddressesTable;
 use App\NMS\ApiClient as NMSApiClient;
+use App\NMS\Dto\IpAddressRange;
+use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
@@ -240,24 +242,20 @@ class IpAddressesController extends AppController
         $ipAddressRanges = NMSApiClient::searchIpAddressRanges($ipAddressRangesFilter);
         unset($ipAddressRangesFilter);
 
-        if ($ipAddressRanges != null) {
-            $this->set(
-                'ipAddressRanges',
-                $ipAddressRanges
-                    ->sortBy('name', SORT_ASC, SORT_NATURAL)
-                    ->sortBy(
-                        fn(array $ipAddressRange): int => $ipAddressRange['access_point_id'] === null ? 1 : 0,
-                        SORT_ASC,
-                        SORT_NUMERIC,
-                    )
-                    ->map(function (array $ipAddressRange): array {
-                        return [
-                            'value' => $ipAddressRange['id'],
-                            'text' => $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')',
-                            'style' => $ipAddressRange['access_point_id'] === null ? 'font-style: italic;' : '',
-                        ];
-                    }),
-            );
+        if ($ipAddressRanges->ok()) {
+            $this->set('ipAddressRanges', $ipAddressRanges->data
+                ->sortBy(fn(IpAddressRange $range): string => (string)$range->name, SORT_ASC, SORT_NATURAL)
+                // the ranges of an access point of their own first, the rest below them
+                ->sortBy(
+                    fn(IpAddressRange $range): int => $range->accessPointId === null ? 1 : 0,
+                    SORT_ASC,
+                    SORT_NUMERIC,
+                )
+                ->map(fn(IpAddressRange $range): array => [
+                    'value' => $range->id,
+                    'text' => $range->name . ' (' . $range->network . ')',
+                    'style' => $range->accessPointId === null ? 'font-style: italic;' : '',
+                ]));
         } else {
             $this->Flash->warning(__('The IP address ranges list could not be loaded. Please, try again.'));
             $this->set('ipAddressRanges', []);
@@ -265,15 +263,13 @@ class IpAddressesController extends AppController
 
         // load available IP addresses if IP address range is selected
         $ipAddresses = [];
-        if (
-            $ipAddressRanges != null
-            && $this->getRequest()->getData('ip_address_range') !== null
-        ) {
-            $ipAddressRange = $ipAddressRanges->firstMatch([
-                'id' => $this->getRequest()->getData('ip_address_range'),
-            ]);
+        if ($ipAddressRanges->ok() && $this->getRequest()->getData('ip_address_range') !== null) {
+            $ipAddressRange = $this->rangeById(
+                $ipAddressRanges->data,
+                (string)$this->getRequest()->getData('ip_address_range'),
+            );
 
-            if ($ipAddressRange) {
+            if ($ipAddressRange !== null) {
                 $ipAddresses = $this->loadAvailableIpAddresses($ipAddressRange);
             }
         }
@@ -457,16 +453,13 @@ class IpAddressesController extends AppController
         $ipAddressRanges = NMSApiClient::searchIpAddressRanges($ipAddressRangesFilter);
         unset($ipAddressRangesFilter);
 
-        if ($ipAddressRanges != null) {
-            $this->set(
-                'ipAddressRanges',
-                $ipAddressRanges->sortBy('name', SORT_ASC, SORT_NATURAL)->combine(
-                    'id',
-                    function (array $ipAddressRange): string {
-                        return $ipAddressRange['name'] . ' (' . $ipAddressRange['ip_network'] . ')';
-                    },
-                ),
-            );
+        if ($ipAddressRanges->ok()) {
+            $this->set('ipAddressRanges', $ipAddressRanges->data
+                ->sortBy(fn(IpAddressRange $range): string => (string)$range->name, SORT_ASC, SORT_NATURAL)
+                ->combine(
+                    fn(IpAddressRange $range): string => $range->id,
+                    fn(IpAddressRange $range): string => $range->name . ' (' . $range->network . ')',
+                ));
         } else {
             $this->Flash->warning(__('The IP address ranges list could not be loaded. Please, try again.'));
             $this->set('ipAddressRanges', []);
@@ -478,15 +471,13 @@ class IpAddressesController extends AppController
                 // only refresh
             } else {
                 // load available IP addresses if IP address range is selected
-                if (
-                    $ipAddressRanges != null
-                    && $this->getRequest()->getData('ip_address_range') !== null
-                ) {
-                    $ipAddressRange = $ipAddressRanges->firstMatch([
-                        'id' => $this->getRequest()->getData('ip_address_range'),
-                    ]);
+                if ($ipAddressRanges->ok() && $this->getRequest()->getData('ip_address_range') !== null) {
+                    $ipAddressRange = $this->rangeById(
+                        $ipAddressRanges->data,
+                        (string)$this->getRequest()->getData('ip_address_range'),
+                    );
 
-                    if ($ipAddressRange) {
+                    if ($ipAddressRange !== null) {
                         /** @var array<int, string> $availableIpAddresses */
                         $availableIpAddresses = array_keys($this->loadAvailableIpAddresses(
                             $ipAddressRange,
@@ -567,20 +558,33 @@ class IpAddressesController extends AppController
     }
 
     /**
+     * The range of the given number, out of the ones Watcher NMS answered with.
+     *
+     * @param \Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange> $ranges Ranges to look in.
+     * @param string $id The number of the range that was picked.
+     * @return \App\NMS\Dto\IpAddressRange|null
+     */
+    private function rangeById(CollectionInterface $ranges, string $id): ?IpAddressRange
+    {
+        return $ranges->firstMatch(['id' => $id])
+            ?? $ranges->filter(fn(IpAddressRange $range): bool => $range->id === $id)->first();
+    }
+
+    /**
      * Load vailable IP Addresses
      *
-     * @param array<string, mixed> $ipAddressRange IP address range.
+     * @param \App\NMS\Dto\IpAddressRange $ipAddressRange IP address range.
      * @param int $daysUnused Minimum number of days since last use.
      * @return array<string, string> List of available IP addresses.
      */
-    public function loadAvailableIpAddresses(array $ipAddressRange, int $daysUnused = 0): array
+    public function loadAvailableIpAddresses(IpAddressRange $ipAddressRange, int $daysUnused = 0): array
     {
         $availableIpAddresses = [];
 
         // parse range CIDR
-        $range = Subnet::parseString($ipAddressRange['ip_network']);
+        $range = Subnet::parseString((string)$ipAddressRange->network);
         if ($range === null) {
-            $this->Flash->error(__('Invalid IP address range CIDR: {0}', $ipAddressRange['ip_network']));
+            $this->Flash->error(__('Invalid IP address range CIDR: {0}', (string)$ipAddressRange->network));
 
             return [];
         }
@@ -604,7 +608,7 @@ class IpAddressesController extends AppController
             }
 
             // skip IP gateway
-            if ($ipAddressRange['ip_gateway'] === $ipFromRange->toString()) {
+            if ($ipAddressRange->gateway === $ipFromRange->toString()) {
                 continue 1;
             }
 

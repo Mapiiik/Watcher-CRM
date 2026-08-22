@@ -5,7 +5,6 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractsController;
 use App\Test\Traits\ControllerTestTrait;
-use ArrayObject;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Database\Connection;
@@ -441,8 +440,8 @@ class ContractsControllerTest extends TestCase
     {
         // A degree of latitude north of the installation address the fixtures place at 1, 1.
         Cache::write(
-            'access_point_' . self::ACCESS_POINT_ID,
-            new ArrayObject(['name' => 'Mast', 'gps_y' => 2.0, 'gps_x' => 1.0]),
+            'access_points',
+            [['id' => self::ACCESS_POINT_ID, 'name' => 'Mast', 'gps_y' => 2.0, 'gps_x' => 1.0]],
             'api_client',
         );
 
@@ -469,7 +468,7 @@ class ContractsControllerTest extends TestCase
                 $markers['access_point']->content,
             );
         } finally {
-            Cache::delete('access_point_' . self::ACCESS_POINT_ID, 'api_client');
+            Cache::delete('access_points', 'api_client');
         }
     }
 
@@ -482,7 +481,8 @@ class ContractsControllerTest extends TestCase
      */
     public function testMapDrawsTheCustomerWithoutTheAccessPoint(): void
     {
-        Cache::write('access_point_' . self::ACCESS_POINT_ID, null, 'api_client');
+        // the other application answered, and said nothing about this point
+        Cache::write('access_points', [], 'api_client');
 
         try {
             $this->login();
@@ -493,7 +493,7 @@ class ContractsControllerTest extends TestCase
             $this->assertSame([], $this->viewVariable('mapPolylines'));
             $this->assertNull($this->viewVariable('mapDistance'));
         } finally {
-            Cache::delete('access_point_' . self::ACCESS_POINT_ID, 'api_client');
+            Cache::delete('access_points', 'api_client');
         }
     }
 }

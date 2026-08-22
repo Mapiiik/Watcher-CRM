@@ -2,17 +2,16 @@
 /**
  * A remark that Watcher NMS did not answer, where a whole message would be too much.
  *
- * It is only ever drawn where a question actually went unanswered while this page was being put
- * together. An installation with no network management system at all, and a page that asked it
- * nothing, get nothing - which is what keeps the mark from becoming furniture and lets it mean
- * something the one time it appears.
+ * Drawn from the answer the caller has in hand, so it appears beside the very reading that came to
+ * nothing. An answer that arrived - even an empty one - and a question nobody asked, because this
+ * installation has no network management system, both draw nothing. That is what keeps the mark
+ * from becoming furniture and lets it mean something the one time it appears.
  *
  * @var \App\View\AppView $this
+ * @var \App\Http\Answer $answer What came of the reading this cell was to be filled from.
  */
 
-use App\NMS\ApiClient;
-
-if (ApiClient::isAvailable() !== false) {
+if (!$answer->unanswered()) {
     return;
 }
 

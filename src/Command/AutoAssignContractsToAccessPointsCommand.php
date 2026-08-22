@@ -6,7 +6,6 @@ namespace App\Command;
 use App\Model\Entity\Contract;
 use App\Model\Table\ContractsTable;
 use App\NMS\ApiClient as NMSApiClient;
-use Cake\Collection\CollectionInterface;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -130,7 +129,7 @@ class AutoAssignContractsToAccessPointsCommand extends Command
             $nasIp = $radiusAccount->radacct[0]->nasipaddress;
             $routerosDevices = NMSApiClient::getRouterosDevicesForIp($nasIp);
 
-            if (!$routerosDevices instanceof CollectionInterface) {
+            if (!$routerosDevices->ok()) {
                 $message = sprintf(
                     'Error when fetching RouterOS devices for NAS IP: %s for contract %s',
                     $nasIp,
@@ -141,18 +140,17 @@ class AutoAssignContractsToAccessPointsCommand extends Command
                 continue;
             }
 
-            foreach ($routerosDevices as $routerosDevice) {
-                /** @var array{access_point_id?: string, access_point?: array{name?: string}} $routerosDevice */
-                if (!isset($routerosDevice['access_point_id'])) {
+            foreach ($routerosDevices->data as $routerosDevice) {
+                if ($routerosDevice->accessPointId === null) {
                     continue;
                 }
 
-                $newApId = $routerosDevice['access_point_id'];
+                $newApId = $routerosDevice->accessPointId;
                 $oldApId = $contract->access_point_id;
 
                 // access point ID with its name appended when the API provides one
-                $newApLabel = isset($routerosDevice['access_point']['name'])
-                    ? sprintf('%s (%s)', $newApId, $routerosDevice['access_point']['name'])
+                $newApLabel = $routerosDevice->accessPoint?->name !== null
+                    ? sprintf('%s (%s)', $newApId, $routerosDevice->accessPoint->name)
                     : $newApId;
 
                 // contract already has this access point, nothing to do

@@ -62,31 +62,29 @@
                         <tr>
                             <th><?= __('Device') ?></th>
                             <td><?php
-                            if (isset($ipAddress->routeros_devices)) {
-                                $device = $ipAddress->routeros_devices->first();
+                            $device = $ipAddress->routeros_devices->data?->first();
+                            if ($device !== null) {
                                 $deviceLink = $this->element('RouterosDevices/link', [
-                                    'id' => isset($device['id']) ? (string)$device['id'] : null,
-                                    'name' => isset($device['system_description'])
-                                        ? (string)$device['system_description']
-                                        : null,
+                                    'id' => $device->id,
+                                    'name' => $device->systemDescription,
                                 ]);
                                 echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
-                                unset($device);
-                            } else {
-                                echo $this->element('NMS/unavailable');
                             }
+                            echo $this->element('NMS/unavailable', [
+                                'answer' => $ipAddress->routeros_devices,
+                            ]);
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('IP Address Range') ?></th>
                             <td><?php
-                            if (isset($ipAddress->ip_address_ranges)) {
-                                echo $this->element('IpAddressRanges/summary', [
-                                    'range' => $ipAddress->ip_address_ranges->first(),
-                                ]);
-                            } else {
-                                echo $this->element('NMS/unavailable');
+                            $range = $ipAddress->ip_address_ranges->data?->first();
+                            if ($range !== null) {
+                                echo $this->element('IpAddressRanges/summary', ['range' => $range]);
                             }
+                            echo $this->element('NMS/unavailable', [
+                                'answer' => $ipAddress->ip_address_ranges,
+                            ]);
                             ?></td>
                         </tr>
                     </table>

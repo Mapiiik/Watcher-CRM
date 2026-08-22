@@ -542,7 +542,7 @@ class CustomerMessagesController extends AppController
             }
         }
 
-        $apNames = NMSApiClient::getAccessPointsList(onlyActive: false) ?? [];
+        $apNames = NMSApiClient::getAccessPointsList(onlyActive: false)->or([]);
         $groups = [];
         foreach ($this->groupCustomersByAccessPoint($messaged, $apNames) as $group) {
             $customers = [];
@@ -1010,13 +1010,13 @@ class CustomerMessagesController extends AppController
             $this->set('saveFailures', null);
         }
 
-        $apNames = NMSApiClient::getAccessPointsList(onlyActive: false);
-        if ($apNames === null) {
+        $answer = NMSApiClient::getAccessPointsList(onlyActive: false);
+        if (!$answer->ok()) {
             // without them every group falls back to "unknown", which would go
             // unnoticed in both the preview and the summary e-mail
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $apNames = [];
         }
+        $apNames = $answer->or([]);
 
         // contract-scoped filters (access point, contract state) have already
         // narrowed the contained contracts in findBulkCustomers(), so grouping

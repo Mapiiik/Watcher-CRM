@@ -166,7 +166,8 @@ $this->Html->script('expandable-text.js', ['block' => true]);
                     </td>
                     <td><?= $this->element('AccessPoints/link', [
                         'id' => $task->access_point_id,
-                        'name' => $task->access_point_name,
+                        'name' => $task->access_point->data?->name,
+                        'answer' => $task->access_point,
                     ]) ?></td>
                     <td><?= h($task->start_date) ?></td>
                     <td><?= h($task->estimated_date) ?></td>

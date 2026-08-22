@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Radius\Model\Entity;
 
+use App\Http\Answer;
 use App\NMS\ApiClient as NMSApiClient;
-use Cake\Collection\CollectionInterface;
 use Cake\ORM\Entity;
 
 /**
@@ -40,7 +40,7 @@ use Cake\ORM\Entity;
  * @property string|null $delegatedipv6prefix
  *
  * @property \Radius\Model\Entity\Account $account
- * @property \Cake\Collection\CollectionInterface<int, mixed>|null $routeros_devices_for_nas
+ * @property \App\Http\Answer $routeros_devices_for_nas
  */
 class Radacct extends Entity
 {
@@ -87,18 +87,14 @@ class Radacct extends Entity
     /**
      * getter for RouterOS devices for NAS (try to load via ApiClient)
      *
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\RouterosDevice}.
      */
-    protected function _getRouterosDevicesForNas(): ?CollectionInterface
+    protected function _getRouterosDevicesForNas(): Answer
     {
-        if (!empty($this->nasipaddress)) {
-            $routerosDevices = NMSApiClient::getRouterosDevicesForIp($this->nasipaddress);
-
-            if ($routerosDevices instanceof CollectionInterface) {
-                return $routerosDevices;
-            }
+        if (empty($this->nasipaddress)) {
+            return Answer::notAsked();
         }
 
-        return null;
+        return NMSApiClient::getRouterosDevicesForIp($this->nasipaddress);
     }
 }

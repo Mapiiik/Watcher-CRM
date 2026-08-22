@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Http\Answer;
 use App\NMS\ApiClient as NMSApiClient;
-use Cake\Collection\CollectionInterface;
 
 /**
  * RemovedIpNetwork Entity
@@ -20,7 +20,7 @@ use Cake\Collection\CollectionInterface;
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Contract $contract
- * @property \Cake\Collection\CollectionInterface<int, mixed>|null $ip_address_ranges
+ * @property \App\Http\Answer $ip_address_ranges
  */
 class RemovedIpNetwork extends AppEntity
 {
@@ -68,9 +68,9 @@ class RemovedIpNetwork extends AppEntity
     /**
      * getter for IP address ranges (try to load via ApiClient)
      *
-     * @return \Cake\Collection\CollectionInterface<int, mixed>|null
+     * @return \App\Http\Answer Answering with a collection of {@see \App\NMS\Dto\IpAddressRange}.
      */
-    protected function _getIpAddressRanges(): ?CollectionInterface
+    protected function _getIpAddressRanges(): Answer
     {
         return NMSApiClient::getIpAddressRangesForIp($this->ip_network);
     }

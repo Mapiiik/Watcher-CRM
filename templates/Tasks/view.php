@@ -71,7 +71,8 @@
                             <th><?= __('Access Point') ?></th>
                             <td><?= $this->element('AccessPoints/link', [
                                 'id' => $task->access_point_id,
-                                'name' => $task->access_point_name,
+                                'name' => $task->access_point->data?->name,
+                                'answer' => $task->access_point,
                             ]) ?></td>
                         </tr>
                         <tr>

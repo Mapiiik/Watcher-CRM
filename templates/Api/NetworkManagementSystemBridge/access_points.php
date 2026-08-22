@@ -1,25 +1,23 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * \Cake\Collection\CollectionInterface|null $routerosDevices RouterOS Devices
+ * @var \App\Http\Answer $routerosDevices What Watcher NMS said about the devices at the address.
  */
 
-if (isset($routerosDevices)) {
-    $device = $routerosDevices->first();
+$device = $routerosDevices->data?->first();
 
+if ($device !== null) {
     $accessPoint = $this->element('AccessPoints/link', [
-        'id' => isset($device['access_point']['id']) ? (string)$device['access_point']['id'] : null,
-        'name' => isset($device['access_point']['name']) ? (string)$device['access_point']['name'] : null,
+        'id' => $device->accessPoint?->id,
+        'name' => $device->accessPoint?->name,
     ]);
     echo $accessPoint !== '' ? __('Access Point') . ': ' . $accessPoint . '<br>' : '';
 
     $deviceLink = $this->element('RouterosDevices/link', [
-        'id' => isset($device['id']) ? (string)$device['id'] : null,
-        'name' => isset($device['name']) ? (string)$device['name'] : null,
+        'id' => $device->id,
+        'name' => $device->name,
     ]);
     echo $deviceLink !== '' ? $deviceLink . '<br>' : '';
-
-    unset($device);
-} else {
-    echo $this->element('NMS/unavailable');
 }
+
+echo $this->element('NMS/unavailable', ['answer' => $routerosDevices]);

@@ -60,10 +60,9 @@ table {
                     <th><?= __('Access Point') ?></th>
                     <td><?= $this->element('AccessPoints/link', [
                         'id' => $task->access_point_id,
-                        'name' => $task->access_point_name,
-                        // an e-mail is read away from the page and long after it was sent, where a
-                        // remark about the network management system means nothing to anybody
-                        'quiet' => true,
+                        // read away from the page and long after it was sent, so the name is
+                        // taken as it came and a system that was down is nobody's business here
+                        'name' => $task->access_point->data?->name,
                     ]) ?></td>
                 </tr>
                 <tr>

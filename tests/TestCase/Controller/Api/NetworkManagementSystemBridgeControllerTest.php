@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller\Api;
 
 use App\Controller\Api\NetworkManagementSystemBridgeController;
-use App\NMS\ApiClient;
 use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
@@ -13,7 +12,6 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
-use ReflectionProperty;
 
 /**
  * App\Controller\Api\NetworkManagementSystemBridgeController Test Case
@@ -52,7 +50,6 @@ class NetworkManagementSystemBridgeControllerTest extends TestCase
         $this->withConfigure(['Nms.url' => 'https://nms.example.com', 'Nms.key' => 'secret']);
 
         Cache::clear('api_client');
-        (new ReflectionProperty(ApiClient::class, 'answered'))->setValue(null, null);
     }
 
     /**

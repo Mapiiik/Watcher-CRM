@@ -4,16 +4,13 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\IpAddressesController;
-use App\NMS\ApiClient as NMSApiClient;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
-use Cake\Collection\Collection;
 use Cake\Core\Configure;
 use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
-use ReflectionProperty;
 
 /**
  * App\Controller\IpAddressesController Test Case
@@ -234,19 +231,19 @@ class IpAddressesControllerTest extends TestCase
 
         Cache::write(
             'ip_address_ranges_for_ip_192-168-11-11',
-            new Collection([[
+            [[
                 'id' => self::RANGE_ID,
                 'name' => 'Hilltop customers',
                 'access_point' => ['id' => self::ACCESS_POINT_ID, 'name' => 'Hilltop'],
-            ]]),
+            ]],
             'api_client',
         );
         Cache::write(
             'routeros_devices_for_ip_192-168-11-11',
-            new Collection([[
+            [[
                 'id' => self::ROUTEROS_DEVICE_ID,
                 'system_description' => 'RB5009 at Hilltop',
-            ]]),
+            ]],
             'api_client',
         );
 
@@ -282,11 +279,11 @@ class IpAddressesControllerTest extends TestCase
 
         Cache::write(
             'ip_address_ranges_for_ip_192-168-11-11',
-            new Collection([[
+            [[
                 'id' => self::RANGE_ID,
                 'name' => 'Hilltop customers',
                 'access_point' => ['id' => self::ACCESS_POINT_ID, 'name' => 'Hilltop'],
-            ]]),
+            ]],
             'api_client',
         );
 
@@ -328,7 +325,6 @@ class IpAddressesControllerTest extends TestCase
         } finally {
             Configure::write('Nms.url', $nmsUrl);
             Configure::write('Nms.key', $nmsKey);
-            (new ReflectionProperty(NMSApiClient::class, 'answered'))->setValue(null, null);
         }
     }
 
@@ -352,7 +348,6 @@ class IpAddressesControllerTest extends TestCase
             $this->assertResponseNotContains('warning-text');
         } finally {
             Configure::write('Nms.url', $nmsUrl);
-            (new ReflectionProperty(NMSApiClient::class, 'answered'))->setValue(null, null);
         }
     }
 }
