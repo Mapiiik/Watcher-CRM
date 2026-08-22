@@ -25,26 +25,46 @@
                 <div class="row">
                     <div class="column">
                         <?php
-                        echo $this->Form->control('task_type_id', ['options' => $taskTypes, 'empty' => true]);
-                        echo $this->Form->control('priority', ['options' => $task->getPriorityOptions()]);
-                        echo $this->Form->control('task_state_id', ['options' => $taskStates]);
-                        echo $this->Form->control('user_id', ['options' => $users, 'empty' => true]);
+                        echo $this->Form->control('task_type_id', [
+                            'options' => $taskTypes,
+                            'empty' => true,
+                            'label' => __('Task Type'),
+                        ]);
+                        echo $this->Form->control('priority', [
+                            'options' => $task->getPriorityOptions(),
+                            'label' => __('Priority'),
+                        ]);
+                        echo $this->Form->control('task_state_id', [
+                            'options' => $taskStates,
+                            'label' => __('Task State'),
+                        ]);
+                        echo $this->Form->control('user_id', [
+                            'options' => $users,
+                            'empty' => true,
+                            'label' => __('User'),
+                        ]);
                         ?>
                     </div>
                     <div class="column">
                         <?php
-                        echo $this->Form->control('email', ['multiple' => 'multiple']);
-                        echo $this->Form->control('phone', ['multiple' => 'multiple']);
-                        echo $this->Form->control('access_point_id', ['options' => $accessPoints, 'empty' => true]);
+                        echo $this->Form->control('email', ['multiple' => 'multiple', 'label' => __('Email')]);
+                        echo $this->Form->control('phone', ['multiple' => 'multiple', 'label' => __('Phone')]);
+                        echo $this->Form->control('access_point_id', [
+                            'options' => $accessPoints,
+                            'empty' => true,
+                            'label' => __('Access Point'),
+                        ]);
                         echo $this->Form->control('customer_id', [
                             'options' => $customers,
                             'empty' => true,
+                            'label' => __('Customer'),
                             'onchange' => $this::REFRESH_ON_CHANGE,
                         ]);
                         if (isset($task->customer_id)) {
                             echo $this->Form->control('contract_id', [
                                 'options' => $contracts,
                                 'empty' => true,
+                                'label' => __('Contract'),
                                 'onchange' => $this::REFRESH_ON_CHANGE,
                             ]);
                         }
@@ -53,20 +73,20 @@
                     </div>
                 </div>
                 <?php
-                echo $this->Form->control('subject');
-                echo $this->Form->control('text', ['style' => 'height: 30.0rem']);
+                echo $this->Form->control('subject', ['label' => __('Subject')]);
+                echo $this->Form->control('text', ['style' => 'height: 30.0rem', 'label' => __('Text')]);
                 ?>
                 <div class="row">
                     <div class="column">
                         <?php
-                        echo $this->Form->control('start_date', ['empty' => true]);
-                        echo $this->Form->control('estimated_date', ['empty' => true]);
+                        echo $this->Form->control('start_date', ['empty' => true, 'label' => __('Start Date')]);
+                        echo $this->Form->control('estimated_date', ['empty' => true, 'label' => __('Estimated Date')]);
                         ?>
                     </div>
                     <div class="column">
                         <?php
-                        echo $this->Form->control('critical_date', ['empty' => true]);
-                        echo $this->Form->control('finish_date', ['empty' => true]);
+                        echo $this->Form->control('critical_date', ['empty' => true, 'label' => __('Critical Date')]);
+                        echo $this->Form->control('finish_date', ['empty' => true, 'label' => __('Finish Date')]);
                         ?>
                     </div>
                 </div>

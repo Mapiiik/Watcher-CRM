@@ -94,20 +94,20 @@ $this->Html->script('expandable-text.js', ['block' => true]);
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('nid', __('Number')) ?></th>
-                    <th><?= $this->Paginator->sort('task_type_id') ?></th>
-                    <th><?= $this->Paginator->sort('priority') ?></th>
+                    <th><?= $this->Paginator->sort('task_type_id', __('Task Type')) ?></th>
+                    <th><?= $this->Paginator->sort('priority', __('Priority')) ?></th>
                     <th><?= $this->Paginator->sort('TaskStates.priority', __('Task State')) ?></th>
-                    <th><?= $this->Paginator->sort('user_id') ?></th>
-                    <th><?= $this->Paginator->sort('subject') ?> / <i><?= __('Summary Text') ?></i></th>
-                    <th><?= $this->Paginator->sort('text') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <th><?= $this->Paginator->sort('user_id', __('User')) ?></th>
+                    <th><?= $this->Paginator->sort('subject', __('Subject')) ?> / <i><?= __('Summary Text') ?></i></th>
+                    <th><?= $this->Paginator->sort('text', __('Text')) ?></th>
+                    <th><?= $this->Paginator->sort('customer_id', __('Customer')) ?></th>
                     <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
-                    <th><?= $this->Paginator->sort('contract_id') ?></th>
-                    <th><?= $this->Paginator->sort('access_point_id') ?></th>
-                    <th><?= $this->Paginator->sort('start_date') ?></th>
-                    <th><?= $this->Paginator->sort('estimated_date') ?></th>
-                    <th><?= $this->Paginator->sort('critical_date') ?></th>
-                    <th><?= $this->Paginator->sort('finish_date') ?></th>
+                    <th><?= $this->Paginator->sort('contract_id', __('Contract')) ?></th>
+                    <th><?= $this->Paginator->sort('access_point_id', __('Access Point')) ?></th>
+                    <th><?= $this->Paginator->sort('start_date', __('Start Date')) ?></th>
+                    <th><?= $this->Paginator->sort('estimated_date', __('Estimated Date')) ?></th>
+                    <th><?= $this->Paginator->sort('critical_date', __('Critical Date')) ?></th>
+                    <th><?= $this->Paginator->sort('finish_date', __('Finish Date')) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
