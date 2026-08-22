@@ -285,6 +285,12 @@ tr:hover td {
     color: var(--color-message-error-text);
 }
 
+/* The same, for something that is missing rather than wrong */
+.warning-text {
+    color: var(--color-message-warning-text);
+    cursor: help;
+}
+
 /* Arrangement of DIVs */
 .container {
     margin: 0 auto;

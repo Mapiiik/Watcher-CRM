@@ -51,6 +51,11 @@ class ApiClient
     private const TIMEOUT = 10;
 
     /**
+     * What came of the asking during this request. {@see self::isAvailable()}
+     */
+    private static ?bool $answered = null;
+
+    /**
      * Fetch access points method
      *
      * @return \Cake\Collection\CollectionInterface<int, mixed>|null Return result from API
@@ -249,6 +254,24 @@ class ApiClient
     }
 
     /**
+     * How the asking has gone so far.
+     *
+     * Whoever draws the page has to tell a Watcher NMS that did not answer from one that answered
+     * nothing - the first is worth saying out loud, the second is just an empty column. Both arrive
+     * here as null, so what actually happened is remembered rather than asked about again: a page
+     * showing a hundred rows would otherwise wait out the timeout a hundred times over to find out
+     * what the first row already knew.
+     *
+     * Kept for one request, which is as long as one page is drawn.
+     *
+     * @return bool|null Null where nothing was asked, false where a question went unanswered.
+     */
+    public static function isAvailable(): ?bool
+    {
+        return self::$answered;
+    }
+
+    /**
      * Whether there is a Watcher NMS to ask at all.
      *
      * @return bool
@@ -287,12 +310,14 @@ class ApiClient
             // The path and never the query: the API key is asked for as a query parameter, and a
             // log is read by more people than a configuration file is.
             Log::error(sprintf('Watcher NMS could not be asked about %s: %s', $path, $e->getMessage()));
+            self::$answered = false;
 
             return null;
         }
 
         if (!$response->isOk()) {
             Log::error(sprintf('Watcher NMS answered %d asking about %s.', $response->getStatusCode(), $path));
+            self::$answered = false;
 
             return null;
         }
@@ -301,9 +326,14 @@ class ApiClient
 
         if (!is_array($body) || !isset($body[$key]) || !is_array($body[$key])) {
             Log::warning(sprintf('Watcher NMS answered %s without `%s` in it.', $path, $key));
+            self::$answered = false;
 
             return null;
         }
+
+        // One answer does not undo another that never came: a page is only as whole as its
+        // emptiest column.
+        self::$answered ??= true;
 
         return $body[$key];
     }

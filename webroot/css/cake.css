@@ -465,6 +465,12 @@ nav.top-nav {
     color: var(--color-message-error-text);
 }
 
+/* The same, for something that is missing rather than wrong */
+.warning-text {
+    color: var(--color-message-warning-text);
+    cursor: help;
+}
+
 /* Forms */
 .input.radio,
 .input.checkbox,

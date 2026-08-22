@@ -13,6 +13,7 @@ use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Http\Message\RequestInterface;
+use ReflectionProperty;
 
 /**
  * App\NMS\ApiClient Test Case
@@ -50,6 +51,9 @@ class ApiClientTest extends TestCase
         Cache::clear('api_client');
 
         $this->setupLog(['error', 'warning']);
+
+        // The outcome is remembered for the length of a request, and one test is one request.
+        (new ReflectionProperty(ApiClient::class, 'answered'))->setValue(null, null);
 
         $this->asked = 0;
     }
@@ -237,6 +241,81 @@ class ApiClientTest extends TestCase
 
         $this->assertNotNull($devices);
         $this->assertSame([['id' => '7']], $devices->toArray());
+    }
+
+    /**
+     * Nothing has been asked yet, so there is nothing to say about the asking.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::isAvailable()
+     */
+    public function testTheAskingIsUnknownUntilSomethingIsAsked(): void
+    {
+        $this->assertNull(ApiClient::isAvailable());
+    }
+
+    /**
+     * An installation with no Watcher NMS has nothing to say about it either - a page there must
+     * not be covered in remarks about a system it was never given.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::isAvailable()
+     */
+    public function testAnUnconfiguredInstallationSaysNothingAboutTheAsking(): void
+    {
+        Configure::write('Nms.url', '');
+
+        ApiClient::fetchAccessPoints();
+
+        $this->assertNull(ApiClient::isAvailable());
+    }
+
+    /**
+     * An answered question says so, which is how a blank column is read as a blank column.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::isAvailable()
+     */
+    public function testAnAnsweredQuestionSaysSo(): void
+    {
+        $this->mock('/api/access-points.json', $this->jsonResponse(['accessPoints' => []]));
+
+        ApiClient::fetchAccessPoints();
+
+        $this->assertTrue(ApiClient::isAvailable());
+    }
+
+    /**
+     * A question that went unanswered says so, which is what the page draws its remark from.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::isAvailable()
+     */
+    public function testAnUnansweredQuestionSaysSo(): void
+    {
+        $this->mock('/api/access-points.json', $this->newClientResponse(500));
+
+        ApiClient::fetchAccessPoints();
+
+        $this->assertFalse(ApiClient::isAvailable());
+    }
+
+    /**
+     * One answer does not undo another that never came: a page is only as whole as its emptiest
+     * column, and a later reading that worked must not talk the first one out of its remark.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::isAvailable()
+     */
+    public function testAnAnswerDoesNotUndoOneThatNeverCame(): void
+    {
+        $this->mock('/api/access-points.json', $this->newClientResponse(500));
+        $this->mock('/api/ip-address-ranges.json', $this->jsonResponse(['ipAddressRanges' => []]));
+
+        ApiClient::fetchAccessPoints();
+        ApiClient::fetchIpAddressRanges();
+
+        $this->assertFalse(ApiClient::isAvailable());
     }
 
     /**
