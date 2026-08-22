@@ -12,6 +12,7 @@ use Cake\Database\Log\LoggedQuery;
 use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
@@ -74,6 +75,22 @@ class ContractsControllerTest extends TestCase
         'app.TaskTypes',
         'app.Tasks',
     ];
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        // What a test said about the other application would otherwise answer the next one.
+        Cache::clear('api_client');
+        Configure::write('Nms.url', '');
+        Configure::write('Nms.key', '');
+
+        parent::tearDown();
+    }
 
     /**
      * The listing renders.
@@ -281,6 +298,26 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * Let the other application keep the place the fixtures' contract names.
+     *
+     * The rules refuse a contract naming a place Watcher NMS does not keep, and a test is not to
+     * ask the network what it keeps - so the answer is written where the client reads it from.
+     *
+     * @return void
+     */
+    private function letTheNetworkKeepTheAccessPoint(): void
+    {
+        Cache::write(
+            'access_points',
+            [['id' => self::ACCESS_POINT_ID, 'name' => 'Mast']],
+            'api_client',
+        );
+
+        Configure::write('Nms.url', 'https://nms.example.com');
+        Configure::write('Nms.key', 'secret');
+    }
+
+    /**
      * A contract filled in on the form is really stored.
      *
      * Rendering the form proves the page is there; this proves the way through it works.
@@ -302,6 +339,7 @@ class ContractsControllerTest extends TestCase
         /** @var \App\Model\Entity\Contract $existing */
         $existing = $this->getTableLocator()->get('Contracts')->get($this->firstId('Contracts'));
         $this->giveTheServiceTypeAUsableCodeFormat((string)$existing->service_type_id);
+        $this->letTheNetworkKeepTheAccessPoint();
 
         $this->post('/contracts/add', [
             'number' => 'S-2026-0001',
@@ -363,6 +401,8 @@ class ContractsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
+
+        $this->letTheNetworkKeepTheAccessPoint();
 
         $contractId = $this->firstId('Contracts');
         $this->post('/contracts/edit/' . $contractId, ['number' => 'S-2026-0003']);

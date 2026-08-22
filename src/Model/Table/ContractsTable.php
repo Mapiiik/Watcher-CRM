@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ServiceType;
 use App\Model\Enum\AddressType;
+use App\Model\Rule\ExistingAccessPointRule;
 use App\Model\Validation\ContractStateValidator;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
@@ -326,6 +327,16 @@ class ContractsTable extends AppTable
         );
         $rules->add($rules->existsIn(['commission_id'], 'Commissions'), ['errorField' => 'commission_id']);
         $rules->add($rules->existsIn(['contract_state_id'], 'ContractStates'), ['errorField' => 'contract_state_id']);
+
+        // The places of the network are Watcher NMS's, so what stands for `existsIn` here asks it.
+        $rules->add(
+            new ExistingAccessPointRule(),
+            'accessPointIsThere',
+            [
+                'errorField' => 'access_point_id',
+                'message' => __('The specified access point is not one Watcher NMS keeps.'),
+            ],
+        );
 
         $rules->add(
             function ($entity, $_options): bool {

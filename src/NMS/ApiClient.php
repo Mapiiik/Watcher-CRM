@@ -71,6 +71,28 @@ class ApiClient
     }
 
     /**
+     * The one access point a record names, or null where Watcher NMS keeps no such point.
+     *
+     * Picked out of every point it keeps rather than asked after by itself. A listing shows many
+     * rows and that reading is fetched once for all of them, where a point apiece would be a
+     * request apiece - and the same reading already stands behind the lists a form picks from.
+     *
+     * An answer that came to nothing is passed on as it is: not knowing whether the point is there
+     * is not the same as knowing it is not, and only the caller can say what that is worth.
+     *
+     * @param string $id The number the point is kept under.
+     * @return \App\Http\Answer<\App\NMS\Dto\AccessPoint|null>
+     */
+    public static function getAccessPoint(string $id): Answer
+    {
+        return self::getAccessPoints()->map(
+            fn(CollectionInterface $accessPoints): ?AccessPoint => $accessPoints
+                ->filter(fn(AccessPoint $accessPoint): bool => $accessPoint->id === $id)
+                ->first(),
+        );
+    }
+
+    /**
      * The access points as a list to pick from, by number and name.
      *
      * Kept of its own beside the points themselves: a listing asks for it once a row, and sorting

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Rule\ExistingAccessPointRule;
 use Cake\ORM\Association;
 use Cake\ORM\RulesChecker;
 use Override;
@@ -12,8 +13,9 @@ use Tasks\Model\Table\TasksTable as TasksTasksTable;
 /**
  * Tasks Model
  *
- * On top of the shared task: what this application files a task under - a customer and a
- * contract - and what a task type may insist on before a task filed under it can be saved.
+ * On top of the shared task: what this application files a task under - a customer, a contract
+ * and a place of the network - and what a task type may insist on before a task filed under it
+ * can be saved.
  *
  * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $TaskTypes
@@ -93,6 +95,16 @@ class TasksTable extends TasksTasksTable
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 
+        // The places of the network are Watcher NMS's, so what stands for `existsIn` here asks it.
+        $rules->add(
+            new ExistingAccessPointRule(),
+            'accessPointIsThere',
+            [
+                'errorField' => 'access_point_id',
+                'message' => __('The specified access point is not one Watcher NMS keeps.'),
+            ],
+        );
+
         $rules->add(
             new RequiredLinkRule('customer_required', 'customer_id'),
             'isRequiredCustomerFilled',
@@ -108,6 +120,15 @@ class TasksTable extends TasksTasksTable
             [
                 'errorField' => 'contract_id',
                 'message' => __('The specified task type requires the assignment of an contract.'),
+            ],
+        );
+
+        $rules->add(
+            new RequiredLinkRule('access_point_required', 'access_point_id'),
+            'isRequiredAccessPointFilled',
+            [
+                'errorField' => 'access_point_id',
+                'message' => __('The specified task type requires the assignment of an access point.'),
             ],
         );
 

@@ -21,10 +21,14 @@
             <fieldset>
                 <legend><?= __d('app_tasks', 'Add Task Type') ?></legend>
                 <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('customer_required');
-                    echo $this->Form->control('contract_required');
-                ?>
+                    echo $this->Form->control('name', ['label' => __d('app_tasks', 'Name')]);
+                    echo $this->Form->control('customer_required', ['label' => __d('app_tasks', 'Customer Required')]);
+                    echo $this->Form->control('contract_required', ['label' => __d('app_tasks', 'Contract Required')]);
+                    echo $this->Form->control(
+                        'access_point_required',
+                        ['label' => __d('app_tasks', 'Access Point Required')],
+                    );
+                    ?>
             </fieldset>
             <?= $this->Form->button(__d('app_tasks', 'Submit')) ?>
             <?= $this->Form->end() ?>

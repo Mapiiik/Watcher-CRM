@@ -68,6 +68,10 @@ class TaskTypesTable extends TasksTaskTypesTable
             ->boolean('contract_required')
             ->notEmptyString('contract_required');
 
+        $validator
+            ->boolean('access_point_required')
+            ->notEmptyString('access_point_required');
+
         return $validator;
     }
 

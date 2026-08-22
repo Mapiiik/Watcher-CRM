@@ -27,9 +27,12 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('customer_required') ?></th>
-                    <th><?= $this->Paginator->sort('contract_required') ?></th>
+                    <th><?= $this->Paginator->sort('name', __d('app_tasks', 'Name')) ?></th>
+                    <th><?= $this->Paginator->sort('customer_required', __d('app_tasks', 'Customer Required')) ?></th>
+                    <th><?= $this->Paginator->sort('contract_required', __d('app_tasks', 'Contract Required')) ?></th>
+                    <th><?=
+                        $this->Paginator->sort('access_point_required', __d('app_tasks', 'Access Point Required'))
+                    ?></th>
                     <th class="actions"><?= __d('app_tasks', 'Actions') ?></th>
                 </tr>
             </thead>
@@ -39,6 +42,9 @@
                     <td><?= h($taskType->name) ?></td>
                     <td><?= $taskType->customer_required ? __d('app_tasks', 'Yes') : __d('app_tasks', 'No'); ?></td>
                     <td><?= $taskType->contract_required ? __d('app_tasks', 'Yes') : __d('app_tasks', 'No'); ?></td>
+                    <td><?= $taskType->access_point_required
+                        ? __d('app_tasks', 'Yes')
+                        : __d('app_tasks', 'No'); ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__d('app_tasks', 'View'), ['action' => 'view', $taskType->id]) ?>
                         <?= $this->AuthLink->link(

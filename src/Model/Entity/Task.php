@@ -5,9 +5,7 @@ namespace App\Model\Entity;
 
 use App\Http\Answer;
 use App\NMS\ApiClient as NMSApiClient;
-use App\NMS\Dto\AccessPoint;
 use App\Phones\Formatter as PhoneFormatter;
-use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
 use Override;
 use Tasks\Model\Entity\Task as TasksTask;
@@ -64,10 +62,6 @@ class Task extends TasksTask
     /**
      * getter for acess point (try to load via ApiClient)
      *
-     * Picked out of every point Watcher NMS keeps rather than asked after by itself. A listing
-     * shows many rows and that reading is fetched once for all of them, where a point apiece would
-     * be a request apiece - and the same reading already stands behind the lists a form picks from.
-     *
      * @return \App\Http\Answer<\App\NMS\Dto\AccessPoint|null>
      */
     protected function _getAccessPoint(): Answer
@@ -76,11 +70,7 @@ class Task extends TasksTask
             return Answer::notAsked();
         }
 
-        return NMSApiClient::getAccessPoints()->map(
-            fn(CollectionInterface $accessPoints): ?AccessPoint => $accessPoints
-                ->filter(fn(AccessPoint $accessPoint): bool => $accessPoint->id === $this->access_point_id)
-                ->first(),
-        );
+        return NMSApiClient::getAccessPoint($this->access_point_id);
     }
 
     /**

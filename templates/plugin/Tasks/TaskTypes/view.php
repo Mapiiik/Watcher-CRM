@@ -55,6 +55,12 @@
                                 ? __d('app_tasks', 'Yes')
                                 : __d('app_tasks', 'No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __d('app_tasks', 'Access Point Required') ?></th>
+                            <td><?= $taskType->access_point_required
+                                ? __d('app_tasks', 'Yes')
+                                : __d('app_tasks', 'No'); ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column">

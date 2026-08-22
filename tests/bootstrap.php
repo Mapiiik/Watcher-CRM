@@ -39,6 +39,13 @@ if (empty($_SERVER['HTTP_HOST'])) {
     Configure::write('App.fullBaseUrl', 'http://localhost');
 }
 
+// No test reaches for the services this installation is configured with. A developer's `.env`
+// names the ones the company really runs, and a suite that read it would ask them real questions
+// and answer differently on every machine - the CI, which has no `.env`, already runs without.
+// A test that wants one says so itself, with an address that goes nowhere.
+Configure::write('Nms.url', '');
+Configure::write('Nms.key', '');
+
 // DebugKit skips settings these connection config if PHP SAPI is CLI / PHPDBG.
 // But since PagesControllerTest is run with debug enabled and DebugKit is loaded
 // in application, without setting up these config DebugKit errors out.
