@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 20:29+0200\n"
+"POT-Creation-Date: 2026-08-23 08:51+0200\n"
 "PO-Revision-Date: 2026-08-22 20:38+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -518,6 +518,10 @@ msgid ""
 msgstr ""
 "Adresy aktualizované z národních adresních registrů: {0} aktualizováno, {1} "
 "beze změny, {2} přeskočeno, {3} selhalo."
+
+#: src/Controller/Api/AccessPointsController.php:49
+msgid "That is not the identifier of an access point."
+msgstr "To není identifikátor přístupového bodu."
 
 #: src/Controller/Api/AddressesBridgeController.php:52
 #: src/Controller/Api/BusinessRegisterBridgeController.php:49
@@ -2326,8 +2330,8 @@ msgstr "IP adresa"
 #: templates/AccessCredentials/add.php:50
 #: templates/AccessCredentials/edit.php:58
 #: templates/AccountingProfiles/add.php:33
-#: templates/AccountingProfiles/edit.php:41 templates/Addresses/add.php:98
-#: templates/Addresses/edit.php:102 templates/Billings/add.php:56
+#: templates/AccountingProfiles/edit.php:41 templates/Addresses/add.php:93
+#: templates/Addresses/edit.php:97 templates/Billings/add.php:56
 #: templates/Billings/bulk_service_change.php:136
 #: templates/Billings/edit.php:61 templates/Billings/service_change.php:168
 #: templates/BorrowedEquipments/add.php:39
@@ -2876,13 +2880,17 @@ msgstr "IP adresy"
 msgid "List Addresses"
 msgstr "Seznam adres"
 
-#: templates/Addresses/add.php:26 templates/Addresses/edit.php:92
+#: templates/Addresses/add.php:26 templates/Addresses/edit.php:87
 msgid "Address Register Search"
 msgstr "Vyhledávání v registru adres"
 
 #: templates/Addresses/add.php:37
 msgid "Add Address"
 msgstr "Přidat adresu"
+
+#: templates/Addresses/add.php:97 templates/Addresses/edit.php:101
+msgid "Manual Coordinates from Map"
+msgstr "Ruční nastavení souřadnic z mapy"
 
 #: templates/Addresses/edit.php:31 templates/Addresses/view.php:12
 msgid "Edit Address"

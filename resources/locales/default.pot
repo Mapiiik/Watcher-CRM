@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 20:29+0200\n"
+"POT-Creation-Date: 2026-08-23 08:51+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -485,6 +485,10 @@ msgstr ""
 
 #: ./src/Controller/AddressesController.php:670
 msgid "Addresses updated from national address registries: {0} updated, {1} unchanged, {2} skipped, {3} failed."
+msgstr ""
+
+#: ./src/Controller/Api/AccessPointsController.php:49
+msgid "That is not the identifier of an access point."
 msgstr ""
 
 #: ./src/Controller/Api/AddressesBridgeController.php:52
@@ -2372,8 +2376,8 @@ msgstr ""
 #: ./templates/AccessCredentials/edit.php:58
 #: ./templates/AccountingProfiles/add.php:33
 #: ./templates/AccountingProfiles/edit.php:41
-#: ./templates/Addresses/add.php:98
-#: ./templates/Addresses/edit.php:102
+#: ./templates/Addresses/add.php:93
+#: ./templates/Addresses/edit.php:97
 #: ./templates/Billings/add.php:56
 #: ./templates/Billings/bulk_service_change.php:136
 #: ./templates/Billings/edit.php:61
@@ -3136,12 +3140,17 @@ msgid "List Addresses"
 msgstr ""
 
 #: ./templates/Addresses/add.php:26
-#: ./templates/Addresses/edit.php:92
+#: ./templates/Addresses/edit.php:87
 msgid "Address Register Search"
 msgstr ""
 
 #: ./templates/Addresses/add.php:37
 msgid "Add Address"
+msgstr ""
+
+#: ./templates/Addresses/add.php:97
+#: ./templates/Addresses/edit.php:101
+msgid "Manual Coordinates from Map"
 msgstr ""
 
 #: ./templates/Addresses/edit.php:31
