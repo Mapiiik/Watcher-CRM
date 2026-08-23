@@ -277,6 +277,37 @@ class AddressesControllerTest extends TestCase
     }
 
     /**
+     * The map for picking coordinates by hand stands outside the form it fills in.
+     *
+     * Leaflet writes the base layer switcher into the map as a radio group it names after a
+     * counter of its own, so a form enclosing the map submits fields the form protection never
+     * signed - and that refuses the whole request, not just the field.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::edit()
+     */
+    public function testEditKeepsThePointPickerOutsideTheForm(): void
+    {
+        $addresses = $this->getTableLocator()->get('Addresses');
+        $address = $addresses->get($this->firstId('Addresses'));
+        $address->set('manual_coordinate_setting', true);
+        $addresses->saveOrFail($address);
+
+        $this->login();
+        $this->get('/addresses/edit/' . $address->get('id'));
+
+        $this->assertResponseOk();
+
+        $body = $this->_getBodyAsString();
+        $picker = strpos($body, 'data-maps-point-picker');
+        $this->assertNotFalse($picker, 'Coordinates set by hand are what the map is drawn for.');
+
+        // whatever happened last before the map was a form closing, not a form opening
+        $before = substr($body, 0, $picker);
+        $this->assertGreaterThan(strrpos($before, '<form'), strrpos($before, '</form>'));
+    }
+
+    /**
      * The delete action runs and redirects. Whether the record really goes depends on what else
      * still references it, which is the application rules' business rather than this test's.
      *

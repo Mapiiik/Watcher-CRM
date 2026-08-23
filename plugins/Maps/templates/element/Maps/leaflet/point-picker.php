@@ -6,6 +6,11 @@
  * address search is offered only when the application named a geocoder, and it asks the
  * application's own `Api/GeocoderBridge` rather than a geocoder directly.
  *
+ * Render this **outside** the `<form>` it fills in, after `Form->end()`. The base layer switcher
+ * is a radio group Leaflet names after a counter of its own and writes into the map at runtime,
+ * so a form enclosing the map submits fields the form protection never signed and refuses the
+ * whole request. The fields are found by id, so where the map stands does not matter otherwise.
+ *
  * @var \Cake\View\View $this
  * @var string|float|null $lat
  * @var string|float|null $lng

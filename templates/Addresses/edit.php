@@ -80,11 +80,6 @@ $this->Html->script('addresses.js', ['block' => true]);
                 if ($address->manual_coordinate_setting) {
                     echo $this->Form->control('gps_y');
                     echo $this->Form->control('gps_x');
-                    echo $this->element('Maps.Maps/point-picker', [
-                        'lat' => $address->gps_y,
-                        'lng' => $address->gps_x,
-                        'country' => $searchCountryCode,
-                    ]);
                 }
                 ?>
             </fieldset>
@@ -101,6 +96,16 @@ $this->Html->script('addresses.js', ['block' => true]);
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
+            <?php if ($address->manual_coordinate_setting) : ?>
+                <fieldset>
+                    <legend><?= __('Manual Coordinates from Map') ?></legend>
+                    <?= $this->element('Maps.Maps/point-picker', [
+                        'lat' => $address->gps_y,
+                        'lng' => $address->gps_x,
+                        'country' => $searchCountryCode,
+                    ]) ?>
+                </fieldset>
+            <?php endif; ?>
         </div>
     </div>
 </div>
