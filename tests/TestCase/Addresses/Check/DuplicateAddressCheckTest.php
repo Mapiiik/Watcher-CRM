@@ -239,9 +239,13 @@ class DuplicateAddressCheckTest extends TestCase
      */
     private function groupsFor(Customer $customer): array
     {
-        return $this->check->find()->all()->filter(
-            fn(EntityInterface $group): bool => $group->get('customer_id') === $customer->id,
-        )->toList();
+        // `toList()` hands back the keys it was given, so the caller cannot reach for the
+        // first group by its position until they are numbered again.
+        return array_values(
+            $this->check->find()->all()->filter(
+                fn(EntityInterface $group): bool => $group->get('customer_id') === $customer->id,
+            )->toList(),
+        );
     }
 
     /**
