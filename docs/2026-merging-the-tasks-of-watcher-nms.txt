@@ -1,0 +1,265 @@
+-- =============================================================================
+-- Moving the task manager of Watcher NMS into Watcher CRM.
+--
+-- Both applications carry the same task manager - the plugin is the same code -
+-- and an installation running both ends up with two lists and two maps of what
+-- is due. CRM is the one to keep: it already files a task under a place of the
+-- network (access_point_id, a soft reference resolved through the NMS API) and
+-- already draws tasks on a map, so the tasks of NMS have somewhere to land
+-- without changing shape.
+--
+-- What travels and what does not:
+--   * id        - kept. The two applications generate identifiers that do not
+--                 collide, so a link to a task in NMS resolves to the same task
+--                 in CRM afterwards.
+--   * nid       - NOT kept. Both applications number tasks from one, so the
+--                 numbers overlap; CRM hands out its own. Step 6 writes down
+--                 which old number became which, for whoever asks later.
+--   * states, types - matched by name through a map that starts out with every
+--                 name pointing at itself. Where the two applications spell the
+--                 same thing differently, the map is corrected by hand.
+--   * users     - matched by username, for the solver and for both footprints.
+--   * customer, contract - NMS has neither, so they stay empty. Step 3 refuses
+--                 the import if a type on the way in demands one.
+--   * timestamps - NMS keeps them with a zone and CRM without one, so they
+--                 cross over with their zone and are laid down in step 4 as the
+--                 wall clock of the timezone the applications run in. Set that
+--                 below before starting.
+--
+-- The rows go in with plain SQL rather than through the application, so no
+-- audit record is written for them and the original timestamps survive. A task
+-- imported this way reads in CRM's history like a task that was always there.
+--
+-- IMPORTANT: run this in a quiet window, and read the counts at every step
+-- before moving on. Steps 1 to 3 change nothing.
+--
+-- An export goes stale the moment somebody writes another task. Either the task
+-- manager in NMS stops taking new ones before step 1, or step 1 is taken again
+-- at the moment of the switch.
+-- =============================================================================
+
+-- What APP_DEFAULT_TIMEZONE is set to for these applications. Both of them have
+-- to be reading the same one, or the times of the imported tasks will be off by
+-- the difference. Step 4 is where it is used, so this belongs in the psql
+-- session opened on the CRM database.
+\set app_timezone 'UTC'
+
+
+-- -----------------------------------------------------------------------------
+-- 1) On the NMS database - write the tasks out.
+--    Names, not identifiers: the two applications do not share the catalogues,
+--    so what crosses over has to be something both of them can be asked.
+-- -----------------------------------------------------------------------------
+
+\copy (SELECT t.id, t.nid, ts.name AS task_state, tt.name AS task_type, u.username AS assigned_to, t.subject, t.text, t.priority, t.email, t.phone, t.start_date, t.finish_date, t.estimated_date, t.critical_date, t.access_point_id, t.created, cb.username AS created_by, t.modified, mb.username AS modified_by FROM tasks t JOIN task_states ts ON ts.id = t.task_state_id JOIN task_types tt ON tt.id = t.task_type_id LEFT JOIN users u ON u.id = t.user_id LEFT JOIN users cb ON cb.id = t.created_by LEFT JOIN users mb ON mb.id = t.modified_by ORDER BY t.nid) TO '/tmp/nms-tasks.csv' WITH (FORMAT csv, HEADER)
+
+-- Postgres reports "COPY <n>". Keep that number - everything below is checked
+-- against it. Take the breakdown too, step 5 reads its own against it:
+--
+--   SELECT ts.name, tt.name, count(*),
+--          count(*) FILTER (WHERE t.access_point_id IS NULL) AS without_a_place,
+--          count(*) FILTER (WHERE t.user_id IS NULL) AS unassigned
+--     FROM tasks t
+--     JOIN task_states ts ON ts.id = t.task_state_id
+--     JOIN task_types tt  ON tt.id = t.task_type_id
+--    GROUP BY 1, 2 ORDER BY 1, 2;
+--
+-- Then carry the file over to the CRM database host.
+
+
+-- -----------------------------------------------------------------------------
+-- 2) On the CRM database - stage the file and say how the names map.
+--    Ordinary tables rather than temporary ones, so the work survives leaving
+--    psql and coming back. Step 7 drops them.
+-- -----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS nms_tasks_import;
+CREATE TABLE nms_tasks_import (
+    id uuid, nid bigint,
+    task_state text, task_type text, assigned_to text,
+    subject text, text text, priority integer,
+    email text, phone text,
+    start_date date, finish_date date, estimated_date date, critical_date date,
+    access_point_id uuid,
+    created timestamptz, created_by text,
+    modified timestamptz, modified_by text
+);
+
+\copy nms_tasks_import FROM '/tmp/nms-tasks.csv' WITH (FORMAT csv, HEADER)
+
+-- Must equal the number step 1 reported.
+SELECT count(*) AS staged FROM nms_tasks_import;
+
+-- Every name starts out pointing at itself, which is right wherever the two
+-- catalogues agree.
+DROP TABLE IF EXISTS nms_name_map;
+CREATE TABLE nms_name_map (
+    kind text NOT NULL,
+    nms_name text NOT NULL,
+    crm_name text NOT NULL,
+    PRIMARY KEY (kind, nms_name)
+);
+INSERT INTO nms_name_map (kind, nms_name, crm_name)
+SELECT DISTINCT 'state', i.task_state, i.task_state FROM nms_tasks_import i
+UNION
+SELECT DISTINCT 'type', i.task_type, i.task_type FROM nms_tasks_import i;
+
+-- Where they disagree, say so here. A state meaning "finished" is the usual
+-- one to differ, the two applications having been worded separately:
+--
+--   UPDATE nms_name_map SET crm_name = '<what CRM calls it>'
+--    WHERE kind = 'state' AND nms_name = '<what NMS calls it>';
+--
+-- Step 3 names whatever still does not resolve, so it can be run, corrected,
+-- and run again until it comes back empty.
+SELECT kind, nms_name, crm_name FROM nms_name_map ORDER BY kind, nms_name;
+
+
+-- -----------------------------------------------------------------------------
+-- 3) Everything that could go wrong, asked before anything is written.
+--    This has to come back EMPTY. Every row is a task that would land badly:
+--    a state, a type or a person CRM does not know, a name CRM answers to more
+--    than once, an identifier already taken, or a type that insists on a
+--    customer or a contract the export cannot supply.
+-- -----------------------------------------------------------------------------
+
+SELECT 'state has no counterpart in CRM' AS trouble, i.task_state AS name, count(*)
+  FROM nms_tasks_import i
+  LEFT JOIN nms_name_map m ON m.kind = 'state' AND m.nms_name = i.task_state
+  LEFT JOIN task_states s ON s.name = m.crm_name
+ WHERE s.id IS NULL GROUP BY 1, 2
+UNION ALL
+SELECT 'type has no counterpart in CRM', i.task_type, count(*)
+  FROM nms_tasks_import i
+  LEFT JOIN nms_name_map m ON m.kind = 'type' AND m.nms_name = i.task_type
+  LEFT JOIN task_types t ON t.name = m.crm_name
+ WHERE t.id IS NULL GROUP BY 1, 2
+UNION ALL
+SELECT 'username has no counterpart in CRM', v.username, count(*)
+  FROM nms_tasks_import i
+ CROSS JOIN LATERAL (VALUES (i.assigned_to), (i.created_by), (i.modified_by)) v(username)
+  LEFT JOIN users u ON u.username = v.username
+ WHERE v.username IS NOT NULL AND u.id IS NULL GROUP BY 1, 2
+UNION ALL
+SELECT 'CRM knows more than one state of this name', s.name, count(*)
+  FROM task_states s JOIN nms_name_map m ON m.kind = 'state' AND m.crm_name = s.name
+ GROUP BY 1, 2 HAVING count(*) > 1
+UNION ALL
+SELECT 'CRM knows more than one type of this name', t.name, count(*)
+  FROM task_types t JOIN nms_name_map m ON m.kind = 'type' AND m.crm_name = t.name
+ GROUP BY 1, 2 HAVING count(*) > 1
+UNION ALL
+SELECT 'identifier already taken in CRM', i.id::text, 1
+  FROM nms_tasks_import i JOIN tasks c ON c.id = i.id
+UNION ALL
+SELECT 'type demands what the export has not', t.name, count(*)
+  FROM nms_tasks_import i
+  JOIN nms_name_map m ON m.kind = 'type' AND m.nms_name = i.task_type
+  JOIN task_types t ON t.name = m.crm_name
+ WHERE t.customer_required OR t.contract_required GROUP BY 1, 2;
+
+-- A missing username is fixed by creating the account in CRM, not by dropping
+-- the name from the task. A missing state or type is either added to CRM's
+-- catalogue or pointed at an existing one through the map in step 2.
+
+
+-- -----------------------------------------------------------------------------
+-- 4) The move itself. Nothing is committed until step 5 says the numbers are
+--    right. The columns CRM fills in for itself - nid above all - are left out
+--    on purpose, so the defaults fire.
+-- -----------------------------------------------------------------------------
+
+BEGIN;
+
+INSERT INTO tasks (
+    id, task_state_id, task_type_id, user_id,
+    subject, text, priority, email, phone,
+    start_date, finish_date, estimated_date, critical_date,
+    access_point_id, created, created_by, modified, modified_by
+)
+SELECT
+    i.id, s.id, t.id, u.id,
+    i.subject, i.text, i.priority, i.email, i.phone,
+    i.start_date, i.finish_date, i.estimated_date, i.critical_date,
+    i.access_point_id,
+    i.created AT TIME ZONE :'app_timezone', cb.id,
+    i.modified AT TIME ZONE :'app_timezone', mb.id
+FROM nms_tasks_import i
+JOIN nms_name_map ms ON ms.kind = 'state' AND ms.nms_name = i.task_state
+JOIN task_states s   ON s.name = ms.crm_name
+JOIN nms_name_map mt ON mt.kind = 'type' AND mt.nms_name = i.task_type
+JOIN task_types t    ON t.name = mt.crm_name
+LEFT JOIN users u  ON u.username  = i.assigned_to
+LEFT JOIN users cb ON cb.username = i.created_by
+LEFT JOIN users mb ON mb.username = i.modified_by
+-- so that CRM hands out its numbers in the order NMS handed out its own
+ORDER BY i.nid;
+
+-- Postgres reports "INSERT 0 <n>" - must equal the number step 1 reported. The
+-- joins on state and type are inner, so a row that lost its way is a row that
+-- silently did not arrive. Step 3 is what keeps that from happening; this count
+-- is what proves it.
+
+
+-- -----------------------------------------------------------------------------
+-- 5) Still inside the transaction - look at what arrived.
+-- -----------------------------------------------------------------------------
+
+SELECT count(*) AS imported, min(nid) AS first_number, max(nid) AS last_number
+  FROM tasks WHERE id IN (SELECT id FROM nms_tasks_import);
+
+-- Nobody the export named may have been dropped on the way. Must be nought.
+SELECT count(*) AS arrived_without_somebody
+  FROM nms_tasks_import i JOIN tasks c ON c.id = i.id
+ WHERE (i.assigned_to IS NOT NULL AND c.user_id     IS NULL)
+    OR (i.created_by  IS NOT NULL AND c.created_by  IS NULL)
+    OR (i.modified_by IS NOT NULL AND c.modified_by IS NULL);
+
+-- The same breakdown step 1 took on the NMS side. The names of the states may
+-- differ by the map; none of the counts may.
+SELECT ts.name AS state, tt.name AS type,
+       count(*),
+       count(*) FILTER (WHERE c.access_point_id IS NULL) AS without_a_place,
+       count(*) FILTER (WHERE c.user_id IS NULL) AS unassigned
+  FROM tasks c
+  JOIN task_states ts ON ts.id = c.task_state_id
+  JOIN task_types tt  ON tt.id = c.task_type_id
+ WHERE c.id IN (SELECT id FROM nms_tasks_import)
+ GROUP BY 1, 2 ORDER BY 1, 2;
+
+-- Everything matches -> COMMIT;
+-- Anything at all off -> ROLLBACK;
+
+
+-- -----------------------------------------------------------------------------
+-- 6) After COMMIT - write down which old number became which.
+--    The task keeps its identifier, so an old link still finds it, but the
+--    number people quote to each other changes. Keep this listing somewhere
+--    findable; the staging table it is read from goes away in step 7.
+-- -----------------------------------------------------------------------------
+
+\copy (SELECT i.nid AS number_in_nms, c.nid AS number_in_crm, c.id, c.subject FROM nms_tasks_import i JOIN tasks c ON c.id = i.id ORDER BY i.nid) TO '/tmp/nms-task-numbers.csv' WITH (FORMAT csv, HEADER)
+
+
+-- -----------------------------------------------------------------------------
+-- 7) Clear the staging away.
+-- -----------------------------------------------------------------------------
+
+DROP TABLE nms_tasks_import;
+DROP TABLE nms_name_map;
+
+
+-- =============================================================================
+-- What this does NOT do, and has to be decided separately:
+--
+--   * The tasks stay in Watcher NMS. Nothing here removes them, so the move can
+--     be read against the original for as long as anyone wants. Turning the
+--     task manager off over there is its own step, taken once the CRM side is
+--     trusted.
+--   * holds_tasks travels with the person, not with the task. Whoever holds
+--     tasks in NMS but not in CRM has to have the flag set in CRM as well.
+--   * A technician standing at a place of the network now has to leave NMS to
+--     see what is due there. A read-only panel on the access point, fed by CRM
+--     the way the rest of the bridge between the two already works, is what
+--     gives that back.
+-- =============================================================================
