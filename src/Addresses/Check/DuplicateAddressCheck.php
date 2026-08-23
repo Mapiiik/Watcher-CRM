@@ -12,17 +12,29 @@ use Override;
 /**
  * The same place written down twice for one customer.
  *
- * Two rows of the same type at the same street, number and city are one address recorded
- * twice, whatever else differs between them. They are worth clearing on their own, and they
- * are part of what makes {@see \App\Addresses\Check\UnclearBillingAddressCheck} report a
- * customer: two identical installation addresses and no billing address leave the invoice
- * pointing at one of two rows that say the same thing.
+ * Two rows of the same type at the same street, number, entrance and unit in the same city
+ * are one address recorded twice, whatever else differs between them. They are worth clearing
+ * on their own, and they are part of what makes {@see \App\Addresses\Check\UnclearBillingAddressCheck}
+ * report a customer: two identical installation addresses and no billing address leave the
+ * invoice pointing at one of two rows that say the same thing.
+ *
+ * The number is only the same number when it is the same kind of number, because a
+ * registration number points at a different building than a house number that reads alike.
  *
  * Rows are compared with the case and the surrounding spaces taken off, because that is how
  * they get typed twice in the first place.
  */
 class DuplicateAddressCheck extends AbstractAddressCheck
 {
+    /**
+     * How closely hand-set pins have to agree to count as one place - four decimal places
+     * are around ten metres here, close enough that two pins on one object land together and
+     * far enough that two objects in one street stay apart.
+     *
+     * @var int
+     */
+    private const COORDINATE_DECIMALS = 4;
+
     /**
      * @param \App\Model\Table\AddressesTable $addresses Addresses table.
      * @param bool $ignore_inactive Whether to pass over customers with nothing running.
@@ -74,11 +86,14 @@ class DuplicateAddressCheck extends AbstractAddressCheck
             ]);
         }
 
-        $parts = ['street', 'number', 'city'];
+        $parts = ['street', 'number', 'city', 'entrance', 'unit'];
 
         $keys = [
             'customer_id' => 'Addresses.customer_id',
             'type' => 'Addresses.type',
+            // Grouped by the column rather than by a `min()` of it, so that the listing
+            // gets the kind of number back as the enum and can say which one it is.
+            'number_type' => 'Addresses.number_type',
         ];
 
         // Grouped by the flattened spelling, but shown as one of the spellings that were
@@ -105,6 +120,7 @@ class DuplicateAddressCheck extends AbstractAddressCheck
                 [new IdentifierExpression('Customers.id')],
                 array_values($keys),
                 array_map(fn(string $part): ExpressionInterface => $this->normalised($query, $part), $parts),
+                [$this->pinned($query, 'gps_x'), $this->pinned($query, 'gps_y')],
             ))
             ->having([$query->expr()->gt($query->func()->count('*'), 1, 'integer')])
             ->orderBy(['Addresses.customer_id' => 'ASC']);
@@ -128,5 +144,32 @@ class DuplicateAddressCheck extends AbstractAddressCheck
     private function normalised(SelectQuery $query, string $field): ExpressionInterface
     {
         return $query->expr(sprintf("LOWER(TRIM(COALESCE(Addresses.%s, '')))", $field));
+    }
+
+    /**
+     * A coordinate of a hand-set pin, and nothing where the pin was not set by hand.
+     *
+     * Somebody who placed the pin themselves said where the place is, so two such rows that
+     * read alike but sit apart are two places rather than one address typed twice. The
+     * coordinates only narrow the spelling down and never stand in for it, because several
+     * things at one mast are pinned together on purpose and are told apart by what is
+     * written in the number.
+     *
+     * Written out for the same reason as {@see self::normalised()}, and rounded rather than
+     * measured: two pins that fall either side of a boundary read as far apart, which is the
+     * price of asking the group by rather than a distance.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query The query
+     *   the expression belongs to.
+     * @param string $field Coordinate column on Addresses.
+     * @return \Cake\Database\ExpressionInterface
+     */
+    private function pinned(SelectQuery $query, string $field): ExpressionInterface
+    {
+        return $query->expr(sprintf(
+            'CASE WHEN Addresses.manual_coordinate_setting THEN ROUND(Addresses.%s::numeric, %d) END',
+            $field,
+            self::COORDINATE_DECIMALS,
+        ));
     }
 }

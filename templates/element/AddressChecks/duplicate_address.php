@@ -31,7 +31,7 @@
                 </td>
                 <td><?= h($group->type?->label()) ?></td>
                 <td class="dashboard-wrap">
-                    <?= h(trim(sprintf('%s %s, %s', $group->street, $group->number, $group->city), ' ,')) ?>
+                    <?= h($group->address) ?>
                 </td>
                 <td><?= h((string)$group->get('total')) ?></td>
             </tr>
