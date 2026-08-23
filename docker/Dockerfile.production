@@ -21,18 +21,32 @@ RUN set -x \
  && docker-run-bootstrap
 
 # Composer install
-RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev
+RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev --optimize-autoloader
 
 # Add on-start commands
 RUN cat <<'EOF' >> /opt/docker/provision/entrypoint.d/99-composer.sh
 # Composer operations
-gosu "${APPLICATION_USER}" composer run-script migrations -d /app
-gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app
+
+# The steps and their order are update.sh's, which does the same work for an installation
+# that does not run in a container.
+gosu "${APPLICATION_USER}" composer run-script migrations -d /app -- --no-lock
+
 # Link the plugins' assets into the webroot, so the web server serves them itself rather
 # than every request for them going through PHP. Here rather than at build time, alongside
 # the others, because this is where the application has its environment.
 gosu "${APPLICATION_USER}" composer run-script plugin-assets -d /app
+
+# What the code of the previous image left cached. `tmp` is a tmpfs and empties itself, but
+# the caches are pointed at Redis, which keeps a volume of its own under a prefix that does
+# not change between builds - so translations and the rest outlive the container they were
+# written by, for as long as the duration they were written with.
+gosu "${APPLICATION_USER}" composer run-script cache-clear -d /app
+
+# Read the new schema once here rather than on somebody's first request. After the clearing,
+# not before, or it would throw away what it had just built.
+gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app
 EOF
+
 RUN chmod +x /opt/docker/provision/entrypoint.d/99-composer.sh
 
 ###################################

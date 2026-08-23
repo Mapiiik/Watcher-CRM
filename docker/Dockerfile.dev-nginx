@@ -30,5 +30,6 @@ RUN cat <<'EOF' > /opt/docker/provision/entrypoint.d/99-composer.sh
 # Composer operations
 gosu "${APPLICATION_USER}" composer install -d /app
 gosu "${APPLICATION_USER}" composer run-script migrations -d /app -- --no-lock
+gosu "${APPLICATION_USER}" composer run-script plugin-assets -d /app
 gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app
 EOF

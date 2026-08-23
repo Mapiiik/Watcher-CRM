@@ -31,7 +31,7 @@ composer migrations -- --no-lock
 composer plugin-assets
 
 # What the previous code left cached, including the table schema the migrations just changed.
-bin/cake cache clear_all
+composer cache-clear
 
 # Read the new schema once here rather than on somebody's first request.
 composer schema-cache

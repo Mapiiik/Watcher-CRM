@@ -63,6 +63,7 @@ set -e
 # Composer operations
 composer install -d /app
 composer run-script migrations -d /app -- --no-lock
+composer run-script plugin-assets -d /app
 composer run-script schema-cache -d /app
 
 exec docker-php-entrypoint "$@"

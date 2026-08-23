@@ -93,6 +93,9 @@
             "@migrations",
             "@schema-cache"
         ],
+        "cache-clear": [
+            "bin/cake cache clear_all"
+        ],
         "check": [
             "@test",
             "@cs-check"
