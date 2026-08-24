@@ -4246,6 +4246,11 @@ msgstr "Přidat zákazníka"
 msgid "VAT Number"
 msgstr "DIČ"
 
+#: templates/Customers/add.php:63 templates/Customers/edit.php:55
+#: templates/Customers/print.php:108 templates/Customers/view.php:268
+msgid "Synchronize to Accounting System"
+msgstr "Synchronizovat do účetnictví"
+
 #: templates/Customers/add.php:65 templates/Customers/edit.php:57
 #: templates/Customers/print.php:116 templates/Customers/view.php:276
 msgid "Individual Maturity Period"

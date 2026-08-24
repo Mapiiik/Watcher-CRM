@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 20:47+0200\n"
+"POT-Creation-Date: 2026-08-24 13:01+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -270,20 +270,24 @@ msgstr ""
 msgid "Sending all customers."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:171
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:185
+msgid "Skipping customer {0}: synchronization to the accounting system is turned off."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:196
 msgid "No customers to send."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:183
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:208
 msgid "Customers successfully sent to accounting system."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:192
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:200
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:217
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:225
 msgid "Error when sending partners: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:199
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:224
 msgid "Error when sending partners"
 msgstr ""
 
@@ -436,46 +440,46 @@ msgstr ""
 msgid "Full Synchronization"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:78
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:79
 msgid "Eurofaktura / E-racuni is not configured."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:100
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:117
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:101
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:118
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:50
 msgid "Unknown error"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:103
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:114
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:104
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:115
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
 msgid "Eurofaktura API error: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:285
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:286
 msgid "Failed to send invoice for customer {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:289
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:347
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:290
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:359
 msgid "Unknown"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:343
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:355
 msgid "Failed to send partner for customer {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:379
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:401
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:423
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:391
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:413
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:435
 msgid "Not implemented in Eurofaktura Provider."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:478
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:490
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:493
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:505
 msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr ""
 

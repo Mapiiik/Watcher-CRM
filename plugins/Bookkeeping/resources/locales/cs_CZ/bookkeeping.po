@@ -335,6 +335,10 @@ msgstr "Odesílání ID zákazníka: {0}"
 msgid "Sending all customers."
 msgstr "Odesílání všech zákazníků."
 
+#: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:185
+msgid "Skipping customer {0}: synchronization to the accounting system is turned off."
+msgstr "Zákazník {0} přeskočen: synchronizace do účetnictví je vypnutá."
+
 #: plugins/Bookkeeping/src/Command/SendPartnersCommand.php:171
 msgid "No customers to send."
 msgstr "Žádní zákazníci k odeslání."
