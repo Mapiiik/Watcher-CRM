@@ -24,6 +24,7 @@ use RuntimeException;
  * @property string|null $suffix
  * @property string|null $company
  * @property int $accounting_profile_id
+ * @property bool $sync_to_accounting
  * @property string|null $bank_name
  * @property string|null $bank_account
  * @property string|null $bank_code
@@ -98,6 +99,7 @@ class Customer extends AppEntity
         'suffix' => true,
         'company' => true,
         'accounting_profile_id' => true,
+        'sync_to_accounting' => true,
         'bank_name' => true,
         'bank_account' => true,
         'bank_code' => true,

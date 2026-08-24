@@ -12,8 +12,9 @@ use PHPUnit\Framework\Attributes\UsesClass;
  * Bookkeeping\Command\SendPartnersCommand Test Case
  *
  * A run hands the customers to the accounting system, which a test is no place to reach. What can
- * be answered without it is the name and the options a cron entry names the command by, and the one
- * branch that returns before any of it: a run with nobody to send.
+ * be answered without it is the name and the options a cron entry names the command by, and the
+ * branches that return before any of it: a run with nobody to send, and a run where nobody is to be
+ * synchronized.
  */
 #[UsesClass(SendPartnersCommand::class)]
 class SendPartnersCommandTest extends TestCase
@@ -23,12 +24,20 @@ class SendPartnersCommandTest extends TestCase
     /**
      * Fixtures
      *
-     * The customers are deliberately left out: with one, the run reaches the accounting system.
+     * The customers are here only because the one test that lets the command see them turns their
+     * synchronization off first: with a customer left to send, the run reaches the accounting
+     * system, which a test is no place to do.
      *
      * @var array<string>
      */
     protected array $fixtures = [
         'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Emails',
+        'app.Phones',
     ];
 
     /**
@@ -77,15 +86,40 @@ class SendPartnersCommandTest extends TestCase
     }
 
     /**
-     * Nobody to send is a quiet run rather than a failed one, and one that reaches for nothing.
+     * Nobody to send - here because nobody falls in the band of customer numbers the run asks for -
+     * is a quiet run rather than a failed one, and one that reaches for nothing.
      *
      * @return void
      * @link \Bookkeeping\Command\SendPartnersCommand::execute()
      */
     public function testExecuteWithNobodyToSend(): void
     {
+        $this->exec('send_partners --min-customer-number 999999999');
+
+        $this->assertExitSuccess();
+        $this->assertErrorContains('No customers to send.');
+    }
+
+    /**
+     * A customer who is not to be synchronized is walked past rather than sent, which is the whole
+     * point of the flag: one partner the accounting system will not take used to end the run for
+     * everybody behind them.
+     *
+     * The customers can be loaded here precisely because none of them is to be sent, so the run
+     * still reaches for nothing.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\SendPartnersCommand::execute()
+     */
+    public function testExecuteSkipsCustomersNotToBeSynchronized(): void
+    {
+        $customers = $this->getTableLocator()->get('Customers');
+        $customers->updateAll(['sync_to_accounting' => false], []);
+
         $this->exec('send_partners');
 
         $this->assertExitSuccess();
+        $this->assertOutputContains('Skipping customer');
+        $this->assertErrorContains('No customers to send.');
     }
 }

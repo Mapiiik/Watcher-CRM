@@ -310,6 +310,10 @@ class CustomersTable extends AppTable
             ->requirePresence('accounting_profile_id', 'create')
             ->notEmptyString('accounting_profile_id');
 
+        $validator
+            ->boolean('sync_to_accounting')
+            ->notEmptyString('sync_to_accounting');
+
         return $validator;
     }
 

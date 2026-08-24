@@ -167,6 +167,31 @@ class SendPartnersCommand extends Command
                 $customers = $customers->toList();
             }
 
+            // a customer somebody has unticked is left where they are: the accounting system holds
+            // a partner card for them that is not ours to write, and the run has to walk past it
+            // rather than die on it
+            $customers = array_values(array_filter(
+                $customers,
+                function (Customer $customer) use ($io): bool {
+                    if ($customer->sync_to_accounting) {
+                        return true;
+                    }
+
+                    Log::info(
+                        'Partner sync skipped for customer ' . $customer->number
+                        . ': synchronization to the accounting system is turned off.',
+                    );
+
+                    $io->info(__d(
+                        'bookkeeping',
+                        'Skipping customer {0}: synchronization to the accounting system is turned off.',
+                        $customer->number,
+                    ));
+
+                    return false;
+                },
+            ));
+
             if ($customers === []) {
                 $io->warning(__d(
                     'bookkeeping',
@@ -178,7 +203,7 @@ class SendPartnersCommand extends Command
 
             // Delegate sending to provider
             $bookkeeping = new BookkeepingService();
-            $bookkeeping->sendPartners(array_values($customers));
+            $bookkeeping->sendPartners($customers);
 
             $io->success(__d(
                 'bookkeeping',

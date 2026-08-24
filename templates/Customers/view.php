@@ -265,6 +265,10 @@ $remark = function (string $note, bool $wrong = false): string {
                             ) : '' ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Synchronize to Accounting System') ?></th>
+                            <td><?= $customer->sync_to_accounting ? __('Yes') : __('No'); ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Dealer') ?></th>
                             <td><?= h($customer->dealer->label()) ?></td>
                         </tr>

@@ -59,6 +59,9 @@ $this->Html->script('customers.js', ['block' => true]);
                         echo $this->Form->control('accounting_profile_id', [
                             'options' => $accountingProfiles,
                         ]);
+                        echo $this->Form->control('sync_to_accounting', [
+                            'label' => __('Synchronize to Accounting System'),
+                        ]);
                         echo $this->Form->control('dealer');
                         echo $this->Form->control('invoice_delivery_type');
                         echo $this->Form->control('individual_maturity_period', [

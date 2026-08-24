@@ -14,6 +14,7 @@ use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
+use Cake\Log\Log;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use RuntimeException;
 use Settings\Utility\Settings;
@@ -320,6 +321,17 @@ class EurofakturaProvider implements AccountingProviderInterface
     public function sendPartners(array $customers): void
     {
         foreach ($customers as $customer) {
+            // the customer says whether their partner card is ours to write; an invoice for them
+            // still goes out, only this push in front of it is left undone
+            if (!$customer->sync_to_accounting) {
+                Log::info(
+                    'Partner sync skipped for customer ' . $customer->number
+                    . ': synchronization to the accounting system is turned off.',
+                );
+
+                continue;
+            }
+
             try {
                 // 1) Build Partner payload
                 $partner = $this->jsonRequestBuilder->buildPartner($customer);

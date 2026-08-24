@@ -413,6 +413,57 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * A new customer is one to synchronize until somebody says otherwise, and the form has to open
+     * that way: an operator who never looks at the box gets what everybody had before it existed.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddOpensWithSynchronizationToAccountingTurnedOn(): void
+    {
+        $this->login();
+        $this->get('/customers/add');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(
+            '<input type="checkbox" name="sync_to_accounting" value="1" id="sync-to-accounting"'
+            . ' checked="checked">',
+        );
+    }
+
+    /**
+     * A box somebody unticks is really stored unticked. It is the whole of what the flag does - the
+     * partner is then theirs to keep right in the accounting system - so a save that quietly put it
+     * back would send them to the accounting system anyway.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddStoresACustomerNotToBeSynchronized(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        // the fixtures write the identity column with the values they carry, which leaves the
+        // identity itself where it started
+        $this->advanceIdentity('customers', 'nid');
+
+        $this->post('/customers/add', [
+            'last_name' => 'Baker',
+            'dealer' => CustomerDealer::Never->value,
+            'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
+            'accounting_profile_id' => self::ACCOUNTING_PROFILE_ID,
+            'sync_to_accounting' => '0',
+        ]);
+
+        $this->assertRedirect();
+        $customers = $this->getTableLocator()->get('Customers');
+        /** @var \App\Model\Entity\Customer $stored */
+        $stored = $customers->find()->where(['last_name' => 'Baker'])->firstOrFail();
+        $this->assertFalse($stored->sync_to_accounting);
+    }
+
+    /**
      * A customer the rules refuse is not stored, and the operator is given the form back rather
      * than a redirect that would suggest it went through.
      *
