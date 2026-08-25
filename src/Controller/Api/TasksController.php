@@ -106,6 +106,7 @@ class TasksController extends AppController
             $query->find('stale', days: (int)$stale);
         }
 
+        $userId = null;
         $username = $request->getQuery('user');
         if (is_string($username) && $username !== '') {
             $user = $this->Tasks->Users->find()
@@ -120,7 +121,8 @@ class TasksController extends AppController
                 return;
             }
 
-            $query->find('forUser', user_id: (string)$user->get('id'));
+            $userId = (string)$user->get('id');
+            $query->find('forUser', user_id: $userId);
         }
 
         $total = $query->count();
@@ -130,7 +132,7 @@ class TasksController extends AppController
             $query->limit(max(0, (int)$limit));
         }
 
-        $this->answerWith(array_values($query->orderBy(self::ORDER)->all()->toList()), $total);
+        $this->answerWith(array_values($query->orderBy(self::ORDER)->all()->toList()), $total, $userId);
     }
 
     /**
@@ -207,14 +209,19 @@ class TasksController extends AppController
      *
      * @param list<\Cake\Datasource\EntityInterface> $tasks The tasks to hand over.
      * @param int $total How many there were before any limit.
+     * @param string|null $userId Whoever the name asked about turned out to be here.
      * @return void
      */
-    private function answerWith(array $tasks, int $total): void
+    private function answerWith(array $tasks, int $total, ?string $userId = null): void
     {
         $this->set([
             'tasks' => $tasks,
             'total' => $total,
+            // The two applications call a person by the same name and by different numbers, so
+            // the number this one knows them by goes back with the answer. Without it a caller
+            // could ask whose the tasks are but could not point anybody at the listing of them.
+            'user_id' => $userId,
         ]);
-        $this->viewBuilder()->setOption('serialize', ['tasks', 'total']);
+        $this->viewBuilder()->setOption('serialize', ['tasks', 'total', 'user_id']);
     }
 }

@@ -111,6 +111,34 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * Asked whose the tasks are, the answer also says who that turned out to be here.
+     *
+     * The two applications call a person by the same name and by different numbers. Without the
+     * number this one knows them by, a caller could ask whose the tasks are but could not then
+     * point anybody at the listing of them - and a listing asked with no name at all falls back
+     * to whoever is signed in, which looks right often enough to go unnoticed.
+     *
+     * @return void
+     * @link \App\Controller\Api\TasksController::search()
+     */
+    public function testSearchSaysWhoTheNameTurnedOutToBe(): void
+    {
+        $holder = $this->getTableLocator()->get('AppUsers')->find()->firstOrFail();
+
+        $this->login('api');
+        $this->get('/api/tasks/search.json?user=' . urlencode((string)$holder->get('username')));
+
+        $this->assertResponseOk();
+        $this->assertSame($holder->get('id'), $this->viewVariable('user_id'));
+
+        // and nobody was asked about, so there is nobody to name
+        $this->get('/api/tasks/search.json');
+
+        $this->assertResponseOk();
+        $this->assertNull($this->viewVariable('user_id'));
+    }
+
+    /**
      * A name this application has never heard of is an answer, not a fault - and the answer is
      * that nobody here holds anything.
      *
