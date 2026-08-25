@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Controller\AppController;
 use App\NMS\ApiClient as NMSApiClient;
 use App\View\AjaxView;
 use Cake\View\JsonView;

@@ -186,6 +186,24 @@ $permissions = [
                 'references',
             ],
         ],
+        //the tasks of the company are kept here, so this is where another application asks about
+        //them - reading only, the same as above: the write actions exist on the controller but
+        //are deliberately not granted, and would want Bearer authentication first
+        [
+            'role' => [
+                'api',
+            ],
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
+                'Tasks',
+            ],
+            'action' => [
+                'index',
+                'view',
+                'search',
+            ],
+        ],
         //allow invoice download for API
         [
             'role' => [

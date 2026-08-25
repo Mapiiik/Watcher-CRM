@@ -216,6 +216,16 @@ return function (RouteBuilder $routes): void {
             ->setPatterns(['id' => '[0-9a-fA-F-]{36}'])
             ->setPass(['id']);
 
+        // The task listing's own cuts, offered to whoever keeps records that name a task.
+        $builder->resources('Tasks', [
+            'map' => [
+                'search' => [
+                    'action' => 'search',
+                    'method' => 'GET',
+                ],
+            ],
+        ]);
+
         // Bridge controllers for external API integrations
         $builder->resources('GeocoderBridge', [
             'only' => [

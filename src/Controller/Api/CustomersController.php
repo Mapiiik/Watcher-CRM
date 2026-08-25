@@ -4,15 +4,12 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Addresses\Resolver as AddressesResolver;
-use App\Controller\AppController;
 use App\Model\Entity\Contract;
 use App\Model\Entity\IpAddress;
 use App\Model\Table\ContractsTable;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Routing\Router;
-use Cake\View\JsonView;
-use Override;
 use RuntimeException;
 
 /**
@@ -22,15 +19,6 @@ use RuntimeException;
  */
 class CustomersController extends AppController
 {
-    /**
-     * Returns supported output types
-     */
-    #[Override]
-    public function viewClasses(): array
-    {
-        return [JsonView::class];
-    }
-
     /**
      * Index method
      *

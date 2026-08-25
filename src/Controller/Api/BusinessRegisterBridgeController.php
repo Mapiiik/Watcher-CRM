@@ -5,11 +5,8 @@ namespace App\Controller\Api;
 
 use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\Registry;
-use App\Controller\AppController;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Log\Log;
-use Cake\View\JsonView;
-use Override;
 use RuntimeException;
 
 /**
@@ -21,15 +18,6 @@ use RuntimeException;
  */
 class BusinessRegisterBridgeController extends AppController
 {
-    /**
-     * Returns supported output types
-     */
-    #[Override]
-    public function viewClasses(): array
-    {
-        return [JsonView::class];
-    }
-
     /**
      * Search method for Select2 select widget integration.
      *

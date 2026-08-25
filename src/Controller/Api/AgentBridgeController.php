@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 
 use App\Agent\ApiClient as AgentApiClient;
 use App\Agent\Dto\PingResult;
-use App\Controller\AppController;
 use App\View\AjaxView;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Log\Log;

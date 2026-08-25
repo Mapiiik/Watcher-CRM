@@ -4,11 +4,8 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Addresses\ApiClient as AddressesApiClient;
-use App\Controller\AppController;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Log\Log;
-use Cake\View\JsonView;
-use Override;
 use RuntimeException;
 use Throwable;
 
@@ -23,15 +20,6 @@ use Throwable;
  */
 class AddressesBridgeController extends AppController
 {
-    /**
-     * Returns supported output types
-     */
-    #[Override]
-    public function viewClasses(): array
-    {
-        return [JsonView::class];
-    }
-
     /**
      * Search method for Select2 select widget integration.
      *
