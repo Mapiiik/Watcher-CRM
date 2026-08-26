@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-26 11:00+0200\n"
+"POT-Creation-Date: 2026-08-26 20:55+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -83,19 +83,19 @@ msgstr ""
 msgid "Every unfinished task has somebody holding it."
 msgstr ""
 
-#: ./plugins/Tasks/src/Model/Entity/Task.php:114
+#: ./plugins/Tasks/src/Model/Entity/Task.php:136
 msgid "Low"
 msgstr ""
 
-#: ./plugins/Tasks/src/Model/Entity/Task.php:115
+#: ./plugins/Tasks/src/Model/Entity/Task.php:137
 msgid "Normal"
 msgstr ""
 
-#: ./plugins/Tasks/src/Model/Entity/Task.php:116
+#: ./plugins/Tasks/src/Model/Entity/Task.php:138
 msgid "High"
 msgstr ""
 
-#: ./plugins/Tasks/src/Model/Entity/Task.php:117
+#: ./plugins/Tasks/src/Model/Entity/Task.php:139
 msgid "Urgent"
 msgstr ""
 
@@ -103,15 +103,15 @@ msgstr ""
 msgid "Task completed: {0} # {1}"
 msgstr ""
 
-#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:28
+#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:48
 msgid "The notification email could not be sent because the user does not have an email address."
 msgstr ""
 
-#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:37
+#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:59
 msgid "You have a new task # {0}"
 msgstr ""
 
-#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:38
+#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:60
 msgid "You have changes in task # {0}"
 msgstr ""
 

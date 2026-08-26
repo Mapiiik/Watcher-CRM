@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tasks\n"
-"POT-Creation-Date: 2026-08-26 11:00+0200\n"
+"POT-Creation-Date: 2026-08-26 20:55+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -81,19 +81,19 @@ msgstr "Nepřiřazené úkoly"
 msgid "Every unfinished task has somebody holding it."
 msgstr "Za každým nedokončeným úkolem stojí někdo, kdo ho má na starosti."
 
-#: plugins/Tasks/src/Model/Entity/Task.php:114
+#: plugins/Tasks/src/Model/Entity/Task.php:136
 msgid "Low"
 msgstr "Nízká"
 
-#: plugins/Tasks/src/Model/Entity/Task.php:115
+#: plugins/Tasks/src/Model/Entity/Task.php:137
 msgid "Normal"
 msgstr "Normální"
 
-#: plugins/Tasks/src/Model/Entity/Task.php:116
+#: plugins/Tasks/src/Model/Entity/Task.php:138
 msgid "High"
 msgstr "Vysoká"
 
-#: plugins/Tasks/src/Model/Entity/Task.php:117
+#: plugins/Tasks/src/Model/Entity/Task.php:139
 msgid "Urgent"
 msgstr "Naléhavé"
 
@@ -101,7 +101,7 @@ msgstr "Naléhavé"
 msgid "Task completed: {0} # {1}"
 msgstr "Úkol dokončen: {0} č. {1}"
 
-#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:28
+#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:48
 msgid ""
 "The notification email could not be sent because the user does not have an "
 "email address."
@@ -109,11 +109,11 @@ msgstr ""
 "E-mail s oznámením nebylo možné odeslat, protože uživatel nemá e-mailovou "
 "adresu."
 
-#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:37
+#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:59
 msgid "You have a new task # {0}"
 msgstr "Máte nový úkol č. {0}"
 
-#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:38
+#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:60
 msgid "You have changes in task # {0}"
 msgstr "Máte změny v úkolu č. {0}"
 
