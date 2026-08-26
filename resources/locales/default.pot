@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-24 13:01+0200\n"
+"POT-Creation-Date: 2026-08-26 11:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -136,7 +136,7 @@ msgid "Installation Address (registry)"
 msgstr ""
 
 #: ./src/BulkMessages/Filter/RegistryAddressFilter.php:136
-#: ./src/Controller/Api/CustomersController.php:189
+#: ./src/Controller/Api/CustomersController.php:177
 #: ./src/Controller/OverviewsController.php:78
 #: ./src/Controller/OverviewsController.php:472
 msgid "Could not retrieve addresses from national address registry: {0}"
@@ -447,7 +447,7 @@ msgstr ""
 #: ./src/Controller/AddressesController.php:350
 #: ./src/Controller/AddressesController.php:399
 #: ./src/Controller/AddressesController.php:477
-#: ./src/Controller/Api/AddressesBridgeController.php:67
+#: ./src/Controller/Api/AddressesBridgeController.php:55
 msgid "The national address registry is not configured."
 msgstr ""
 
@@ -487,24 +487,25 @@ msgstr ""
 msgid "Addresses updated from national address registries: {0} updated, {1} unchanged, {2} skipped, {3} failed."
 msgstr ""
 
-#: ./src/Controller/Api/AccessPointsController.php:49
+#: ./src/Controller/Api/AccessPointsController.php:37
+#: ./src/Controller/Api/TasksController.php:85
 msgid "That is not the identifier of an access point."
 msgstr ""
 
-#: ./src/Controller/Api/AddressesBridgeController.php:52
-#: ./src/Controller/Api/BusinessRegisterBridgeController.php:49
+#: ./src/Controller/Api/AddressesBridgeController.php:40
+#: ./src/Controller/Api/BusinessRegisterBridgeController.php:37
 msgid "Invalid request parameters"
 msgstr ""
 
-#: ./src/Controller/Api/AgentBridgeController.php:39
+#: ./src/Controller/Api/AgentBridgeController.php:38
 msgid "Invalid IP address"
 msgstr ""
 
-#: ./src/Controller/Api/BusinessRegisterBridgeController.php:54
+#: ./src/Controller/Api/BusinessRegisterBridgeController.php:42
 msgid "Unknown business register."
 msgstr ""
 
-#: ./src/Controller/Api/BusinessRegisterBridgeController.php:70
+#: ./src/Controller/Api/BusinessRegisterBridgeController.php:58
 #: ./src/Controller/CustomersController.php:609
 msgid "The business register is not configured."
 msgstr ""
@@ -1295,17 +1296,17 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:477
-#: ./src/Controller/TasksController.php:628
+#: ./src/Controller/TasksController.php:472
+#: ./src/Controller/TasksController.php:618
 msgid "The task has been saved."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:481
-#: ./src/Controller/TasksController.php:632
+#: ./src/Controller/TasksController.php:476
+#: ./src/Controller/TasksController.php:622
 msgid "The task could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:557
+#: ./src/Controller/TasksController.php:552
 #: ./src/Model/Enum/AddressType.php:41
 #: ./templates/Contracts/print.php:77
 #: ./templates/Contracts/view.php:176
@@ -1315,7 +1316,7 @@ msgstr ""
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:570
+#: ./src/Controller/TasksController.php:565
 #: ./src/Model/Enum/CustomerMessageType.php:27
 #: ./src/Utility/ServiceChangeMessageBuilder.php:163
 #: ./templates/Customers/view.php:341
@@ -1323,47 +1324,27 @@ msgstr ""
 #: ./templates/Tasks/add.php:50
 #: ./templates/Tasks/edit.php:63
 #: ./templates/Tasks/view.php:63
-#: ./templates/email/html/task_notification.php:52
+#: ./templates/element/Tasks/email_detail.php:52
 msgid "Email"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:571
+#: ./src/Controller/TasksController.php:566
 #: ./src/Utility/ServiceChangeMessageBuilder.php:164
 #: ./templates/Customers/view.php:390
 #: ./templates/Phones/view.php:43
 #: ./templates/Tasks/add.php:51
 #: ./templates/Tasks/edit.php:64
 #: ./templates/Tasks/view.php:67
-#: ./templates/email/html/task_notification.php:56
+#: ./templates/element/Tasks/email_detail.php:56
 msgid "Phone"
 msgstr ""
 
-#: ./src/Controller/TasksController.php:708
+#: ./src/Controller/TasksController.php:698
 msgid "The task has been deleted."
 msgstr ""
 
-#: ./src/Controller/TasksController.php:711
+#: ./src/Controller/TasksController.php:701
 msgid "The task could not be deleted. Please, try again."
-msgstr ""
-
-#: ./src/Controller/TasksController.php:761
-msgid "The notification email could not be sent because the user does not have an email address."
-msgstr ""
-
-#: ./src/Controller/TasksController.php:774
-msgid "You have a new task # {0}"
-msgstr ""
-
-#: ./src/Controller/TasksController.php:775
-msgid "You have changes in task # {0}"
-msgstr ""
-
-#: ./src/Controller/TasksController.php:787
-msgid "Notification email sent."
-msgstr ""
-
-#: ./src/Controller/TasksController.php:791
-msgid "The notification email could not be sent."
 msgstr ""
 
 #: ./src/Controller/TasksController.php:387
@@ -1426,7 +1407,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:100
 #: ./templates/Tasks/view.php:54
 #: ./templates/element/Contracts/Tasks.php:25
-#: ./templates/email/html/task_notification.php:48
+#: ./templates/element/Tasks/email_detail.php:48
 msgid "User"
 msgstr ""
 
@@ -1964,7 +1945,7 @@ msgid "One of the roles named is not a role."
 msgstr ""
 
 #: ./src/Model/Table/ContractsTable.php:337
-#: ./src/Model/Table/TasksTable.php:104
+#: ./src/Model/Table/TasksTable.php:119
 msgid "The specified access point is not one Watcher NMS keeps."
 msgstr ""
 
@@ -2024,15 +2005,15 @@ msgid_plural "The override duration must not exceed {0} days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Model/Table/TasksTable.php:113
+#: ./src/Model/Table/TasksTable.php:128
 msgid "The specified task type requires the assignment of an customer."
 msgstr ""
 
-#: ./src/Model/Table/TasksTable.php:122
+#: ./src/Model/Table/TasksTable.php:137
 msgid "The specified task type requires the assignment of an contract."
 msgstr ""
 
-#: ./src/Model/Table/TasksTable.php:131
+#: ./src/Model/Table/TasksTable.php:146
 msgid "The specified task type requires the assignment of an access point."
 msgstr ""
 
@@ -2901,7 +2882,7 @@ msgstr ""
 #: ./templates/element/AddressChecks/unclear_billing_address.php:10
 #: ./templates/element/Contracts/Billings.php:17
 #: ./templates/element/Contracts/related.php:20
-#: ./templates/email/html/task_notification.php:69
+#: ./templates/element/Tasks/email_detail.php:69
 msgid "Customer"
 msgstr ""
 
@@ -2941,7 +2922,7 @@ msgstr ""
 #: ./templates/element/Contracts/RemovedIpNetworks.php:13
 #: ./templates/element/Contracts/SoldEquipments.php:13
 #: ./templates/element/Contracts/Tasks.php:23
-#: ./templates/email/html/task_notification.php:81
+#: ./templates/element/Tasks/email_detail.php:81
 msgid "Contract"
 msgstr ""
 
@@ -3267,7 +3248,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:71
 #: ./templates/element/Contracts/related.php:31
 #: ./templates/element/IpAddressRanges/summary.php:17
-#: ./templates/email/html/task_notification.php:60
+#: ./templates/element/Tasks/email_detail.php:60
 msgid "Access Point"
 msgstr ""
 
@@ -3443,7 +3424,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:140
 #: ./templates/element/Contracts/Billings.php:24
 #: ./templates/element/Contracts/Tasks.php:21
-#: ./templates/email/html/task_notification.php:152
+#: ./templates/element/Tasks/email_detail.php:152
 msgid "Text"
 msgstr ""
 
@@ -4597,7 +4578,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:101
 #: ./templates/Tasks/view.php:130
 #: ./templates/element/Contracts/Tasks.php:20
-#: ./templates/email/html/task_notification.php:142
+#: ./templates/element/Tasks/email_detail.php:142
 msgid "Subject"
 msgstr ""
 
@@ -5245,8 +5226,8 @@ msgid "Related Customer Labels"
 msgstr ""
 
 #: ./templates/Labels/view.php:102
+#: ./templates/element/Tasks/email_detail.php:118
 #: ./templates/element/common/audit.php:14
-#: ./templates/email/html/task_notification.php:118
 msgid "Created"
 msgstr ""
 
@@ -6012,7 +5993,7 @@ msgstr ""
 #: ./templates/Tasks/map.php:15
 #: ./templates/Tasks/view.php:36
 #: ./templates/element/Contracts/Tasks.php:18
-#: ./templates/email/html/task_notification.php:36
+#: ./templates/element/Tasks/email_detail.php:36
 msgid "Task Type"
 msgstr ""
 
@@ -6020,7 +6001,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:48
 #: ./templates/Tasks/index.php:98
 #: ./templates/Tasks/view.php:43
-#: ./templates/email/html/task_notification.php:40
+#: ./templates/element/Tasks/email_detail.php:40
 msgid "Priority"
 msgstr ""
 
@@ -6031,7 +6012,8 @@ msgstr ""
 #: ./templates/Tasks/map.php:24
 #: ./templates/Tasks/view.php:47
 #: ./templates/element/Contracts/Tasks.php:19
-#: ./templates/email/html/task_notification.php:44
+#: ./templates/element/Tasks/email_detail.php:44
+#: ./templates/email/html/task_completed.php:19
 msgid "Task State"
 msgstr ""
 
@@ -6039,7 +6021,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:95
 #: ./templates/Tasks/index.php:107
 #: ./templates/Tasks/view.php:110
-#: ./templates/email/html/task_notification.php:98
+#: ./templates/element/Tasks/email_detail.php:98
 msgid "Start Date"
 msgstr ""
 
@@ -6048,7 +6030,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:108
 #: ./templates/Tasks/view.php:114
 #: ./templates/element/Dashboard/task_list.php:58
-#: ./templates/email/html/task_notification.php:102
+#: ./templates/element/Tasks/email_detail.php:102
 msgid "Estimated Date"
 msgstr ""
 
@@ -6056,7 +6038,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:101
 #: ./templates/Tasks/index.php:109
 #: ./templates/Tasks/view.php:118
-#: ./templates/email/html/task_notification.php:106
+#: ./templates/element/Tasks/email_detail.php:106
 msgid "Critical Date"
 msgstr ""
 
@@ -6064,7 +6046,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:102
 #: ./templates/Tasks/index.php:110
 #: ./templates/Tasks/view.php:122
-#: ./templates/email/html/task_notification.php:110
+#: ./templates/element/Tasks/email_detail.php:110
 msgid "Finish Date"
 msgstr ""
 
@@ -6095,7 +6077,7 @@ msgstr ""
 
 #: ./templates/Tasks/index.php:101
 #: ./templates/Tasks/view.php:134
-#: ./templates/email/html/task_notification.php:146
+#: ./templates/element/Tasks/email_detail.php:146
 msgid "Summary Text"
 msgstr ""
 
@@ -6274,24 +6256,28 @@ msgstr ""
 msgid "Default value:"
 msgstr ""
 
+#: ./templates/element/Tasks/email_detail.php:114
 #: ./templates/element/common/audit.php:9
-#: ./templates/email/html/task_notification.php:114
 msgid "Id"
 msgstr ""
 
+#: ./templates/element/Tasks/email_detail.php:122
 #: ./templates/element/common/audit.php:19
-#: ./templates/email/html/task_notification.php:122
 msgid "Created By"
 msgstr ""
 
+#: ./templates/element/Tasks/email_detail.php:126
 #: ./templates/element/common/audit.php:33
-#: ./templates/email/html/task_notification.php:126
 msgid "Modified"
 msgstr ""
 
+#: ./templates/element/Tasks/email_detail.php:130
 #: ./templates/element/common/audit.php:38
-#: ./templates/email/html/task_notification.php:130
 msgid "Modified By"
+msgstr ""
+
+#: ./templates/element/Tasks/email_detail.php:138
+msgid "View Task"
 msgstr ""
 
 #: ./templates/element/common/audit.php:58
@@ -6348,8 +6334,12 @@ msgstr ""
 msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
 msgstr ""
 
-#: ./templates/email/html/task_notification.php:138
-msgid "View Task"
+#: ./templates/email/html/task_completed.php:23
+msgid "Closed By"
+msgstr ""
+
+#: ./templates/email/html/task_completed.php:27
+msgid "Closed"
 msgstr ""
 
 #: ./templates/layout/default.php:129

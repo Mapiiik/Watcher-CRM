@@ -5873,6 +5873,14 @@ msgstr "Zdrojový kód"
 msgid "Version"
 msgstr "Verze"
 
+#: ./templates/email/html/task_completed.php:24
+msgid "Closed By"
+msgstr "Uzavřel"
+
+#: ./templates/email/html/task_completed.php:28
+msgid "Closed"
+msgstr "Uzavřeno"
+
 #~ msgid "Addresses API is not configured."
 #~ msgstr "Rozhraní API adres není nakonfigurováno."
 

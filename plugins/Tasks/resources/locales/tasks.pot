@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 20:29+0200\n"
+"POT-Creation-Date: 2026-08-26 11:00+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -97,6 +97,30 @@ msgstr ""
 
 #: ./plugins/Tasks/src/Model/Entity/Task.php:117
 msgid "Urgent"
+msgstr ""
+
+#: ./plugins/Tasks/src/Service/CompletedTaskReport.php:40
+msgid "Task completed: {0} # {1}"
+msgstr ""
+
+#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:28
+msgid "The notification email could not be sent because the user does not have an email address."
+msgstr ""
+
+#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:37
+msgid "You have a new task # {0}"
+msgstr ""
+
+#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:38
+msgid "You have changes in task # {0}"
+msgstr ""
+
+#: ./plugins/Tasks/src/Service/TaskMail.php:65
+msgid "Notification email sent."
+msgstr ""
+
+#: ./plugins/Tasks/src/Service/TaskMail.php:72
+msgid "The notification email could not be sent."
 msgstr ""
 
 #: ./plugins/Tasks/templates/TaskStates/add.php:10

@@ -260,6 +260,18 @@ msgstr "Fakturováno"
 msgid "Blocked"
 msgstr "Blokováno"
 
+#: ./templates/plugin/Tasks/TaskTypes/add.php:32
+#: ./templates/plugin/Tasks/TaskTypes/edit.php:40
+#: ./templates/plugin/Tasks/TaskTypes/index.php:37
+#: ./templates/plugin/Tasks/TaskTypes/view.php:65
+msgid "Report on Completion"
+msgstr "Hlásit dokončení"
+
+#: ./templates/plugin/Tasks/TaskTypes/add.php:34
+#: ./templates/plugin/Tasks/TaskTypes/edit.php:42
+msgid "Tell the report addresses whenever a task of this type is closed."
+msgstr "Poslat na reportovací adresy zprávu pokaždé, když se úkol tohoto typu uzavře."
+
 #~ msgid "first"
 #~ msgstr "první"
 
