@@ -152,7 +152,7 @@ class UpdateCustomerLabelsCommandTest extends TestCase
      */
     public function testExecuteStopsOnALabelWhoseQueryWillNotRun(): void
     {
-        $this->withConfigure(['Report.emails' => ['labels@example.com']]);
+        $this->withConfigure(['Report.errorEmails' => ['labels@example.com']]);
         $label = $this->dynamicLabel('SELECT this is not a query');
 
         $this->exec('update_customer_labels ' . $label);

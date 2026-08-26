@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Traits\MessageHandlerTrait;
+use App\Service\ErrorReport;
 use App\Service\HistoricalConnections\HistoricalConnectionsUpdater;
 use App\Service\HistoricalConnections\SourceInterface;
-use App\Service\OperatorReport;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -106,7 +106,7 @@ class UpdateHistoricalConnectionsCommand extends Command
                 $e->getMessage(),
             ));
 
-            OperatorReport::send(
+            ErrorReport::send(
                 __('Historical connections update failed'),
                 __(
                     'Historical connections update failed.' . PHP_EOL . PHP_EOL

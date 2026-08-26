@@ -10,7 +10,7 @@ use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
-use App\Service\OperatorReport;
+use App\Service\ErrorReport;
 use Bookkeeping\Debtors\Debtor;
 use Bookkeeping\Debtors\DebtorsProcessor;
 use Bookkeeping\Service\BookkeepingService;
@@ -323,7 +323,7 @@ class ProcessDebtorsCommand extends Command
                 $e->getMessage(),
             ));
 
-            OperatorReport::send(
+            ErrorReport::send(
                 __d('bookkeeping', 'Debtor processing failed'),
                 __d(
                     'bookkeeping',

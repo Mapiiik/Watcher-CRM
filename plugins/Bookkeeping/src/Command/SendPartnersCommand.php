@@ -5,7 +5,7 @@ namespace Bookkeeping\Command;
 
 use App\Model\Entity\Customer;
 use App\Model\Table\CustomersTable;
-use App\Service\OperatorReport;
+use App\Service\ErrorReport;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -220,7 +220,7 @@ class SendPartnersCommand extends Command
                 $e->getMessage(),
             ));
 
-            OperatorReport::send(
+            ErrorReport::send(
                 __d('bookkeeping', 'Error when sending partners'),
                 __d('bookkeeping', 'Error when sending partners: {0}', $e->getMessage()),
             );

@@ -13,7 +13,7 @@ use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Table\CustomerMessagesTable;
-use App\Service\OperatorReport;
+use App\Service\ErrorReport;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -188,7 +188,7 @@ class ProcessSmsCommand extends Command
                     // log error
                     Log::error('Error sending SMS message with ID ' . $smsMessage->id . ': ' . $e->getMessage());
 
-                    OperatorReport::send(
+                    ErrorReport::send(
                         __('Error sending SMS message with ID {0}', $smsMessage->id),
                         __(
                             'Error sending message with ID {0}: {1}',
@@ -222,7 +222,7 @@ class ProcessSmsCommand extends Command
                 // log error
                 Log::error('Error getting SMS message status with ID ' . $smsMessage->id . ': ' . $e->getMessage());
 
-                OperatorReport::send(
+                ErrorReport::send(
                     __('Error getting SMS message status with ID {0}', $smsMessage->id),
                     __(
                         'Error getting message status with ID {0}: {1}',

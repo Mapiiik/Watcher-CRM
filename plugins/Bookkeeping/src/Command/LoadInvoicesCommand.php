@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Command;
 
-use App\Service\OperatorReport;
+use App\Service\ErrorReport;
 use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
@@ -141,7 +141,7 @@ class LoadInvoicesCommand extends Command
                 [$e->getMessage()],
             ));
 
-            OperatorReport::send(
+            ErrorReport::send(
                 __d('bookkeeping', 'Invoice synchronization failed'),
                 __d(
                     'bookkeeping',

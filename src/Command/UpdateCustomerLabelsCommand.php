@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Model\Table\LabelsTable;
-use App\Service\OperatorReport;
+use App\Service\ErrorReport;
 use Cake\Collection\Collection;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -216,7 +216,7 @@ class UpdateCustomerLabelsCommand extends Command
                 $e->getMessage(),
             ));
 
-            OperatorReport::send(
+            ErrorReport::send(
                 __('Customer labels update failed'),
                 __(
                     'Customer labels update failed.' . PHP_EOL . PHP_EOL

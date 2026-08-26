@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Command;
 
 use App\Model\Enum\CustomerInvoiceDeliveryType;
-use App\Service\OperatorReport;
+use App\Service\ErrorReport;
 use Bookkeeping\Model\Table\InvoicesTable;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
@@ -209,7 +209,7 @@ class SendIssuedInvoicesCommand extends Command
                         $e->getMessage(),
                     ));
 
-                    OperatorReport::send(
+                    ErrorReport::send(
                         __d(
                             'bookkeeping',
                             'Error sending email message with issued invoice ID {0}',

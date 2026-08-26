@@ -5,7 +5,7 @@ namespace Bookkeeping\Command;
 
 use App\Model\Table\AccountingProfilesTable;
 use App\Model\Table\CustomersTable;
-use App\Service\OperatorReport;
+use App\Service\ErrorReport;
 use Bookkeeping\Service\BookkeepingService;
 use Bookkeeping\Service\InvoiceGenerationService;
 use Cake\Command\Command;
@@ -299,7 +299,7 @@ class IssueInvoicesCommand extends Command
                 $e->getMessage(),
             ));
 
-            OperatorReport::send(
+            ErrorReport::send(
                 __d('bookkeeping', 'Error when issuing invoices'),
                 __d('bookkeeping', 'Error when issuing invoices: {0}', $e->getMessage()),
             );

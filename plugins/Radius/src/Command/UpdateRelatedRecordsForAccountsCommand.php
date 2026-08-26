@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Radius\Command;
 
 use App\Command\Traits\MessageHandlerTrait;
-use App\Service\OperatorReport;
+use App\Service\ErrorReport;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -122,7 +122,7 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
                 $e->getMessage(),
             ));
 
-            OperatorReport::send(
+            ErrorReport::send(
                 __d('radius', 'RADIUS accounts update failed'),
                 __d(
                     'radius',

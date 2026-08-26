@@ -36,7 +36,7 @@ class LoadInvoicesCommandTest extends TestCase
 
         // A run that cannot start reports it by mail, so a test of that path needs somebody to
         // report it to - said here rather than left to whatever the environment was built with.
-        $this->withConfigure(['Report.emails' => ['nobody@example.com']]);
+        $this->withConfigure(['Report.errorEmails' => ['nobody@example.com']]);
     }
 
     /**

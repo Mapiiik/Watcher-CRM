@@ -285,14 +285,27 @@ return [
     ],
 
     /*
-     * Who is told when something that runs unattended fails.
+     * Who is told what: `emails` is sent what the application has to report - a task closed,
+     * accounts changed, readings taken - and `errorEmails` is told when something that runs
+     * unattended has failed.
+     *
+     * Two audiences, because whoever is on call is rarely whoever reads the overnight paperwork.
+     * Until a deployment names the second, a failure goes where it went before the two were told
+     * apart.
      *
      * Read from the environment here and nowhere else, so that the day it comes from somewhere
      * else - the database, a vault - one line changes. Empty is a deployment saying nobody is to
-     * be told, which is allowed: the failure is logged and printed either way.
+     * be told, which is allowed: a failure is logged and printed either way, and a report is
+     * simply left unsent.
      */
     'Report' => [
         'emails' => preg_split('/\s+/', trim((string)env('REPORT_EMAILS', '')), -1, PREG_SPLIT_NO_EMPTY) ?: [],
+        'errorEmails' => preg_split(
+            '/\s+/',
+            trim((string)(env('ERROR_EMAILS') ?: env('REPORT_EMAILS', ''))),
+            -1,
+            PREG_SPLIT_NO_EMPTY,
+        ) ?: [],
     ],
 
     /*
