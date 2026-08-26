@@ -15,6 +15,7 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
 
+use Cake\Cache\Cache;
 use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Database\Connection;
@@ -45,6 +46,24 @@ if (empty($_SERVER['HTTP_HOST'])) {
 // A test that wants one says so itself, with an address that goes nowhere.
 Configure::write('Nms.url', '');
 Configure::write('Nms.key', '');
+
+// Nor for what those services said last time. The addresses above are blanked, but the answers
+// remembered from them are kept in caches this container shares with everything else running in
+// it - a browser on the development site fills them, and a client that reads its cache before it
+// asks whether there is anybody to ask hands one of those readings to a test as though it were an
+// answer. That made a test file pass or fail by what somebody had last been looking at. Every
+// cache therefore gets a prefix of its own here, so the suite writes and reads beside the
+// application rather than into it.
+foreach (Cache::configured() as $cache) {
+    $config = Cache::getConfig($cache);
+
+    if (!is_array($config)) {
+        continue;
+    }
+
+    Cache::drop($cache);
+    Cache::setConfig($cache, ['prefix' => 'test_' . ($config['prefix'] ?? $cache . '_')] + $config);
+}
 
 // DebugKit skips settings these connection config if PHP SAPI is CLI / PHPDBG.
 // But since PagesControllerTest is run with debug enabled and DebugKit is loaded
