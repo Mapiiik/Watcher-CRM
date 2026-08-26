@@ -486,8 +486,11 @@ class ContractsControllerTest extends TestCase
             'api_client',
         );
 
-        // Said here rather than read from the environment, which the CI has none of.
+        // Said here rather than read from the environment, which the CI has none of. Both halves
+        // of it, because a kept reading is only handed over where there is a Watcher NMS it could
+        // have come from.
         Configure::write('Nms.url', 'https://nms.example.com');
+        Configure::write('Nms.key', 'secret');
 
         try {
             $this->login();
@@ -510,6 +513,7 @@ class ContractsControllerTest extends TestCase
             );
         } finally {
             Cache::delete('access_points', 'api_client');
+            Configure::write('Nms.key', '');
         }
     }
 

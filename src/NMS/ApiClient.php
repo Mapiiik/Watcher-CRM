@@ -105,6 +105,10 @@ class ApiClient
     {
         $key = 'access_points_list|' . ($onlyActive ? 'active' : 'all');
 
+        if (!self::configured()) {
+            return Answer::notAsked();
+        }
+
         $cached = Cache::read($key, self::CACHE_CONFIG);
         if ($cached !== null) {
             return Answer::of($cached);
@@ -218,6 +222,16 @@ class ApiClient
     }
 
     /**
+     * Whether there is a Watcher NMS to ask at all.
+     *
+     * @return bool
+     */
+    private static function configured(): bool
+    {
+        return (string)Configure::read('Nms.url') !== '' && (string)Configure::read('Nms.key') !== '';
+    }
+
+    /**
      * What is kept, or what Watcher NMS says now.
      *
      * What goes into the cache is the answer as it arrived, never the things read out of it: a
@@ -234,6 +248,14 @@ class ApiClient
      */
     private static function read(string $key, string $path, string $answerKey, array $query = []): Answer
     {
+        // Asked before the cache rather than after it. A reading kept from an address that has
+        // since been taken out of the configuration is a reading of a system this installation no
+        // longer has, and handing it over says the place is known to be there, or known not to be,
+        // where the truth is that there is nobody left to ask.
+        if (!self::configured()) {
+            return Answer::notAsked();
+        }
+
         $cached = Cache::read($key, self::CACHE_CONFIG);
         if ($cached !== null) {
             return Answer::of($cached);
@@ -263,8 +285,9 @@ class ApiClient
     {
         // Not being configured is a state, not a failure - an installation without a Watcher NMS
         // says so by leaving the address empty, and saying it again in the log every few minutes
-        // helps nobody.
-        if ((string)Configure::read('Nms.url') === '' || (string)Configure::read('Nms.key') === '') {
+        // helps nobody. Asked here as well as above the cache, so that no way in reaches the wire
+        // without passing it.
+        if (!self::configured()) {
             return Answer::notAsked();
         }
 

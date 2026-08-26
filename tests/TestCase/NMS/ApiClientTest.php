@@ -243,6 +243,34 @@ class ApiClientTest extends TestCase
     }
 
     /**
+     * A reading kept from a Watcher NMS this installation no longer has is not handed over.
+     *
+     * The cache used to be read before the question of whether there was anybody to ask. An
+     * address taken out of the configuration therefore left the old readings answering in its
+     * place, and handing one over says a thing is known to be there, or known not to be, where
+     * the truth is that there is nobody left to ask - a rule reading it that way refused records
+     * naming places that were perfectly real.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::getAccessPoints()
+     */
+    public function testAReadingFromAnAddressSinceRemovedIsNotHandedOver(): void
+    {
+        $this->mock('/api/access-points.json', $this->jsonResponse([
+            'accessPoints' => [['id' => '1', 'name' => 'Hilltop', 'archived' => null]],
+        ]));
+
+        // asked and kept while there was somebody to ask
+        $this->assertTrue(ApiClient::getAccessPoints()->ok());
+
+        Configure::write('Nms.url', '');
+
+        $this->assertFalse(ApiClient::getAccessPoints()->asked, 'The kept reading is not an answer.');
+        $this->assertFalse(ApiClient::getAccessPointsList()->asked);
+        $this->assertSame(1, $this->asked, 'And nothing new was asked either.');
+    }
+
+    /**
      * An installation with no Watcher NMS asks nothing and says nothing - not having been asked is
      * a state of its own, and a page there must not be covered in remarks about a system it was
      * never given.

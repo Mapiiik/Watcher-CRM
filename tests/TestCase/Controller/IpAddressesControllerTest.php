@@ -225,9 +225,13 @@ class IpAddressesControllerTest extends TestCase
      */
     public function testViewLeadsBackToWhatTheNmsKnows(): void
     {
-        // Said here rather than read from the environment, which the CI has none of.
+        // Said here rather than read from the environment, which the CI has none of. Both halves
+        // of it, because a kept reading is only handed over where there is a Watcher NMS it could
+        // have come from.
         $nmsUrl = Configure::read('Nms.url');
+        $nmsKey = Configure::read('Nms.key');
         Configure::write('Nms.url', 'https://nms.example.com');
+        Configure::write('Nms.key', 'secret');
 
         Cache::write(
             'ip_address_ranges_for_ip_192-168-11-11',
@@ -263,40 +267,7 @@ class IpAddressesControllerTest extends TestCase
             Cache::delete('ip_address_ranges_for_ip_192-168-11-11', 'api_client');
             Cache::delete('routeros_devices_for_ip_192-168-11-11', 'api_client');
             Configure::write('Nms.url', $nmsUrl);
-        }
-    }
-
-    /**
-     * Without an NMS to point at, the same page still says what it knows - it just says it plainly.
-     *
-     * @return void
-     * @link \App\Controller\IpAddressesController::view()
-     */
-    public function testViewNamesWhatItCannotLinkTo(): void
-    {
-        $nmsUrl = Configure::read('Nms.url');
-        Configure::write('Nms.url', '');
-
-        Cache::write(
-            'ip_address_ranges_for_ip_192-168-11-11',
-            [[
-                'id' => self::RANGE_ID,
-                'name' => 'Hilltop customers',
-                'access_point' => ['id' => self::ACCESS_POINT_ID, 'name' => 'Hilltop'],
-            ]],
-            'api_client',
-        );
-
-        try {
-            $this->login();
-            $this->get('/ip-addresses/view/' . $this->firstId('IpAddresses'));
-
-            $this->assertResponseOk();
-            $this->assertResponseContains('Hilltop customers');
-            $this->assertResponseNotContains('/ip-address-ranges/view/' . self::RANGE_ID);
-        } finally {
-            Cache::delete('ip_address_ranges_for_ip_192-168-11-11', 'api_client');
-            Configure::write('Nms.url', $nmsUrl);
+            Configure::write('Nms.key', $nmsKey);
         }
     }
 

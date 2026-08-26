@@ -118,6 +118,14 @@ class Registry
     {
         // A register not holding the reference is an answer too, and is kept as one - `false`
         // rather than null, which a cache cannot tell from having nothing.
+        // Asked before the cache rather than after it. The entry is kept per register, so one
+        // that has since been taken out of the configuration - or had its credentials removed -
+        // would otherwise go on answering in the name of a register nobody can reach any more.
+        $register = self::get($key);
+        if ($register === null) {
+            return Answer::notAsked();
+        }
+
         $cacheKey = sprintf('subject_%s_%s', $key, md5($reference));
         $cached = Cache::read($cacheKey, 'business_register');
         if (is_array($cached)) {
@@ -127,7 +135,7 @@ class Registry
             return Answer::of(null);
         }
 
-        $answer = self::get($key)?->byReference($reference) ?? Answer::notAsked();
+        $answer = $register->byReference($reference);
 
         // What goes into the cache is the entry in the shape the registers share, never the
         // subject read out of it - and an answer that never came is not kept at all.
@@ -215,6 +223,17 @@ class Registry
             return null;
         }
 
+        // Only some registers check VAT numbers, so what counts is whether one of those is
+        // configured - and it is asked before the cache, for the same reason as above.
+        $askable = array_filter(
+            self::sources(),
+            fn(SourceInterface $source): bool => $source instanceof VatNumberCheckInterface,
+        );
+
+        if ($askable === []) {
+            return null;
+        }
+
         $cacheKey = 'vat_' . md5($vatNumber);
         $cached = Cache::read($cacheKey, 'business_register');
         if (is_array($cached)) {
@@ -224,11 +243,7 @@ class Registry
             }
         }
 
-        foreach (self::sources() as $source) {
-            if (!$source instanceof VatNumberCheckInterface) {
-                continue;
-            }
-
+        foreach ($askable as $source) {
             $answer = $source->vatNumberCheck($vatNumber);
 
             if (!$answer->ok()) {
