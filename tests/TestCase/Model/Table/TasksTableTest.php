@@ -36,6 +36,14 @@ class TasksTableTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
+     * The user the fixtures carry, and the address they can be reached at.
+     *
+     * @var string
+     */
+    private const HOLDER_ID = '11edb519-be76-4d66-aea0-34188d31eae1';
+    private const HOLDER_ADDRESS = 'operator@example.com';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -366,6 +374,61 @@ class TasksTableTest extends TestCase
         $task = $this->openTaskOfAReportingType();
 
         $this->assertNotFalse($this->Tasks->save($this->close($task)), 'The task still saves.');
+        $this->assertNoMailSent();
+    }
+
+    /**
+     * A task saved with nobody signed in still tells the person holding it.
+     *
+     * Who acted is read from the footprint of the save, and the footprint is only written where
+     * there is a request with an identity. A command or an integration leaves it untouched, and
+     * then there is nobody to leave out - the alternative would be reading whatever the column
+     * happened to hold from some earlier save and quietly swallowing the notice.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::isSomebodyElses()
+     */
+    public function testATaskSavedWithNobodySignedInStillTellsItsHolder(): void
+    {
+        $task = $this->Tasks->newEntity(
+            ['user_id' => self::HOLDER_ID] + $this->task($this->taskType([])),
+        );
+
+        $this->assertNotFalse($this->Tasks->save($task));
+
+        $this->assertMailCount(1);
+        $this->assertMailSentTo(self::HOLDER_ADDRESS);
+        $this->assertMailSubjectContains('You have a new task');
+    }
+
+    /**
+     * A task saved by the very person holding it tells them nothing - they are looking at it.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::isSomebodyElses()
+     */
+    public function testATaskSavedByItsOwnHolderTellsThemNothing(): void
+    {
+        // what the footprint would have written had this gone through a signed-in request
+        $task = $this->Tasks->newEntity(
+            ['user_id' => self::HOLDER_ID, 'created_by' => self::HOLDER_ID] + $this->task($this->taskType([])),
+        );
+
+        $this->assertNotFalse($this->Tasks->save($task));
+        $this->assertNoMailSent();
+    }
+
+    /**
+     * A task nobody holds tells nobody, which is the branch that would fail on a null address.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::isSomebodyElses()
+     */
+    public function testATaskNobodyHoldsTellsNobody(): void
+    {
+        $task = $this->Tasks->newEntity($this->task($this->taskType([])));
+
+        $this->assertNotFalse($this->Tasks->save($task));
         $this->assertNoMailSent();
     }
 

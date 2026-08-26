@@ -11,14 +11,12 @@ use Cake\Form\Form;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
-use Cake\Mailer\Mailer;
 use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
-use Exception;
 use Settings\Utility\Settings;
 
 /**
@@ -468,14 +466,6 @@ class TasksController extends AppController
                 // only refresh
             } else {
                 if ($this->Tasks->save($task)) {
-                    // send email notification
-                    if (
-                        $task->user_id !== null
-                        && $task->user_id != ($this->getRequest()->getAttribute('identity')['id'] ?? null)
-                    ) {
-                        $this->sendNotificationEmail($task->id, true);
-                    }
-
                     // whatever saving had to say for itself, said where the model could not
                     $this->handleMessages($this->Tasks->Messages);
 
@@ -622,14 +612,6 @@ class TasksController extends AppController
                 // only refresh
             } else {
                 if ($this->Tasks->save($task)) {
-                    // send email notification
-                    if (
-                        $task->user_id !== null
-                        && $task->user_id != ($this->getRequest()->getAttribute('identity')['id'] ?? null)
-                    ) {
-                        $this->sendNotificationEmail($task->id, false);
-                    }
-
                     // whatever saving had to say for itself, said where the model could not
                     $this->handleMessages($this->Tasks->Messages);
 
@@ -739,66 +721,5 @@ class TasksController extends AppController
         unset($identity);
 
         return $text;
-    }
-
-    /**
-     * Send a task notification email
-     *
-     * @param string|null $id Task id.
-     * @param bool $new This is new task.
-     * @return bool Successfull?
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    private function sendNotificationEmail(?string $id = null, bool $new = false): bool
-    {
-        $task = $this->Tasks->get($id, contain: [
-            'TaskTypes',
-            'TaskStates',
-            'Customers' => [
-                'Addresses',
-            ],
-            'Contracts' => [
-                'InstallationAddresses',
-            ],
-            'Users',
-            'Creators',
-            'Modifiers',
-        ]);
-
-        if (!is_object($task->user) || empty($task->user->email)) {
-            $this->Flash->error(__(
-                'The notification email could not be sent because the user does not have an email address.',
-            ));
-
-            return false;
-        }
-
-        try {
-            $mailer = new Mailer('default');
-
-            $mailer->setTo($task->user->email, $task->user->name);
-
-            $title = $new ?
-                __('You have a new task # {0}', $task->number)
-                : __('You have changes in task # {0}', $task->number);
-
-            $mailer->setSubject($title . ' - ' . $task->summary_text);
-            $mailer->setEmailFormat('html');
-
-            $mailer->viewBuilder()
-                ->setLayout('default')
-                ->setTemplate('task-notification');
-
-            $mailer->setViewVars(['title' => $title, 'task' => $task]);
-
-            $mailer->deliver();
-            $this->Flash->success(__('Notification email sent.') . ' (' . $task->user->email . ')');
-
-            return true;
-        } catch (Exception $e) {
-            $this->Flash->error(__('The notification email could not be sent.') . ' (' . $e->getMessage() . ')');
-
-            return false;
-        }
     }
 }

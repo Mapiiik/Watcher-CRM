@@ -15,6 +15,7 @@ use Cake\Validation\Validator;
 use Override;
 use Tasks\Model\Entity\Task;
 use Tasks\Service\CompletedTaskReport;
+use Tasks\Service\TaskAssignmentNotice;
 
 /**
  * Tasks Model
@@ -188,18 +189,14 @@ class TasksTable extends AppTable
     }
 
     /**
-     * Tell whoever asked when a task has just been closed.
+     * Tell whoever a save concerns, once it is on disk for good.
      *
-     * What counts is the *move* into a closed state, not being in one: reporting the latter would
-     * send mail on every later save of a task that is already done. So the state it is leaving is
-     * asked about too, and only open -> closed is news.
+     * Both mails hang off the save rather than off the form, so a task saved through the API is
+     * answered for the same as one saved through a page. Neither may throw: the save has already
+     * committed by now, and a mail server that is down must not be reported as a task that was
+     * not saved.
      *
-     * A task filed straight into a closed state is reported as well. The work is finished either
-     * way, and whatever has to follow it - an invoice, equipment booked back in - needs to know,
-     * whether or not anybody ever saw the task open.
-     *
-     * This runs after the transaction has committed, so the entity is still dirty and its
-     * originals are still readable: CakePHP cleans it only once this has been dispatched.
+     * This runs before CakePHP cleans the entity, so what the task *was* is still readable here.
      *
      * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event The event that was fired.
      * @param \Cake\Datasource\EntityInterface $entity The task that was saved.
@@ -207,22 +204,72 @@ class TasksTable extends AppTable
      */
     public function afterSaveCommit(EventInterface $event, EntityInterface $entity): void
     {
-        if (!$entity instanceof Task || !$entity->isDirty('task_state_id')) {
+        if (!$entity instanceof Task) {
             return;
         }
 
-        $wasCompleted = !$entity->isNew()
-            && $this->TaskStates->get($entity->getOriginal('task_state_id'))->completed;
+        $closed = $this->hasJustBeenClosed($entity);
+        $somebodyElses = $this->isSomebodyElses($entity);
 
-        if ($wasCompleted || !$this->TaskStates->get($entity->task_state_id)->completed) {
+        if (!$closed && !$somebodyElses) {
             return;
         }
 
+        // read once; both mails show the same task
         $task = $this->get($entity->id, contain: $this->reportContain());
 
-        if ($task->task_type->report_on_completion) {
+        if ($closed && $task->task_type->report_on_completion) {
             CompletedTaskReport::send($task, $this->Messages);
         }
+
+        if ($somebodyElses) {
+            TaskAssignmentNotice::send($task, $entity->isNew(), $this->Messages);
+        }
+    }
+
+    /**
+     * Whether this save is the one that closed the task.
+     *
+     * What counts is the *move* into a closed state, not being in one: asking the latter would
+     * send the report again on every later save of a task that was closed weeks ago. So the state
+     * it is leaving is asked about too, and only open -> closed is news.
+     *
+     * A task filed straight into a closed state counts. The work is finished either way, and
+     * whatever has to follow it - an invoice, equipment booked back in - needs to know, whether
+     * or not anybody ever saw the task open.
+     *
+     * @param \Tasks\Model\Entity\Task $task The task as it was just saved.
+     * @return bool
+     */
+    private function hasJustBeenClosed(Task $task): bool
+    {
+        if (!$task->isDirty('task_state_id')) {
+            return false;
+        }
+
+        $wasCompleted = !$task->isNew()
+            && $this->TaskStates->get($task->getOriginal('task_state_id'))->completed;
+
+        return !$wasCompleted && $this->TaskStates->get($task->task_state_id)->completed;
+    }
+
+    /**
+     * Whether this save handed the task to somebody other than the person saving it.
+     *
+     * Who acted is read from the footprint of this very save rather than from the request, which
+     * the model has no business knowing about. The footprint is only written where somebody is
+     * signed in, so a save from a command or an integration leaves the column untouched - and
+     * then there is nobody to leave out and the holder is told.
+     *
+     * @param \Tasks\Model\Entity\Task $task The task as it was just saved.
+     * @return bool
+     */
+    private function isSomebodyElses(Task $task): bool
+    {
+        $column = $task->isNew() ? 'created_by' : 'modified_by';
+        $actor = $task->isDirty($column) ? $task->get($column) : null;
+
+        return $task->user_id !== null && $task->user_id !== $actor;
     }
 
     /**
