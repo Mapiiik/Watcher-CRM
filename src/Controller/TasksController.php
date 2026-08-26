@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Controller\Traits\MessageHandlerTrait;
 use App\Maps\TaskMap;
 use App\Model\Enum\AddressType;
 use Cake\Form\Form;
@@ -28,6 +29,7 @@ use Settings\Utility\Settings;
 class TasksController extends AppController
 {
     use CommonViewVarListsTrait;
+    use MessageHandlerTrait;
 
     /**
      * Map method
@@ -474,6 +476,9 @@ class TasksController extends AppController
                         $this->sendNotificationEmail($task->id, true);
                     }
 
+                    // whatever saving had to say for itself, said where the model could not
+                    $this->handleMessages($this->Tasks->Messages);
+
                     $this->Flash->success(__('The task has been saved.'));
 
                     return $this->afterAddRedirect(['action' => 'view', $task->id]);
@@ -624,6 +629,9 @@ class TasksController extends AppController
                     ) {
                         $this->sendNotificationEmail($task->id, false);
                     }
+
+                    // whatever saving had to say for itself, said where the model could not
+                    $this->handleMessages($this->Tasks->Messages);
 
                     $this->Flash->success(__('The task has been saved.'));
 

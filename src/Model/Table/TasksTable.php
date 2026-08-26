@@ -81,6 +81,21 @@ class TasksTable extends TasksTasksTable
     }
 
     /**
+     * An email about a task shows what this application files it under, so the customer and the
+     * contract come with it on top of the shared part.
+     *
+     * @return array<mixed>
+     */
+    #[Override]
+    public function reportContain(): array
+    {
+        return array_merge(parent::reportContain(), [
+            'Contracts' => ['InstallationAddresses'],
+            'Customers' => ['Addresses'],
+        ]);
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *

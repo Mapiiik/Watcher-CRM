@@ -7,6 +7,7 @@ use App\Model\Table\TasksTable;
 use App\Test\Traits\TableTestTrait;
 use App\Test\Traits\WatcherNmsAnswersTrait;
 use Cake\Datasource\EntityInterface;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
 use Cake\Utility\Text;
 use Override;
@@ -16,6 +17,7 @@ use Override;
  */
 class TasksTableTest extends TestCase
 {
+    use EmailTrait;
     use TableTestTrait;
     use WatcherNmsAnswersTrait;
 
@@ -64,6 +66,10 @@ class TasksTableTest extends TestCase
         parent::setUp();
         $config = $this->getTableLocator()->exists('Tasks') ? [] : ['className' => TasksTable::class];
         $this->Tasks = $this->getTableLocator()->get('Tasks', $config);
+
+        // an email about a task links to it, and a link wants routes; a request and the console
+        // both bring their own, a bare test case does not
+        $this->loadRoutes();
 
         $this->withWatcherNms();
     }
@@ -248,6 +254,154 @@ class TasksTableTest extends TestCase
     }
 
     /**
+     * Moving a task of a reporting type into a closed state tells the report addresses.
+     *
+     * This is the whole point of the flag: an installation that is done still has to be invoiced,
+     * and whoever does that never sees the task.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::afterSaveCommit()
+     */
+    public function testClosingATaskOfAReportingTypeTellsTheReportAddresses(): void
+    {
+        $this->withConfigure(['Report.emails' => ['billing@example.com']]);
+
+        $task = $this->openTaskOfAReportingType();
+        $this->assertNotFalse($this->Tasks->save($this->close($task)));
+
+        $this->assertMailCount(1);
+        $this->assertMailSentTo('billing@example.com');
+        $this->assertMailSubjectContains('Task completed');
+    }
+
+    /**
+     * The same move on a type that did not ask for it tells nobody, which is the branch that
+     * would bury everybody if the flag were read the wrong way round.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::afterSaveCommit()
+     */
+    public function testClosingATaskOfAnOrdinaryTypeTellsNobody(): void
+    {
+        $this->withConfigure(['Report.emails' => ['billing@example.com']]);
+
+        $task = $this->openTask($this->taskType(['report_on_completion' => false]));
+        $this->assertNotFalse($this->Tasks->save($this->close($task)));
+
+        $this->assertNoMailSent();
+    }
+
+    /**
+     * A task that was already closed is not reported again. What is news is the move into a
+     * closed state, not being in one - otherwise every later correction would send the report
+     * once more.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::afterSaveCommit()
+     */
+    public function testSavingATaskThatIsAlreadyClosedTellsNobodyAgain(): void
+    {
+        $this->withConfigure(['Report.emails' => ['billing@example.com']]);
+
+        $task = $this->openTaskOfAReportingType();
+        $this->Tasks->saveOrFail($this->close($task));
+
+        // saved again, still closed, and this time named the same state on purpose
+        $task->set('task_state_id', $this->stateId(completed: true));
+        $task->set('subject', 'Corrected afterwards');
+        $this->Tasks->saveOrFail($task);
+
+        $this->assertMailCount(1, 'Only the move into the closed state is news.');
+    }
+
+    /**
+     * Changing anything else about a closed task tells nobody either.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::afterSaveCommit()
+     */
+    public function testChangingSomethingOtherThanTheStateTellsNobody(): void
+    {
+        $this->withConfigure(['Report.emails' => ['billing@example.com']]);
+
+        $task = $this->openTaskOfAReportingType();
+
+        $task->set('subject', 'Renamed while still open');
+        $this->Tasks->saveOrFail($task);
+
+        $this->assertNoMailSent();
+    }
+
+    /**
+     * A task filed straight into a closed state is reported too. The work is finished either way
+     * and whatever follows it has to know, whether or not anybody ever saw the task open.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::afterSaveCommit()
+     */
+    public function testATaskFiledStraightIntoAClosedStateIsReported(): void
+    {
+        $this->withConfigure(['Report.emails' => ['billing@example.com']]);
+
+        $type = $this->taskType(['report_on_completion' => true]);
+        $task = $this->Tasks->newEntity(
+            ['task_state_id' => $this->stateId(completed: true)] + $this->task($type),
+        );
+
+        $this->assertNotFalse($this->Tasks->save($task));
+        $this->assertMailCount(1);
+    }
+
+    /**
+     * A deployment that has nobody configured to be told saves the task and sends nothing, rather
+     * than failing the save over a report nobody asked for.
+     *
+     * @return void
+     * @link \Tasks\Service\CompletedTaskReport::send()
+     */
+    public function testNothingIsSentWhereNobodyIsConfigured(): void
+    {
+        $this->withConfigure(['Report.emails' => []]);
+
+        $task = $this->openTaskOfAReportingType();
+
+        $this->assertNotFalse($this->Tasks->save($this->close($task)), 'The task still saves.');
+        $this->assertNoMailSent();
+    }
+
+    /**
+     * An open task of a type that asks to be reported when it closes.
+     */
+    private function openTaskOfAReportingType(): EntityInterface
+    {
+        return $this->openTask($this->taskType(['report_on_completion' => true]));
+    }
+
+    /**
+     * An open task already in the database, so that closing it is a move rather than a creation.
+     *
+     * @param \Cake\Datasource\EntityInterface $type The type it is filed under.
+     * @return \Cake\Datasource\EntityInterface
+     */
+    private function openTask(EntityInterface $type): EntityInterface
+    {
+        return $this->Tasks->saveOrFail($this->Tasks->newEntity($this->task($type)));
+    }
+
+    /**
+     * The same task, moved into a closed state.
+     *
+     * @param \Cake\Datasource\EntityInterface $task The task to close.
+     * @return \Cake\Datasource\EntityInterface
+     */
+    private function close(EntityInterface $task): EntityInterface
+    {
+        $task->set('task_state_id', $this->stateId(completed: true));
+
+        return $task;
+    }
+
+    /**
      * A task type asking for exactly what it is given.
      *
      * @param array<string, mixed> $flags What this type insists on.
@@ -267,13 +421,28 @@ class TasksTableTest extends TestCase
      */
     private function task(EntityInterface $type): array
     {
-        $states = $this->getTableLocator()->get('TaskStates');
-
         return [
             'task_type_id' => $type->get('id'),
-            'task_state_id' => $states->find()->firstOrFail()->get('id'),
+            // a task starts open; asked for by name because there is more than one state and an
+            // unordered `first()` over them would pick whichever the database felt like
+            'task_state_id' => $this->stateId(completed: false),
             'subject' => 'Written by the test',
             'priority' => 1,
         ];
+    }
+
+    /**
+     * The one state that is, or is not, a closed one.
+     *
+     * @param bool $completed Whether the state wanted is one that closes a task.
+     * @return string
+     */
+    private function stateId(bool $completed): string
+    {
+        return (string)$this->getTableLocator()->get('TaskStates')
+            ->find()
+            ->where(['completed' => $completed])
+            ->firstOrFail()
+            ->get('id');
     }
 }

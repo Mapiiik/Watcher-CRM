@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Tasks\Model\Table;
 
+use App\Messages\Messages;
 use App\Model\Table\AppTable;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
@@ -11,6 +14,7 @@ use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
 use Tasks\Model\Entity\Task;
+use Tasks\Service\CompletedTaskReport;
 
 /**
  * Tasks Model
@@ -36,6 +40,15 @@ use Tasks\Model\Entity\Task;
 class TasksTable extends AppTable
 {
     /**
+     * What saving a task had to say for itself.
+     *
+     * Saving a task can send mail, and whoever asked for the save is the one who should hear how
+     * that went - but the model has no Flash and no console. It leaves the outcome here instead
+     * and lets the layer above render it: `handleMessages()` in a controller or in a command.
+     */
+    public Messages $Messages;
+
+    /**
      * Initialize method
      *
      * @param array<string, mixed> $config The configuration for the Table.
@@ -45,6 +58,8 @@ class TasksTable extends AppTable
     public function initialize(array $config): void
     {
         parent::initialize($config);
+
+        $this->Messages = new Messages();
 
         $this->setTable('tasks');
         $this->setDisplayField('id');
@@ -157,6 +172,57 @@ class TasksTable extends AppTable
     public function summaryContain(): array
     {
         return ['TaskTypes'];
+    }
+
+    /**
+     * What a task has to be read together with for an email about it to say anything.
+     *
+     * The shared part is here; an application that files tasks under things of its own adds them,
+     * the same way it does for the summary line.
+     *
+     * @return array<mixed>
+     */
+    public function reportContain(): array
+    {
+        return ['TaskTypes', 'TaskStates', 'Users', 'Creators', 'Modifiers'];
+    }
+
+    /**
+     * Tell whoever asked when a task has just been closed.
+     *
+     * What counts is the *move* into a closed state, not being in one: reporting the latter would
+     * send mail on every later save of a task that is already done. So the state it is leaving is
+     * asked about too, and only open -> closed is news.
+     *
+     * A task filed straight into a closed state is reported as well. The work is finished either
+     * way, and whatever has to follow it - an invoice, equipment booked back in - needs to know,
+     * whether or not anybody ever saw the task open.
+     *
+     * This runs after the transaction has committed, so the entity is still dirty and its
+     * originals are still readable: CakePHP cleans it only once this has been dispatched.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event The event that was fired.
+     * @param \Cake\Datasource\EntityInterface $entity The task that was saved.
+     * @return void
+     */
+    public function afterSaveCommit(EventInterface $event, EntityInterface $entity): void
+    {
+        if (!$entity instanceof Task || !$entity->isDirty('task_state_id')) {
+            return;
+        }
+
+        $wasCompleted = !$entity->isNew()
+            && $this->TaskStates->get($entity->getOriginal('task_state_id'))->completed;
+
+        if ($wasCompleted || !$this->TaskStates->get($entity->task_state_id)->completed) {
+            return;
+        }
+
+        $task = $this->get($entity->id, contain: $this->reportContain());
+
+        if ($task->task_type->report_on_completion) {
+            CompletedTaskReport::send($task, $this->Messages);
+        }
     }
 
     /**

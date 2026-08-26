@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\TasksController;
 use App\Model\Entity\Task;
+use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
@@ -22,6 +23,7 @@ class TasksControllerTest extends TestCase
 {
     // saving a task mails whoever watches it; without this the message is left behind for
     // whichever test asks about mail next
+    use ConfigureTestTrait;
     use ControllerTestTrait;
     use EmailTrait;
     use IntegrationTestTrait;
@@ -364,6 +366,50 @@ class TasksControllerTest extends TestCase
         $this->assertMailSentTo(self::USER_ADDRESS);
         $this->assertMailSubjectContains('You have changes in task');
         $this->assertMailContainsHtml('Antenna replacement');
+    }
+
+    /**
+     * Closing a task through the form reports it, and the operator who closed it is told that it
+     * went out.
+     *
+     * The report is sent from the model, which has no Flash of its own - so what this really asks
+     * is whether the message buffer the model leaves behind reaches the controller that drains it.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::edit()
+     */
+    public function testClosingATaskReportsItAndSaysSoOnScreen(): void
+    {
+        $this->withConfigure(['Report.emails' => ['billing@example.com']]);
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $tasks = $this->getTableLocator()->get('Tasks');
+        $task = $tasks->get($this->firstId('Tasks'));
+
+        // the fixture task is finished already, so it is reopened first and then closed for real
+        $states = $this->getTableLocator()->get('TaskStates');
+        $open = $states->find()->where(['completed' => false])->firstOrFail();
+        $closed = $states->find()->where(['completed' => true])->firstOrFail();
+        $tasks->saveOrFail($task->patch([
+            'task_state_id' => $open->get('id'),
+            // the fixture type insists on one and the fixture task names none
+            'contract_id' => self::CONTRACT_ID,
+        ]));
+
+        $types = $this->getTableLocator()->get('TaskTypes');
+        $types->saveOrFail($types->get($task->get('task_type_id'))->set('report_on_completion', true));
+
+        $this->post('/tasks/edit/' . $task->get('id'), [
+            'task_state_id' => $closed->get('id'),
+            'contract_id' => $this->firstId('Contracts'),
+        ]);
+
+        $this->assertRedirect();
+        $this->assertMailSentTo('billing@example.com');
+        $this->assertMailSubjectContains('Task completed');
+        $this->assertFlashMessage('Notification email sent. (billing@example.com)');
     }
 
     /**

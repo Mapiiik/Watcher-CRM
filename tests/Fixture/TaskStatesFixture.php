@@ -31,6 +31,19 @@ class TaskStatesFixture extends TestFixture
                 'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
                 'priority' => 1,
             ],
+            [
+                // a state a task can still be moved out of, so a close can be played out; the id
+                // sorts after the one above on purpose, because `firstId()` takes the lowest
+                'name' => 'Open',
+                'color' => '#ffffff',
+                'completed' => 0,
+                'created' => 1698520818,
+                'modified' => 1698520818,
+                'id' => 'f1e5d0c2-0000-4000-8000-000000000001',
+                'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'modified_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
+                'priority' => 0,
+            ],
         ];
         parent::init();
     }
