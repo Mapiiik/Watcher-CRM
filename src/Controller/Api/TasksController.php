@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use Cake\Http\Exception\BadRequestException;
+use Cake\ORM\Association;
 use Cake\Validation\Validation;
 
 /**
@@ -30,6 +31,12 @@ class TasksController extends AppController
         'TaskTypes',
         'TaskStates',
         'Users' => ['fields' => ['id', 'username', 'first_name', 'last_name']],
+        // Read one query at a time. The answer is ordered by the state of a task and cut to a
+        // limit, which the `subquery` strategy would carry into a `GROUP BY` PostgreSQL rejects.
+        'Collaborators' => [
+            'fields' => ['id', 'username', 'first_name', 'last_name'],
+            'strategy' => Association::STRATEGY_SELECT,
+        ],
     ];
 
     /**

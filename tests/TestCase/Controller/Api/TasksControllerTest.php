@@ -140,6 +140,45 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * A task hands over whoever is on it beside its holder, cut down the same way.
+     *
+     * The account is cut to what names the person, whichever of the two ways they are named on
+     * the task - and what keeps the link is nobody's business out here.
+     *
+     * @return void
+     * @link \App\Controller\Api\TasksController::search()
+     */
+    public function testSearchHandsOverWhoElseIsOnATask(): void
+    {
+        $helper = $this->getTableLocator()->get('AppUsers')->find()->firstOrFail();
+
+        $place = Text::uuid();
+        $this->taskAt($place, 'Two of us are going');
+
+        $links = $this->getTableLocator()->get('TaskCollaborators');
+        $links->saveOrFail($links->newEntity([
+            'task_id' => $this->getTableLocator()->get('Tasks')
+                ->find()->where(['subject' => 'Two of us are going'])->firstOrFail()->get('id'),
+            'user_id' => $helper->get('id'),
+        ]));
+
+        $this->login('api');
+        $this->get('/api/tasks/search.json?access_point_id=' . $place);
+
+        $this->assertResponseOk();
+
+        $answered = json_decode((string)$this->_response?->getBody(), true);
+        $collaborators = $answered['tasks'][0]['collaborators'] ?? [];
+
+        $this->assertCount(1, $collaborators);
+        $this->assertSame(
+            ['id', 'username', 'first_name', 'last_name'],
+            array_keys($collaborators[0]),
+            'The same cut as the holder, and nothing about the link itself.',
+        );
+    }
+
+    /**
      * A name this application has never heard of is an answer, not a fault - and the answer is
      * that nobody here holds anything.
      *

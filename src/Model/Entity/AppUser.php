@@ -28,6 +28,29 @@ use CakeDC\Users\Model\Entity\User;
 class AppUser extends User
 {
     /**
+     * Fields left out wherever the account is written out whole.
+     *
+     * A person is handed out beside the records they are named on - a task they are working on,
+     * say - and the row that attached them there travels with them unasked. What that row says
+     * is a fact about the record rather than about the person, and out in an answer it is noise.
+     *
+     * The six above it are the plugin's own list, repeated because a property replaces the one
+     * it inherits rather than adding to it. Anything the plugin adds to its list has to be
+     * copied here as well.
+     *
+     * @var list<string>
+     */
+    protected array $_hidden = [
+        'additional_data',
+        'api_token',
+        'password',
+        'secret',
+        'token',
+        'token_expires',
+        '_joinData',
+    ];
+
+    /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * @var array<string, bool>
