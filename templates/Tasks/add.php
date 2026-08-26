@@ -43,6 +43,13 @@
                             'empty' => true,
                             'label' => __('User'),
                         ]);
+                        echo $this->Form->control('collaborators._ids', [
+                            'options' => $users,
+                            'multiple' => 'multiple',
+                            'style' => 'height: 100px;',
+                            'label' => __('Collaborators'),
+                            'title' => __('Anybody else working on this beside the user above.'),
+                        ]);
                         ?>
                     </div>
                     <div class="column">

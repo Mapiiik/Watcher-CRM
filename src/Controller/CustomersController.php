@@ -370,6 +370,7 @@ class CustomersController extends AppController
                 'TaskTypes',
                 'TaskStates',
                 'Users',
+                'Collaborators',
             ],
             'AccountingProfiles',
             'IpAddresses' => [

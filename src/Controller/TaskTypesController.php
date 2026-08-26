@@ -23,7 +23,7 @@ class TaskTypesController extends AppController
     protected function viewContain(): array
     {
         return [
-            'Tasks' => ['Customers', 'TaskStates', 'Users'],
+            'Tasks' => ['Customers', 'TaskStates', 'Users', 'Collaborators'],
             'ContractStates',
             'Creators',
             'Modifiers',

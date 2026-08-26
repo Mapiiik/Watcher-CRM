@@ -7,6 +7,7 @@ use App\Controller\TasksController;
 use App\Model\Entity\Task;
 use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
+use App\Test\Traits\IdentityColumnTrait;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\EmailTrait;
@@ -26,6 +27,7 @@ class TasksControllerTest extends TestCase
     use ConfigureTestTrait;
     use ControllerTestTrait;
     use EmailTrait;
+    use IdentityColumnTrait;
     use IntegrationTestTrait;
 
     /**
@@ -952,5 +954,88 @@ class TasksControllerTest extends TestCase
     private function loginAs(string $userId): void
     {
         $this->session(['Auth' => $this->getTableLocator()->get('AppUsers')->get($userId)]);
+    }
+
+    /**
+     * The form saves whoever else was picked out as being on the task.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::edit()
+     */
+    public function testEditStoresWhoElseIsOnTheTask(): void
+    {
+        $helper = $this->somebodyElse('helper');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $taskId = $this->firstId('Tasks');
+        $this->post('/tasks/edit/' . $taskId, [
+            'subject' => 'Two of us are going',
+            'contract_id' => $this->firstId('Contracts'),
+            'collaborators' => ['_ids' => [$helper]],
+        ]);
+
+        $this->assertRedirect();
+
+        $task = $this->getTableLocator()->get('Tasks')->get($taskId, contain: ['Collaborators']);
+        $this->assertSame([$helper], array_column($task->get('collaborators'), 'id'));
+    }
+
+    /**
+     * Narrowed to one person, the listing holds the work they were put on as well as the work
+     * they hold - which is what the dashboard card pointing at it holds.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testTheListingNarrowedToSomebodyHoldsWhatTheyWerePutOnToo(): void
+    {
+        $helper = $this->somebodyElse('helper');
+
+        $tasks = $this->getTableLocator()->get('Tasks');
+        $links = $this->getTableLocator()->get('TaskCollaborators');
+        $links->saveOrFail($links->newEntity([
+            'task_id' => $this->firstId('Tasks'),
+            'user_id' => $helper,
+        ]));
+
+        // the fixture task is held by somebody else entirely, so the only way it can turn up is
+        // through the list
+        $tasks->updateAll(['user_id' => null], []);
+
+        $this->login();
+        $this->get('/tasks?show_completed=1&user_id=' . $helper);
+
+        $this->assertResponseOk();
+        $this->assertCount(1, (array)$this->viewVariable('tasks')->toArray());
+    }
+
+    /**
+     * Somebody else with an account, so that a task can name two people.
+     *
+     * The password goes in past its setter, which reaches for a hasher the test environment does
+     * not configure.
+     *
+     * @param string $username What to call them.
+     * @return string Their identifier.
+     */
+    private function somebodyElse(string $username): string
+    {
+        $this->advanceIdentity('users', 'nid');
+
+        $users = $this->getTableLocator()->get('AppUsers');
+        $person = $users->newEmptyEntity();
+        $person->patch([
+            'username' => $username,
+            'email' => $username . '@example.com',
+            'role' => 'user',
+            'active' => true,
+            'holds_tasks' => true,
+        ]);
+        $person->set('password', 'irrelevant-for-this-test', ['setter' => false]);
+
+        return (string)$users->saveOrFail($person)->get('id');
     }
 }

@@ -57,6 +57,17 @@
                                 ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
                             ) : '' ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Collaborators') ?></th>
+                            <td>
+                                <?php foreach ($task->collaborators as $i => $person) : ?>
+                                    <?= $i > 0 ? ', ' : '' ?><?= $this->Html->link(
+                                        $person->name ?? '(' . $person->id . ')',
+                                        ['controller' => 'AppUsers', 'action' => 'view', $person->id],
+                                    ) ?>
+                                <?php endforeach; ?>
+                            </td>
+                        </tr>
                     </table>
                     <table>
                         <tr>

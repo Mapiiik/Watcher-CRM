@@ -62,6 +62,11 @@
                     $task->user->name ?? '(' . $task->user->id . ')',
                     ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
                 ) : '' ?>
+                <?php if ($task->collaborator_names !== '') : ?>
+                    <br><small title="<?= h(__d('app_tasks', 'Collaborators')) ?>">
+                        <?= h($task->collaborator_names) ?>
+                    </small>
+                <?php endif ?>
             </td>
             <td><?= h($task->subject) ?></td>
             <td style="overflow-wrap: break-word; max-width: 600px;">

@@ -29,6 +29,7 @@ class TaskStatesController extends AppController
                 'TaskStates',
                 'TaskTypes',
                 'Users',
+                'Collaborators',
             ],
         ];
     }

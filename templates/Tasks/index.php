@@ -133,6 +133,13 @@ $this->Html->script('expandable-text.js', ['block' => true]);
                             $task->user->name ?? '(' . $task->user->id . ')',
                             ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
                         ) : '' ?>
+                        <?php // under the holder rather than in a column of its own; the listing
+                              // is wide enough, and the two answer the same question ?>
+                        <?php if ($task->collaborator_names !== '') : ?>
+                            <br><small title="<?= h(__('Collaborators')) ?>">
+                                <?= h($task->collaborator_names) ?>
+                            </small>
+                        <?php endif ?>
                     </td>
                     <td>
                         <?= h($task->subject) ?? '&nbsp;' ?>

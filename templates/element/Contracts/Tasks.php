@@ -47,7 +47,13 @@
                 ) : '' ?>
             </td>
             <?php endif; ?>
-            <td><?= $task->user !== null ? h($task->user->name) : '' ?></td>
+            <td><?= $task->user !== null ? h($task->user->name) : '' ?>
+                <?php if ($task->collaborator_names !== '') : ?>
+                    <br><small title="<?= h(__('Collaborators')) ?>">
+                        <?= h($task->collaborator_names) ?>
+                    </small>
+                <?php endif ?>
+            </td>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),
