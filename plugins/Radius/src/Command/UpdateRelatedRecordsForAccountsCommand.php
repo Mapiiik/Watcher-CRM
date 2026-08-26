@@ -88,7 +88,7 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
             $changelog = $accountsUpdater->updateRelatedRecordsForAllAccounts($args->getOptions());
 
             // load messages from accounts updater and generate flash messages
-            $this->handleMessages($accountsUpdater->Messages->getMessages(), $io);
+            $this->handleMessages($accountsUpdater->Messages, $io);
 
             // generate summary table
             $tableData = [];

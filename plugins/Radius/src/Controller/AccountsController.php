@@ -172,7 +172,7 @@ class AccountsController extends AppController
                     $account->radusergroup = $accountsUpdater->autoRadusergroupData($account);
 
                     // load messages from accounts updater and generate flash messages
-                    $this->handleMessages($accountsUpdater->Messages->getMessages());
+                    $this->handleMessages($accountsUpdater->Messages);
                 }
 
                 if ($this->Accounts->save($account)) {
@@ -283,7 +283,7 @@ class AccountsController extends AppController
                     $account->radcheck = $accountsUpdater->autoRadcheckData($account);
 
                     // load messages from accounts updater and generate flash messages
-                    $this->handleMessages($accountsUpdater->Messages->getMessages());
+                    $this->handleMessages($accountsUpdater->Messages);
                 }
 
                 if ($this->Accounts->save($account)) {
@@ -475,7 +475,7 @@ class AccountsController extends AppController
             $radiusRequestSender->sendDisconnectRequest($session);
         }
         // load messages from RADIUS Request sender and generate flash messages
-        $this->handleMessages($radiusRequestSender->Messages->getMessages());
+        $this->handleMessages($radiusRequestSender->Messages);
 
         // wait one second for RADIUS records to update
         sleep(1);
@@ -501,7 +501,7 @@ class AccountsController extends AppController
         $accountsUpdater->updateRelatedRecords($id);
 
         // load messages from accounts updater and generate flash messages
-        $this->handleMessages($accountsUpdater->Messages->getMessages());
+        $this->handleMessages($accountsUpdater->Messages);
 
         return $this->redirect($this->referer(['action' => 'view', $id]));
     }
@@ -521,7 +521,7 @@ class AccountsController extends AppController
             $changelog = $accountsUpdater->updateRelatedRecordsForAllAccounts($this->getRequest()->getData());
 
             // load messages from accounts updater and generate flash messages
-            $this->handleMessages($accountsUpdater->Messages->getMessages());
+            $this->handleMessages($accountsUpdater->Messages);
 
             // changelog
             $this->set('changelog', $changelog);

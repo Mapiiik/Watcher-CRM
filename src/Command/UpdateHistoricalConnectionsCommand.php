@@ -73,7 +73,7 @@ class UpdateHistoricalConnectionsCommand extends Command
             $updater = new HistoricalConnectionsUpdater();
             $summary = $updater->update($sources);
 
-            $this->handleMessages($updater->Messages->getMessages(), $io);
+            $this->handleMessages($updater->Messages, $io);
 
             $io->helper('Table')->output([
                 [__('Accounts'), __('Opened'), __('By account change'), __('Extended'), __('Enriched')],

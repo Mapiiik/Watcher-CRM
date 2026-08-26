@@ -4,23 +4,29 @@ declare(strict_types=1);
 namespace App\Controller\Traits;
 
 use App\Messages\Message;
+use App\Messages\Messages;
 use Cake\Log\Log;
 use Cake\View\Exception\MissingElementException;
 
 trait MessageHandlerTrait
 {
     /**
-     * Handles messages.
+     * Flashes everything a layer below has said, and empties the buffer behind itself.
      *
-     * @param array<\App\Messages\Message> $messages
+     * The buffer is taken rather than read, so that whoever handed it over cannot hand the same
+     * messages over twice - the buffer is static and outlives every instance of it.
+     *
+     * @param \App\Messages\Messages $messages The buffer to drain.
      * @return void
      */
-    protected function handleMessages(array $messages): void
+    protected function handleMessages(Messages $messages): void
     {
         // Process each message
-        foreach ($messages as $message) {
+        foreach ($messages->getMessages() as $message) {
             $this->handleMessage($message);
         }
+
+        $messages->clear();
     }
 
     /**

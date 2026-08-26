@@ -16,9 +16,13 @@ class Messages
     /**
      * Message Buffer
      *
+     * Held per instance. Whoever produces messages owns a buffer and hands that same buffer over;
+     * a shared one would let anything that never drains it leak into whoever drains next - across
+     * requests in a long-running process, and across cases in a test run.
+     *
      * @var array<\App\Messages\Message>
      */
-    private static array $messages = [];
+    private array $messages = [];
 
     /**
      * Magic method for set method based on element names.
@@ -38,7 +42,7 @@ class Messages
      */
     public function set(string $type, string $message, array $options = []): void
     {
-            self::$messages[] = new Message($type, $message, $options);
+            $this->messages[] = new Message($type, $message, $options);
     }
 
     /**
@@ -48,6 +52,20 @@ class Messages
      */
     public function getMessages(): array
     {
-            return self::$messages;
+            return $this->messages;
+    }
+
+    /**
+     * Empty the message buffer.
+     *
+     * A producer is used for more than one round of work - a controller action that saves twice,
+     * a command that drains between steps - so whoever has handled the messages says so and the
+     * next round starts empty, rather than repeating what was already shown.
+     *
+     * @return void
+     */
+    public function clear(): void
+    {
+            $this->messages = [];
     }
 }

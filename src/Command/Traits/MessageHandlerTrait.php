@@ -4,24 +4,30 @@ declare(strict_types=1);
 namespace App\Command\Traits;
 
 use App\Messages\Message;
+use App\Messages\Messages;
 use Cake\Console\ConsoleIo;
 use Cake\Log\Log;
 
 trait MessageHandlerTrait
 {
     /**
-     * Handles messages.
+     * Prints everything a layer below has said, and empties the buffer behind itself.
      *
-     * @param array<\App\Messages\Message> $messages
+     * The buffer is taken rather than read, so that a command draining it more than once in a run
+     * does not print the earlier batch again - the buffer is static and outlives every instance.
+     *
+     * @param \App\Messages\Messages $messages The buffer to drain.
      * @param \Cake\Console\ConsoleIo $io The console io.
      * @return void
      */
-    protected function handleMessages(array $messages, ConsoleIo $io): void
+    protected function handleMessages(Messages $messages, ConsoleIo $io): void
     {
         // Process each message
-        foreach ($messages as $message) {
+        foreach ($messages->getMessages() as $message) {
             $this->handleMessage($message, $io);
         }
+
+        $messages->clear();
     }
 
     /**

@@ -57,13 +57,16 @@ class DebtorsProcessor
     }
 
     /**
-     * Get messages
+     * The buffer of what processing had to say, for whoever is above to drain.
      *
-     * @return array
+     * The buffer itself is handed over rather than its contents, so that `handleMessages()` can
+     * empty it and nobody is told the same thing twice.
+     *
+     * @return \App\Messages\Messages
      */
-    public function getMessages(): array
+    public function getMessages(): Messages
     {
-        return $this->messages->getMessages();
+        return $this->messages;
     }
 
     /**
