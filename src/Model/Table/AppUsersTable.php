@@ -14,6 +14,7 @@ use Override;
  * Users database table
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
+ * @property \App\Model\Table\TaskCollaboratorsTable&\Cake\ORM\Association\HasMany $TaskCollaborators
  * @method \App\Model\Entity\AppUser get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\AppUser newEmptyEntity()
  * @method \App\Model\Entity\AppUser newEntity(array $data, array $options = [])
@@ -57,6 +58,9 @@ class AppUsersTable extends UsersTable
         $this->hasMany('Tasks', [
             'foreignKey' => 'user_id',
         ]);
+        $this->hasMany('TaskCollaborators', [
+            'foreignKey' => 'user_id',
+        ]);
     }
 
     /**
@@ -97,8 +101,12 @@ class AppUsersTable extends UsersTable
 
                 // Finished work counts as much as unfinished: a task says whose it was, and an
                 // account that stops being one that holds tasks while tasks still name it leaves
-                // that answer half told.
-                return !$this->Tasks->exists(['Tasks.user_id' => $entity->get('id')]);
+                // that answer half told. Standing beside whoever holds one counts the same: it
+                // is the account being named that matters, not which of the two names it is.
+                $id = $entity->get('id');
+
+                return !$this->Tasks->exists(['Tasks.user_id' => $id])
+                    && !$this->TaskCollaborators->exists(['TaskCollaborators.user_id' => $id]);
             },
             'holdsNoTasks',
             [
@@ -111,6 +119,7 @@ class AppUsersTable extends UsersTable
         // raising, which reaches the operator as an error page rather than as an answer. Asked
         // here, it is an answer.
         $rules->addDelete($rules->isNotLinkedTo('Tasks'));
+        $rules->addDelete($rules->isNotLinkedTo('TaskCollaborators'));
 
         return $rules;
     }

@@ -24,6 +24,8 @@ use Tasks\Service\TaskAssignmentNotice;
  * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $TaskTypes
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\TaskCollaboratorsTable&\Cake\ORM\Association\HasMany $TaskCollaborators
+ * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsToMany $Collaborators
  * @method \Tasks\Model\Entity\Task newEmptyEntity()
  * @method \Tasks\Model\Entity\Task newEntity(array $data, array $options = [])
  * @method \Tasks\Model\Entity\Task[] newEntities(array $data, array $options = [])
@@ -83,6 +85,22 @@ class TasksTable extends AppTable
             'className' => 'AppUsers',
             'foreignKey' => 'user_id',
         ]);
+
+        // Work is not always done alone, so beside the one person who answers for a task there
+        // is a list of whoever else is on it. The link is a record of its own, and it is deleted
+        // through here rather than by the database, so that putting somebody on a task and
+        // taking them off it again are kept in the history like every other change.
+        $this->hasMany('TaskCollaborators', [
+            'foreignKey' => 'task_id',
+            'dependent' => true,
+        ]);
+        $this->belongsToMany('Collaborators', [
+            'className' => 'AppUsers',
+            'through' => 'TaskCollaborators',
+            'foreignKey' => 'task_id',
+            'targetForeignKey' => 'user_id',
+            'sort' => ['Collaborators.last_name', 'Collaborators.first_name'],
+        ]);
     }
 
     /**
@@ -102,7 +120,14 @@ class TasksTable extends AppTable
     }
 
     /**
-     * Tasks a user is holding.
+     * Tasks a user has a part in - the ones they hold, and the ones they were put on beside
+     * whoever holds them.
+     *
+     * Both count as theirs. Somebody sent out to an installation as the second pair of hands
+     * has to find it where they look for their work, and the only place they look is here.
+     *
+     * Asked as a list of tasks rather than as a join, because a join would answer with the task
+     * once per person on it, and a page of results counted twice over is not a page.
      *
      * @param \Cake\ORM\Query\SelectQuery<\Tasks\Model\Entity\Task> $query The query to scope.
      * @param string $user_id The user the tasks belong to.
@@ -110,18 +135,52 @@ class TasksTable extends AppTable
      */
     public function findForUser(SelectQuery $query, string $user_id): SelectQuery
     {
-        return $query->where(['Tasks.user_id' => $user_id]);
+        return $query->where([
+            'OR' => [
+                'Tasks.user_id' => $user_id,
+                'Tasks.id IN' => $this->tasksSomebodyIsOn($user_id),
+            ],
+        ]);
     }
 
     /**
-     * Tasks nobody holds.
+     * Tasks nobody has anything to do with.
+     *
+     * Nobody at all, not merely nobody holding them: a task three people are out on is not one
+     * that has been overlooked, which is the whole question this asks. It does leave a task with
+     * helpers but no one answering for it out of sight, and that is the accepted cost.
      *
      * @param \Cake\ORM\Query\SelectQuery<\Tasks\Model\Entity\Task> $query The query to scope.
      * @return \Cake\ORM\Query\SelectQuery<\Tasks\Model\Entity\Task>
      */
     public function findUnassigned(SelectQuery $query): SelectQuery
     {
-        return $query->where(['Tasks.user_id IS' => null]);
+        return $query->where([
+            'Tasks.user_id IS' => null,
+            'Tasks.id NOT IN' => $this->tasksSomebodyIsOn(),
+        ]);
+    }
+
+    /**
+     * The tasks somebody has been put on, as a list of their identifiers.
+     *
+     * Left uncorrelated - it asks nothing of the query it lands in - so that it survives being
+     * carried around by whatever rewrites that query, and so that the database may read the
+     * links once rather than once per task.
+     *
+     * @param string|null $user_id Whose links to read, or null for everybody's.
+     * @return \Cake\ORM\Query\SelectQuery<\Tasks\Model\Entity\TaskCollaborator>
+     */
+    private function tasksSomebodyIsOn(?string $user_id = null): SelectQuery
+    {
+        $links = $this->TaskCollaborators->find()
+            ->select(['TaskCollaborators.task_id']);
+
+        if ($user_id !== null) {
+            $links->where(['TaskCollaborators.user_id' => $user_id]);
+        }
+
+        return $links;
     }
 
     /**
@@ -186,7 +245,7 @@ class TasksTable extends AppTable
      */
     public function reportContain(): array
     {
-        return ['TaskTypes', 'TaskStates', 'Users', 'Creators', 'Modifiers'];
+        return ['TaskTypes', 'TaskStates', 'Users', 'Collaborators', 'Creators', 'Modifiers'];
     }
 
     /**

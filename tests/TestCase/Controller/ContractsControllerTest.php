@@ -74,6 +74,7 @@ class ContractsControllerTest extends TestCase
         'app.TaskStates',
         'app.TaskTypes',
         'app.Tasks',
+        'app.TaskCollaborators',
     ];
 
     /**

@@ -56,6 +56,7 @@ class Task extends TasksTask
         'customer' => true,
         'contract' => true,
         'user' => true,
+        'collaborators' => true,
         'access_point' => true,
     ];
 

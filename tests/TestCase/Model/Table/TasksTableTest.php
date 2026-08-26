@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\TasksTable;
+use App\Test\Traits\IdentityColumnTrait;
 use App\Test\Traits\TableTestTrait;
 use App\Test\Traits\WatcherNmsAnswersTrait;
 use Cake\Datasource\EntityInterface;
@@ -18,6 +19,7 @@ use Override;
 class TasksTableTest extends TestCase
 {
     use EmailTrait;
+    use IdentityColumnTrait;
     use TableTestTrait;
     use WatcherNmsAnswersTrait;
 
@@ -61,6 +63,7 @@ class TasksTableTest extends TestCase
         'app.TaskStates',
         'app.TaskTypes',
         'app.Tasks',
+        'app.TaskCollaborators',
     ];
 
     /**
@@ -413,6 +416,115 @@ class TasksTableTest extends TestCase
 
         $this->assertNotFalse($this->Tasks->save($task));
         $this->assertNoMailSent();
+    }
+
+    /**
+     * A task reaches somebody who was put on it beside whoever holds it.
+     *
+     * This is the whole point of keeping a list: the second pair of hands sent out to an
+     * installation looks for their work in one place, and if the task is not there they never
+     * learn of it.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::findForUser()
+     */
+    public function testATaskReachesSomebodyPutOnItBesideItsHolder(): void
+    {
+        $helper = $this->somebodyElse('helper');
+
+        $task = $this->openTask($this->taskType([]));
+        $this->putOnTheTask($task, $helper);
+
+        $theirs = $this->Tasks->find('forUser', user_id: $helper)->all()->extract('id')->toList();
+
+        $this->assertSame([$task->get('id')], $theirs);
+    }
+
+    /**
+     * Somebody who both holds a task and stands on the list gets it once.
+     *
+     * A join would have answered with the task once per way it names them, and a page counted
+     * twice over is not a page - which is why the list is asked as a list of tasks.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::findForUser()
+     */
+    public function testATaskCountsOnceForSomebodyNamedOnItTwice(): void
+    {
+        // the fixture hands its own task to this same person, which would leave the count saying
+        // nothing about the question
+        $this->Tasks->updateAll(['user_id' => null], []);
+
+        $task = $this->openTask($this->taskType([]));
+        $task->set('user_id', self::HOLDER_ID);
+        $this->Tasks->saveOrFail($task);
+        $this->putOnTheTask($task, self::HOLDER_ID);
+
+        $this->assertSame(1, $this->Tasks->find('forUser', user_id: self::HOLDER_ID)->count());
+    }
+
+    /**
+     * A task somebody is out on is not one that has been overlooked.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::findUnassigned()
+     */
+    public function testATaskSomebodyIsOnIsNotCountedAsOverlooked(): void
+    {
+        $helper = $this->somebodyElse('helper');
+
+        $alone = $this->openTask($this->taskType([]));
+        $helped = $this->openTask($this->taskType([]));
+        $this->putOnTheTask($helped, $helper);
+
+        $overlooked = $this->Tasks->find('unassigned')->all()->extract('id')->toList();
+
+        $this->assertContains($alone->get('id'), $overlooked, 'Nobody has anything to do with it.');
+        $this->assertNotContains($helped->get('id'), $overlooked, 'Somebody is out on it.');
+    }
+
+    /**
+     * Somebody else with an account, so that a task can name two people.
+     *
+     * The password goes in past its setter, which reaches for a hasher the test environment does
+     * not configure.
+     *
+     * @param string $username What to call them.
+     * @return string Their identifier.
+     */
+    private function somebodyElse(string $username): string
+    {
+        $this->advanceIdentity('users', 'nid');
+
+        $users = $this->getTableLocator()->get('AppUsers');
+        $person = $users->newEmptyEntity();
+        $person->patch([
+            'username' => $username,
+            'email' => $username . '@example.com',
+            'role' => 'user',
+            'active' => true,
+            'holds_tasks' => true,
+        ]);
+        $person->set('password', 'irrelevant-for-this-test', ['setter' => false]);
+
+        return (string)$users->saveOrFail($person)->get('id');
+    }
+
+    /**
+     * Put somebody on a task beside whoever holds it.
+     *
+     * @param \Cake\Datasource\EntityInterface $task The task they are on.
+     * @param string $user_id Who is on it.
+     * @return void
+     */
+    private function putOnTheTask(EntityInterface $task, string $user_id): void
+    {
+        $links = $this->getTableLocator()->get('TaskCollaborators');
+
+        $links->saveOrFail($links->newEntity([
+            'task_id' => $task->get('id'),
+            'user_id' => $user_id,
+        ]));
     }
 
     /**

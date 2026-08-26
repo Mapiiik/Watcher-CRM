@@ -40,6 +40,7 @@ class AppUsersTableTest extends TestCase
         'app.TaskStates',
         'app.TaskTypes',
         'app.Tasks',
+        'app.TaskCollaborators',
     ];
 
     /**
@@ -161,5 +162,66 @@ class AppUsersTableTest extends TestCase
 
         $this->assertFalse($this->AppUsers->delete($user));
         $this->assertNotEmpty($this->AppUsers->get($user->id));
+    }
+
+    /**
+     * Standing on somebody else's task counts as much as holding one of your own.
+     *
+     * It is the account being named that the rule is about, not which of the two ways it is
+     * named - so the switch waits either way.
+     *
+     * @return void
+     * @link \App\Model\Table\AppUsersTable::buildRules()
+     */
+    public function testHoldsTasksCannotBeTurnedOffWhileTheAccountIsOnSomebodyElsesTask(): void
+    {
+        /** @var \App\Model\Entity\AppUser $user */
+        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+
+        // nothing is held any more, so what answers below is the list rather than the column
+        $this->putOnEverySomebodyElsesTask($user->id);
+
+        $saved = $this->AppUsers->save($this->AppUsers->patchEntity($user, ['holds_tasks' => false]));
+
+        $this->assertFalse($saved);
+        $this->assertArrayHasKey('holdsNoTasks', $user->getError('holds_tasks'));
+    }
+
+    /**
+     * Nor can such an account be deleted, for the same reason and by the same two locks.
+     *
+     * @return void
+     * @link \App\Model\Table\AppUsersTable::buildRules()
+     */
+    public function testAnAccountOnSomebodyElsesTaskCannotBeDeleted(): void
+    {
+        /** @var \App\Model\Entity\AppUser $user */
+        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+
+        $this->putOnEverySomebodyElsesTask($user->id);
+
+        $this->assertFalse($this->AppUsers->delete($user));
+        $this->assertNotEmpty($this->AppUsers->get($user->id));
+    }
+
+    /**
+     * Hand every task away and put the account on them instead, so that the only thing left
+     * naming it is the list.
+     *
+     * @param string $user_id The account to move over.
+     * @return void
+     */
+    private function putOnEverySomebodyElsesTask(string $user_id): void
+    {
+        $tasks = $this->getTableLocator()->get('Tasks');
+        $tasks->updateAll(['user_id' => null], []);
+
+        $links = $this->getTableLocator()->get('TaskCollaborators');
+        foreach ($tasks->find()->all() as $task) {
+            $links->saveOrFail($links->newEntity([
+                'task_id' => $task->get('id'),
+                'user_id' => $user_id,
+            ]));
+        }
     }
 }

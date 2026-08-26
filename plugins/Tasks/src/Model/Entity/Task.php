@@ -34,6 +34,7 @@ use Cake\Core\Configure;
  * @property \App\Model\Entity\TaskState $task_state
  * @property \App\Model\Entity\TaskType $task_type
  * @property \App\Model\Entity\AppUser|null $user
+ * @property array<\App\Model\Entity\AppUser> $collaborators
  */
 class Task extends AppEntity
 {
