@@ -9,10 +9,13 @@ use App\Model\Entity\AppEntity;
  * What a task type is, in both applications.
  *
  * What a type requires of a task is left to each application, which adds its own flags to this.
+ * Whether closing a task is worth reporting is not one of those: it is asked the same way
+ * wherever tasks are kept, so it is here.
  *
  * @property string $id
  * @property int $nid
  * @property string|null $name
+ * @property bool $report_on_completion
  *
  * @property \App\Model\Entity\Task[] $tasks
  */
@@ -33,6 +36,7 @@ class TaskType extends AppEntity
         'modified' => true,
         'modified_by' => true,
         'name' => true,
+        'report_on_completion' => true,
         'tasks' => true,
     ];
 }

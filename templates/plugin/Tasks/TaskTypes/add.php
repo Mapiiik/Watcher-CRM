@@ -28,6 +28,13 @@
                         'access_point_required',
                         ['label' => __d('app_tasks', 'Access Point Required')],
                     );
+                    echo $this->Form->control('report_on_completion', [
+                        'label' => __d('app_tasks', 'Report on Completion'),
+                        'title' => __d(
+                            'app_tasks',
+                            'Tell the report addresses whenever a task of this type is closed.',
+                        ),
+                    ]);
                     ?>
             </fieldset>
             <?= $this->Form->button(__d('app_tasks', 'Submit')) ?>

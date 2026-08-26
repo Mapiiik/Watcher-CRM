@@ -61,6 +61,12 @@
                                 ? __d('app_tasks', 'Yes')
                                 : __d('app_tasks', 'No'); ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __d('app_tasks', 'Report on Completion') ?></th>
+                            <td><?= $taskType->report_on_completion
+                                ? __d('app_tasks', 'Yes')
+                                : __d('app_tasks', 'No'); ?></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="column">

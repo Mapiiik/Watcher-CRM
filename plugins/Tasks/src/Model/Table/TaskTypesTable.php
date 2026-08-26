@@ -77,6 +77,10 @@ class TaskTypesTable extends AppTable
             ->scalar('name')
             ->allowEmptyString('name');
 
+        $validator
+            ->boolean('report_on_completion')
+            ->notEmptyString('report_on_completion');
+
         return $validator;
     }
 
