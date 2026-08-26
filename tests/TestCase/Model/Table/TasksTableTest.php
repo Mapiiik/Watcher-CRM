@@ -402,23 +402,6 @@ class TasksTableTest extends TestCase
     }
 
     /**
-     * A task saved by the very person holding it tells them nothing - they are looking at it.
-     *
-     * @return void
-     * @link \Tasks\Model\Table\TasksTable::isSomebodyElses()
-     */
-    public function testATaskSavedByItsOwnHolderTellsThemNothing(): void
-    {
-        // what the footprint would have written had this gone through a signed-in request
-        $task = $this->Tasks->newEntity(
-            ['user_id' => self::HOLDER_ID, 'created_by' => self::HOLDER_ID] + $this->task($this->taskType([])),
-        );
-
-        $this->assertNotFalse($this->Tasks->save($task));
-        $this->assertNoMailSent();
-    }
-
-    /**
      * A task nobody holds tells nobody, which is the branch that would fail on a null address.
      *
      * @return void

@@ -11,6 +11,7 @@ use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
+use Cake\Routing\Router;
 use Cake\Validation\Validator;
 use Override;
 use Tasks\Model\Entity\Task;
@@ -256,18 +257,22 @@ class TasksTable extends AppTable
     /**
      * Whether this save handed the task to somebody other than the person saving it.
      *
-     * Who acted is read from the footprint of this very save rather than from the request, which
-     * the model has no business knowing about. The footprint is only written where somebody is
-     * signed in, so a save from a command or an integration leaves the column untouched - and
-     * then there is nobody to leave out and the holder is told.
+     * Who acted is asked of the request, the same way `FootprintBehavior` asks it. The footprint
+     * columns cannot answer this: where the same person saves a task they saved last time, the
+     * column is written with the value it already held, which leaves it clean - and a clean
+     * column is indistinguishable from one this save never touched. Reading it that way told
+     * people about their own edits, which is the one thing this is here to prevent.
+     *
+     * Nobody signed in - a command, an integration - means nobody to leave out, and the holder
+     * is told.
      *
      * @param \Tasks\Model\Entity\Task $task The task as it was just saved.
      * @return bool
      */
     private function isSomebodyElses(Task $task): bool
     {
-        $column = $task->isNew() ? 'created_by' : 'modified_by';
-        $actor = $task->isDirty($column) ? $task->get($column) : null;
+        $identity = Router::getRequest()?->getAttribute('identity');
+        $actor = $identity['id'] ?? null;
 
         return $task->user_id !== null && $task->user_id !== $actor;
     }

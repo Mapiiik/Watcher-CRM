@@ -50,6 +50,13 @@ class TasksControllerTest extends TestCase
     private const USER_ADDRESS = 'operator@example.com';
 
     /**
+     * The user the fixture task is assigned to.
+     *
+     * @var string
+     */
+    private const HOLDER_ID = '11edb519-be76-4d66-aea0-34188d31eae1';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -366,6 +373,32 @@ class TasksControllerTest extends TestCase
         $this->assertMailSentTo(self::USER_ADDRESS);
         $this->assertMailSubjectContains('You have changes in task');
         $this->assertMailContainsHtml('Antenna replacement');
+    }
+
+    /**
+     * A task saved by the very person holding it tells them nothing - they are looking at it.
+     *
+     * The footprint of the save is what says who acted, and where the same person saves a task
+     * they already saved last time, the column is written with the value it already held. Asking
+     * whether the save touched it cannot tell that apart from a save that never touched it at
+     * all, so who acted has to be asked of the request instead.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::isSomebodyElses()
+     */
+    public function testATaskSavedByItsOwnHolderTellsThemNothing(): void
+    {
+        $this->loginAs(self::HOLDER_ID);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/tasks/edit/' . $this->firstId('Tasks'), [
+            'subject' => 'Noted by the person holding it',
+            'contract_id' => $this->firstId('Contracts'),
+        ]);
+
+        $this->assertRedirect();
+        $this->assertNoMailSent();
     }
 
     /**
@@ -903,5 +936,20 @@ class TasksControllerTest extends TestCase
         $offered = array_keys((array)$this->viewVariable('taskStates')->toArray());
         $this->assertContains($waiting->get('id'), $offered);
         $this->assertNotContains($finished->get('id'), $offered);
+    }
+
+    /**
+     * Signed in as somebody the fixtures actually carry, so that the identity has an id.
+     *
+     * `login()` makes one up on the spot, which is what most of these tests want - but a task
+     * being somebody's own is a question about who is signed in, and an identity with no id can
+     * never be anybody's.
+     *
+     * @param string $userId The user to sign in as.
+     * @return void
+     */
+    private function loginAs(string $userId): void
+    {
+        $this->session(['Auth' => $this->getTableLocator()->get('AppUsers')->get($userId)]);
     }
 }
