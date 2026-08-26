@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-24 13:01+0200\n"
+"POT-Creation-Date: 2026-08-26 13:17+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -339,86 +339,86 @@ msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:80
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:83
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:92
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:95
 msgid "{0} failed"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:101
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:104
 msgid "Unknown error."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:167
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:170
 msgid "Debtors data is not available."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:312
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:366
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:421
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:473
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:523
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:315
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:369
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:424
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:476
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:526
 msgid "Debtor blocking is globally disabled by settings. No external systems were modified."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:321
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:375
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:324
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:378
 msgid "Customer ID of the debtor must be provided."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:340
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:394
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:446
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:498
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:556
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:343
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:397
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:449
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:501
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:559
 msgid "SledovaniTV blocking update"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:351
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:405
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:457
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:509
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:567
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:354
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:408
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:460
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:512
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:570
 msgid "Routers blocking update"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:592
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:595
 msgid "debtor"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:782
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:785
 msgid "RouterOS device {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:836
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:864
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:839
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:867
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:885
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:888
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:913
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:941
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:916
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:944
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:962
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:965
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:992
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:995
 msgid "SledovaniTV is not configured."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1054
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1057
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1060
+#: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1063
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr ""
 

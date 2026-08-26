@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Watcher CRM\n"
-"POT-Creation-Date: 2026-08-22 20:29+0200\n"
-"PO-Revision-Date: 2026-08-22 20:36+0200\n"
+"POT-Creation-Date: 2026-08-26 11:00+0200\n"
+"PO-Revision-Date: 2026-08-26 13:20+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -84,34 +84,34 @@ msgstr "Datum vyřízení"
 #: templates/plugin/Tasks/TaskStates/view.php:10
 #: templates/plugin/Tasks/TaskTypes/add.php:10
 #: templates/plugin/Tasks/TaskTypes/edit.php:10
-#: templates/plugin/Tasks/TaskTypes/index.php:36
+#: templates/plugin/Tasks/TaskTypes/index.php:39
 #: templates/plugin/Tasks/TaskTypes/view.php:10
-#: templates/plugin/Tasks/TaskTypes/view.php:89
+#: templates/plugin/Tasks/TaskTypes/view.php:95
 msgid "Actions"
 msgstr "Akce"
 
 #: templates/element/Tasks/related.php:90
-#: templates/plugin/Tasks/TaskTypes/index.php:49
-#: templates/plugin/Tasks/TaskTypes/view.php:109
+#: templates/plugin/Tasks/TaskTypes/index.php:55
+#: templates/plugin/Tasks/TaskTypes/view.php:115
 msgid "View"
 msgstr "Zobrazit"
 
 #: templates/element/Tasks/related.php:94
-#: templates/plugin/Tasks/TaskTypes/index.php:51
-#: templates/plugin/Tasks/TaskTypes/view.php:113
+#: templates/plugin/Tasks/TaskTypes/index.php:57
+#: templates/plugin/Tasks/TaskTypes/view.php:119
 msgid "Edit"
 msgstr "Upravit"
 
 #: templates/element/Tasks/related.php:99
 #: templates/plugin/Tasks/TaskTypes/edit.php:12
-#: templates/plugin/Tasks/TaskTypes/index.php:56
+#: templates/plugin/Tasks/TaskTypes/index.php:62
 msgid "Delete"
 msgstr "Odstranit"
 
 #: templates/element/Tasks/related.php:102
 #: templates/plugin/Tasks/TaskStates/view.php:20
 #: templates/plugin/Tasks/TaskTypes/edit.php:15
-#: templates/plugin/Tasks/TaskTypes/index.php:58
+#: templates/plugin/Tasks/TaskTypes/index.php:64
 #: templates/plugin/Tasks/TaskTypes/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
@@ -137,7 +137,7 @@ msgstr "Nový stav úkolu"
 #: templates/plugin/Tasks/TaskTypes/edit.php:32
 #: templates/plugin/Tasks/TaskTypes/index.php:30
 #: templates/plugin/Tasks/TaskTypes/view.php:43
-#: templates/plugin/Tasks/TaskTypes/view.php:84
+#: templates/plugin/Tasks/TaskTypes/view.php:90
 msgid "Name"
 msgstr "Jméno"
 
@@ -150,35 +150,39 @@ msgid "Completed"
 msgstr "Dokončeno"
 
 #: templates/plugin/Tasks/TaskStates/view.php:56
-#: templates/plugin/Tasks/TaskTypes/index.php:43
-#: templates/plugin/Tasks/TaskTypes/index.php:44
 #: templates/plugin/Tasks/TaskTypes/index.php:46
+#: templates/plugin/Tasks/TaskTypes/index.php:47
+#: templates/plugin/Tasks/TaskTypes/index.php:49
+#: templates/plugin/Tasks/TaskTypes/index.php:52
 #: templates/plugin/Tasks/TaskTypes/view.php:49
 #: templates/plugin/Tasks/TaskTypes/view.php:55
 #: templates/plugin/Tasks/TaskTypes/view.php:61
-#: templates/plugin/Tasks/TaskTypes/view.php:96
-#: templates/plugin/Tasks/TaskTypes/view.php:99
+#: templates/plugin/Tasks/TaskTypes/view.php:67
 #: templates/plugin/Tasks/TaskTypes/view.php:102
 #: templates/plugin/Tasks/TaskTypes/view.php:105
+#: templates/plugin/Tasks/TaskTypes/view.php:108
+#: templates/plugin/Tasks/TaskTypes/view.php:111
 msgid "Yes"
 msgstr "Ano"
 
 #: templates/plugin/Tasks/TaskStates/view.php:56
-#: templates/plugin/Tasks/TaskTypes/index.php:43
-#: templates/plugin/Tasks/TaskTypes/index.php:44
+#: templates/plugin/Tasks/TaskTypes/index.php:46
 #: templates/plugin/Tasks/TaskTypes/index.php:47
+#: templates/plugin/Tasks/TaskTypes/index.php:50
+#: templates/plugin/Tasks/TaskTypes/index.php:53
 #: templates/plugin/Tasks/TaskTypes/view.php:50
 #: templates/plugin/Tasks/TaskTypes/view.php:56
 #: templates/plugin/Tasks/TaskTypes/view.php:62
-#: templates/plugin/Tasks/TaskTypes/view.php:97
-#: templates/plugin/Tasks/TaskTypes/view.php:100
+#: templates/plugin/Tasks/TaskTypes/view.php:68
 #: templates/plugin/Tasks/TaskTypes/view.php:103
 #: templates/plugin/Tasks/TaskTypes/view.php:106
+#: templates/plugin/Tasks/TaskTypes/view.php:109
+#: templates/plugin/Tasks/TaskTypes/view.php:112
 msgid "No"
 msgstr "Ne"
 
 #: templates/plugin/Tasks/TaskStates/view.php:65
-#: templates/plugin/Tasks/TaskTypes/view.php:71
+#: templates/plugin/Tasks/TaskTypes/view.php:77
 msgid "Related Tasks"
 msgstr "Související úkoly"
 
@@ -213,8 +217,20 @@ msgstr "Je vyžadována smlouva"
 msgid "Access Point Required"
 msgstr "Je vyžadován přístupový bod"
 
+#: templates/plugin/Tasks/TaskTypes/add.php:32
+#: templates/plugin/Tasks/TaskTypes/edit.php:40
+#: templates/plugin/Tasks/TaskTypes/index.php:37
+#: templates/plugin/Tasks/TaskTypes/view.php:65
+msgid "Report on Completion"
+msgstr "Hlásit dokončení"
+
 #: templates/plugin/Tasks/TaskTypes/add.php:33
 #: templates/plugin/Tasks/TaskTypes/edit.php:41
+msgid "Tell the report addresses whenever a task of this type is closed."
+msgstr "Poslat na reportovací adresy zprávu pokaždé, když se úkol tohoto typu uzavře."
+
+#: templates/plugin/Tasks/TaskTypes/add.php:40
+#: templates/plugin/Tasks/TaskTypes/edit.php:48
 msgid "Submit"
 msgstr "Potvrdit"
 
@@ -240,37 +256,25 @@ msgstr "Typy úkolů"
 msgid "Delete Task Type"
 msgstr "Odstranit typ úkolu"
 
-#: templates/plugin/Tasks/TaskTypes/view.php:78
+#: templates/plugin/Tasks/TaskTypes/view.php:84
 msgid "Related Contract States"
 msgstr "Související stavy smlouvy"
 
-#: templates/plugin/Tasks/TaskTypes/view.php:85
+#: templates/plugin/Tasks/TaskTypes/view.php:91
 msgid "Usable for New Contracts"
 msgstr "Použitelné pro nové smlouvy"
 
-#: templates/plugin/Tasks/TaskTypes/view.php:86
+#: templates/plugin/Tasks/TaskTypes/view.php:92
 msgid "Active Services"
 msgstr "Aktivní služby"
 
-#: templates/plugin/Tasks/TaskTypes/view.php:87
+#: templates/plugin/Tasks/TaskTypes/view.php:93
 msgid "Billed"
 msgstr "Fakturováno"
 
-#: templates/plugin/Tasks/TaskTypes/view.php:88
+#: templates/plugin/Tasks/TaskTypes/view.php:94
 msgid "Blocked"
 msgstr "Blokováno"
-
-#: ./templates/plugin/Tasks/TaskTypes/add.php:32
-#: ./templates/plugin/Tasks/TaskTypes/edit.php:40
-#: ./templates/plugin/Tasks/TaskTypes/index.php:37
-#: ./templates/plugin/Tasks/TaskTypes/view.php:65
-msgid "Report on Completion"
-msgstr "Hlásit dokončení"
-
-#: ./templates/plugin/Tasks/TaskTypes/add.php:34
-#: ./templates/plugin/Tasks/TaskTypes/edit.php:42
-msgid "Tell the report addresses whenever a task of this type is closed."
-msgstr "Poslat na reportovací adresy zprávu pokaždé, když se úkol tohoto typu uzavře."
 
 #~ msgid "first"
 #~ msgstr "první"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tasks\n"
-"POT-Creation-Date: 2026-08-22 20:29+0200\n"
+"POT-Creation-Date: 2026-08-26 11:00+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -96,6 +96,34 @@ msgstr "Vysoká"
 #: plugins/Tasks/src/Model/Entity/Task.php:117
 msgid "Urgent"
 msgstr "Naléhavé"
+
+#: plugins/Tasks/src/Service/CompletedTaskReport.php:40
+msgid "Task completed: {0} # {1}"
+msgstr "Úkol dokončen: {0} č. {1}"
+
+#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:28
+msgid ""
+"The notification email could not be sent because the user does not have an "
+"email address."
+msgstr ""
+"E-mail s oznámením nebylo možné odeslat, protože uživatel nemá e-mailovou "
+"adresu."
+
+#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:37
+msgid "You have a new task # {0}"
+msgstr "Máte nový úkol č. {0}"
+
+#: plugins/Tasks/src/Service/TaskAssignmentNotice.php:38
+msgid "You have changes in task # {0}"
+msgstr "Máte změny v úkolu č. {0}"
+
+#: plugins/Tasks/src/Service/TaskMail.php:65
+msgid "Notification email sent."
+msgstr "E-mail s oznámením odeslán."
+
+#: plugins/Tasks/src/Service/TaskMail.php:72
+msgid "The notification email could not be sent."
+msgstr "E-mail s oznámením se nepodařilo odeslat."
 
 #: plugins/Tasks/templates/TaskStates/add.php:10
 #: plugins/Tasks/templates/TaskStates/edit.php:10
@@ -206,30 +234,6 @@ msgid ""
 msgstr ""
 "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
 "počtu {{count}}"
-
-#: ./plugins/Tasks/src/Service/CompletedTaskReport.php:40
-msgid "Task completed: {0} # {1}"
-msgstr "Úkol dokončen: {0} č. {1}"
-
-#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:37
-msgid "You have a new task # {0}"
-msgstr "Máte nový úkol č. {0}"
-
-#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:38
-msgid "You have changes in task # {0}"
-msgstr "Máte změny v úkolu č. {0}"
-
-#: ./plugins/Tasks/src/Service/TaskAssignmentNotice.php:30
-msgid "The notification email could not be sent because the user does not have an email address."
-msgstr "E-mail s oznámením nebylo možné odeslat, protože uživatel nemá e-mailovou adresu."
-
-#: ./plugins/Tasks/src/Service/TaskMail.php:65
-msgid "Notification email sent."
-msgstr "E-mail s oznámením odeslán."
-
-#: ./plugins/Tasks/src/Service/TaskMail.php:72
-msgid "The notification email could not be sent."
-msgstr "E-mail s oznámením se nepodařilo odeslat."
 
 #~ msgid "Delete Task State"
 #~ msgstr "Odstranit stav úkolu"
