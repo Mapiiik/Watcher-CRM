@@ -181,6 +181,18 @@ class ContractStatesTable extends AppTable
             ->boolean('requires_no_active_obligations')
             ->notEmptyString('requires_no_active_obligations');
 
+        $validator
+            ->boolean('requires_versions_matching_termination')
+            ->notEmptyString('requires_versions_matching_termination');
+
+        $validator
+            ->boolean('requires_billings_matching_termination')
+            ->notEmptyString('requires_billings_matching_termination');
+
+        $validator
+            ->boolean('requires_equipments_matching_uninstallation')
+            ->notEmptyString('requires_equipments_matching_uninstallation');
+
         return $validator;
     }
 

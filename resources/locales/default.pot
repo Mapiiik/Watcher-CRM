@@ -6390,3 +6390,38 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
+#: src/Model/Validation/ContractStateValidator.php:357
+msgid "A billing has no end date, so it reaches past the termination of services."
+msgstr ""
+
+#: src/Model/Validation/ContractStateValidator.php:370
+msgid "The last billing runs until {0}, but the services are terminated on {1}."
+msgstr ""
+
+#: src/Model/Validation/ContractStateValidator.php:398
+msgid "A contract version has no end date, so it reaches past the termination of services."
+msgstr ""
+
+#: src/Model/Validation/ContractStateValidator.php:411
+msgid "The last contract version is valid until {0}, but the services are terminated on {1}."
+msgstr ""
+
+#: src/Model/Validation/ContractStateValidator.php:439
+msgid "A borrowed equipment has no return date, so it reaches past the uninstallation."
+msgstr ""
+
+#: src/Model/Validation/ContractStateValidator.php:452
+msgid "The last borrowed equipment is lent until {0}, but the uninstallation is on {1}."
+msgstr ""
+
+#: templates/ContractStates/view.php:132
+msgid "Requires Contract Versions Matching the Termination Date"
+msgstr ""
+
+#: templates/ContractStates/view.php:137
+msgid "Requires Billings Matching the Termination Date"
+msgstr ""
+
+#: templates/ContractStates/view.php:142
+msgid "Requires Borrowed Equipments Matching the Uninstallation Date"
+msgstr ""

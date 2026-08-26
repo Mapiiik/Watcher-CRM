@@ -129,6 +129,21 @@
                             <td><?= $contractState->requires_termination_date ? __('Yes') : __('No') ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Requires Contract Versions Matching the Termination Date') ?></th>
+                            <td><?= $contractState->requires_versions_matching_termination ?
+                                __('Yes') : __('No') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Requires Billings Matching the Termination Date') ?></th>
+                            <td><?= $contractState->requires_billings_matching_termination ?
+                                __('Yes') : __('No') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Requires Borrowed Equipments Matching the Uninstallation Date') ?></th>
+                            <td><?= $contractState->requires_equipments_matching_uninstallation ?
+                                __('Yes') : __('No') ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Requires No Assigned IP Addresses or Networks') ?></th>
                             <td><?= $contractState->requires_no_assigned_ip_addresses_or_networks ?
                                 __('Yes') : __('No') ?></td>

@@ -73,6 +73,15 @@
                         echo $this->Form->control('requires_installation_date');
                         echo $this->Form->control('requires_uninstallation_date');
                         echo $this->Form->control('requires_termination_date');
+                        echo $this->Form->control('requires_versions_matching_termination', [
+                            'label' => __('Requires Contract Versions Matching the Termination Date'),
+                        ]);
+                        echo $this->Form->control('requires_billings_matching_termination', [
+                            'label' => __('Requires Billings Matching the Termination Date'),
+                        ]);
+                        echo $this->Form->control('requires_equipments_matching_uninstallation', [
+                            'label' => __('Requires Borrowed Equipments Matching the Uninstallation Date'),
+                        ]);
                         ?>
                         <br>
                         <?php

@@ -59,6 +59,11 @@ class ContractStatesFixture extends TestFixture
                 'requires_no_active_or_future_contract_versions' => 0,
                 'requires_no_active_obligations' => 0,
 
+                // Consistent end dates
+                'requires_versions_matching_termination' => 0,
+                'requires_billings_matching_termination' => 0,
+                'requires_equipments_matching_uninstallation' => 0,
+
                 // Meta
                 'created' => 1669643075,
                 'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',

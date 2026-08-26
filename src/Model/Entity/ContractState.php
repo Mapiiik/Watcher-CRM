@@ -50,6 +50,11 @@ use App\Model\Entity\Trait\DashboardVisibilityTrait;
  * @property bool $requires_no_active_or_future_contract_versions
  * @property bool $requires_no_active_obligations
  *
+ * // Consistent end dates
+ * @property bool $requires_versions_matching_termination
+ * @property bool $requires_billings_matching_termination
+ * @property bool $requires_equipments_matching_uninstallation
+ *
  * // Associations
  * @property \App\Model\Entity\Contract[] $contracts
  *
@@ -108,6 +113,11 @@ class ContractState extends AppEntity
         'requires_active_or_future_contract_version' => true,
         'requires_no_active_or_future_contract_versions' => true,
         'requires_no_active_obligations' => true,
+
+        // Consistent end dates
+        'requires_versions_matching_termination' => true,
+        'requires_billings_matching_termination' => true,
+        'requires_equipments_matching_uninstallation' => true,
 
         // Meta
         'created' => true,
