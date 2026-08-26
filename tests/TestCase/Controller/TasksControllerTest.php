@@ -385,7 +385,7 @@ class TasksControllerTest extends TestCase
      * all, so who acted has to be asked of the request instead.
      *
      * @return void
-     * @link \Tasks\Model\Table\TasksTable::isSomebodyElses()
+     * @link \Tasks\Model\Table\TasksTable::concernsSomebodyElse()
      */
     public function testATaskSavedByItsOwnHolderTellsThemNothing(): void
     {

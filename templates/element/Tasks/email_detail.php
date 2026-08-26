@@ -49,6 +49,10 @@ table {
                     <td><?= $task->user !== null ? h($task->user->name) : '' ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('Collaborators') ?></th>
+                    <td><?= h($task->collaborator_names) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Email') ?></th>
                     <td><?= h($task->email) ?></td>
                 </tr>

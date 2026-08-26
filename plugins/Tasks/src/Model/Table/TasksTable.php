@@ -269,7 +269,7 @@ class TasksTable extends AppTable
         }
 
         $closed = $this->hasJustBeenClosed($entity);
-        $somebodyElses = $this->isSomebodyElses($entity);
+        $somebodyElses = $this->concernsSomebodyElse($entity);
 
         if (!$closed && !$somebodyElses) {
             return;
@@ -283,7 +283,7 @@ class TasksTable extends AppTable
         }
 
         if ($somebodyElses) {
-            TaskAssignmentNotice::send($task, $entity->isNew(), $this->Messages);
+            TaskAssignmentNotice::send($task, $this->peopleToTell($task), $entity->isNew(), $this->Messages);
         }
     }
 
@@ -314,26 +314,76 @@ class TasksTable extends AppTable
     }
 
     /**
-     * Whether this save handed the task to somebody other than the person saving it.
+     * Whether this save leaves the task in the hands of anybody other than the person saving it.
      *
-     * Who acted is asked of the request, the same way `FootprintBehavior` asks it. The footprint
-     * columns cannot answer this: where the same person saves a task they saved last time, the
-     * column is written with the value it already held, which leaves it clean - and a clean
-     * column is indistinguishable from one this save never touched. Reading it that way told
-     * people about their own edits, which is the one thing this is here to prevent.
-     *
-     * Nobody signed in - a command, an integration - means nobody to leave out, and the holder
-     * is told.
+     * Asked before the task is read back, because most saves are somebody tidying up their own
+     * work and there is nothing to send: the column answers on its own, and the list is only
+     * looked at where it does not.
      *
      * @param \Tasks\Model\Entity\Task $task The task as it was just saved.
      * @return bool
      */
-    private function isSomebodyElses(Task $task): bool
+    private function concernsSomebodyElse(Task $task): bool
+    {
+        $actor = $this->whoActed();
+
+        if ($task->user_id !== null && $task->user_id !== $actor) {
+            return true;
+        }
+
+        $others = ['TaskCollaborators.task_id' => $task->id];
+        if ($actor !== null) {
+            $others['TaskCollaborators.user_id !='] = $actor;
+        }
+
+        return $this->TaskCollaborators->exists($others);
+    }
+
+    /**
+     * Everybody the task is now in the hands of, except whoever put it there.
+     *
+     * A task saved by somebody it names tells them nothing they were not just looking at, and
+     * that holds however they are named on it.
+     *
+     * @param \Tasks\Model\Entity\Task $task The task, read together with {@see self::reportContain()}.
+     * @return list<\App\Model\Entity\AppUser>
+     */
+    private function peopleToTell(Task $task): array
+    {
+        $actor = $this->whoActed();
+        $told = [];
+
+        foreach (array_merge([$task->user], $task->get('collaborators') ?? []) as $person) {
+            if ($person === null || $person->get('id') === $actor) {
+                continue;
+            }
+
+            $told[$person->get('id')] = $person;
+        }
+
+        return array_values($told);
+    }
+
+    /**
+     * Whoever is behind this save, if anybody is.
+     *
+     * Asked of the request, the same way `FootprintBehavior` asks it. The footprint columns
+     * cannot answer it: where the same person saves a task they saved last time, the column is
+     * written with the value it already held, which leaves it clean - and a clean column is
+     * indistinguishable from one this save never touched. Reading it that way told people about
+     * their own edits, which is the one thing this is here to prevent.
+     *
+     * Nobody signed in - a command, an integration - means nobody to leave out, and everybody
+     * the task names is told.
+     *
+     * @return string|null
+     */
+    private function whoActed(): ?string
     {
         $identity = Router::getRequest()?->getAttribute('identity');
         $actor = $identity['id'] ?? null;
 
-        return $task->user_id !== null && $task->user_id !== $actor;
+        return is_string($actor) ? $actor : null;
     }
 
     /**

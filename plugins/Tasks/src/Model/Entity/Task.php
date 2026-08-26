@@ -29,6 +29,7 @@ use Cake\Core\Configure;
  * @property \Cake\I18n\Date|null $critical_date
  * @property string $number
  * @property string $summary_text
+ * @property string $collaborator_names
  * @property string $style
  *
  * @property \App\Model\Entity\TaskState $task_state
@@ -79,6 +80,26 @@ class Task extends AppEntity
     public function getSummaryText(bool $with_subject = true): string
     {
         return $with_subject ? $this->subject ?? $this->task_type->name ?? '' : '';
+    }
+
+    /**
+     * The people on a task beside whoever holds it, named in one line.
+     *
+     * Read out wherever a task is drawn - its own page, the listings it turns up in, the emails
+     * about it - so the line is written once. Empty where nobody is on it, and equally where the
+     * list was never read together with the task.
+     *
+     * @return string
+     */
+    protected function _getCollaboratorNames(): string
+    {
+        $names = [];
+
+        foreach ($this->get('collaborators') ?? [] as $person) {
+            $names[] = (string)$person->get('name');
+        }
+
+        return implode(', ', $names);
     }
 
     /**

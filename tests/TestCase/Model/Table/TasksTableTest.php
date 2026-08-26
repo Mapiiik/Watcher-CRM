@@ -389,7 +389,7 @@ class TasksTableTest extends TestCase
      * happened to hold from some earlier save and quietly swallowing the notice.
      *
      * @return void
-     * @link \Tasks\Model\Table\TasksTable::isSomebodyElses()
+     * @link \Tasks\Model\Table\TasksTable::concernsSomebodyElse()
      */
     public function testATaskSavedWithNobodySignedInStillTellsItsHolder(): void
     {
@@ -408,7 +408,7 @@ class TasksTableTest extends TestCase
      * A task nobody holds tells nobody, which is the branch that would fail on a null address.
      *
      * @return void
-     * @link \Tasks\Model\Table\TasksTable::isSomebodyElses()
+     * @link \Tasks\Model\Table\TasksTable::concernsSomebodyElse()
      */
     public function testATaskNobodyHoldsTellsNobody(): void
     {
@@ -416,6 +416,61 @@ class TasksTableTest extends TestCase
 
         $this->assertNotFalse($this->Tasks->save($task));
         $this->assertNoMailSent();
+    }
+
+    /**
+     * Everybody a task names is told about it, not only whoever holds it.
+     *
+     * Two out on one installation both have to hear that the date moved, and only one of them is
+     * the person the task is filed under.
+     *
+     * @return void
+     * @link \Tasks\Model\Table\TasksTable::peopleToTell()
+     */
+    public function testEverybodyOnATaskIsToldAboutIt(): void
+    {
+        $helper = $this->somebodyElse('helper');
+
+        $task = $this->Tasks->newEntity(
+            ['user_id' => self::HOLDER_ID] + $this->task($this->taskType([])),
+        );
+        $this->Tasks->saveOrFail($task);
+        $this->putOnTheTask($task, $helper);
+
+        // saved again, now that somebody stands beside the holder
+        $this->Tasks->saveOrFail($this->Tasks->patchEntity($task, ['subject' => 'Moved to Friday']));
+
+        $this->assertMailSentTo(self::HOLDER_ADDRESS);
+        $this->assertMailSentTo('helper@example.com');
+    }
+
+    /**
+     * An account nobody filled in an address for does not leave the others in the dark.
+     *
+     * Work somebody is expected to do is not something to swallow over a field of somebody
+     * else's that was never filled in.
+     *
+     * @return void
+     * @link \Tasks\Service\TaskAssignmentNotice::send()
+     */
+    public function testSomebodyWithNoAddressDoesNotStopTheRestBeingTold(): void
+    {
+        $unreachable = $this->somebodyElse('unreachable', address: false);
+
+        $task = $this->Tasks->newEntity(
+            ['user_id' => self::HOLDER_ID] + $this->task($this->taskType([])),
+        );
+        $this->Tasks->saveOrFail($task);
+        $this->putOnTheTask($task, $unreachable);
+
+        $this->Tasks->saveOrFail($this->Tasks->patchEntity($task, ['subject' => 'Moved to Friday']));
+
+        $this->assertMailSentTo(self::HOLDER_ADDRESS);
+        $warnings = array_filter(
+            $this->Tasks->Messages->getMessages(),
+            fn($message): bool => $message->type === 'warning',
+        );
+        $this->assertNotEmpty($warnings, 'And it says the one of them could not be reached.');
     }
 
     /**
@@ -490,9 +545,10 @@ class TasksTableTest extends TestCase
      * not configure.
      *
      * @param string $username What to call them.
+     * @param bool $address Whether anybody ever filled in an address for them.
      * @return string Their identifier.
      */
-    private function somebodyElse(string $username): string
+    private function somebodyElse(string $username, bool $address = true): string
     {
         $this->advanceIdentity('users', 'nid');
 
@@ -500,7 +556,7 @@ class TasksTableTest extends TestCase
         $person = $users->newEmptyEntity();
         $person->patch([
             'username' => $username,
-            'email' => $username . '@example.com',
+            'email' => $address ? $username . '@example.com' : null,
             'role' => 'user',
             'active' => true,
             'holds_tasks' => true,
