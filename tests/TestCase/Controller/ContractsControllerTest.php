@@ -10,6 +10,7 @@ use Cake\Core\Configure;
 use Cake\Database\Connection;
 use Cake\Database\Log\LoggedQuery;
 use Cake\Datasource\ConnectionManager;
+use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -146,6 +147,63 @@ class ContractsControllerTest extends TestCase
         // accounts are drawn by a cell, which renders in a view of its own and so cannot ask
         // for the script - this page has to, and only opening it says whether it did.
         $this->assertResponseContains('js/lazy-load.js');
+    }
+
+    /**
+     * A contract that does not add up says so at the top, where it is being worked on, rather
+     * than only in a listing of the whole file that nobody opens while fixing one record.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::view()
+     */
+    public function testViewShowsWhatDoesNotAddUpOnTheContract(): void
+    {
+        $contract_id = $this->firstId('Contracts');
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->deleteAll(['contract_id' => $contract_id]);
+
+        $service_id = $this->getTableLocator()->get('Services')->find()->firstOrFail()->get('id');
+        $customer_id = $this->getTableLocator()->get('Contracts')->get($contract_id)->get('customer_id');
+
+        // a year that nobody is billed for, which is what the check is there to find
+        foreach ([['+1 month', '+13 months'], ['+25 months', null]] as [$from, $until]) {
+            $billings->saveOrFail($billings->newEntity([
+                'customer_id' => $customer_id,
+                'contract_id' => $contract_id,
+                'service_id' => $service_id,
+                'billing_from' => Date::now()->modify($from)->format('Y-m-d'),
+                'billing_until' => $until === null ? null : Date::now()->modify($until)->format('Y-m-d'),
+                'quantity' => 1,
+                'separate_invoice' => false,
+            ]));
+        }
+
+        $this->login();
+        $this->get('/contracts/view/' . $contract_id);
+
+        $this->assertResponseOk();
+        $this->assertCount(1, $this->viewVariable('problems'));
+        $this->assertResponseContains('Gap Between Consecutive Billings');
+    }
+
+    /**
+     * A contract with nothing wrong shows no heading at all - an empty warning would teach
+     * everybody to look past the place the real ones appear.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::view()
+     */
+    public function testViewShowsNothingWhereTheContractAddsUp(): void
+    {
+        $contract_id = $this->firstId('Contracts');
+        $this->getTableLocator()->get('Billings')->deleteAll(['contract_id' => $contract_id]);
+
+        $this->login();
+        $this->get('/contracts/view/' . $contract_id);
+
+        $this->assertResponseOk();
+        $this->assertSame([], $this->viewVariable('problems'));
+        $this->assertResponseNotContains('This contract does not add up');
     }
 
     /**

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Contracts\Check\ContractCheckRegistry;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Maps\ContractMap;
 use App\Model\Enum\ContractPrintType;
@@ -217,7 +218,20 @@ class ContractsController extends AppController
 
         $contract = $this->Contracts->get($id, contain: $contain);
 
-        $this->set(compact('contract'));
+        // Whoever opened this contract wants to see everything that does not add up on it,
+        // so the filter that keeps the checks to what is running is lifted, and the ones
+        // that are informational rather than faults are asked too. What would bury a listing
+        // of the whole file is a line or two on one record.
+        $problems = [];
+        foreach ((new ContractCheckRegistry(false, $contract->id))->all() as $check) {
+            $records = $check->find()->all();
+
+            if (count($records) > 0) {
+                $problems[] = ['check' => $check, 'records' => $records];
+            }
+        }
+
+        $this->set(compact('contract', 'problems'));
     }
 
     /**

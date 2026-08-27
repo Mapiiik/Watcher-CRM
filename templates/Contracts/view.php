@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
  * @var bool $show_historical_records
+ * @var list<array{check: \App\Contracts\Check\ContractCheckInterface, records: iterable<\Cake\Datasource\EntityInterface>}> $problems
  */
 
 // The RADIUS accounts below are drawn by a cell, and a cell renders in a view of its own, so
@@ -132,6 +133,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
             ) ?>
             <a id="contract"></a>
             <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
+            <?= $this->element('Contracts/problems', ['problems' => $problems]) ?>
             <h5><?= h(
                 ($contract->service_type !== null ? $contract->service_type->name : '')
                 . ($contract->installation_address !== null ? ' - ' . $contract->installation_address->address : ''),
