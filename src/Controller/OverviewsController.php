@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Addresses\Check\AddressCheckRegistry;
 use App\Addresses\Resolver as AddressesResolver;
+use App\Contracts\Check\ContractCheckRegistry;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
@@ -883,6 +884,45 @@ class OverviewsController extends AppController
             || filter_var($this->getRequest()->getQuery('ignore_inactive'), FILTER_VALIDATE_BOOLEAN);
 
         $registry = new AddressCheckRegistry($ignore_inactive);
+        $asked = (array)$this->getRequest()->getQuery('checks', []);
+
+        $shown = [];
+        foreach ($registry->all() as $check) {
+            $shown[$check->id()] = array_key_exists($check->id(), $asked)
+                ? filter_var($asked[$check->id()], FILTER_VALIDATE_BOOLEAN)
+                : !$check->optional();
+        }
+
+        // A check nobody asked for does not run. Counting them all and drawing some of them
+        // would make the ticks cost exactly what they are there to save.
+        $results = [];
+        foreach ($registry->all() as $check) {
+            if ($shown[$check->id()]) {
+                $results[$check->id()] = $check->find()->all();
+            }
+        }
+
+        $checks = $registry->all();
+
+        $this->set(compact('checks', 'shown', 'results', 'ignore_inactive'));
+    }
+
+    /**
+     * Overview of what is wrong with the contracts on file
+     *
+     * The ticks work exactly as they do for the addresses above, and for the same reason.
+     *
+     * @return void Renders view
+     */
+    public function overviewOfContractProblems(): void
+    {
+        // Read the same way as the ticks below, and on by default. Off, the checks reach back
+        // into contracts nobody is serving any more and into breaks that are long over -
+        // which is what putting the history straight needs, and not what daily work is.
+        $ignore_inactive = $this->getRequest()->getQuery('ignore_inactive') === null
+            || filter_var($this->getRequest()->getQuery('ignore_inactive'), FILTER_VALIDATE_BOOLEAN);
+
+        $registry = new ContractCheckRegistry($ignore_inactive);
         $asked = (array)$this->getRequest()->getQuery('checks', []);
 
         $shown = [];

@@ -290,6 +290,80 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
+     * The contract checks read the query string exactly as the address ones do, and are
+     * offered to the same roles - so what is tested there is tested here too, once.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContractProblems()
+     */
+    public function testOverviewOfContractProblemsRunsTheDefaultChecks(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-contract-problems');
+
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('shown')['billing_gap']);
+        $this->assertArrayHasKey('billing_gap', $this->viewVariable('results'));
+    }
+
+    /**
+     * Breaks that are long over are passed over unless somebody asks for them.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContractProblems()
+     */
+    public function testOverviewOfContractProblemsIgnoresWhatIsOverByDefault(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-contract-problems');
+
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('ignore_inactive'));
+
+        $this->get('/overviews/overview-of-contract-problems?ignore_inactive=0');
+
+        $this->assertResponseOk();
+        $this->assertFalse($this->viewVariable('ignore_inactive'));
+    }
+
+    /**
+     * A check switched off does not run.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContractProblems()
+     */
+    public function testOverviewOfContractProblemsTurnsOffWhatWasUnticked(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-contract-problems?checks[billing_gap]=0');
+
+        $this->assertResponseOk();
+        $this->assertFalse($this->viewVariable('shown')['billing_gap']);
+        $this->assertArrayNotHasKey('billing_gap', $this->viewVariable('results'));
+    }
+
+    /**
+     * The card offers this overview to the same roles as the address one, so the link has to
+     * lead somewhere for them - and the rack of overviews still must not.
+     *
+     * @param string $role Role to sign in as.
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContractProblems()
+     */
+    #[DataProvider('addressProblemRoles')]
+    public function testOverviewOfContractProblemsIsOpenToTheCardsRoles(string $role): void
+    {
+        $this->login($role);
+
+        $this->get('/overviews/overview-of-contract-problems');
+
+        $this->assertResponseOk();
+    }
+
+    /**
      * The card offers this overview to two roles the overviews otherwise do not admit, so
      * the link has to lead somewhere for them - and the rack of overviews still must not.
      *

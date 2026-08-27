@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Dashboard;
 
 use App\Addresses\Check\AddressCheckRegistry;
+use App\Contracts\Check\ContractCheckRegistry;
 use App\Dashboard\Card\AddressProblemsCard;
+use App\Dashboard\Card\ContractProblemsCard;
 use App\Dashboard\Card\ContractStatesCard;
 use App\Dashboard\Card\DebtorsCard;
 use App\Dashboard\Card\EndingObligationsCard;
@@ -70,6 +72,8 @@ final class DashboardCardRegistry implements CardRegistryInterface
             fn(): DashboardCardInterface => new EndingObligationsCard($contract_versions);
         $this->factories['address_problems'] =
             fn(): DashboardCardInterface => new AddressProblemsCard(new AddressCheckRegistry());
+        $this->factories['contract_problems'] =
+            fn(): DashboardCardInterface => new ContractProblemsCard(new ContractCheckRegistry());
 
         // The debtor cards read the accounting records, which only exist with the plugin.
         // They come last, so that what the whole office looks at stands ahead of what only

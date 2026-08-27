@@ -501,8 +501,8 @@ $permissions = [
             ],
             'action' => '*',
         ],
-        //the address checks are offered on the dashboard to roles that are otherwise not
-        //let into the overviews, so the one they link to is opened to them by name - not
+        //the address and contract checks are offered on the dashboard to roles that are otherwise
+        //not let into the overviews, so the ones they link to are opened to them by name - not
         //the index beside it, which would hand them the whole rack of overviews
         [
             'role' => [
@@ -515,6 +515,7 @@ $permissions = [
             ],
             'action' => [
                 'overviewOfAddressProblems',
+                'overviewOfContractProblems',
             ],
         ],
         //enable customer message sending for network managers and sales managers

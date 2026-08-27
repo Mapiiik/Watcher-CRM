@@ -87,6 +87,11 @@
             <h4><?= __('Contract Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
+                    __('Contract Problems'),
+                    ['action' => 'overviewOfContractProblems'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('Overview of Contracts'),
                     ['action' => 'overviewOfContracts'],
                     ['class' => 'side-nav-item'],

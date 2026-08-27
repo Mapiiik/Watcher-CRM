@@ -668,6 +668,55 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
+     * The contract card is offered to the same roles as the address one beside it: what the
+     * checks are about is the customer's file either way.
+     *
+     * @param string $role Role to sign in as.
+     * @param bool $offered Whether that role is offered the card.
+     * @return void
+     * @link \App\Dashboard\Card\ContractProblemsCard::roles()
+     */
+    #[DataProvider('addressProblemRoles')]
+    public function testContractProblemsCardIsOfferedToTheCustomerRoles(string $role, bool $offered): void
+    {
+        $this->login($role);
+        $this->get('/dashboard/card/contract_problems');
+
+        $this->assertResponseCode($offered ? 200 : 404);
+    }
+
+    /**
+     * A count on the card links into the overview with that check alone switched on, and
+     * every other check named as off - the same reading of the query string the address
+     * card relies on.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\ContractProblemsCard::data()
+     */
+    public function testContractProblemsCardLinksIntoItsOwnOverview(): void
+    {
+        $this->login('bookkeeper');
+        $this->get('/dashboard/card/contract_problems');
+
+        $this->assertResponseOk();
+
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+        $data = $card->data();
+
+        $this->assertSame('overviewOfContractProblems', $data['overview_url']['action']);
+
+        foreach ($data['rows'] as $row) {
+            $this->assertSame('overviewOfContractProblems', $row['url']['action']);
+            $this->assertSame([1], array_values(array_unique(array_filter($row['url']['?']['checks']))));
+
+            // the card counts only what is still ahead, so the overview it leads to has to
+            // as well - the same finding under two different numbers reads as a fault
+            $this->assertSame(1, $row['url']['?']['ignore_inactive']);
+        }
+    }
+
+    /**
      * A count on the card links into the overview with that check alone switched on, and
      * every other check switched off by name. A check left out of the query string is read
      * as being at its default, so naming only the one would arrive with the rest beside it.
