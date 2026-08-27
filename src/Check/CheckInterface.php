@@ -83,6 +83,18 @@ interface CheckInterface
     public function answersWhatWasAsked(): bool;
 
     /**
+     * Whether lifting the filter gives this check anything more to say.
+     *
+     * Most checks keep to what is running and have a longer answer about the history behind
+     * it. A few have only the one answer - what is running is not a narrowing of their subject
+     * but the whole of it - and a page that lifts the filter to see everything about a record
+     * has to keep getting that one answer rather than a different, narrower question.
+     *
+     * @return bool
+     */
+    public function hasAWiderReading(): bool;
+
+    /**
      * Whether the dashboard card counts this one.
      *
      * A check the card would only ever shout about belongs in the overview alone.

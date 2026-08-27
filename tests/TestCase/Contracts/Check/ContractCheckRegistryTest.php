@@ -103,11 +103,15 @@ class ContractCheckRegistryTest extends TestCase
                 sprintf('%s reports more when the filter is on than when it is lifted.', $check->id()),
             );
 
-            $this->assertNotSame(
-                $check->find()->sql(),
-                $lifted->find()->sql(),
-                sprintf('%s asks the same thing either way, so the filter passes it by.', $check->id()),
-            );
+            // A check whose subject is what is running has no longer history to fall back
+            // on, and says so rather than inventing a narrower question to answer instead.
+            if ($check->hasAWiderReading()) {
+                $this->assertNotSame(
+                    $check->find()->sql(),
+                    $lifted->find()->sql(),
+                    sprintf('%s asks the same thing either way, so the filter passes it by.', $check->id()),
+                );
+            }
         }
     }
 

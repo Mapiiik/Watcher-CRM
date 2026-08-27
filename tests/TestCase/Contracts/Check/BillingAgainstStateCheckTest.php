@@ -105,9 +105,22 @@ class BillingAgainstStateCheckTest extends TestCase
         $this->billed('-3 years', '-2 years');
 
         $this->assertCount(1, $this->givenAwayService());
+    }
 
-        // lifting the filter asks the narrower question - never billed at all - and this was
-        $this->assertSame([], $this->givenAwayService(ignore_inactive: false));
+    /**
+     * There is no longer history to fall back on here - not billed now is the whole of it -
+     * so a page that lifts the filter to see everything about a contract has to keep being
+     * shown this, rather than a narrower question about whether it was ever billed at all.
+     *
+     * @return void
+     * @link \App\Contracts\Check\ActiveWithoutBillingCheck::hasAWiderReading()
+     */
+    public function testLiftingTheFilterLeavesItSayingTheSame(): void
+    {
+        $this->billed('-3 years', '-2 years');
+
+        $this->assertCount(1, $this->givenAwayService(ignore_inactive: false));
+        $this->assertFalse((new ActiveWithoutBillingCheck($this->Contracts))->hasAWiderReading());
     }
 
     /**

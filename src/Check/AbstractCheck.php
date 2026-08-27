@@ -149,6 +149,16 @@ abstract class AbstractCheck implements CheckInterface
     }
 
     /**
+     * Lifting the filter says more unless the check says it cannot.
+     *
+     * @return bool
+     */
+    public function hasAWiderReading(): bool
+    {
+        return true;
+    }
+
+    /**
      * Checks are listed without being asked for unless they say otherwise.
      *
      * @return bool

@@ -14,14 +14,18 @@ use Override;
  * somebody is getting the service for nothing, or the state is wrong and the service stopped
  * without anybody saying so - and both are worth a minute.
  *
- * Lifting the filter narrows this rather than widening it: what is left is the contracts that
- * have never been billed at all, which is a different and much smaller thing to put right.
+ * There is only the one answer to give. A contract billed for something that has since ended
+ * is not billed now, which is the whole of what this is about - so unlike its neighbours it
+ * has no longer history to fall back on, and lifting the filter leaves it saying the same.
+ * Anything else would have a contract's own page, which lifts the filter to see everything,
+ * shown less than the listing that led there.
  */
 class ActiveWithoutBillingCheck extends AbstractContractCheck
 {
     /**
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
-     * @param bool $ignore_inactive Whether a billing that has ended still counts as billing.
+     * @param bool $ignore_inactive Kept for the shape of the family; this check has only the
+     *   one reading. {@see self::hasAWiderReading()}
      * @param string|null $contract_id The one contract being asked about, where there is one.
      * @param string|null $customer_id The one customer being asked about, where there is one.
      */
@@ -83,16 +87,22 @@ class ActiveWithoutBillingCheck extends AbstractContractCheck
     }
 
     /**
-     * The subject is a contract that is running, so that is not what the filter narrows -
-     * what it narrows is which billings count as billing.
-     *
+     * @return bool
+     */
+    #[Override]
+    public function hasAWiderReading(): bool
+    {
+        return false;
+    }
+
+    /**
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
     #[Override]
     public function find(): SelectQuery
     {
         $billed = $this->contracts->Billings
-            ->find($this->ignore_inactive ? 'activeOrFuture' : 'all')
+            ->find('activeOrFuture')
             ->select(['Billings.contract_id'], true);
 
         $query = $this->contracts
