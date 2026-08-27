@@ -135,6 +135,32 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * And the same address wherever the reader came to the task from.
+     *
+     * The listing is reachable under a customer and under a contract, and the router carries
+     * that nesting into every link it builds unless it is told not to. Copied like that, the
+     * address says as much about the way here as about the task - and the next person to follow
+     * it lands beside a customer they were never shown.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testTheCopiedAddressIsTheTasksOwnWhereverItWasTakenFrom(): void
+    {
+        $this->login();
+        $plainly = 'data-copy-url="http://localhost/tasks/view/' . $this->firstId('Tasks') . '"';
+
+        $this->get('/customers/' . self::CUSTOMER_ID . '/tasks?show_completed=1');
+        $this->assertResponseOk();
+        $this->assertResponseContains($plainly, 'The listing read under a customer.');
+
+        // the panel beside the customer itself, which is a template of its own
+        $this->get('/customers/' . self::CUSTOMER_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains($plainly, 'The panel beside the customer.');
+    }
+
+    /**
      * The listing renders with the search filled in, which builds a different query than the plain
      * listing does and is therefore worth requesting on its own.
      *

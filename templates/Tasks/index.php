@@ -191,10 +191,18 @@ $this->Html->script('expandable-text.js', ['block' => true]);
                             ['class' => 'win-link'],
                         ) ?>
                         <?= $this->element('common/copy_url', [
-                            // win-link null keeps the routing filter from marking the copied
-                            // link as one that belongs inside the popup window
+                            // The nestings and win-link are nulled for the same reason: what
+                            // is copied has to be the task itself, not the way this reader came
+                            // to it. A link carrying the customer it was taken beside sends the
+                            // next person somewhere they may not have meant to go.
                             'url' => $this->Url->build(
-                                ['action' => 'view', $task->id, '?' => ['win-link' => null]],
+                                [
+                                    'action' => 'view',
+                                    $task->id,
+                                    'customer_id' => null,
+                                    'contract_id' => null,
+                                    '?' => ['win-link' => null],
+                                ],
                                 ['fullBase' => true],
                             ),
                             // said shorter than on a page of its own: among three other actions

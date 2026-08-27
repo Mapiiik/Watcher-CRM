@@ -70,10 +70,19 @@
                     ['confirm' => __('Are you sure you want to delete # {0}?', $task->number)],
                 ) ?>
                 <?= $this->element('common/copy_url', [
-                    // win-link null keeps the routing filter from marking the copied link as one
-                    // that belongs inside the popup window - this listing is often read in one
+                    // The nestings and win-link are nulled for the same reason: what is copied
+                    // has to be the task itself, not the way this reader came to it. This listing
+                    // is drawn beside a customer and beside a contract, so without that the link
+                    // would carry whichever of the two it was taken from.
                     'url' => $this->Url->build(
-                        ['controller' => 'Tasks', 'action' => 'view', $task->id, '?' => ['win-link' => null]],
+                        [
+                            'controller' => 'Tasks',
+                            'action' => 'view',
+                            $task->id,
+                            'customer_id' => null,
+                            'contract_id' => null,
+                            '?' => ['win-link' => null],
+                        ],
                         ['fullBase' => true],
                     ),
                     // said shorter than on a page of its own: among three other actions
