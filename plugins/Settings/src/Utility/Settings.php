@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Settings\Utility;
 
+use Cake\I18n\Date;
 use Settings\Service\SettingsService;
 
 class Settings
@@ -41,6 +42,31 @@ class Settings
         $value = self::get($path, $default);
 
         return (string)$value;
+    }
+
+    /**
+     * Get a setting value by path and return it as a date.
+     *
+     * A day is stored as `Y-m-d` text, because what a setting hands back is a plain value - the
+     * cache carries it and templates print it. The date is put together here, for the caller that
+     * wants to compare or add to it rather than show it.
+     *
+     * Path format: "plugin.key" or "plugin.key.subkey".
+     * Example: "contracts.checks.earliest_date"
+     *
+     * @param string $path The path to the setting (plugin.key[.subkey...]).
+     * @param string|null $default Default value if not found, as `Y-m-d`.
+     * @return \Cake\I18n\Date|null The day, or null where neither the setting nor the default names one.
+     */
+    public static function getDate(string $path, ?string $default = null): ?Date
+    {
+        $value = self::get($path, $default);
+
+        if ($value instanceof Date) {
+            return $value;
+        }
+
+        return is_string($value) ? Date::parseDate($value, 'yyyy-MM-dd') : null;
     }
 
     /**

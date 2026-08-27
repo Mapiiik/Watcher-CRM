@@ -175,6 +175,45 @@ class ListTypeTest extends TestCase
     }
 
     /**
+     * A list of days is held to the same rule as a single day, so the two agree on what one is.
+     *
+     * @return void
+     * @link \Settings\ValueObject\Type\ListType::ofDates()
+     */
+    public function testDaysAreStoredAsDays(): void
+    {
+        $this->assertSame(
+            ['1800-01-01', '2026-08-27'],
+            ListType::ofDates([])->normalize('["1800-01-01", "2026-08-27"]'),
+        );
+    }
+
+    /**
+     * @return void
+     * @link \Settings\ValueObject\Type\ListType::ofDates()
+     */
+    public function testSomethingThatIsNotADayIsRefusedWhereDaysWereDeclared(): void
+    {
+        $this->expectException(SettingValueException::class);
+
+        ListType::ofDates([])->normalize('["1800-01-01", "soon"]');
+    }
+
+    /**
+     * A day outside its month would otherwise roll forward into the next one, which is not the day
+     * that was written.
+     *
+     * @return void
+     * @link \Settings\ValueObject\Type\ListType::ofDates()
+     */
+    public function testADayThatIsNotInTheCalendarIsRefused(): void
+    {
+        $this->expectException(SettingValueException::class);
+
+        ListType::ofDates([])->normalize('["2026-02-30"]');
+    }
+
+    /**
      * The JSON is put in front of a person to edit, so it is written to be read: laid out over
      * several lines and with accented characters left as themselves rather than as escapes.
      *

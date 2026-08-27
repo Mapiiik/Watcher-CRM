@@ -16,6 +16,7 @@ enum SettingWidget: string
     case Text = 'text';
     case Textarea = 'textarea';
     case Number = 'number';
+    case Date = 'date';
     case TriState = 'tri_state';
     case Json = 'json';
 }

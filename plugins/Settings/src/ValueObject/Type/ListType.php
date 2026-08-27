@@ -28,7 +28,7 @@ final readonly class ListType implements SettingType
 
     /**
      * @param array<int, mixed> $default The list shipped when nothing is stored.
-     * @param string $itemType What the items are: `string`, `int` or `float`.
+     * @param string $itemType What the items are: `string`, `int`, `float` or `date`.
      * @param string|null $hint What to tell the operator about the field.
      */
     private function __construct(
@@ -82,6 +82,21 @@ final readonly class ListType implements SettingType
     public static function ofFloats(array $default, ?string $hint = null): self
     {
         return new self($default, 'float', $hint);
+    }
+
+    /**
+     * A list of days, each written as `Y-m-d`.
+     *
+     * Name the arguments when declaring one - `ofDates(default: [...], hint: ...)` - so the
+     * declaration says what each value is for and survives the parameters being changed.
+     *
+     * @param array<int, mixed> $default The list shipped when nothing is stored.
+     * @param string|null $hint What to tell the operator about the field.
+     * @return self
+     */
+    public static function ofDates(array $default, ?string $hint = null): self
+    {
+        return new self($default, 'date', $hint);
     }
 
     /**
@@ -219,6 +234,11 @@ final readonly class ListType implements SettingType
     {
         if ($this->itemType === 'string') {
             return is_string($item) || is_int($item) || is_float($item) ? (string)$item : null;
+        }
+
+        // the same rule a single day is held to, so a list of days and a day agree on what one is
+        if ($this->itemType === 'date') {
+            return DateType::canonicalDay($item);
         }
 
         if (!is_int($item) && !is_float($item) && !(is_string($item) && is_numeric($item))) {
