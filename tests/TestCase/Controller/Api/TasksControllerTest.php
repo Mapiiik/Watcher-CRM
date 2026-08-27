@@ -112,6 +112,42 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * Whose a task is includes the ones somebody was put on beside whoever holds it.
+     *
+     * This is what the dashboard of the other application stands on. Its "my tasks" card knows a
+     * person by name, asks here, and draws whatever comes back - so a second pair of hands sent
+     * out to an installation sees the job only if this cut counts them. It is the same finder the
+     * listing uses and the table's own tests cover, but nothing else asserts that this cut reaches
+     * for it, and it is the one link in that chain with a whole dashboard hanging off it.
+     *
+     * @return void
+     * @link \App\Controller\Api\TasksController::search()
+     */
+    public function testSearchCountsTheTasksSomebodyWasPutOnAsTheirs(): void
+    {
+        $helper = $this->getTableLocator()->get('AppUsers')->find()->firstOrFail();
+        // The fixture hands its own task to this same person, which would answer the question
+        // before it is asked. Nobody holds anything now.
+        $this->getTableLocator()->get('Tasks')->updateAll(['user_id' => null], []);
+
+        $this->taskAt(Text::uuid(), 'Two of us are going');
+
+        $links = $this->getTableLocator()->get('TaskCollaborators');
+        $links->saveOrFail($links->newEntity([
+            'task_id' => $this->getTableLocator()->get('Tasks')
+                ->find()->where(['subject' => 'Two of us are going'])->firstOrFail()->get('id'),
+            'user_id' => $helper->get('id'),
+        ]));
+
+        $this->login('api');
+        $this->get('/api/tasks/search.json?user=' . urlencode((string)$helper->get('username')));
+
+        $this->assertResponseOk();
+        $this->assertSame(1, $this->viewVariable('total'), 'Nobody holds it, but somebody is on it.');
+        $this->assertSame('Two of us are going', $this->firstTask()->get('subject'));
+    }
+
+    /**
      * Asked whose the tasks are, the answer also says who that turned out to be here.
      *
      * The two applications call a person by the same name and by different numbers. Without the
