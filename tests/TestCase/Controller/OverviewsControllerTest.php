@@ -467,15 +467,19 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
-     * Opening the one overview does not open the rest of them.
+     * Being let into the rack is not being let into everything standing in it. The rack only
+     * lists what whoever opened it may follow, so what is shut stays shut behind it.
      *
      * @return void
      */
-    public function testTheAddressProblemsRoleIsNotLetIntoTheOtherOverviews(): void
+    public function testTheChecksDoNotOpenTheOtherOverviewsBesideThem(): void
     {
         $this->login('bookkeeper');
 
         $this->get('/overviews');
+        $this->assertResponseOk();
+
+        $this->get('/overviews/overview-of-active-services');
 
         // a role that may not reach an action is sent away rather than shown it
         $this->assertRedirect();

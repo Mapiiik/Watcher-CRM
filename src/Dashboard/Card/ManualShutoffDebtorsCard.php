@@ -54,7 +54,7 @@ class ManualShutoffDebtorsCard extends AbstractDebtorCard
     #[Override]
     public function roles(): array
     {
-        return ['bookkeeper', 'sales-manager'];
+        return ['bookkeeper', 'sales-manager', 'sales-representative'];
     }
 
     /**

@@ -519,9 +519,9 @@ $permissions = [
             ],
             'action' => '*',
         ],
-        //the checks are offered on the dashboard to roles that are otherwise not let into the
-        //overviews, so the ones they link to are opened to them by name - not the index beside
-        //them, which would hand them the whole rack of overviews
+        //the office roles reach the checks from the dashboard and from the rack of overviews
+        //alike; the rack itself only lists what whoever opened it may follow, so admitting
+        //them to it shows them a shorter one rather than everything in it
         [
             'role' => [
                 'bookkeeper',
@@ -532,6 +532,7 @@ $permissions = [
                 'Overviews',
             ],
             'action' => [
+                'index',
                 'overviewOfAddressProblems',
                 'overviewOfContractProblems',
                 'overviewOfCustomerProblems',

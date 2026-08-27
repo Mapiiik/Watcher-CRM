@@ -34,7 +34,7 @@ class UnassignedTasksCard extends AbstractTaskListCard
     #[Override]
     public function roles(): array
     {
-        return ['network-manager', 'sales-manager'];
+        return ['network-manager', 'sales-manager', 'bookkeeper', 'sales-representative'];
     }
 
     /**
