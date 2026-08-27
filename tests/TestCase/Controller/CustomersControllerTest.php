@@ -337,6 +337,25 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * And what is missing about the customer themselves, which is the third family the card
+     * gathers. Whichever family a finding came from is not something the page has to know.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::problems()
+     */
+    public function testViewShowsWhatIsMissingAboutTheCustomerToo(): void
+    {
+        $this->getTableLocator()->get('Emails')->deleteAll(['customer_id' => self::CUSTOMER_ID]);
+
+        $this->login();
+        $this->get('/customers/problems/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertContains('missing_email', $this->reportedChecks());
+        $this->assertResponseContains('No E-mail Address');
+    }
+
+    /**
      * The card carries what the address checks have on them beside what the contract checks
      * do. Which family a finding came from is not something the page has to know - the check
      * says which listing draws it - and this is what says the two really do arrive together.

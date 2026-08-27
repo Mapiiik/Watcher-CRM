@@ -529,6 +529,7 @@ $permissions = [
             'action' => [
                 'overviewOfAddressProblems',
                 'overviewOfContractProblems',
+                'overviewOfCustomerProblems',
             ],
         ],
         //enable customer message sending for network managers and sales managers

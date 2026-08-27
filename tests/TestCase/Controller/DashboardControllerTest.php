@@ -717,6 +717,46 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
+     * The customer card is offered to the same roles as the two beside it.
+     *
+     * @param string $role Role to sign in as.
+     * @param bool $offered Whether that role is offered the card.
+     * @return void
+     * @link \App\Dashboard\Card\CustomerProblemsCard::roles()
+     */
+    #[DataProvider('addressProblemRoles')]
+    public function testCustomerProblemsCardIsOfferedToTheCustomerRoles(string $role, bool $offered): void
+    {
+        $this->login($role);
+        $this->get('/dashboard/card/customer_problems');
+
+        $this->assertResponseCode($offered ? 200 : 404);
+    }
+
+    /**
+     * @return void
+     * @link \App\Dashboard\Card\CustomerProblemsCard::data()
+     */
+    public function testCustomerProblemsCardLinksIntoItsOwnOverview(): void
+    {
+        $this->login('bookkeeper');
+        $this->get('/dashboard/card/customer_problems');
+
+        $this->assertResponseOk();
+
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+        $data = $card->data();
+
+        $this->assertSame('overviewOfCustomerProblems', $data['overview_url']['action']);
+
+        foreach ($data['rows'] as $row) {
+            $this->assertSame('overviewOfCustomerProblems', $row['url']['action']);
+            $this->assertSame(1, $row['url']['?']['ignore_inactive']);
+        }
+    }
+
+    /**
      * A count on the card links into the overview with that check alone switched on, and
      * every other check switched off by name. A check left out of the query string is read
      * as being at its default, so naming only the one would arrive with the rest beside it.

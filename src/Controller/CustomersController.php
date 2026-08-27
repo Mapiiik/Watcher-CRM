@@ -7,6 +7,7 @@ use App\Addresses\Check\AddressCheckRegistry;
 use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\Registry;
 use App\Contracts\Check\ContractCheckRegistry;
+use App\Customers\Check\CustomerCheckRegistry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
 use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerPrintType;
@@ -435,6 +436,7 @@ class CustomersController extends AppController
         $customer = $this->Customers->get($id);
 
         $problems = array_merge(
+            (new CustomerCheckRegistry(false, $customer->id))->findings(),
             (new ContractCheckRegistry(false, null, $customer->id))->findings(),
             (new AddressCheckRegistry(false, null, $customer->id))->findings(),
         );

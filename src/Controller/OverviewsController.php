@@ -7,6 +7,7 @@ use App\Addresses\Check\AddressCheckRegistry;
 use App\Addresses\Resolver as AddressesResolver;
 use App\Contracts\Check\ContractCheckRegistry;
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Customers\Check\CustomerCheckRegistry;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
@@ -923,6 +924,44 @@ class OverviewsController extends AppController
             || filter_var($this->getRequest()->getQuery('ignore_inactive'), FILTER_VALIDATE_BOOLEAN);
 
         $registry = new ContractCheckRegistry($ignore_inactive);
+        $asked = (array)$this->getRequest()->getQuery('checks', []);
+
+        $shown = [];
+        foreach ($registry->all() as $check) {
+            $shown[$check->id()] = array_key_exists($check->id(), $asked)
+                ? filter_var($asked[$check->id()], FILTER_VALIDATE_BOOLEAN)
+                : !$check->optional();
+        }
+
+        // A check nobody asked for does not run. Counting them all and drawing some of them
+        // would make the ticks cost exactly what they are there to save.
+        $results = [];
+        foreach ($registry->all() as $check) {
+            if ($shown[$check->id()]) {
+                $results[$check->id()] = $check->find()->all();
+            }
+        }
+
+        $checks = $registry->all();
+
+        $this->set(compact('checks', 'shown', 'results', 'ignore_inactive'));
+    }
+
+    /**
+     * Overview of what is missing from what is on record about the customers
+     *
+     * The ticks work exactly as they do for the addresses and the contracts above.
+     *
+     * @return void Renders view
+     */
+    public function overviewOfCustomerProblems(): void
+    {
+        // Read the same way as the ticks below, and on by default: what is on file about
+        // somebody we no longer serve is not worth chasing.
+        $ignore_inactive = $this->getRequest()->getQuery('ignore_inactive') === null
+            || filter_var($this->getRequest()->getQuery('ignore_inactive'), FILTER_VALIDATE_BOOLEAN);
+
+        $registry = new CustomerCheckRegistry($ignore_inactive);
         $asked = (array)$this->getRequest()->getQuery('checks', []);
 
         $shown = [];

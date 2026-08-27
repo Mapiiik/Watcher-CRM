@@ -346,6 +346,30 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
+     * The customer checks read the query string exactly as the two families above do.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfCustomerProblems()
+     */
+    public function testOverviewOfCustomerProblemsRunsTheDefaultChecks(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-customer-problems');
+
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('shown')['missing_email']);
+        $this->assertArrayHasKey('missing_email', $this->viewVariable('results'));
+
+        $this->get('/overviews/overview-of-customer-problems?checks[missing_email]=0&ignore_inactive=0');
+
+        $this->assertResponseOk();
+        $this->assertFalse($this->viewVariable('shown')['missing_email']);
+        $this->assertFalse($this->viewVariable('ignore_inactive'));
+        $this->assertArrayNotHasKey('missing_email', $this->viewVariable('results'));
+    }
+
+    /**
      * The card offers this overview to the same roles as the address one, so the link has to
      * lead somewhere for them - and the rack of overviews still must not.
      *
