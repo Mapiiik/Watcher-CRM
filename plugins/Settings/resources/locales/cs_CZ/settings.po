@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-11 09:29+0200\n"
+"POT-Creation-Date: 2026-08-27 16:15+0200\n"
 "PO-Revision-Date: 2026-08-11 09:35+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -35,23 +35,27 @@ msgstr "Nastavení nelze uložit. Zkuste to prosím znovu."
 msgid "The setting {path} could not be saved: {reason}"
 msgstr "Nastavení {path} se nepodařilo uložit: {reason}"
 
-#: plugins/Settings/src/ValueObject/Type/ListType.php:150
+#: plugins/Settings/src/ValueObject/Type/DateType.php:164
+msgid "A day in the form YYYY-MM-DD was expected."
+msgstr "Očekával se den ve tvaru RRRR-MM-DD."
+
+#: plugins/Settings/src/ValueObject/Type/ListType.php:165
 msgid "A list was expected."
 msgstr "Očekával se seznam."
 
-#: plugins/Settings/src/ValueObject/Type/ListType.php:163
+#: plugins/Settings/src/ValueObject/Type/ListType.php:178
 msgid "The list is not valid JSON: {reason}"
 msgstr "Seznam není platným JSON: {reason}"
 
-#: plugins/Settings/src/ValueObject/Type/ListType.php:170
+#: plugins/Settings/src/ValueObject/Type/ListType.php:185
 msgid "A list was expected, not a single value."
 msgstr "Očekával se seznam, nikoli jednotlivá hodnota."
 
-#: plugins/Settings/src/ValueObject/Type/ListType.php:187
+#: plugins/Settings/src/ValueObject/Type/ListType.php:202
 msgid "A list of items was expected, but the value is keyed."
 msgstr "Očekával se seznam položek, ale hodnota je zadána s klíčem."
 
-#: plugins/Settings/src/ValueObject/Type/ListType.php:197
+#: plugins/Settings/src/ValueObject/Type/ListType.php:212
 msgid "Item {position} of the list is not of type {type}."
 msgstr "Položka {position} v seznamu není typu {type}."
 

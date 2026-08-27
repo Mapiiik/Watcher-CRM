@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-11 09:29+0200\n"
+"POT-Creation-Date: 2026-08-27 16:15+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -34,23 +34,27 @@ msgstr ""
 msgid "The setting {path} could not be saved: {reason}"
 msgstr ""
 
-#: ./plugins/Settings/src/ValueObject/Type/ListType.php:150
+#: ./plugins/Settings/src/ValueObject/Type/DateType.php:164
+msgid "A day in the form YYYY-MM-DD was expected."
+msgstr ""
+
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:165
 msgid "A list was expected."
 msgstr ""
 
-#: ./plugins/Settings/src/ValueObject/Type/ListType.php:163
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:178
 msgid "The list is not valid JSON: {reason}"
 msgstr ""
 
-#: ./plugins/Settings/src/ValueObject/Type/ListType.php:170
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:185
 msgid "A list was expected, not a single value."
 msgstr ""
 
-#: ./plugins/Settings/src/ValueObject/Type/ListType.php:187
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:202
 msgid "A list of items was expected, but the value is keyed."
 msgstr ""
 
-#: ./plugins/Settings/src/ValueObject/Type/ListType.php:197
+#: ./plugins/Settings/src/ValueObject/Type/ListType.php:212
 msgid "Item {position} of the list is not of type {type}."
 msgstr ""
 
