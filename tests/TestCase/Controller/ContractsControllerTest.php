@@ -260,7 +260,7 @@ class ContractsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertSame([], $this->viewVariable('problems'));
-        $this->assertResponseNotContains('This contract does not add up');
+        $this->assertResponseNotContains('probably not right');
     }
 
     /**

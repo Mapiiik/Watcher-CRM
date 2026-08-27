@@ -6,4 +6,4 @@
  * @var list<array{check: \App\Check\CheckInterface, records: iterable<\Cake\Datasource\EntityInterface>}> $problems
  */
 
-echo $this->element('common/problems', ['problems' => $problems, 'one_contract' => true]);
+echo $this->element('common/problems', ['problems' => $problems, 'contract_column' => false]);

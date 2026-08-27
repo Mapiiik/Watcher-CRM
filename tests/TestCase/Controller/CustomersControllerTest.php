@@ -329,7 +329,7 @@ class CustomersControllerTest extends TestCase
         $this->assertContains('billing_gap', $this->reportedChecks());
 
         // gathered over several contracts, so each row has to say which one it is about
-        $this->assertResponseContains('These records do not add up');
+        $this->assertResponseContains('probably not right');
         $this->assertResponseContains('Gap Between Consecutive Billings');
 
         // drawn on its own, so it arrives as the block itself rather than as a page
