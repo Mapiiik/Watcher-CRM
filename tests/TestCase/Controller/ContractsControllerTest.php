@@ -253,7 +253,20 @@ class ContractsControllerTest extends TestCase
     public function testViewShowsNothingWhereTheContractAddsUp(): void
     {
         $contract_id = $this->firstId('Contracts');
-        $this->getTableLocator()->get('Billings')->deleteAll(['contract_id' => $contract_id]);
+
+        // One billing, open ended, covering today: a contract providing services with nothing
+        // billed for them is itself a finding, so leaving it with none would not be clean.
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->deleteAll(['contract_id' => $contract_id]);
+        $billings->saveOrFail($billings->newEntity([
+            'customer_id' => $this->getTableLocator()->get('Contracts')->get($contract_id)->get('customer_id'),
+            'contract_id' => $contract_id,
+            'service_id' => $this->getTableLocator()->get('Services')->find()->firstOrFail()->get('id'),
+            'billing_from' => Date::now()->modify('-1 year')->format('Y-m-d'),
+            'billing_until' => null,
+            'quantity' => 1,
+            'separate_invoice' => false,
+        ]));
 
         $this->login();
         $this->get('/contracts/problems/' . $contract_id);

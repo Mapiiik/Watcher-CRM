@@ -106,13 +106,7 @@ class MissingInstallationAddressCheck extends AbstractAddressCheck
             ->where(['ServiceTypes.installation_address_required' => true]);
 
         if ($this->ignore_inactive) {
-            // The state is contained for the listing to show, so the live ones are asked for
-            // as ids rather than by joining the state a second time under the same alias.
-            $query->where([
-                'Contracts.id IN' => $this->contracts
-                    ->find('withActiveServices')
-                    ->select(['Contracts.id'], true),
-            ]);
+            $query->where(['Contracts.id IN' => $this->activeContractIds()]);
         }
 
         $this->scoped($query);

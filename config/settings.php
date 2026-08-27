@@ -149,7 +149,7 @@ return [
                 ),
                 'signature_expected_within_months' => NumberType::ofInt(
                     default: 3,
-                    hint: __('How long after a contract version starts its signature may still arrive.'),
+                    hint: __('How long before a contract version takes effect it may have been concluded.'),
                 ),
             ],
         ],

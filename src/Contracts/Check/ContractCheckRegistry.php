@@ -21,7 +21,8 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
 {
     /**
      * Registered in the order they are listed: what is billed first, because that is where a
-     * mistake costs money, then what was agreed, then the days the contract itself carries.
+     * mistake costs money, then what was agreed, then the days the contract itself carries,
+     * then what is missing from it.
      *
      * @param bool $ignore_inactive Whether the checks keep to what is running. Each applies
      *   it to its own subject - the contract for most of them, the finding itself where the
@@ -93,6 +94,55 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
             'contract_version_gap' =>
                 fn(): ContractCheckInterface => new ContractVersionGapCheck(
                     $versions,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
+            'active_without_billing' =>
+                fn(): ContractCheckInterface => new ActiveWithoutBillingCheck(
+                    $contracts,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
+            'inactive_with_billing' =>
+                fn(): ContractCheckInterface => new InactiveWithBillingCheck(
+                    $contracts,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
+            'billing_service_type_mismatch' =>
+                fn(): ContractCheckInterface => new BillingServiceTypeMismatchCheck(
+                    $billings,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
+            'non_standard_service' =>
+                fn(): ContractCheckInterface => new NonStandardServiceCheck(
+                    $billings,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
+            'unsigned_contract' =>
+                fn(): ContractCheckInterface => new UnsignedContractCheck(
+                    $versions,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
+            'missing_installation_date' =>
+                fn(): ContractCheckInterface => new MissingInstallationDateCheck(
+                    $contracts,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
+            'missing_access_point' =>
+                fn(): ContractCheckInterface => new MissingAccessPointCheck(
+                    $contracts,
                     $this->ignore_inactive,
                     $this->contract_id,
                     $this->customer_id,

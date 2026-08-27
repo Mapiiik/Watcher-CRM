@@ -110,6 +110,25 @@ abstract class AbstractCheck implements CheckInterface
     }
 
     /**
+     * The contracts that are providing services, as ids.
+     *
+     * For the checks whose listing shows the state a contract is in: the association is
+     * already contained for that, so the live ones are asked for as ids rather than by
+     * joining the state a second time under the same alias.
+     *
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     */
+    protected function activeContractIds(): SelectQuery
+    {
+        /** @var \App\Model\Table\ContractsTable $contracts */
+        $contracts = $this->fetchTable(ContractsTable::class);
+
+        return $contracts
+            ->find('withActiveServices')
+            ->select(['Contracts.id'], true);
+    }
+
+    /**
      * The template is named after the check unless it says otherwise.
      *
      * @return string
