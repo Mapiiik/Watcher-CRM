@@ -6,6 +6,7 @@ namespace Settings\ValueObject\Type;
 use Settings\Exception\SettingValueException;
 use Settings\ValueObject\SettingType;
 use Settings\ValueObject\SettingWidget;
+use Settings\ValueObject\Trait\ShippedValueTrait;
 
 /**
  * A number, either whole or given to a fixed number of decimal places.
@@ -19,6 +20,8 @@ use Settings\ValueObject\SettingWidget;
  */
 final readonly class NumberType implements SettingType
 {
+    use ShippedValueTrait;
+
     /**
      * The value shipped when nothing is stored.
      *
@@ -36,7 +39,14 @@ final readonly class NumberType implements SettingType
         private ?int $scale,
         private ?string $hint,
     ) {
-        $this->default = $this->cast($default);
+        try {
+            $this->default = $this->cast($default);
+        } catch (SettingValueException $refused) {
+            // The number is a number, only given more finely than the declaration allows, so
+            // it is kept as written rather than rounded to something nobody asked for.
+            $this->default = $default;
+            self::sayTheShippedValueDoesNotFit($refused);
+        }
     }
 
     /**

@@ -42,17 +42,21 @@ class ListTypeTest extends TestCase
     }
 
     /**
-     * A default that does not fit the type it is declared with is a mistake in the configuration,
-     * and one worth hearing about while it is being written rather than when somebody saves a form.
+     * The defaults are declared in a configuration file the service reads on the way up, so a
+     * type that threw over one of them took the whole application down - every page, including
+     * the settings page where the declaration could have been put right. It goes to the log
+     * instead, and what can be kept is kept.
+     *
+     * What a person submits is another matter: {@see self::testTextIsRefusedWhereNumbersWereDeclared()} still refuses it,
+     * out loud, on the form it was typed into.
      *
      * @return void
-     * @link \Settings\ValueObject\Type\ListType::__construct()
      */
-    public function testADefaultThatDoesNotFitIsRefused(): void
+    public function testADefaultThatDoesNotFitIsKeptRatherThanThrown(): void
     {
-        $this->expectException(SettingValueException::class);
+        $type = ListType::ofInts([1, 'not a number', 3]);
 
-        ListType::ofInts(['not a number']);
+        $this->assertSame([1, 3], $type->default(), 'The items that fit have to survive the one that does not.');
     }
 
     /**

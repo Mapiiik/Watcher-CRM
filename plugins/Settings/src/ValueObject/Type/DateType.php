@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Settings\Exception\SettingValueException;
 use Settings\ValueObject\SettingType;
 use Settings\ValueObject\SettingWidget;
+use Settings\ValueObject\Trait\ShippedValueTrait;
 
 /**
  * A single day.
@@ -27,6 +28,8 @@ use Settings\ValueObject\SettingWidget;
  */
 final readonly class DateType implements SettingType
 {
+    use ShippedValueTrait;
+
     /**
      * The day shipped when nothing is stored, as `Y-m-d`.
      *
@@ -42,7 +45,12 @@ final readonly class DateType implements SettingType
         Date|DateTimeInterface|string $default,
         private ?string $hint,
     ) {
-        $this->default = $this->cast($default);
+        $this->default = self::canonicalDay($default) ?? self::shipped(
+            $default instanceof Date || $default instanceof DateTimeInterface
+                ? $default->format('Y-m-d')
+                : $default,
+            'a day in the form YYYY-MM-DD',
+        );
     }
 
     /**
@@ -140,14 +148,17 @@ final readonly class DateType implements SettingType
             return $value->format('Y-m-d');
         }
 
-        if (!is_string($value) || preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) !== 1) {
+        if (!is_string($value) || preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value, $parts) !== 1) {
             return null;
         }
 
-        $date = Date::parseDate($value, 'yyyy-MM-dd');
-
-        // a day outside its month parses into the next one, which is not the day that was given
-        return $date?->format('Y-m-d') === $value ? $value : null;
+        // Checked against the calendar itself rather than by parsing and looking at what came
+        // back. Parsing reads the day in the machine's timezone, and before about 1884 a zone's
+        // offset was the town's own solar time - which ICU rounds to whole minutes and the
+        // timezone database does not. Those few seconds are enough to hand back the day before:
+        // 1800-01-01 under Europe/Zagreb parses as 1799-12-31, so an installation running in
+        // that zone rejected a day every other installation accepted.
+        return checkdate((int)$parts[2], (int)$parts[3], (int)$parts[1]) ? $value : null;
     }
 
     /**

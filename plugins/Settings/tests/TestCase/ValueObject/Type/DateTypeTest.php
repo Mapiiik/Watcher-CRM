@@ -5,6 +5,7 @@ namespace Settings\Test\TestCase\ValueObject\Type;
 
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Settings\Exception\SettingValueException;
 use Settings\ValueObject\SettingWidget;
 use Settings\ValueObject\Type\DateType;
@@ -108,17 +109,61 @@ class DateTypeTest extends TestCase
     }
 
     /**
-     * A default that does not fit the type it is declared with is a mistake in the configuration,
-     * and one worth hearing about while it is being written.
+     * A day is held against the calendar rather than parsed and looked at.
+     *
+     * Parsing reads the day in the machine's timezone, and before about 1884 a zone's offset was
+     * its town's own solar time - which ICU rounds to whole minutes and the timezone database does
+     * not. Those few seconds handed back the day before: an installation running in Europe/Zagreb
+     * took the whole application down over a default that every other installation accepted.
+     *
+     * @param string $zone The timezone the machine stands in.
+     * @return void
+     * @link \Settings\ValueObject\Type\DateType::canonicalDay()
+     */
+    #[DataProvider('timezones')]
+    public function testADayMeansTheSameWhereverTheMachineStands(string $zone): void
+    {
+        $was = date_default_timezone_get();
+        date_default_timezone_set($zone);
+
+        try {
+            $this->assertSame('1800-01-01', DateType::of('1800-01-01')->default());
+            $this->assertSame('1800-01-01', DateType::of('2000-01-01')->normalize('1800-01-01'));
+            $this->assertNull(DateType::canonicalDay('2026-02-30'), 'A day off the calendar still is one.');
+        } finally {
+            date_default_timezone_set($was);
+        }
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function timezones(): array
+    {
+        return [
+            'UTC' => ['UTC'],
+            'where the office is' => ['Europe/Prague'],
+            'where it broke' => ['Europe/Zagreb'],
+            'the far side of the date line' => ['Pacific/Kiritimati'],
+        ];
+    }
+
+    /**
+     * The defaults are declared in a configuration file the service reads on the way up, so a
+     * type that threw over one of them took the whole application down - every page, including
+     * the settings page where the declaration could have been put right. It goes to the log
+     * instead, and what can be kept is kept.
+     *
+     * What a person submits is another matter: {@see self::testSomethingThatIsNotADayIsRefused()} still refuses it,
+     * out loud, on the form it was typed into.
      *
      * @return void
-     * @link \Settings\ValueObject\Type\DateType::__construct()
      */
-    public function testADefaultThatDoesNotFitIsRefused(): void
+    public function testADefaultThatDoesNotFitIsKeptRatherThanThrown(): void
     {
-        $this->expectException(SettingValueException::class);
+        $type = DateType::of('the first of January');
 
-        DateType::of('the first of January');
+        $this->assertSame('the first of January', $type->default());
     }
 
     /**

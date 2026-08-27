@@ -5,6 +5,7 @@ namespace Settings\Utility;
 
 use Cake\I18n\Date;
 use Settings\Service\SettingsService;
+use Settings\ValueObject\Type\DateType;
 
 class Settings
 {
@@ -66,7 +67,12 @@ class Settings
             return $value;
         }
 
-        return is_string($value) ? Date::parseDate($value, 'yyyy-MM-dd') : null;
+        // Built rather than parsed: parsing reads the day in the machine's timezone, which for
+        // a day before about 1884 can hand back the one before it.
+        // {@see \Settings\ValueObject\Type\DateType::canonicalDay()}
+        $day = DateType::canonicalDay($value);
+
+        return $day === null ? null : new Date($day);
     }
 
     /**

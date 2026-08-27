@@ -7,6 +7,7 @@ use JsonException;
 use Settings\Exception\SettingValueException;
 use Settings\ValueObject\SettingType;
 use Settings\ValueObject\SettingWidget;
+use Settings\ValueObject\Trait\ShippedValueTrait;
 
 /**
  * A list of values of one type, edited as JSON.
@@ -19,6 +20,8 @@ use Settings\ValueObject\SettingWidget;
  */
 final readonly class ListType implements SettingType
 {
+    use ShippedValueTrait;
+
     /**
      * The list shipped when nothing is stored.
      *
@@ -36,7 +39,17 @@ final readonly class ListType implements SettingType
         private string $itemType,
         private ?string $hint,
     ) {
-        $this->default = $this->castList($default);
+        try {
+            $this->default = $this->castList($default);
+        } catch (SettingValueException $refused) {
+            // The items that fit are kept and the rest left out, so a list with one bad entry
+            // still ships the others rather than nothing.
+            $this->default = array_values(array_filter(
+                array_map($this->cast(...), array_is_list($default) ? $default : []),
+                fn(float|int|string|null $item): bool => $item !== null,
+            ));
+            self::sayTheShippedValueDoesNotFit($refused);
+        }
     }
 
     /**
