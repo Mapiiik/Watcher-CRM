@@ -20,6 +20,11 @@ class ContractCheckRegistryTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * The customer holding it.
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -136,6 +141,60 @@ class ContractCheckRegistryTest extends TestCase
                 sprintf('%s asks the same thing either way, so the contract passes it by.', $check->id()),
             );
         }
+    }
+
+    /**
+     * The customer a check is asked about has to reach every check too, because a customer's
+     * page shows the findings on every contract they hold.
+     *
+     * @return void
+     * @link \App\Contracts\Check\ContractCheckRegistry::__construct()
+     */
+    public function testEveryCheckIsToldWhichCustomerIsBeingAskedAbout(): void
+    {
+        $anybody = new ContractCheckRegistry(customer_id: null);
+        $theirs = new ContractCheckRegistry(customer_id: self::CUSTOMER_ID);
+
+        foreach ($anybody->all() as $check) {
+            $narrowed = $theirs->get($check->id());
+
+            $this->assertNotNull($narrowed);
+
+            // the contract is beside every one of these queries, as its subject or as what
+            // the record hangs on, so they all narrow through the same field
+            $this->assertStringContainsString(
+                'Contracts.customer_id = :',
+                $narrowed->find()->sql(),
+                sprintf('%s does not narrow to the customer it was asked about.', $check->id()),
+            );
+        }
+    }
+
+    /**
+     * A check with nothing to say gets no heading on the page that draws the findings, and
+     * one that has something is handed what it found rather than being asked twice.
+     *
+     * @return void
+     * @link \App\Check\AbstractCheckRegistry::findings()
+     */
+    public function testFindingsLeaveOutTheChecksWithNothingToSay(): void
+    {
+        $findings = (new ContractCheckRegistry(ignore_inactive: false))->findings();
+
+        foreach ($findings as $finding) {
+            $this->assertGreaterThan(
+                0,
+                count($finding['records']),
+                $finding['check']->id() . ' was listed with nothing to show.',
+            );
+        }
+
+        $listed = array_map(
+            fn(array $finding): string => $finding['check']->id(),
+            $findings,
+        );
+
+        $this->assertSame($listed, array_unique($listed));
     }
 
     /**

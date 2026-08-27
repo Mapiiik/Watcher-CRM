@@ -68,6 +68,31 @@ abstract class AbstractCheckRegistry
     }
 
     /**
+     * Every check that found something, with what it found.
+     *
+     * This is what a page showing findings about one record wants: it draws a heading per
+     * check and the check's own listing under it, and a check with nothing to say gets
+     * neither. Running the queries here rather than in the template keeps the page from
+     * asking the database twice - once to know whether to draw a heading, once to fill it.
+     *
+     * @return list<array{check: TCheck, records: \Cake\Datasource\ResultSetInterface<int, \Cake\Datasource\EntityInterface>}>
+     */
+    public function findings(): array
+    {
+        $findings = [];
+
+        foreach ($this->all() as $check) {
+            $records = $check->find()->all();
+
+            if (count($records) > 0) {
+                $findings[] = ['check' => $check, 'records' => $records];
+            }
+        }
+
+        return $findings;
+    }
+
+    /**
      * The checks the dashboard card counts.
      *
      * @return list<TCheck>

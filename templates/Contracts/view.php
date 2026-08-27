@@ -126,6 +126,7 @@ $this->Html->script('lazy-load.js', ['block' => true]);
     </aside>
     <div class="column column-90">
         <div class="contracts view content">
+            <?= $this->element('Contracts/problems', ['problems' => $problems, 'one_contract' => true]) ?>
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $contract->id],
@@ -133,7 +134,6 @@ $this->Html->script('lazy-load.js', ['block' => true]);
             ) ?>
             <a id="contract"></a>
             <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
-            <?= $this->element('Contracts/problems', ['problems' => $problems]) ?>
             <h5><?= h(
                 ($contract->service_type !== null ? $contract->service_type->name : '')
                 . ($contract->installation_address !== null ? ' - ' . $contract->installation_address->address : ''),

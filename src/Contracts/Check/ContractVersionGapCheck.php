@@ -71,13 +71,15 @@ class ContractVersionGapCheck extends AbstractContractCheck
      * @param \App\Model\Table\ContractVersionsTable $versions Contract versions table.
      * @param bool $ignore_inactive Whether to count only breaks that are still open.
      * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
     public function __construct(
         private ContractVersionsTable $versions,
         bool $ignore_inactive = true,
         ?string $contract_id = null,
+        ?string $customer_id = null,
     ) {
-        parent::__construct($ignore_inactive, $contract_id);
+        parent::__construct($ignore_inactive, $contract_id, $customer_id);
     }
 
     /**
@@ -155,6 +157,6 @@ class ContractVersionGapCheck extends AbstractContractCheck
             $this->onlyRunningContracts($query)->where([$query->expr(self::BREAK_NOT_OVER)]);
         }
 
-        return $this->scopedToContract($query, 'ContractVersions.contract_id');
+        return $this->scoped($query, 'ContractVersions.contract_id');
     }
 }

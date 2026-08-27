@@ -222,14 +222,7 @@ class ContractsController extends AppController
         // so the filter that keeps the checks to what is running is lifted, and the ones
         // that are informational rather than faults are asked too. What would bury a listing
         // of the whole file is a line or two on one record.
-        $problems = [];
-        foreach ((new ContractCheckRegistry(false, $contract->id))->all() as $check) {
-            $records = $check->find()->all();
-
-            if (count($records) > 0) {
-                $problems[] = ['check' => $check, 'records' => $records];
-            }
-        }
+        $problems = (new ContractCheckRegistry(false, $contract->id))->findings();
 
         $this->set(compact('contract', 'problems'));
     }

@@ -30,9 +30,14 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
      *   straight needs and what daily work does not.
      * @param string|null $contract_id One contract to ask about, rather than the whole file.
      *   This is what lets a contract show its own findings.
+     * @param string|null $customer_id One customer to ask about, rather than the whole file.
+     *   This is what lets a customer show the findings on every contract they hold.
      */
-    public function __construct(private bool $ignore_inactive = true, private ?string $contract_id = null)
-    {
+    public function __construct(
+        private bool $ignore_inactive = true,
+        private ?string $contract_id = null,
+        private ?string $customer_id = null,
+    ) {
         /** @var \App\Model\Table\BillingsTable $billings */
         $billings = $this->fetchTable(BillingsTable::class);
         /** @var \App\Model\Table\ContractVersionsTable $versions */
@@ -48,54 +53,63 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
                     $billings,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
             'overlapping_billings' =>
                 fn(): ContractCheckInterface => new OverlappingBillingsCheck(
                     $billings,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
             'impossible_billing_period' =>
                 fn(): ContractCheckInterface => new ImpossibleBillingPeriodCheck(
                     $billings,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
             'overlapping_contract_versions' =>
                 fn(): ContractCheckInterface => new OverlappingContractVersionsCheck(
                     $versions,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
             'impossible_contract_version_period' =>
                 fn(): ContractCheckInterface => new ImpossibleContractVersionPeriodCheck(
                     $versions,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
             'unsettled_obligation' =>
                 fn(): ContractCheckInterface => new UnsettledObligationCheck(
                     $versions,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
             'contract_version_gap' =>
                 fn(): ContractCheckInterface => new ContractVersionGapCheck(
                     $versions,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
             'impossible_contract_dates' =>
                 fn(): ContractCheckInterface => new ImpossibleContractDatesCheck(
                     $contracts,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
             'impossible_borrowed_period' =>
                 fn(): ContractCheckInterface => new ImpossibleBorrowedPeriodCheck(
                     $equipments,
                     $this->ignore_inactive,
                     $this->contract_id,
+                    $this->customer_id,
                 ),
         ];
     }

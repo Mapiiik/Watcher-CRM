@@ -24,13 +24,15 @@ class ImpossibleContractDatesCheck extends AbstractContractCheck
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
      * @param bool $ignore_inactive Whether to count only the contracts that are running.
      * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
     public function __construct(
         private ContractsTable $contracts,
         bool $ignore_inactive = true,
         ?string $contract_id = null,
+        ?string $customer_id = null,
     ) {
-        parent::__construct($ignore_inactive, $contract_id);
+        parent::__construct($ignore_inactive, $contract_id, $customer_id);
     }
 
     /**
@@ -91,6 +93,6 @@ class ImpossibleContractDatesCheck extends AbstractContractCheck
             ])
             ->orderBy(['Contracts.number' => 'ASC']);
 
-        return $this->scopedToContract($query, 'Contracts.id');
+        return $this->scoped($query, 'Contracts.id');
     }
 }

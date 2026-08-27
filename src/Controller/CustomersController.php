@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\Registry;
+use App\Contracts\Check\ContractCheckRegistry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
 use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerPrintType;
@@ -404,8 +405,14 @@ class CustomersController extends AppController
 
         $customer = $this->Customers->get($id, contain: $contain);
 
+        // The same findings a contract shows about itself, gathered over every contract this
+        // customer holds - most of what is wrong with one of them was done to all of them at
+        // once, on the day they were written.
+        $problems = (new ContractCheckRegistry(false, null, $customer->id))->findings();
+
         $this->set(compact(
             'customer',
+            'problems',
         ));
     }
 

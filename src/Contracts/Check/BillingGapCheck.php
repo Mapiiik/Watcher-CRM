@@ -87,13 +87,15 @@ class BillingGapCheck extends AbstractContractCheck
      * @param \App\Model\Table\BillingsTable $billings Billings table.
      * @param bool $ignore_inactive Whether to count only breaks that are still ahead.
      * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
     public function __construct(
         private BillingsTable $billings,
         bool $ignore_inactive = true,
         ?string $contract_id = null,
+        ?string $customer_id = null,
     ) {
-        parent::__construct($ignore_inactive, $contract_id);
+        parent::__construct($ignore_inactive, $contract_id, $customer_id);
     }
 
     /**
@@ -154,6 +156,6 @@ class BillingGapCheck extends AbstractContractCheck
             $this->onlyRunningContracts($query)->where([$query->expr(self::BREAK_NOT_OVER)]);
         }
 
-        return $this->scopedToContract($query, 'Billings.contract_id');
+        return $this->scoped($query, 'Billings.contract_id');
     }
 }

@@ -15,7 +15,9 @@ use Settings\Utility\Settings;
  * Two things every one of them is given. Whether it keeps to what is running, which each
  * applies to its own subject - the answer has to be about the record being reported rather
  * than about something else its contract happens to have. And, when the checks are asked
- * about one contract rather than about the whole file, which contract that is.
+ * about one record rather than about the whole file, which record that is: a contract, so
+ * that it can show its own findings, or a customer, so that theirs can show the findings on
+ * every contract they hold.
  *
  * Beside that, what counts as a date at all. Where a day may reasonably fall is a matter of
  * how the company works rather than of how the code does, so it is asked of the settings -
@@ -50,24 +52,35 @@ abstract class AbstractContractCheck extends AbstractCheck implements ContractCh
     /**
      * @param bool $ignore_inactive Whether the check keeps to what is running.
      * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
     public function __construct(
         protected bool $ignore_inactive = true,
         protected ?string $contract_id = null,
+        protected ?string $customer_id = null,
     ) {
     }
 
     /**
-     * Narrow a query to the one contract being asked about, where there is one.
+     * Narrow a query to whatever the check was asked about, where it was asked about anything.
+     *
+     * The contract is named per check, because each looks at it through a field of its own.
+     * The customer is not: every one of these queries has the contract beside it, either as
+     * its subject or as what it hangs on, so `Contracts.customer_id` is there to be asked in
+     * all of them.
      *
      * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query to narrow.
      * @param string $field The field holding the contract, qualified by its alias.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    protected function scopedToContract(SelectQuery $query, string $field): SelectQuery
+    protected function scoped(SelectQuery $query, string $field): SelectQuery
     {
         if ($this->contract_id !== null) {
             $query->where([$field => $this->contract_id]);
+        }
+
+        if ($this->customer_id !== null) {
+            $query->where(['Contracts.customer_id' => $this->customer_id]);
         }
 
         return $query;

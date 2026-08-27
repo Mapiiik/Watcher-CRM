@@ -20,13 +20,15 @@ class ImpossibleBorrowedPeriodCheck extends AbstractContractCheck
      * @param \App\Model\Table\BorrowedEquipmentsTable $equipments Borrowed equipments table.
      * @param bool $ignore_inactive Whether to count only the contracts that are running.
      * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
     public function __construct(
         private BorrowedEquipmentsTable $equipments,
         bool $ignore_inactive = true,
         ?string $contract_id = null,
+        ?string $customer_id = null,
     ) {
-        parent::__construct($ignore_inactive, $contract_id);
+        parent::__construct($ignore_inactive, $contract_id, $customer_id);
     }
 
     /**
@@ -83,6 +85,6 @@ class ImpossibleBorrowedPeriodCheck extends AbstractContractCheck
             $this->onlyRunningContracts($query);
         }
 
-        return $this->scopedToContract($query, 'BorrowedEquipments.contract_id');
+        return $this->scoped($query, 'BorrowedEquipments.contract_id');
     }
 }

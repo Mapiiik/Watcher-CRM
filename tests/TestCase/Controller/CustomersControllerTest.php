@@ -271,6 +271,71 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * What does not add up on a customer's contracts is shown on their card, gathered over all
+     * of them - most of what is wrong with one was done to all of them on the day they were
+     * written, and a customer's card is where that is seen at once.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewShowsWhatDoesNotAddUpOnTheirContracts(): void
+    {
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $contract_id = $contracts->find()
+            ->where(['Contracts.customer_id' => self::CUSTOMER_ID])
+            ->firstOrFail()
+            ->get('id');
+
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->deleteAll(['customer_id' => self::CUSTOMER_ID]);
+
+        $service_id = $this->getTableLocator()->get('Services')->find()->firstOrFail()->get('id');
+
+        // a year that nobody is billed for, which is what the check is there to find
+        foreach ([['+1 month', '+13 months'], ['+25 months', null]] as [$from, $until]) {
+            $billings->saveOrFail($billings->newEntity([
+                'customer_id' => self::CUSTOMER_ID,
+                'contract_id' => $contract_id,
+                'service_id' => $service_id,
+                'billing_from' => Date::now()->modify($from)->format('Y-m-d'),
+                'billing_until' => $until === null ? null : Date::now()->modify($until)->format('Y-m-d'),
+                'quantity' => 1,
+                'separate_invoice' => false,
+            ]));
+        }
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertCount(1, $this->viewVariable('problems'));
+
+        // gathered over several contracts, so each row has to say which one it is about
+        $this->assertResponseContains('These contracts do not add up');
+        $this->assertResponseContains('Gap Between Consecutive Billings');
+    }
+
+    /**
+     * A customer whose contracts add up shows no heading at all - an empty warning would teach
+     * everybody to look past the place the real ones appear.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewShowsNothingWhereTheContractsAddUp(): void
+    {
+        $this->getTableLocator()->get('Billings')->deleteAll(['customer_id' => self::CUSTOMER_ID]);
+        $this->getTableLocator()->get('ContractVersions')->deleteAll(['1 = 1']);
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertSame([], $this->viewVariable('problems'));
+        $this->assertResponseNotContains('These contracts do not add up');
+    }
+
+    /**
      * The tasks filed under the customer are listed on their card - one table written once and
      * shown wherever tasks stand beside a record.
      *
