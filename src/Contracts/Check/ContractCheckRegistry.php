@@ -5,6 +5,9 @@ namespace App\Contracts\Check;
 
 use App\Check\AbstractCheckRegistry;
 use App\Model\Table\BillingsTable;
+use App\Model\Table\BorrowedEquipmentsTable;
+use App\Model\Table\ContractsTable;
+use App\Model\Table\ContractVersionsTable;
 
 /**
  * Registry of the checks that can be run against the contracts on file.
@@ -17,7 +20,8 @@ use App\Model\Table\BillingsTable;
 final class ContractCheckRegistry extends AbstractCheckRegistry
 {
     /**
-     * Registered in the order they are listed.
+     * Registered in the order they are listed: what is billed first, because that is where a
+     * mistake costs money, then what was agreed, then the days the contract itself carries.
      *
      * @param bool $ignore_inactive Whether the checks keep to what is running. Each applies
      *   it to its own subject - the contract for most of them, the finding itself where the
@@ -31,11 +35,65 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
     {
         /** @var \App\Model\Table\BillingsTable $billings */
         $billings = $this->fetchTable(BillingsTable::class);
+        /** @var \App\Model\Table\ContractVersionsTable $versions */
+        $versions = $this->fetchTable(ContractVersionsTable::class);
+        /** @var \App\Model\Table\ContractsTable $contracts */
+        $contracts = $this->fetchTable(ContractsTable::class);
+        /** @var \App\Model\Table\BorrowedEquipmentsTable $equipments */
+        $equipments = $this->fetchTable(BorrowedEquipmentsTable::class);
 
         $this->factories = [
             'billing_gap' =>
                 fn(): ContractCheckInterface => new BillingGapCheck(
                     $billings,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                ),
+            'overlapping_billings' =>
+                fn(): ContractCheckInterface => new OverlappingBillingsCheck(
+                    $billings,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                ),
+            'impossible_billing_period' =>
+                fn(): ContractCheckInterface => new ImpossibleBillingPeriodCheck(
+                    $billings,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                ),
+            'overlapping_contract_versions' =>
+                fn(): ContractCheckInterface => new OverlappingContractVersionsCheck(
+                    $versions,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                ),
+            'impossible_contract_version_period' =>
+                fn(): ContractCheckInterface => new ImpossibleContractVersionPeriodCheck(
+                    $versions,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                ),
+            'unsettled_obligation' =>
+                fn(): ContractCheckInterface => new UnsettledObligationCheck(
+                    $versions,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                ),
+            'contract_version_gap' =>
+                fn(): ContractCheckInterface => new ContractVersionGapCheck(
+                    $versions,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                ),
+            'impossible_contract_dates' =>
+                fn(): ContractCheckInterface => new ImpossibleContractDatesCheck(
+                    $contracts,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                ),
+            'impossible_borrowed_period' =>
+                fn(): ContractCheckInterface => new ImpossibleBorrowedPeriodCheck(
+                    $equipments,
                     $this->ignore_inactive,
                     $this->contract_id,
                 ),

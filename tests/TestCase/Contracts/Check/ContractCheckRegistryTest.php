@@ -122,8 +122,11 @@ class ContractCheckRegistryTest extends TestCase
             $narrowed = $here->get($check->id());
 
             $this->assertNotNull($narrowed);
-            $this->assertStringContainsString(
-                'contract_id',
+
+            // a check over the contracts themselves narrows on the key, the rest on the
+            // field pointing at it - either way the contract has to reach the query
+            $this->assertMatchesRegularExpression(
+                '/(contract_id|Contracts\.id) = :/',
                 $narrowed->find()->sql(),
                 sprintf('%s does not narrow to the contract it was asked about.', $check->id()),
             );

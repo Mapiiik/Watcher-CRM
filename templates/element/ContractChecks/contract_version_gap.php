@@ -1,18 +1,14 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Billing> $records
+ * @var iterable<\App\Model\Entity\ContractVersion> $records
  * @var bool|null $contract_column
  */
 
-// on a contract's own page every row is about that contract, so the column says nothing
 $contract_column ??= true;
 ?>
 <p>
-    <?= __(
-        'The billing shown is the last one before the break.'
-        . ' Either it ends too early, or the one after it starts too late.',
-    ) ?>
+    <?= __('Not always a fault: a contract can lapse and be signed again. The other reading is a mistyped date.') ?>
 </p>
 <div class="table-responsive">
     <table>
@@ -21,22 +17,22 @@ $contract_column ??= true;
                 <?php if ($contract_column) : ?>
                     <th><?= __('Contract') ?></th>
                 <?php endif ?>
-                <th><?= __('Service') ?></th>
-                <th><?= __('Billing Until') ?></th>
-                <th><?= __('Billing Resumes') ?></th>
-                <th><?= __('Days Not Billed') ?></th>
+                <th><?= __('Valid From') ?></th>
+                <th><?= __('Valid Until') ?></th>
+                <th><?= __('Next One In Force From') ?></th>
+                <th><?= __('Days Without a Version') ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($records as $billing) : ?>
-                <?php $until = $billing->billing_until ?>
-                <?php $resumes = $billing->get('resumes_on') ?>
+            <?php foreach ($records as $version) : ?>
+                <?php $until = $version->valid_until ?>
+                <?php $resumes = $version->get('resumes_on') ?>
                 <tr>
                     <?= $this->element('ContractChecks/contract_cell', [
-                        'contract' => $billing->contract,
+                        'contract' => $version->contract,
                         'contract_column' => $contract_column,
                     ]) ?>
-                    <td class="dashboard-wrap"><?= h($billing->service?->name) ?></td>
+                    <td><?= h($version->valid_from) ?></td>
                     <td><?= h($until) ?></td>
                     <td><?= h($resumes) ?></td>
                     <td>

@@ -5,14 +5,10 @@
  * @var bool|null $contract_column
  */
 
-// on a contract's own page every row is about that contract, so the column says nothing
 $contract_column ??= true;
 ?>
 <p>
-    <?= __(
-        'The billing shown is the last one before the break.'
-        . ' Either it ends too early, or the one after it starts too late.',
-    ) ?>
+    <?= __('The billing shown is the earlier of the two. Usually it was left open when the next one was written.') ?>
 </p>
 <div class="table-responsive">
     <table>
@@ -22,28 +18,28 @@ $contract_column ??= true;
                     <th><?= __('Contract') ?></th>
                 <?php endif ?>
                 <th><?= __('Service') ?></th>
+                <th><?= __('Billing From') ?></th>
                 <th><?= __('Billing Until') ?></th>
-                <th><?= __('Billing Resumes') ?></th>
-                <th><?= __('Days Not Billed') ?></th>
+                <th><?= __('Billed Twice From') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($records as $billing) : ?>
-                <?php $until = $billing->billing_until ?>
-                <?php $resumes = $billing->get('resumes_on') ?>
                 <tr>
                     <?= $this->element('ContractChecks/contract_cell', [
                         'contract' => $billing->contract,
                         'contract_column' => $contract_column,
                     ]) ?>
                     <td class="dashboard-wrap"><?= h($billing->service?->name) ?></td>
-                    <td><?= h($until) ?></td>
-                    <td><?= h($resumes) ?></td>
+                    <td><?= h($billing->billing_from) ?></td>
                     <td>
-                        <?= $until !== null && $resumes !== null
-                            ? h((string)($until->diffInDays($resumes) - 1))
-                            : '' ?>
+                        <?php if ($billing->billing_until === null) : ?>
+                            <?= __('open') ?>
+                        <?php else : ?>
+                            <?= h($billing->billing_until) ?>
+                        <?php endif ?>
                     </td>
+                    <td><?= h($billing->get('overlaps_from')) ?></td>
                 </tr>
             <?php endforeach ?>
         </tbody>

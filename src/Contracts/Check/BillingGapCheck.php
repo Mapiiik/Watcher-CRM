@@ -33,7 +33,8 @@ class BillingGapCheck extends AbstractContractCheck
     private const RESUMES_LATER = <<<'SQL'
         EXISTS (
             SELECT 1 FROM billings later
-            WHERE later.contract_id = Billings.contract_id
+            WHERE later.id <> Billings.id
+              AND later.contract_id = Billings.contract_id
               AND later.service_id IS NOT DISTINCT FROM Billings.service_id
               AND later.billing_from > Billings.billing_until + 1
         )
@@ -60,7 +61,8 @@ class BillingGapCheck extends AbstractContractCheck
     private const BREAK_NOT_OVER = <<<'SQL'
         NOT EXISTS (
             SELECT 1 FROM billings resumed
-            WHERE resumed.contract_id = Billings.contract_id
+            WHERE resumed.id <> Billings.id
+              AND resumed.contract_id = Billings.contract_id
               AND resumed.service_id IS NOT DISTINCT FROM Billings.service_id
               AND resumed.billing_from > Billings.billing_until + 1
               AND resumed.billing_from <= CURRENT_DATE
@@ -74,7 +76,8 @@ class BillingGapCheck extends AbstractContractCheck
     private const RESUMES_ON = <<<'SQL'
         (
             SELECT MIN(resumes.billing_from) FROM billings resumes
-            WHERE resumes.contract_id = Billings.contract_id
+            WHERE resumes.id <> Billings.id
+              AND resumes.contract_id = Billings.contract_id
               AND resumes.service_id IS NOT DISTINCT FROM Billings.service_id
               AND resumes.billing_from > Billings.billing_until + 1
         )
