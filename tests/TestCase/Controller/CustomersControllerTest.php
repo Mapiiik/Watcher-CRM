@@ -308,31 +308,45 @@ class CustomersControllerTest extends TestCase
         $this->get('/customers/view/' . self::CUSTOMER_ID);
 
         $this->assertResponseOk();
-        $this->assertCount(1, $this->viewVariable('problems'));
+        $this->assertContains('billing_gap', $this->reportedChecks());
 
         // gathered over several contracts, so each row has to say which one it is about
-        $this->assertResponseContains('These contracts do not add up');
+        $this->assertResponseContains('These records do not add up');
         $this->assertResponseContains('Gap Between Consecutive Billings');
     }
 
     /**
-     * A customer whose contracts add up shows no heading at all - an empty warning would teach
-     * everybody to look past the place the real ones appear.
+     * The card carries what the address checks have on them beside what the contract checks
+     * do. Which family a finding came from is not something the page has to know - the check
+     * says which listing draws it - and this is what says the two really do arrive together.
      *
      * @return void
      * @link \App\Controller\CustomersController::view()
      */
-    public function testViewShowsNothingWhereTheContractsAddUp(): void
+    public function testViewShowsWhatIsWrongWithTheirAddressesToo(): void
     {
-        $this->getTableLocator()->get('Billings')->deleteAll(['customer_id' => self::CUSTOMER_ID]);
-        $this->getTableLocator()->get('ContractVersions')->deleteAll(['1 = 1']);
-
         $this->login();
         $this->get('/customers/view/' . self::CUSTOMER_ID);
 
         $this->assertResponseOk();
-        $this->assertSame([], $this->viewVariable('problems'));
-        $this->assertResponseNotContains('These contracts do not add up');
+
+        $reported = $this->reportedChecks();
+
+        $this->assertContains('missing_installation_address', $reported, 'No address check reached the card.');
+        $this->assertResponseContains('Contract Without an Installation Address');
+    }
+
+    /**
+     * The checks reported on the card, by name.
+     *
+     * @return list<string>
+     */
+    private function reportedChecks(): array
+    {
+        /** @var list<array{check: \App\Check\CheckInterface, records: iterable<mixed>}> $problems */
+        $problems = $this->viewVariable('problems');
+
+        return array_map(fn(array $problem): string => $problem['check']->id(), $problems);
     }
 
     /**

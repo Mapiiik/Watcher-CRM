@@ -7,6 +7,7 @@ use App\Check\AbstractCheck;
 use Cake\Database\Expression\QueryExpression;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
+use Override;
 use Settings\Utility\Settings;
 
 /**
@@ -56,34 +57,32 @@ abstract class AbstractContractCheck extends AbstractCheck implements ContractCh
      */
     public function __construct(
         protected bool $ignore_inactive = true,
-        protected ?string $contract_id = null,
-        protected ?string $customer_id = null,
+        ?string $contract_id = null,
+        ?string $customer_id = null,
     ) {
+        parent::__construct($contract_id, $customer_id);
     }
 
     /**
-     * Narrow a query to whatever the check was asked about, where it was asked about anything.
+     * Every one of these queries has the contract beside it, either as its subject or as what
+     * the record hangs on, so they all hold the customer in the same place. Which field holds
+     * the contract differs, and each check says.
      *
-     * The contract is named per check, because each looks at it through a field of its own.
-     * The customer is not: every one of these queries has the contract beside it, either as
-     * its subject or as what it hangs on, so `Contracts.customer_id` is there to be asked in
-     * all of them.
-     *
-     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query to narrow.
-     * @param string $field The field holding the contract, qualified by its alias.
-     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     * @return string|null
      */
-    protected function scoped(SelectQuery $query, string $field): SelectQuery
+    #[Override]
+    protected function customerField(): ?string
     {
-        if ($this->contract_id !== null) {
-            $query->where([$field => $this->contract_id]);
-        }
+        return 'Contracts.customer_id';
+    }
 
-        if ($this->customer_id !== null) {
-            $query->where(['Contracts.customer_id' => $this->customer_id]);
-        }
-
-        return $query;
+    /**
+     * @return string
+     */
+    #[Override]
+    public function element(): string
+    {
+        return 'ContractChecks/' . $this->template();
     }
 
     /**

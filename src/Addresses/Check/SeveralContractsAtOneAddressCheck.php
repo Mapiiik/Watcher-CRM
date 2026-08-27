@@ -30,9 +30,25 @@ class SeveralContractsAtOneAddressCheck extends AbstractAddressCheck
     /**
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
      * @param bool $ignore_inactive Whether to count only the contracts that are running.
+     * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
-    public function __construct(private ContractsTable $contracts, private bool $ignore_inactive = true)
+    public function __construct(
+        private ContractsTable $contracts,
+        private bool $ignore_inactive = true,
+        ?string $contract_id = null,
+        ?string $customer_id = null,
+    ) {
+        parent::__construct($contract_id, $customer_id);
+    }
+
+    /**
+     * @return string|null
+     */
+    #[Override]
+    protected function customerField(): ?string
     {
+        return 'Contracts.customer_id';
     }
 
     /**
@@ -92,6 +108,8 @@ class SeveralContractsAtOneAddressCheck extends AbstractAddressCheck
         // place picks up a second contract - the old one and the one that replaced it. That
         // is history rather than a fault, and worth seeing only when history is the subject.
         $query = $this->contracts->find($this->ignore_inactive ? 'withActiveServices' : 'all');
+
+        $this->scoped($query);
 
         return $query
             ->select([

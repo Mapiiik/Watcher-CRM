@@ -43,7 +43,7 @@
                 <?php if (count($records) === 0) : ?>
                     <p><?= h($check->emptyMessage()) ?></p>
                 <?php else : ?>
-                    <?= $this->element('ContractChecks/' . $check->template(), ['records' => $records]) ?>
+                    <?= $this->element($check->element(), ['records' => $records]) ?>
                 <?php endif ?>
             </div>
         <?php endforeach ?>

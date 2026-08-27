@@ -63,6 +63,15 @@ class OverlappingContractVersionsCheck extends AbstractContractCheck
     }
 
     /**
+     * @return string|null
+     */
+    #[Override]
+    protected function contractField(): ?string
+    {
+        return 'ContractVersions.contract_id';
+    }
+
+    /**
      * @return string
      */
     #[Override]
@@ -114,6 +123,6 @@ class OverlappingContractVersionsCheck extends AbstractContractCheck
             $this->onlyRunningContracts($query);
         }
 
-        return $this->scoped($query, 'ContractVersions.contract_id');
+        return $this->scoped($query);
     }
 }

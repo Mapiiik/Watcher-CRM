@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Addresses\Check;
 
 use App\Check\AbstractCheck;
+use Override;
 
 /**
  * Shared ground for address checks.
@@ -14,4 +15,12 @@ use App\Check\AbstractCheck;
  */
 abstract class AbstractAddressCheck extends AbstractCheck implements AddressCheckInterface
 {
+    /**
+     * @return string
+     */
+    #[Override]
+    public function element(): string
+    {
+        return 'AddressChecks/' . $this->template();
+    }
 }

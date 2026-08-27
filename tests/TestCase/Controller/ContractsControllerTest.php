@@ -187,6 +187,40 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * The address checks are asked about the contract too. Most of them are about a customer's
+     * address book and leave themselves out, but the one whose subject is the contracts
+     * answers - and a contract with nowhere to install is exactly a contract-page finding.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::view()
+     */
+    public function testViewShowsWhatTheAddressChecksHaveOnTheContract(): void
+    {
+        $contract_id = $this->firstId('Contracts');
+        $contracts = $this->getTableLocator()->get('Contracts');
+
+        // the service type on it already requires an installation address
+        $contracts->updateAll(['installation_address_id' => null], ['id' => $contract_id]);
+        $this->getTableLocator()->get('Billings')->deleteAll(['contract_id' => $contract_id]);
+
+        $this->login();
+        $this->get('/contracts/view/' . $contract_id);
+
+        $this->assertResponseOk();
+
+        $reported = array_map(
+            fn(array $problem): string => $problem['check']->id(),
+            (array)$this->viewVariable('problems'),
+        );
+
+        $this->assertContains('missing_installation_address', $reported);
+
+        // and the ones that cannot speak about one contract stayed out of it
+        $this->assertNotContains('duplicate_address', $reported);
+        $this->assertNotContains('unclear_billing_address', $reported);
+    }
+
+    /**
      * A contract with nothing wrong shows no heading at all - an empty warning would teach
      * everybody to look past the place the real ones appear.
      *

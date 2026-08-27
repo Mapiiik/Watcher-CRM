@@ -59,7 +59,10 @@ abstract class AbstractCheckRegistry
         $checks = [];
         foreach (array_keys($this->factories) as $id) {
             $check = $this->get($id);
-            if ($check !== null) {
+
+            // Asked about one record, a check with no way to narrow to it would answer about
+            // the whole file - which on that record's page reads as its own findings.
+            if ($check !== null && $check->answersWhatWasAsked()) {
                 $checks[] = $check;
             }
         }

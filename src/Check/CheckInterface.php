@@ -54,11 +54,33 @@ interface CheckInterface
     public function count(): int;
 
     /**
-     * The element that lists its records, under the directory its family keeps.
+     * The element that lists its records, named within the directory its family keeps.
      *
      * @return string
      */
     public function template(): string;
+
+    /**
+     * That same element, named the way a template asks for one.
+     *
+     * A page showing findings from more than one family - a customer's card carries both what
+     * is wrong with their contracts and what is wrong with their addresses - cannot know which
+     * directory to look in, so the check says.
+     *
+     * @return string
+     */
+    public function element(): string;
+
+    /**
+     * Whether the check can answer the question it was given.
+     *
+     * A check asked about one record it has no way to narrow to would answer about the whole
+     * file instead, so a registry asked about a record only offers the checks that can speak
+     * about it.
+     *
+     * @return bool
+     */
+    public function answersWhatWasAsked(): bool;
 
     /**
      * Whether the dashboard card counts this one.

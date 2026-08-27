@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Addresses\Check\AddressCheckRegistry;
 use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\Registry;
 use App\Contracts\Check\ContractCheckRegistry;
@@ -407,8 +408,15 @@ class CustomersController extends AppController
 
         // The same findings a contract shows about itself, gathered over every contract this
         // customer holds - most of what is wrong with one of them was done to all of them at
-        // once, on the day they were written.
-        $problems = (new ContractCheckRegistry(false, null, $customer->id))->findings();
+        // once, on the day they were written - and what the address checks have on them
+        // beside it. Contracts come first: that is where a mistake costs money.
+        //
+        // Every check whose subject cannot be narrowed to one customer leaves itself out, so
+        // this is what can be said about this customer rather than about the whole file.
+        $problems = array_merge(
+            (new ContractCheckRegistry(false, null, $customer->id))->findings(),
+            (new AddressCheckRegistry(false, null, $customer->id))->findings(),
+        );
 
         $this->set(compact(
             'customer',

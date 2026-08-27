@@ -36,6 +36,15 @@ class ImpossibleContractDatesCheck extends AbstractContractCheck
     }
 
     /**
+     * @return string|null
+     */
+    #[Override]
+    protected function contractField(): ?string
+    {
+        return 'Contracts.id';
+    }
+
+    /**
      * @return string
      */
     #[Override]
@@ -93,6 +102,6 @@ class ImpossibleContractDatesCheck extends AbstractContractCheck
             ])
             ->orderBy(['Contracts.number' => 'ASC']);
 
-        return $this->scoped($query, 'Contracts.id');
+        return $this->scoped($query);
     }
 }

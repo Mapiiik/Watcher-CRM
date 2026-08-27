@@ -65,6 +65,15 @@ class OverlappingBillingsCheck extends AbstractContractCheck
     }
 
     /**
+     * @return string|null
+     */
+    #[Override]
+    protected function contractField(): ?string
+    {
+        return 'Billings.contract_id';
+    }
+
+    /**
      * @return string
      */
     #[Override]
@@ -116,6 +125,6 @@ class OverlappingBillingsCheck extends AbstractContractCheck
             $this->onlyRunningContracts($query);
         }
 
-        return $this->scoped($query, 'Billings.contract_id');
+        return $this->scoped($query);
     }
 }

@@ -2,13 +2,19 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Address> $records
+ * @var bool|null $customer_column
  */
+
+// on a customer's own page every row is about that customer, so the column says nothing
+$customer_column ??= true;
 ?>
 <table>
     <thead>
         <tr>
             <th><?= __('Address') ?></th>
-            <th><?= __('Customer') ?></th>
+            <?php if ($customer_column) : ?>
+                <th><?= __('Customer') ?></th>
+            <?php endif ?>
             <th><?= __('Coordinates Set by Hand') ?></th>
         </tr>
     </thead>
@@ -26,19 +32,21 @@
                         ],
                     ) ?>
                 </td>
-                <td>
-                    <?php if ($address->customer !== null) : ?>
-                        <?= $this->Html->link(
-                            $address->customer->name_for_lists,
-                            [
-                                'controller' => 'Customers',
-                                'action' => 'view',
-                                $address->customer_id,
-                                'customer_id' => false,
-                            ],
-                        ) ?>
-                    <?php endif ?>
-                </td>
+                <?php if ($customer_column) : ?>
+                    <td>
+                        <?php if ($address->customer !== null) : ?>
+                            <?= $this->Html->link(
+                                $address->customer->name_for_lists,
+                                [
+                                    'controller' => 'Customers',
+                                    'action' => 'view',
+                                    $address->customer_id,
+                                    'customer_id' => false,
+                                ],
+                            ) ?>
+                        <?php endif ?>
+                    </td>
+                <?php endif ?>
                 <td><?= $address->manual_coordinate_setting ? __('Yes') : __('No') ?></td>
             </tr>
         <?php endforeach ?>

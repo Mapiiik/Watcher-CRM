@@ -15,6 +15,13 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class AddressCheckRegistryTest extends TestCase
 {
     /**
+     * The customer the fixtures hang their contracts on, and one of those contracts.
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -123,6 +130,49 @@ class AddressCheckRegistryTest extends TestCase
                 sprintf('%s asks the same thing either way, so the filter passes it by.', $check->id()),
             );
         }
+    }
+
+    /**
+     * A customer's card carries these findings beside what is wrong with their contracts, so
+     * every one of them has to be able to speak about one customer.
+     *
+     * @return void
+     * @link \App\Addresses\Check\AddressCheckRegistry::__construct()
+     */
+    public function testEveryCheckCanSpeakAboutOneCustomer(): void
+    {
+        $anybody = new AddressCheckRegistry(customer_id: null);
+        $theirs = new AddressCheckRegistry(customer_id: self::CUSTOMER_ID);
+
+        $this->assertCount(count($anybody->all()), $theirs->all());
+
+        foreach ($theirs->all() as $check) {
+            $this->assertNotSame(
+                $anybody->get($check->id())?->find()->sql(),
+                $check->find()->sql(),
+                sprintf('%s asks the same thing either way, so the customer passes it by.', $check->id()),
+            );
+        }
+    }
+
+    /**
+     * Most of these are about a customer's address book rather than about one contract - the
+     * same place recorded twice, an invoice with nowhere to go - and one contract cannot be
+     * asked about that. Rather than answering about the whole file under a heading that says
+     * otherwise, they leave themselves out.
+     *
+     * @return void
+     * @link \App\Check\AbstractCheck::answersWhatWasAsked()
+     */
+    public function testOnlyTheChecksThatCanSpeakAboutOneContractAreOffered(): void
+    {
+        $ids = array_map(
+            fn(AddressCheckInterface $check): string => $check->id(),
+            (new AddressCheckRegistry(contract_id: self::CONTRACT_ID))->all(),
+        );
+
+        // the contracts are its subject, so one of them is a plain condition
+        $this->assertSame(['missing_installation_address'], $ids);
     }
 
     /**

@@ -38,9 +38,25 @@ class DuplicateAddressCheck extends AbstractAddressCheck
     /**
      * @param \App\Model\Table\AddressesTable $addresses Addresses table.
      * @param bool $ignore_inactive Whether to pass over customers with nothing running.
+     * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
-    public function __construct(private AddressesTable $addresses, private bool $ignore_inactive = true)
+    public function __construct(
+        private AddressesTable $addresses,
+        private bool $ignore_inactive = true,
+        ?string $contract_id = null,
+        ?string $customer_id = null,
+    ) {
+        parent::__construct($contract_id, $customer_id);
+    }
+
+    /**
+     * @return string|null
+     */
+    #[Override]
+    protected function customerField(): ?string
     {
+        return 'Addresses.customer_id';
     }
 
     /**
@@ -104,6 +120,8 @@ class DuplicateAddressCheck extends AbstractAddressCheck
         foreach ($parts as $part) {
             $shown[$part] = $query->func()->min('Addresses.' . $part, ['string']);
         }
+
+        $this->scoped($query);
 
         return $query
             ->select($keys + $shown + ['total' => $query->func()->count('*')], true)

@@ -83,6 +83,15 @@ class ContractVersionGapCheck extends AbstractContractCheck
     }
 
     /**
+     * @return string|null
+     */
+    #[Override]
+    protected function contractField(): ?string
+    {
+        return 'ContractVersions.contract_id';
+    }
+
+    /**
      * @return string
      */
     #[Override]
@@ -157,6 +166,6 @@ class ContractVersionGapCheck extends AbstractContractCheck
             $this->onlyRunningContracts($query)->where([$query->expr(self::BREAK_NOT_OVER)]);
         }
 
-        return $this->scoped($query, 'ContractVersions.contract_id');
+        return $this->scoped($query);
     }
 }

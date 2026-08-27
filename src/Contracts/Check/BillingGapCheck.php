@@ -99,6 +99,15 @@ class BillingGapCheck extends AbstractContractCheck
     }
 
     /**
+     * @return string|null
+     */
+    #[Override]
+    protected function contractField(): ?string
+    {
+        return 'Billings.contract_id';
+    }
+
+    /**
      * @return string
      */
     #[Override]
@@ -156,6 +165,6 @@ class BillingGapCheck extends AbstractContractCheck
             $this->onlyRunningContracts($query)->where([$query->expr(self::BREAK_NOT_OVER)]);
         }
 
-        return $this->scoped($query, 'Billings.contract_id');
+        return $this->scoped($query);
     }
 }

@@ -26,9 +26,25 @@ abstract class AbstractRegistryReferenceCheck extends AbstractAddressCheck
     /**
      * @param \App\Model\Table\AddressesTable $addresses Addresses table.
      * @param bool $ignore_inactive Whether to keep to addresses something is running at.
+     * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
-    public function __construct(protected AddressesTable $addresses, protected bool $ignore_inactive = true)
+    public function __construct(
+        protected AddressesTable $addresses,
+        protected bool $ignore_inactive = true,
+        ?string $contract_id = null,
+        ?string $customer_id = null,
+    ) {
+        parent::__construct($contract_id, $customer_id);
+    }
+
+    /**
+     * @return string|null
+     */
+    #[Override]
+    protected function customerField(): ?string
     {
+        return 'Addresses.customer_id';
     }
 
     /**
@@ -62,7 +78,7 @@ abstract class AbstractRegistryReferenceCheck extends AbstractAddressCheck
             ->select(['Contracts.installation_address_id'], true)
             ->where(['Contracts.installation_address_id IS NOT' => null]);
 
-        return $this->addresses
+        $query = $this->addresses
             ->find()
             ->contain(['Customers'])
             ->where([
@@ -70,5 +86,7 @@ abstract class AbstractRegistryReferenceCheck extends AbstractAddressCheck
                 'Addresses.address_registry_reference IS' => null,
             ])
             ->orderBy(['Addresses.city' => 'ASC', 'Addresses.street' => 'ASC']);
+
+        return $this->scoped($query);
     }
 }

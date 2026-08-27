@@ -38,6 +38,15 @@ class UnsettledObligationCheck extends AbstractContractCheck
     }
 
     /**
+     * @return string|null
+     */
+    #[Override]
+    protected function contractField(): ?string
+    {
+        return 'ContractVersions.contract_id';
+    }
+
+    /**
      * @return string
      */
     #[Override]
@@ -102,6 +111,6 @@ class UnsettledObligationCheck extends AbstractContractCheck
             $query->where(['ContractVersions.obligation_until >=' => Date::now()]);
         }
 
-        return $this->scoped($query, 'ContractVersions.contract_id');
+        return $this->scoped($query);
     }
 }

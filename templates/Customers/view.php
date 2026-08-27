@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var bool $show_historical_records
- * @var list<array{check: \App\Contracts\Check\ContractCheckInterface, records: iterable<\Cake\Datasource\EntityInterface>}> $problems
+ * @var list<array{check: \App\Check\CheckInterface, records: iterable<\Cake\Datasource\EntityInterface>}> $problems
  */
 
 use App\BusinessRegister\IdentityNumberStatus;
@@ -156,7 +156,7 @@ $remark = function (string $note, bool $wrong = false): string {
     </aside>
     <div class="column column-90">
         <div class="customers view content">
-            <?= $this->element('Contracts/problems', ['problems' => $problems]) ?>
+            <?= $this->element('common/problems', ['problems' => $problems, 'one_customer' => true]) ?>
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $customer->id],

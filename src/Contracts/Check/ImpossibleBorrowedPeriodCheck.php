@@ -32,6 +32,15 @@ class ImpossibleBorrowedPeriodCheck extends AbstractContractCheck
     }
 
     /**
+     * @return string|null
+     */
+    #[Override]
+    protected function contractField(): ?string
+    {
+        return 'BorrowedEquipments.contract_id';
+    }
+
+    /**
      * @return string
      */
     #[Override]
@@ -85,6 +94,6 @@ class ImpossibleBorrowedPeriodCheck extends AbstractContractCheck
             $this->onlyRunningContracts($query);
         }
 
-        return $this->scoped($query, 'BorrowedEquipments.contract_id');
+        return $this->scoped($query);
     }
 }

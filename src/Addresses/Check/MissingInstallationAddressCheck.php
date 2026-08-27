@@ -30,9 +30,34 @@ class MissingInstallationAddressCheck extends AbstractAddressCheck
     /**
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
      * @param bool $ignore_inactive Whether to pass over contracts with nothing running.
+     * @param string|null $contract_id The one contract being asked about, where there is one.
+     * @param string|null $customer_id The one customer being asked about, where there is one.
      */
-    public function __construct(private ContractsTable $contracts, private bool $ignore_inactive = true)
+    public function __construct(
+        private ContractsTable $contracts,
+        private bool $ignore_inactive = true,
+        ?string $contract_id = null,
+        ?string $customer_id = null,
+    ) {
+        parent::__construct($contract_id, $customer_id);
+    }
+
+    /**
+     * @return string|null
+     */
+    #[Override]
+    protected function customerField(): ?string
     {
+        return 'Contracts.customer_id';
+    }
+
+    /**
+     * @return string|null
+     */
+    #[Override]
+    protected function contractField(): ?string
+    {
+        return 'Contracts.id';
     }
 
     /**
@@ -89,6 +114,8 @@ class MissingInstallationAddressCheck extends AbstractAddressCheck
                     ->select(['Contracts.id'], true),
             ]);
         }
+
+        $this->scoped($query);
 
         return $query
             ->where([

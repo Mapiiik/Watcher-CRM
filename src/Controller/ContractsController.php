@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Addresses\Check\AddressCheckRegistry;
 use App\Contracts\Check\ContractCheckRegistry;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Maps\ContractMap;
@@ -222,7 +223,14 @@ class ContractsController extends AppController
         // so the filter that keeps the checks to what is running is lifted, and the ones
         // that are informational rather than faults are asked too. What would bury a listing
         // of the whole file is a line or two on one record.
-        $problems = (new ContractCheckRegistry(false, $contract->id))->findings();
+        //
+        // Most of the address checks are about a customer's address book rather than about
+        // one contract and leave themselves out when asked; the one whose subject is the
+        // contracts answers, which is why they are asked at all.
+        $problems = array_merge(
+            (new ContractCheckRegistry(false, $contract->id))->findings(),
+            (new AddressCheckRegistry(false, $contract->id))->findings(),
+        );
 
         $this->set(compact('contract', 'problems'));
     }

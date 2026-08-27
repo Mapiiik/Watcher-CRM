@@ -27,9 +27,17 @@ final class AddressCheckRegistry extends AbstractCheckRegistry
      *   being reported rather than about something else its customer happens to have. Off,
      *   the checks report the history as well, which is what putting the history straight
      *   needs and what daily work does not.
+     * @param string|null $contract_id One contract to ask about, rather than the whole file.
+     *   Most of these are about a customer's address book rather than about one contract and
+     *   leave themselves out when asked; the one whose subject is the contracts does not.
+     * @param string|null $customer_id One customer to ask about, rather than the whole file.
+     *   This is what lets a customer show the findings on their own addresses.
      */
-    public function __construct(private bool $ignore_inactive = true)
-    {
+    public function __construct(
+        private bool $ignore_inactive = true,
+        private ?string $contract_id = null,
+        private ?string $customer_id = null,
+    ) {
         /** @var \App\Model\Table\CustomersTable $customers */
         $customers = $this->fetchTable(CustomersTable::class);
         /** @var \App\Model\Table\ContractsTable $contracts */
@@ -39,28 +47,46 @@ final class AddressCheckRegistry extends AbstractCheckRegistry
 
         $this->factories = [
             'unclear_billing_address' =>
-                fn(): AddressCheckInterface => new UnclearBillingAddressCheck($customers, $this->ignore_inactive),
+                fn(): AddressCheckInterface => new UnclearBillingAddressCheck(
+                    $customers,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
             'missing_installation_address' =>
                 fn(): AddressCheckInterface => new MissingInstallationAddressCheck(
                     $contracts,
                     $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
                 ),
             'unlocated_installation_address' =>
                 fn(): AddressCheckInterface => new UnlocatedInstallationAddressCheck(
                     $addresses,
                     $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
                 ),
             'duplicate_address' =>
-                fn(): AddressCheckInterface => new DuplicateAddressCheck($addresses, $this->ignore_inactive),
+                fn(): AddressCheckInterface => new DuplicateAddressCheck(
+                    $addresses,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
             'unregistered_installation_address' =>
                 fn(): AddressCheckInterface => new UnregisteredInstallationAddressCheck(
                     $addresses,
                     $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
                 ),
             'several_contracts_at_one_address' =>
                 fn(): AddressCheckInterface => new SeveralContractsAtOneAddressCheck(
                     $contracts,
                     $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
                 ),
         ];
     }
