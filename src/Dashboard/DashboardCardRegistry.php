@@ -70,14 +70,19 @@ final class DashboardCardRegistry implements CardRegistryInterface
         $this->factories['labels'] = fn(): DashboardCardInterface => new LabelsCard($labels, $this->role);
         $this->factories['contract_states'] =
             fn(): DashboardCardInterface => new ContractStatesCard($contract_states, $this->role);
-        $this->factories['ending_obligations'] =
-            fn(): DashboardCardInterface => new EndingObligationsCard($contract_versions);
+
+        // The three that report findings stand together, and in the order the customer's file
+        // is read: where they live, who they are, what they hold. What is ending comes after
+        // them, because it is work that is coming rather than work that is waiting.
         $this->factories['address_problems'] =
             fn(): DashboardCardInterface => new AddressProblemsCard(new AddressCheckRegistry());
-        $this->factories['contract_problems'] =
-            fn(): DashboardCardInterface => new ContractProblemsCard(new ContractCheckRegistry());
         $this->factories['customer_problems'] =
             fn(): DashboardCardInterface => new CustomerProblemsCard(new CustomerCheckRegistry());
+        $this->factories['contract_problems'] =
+            fn(): DashboardCardInterface => new ContractProblemsCard(new ContractCheckRegistry());
+
+        $this->factories['ending_obligations'] =
+            fn(): DashboardCardInterface => new EndingObligationsCard($contract_versions);
 
         // The debtor cards read the accounting records, which only exist with the plugin.
         // They come last, so that what the whole office looks at stands ahead of what only
