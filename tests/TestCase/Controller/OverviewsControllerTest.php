@@ -406,6 +406,55 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
+     * Whoever is let into the rack of overviews at all works the whole file rather than one
+     * customer at a time, so what does not add up in it is theirs to look up as much as
+     * anybody's. Network managers were the one such role the checks were closed to.
+     *
+     * @param string $overview The check overview to open.
+     * @return void
+     */
+    #[DataProvider('checkOverviews')]
+    public function testTheChecksAreOpenToWhoeverIsLetIntoTheOverviews(string $overview): void
+    {
+        $this->login('network-manager');
+
+        $this->get('/overviews');
+        $this->assertResponseOk('A role that cannot open the rack proves nothing about the rest.');
+
+        $this->get($overview);
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Being let into the checks is not being let into everything else in the rack.
+     *
+     * @param string $overview The check overview a role reaches by name.
+     * @return void
+     */
+    #[DataProvider('checkOverviews')]
+    public function testTheChecksStayShutToWhoeverTheOverviewsAreShutTo(string $overview): void
+    {
+        $this->login('network-technician');
+
+        $this->get($overview);
+
+        // a role that may not reach an action is sent away rather than shown it
+        $this->assertRedirect();
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function checkOverviews(): array
+    {
+        return [
+            'addresses' => ['/overviews/overview-of-address-problems'],
+            'contracts' => ['/overviews/overview-of-contract-problems'],
+            'customers' => ['/overviews/overview-of-customer-problems'],
+        ];
+    }
+
+    /**
      * @return array<string, array{string}>
      */
     public static function addressProblemRoles(): array

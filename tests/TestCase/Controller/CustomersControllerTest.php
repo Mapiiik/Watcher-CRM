@@ -17,6 +17,7 @@ use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
@@ -268,6 +269,49 @@ class CustomersControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Obligation Until'));
+    }
+
+    /**
+     * As on a contract: whoever may look at the customer may ask what does not add up about
+     * them. The findings being fetched on their own must not narrow who is shown them.
+     *
+     * @param string $role Role to sign in as.
+     * @return void
+     * @link \App\Controller\CustomersController::problems()
+     */
+    #[DataProvider('everyRole')]
+    public function testWhoeverMayLookAtTheCustomerMayAskWhatIsWrongWithThem(string $role): void
+    {
+        $this->login($role);
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+        $viewing = $this->_response?->getStatusCode();
+
+        $this->login($role);
+        $this->get('/customers/problems/' . self::CUSTOMER_ID);
+
+        $this->assertSame(
+            $viewing,
+            $this->_response?->getStatusCode(),
+            sprintf('%s is shown the customer but not what does not add up about them.', $role),
+        );
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function everyRole(): array
+    {
+        $roles = [
+            'admin',
+            'sales-manager',
+            'network-manager',
+            'bookkeeper',
+            'sales-representative',
+            'network-technician',
+            'customer-service-technician',
+        ];
+
+        return array_combine($roles, array_map(fn(string $role): array => [$role], $roles));
     }
 
     /**

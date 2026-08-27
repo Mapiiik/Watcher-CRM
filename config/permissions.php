@@ -468,7 +468,9 @@ $permissions = [
                 'delete',
             ],
         ],
-        //allow some overviews for network-managers
+        //allow some overviews for network-managers, the checks among them: they are let into
+        //the rack of overviews and work the whole file rather than one customer at a time, so
+        //what does not add up in it is theirs to look up as much as anybody's
         [
             'role' => [
                 'network-manager',
@@ -482,6 +484,9 @@ $permissions = [
                 'overviewOfActiveServices',
                 'overviewOfCzechCustomerConnectionPoints',
                 'overviewOfCzechCustomerConnectionSpeeds',
+                'overviewOfAddressProblems',
+                'overviewOfContractProblems',
+                'overviewOfCustomerProblems',
             ],
         ],
         //historical connections - only index and view
@@ -514,9 +519,9 @@ $permissions = [
             ],
             'action' => '*',
         ],
-        //the address and contract checks are offered on the dashboard to roles that are otherwise
-        //not let into the overviews, so the ones they link to are opened to them by name - not
-        //the index beside it, which would hand them the whole rack of overviews
+        //the checks are offered on the dashboard to roles that are otherwise not let into the
+        //overviews, so the ones they link to are opened to them by name - not the index beside
+        //them, which would hand them the whole rack of overviews
         [
             'role' => [
                 'bookkeeper',

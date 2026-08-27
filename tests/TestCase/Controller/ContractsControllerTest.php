@@ -14,6 +14,7 @@ use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
@@ -147,6 +148,52 @@ class ContractsControllerTest extends TestCase
         // accounts are drawn by a cell, which renders in a view of its own and so cannot ask
         // for the script - this page has to, and only opening it says whether it did.
         $this->assertResponseContains('js/lazy-load.js');
+    }
+
+    /**
+     * The findings are fetched on their own, which made them an action of their own - and an
+     * action of its own is a thing that can quietly be shut to somebody the page is open to.
+     * Whoever may look at the contract may ask what does not add up on it.
+     *
+     * @param string $role Role to sign in as.
+     * @return void
+     * @link \App\Controller\ContractsController::problems()
+     */
+    #[DataProvider('everyRole')]
+    public function testWhoeverMayLookAtTheContractMayAskWhatIsWrongWithIt(string $role): void
+    {
+        $contract_id = $this->firstId('Contracts');
+
+        $this->login($role);
+        $this->get('/contracts/view/' . $contract_id);
+        $viewing = $this->_response?->getStatusCode();
+
+        $this->login($role);
+        $this->get('/contracts/problems/' . $contract_id);
+
+        $this->assertSame(
+            $viewing,
+            $this->_response?->getStatusCode(),
+            sprintf('%s is shown the contract but not what does not add up on it.', $role),
+        );
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function everyRole(): array
+    {
+        $roles = [
+            'admin',
+            'sales-manager',
+            'network-manager',
+            'bookkeeper',
+            'sales-representative',
+            'network-technician',
+            'customer-service-technician',
+        ];
+
+        return array_combine($roles, array_map(fn(string $role): array => [$role], $roles));
     }
 
     /**
