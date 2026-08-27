@@ -43,6 +43,7 @@
  */
 
 use Settings\ValueObject\Type\BoolType;
+use Settings\ValueObject\Type\DateType;
 use Settings\ValueObject\Type\ListType;
 use Settings\ValueObject\Type\NumberType;
 
@@ -132,6 +133,41 @@ return [
             'service_overrides' => [
                 'max_duration_days' => NumberType::ofInt(default: 5),
                 'max_start_offset_days' => NumberType::ofInt(default: 5),
+            ],
+            'checks' => [
+                'earliest_date' => DateType::of(
+                    default: '2000-01-01',
+                    hint: __('A date before this one is pointed out as mistyped.'),
+                ),
+                'years_ahead' => NumberType::ofInt(
+                    default: 5,
+                    hint: __('How far ahead a date may still reach before it is pointed out as mistyped.'),
+                ),
+                'dates_meaning_unknown' => ListType::ofDates(
+                    default: ['1800-01-01'],
+                    hint: __('Days that stand for "not known" rather than for a day. The checks pass over them.'),
+                ),
+                'signature_expected_within_months' => NumberType::ofInt(
+                    default: 3,
+                    hint: __('How long after a contract version starts its signature may still arrive.'),
+                ),
+            ],
+        ],
+
+        'customers' => [
+            'checks' => [
+                'incomplete_identity_excused_by' => ListType::ofStrings(
+                    default: ['Ne datum narození'],
+                    hint: __('Labels that say the missing details are known about and accepted.'),
+                ),
+                'missing_email_excused_by' => ListType::ofStrings(
+                    default: ['Ne email'],
+                    hint: __('Labels that say the missing e-mail address is known about and accepted.'),
+                ),
+                'missing_gdpr_consent_excused_by' => ListType::ofStrings(
+                    default: ['GDPR-NE'],
+                    hint: __('Labels that say the missing consent is known about and accepted.'),
+                ),
             ],
         ],
 
