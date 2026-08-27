@@ -239,6 +239,19 @@ $permissions = [
                 'view',
             ],
         ],
+        //the findings on a record are fetched on their own so they do not hold its page up,
+        //which makes them an action of their own - open to whoever may look at the record
+        [
+            'role' => '*',
+            'plugin' => null,
+            'controller' => [
+                'Customers',
+                'Contracts',
+            ],
+            'action' => [
+                'problems',
+            ],
+        ],
         [
             'role' => '*',
             'plugin' => null,

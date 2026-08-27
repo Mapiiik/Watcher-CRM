@@ -271,6 +271,24 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * The checks come to about as much work as the rest of the page put together, so the card
+     * must not be waiting on them - it draws first and asks for them afterwards.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewAsksForTheFindingsRatherThanWaitingForThem(): void
+    {
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertNull($this->viewVariable('problems'), 'The card ran the checks itself.');
+        $this->assertResponseContains('/customers/problems/' . self::CUSTOMER_ID);
+        $this->assertResponseContains('js/lazy-load.js');
+    }
+
+    /**
      * What does not add up on a customer's contracts is shown on their card, gathered over all
      * of them - most of what is wrong with one was done to all of them on the day they were
      * written, and a customer's card is where that is seen at once.
@@ -305,7 +323,7 @@ class CustomersControllerTest extends TestCase
         }
 
         $this->login();
-        $this->get('/customers/view/' . self::CUSTOMER_ID);
+        $this->get('/customers/problems/' . self::CUSTOMER_ID);
 
         $this->assertResponseOk();
         $this->assertContains('billing_gap', $this->reportedChecks());
@@ -313,6 +331,9 @@ class CustomersControllerTest extends TestCase
         // gathered over several contracts, so each row has to say which one it is about
         $this->assertResponseContains('These records do not add up');
         $this->assertResponseContains('Gap Between Consecutive Billings');
+
+        // drawn on its own, so it arrives as the block itself rather than as a page
+        $this->assertResponseNotContains('<html');
     }
 
     /**
@@ -326,7 +347,7 @@ class CustomersControllerTest extends TestCase
     public function testViewShowsWhatIsWrongWithTheirAddressesToo(): void
     {
         $this->login();
-        $this->get('/customers/view/' . self::CUSTOMER_ID);
+        $this->get('/customers/problems/' . self::CUSTOMER_ID);
 
         $this->assertResponseOk();
 

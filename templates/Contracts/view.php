@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
  * @var bool $show_historical_records
- * @var list<array{check: \App\Contracts\Check\ContractCheckInterface, records: iterable<\Cake\Datasource\EntityInterface>}> $problems
  */
 
 // The RADIUS accounts below are drawn by a cell, and a cell renders in a view of its own, so
@@ -126,7 +125,18 @@ $this->Html->script('lazy-load.js', ['block' => true]);
     </aside>
     <div class="column column-90">
         <div class="contracts view content">
-            <?= $this->element('common/problems', ['problems' => $problems, 'one_contract' => true]) ?>
+            <?php // the checks come to about as much work as the rest of the page, and none of ?>
+            <?php // it is what the page was opened to read - so it is asked for afterwards ?>
+            <div
+                class="lazy-load"
+                data-url="<?= $this->Url->build([
+                    'action' => 'problems',
+                    $contract->id,
+                    'customer_id' => $contract->customer_id,
+                ]) ?>"
+                data-error="<?= h(__('What does not add up on this contract could not be loaded.')) ?>"
+                data-trigger="load"
+            ></div>
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $contract->id],

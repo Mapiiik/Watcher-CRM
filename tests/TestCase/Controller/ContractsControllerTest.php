@@ -150,6 +150,26 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * The checks come to about as much work as the rest of the page put together, so the page
+     * must not be waiting on them - it draws first and asks for them afterwards.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::view()
+     */
+    public function testViewAsksForTheFindingsRatherThanWaitingForThem(): void
+    {
+        $contract_id = $this->firstId('Contracts');
+
+        $this->login();
+        $this->get('/contracts/view/' . $contract_id);
+
+        $this->assertResponseOk();
+        $this->assertNull($this->viewVariable('problems'), 'The page ran the checks itself.');
+        $this->assertResponseContains('/contracts/problems/' . $contract_id);
+        $this->assertResponseContains('js/lazy-load.js');
+    }
+
+    /**
      * A contract that does not add up says so at the top, where it is being worked on, rather
      * than only in a listing of the whole file that nobody opens while fixing one record.
      *
@@ -179,11 +199,14 @@ class ContractsControllerTest extends TestCase
         }
 
         $this->login();
-        $this->get('/contracts/view/' . $contract_id);
+        $this->get('/contracts/problems/' . $contract_id);
 
         $this->assertResponseOk();
         $this->assertCount(1, $this->viewVariable('problems'));
         $this->assertResponseContains('Gap Between Consecutive Billings');
+
+        // drawn on its own, so it arrives as the block itself rather than as a page
+        $this->assertResponseNotContains('<html');
     }
 
     /**
@@ -204,7 +227,7 @@ class ContractsControllerTest extends TestCase
         $this->getTableLocator()->get('Billings')->deleteAll(['contract_id' => $contract_id]);
 
         $this->login();
-        $this->get('/contracts/view/' . $contract_id);
+        $this->get('/contracts/problems/' . $contract_id);
 
         $this->assertResponseOk();
 
@@ -233,7 +256,7 @@ class ContractsControllerTest extends TestCase
         $this->getTableLocator()->get('Billings')->deleteAll(['contract_id' => $contract_id]);
 
         $this->login();
-        $this->get('/contracts/view/' . $contract_id);
+        $this->get('/contracts/problems/' . $contract_id);
 
         $this->assertResponseOk();
         $this->assertSame([], $this->viewVariable('problems'));

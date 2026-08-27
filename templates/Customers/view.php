@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var bool $show_historical_records
- * @var list<array{check: \App\Check\CheckInterface, records: iterable<\Cake\Datasource\EntityInterface>}> $problems
  */
 
 use App\BusinessRegister\IdentityNumberStatus;
@@ -156,7 +155,18 @@ $remark = function (string $note, bool $wrong = false): string {
     </aside>
     <div class="column column-90">
         <div class="customers view content">
-            <?= $this->element('common/problems', ['problems' => $problems, 'one_customer' => true]) ?>
+            <?php // the checks come to about as much work as the rest of the page, and none of ?>
+            <?php // it is what the page was opened to read - so it is asked for afterwards ?>
+            <div
+                class="lazy-load"
+                data-url="<?= $this->Url->build([
+                    'action' => 'problems',
+                    $customer->id,
+                    'customer_id' => false,
+                ]) ?>"
+                data-error="<?= h(__('What does not add up about this customer could not be loaded.')) ?>"
+                data-trigger="load"
+            ></div>
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $customer->id],

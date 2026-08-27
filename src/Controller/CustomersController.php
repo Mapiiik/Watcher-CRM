@@ -406,22 +406,41 @@ class CustomersController extends AppController
 
         $customer = $this->Customers->get($id, contain: $contain);
 
-        // The same findings a contract shows about itself, gathered over every contract this
-        // customer holds - most of what is wrong with one of them was done to all of them at
-        // once, on the day they were written - and what the address checks have on them
-        // beside it. Contracts come first: that is where a mistake costs money.
-        //
-        // Every check whose subject cannot be narrowed to one customer leaves itself out, so
-        // this is what can be said about this customer rather than about the whole file.
+        $this->set(compact(
+            'customer',
+        ));
+    }
+
+    /**
+     * What does not add up about one customer, fetched on its own
+     *
+     * The checks come to about as much work as the rest of the page put together, and none of
+     * it is what somebody opened the customer to read - so the page draws without them and
+     * asks for them afterwards.
+     *
+     * The same findings a contract shows about itself, gathered over every contract this
+     * customer holds - most of what is wrong with one of them was done to all of them at once,
+     * on the day they were written - and what the address checks have on them beside it.
+     * Contracts come first: that is where a mistake costs money.
+     *
+     * Every check whose subject cannot be narrowed to one customer leaves itself out, so this
+     * is what can be said about this customer rather than about the whole file.
+     *
+     * @param string|null $id Customer id.
+     * @return void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function problems(?string $id = null): void
+    {
+        $customer = $this->Customers->get($id);
+
         $problems = array_merge(
             (new ContractCheckRegistry(false, null, $customer->id))->findings(),
             (new AddressCheckRegistry(false, null, $customer->id))->findings(),
         );
 
-        $this->set(compact(
-            'customer',
-            'problems',
-        ));
+        $this->viewBuilder()->setLayout('ajax');
+        $this->set(compact('problems'));
     }
 
     /**

@@ -219,20 +219,40 @@ class ContractsController extends AppController
 
         $contract = $this->Contracts->get($id, contain: $contain);
 
-        // Whoever opened this contract wants to see everything that does not add up on it,
-        // so the filter that keeps the checks to what is running is lifted, and the ones
-        // that are informational rather than faults are asked too. What would bury a listing
-        // of the whole file is a line or two on one record.
-        //
-        // Most of the address checks are about a customer's address book rather than about
-        // one contract and leave themselves out when asked; the one whose subject is the
-        // contracts answers, which is why they are asked at all.
+        $this->set(compact('contract'));
+    }
+
+    /**
+     * What does not add up on one contract, fetched on its own
+     *
+     * The checks come to about as much work as the rest of the page put together, and none of
+     * it is what somebody opened the contract to read - so the page draws without them and
+     * asks for them afterwards.
+     *
+     * Whoever opened this contract wants to see everything that does not add up on it, so the
+     * filter that keeps the checks to what is running is lifted, and the ones that are
+     * informational rather than faults are asked too. What would bury a listing of the whole
+     * file is a line or two on one record.
+     *
+     * Most of the address checks are about a customer's address book rather than about one
+     * contract and leave themselves out when asked; the one whose subject is the contracts
+     * answers, which is why they are asked at all.
+     *
+     * @param string|null $id Contract id.
+     * @return void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function problems(?string $id = null): void
+    {
+        $contract = $this->Contracts->get($id);
+
         $problems = array_merge(
             (new ContractCheckRegistry(false, $contract->id))->findings(),
             (new AddressCheckRegistry(false, $contract->id))->findings(),
         );
 
-        $this->set(compact('contract', 'problems'));
+        $this->viewBuilder()->setLayout('ajax');
+        $this->set(compact('problems'));
     }
 
     /**
