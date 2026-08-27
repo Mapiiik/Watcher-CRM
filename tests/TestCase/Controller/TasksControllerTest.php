@@ -112,6 +112,29 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * Every row offers its own address to be copied, and offers it whole.
+     *
+     * Planning work means pasting task links elsewhere, and a listing is where that is done from
+     * - so what the control carries has to be the address as it would be typed: absolute, and
+     * without the mark that says a page belongs inside the popup window. Half an address pasted
+     * into a calendar is worse than none, because it looks like one.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testTheListingOffersEachTaskAddressToBeCopied(): void
+    {
+        $this->login();
+        $this->get('/tasks?show_completed=1');
+
+        $this->assertResponseOk();
+
+        $this->assertResponseContains(
+            'data-copy-url="http://localhost/tasks/view/' . $this->firstId('Tasks') . '"',
+        );
+    }
+
+    /**
      * The listing renders with the search filled in, which builds a different query than the plain
      * listing does and is therefore worth requesting on its own.
      *

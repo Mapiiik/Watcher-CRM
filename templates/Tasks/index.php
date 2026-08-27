@@ -190,6 +190,18 @@ $this->Html->script('expandable-text.js', ['block' => true]);
                             ['action' => 'edit', $task->id],
                             ['class' => 'win-link'],
                         ) ?>
+                        <?= $this->element('common/copy_url', [
+                            // win-link null keeps the routing filter from marking the copied
+                            // link as one that belongs inside the popup window
+                            'url' => $this->Url->build(
+                                ['action' => 'view', $task->id, '?' => ['win-link' => null]],
+                                ['fullBase' => true],
+                            ),
+                            // said shorter than on a page of its own: among three other actions
+                            // there is no room to spell out what the click does
+                            'label' => __('Link'),
+                            'as_link' => true,
+                        ]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
