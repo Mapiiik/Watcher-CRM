@@ -421,6 +421,25 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * A customer holding a dozen contracts gathers enough findings to push their card off the
+     * screen, so a banner past a few rows is cut to a height and opened by whoever wants it.
+     * Nothing is left out - the checks all ran and all of them are in the page.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::problems()
+     */
+    public function testALongBannerIsCutToAHeightAndOpenedByTheReader(): void
+    {
+        $this->login();
+        $this->get('/customers/problems/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertGreaterThan(1, count($this->reportedChecks()), 'The card had too little on it to be cut.');
+        $this->assertResponseContains('problems-toggle');
+        $this->assertResponseContains('problems-viewport clamped');
+    }
+
+    /**
      * The checks reported on the card, by name.
      *
      * @return list<string>

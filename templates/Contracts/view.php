@@ -8,6 +8,10 @@
 // The RADIUS accounts below are drawn by a cell, and a cell renders in a view of its own, so
 // a block it asked for would never reach this page's layout - the script is asked for here.
 $this->Html->script('lazy-load.js', ['block' => true]);
+
+// The findings banner is drawn by the ajax layout, which carries no css block, so its style is
+// asked for here - on the page that will be holding it.
+$this->Html->css('problems', ['block' => true]);
 ?>
 <div class="row">
     <aside class="column">

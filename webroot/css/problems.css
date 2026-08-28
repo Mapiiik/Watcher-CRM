@@ -1,0 +1,48 @@
+/* Findings banner */
+
+/* Kept off the page so a long list of findings does not push the record itself below the fold.
+   Done without a line of script: the banner arrives by lazy load, injected as innerHTML, which
+   never runs a script and never lets one bind to it. */
+.problems-viewport.clamped {
+    /* the height comes from the template, which is where it is also decided whether a banner
+       is long enough to be worth cutting at all */
+    max-height: var(--problems-cut, 26rem);
+    overflow: hidden;
+    /* The content fades out so it is plain that it goes on. Masked rather than faded into a
+       colour, so it sits right over a table and over the page alike, in every theme. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
+    mask-image: linear-gradient(to bottom, #000 70%, transparent);
+}
+
+/* out of the way but still reachable from the keyboard */
+.problems-toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.problems-toggle:checked ~ .problems-viewport.clamped {
+    max-height: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
+.problems-more {
+    display: block;
+    text-align: right;
+    cursor: pointer;
+    color: var(--color-links);
+}
+
+.problems-toggle:focus-visible ~ .problems-more {
+    outline: 1px dotted currentColor;
+}
+
+.problems-toggle:checked ~ .problems-more .when-folded,
+.problems-more .when-unfolded {
+    display: none;
+}
+
+.problems-toggle:checked ~ .problems-more .when-unfolded {
+    display: inline;
+}

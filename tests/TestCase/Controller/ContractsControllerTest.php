@@ -324,6 +324,69 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * A banner of a few rows is shorter than the height it would be cut to, so it is shown whole
+     * and without an opener - one that uncovers nothing would only teach people to ignore it.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::problems()
+     */
+    public function testAShortBannerIsShownWholeWithNothingToOpen(): void
+    {
+        $contract_id = $this->firstId('Contracts');
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->deleteAll(['contract_id' => $contract_id]);
+
+        $service_id = $this->getTableLocator()->get('Services')->find()->firstOrFail()->get('id');
+        $customer_id = $this->getTableLocator()->get('Contracts')->get($contract_id)->get('customer_id');
+
+        foreach ([['+1 month', '+13 months'], ['+25 months', null]] as [$from, $until]) {
+            $billings->saveOrFail($billings->newEntity([
+                'customer_id' => $customer_id,
+                'contract_id' => $contract_id,
+                'service_id' => $service_id,
+                'billing_from' => Date::now()->modify($from)->format('Y-m-d'),
+                'billing_until' => $until === null ? null : Date::now()->modify($until)->format('Y-m-d'),
+                'quantity' => 1,
+                'separate_invoice' => false,
+            ]));
+        }
+
+        $this->login();
+        $this->get('/contracts/problems/' . $contract_id);
+
+        $this->assertResponseOk();
+        $this->assertCount(1, $this->viewVariable('problems'));
+        $this->assertResponseNotContains('problems-toggle');
+        $this->assertResponseNotContains('clamped');
+    }
+
+    /**
+     * Two checks of a row each is the common shape of a contract that does not add up, and it
+     * is shorter than the height it would be cut to - cutting it would save a few pixels at
+     * the price of a click.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::problems()
+     */
+    public function testTwoFindingsOfOneRowEachAreStillShownWhole(): void
+    {
+        $contract_id = $this->firstId('Contracts');
+
+        // nothing billed and nowhere to install it: one row from each of two checks
+        $this->getTableLocator()->get('Billings')->deleteAll(['contract_id' => $contract_id]);
+        $this->getTableLocator()->get('Contracts')
+            ->updateAll(['installation_address_id' => null], ['id' => $contract_id]);
+
+        $this->login();
+        $this->get('/contracts/problems/' . $contract_id);
+
+        $this->assertResponseOk();
+        $this->assertCount(2, $this->viewVariable('problems'));
+        $this->assertResponseNotContains('problems-toggle');
+        $this->assertResponseNotContains('clamped');
+    }
+
+    /**
      * The card carries two task tables: the ones filed under this contract, and the customer's
      * others. Only the second names a contract per row - on the first it would say the same
      * thing every time.
