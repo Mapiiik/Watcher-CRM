@@ -132,25 +132,91 @@ class BillingAgainstStateCheckTest extends TestCase
     public function testAStoppedServiceStillBeingChargedForIsReported(): void
     {
         $this->billed('-1 year', null);
-        $this->stopTheServices();
+        $this->stoppedOn('-1 month');
 
         $this->assertCount(1, $this->chargedForNothing());
     }
 
     /**
-     * Stopped, and the billing stopped with it - which is what stopping a contract properly
-     * looks like. Lifting the filter is what finds it, because it happened once.
+     * Billing that runs on past the day the contract stopped is the whole of the fault, however
+     * long ago it was and whether or not it is still running now.
      *
      * @return void
      * @link \App\Contracts\Check\InactiveWithBillingCheck::find()
      */
-    public function testABillingEndedWithTheContractIsOnlyReportedWhenTheFilterIsLifted(): void
+    public function testBillingThatOutlivedTheContractIsReportedLongAfterwards(): void
     {
-        $this->billed('-3 years', '-2 years');
-        $this->stopTheServices();
+        $this->billed('-3 years', '-1 year');
+        $this->stoppedOn('-2 years');
+
+        $this->assertCount(1, $this->chargedForNothing());
+    }
+
+    /**
+     * A contract wound up properly - the billing ended on the very day the service was - is not
+     * a finding. This is what was reported from production: contract 116969-5694 stopped on the
+     * last day of July with its billing ended the same day, and its own page said it was still
+     * being charged for.
+     *
+     * @return void
+     * @link \App\Contracts\Check\InactiveWithBillingCheck::find()
+     */
+    public function testAContractWoundUpProperlyIsNotAFinding(): void
+    {
+        $this->billed('-3 years', '-1 month');
+        $this->stoppedOn('-1 month');
 
         $this->assertSame([], $this->chargedForNothing());
-        $this->assertCount(1, $this->chargedForNothing(ignore_inactive: false));
+    }
+
+    /**
+     * And it stays out of it whichever way the filter is set. A contract's own page lifts the
+     * filter to see everything about it, and was being shown every terminated contract that had
+     * ever been billed at all - which is nearly all of them.
+     *
+     * @return void
+     * @link \App\Contracts\Check\InactiveWithBillingCheck::hasAWiderReading()
+     */
+    public function testLiftingTheFilterDoesNotTurnItIntoEveryStoppedContract(): void
+    {
+        $this->billed('-3 years', '-1 month');
+        $this->stoppedOn('-1 month');
+
+        $this->assertSame([], $this->chargedForNothing(ignore_inactive: false));
+        $this->assertFalse((new InactiveWithBillingCheck($this->Contracts))->hasAWiderReading());
+    }
+
+    /**
+     * The billing ends the day after the service did, which is a day charged for nothing.
+     *
+     * @return void
+     * @link \App\Contracts\Check\InactiveWithBillingCheck::find()
+     */
+    public function testABillingOutlivingTheContractByOneDayIsReported(): void
+    {
+        $this->billed('-3 years', '-1 month +1 day');
+        $this->stoppedOn('-1 month');
+
+        $this->assertCount(1, $this->chargedForNothing());
+    }
+
+    /**
+     * Stopped with no day recorded, so there is nothing to hold the billing against but today.
+     *
+     * @return void
+     * @link \App\Contracts\Check\InactiveWithBillingCheck::find()
+     */
+    public function testWithNoDayRecordedTheBillingIsHeldAgainstToday(): void
+    {
+        $this->billed('-3 years', '-1 month');
+        $this->stopTheServices();
+        $this->Contracts->updateAll(['termination_date' => null], ['1 = 1']);
+
+        $this->assertSame([], $this->chargedForNothing(), 'Billing already over is not still charging.');
+
+        $this->billed('-1 month', null);
+
+        $this->assertCount(1, $this->chargedForNothing());
     }
 
     /**
@@ -198,6 +264,21 @@ class BillingAgainstStateCheckTest extends TestCase
     private function stopTheServices(): void
     {
         $this->getTableLocator()->get('ContractStates')->updateAll(['active_services' => false], ['1 = 1']);
+    }
+
+    /**
+     * Stop the services and say which day they stopped on.
+     *
+     * @param string $on The day, as a modifier of today.
+     * @return void
+     */
+    private function stoppedOn(string $on): void
+    {
+        $this->stopTheServices();
+        $this->Contracts->updateAll(
+            ['termination_date' => Date::now()->modify($on)->format('Y-m-d')],
+            ['id' => self::CONTRACT_ID],
+        );
     }
 
     /**
