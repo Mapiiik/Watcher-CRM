@@ -21,34 +21,50 @@ use Override;
  * A service that was genuinely paused and later resumed looks exactly the same, which is why
  * only breaks that have not finished yet are counted by default: those are the ones still
  * worth doing something about.
+ *
+ * What counts as one run is the line rather than the service. A queue carries the speeds and
+ * the kind of service the regulator is told about - it is what says which line this is - so a
+ * contract has one such service at a time and a tariff giving way to another is a change of
+ * tariff, not a month nobody paid for. A service without a queue is a fee or an add-on
+ * standing beside the line: a static address or a television package running alongside does
+ * not pay for the connection, so it cannot fill a break in it either.
  */
 class BillingGapCheck extends AbstractContractCheck
 {
     /**
-     * Another billing of the same service picks up, but later than the day after this one ends.
+     * Another billing of the same run picks up, but later than the day after this one ends.
      *
-     * A service is compared with itself: `IS NOT DISTINCT FROM` so that billings carrying no
-     * service at all form one run rather than none.
+     * Two billings are of one run when both are for a tariff - whichever tariff - or when they
+     * name the very same service. `IS NOT DISTINCT FROM` so that billings carrying no service
+     * at all form one run rather than none.
      */
     private const RESUMES_LATER = <<<'SQL'
         EXISTS (
             SELECT 1 FROM billings later
+            LEFT JOIN services later_service ON later_service.id = later.service_id
             WHERE later.id <> Billings.id
               AND later.contract_id = Billings.contract_id
-              AND later.service_id IS NOT DISTINCT FROM Billings.service_id
+              AND (
+                (later_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                OR later.service_id IS NOT DISTINCT FROM Billings.service_id
+              )
               AND later.billing_from > Billings.billing_until + 1
         )
         SQL;
 
     /**
-     * Nothing of the same service starts within the break, so this really is the last billing
+     * Nothing of the same run starts within the break, so this really is the last billing
      * before it. Without this every earlier billing of a long run would be reported as well.
      */
     private const NOTHING_FOLLOWS_IT = <<<'SQL'
         NOT EXISTS (
             SELECT 1 FROM billings covering
+            LEFT JOIN services covering_service ON covering_service.id = covering.service_id
             WHERE covering.contract_id = Billings.contract_id
-              AND covering.service_id IS NOT DISTINCT FROM Billings.service_id
+              AND (
+                (covering_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                OR covering.service_id IS NOT DISTINCT FROM Billings.service_id
+              )
               AND covering.billing_from > Billings.billing_from
               AND covering.billing_from <= Billings.billing_until + 1
         )
@@ -61,9 +77,13 @@ class BillingGapCheck extends AbstractContractCheck
     private const BREAK_NOT_OVER = <<<'SQL'
         NOT EXISTS (
             SELECT 1 FROM billings resumed
+            LEFT JOIN services resumed_service ON resumed_service.id = resumed.service_id
             WHERE resumed.id <> Billings.id
               AND resumed.contract_id = Billings.contract_id
-              AND resumed.service_id IS NOT DISTINCT FROM Billings.service_id
+              AND (
+                (resumed_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                OR resumed.service_id IS NOT DISTINCT FROM Billings.service_id
+              )
               AND resumed.billing_from > Billings.billing_until + 1
               AND resumed.billing_from <= CURRENT_DATE
         )
@@ -76,9 +96,13 @@ class BillingGapCheck extends AbstractContractCheck
     private const RESUMES_ON = <<<'SQL'
         (
             SELECT MIN(resumes.billing_from) FROM billings resumes
+            LEFT JOIN services resumes_service ON resumes_service.id = resumes.service_id
             WHERE resumes.id <> Billings.id
               AND resumes.contract_id = Billings.contract_id
-              AND resumes.service_id IS NOT DISTINCT FROM Billings.service_id
+              AND (
+                (resumes_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                OR resumes.service_id IS NOT DISTINCT FROM Billings.service_id
+              )
               AND resumes.billing_from > Billings.billing_until + 1
         )
         SQL;

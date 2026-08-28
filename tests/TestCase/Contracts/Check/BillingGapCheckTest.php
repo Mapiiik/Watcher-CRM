@@ -148,17 +148,53 @@ class BillingGapCheckTest extends TestCase
     }
 
     /**
-     * Two services each have their own run. Another service billed across the break covers
-     * the calendar but not the service, and the service is what is left unbilled.
+     * A fee billed across the break covers the calendar but not the line. A static address or
+     * a television package running alongside does not pay for the connection, so it cannot
+     * fill a break in it.
      *
      * @return void
      * @link \App\Contracts\Check\BillingGapCheck::find()
      */
-    public function testAnotherServiceDoesNotFillTheBreak(): void
+    public function testAFeeAlongsideDoesNotFillTheBreak(): void
     {
+        $this->aFee(self::OTHER_SERVICE_ID);
+
         $this->billed('+1 month', '+13 months');
         $this->billed('+25 months', null);
         $this->billed('+14 months', '+24 months', self::OTHER_SERVICE_ID);
+
+        $this->assertCount(1, $this->found());
+    }
+
+    /**
+     * One tariff giving way to another is a change of tariff, not a month nobody paid for -
+     * the line was billed throughout, only under another name. Reported from production on
+     * 115492-476, where a customer moved to a different tariff and later moved back.
+     *
+     * @return void
+     * @link \App\Contracts\Check\BillingGapCheck::find()
+     */
+    public function testATariffGivingWayToAnotherIsNotABreak(): void
+    {
+        $this->billed('+1 month', '+13 months');
+        $this->billed('+13 months +1 day', '+25 months -1 day', self::OTHER_SERVICE_ID);
+        $this->billed('+25 months', null);
+
+        $this->assertSame([], $this->found());
+    }
+
+    /**
+     * And the line has to be billed throughout for that to hold: another tariff that does not
+     * reach across the break leaves it a break.
+     *
+     * @return void
+     * @link \App\Contracts\Check\BillingGapCheck::find()
+     */
+    public function testAnotherTariffThatDoesNotReachAcrossStillLeavesABreak(): void
+    {
+        $this->billed('+1 month', '+13 months');
+        $this->billed('+13 months +1 day', '+18 months', self::OTHER_SERVICE_ID);
+        $this->billed('+25 months', null);
 
         $this->assertCount(1, $this->found());
     }
@@ -240,6 +276,20 @@ class BillingGapCheckTest extends TestCase
         $records = $check->find()->all()->toList();
 
         return $records;
+    }
+
+    /**
+     * Make a service a fee rather than a tariff, by taking its queue away.
+     *
+     * The queue is what says which line a service is; without one it stands beside the line.
+     * Both fixture services carry one, so a case about a fee has to say so.
+     *
+     * @param string $service_id The service to turn into a fee.
+     * @return void
+     */
+    private function aFee(string $service_id): void
+    {
+        $this->getTableLocator()->get('Services')->updateAll(['queue_id' => null], ['id' => $service_id]);
     }
 
     /**
