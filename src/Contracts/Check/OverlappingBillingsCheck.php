@@ -8,19 +8,24 @@ use Cake\ORM\Query\SelectQuery;
 use Override;
 
 /**
- * One service billed twice over the same stretch of time on one contract.
+ * One line billed twice over the same stretch of time on one contract.
  *
  * Almost always the previous billing was left open when the new one was written, so the
  * customer is charged for both from that day on. It is the mirror image of a break, and the
  * more expensive way round: a break nobody notices costs us, an overlap nobody notices costs
  * the customer, and they do notice.
  *
+ * What counts as one line is what counts as one for a break, and for the same reason: a queue
+ * says which line a service is, and a contract has one of those at a time. So two tariffs
+ * running at once are an overlap however differently they are named - the customer is paying
+ * for the connection twice - while a fee standing beside the line overlaps only itself.
+ *
  * The earlier of the two is reported, because that is the one whose end is missing or wrong.
  */
 class OverlappingBillingsCheck extends AbstractContractCheck
 {
     /**
-     * Another billing of the same service starts before this one has finished.
+     * Another billing of the same line starts before this one has finished.
      *
      * A billing with no end reaches forever, which `infinity` says without the query having to
      * be written twice. The pair is ordered so that only the earlier of the two is reported -
@@ -29,8 +34,12 @@ class OverlappingBillingsCheck extends AbstractContractCheck
     private const RUNS_INTO_ANOTHER = <<<'SQL'
         EXISTS (
             SELECT 1 FROM billings other
+            LEFT JOIN services other_service ON other_service.id = other.service_id
             WHERE other.contract_id = Billings.contract_id
-              AND other.service_id IS NOT DISTINCT FROM Billings.service_id
+              AND (
+                (other_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                OR other.service_id IS NOT DISTINCT FROM Billings.service_id
+              )
               AND (other.billing_from, other.id) > (Billings.billing_from, Billings.id)
               AND other.billing_from <= COALESCE(Billings.billing_until, 'infinity'::date)
         )
@@ -42,10 +51,35 @@ class OverlappingBillingsCheck extends AbstractContractCheck
     private const OVERLAPS_FROM = <<<'SQL'
         (
             SELECT MIN(overlapping.billing_from) FROM billings overlapping
+            LEFT JOIN services overlapping_service ON overlapping_service.id = overlapping.service_id
             WHERE overlapping.contract_id = Billings.contract_id
-              AND overlapping.service_id IS NOT DISTINCT FROM Billings.service_id
+              AND (
+                (overlapping_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                OR overlapping.service_id IS NOT DISTINCT FROM Billings.service_id
+              )
               AND (overlapping.billing_from, overlapping.id) > (Billings.billing_from, Billings.id)
               AND overlapping.billing_from <= COALESCE(Billings.billing_until, 'infinity'::date)
+        )
+        SQL;
+
+    /**
+     * What the other one is for, so that a pair of differently named tariffs reads as the
+     * overlap it is rather than as one line listed for no visible reason.
+     */
+    private const OVERLAPS_WITH = <<<'SQL'
+        (
+            SELECT with_service.name
+            FROM billings with_billing
+            LEFT JOIN services with_service ON with_service.id = with_billing.service_id
+            WHERE with_billing.contract_id = Billings.contract_id
+              AND (
+                (with_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                OR with_billing.service_id IS NOT DISTINCT FROM Billings.service_id
+              )
+              AND (with_billing.billing_from, with_billing.id) > (Billings.billing_from, Billings.id)
+              AND with_billing.billing_from <= COALESCE(Billings.billing_until, 'infinity'::date)
+            ORDER BY with_billing.billing_from, with_billing.id
+            LIMIT 1
         )
         SQL;
 
@@ -114,6 +148,7 @@ class OverlappingBillingsCheck extends AbstractContractCheck
 
         $query
             ->select(['overlaps_from' => $query->expr(self::OVERLAPS_FROM)])
+            ->select(['overlaps_with' => $query->expr(self::OVERLAPS_WITH)])
             ->select($this->billings)
             ->select($this->billings->Contracts)
             ->select($this->billings->Services)

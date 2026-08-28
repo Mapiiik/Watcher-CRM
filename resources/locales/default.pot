@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-27 16:15+0200\n"
+"POT-Creation-Date: 2026-08-28 10:11+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -421,11 +421,11 @@ msgstr ""
 msgid "Every contract providing services is billed for."
 msgstr ""
 
-#: ./src/Contracts/Check/BillingGapCheck.php:125
+#: ./src/Contracts/Check/BillingGapCheck.php:149
 msgid "Gap Between Consecutive Billings"
 msgstr ""
 
-#: ./src/Contracts/Check/BillingGapCheck.php:134
+#: ./src/Contracts/Check/BillingGapCheck.php:158
 msgid "No service stops being billed and starts again later."
 msgstr ""
 
@@ -477,11 +477,11 @@ msgstr ""
 msgid "Every contract version runs over a stretch of time that can exist."
 msgstr ""
 
-#: ./src/Contracts/Check/InactiveWithBillingCheck.php:73
+#: ./src/Contracts/Check/InactiveWithBillingCheck.php:106
 msgid "Billed Without Providing Services"
 msgstr ""
 
-#: ./src/Contracts/Check/InactiveWithBillingCheck.php:82
+#: ./src/Contracts/Check/InactiveWithBillingCheck.php:115
 msgid "No contract is billed for a service it is not providing."
 msgstr ""
 
@@ -509,11 +509,11 @@ msgstr ""
 msgid "Every billing simply names the service it is for."
 msgstr ""
 
-#: ./src/Contracts/Check/OverlappingBillingsCheck.php:91
+#: ./src/Contracts/Check/OverlappingBillingsCheck.php:125
 msgid "Overlapping Billings"
 msgstr ""
 
-#: ./src/Contracts/Check/OverlappingBillingsCheck.php:100
+#: ./src/Contracts/Check/OverlappingBillingsCheck.php:134
 msgid "No service is billed twice over the same stretch of time."
 msgstr ""
 
@@ -3113,6 +3113,7 @@ msgstr ""
 #: ./templates/element/AddressChecks/unclear_billing_address.php:15
 #: ./templates/element/ContractChecks/contract.php:26
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:20
+#: ./templates/element/ContractChecks/inactive_with_billing.php:23
 #: ./templates/element/ContractChecks/unsigned_contract.php:23
 #: ./templates/element/Contracts/Billings.php:17
 #: ./templates/element/Contracts/related.php:20
@@ -3157,8 +3158,9 @@ msgstr ""
 #: ./templates/element/ContractChecks/impossible_borrowed_period.php:21
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:19
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:18
+#: ./templates/element/ContractChecks/inactive_with_billing.php:20
 #: ./templates/element/ContractChecks/non_standard_service.php:21
-#: ./templates/element/ContractChecks/overlapping_billings.php:18
+#: ./templates/element/ContractChecks/overlapping_billings.php:21
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:18
 #: ./templates/element/ContractChecks/unsettled_obligation.php:21
 #: ./templates/element/ContractChecks/unsigned_contract.php:20
@@ -3554,7 +3556,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/billing_service_type_mismatch.php:20
 #: ./templates/element/ContractChecks/impossible_billing_period.php:20
 #: ./templates/element/ContractChecks/non_standard_service.php:23
-#: ./templates/element/ContractChecks/overlapping_billings.php:20
+#: ./templates/element/ContractChecks/overlapping_billings.php:23
 #: ./templates/element/Contracts/Billings.php:23
 msgid "Service"
 msgstr ""
@@ -3689,7 +3691,7 @@ msgstr ""
 #: ./templates/Services/view.php:92
 #: ./templates/element/ContractChecks/impossible_billing_period.php:21
 #: ./templates/element/ContractChecks/non_standard_service.php:26
-#: ./templates/element/ContractChecks/overlapping_billings.php:21
+#: ./templates/element/ContractChecks/overlapping_billings.php:24
 #: ./templates/element/Contracts/Billings.php:30
 msgid "Billing From"
 msgstr ""
@@ -3701,7 +3703,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/billing_gap.php:25
 #: ./templates/element/ContractChecks/impossible_billing_period.php:22
 #: ./templates/element/ContractChecks/non_standard_service.php:27
-#: ./templates/element/ContractChecks/overlapping_billings.php:22
+#: ./templates/element/ContractChecks/overlapping_billings.php:25
 #: ./templates/element/Contracts/Billings.php:31
 msgid "Billing Until"
 msgstr ""
@@ -4067,6 +4069,11 @@ msgctxt "address"
 msgid "None"
 msgstr ""
 
+#: ./templates/element/ContractChecks/inactive_with_billing.php:50
+msgctxt "termination date"
+msgid "None"
+msgstr ""
+
 #: ./templates/element/ContractChecks/non_standard_service.php:39
 msgctxt "service"
 msgid "None"
@@ -4222,6 +4229,7 @@ msgstr ""
 #: ./templates/Customers/view.php:593
 #: ./templates/Overviews/overview_of_contracts.php:91
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:24
+#: ./templates/element/ContractChecks/inactive_with_billing.php:26
 #: ./templates/element/ContractChecks/unsettled_obligation.php:25
 #: ./templates/element/Contracts/related.php:36
 msgid "Date of Termination of Services"
@@ -4259,6 +4267,7 @@ msgstr ""
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
 #: ./templates/element/AddressChecks/missing_installation_address.php:19
 #: ./templates/element/ContractChecks/contract.php:29
+#: ./templates/element/ContractChecks/inactive_with_billing.php:25
 #: ./templates/element/Contracts/related.php:24
 msgid "Contract State"
 msgstr ""
@@ -6544,21 +6553,34 @@ msgstr ""
 msgid "A version cannot end before it begins, and its minimum term cannot be over before the version exists."
 msgstr ""
 
+#: ./templates/element/ContractChecks/inactive_with_billing.php:13
+msgid "What puts a contract here is the billing running on past the day the contract itself stopped."
+msgstr ""
+
+#: ./templates/element/ContractChecks/inactive_with_billing.php:27
+msgid "Billed Until"
+msgstr ""
+
+#: ./templates/element/ContractChecks/inactive_with_billing.php:57
+#: ./templates/element/ContractChecks/overlapping_billings.php:41
+#: ./templates/element/ContractChecks/overlapping_contract_versions.php:35
+msgid "open"
+msgstr ""
+
 #: ./templates/element/ContractChecks/non_standard_service.php:11
 msgid "Not a fault on its own. Where the same thing is written by hand again and again, it is a service the price list is still missing."
 msgstr ""
 
 #: ./templates/element/ContractChecks/overlapping_billings.php:11
-msgid "The billing shown is the earlier of the two. Usually it was left open when the next one was written."
+msgid "The billing shown is the earlier of the two. Usually it was left open when the next one was written - and two tariffs at once are an overlap however differently they are named."
 msgstr ""
 
-#: ./templates/element/ContractChecks/overlapping_billings.php:23
+#: ./templates/element/ContractChecks/overlapping_billings.php:26
 msgid "Billed Twice From"
 msgstr ""
 
-#: ./templates/element/ContractChecks/overlapping_billings.php:37
-#: ./templates/element/ContractChecks/overlapping_contract_versions.php:35
-msgid "open"
+#: ./templates/element/ContractChecks/overlapping_billings.php:27
+msgid "Overlaps With"
 msgstr ""
 
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:11

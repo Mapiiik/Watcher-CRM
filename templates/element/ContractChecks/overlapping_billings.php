@@ -8,7 +8,10 @@
 $contract_column ??= true;
 ?>
 <p>
-    <?= __('The billing shown is the earlier of the two. Usually it was left open when the next one was written.') ?>
+    <?= __(
+        'The billing shown is the earlier of the two. Usually it was left open when the next one'
+        . ' was written - and two tariffs at once are an overlap however differently they are named.',
+    ) ?>
 </p>
 <div class="table-responsive">
     <table>
@@ -21,6 +24,7 @@ $contract_column ??= true;
                 <th><?= __('Billing From') ?></th>
                 <th><?= __('Billing Until') ?></th>
                 <th><?= __('Billed Twice From') ?></th>
+                <th><?= __('Overlaps With') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -40,6 +44,7 @@ $contract_column ??= true;
                         <?php endif ?>
                     </td>
                     <td><?= h($billing->get('overlaps_from')) ?></td>
+                    <td class="dashboard-wrap"><?= h($billing->get('overlaps_with')) ?></td>
                 </tr>
             <?php endforeach ?>
         </tbody>

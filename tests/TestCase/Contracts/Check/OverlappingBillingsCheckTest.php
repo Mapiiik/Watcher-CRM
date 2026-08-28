@@ -118,18 +118,41 @@ class OverlappingBillingsCheckTest extends TestCase
     }
 
     /**
-     * Two services on one contract run side by side on purpose - that is what a contract with
-     * an internet tariff and a static address looks like.
+     * A fee running beside the line is what a contract with an internet tariff and a static
+     * address looks like, and is nobody's fault.
      *
      * @return void
      * @link \App\Contracts\Check\OverlappingBillingsCheck::find()
      */
-    public function testTwoServicesRunningTogetherAreNotAnOverlap(): void
+    public function testAFeeRunningBesideTheLineIsNotAnOverlap(): void
     {
+        $this->aFee(self::OTHER_SERVICE_ID);
+
         $this->billed('-2 years', null);
         $this->billed('-1 year', null, self::OTHER_SERVICE_ID);
 
         $this->assertSame([], $this->found());
+    }
+
+    /**
+     * Two tariffs at once are an overlap however differently they are named: the customer is
+     * paying for the connection twice, and a contract has one connection.
+     *
+     * @return void
+     * @link \App\Contracts\Check\OverlappingBillingsCheck::find()
+     */
+    public function testTwoTariffsAtOnceAreAnOverlap(): void
+    {
+        $this->billed('-2 years', null);
+        $this->billed('-1 year', null, self::OTHER_SERVICE_ID);
+
+        $found = $this->found();
+
+        $this->assertCount(1, $found, 'Only the earlier of the pair is the one to fix.');
+        $this->assertSame(
+            Date::now()->modify('-2 years')->format('Y-m-d'),
+            $found[0]->billing_from?->format('Y-m-d'),
+        );
     }
 
     /**
@@ -160,6 +183,20 @@ class OverlappingBillingsCheckTest extends TestCase
         $records = (new OverlappingBillingsCheck($this->Billings, $ignore_inactive))->find()->all()->toList();
 
         return $records;
+    }
+
+    /**
+     * Make a service a fee rather than a tariff, by taking its queue away.
+     *
+     * The queue is what says which line a service is; without one it stands beside the line.
+     * Both fixture services carry one, so a case about a fee has to say so.
+     *
+     * @param string $service_id The service to turn into a fee.
+     * @return void
+     */
+    private function aFee(string $service_id): void
+    {
+        $this->getTableLocator()->get('Services')->updateAll(['queue_id' => null], ['id' => $service_id]);
     }
 
     /**

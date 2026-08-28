@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-27 16:15+0200\n"
+"POT-Creation-Date: 2026-08-28 10:11+0200\n"
 "PO-Revision-Date: 2026-08-26 13:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -448,11 +448,11 @@ msgstr "Poskytuje službu bez fakturace"
 msgid "Every contract providing services is billed for."
 msgstr "Každá smlouva, která poskytuje službu, je fakturovaná."
 
-#: src/Contracts/Check/BillingGapCheck.php:125
+#: src/Contracts/Check/BillingGapCheck.php:149
 msgid "Gap Between Consecutive Billings"
 msgstr "Mezera mezi navazujícími fakturacemi"
 
-#: src/Contracts/Check/BillingGapCheck.php:134
+#: src/Contracts/Check/BillingGapCheck.php:158
 msgid "No service stops being billed and starts again later."
 msgstr "Žádná služba nepřestává být fakturovaná, aby se k ní později vrátila."
 
@@ -504,11 +504,11 @@ msgstr "Nemožné období verze smlouvy"
 msgid "Every contract version runs over a stretch of time that can exist."
 msgstr "Každá verze smlouvy platí po období, které může existovat."
 
-#: src/Contracts/Check/InactiveWithBillingCheck.php:73
+#: src/Contracts/Check/InactiveWithBillingCheck.php:106
 msgid "Billed Without Providing Services"
 msgstr "Fakturuje se bez poskytování služby"
 
-#: src/Contracts/Check/InactiveWithBillingCheck.php:82
+#: src/Contracts/Check/InactiveWithBillingCheck.php:115
 msgid "No contract is billed for a service it is not providing."
 msgstr "Žádná smlouva se nefakturuje za službu, kterou neposkytuje."
 
@@ -536,11 +536,11 @@ msgstr "Fakturace psaná ručně místo za službu"
 msgid "Every billing simply names the service it is for."
 msgstr "Každá fakturace prostě uvádí službu, za kterou je."
 
-#: src/Contracts/Check/OverlappingBillingsCheck.php:91
+#: src/Contracts/Check/OverlappingBillingsCheck.php:125
 msgid "Overlapping Billings"
 msgstr "Překrývající se fakturace"
 
-#: src/Contracts/Check/OverlappingBillingsCheck.php:100
+#: src/Contracts/Check/OverlappingBillingsCheck.php:134
 msgid "No service is billed twice over the same stretch of time."
 msgstr "Žádná služba není za totéž období fakturovaná dvakrát."
 
@@ -2905,6 +2905,7 @@ msgstr "Odstranit přístupové oprávnění"
 #: templates/element/AddressChecks/unclear_billing_address.php:15
 #: templates/element/ContractChecks/contract.php:26
 #: templates/element/ContractChecks/impossible_contract_dates.php:20
+#: templates/element/ContractChecks/inactive_with_billing.php:23
 #: templates/element/ContractChecks/unsigned_contract.php:23
 #: templates/element/Contracts/Billings.php:17
 #: templates/element/Contracts/related.php:20
@@ -2942,8 +2943,9 @@ msgstr "Zákazník"
 #: templates/element/ContractChecks/impossible_borrowed_period.php:21
 #: templates/element/ContractChecks/impossible_contract_dates.php:19
 #: templates/element/ContractChecks/impossible_contract_version_period.php:18
+#: templates/element/ContractChecks/inactive_with_billing.php:20
 #: templates/element/ContractChecks/non_standard_service.php:21
-#: templates/element/ContractChecks/overlapping_billings.php:18
+#: templates/element/ContractChecks/overlapping_billings.php:21
 #: templates/element/ContractChecks/overlapping_contract_versions.php:18
 #: templates/element/ContractChecks/unsettled_obligation.php:21
 #: templates/element/ContractChecks/unsigned_contract.php:20
@@ -3274,7 +3276,7 @@ msgstr "Původní služba"
 #: templates/element/ContractChecks/billing_service_type_mismatch.php:20
 #: templates/element/ContractChecks/impossible_billing_period.php:20
 #: templates/element/ContractChecks/non_standard_service.php:23
-#: templates/element/ContractChecks/overlapping_billings.php:20
+#: templates/element/ContractChecks/overlapping_billings.php:23
 #: templates/element/Contracts/Billings.php:23
 msgid "Service"
 msgstr "Služba"
@@ -3394,7 +3396,7 @@ msgstr "Text"
 #: templates/Services/view.php:92
 #: templates/element/ContractChecks/impossible_billing_period.php:21
 #: templates/element/ContractChecks/non_standard_service.php:26
-#: templates/element/ContractChecks/overlapping_billings.php:21
+#: templates/element/ContractChecks/overlapping_billings.php:24
 #: templates/element/Contracts/Billings.php:30
 msgid "Billing From"
 msgstr "Fakturovat od"
@@ -3405,7 +3407,7 @@ msgstr "Fakturovat od"
 #: templates/element/ContractChecks/billing_gap.php:25
 #: templates/element/ContractChecks/impossible_billing_period.php:22
 #: templates/element/ContractChecks/non_standard_service.php:27
-#: templates/element/ContractChecks/overlapping_billings.php:22
+#: templates/element/ContractChecks/overlapping_billings.php:25
 #: templates/element/Contracts/Billings.php:31
 msgid "Billing Until"
 msgstr "Fakturovat do"
@@ -3729,6 +3731,11 @@ msgctxt "address"
 msgid "None"
 msgstr "Žádná"
 
+#: templates/element/ContractChecks/inactive_with_billing.php:50
+msgctxt "termination date"
+msgid "None"
+msgstr "Žádné"
+
 #: templates/element/ContractChecks/non_standard_service.php:39
 msgctxt "service"
 msgid "None"
@@ -3866,6 +3873,7 @@ msgstr "Datum deinstalace/zrušení"
 #: templates/Customers/view.php:593
 #: templates/Overviews/overview_of_contracts.php:91
 #: templates/element/ContractChecks/impossible_contract_dates.php:24
+#: templates/element/ContractChecks/inactive_with_billing.php:26
 #: templates/element/ContractChecks/unsettled_obligation.php:25
 #: templates/element/Contracts/related.php:36
 msgid "Date of Termination of Services"
@@ -3901,6 +3909,7 @@ msgstr "Zobrazit smlouvu"
 #: templates/Overviews/overview_of_dealer_commissions.php:61
 #: templates/element/AddressChecks/missing_installation_address.php:19
 #: templates/element/ContractChecks/contract.php:29
+#: templates/element/ContractChecks/inactive_with_billing.php:25
 #: templates/element/Contracts/related.php:24
 msgid "Contract State"
 msgstr "Stav smlouvy"
@@ -6057,6 +6066,24 @@ msgstr ""
 "Verze nemůže skončit dřív, než začne, a její závazek nemůže vypršet dřív, "
 "než verze vznikne."
 
+#: templates/element/ContractChecks/inactive_with_billing.php:13
+msgid ""
+"What puts a contract here is the billing running on past the day the "
+"contract itself stopped."
+msgstr ""
+"Na seznam se smlouva dostane tím, že fakturace běží dál i po dni, kdy "
+"smlouva sama skončila."
+
+#: templates/element/ContractChecks/inactive_with_billing.php:27
+msgid "Billed Until"
+msgstr "Fakturováno do"
+
+#: templates/element/ContractChecks/inactive_with_billing.php:57
+#: templates/element/ContractChecks/overlapping_billings.php:41
+#: templates/element/ContractChecks/overlapping_contract_versions.php:35
+msgid "open"
+msgstr "otevřená"
+
 #: templates/element/ContractChecks/non_standard_service.php:11
 msgid ""
 "Not a fault on its own. Where the same thing is written by hand again and "
@@ -6068,19 +6095,20 @@ msgstr ""
 #: templates/element/ContractChecks/overlapping_billings.php:11
 msgid ""
 "The billing shown is the earlier of the two. Usually it was left open when "
-"the next one was written."
+"the next one was written - and two tariffs at once are an overlap however "
+"differently they are named."
 msgstr ""
 "Zobrazená fakturace je ta dřívější z dvojice. Obvykle jí při psaní té další "
-"zůstal otevřený konec."
+"zůstal otevřený konec — a dva tarify naráz jsou překryv, i když se jmenují "
+"jinak."
 
-#: templates/element/ContractChecks/overlapping_billings.php:23
+#: templates/element/ContractChecks/overlapping_billings.php:26
 msgid "Billed Twice From"
 msgstr "Dvojí fakturace od"
 
-#: templates/element/ContractChecks/overlapping_billings.php:37
-#: templates/element/ContractChecks/overlapping_contract_versions.php:35
-msgid "open"
-msgstr "otevřená"
+#: templates/element/ContractChecks/overlapping_billings.php:27
+msgid "Overlaps With"
+msgstr "Překrývá se s"
 
 #: templates/element/ContractChecks/overlapping_contract_versions.php:11
 msgid ""
@@ -6364,6 +6392,13 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:282
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid ""
+#~ "The billing shown is the earlier of the two. Usually it was left open "
+#~ "when the next one was written."
+#~ msgstr ""
+#~ "Zobrazená fakturace je ta dřívější z dvojice. Obvykle jí při psaní té "
+#~ "další zůstal otevřený konec."
 
 #~ msgid ""
 #~ "The notification email could not be sent because the user does not have "
