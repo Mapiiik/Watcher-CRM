@@ -17,6 +17,20 @@
     position: relative;
 }
 
+/* The text fades out on the side it was cut on, so it is plain that it goes on. Masked rather
+   than faded into a colour, because the rows behind it alternate and the themes differ. Kept
+   short and stopped short of nothing: what is cut here is a sentence somebody may still want
+   to read, not a table the fade is only pointing past. */
+.expandable-text.mode-end.overflowing:not(.expanded) .expandable-text-viewport {
+    -webkit-mask-image: linear-gradient(to top, #000 80%, rgba(0, 0, 0, 0.35));
+    mask-image: linear-gradient(to top, #000 80%, rgba(0, 0, 0, 0.35));
+}
+
+.expandable-text.mode-start.overflowing:not(.expanded) .expandable-text-viewport {
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, rgba(0, 0, 0, 0.35));
+    mask-image: linear-gradient(to bottom, #000 80%, rgba(0, 0, 0, 0.35));
+}
+
 /* START MODE */
 .expandable-text.mode-start .expandable-text-content {
     display: -webkit-box;

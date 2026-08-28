@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const lineHeight = parseFloat(getComputedStyle(content).lineHeight);
             wrapper.style.setProperty('--line-height', lineHeight + 'px');
 
+            // over a text that fits whole, a fade reads as a rendering fault rather than as
+            // "there is more", so it is drawn only where something was really cut off
+            wrapper.classList.toggle('overflowing', content.scrollHeight > lineHeight * lines);
+
             // check if toggle is needed
             if (content.scrollHeight <= lineHeight * lines) {
                 toggle.style.display = 'none';
