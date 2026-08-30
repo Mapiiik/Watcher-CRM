@@ -563,8 +563,8 @@ class BillingsController extends AppController
             $originalBillingData['service'],
         );
 
-        // The money is held on the entity as an object, and the marshaller takes only what a form
-        // would send.
+        // The money is held on the entity as an object and the marshaller takes only what a form
+        // would send, so the copy is refused for any field the form then does not overwrite.
         $originalBillingData['price'] = $originalBilling->price?->toString();
         $originalBillingData['fixed_discount'] = $originalBilling->fixed_discount?->toString();
 

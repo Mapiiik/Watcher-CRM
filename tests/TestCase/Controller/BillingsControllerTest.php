@@ -467,6 +467,8 @@ class BillingsControllerTest extends TestCase
         $this->enableSecurityToken();
 
         $before = $this->idsIn('Billings');
+        // deliberately without the money: the replacement is the original with the form laid
+        // over it, so what the form leaves out has to be carried across
         $this->post('/billings/service-change/' . $billing->get('id'), [
             'service_id' => $service->get('id'),
             'billing_from' => $from->toDateString(),
@@ -482,6 +484,7 @@ class BillingsControllerTest extends TestCase
         $started = $this->addedRecord('Billings', $before);
         $this->assertSame($service->get('id'), $started->get('service_id'));
         $this->assertEquals($from, $started->get('billing_from'));
+        $this->assertEquals($billing->get('price'), $started->get('price'), 'The price was not carried across.');
     }
 
     /**
