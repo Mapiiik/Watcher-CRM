@@ -332,6 +332,31 @@ class BillingsTableTest extends TestCase
     }
 
     /**
+     * What may be taken back and what may not, which the permissions ask before they draw the
+     * button and again before they let the request through.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::mayBeDeleted()
+     */
+    public function testOnlyABillingInvoicingHasNotReachedMayBeTakenBack(): void
+    {
+        $open = $this->Billings->firstOpenPeriodStart();
+
+        $this->assertTrue(
+            $this->Billings->mayBeDeleted($this->newBillingFrom($open)),
+            'A billing nobody has been invoiced for could not be taken back.',
+        );
+        $this->assertFalse(
+            $this->Billings->mayBeDeleted($this->newBillingFrom($open->subDays(1))),
+            'A billing starting in a period already invoiced was taken back.',
+        );
+        $this->assertFalse(
+            $this->Billings->mayBeDeleted($this->Billings->get($this->closedBillingId())),
+            'A billing from years back was taken back.',
+        );
+    }
+
+    /**
      * A billing that starts in the period nobody has been invoiced for yet.
      *
      * It has to be made here rather than in the fixture: where the line falls depends on the day

@@ -470,11 +470,10 @@ $permissions = [
             'action' => [
                 'delete',
             ],
-            //What has been invoiced for stays: only a billing whose start invoicing has not
-            //reached may be taken back. The condition reads the record, so it also settles
-            //whether AuthLink draws the button - the link and the request that follows it are
-            //asked the very same question. Keep it last: the rule is read key by key and this
-            //one ends the reading, so the role has to be matched before it.
+            //The table says what may be taken back. The condition reads the record, so it also
+            //settles whether AuthLink draws the button - the link and the request that follows
+            //it are asked the very same question. Keep it last: the rule is read key by key and
+            //this one ends the reading, so the role has to be matched before it.
             'allowed' => function ($_user, $_role, ServerRequest $request): bool {
                 $id = $request->getParam('pass.0');
 
@@ -490,7 +489,7 @@ $permissions = [
                     ->where(['Billings.id' => $id])
                     ->first();
 
-                return $billing !== null && $billing->billing_from >= $billings->firstOpenPeriodStart();
+                return $billing !== null && $billings->mayBeDeleted($billing);
             },
         ],
         //allow delete of a contract version that is not signed and is not history yet

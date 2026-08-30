@@ -156,6 +156,20 @@ class BillingsTable extends AppTable
     }
 
     /**
+     * Whether a billing may still be taken back.
+     *
+     * Only one invoicing has not reached: what somebody has been charged for stays, because
+     * removing it takes the ground out from under an invoice that has gone out.
+     *
+     * @param \App\Model\Entity\Billing $billing The billing being asked about.
+     * @return bool
+     */
+    public function mayBeDeleted(Billing $billing): bool
+    {
+        return $billing->billing_from >= $this->firstOpenPeriodStart();
+    }
+
+    /**
      * What the installation says about when it invoices.
      *
      * A value outside the list cannot be stored - the setting is declared as a choice and refuses
