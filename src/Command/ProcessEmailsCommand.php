@@ -140,13 +140,33 @@ class ProcessEmailsCommand extends Command
         foreach ($emailMessages as $emailMessage) {
             // Submit messages that have not yet been processed
             if ($emailMessage->delivery_status == CustomerMessageDeliveryStatus::Pending) {
-                // prepare message object
-                $mailer = new Mailer($this->getMailerConfig($emailMessage->type));
-                $mailer->setEmailFormat($this->getEmailFormat($emailMessage->body_format));
-                $mailer->setTo($emailMessage->recipients);
-                $mailer->setSubject($emailMessage->subject);
+                // Nobody to write to is not worth trying again, and handing a transport an empty
+                // recipient list is worse than not trying: some take it and answer that it went.
+                // The message is kept, because it says what was meant to go out - it is only put
+                // down as what it is.
+                if ($emailMessage->recipients === []) {
+                    $emailMessage->delivery_status = CustomerMessageDeliveryStatus::Failed;
+                    $customerMessagesTable->saveOrFail($emailMessage);
+
+                    $reason = 'Email message with ID ' . $emailMessage->id . ' names nobody to send it to.';
+                    Log::error($reason);
+                    $io->error(__('Message with ID {0} names nobody to send it to.', $emailMessage->id));
+                    ErrorReport::send(
+                        __('Email message with ID {0} could not be sent', $emailMessage->id),
+                        $reason,
+                    );
+
+                    continue;
+                }
 
                 try {
+                    // prepare message object - what it is made of can be refused, and one message
+                    // that cannot be made is not a reason to leave the rest of the queue standing
+                    $mailer = new Mailer($this->getMailerConfig($emailMessage->type));
+                    $mailer->setEmailFormat($this->getEmailFormat($emailMessage->body_format));
+                    $mailer->setTo($emailMessage->recipients);
+                    $mailer->setSubject($emailMessage->subject);
+
                     // add attachments
                     if (is_array($emailMessage->attachments)) {
                         $mailer->setAttachments($emailMessage->attachments);

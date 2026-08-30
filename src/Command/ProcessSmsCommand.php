@@ -161,13 +161,32 @@ class ProcessSmsCommand extends Command
                     continue;
                 }
 
-                // prepare message object
-                $message = (new MessageBuilder($smsMessage->body, $smsMessage->recipients))
-                    ->setTtl(86400)
-                    ->setWithDeliveryReport(true)
-                    ->build();
+                // Nobody to send to is not worth trying again - and it matters more here than it
+                // would elsewhere, because a message the gateway refuses stops this whole run,
+                // so one that can never go would hold up every SMS behind it for good.
+                if ($smsMessage->recipients === []) {
+                    $smsMessage->delivery_status = CustomerMessageDeliveryStatus::Failed;
+                    $customerMessagesTable->saveOrFail($smsMessage);
+
+                    $reason = 'SMS message with ID ' . $smsMessage->id . ' names nobody to send it to.';
+                    Log::error($reason);
+                    $io->error(__('Message with ID {0} names nobody to send it to.', $smsMessage->id));
+                    ErrorReport::send(
+                        __('SMS message with ID {0} could not be sent', $smsMessage->id),
+                        $reason,
+                    );
+
+                    continue;
+                }
 
                 try {
+                    // prepare message object - inside, so that a message that cannot be made is
+                    // reported like one that cannot be sent rather than ending the run untold
+                    $message = (new MessageBuilder($smsMessage->body, $smsMessage->recipients))
+                        ->setTtl(86400)
+                        ->setWithDeliveryReport(true)
+                        ->build();
+
                     // submit a message to the Android SMS gateway
                     $messageState = $client->SendMessage($message);
                     // info to console

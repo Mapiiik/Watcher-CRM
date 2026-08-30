@@ -133,6 +133,32 @@ class ProcessSmsCommandTest extends TestCase
     }
 
     /**
+     * A message with nobody to send it to is put down as failed rather than offered to the
+     * gateway - which would refuse it, and refusing ends the whole run, so one that can never go
+     * would hold up every SMS behind it for good.
+     *
+     * @return void
+     * @link \App\Command\ProcessSmsCommand::execute()
+     */
+    public function testExecuteFailsAMessageWithNobodyToSendItTo(): void
+    {
+        $unreachable = $this->sms([
+            'delivery_status' => CustomerMessageDeliveryStatus::Pending,
+            'recipients' => [],
+        ]);
+
+        $this->exec('process_sms');
+
+        $messages = $this->getTableLocator()->get('CustomerMessages');
+        $this->assertSame(
+            CustomerMessageDeliveryStatus::Failed,
+            $messages->get($unreachable)->get('delivery_status'),
+            'A message nobody could receive was not put down as failed.',
+        );
+        $this->assertNull($messages->get($unreachable)->get('identifier'), 'It reached the gateway.');
+    }
+
+    /**
      * A message already gone is left where it is, rather than sent a second time.
      *
      * @return void

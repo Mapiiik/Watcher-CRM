@@ -109,6 +109,38 @@ class ProcessEmailsCommandTest extends TestCase
     }
 
     /**
+     * A message with nobody to send it to is put down as failed rather than handed to the
+     * transport, which may take an empty recipient list and answer that it went.
+     *
+     * @return void
+     * @link \App\Command\ProcessEmailsCommand::execute()
+     */
+    public function testExecuteFailsAMessageWithNobodyToSendItTo(): void
+    {
+        $unreachable = $this->message(['recipients' => []]);
+        $waiting = $this->message();
+
+        $this->exec('process_emails');
+
+        $this->assertExitSuccess();
+
+        $messages = $this->getTableLocator()->get('CustomerMessages');
+        $this->assertSame(
+            CustomerMessageDeliveryStatus::Failed,
+            $messages->get($unreachable)->get('delivery_status'),
+            'A message nobody could receive was not put down as failed.',
+        );
+        $this->assertNull($messages->get($unreachable)->get('identifier'), 'It was recorded as sent.');
+
+        // and the one behind it went, which is the whole point of not stopping on it
+        $this->assertMailSentTo('customer@example.com');
+        $this->assertNotSame(
+            CustomerMessageDeliveryStatus::Pending,
+            $messages->get($waiting)->get('delivery_status'),
+        );
+    }
+
+    /**
      * A message already sent is not sent again.
      *
      * @return void

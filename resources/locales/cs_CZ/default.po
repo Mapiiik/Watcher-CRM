@@ -284,6 +284,19 @@ msgstr "Zpráva s ID {0} byla odeslána s identifikátorem: {1}"
 msgid "Error sending message with ID {0}: {1}"
 msgstr "Chyba při odesílání zprávy s ID {0}: {1}"
 
+#: src/Command/ProcessEmailsCommand.php:153
+#: src/Command/ProcessSmsCommand.php:173
+msgid "Message with ID {0} names nobody to send it to."
+msgstr "Zpráva s ID {0} neuvádí nikoho, komu ji poslat."
+
+#: src/Command/ProcessEmailsCommand.php:155
+msgid "Email message with ID {0} could not be sent"
+msgstr "E-mailovou zprávu s ID {0} nebylo možné odeslat"
+
+#: src/Command/ProcessSmsCommand.php:175
+msgid "SMS message with ID {0} could not be sent"
+msgstr "SMS zprávu s ID {0} nebylo možné odeslat"
+
 #: src/Command/ProcessEmailsCommand.php:183
 msgid "Error sending email message with ID {0}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID {0}"
