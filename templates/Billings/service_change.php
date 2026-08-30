@@ -138,12 +138,6 @@
                     'value' => '',
                     'required' => true,
                 ]);
-                if (!empty($closed_period_override)) {
-                    echo $this->Form->control('allow_closed_periods', [
-                        'type' => 'checkbox',
-                        'label' => __('Allow a change inside an already invoiced period'),
-                    ]);
-                }
                 ?>
             </fieldset>
             <fieldset>
@@ -171,6 +165,14 @@
                     'label' => __('Version without legislative information'),
                     'type' => 'checkbox',
                     'checked' => false,
+                ]) ?>
+            </fieldset>
+            <?php endif; ?>
+            <?php if (!empty($closed_period_override)) : ?>
+            <fieldset>
+                <?= $this->Form->control('allow_closed_periods', [
+                    'type' => 'checkbox',
+                    'label' => __('Allow a change inside an already invoiced period'),
                 ]) ?>
             </fieldset>
             <?php endif; ?>

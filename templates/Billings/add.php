@@ -50,14 +50,16 @@
                 <?php
                 echo $this->Form->control('billing_from', ['empty' => true]);
                 echo $this->Form->control('billing_until', ['empty' => true]);
+                echo $this->Form->control('separate_invoice');
+                echo $this->Form->control('note');
+                // last of all, right above the button: reaching into an invoiced period is the
+                // deliberate act, not the one made on the way past the dates
                 if (!empty($closed_period_override)) {
                     echo $this->Form->control('allow_closed_periods', [
                         'type' => 'checkbox',
                         'label' => __('Allow a change inside an already invoiced period'),
                     ]);
                 }
-                echo $this->Form->control('separate_invoice');
-                echo $this->Form->control('note');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

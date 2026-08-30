@@ -6407,6 +6407,16 @@ msgid "The billing may not end before {0}, the last day that has been invoiced."
 msgstr ""
 "Fakturace nesmí skončit dřív než {0}, což je poslední vyfakturovaný den."
 
+#: templates/Billings/edit.php:67
+msgid "This billing has been invoiced for, so what it charges is no longer changed here."
+msgstr ""
+"Tato položka už byla vyfakturována, takže se tu služba, počet, cena ani slevy už "
+"nemění."
+
+#: templates/Billings/edit.php:71
+msgid "End it and start a new one from the day the change takes effect:"
+msgstr "Ukončete ji a od data změny založte novou:"
+
 #: src/Model/Table/BillingsTable.php:377
 msgid ""
 "What has already been invoiced for is not changed here. End this billing and start a new one from the day the change takes effect."

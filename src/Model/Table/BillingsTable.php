@@ -184,6 +184,21 @@ class BillingsTable extends AppTable
     }
 
     /**
+     * Whether a billing ending on a day is one whose end may still be moved.
+     *
+     * An end already lying in a period that has been invoiced is not moved at all - not even
+     * later, which would charge for months whose invoices went out without them. An end nobody
+     * has been invoiced past, or none at all, is still the operator's to set.
+     *
+     * @param \Cake\I18n\Date|null $ends The day the billing ends, or null where it runs on.
+     * @return bool
+     */
+    public function endIsStillOpen(?Date $ends): bool
+    {
+        return $ends === null || $ends >= $this->lastClosedPeriodEnd();
+    }
+
+    /**
      * What the installation says about when it invoices.
      *
      * A value outside the list cannot be stored - the setting is declared as a choice and refuses
@@ -336,16 +351,11 @@ class BillingsTable extends AppTable
                     return true;
                 }
 
-                $closed = $this->lastClosedPeriodEnd();
-                $was = $entity->isNew() ? null : $entity->getOriginal('billing_until');
-
-                // an end lying in a period already invoiced is not to be moved at all - lifting it
-                // charges for months whose invoices went out without them
-                if ($was !== null && $was < $closed) {
-                    return false;
-                }
-
-                return $entity->billing_until === null || $entity->billing_until >= $closed;
+                // neither where the end was nor where it is being taken may lie behind what has
+                // been invoiced: the first would charge for months whose invoices went out
+                // without them, the second would take back months that were charged
+                return $this->endIsStillOpen($entity->isNew() ? null : $entity->getOriginal('billing_until'))
+                    && $this->endIsStillOpen($entity->billing_until);
             },
             'billingEndsAfterWhatWasInvoiced',
             [

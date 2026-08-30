@@ -199,6 +199,15 @@ class BillingsController extends AppController
     {
         $billing = $this->Billings->get($id, contain: []);
 
+        // Two facts about the record as it stands, asked before the form has had its say so that
+        // a start typed into the box cannot unlock the rest of it. They are said out loud to
+        // everybody, admin included; whether they also shut a box is the override's to answer,
+        // and the form holds the two together.
+        $invoiced_for = !$this->Billings->mayBeDeleted($billing);
+        // the end asks its own question: a billing running on may still be brought to a close,
+        // even where everything else about it is settled
+        $end_invoiced_for = !$this->Billings->endIsStillOpen($billing->billing_until);
+
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $billing = $this->Billings->patchEntity($billing, $this->getRequest()->getData());
 
@@ -264,7 +273,15 @@ class BillingsController extends AppController
 
         $closed_period_override = $this->mayReachIntoClosedPeriods();
 
-        $this->set(compact('billing', 'customers', 'services', 'contracts', 'closed_period_override'));
+        $this->set(compact(
+            'billing',
+            'customers',
+            'services',
+            'contracts',
+            'closed_period_override',
+            'invoiced_for',
+            'end_invoiced_for',
+        ));
 
         return null;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\BillingsController;
+use App\Model\Table\BillingsTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -522,6 +523,143 @@ class BillingsControllerTest extends TestCase
 
         $this->assertRedirect();
         $this->assertNull($this->viewVariable('billings'), 'The bulk form was rendered for them.');
+    }
+
+    /**
+     * A box that cannot be saved is shut rather than argued with afterwards - and told why, or
+     * being shut is its own puzzle.
+     *
+     * Every box a rule would refuse and no others, because a form that shuts more than the rules
+     * do takes work away from the operator for no reason.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::edit()
+     */
+    public function testTheSettledTermsAreShutOnTheFormForWhoeverCannotSaveThem(): void
+    {
+        $billingId = $this->closedBillingId();
+
+        $this->login('bookkeeper');
+        $this->get('/billings/edit/' . $billingId);
+
+        $this->assertResponseOk();
+        // its end ran out in an invoiced month too, so a service change would not save either
+        $this->assertResponseNotContains('/billings/service-change/' . $billingId);
+
+        foreach ([...BillingsTable::SETTLED_TERMS, 'billing_from', 'billing_until'] as $shut) {
+            $this->assertFieldIsShut($shut);
+        }
+        foreach (['text', 'separate_invoice', 'note'] as $open) {
+            $this->assertFieldIsOpen($open);
+        }
+
+        // the admin has the box that reaches into an invoiced period, so nothing is shut for
+        // them - but they are told the same thing, or they would reach in without noticing
+        $this->login();
+        $this->get('/billings/edit/' . $billingId);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('disabled="disabled"');
+        $this->assertResponseContains('message warning');
+    }
+
+    /**
+     * A billing running on may still be brought to a close, even where everything else about it
+     * is settled - which is what ending a contract does.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::edit()
+     */
+    public function testTheEndStaysOpenOnABillingThatRunsOn(): void
+    {
+        $billingId = $this->getTableLocator()->get('Billings')
+            ->find()
+            ->where(['Billings.billing_until IS' => null])
+            ->firstOrFail()
+            ->get('id');
+
+        $this->login('bookkeeper');
+        $this->get('/billings/edit/' . $billingId);
+
+        $this->assertResponseOk();
+        $this->assertFieldIsShut('billing_from');
+        $this->assertFieldIsOpen('billing_until');
+        // and because it still has an end to give, the way out is worth offering
+        $this->assertResponseContains('/billings/service-change/' . $billingId);
+    }
+
+    /**
+     * A billing invoicing has not reached is nobody's business but the operator's, so it is
+     * offered whole.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::edit()
+     */
+    public function testTheSettledTermsStayOpenWhileNothingHasBeenInvoiced(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billing = $billings->saveOrFail($billings->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+            'text' => 'Not invoiced for yet',
+            'quantity' => 1,
+            'separate_invoice' => false,
+            'billing_from' => $billings->firstOpenPeriodStart()->toDateString(),
+        ]));
+
+        $this->login('bookkeeper');
+        $this->get('/billings/edit/' . $billing->id);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('disabled="disabled"');
+        $this->assertResponseNotContains('message warning');
+    }
+
+    /**
+     * A field the form offers but will not take back.
+     *
+     * Matched loosely, because what the helper puts between the name and the disabled attribute
+     * differs from one kind of box to the next and says nothing about the question being asked.
+     *
+     * @param string $field The field that has to be shut.
+     * @return void
+     */
+    private function assertFieldIsShut(string $field): void
+    {
+        $this->assertMatchesRegularExpression(
+            sprintf('/name="%s"[^>]*disabled="disabled"/', preg_quote($field, '/')),
+            (string)$this->_response?->getBody(),
+            sprintf('%s was left open.', $field),
+        );
+    }
+
+    /**
+     * A field that is still the operator's to fill in.
+     *
+     * @param string $field The field that has to be open.
+     * @return void
+     */
+    private function assertFieldIsOpen(string $field): void
+    {
+        $this->assertDoesNotMatchRegularExpression(
+            sprintf('/name="%s"[^>]*disabled="disabled"/', preg_quote($field, '/')),
+            (string)$this->_response?->getBody(),
+            sprintf('%s was shut.', $field),
+        );
+    }
+
+    /**
+     * A billing from the fixtures whose whole period lies in years nobody can still invoice for.
+     *
+     * @return string
+     */
+    private function closedBillingId(): string
+    {
+        return (string)$this->getTableLocator()->get('Billings')
+            ->find()
+            ->where(['Billings.billing_until IS NOT' => null])
+            ->firstOrFail()
+            ->get('id');
     }
 
     /**
