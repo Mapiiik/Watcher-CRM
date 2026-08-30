@@ -318,6 +318,8 @@ class BillingGapCheckTest extends TestCase
             'separate_invoice' => false,
         ]);
 
-        $this->Billings->saveOrFail($billing);
+        // dated as it would have come to be before the rules were there to refuse it, which
+        // is the very thing the check is here to find
+        $this->Billings->saveOrFail($billing, [BillingsTable::ALLOW_CLOSED_PERIODS => true]);
     }
 }

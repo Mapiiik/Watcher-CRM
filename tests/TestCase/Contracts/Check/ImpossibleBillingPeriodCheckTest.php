@@ -173,6 +173,9 @@ class ImpossibleBillingPeriodCheckTest extends TestCase
      */
     private function billedBetween(string $from, ?string $until): void
     {
+        // Saved past the rules on purpose. A period like this cannot be written through the
+        // application any more - which is what the rules are for - but the rows are in the data
+        // from before they were, and finding those is what the check is for.
         $this->Billings->saveOrFail($this->Billings->newEntity([
             'customer_id' => self::CUSTOMER_ID,
             'contract_id' => self::CONTRACT_ID,
@@ -181,6 +184,6 @@ class ImpossibleBillingPeriodCheckTest extends TestCase
             'billing_until' => $until,
             'quantity' => 1,
             'separate_invoice' => false,
-        ]));
+        ]), ['checkRules' => false]);
     }
 }

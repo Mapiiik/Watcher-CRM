@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Billing $billing
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
+ * @var bool|null $closed_period_override
  */
 ?>
 <div class="row">
@@ -136,6 +137,12 @@
                     'value' => '',
                     'required' => true,
                 ]);
+                if (!empty($closed_period_override)) {
+                    echo $this->Form->control('allow_closed_periods', [
+                        'type' => 'checkbox',
+                        'label' => __('Allow a change inside an already invoiced period'),
+                    ]);
+                }
                 ?>
             </fieldset>
             <fieldset>

@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\SettingsController;
 use App\Test\Traits\ControllerTestTrait;
+use Bookkeeping\Model\Enum\InvoicingSchedule;
 use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Locator\TableLocator;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -98,5 +99,29 @@ class SettingsControllerTest extends TestCase
         $this->get('/settings/edit/core.dashboard.tasks');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * A setting whose answers are named in advance is offered as a list to pick from, so nobody
+     * has to type the spelling of one - which is the whole reason for declaring it as a choice.
+     *
+     * The widget is drawn by this application's own copy of the form element, so the plugin's
+     * tests cannot answer for it.
+     *
+     * @return void
+     * @link \Settings\ValueObject\Type\ChoiceType::formOptions()
+     */
+    public function testASettingWithNamedAnswersIsOfferedAsAList(): void
+    {
+        $this->login();
+        $this->get('/settings/edit/bookkeeping.invoices.issuing');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<select name="overlay[schedule]"');
+
+        foreach (InvoicingSchedule::cases() as $schedule) {
+            $this->assertResponseContains('value="' . $schedule->value . '"');
+            $this->assertResponseContains($schedule->label());
+        }
     }
 }

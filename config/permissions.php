@@ -10,7 +10,9 @@
  */
 
 use Cake\Http\ServerRequest;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
+use Cake\Validation\Validation;
 
 /*
  * This is a quick roles-permissions implementation
@@ -452,6 +454,44 @@ $permissions = [
             'action' => [
                 'delete',
             ],
+        ],
+        //allow delete of a billing nobody has been invoiced for yet
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Billings',
+            ],
+            'action' => [
+                'delete',
+            ],
+            //What has been invoiced for stays: only a billing whose start invoicing has not
+            //reached may be taken back. The condition reads the record, so it also settles
+            //whether AuthLink draws the button - the link and the request that follows it are
+            //asked the very same question. Keep it last: the rule is read key by key and this
+            //one ends the reading, so the role has to be matched before it.
+            'allowed' => function ($_user, $_role, ServerRequest $request): bool {
+                $id = $request->getParam('pass.0');
+
+                if (!is_string($id) || !Validation::uuid($id)) {
+                    return false;
+                }
+
+                /** @var \App\Model\Table\BillingsTable $billings */
+                $billings = TableRegistry::getTableLocator()->get('Billings');
+                /** @var \App\Model\Entity\Billing|null $billing */
+                $billing = $billings->find()
+                    ->select(['Billings.billing_from'])
+                    ->where(['Billings.id' => $id])
+                    ->first();
+
+                return $billing !== null && $billing->billing_from >= $billings->firstOpenPeriodStart();
+            },
         ],
         //allow add/edit/delete of access credentials for network-managers
         [

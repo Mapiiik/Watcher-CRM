@@ -6393,6 +6393,26 @@ msgstr "Zdrojový kód"
 msgid "Version"
 msgstr "Verze"
 
+#: src/Model/Table/BillingsTable.php:281
+msgid "The billing cannot end before it starts."
+msgstr "Fakturace nemůže skončit dřív, než začne."
+
+#: src/Model/Table/BillingsTable.php:301
+msgid "The billing may not start in a period that has already been invoiced."
+msgstr ""
+"Fakturace nesmí začínat v období, které už bylo vyfakturováno."
+
+#: src/Model/Table/BillingsTable.php:326
+msgid "The billing may not end before {0}, the last day that has been invoiced."
+msgstr ""
+"Fakturace nesmí skončit dřív než {0}, což je poslední vyfakturovaný den."
+
+#: templates/Billings/add.php:56
+#: templates/Billings/edit.php:61
+#: templates/Billings/service_change.php:143
+msgid "Allow a change inside an already invoiced period"
+msgstr "Povolit zásah do již vyfakturovaného období"
+
 #~ msgid ""
 #~ "The billing shown is the earlier of the two. Usually it was left open "
 #~ "when the next one was written."

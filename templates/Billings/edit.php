@@ -5,6 +5,7 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
+ * @var bool|null $closed_period_override
  */
 ?>
 <div class="row">
@@ -54,6 +55,12 @@
                 <?php
                 echo $this->Form->control('billing_from', ['empty' => true]);
                 echo $this->Form->control('billing_until', ['empty' => true]);
+                if (!empty($closed_period_override)) {
+                    echo $this->Form->control('allow_closed_periods', [
+                        'type' => 'checkbox',
+                        'label' => __('Allow a change inside an already invoiced period'),
+                    ]);
+                }
                 echo $this->Form->control('separate_invoice');
                 echo $this->Form->control('note');
                 ?>

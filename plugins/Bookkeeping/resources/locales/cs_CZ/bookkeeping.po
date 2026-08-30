@@ -1003,6 +1003,27 @@ msgstr "Stáhnout fakturu"
 msgid "Show also paid invoices"
 msgstr "Zobrazit také zaplacené faktury"
 
+#: plugins/Bookkeeping/src/Model/Enum/InvoicingSchedule.php:45
+msgid "On the first day of the month that follows"
+msgstr "První den následujícího měsíce"
+
+#: plugins/Bookkeeping/src/Model/Enum/InvoicingSchedule.php:46
+msgid "On the last day of the month it covers"
+msgstr "Poslední den fakturovaného měsíce"
+
+#: plugins/Bookkeeping/config/settings.php:154
+msgid ""
+"Also the default the invoicing command takes when it is called without "
+"--schedule."
+msgstr ""
+"Zároveň výchozí hodnota, kterou použije fakturační příkaz volaný bez "
+"--schedule."
+
+#: plugins/Bookkeeping/config/settings.php:164
+msgid "Leave the period being invoiced today open, so it can still be corrected."
+msgstr ""
+"Ponechat období, které se dnes fakturuje, otevřené pro opravy."
+
 #~ msgid "Eurofaktura API error ({0}, {1})"
 #~ msgstr "Chyba API Eurofaktura ({0}, {1})"
 

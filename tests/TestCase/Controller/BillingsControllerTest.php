@@ -323,4 +323,122 @@ class BillingsControllerTest extends TestCase
             $this->getTableLocator()->get('Billings')->get($billingId)->text,
         );
     }
+
+    /**
+     * The roles that write billings may now take one back, which they could not before - but only
+     * while nobody has been invoiced for it.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::delete()
+     */
+    public function testABillingNobodyHasBeenInvoicedForMayBeDeletedByWhoeverWritesThem(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billing = $billings->saveOrFail($billings->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+            'text' => 'Not invoiced for yet',
+            'quantity' => 1,
+            'separate_invoice' => false,
+            'billing_from' => $billings->firstOpenPeriodStart()->toDateString(),
+        ]));
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/delete/' . $billing->id);
+
+        $this->assertRedirect();
+        $this->assertFalse($billings->exists(['id' => $billing->id]));
+    }
+
+    /**
+     * What has been invoiced for stays, whoever asks - short of an admin, who is trusted with the
+     * whole application anyway.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::delete()
+     */
+    public function testABillingAlreadyInvoicedForIsNotTheirsToDelete(): void
+    {
+        $billingId = $this->firstId('Billings');
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/delete/' . $billingId);
+
+        $this->assertTrue($this->getTableLocator()->get('Billings')->exists(['id' => $billingId]));
+    }
+
+    /**
+     * The admin keeps the reach they have always had.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::delete()
+     */
+    public function testAnAdminDeletesABillingWhateverItsDates(): void
+    {
+        $billingId = $this->firstId('Billings');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/delete/' . $billingId);
+
+        $this->assertRedirect();
+        $this->assertFalse($this->getTableLocator()->get('Billings')->exists(['id' => $billingId]));
+    }
+
+    /**
+     * A start lying in a period that has been invoiced for is not to be moved, and the form says
+     * so rather than saving something the invoices do not agree with.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::edit()
+     */
+    public function testTheFormRefusesToMoveAStartThatHasBeenInvoicedFor(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billingId = $this->firstId('Billings');
+        $was = $billings->get($billingId)->billing_from;
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/edit/' . $billingId, [
+            'billing_from' => $billings->firstOpenPeriodStart()->toDateString(),
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertTrue($was->equals($billings->get($billingId)->billing_from));
+    }
+
+    /**
+     * And the admin may say they mean it, which is the whole of what the box on the form does.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::edit()
+     */
+    public function testAnAdminTickingTheBoxMovesItAnyway(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billingId = $billings
+            ->find()
+            ->where(['Billings.billing_until IS' => null])
+            ->firstOrFail()
+            ->get('id');
+        $moved = $billings->firstOpenPeriodStart();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/edit/' . $billingId, [
+            'billing_from' => $moved->toDateString(),
+            'allow_closed_periods' => '1',
+        ]);
+
+        $this->assertRedirect();
+        $this->assertTrue($moved->equals($billings->get($billingId)->billing_from));
+    }
 }

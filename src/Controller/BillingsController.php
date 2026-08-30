@@ -9,6 +9,7 @@ use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessageType;
+use App\Model\Table\BillingsTable;
 use App\Model\Table\CustomerMessagesTable;
 use App\Utility\ServiceChangeMessageBuilder;
 use Cake\Http\Response;
@@ -133,7 +134,7 @@ class BillingsController extends AppController
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
             } else {
-                if ($this->Billings->save($billing)) {
+                if ($this->Billings->save($billing, $this->closedPeriodSaveOptions())) {
                     $this->Flash->success(__('The billing has been saved.'));
 
                     return $this->afterAddRedirect(['action' => 'view', $billing->id]);
@@ -180,7 +181,9 @@ class BillingsController extends AppController
         // only services available for new customers
         $services->andWhere(['Services.not_for_new_customers' => false]);
 
-        $this->set(compact('billing', 'customers', 'services', 'contracts'));
+        $closed_period_override = $this->mayReachIntoClosedPeriods();
+
+        $this->set(compact('billing', 'customers', 'services', 'contracts', 'closed_period_override'));
 
         return null;
     }
@@ -215,7 +218,7 @@ class BillingsController extends AppController
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
             } else {
-                if ($this->Billings->save($billing)) {
+                if ($this->Billings->save($billing, $this->closedPeriodSaveOptions())) {
                     $this->Flash->success(__('The billing has been saved.'));
 
                     return $this->afterEditRedirect(['action' => 'view', $billing->id]);
@@ -259,7 +262,9 @@ class BillingsController extends AppController
             ]]);
         }
 
-        $this->set(compact('billing', 'customers', 'services', 'contracts'));
+        $closed_period_override = $this->mayReachIntoClosedPeriods();
+
+        $this->set(compact('billing', 'customers', 'services', 'contracts', 'closed_period_override'));
 
         return null;
     }
@@ -331,7 +336,9 @@ class BillingsController extends AppController
             ->all();
 
         // set data
-        $this->set(compact('billing', 'services'));
+        $closed_period_override = $this->mayReachIntoClosedPeriods();
+
+        $this->set(compact('billing', 'services', 'closed_period_override'));
 
         return null;
     }
@@ -458,6 +465,33 @@ class BillingsController extends AppController
     }
 
     /**
+     * Whether this request is one that may be offered the way into an invoiced period at all.
+     *
+     * Offered to an admin and to nobody else. What has been invoiced is not meant to be rewritten
+     * by not noticing, so even there it is a box that has to be ticked.
+     *
+     * @return bool
+     */
+    private function mayReachIntoClosedPeriods(): bool
+    {
+        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+    }
+
+    /**
+     * What to save a billing with, having asked whether this request reaches into a closed period.
+     *
+     * @return array<string, bool>
+     */
+    private function closedPeriodSaveOptions(): array
+    {
+        return [
+            BillingsTable::ALLOW_CLOSED_PERIODS =>
+                $this->mayReachIntoClosedPeriods()
+                && $this->getRequest()->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1',
+        ];
+    }
+
+    /**
      * Process Service Change method
      *
      * @param \App\Model\Entity\Billing $originalBilling Original billing entity
@@ -504,7 +538,7 @@ class BillingsController extends AppController
                     $originalBilling,
                     $newBilling,
                 ],
-                [
+                $this->closedPeriodSaveOptions() + [
                     // saveMany audit options kept intentionally:
                     // - mapiiik/audit-log (5.x, 6.x) logs nothing without them
                     // - even audit-stash 2.0.1+ groups the batch under one transaction id only

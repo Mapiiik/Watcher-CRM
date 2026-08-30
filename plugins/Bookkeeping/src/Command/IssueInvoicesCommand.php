@@ -6,6 +6,7 @@ namespace Bookkeeping\Command;
 use App\Model\Table\AccountingProfilesTable;
 use App\Model\Table\CustomersTable;
 use App\Service\ErrorReport;
+use Bookkeeping\Model\Enum\InvoicingSchedule;
 use Bookkeeping\Service\BookkeepingService;
 use Bookkeeping\Service\InvoiceGenerationService;
 use Cake\Command\Command;
@@ -15,6 +16,7 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
 use Cake\Log\Log;
 use RuntimeException;
+use Settings\Utility\Settings;
 use Throwable;
 
 /**
@@ -35,10 +37,6 @@ use Throwable;
  */
 class IssueInvoicesCommand extends Command
 {
-    public const SCHEDULE_PREV_MONTH_ON_FIRST = 'prev-month-on-first';
-
-    public const SCHEDULE_CURRENT_MONTH_ON_LAST = 'current-month-on-last';
-
     /**
      * The name of this command.
      */
@@ -92,11 +90,13 @@ class IssueInvoicesCommand extends Command
                     'bookkeeping',
                     'Run schedule when --month is not provided.',
                 ),
-                'choices' => [
-                    self::SCHEDULE_PREV_MONTH_ON_FIRST,
-                    self::SCHEDULE_CURRENT_MONTH_ON_LAST,
-                ],
-                'default' => self::SCHEDULE_PREV_MONTH_ON_FIRST,
+                'choices' => array_keys(InvoicingSchedule::options()),
+                // what the installation says it does, so a cron line naming nothing still runs
+                // the way the rest of the application believes invoicing happens
+                'default' => Settings::getString(
+                    InvoicingSchedule::SETTINGS_PATH,
+                    InvoicingSchedule::CURRENT_MONTH_ON_LAST->value,
+                ),
             ])
 
             ->addOption('force', [
@@ -149,8 +149,16 @@ class IssueInvoicesCommand extends Command
         try {
             // Resolve invoiced month
             $monthOption = $args->getOption('month');
-            $schedule = (string)$args->getOption('schedule');
+            $schedule = InvoicingSchedule::tryFrom((string)$args->getOption('schedule'));
             $force = (bool)$args->getOption('force');
+
+            if ($schedule === null) {
+                throw new RuntimeException(__d(
+                    'bookkeeping',
+                    'Invalid schedule value: {0}',
+                    (string)$args->getOption('schedule'),
+                ));
+            }
 
             $today = Date::now();
 
@@ -161,7 +169,7 @@ class IssueInvoicesCommand extends Command
                 // Scheduled mode
                 if (!$force) {
                     if (
-                        $schedule === self::SCHEDULE_PREV_MONTH_ON_FIRST
+                        $schedule === InvoicingSchedule::PREV_MONTH_ON_FIRST
                         && !$today->equals($today->firstOfMonth())
                     ) {
                         $io->out(__d(
@@ -173,7 +181,7 @@ class IssueInvoicesCommand extends Command
                     }
 
                     if (
-                        $schedule === self::SCHEDULE_CURRENT_MONTH_ON_LAST
+                        $schedule === InvoicingSchedule::CURRENT_MONTH_ON_LAST
                         && !$today->equals($today->lastOfMonth())
                     ) {
                         $io->out(__d(
@@ -186,17 +194,11 @@ class IssueInvoicesCommand extends Command
                 }
 
                 $invoicedMonth = match ($schedule) {
-                    self::SCHEDULE_PREV_MONTH_ON_FIRST =>
+                    InvoicingSchedule::PREV_MONTH_ON_FIRST =>
                         $today->subMonths(1)->firstOfMonth(),
 
-                    self::SCHEDULE_CURRENT_MONTH_ON_LAST =>
+                    InvoicingSchedule::CURRENT_MONTH_ON_LAST =>
                         $today->firstOfMonth(),
-
-                    default => throw new RuntimeException(__d(
-                        'bookkeeping',
-                        'Invalid schedule value: {0}',
-                        $schedule,
-                    )),
                 };
             }
 

@@ -32,9 +32,11 @@
  *   is for can be read off the line it stands on.
  */
 
+use Bookkeeping\Model\Enum\InvoicingSchedule;
 use Bookkeeping\Provider\Eurofaktura\EurofakturaProvider;
 use Bookkeeping\Provider\Pohoda\PohodaProvider;
 use Settings\ValueObject\Type\BoolType;
+use Settings\ValueObject\Type\ChoiceType;
 use Settings\ValueObject\Type\ListType;
 use Settings\ValueObject\Type\NumberType;
 
@@ -141,6 +143,29 @@ return [
         ],
 
         'invoices' => [
+            'issuing' => [
+                // When invoicing runs, and so which periods it has settled. Nothing in the data
+                // says which months were invoiced, so this is what a billing is held against:
+                // a date inside a settled period may no longer be moved.
+                'schedule' => new ChoiceType(
+                    default: InvoicingSchedule::CURRENT_MONTH_ON_LAST,
+                    hint: __d(
+                        'bookkeeping',
+                        'Also the default the invoicing command takes when it is called without --schedule.',
+                    ),
+                ),
+
+                // Whether the day of the run itself is still open. It usually is: the check
+                // against the control file fails and it is put right on that very day.
+                'day_stays_open' => new BoolType(
+                    default: true,
+                    hint: __d(
+                        'bookkeeping',
+                        'Leave the period being invoiced today open, so it can still be corrected.',
+                    ),
+                ),
+            ],
+
             'texts' => [
                 'default' => 'Faktura za poskytované služby dle smlouvy {contract_number} za období {invoiced_month}',
                 'separate' => 'Faktura za službu {service_name} za období {invoiced_month}',

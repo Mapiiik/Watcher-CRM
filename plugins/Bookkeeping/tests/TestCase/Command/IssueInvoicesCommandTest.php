@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace Bookkeeping\Test\TestCase\Command;
 
 use Bookkeeping\Command\IssueInvoicesCommand;
+use Bookkeeping\Model\Enum\InvoicingSchedule;
 use Cake\Chronos\Chronos;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Settings\Utility\Settings;
 
 /**
  * Bookkeeping\Command\IssueInvoicesCommand Test Case
@@ -23,6 +25,15 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class IssueInvoicesCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
+
+    /**
+     * Fixtures
+     *
+     * @var array<string>
+     */
+    protected array $fixtures = [
+        'plugin.Settings.Settings',
+    ];
 
     /**
      * The name a cron entry calls the command by.
@@ -99,6 +110,77 @@ class IssueInvoicesCommandTest extends TestCase
             $this->assertOutputContains('skipping');
         } finally {
             Chronos::setTestNow($nowBefore);
+        }
+    }
+
+    /**
+     * A cron entry that names the command and nothing else has to invoice the way the rest of the
+     * application believes it does, so the schedule it falls back on is the one the installation
+     * has settled on - not one built into the command.
+     *
+     * Asked on a day the stored schedule does not fire on, so the run skips and nothing is issued,
+     * handed to the accounting system or mailed out.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\IssueInvoicesCommand::buildOptionParser()
+     */
+    public function testTheScheduleFallsBackToWhatTheInstallationSays(): void
+    {
+        Settings::set(InvoicingSchedule::SETTINGS_PATH, InvoicingSchedule::PREV_MONTH_ON_FIRST->value);
+
+        $nowBefore = Chronos::getTestNow();
+        // the last day of a month: due under the other schedule, and not under this one
+        Chronos::setTestNow(new Chronos('2026-08-31 03:00:00'));
+
+        try {
+            $this->exec('issue_invoices');
+
+            $this->assertExitSuccess();
+            $this->assertOutputContains('Not the first day of month');
+        } finally {
+            Chronos::setTestNow($nowBefore);
+        }
+    }
+
+    /**
+     * And the other way round, so that it is the setting being read rather than a default that
+     * happens to agree with it.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\IssueInvoicesCommand::buildOptionParser()
+     */
+    public function testTheOtherScheduleIsFallenBackOnJustTheSame(): void
+    {
+        Settings::set(InvoicingSchedule::SETTINGS_PATH, InvoicingSchedule::CURRENT_MONTH_ON_LAST->value);
+
+        $nowBefore = Chronos::getTestNow();
+        // the first day of a month: due under the other schedule, and not under this one
+        Chronos::setTestNow(new Chronos('2026-09-01 03:00:00'));
+
+        try {
+            $this->exec('issue_invoices');
+
+            $this->assertExitSuccess();
+            $this->assertOutputContains('Not the last day of month');
+        } finally {
+            Chronos::setTestNow($nowBefore);
+        }
+    }
+
+    /**
+     * The answers offered are the ways of invoicing there are.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\IssueInvoicesCommand::buildOptionParser()
+     */
+    public function testTheScheduleOffersTheWaysOfInvoicingThereAre(): void
+    {
+        $this->exec('issue_invoices --help');
+
+        $this->assertExitSuccess();
+
+        foreach (InvoicingSchedule::cases() as $schedule) {
+            $this->assertOutputContains($schedule->value);
         }
     }
 }

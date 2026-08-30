@@ -290,6 +290,8 @@ class BillingAgainstStateCheckTest extends TestCase
      */
     private function billed(string $from, ?string $until): void
     {
+        // dated as it would have come to be before the rules were there to refuse it, which
+        // is the very thing the check is here to find
         $this->Billings->saveOrFail($this->Billings->newEntity([
             'customer_id' => self::CUSTOMER_ID,
             'contract_id' => self::CONTRACT_ID,
@@ -298,6 +300,6 @@ class BillingAgainstStateCheckTest extends TestCase
             'billing_until' => $until === null ? null : Date::now()->modify($until)->format('Y-m-d'),
             'quantity' => 1,
             'separate_invoice' => false,
-        ]));
+        ]), [BillingsTable::ALLOW_CLOSED_PERIODS => true]);
     }
 }

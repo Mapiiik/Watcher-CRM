@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractsController;
+use App\Model\Table\BillingsTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
@@ -313,7 +314,7 @@ class ContractsControllerTest extends TestCase
             'billing_until' => null,
             'quantity' => 1,
             'separate_invoice' => false,
-        ]));
+        ]), [BillingsTable::ALLOW_CLOSED_PERIODS => true]);
 
         $this->login();
         $this->get('/contracts/problems/' . $contract_id);
@@ -778,5 +779,75 @@ class ContractsControllerTest extends TestCase
         } finally {
             Cache::delete('access_points', 'api_client');
         }
+    }
+
+    /**
+     * Winding a contract up ends the billings that were still running with it.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::terminateRelatedBillings()
+     */
+    public function testTerminatingBillingsGivesThemTheDayTheContractStopped(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $stopped = $billings->firstOpenPeriodStart()->addDays(5);
+        $this->contractStoppedOn($stopped);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contracts/terminate-related-billings/' . self::CONTRACT_ID);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            0,
+            $billings->find()->where([
+                'Billings.contract_id' => self::CONTRACT_ID,
+                'Billings.billing_until IS' => null,
+            ])->count(),
+        );
+    }
+
+    /**
+     * A contract wound up in a month that has already been invoiced for is another matter: giving
+     * the billings that day takes back part of an invoice that has gone out, so it is refused and
+     * said out loud rather than done quietly.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::terminateRelatedBillings()
+     */
+    public function testBillingsAreNotTerminatedBackIntoAnInvoicedPeriod(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $this->contractStoppedOn($billings->lastClosedPeriodEnd()->subDays(1));
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contracts/terminate-related-billings/' . self::CONTRACT_ID);
+
+        $this->assertRedirect();
+        $this->assertGreaterThan(
+            0,
+            $billings->find()->where([
+                'Billings.contract_id' => self::CONTRACT_ID,
+                'Billings.billing_until IS' => null,
+            ])->count(),
+            'A billing was ended inside a period that has been invoiced for.',
+        );
+    }
+
+    /**
+     * Record that the contract stopped on the given day.
+     *
+     * @param \Cake\I18n\Date $day The day it stopped.
+     * @return void
+     */
+    private function contractStoppedOn(Date $day): void
+    {
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $contract = $contracts->get(self::CONTRACT_ID);
+        $contract->termination_date = $day;
+        $contracts->saveOrFail($contract, ['checkRules' => false]);
     }
 }
