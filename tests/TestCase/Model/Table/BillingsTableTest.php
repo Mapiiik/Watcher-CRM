@@ -10,7 +10,9 @@ use Bookkeeping\Model\Enum\InvoicingSchedule;
 use Cake\Chronos\Chronos;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Inflector;
 use Override;
+use PhpCollective\DecimalObject\Decimal;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Settings\Utility\Settings;
 
@@ -332,6 +334,86 @@ class BillingsTableTest extends TestCase
     }
 
     /**
+     * The fields that say what is being charged for, taken from the table so a term added there
+     * cannot quietly go untested.
+     *
+     * @return list<array{string}>
+     */
+    public static function settledTerms(): array
+    {
+        return array_map(static fn(string $term): array => [$term], BillingsTable::SETTLED_TERMS);
+    }
+
+    /**
+     * What has already been invoiced for is not re-priced in place: the invoice has gone out and
+     * the record is the only account of what it was for.
+     *
+     * @param string $term The field being changed.
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    #[DataProvider('settledTerms')]
+    public function testASettledTermIsNotRewritten(string $term): void
+    {
+        $billing = $this->Billings->get($this->closedBillingId());
+        $changed = $this->Billings->patchEntity($billing, [$term => $this->somethingElseFor($billing, $term)]);
+
+        $this->assertFalse($this->Billings->save($changed), sprintf('%s was rewritten.', $term));
+        $this->assertArrayHasKey('settled' . Inflector::camelize($term), $changed->getError($term));
+    }
+
+    /**
+     * Until an invoice has gone out there is nothing to disagree with, so the same change is
+     * nobody's business but the operator's.
+     *
+     * @param string $term The field being changed.
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    #[DataProvider('settledTerms')]
+    public function testASettledTermMayBeChangedWhileNothingHasBeenInvoiced(string $term): void
+    {
+        $billing = $this->openBilling();
+        $changed = $this->Billings->patchEntity($billing, [$term => $this->somethingElseFor($billing, $term)]);
+
+        $this->assertNotFalse($this->Billings->save($changed), sprintf('%s could not be set.', $term));
+    }
+
+    /**
+     * Something does have to be put right now and then, and that is what the admin's box is for.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testASettledTermCanBeRewrittenWhenItIsAskedFor(): void
+    {
+        $billing = $this->Billings->patchEntity($this->Billings->get($this->closedBillingId()), ['price' => 9]);
+
+        $this->assertNotFalse(
+            $this->Billings->save($billing, [BillingsTable::ALLOW_CLOSED_PERIODS => true]),
+        );
+    }
+
+    /**
+     * The sanctioned way out is to end the billing and start another, so the one being started
+     * must not be held to what the one it replaces was invoiced for.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testABillingBeingStartedIsNotHeldToWhatCameBefore(): void
+    {
+        $replaced = $this->Billings->get($this->closedBillingId());
+
+        $starting = $this->Billings->newEntity(
+            ['billing_from' => $this->Billings->firstOpenPeriodStart()->toDateString()]
+            + $this->somethingElseFor($replaced, 'copy'),
+        );
+
+        $this->assertNotFalse($this->Billings->save($starting));
+    }
+
+    /**
      * What may be taken back and what may not, which the permissions ask before they draw the
      * button and again before they let the request through.
      *
@@ -354,6 +436,40 @@ class BillingsTableTest extends TestCase
             $this->Billings->mayBeDeleted($this->Billings->get($this->closedBillingId())),
             'A billing from years back was taken back.',
         );
+    }
+
+    /**
+     * A value for one of the settled terms that differs from the one the billing carries.
+     *
+     * Asked for as `copy` it hands back the whole record instead, which is what starting a billing
+     * over as a replacement for another one amounts to.
+     *
+     * @param \App\Model\Entity\Billing $billing The billing being changed.
+     * @param string $term The field being changed, or `copy` for all of them.
+     * @return mixed
+     */
+    private function somethingElseFor(Billing $billing, string $term): mixed
+    {
+        if ($term === 'copy') {
+            $terms = ['customer_id' => $billing->customer_id, 'contract_id' => $billing->contract_id];
+            foreach (BillingsTable::SETTLED_TERMS as $settled) {
+                $carried = $billing->get($settled);
+                // the money is held as an object, and what arrives from a form never is
+                $terms[$settled] = $carried instanceof Decimal ? $carried->toString() : $carried;
+            }
+
+            return $terms;
+        }
+
+        if ($term === 'service_id') {
+            return $this->Billings->Services
+                ->find()
+                ->where(['Services.id IS NOT' => $billing->service_id])
+                ->firstOrFail()
+                ->get('id');
+        }
+
+        return 9;
     }
 
     /**

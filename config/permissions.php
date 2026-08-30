@@ -428,6 +428,7 @@ $permissions = [
                 'edit',
                 'print',
                 'revoke',
+                'serviceChange',
                 'setDatesForRelatedBorrowedEquipments',
                 'terminateRelatedBillings',
             ],

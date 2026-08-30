@@ -8,6 +8,7 @@ use Bookkeeping\Model\Enum\InvoicingSchedule;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
+use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 use Override;
 use Settings\Utility\Settings;
@@ -48,6 +49,19 @@ class BillingsTable extends AppTable
      * @var string
      */
     public const ALLOW_CLOSED_PERIODS = 'allow_closed_periods';
+
+    /**
+     * The fields saying what is being charged for and how much, as against over what period.
+     *
+     * @var list<string>
+     */
+    public const SETTLED_TERMS = [
+        'service_id',
+        'quantity',
+        'price',
+        'fixed_discount',
+        'percentage_discount',
+    ];
 
     /**
      * Initialize method
@@ -342,6 +356,30 @@ class BillingsTable extends AppTable
                 ),
             ],
         );
+
+        // One rule per field rather than one for all of them: a rule carries a single field to
+        // hang its message on, and the operator has to see it under the box they changed. What is
+        // new is passed over - there is nothing to rewrite yet, and a start laid in a closed
+        // period is refused by the rule above instead.
+        foreach (self::SETTLED_TERMS as $term) {
+            $rules->add(
+                function (Billing $entity, array $options) use ($term): bool {
+                    if (!empty($options[self::ALLOW_CLOSED_PERIODS]) || $entity->isNew()) {
+                        return true;
+                    }
+
+                    return !$entity->isDirty($term) || $this->mayBeDeleted($entity);
+                },
+                'settled' . Inflector::camelize($term),
+                [
+                    'errorField' => $term,
+                    'message' => __(
+                        'What has already been invoiced for is not changed here. End this billing'
+                        . ' and start a new one from the day the change takes effect.',
+                    ),
+                ],
+            );
+        }
 
         return $rules;
     }

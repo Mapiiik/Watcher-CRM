@@ -124,7 +124,7 @@ use App\Model\Entity\Billing;
                 <?= $this->Form->control('send_customer_notification', [
                     'label' => __('Send a customer notification about the change'),
                     'type' => 'checkbox',
-                    'checked' => true,
+                    'checked' => false,
                 ]) ?>
                 <?= $this->Form->control('version_without_legislative_information', [
                     'label' => __('Version without legislative information'),

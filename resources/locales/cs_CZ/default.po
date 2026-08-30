@@ -6407,6 +6407,13 @@ msgid "The billing may not end before {0}, the last day that has been invoiced."
 msgstr ""
 "Fakturace nesmí skončit dřív než {0}, což je poslední vyfakturovaný den."
 
+#: src/Model/Table/BillingsTable.php:377
+msgid ""
+"What has already been invoiced for is not changed here. End this billing and start a new one from the day the change takes effect."
+msgstr ""
+"Co už bylo vyfakturováno, se tady nemění. Ukončete toto fakturační pravidlo a od data "
+"změny založte nové."
+
 #: src/Model/Table/ContractVersionsTable.php:191
 msgid "The contract version cannot end before it begins."
 msgstr "Verze smlouvy nemůže skončit dřív, než začne."

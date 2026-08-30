@@ -164,7 +164,9 @@ class BillingsControllerTest extends TestCase
         $this->post('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/billings/add', [
             'text' => 'Nested item',
             'price' => '100.00',
-            'billing_from' => '2026-08-05',
+            // taken from today rather than written down: a day in a month already invoiced for is
+            // refused, and a day written down becomes one as soon as the month turns
+            'billing_from' => $this->getTableLocator()->get('Billings')->firstOpenPeriodStart()->toDateString(),
         ]);
 
         $this->assertRedirect();
@@ -440,5 +442,106 @@ class BillingsControllerTest extends TestCase
 
         $this->assertRedirect();
         $this->assertTrue($moved->equals($billings->get($billingId)->billing_from));
+    }
+
+    /**
+     * The way out of a settled billing is to end it and start another, and the roles that write
+     * billings may now walk it themselves - before, only an admin could.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::serviceChange()
+     */
+    public function testWhoeverWritesBillingsMayChangeTheServiceOfARunningOne(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billing = $billings->find()->where(['Billings.billing_until IS' => null])->firstOrFail();
+        $from = $billings->firstOpenPeriodStart();
+        $service = $billings->Services
+            ->find()
+            ->where(['Services.id IS NOT' => $billing->get('service_id')])
+            ->firstOrFail();
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('Billings');
+        $this->post('/billings/service-change/' . $billing->get('id'), [
+            'service_id' => $service->get('id'),
+            'billing_from' => $from->toDateString(),
+        ]);
+
+        $this->assertRedirectContains('/billings/view/');
+        $this->assertEquals(
+            $from->subDays(1),
+            $billings->get($billing->get('id'))->billing_until,
+            'The billing being replaced was not ended the day before its replacement starts.',
+        );
+
+        $started = $this->addedRecord('Billings', $before);
+        $this->assertSame($service->get('id'), $started->get('service_id'));
+        $this->assertEquals($from, $started->get('billing_from'));
+    }
+
+    /**
+     * The letter goes out over the company's name, so the option is the admin's - and unticked
+     * even there, because a service is usually changed on the customer's own word.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::serviceChange()
+     */
+    public function testTheCustomerNotificationIsOfferedToAnAdminAloneAndUnticked(): void
+    {
+        $billingId = $this->firstId('Billings');
+
+        $this->login('bookkeeper');
+        $this->get('/billings/service-change/' . $billingId);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('send-customer-notification');
+        $this->assertResponseNotContains('version-without-legislative-information');
+
+        $this->login();
+        $this->get('/billings/service-change/' . $billingId);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('send-customer-notification');
+        $this->assertResponseNotContains('checked="checked"');
+    }
+
+    /**
+     * Changing the prices of hundreds of contracts at one submission stays the admin's.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testTheBulkServiceChangeIsNotOpenedAlongWithTheSingleOne(): void
+    {
+        $this->login('bookkeeper');
+        $this->get('/billings/bulk-service-change');
+
+        $this->assertRedirect();
+        $this->assertNull($this->viewVariable('billings'), 'The bulk form was rendered for them.');
+    }
+
+    /**
+     * A price somebody has been invoiced is not re-typed on the form either.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::edit()
+     */
+    public function testTheFormRefusesToRepriceABillingAlreadyInvoicedFor(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billingId = $this->firstId('Billings');
+        $priced = $billings->get($billingId)->price;
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/edit/' . $billingId, ['price' => '99.00']);
+
+        $this->assertNoRedirect();
+        $this->assertEquals($priced, $billings->get($billingId)->price, 'The price was rewritten.');
     }
 }

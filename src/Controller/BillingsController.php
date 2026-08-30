@@ -337,8 +337,9 @@ class BillingsController extends AppController
 
         // set data
         $closed_period_override = $this->mayReachIntoClosedPeriods();
+        $customer_notification = $this->mayNotifyTheCustomer();
 
-        $this->set(compact('billing', 'services', 'closed_period_override'));
+        $this->set(compact('billing', 'services', 'closed_period_override', 'customer_notification'));
 
         return null;
     }
@@ -474,6 +475,29 @@ class BillingsController extends AppController
      */
     private function mayReachIntoClosedPeriods(): bool
     {
+        return $this->isAdmin();
+    }
+
+    /**
+     * Whether this request may have the customer told about the change.
+     *
+     * The letter goes out over the company's name, so who sends one is not everybody's to decide -
+     * and it is offered unticked, because a service is usually changed on the customer's own word.
+     *
+     * @return bool
+     */
+    private function mayNotifyTheCustomer(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    /**
+     * Whether whoever is asking is trusted with the whole application.
+     *
+     * @return bool
+     */
+    private function isAdmin(): bool
+    {
         return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
     }
 
@@ -522,8 +546,19 @@ class BillingsController extends AppController
             $originalBillingData['service'],
         );
 
+        // The money is held on the entity as an object, and the marshaller takes only what a form
+        // would send.
+        $originalBillingData['price'] = $originalBilling->price?->toString();
+        $originalBillingData['fixed_discount'] = $originalBilling->fixed_discount?->toString();
+
         $newBilling = $this->Billings->newEntity($originalBillingData);
-        $newBilling = $this->Billings->patchEntity($newBilling, $request->getData());
+        // The customer and the contract are not on the form - the replacement belongs where the
+        // billing it replaces did - but the record being written is a new one, and a new one is
+        // asked for them.
+        $newBilling = $this->Billings->patchEntity($newBilling, $request->getData() + [
+            'customer_id' => $originalBilling->customer_id,
+            'contract_id' => $originalBilling->contract_id,
+        ]);
         $newBilling->service = $this->Billings->Services->get($newBilling->service_id); // load associated service
 
         // Update original billing

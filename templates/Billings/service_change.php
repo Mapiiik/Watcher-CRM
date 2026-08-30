@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Billing $billing
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
  * @var bool|null $closed_period_override
+ * @var bool|null $customer_notification
  */
 ?>
 <div class="row">
@@ -159,11 +160,12 @@
                     'type' => 'number',
                 ]) ?>
             </fieldset>
+            <?php if (!empty($customer_notification)) : ?>
             <fieldset>
                 <?= $this->Form->control('send_customer_notification', [
                     'label' => __('Send a customer notification about the change'),
                     'type' => 'checkbox',
-                    'checked' => true,
+                    'checked' => false,
                 ]) ?>
                 <?= $this->Form->control('version_without_legislative_information', [
                     'label' => __('Version without legislative information'),
@@ -171,6 +173,7 @@
                     'checked' => false,
                 ]) ?>
             </fieldset>
+            <?php endif; ?>
             <?= $this->Form->button(
                 __('Submit'),
                 [
