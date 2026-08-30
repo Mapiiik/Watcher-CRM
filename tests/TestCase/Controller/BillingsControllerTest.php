@@ -55,6 +55,8 @@ class BillingsControllerTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
+        'app.Emails',
+        'app.CustomerMessages',
     ];
 
     /**
@@ -485,6 +487,42 @@ class BillingsControllerTest extends TestCase
         $this->assertSame($service->get('id'), $started->get('service_id'));
         $this->assertEquals($from, $started->get('billing_from'));
         $this->assertEquals($billing->get('price'), $started->get('price'), 'The price was not carried across.');
+    }
+
+    /**
+     * The letter itself, which has never been written: the action it hangs off was dormant for
+     * years and then refused everything, so this branch has not run once.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::serviceChange()
+     */
+    public function testTheCustomerNotificationIsActuallyWritten(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billing = $billings->find()->where(['Billings.billing_until IS' => null])->firstOrFail();
+        $service = $billings->Services
+            ->find()
+            ->where(['Services.id IS NOT' => $billing->get('service_id')])
+            ->firstOrFail();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('CustomerMessages');
+        $this->post('/billings/service-change/' . $billing->get('id'), [
+            'service_id' => $service->get('id'),
+            'billing_from' => $billings->firstOpenPeriodStart()->toDateString(),
+            'send_customer_notification' => '1',
+        ]);
+
+        $this->assertRedirectContains('/billings/view/');
+
+        $written = $this->addedRecord('CustomerMessages', $before);
+        $this->assertNotEmpty($written->get('subject'));
+        $this->assertNotEmpty($written->get('body'));
+        $this->assertSame($billing->get('customer_id'), $written->get('customer_id'));
+        $this->assertSame(['customer@example.com'], $written->get('recipients'));
     }
 
     /**
