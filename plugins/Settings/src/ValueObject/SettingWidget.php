@@ -18,5 +18,6 @@ enum SettingWidget: string
     case Number = 'number';
     case Date = 'date';
     case TriState = 'tri_state';
+    case Choice = 'choice';
     case Json = 'json';
 }

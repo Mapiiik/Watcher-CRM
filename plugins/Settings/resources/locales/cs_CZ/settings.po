@@ -70,3 +70,7 @@ msgstr "Očekávalo se celé číslo."
 #: plugins/Settings/src/ValueObject/Type/NumberType.php:179
 msgid "At most {scale} decimal places were expected."
 msgstr "Očekávalo se maximálně {scale} desetinných míst."
+
+#: plugins/Settings/src/ValueObject/Type/ChoiceType.php:109
+msgid "One of the answers on offer was expected."
+msgstr "Očekávala se některá z nabízených odpovědí."

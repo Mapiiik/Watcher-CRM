@@ -33,10 +33,22 @@ foreach ($default as $key => $defaultValue) {
         // the blank choice is what every other field says by being left empty: use what was shipped
         $answers = ['' => __('Default'), '1' => __('Yes'), '0' => __('No')];
 
+        // a choice names its own answers, and hands them over among the options below
+        if ($widget === SettingWidget::Choice) {
+            $offered = $type->formOptions()['options'] ?? [];
+            $answers = is_array($offered) ? $offered : [];
+        }
+
         if ($widget === SettingWidget::TriState) {
             $options = [
                 'type' => 'select',
                 'options' => $answers,
+                'value' => $type->toFormValue($actualOverlay),
+            ];
+        } elseif ($widget === SettingWidget::Choice) {
+            $options = [
+                'type' => 'select',
+                'empty' => __('Default'),
                 'value' => $type->toFormValue($actualOverlay),
             ];
         } else {
@@ -51,7 +63,7 @@ foreach ($default as $key => $defaultValue) {
         $options = array_merge($type->formOptions(), $options);
 
         $shownDefault = $type->toFormValue($defaultValue);
-        if ($widget === SettingWidget::TriState) {
+        if ($widget === SettingWidget::TriState || $widget === SettingWidget::Choice) {
             $shownDefault = $answers[$shownDefault] ?? $shownDefault;
         }
         ?>
