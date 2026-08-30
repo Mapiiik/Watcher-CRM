@@ -493,6 +493,43 @@ $permissions = [
                 return $billing !== null && $billing->billing_from >= $billings->firstOpenPeriodStart();
             },
         ],
+        //allow delete of a contract version that is not signed and is not history yet
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'ContractVersions',
+            ],
+            'action' => [
+                'delete',
+            ],
+            //The table says what may be taken back. The condition reads the record, so it also
+            //settles whether AuthLink draws the button - the link and the request that follows
+            //it are asked the very same question. Keep it last: the rule is read key by key and
+            //this one ends the reading, so the role has to be matched before it.
+            'allowed' => function ($_user, $_role, ServerRequest $request): bool {
+                $id = $request->getParam('pass.0');
+
+                if (!is_string($id) || !Validation::uuid($id)) {
+                    return false;
+                }
+
+                /** @var \App\Model\Table\ContractVersionsTable $versions */
+                $versions = TableRegistry::getTableLocator()->get('ContractVersions');
+                /** @var \App\Model\Entity\ContractVersion|null $version */
+                $version = $versions->find()
+                    ->select(['ContractVersions.conclusion_date', 'ContractVersions.valid_from'])
+                    ->where(['ContractVersions.id' => $id])
+                    ->first();
+
+                return $version !== null && $versions->mayBeDeleted($version);
+            },
+        ],
         //allow add/edit/delete of access credentials for network-managers
         [
             'role' => [

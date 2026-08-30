@@ -325,6 +325,103 @@ class ContractVersionsControllerTest extends TestCase
     }
 
     /**
+     * The roles that write versions may now take one back, which they could not before - but only
+     * while there is no paper behind it and it has not become history.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::delete()
+     */
+    public function testAnUnsignedVersionOfThisMonthMayBeDeletedByWhoeverWritesThem(): void
+    {
+        $version = $this->contractVersion([
+            'valid_from' => Date::today()->firstOfMonth(),
+            'conclusion_date' => null,
+        ]);
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-versions/delete/' . $version->get('id'));
+
+        $this->assertRedirect();
+        $this->assertFalse($this->getTableLocator()->get('ContractVersions')->exists(['id' => $version->get('id')]));
+    }
+
+    /**
+     * What was signed stays, and so does what belongs to a month already behind us.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::delete()
+     */
+    public function testASignedOrOlderVersionIsNotTheirsToDelete(): void
+    {
+        $signed = $this->contractVersion([
+            'valid_from' => Date::today()->firstOfMonth(),
+            'conclusion_date' => Date::today()->firstOfMonth(),
+        ]);
+        $older = $this->contractVersion([
+            'valid_from' => Date::today()->firstOfMonth()->subDays(1),
+            'conclusion_date' => null,
+        ]);
+
+        $versions = $this->getTableLocator()->get('ContractVersions');
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/contract-versions/delete/' . $signed->get('id'));
+        $this->assertTrue($versions->exists(['id' => $signed->get('id')]), 'A signed version was deleted.');
+
+        $this->post('/contract-versions/delete/' . $older->get('id'));
+        $this->assertTrue($versions->exists(['id' => $older->get('id')]), 'A version from last month was deleted.');
+    }
+
+    /**
+     * The admin keeps the reach they have always had.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::delete()
+     */
+    public function testAnAdminDeletesAVersionWhateverItSays(): void
+    {
+        $versionId = $this->firstId('ContractVersions');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-versions/delete/' . $versionId);
+
+        $this->assertRedirect();
+        $this->assertFalse($this->getTableLocator()->get('ContractVersions')->exists(['id' => $versionId]));
+    }
+
+    /**
+     * A stretch of time that cannot exist is refused by the form rather than stored for a check
+     * to find months later.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::edit()
+     */
+    public function testTheFormRefusesAVersionThatEndsBeforeItBegins(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $versionId = $this->firstId('ContractVersions');
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $stored = $versions->get($versionId)->valid_until;
+
+        $this->post('/contract-versions/edit/' . $versionId, [
+            'valid_until' => $versions->get($versionId)->valid_from->subDays(1)->toDateString(),
+        ]);
+
+        $this->assertNoRedirect();
+        $this->assertEquals($stored, $versions->get($versionId)->valid_until, 'The impossible period was stored.');
+    }
+
+    /**
      * A contract version of the fixture contract, differing by what it is asked for.
      *
      * @param array<string, mixed> $data What this version differs by.

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\ContractVersion;
 use Cake\Database\Expression\IdentifierExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\I18n\Date;
@@ -96,6 +97,24 @@ class ContractVersionsTable extends AppTable
     }
 
     /**
+     * Whether a version may still be taken back.
+     *
+     * Two things have to hold. Nothing was signed - a version with paper behind it is the record
+     * of what the customer agreed to, and that is not ours to remove. And it belongs to the month
+     * being lived through or to one ahead of it, which is what a version somebody is still putting
+     * together looks like. Older ones are history even where the paperwork never caught up, and on
+     * file there are a thousand of those from one import.
+     *
+     * @param \App\Model\Entity\ContractVersion $version The version being asked about.
+     * @return bool
+     */
+    public function mayBeDeleted(ContractVersion $version): bool
+    {
+        return $version->conclusion_date === null
+            && $version->valid_from >= Date::now()->firstOfMonth();
+    }
+
+    /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
@@ -152,6 +171,42 @@ class ContractVersionsTable extends AppTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('contract_id', 'Contracts'), ['errorField' => 'contract_id']);
+
+        // Both of these are asked whenever a version is saved, not only when a date has been
+        // touched. A stretch of time that cannot exist was wrong the day it was written and time
+        // does not put it right, so whoever opens such a version is the one to look it up and
+        // correct it - the same as a contract missing what its service type requires.
+        $rules->add(
+            function (ContractVersion $entity): bool {
+                if ($entity->valid_from === null || $entity->valid_until === null) {
+                    return true;
+                }
+
+                // a version in force for a single day is a real one
+                return $entity->valid_until >= $entity->valid_from;
+            },
+            'contractVersionPeriodIsPossible',
+            [
+                'errorField' => 'valid_until',
+                'message' => __('The contract version cannot end before it begins.'),
+            ],
+        );
+
+        $rules->add(
+            function (ContractVersion $entity): bool {
+                if ($entity->valid_from === null || $entity->obligation_until === null) {
+                    return true;
+                }
+
+                // the term belongs to the version, so it cannot have run out before it existed
+                return $entity->obligation_until >= $entity->valid_from;
+            },
+            'obligationEndsAfterItsVersionBegins',
+            [
+                'errorField' => 'obligation_until',
+                'message' => __('The minimum term cannot run out before the version it belongs to begins.'),
+            ],
+        );
 
         return $rules;
     }

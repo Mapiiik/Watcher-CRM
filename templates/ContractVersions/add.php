@@ -69,7 +69,7 @@ use Cake\I18n\Date;
                 ]);
                 $this->Form->unlockField('obligations_settled'); //disable form security check
 
-                echo $this->Form->control('conclusion_date', ['empty' => true]);
+                echo $this->Form->control('conclusion_date', ['empty' => true, 'max' => date('Y-m-d')]);
                 echo $this->Form->control('number_of_amendments');
                 echo $this->Form->control('note');
                 ?>
