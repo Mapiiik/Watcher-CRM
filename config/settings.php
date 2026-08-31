@@ -451,7 +451,7 @@ return [
 
                         'amendment_intro' => 'Tento dodatek mění Seznam poskytovaných služeb a Platební údaje původní smlouvy ve znění případných předchozích dodatků s účinností od {valid_from} takto:',
                         'individual_clause' => 'Smluvní strany ujednávají, že výše cen za Poskytovatelovy služby je touto smlouvou ujednána oproti Ceníku v individuální výši. Včetně všech svých složek má proto povahu Poskytovatelova obchodního tajemství dle § 504 zákona č. 89/2012 Sb., občanského zákoníku.',
-                        'reverse_charge_clause' => '*faktury budou vystaveny v režimu přenesené daňové povinnosti dle § 92a zákona o dani z přidané hodnoty, kdy výši daně je povinen doplnit a přiznat plátce, pro kterého je plnění uskutečněno',
+                        'reverse_charge_clause' => '*faktury budou vystaveny v režimu přenesení daňové povinnosti dle § 92a zákona č. 235/2004 Sb., o dani z přidané hodnoty, s údajem „daň odvede zákazník“ – daň je povinen přiznat plátce, pro kterého je plnění uskutečněno',
                         'standing_order_note' => '*doporučujeme nastavit si trvalý příkaz dle předepsaných platebních údajů, údaje lze použít i pro jednotlivé platby',
                         'amendment_final_clause' => 'Ustanovení smlouvy (ve znění případných předchozích dodatků) nedotčená tímto dodatkem zůstávají beze změn.',
                         'amendment_final_statement' => 'Tento dodatek je vyhotoven ve dvou stejnopisech.',
@@ -480,7 +480,7 @@ return [
                                     <ul>
                                         <li>Uživatel si je vědom skutečnosti, že Podmínky jsou nedílnou součástí této Smlouvy a zavazuje se je dodržovat.</li>
                                         <li>Uživateli je též známo, že Poskytovatel je oprávněn Podmínky v souladu s příslušnými právními předpisy jednostranně měnit.</li>
-                                        <li>Podmínky obsahují mimo jiné i podrobné informace vyžadované § 63 odst. 1 zákona č. 127/2005 Sb. o elektronických komunikacích,
+                                        <li>Podmínky obsahují mimo jiné i podrobné informace vyžadované § 63 odst. 1 a přílohou č. 1 zákona č. 127/2005 Sb., o elektronických komunikacích,
                                             jako jsou informace o veškerých podmínkách omezujících přístup k poskytovaným službám a možnostem jejich využívání,
                                             o minimální nabízené a minimální zaručené úrovni kvality poskytovaných služeb, o omezeních týkajících se omezení užívání koncových zařízení nebo o možnostech ukončení smlouvy.
                                         </li>
@@ -644,13 +644,16 @@ return [
 
                     3. Zpracování osobních údajů je prováděno Správcem.
 
-                    4. Beru na vědomí, že podle zákona o ochraně osobních údajů mám právo:
+                    4. Beru na vědomí, že podle nařízení (EU) 2016/679 (GDPR) a zákona č. 110/2019 Sb., o zpracování osobních údajů, mám právo:
                         a) vzít souhlas kdykoliv zpět
                         b) požadovat po Správci informaci, jaké moje osobní údaje zpracovává
                         c) požadovat po Správci vysvětlení ohledně zpracování osobních údajů
                         d) vyžádat si u Správce přístup k těmto údajům a tyto nechat aktualizovat nebo opravit
                         e) požadovat po Správci výmaz těchto osobních údajů, pokud Správce neprokáže oprávněné důvody pro zpracování těchto osobních údajů
-                        f) v případě pochybností o dodržování povinností souvisejících se zpracováním osobních údajů obrátit se na Správce nebo na Úřad pro ochranu osobních údajů
+                        f) požadovat omezení zpracování osobních údajů
+                        g) získat své osobní údaje ve strojově čitelném formátu a předat je jinému správci
+                        h) vznést námitku proti zpracování prováděnému z důvodu oprávněného zájmu Správce a kdykoli proti zpracování pro účely přímého marketingu
+                        i) v případě pochybností o dodržování povinností souvisejících se zpracováním osobních údajů obrátit se na Správce nebo podat stížnost u Úřadu pro ochranu osobních údajů
                     TEXT,
 
                 'checkboxes' => [
@@ -686,7 +689,7 @@ return [
 
                 'price_list' => 'Aktuálně platný ceník je uveřejněný na našich internetových stránkách zde: {price_list_url}',
 
-                'legislative_information' => 'V souladu s ust. § 63 odst. 6 zákona č. 127/2005 Sb. o elektronických komunikacích Vás také informujeme, že jestliže tuto změnu neakceptujete, jste oprávněn smlouvu s naší společností bez sankce vypovědět k datu nabytí účinnosti této změny.',
+                'legislative_information' => 'V souladu s ust. § 63b odst. 5 zákona č. 127/2005 Sb., o elektronických komunikacích, Vás také informujeme, že jestliže tuto změnu neakceptujete, jste oprávněn smlouvu s naší společností bez sankce vypovědět k datu nabytí účinnosti této změny.',
 
                 'closing' => 'Pokud budete mít jakékoliv dotazy nebo máte zájem o jiný tarif, než který navrhujeme, neváhejte nás kontaktovat.',
             ],
