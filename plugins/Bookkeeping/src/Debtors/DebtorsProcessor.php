@@ -576,6 +576,7 @@ class DebtorsProcessor
         // A contract blocked twice over is one blocked contract, and the reason it keeps is
         // the debt - which is what gets paid off to be let back in.
         $blocked += $this->unsignedToBlock();
+        $blocked += $this->statedAsBlocked();
 
         foreach (array_keys($blocked) as $contract_id) {
             $customerIps = array_merge_recursive(
@@ -613,6 +614,39 @@ class DebtorsProcessor
                 __d('bookkeeping', 'Routers blocking update'),
             );
         }
+    }
+
+    /**
+     * The contracts an operator has put into a state that says they are blocked.
+     *
+     * Contract states have carried a `blocked` flag since they were written, and the office
+     * has been able to set it all along, but nothing ever read it - a contract could sit in a
+     * state called blocked and go on serving. This is what makes the flag mean something.
+     *
+     * It is a decision somebody made rather than a deadline that ran out, so there is no
+     * setting to switch it off: a state that says blocked is the operator saying so.
+     *
+     * @return array<string, string> Contract id to the reason it is being cut off.
+     */
+    private function statedAsBlocked(): array
+    {
+        $contracts = $this->fetchTable(ContractsTable::class)
+            ->find()
+            ->select(['Contracts.id'])
+            ->innerJoinWith(
+                'ContractStates',
+                fn(SelectQuery $states): SelectQuery => $states->where(['ContractStates.blocked' => true]),
+            )
+            ->all();
+
+        $blocked = [];
+
+        /** @var \App\Model\Entity\Contract $contract */
+        foreach ($contracts as $contract) {
+            $blocked[$contract->id] = __d('bookkeeping', 'blocked state');
+        }
+
+        return $blocked;
     }
 
     /**

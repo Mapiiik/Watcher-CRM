@@ -87,6 +87,11 @@ class DebtorsProcessorTest extends TestCase
         // that loaded them. A case that changes what is owed would otherwise be answered out
         // of whatever ran before it.
         (new ReflectionProperty(DebtorsProcessor::class, 'debtors'))->setValue(null, null);
+
+        // The state in the fixtures says blocked, which would put every contract in them
+        // into the blocked set for that reason alone. Cases about some other reason start
+        // from a state that says nothing; the case about this one turns it back on.
+        $this->fetchTable('ContractStates')->updateAll(['blocked' => false], ['1 = 1']);
     }
 
     /**
@@ -264,6 +269,29 @@ class DebtorsProcessorTest extends TestCase
 
         $this->assertCount(1, $labels);
         $this->assertSame('debtor', $labels[0]->note, 'The debt is what they pay off to be let back in.');
+    }
+
+    /**
+     * A contract state has carried a flag saying blocked since it was written, and the office
+     * has been able to set it all along, but nothing ever read it - a contract could sit in a
+     * state called blocked and go on serving. Now it is what the operator says it is.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::statedAsBlocked()
+     */
+    public function testAStateThatSaysBlockedBlocks(): void
+    {
+        $this->onlyLabelling();
+        $this->fetchTable('Bookkeeping.Invoices')->deleteAll([]);
+        $this->fetchTable('ContractStates')->updateAll(['blocked' => true], ['1 = 1']);
+
+        (new DebtorsProcessor())->blockingUpdate();
+
+        /** @var list<\App\Model\Entity\CustomerLabel> $labels */
+        $labels = $this->fetchTable('CustomerLabels')->find()->all()->toList();
+
+        $this->assertCount(1, $labels);
+        $this->assertSame('blocked state', $labels[0]->note);
     }
 
     /**
