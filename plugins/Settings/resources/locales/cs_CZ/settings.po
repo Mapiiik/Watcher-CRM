@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-27 16:15+0200\n"
+"POT-Creation-Date: 2026-08-31 17:38+0200\n"
 "PO-Revision-Date: 2026-08-11 09:35+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -35,42 +35,42 @@ msgstr "Nastavení nelze uložit. Zkuste to prosím znovu."
 msgid "The setting {path} could not be saved: {reason}"
 msgstr "Nastavení {path} se nepodařilo uložit: {reason}"
 
-#: plugins/Settings/src/ValueObject/Type/DateType.php:164
-msgid "A day in the form YYYY-MM-DD was expected."
-msgstr "Očekával se den ve tvaru RRRR-MM-DD."
-
-#: plugins/Settings/src/ValueObject/Type/ListType.php:165
-msgid "A list was expected."
-msgstr "Očekával se seznam."
-
-#: plugins/Settings/src/ValueObject/Type/ListType.php:178
-msgid "The list is not valid JSON: {reason}"
-msgstr "Seznam není platným JSON: {reason}"
-
-#: plugins/Settings/src/ValueObject/Type/ListType.php:185
-msgid "A list was expected, not a single value."
-msgstr "Očekával se seznam, nikoli jednotlivá hodnota."
-
-#: plugins/Settings/src/ValueObject/Type/ListType.php:202
-msgid "A list of items was expected, but the value is keyed."
-msgstr "Očekával se seznam položek, ale hodnota je zadána s klíčem."
-
-#: plugins/Settings/src/ValueObject/Type/ListType.php:212
-msgid "Item {position} of the list is not of type {type}."
-msgstr "Položka {position} v seznamu není typu {type}."
-
-#: plugins/Settings/src/ValueObject/Type/NumberType.php:165
-msgid "A number was expected."
-msgstr "Očekávalo se číslo."
-
-#: plugins/Settings/src/ValueObject/Type/NumberType.php:172
-msgid "A whole number was expected."
-msgstr "Očekávalo se celé číslo."
-
-#: plugins/Settings/src/ValueObject/Type/NumberType.php:179
-msgid "At most {scale} decimal places were expected."
-msgstr "Očekávalo se maximálně {scale} desetinných míst."
-
 #: plugins/Settings/src/ValueObject/Type/ChoiceType.php:109
 msgid "One of the answers on offer was expected."
 msgstr "Očekávala se některá z nabízených odpovědí."
+
+#: plugins/Settings/src/ValueObject/Type/DateType.php:175
+msgid "A day in the form YYYY-MM-DD was expected."
+msgstr "Očekával se den ve tvaru RRRR-MM-DD."
+
+#: plugins/Settings/src/ValueObject/Type/ListType.php:178
+msgid "A list was expected."
+msgstr "Očekával se seznam."
+
+#: plugins/Settings/src/ValueObject/Type/ListType.php:191
+msgid "The list is not valid JSON: {reason}"
+msgstr "Seznam není platným JSON: {reason}"
+
+#: plugins/Settings/src/ValueObject/Type/ListType.php:198
+msgid "A list was expected, not a single value."
+msgstr "Očekával se seznam, nikoli jednotlivá hodnota."
+
+#: plugins/Settings/src/ValueObject/Type/ListType.php:215
+msgid "A list of items was expected, but the value is keyed."
+msgstr "Očekával se seznam položek, ale hodnota je zadána s klíčem."
+
+#: plugins/Settings/src/ValueObject/Type/ListType.php:225
+msgid "Item {position} of the list is not of type {type}."
+msgstr "Položka {position} v seznamu není typu {type}."
+
+#: plugins/Settings/src/ValueObject/Type/NumberType.php:175
+msgid "A number was expected."
+msgstr "Očekávalo se číslo."
+
+#: plugins/Settings/src/ValueObject/Type/NumberType.php:182
+msgid "A whole number was expected."
+msgstr "Očekávalo se celé číslo."
+
+#: plugins/Settings/src/ValueObject/Type/NumberType.php:189
+msgid "At most {scale} decimal places were expected."
+msgstr "Očekávalo se maximálně {scale} desetinných míst."
