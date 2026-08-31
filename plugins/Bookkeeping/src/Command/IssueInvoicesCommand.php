@@ -211,7 +211,7 @@ class IssueInvoicesCommand extends Command
             $io->out(__d(
                 'bookkeeping',
                 'Run mode: {0}',
-                $monthOption !== null ? 'manual' : $schedule,
+                $monthOption !== null ? 'manual' : $schedule->value,
             ));
 
             // Resolve accounting profile option

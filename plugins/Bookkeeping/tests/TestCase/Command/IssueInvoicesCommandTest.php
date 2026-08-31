@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Command;
 
+use App\Test\Traits\ConfigureTestTrait;
 use Bookkeeping\Command\IssueInvoicesCommand;
 use Bookkeeping\Model\Enum\InvoicingSchedule;
 use Cake\Chronos\Chronos;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Settings\Utility\Settings;
 
@@ -24,6 +26,7 @@ use Settings\Utility\Settings;
 #[UsesClass(IssueInvoicesCommand::class)]
 class IssueInvoicesCommandTest extends TestCase
 {
+    use ConfigureTestTrait;
     use ConsoleIntegrationTestTrait;
 
     /**
@@ -34,6 +37,34 @@ class IssueInvoicesCommandTest extends TestCase
     protected array $fixtures = [
         'plugin.Settings.Settings',
     ];
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // A run that stops reports it by mail. Said here rather than left to whatever the
+        // environment was built with, so a test of that path does not reach a real mailbox.
+        $this->withConfigure(['Report.errorEmails' => []]);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        $this->restoreConfigure();
+
+        parent::tearDown();
+    }
 
     /**
      * The name a cron entry calls the command by.
@@ -162,6 +193,40 @@ class IssueInvoicesCommandTest extends TestCase
 
             $this->assertExitSuccess();
             $this->assertOutputContains('Not the last day of month');
+        } finally {
+            Chronos::setTestNow($nowBefore);
+        }
+    }
+
+    /**
+     * On a day it is due, the run gets past deciding what to invoice for and says how it was
+     * called - the last thing that happens before an accounting profile is required, and so the
+     * furthest a test can follow a run without invoices being raised, handed to the accounting
+     * system and mailed out.
+     *
+     * Every test above is answered on a day the run is not due, so all of them return before this
+     * point: that is how a run mode printed as the schedule itself - an object where a string was
+     * expected - stopped every scheduled run without a test noticing.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\IssueInvoicesCommand::execute()
+     */
+    public function testExecuteSaysHowItWasCalledOnADayItIsDue(): void
+    {
+        Settings::set(InvoicingSchedule::SETTINGS_PATH, InvoicingSchedule::CURRENT_MONTH_ON_LAST->value);
+
+        $nowBefore = Chronos::getTestNow();
+        // the last day of a month, which is the day the stored schedule fires on
+        Chronos::setTestNow(new Chronos('2026-08-31 03:00:00'));
+
+        try {
+            $this->exec('issue_invoices');
+
+            $this->assertOutputContains('2026-08');
+            $this->assertOutputContains(InvoicingSchedule::CURRENT_MONTH_ON_LAST->value);
+            // and it stops where a run without an accounting profile is meant to
+            $this->assertExitError();
+            $this->assertErrorContains('accounting profile');
         } finally {
             Chronos::setTestNow($nowBefore);
         }
