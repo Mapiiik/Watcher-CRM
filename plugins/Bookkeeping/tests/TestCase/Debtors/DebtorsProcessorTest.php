@@ -10,8 +10,11 @@ use Bookkeeping\Debtors\DebtorsProcessor;
 use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use ReflectionMethod;
+use ReflectionProperty;
+use Settings\Utility\Settings;
 
 /**
  * Bookkeeping\Debtors\DebtorsProcessor Test Case
@@ -40,6 +43,13 @@ class DebtorsProcessorTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * The label a blocked customer is marked with.
+     *
+     * @var string
+     */
+    private const LABEL_ID = 'e9cbb697-be8b-4e05-8226-1b0aeb53130d';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -54,12 +64,30 @@ class DebtorsProcessorTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
+        'app.ContractVersions',
         'app.Emails',
         'app.Phones',
         'app.IpAddresses',
         'app.IpNetworks',
+        'app.Labels',
+        'app.CustomerLabels',
+        'plugin.Settings.Settings',
         'plugin.Bookkeeping.Invoices',
     ];
+
+    /**
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // The processor keeps the debtors it has loaded in a static, which outlives the test
+        // that loaded them. A case that changes what is owed would otherwise be answered out
+        // of whatever ran before it.
+        (new ReflectionProperty(DebtorsProcessor::class, 'debtors'))->setValue(null, null);
+    }
 
     /**
      * The aggregate finds the same debtor the hydrating read does.
@@ -171,5 +199,106 @@ class DebtorsProcessorTest extends TestCase
 
         $this->assertSame(['192.168.11.11', '10.0.0.0/8'], array_keys($ips['ipv4']));
         $this->assertSame([], $ips['ipv6']);
+    }
+
+    /**
+     * A running service with no signed contract is cut off by this same pass, because the
+     * address list on the router is wiped and rebuilt here - a pass of its own would undo
+     * this one rather than add to it. Which is also why the pass works the set out for
+     * itself: a caller that handed it in would be one of two callers, and the other would
+     * quietly reconnect everybody.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::blockingUpdate()
+     */
+    public function testUnsignedPaperworkIsBlockedBesideTheDebtors(): void
+    {
+        $this->onlyLabelling();
+        $this->unsignedPaperwork();
+        $this->fetchTable('Bookkeeping.Invoices')->deleteAll([]);
+
+        (new DebtorsProcessor())->blockingUpdate();
+
+        /** @var list<\App\Model\Entity\CustomerLabel> $labels */
+        $labels = $this->fetchTable('CustomerLabels')->find()->all()->toList();
+
+        $this->assertCount(1, $labels);
+        $this->assertSame('unsigned contract', $labels[0]->note);
+    }
+
+    /**
+     * Switched off, the pass is the debtor pass it always was.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::blockingUpdate()
+     */
+    public function testUnsignedPaperworkIsLeftAloneWhileItsBlockingIsOff(): void
+    {
+        $this->onlyLabelling();
+        $this->unsignedPaperwork();
+        Settings::set('core.contracts.unsigned.blocking.enabled', false);
+        $this->fetchTable('Bookkeeping.Invoices')->deleteAll([]);
+
+        (new DebtorsProcessor())->blockingUpdate();
+
+        $this->assertSame(0, $this->fetchTable('CustomerLabels')->find()->count());
+    }
+
+    /**
+     * And somebody who owes money and is also missing their paperwork is one blocked
+     * customer, not two. Two labels would take two things to clear.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::addLabel()
+     */
+    public function testBeingBlockedTwiceOverStillLeavesOneLabel(): void
+    {
+        $this->onlyLabelling();
+        $this->unsignedPaperwork();
+
+        // the fixture invoice already makes this customer a debtor
+        (new DebtorsProcessor())->blockingUpdate();
+
+        /** @var list<\App\Model\Entity\CustomerLabel> $labels */
+        $labels = $this->fetchTable('CustomerLabels')->find()->all()->toList();
+
+        $this->assertCount(1, $labels);
+        $this->assertSame('debtor', $labels[0]->note, 'The debt is what they pay off to be let back in.');
+    }
+
+    /**
+     * Blocking switched on, but neither of the things it reaches out to. What is left is the
+     * labelling, which is the part these cases are about - and nothing leaves the machine.
+     *
+     * @return void
+     */
+    private function onlyLabelling(): void
+    {
+        Settings::set('bookkeeping.debtors.blocking.enabled', true);
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.enabled', false);
+        Settings::set('bookkeeping.debtors.blocking.services.routers.enabled', false);
+        Settings::set('bookkeeping.debtors.blocking.blocked_label_id', self::LABEL_ID);
+    }
+
+    /**
+     * Give the fixture contract a version nobody signed, long enough ago to be cut off for.
+     *
+     * @return void
+     */
+    private function unsignedPaperwork(): void
+    {
+        Settings::set('core.contracts.unsigned.blocking.enabled', true);
+        Settings::set('core.contracts.unsigned.blocking.after_installation_days', 10);
+        Settings::set('core.contracts.unsigned.blocking.after_valid_from_days', 20);
+        Settings::set('core.contracts.unsigned.consider_from', '2020-01-01');
+
+        $versions = $this->fetchTable('ContractVersions');
+        $versions->saveOrFail($versions->newEntity([
+            'contract_id' => self::CONTRACT_ID,
+            'valid_from' => Date::today()->subDays(60),
+            'conclusion_date' => null,
+            'number_of_amendments' => 0,
+            'obligations_settled' => false,
+        ]));
     }
 }

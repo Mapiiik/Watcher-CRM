@@ -63,6 +63,31 @@ final class UnsignedPaperwork
     }
 
     /**
+     * The contracts whose service is to be cut off for want of a signature.
+     *
+     * Contracts rather than customers, and rather than versions. Not customers, because a
+     * customer holding three contracts has not agreed to lose the two that are signed and
+     * paid for over the one that is not. Not versions, because two unsigned versions of the
+     * same contract are still one service to cut off.
+     *
+     * @param int $after_anchor Days after the anchor date before the service is cut off.
+     * @param int $after_valid_from Days after the version took effect before it is cut off.
+     * @param \Cake\I18n\Date $today The day being asked about.
+     * @return array<string, string> Contract id to the reason it is being cut off.
+     */
+    public function contractIdsToBlock(int $after_anchor, int $after_valid_from, Date $today): array
+    {
+        $blocked = [];
+
+        /** @var \App\Model\Entity\ContractVersion $version */
+        foreach ($this->findDue($after_anchor, $after_valid_from, $today)->all() as $version) {
+            $blocked[$version->contract_id] = __('unsigned contract');
+        }
+
+        return $blocked;
+    }
+
+    /**
      * Versions whose wait was up on exactly the given day.
      *
      * This is an event, which is what notifying asks. Asking for the day rather than for the

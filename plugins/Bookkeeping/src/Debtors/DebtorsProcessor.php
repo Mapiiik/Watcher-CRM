@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Debtors;
 
+use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Messages\Messages;
+use App\Model\Entity\Customer;
 use App\Model\Entity\CustomerLabel;
+use App\Model\Table\ContractsTable;
+use App\Model\Table\ContractVersionsTable;
 use App\Model\Table\CustomerLabelsTable;
 use App\Model\Table\CustomersTable;
 use App\SledovaniTV\ApiClient as SledovaniTVApiClient;
@@ -31,6 +35,19 @@ use Throwable;
 class DebtorsProcessor
 {
     use LocatorAwareTrait;
+
+    /**
+     * Where the settings say how long a running service may go without a signed contract.
+     */
+    private const UNSIGNED_PATH = 'core.contracts.unsigned';
+
+    /**
+     * The waits before an unsigned contract costs the customer their service, where the
+     * settings name none.
+     */
+    private const UNSIGNED_AFTER_INSTALLATION_DAYS = 10;
+
+    private const UNSIGNED_AFTER_VALID_FROM_DAYS = 20;
 
     /**
      * @var \Cake\Collection\CollectionInterface<string, \Bookkeeping\Debtors\Debtor>|null
@@ -517,6 +534,16 @@ class DebtorsProcessor
     /**
      * Automatic Update of Debtor Blocking
      *
+     * Whoever is blocked has to be worked out in one pass, whatever the reasons. The address
+     * list on each router is wiped and rebuilt here rather than added to - that is how
+     * anybody who has paid gets let back in - so a second pass over a second set of customers
+     * would not add to this one, it would undo it.
+     *
+     * Which is why the other reasons are gathered here rather than handed in. This runs from
+     * the nightly command and from a button on the debtor listing, and a set passed in by one
+     * of those callers would be missing from the other - leaving whoever pressed the button
+     * to quietly reconnect everybody the night before had cut off.
+     *
      * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -534,20 +561,36 @@ class DebtorsProcessor
         $start_time = DateTime::now();
 
         $customerIps = [];
-        $customerIds = [];
 
+        // Contracts rather than customers. Owing money is a reason to cut off everything
+        // somebody has, so a debtor names all of theirs - but an unsigned contract says
+        // nothing about the two beside it that are signed and paid for, and neither does a
+        // state an operator has put one contract into.
+        $blocked = [];
         foreach ($this->getFilteredOverdueDebtors() as $debtor) {
-            $customerIds[] = $debtor->getCustomer()->id;
+            foreach ($debtor->getCustomer()->contracts as $contract) {
+                $blocked[$contract->id] = __d('bookkeeping', 'debtor');
+            }
+        }
 
+        // A contract blocked twice over is one blocked contract, and the reason it keeps is
+        // the debt - which is what gets paid off to be let back in.
+        $blocked += $this->unsignedToBlock();
+
+        foreach (array_keys($blocked) as $contract_id) {
             $customerIps = array_merge_recursive(
                 $customerIps,
-                $this->getCustomerIps($debtor->getCustomer()->id),
+                $this->getContractIps($contract_id),
             );
+        }
 
-            $this->addLabel($debtor->getCustomer()->id);
+        foreach ($this->labelNotes($blocked) as $customer_id => $note) {
+            $this->addLabel($customer_id, $note);
         }
 
         $this->clearLabel($start_time);
+
+        $customerIds = $this->customersLeftWithNothing(array_keys($blocked));
 
         if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
             $this->safeCall(
@@ -573,12 +616,136 @@ class DebtorsProcessor
     }
 
     /**
+     * What each customer's label should say, given the contracts of theirs that are blocked.
+     *
+     * The label sits on the customer rather than on the contract, so somebody whose contracts
+     * are blocked for different reasons still carries one - and it says the debt, because
+     * that is the reason that has to be settled before anything is restored.
+     *
+     * @param array<string, string> $blocked Contract id to the reason it is blocked.
+     * @return array<string, string> Customer id to what their label should say.
+     */
+    private function labelNotes(array $blocked): array
+    {
+        if ($blocked === []) {
+            return [];
+        }
+
+        $notes = [];
+
+        $contracts = $this->fetchTable(ContractsTable::class)
+            ->find()
+            ->select(['Contracts.id', 'Contracts.customer_id'])
+            ->where(['Contracts.id IN' => array_keys($blocked)])
+            ->all();
+
+        /** @var \App\Model\Entity\Contract $contract */
+        foreach ($contracts as $contract) {
+            $note = $blocked[$contract->id];
+
+            // the debt outranks anything else the same customer is blocked for
+            if (($notes[$contract->customer_id] ?? null) !== __d('bookkeeping', 'debtor')) {
+                $notes[$contract->customer_id] = $note;
+            }
+        }
+
+        return $notes;
+    }
+
+    /**
+     * The customers whose every contract is in the blocked set.
+     *
+     * Television is sold to a person rather than to one of their contracts - the provider
+     * knows them by their customer number and nothing finer - so it can only be switched off
+     * when there is nothing of theirs left running. Cutting one contract of three does not
+     * take the television with it.
+     *
+     * @param list<string> $blocked_contract_ids The contracts being blocked.
+     * @return list<string> Customer ids.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    private function customersLeftWithNothing(array $blocked_contract_ids): array
+    {
+        if ($blocked_contract_ids === []) {
+            return [];
+        }
+
+        $contracts = $this->fetchTable(ContractsTable::class);
+
+        $customer_ids = $contracts
+            ->find()
+            ->select(['Contracts.customer_id'])
+            ->distinct(['Contracts.customer_id'])
+            ->where(['Contracts.id IN' => $blocked_contract_ids])
+            ->all()
+            ->extract('customer_id')
+            ->toList();
+
+        $left = [];
+
+        foreach ($customer_ids as $customer_id) {
+            $still_running = $contracts
+                ->find()
+                ->find('withActiveServices')
+                ->where([
+                    'Contracts.customer_id' => $customer_id,
+                    'Contracts.id NOT IN' => $blocked_contract_ids,
+                ])
+                ->count();
+
+            if ($still_running === 0) {
+                $left[] = (string)$customer_id;
+            }
+        }
+
+        return $left;
+    }
+
+    /**
+     * The contracts to cut off for want of a signed contract.
+     *
+     * Paperwork is the contracts' business rather than the accounting's, so what comes back
+     * is a finished list of identifiers: this asks who, and never why. Switched off, or with
+     * nobody past the deadline, it is simply empty and the pass is the debtor pass it always
+     * was.
+     *
+     * @return array<string, string> Contract id to the reason it is being cut off.
+     */
+    private function unsignedToBlock(): array
+    {
+        if (!(bool)Settings::get(self::UNSIGNED_PATH . '.blocking.enabled', false)) {
+            return [];
+        }
+
+        /** @var \App\Model\Table\ContractVersionsTable $versions */
+        $versions = $this->fetchTable(ContractVersionsTable::class);
+
+        return (new UnsignedPaperwork($versions))->contractIdsToBlock(
+            (int)Settings::get(
+                self::UNSIGNED_PATH . '.blocking.after_installation_days',
+                self::UNSIGNED_AFTER_INSTALLATION_DAYS,
+            ),
+            (int)Settings::get(
+                self::UNSIGNED_PATH . '.blocking.after_valid_from_days',
+                self::UNSIGNED_AFTER_VALID_FROM_DAYS,
+            ),
+            Date::now(),
+        );
+    }
+
+    /**
      * Adds a label for the customer
      *
+     * The note is not part of what is looked for. A customer already carrying this label for
+     * one reason and now blocked for another is still one blocked customer with one label,
+     * and searching by the note as well would leave them holding two - which would then take
+     * two payments, or two signatures, to clear.
+     *
      * @param string $id Customer ID.
+     * @param string|null $note What the label says about why, or null for the debt.
      * @psalm-suppress UnusedReturnValue
      */
-    private function addLabel(string $id): CustomerLabel|false
+    private function addLabel(string $id, ?string $note = null): CustomerLabel|false
     {
         // check that the label is configured
         $labelId = Settings::getString('bookkeeping.debtors.blocking.blocked_label_id');
@@ -592,8 +759,9 @@ class DebtorsProcessor
             'label_id' => $labelId,
             'customer_id' => $id,
             'contract_id IS' => null,
-            'note' => __d('bookkeeping', 'debtor'),
         ]);
+
+        $customerLabel->note = $note ?? __d('bookkeeping', 'debtor');
 
         // update modification time
         $customerLabel->modified = DateTime::now();
@@ -690,11 +858,78 @@ class DebtorsProcessor
             ],
         ]);
 
+        return $this->collectIps(
+            $customer,
+            $customer->ip_addresses,
+            $customer->ip_networks,
+            $comment_prefix,
+            $skip_vip,
+        );
+    }
+
+    /**
+     * Get the IPs of one contract
+     *
+     * The same addresses, asked for by the contract they hang on rather than by the person
+     * who holds it. A reason to cut somebody off is not always a reason to cut off
+     * everything they have: an unsigned contract, or one an operator has put into a blocked
+     * state, says nothing about the other two contracts the same customer is paying for.
+     *
+     * Where the reason is the person rather than the contract - money owed - every contract
+     * they hold is named, and this comes to the same thing as asking by customer.
+     *
+     * @param string $contract_id Contract ID.
+     * @param string $comment_prefix IP comment prefix.
+     * @param bool $skip_vip Skip VIP contracts.
+     * @return array<string, mixed> List of IPv4 and IPv6 adresses/networks.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    private function getContractIps(string $contract_id, string $comment_prefix = '', bool $skip_vip = true): array
+    {
+        $contract = $this->fetchTable(ContractsTable::class)->get($contract_id, contain: [
+            'Customers',
+            'IpAddresses',
+            'IpNetworks',
+        ]);
+
+        // The address carries the contract in the comment written onto the router, and it is
+        // this contract - so it is put back on each one rather than read off the association
+        // a fetch by contract has no reason to load.
+        foreach ([...$contract->ip_addresses, ...$contract->ip_networks] as $address) {
+            $address->contract = $contract;
+        }
+
+        return $this->collectIps(
+            $contract->customer,
+            $contract->ip_addresses,
+            $contract->ip_networks,
+            $comment_prefix,
+            $skip_vip,
+        );
+    }
+
+    /**
+     * Sort a customer's addresses into what may go onto a firewall list and what may not.
+     *
+     * @param \App\Model\Entity\Customer $customer Who they belong to.
+     * @param array<\App\Model\Entity\IpAddress> $ip_addresses Addresses to consider.
+     * @param array<\App\Model\Entity\IpNetwork> $ip_networks Networks to consider.
+     * @param string $comment_prefix IP comment prefix.
+     * @param bool $skip_vip Skip VIP contracts.
+     * @return array<string, mixed> List of IPv4 and IPv6 adresses/networks.
+     */
+    private function collectIps(
+        Customer $customer,
+        array $ip_addresses,
+        array $ip_networks,
+        string $comment_prefix,
+        bool $skip_vip,
+    ): array {
         $ipv4s = [];
         $ipv6s = [];
 
         // IP addresses
-        foreach ($customer->ip_addresses as $ipAddress) {
+        foreach ($ip_addresses as $ipAddress) {
             // skip our own equipment
             if (!$ipAddress->type_of_use->isCustomer()) {
                 continue;
@@ -717,7 +952,7 @@ class DebtorsProcessor
             }
         }
         // IP networks
-        foreach ($customer->ip_networks as $ipNetwork) {
+        foreach ($ip_networks as $ipNetwork) {
             // skip our own equipment
             if (!$ipNetwork->type_of_use->isCustomer()) {
                 continue;
