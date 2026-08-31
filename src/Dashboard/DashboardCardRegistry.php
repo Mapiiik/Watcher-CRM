@@ -5,6 +5,7 @@ namespace App\Dashboard;
 
 use App\Addresses\Check\AddressCheckRegistry;
 use App\Contracts\Check\ContractCheckRegistry;
+use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Customers\Check\CustomerCheckRegistry;
 use App\Dashboard\Card\AddressProblemsCard;
 use App\Dashboard\Card\ContractProblemsCard;
@@ -14,6 +15,7 @@ use App\Dashboard\Card\DebtorsCard;
 use App\Dashboard\Card\EndingObligationsCard;
 use App\Dashboard\Card\LabelsCard;
 use App\Dashboard\Card\ManualShutoffDebtorsCard;
+use App\Dashboard\Card\UnsignedContractsCard;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractStatesTable;
 use App\Model\Table\ContractVersionsTable;
@@ -83,6 +85,15 @@ final class DashboardCardRegistry implements CardRegistryInterface
 
         $this->factories['ending_obligations'] =
             fn(): DashboardCardInterface => new EndingObligationsCard($contract_versions);
+
+        // Papers nobody has signed end in a disconnection like an unpaid invoice does, but
+        // they are the contract office's work rather than the bookkeepers', and nothing
+        // about them is asked of the accounting records - so this stands ahead of the
+        // debtors, and stands whether or not the plugin is there.
+        $this->factories['unsigned_contracts'] =
+            fn(): DashboardCardInterface => new UnsignedContractsCard(
+                new UnsignedPaperwork($contract_versions),
+            );
 
         // The debtor cards read the accounting records, which only exist with the plugin.
         // They come last, so that what the whole office looks at stands ahead of what only

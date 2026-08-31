@@ -193,6 +193,24 @@ class DashboardControllerTest extends TestCase
         $this->assertContains('my_tasks', $ids);
         $this->assertNotContains('debtors', $ids);
         $this->assertNotContains('unassigned_tasks', $ids);
+        // chasing paperwork is the office's work, not the technician's
+        $this->assertNotContains('unsigned_contracts', $ids);
+    }
+
+    /**
+     * The card counts unsigned paperwork twice over, by two sets of deadlines, so both
+     * queries have to actually run.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\UnsignedContractsCard::data()
+     */
+    public function testUnsignedContractsCard(): void
+    {
+        $this->login();
+        $this->get('/dashboard/card/unsigned_contracts');
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('<html');
     }
 
     /**
