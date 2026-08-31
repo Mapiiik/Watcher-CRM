@@ -191,6 +191,91 @@ return [
                         'email' => ['enabled' => new BoolType(default: true)],
                         'sms' => ['enabled' => new BoolType(default: true)],
                     ],
+                    // Two letters, because two different things are being said. The first
+                    // asks for the paper. The second says what happens now that it has not
+                    // come.
+                    //
+                    // Both on, because cutting somebody off without telling them is the
+                    // worse of the two mistakes available here. The other one is worth
+                    // knowing about all the same: with the blocking switched off, the second
+                    // letter warns of a disconnection no run is going to carry out, and a
+                    // warning that comes to nothing is not believed the next time. An
+                    // installation that chases paperwork but never cuts anybody off wants
+                    // this one switched off.
+                    'types' => [
+                        'notify' => ['enabled' => new BoolType(default: true)],
+                        'block' => ['enabled' => new BoolType(default: true)],
+                    ],
+                ],
+                // What goes out to the customer. Written here rather than as a view template
+                // because it is the office's text to change, the way the debtor letters are.
+                'emails' => [
+                    'notify' => [
+                        'subject' => 'NETAIR - nepodepsaná smlouva ke dni {date} - VS: {customer_number}',
+                        'body_text' => <<<TEXT
+                            Vážený zákazníku,
+
+                            k dnešnímu dni evidujeme nepodepsanou smlouvu na níže uvedenou službu, kterou Vám poskytujeme.
+
+                            {contracts_table}
+
+                            Prosíme Vás o její podepsání a vrácení. Pokud jste smlouvu již odeslali, nebo jste ji nikdy neobdrželi, dejte nám prosím vědět.
+
+                            Kontakty na naše smluvní oddělení
+                            Mail: {company_contracts_email}
+                            Telefon: {company_contracts_phone}
+
+                            Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
+
+                            Tento email byl vygenerován automaticky.
+
+                            {company_name}
+                            {company_address_line_1}
+                            {company_address_line_2}
+                            IČ: {identity_number}, DIČ: {vat_number}
+                            TEXT,
+                    ],
+                    'block' => [
+                        'subject' => 'NETAIR - omezení služby pro nepodepsanou smlouvu - VS: {customer_number}',
+                        'body_text' => <<<TEXT
+                            Vážený zákazníku,
+
+                            přes naše předchozí upozornění nemáme stále podepsanou smlouvu na níže uvedenou službu, kterou Vám poskytujeme.
+
+                            {contracts_table}
+
+                            Bez podepsané smlouvy nemůžeme službu dále poskytovat, a proto bude omezena.
+
+                            Pokud smlouvu podepíšete a vrátíte, službu obratem obnovíme. Pokud jste ji již odeslali, nebo jste ji nikdy neobdrželi, ozvěte se nám prosím co nejdříve.
+
+                            Kontakty na naše smluvní oddělení
+                            Mail: {company_contracts_email}
+                            Telefon: {company_contracts_phone}
+
+                            Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
+
+                            Tento email byl vygenerován automaticky.
+
+                            {company_name}
+                            {company_address_line_1}
+                            {company_address_line_2}
+                            IČ: {identity_number}, DIČ: {vat_number}
+                            TEXT,
+                    ],
+                ],
+                'sms' => [
+                    'notify' => [
+                        'subject' => 'NETAIR - nepodepsaná smlouva',
+                        'body' => <<<TEXT
+                            {company_name}: u Vaší služby nemáme podepsanou smlouvu. Prosíme o její podepsání a vrácení. Informace na {company_contracts_phone} nebo {company_contracts_email}.
+                            TEXT,
+                    ],
+                    'block' => [
+                        'subject' => 'NETAIR - omezení služby',
+                        'body' => <<<TEXT
+                            {company_name}: bez podepsané smlouvy bude Vaše služba omezena. Podepsanou smlouvu prosím vraťte, nebo se ozvěte na {company_contracts_phone}.
+                            TEXT,
+                    ],
                 ],
                 'blocking' => [
                     'enabled' => new BoolType(
