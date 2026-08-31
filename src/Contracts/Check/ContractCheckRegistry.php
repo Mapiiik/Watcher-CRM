@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Contracts\Check;
 
 use App\Check\AbstractCheckRegistry;
+use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\BorrowedEquipmentsTable;
 use App\Model\Table\ContractsTable;
@@ -129,6 +130,7 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
             'unsigned_contract' =>
                 fn(): ContractCheckInterface => new UnsignedContractCheck(
                     $versions,
+                    new UnsignedPaperwork($versions),
                     $this->ignore_inactive,
                     $this->contract_id,
                     $this->customer_id,
