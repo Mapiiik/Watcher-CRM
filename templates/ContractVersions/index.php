@@ -39,6 +39,8 @@
                     <th><?= $this->Paginator->sort('valid_until') ?></th>
                     <th><?= $this->Paginator->sort('obligation_until') ?></th>
                     <th><?= $this->Paginator->sort('obligations_settled') ?></th>
+                    <th><?= $this->Paginator->sort('sent_date') ?></th>
+                    <th><?= $this->Paginator->sort('sent_by') ?></th>
                     <th><?= $this->Paginator->sort('conclusion_date') ?></th>
                     <th><?= $this->Paginator->sort('number_of_amendments') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -62,6 +64,8 @@
                     <td><?= h($contractVersion->obligation_until) ?></td>
                     <td><?= isset($contractVersion->obligation_until) ?
                         ($contractVersion->obligations_settled ? __('Yes') : __('No')) : '' ?></td>
+                    <td><?= h($contractVersion->sent_date) ?></td>
+                    <td><?= h($contractVersion->sent_by?->label()) ?></td>
                     <td><?= h($contractVersion->conclusion_date) ?></td>
                     <td><?= $this->Number->format($contractVersion->number_of_amendments) ?></td>
                     <td class="actions">

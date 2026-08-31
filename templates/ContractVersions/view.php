@@ -86,6 +86,14 @@
 
                         </tr>
                         <tr>
+                            <th><?= __('Sent To The Customer') ?></th>
+                            <td><?= h($contractVersion->sent_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Sent By') ?></th>
+                            <td><?= h($contractVersion->sent_by?->label()) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Conclusion Date') ?></th>
                             <td><?= h($contractVersion->conclusion_date) ?></td>
                         </tr>

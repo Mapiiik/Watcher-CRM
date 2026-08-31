@@ -15,6 +15,8 @@ use Cake\I18n\Date;
  * @property \Cake\I18n\Date|null $obligation_until
  * @property bool $obligations_settled
  * @property \Cake\I18n\Date|null $conclusion_date
+ * @property \Cake\I18n\Date|null $sent_date
+ * @property \App\Model\Enum\ContractDeliveryMethod|null $sent_by
  * @property int $number_of_amendments
  * @property string|null $note
  * @property int|null $minimum_duration
@@ -40,6 +42,8 @@ class ContractVersion extends AppEntity
         'obligation_until' => true,
         'obligations_settled' => true,
         'conclusion_date' => true,
+        'sent_date' => true,
+        'sent_by' => true,
         'number_of_amendments' => true,
         'note' => true,
         'created' => true,

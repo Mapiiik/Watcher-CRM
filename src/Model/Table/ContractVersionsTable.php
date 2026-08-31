@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\ContractVersion;
+use App\Model\Enum\ContractDeliveryMethod;
 use Cake\Database\Expression\IdentifierExpression;
 use Cake\Database\Expression\QueryExpression;
+use Cake\Database\Type\EnumType;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -47,6 +49,11 @@ class ContractVersionsTable extends AppTable
         $this->setTable('contract_versions');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->getSchema()->setColumnType(
+            'sent_by',
+            EnumType::from(ContractDeliveryMethod::class),
+        );
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
@@ -150,6 +157,13 @@ class ContractVersionsTable extends AppTable
             ->allowEmptyDate('conclusion_date');
 
         $validator
+            ->date('sent_date')
+            ->allowEmptyDate('sent_date');
+
+        $validator
+            ->allowEmptyString('sent_by');
+
+        $validator
             ->integer('number_of_amendments')
             ->notEmptyString('number_of_amendments');
 
@@ -205,6 +219,18 @@ class ContractVersionsTable extends AppTable
             [
                 'errorField' => 'obligation_until',
                 'message' => __('The minimum term cannot run out before the version it belongs to begins.'),
+            ],
+        );
+
+        // The two halves of the sending record answer for each other. A way with no day does
+        // not say when, a day with no way does not say how it could be shown, and either on
+        // its own reads later as a record when it is half of one.
+        $rules->add(
+            fn(ContractVersion $entity): bool => ($entity->sent_date === null) === ($entity->sent_by === null),
+            'sendingIsRecordedWhole',
+            [
+                'errorField' => 'sent_by',
+                'message' => __('Say both when the papers were sent and how, or neither.'),
             ],
         );
 

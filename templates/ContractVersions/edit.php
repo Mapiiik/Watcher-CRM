@@ -1,4 +1,6 @@
 <?php
+use App\Model\Enum\ContractDeliveryMethod;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersion $contractVersion
@@ -77,6 +79,13 @@
                 ]);
                 $this->Form->unlockField('obligations_settled'); //disable form security check
 
+                // the papers go out before they come back signed, so they are asked for in
+                // that order
+                echo $this->Form->control('sent_date', ['empty' => true, 'max' => date('Y-m-d')]);
+                echo $this->Form->control('sent_by', [
+                    'options' => ContractDeliveryMethod::options(),
+                    'empty' => true,
+                ]);
                 echo $this->Form->control('conclusion_date', ['empty' => true, 'max' => date('Y-m-d')]);
                 echo $this->Form->control('number_of_amendments');
                 echo $this->Form->control('note');
