@@ -23,6 +23,13 @@ use Cake\I18n\Date;
  * @property string $style
  *
  * @property \App\Model\Entity\Contract $contract
+ *
+ * Of the query rather than of the record, and only where
+ * {@see \App\Contracts\Unsigned\UnsignedPaperwork::withDeadlines()} has put them there: the
+ * days an unsigned version is written to about and cut off for. Fetched any other way, a
+ * version does not carry them.
+ * @property \Cake\I18n\Date|null $notify_due
+ * @property \Cake\I18n\Date|null $block_due
  */
 class ContractVersion extends AppEntity
 {

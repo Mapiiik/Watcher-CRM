@@ -42,7 +42,9 @@
  *   is for can be read off the line it stands on.
  */
 
+use App\Model\Enum\UnsignedDeadlineAnchor;
 use Settings\ValueObject\Type\BoolType;
+use Settings\ValueObject\Type\ChoiceType;
 use Settings\ValueObject\Type\DateType;
 use Settings\ValueObject\Type\ListType;
 use Settings\ValueObject\Type\NumberType;
@@ -151,6 +153,59 @@ return [
                     default: 3,
                     hint: __('How long before a contract version takes effect it may have been concluded.'),
                 ),
+            ],
+
+            // Running a service on paperwork nobody has signed. What is chased, from when,
+            // and how long before it stops being a reminder and becomes a disconnection.
+            'unsigned' => [
+                'consider_from' => DateType::of(
+                    default: '2026-01-01',
+                    hint: __('Contract versions taking effect before this day are left alone. What an import left behind is not work anybody is going to do, and mailing about it would be worse than leaving it.'),
+                ),
+                'anchor' => new ChoiceType(
+                    default: UnsignedDeadlineAnchor::Installation,
+                    hint: __('What the wait for a signature is counted from.'),
+                ),
+                'notifications' => [
+                    'enabled' => new BoolType(
+                        default: false,
+                        hint: __('Whether the customer is written to at all about papers nobody has signed.'),
+                    ),
+                    'after_installation_days' => NumberType::ofInt(
+                        default: 5,
+                        hint: __('Days after the day above before the customer is reminded.'),
+                    ),
+                    'after_valid_from_days' => NumberType::ofInt(
+                        default: 10,
+                        hint: __('Days after the version takes effect before the customer is reminded. Both waits have to be up.'),
+                    ),
+                    'reminder_days' => ListType::ofInts(
+                        default: [0],
+                        hint: __('Which days after the wait runs out to write on. 0 is the day it runs out.'),
+                    ),
+                    'remind_daily_after' => new BoolType(
+                        default: false,
+                        hint: __('Once the days above are used up, keep writing every day until the paper comes in.'),
+                    ),
+                    'channels' => [
+                        'email' => ['enabled' => new BoolType(default: true)],
+                        'sms' => ['enabled' => new BoolType(default: true)],
+                    ],
+                ],
+                'blocking' => [
+                    'enabled' => new BoolType(
+                        default: false,
+                        hint: __('Whether unsigned paperwork cuts the service off, the same way an unpaid invoice does.'),
+                    ),
+                    'after_installation_days' => NumberType::ofInt(
+                        default: 10,
+                        hint: __('Days after the day the wait is counted from before the service is cut off.'),
+                    ),
+                    'after_valid_from_days' => NumberType::ofInt(
+                        default: 20,
+                        hint: __('Days after the version takes effect before the service is cut off. Both waits have to be up.'),
+                    ),
+                ],
             ],
         ],
 
