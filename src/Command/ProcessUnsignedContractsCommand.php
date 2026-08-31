@@ -166,7 +166,10 @@ class ProcessUnsignedContractsCommand extends Command
 
             ErrorReport::send(
                 __('Processing of unsigned contracts failed'),
-                __('Processing of unsigned contracts failed.' . PHP_EOL . PHP_EOL . 'Error: {0}', [$e->getMessage()]),
+                // one literal rather than pieces joined together: the extractor reads what is
+                // written here, and a joined string leaves it with half a msgid that nothing
+                // will ever match at run time
+                __("Processing of unsigned contracts failed.\n\nError: {0}", [$e->getMessage()]),
             );
 
             return static::CODE_ERROR;

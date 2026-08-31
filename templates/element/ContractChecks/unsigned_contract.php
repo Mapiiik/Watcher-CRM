@@ -33,7 +33,7 @@ $today = Date::today();
                 <th><?= __('Conclusion Date') ?></th>
                 <?php // which of the two waits a version is past, and so what is about to
                       // happen to it if nobody does anything ?>
-                <th><?= __('Standing') ?></th>
+                <th><?= __('Deadline') ?></th>
             </tr>
         </thead>
         <tbody>
