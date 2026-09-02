@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\AppUser $user
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taskTypes
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taskStates
+ * @var array<string, string> $landingPages
  */
 
 ?>
@@ -57,6 +58,10 @@
                         'contrast' => __('Contrast'),
                         'legacy' => __('Legacy'),
                     ],
+                ]);
+                echo $this->Form->control('user_settings.landing_page', [
+                    'label' => __d('app_users', 'Landing Page'),
+                    'options' => $landingPages,
                 ]);
                 echo $this->Form->control('user_settings.customers.advanced_search', [
                     'label' =>

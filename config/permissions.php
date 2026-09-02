@@ -138,6 +138,15 @@ $permissions = [
             'controller' => 'Pages',
             'action' => 'display',
         ],
+        //the root is where everybody arrives and is only ever a redirect, so no role may be
+        //stopped at it - the page it then sends them to is what gets checked, there
+        [
+            'role' => '*',
+            'prefix' => false,
+            'plugin' => null,
+            'controller' => 'Home',
+            'action' => 'index',
+        ],
         //the dashboard is the landing page, so every role has to get through it -
         //which cards it then draws is decided per role by the card registry
         [

@@ -58,44 +58,49 @@ class DashboardControllerTest extends TestCase
     ];
 
     /**
-     * The dashboard is the landing page, so the root has to render it rather than redirect.
+     * The root asks which page this user starts on, and the dashboard is the answer for
+     * everybody who has not chosen another one.
      *
      * @return void
-     * @link \App\Controller\DashboardController::index()
+     * @link \App\Controller\HomeController::index()
      */
-    public function testRootRendersTheDashboard(): void
+    public function testRootSendsYouToTheDashboard(): void
     {
         $this->login();
         $this->get('/');
+
+        $this->assertRedirect('/dashboard');
+
+        $this->get('/dashboard');
 
         $this->assertResponseOk();
         $this->assertNotEmpty($this->viewVariable('cards'));
     }
 
     /**
-     * Signing in has to land on the dashboard's own route rather than on the fallback
-     * `/dashboard`. A plugin's assets are linked into the webroot under the plugin's own
-     * name, and this plugin is named after the page it draws - so that path is a directory
-     * the web server answers itself, before the router is ever asked.
+     * Signing in has to arrive at the root rather than at a page named here, as the root is
+     * where the page a user starts on is decided. Naming the dashboard in the setting would
+     * put that choice out of reach of everybody who arrives by signing in.
      *
      * @return void
      */
-    public function testTheLoginLandsOnTheDashboardsOwnRoute(): void
+    public function testTheLoginLandsWhereTheChoiceIsMade(): void
     {
         // the plugin that owns this setting merges it in as the application boots, which a
         // request is what brings about
         $this->login();
-        $this->get('/');
+        $this->get('/dashboard');
         $this->assertResponseOk();
 
         $redirect = (string)Configure::read('Auth.AuthenticationComponent.loginRedirect');
 
-        $this->assertSame(
-            Router::url(['controller' => 'Dashboard', 'action' => 'index', 'plugin' => null]),
-            $redirect,
-        );
+        $this->assertSame(Router::url(['controller' => 'Home', 'action' => 'index', 'plugin' => null]), $redirect);
 
         $this->get($redirect);
+
+        $this->assertRedirect('/dashboard');
+
+        $this->get('/dashboard');
 
         $this->assertResponseOk();
         $this->assertNotEmpty($this->viewVariable('cards'));

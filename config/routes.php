@@ -153,8 +153,10 @@ return function (RouteBuilder $routes): void {
                 'customer_id' => RouteBuilder::UUID,
             ]);
 
-        // The landing page
-        $builder->connect('/', ['controller' => 'Dashboard', 'action' => 'index']);
+        // The landing page is a per-user setting, so which page it is gets answered in an
+        // action rather than by the router. Leaving the dashboard to the fallback route is
+        // what gives it an address of its own to be sent to.
+        $builder->connect('/', ['controller' => 'Home', 'action' => 'index']);
 
         /*
         * ...and connect the rest of 'Pages' controller's URLs.

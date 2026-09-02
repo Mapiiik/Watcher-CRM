@@ -1324,6 +1324,10 @@ msgstr "Typ zařízení byl odstraněn."
 msgid "The equipment type could not be deleted. Please, try again."
 msgstr "Typ zařízení nelze odstranit. Opakujte akci."
 
+#: src/Controller/HomeController.php:39
+msgid "The page you chose to start on is not open to you any more. Please pick another one in your settings."
+msgstr "Stránka, kterou jste si zvolili jako výchozí, vám již není přístupná. Zvolte si prosím v nastavení jinou."
+
 #: src/Controller/IpAddressesController.php:113
 #: src/Controller/IpAddressesController.php:177
 #: src/Controller/IpAddressesController.php:303

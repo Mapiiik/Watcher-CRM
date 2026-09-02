@@ -282,6 +282,10 @@ msgstr "Počet řádků na stránku"
 msgid "Theme"
 msgstr "Motiv"
 
+#: templates/AppUsers/user_settings.php:62
+msgid "Landing Page"
+msgstr "Výchozí stránka"
+
 #: templates/AppUsers/user_settings.php:63
 #: templates/AppUsers/user_settings.php:69
 msgid "Customers"

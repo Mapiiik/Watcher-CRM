@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Traits;
 
+use App\Model\Enum\LandingPage;
 use Cake\Core\Configure;
+use CakeDC\Auth\Traits\IsAuthorizedTrait;
 
 /**
  * Covers the user settings
@@ -12,6 +14,8 @@ use Cake\Core\Configure;
  */
 trait UserSettingsTrait
 {
+    use IsAuthorizedTrait;
+
     /**
      * Edit user settings method
      *
@@ -81,6 +85,14 @@ trait UserSettingsTrait
             ->where(['TaskStates.completed' => false])
             ->all();
 
-        $this->set(compact('user', 'taskTypes', 'taskStates'));
+        // Only a page this user could actually open is worth offering to start on. What they
+        // may reach can change after the choice is made, so the redirect checks it again.
+        $landingPages = array_filter(
+            LandingPage::options(),
+            fn(string $value): bool => $this->isAuthorized(LandingPage::from($value)->url()),
+            ARRAY_FILTER_USE_KEY,
+        );
+
+        $this->set(compact('user', 'taskTypes', 'taskStates', 'landingPages'));
     }
 }
