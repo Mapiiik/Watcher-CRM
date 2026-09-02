@@ -15,6 +15,7 @@ use Cake\I18n\DateTime;
 use Cake\I18n\Number;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
+use Cake\ORM\Association;
 use Override;
 use Settings\Utility\Settings;
 use Throwable;
@@ -121,7 +122,12 @@ class SendIssuedInvoicesCommand extends Command
             ->find()
             ->contain([
                 'Customers' => [
-                    'Emails',
+                    // `subquery`, the CakePHP 5.4 default, filters its fetch by the source query
+                    // grouped by the customer - and the limit then cuts that grouping, not the
+                    // invoices. The customers it comes back with are a different set from the
+                    // invoices being sent, so the emails land nowhere and every invoice reads as
+                    // a customer without a contact
+                    'Emails' => ['strategy' => Association::STRATEGY_SELECT],
                 ],
             ])
             ->where([
