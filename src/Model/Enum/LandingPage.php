@@ -55,7 +55,7 @@ enum LandingPage: string implements EnumLabelInterface
     public function url(): array
     {
         return match ($this) {
-            self::Dashboard => ['plugin' => null, 'controller' => 'Dashboard', 'action' => 'index'],
+            self::Dashboard => ['plugin' => null, 'controller' => 'Dashboard', 'action' => 'cards'],
             self::Customers => ['plugin' => null, 'controller' => 'Customers', 'action' => 'index'],
             self::Tasks => ['plugin' => null, 'controller' => 'Tasks', 'action' => 'index'],
             self::Bookkeeping => ['plugin' => 'Bookkeeping', 'controller' => 'Invoices', 'action' => 'index'],

@@ -21,11 +21,18 @@ use Dashboard\Card\CardRegistryInterface;
 trait DashboardControllerTrait
 {
     /**
-     * Index method
+     * The page: every card the signed-in role is offered.
+     *
+     * Named after what it draws rather than `index`, because the bare `/dashboard` is not
+     * this page to have. A plugin that ships a webroot has it linked into the application's
+     * own under the plugin's name, and this plugin is named after the page it draws - so a
+     * web server that answers directories itself takes that path before the router is ever
+     * asked. On nginx that is a 403, on Caddy it is not, which is what makes it a fault that
+     * only shows in production.
      *
      * @return void Renders view
      */
-    public function index(): void
+    public function cards(): void
     {
         $cards = $this->registry()->forRole();
 

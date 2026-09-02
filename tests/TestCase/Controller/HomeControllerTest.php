@@ -49,7 +49,7 @@ class HomeControllerTest extends TestCase
         $this->login();
         $this->get('/');
 
-        $this->assertRedirect('/dashboard');
+        $this->assertRedirect('/dashboard/cards');
     }
 
     /**
@@ -118,7 +118,7 @@ class HomeControllerTest extends TestCase
         $this->login('admin', ['landing_page' => 'somewhere-we-no-longer-go']);
         $this->get('/');
 
-        $this->assertRedirect('/dashboard');
+        $this->assertRedirect('/dashboard/cards');
     }
 
     /**
@@ -136,7 +136,7 @@ class HomeControllerTest extends TestCase
         $this->login('user', ['landing_page' => 'tasks']);
         $this->get('/');
 
-        $this->assertRedirect('/dashboard');
+        $this->assertRedirect('/dashboard/cards');
         $this->assertFlashElement('flash/error');
     }
 

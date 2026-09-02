@@ -10,7 +10,7 @@ $this->Html->css('Dashboard.dashboard', ['block' => true]);
 // the page that needs it rather than with every page.
 $this->Html->script('lazy-load.js', ['block' => true]);
 ?>
-<div class="dashboard index content">
+<div class="dashboard cards content">
     <h3><?= __d('dashboard', 'Dashboard') ?></h3>
 
     <?php if ($cards === []) : ?>
