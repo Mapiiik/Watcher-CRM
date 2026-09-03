@@ -40,12 +40,12 @@ class ContractSummaryPDF extends AppPDF
      * ten-point version on request - so shrinking the type to save a page is not a trade
      * that is on offer, and the second page is the cheaper of the two prices.
      */
-    private const BODY_FONT_SIZE = 10;
+    protected const BODY_FONT_SIZE = 10;
 
     /**
      * Section headings, a step above the body as in the contract.
      */
-    private const HEADING_FONT_SIZE = 11;
+    protected const HEADING_FONT_SIZE = 11;
 
     /**
      * The footnote to the first bullet, which is apparatus rather than summary text and is
@@ -56,14 +56,20 @@ class ContractSummaryPDF extends AppPDF
     /**
      * Line height that goes with the body size.
      */
-    private const LINE_HEIGHT = 4.5;
+    protected const LINE_HEIGHT = 4.5;
 
     /**
      * Air between one block of prose and the next. Whatever is not a paragraph - a list, a row
      * of contacts, a statement set in bold - leaves the same gap behind it, or the paragraph
      * that follows reads as its continuation.
      */
-    private const PARAGRAPH_GAP = 1.5;
+    protected const PARAGRAPH_GAP = 1.5;
+
+    /**
+     * This document keeps its blocks whole: it is read to be compared, and a paragraph or a
+     * table broken over the fold is the one thing that defeats that.
+     */
+    protected const KEEPS_BLOCKS_WHOLE = true;
 
     /**
      * Line height that goes with the footnote.
@@ -75,13 +81,13 @@ class ContractSummaryPDF extends AppPDF
      * one place this document parts company with the contract's serif, and it also reads
      * lighter than a serif at the same size.
      */
-    private const FONT_FAMILY = 'dejavusans';
+    protected const FONT_FAMILY = 'dejavusans';
 
     /**
      * Room a heading needs below it - itself and a couple of lines - before it is worth
      * starting a section on this page at all.
      */
-    private const HEADING_ORPHAN_GUARD = 16.0;
+    protected const HEADING_ORPHAN_GUARD = 16.0;
 
     /**
      * Foot of every page kept clear, because the footnote to the opening bullet is written
@@ -96,9 +102,11 @@ class ContractSummaryPDF extends AppPDF
     private const KBPS_PER_MBPS = 1024;
 
     /**
-     * Width the contract sets its flowing paragraphs to.
+     * Width the contract sets its flowing paragraphs to. This document centres its title
+     * block over the same width, so nothing on the page sits wider than the text.
      */
-    private const TEXT_WIDTH = 180.0;
+    protected const TEXT_WIDTH = 180.0;
+    protected const PAGE_WIDTH = 180.0;
 
     /**
      * Renders the contract summary.
@@ -120,14 +128,20 @@ class ContractSummaryPDF extends AppPDF
             throw new InvalidArgumentException('The contract version to be executed must be provided');
         }
 
-        $this->setPrintHeader(false);
-        $this->setPrintFooter(false);
         $this->SetAutoPageBreak(true, self::FOOTNOTE_RESERVE);
-        $this->AddPage();
 
-        $this->Image(K_PATH_IMAGES . 'logo-contract.png', 10, 5, 28);
+        // The template asks for the name of the service on offer directly above the title and
+        // the provider's name directly below it, so that two summaries laid side by side name
+        // what they are describing in the same place. The provider is named once, in the block
+        // the template asks it for; naming the company again under the title only takes up the
+        // room the subtitle needs.
+        $this->printDocumentHeader(
+            $this->summaryText('title'),
+            $this->summaryText('subtitle'),
+            $this->serviceNames($data),
+        );
 
-        $this->printTitleBlock($data, $contract->number, $contractVersion);
+        $this->printContractIdentification($contract->number, $contractVersion);
         $this->printIntro();
         $this->printIntroFootnote();
         $this->printProviderContact();
@@ -148,65 +162,22 @@ class ContractSummaryPDF extends AppPDF
     }
 
     /**
-     * Title, subtitle and the contract this summary belongs to.
+     * Says which contract this summary belongs to.
      *
-     * The template asks for the name of the service on offer directly above the title and the
-     * provider's name directly below it, so that two summaries laid side by side name what
-     * they are describing in the same place.
+     * The issue date is the template's own, and it is the one that matters here: the duty is to
+     * hand the summary over before the customer is bound, so it has to say when it was made.
      *
-     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
      * @param string $contractNumber Number of the contract being summarised
      * @param \App\Model\Entity\ContractVersion $contractVersion Version being summarised
      * @return void
      */
-    private function printTitleBlock(
-        ContractPrintData $data,
-        string $contractNumber,
-        ContractVersion $contractVersion,
-    ): void {
-        $services = $this->serviceNames($data);
-        if ($services !== '') {
-            $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
-            $this->Cell(self::TEXT_WIDTH, 4, $services, align: 'C');
-            $this->Ln(5);
-        }
-
-        $this->SetFont(self::FONT_FAMILY, 'B', 18);
-        $this->Cell(self::TEXT_WIDTH, 6, $this->summaryText('title'), align: 'C');
-        $this->Ln();
-
-        // The provider is named once, in the block below that the template asks it for; naming
-        // the company again under the title only takes up the room the subtitle needs.
-        $this->SetFont(self::FONT_FAMILY, 'B', 12);
-        $this->Cell(self::TEXT_WIDTH, 2, $this->summaryText('subtitle'), align: 'C');
-        $this->Ln(3);
-
-        $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
-
-        // The issue date is the template's own, and it is the one that matters here: the duty is
-        // to hand the summary over before the customer is bound, so it has to say when it was made.
-        $label = fn(string $key): string => Settings::getString('core.documents.common.labels.' . $key);
-        $columns = [
+    private function printContractIdentification(string $contractNumber, ContractVersion $contractVersion): void
+    {
+        $this->printLabelledRow([
             [$this->summaryText('labels.issue_date'), (string)Date::now()],
-            [$label('contract_number'), $contractNumber],
-            [$label('start_date'), (string)$contractVersion->valid_from],
-        ];
-
-        $width = self::TEXT_WIDTH / count($columns);
-
-        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        foreach ($columns as [$heading, $value]) {
-            $this->Cell($width, self::LINE_HEIGHT, $heading, align: 'C');
-        }
-        $this->Ln();
-
-        $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
-        foreach ($columns as [$heading, $value]) {
-            $this->Cell($width, self::LINE_HEIGHT, $value, align: 'C');
-        }
-        $this->Ln();
-
-        $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
+            [$this->label('contract_number'), $contractNumber],
+            [$this->label('start_date'), (string)$contractVersion->valid_from],
+        ]);
     }
 
     /**
@@ -360,7 +331,7 @@ class ContractSummaryPDF extends AppPDF
      */
     private function printServices(ContractPrintData $data): void
     {
-        $this->printSectionHeading('services');
+        $this->printSummaryHeading('services');
 
         $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
         foreach ($this->billings($data) as $billing) {
@@ -401,7 +372,7 @@ class ContractSummaryPDF extends AppPDF
      */
     private function printSpeeds(ContractPrintData $data): void
     {
-        $this->printSectionHeading('speeds');
+        $this->printSummaryHeading('speeds');
 
         $queue = $this->queue($data);
 
@@ -501,7 +472,7 @@ class ContractSummaryPDF extends AppPDF
      */
     private function printPrice(ContractPrintData $data, ContractVersion $contractVersion): void
     {
-        $this->printSectionHeading('price');
+        $this->printSummaryHeading('price');
 
         $total = Decimal::create(0, 2);
         $undiscounted = Decimal::create(0, 2);
@@ -588,7 +559,7 @@ class ContractSummaryPDF extends AppPDF
      */
     private function printDuration(ContractPrintData $data, ContractVersion $contractVersion): void
     {
-        $this->printSectionHeading('duration');
+        $this->printSummaryHeading('duration');
 
         $this->printParagraph(
             strtr(Settings::getString('core.documents.contracts.contract.texts.new_intro'), [
@@ -646,7 +617,7 @@ class ContractSummaryPDF extends AppPDF
      */
     private function printAccessibility(): void
     {
-        $this->printSectionHeading('accessibility');
+        $this->printSummaryHeading('accessibility');
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         $this->printParagraph($this->summaryText('texts.accessibility'));
@@ -660,7 +631,7 @@ class ContractSummaryPDF extends AppPDF
      */
     private function printOtherInformation(): void
     {
-        $this->printSectionHeading('other');
+        $this->printSummaryHeading('other');
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         foreach ($this->summaryList('other_information') as $document) {
@@ -677,63 +648,15 @@ class ContractSummaryPDF extends AppPDF
     /**
      * Prints one of the template's section headings, the way the contract heads its own.
      *
+     * Ten services still fit on the page; beyond that the summary runs over, which the
+     * regulation allows for a bundle.
+     *
      * @param string $key Key under the summary's sections block
      * @return void
      */
-    private function printSectionHeading(string $key): void
+    private function printSummaryHeading(string $key): void
     {
-        // Ten services still fit on the page; beyond that the summary runs over, which the
-        // regulation allows for a bundle. A heading left stranded at the foot with its text
-        // overleaf would only read as a mistake, so it takes the break with it.
-        if ($this->GetY() > $this->getPageHeight() - $this->getBreakMargin() - self::HEADING_ORPHAN_GUARD) {
-            $this->AddPage();
-        }
-
-        $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
-        $this->Write(4, $this->summaryText('sections.' . $key));
-        $this->Ln();
-
-        $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
-    }
-
-    /**
-     * Prints one paragraph of body text, with the gap that separates it from the next.
-     *
-     * Every block of prose on the page goes through here, because a wall of paragraphs with no
-     * air between them is the one thing a summary cannot afford - it is read to be compared.
-     *
-     * @param string $text The paragraph
-     * @param string $align Alignment, justified unless the text reads better ragged
-     * @param bool $bold Whether the paragraph carries the weight of a statement
-     * @return void
-     */
-    private function printParagraph(string $text, string $align = 'J', bool $bold = false): void
-    {
-        $this->SetFont(self::FONT_FAMILY, $bold ? 'B' : '', self::BODY_FONT_SIZE);
-
-        $body = $text . PHP_EOL;
-        $this->keepTogether($this->getNumLines($body, self::TEXT_WIDTH) * self::LINE_HEIGHT);
-        $this->MultiCell(self::TEXT_WIDTH, self::LINE_HEIGHT, $body, align: $align);
-        $this->Ln(self::PARAGRAPH_GAP);
-    }
-
-    /**
-     * Starts a new page if what comes next would not fit whole on this one.
-     *
-     * A paragraph broken over the fold is read twice - once to lose the thread and once to find
-     * it again - and a table split from its heading says nothing at all. Anything taller than a
-     * page is let through, because moving it would only move the problem.
-     *
-     * @param float $height How much room the block needs, in mm
-     * @return void
-     */
-    private function keepTogether(float $height): void
-    {
-        $bottom = $this->getPageHeight() - $this->getBreakMargin();
-
-        if ($height < $bottom - $this->getMargins()['top'] && $this->GetY() + $height > $bottom) {
-            $this->AddPage();
-        }
+        $this->printSectionHeading($this->summaryText('sections.' . $key));
     }
 
     /**

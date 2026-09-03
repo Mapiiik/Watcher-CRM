@@ -26,72 +26,27 @@ class CustomerPDF extends AppPDF
             throw new InvalidArgumentException('Customer billing address is required to generate GDPR agreement.');
         }
 
-        // Disable default header and footer
-        $this->setPrintHeader(false);
-        $this->setPrintFooter(false);
+        $this->printDocumentHeader($this->gdprText('title'), $this->gdprText('subtitle'));
 
-        // Add first page
-        $this->AddPage();
-
-        // Company logo
-        $this->Image(K_PATH_IMAGES . 'logo-contract.png', 10, 5, 28);
-
-        // Document title
-        $this->SetFont('DejaVuSerif', 'B', 18);
-        $this->Cell(187, 6, Settings::getString('core.documents.gdpr.title'), align: 'C');
-        $this->Ln();
-
-        // Document subtitle
-        $this->SetFont('DejaVuSerif', 'B', 12);
-        $this->Cell(187, 2, Settings::getString('core.documents.gdpr.subtitle'), align: 'C');
-        $this->Ln(3);
-
-        // Separator line
-        $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
-
-        // Agreement header labels
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(62, 4, Settings::getString('core.documents.common.labels.new_or_change'), align: 'C');
-        $this->Cell(62, 4, Settings::getString('core.documents.common.labels.agreement_number'), align: 'C');
-        $this->Cell(62, 4, Settings::getString('core.documents.common.labels.agreement_duration'), align: 'C');
-        $this->Ln();
-
-        // Agreement header values
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        switch ($type) {
-            case CustomerPrintType::GdprNew:
-                $this->Cell(62, 4, Settings::getString('core.documents.common.labels.new'), align: 'C');
-                break;
-            case CustomerPrintType::GdprChange:
-                $this->Cell(62, 4, Settings::getString('core.documents.common.labels.change'), align: 'C');
-                break;
-            default:
-                throw new InvalidArgumentException('Unsupported customer print type: ' . $type->value);
-        }
-        $this->Cell(62, 4, $customer->number, align: 'C');
-        $this->Cell(62, 4, Settings::getString('core.documents.common.labels.duration_indefinite'), align: 'C');
-        $this->Ln();
-
-        // Separator line
-        $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 3.0);
+        // What this agreement is, which customer it belongs to, and for how long it holds
+        $this->printLabelledRow(
+            [
+                [$this->label('new_or_change'), $this->label(match ($type) {
+                    CustomerPrintType::GdprNew => 'new',
+                    CustomerPrintType::GdprChange => 'change',
+                })],
+                [$this->label('agreement_number'), $customer->number],
+                [$this->label('agreement_duration'), $this->label('duration_indefinite')],
+            ],
+            62.0,
+        );
 
         // Controller section
-        $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 2, Settings::getString('core.documents.common.labels.between'), align: 'C');
+        $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
+        $this->Cell(self::PAGE_WIDTH, 2, $this->label('between'), align: 'C');
         $this->Ln();
 
-        // Controller section - company details block
-        $this->printCompanyDetails(Settings::getString('core.documents.common.labels.controller'));
-
-        // User section
-        $this->SetFont('DejaVuSerif', 'B', 9);
-        $this->Cell(187, 4, Settings::getString('core.documents.common.labels.and'), align: 'C');
-        $this->Ln();
-        $this->Cell(30, 4, Settings::getString('core.documents.common.labels.user'));
-
-        // Determine user type (non-business, business, legal entity)
-        $this->SetFont('DejaVuSerif', '', 8);
-        $this->printUserType($customer);
+        $this->printParties($this->label('controller'), $customer);
 
         $this->Ln();
 
@@ -99,48 +54,48 @@ class CustomerPDF extends AppPDF
         $this->drawSeparator(lnAfter: 0.5);
 
         // Customer personal and business data
-        $this->SetFont('DejaVuSerif', '', 8);
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         $this->printTable(
             [
-                Settings::getString('core.documents.common.labels.personal_data'),
-                Settings::getString('core.documents.common.labels.business_data'),
+                $this->label('personal_data'),
+                $this->label('business_data'),
             ],
             [
                 [
                     [
-                        'label' => Settings::getString('core.documents.common.labels.name'),
+                        'label' => $this->label('name'),
                         'value' => $customer->billing_address->full_name ?? '',
                     ],
                     [
-                        'label' => Settings::getString('core.documents.common.labels.company'),
+                        'label' => $this->label('company'),
                         'value' => $this->strOrX($customer->billing_address?->company),
                     ],
                 ],
                 [
                     [
-                        'label' => Settings::getString('core.documents.common.labels.birth_date'),
+                        'label' => $this->label('birth_date'),
                         'value' => (string)$customer->date_of_birth,
                     ],
                     [
-                        'label' => Settings::getString('core.documents.common.labels.identity_number'),
+                        'label' => $this->label('identity_number'),
                         'value' => $this->strOrX($customer->identity_number),
                     ],
                 ],
                 [
                     [
-                        'label' => Settings::getString('core.documents.common.labels.identity_card_number'),
+                        'label' => $this->label('identity_card_number'),
                         'value' => (string)$customer->identity_card_number,
                     ],
                     [
-                        'label' => Settings::getString('core.documents.common.labels.vat_number'),
+                        'label' => $this->label('vat_number'),
                         'value' => $this->strOrX($customer->vat_number),
                     ],
                 ],
                 [
-                    ['label' => Settings::getString('core.documents.common.labels.phone'), 'value' => $customer->phone],
+                    ['label' => $this->label('phone'), 'value' => $customer->phone],
                 ],
                 [
-                    ['label' => Settings::getString('core.documents.common.labels.email'), 'value' => $customer->email],
+                    ['label' => $this->label('email'), 'value' => $customer->email],
                 ],
             ],
         );
@@ -156,18 +111,29 @@ class CustomerPDF extends AppPDF
         $this->Ln();
 
         // Declaration text
-        $this->SetFont('DejaVuSerif', '', 7);
-        $this->Write(3, Settings::getString('core.documents.gdpr.declaration_text'), ln: true);
+        $this->SetFont(self::FONT_FAMILY, '', self::NOTE_FONT_SIZE);
+        $this->Write(3, $this->gdprText('declaration_text'), ln: true);
 
         // Checkboxes
-        $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Write(3, Settings::getString('core.documents.gdpr.checkboxes.billing'), ln: true);
-        $this->Write(3, Settings::getString('core.documents.gdpr.checkboxes.outages'), ln: true);
-        $this->Write(3, Settings::getString('core.documents.gdpr.checkboxes.marketing'), ln: true);
+        $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
+        $this->Write(3, $this->gdprText('checkboxes.billing'), ln: true);
+        $this->Write(3, $this->gdprText('checkboxes.outages'), ln: true);
+        $this->Write(3, $this->gdprText('checkboxes.marketing'), ln: true);
         $this->Ln();
-        $this->Write(3, Settings::getString('core.documents.gdpr.checkboxes.note'), ln: true);
+        $this->Write(3, $this->gdprText('checkboxes.note'), ln: true);
 
         // Signature section
         $this->printSignatureSection('single-right', false);
+    }
+
+    /**
+     * Reads one of this document's own texts.
+     *
+     * @param string $key Key under the GDPR documents block
+     * @return string
+     */
+    private function gdprText(string $key): string
+    {
+        return Settings::getString('core.documents.gdpr.' . $key);
     }
 }

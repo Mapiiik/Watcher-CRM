@@ -19,6 +19,59 @@ class AppPDF extends TCPDF
     public const SEPARATOR_OFFSET_X = 4.0;
 
     /**
+     * Typeface the documents are set in. The summary overrides it, because the regulation
+     * that prescribes it names a sans-serif as the readable choice.
+     */
+    protected const FONT_FAMILY = 'DejaVuSerif';
+
+    /**
+     * Body text, and section headings a step above it.
+     */
+    protected const BODY_FONT_SIZE = 8;
+    protected const HEADING_FONT_SIZE = 9;
+
+    /**
+     * Footnotes and clauses that hang off a table, set below the body.
+     */
+    protected const NOTE_FONT_SIZE = 7;
+
+    /**
+     * Title block at the head of every document.
+     */
+    protected const TITLE_FONT_SIZE = 18;
+    protected const SUBTITLE_FONT_SIZE = 12;
+
+    /**
+     * Line height that goes with the body size, and the air left behind a paragraph.
+     */
+    protected const LINE_HEIGHT = 4.0;
+    protected const PARAGRAPH_GAP = 3.0;
+
+    /**
+     * Width of a flowing paragraph, and of the full text column the rules and centred
+     * headings span.
+     */
+    protected const TEXT_WIDTH = 180.0;
+    protected const PAGE_WIDTH = 187.0;
+
+    /**
+     * Left margin a table indents by, so its frame does not sit flush against the text.
+     */
+    protected const TABLE_INDENT = 4.0;
+
+    /**
+     * Whether blocks are kept whole across a page break. Off here, because a document laid
+     * out around the breaks it has must keep them; a document turns it on for itself.
+     */
+    protected const KEEPS_BLOCKS_WHOLE = false;
+
+    /**
+     * Room a heading needs below it - itself and a couple of lines - before it is worth
+     * starting a section on this page at all. Only consulted where blocks are kept whole.
+     */
+    protected const HEADING_ORPHAN_GUARD = 16.0;
+
+    /**
      * @inheritDoc
      */
     #[Override]
@@ -68,6 +121,180 @@ class AppPDF extends TCPDF
 
         if (is_float($lnAfter)) {
             $this->Ln($lnAfter);
+        }
+    }
+
+    /**
+     * Reads one of the labels every document shares.
+     *
+     * @param string $key Key under the common labels block
+     * @return string
+     */
+    protected function label(string $key): string
+    {
+        return Settings::getString('core.documents.common.labels.' . $key);
+    }
+
+    /**
+     * Opens a document: logo, title, subtitle and the rule that closes the block.
+     *
+     * Every document this application prints starts the same way, and it is what makes a
+     * contract, its handover protocol and its summary read as one set of papers.
+     *
+     * @param string $title Title, set large and centred
+     * @param string $subtitle Subtitle directly beneath it
+     * @param string|null $overline A line above the title, where a document needs one
+     * @return void
+     */
+    protected function printDocumentHeader(string $title, string $subtitle, ?string $overline = null): void
+    {
+        $this->setPrintHeader(false);
+        $this->setPrintFooter(false);
+        $this->AddPage();
+
+        $this->Image(K_PATH_IMAGES . 'logo-contract.png', 10, 5, 28);
+
+        if ($overline !== null && $overline !== '') {
+            $this->SetFont(static::FONT_FAMILY, 'B', static::BODY_FONT_SIZE);
+            $this->Cell(static::PAGE_WIDTH, 4, $overline, align: 'C');
+            $this->Ln(5);
+        }
+
+        $this->SetFont(static::FONT_FAMILY, 'B', static::TITLE_FONT_SIZE);
+        $this->Cell(static::PAGE_WIDTH, 6, $title, align: 'C');
+        $this->Ln();
+
+        $this->SetFont(static::FONT_FAMILY, 'B', static::SUBTITLE_FONT_SIZE);
+        $this->Cell(static::PAGE_WIDTH, 2, $subtitle, align: 'C');
+        $this->Ln(3);
+
+        $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
+    }
+
+    /**
+     * Prints a row of centred labels over their values, closed by a rule.
+     *
+     * This is how every document states what it is about - contract number, dates, the
+     * number of the amendment - and the columns are shared out evenly across the width.
+     *
+     * @param array<int, array{0:string, 1:string}> $columns Label and value pairs
+     * @param float|null $width Column width, or null to divide the page evenly
+     * @param float $separatorOffset Indent of the closing rule
+     * @return void
+     */
+    protected function printLabelledRow(
+        array $columns,
+        ?float $width = null,
+        float $separatorOffset = self::SEPARATOR_OFFSET_X,
+    ): void {
+        $width ??= static::TEXT_WIDTH / max(1, count($columns));
+
+        $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
+        foreach ($columns as [$label, $value]) {
+            $this->Cell($width, static::LINE_HEIGHT, $label, align: 'C');
+        }
+        $this->Ln();
+
+        $this->SetFont(static::FONT_FAMILY, 'B', static::BODY_FONT_SIZE);
+        foreach ($columns as [$label, $value]) {
+            $this->Cell($width, static::LINE_HEIGHT, $value, align: 'C');
+        }
+        $this->Ln();
+
+        $this->drawSeparator($separatorOffset, lnAfter: 3.0);
+    }
+
+    /**
+     * Names the two parties: the provider's own block, then who the other one is.
+     *
+     * @param string $roleLabel What the company is in this document - provider, controller
+     * @param \App\Model\Entity\Customer|\App\Model\Entity\Contract $entity Whose type is stated
+     * @return void
+     */
+    protected function printParties(string $roleLabel, Customer|Contract $entity): void
+    {
+        $this->printCompanyDetails($roleLabel);
+
+        $this->SetFont(static::FONT_FAMILY, 'B', static::HEADING_FONT_SIZE);
+        $this->Cell(static::PAGE_WIDTH, 4, $this->label('and'), align: 'C');
+        $this->Ln();
+        $this->Cell(30, 4, $this->label('user'));
+
+        $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
+        $this->printUserType($entity);
+    }
+
+    /**
+     * Prints a section heading over a rule.
+     *
+     * A heading left stranded at the foot of a page with its text overleaf reads as a
+     * mistake, so where a document asks for the guard the heading takes the break with it.
+     *
+     * @param string $text The heading
+     * @return void
+     */
+    protected function printSectionHeading(string $text): void
+    {
+        $this->keepTogether(static::HEADING_ORPHAN_GUARD);
+
+        $this->SetFont(static::FONT_FAMILY, 'B', static::HEADING_FONT_SIZE);
+        $this->Write(4, $text);
+        $this->Ln();
+
+        $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
+    }
+
+    /**
+     * Prints one paragraph of body text and the air that separates it from the next.
+     *
+     * The trailing newline is what keeps a justified last line from being stretched across
+     * the full width, and every flowing paragraph in these documents needs it.
+     *
+     * @param string $text The paragraph
+     * @param string $align Alignment, justified unless the text reads better ragged
+     * @param bool $bold Whether the paragraph carries the weight of a statement
+     * @param string $format Extra font style, used where a document sets a whole block apart
+     * @param float|null $gap Air left behind it, or null for the document's own
+     * @return void
+     */
+    protected function printParagraph(
+        string $text,
+        string $align = 'J',
+        bool $bold = false,
+        string $format = '',
+        ?float $gap = null,
+    ): void {
+        $this->SetFont(static::FONT_FAMILY, ($bold ? 'B' : '') . $format, static::BODY_FONT_SIZE);
+
+        $body = $text . PHP_EOL;
+        $this->keepTogether($this->getNumLines($body, static::TEXT_WIDTH) * static::LINE_HEIGHT);
+        $this->MultiCell(static::TEXT_WIDTH, static::LINE_HEIGHT, $body, align: $align);
+        $this->Ln($gap ?? static::PARAGRAPH_GAP);
+    }
+
+    /**
+     * Starts a new page if what comes next would not fit whole on this one.
+     *
+     * A paragraph broken over the fold is read twice - once to lose the thread and once to
+     * find it again - and a table split from its heading says nothing at all. Anything taller
+     * than a page is let through, because moving it would only move the problem.
+     *
+     * Documents opt into this: one that was laid out around where its pages happen to break
+     * leaves it off and keeps the breaks it has.
+     *
+     * @param float $height How much room the block needs, in mm
+     * @return void
+     */
+    protected function keepTogether(float $height): void
+    {
+        if (!static::KEEPS_BLOCKS_WHOLE || $height <= 0.0) {
+            return;
+        }
+
+        $bottom = $this->getPageHeight() - $this->getBreakMargin();
+
+        if ($height < $bottom - $this->getMargins()['top'] && $this->GetY() + $height > $bottom) {
+            $this->AddPage();
         }
     }
 
