@@ -18,6 +18,7 @@ enum ContractPrintType: string implements EnumLabelInterface
     case ContractNewX = 'contract-new-x';
     case ContractAmendment = 'contract-amendment';
     case ContractTermination = 'contract-termination';
+    case ContractSummary = 'contract-summary';
     case HandoverInstallation = 'handover-protocol-installation';
     case HandoverUninstallation = 'handover-protocol-uninstallation';
 
@@ -39,6 +40,9 @@ enum ContractPrintType: string implements EnumLabelInterface
 
             self::ContractTermination =>
                 __('Agreement to terminate contract for the provision of services'),
+
+            self::ContractSummary =>
+                __('Contract summary'),
 
             self::HandoverInstallation =>
                 __('Handover protocol - Installation of internet connection'),
@@ -63,6 +67,7 @@ enum ContractPrintType: string implements EnumLabelInterface
             self::ContractNew,
             self::ContractNewX,
             self::ContractAmendment,
+            self::ContractSummary,
             self::HandoverInstallation,
         ], true);
     }

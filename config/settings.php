@@ -633,6 +633,159 @@ return [
                         'dns_servers' => '79.98.156.2, 79.98.152.2',
                     ],
                 ],
+
+                // Contract summary under the template of Regulation (EU) 2019/2243. The template
+                // is what makes offers comparable between providers, so the section headings and
+                // the opening bullets are prescribed rather than ours to phrase.
+                'summary' => [
+                    'title' => 'SHRNUTÍ SMLOUVY',
+                    'subtitle' => 'ke Smlouvě o poskytování služeb',
+
+                    'intro_bullets' => ListType::ofStrings(
+                        default: [
+                            'Toto shrnutí smlouvy uvádí hlavní prvky této nabídky služeb, jak vyžadují právní předpisy EU¹.',
+                            'Pomáhá porovnat různé nabídky služeb.',
+                            'Úplné informace o dané službě jsou obsaženy v jiných dokumentech.',
+                        ],
+                        hint: __('The three opening bullets prescribed by the contract summary template.'),
+                    ),
+
+                    // The template hangs a footnote off the first bullet naming the provision that
+                    // requires the summary. Every Czech summary I have seen carries it.
+                    'intro_footnote' => '¹ Ustanovení čl. 102 odst. 3 směrnice Evropského parlamentu a Rady (EU) 2018/1972 ze dne 11. prosince 2018, kterou se stanoví evropský kodex pro elektronické komunikace (Úřední věstník L 321, 17. 12. 2018, s. 36).',
+
+                    'sections' => [
+                        'services' => 'Služba/služby a zařízení',
+                        'speeds' => 'Rychlost služby přístupu k internetu a prostředky nápravy',
+                        'price' => 'Cena',
+                        'duration' => 'Doba trvání, obnovení a ukončení',
+                        'accessibility' => 'Funkce pro koncové uživatele se zdravotním postižením',
+                        'other' => 'Další důležité informace',
+                    ],
+
+                    'labels' => [
+                        // The template carries this in the identity block, in black - it is what
+                        // shows when the summary was handed over, which is what the duty is about.
+                        'issue_date' => 'datum vystavení shrnutí:',
+                        'complaints' => 'Reklamace',
+
+                        // The contract names the provider inside a sentence and so declines the
+                        // word; the summary heads a block with it and takes the nominative.
+                        'provider' => 'Poskytovatel',
+
+                        'price_per_month' => 'Cena za zúčtovací období (měsíc):',
+                        'price_without_discount' => 'Cena bez slevy:',
+                        'activation_fee' => 'Aktivační poplatek (jednorázově):',
+                        'activation_fee_with_obligation' => 'Aktivační poplatek se sjednanou minimální dobou plnění (jednorázově):',
+                        'equipment_price' => 'Prodaná zařízení (jednorázově):',
+                    ],
+
+                    'speed_labels' => [
+                        'direction' => 'Směr',
+                        'download' => 'Stahování (download)',
+                        'upload' => 'Odesílání (upload)',
+                        'advertised' => 'Maximální rychlost (inzerovaná)',
+                        'common' => 'Běžně dostupná rychlost',
+                        'minimum' => 'Minimální rychlost',
+                        'unit' => 'Mbit/s',
+                    ],
+
+                    // Empty on a tariff means the figure is not declared and gets taken as a share
+                    // of the advertised speed instead. The floors are the Office's: the commonly
+                    // available speed may not be set below 60 % of the advertised one, nor the
+                    // minimum below 30 %, so these defaults sit exactly on them.
+                    'speed_coefficients' => [
+                        'common' => NumberType::ofDecimal(
+                            default: 0.6,
+                            scale: 2,
+                            hint: __('Share of the advertised speed taken as the commonly available one.'),
+                        ),
+                        'minimum' => NumberType::ofDecimal(
+                            default: 0.3,
+                            scale: 2,
+                            hint: __('Share of the advertised speed taken as the minimum one.'),
+                        ),
+                    ],
+
+                    // The notice period the summary states. It has to be the one the Terms actually
+                    // grant; the value here is the longest the Act allows against a consumer.
+                    'notice_period' => '30 dnů',
+
+                    'texts' => [
+                        'service_note' => 'Služba přístupu k síti internet v pevném místě. Podrobné parametry jednotlivých tarifů obsahuje dokument uvedený v části Další důležité informace.',
+
+                        // The template asks for the equipment as well as the service, and the
+                        // contract already decides which of the two situations it is describing.
+                        'equipment_borrowed' => 'Zařízení nutná pro připojení poskytuje Poskytovatel Uživateli bezúplatně po dobu trvání Smlouvy a zůstávají ve vlastnictví Poskytovatele.',
+                        'equipment_own' => 'Zařízení nutná pro připojení jsou ve vlastnictví Uživatele.',
+                        'equipment_sold' => 'Zařízení nutná pro připojení prodává Poskytovatel Uživateli; jejich cena je uvedena v části Cena.',
+
+                        // A tariff with a limit charges for the excess, it does not throttle - the
+                        // wording has to match what the tariff actually does to the customer.
+                        'data_limit' => 'Datový limit za zúčtovací období: {data_limit}. Rychlost se po jeho vyčerpání nesnižuje, každých započatých {overlimit_fragment} nad limit je zpoplatněno částkou {overlimit_cost} podle Ceníku.',
+                        'data_limit_plain' => 'Datový limit za zúčtovací období: {data_limit}. Podmínky pro jeho překročení jsou uvedeny v Ceníku a v Podmínkách.',
+                        'no_data_limit' => 'Služba není omezena datovým limitem.',
+
+                        // A contract can carry a charge without carrying a tariff, and a table of
+                        // dashes under this heading would read as a service with no speed rather
+                        // than as no service.
+                        'no_internet_service' => 'Smlouva neobsahuje službu přístupu k síti internet, rychlosti se proto neuvádějí.',
+
+                        // Prescribed wording, and the template prints it in black - it may not be
+                        // dropped and it may not be paraphrased away.
+                        'speed_rights_note' => 'Odchylka od výkonu uvedeného ve Smlouvě nemá vliv na výkon Vašeho práva na přístup k informacím a obsahu a jejich šíření, na využívání a poskytování aplikací a služeb ani na využívání koncového zařízení podle vlastního výběru. Může se však stát, že vyhledávaná informace nebo využívaná služba bude načtena pomaleji – například videa a obrázky se mohou zobrazit později.',
+
+                        // The last step of the remedies overview in the template. Without it the
+                        // customer is told they may complain but not what follows if it fails.
+                        'complaint_escalation' => 'Nevyhoví-li Poskytovatel reklamaci, můžete podat u Českého telekomunikačního úřadu (www.ctu.cz) návrh na zahájení řízení o námitce proti vyřízení reklamace, a to bez zbytečného odkladu, nejpozději však do 1 měsíce ode dne doručení vyřízení reklamace nebo marného uplynutí lhůty pro její vyřízení, jinak právo uplatnit námitku zanikne.',
+
+                        // The Office defines both deviations against the commonly available speed
+                        // and expects the provider to state them, which is the only reason the
+                        // table above carries three figures. The remedy is the one the Act gives -
+                        // the fault removed and the price reduced - not a right to walk away.
+                        'speed_remedies' => 'Pokles skutečně dosahované rychlosti pod minimální rychlost je výpadkem služby. Velkou trvající odchylkou je pokles pod běžně dostupnou rychlost trvající déle než 70 minut, velkou opakující se odchylkou jsou nejméně tři takové poklesy trvající alespoň 3,5 minuty v úseku 90 minut; projeví se pomalejším načítáním obsahu a delší odezvou. Závadu oznamte Poskytovateli bez zbytečného odkladu jako poruchu; reklamaci uplatněte písemně na adrese Poskytovatele, e-mailem nebo v Uživatelském portálu na kontaktech uvedených výše, a to nejpozději do 2 měsíců od vadného poskytnutí služby. Poskytovatel ji vyřídí do 1 měsíce. Máte právo na odstranění závady a na poměrné snížení ceny podle § 64 odst. 12 zákona č. 127/2005 Sb.',
+
+                        // Two wordings because the contract has two shapes, and the summary must not
+                        // promise the fixed-term one that nothing happens when the term runs out.
+                        // A contract with nothing to renew has no business saying it does not renew,
+                        // and one that is free to leave only after the commitment has run must not
+                        // say leaving is free. Three shapes, three sentences.
+                        'renewal_indefinite' => 'Smlouva trvá, dokud ji některá ze smluvních stran neukončí. Uživatel ji může kdykoli vypovědět s výpovědní dobou {notice_period}, která začíná běžet dnem doručení výpovědi Poskytovateli. Ukončení Smlouvy je bezplatné.',
+                        'renewal_indefinite_committed' => 'Smlouva trvá, dokud ji některá ze smluvních stran neukončí. Uživatel ji může kdykoli vypovědět s výpovědní dobou {notice_period}, která začíná běžet dnem doručení výpovědi Poskytovateli. Skončí-li Smlouva před uplynutím minimální doby plnění, uplatní se úhrada podle Podmínek; po jejím uplynutí je ukončení Smlouvy bezplatné.',
+                        'renewal_definite' => 'Uplynutím sjednané doby Smlouva zaniká, aniž by ji bylo třeba vypovídat, a automaticky se neprodlužuje. Prodloužit ji lze jen dohodou smluvních stran. Před uplynutím sjednané doby ji může Uživatel vypovědět s výpovědní dobou {notice_period}.',
+
+                        // TODO: confirm with counsel. Act No. 424/2023 Coll. has applied to
+                        // electronic communications services since 28 June 2025 and exempts
+                        // microenterprises; if the exemption does not hold, this has to say what is
+                        // actually offered rather than that nothing is.
+                        'accessibility' => 'Poskytovatel nenabízí zvláštní produkty ani služby určené výhradně koncovým uživatelům se zdravotním postižením. Potřebujete-li službu nebo komunikaci s Poskytovatelem přizpůsobit svým potřebám, obraťte se prosím na Poskytovatele; kontaktní údaje jsou uvedeny výše.',
+
+                        // A promotional price has to be shown as one - with the undiscounted price
+                        // beside it and the day it runs to - or the comparison the summary exists
+                        // for is made against the wrong number.
+                        'discount_period' => 'Zvýhodněná cena platí do {date}.',
+                        'discount_open_ended' => 'Zvýhodněná cena platí po dobu trvání Smlouvy.',
+
+                        'price_note' => 'Všechny uvedené ceny jsou včetně DPH a platí za jedno zúčtovací období. Ceny služeb a úkonů, které zde nejsou uvedeny, se řídí Ceníkem.',
+
+                        // True whatever the Terms say, and the template's example carries it: the
+                        // statutory ways out cost nothing beyond the capped equipment share.
+                        'termination_other' => 'Smlouvu lze ukončit i dalšími způsoby, které stanoví právní předpisy. Ukončíte-li závazek z důvodu, který Vám dává zákon, neukládá se Vám žádná úhrada s výjimkou poměrné části hodnoty dotovaného koncového zařízení, které si ponecháte; ta nesmí přesáhnout zbývající část ceny za služby.',
+                    ],
+
+                    'other_information' => ListType::ofStrings(
+                        default: [
+                            'Všeobecné podmínky služeb elektronických komunikací',
+                            'Přehled parametrů a rychlostí poskytovaných tarifů pro služby připojení k internetu v pevném místě',
+                            'Oznámení o typech rozhraní pro připojení k veřejné komunikační síti',
+                            'Zásady zpracování osobních údajů',
+                            'Ceník',
+                        ],
+                        hint: __('Documents the summary points the customer to.'),
+                    ),
+
+                    'other_information_note' => 'Aktuální znění těchto dokumentů je vždy dostupné na https://netair.cz, ke dni uzavření Smlouvy konkrétně na https://netair.cz/internet/vseobecne-informace.',
+                ],
             ],
 
             'gdpr' => [

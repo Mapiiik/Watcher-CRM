@@ -867,6 +867,7 @@ class ContractsController extends AppController
                 ContractPrintType::ContractNewX->value => ContractPrintType::ContractNewX->label(),
                 ContractPrintType::ContractAmendment->value => ContractPrintType::ContractAmendment->label(),
                 ContractPrintType::ContractTermination->value => ContractPrintType::ContractTermination->label(),
+                ContractPrintType::ContractSummary->value => ContractPrintType::ContractSummary->label(),
             ],
             __('Handover Protocols') => [
                 ContractPrintType::HandoverInstallation->value => ContractPrintType::HandoverInstallation->label(),
@@ -880,7 +881,7 @@ class ContractsController extends AppController
 
         // load the contract with all related data needed for rendering the print views and generating the PDF documents
         $contract = $this->Contracts->get($id, contain: [
-            'Billings' => ['Services'],
+            'Billings' => ['Services' => ['Queues']],
             'BorrowedEquipments.EquipmentTypes' => function (SelectQuery $query) {
                 return $query->where([
                     'BorrowedEquipments.borrowed_until IS NULL',

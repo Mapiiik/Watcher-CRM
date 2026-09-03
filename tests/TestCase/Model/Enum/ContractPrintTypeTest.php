@@ -51,6 +51,7 @@ class ContractPrintTypeTest extends TestCase
                 ContractPrintType::ContractNew,
                 ContractPrintType::ContractNewX,
                 ContractPrintType::ContractAmendment,
+                ContractPrintType::ContractSummary,
                 ContractPrintType::HandoverInstallation,
             ],
             $this->typesWhere(fn(ContractPrintType $type): bool => $type->requiresContractVersionToBeExecuted()),

@@ -78,6 +78,9 @@ final class ContractPrintValidator
             ContractPrintType::ContractTermination =>
                 $this->validateContractTermination($data, $query),
 
+            ContractPrintType::ContractSummary =>
+                $this->validateContractSummary($data),
+
             ContractPrintType::HandoverInstallation =>
                 $this->validateHandoverInstallation($data),
 
@@ -272,6 +275,18 @@ final class ContractPrintValidator
         }
 
         $this->requireFixedTermAcknowledgement($data->contractVersionToBeExecuted, $query);
+    }
+
+    /**
+     * Validation for the contract summary.
+     *
+     * A version is all it needs. The fixed-term acknowledgement guards issuing a binding
+     * document, and the summary binds nobody - it only describes what is on offer.
+     */
+    private function validateContractSummary(
+        ContractPrintData $data,
+    ): void {
+        $this->requireContractVersionToBeExecuted($data);
     }
 
     /**
