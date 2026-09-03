@@ -551,8 +551,7 @@ class OverviewsController extends AppController
                                         $billings_collection
                                             ->countBy(function (Billing $billing): string {
                                                 $commonly_available_download_speed =
-                                                    $billing->service?->queue->speed_down ?
-                                                        $billing->service->queue->speed_down * 0.6 : null;
+                                                    $billing->service?->queue?->getSpeedDownCommon();
                                                 if ($commonly_available_download_speed < 30720) {
                                                     return 'speed_0_30';
                                                 }
@@ -569,15 +568,20 @@ class OverviewsController extends AppController
 
                                     $address->available_connections = $billings_collection->count();
 
-                                    $maximal_download = $billings_collection
-                                        ->max('billing.service.queue.speed_down')
-                                        ->service->queue->speed_down;
-                                    $effective_download = $maximal_download * 0.6;
+                                    // The path is resolved against the billing itself, so it carries no
+                                    // "billing." prefix - with one, nothing resolves and max() hands back
+                                    // whichever connection came first instead of the fastest.
+                                    $fastest_download = $billings_collection
+                                        ->max('service.queue.speed_down')
+                                        ->service->queue;
+                                    $maximal_download = $fastest_download->getSpeedDown();
+                                    $effective_download = $fastest_download->getSpeedDownCommon();
 
-                                    $maximal_upload = $billings_collection
-                                        ->max('billing.service.queue.speed_up')
-                                        ->service->queue->speed_up;
-                                    $effective_upload = $maximal_upload * 0.6;
+                                    $fastest_upload = $billings_collection
+                                        ->max('service.queue.speed_up')
+                                        ->service->queue;
+                                    $maximal_upload = $fastest_upload->getSpeedUp();
+                                    $effective_upload = $fastest_upload->getSpeedUpCommon();
 
                                     $address->available_speeds = new ArrayObject(
                                         [

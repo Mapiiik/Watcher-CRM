@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Queue $queue
  */
+$derived = __('(derived)');
 ?>
 <div class="row">
     <aside class="column">
@@ -55,12 +56,44 @@
                                 '' : $this->Number->currency($queue->overlimit_cost) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Speed Down') ?></th>
+                            <td><?= $queue->speed_down === null ? '' : $this->Number->format($queue->speed_down) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Speed Up') ?></th>
                             <td><?= $queue->speed_up === null ? '' : $this->Number->format($queue->speed_up) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Speed Down') ?></th>
-                            <td><?= $queue->speed_down === null ? '' : $this->Number->format($queue->speed_down) ?></td>
+                            <th><?= __('Speed Down Commonly Available') ?></th>
+                            <td><?=
+                                $queue->getSpeedDownCommon() === null ? '' :
+                                    $this->Number->format($queue->getSpeedDownCommon())
+                                    . ($queue->speed_down_common === null ? ' ' . $derived : '')
+                            ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Speed Up Commonly Available') ?></th>
+                            <td><?=
+                                $queue->getSpeedUpCommon() === null ? '' :
+                                    $this->Number->format($queue->getSpeedUpCommon())
+                                    . ($queue->speed_up_common === null ? ' ' . $derived : '')
+                            ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Speed Down Minimum') ?></th>
+                            <td><?=
+                                $queue->getSpeedDownMinimum() === null ? '' :
+                                    $this->Number->format($queue->getSpeedDownMinimum())
+                                    . ($queue->speed_down_minimum === null ? ' ' . $derived : '')
+                            ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Speed Up Minimum') ?></th>
+                            <td><?=
+                                $queue->getSpeedUpMinimum() === null ? '' :
+                                    $this->Number->format($queue->getSpeedUpMinimum())
+                                    . ($queue->speed_up_minimum === null ? ' ' . $derived : '')
+                            ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Cto Category') ?></th>

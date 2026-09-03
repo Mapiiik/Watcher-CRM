@@ -91,10 +91,18 @@ class QueuesTable extends AppTable
             ->allowEmptyString('overlimit_cost');
 
         $validator
-            ->allowEmptyString('speed_up');
+            ->allowEmptyString('speed_down');
 
         $validator
-            ->allowEmptyString('speed_down');
+            ->allowEmptyString('speed_up');
+
+        // Empty is an answer here: the tariff declares no figure of its own and the entity
+        // derives one from the advertised speed.
+        foreach (['speed_down_common', 'speed_up_common', 'speed_down_minimum', 'speed_up_minimum'] as $field) {
+            $validator
+                ->integer($field)
+                ->allowEmptyString($field);
+        }
 
         return $validator;
     }

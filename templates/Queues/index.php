@@ -29,8 +29,8 @@
                     <th><?= $this->Paginator->sort('data_limit') ?></th>
                     <th><?= $this->Paginator->sort('overlimit_fragment') ?></th>
                     <th><?= $this->Paginator->sort('overlimit_cost') ?></th>
-                    <th><?= $this->Paginator->sort('speed_up') ?></th>
                     <th><?= $this->Paginator->sort('speed_down') ?></th>
+                    <th><?= $this->Paginator->sort('speed_up') ?></th>
                     <th><?= $this->Paginator->sort('cto_category') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -46,8 +46,8 @@
                         '' : $this->Number->format($queue->overlimit_fragment) ?></td>
                     <td><?= $queue->overlimit_cost === null ?
                         '' : $this->Number->currency($queue->overlimit_cost) ?></td>
-                    <td><?= $queue->speed_up === null ? '' : $this->Number->format($queue->speed_up) ?></td>
                     <td><?= $queue->speed_down === null ? '' : $this->Number->format($queue->speed_down) ?></td>
+                    <td><?= $queue->speed_up === null ? '' : $this->Number->format($queue->speed_up) ?></td>
                     <td><?= h($queue->cto_category) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $queue->id]) ?>
