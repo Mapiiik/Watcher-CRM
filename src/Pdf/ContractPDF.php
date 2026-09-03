@@ -33,6 +33,13 @@ class ContractPDF extends AppPDF
     private const EMPTY_SERIAL = '';
 
     /**
+     * These are papers that get read in order and signed at the end, so a clause split across
+     * the fold is read twice and a heading stranded at the foot reads as a mistake. Blocks
+     * take the break with them instead.
+     */
+    protected const KEEPS_BLOCKS_WHOLE = true;
+
+    /**
      * Row height of the framed tables - equipment, credentials, networks. Taller than a line
      * of text, because a bordered cell needs the air a plain one does not.
      */
@@ -314,7 +321,9 @@ class ContractPDF extends AppPDF
      *
      * Each type is identified by different figures - a new contract by when it starts, an
      * amendment by which one in the series it is, a termination by when it ends - so each
-     * gets its own row rather than a shared one with blanks in it.
+     * gets its own row rather than a shared one with blanks in it. The rule under the row is
+     * indented like every other document's; the amendment and the termination used to draw
+     * theirs flush left, which read as a different document rather than the same one.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
      * @return void
@@ -346,7 +355,7 @@ class ContractPDF extends AppPDF
                     [$this->label('amendment_effective'), (string)$data->effectiveDateOfAmendment],
                 ],
                 45.0,
-                0.0,
+                AppPDF::SEPARATOR_OFFSET_X,
                 'between_amendment',
             ],
             ContractPrintType::ContractTermination => [
@@ -356,7 +365,7 @@ class ContractPDF extends AppPDF
                     [$this->label('end_date'), (string)$this->terminatedVersion($data)->valid_until],
                 ],
                 60.0,
-                0.0,
+                AppPDF::SEPARATOR_OFFSET_X,
                 'between_termination',
             ],
             default => throw new InvalidArgumentException('Unsupported contract print type: ' . $data->type->value),
@@ -666,6 +675,8 @@ class ContractPDF extends AppPDF
      */
     private function printBillingHeading(string $text, string $format): void
     {
+        $this->keepTogether(self::HEADING_ORPHAN_GUARD);
+
         $this->SetFont(self::FONT_FAMILY, 'B' . $format, self::HEADING_FONT_SIZE);
         $this->Cell(self::PAGE_WIDTH, 3, $text);
         $this->Ln();
