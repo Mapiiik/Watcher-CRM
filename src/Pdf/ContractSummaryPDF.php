@@ -21,10 +21,10 @@ use Settings\Utility\Settings;
  * another provider's and compare them, which is why the section order, the opening bullets
  * and even where the service and provider names sit are prescribed.
  *
- * One page is what the regulation asks for, and a plain tariff on an indefinite contract
- * fits it. A commitment does not: the clause on what leaving early costs, and the deviations
- * the Office wants spelled out, are both required elsewhere in the same body of law, so the
- * document carries them and runs to a second page rather than losing them.
+ * One A4 page is the length asked for, and three where services and equipment are bundled
+ * into a single contract around an internet access service - which is what ours are. A plain
+ * tariff on an indefinite contract fits the one page. A commitment does not, because the
+ * clause on what leaving early costs has to be there too, so it runs to a second.
  *
  * It is laid out as a sibling of the contract - same logo, same title block, same headed
  * sections over a rule - so the two read as one set of papers. Its own text is set two
@@ -35,10 +35,10 @@ class ContractSummaryPDF extends AppPDF
     use ContractDurationTrait;
 
     /**
-     * Ten points, which is the smallest the regulation allows outright. Going under it is
-     * permitted only with a reason, and then only against an undertaking to hand over a
-     * ten-point version on request - so shrinking the type to save a page is not a trade
-     * that is on offer, and the second page is the cheaper of the two prices.
+     * Ten points, which is the smallest allowed outright. Going under it takes a reason, and
+     * then the summary has to be enlargeable on screen or available at ten points on request.
+     * There is nothing to buy with the difference anyway: the length this document is allowed
+     * leaves no reason to shrink the type to save a page.
      */
     protected const BODY_FONT_SIZE = 10;
 
@@ -84,9 +84,9 @@ class ContractSummaryPDF extends AppPDF
     private const FOOTNOTE_LINE_HEIGHT = 3.2;
 
     /**
-     * Sans-serif, which the regulation names as the readable choice for a summary. It is the
-     * one place this document parts company with the contract's serif, and it also reads
-     * lighter than a serif at the same size.
+     * Sans-serif, which the Office's manual allows in as many words: commonly used sans-serif
+     * faces may be used in the interest of legibility. It is the one place this document parts
+     * company with the contract's serif, and it also reads lighter at the same size.
      */
     protected const FONT_FAMILY = 'dejavusans';
 
