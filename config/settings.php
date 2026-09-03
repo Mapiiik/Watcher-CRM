@@ -62,8 +62,8 @@ return [
             'address_line_2' => '512 43 Jablonec nad Jizerou',
 
             'executive' => 'Marko Jujnović, jednatel', // not used yet :-)
-            'executive_clause' => 'zastoupeným Marko Jujnovićem, jednatelem',
-            'registry_clause' => 'zapsaným v obchodním rejstříku vedeném u Krajského soudu v Hradci Králové, oddíl C, vložka 22450.',
+            'executive_clause' => 'zastoupení: Marko Jujnović, jednatel',
+            'registry_clause' => 'zápis v obchodním rejstříku: Krajský soud v Hradci Králové, oddíl C, vložka 22450',
 
             'price_list_url' => 'https://netair.cz/cenik-pripojeni/',
             'user_portal_url' => 'https://nms.netair.cz/netair/',
@@ -565,16 +565,25 @@ return [
                             TEXT,
 
                         'uninstallation_borrowed_equipment_intro' => 'Poskytovatel poskytl Uživateli pro dobu trvání Smlouvy bezúplatně tato zařízení:',
-                        'uninstallation_equipment_state' => 'Stav zařízení v době deinstalace:',
+                        'uninstallation_equipment_state' => 'Vrácení zařízení a jejich stav:',
 
                         'uninstallation_equipment_checks_text' => <<<TEXT
-                            ▢ ano / ▢ ne - Poskytovateli byla umožněna zkouška funkčnosti zařízení na místě, jejich zapnutím, připojením se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky
+                            ▢ ano / ▢ ne - zařízení byla Poskytovateli vrácena
 
-                            ▢ ano / ▢ ne - provedením zkoušky funkčnosti zařízení na místě, byla zjištěna jeho nefunkčnost
+                            ▢ ano / ▢ ne - demontáž zařízení provedl Uživatel sám (ne = demontáž provedl Poskytovatel na místě instalace)
+
+                            ▢ ano / ▢ ne - zařízení byla vrácena kompletní podle soupisu uvedeného výše
+
+                            ▢ ano / ▢ ne - Poskytovateli byla umožněna zkouška funkčnosti zařízení při jejich předání, jejich zapnutím, připojením
+                                                    se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky
+
+                            ▢ ano / ▢ ne - provedením zkoušky funkčnosti zařízení při předání byla zjištěna jejich nefunkčnost
 
                             ▢ ano / ▢ ne - zařízení má viditelnou vadu nebo poškození způsobené neodborným zacházením ze strany Uživatele
 
-                            zjištěné nedostatky:
+                            ▢ ano / ▢ ne - deinstalace neproběhla a zařízení si přebírá nový Uživatel podle smlouvy č. __________________-____________
+
+                            zjištěné nedostatky a poznámky:
 
                             _______________________________________________________________________________________________________
 
@@ -582,7 +591,7 @@ return [
 
                             _______________________________________________________________________________________________________
 
-                            V případě že provedení zkoušky funkčnosti těchto zařízení na místě nebylo umožněno, bude provedeno následně v provozovně Poskytovatele.
+                            Nebyla-li zkouška funkčnosti provedena při předání, bude provedena následně v provozovně Poskytovatele.
 
                             V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.
                             TEXT,
@@ -591,11 +600,11 @@ return [
                         'uninstallation_general_statements_text' => 'Uživatel a Poskytovatel tímto stvrzují, že: ___________________________________________________________________________________',
 
                         'uninstallation_final_statements_text' => <<<TEXT
-                            Poskytovatel svým podpisem stvrzuje, že uvedená zařízení převzal ve stavu popsaném výše.
+                            Poskytovatel svým podpisem stvrzuje, že zařízení, která mu byla vrácena, převzal ve stavu popsaném výše.
 
                             Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).
 
-                            Uživatel dále potvrzuje, že souhlasí s provedenou deinstalací a nemá vůči ní žádné námitky.
+                            Byla-li deinstalace provedena Poskytovatelem, Uživatel potvrzuje, že s jejím provedením souhlasí a nemá vůči ní žádné námitky.
 
                             Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
 
