@@ -51,7 +51,7 @@ class ContractSummaryPDF extends AppPDF
      * The footnote to the first bullet, which is apparatus rather than summary text and is
      * therefore the one thing on the page allowed under ten points.
      */
-    private const FOOTNOTE_FONT_SIZE = 8;
+    protected const NOTE_FONT_SIZE = 8;
 
     /**
      * Line height that goes with the body size.
@@ -72,6 +72,13 @@ class ContractSummaryPDF extends AppPDF
     protected const KEEPS_BLOCKS_WHOLE = true;
 
     /**
+     * The tables state the figures the offer is judged on, so they line up with the paragraphs
+     * around them rather than indenting off them, and their rows carry the taller body text.
+     */
+    protected const TABLE_INDENT = 0.0;
+    protected const TABLE_ROW_HEIGHT = 6.0;
+
+    /**
      * Line height that goes with the footnote.
      */
     private const FOOTNOTE_LINE_HEIGHT = 3.2;
@@ -84,12 +91,6 @@ class ContractSummaryPDF extends AppPDF
     protected const FONT_FAMILY = 'dejavusans';
 
     /**
-     * Room a heading needs below it - itself and a couple of lines - before it is worth
-     * starting a section on this page at all.
-     */
-    protected const HEADING_ORPHAN_GUARD = 16.0;
-
-    /**
      * Foot of every page kept clear, because the footnote to the opening bullet is written
      * into it after the sections have been laid out and must not land on top of them.
      */
@@ -100,13 +101,6 @@ class ContractSummaryPDF extends AppPDF
      * how the tariffs hold their speeds - a ten megabit tariff is stored as 10240.
      */
     private const KBPS_PER_MBPS = 1024;
-
-    /**
-     * Width the contract sets its flowing paragraphs to. This document centres its title
-     * block over the same width, so nothing on the page sits wider than the text.
-     */
-    protected const TEXT_WIDTH = 180.0;
-    protected const PAGE_WIDTH = 180.0;
 
     /**
      * Renders the contract summary.
@@ -316,7 +310,7 @@ class ContractSummaryPDF extends AppPDF
         $this->SetAutoPageBreak(false);
         $this->SetY(-self::FOOTNOTE_RESERVE);
         $this->drawSeparator(width: 60.0, lnAfter: 0.8);
-        $this->SetFont(self::FONT_FAMILY, '', self::FOOTNOTE_FONT_SIZE);
+        $this->SetFont(self::FONT_FAMILY, '', self::NOTE_FONT_SIZE);
         $this->MultiCell(self::TEXT_WIDTH, self::FOOTNOTE_LINE_HEIGHT, $footnote, align: 'L');
 
         $this->SetAutoPageBreak(true, self::FOOTNOTE_RESERVE);
@@ -391,7 +385,6 @@ class ContractSummaryPDF extends AppPDF
         // Ruled, because three numbers in each of two directions is a table and reads as one.
         // The widths add up to the text width exactly so the frame lines up with the paragraphs.
         $columns = [48.0, 44.0, 44.0, 44.0];
-        $height = self::LINE_HEIGHT + 1.5;
 
         // Headings wrap, so each gets a cell of the row's own height instead of one line -
         // squeezing the longest of them onto a single line is what pushed it out of its cell.
@@ -401,9 +394,9 @@ class ContractSummaryPDF extends AppPDF
             $label('common'),
             $label('minimum'),
         ];
-        $headingHeight = $height * 2;
+        $headingHeight = self::TABLE_ROW_HEIGHT * 2;
         // Heading plus the two directions - the table has no other shape.
-        $this->keepTogether($headingHeight + 2 * $height);
+        $this->keepTogether($headingHeight + 2 * self::TABLE_ROW_HEIGHT);
         $x = $this->GetX();
         $y = $this->GetY();
 
@@ -439,14 +432,12 @@ class ContractSummaryPDF extends AppPDF
         ];
 
         foreach ($rows as [$direction, $advertised, $common, $minimum]) {
-            $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-            $this->Cell($columns[0], $height, $direction, border: 1);
-
-            $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
-            foreach ([$advertised, $common, $minimum] as $index => $speed) {
-                $this->Cell($columns[$index + 1], $height, $this->mbps($speed), border: 1, align: 'C');
-            }
-            $this->Ln();
+            $this->printFramedRow(
+                [$direction, $this->mbps($advertised), $this->mbps($common), $this->mbps($minimum)],
+                $columns,
+                ['L', 'C', 'C', 'C'],
+                [false, true, true, true],
+            );
         }
 
         $this->Ln(1);
@@ -669,15 +660,15 @@ class ContractSummaryPDF extends AppPDF
     {
         // Ruled like the speed table: these are the figures the offer is judged on, and a frame
         // is what tells the eye that at a glance.
-        $height = self::LINE_HEIGHT + 1.5;
-        $this->keepTogether(count($amounts) * $height);
+        $this->keepTogether(count($amounts) * self::TABLE_ROW_HEIGHT);
 
         foreach ($amounts as [$label, $amount]) {
-            $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-            $this->Cell(130, $height, $label, border: 1);
-            $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
-            $this->Cell(50, $height, Number::currency($amount->toFloat()), border: 1, align: 'R');
-            $this->Ln();
+            $this->printFramedRow(
+                [$label, Number::currency($amount->toFloat())],
+                [130, 50],
+                ['L', 'R'],
+                [false, true],
+            );
         }
     }
 

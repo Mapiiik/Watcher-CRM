@@ -55,9 +55,16 @@ class AppPDF extends TCPDF
     protected const PAGE_WIDTH = 187.0;
 
     /**
-     * Left margin a table indents by, so its frame does not sit flush against the text.
+     * Left margin a table indents by, so its frame does not sit flush against the text. A
+     * document whose tables are meant to line up with its paragraphs sets it to nothing.
      */
     protected const TABLE_INDENT = 4.0;
+
+    /**
+     * Height of a framed table row. Taller than a line of text, because a bordered cell needs
+     * the air a plain one does not.
+     */
+    protected const TABLE_ROW_HEIGHT = 5.0;
 
     /**
      * Whether blocks are kept whole across a page break. Off here, because a document laid
@@ -270,6 +277,53 @@ class AppPDF extends TCPDF
         $this->keepTogether($this->getNumLines($body, static::TEXT_WIDTH) * static::LINE_HEIGHT);
         $this->MultiCell(static::TEXT_WIDTH, static::LINE_HEIGHT, $body, align: $align);
         $this->Ln($gap ?? static::PARAGRAPH_GAP);
+    }
+
+    /**
+     * One row of a framed table.
+     *
+     * Weight is given per row, or per cell where a row states a figure against its label and
+     * only the figure carries the weight.
+     *
+     * @param array<int, string> $cells Cell contents
+     * @param array<int, float|int> $widths Cell widths in mm
+     * @param array<int, string> $aligns Cell alignments
+     * @param array<int, bool>|bool $bold Whether the row, or each of its cells, is set bold
+     * @return void
+     */
+    protected function printFramedRow(array $cells, array $widths, array $aligns, array|bool $bold = false): void
+    {
+        if (static::TABLE_INDENT > 0.0) {
+            $this->Cell(static::TABLE_INDENT, static::TABLE_ROW_HEIGHT);
+        }
+
+        foreach ($cells as $index => $cell) {
+            $weight = is_array($bold) ? ($bold[$index] ?? false) : $bold;
+            $this->SetFont(static::FONT_FAMILY, $weight ? 'B' : '', static::BODY_FONT_SIZE);
+            $this->Cell($widths[$index], static::TABLE_ROW_HEIGHT, $cell, border: 1, align: $aligns[$index]);
+        }
+
+        $this->Ln();
+    }
+
+    /**
+     * Empty framed rows, so a document filled in by hand has room to write in.
+     *
+     * @param int $count How many rows
+     * @param array<int, float|int> $widths Cell widths in mm
+     * @return void
+     */
+    protected function printBlankRows(int $count, array $widths): void
+    {
+        for ($i = 1; $i <= $count; $i++) {
+            if (static::TABLE_INDENT > 0.0) {
+                $this->Cell(static::TABLE_INDENT, static::TABLE_ROW_HEIGHT);
+            }
+            foreach ($widths as $width) {
+                $this->Cell($width, static::TABLE_ROW_HEIGHT, '', border: 1, align: 'C');
+            }
+            $this->Ln();
+        }
     }
 
     /**

@@ -40,12 +40,6 @@ class ContractPDF extends AppPDF
     protected const KEEPS_BLOCKS_WHOLE = true;
 
     /**
-     * Row height of the framed tables - equipment, credentials, networks. Taller than a line
-     * of text, because a bordered cell needs the air a plain one does not.
-     */
-    private const TABLE_ROW_HEIGHT = 5.0;
-
-    /**
      * How many rows the equipment tables are padded out to, so there is somewhere to write a
      * serial number by hand on a protocol that is filled in on site.
      */
@@ -1597,44 +1591,6 @@ class ContractPDF extends AppPDF
             ]),
             bold: true,
         );
-    }
-
-    /**
-     * One row of a framed table, indented off the text column.
-     *
-     * @param array<int, string> $cells Cell contents
-     * @param array<int, float|int> $widths Cell widths in mm
-     * @param array<int, string> $aligns Cell alignments
-     * @param bool $bold Whether this is a header row
-     * @return void
-     */
-    private function printFramedRow(array $cells, array $widths, array $aligns, bool $bold = false): void
-    {
-        $this->SetFont(self::FONT_FAMILY, $bold ? 'B' : '', self::BODY_FONT_SIZE);
-
-        $this->Cell(self::TABLE_INDENT, self::TABLE_ROW_HEIGHT);
-        foreach ($cells as $index => $cell) {
-            $this->Cell($widths[$index], self::TABLE_ROW_HEIGHT, $cell, border: 1, align: $aligns[$index]);
-        }
-        $this->Ln();
-    }
-
-    /**
-     * Empty framed rows, so a protocol filled in on site has room to write in.
-     *
-     * @param int $count How many rows
-     * @param array<int, float|int> $widths Cell widths in mm
-     * @return void
-     */
-    private function printBlankRows(int $count, array $widths): void
-    {
-        for ($i = 1; $i <= $count; $i++) {
-            $this->Cell(self::TABLE_INDENT, self::TABLE_ROW_HEIGHT);
-            foreach ($widths as $width) {
-                $this->Cell($width, self::TABLE_ROW_HEIGHT, '', border: 1, align: 'C');
-            }
-            $this->Ln();
-        }
     }
 
     /**
