@@ -7088,3 +7088,46 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
+#: src/Model/Enum/ContractPrintType.php
+msgid "Contract summary"
+msgstr ""
+
+#: templates/Queues/add.php
+msgid "Speed Down Commonly Available"
+msgstr ""
+
+#: templates/Queues/add.php
+msgid "Speed Up Commonly Available"
+msgstr ""
+
+#: templates/Queues/add.php
+msgid "Speed Down Minimum"
+msgstr ""
+
+#: templates/Queues/add.php
+msgid "Speed Up Minimum"
+msgstr ""
+
+#: templates/Queues/add.php
+msgid "Leave empty to derive it from the advertised speed."
+msgstr ""
+
+#: templates/Queues/view.php
+msgid "(derived)"
+msgstr ""
+
+#: config/settings.php
+msgid "The three opening bullets prescribed by the contract summary template."
+msgstr ""
+
+#: config/settings.php
+msgid "Share of the advertised speed taken as the commonly available one."
+msgstr ""
+
+#: config/settings.php
+msgid "Share of the advertised speed taken as the minimum one."
+msgstr ""
+
+#: config/settings.php
+msgid "Documents the summary points the customer to."
+msgstr ""

@@ -6672,6 +6672,50 @@ msgstr "Zdrojový kód"
 msgid "Version"
 msgstr "Verze"
 
+#: src/Model/Enum/ContractPrintType.php
+msgid "Contract summary"
+msgstr "Shrnutí smlouvy"
+
+#: templates/Queues/add.php
+msgid "Speed Down Commonly Available"
+msgstr "Běžně dostupná rychlost dolů"
+
+#: templates/Queues/add.php
+msgid "Speed Up Commonly Available"
+msgstr "Běžně dostupná rychlost nahoru"
+
+#: templates/Queues/add.php
+msgid "Speed Down Minimum"
+msgstr "Minimální rychlost dolů"
+
+#: templates/Queues/add.php
+msgid "Speed Up Minimum"
+msgstr "Minimální rychlost nahoru"
+
+#: templates/Queues/add.php
+msgid "Leave empty to derive it from the advertised speed."
+msgstr "Ponechte prázdné, hodnota se dopočítá z inzerované rychlosti."
+
+#: templates/Queues/view.php
+msgid "(derived)"
+msgstr "(dopočítáno)"
+
+#: config/settings.php
+msgid "The three opening bullets prescribed by the contract summary template."
+msgstr "Tři úvodní odrážky předepsané šablonou shrnutí smlouvy."
+
+#: config/settings.php
+msgid "Share of the advertised speed taken as the commonly available one."
+msgstr "Podíl inzerované rychlosti, který se bere jako běžně dostupná rychlost."
+
+#: config/settings.php
+msgid "Share of the advertised speed taken as the minimum one."
+msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
+
+#: config/settings.php
+msgid "Documents the summary points the customer to."
+msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
+
 #~ msgid "Standing"
 #~ msgstr "Lhůta"
 
