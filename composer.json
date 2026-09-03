@@ -105,8 +105,8 @@
         "migrations": [
             "bin/cake migrations migrate --plugin CakeDC/Users",
             "bin/cake migrations migrate",
-            "bin/cake migrations migrate --plugin Bookkeeping",
-            "bin/cake migrations migrate --plugin Settings"
+            "bin/cake migrations migrate --plugin Settings",
+            "bin/cake migrations migrate --plugin Bookkeeping"
         ],
         "plugin-assets": [
             "bin/cake plugin assets symlink"
