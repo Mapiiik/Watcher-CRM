@@ -3,21 +3,21 @@ declare(strict_types=1);
 
 namespace App\Service\ContractPrint;
 
-use App\Model\Entity\ContractVersion;
-use App\Model\Entity\IpAddress;
-use App\Model\Enum\ContractPrintType;
-use App\Model\Enum\IpAddressTypeOfUse;
-use Cake\Collection\Collection;
-use Cake\Database\Exception\MissingConnectionException;
-use Cake\I18n\Date;
-use Cake\ORM\Locator\LocatorAwareTrait;
-use Radius\Model\Table\AccountsTable;
+use App\Contracts\Proposal\ProposalDocumentTypes;
+use App\Model\Entity\ContractVersionProposal;
 
 /**
  * Validator for contract print requests.
  *
- * Validates print-specific requirements depending on document type
- * and fills ContractPrintData with validated values.
+ * There is very little left to ask here, and that is the point. What this used to check has moved
+ * to where it belongs: whether the contract is ready for papers at all is now asked once when the
+ * proposal is drawn up and the answer kept, and what a proposal may say about ending things is a
+ * rule of the proposals table. A reprint therefore asks nothing - which is what lets last year's
+ * paper be printed again after the equipment on it has been handed back.
+ *
+ * Two things remain. There has to be a proposal, because a document without one would be assembled
+ * from whatever the records happen to say today. And the document has to be one that proposal can
+ * be printed as, so that the offered list cannot be stepped around by typing a URL.
  *
  * This validator:
  *  - does NOT perform redirects
@@ -28,8 +28,6 @@ use Radius\Model\Table\AccountsTable;
  */
 final class ContractPrintValidator
 {
-    use LocatorAwareTrait;
-
     /**
      * Collected validation errors.
      *
@@ -53,7 +51,7 @@ final class ContractPrintValidator
     }
 
     /**
-     * Validates print data according to document type.
+     * Validates print data.
      *
      * @return array<string, array<string>>
      */
@@ -63,379 +61,46 @@ final class ContractPrintValidator
     ): array {
         $this->errors = [];
 
-        $this->validateCommon($data, $query);
+        $data->signed = !empty($query['signed']);
 
-        match ($data->type) {
-            ContractPrintType::ContractNew =>
-                $this->validateContractNew($data, $query),
+        if (!$data->type->requiresProposal()) {
+            return $this->errors;
+        }
 
-            ContractPrintType::ContractNewX =>
-                $this->validateContractNewX($data, $query),
+        if (!$data->proposal instanceof ContractVersionProposal) {
+            $this->setError(
+                'proposal_id',
+                __('Please choose the proposal these papers are for, or draw one up.'),
+            );
 
-            ContractPrintType::ContractAmendment =>
-                $this->validateContractAmendment($data, $query),
+            return $this->errors;
+        }
 
-            ContractPrintType::ContractTermination =>
-                $this->validateContractTermination($data, $query),
-
-            ContractPrintType::ContractSummary =>
-                $this->validateContractSummary($data),
-
-            ContractPrintType::HandoverInstallation =>
-                $this->validateHandoverInstallation($data),
-
-            ContractPrintType::HandoverUninstallation =>
-                $this->validateHandoverUninstallation($data, $query),
-        };
+        if (!$this->documentSuitsTheProposal($data)) {
+            $this->setError(
+                'document_type',
+                __('This proposal cannot be printed as that document.'),
+            );
+        }
 
         return $this->errors;
     }
 
     /**
-     * Common validation used by many document types.
-     * Checks that a contract version to be executed is selected.
+     * Whether the chosen document is one the proposal may be printed as.
      *
-     * @return bool Whether the contract version requirement is fulfilled.
-     * @phpstan-assert-if-true !null $data->contractVersionToBeExecuted
+     * @return bool
      */
-    private function requireContractVersionToBeExecuted(ContractPrintData $data): bool
+    private function documentSuitsTheProposal(ContractPrintData $data): bool
     {
-        if (!$data->contractVersionToBeExecuted instanceof ContractVersion) {
-            $this->setError(
-                'contract_version_to_be_executed_id',
-                __('Please select the contract version to be executed.'),
-            );
+        /** @var \App\Model\Entity\ContractVersionProposal $proposal */
+        $proposal = $data->proposal;
 
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Common validation used by termination document types.
-     * Checks that a contract version to be terminated is selected.
-     *
-     * @return bool Whether the contract version requirement is fulfilled.
-     * @phpstan-assert-if-true !null $data->contractVersionToBeTerminated
-     */
-    private function requireContractVersionToBeTerminated(ContractPrintData $data): bool
-    {
-        if (!$data->contractVersionToBeTerminated instanceof ContractVersion) {
-            $this->setError(
-                'contract_version_to_be_terminated_id',
-                __('Please select the contract version to be terminated.'),
-            );
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Requires the operator to acknowledge that a contract version with an end date
-     * is meant to be printed as a fixed-term contract.
-     *
-     * An end date on a contract version does not say by itself that the contract is
-     * for a fixed term - it is also how a superseded or ended version is recorded.
-     * A fixed term is its own minimum period of performance, so the obligation has
-     * to reach the end of the contract for the activation fee and its clause to come
-     * out right.
-     */
-    private function requireFixedTermAcknowledgement(
-        ContractVersion $contractVersion,
-        array $query,
-    ): void {
-        if ($contractVersion->valid_until === null) {
-            return;
-        }
-
-        if (empty($query['fixed_term'])) {
-            $this->setError(
-                'fixed_term',
-                __(
-                    'The contract version to be executed ends on a given date,'
-                    . ' so the document will be printed as a fixed-term contract.'
-                    . ' Please confirm that this is intended.',
-                ),
-            );
-
-            return;
-        }
-
-        if (
-            $contractVersion->obligation_until === null
-            || !$contractVersion->obligation_until->equals($contractVersion->valid_until)
-        ) {
-            $this->setError(
-                'fixed_term',
-                __(
-                    'A fixed-term contract is its own minimum period of performance.'
-                    . ' Please set the obligation of the contract version to be executed'
-                    . ' to the date until which it is valid.',
-                ),
-            );
-        }
-    }
-
-    /**
-     * Common validation shared by all document types.
-     */
-    private function validateCommon(
-        ContractPrintData $data,
-        array $query,
-    ): void {
-        // For service types that normally require borrowed equipment, check that either own or borrowed equipment is assigned.
-        if (
-            empty($query['own_equipment'])
-            && $data->contract->service_type->have_equipments
-            && $data->contract->service_type->normally_with_borrowed_equipment
-            && empty($data->contract->borrowed_equipments)
-        ) {
-            $this->setError(
-                'own_equipment',
-                __(
-                    'A borrowed equipment is not assigned, although it should normally be for this type of service.'
-                    . ' Please confirm that the customer has their own equipment or add it.',
-                ),
-            );
-        }
-
-        // If service type has IP addresses, load them and partition into RADIUS and static IPs for further checks.
-        if ($data->contract->service_type->have_ip_addresses) {
-            $ipAddresses = new Collection($data->contract->ip_addresses);
-
-            $radiusIpAddresses = $ipAddresses
-                ->filter(fn(IpAddress $ip): bool => $ip->type_of_use === IpAddressTypeOfUse::CustomerRADIUS);
-
-            $staticIpAddresses = $ipAddresses
-                ->filter(fn(IpAddress $ip): bool => $ip->type_of_use === IpAddressTypeOfUse::CustomerManually);
-        }
-
-        // For service types that normally require IP addresses, check that either the customer does not use IP addresses or that they are assigned.
-        if (
-            empty($query['does_not_use_ip_addresses'])
-            && $data->contract->service_type->have_ip_addresses
-            && $radiusIpAddresses->isEmpty()
-            && $staticIpAddresses->isEmpty()
-        ) {
-            $this->setError(
-                'does_not_use_ip_addresses',
-                __(
-                    'IP addresses are not assigned, although they usually should be for this type of service.'
-                    . ' Please confirm that the customer does not use IP addresses or add them.',
-                ),
-            );
-        }
-
-        // For service types that normally require RADIUS accounts, check that either the customer does not use RADIUS accounts or that they are assigned.
-        if (
-            empty($query['does_not_use_radius'])
-            && $data->contract->service_type->have_ip_addresses
-            && $data->contract->service_type->have_radius_accounts
-            && !$radiusIpAddresses->isEmpty()
-        ) {
-            try {
-                $radiusAccountExists = $this->fetchTable(AccountsTable::class)
-                    ->find()
-                    ->where([
-                        'contract_id' => $data->contract->id,
-                        'active' => true,
-                    ])
-                    ->limit(1)
-                    ->count() > 0;
-            } catch (MissingConnectionException) {
-                $radiusAccountExists = false;
-            }
-
-            if ($radiusAccountExists === false) {
-                $this->setError(
-                    'does_not_use_radius',
-                    __(
-                        'RADIUS accounts are not assigned, although they usually should be for this type of service.'
-                        . ' Please confirm that the customer does not use RADIUS accounts or add them.',
-                    ),
-                );
-            }
-        }
-
-        $data->signed = !empty($query['signed']);
-    }
-
-    /**
-     * Validation for new contract document.
-     */
-    private function validateContractNew(
-        ContractPrintData $data,
-        array $query,
-    ): void {
-        if (!$this->requireContractVersionToBeExecuted($data)) {
-            return;
-        }
-
-        $this->requireFixedTermAcknowledgement($data->contractVersionToBeExecuted, $query);
-    }
-
-    /**
-     * Validation for the contract summary.
-     *
-     * A version is all it needs. The fixed-term acknowledgement guards issuing a binding
-     * document, and the summary binds nobody - it only describes what is on offer.
-     */
-    private function validateContractSummary(
-        ContractPrintData $data,
-    ): void {
-        $this->requireContractVersionToBeExecuted($data);
-    }
-
-    /**
-     * Validation for new contract with replacement.
-     */
-    private function validateContractNewX(
-        ContractPrintData $data,
-        array $query,
-    ): void {
-        if (!$this->requireContractVersionToBeExecuted($data)) {
-            return;
-        }
-
-        $this->requireFixedTermAcknowledgement($data->contractVersionToBeExecuted, $query);
-
-        if (!$this->requireContractVersionToBeTerminated($data)) {
-            return;
-        }
-
-        if ($data->contractVersionToBeTerminated->id === $data->contractVersionToBeExecuted->id) {
-            $this->setError(
-                'contract_version_to_be_terminated_id',
-                __(
-                    'The contract version to be terminated must differ from the contract version to be executed.',
-                ),
-            );
-
-            return;
-        }
-
-        if ($data->contractVersionToBeTerminated->conclusion_date === null) {
-            $this->setError(
-                'Flash',
-                __('Please set the conclusion date of the contract version to be terminated.'),
-            );
-        }
-
-        if (empty($query['contract_number_to_be_terminated'])) {
-            $this->setError(
-                'contract_number_to_be_terminated',
-                __('Please enter the contract number to be terminated.'),
-            );
-        } else {
-            $data->contractNumberToBeTerminated =
-                (string)$query['contract_number_to_be_terminated'];
-        }
-    }
-
-    /**
-     * Validation for contract amendment document.
-     */
-    private function validateContractAmendment(
-        ContractPrintData $data,
-        array $query,
-    ): void {
-        if (!$this->requireContractVersionToBeExecuted($data)) {
-            return;
-        }
-
-        if (empty($query['effective_date_of_the_amendment'])) {
-            $this->setError(
-                'effective_date_of_the_amendment',
-                __('Please enter the effective date of the amendment.'),
-            );
-        } else {
-            $data->effectiveDateOfAmendment =
-                new Date($query['effective_date_of_the_amendment']);
-        }
-
-        if ($data->contractVersionToBeExecuted->conclusion_date === null) {
-            $this->setError(
-                'Flash',
-                __('Please set the conclusion date of the contract version to be executed.'),
-            );
-        }
-    }
-
-    /**
-     * Validation for contract termination document.
-     */
-    private function validateContractTermination(
-        ContractPrintData $data,
-        array $query,
-    ): void {
-        if (!$this->requireContractVersionToBeTerminated($data)) {
-            return;
-        }
-
-        if ($data->contractVersionToBeTerminated->valid_until === null) {
-            $this->setError(
-                'Flash',
-                __('Please set the date until which the contract version to be terminated is valid.'),
-            );
-        }
-
-        if ($data->contractVersionToBeTerminated->conclusion_date === null) {
-            $this->setError(
-                'Flash',
-                __('Please set the conclusion date of the contract version to be terminated.'),
-            );
-        }
-
-        if (empty($query['contract_number_to_be_terminated'])) {
-            $this->setError(
-                'contract_number_to_be_terminated',
-                __('Please enter the contract number to be terminated.'),
-            );
-        } else {
-            $data->contractNumberToBeTerminated =
-                (string)$query['contract_number_to_be_terminated'];
-        }
-    }
-
-    /**
-     * Validation for handover protocol – installation.
-     */
-    private function validateHandoverInstallation(
-        ContractPrintData $data,
-    ): void {
-        if (!$this->requireContractVersionToBeExecuted($data)) {
-        }
-    }
-
-    /**
-     * Validation for handover protocol – uninstallation.
-     */
-    private function validateHandoverUninstallation(
-        ContractPrintData $data,
-        array $query,
-    ): void {
-        if (!$this->requireContractVersionToBeTerminated($data)) {
-            return;
-        }
-
-        if ($data->contractVersionToBeTerminated->valid_until === null) {
-            $this->setError(
-                'Flash',
-                __('Please set the date until which the contract version to be terminated is valid.'),
-            );
-        }
-
-        if (empty($query['contract_number_to_be_terminated'])) {
-            $this->setError(
-                'contract_number_to_be_terminated',
-                __('Please enter the contract number to be terminated.'),
-            );
-        } else {
-            $data->contractNumberToBeTerminated =
-                (string)$query['contract_number_to_be_terminated'];
-        }
+        return (new ProposalDocumentTypes())->allows(
+            $data->type,
+            $proposal,
+            (bool)($data->contract->service_type->have_equipments ?? false),
+            $data->contractVersionToBeExecuted?->conclusion_date !== null,
+        );
     }
 }

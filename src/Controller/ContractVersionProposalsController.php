@@ -476,7 +476,9 @@ class ContractVersionProposalsController extends AppController
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
 
-        $howAVersionReads = fn(ContractVersion $version): string => $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
+        $howAVersionReads = function (ContractVersion $version): string {
+            return $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
+        };
 
         $versions = $this->ContractVersionProposals->ContractVersions
             ->find('list', valueField: $howAVersionReads)
@@ -498,7 +500,22 @@ class ContractVersionProposalsController extends AppController
 
         $questions = $contract === null ? [] : (new ReadinessChecks())->questionsFor($contract);
 
-        $this->set(compact('contract', 'contracts', 'versions', 'services', 'billings', 'questions'));
+        // Contracts concluded before the renumbering carry the customer number, one contract to a
+        // customer, so both are worth offering and neither is worth looking further than.
+        $contractNumbers = $contract === null ? [] : array_values(array_unique(array_filter([
+            $contract->number,
+            $contract->customer->number ?? null,
+        ])));
+
+        $this->set(compact(
+            'contract',
+            'contracts',
+            'versions',
+            'services',
+            'billings',
+            'questions',
+            'contractNumbers',
+        ));
         $this->set('wording', ReadinessChecks::wording());
         $this->set('deliveryMethods', $this->deliveryMethodOptions());
     }

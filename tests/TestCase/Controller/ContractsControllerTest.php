@@ -687,19 +687,20 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
-     * The number of the contract to be terminated is typed by hand, because a contract concluded
-     * before the renumbering carries a different one than the record does. Both numbers it could
-     * be are offered.
+     * The number of the contract being terminated is suggested where it is now written down - on
+     * the proposal, which is what keeps it after the paper is printed. It used to be typed in at
+     * every printing and thrown away with the query string.
      *
      * @return void
-     * @link \App\Controller\ContractsController::print()
+     * @link \App\Controller\ContractVersionProposalsController::add()
      */
-    public function testPrintSuggestsNumbersForTheContractToBeTerminated(): void
+    public function testTheNumberToBeTerminatedIsSuggestedOnTheProposal(): void
     {
         $contract = $this->fetchTable('Contracts')->get($this->firstId('Contracts'), contain: ['Customers']);
 
         $this->login();
-        $this->get('/contracts/print/' . $contract->id);
+        $this->get('/customers/' . $contract->customer_id . '/contracts/' . $contract->id
+            . '/contract-version-proposals/add');
 
         $this->assertResponseOk();
         $this->assertResponseContains('<datalist id="contract-numbers-to-be-terminated">');

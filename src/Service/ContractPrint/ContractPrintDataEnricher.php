@@ -160,7 +160,9 @@ final class ContractPrintDataEnricher
         }
 
         // Use CakePHP's Collection to filter billings based on their relevance to the reference date
-        $billings = new Collection($data->contract->billings);
+        // What the proposal would leave behind, where there is one; the live records otherwise,
+        // which is what the summary of an older contract still falls back on.
+        $billings = new Collection($data->projectedBillings ?? $data->contract->billings);
 
         // Active billings are those that are applicable at the reference date
         $data->activeBillings = $billings->reject(

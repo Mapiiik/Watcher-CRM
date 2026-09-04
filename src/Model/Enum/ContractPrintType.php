@@ -125,6 +125,19 @@ enum ContractPrintType: string implements EnumLabelInterface
     }
 
     /**
+     * Indicates whether this document type is printed from a proposal.
+     *
+     * Every one of them is, today. It is a property of the document rather than a rule of printing,
+     * so that a type added later which binds nobody can say so for itself.
+     *
+     * @return bool
+     */
+    public function requiresProposal(): bool
+    {
+        return true;
+    }
+
+    /**
      * Indicates whether this document type represents
      * a handover protocol and therefore requires
      * technical connection details enrichment.

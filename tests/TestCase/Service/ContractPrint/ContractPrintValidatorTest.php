@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Service\ContractPrint;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
+use App\Model\Entity\ContractVersionProposal;
 use App\Model\Entity\ServiceType;
 use App\Model\Enum\ContractPrintType;
 use App\Service\ContractPrint\ContractPrintData;
@@ -16,16 +17,17 @@ use PHPUnit\Framework\Attributes\UsesClass;
 /**
  * App\Service\ContractPrint\ContractPrintValidator Test Case
  *
- * An end date on a contract version is not by itself a fixed-term contract - it is also how
- * a superseded or an ended version is recorded. The gate is therefore what tells the two
- * apart, and it also holds the obligation to the end of the contract, because the activation
- * fee and its clause are decided by the obligation alone.
+ * Very little is asked here any more, and that is the point. Whether the contract is ready for
+ * papers is asked once when the proposal is drawn up, and what a proposal may say about ending
+ * things is a rule of the proposals table - so those are tested where they now live, in
+ * ContractVersionProposalsTableTest. What is left is that a document is printed from a proposal at
+ * all, and that it is one that proposal may be printed as.
  */
 #[UsesClass(ContractPrintValidator::class)]
 class ContractPrintValidatorTest extends TestCase
 {
     /**
-     * A contract whose service type asks for nothing the common validation would complain about.
+     * A contract whose service type has no equipment, so no handover protocol is on offer.
      *
      * @return \App\Model\Entity\Contract
      */
@@ -49,154 +51,153 @@ class ContractPrintValidatorTest extends TestCase
     }
 
     /**
-     * A contract version to be executed, to be varied by the tests.
+     * A version, concluded or not.
      *
-     * @param string|null $validUntil Date the version is valid until.
-     * @param string|null $obligationUntil Date the obligation lasts until.
+     * @param bool $concluded Whether anybody signed it.
      * @return \App\Model\Entity\ContractVersion
      */
-    private static function contractVersion(
-        ?string $validUntil = null,
-        ?string $obligationUntil = null,
-    ): ContractVersion {
+    private static function version(bool $concluded = true): ContractVersion
+    {
         return new ContractVersion([
             'id' => 'a1b2c3d4-0000-4000-8000-000000000003',
             'valid_from' => new Date('2026-01-01'),
-            'valid_until' => $validUntil === null ? null : new Date($validUntil),
-            'obligation_until' => $obligationUntil === null ? null : new Date($obligationUntil),
-            'conclusion_date' => new Date('2026-01-01'),
+            'valid_until' => null,
+            'obligation_until' => null,
+            'conclusion_date' => $concluded ? new Date('2026-01-01') : null,
         ]);
     }
 
     /**
-     * Runs the validator over a document type that executes a contract version.
+     * A proposal that changes nothing, which is the ordinary one.
      *
-     * @param array<string, mixed> $query Print form query parameters.
+     * @param array<string, mixed> $says What it says beyond that.
+     * @return \App\Model\Entity\ContractVersionProposal
+     */
+    private static function proposal(array $says = []): ContractVersionProposal
+    {
+        return new ContractVersionProposal($says + [
+            'id' => 'a1b2c3d4-0000-4000-8000-000000000004',
+            'effective_from' => new Date('2026-10-01'),
+            'changes' => [],
+            'terminates_contract_version_id' => null,
+        ]);
+    }
+
+    /**
+     * What the validator makes of the given document.
+     *
+     * @param \App\Model\Enum\ContractPrintType $type Which document.
+     * @param \App\Model\Entity\ContractVersionProposal|null $proposal The proposal, where there is one.
+     * @param bool $concluded Whether the version has been concluded.
      * @return array<string, array<string>>
      */
-    private static function validate(
-        ContractVersion $contractVersion,
-        array $query = [],
-        ContractPrintType $type = ContractPrintType::ContractNew,
+    private static function errorsFor(
+        ContractPrintType $type,
+        ?ContractVersionProposal $proposal,
+        bool $concluded = true,
     ): array {
+        $data = new ContractPrintData($type, self::contract(), self::version($concluded), null);
+        $data->proposal = $proposal;
+
+        return (new ContractPrintValidator())->validate($data, []);
+    }
+
+    /**
+     * Without a proposal there is nothing to print from, because the document would otherwise be
+     * assembled from whatever the records happen to say today.
+     *
+     * @return void
+     */
+    public function testADocumentWithoutAProposalIsRefused(): void
+    {
+        $errors = self::errorsFor(ContractPrintType::ContractNew, null);
+
+        $this->assertArrayHasKey('proposal_id', $errors);
+    }
+
+    /**
+     * With one, an ordinary contract prints.
+     *
+     * @return void
+     */
+    public function testAProposalIsEnough(): void
+    {
+        $this->assertSame([], self::errorsFor(ContractPrintType::ContractNew, self::proposal()));
+    }
+
+    /**
+     * The offered list of documents cannot be stepped around by typing a URL: a proposal that
+     * replaces nothing cannot be printed as a contract that replaces something.
+     *
+     * @return void
+     */
+    public function testADocumentTheProposalCannotBePrintedAsIsRefused(): void
+    {
+        $errors = self::errorsFor(ContractPrintType::ContractNewX, self::proposal());
+
+        $this->assertArrayHasKey('document_type', $errors);
+    }
+
+    /**
+     * Nor as a termination, when it ends nothing.
+     *
+     * @return void
+     */
+    public function testATerminationOfNothingIsRefused(): void
+    {
+        $errors = self::errorsFor(ContractPrintType::ContractTermination, self::proposal());
+
+        $this->assertArrayHasKey('document_type', $errors);
+    }
+
+    /**
+     * An amendment wants a contract somebody concluded; there is nothing to amend otherwise.
+     *
+     * @return void
+     */
+    public function testAnAmendmentToAnUnconcludedContractIsRefused(): void
+    {
+        $errors = self::errorsFor(ContractPrintType::ContractAmendment, self::proposal(), concluded: false);
+
+        $this->assertArrayHasKey('document_type', $errors);
+
+        $this->assertSame(
+            [],
+            self::errorsFor(ContractPrintType::ContractAmendment, self::proposal(), concluded: true),
+        );
+    }
+
+    /**
+     * The summary describes what is on offer and binds nobody, so every proposal may be printed as
+     * one - including the empty proposal behind a new contract's papers.
+     *
+     * @return void
+     */
+    public function testTheSummaryIsAlwaysOnOffer(): void
+    {
+        $this->assertSame(
+            [],
+            self::errorsFor(ContractPrintType::ContractSummary, self::proposal(), concluded: false),
+        );
+    }
+
+    /**
+     * Asking for a signed copy is a choice about one printing, not a fact about the contract, so it
+     * stays a query parameter and reaches the document unchallenged.
+     *
+     * @return void
+     */
+    public function testAskingForASignedCopyIsCarriedThrough(): void
+    {
         $data = new ContractPrintData(
-            type: $type,
-            contract: self::contract(),
-            contractVersionToBeExecuted: $contractVersion,
-            contractVersionToBeTerminated: null,
+            ContractPrintType::ContractNew,
+            self::contract(),
+            self::version(),
+            null,
         );
+        $data->proposal = self::proposal();
 
-        return (new ContractPrintValidator())->validate($data, $query);
-    }
-
-    /**
-     * A version with an end date will not print until the operator says a fixed term is meant.
-     *
-     * @return void
-     */
-    public function testEndDateWithoutAcknowledgementIsRefused(): void
-    {
-        $errors = self::validate(self::contractVersion('2027-12-31', '2027-12-31'));
-
-        $this->assertArrayHasKey('fixed_term', $errors);
-        $this->assertStringContainsString('Please confirm', $errors['fixed_term'][0]);
-    }
-
-    /**
-     * A fixed term is its own minimum period of performance, so an unset obligation is refused.
-     *
-     * @return void
-     */
-    public function testFixedTermWithoutObligationIsRefused(): void
-    {
-        $errors = self::validate(
-            self::contractVersion('2027-12-31'),
-            ['fixed_term' => '1'],
-        );
-
-        $this->assertArrayHasKey('fixed_term', $errors);
-        $this->assertStringContainsString('minimum period of performance', $errors['fixed_term'][0]);
-    }
-
-    /**
-     * An obligation that ends before the contract does is refused for the same reason.
-     *
-     * @return void
-     */
-    public function testFixedTermWithShorterObligationIsRefused(): void
-    {
-        $errors = self::validate(
-            self::contractVersion('2027-12-31', '2027-06-30'),
-            ['fixed_term' => '1'],
-        );
-
-        $this->assertArrayHasKey('fixed_term', $errors);
-        $this->assertStringContainsString('minimum period of performance', $errors['fixed_term'][0]);
-    }
-
-    /**
-     * Acknowledged, with the obligation reaching the end of the contract, the document prints.
-     *
-     * @return void
-     */
-    public function testAcknowledgedFixedTermPasses(): void
-    {
-        $errors = self::validate(
-            self::contractVersion('2027-12-31', '2027-12-31'),
-            ['fixed_term' => '1'],
-        );
-
-        $this->assertSame([], $errors);
-    }
-
-    /**
-     * A version without an end date is untouched by the gate, acknowledged or not.
-     *
-     * @return void
-     */
-    public function testVersionWithoutEndDatePasses(): void
-    {
-        $this->assertSame([], self::validate(self::contractVersion()));
-        $this->assertSame([], self::validate(self::contractVersion(), ['fixed_term' => '1']));
-    }
-
-    /**
-     * The same gate applies to a new contract that terminates the original one.
-     *
-     * @return void
-     */
-    public function testGateAppliesToContractNewX(): void
-    {
-        $errors = self::validate(
-            self::contractVersion('2027-12-31', '2027-12-31'),
-            [],
-            ContractPrintType::ContractNewX,
-        );
-
-        $this->assertArrayHasKey('fixed_term', $errors);
-    }
-
-    /**
-     * Document types that do not state the duration of the contract are left alone.
-     *
-     * @return void
-     */
-    public function testGateDoesNotApplyToOtherDocumentTypes(): void
-    {
-        $contractVersion = self::contractVersion('2027-12-31');
-
-        $amendment = self::validate(
-            $contractVersion,
-            ['effective_date_of_the_amendment' => '2027-01-01'],
-            ContractPrintType::ContractAmendment,
-        );
-        $this->assertArrayNotHasKey('fixed_term', $amendment);
-
-        $handover = self::validate(
-            $contractVersion,
-            [],
-            ContractPrintType::HandoverInstallation,
-        );
-        $this->assertSame([], $handover);
+        $this->assertSame([], (new ContractPrintValidator())->validate($data, ['signed' => '1']));
+        $this->assertTrue($data->signed);
     }
 }

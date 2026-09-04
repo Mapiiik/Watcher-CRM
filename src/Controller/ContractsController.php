@@ -5,8 +5,12 @@ namespace App\Controller;
 
 use App\Addresses\Check\AddressCheckRegistry;
 use App\Contracts\Check\ContractCheckRegistry;
+use App\Contracts\Proposal\ProposalDocumentTypes;
+use App\Contracts\Proposal\ProposalProjection;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Maps\ContractMap;
+use App\Model\Entity\Contract;
+use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\CustomerDealer;
 use App\Service\ContractPrint\ContractPrintData;
@@ -19,7 +23,6 @@ use Cake\Form\Form;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
-use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Cake\View\Helper\HtmlHelper;
@@ -860,81 +863,25 @@ class ContractsController extends AppController
      */
     public function print(?string $id = null, ?string $type = null): ?Response
     {
-        // prepare supported document types for selection in the print view
-        $documentTypes = [
-            __('Contracts') => [
-                ContractPrintType::ContractNew->value => ContractPrintType::ContractNew->label(),
-                ContractPrintType::ContractNewX->value => ContractPrintType::ContractNewX->label(),
-                ContractPrintType::ContractAmendment->value => ContractPrintType::ContractAmendment->label(),
-                ContractPrintType::ContractTermination->value => ContractPrintType::ContractTermination->label(),
-                ContractPrintType::ContractSummary->value => ContractPrintType::ContractSummary->label(),
-            ],
-            __('Handover Protocols') => [
-                ContractPrintType::HandoverInstallation->value => ContractPrintType::HandoverInstallation->label(),
-                ContractPrintType::HandoverUninstallation->value => ContractPrintType::HandoverUninstallation->label(),
-            ],
-        ];
-        $this->set('documentTypes', $documentTypes);
-
         // initialize an empty form to be used for PDF generation (validation errors will be added to this form)
         $printForm = new Form();
 
-        // load the contract with all related data needed for rendering the print views and generating the PDF documents
-        $contract = $this->Contracts->get($id, contain: [
-            'Billings' => ['Services' => ['Queues']],
-            'BorrowedEquipments.EquipmentTypes' => function (SelectQuery $query) {
-                return $query->where([
-                    'BorrowedEquipments.borrowed_until IS NULL',
-                ]);
-            },
-            'Commissions',
-            'ContractStates',
-            'ContractVersions',
-            'Customers' => [
-                'Addresses',
-                'Emails',
-                'Phones',
-                'AccountingProfiles',
-            ],
-            'InstallationAddresses',
-            'InstallationTechnicians',
-            'IpAddresses',
-            'IpNetworks',
-            'ServiceTypes',
-            'SoldEquipments.EquipmentTypes' => function (SelectQuery $query) {
-                return $query->where([
-                    'SoldEquipments.date_of_sale IS NULL',
-                ]);
-            },
-            'UninstallationTechnicians',
-            'Creators',
-            'Modifiers',
-        ]);
+        // Only what the page itself needs; the document is drawn from the proposal's snapshot.
+        $contract = $this->Contracts->get($id, contain: ['Customers', 'ServiceTypes']);
 
-        // prepare contract versions for selection in the print view
-        $contractVersions = (new Collection($contract->contract_versions))->map(function ($contract_version): array {
-            return [
-                'value' => $contract_version->id,
-                'text' => $contract_version->valid_from
-                    . ' - '
-                    . ($contract_version->valid_until ?: __('indefinitely')),
-            ];
-        })->toArray();
+        // Every proposal on the contract, across all of its versions - which is why the version is
+        // no longer chosen here: it follows from whichever proposal is chosen.
+        $proposals = $this->Contracts->ContractVersionProposals->find()
+            ->contain(['ContractVersions'])
+            ->where(['ContractVersionProposals.contract_id' => $contract->id])
+            ->orderBy(['ContractVersionProposals.effective_from' => 'DESC'])
+            ->all();
 
-        // prepare suggestions for the number of the contract to be terminated - contracts concluded
-        // before the renumbering carry the customer number, one contract to a customer
-        $contractNumbers = array_values(array_unique(array_filter([
-            $contract->number,
-            $contract->customer->number ?? null,
-        ])));
-
-        // load query parameters from the request
         $query = $this->getRequest()->getQuery();
-
-        // keep only relevant query parameters for PDF generation in the query string
         unset($query['submit_action']);
 
-        // load the print type from the query string or use the one from the URL parameter
+        $proposal = $this->chosenProposal($proposals, $query['proposal_id'] ?? null);
+
         try {
             $printType = ContractPrintType::from($query['document_type'] ?? $type ?? '');
         } catch (ValueError) {
@@ -942,95 +889,148 @@ class ContractsController extends AppController
             $printType = null;
         }
 
-        // PDF request: validate input, enrich data and render PDF output
+        $documentTypes = $this->documentsFor($proposal);
+
         if (
             $this->getRequest()->getParam('_ext') === 'pdf'
             || $this->getRequest()->getQuery('submit_action') === 'pdf'
         ) {
-            // if the print type is invalid or missing, show an error and redirect back to the print view
             if ($printType === null) {
                 $this->Flash->error(__('Invalid type of document.'));
 
                 return $this->redirect(['action' => 'print', $id, '?' => $query]);
             }
 
-            // load the contract version to be printed from the query string
-            $contractVersionToBeExecuted = null;
-            if (!empty($query['contract_version_to_be_executed_id'])) {
-                $contractVersionToBeExecuted = (new Collection($contract->contract_versions))->firstMatch([
-                    'id' => $query['contract_version_to_be_executed_id'],
-                ]);
-
-                if ($contractVersionToBeExecuted === null) {
-                    $this->Flash->error(__('Invalid contract version to be executed.'));
-
-                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                }
-            }
-
-            // load the contract version to be terminated from the query string
-            $contractVersionToBeTerminated = null;
-            if (!empty($query['contract_version_to_be_terminated_id'])) {
-                $contractVersionToBeTerminated = (new Collection($contract->contract_versions))->firstMatch([
-                    'id' => $query['contract_version_to_be_terminated_id'],
-                ]);
-
-                if ($contractVersionToBeTerminated === null) {
-                    $this->Flash->error(__('Invalid contract version to be terminated.'));
-
-                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                }
-            }
-
-            // prepare data for validation
-            $data = new ContractPrintData(
-                type: $printType,
-                contract: $contract,
-                contractVersionToBeExecuted: $contractVersionToBeExecuted,
-                contractVersionToBeTerminated: $contractVersionToBeTerminated,
-            );
-
-            // validate the data for the requested document type
+            $data = $this->printDataFor($printType, $contract, $proposal);
             $errors = (new ContractPrintValidator())->validate($data, $query);
 
-            // if there are validation errors, process them
             if ($errors !== []) {
-                // flash error messages for the user
                 foreach ($errors['Flash'] ?? [] as $error) {
                     $this->Flash->error($error);
                 }
                 unset($errors['Flash']);
 
                 if ($this->getRequest()->getParam('_ext') !== 'pdf') {
-                    // Set validation errors on the form to be displayed in the print view
                     $printForm->setErrors($errors);
                 } else {
-                    // if the request is already a PDF request, redirect to the same URL without the PDF extension
                     return $this->redirect(['action' => 'print', $id, '?' => $query]);
                 }
             } else {
-                // if the request is not already a PDF request, redirect to the same URL with the PDF extension to trigger PDF rendering
                 if ($this->getRequest()->getParam('_ext') !== 'pdf') {
                     return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
                 }
 
-                // enrich the data for the requested document type (e.g. add technical details for handover protocols)
                 (new ContractPrintDataEnricher())->enrich($data, $query);
 
-                // render the PDF document based on the enriched data
                 return (new ContractPrintPdfOutput())->render($data);
             }
         }
 
-        // render the print view for HTML requests
         $this->set(compact(
             'printForm',
             'printType',
             'contract',
-            'contractVersions',
-            'contractNumbers',
+            'proposals',
+            'proposal',
+            'documentTypes',
         ));
 
         return null;
+    }
+
+    /**
+     * The proposal the papers are for, of the ones this contract has.
+     *
+     * @param iterable<\App\Model\Entity\ContractVersionProposal> $proposals What it has.
+     * @param mixed $chosen What was asked for.
+     * @return \App\Model\Entity\ContractVersionProposal|null
+     */
+    private function chosenProposal(iterable $proposals, mixed $chosen): ?ContractVersionProposal
+    {
+        if (!is_string($chosen) || $chosen === '') {
+            return null;
+        }
+
+        return (new Collection($proposals))->firstMatch(['id' => $chosen]);
+    }
+
+    /**
+     * The documents that proposal may be printed as.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal|null $proposal The chosen proposal.
+     * @return array<string, string>
+     */
+    private function documentsFor(?ContractVersionProposal $proposal): array
+    {
+        if ($proposal === null) {
+            return [];
+        }
+
+        $snapshot = $proposal->stateOfThings();
+        $offered = (new ProposalDocumentTypes())->for(
+            $proposal,
+            (bool)($snapshot->part('contract')['service_type']['have_equipments'] ?? false),
+            ($snapshot->part('version')['conclusion_date'] ?? null) !== null,
+        );
+
+        $documents = [];
+        foreach ($offered as $document) {
+            $documents[$document->value] = $document->label();
+        }
+
+        return $documents;
+    }
+
+    /**
+     * What to print, put together from the proposal's snapshot rather than from the live records.
+     *
+     * @param \App\Model\Enum\ContractPrintType $type Which document.
+     * @param \App\Model\Entity\Contract $contract The contract, for the page and its checks.
+     * @param \App\Model\Entity\ContractVersionProposal|null $proposal The chosen proposal.
+     * @return \App\Service\ContractPrint\ContractPrintData
+     */
+    private function printDataFor(
+        ContractPrintType $type,
+        Contract $contract,
+        ?ContractVersionProposal $proposal,
+    ): ContractPrintData {
+        if ($proposal === null) {
+            $data = new ContractPrintData($type, $contract, null, null);
+            $data->proposal = null;
+
+            return $data;
+        }
+
+        $snapshot = $proposal->stateOfThings();
+        $projection = new ProposalProjection();
+        $changes = $proposal->proposedChanges();
+
+        $asItStood = $snapshot->hydrate();
+        $executed = $projection->projectVersion($snapshot->hydrateVersion(), $changes->version);
+
+        // A proposal that replaces an earlier version names it; one that ends the contract ends the
+        // version it belongs to, so that is the one the termination paper is about.
+        $replaced = $snapshot->hydrateTerminatedVersion();
+        $terminated = match (true) {
+            $replaced !== null => $projection->projectTerminatedVersion(
+                $replaced,
+                $proposal->effective_from,
+            ),
+            $changes->endsTheContract() => $executed,
+            default => null,
+        };
+
+        $data = new ContractPrintData($type, $asItStood, $executed, $terminated);
+        $data->proposal = $proposal;
+        $data->contractNumberToBeTerminated = $proposal->terminated_contract_number;
+        $data->effectiveDateOfAmendment = $proposal->effective_from;
+        $data->projectedBillings = $projection->projectBillings(
+            $asItStood->billings,
+            $changes,
+            $proposal->effective_from,
+            $snapshot->servicesChosenBy($changes),
+        );
+
+        return $data;
     }
 }

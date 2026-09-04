@@ -4,10 +4,39 @@
  * @var \Cake\Form\Form $printForm
  * @var \App\Model\Enum\ContractPrintType|null $printType
  * @var \App\Model\Entity\Contract $contract
- * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contractVersions
- * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $documentTypes
- * @var array<string> $contractNumbers
+ * @var iterable<\App\Model\Entity\ContractVersionProposal> $proposals
+ * @var \App\Model\Entity\ContractVersionProposal|null $proposal
+ * @var array<string, string> $documentTypes
  */
+
+$howAProposalReads = function ($one) {
+    $version = $one->contract_version ?? null;
+    $period = $version === null
+        ? ''
+        : $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
+
+    $state = match (true) {
+        $one->hasBeenApplied() => __('carried over'),
+        $one->hasBeenRevoked() => __('revoked'),
+        $one->hasBeenConcluded() => __('concluded'),
+        $one->hasBeenSent() => __('sent'),
+        default => __('being drawn up'),
+    };
+
+    return sprintf(
+        '%s — %s (%s), %s %s',
+        $one->effective_from,
+        $period,
+        $state,
+        __('snapshot taken'),
+        $one->snapshot_taken,
+    );
+};
+
+$options = [];
+foreach ($proposals as $one) {
+    $options[$one->id] = $howAProposalReads($one);
+}
 ?>
 <div class="row">
     <aside class="column">
@@ -19,8 +48,12 @@
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Edit Contract'),
-                ['action' => 'edit', $contract->id],
+                __('Draw Up a Proposal'),
+                [
+                    'controller' => 'ContractVersionProposals',
+                    'action' => 'add',
+                    '?' => ['contract_id' => $contract->id],
+                ],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -33,277 +66,49 @@
     <div class="column column-90">
         <div class="contracts form content">
             <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
-            <h5><?=
-                ($contract->service_type !== null ? $contract->service_type->name : '') .
-                ($contract->installation_address !== null ? ' - ' . $contract->installation_address->address : '')
-            ?></h5>
-            <div class="row">
-                <div class="column">
-                    <table style="<?= $contract->style ?>">
-                        <tr>
-                            <th><?= __('Customer') ?></th>
-                            <td><?= $contract->customer !== null ? $this->Html->link(
-                                $contract->customer->name ?? '(' . $contract->customer->id . ')',
-                                ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Customer Number') ?></th>
-                            <td><?= $contract->customer !== null ? h($contract->customer->number) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Contract State') ?></th>
-                            <td><?= $contract->contract_state !== null ? $this->Html->link(
-                                $contract->contract_state->name ?? '(' . $contract->contract_state->id . ')',
-                                ['controller' => 'ContractStates', 'action' => 'view', $contract->contract_state->id],
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Service Type') ?></th>
-                            <td><?= $contract->service_type !== null ? $this->Html->link(
-                                $contract->service_type->name ?? '(' . $contract->service_type->id . ')',
-                                ['controller' => 'ServiceTypes', 'action' => 'view', $contract->service_type->id],
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Number') ?></th>
-                            <td><?= h($contract->number) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Subscriber Verification Code') ?></th>
-                            <td><?= h($contract->subscriber_verification_code) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Installation Address') ?></th>
-                            <td><?= $contract->installation_address !== null ? $this->Html->link(
-                                $contract->installation_address->full_address,
-                                ['controller' => 'Addresses', 'action' => 'view', $contract->installation_address->id],
-                            ) . ($contract->installation_address->note ?
-                                ' (' . h($contract->installation_address->note) . ')' : ''
-                            ) : '' ?></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Access Point') ?></th>
-                            <td><?= $this->element('AccessPoints/link', [
-                                'id' => $contract->access_point_id,
-                                'name' => $contract->access_point->data?->name,
-                                'answer' => $contract->access_point,
-                            ]) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Commission') ?></th>
-                            <td><?= $contract->commission !== null ? $this->Html->link(
-                                $contract->commission->name ?? '(' . $contract->commission->id . ')',
-                                ['controller' => 'Commissions', 'action' => 'view', $contract->commission->id],
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Vip') ?></th>
-                            <td><?= $contract->vip ? __('Yes') : __('No'); ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Activation Fee') ?></th>
-                            <td><?= h($contract->activation_fee) ?><?= $contract->service_type !== null ?
-                                ' (' . h($contract->service_type->activation_fee) . ')' : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Activation Fee With Obligation') ?></th>
-                            <td><?=
-                                h($contract->activation_fee_with_obligation)
-                            ?><?=
-                                $contract->service_type !== null ?
-                                    ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __('Installation/Establishment Date') ?></th>
-                            <td><?= h($contract->installation_date) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Installation Technician') ?></th>
-                            <td><?= $contract->installation_technician !== null ? $this->Html->link(
-                                $contract->installation_technician->name
-                                ?? '(' . $contract->installation_technician->id . ')',
-                                [
-                                    'controller' => 'Customers',
-                                    'action' => 'view',
-                                    $contract->installation_technician->id,
-                                ],
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Uninstallation/Cancellation Date') ?></th>
-                            <td><?= h($contract->uninstallation_date) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Uninstallation Technician') ?></th>
-                            <td><?= $contract->uninstallation_technician !== null ? $this->Html->link(
-                                $contract->uninstallation_technician->name
-                                ?? '(' . $contract->uninstallation_technician->id . ')',
-                                [
-                                    'controller' => 'Customers',
-                                    'action' => 'view',
-                                    $contract->uninstallation_technician->id,
-                                ],
-                            ) : '' ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __('Date of Termination of Services') ?></th>
-                            <td><?= h($contract->termination_date) ?></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="column">
-                    <?= $this->element('common/audit', ['entity' => $contract]) ?>
-                </div>
-            </div>
-            <?php if ($contract->service_type !== null && $contract->service_type->have_contract_versions) : ?>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New Contract Version'),
-                    ['controller' => 'ContractVersions', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link'],
-                ) ?>
-                <h4><?= __('Contract Versions') ?></h4>
-                <?= $this->element('Contracts/ContractVersions', [
-                    'contract_versions' => $contract->contract_versions,
-                ]) ?>
-            </div>
-            <br>
-            <?php endif; ?>
-            <?= $this->Form->create($printForm, [
-                'type' => 'get',
-                'valueSources' => ['query'],
-                'url' => [
-                    'action' => 'print',
-                    $contract->id,
-                ],
-            ]) ?>
+            <h5><?= h($contract->service_type->name ?? '') ?></h5>
+
+            <?= $this->Form->create($printForm, ['type' => 'get', 'valueSources' => ['query']]) ?>
             <fieldset>
-                <legend><?= __('Print Documents') ?></legend>
-                <datalist id="contract-numbers-to-be-terminated">
-                    <?php foreach ($contractNumbers as $contractNumber) : ?>
-                        <option value="<?= h($contractNumber) ?>">
-                    <?php endforeach; ?>
-                </datalist>
-                <div class="row">
-                    <div class="column">
-                        <?php
+                <legend><?= __('Print') ?></legend>
+                <p><?= __(
+                    'A document is printed from a proposal, so that the same paper printed twice is'
+                    . ' the same paper. What it says is what the proposal took down, not what the'
+                    . ' records happen to say today.',
+                ) ?></p>
+                <?php
+                if ($options === []) {
+                    echo '<p>' . __('There is no proposal on this contract yet.') . '</p>';
+                } else {
+                    echo $this->Form->control('proposal_id', [
+                        'options' => $options,
+                        'empty' => true,
+                        'value' => $proposal?->id,
+                        'label' => __('Proposal'),
+                        'onchange' => 'this.form.submit()',
+                    ]);
+
+                    if ($proposal !== null) {
                         echo $this->Form->control('document_type', [
-                            'label' => __('Document Type'),
                             'options' => $documentTypes,
                             'empty' => true,
-                            'required' => true,
-                            'onchange' => $this::SUBMIT_ON_CHANGE,
+                            'value' => $printType?->value,
+                            'label' => __('Type of Document'),
                         ]);
-
                         echo $this->Form->control('signed', [
-                            'label' => __('Signed'),
                             'type' => 'checkbox',
-                            'onchange' => $this::SUBMIT_ON_CHANGE,
+                            'label' => __('Generate as signed'),
                         ]);
-                        ?>
-                        <br>
-                        <?php
-                        echo $this->Form->control('own_equipment', [
-                            'label' => __('The customer has his own equipment'),
-                            'type' => 'checkbox',
-                            'onchange' => $this::SUBMIT_ON_CHANGE,
-                        ]);
-                        echo $this->Form->control('does_not_use_ip_addresses', [
-                            'label' => __('The customer does not use IP addresses'),
-                            'type' => 'checkbox',
-                            'onchange' => $this::SUBMIT_ON_CHANGE,
-                        ]);
-                        echo $this->Form->control('does_not_use_radius', [
-                            'label' => __('The customer does not use RADIUS accounts'),
-                            'type' => 'checkbox',
-                            'onchange' => $this::SUBMIT_ON_CHANGE,
-                        ]);
-                        echo $this->Form->control('fixed_term', [
-                            'label' => __('Allow generating a fixed-term contract'),
-                            'type' => 'checkbox',
-                            'onchange' => $this::SUBMIT_ON_CHANGE,
-                        ]);
-                        ?>
-                    </div>
-                    <div class="column">
-                        <?php
-                        if ($printType?->requiresContractVersionToBeExecuted()) {
-                            echo $this->Form->control('contract_version_to_be_executed_id', [
-                                'label' => __('Contract version to be executed'),
-                                'options' => $contractVersions,
-                                'empty' => true,
-                                'required' => true,
-                                'onchange' => $this::SUBMIT_ON_CHANGE,
-                            ]);
-                        }
-
-                        if ($printType?->requiresContractVersionToBeTerminated()) {
-                            echo $this->Form->control('contract_version_to_be_terminated_id', [
-                                'label' => __('Contract version to be terminated'),
-                                'options' => $contractVersions,
-                                'empty' => true,
-                                'required' => true,
-                                'onchange' => $this::SUBMIT_ON_CHANGE,
-                            ]);
-                        }
-
-                        if ($printType?->requiresContractNumberToBeTerminated()) {
-                            echo $this->Form->control('contract_number_to_be_terminated', [
-                                'label' => __('Contract number to be terminated'),
-                                'empty' => true,
-                                'required' => true,
-                                'list' => 'contract-numbers-to-be-terminated',
-                                'onchange' => $this::SUBMIT_ON_CHANGE,
-                            ]);
-                        }
-
-                        if ($printType?->requiresEffectiveDateOfTheAmendment()) {
-                            echo $this->Form->control('effective_date_of_the_amendment', [
-                                'label' => __('Effective date of the amendment'),
-                                'type' => 'date',
-                                'empty' => true,
-                                'required' => true,
-                                'onchange' => $this::SUBMIT_ON_CHANGE,
-                            ]);
-                        }
-
-                        if ($printType?->isHandoverProtocol()) {
-                            echo $this->Form->control('access_point', [
-                                'empty' => true,
-                                'onchange' => $this::SUBMIT_ON_CHANGE,
-                            ]);
-                            echo $this->Form->control('radius_username', [
-                                'empty' => true,
-                                'onchange' => $this::SUBMIT_ON_CHANGE,
-                            ]);
-                            echo $this->Form->control('radius_password', [
-                                'empty' => true,
-                                'onchange' => $this::SUBMIT_ON_CHANGE,
-                            ]);
-                        }
-                        ?>
-                    </div>
-                </div>
+                    }
+                }
+                ?>
             </fieldset>
-            <?= $this->Form->hidden('submit_action', [
-                'value' => 'refresh',
-            ]) ?>
-            <?= $this->Form->button(__('Print to PDF'), [
-                'name' => 'submit_action',
-                'value' => 'pdf',
-            ]) ?>
+            <?php if ($proposal !== null) : ?>
+                <?= $this->Form->button(__('Generate PDF'), [
+                    'name' => 'submit_action',
+                    'value' => 'pdf',
+                ]) ?>
+            <?php endif; ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

@@ -11,6 +11,7 @@
  * @var array<\App\Model\Entity\Billing> $billings
  * @var array<string> $questions
  * @var array<string, string> $wording
+ * @var array<string> $contractNumbers
  */
 
 use App\Contracts\Proposal\ProposalForm;
@@ -21,6 +22,11 @@ $changes = $contractVersionProposal->isNew()
     : $contractVersionProposal->proposedChanges();
 $acted_on = $changes?->billingsByBillingId() ?? [];
 ?>
+<datalist id="contract-numbers-to-be-terminated">
+    <?php foreach ($contractNumbers as $contractNumber) : ?>
+        <option value="<?= h($contractNumber) ?>">
+    <?php endforeach; ?>
+</datalist>
 <fieldset>
     <legend><?= __('What the papers are for') ?></legend>
     <?php
@@ -48,6 +54,7 @@ $acted_on = $changes?->billingsByBillingId() ?? [];
     ]);
     echo $this->Form->control('terminated_contract_number', [
         'label' => __('Number of the contract being terminated'),
+        'list' => 'contract-numbers-to-be-terminated',
     ]);
     echo $this->Form->control('note');
     ?>

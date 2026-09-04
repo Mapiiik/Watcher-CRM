@@ -6,6 +6,7 @@ namespace App\Service\ContractPrint;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
+use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractPrintType;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -75,6 +76,21 @@ final class ContractPrintData
      * Indicates whether the document should be generated as signed.
      */
     public bool $signed = false;
+
+    /**
+     * The proposal the document is printed from.
+     *
+     * Every document is printed from one: the snapshot it holds is what the pages are drawn from,
+     * so that the same paper printed twice is the same paper.
+     */
+    public ?ContractVersionProposal $proposal = null;
+
+    /**
+     * The billings as the proposal would leave them, put together from its snapshot.
+     *
+     * @var array<\App\Model\Entity\Billing>|null
+     */
+    public ?array $projectedBillings = null;
 
     /**
      * Active billings applicable at the time of the contract version.
