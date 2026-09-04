@@ -3,13 +3,13 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
  * @var \App\Contracts\Proposal\ProposalChanges $changes
- * @var \App\Contracts\Proposal\ProposalAcknowledgements $confirmations
+ * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
  * @var array<int|string, string> $deliveryMethods
  */
 
-use App\Contracts\Proposal\ProposalAcknowledgements;
+use App\Contracts\Proposal\ProposalConfirmations;
 
 ?>
 <div class="row">
@@ -181,7 +181,7 @@ use App\Contracts\Proposal\ProposalAcknowledgements;
                 <p><?= __('Nothing was asked.') ?></p>
             <?php else : ?>
                 <ul>
-                <?php foreach (ProposalAcknowledgements::QUESTIONS as $question) : ?>
+                <?php foreach (ProposalConfirmations::QUESTIONS as $question) : ?>
                     <?php if (array_key_exists($question, $answered)) : ?>
                         <li><?= h($question) ?>:
                             <?= $answered[$question] ? __('yes') : __('no') ?></li>

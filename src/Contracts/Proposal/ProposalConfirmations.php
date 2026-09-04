@@ -15,7 +15,7 @@ use InvalidArgumentException;
  * An unanswered question is not the same as one answered "no" - the first blocks saving, the
  * second is a confirmation that something is deliberately absent.
  */
-final class ProposalAcknowledgements
+final class ProposalConfirmations
 {
     /**
      * The customer has equipment of their own, so none needs to be lent.

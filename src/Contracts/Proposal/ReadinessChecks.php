@@ -40,15 +40,15 @@ final class ReadinessChecks
         $asked = [];
 
         if ($this->wantsBorrowedEquipment($contract)) {
-            $asked[] = ProposalAcknowledgements::OWN_EQUIPMENT;
+            $asked[] = ProposalConfirmations::OWN_EQUIPMENT;
         }
 
         if ($this->wantsIpAddresses($contract)) {
-            $asked[] = ProposalAcknowledgements::NO_IP_ADDRESSES;
+            $asked[] = ProposalConfirmations::NO_IP_ADDRESSES;
         }
 
         if ($this->wantsARadiusAccount($contract)) {
-            $asked[] = ProposalAcknowledgements::NO_RADIUS;
+            $asked[] = ProposalConfirmations::NO_RADIUS;
         }
 
         return $asked;
@@ -58,10 +58,10 @@ final class ReadinessChecks
      * What the operator has been asked but has not answered.
      *
      * @param \App\Model\Entity\Contract $contract The contract.
-     * @param \App\Contracts\Proposal\ProposalAcknowledgements $answers What has been confirmed.
+     * @param \App\Contracts\Proposal\ProposalConfirmations $answers What has been confirmed.
      * @return array<string>
      */
-    public function unansweredFor(Contract $contract, ProposalAcknowledgements $answers): array
+    public function unansweredFor(Contract $contract, ProposalConfirmations $answers): array
     {
         return $answers->unanswered($this->questionsFor($contract));
     }
@@ -74,15 +74,15 @@ final class ReadinessChecks
     public static function wording(): array
     {
         return [
-            ProposalAcknowledgements::OWN_EQUIPMENT => __(
+            ProposalConfirmations::OWN_EQUIPMENT => __(
                 'A borrowed equipment is not assigned, although it should normally be for this type'
                 . ' of service. Please confirm that the customer has their own equipment or add it.',
             ),
-            ProposalAcknowledgements::NO_IP_ADDRESSES => __(
+            ProposalConfirmations::NO_IP_ADDRESSES => __(
                 'IP addresses are not assigned, although they usually should be for this type of'
                 . ' service. Please confirm that the customer does not use IP addresses or add them.',
             ),
-            ProposalAcknowledgements::NO_RADIUS => __(
+            ProposalConfirmations::NO_RADIUS => __(
                 'RADIUS accounts are not assigned, although they usually should be for this type of'
                 . ' service. Please confirm that the customer does not use RADIUS accounts or add them.',
             ),

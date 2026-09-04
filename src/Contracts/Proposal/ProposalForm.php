@@ -80,8 +80,8 @@ final class ProposalForm
     {
         $confirmed = [];
 
-        foreach ((array)($data['acknowledgements'] ?? []) as $question => $answer) {
-            if (in_array($question, ProposalAcknowledgements::QUESTIONS, true)) {
+        foreach ((array)($data['confirmations'] ?? []) as $question => $answer) {
+            if (in_array($question, ProposalConfirmations::QUESTIONS, true)) {
                 $confirmed[(string)$question] = (bool)$answer;
             }
         }

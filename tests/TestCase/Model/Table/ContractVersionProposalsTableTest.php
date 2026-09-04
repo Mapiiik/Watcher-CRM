@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Contracts\Proposal\ProposalAcknowledgements;
+use App\Contracts\Proposal\ProposalConfirmations;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractDeliveryMethod;
 use App\Model\Table\ContractVersionProposalsTable;
@@ -148,7 +148,7 @@ class ContractVersionProposalsTableTest extends TestCase
             'snapshot' => $this->aSnapshot(),
             'snapshot_taken' => DateTime::now(),
             'changes' => [],
-            'acknowledgements' => [],
+            'confirmations' => [],
         ];
     }
 
@@ -276,7 +276,7 @@ class ContractVersionProposalsTableTest extends TestCase
                 'version' => ['valid_until' => '2026-12-31'],
                 'contract' => ['termination_date' => '2026-12-31'],
             ],
-            'acknowledgements' => [ProposalAcknowledgements::FIXED_TERM => true],
+            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
 
         $this->assertArrayHasKey('changes', $proposal->getErrors());
@@ -292,7 +292,7 @@ class ContractVersionProposalsTableTest extends TestCase
         $proposal = $this->save([
             'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
             'changes' => ['version' => ['valid_until' => '2026-12-31']],
-            'acknowledgements' => [ProposalAcknowledgements::FIXED_TERM => true],
+            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
 
         $this->assertArrayHasKey('changes', $proposal->getErrors());
@@ -312,7 +312,7 @@ class ContractVersionProposalsTableTest extends TestCase
                 'version' => ['valid_until' => '2026-12-31'],
                 'contract' => ['termination_date' => '2027-01-31'],
             ],
-            'acknowledgements' => [ProposalAcknowledgements::FIXED_TERM => true],
+            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
 
         $this->assertArrayHasKey('changes', $proposal->getErrors());
@@ -331,7 +331,7 @@ class ContractVersionProposalsTableTest extends TestCase
                 'version' => ['valid_until' => '2026-12-31', 'obligation_until' => '2026-12-31'],
                 'contract' => ['termination_date' => '2026-12-31'],
             ],
-            'acknowledgements' => [ProposalAcknowledgements::FIXED_TERM => true],
+            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ];
 
         $without = $this->save($ending);
@@ -359,7 +359,7 @@ class ContractVersionProposalsTableTest extends TestCase
         ];
 
         $unacknowledged = $this->save($ending);
-        $this->assertArrayHasKey('acknowledgements', $unacknowledged->getErrors());
+        $this->assertArrayHasKey('confirmations', $unacknowledged->getErrors());
 
         $mismatched = $this->save([
             'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
@@ -367,12 +367,12 @@ class ContractVersionProposalsTableTest extends TestCase
                 'version' => ['valid_until' => '2026-12-31', 'obligation_until' => '2027-06-30'],
                 'contract' => ['termination_date' => '2026-12-31'],
             ],
-            'acknowledgements' => [ProposalAcknowledgements::FIXED_TERM => true],
+            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
-        $this->assertArrayHasKey('acknowledgements', $mismatched->getErrors());
+        $this->assertArrayHasKey('confirmations', $mismatched->getErrors());
 
         $agreed = $this->save($ending + [
-            'acknowledgements' => [ProposalAcknowledgements::FIXED_TERM => true],
+            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
         $this->assertEmpty($agreed->getErrors());
     }
@@ -429,8 +429,8 @@ class ContractVersionProposalsTableTest extends TestCase
         $badSnapshot = $this->save(['snapshot' => ['contract' => []]]);
         $this->assertArrayHasKey('snapshot', $badSnapshot->getErrors());
 
-        $badAnswers = $this->save(['acknowledgements' => ['has_a_ladder' => true]]);
-        $this->assertArrayHasKey('acknowledgements', $badAnswers->getErrors());
+        $badAnswers = $this->save(['confirmations' => ['has_a_ladder' => true]]);
+        $this->assertArrayHasKey('confirmations', $badAnswers->getErrors());
     }
 
     /**

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Contracts\Proposal\ProposalAcknowledgements;
 use App\Contracts\Proposal\ProposalChanges;
+use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposalSnapshot;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Model\Entity\ContractVersion;
@@ -49,7 +49,7 @@ class ContractVersionProposalsTable extends AppTable
     private const SETTLED_ONCE_SENT = [
         'snapshot',
         'changes',
-        'acknowledgements',
+        'confirmations',
         'effective_from',
         'terminates_contract_version_id',
         'terminated_contract_number',
@@ -72,7 +72,7 @@ class ContractVersionProposalsTable extends AppTable
 
         $this->getSchema()->setColumnType('snapshot', 'json');
         $this->getSchema()->setColumnType('changes', 'json');
-        $this->getSchema()->setColumnType('acknowledgements', 'json');
+        $this->getSchema()->setColumnType('confirmations', 'json');
         $this->getSchema()->setColumnType(
             'sent_by',
             EnumType::from(ContractDeliveryMethod::class),
@@ -203,8 +203,8 @@ class ContractVersionProposalsTable extends AppTable
             ->allowEmptyArray('changes');
 
         $validator
-            ->array('acknowledgements')
-            ->allowEmptyArray('acknowledgements');
+            ->array('confirmations')
+            ->allowEmptyArray('confirmations');
 
         $validator
             ->date('sent_date')
@@ -338,9 +338,9 @@ class ContractVersionProposalsTable extends AppTable
 
                 return true;
             },
-            'acknowledgementsAreShaped',
+            'confirmationsAreShaped',
             [
-                'errorField' => 'acknowledgements',
+                'errorField' => 'confirmations',
                 'message' => __('The confirmations name a question nobody asks.'),
             ],
         );
@@ -556,7 +556,7 @@ class ContractVersionProposalsTable extends AppTable
                     return true;
                 }
 
-                if (!$this->readAcknowledgements($entity)?->confirms(ProposalAcknowledgements::FIXED_TERM)) {
+                if (!$this->readConfirmations($entity)?->confirms(ProposalConfirmations::FIXED_TERM)) {
                     return false;
                 }
 
@@ -566,7 +566,7 @@ class ContractVersionProposalsTable extends AppTable
             },
             'fixedTermIsAcknowledged',
             [
-                'errorField' => 'acknowledgements',
+                'errorField' => 'confirmations',
                 'message' => __(
                     'The contract version ends on a given date, so the papers will be printed as a'
                     . ' fixed-term contract. Please confirm that this is intended and set the'
@@ -742,9 +742,9 @@ class ContractVersionProposalsTable extends AppTable
      * The confirmations, or null when they are in no shape to be read.
      *
      * @param \App\Model\Entity\ContractVersionProposal $entity The proposal being asked about.
-     * @return \App\Contracts\Proposal\ProposalAcknowledgements|null
+     * @return \App\Contracts\Proposal\ProposalConfirmations|null
      */
-    private function readAcknowledgements(ContractVersionProposal $entity): ?ProposalAcknowledgements
+    private function readConfirmations(ContractVersionProposal $entity): ?ProposalConfirmations
     {
         try {
             return $entity->confirmations();

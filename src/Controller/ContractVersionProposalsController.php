@@ -411,7 +411,22 @@ class ContractVersionProposalsController extends AppController
 
         $form = new ProposalForm();
         $data['changes'] = $form->changesFrom($data, $this->chosenServices($data));
-        $data['acknowledgements'] = $form->confirmationsFrom($data);
+        $data['confirmations'] = $form->confirmationsFrom($data);
+
+        // The form speaks in its own terms - a line per billing, a date per record, a box per
+        // question - and they have all been read into `changes` by now. What is left has to go,
+        // because two of those names are associations on the proposal: handed `contract`, the
+        // marshaller would build a whole new contract out of one date and then complain that it
+        // has no customer, no service type and no state, on fields no form ever drew.
+        unset(
+            $data['lines'],
+            $data['additions'],
+            $data['version'],
+            $data['version_named'],
+            $data['contract'],
+            $data['contract_named'],
+            $data['refresh'],
+        );
 
         if (!$keepSnapshot) {
             $contract = $this->contractFor((string)($data['contract_id'] ?? $proposal->contract_id));
@@ -490,7 +505,7 @@ class ContractVersionProposalsController extends AppController
                 $wording = ReadinessChecks::wording();
 
                 foreach ($unanswered as $question) {
-                    $proposal->setError('acknowledgements.' . $question, [
+                    $proposal->setError('confirmations.' . $question, [
                         $wording[$question] ?? __('Please answer this before the papers go out.'),
                     ]);
                 }

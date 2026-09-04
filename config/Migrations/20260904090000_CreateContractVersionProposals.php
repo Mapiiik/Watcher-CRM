@@ -16,7 +16,7 @@ class CreateContractVersionProposals extends BaseMigration
      * A proposal holds three things. The snapshot is how everything stood when it was drawn up,
      * and the documents are printed from it, so the same paper printed twice is the same paper.
      * The changes are what is to happen once it is signed, and they reach the live records only
-     * when somebody carries them over. The acknowledgements are what the operator confirmed
+     * when somebody carries them over. The confirmations are what the operator confirmed
      * against the readiness checks - asked here once instead of at every printing.
      *
      * More information on this method is available here:
@@ -82,7 +82,7 @@ class CreateContractVersionProposals extends BaseMigration
             'comment' => 'What is to happen once the proposal is signed',
         ]);
 
-        $table->addColumn('acknowledgements', 'jsonb', [
+        $table->addColumn('confirmations', 'jsonb', [
             'default' => '{}',
             'null' => false,
             'comment' => 'What the operator confirmed against the readiness checks',

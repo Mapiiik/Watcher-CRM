@@ -220,15 +220,15 @@ class ContractVersionProposalsControllerTest extends TestCase
             . self::CONTRACT_ID . '/contract-version-proposals/add', [
                 'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
                 'effective_from' => '2026-11-01',
-                'acknowledgements' => ['fixed_term' => '1'],
+                'confirmations' => ['fixed_term' => '1'],
             ]);
 
         $this->assertResponseOk();
 
         $errors = $this->viewVariable('contractVersionProposal')->getErrors();
-        $this->assertArrayHasKey('acknowledgements', $errors);
+        $this->assertArrayHasKey('confirmations', $errors);
         // Nested under the field the boxes are named after, so the form marks them.
-        $this->assertArrayHasKey('own_equipment', $errors['acknowledgements']);
+        $this->assertArrayHasKey('own_equipment', $errors['confirmations']);
         $this->assertArrayNotHasKey('snapshot', $errors);
         $this->assertArrayNotHasKey('changes', $errors);
     }
@@ -256,7 +256,7 @@ class ContractVersionProposalsControllerTest extends TestCase
             . self::CONTRACT_ID . '/contract-version-proposals/add', [
                 'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
                 'effective_from' => '2026-11-01',
-                'acknowledgements' => [
+                'confirmations' => [
                     'fixed_term' => '1',
                     'own_equipment' => '1',
                     'does_not_use_ip_addresses' => '1',
@@ -265,6 +265,47 @@ class ContractVersionProposalsControllerTest extends TestCase
             ]);
 
         $this->assertRedirect();
+    }
+
+    /**
+     * The form talks about the version and the contract in its own fields, and two of those names
+     * are associations on the proposal. Handed them, the marshaller would build a whole new
+     * contract out of one date and then complain that it has no customer, no service type and no
+     * state - three complaints on fields no form ever drew.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testTheFormsOwnFieldsAreNotReadAsAssociations(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481/contracts/'
+            . self::CONTRACT_ID . '/contract-version-proposals/add', [
+                'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
+                'effective_from' => '2026-11-01',
+                'confirmations' => [
+                    'fixed_term' => '1',
+                    'own_equipment' => '1',
+                    'does_not_use_ip_addresses' => '1',
+                    'does_not_use_radius' => '1',
+                ],
+                // exactly what the form sends when nothing about them is ticked
+                'version_named' => ['valid_until' => '0', 'obligation_until' => '0'],
+                'version' => ['valid_until' => '', 'obligation_until' => ''],
+                'contract_named' => ['termination_date' => '0'],
+                'contract' => ['termination_date' => ''],
+                'lines' => [],
+                'additions' => [],
+            ]);
+
+        $this->assertRedirect();
+
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        /** @var \App\Model\Entity\ContractVersionProposal $saved */
+        $saved = $proposals->find()->orderByDesc('created')->firstOrFail();
+        $this->assertTrue($saved->proposedChanges()->isEmpty());
     }
 
     /**
@@ -317,7 +358,7 @@ class ContractVersionProposalsControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/contract-version-proposals/refresh-snapshot/' . self::PROPOSAL_ID, [
-            'acknowledgements' => [
+            'confirmations' => [
                 'fixed_term' => 1,
                 'own_equipment' => 1,
                 'does_not_use_ip_addresses' => 1,

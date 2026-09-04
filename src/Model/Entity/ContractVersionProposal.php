@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use App\Contracts\Proposal\ProposalAcknowledgements;
 use App\Contracts\Proposal\ProposalChanges;
+use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposalSnapshot;
 use Cake\I18n\Date;
 
@@ -20,7 +20,7 @@ use Cake\I18n\Date;
  * @property array<string, mixed> $snapshot
  * @property \Cake\I18n\DateTime $snapshot_taken
  * @property array<string, mixed> $changes
- * @property array<string, bool> $acknowledgements
+ * @property array<string, bool> $confirmations
  * @property \Cake\I18n\Date|null $sent_date
  * @property \App\Model\Enum\ContractDeliveryMethod|null $sent_by
  * @property \Cake\I18n\Date|null $conclusion_date
@@ -54,7 +54,7 @@ class ContractVersionProposal extends AppEntity
         'snapshot' => true,
         'snapshot_taken' => true,
         'changes' => true,
-        'acknowledgements' => true,
+        'confirmations' => true,
         'sent_date' => true,
         'sent_by' => true,
         'conclusion_date' => true,
@@ -95,11 +95,11 @@ class ContractVersionProposal extends AppEntity
     /**
      * What the operator confirmed against the readiness checks.
      *
-     * @return \App\Contracts\Proposal\ProposalAcknowledgements
+     * @return \App\Contracts\Proposal\ProposalConfirmations
      */
-    public function confirmations(): ProposalAcknowledgements
+    public function confirmations(): ProposalConfirmations
     {
-        return ProposalAcknowledgements::fromArray((array)($this->acknowledgements ?? []));
+        return ProposalConfirmations::fromArray((array)($this->confirmations ?? []));
     }
 
     /**

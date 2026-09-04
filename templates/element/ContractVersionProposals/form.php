@@ -214,7 +214,7 @@ $acted_on = $changes?->billingsByBillingId() ?? [];
 <fieldset>
     <legend><?= __('Before the papers are drawn up') ?></legend>
     <?php foreach ($questions as $question) : ?>
-        <?= $this->Form->control("acknowledgements.{$question}", [
+        <?= $this->Form->control("confirmations.{$question}", [
             'type' => 'checkbox',
             'checked' => $contractVersionProposal->confirmations()->confirms($question),
             'label' => $wording[$question] ?? $question,
@@ -226,7 +226,7 @@ $acted_on = $changes?->billingsByBillingId() ?? [];
 <?php
 // An end date on a version is also how a superseded one is recorded, so printing it as a fixed-term
 // contract is said out loud rather than assumed.
-echo $this->Form->control('acknowledgements.fixed_term', [
+echo $this->Form->control('confirmations.fixed_term', [
     'type' => 'checkbox',
     'checked' => $contractVersionProposal->confirmations()->confirms('fixed_term'),
     'label' => __('This is a fixed-term contract, and the obligation runs to the end of it.'),

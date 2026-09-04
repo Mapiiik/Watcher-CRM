@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use App\Contracts\Proposal\ProposalAcknowledgements;
+use App\Contracts\Proposal\ProposalConfirmations;
 use Cake\TestSuite\Fixture\TestFixture;
 use Override;
 
@@ -72,7 +72,7 @@ class ContractVersionProposalsFixture extends TestFixture
                 'snapshot' => $snapshot,
                 'snapshot_taken' => 1772582400,
                 'changes' => [],
-                'acknowledgements' => [ProposalAcknowledgements::FIXED_TERM => true],
+                'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
                 'sent_date' => null,
                 'sent_by' => null,
                 'conclusion_date' => null,
