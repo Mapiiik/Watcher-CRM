@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-18 15:03+0200\n"
+"POT-Creation-Date: 2026-09-04 23:49+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,65 +14,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./src/Pdf/ContractPDF.php:387
-#: ./src/Pdf/ContractPDF.php:1326
+#: ./src/Pdf/ContractPDF.php:438
 msgid "Billing Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:458
-#: ./src/Pdf/ContractPDF.php:1397
+#: ./src/Pdf/ContractPDF.php:508
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:462
-#: ./src/Pdf/ContractPDF.php:1401
+#: ./src/Pdf/ContractPDF.php:512
 msgid "Delivery Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:466
-#: ./src/Pdf/ContractPDF.php:1405
+#: ./src/Pdf/ContractPDF.php:516
 msgid "Permanent Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:488
+#: ./src/Pdf/ContractPDF.php:1220
 msgid "Username"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:489
+#: ./src/Pdf/ContractPDF.php:1220
 msgid "Password"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:503
+#: ./src/Pdf/ContractPDF.php:1261
 msgid "Assigned IP Addresses"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:508
+#: ./src/Pdf/ContractPDF.php:1266
 msgid "IP Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:509
-#: ./src/Pdf/ContractPDF.php:563
+#: ./src/Pdf/ContractPDF.php:1267
+#: ./src/Pdf/ContractPDF.php:1342
 msgid "IP Network"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:510
-#: ./src/Pdf/ContractPDF.php:564
+#: ./src/Pdf/ContractPDF.php:1268
+#: ./src/Pdf/ContractPDF.php:1343
 msgid "IP Gateway"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:540
+#: ./src/Pdf/ContractPDF.php:1313
 msgid "Assigned IP Networks"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:565
+#: ./src/Pdf/ContractPDF.php:1344
 msgid "DNS Servers"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:597
+#: ./src/Pdf/ContractPDF.php:1363
 msgid "WiFi - SSID"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:598
+#: ./src/Pdf/ContractPDF.php:1363
 msgid "WiFi - Password"
 msgstr ""
 

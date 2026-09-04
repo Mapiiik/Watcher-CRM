@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-31 17:38+0200\n"
+"POT-Creation-Date: 2026-09-04 23:49+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -225,7 +225,7 @@ msgid "Notification SMS has been generated for inactive services for customer {c
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:314
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:238
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:244
 msgid "Done"
 msgstr ""
 
@@ -241,28 +241,28 @@ msgstr ""
 msgid "Debtor processing failed."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:100
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:101
 msgid "Number of emails to process."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:134
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:140
 msgid "Sending invoices:"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:145
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:151
 msgid "Invoice - {0} - {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:197
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:203
 msgid "Email was successfully sent."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:205
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:218
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:211
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:224
 msgid "Error sending email message with issued invoice ID {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:213
+#: ./plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:219
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr ""
 

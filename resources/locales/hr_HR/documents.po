@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-18 15:03+0200\n"
+"POT-Creation-Date: 2026-09-04 23:49+0200\n"
 "PO-Revision-Date: 2026-08-18 15:10+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -16,58 +16,58 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: src/Pdf/ContractPDF.php:387 src/Pdf/ContractPDF.php:1326
+#: src/Pdf/ContractPDF.php:438
 msgid "Billing Address"
 msgstr "Adresa za naplatu"
 
-#: src/Pdf/ContractPDF.php:458 src/Pdf/ContractPDF.php:1397
+#: src/Pdf/ContractPDF.php:508
 msgid "Installation Address"
 msgstr "Adresa instalacije"
 
-#: src/Pdf/ContractPDF.php:462 src/Pdf/ContractPDF.php:1401
+#: src/Pdf/ContractPDF.php:512
 msgid "Delivery Address"
 msgstr "Adresa za dostavu"
 
-#: src/Pdf/ContractPDF.php:466 src/Pdf/ContractPDF.php:1405
+#: src/Pdf/ContractPDF.php:516
 msgid "Permanent Address"
 msgstr "Adresa prebivališta"
 
-#: src/Pdf/ContractPDF.php:488
+#: src/Pdf/ContractPDF.php:1220
 msgid "Username"
 msgstr "Korisničko ime"
 
-#: src/Pdf/ContractPDF.php:489
+#: src/Pdf/ContractPDF.php:1220
 msgid "Password"
 msgstr "Lozinka"
 
-#: src/Pdf/ContractPDF.php:503
+#: src/Pdf/ContractPDF.php:1261
 msgid "Assigned IP Addresses"
 msgstr "Dodijeljene IP adrese"
 
-#: src/Pdf/ContractPDF.php:508
+#: src/Pdf/ContractPDF.php:1266
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: src/Pdf/ContractPDF.php:509 src/Pdf/ContractPDF.php:563
+#: src/Pdf/ContractPDF.php:1267 src/Pdf/ContractPDF.php:1342
 msgid "IP Network"
 msgstr "IP mreža"
 
-#: src/Pdf/ContractPDF.php:510 src/Pdf/ContractPDF.php:564
+#: src/Pdf/ContractPDF.php:1268 src/Pdf/ContractPDF.php:1343
 msgid "IP Gateway"
 msgstr "IP pristupnik"
 
-#: src/Pdf/ContractPDF.php:540
+#: src/Pdf/ContractPDF.php:1313
 msgid "Assigned IP Networks"
 msgstr "Dodijeljene IP mreže"
 
-#: src/Pdf/ContractPDF.php:565
+#: src/Pdf/ContractPDF.php:1344
 msgid "DNS Servers"
 msgstr "DNS poslužitelji"
 
-#: src/Pdf/ContractPDF.php:597
+#: src/Pdf/ContractPDF.php:1363
 msgid "WiFi - SSID"
 msgstr "WiFi - SSID"
 
-#: src/Pdf/ContractPDF.php:598
+#: src/Pdf/ContractPDF.php:1363
 msgid "WiFi - Password"
 msgstr "WiFi - Lozinka"
