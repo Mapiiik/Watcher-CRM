@@ -667,19 +667,25 @@ class ContractVersionProposalsController extends AppController
             $data['refresh'],
         );
 
-        // The day the papers take effect is the day their version does, unless they are an
-        // amendment to something already concluded - then it is their own and the form asks.
         $version = $this->versionFor(
             (string)($data['contract_version_id'] ?? $proposal->contract_version_id),
         );
 
-        if ($version !== null && !$this->effectiveDateIsItsOwn($version)) {
-            $data['effective_from'] = $version->valid_from->toDateString();
-        }
-
-        // A form asking to be drawn again is not an attempt to save, so nothing is held against it.
+        // A form asking to be drawn again is not an attempt to save, so nothing is held against it
+        // - and the day is left exactly as it was typed. Filling it in here is what would make the
+        // day of one version stay behind in the field after another was chosen.
         if ($redrawing) {
             return $this->ContractVersionProposals->patchEntity($proposal, $data, ['validate' => false]);
+        }
+
+        // The day the papers take effect is asked for only over a version already concluded, and
+        // even there it may be left empty. Whatever is not said is the day the version itself
+        // takes effect.
+        $said = $data['effective_from'] ?? null;
+        $saidNothing = !is_string($said) || trim($said) === '';
+
+        if ($version !== null && ($saidNothing || !$this->effectiveDateIsItsOwn($version))) {
+            $data['effective_from'] = $version->valid_from->toDateString();
         }
 
         if (!$keepSnapshot) {
@@ -905,9 +911,11 @@ class ContractVersionProposalsController extends AppController
             $contract->customer->number ?? null,
         ])));
 
-        $effectiveDateIsItsOwn = $this->effectiveDateIsItsOwn(
-            $this->versionFor((string)$proposal->contract_version_id),
-        );
+        $version = $this->versionFor((string)$proposal->contract_version_id);
+        $effectiveDateIsItsOwn = $this->effectiveDateIsItsOwn($version);
+
+        // The day the field falls back on when it is left empty, so the hint can name it.
+        $effectiveFromDefault = $version?->valid_from;
 
         $this->set(compact(
             'contract',
@@ -916,6 +924,7 @@ class ContractVersionProposalsController extends AppController
             'questions',
             'contractNumbers',
             'effectiveDateIsItsOwn',
+            'effectiveFromDefault',
         ));
         $this->set('wording', ReadinessChecks::wording());
         $this->set('deliveryMethods', $this->deliveryMethodOptions());

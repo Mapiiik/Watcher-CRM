@@ -40,6 +40,14 @@ class ContractVersionProposalsControllerTest extends TestCase
     private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
 
     /**
+     * The version the fixture carries: concluded, so papers over it take effect on a day of their
+     * own and the form asks for one.
+     *
+     * @var string
+     */
+    private const CONTRACT_VERSION_ID = '74824fba-20b2-46fc-806c-df795aa9e429';
+
+    /**
      * A billing the fixture proposal's snapshot knows about.
      *
      * @var string
@@ -147,6 +155,53 @@ class ContractVersionProposalsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertNotEmpty($this->viewVariable('versions')->toArray());
+    }
+
+    /**
+     * The day the papers apply from may be left empty, and then follows the version. It is left
+     * empty rather than filled in ahead of time on purpose: a day put there for the operator would
+     * stay behind when they chose another version, and read as theirs.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testTheDayThePapersApplyFromFollowsTheVersionWhenLeftEmpty(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/add?contract_version_id=' . self::CONTRACT_VERSION_ID);
+
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('effectiveDateIsItsOwn'));
+        $this->assertResponseNotContains('value="2022-11-30"');
+        // The hint names that day, written the way the application writes days.
+        $day = $this->getTableLocator()->get('ContractVersions')
+            ->get(self::CONTRACT_VERSION_ID)
+            ->get('valid_from');
+        $this->assertResponseContains('the version does, ' . $day);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/add', [
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => self::CONTRACT_VERSION_ID,
+            'effective_from' => '',
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractVersionProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractVersionProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        $this->assertSame('2022-11-30', $drawn->effective_from->toDateString());
     }
 
     /**

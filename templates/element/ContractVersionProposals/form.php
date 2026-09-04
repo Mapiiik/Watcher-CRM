@@ -13,6 +13,7 @@
  * @var array<string, string> $wording
  * @var array<string> $contractNumbers
  * @var bool $effectiveDateIsItsOwn
+ * @var \Cake\I18n\Date|null $effectiveFromDefault
  */
 
 $changes = $contractVersionProposal->isNew()
@@ -51,7 +52,16 @@ $changes = $contractVersionProposal->isNew()
     if ($effectiveDateIsItsOwn) {
         echo $this->Form->control('effective_from', [
             'label' => __('Effective From'),
-            'help' => __('The day these papers start to apply.'),
+            // Left empty it follows the version, so it is not filled in ahead of time: a day put
+            // there for the operator would stay behind when they chose another version.
+            'required' => false,
+            'help' => $effectiveFromDefault === null
+                ? __('The day these papers start to apply.')
+                : __(
+                    'The day these papers start to apply. Empty takes the day the version does,'
+                    . ' {0}.',
+                    $effectiveFromDefault,
+                ),
         ]);
     } else {
         echo '<p>' . __('These papers take effect with the contract version they are for.') . '</p>';
