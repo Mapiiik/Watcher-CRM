@@ -7,16 +7,6 @@
 
 $version_column ??= true;
 
-$howItStands = function ($proposal): string {
-    return match (true) {
-        $proposal->hasBeenApplied() => __('Carried over'),
-        $proposal->hasBeenRevoked() => __('Revoked'),
-        $proposal->hasBeenConcluded() => __('Waiting to be carried over'),
-        $proposal->hasBeenSent() => __('Sent'),
-        default => __('Being drawn up'),
-    };
-};
-
 $whatItAsksFor = function ($proposal): string {
     $changes = $proposal->proposedChanges();
     $lines = count($changes->billings);
@@ -63,7 +53,7 @@ $whichVersion = function ($proposal): string {
             <td><?= h($whatItAsksFor($proposal)) ?></td>
             <td><?= h($proposal->sent_date) ?></td>
             <td><?= h($proposal->conclusion_date) ?></td>
-            <td><?= h($howItStands($proposal)) ?></td>
+            <td><?= h($proposal->getState()) ?></td>
             <td class="actions">
                 <?= $this->AuthLink->link(
                     __('View'),

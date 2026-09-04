@@ -5,65 +5,99 @@
  * @var bool $show_settled
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(
-                __('Draw Up a Proposal'),
-                ['action' => 'add'],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->Html->link(
-                $show_settled ? __('Hide settled proposals') : __('Show settled proposals'),
-                ['?' => ['show_settled' => $show_settled ? null : 1]],
-                ['class' => 'side-nav-item'],
-            ) ?>
-        </div>
-    </aside>
-    <div class="column column-90">
-        <div class="contractVersionProposals index content">
-            <h3><?= __('Proposals') ?></h3>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th><?= $this->Paginator->sort('Contracts.number', __('Contract')) ?></th>
-                            <th><?= $this->Paginator->sort('effective_from', __('Effective From')) ?></th>
-                            <th><?= $this->Paginator->sort('sent_date', __('Sent On')) ?></th>
-                            <th><?= $this->Paginator->sort('conclusion_date', __('Concluded On')) ?></th>
-                            <th><?= __('State') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($contractVersionProposals as $proposal) : ?>
-                        <tr>
-                            <td><?= h($proposal->contract->number ?? '') ?></td>
-                            <td><?= h($proposal->effective_from) ?></td>
-                            <td><?= h($proposal->sent_date) ?></td>
-                            <td><?= h($proposal->conclusion_date) ?></td>
-                            <td>
-                                <?= match (true) {
-                                    $proposal->hasBeenApplied() => __('Carried over'),
-                                    $proposal->hasBeenRevoked() => __('Revoked'),
-                                    $proposal->hasBeenConcluded() => __('Waiting to be carried over'),
-                                    $proposal->hasBeenSent() => __('Sent'),
-                                    default => __('Being drawn up'),
-                                } ?>
-                            </td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(
-                                    __('View'),
-                                    ['action' => 'view', $proposal->id],
-                                ) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-            <?= $this->element('common/paginator') ?>
-        </div>
+    <div class="column">
+        <?= $this->Form->control('search', [
+            'label' => __('Search'),
+            'type' => 'search',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+        <?= $this->Form->control('show_settled', [
+            'label' => __('Settled Proposals As Well'),
+            'type' => 'checkbox',
+            'checked' => $show_settled,
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
     </div>
+</div>
+<?= $this->Form->end() ?>
+
+<div class="contractVersionProposals index content">
+    <?= $this->AuthLink->link(
+        __('Draw Up a Proposal'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link'],
+    ) ?>
+    <h3><?= __('Contract Version Proposals') ?></h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th><?= $this->Paginator->sort('Contracts.number', __('Contract')) ?></th>
+                    <th><?= $this->Paginator->sort('ContractVersions.valid_from', __('Contract Version')) ?></th>
+                    <th><?= $this->Paginator->sort('effective_from') ?></th>
+                    <th><?= $this->Paginator->sort('sent_date', __('Sent To The Customer')) ?></th>
+                    <th><?= $this->Paginator->sort('sent_by') ?></th>
+                    <th><?= $this->Paginator->sort('conclusion_date') ?></th>
+                    <th><?= __('State') ?></th>
+                    <th class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($contractVersionProposals as $contractVersionProposal) : ?>
+                    <?php
+                    $contract = $contractVersionProposal->contract;
+                    $version = $contractVersionProposal->contract_version;
+                    ?>
+                <tr style="<?= $contractVersionProposal->isOpen() ? '' : 'color: darkgray;' ?>">
+                    <td><?=
+                        $contract !== null ? $this->Html->link(
+                            $contract->name ?? '(' . $contract->id . ')',
+                            [
+                                'controller' => 'Contracts',
+                                'action' => 'view',
+                                $contract->id,
+                                'customer_id' => $contract->customer_id,
+                            ],
+                        ) : '' ?></td>
+                    <td><?=
+                        $version !== null ? $this->Html->link(
+                            $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely')),
+                            [
+                                'controller' => 'ContractVersions',
+                                'action' => 'view',
+                                $version->id,
+                            ],
+                        ) : '' ?></td>
+                    <td><?= h($contractVersionProposal->effective_from) ?></td>
+                    <td><?= h($contractVersionProposal->sent_date) ?></td>
+                    <td><?= h($contractVersionProposal->sent_by?->label()) ?></td>
+                    <td><?= h($contractVersionProposal->conclusion_date) ?></td>
+                    <td><?= h($contractVersionProposal->getState()) ?></td>
+                    <td class="actions">
+                        <?= $this->AuthLink->link(
+                            __('View'),
+                            ['action' => 'view', $contractVersionProposal->id],
+                        ) ?>
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $contractVersionProposal->id],
+                            ['class' => 'win-link'],
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $contractVersionProposal->id],
+                            ['confirm' => __(
+                                'Are you sure you want to delete # {0}?',
+                                $contractVersionProposal->id,
+                            )],
+                        ) ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?= $this->element('common/paginator') ?>
 </div>

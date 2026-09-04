@@ -107,6 +107,11 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('List Contract Version Proposals'),
+                    ['controller' => 'ContractVersionProposals', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('List Billings'),
                     ['controller' => 'Billings', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],

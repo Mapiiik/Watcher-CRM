@@ -63,7 +63,7 @@ class ContractVersionProposalsController extends AppController
         }
 
         $request = $this->getRequest();
-        $show_settled = (bool)$request->getQuery('show_settled');
+        $show_settled = toBool($request->getQuery('show_settled')) ?? false;
 
         $search = $request->getQuery('search');
         if (!empty($search)) {
@@ -454,6 +454,7 @@ class ContractVersionProposalsController extends AppController
         }
 
         $this->set('contractVersionProposal', $proposal);
+        $this->set('deliveryMethods', $this->deliveryMethodOptions());
 
         return null;
     }

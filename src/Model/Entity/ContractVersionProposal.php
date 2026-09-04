@@ -156,6 +156,26 @@ class ContractVersionProposal extends AppEntity
     }
 
     /**
+     * Where the proposal stands, in one word for a listing to print.
+     *
+     * The order is the order things happen in, read backwards: what has settled the proposal comes
+     * before what only moved it along, so a proposal that was carried over does not still read as
+     * sent.
+     *
+     * @return string
+     */
+    public function getState(): string
+    {
+        return match (true) {
+            $this->hasBeenApplied() => __('Carried over'),
+            $this->hasBeenRevoked() => __('Revoked'),
+            $this->hasBeenConcluded() => __('Waiting to be carried over'),
+            $this->hasBeenSent() => __('Sent'),
+            default => __('Being drawn up'),
+        };
+    }
+
+    /**
      * Whether the proposal is signed and waiting to be carried over.
      *
      * @return bool
