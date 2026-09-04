@@ -8,6 +8,7 @@ use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\BorrowedEquipmentsTable;
 use App\Model\Table\ContractsTable;
+use App\Model\Table\ContractVersionProposalsTable;
 use App\Model\Table\ContractVersionsTable;
 
 /**
@@ -44,6 +45,8 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
         $billings = $this->fetchTable(BillingsTable::class);
         /** @var \App\Model\Table\ContractVersionsTable $versions */
         $versions = $this->fetchTable(ContractVersionsTable::class);
+        /** @var \App\Model\Table\ContractVersionProposalsTable $proposals */
+        $proposals = $this->fetchTable(ContractVersionProposalsTable::class);
         /** @var \App\Model\Table\ContractsTable $contracts */
         $contracts = $this->fetchTable(ContractsTable::class);
         /** @var \App\Model\Table\BorrowedEquipmentsTable $equipments */
@@ -123,6 +126,13 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
             'non_standard_service' =>
                 fn(): ContractCheckInterface => new NonStandardServiceCheck(
                     $billings,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
+            'untransferred_proposal' =>
+                fn(): ContractCheckInterface => new UntransferredProposalCheck(
+                    $proposals,
                     $this->ignore_inactive,
                     $this->contract_id,
                     $this->customer_id,

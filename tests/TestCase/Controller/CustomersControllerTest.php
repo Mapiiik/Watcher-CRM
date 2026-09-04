@@ -79,6 +79,7 @@ class CustomersControllerTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.ContractVersionProposals',
         'app.Queues',
         'app.Services',
         'app.Billings',
