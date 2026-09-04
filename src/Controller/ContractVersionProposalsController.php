@@ -5,14 +5,18 @@ namespace App\Controller;
 
 use App\Contracts\Proposal\ProposalForm;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
+use App\Contracts\Proposal\ProposalTransfer;
 use App\Contracts\Proposal\ReadinessChecks;
+use App\Contracts\Proposal\TransferPreview;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Table\BillingsTable;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
+use Exception;
 
 /**
  * ContractVersionProposals Controller
@@ -233,6 +237,85 @@ class ContractVersionProposalsController extends AppController
         $this->set('contractVersionProposal', $proposal);
 
         return null;
+    }
+
+    /**
+     * Shows what carrying the proposal over would do, and does it when told to.
+     *
+     * This is the one place a proposal touches anything outside itself. Up to here the live records
+     * have not moved, which is what lets a proposal nobody signs be given up on with one click.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @return \Cake\Http\Response|null Redirects when carried over, renders the preview otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function transfer(?string $id = null): ?Response
+    {
+        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+
+        $preview = new TransferPreview();
+        $found = $preview->of($proposal);
+
+        if (!$proposal->isOpen()) {
+            $this->Flash->warning(__('This proposal has already been settled.'));
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            if ($preview->anythingStopsIt($found)) {
+                $this->Flash->error(__('This proposal cannot be carried over as it stands.'));
+            } else {
+                try {
+                    (new ProposalTransfer())->carryOver(
+                        $proposal,
+                        $this->getRequest()->getAttribute('identity')['id'] ?? null,
+                        $this->mayReachIntoClosedPeriods()
+                            && $this->request->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1',
+                    );
+
+                    $this->Flash->success($proposal->proposedChanges()->isEmpty()
+                        ? __('The proposal has been marked as dealt with; it changed nothing.')
+                        : __('The proposal has been carried over into the live records.'));
+
+                    if ($proposal->proposedChanges()->contract->endsTheContract()) {
+                        $this->Flash->warning(__(
+                            'The contract has been given an end date. Its state is left as it was,'
+                            . ' because that has its own requirements to satisfy.',
+                        ));
+                    }
+
+                    return $this->redirect(['action' => 'view', $proposal->id]);
+                } catch (Exception $failure) {
+                    $this->Flash->error(__(
+                        'The proposal could not be carried over: {0}',
+                        $failure->getMessage(),
+                    ));
+                }
+            }
+        }
+
+        $this->set('contractVersionProposal', $proposal);
+        $this->set('found', $found);
+        $this->set('stopped', $preview->anythingStopsIt($found));
+        $this->set('billingsNow', $preview->billingsNow($proposal));
+        $this->set('billingsAfterwards', $preview->billingsAfterwards($proposal));
+        $this->set('closed_period_override', $this->mayReachIntoClosedPeriods());
+
+        return null;
+    }
+
+    /**
+     * Whether this request is one that may be offered the way into an invoiced period at all.
+     *
+     * Offered to an administrator and to nobody else, and even there it is a box that has to be
+     * ticked - the same gate the service change has had.
+     *
+     * @return bool
+     */
+    private function mayReachIntoClosedPeriods(): bool
+    {
+        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
     }
 
     /**

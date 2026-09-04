@@ -442,6 +442,7 @@ $permissions = [
                 'refreshSnapshot',
                 'revoke',
                 'send',
+                'transfer',
                 'serviceChange',
                 'setDatesForRelatedBorrowedEquipments',
                 'terminateRelatedBillings',

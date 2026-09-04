@@ -246,6 +246,69 @@ class ContractVersionProposalsControllerTest extends TestCase
     }
 
     /**
+     * The preview says what the transfer would run into before anybody presses the button.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::transfer()
+     */
+    public function testTheTransferPreviewSaysWhatStandsInTheWay(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/transfer/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        // Nobody has signed it, so it says so and does not offer the button.
+        $this->assertResponseContains(__('Nobody has signed this proposal yet, so there is nothing to carry over.'));
+    }
+
+    /**
+     * A signed proposal that changes nothing is carried over all the same, so that it stops being
+     * listed as waiting - and nothing of the contract moves.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::transfer()
+     */
+    public function testAnEmptyProposalIsMarkedAsDealtWith(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal->conclusion_date = new Date('2026-09-15');
+        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+
+        $billings = $this->getTableLocator()->get('Billings');
+        $before = $billings->find()->count();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/transfer/' . self::PROPOSAL_ID);
+
+        $this->assertRedirect();
+        $this->assertTrue($proposals->get(self::PROPOSAL_ID)->hasBeenApplied());
+        $this->assertSame($before, $billings->find()->count());
+    }
+
+    /**
+     * An unsigned proposal is not carried over even when the request is made straight at it.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::transfer()
+     */
+    public function testAnUnsignedProposalIsNotCarriedOver(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/transfer/' . self::PROPOSAL_ID);
+
+        $this->assertFalse(
+            $this->getTableLocator()->get('ContractVersionProposals')
+                ->get(self::PROPOSAL_ID)
+                ->hasBeenApplied(),
+        );
+    }
+
+    /**
      * A proposal that never went anywhere may be removed; one that did may not.
      *
      * @return void

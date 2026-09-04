@@ -33,6 +33,13 @@ use App\Contracts\Proposal\ProposalAcknowledgements;
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
+            <?php if ($contractVersionProposal->isOpen()) : ?>
+                <?= $this->AuthLink->link(
+                    __('Carry Over'),
+                    ['action' => 'transfer', $contractVersionProposal->id],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            <?php endif; ?>
             <?= $this->AuthLink->link(
                 __('Print'),
                 [
