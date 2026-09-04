@@ -85,6 +85,20 @@ class AppPDF extends TCPDF
     protected const HEADING_ORPHAN_GUARD = 16.0;
 
     /**
+     * A cell, with two habits of its own.
+     *
+     * Bordered cells centre their text vertically, because a frame drawn round text sitting
+     * on the top edge reads as a mistake.
+     *
+     * And text too long for its cell is condensed to fit rather than allowed to run past its
+     * edge. A cell cannot wrap - that is what MultiCell is for - so without this the overflow
+     * lands on whatever comes next, which on these documents is usually a price. The scaling
+     * engages only when the text would not otherwise fit, so nothing that fits is touched.
+     *
+     * This is only honest if every cell is declared as wide as the room it actually has: one
+     * followed by a blank spacer owns that spacer's width too, and saying otherwise condenses
+     * text that had somewhere to go.
+     *
      * @inheritDoc
      */
     #[Override]
@@ -97,7 +111,7 @@ class AppPDF extends TCPDF
         mixed $align = '',
         mixed $fill = false,
         mixed $link = '',
-        mixed $stretch = 0,
+        mixed $stretch = self::STRETCH_TO_FIT,
         mixed $ignore_min_height = false,
         mixed $calign = 'T',
         mixed $valign = '',
@@ -431,19 +445,19 @@ class AppPDF extends TCPDF
 
         $this->drawSeparator(lnAfter: 1.0);
 
+        // Each value is declared as wide as the room it actually has before the next thing
+        // with text in it, blank columns included, so it is only condensed when it truly
+        // overruns rather than whenever it crosses a spacer.
         $this->SetFont('DejaVuSerif', 'B', 8);
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.name'));
+        $this->Cell(110, 4, Settings::getString('core.company.name'));
         $this->SetFont('DejaVuSerif', '', 8);
-        $this->Cell(30, 4);
-        $this->Cell(40, 4);
         $this->Cell(15, 4, Settings::getString('core.documents.common.labels.phone'));
         $this->Cell(40, 4, Settings::getString('core.company.phone'));
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.address_line_1'));
-        $this->Cell(20, 4);
+        $this->Cell(60, 4, Settings::getString('core.company.address_line_1'));
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
         $this->Cell(40, 4, Settings::getString('core.company.identity_number'));
         $this->Cell(15, 4, Settings::getString('core.documents.common.labels.mobile'));
@@ -451,8 +465,7 @@ class AppPDF extends TCPDF
         $this->Ln();
 
         $this->Cell(30, 4);
-        $this->Cell(40, 4, Settings::getString('core.company.address_line_2'));
-        $this->Cell(20, 4);
+        $this->Cell(60, 4, Settings::getString('core.company.address_line_2'));
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
         $this->Cell(40, 4, Settings::getString('core.company.vat_number'));
         $this->Cell(15, 4, Settings::getString('core.documents.common.labels.email'));
@@ -636,8 +649,10 @@ class AppPDF extends TCPDF
             return;
         }
 
+        // The title has the line to itself, so it is given the whole column; the indent is
+        // only there to place the address underneath it.
         $this->SetFont('DejaVuSerif', 'B', 8);
-        $this->Cell($indent, $lineHeight, $title . ': ');
+        $this->Cell(static::TEXT_WIDTH, $lineHeight, $title . ': ');
         $this->Ln();
         $this->Cell($indent, $lineHeight);
         $this->MultiCell(180 - $indent, $lineHeight, $fullAddress, align: 'L');
