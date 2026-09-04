@@ -813,7 +813,9 @@ class ContractPDF extends AppPDF
         $this->Cell(
             $column,
             self::LINE_HEIGHT,
-            'do ' . $billingReferenceDate->day(1)->addMonths(1)->addDays(9),
+            strtr($this->label('first_payment_due'), [
+                '{date}' => (string)$billingReferenceDate->day(1)->addMonths(1)->addDays(9),
+            ]),
             align: 'C',
         );
 

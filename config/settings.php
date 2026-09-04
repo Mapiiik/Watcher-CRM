@@ -372,6 +372,7 @@ return [
                     'first_payment_total' => 'první platba za služby celkem:',
                     'monthly' => 'měsíčně',
                     'bank_transfer' => 'převodem z účtu',
+                    'first_payment_due' => 'do {date}',
                     'provider_bank' => 'peněžní ústav poskytovatele:',
                     'provider_account' => 'číslo účtu poskytovatele:',
                     'variable_symbol' => 'variabilní symbol:',
