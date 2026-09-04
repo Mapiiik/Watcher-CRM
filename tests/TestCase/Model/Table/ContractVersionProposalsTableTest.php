@@ -160,9 +160,8 @@ class ContractVersionProposalsTableTest extends TestCase
     private function aSnapshot(): array
     {
         return [
-            'contract' => ['number' => '2022/0001'],
-            'customer' => ['number' => '1'],
-            'addresses' => ['installation' => 'Lorem 1, 100 00 Praha'],
+            'contract' => ['id' => self::CONTRACT_ID, 'number' => '2022/0001'],
+            'customer' => ['nid' => 1, 'addresses' => [], 'emails' => [], 'phones' => []],
             'version' => ['id' => self::VERSION_ID],
             'billings' => [
                 ['id' => self::KNOWN_BILLING_ID, 'billing_from' => '2022-01-01'],

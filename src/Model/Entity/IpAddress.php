@@ -77,10 +77,16 @@ class IpAddress extends AppEntity
     /**
      * getter for IP address ranges (try to load via ApiClient)
      *
+     * A range that has already been found is handed back rather than asked for again. That is what
+     * lets a record put together from a snapshot carry the range that was found when the snapshot
+     * was taken, so that reprinting a paper does not depend on the other system being up.
+     *
+     * @param \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange>>|null $found
+     *   The ranges already on the record, where there are any.
      * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\IpAddressRange>>
      */
-    protected function _getIpAddressRanges(): Answer
+    protected function _getIpAddressRanges(?Answer $found = null): Answer
     {
-        return NMSApiClient::getIpAddressRangesForIp($this->ip_address);
+        return $found ?? NMSApiClient::getIpAddressRangesForIp($this->ip_address);
     }
 }

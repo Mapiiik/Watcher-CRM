@@ -3,7 +3,14 @@ declare(strict_types=1);
 
 namespace App\Contracts\Proposal;
 
+use App\Http\Answer;
 use App\Model\Entity\Billing;
+use App\Model\Entity\Contract;
+use App\Model\Entity\ContractVersion;
+use App\NMS\Dto\IpAddressRange;
+use Cake\Collection\Collection;
+use Cake\Datasource\EntityInterface;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use InvalidArgumentException;
 
 /**
@@ -20,6 +27,8 @@ use InvalidArgumentException;
  */
 final class ProposalSnapshot
 {
+    use LocatorAwareTrait;
+
     /**
      * The parts a snapshot always carries.
      *
@@ -28,7 +37,6 @@ final class ProposalSnapshot
     public const REQUIRED = [
         'contract',
         'customer',
-        'addresses',
         'version',
         'billings',
     ];
@@ -176,5 +184,233 @@ final class ProposalSnapshot
         }
 
         return $added;
+    }
+
+    /**
+     * The contract as it stood, as unsaved records the documents can be printed from.
+     *
+     * Only the plain fields were kept, so everything the entities work out - which address is the
+     * billing one, how it is written, what a line comes to - is worked out again here, by the same
+     * code that works it out for the live records. That is what keeps the two from parting company.
+     *
+     * @return \App\Model\Entity\Contract
+     */
+    public function hydrate(): Contract
+    {
+        $customer = $this->part('customer');
+
+        /** @var \App\Model\Entity\Contract $contract */
+        $contract = $this->record('Contracts', $this->part('contract'));
+        $contract->set('service_type', $this->record('ServiceTypes', $this->nested('contract', 'service_type')));
+        $contract->set('installation_address', $this->record(
+            'Addresses',
+            $this->nested('contract', 'installation_address'),
+        ));
+
+        /** @var \App\Model\Entity\Customer $whom */
+        $whom = $this->record('Customers', $customer);
+        $whom->set('accounting_profile', $this->record(
+            'AccountingProfiles',
+            $this->nested('customer', 'accounting_profile'),
+        ));
+        $whom->set('addresses', $this->records('Addresses', (array)($customer['addresses'] ?? [])));
+        $whom->set('emails', $this->records('Emails', (array)($customer['emails'] ?? [])));
+        $whom->set('phones', $this->records('Phones', (array)($customer['phones'] ?? [])));
+        $contract->set('customer', $whom);
+
+        $contract->set('billings', $this->hydrateBillings());
+        $contract->set('borrowed_equipments', $this->hydrateEquipments('BorrowedEquipments', 'borrowed_equipments'));
+        $contract->set('sold_equipments', $this->hydrateEquipments('SoldEquipments', 'sold_equipments'));
+        $contract->set('ip_addresses', $this->hydrateIpAddresses());
+        $contract->set('ip_networks', $this->records('IpNetworks', $this->part('ip_networks')));
+
+        $contract->clean();
+
+        return $contract;
+    }
+
+    /**
+     * The version the proposal belongs to, as it stood.
+     *
+     * @return \App\Model\Entity\ContractVersion
+     */
+    public function hydrateVersion(): ContractVersion
+    {
+        /** @var \App\Model\Entity\ContractVersion $version */
+        $version = $this->record('ContractVersions', $this->part('version'));
+
+        return $version;
+    }
+
+    /**
+     * The version the proposal terminates, as it stood, where there is one.
+     *
+     * @return \App\Model\Entity\ContractVersion|null
+     */
+    public function hydrateTerminatedVersion(): ?ContractVersion
+    {
+        $taken = $this->taken['terminated_version'] ?? null;
+
+        if (!is_array($taken) || $taken === []) {
+            return null;
+        }
+
+        /** @var \App\Model\Entity\ContractVersion $version */
+        $version = $this->record('ContractVersions', $taken);
+
+        return $version;
+    }
+
+    /**
+     * What was billed for, each line with what it was for.
+     *
+     * @return array<\App\Model\Entity\Billing>
+     */
+    private function hydrateBillings(): array
+    {
+        $billings = [];
+
+        foreach ($this->part('billings') as $taken) {
+            $taken = (array)$taken;
+            /** @var \App\Model\Entity\Billing $billing */
+            $billing = $this->record('Billings', $taken);
+
+            $service = (array)($taken['service'] ?? []);
+            if ($service !== []) {
+                /** @var \App\Model\Entity\Service $for */
+                $for = $this->record('Services', $service);
+                $for->set('queue', $this->record('Queues', (array)($service['queue'] ?? [])));
+                $billing->set('service', $for);
+            }
+
+            $billings[] = $billing;
+        }
+
+        return $billings;
+    }
+
+    /**
+     * Equipment lent or sold, each with what kind it was.
+     *
+     * @param string $table Which records they are.
+     * @param string $part Which part of the snapshot holds them.
+     * @return array<\Cake\Datasource\EntityInterface>
+     */
+    private function hydrateEquipments(string $table, string $part): array
+    {
+        $equipments = [];
+
+        foreach ($this->part($part) as $taken) {
+            $taken = (array)$taken;
+            $equipment = $this->record($table, $taken);
+
+            if ($equipment === null) {
+                continue;
+            }
+
+            $equipment->set('equipment_type', $this->record(
+                'EquipmentTypes',
+                (array)($taken['equipment_type'] ?? []),
+            ));
+
+            $equipments[] = $equipment;
+        }
+
+        return $equipments;
+    }
+
+    /**
+     * The addresses, each carrying the range that was found for it at the time.
+     *
+     * @return array<\App\Model\Entity\IpAddress>
+     */
+    private function hydrateIpAddresses(): array
+    {
+        $addresses = [];
+
+        foreach ($this->part('ip_addresses') as $taken) {
+            $taken = (array)$taken;
+            /** @var \App\Model\Entity\IpAddress $address */
+            $address = $this->record('IpAddresses', $taken);
+
+            $range = (array)($taken['range'] ?? []);
+            $address->set('ip_address_ranges', Answer::of(new Collection(
+                $range === [] ? [] : [new IpAddressRange(
+                    id: '',
+                    network: $range['network'] ?? null,
+                    gateway: $range['gateway'] ?? null,
+                )],
+            )));
+
+            $addresses[] = $address;
+        }
+
+        return $addresses;
+    }
+
+    /**
+     * One record, put back together with the types it was kept in.
+     *
+     * The marshaller is what turns the stored text back into dates, money and enums, which is why
+     * the records go through the table rather than being built by hand.
+     *
+     * @param string $table Which records it is.
+     * @param array<string, mixed> $taken What was kept of it.
+     * @return \Cake\Datasource\EntityInterface|null Null where nothing was kept.
+     */
+    private function record(string $table, array $taken): ?EntityInterface
+    {
+        $fields = array_filter(
+            $taken,
+            fn(mixed $value, string $field): bool => !is_array($value),
+            ARRAY_FILTER_USE_BOTH,
+        );
+
+        if ($fields === []) {
+            return null;
+        }
+
+        $entity = $this->fetchTable($table)->newEntity($fields, [
+            'validate' => false,
+            'accessibleFields' => ['*' => true],
+        ]);
+        $entity->clean();
+        $entity->setNew(false);
+
+        return $entity;
+    }
+
+    /**
+     * Every one of them.
+     *
+     * @param string $table Which records they are.
+     * @param array<mixed> $taken What was kept of them.
+     * @return array<\Cake\Datasource\EntityInterface>
+     */
+    private function records(string $table, array $taken): array
+    {
+        $records = [];
+
+        foreach ($taken as $one) {
+            $record = $this->record($table, (array)$one);
+
+            if ($record !== null) {
+                $records[] = $record;
+            }
+        }
+
+        return $records;
+    }
+
+    /**
+     * A record kept inside another.
+     *
+     * @param string $part Which part of the snapshot.
+     * @param string $within Which record inside it.
+     * @return array<string, mixed>
+     */
+    private function nested(string $part, string $within): array
+    {
+        return (array)($this->part($part)[$within] ?? []);
     }
 }
