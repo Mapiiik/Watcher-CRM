@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractsController;
+use App\Model\Enum\ContractPrintType;
 use App\Model\Table\BillingsTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
@@ -69,6 +70,7 @@ class ContractsControllerTest extends TestCase
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.ContractVersions',
+        'app.ContractVersionProposals',
         'app.IpAddresses',
         'app.RemovedIpAddresses',
         'app.IpNetworks',
@@ -672,8 +674,8 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
-     * The print page renders its document type selection. It eager loads most of what hangs off a
-     * contract, so it is the widest query in this controller.
+     * The print page renders. It shows the contract, its versions and the proposals drawn up on it,
+     * because a document is chosen by choosing which proposal it is for.
      *
      * @return void
      * @link \App\Controller\ContractsController::print()
@@ -681,9 +683,32 @@ class ContractsControllerTest extends TestCase
     public function testPrint(): void
     {
         $this->login();
-        $this->get('/contracts/print/' . $this->firstId('Contracts'));
+        $this->get('/contracts/print/7f76dc3f-a11b-4109-958b-4b0382545a66');
 
         $this->assertResponseOk();
+        $this->assertResponseContains(__('Contract Versions'));
+        $this->assertResponseContains(__('Proposals'));
+        $this->assertResponseContains(__('Draw Up a Proposal'));
+    }
+
+    /**
+     * Choosing a proposal offers the documents it may be printed as, and no others.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::print()
+     */
+    public function testPrintOffersWhatTheProposalMayBePrintedAs(): void
+    {
+        $this->login();
+        $this->get('/contracts/print/7f76dc3f-a11b-4109-958b-4b0382545a66'
+            . '?proposal_id=c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Document Type'));
+        $this->assertResponseContains(ContractPrintType::ContractSummary->label());
+        // It replaces nothing and ends nothing, so neither of those documents is on offer.
+        $this->assertResponseNotContains(ContractPrintType::ContractNewX->label());
+        $this->assertResponseNotContains(ContractPrintType::ContractTermination->label());
     }
 
     /**

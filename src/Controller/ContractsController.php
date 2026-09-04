@@ -866,8 +866,21 @@ class ContractsController extends AppController
         // initialize an empty form to be used for PDF generation (validation errors will be added to this form)
         $printForm = new Form();
 
-        // Only what the page itself needs; the document is drawn from the proposal's snapshot.
-        $contract = $this->Contracts->get($id, contain: ['Customers', 'ServiceTypes']);
+        // What the page itself shows. The documents are drawn from the proposal's snapshot rather
+        // than from any of this, but the page is still where somebody looks the contract over
+        // before deciding which papers to draw up.
+        $contract = $this->Contracts->get($id, contain: [
+            'Commissions',
+            'ContractStates',
+            'ContractVersions',
+            'Customers',
+            'InstallationAddresses',
+            'InstallationTechnicians',
+            'ServiceTypes',
+            'UninstallationTechnicians',
+            'Creators',
+            'Modifiers',
+        ]);
 
         // Every proposal on the contract, across all of its versions - which is why the version is
         // no longer chosen here: it follows from whichever proposal is chosen.
