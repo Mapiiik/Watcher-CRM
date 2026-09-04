@@ -119,10 +119,9 @@
                     [
                         'controller' => 'ContractVersionProposals',
                         'action' => 'add',
-                        '?' => [
-                            'contract_id' => $contractVersion->contract_id,
-                            'contract_version_id' => $contractVersion->id,
-                        ],
+                        'customer_id' => $contractVersion->contract->customer_id,
+                        'contract_id' => $contractVersion->contract_id,
+                        '?' => ['contract_version_id' => $contractVersion->id],
                     ],
                     ['class' => 'button button-small float-right win-link'],
                 ) ?>

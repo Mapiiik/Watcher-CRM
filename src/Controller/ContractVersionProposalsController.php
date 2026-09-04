@@ -113,20 +113,22 @@ class ContractVersionProposalsController extends AppController
     {
         $proposal = $this->ContractVersionProposals->newEmptyEntity();
 
-        if ($this->contract_id !== null) {
-            $proposal->contract_id = $this->contract_id;
-        }
+        // Which contract the papers are for comes from the nested route the form was opened
+        // under; a link from a version's own page settles the version as well.
+        foreach (['contract_id' => $this->contract_id, 'contract_version_id' => null] as $what => $known) {
+            $named = $known ?? $this->named($what);
 
-        // Drawn up from a version's own page, the version it is for is already settled.
-        $named = $this->getRequest()->getQuery('contract_version_id');
-        if (is_string($named) && $named !== '') {
-            $proposal->contract_version_id = $named;
+            if ($named !== null) {
+                $proposal->set($what, $named);
+            }
         }
 
         if ($this->request->is('post')) {
             $proposal = $this->fillFromForm($proposal, $this->request->getData());
 
-            if ($this->saveProposal($proposal)) {
+            // Changing the contract redraws the form so that its versions and services are the
+            // ones that contract has; it is not an attempt to save anything yet.
+            if (!$this->isARedraw() && $this->saveProposal($proposal)) {
                 return $this->afterAddRedirect(['action' => 'view', $proposal->id]);
             }
         }
@@ -135,6 +137,16 @@ class ContractVersionProposalsController extends AppController
         $this->setFormViewVars($proposal);
 
         return null;
+    }
+
+    /**
+     * Whether this request is the form asking to be drawn again rather than to be saved.
+     *
+     * @return bool
+     */
+    private function isARedraw(): bool
+    {
+        return $this->getRequest()->getData('refresh') === 'refresh';
     }
 
     /**
@@ -160,7 +172,7 @@ class ContractVersionProposalsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $proposal = $this->fillFromForm($proposal, $this->request->getData(), keepSnapshot: true);
 
-            if ($this->saveProposal($proposal)) {
+            if (!$this->isARedraw() && $this->saveProposal($proposal)) {
                 return $this->afterEditRedirect(['action' => 'view', $proposal->id]);
             }
         }
@@ -391,6 +403,10 @@ class ContractVersionProposalsController extends AppController
         array $data,
         bool $keepSnapshot = false,
     ): ContractVersionProposal {
+        // The form asking to be drawn again is not an attempt to save, so a half-filled one is
+        // expected rather than wrong.
+        $redrawing = $this->isARedraw();
+
         $data = $this->dataWithAdditionalParameters($this->ContractVersionProposals, $data);
 
         $form = new ProposalForm();
@@ -406,13 +422,45 @@ class ContractVersionProposalsController extends AppController
                 ?? $proposal->terminates_contract_version_id;
             $terminated = $terminates === null ? null : $this->versionFor((string)$terminates);
 
-            if ($contract !== null && $version !== null) {
-                $data['snapshot'] = (new ProposalSnapshotBuilder())->take($contract, $version, $terminated);
-                $data['snapshot_taken'] = DateTime::now();
+            if ($contract === null || $version === null) {
+                if ($redrawing) {
+                    return $this->ContractVersionProposals->patchEntity($proposal, $data, [
+                        'validate' => false,
+                    ]);
+                }
+
+                // Without both there is nothing to take a snapshot of, and the columns that would
+                // hold one are not on the form - so it is said where the operator is looking,
+                // with everything they typed still in front of them.
+                $proposal = $this->ContractVersionProposals->patchEntity($proposal, $data, [
+                    'validate' => false,
+                ]);
+                $proposal->setError(
+                    $contract === null ? 'contract_id' : 'contract_version_id',
+                    [__('Choose which contract and which version of it these papers are for.')],
+                );
+
+                return $proposal;
             }
+
+            $data['snapshot'] = (new ProposalSnapshotBuilder())->take($contract, $version, $terminated);
+            $data['snapshot_taken'] = DateTime::now();
         }
 
         return $this->ContractVersionProposals->patchEntity($proposal, $data);
+    }
+
+    /**
+     * One of the things a link may have settled before the form was opened.
+     *
+     * @param string $what Which one.
+     * @return string|null
+     */
+    private function named(string $what): ?string
+    {
+        $named = $this->getRequest()->getQuery($what);
+
+        return is_string($named) && $named !== '' ? $named : null;
     }
 
     /**
@@ -424,6 +472,12 @@ class ContractVersionProposalsController extends AppController
      */
     private function saveProposal(ContractVersionProposal $proposal): bool
     {
+        if ($proposal->getErrors() !== []) {
+            $this->flashValidationErrors($proposal->getErrors());
+
+            return false;
+        }
+
         $contract = $this->contractFor((string)$proposal->contract_id);
 
         if ($contract !== null) {
@@ -431,10 +485,14 @@ class ContractVersionProposalsController extends AppController
                 ->unansweredFor($contract, $proposal->confirmations());
 
             if ($unanswered !== []) {
-                foreach (ReadinessChecks::wording() as $question => $wording) {
-                    if (in_array($question, $unanswered, true)) {
-                        $proposal->setError('acknowledgements', [$question => $wording]);
-                    }
+                // Each answer is a box on the form named after this column, so the complaint lands
+                // on the box rather than on nothing the operator can see.
+                $wording = ReadinessChecks::wording();
+
+                foreach ($unanswered as $question) {
+                    $proposal->setError('acknowledgements.' . $question, [
+                        $wording[$question] ?? __('Please answer this before the papers go out.'),
+                    ]);
                 }
 
                 $this->Flash->error(__('The contract is not ready for papers to be drawn up.'));
@@ -558,7 +616,9 @@ class ContractVersionProposalsController extends AppController
      */
     private function setFormViewVars(ContractVersionProposal $proposal, bool $fresh = false): void
     {
-        $contract = $this->contractFor((string)($proposal->contract_id ?? $this->contract_id ?? ''));
+        $contract = $this->contractFor(
+            (string)($proposal->contract_id ?? $this->contract_id ?? $this->named('contract_id') ?? ''),
+        );
 
         $contracts = $this->ContractVersionProposals->Contracts->find('list', order: ['Contracts.number']);
         if ($this->customer_id !== null) {

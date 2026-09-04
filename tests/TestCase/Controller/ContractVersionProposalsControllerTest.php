@@ -126,6 +126,148 @@ class ContractVersionProposalsControllerTest extends TestCase
     }
 
     /**
+     * A link from the contract's own pages settles which contract the papers are for, so the form
+     * has the versions of that contract to choose from rather than an empty list.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testTheFormFollowsTheContractTheLinkNamed(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/add?contract_id=' . self::CONTRACT_ID);
+
+        $this->assertResponseOk();
+        $this->assertNotEmpty($this->viewVariable('versions')->toArray());
+    }
+
+    /**
+     * Saying nothing about which version the papers are for is said on that field, not on the
+     * columns behind the snapshot - those are not on the form, and an error nobody can see reads
+     * as three required fields with nothing marked.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testAProposalWithoutAVersionSaysSoWhereItCanBeSeen(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/add', [
+            'contract_id' => self::CONTRACT_ID,
+            'effective_from' => '2026-11-01',
+        ]);
+
+        $this->assertResponseOk();
+
+        $errors = $this->viewVariable('contractVersionProposal')->getErrors();
+        $this->assertArrayHasKey('contract_version_id', $errors);
+        $this->assertArrayNotHasKey('snapshot', $errors);
+        $this->assertArrayNotHasKey('snapshot_taken', $errors);
+    }
+
+    /**
+     * Changing the contract redraws the form with that contract's versions rather than trying to
+     * save what is only half filled in.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testChangingTheContractOnlyRedrawsTheForm(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $before = $proposals->find()->count();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/add', [
+            'refresh' => 'refresh',
+            'contract_id' => self::CONTRACT_ID,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame([], $this->viewVariable('contractVersionProposal')->getErrors());
+        $this->assertNotEmpty($this->viewVariable('versions')->toArray());
+        $this->assertSame($before, $proposals->find()->count());
+    }
+
+    /**
+     * A contract whose service type wants equipment, addresses and an account asks three questions,
+     * and an unanswered one has to land on the box that answers it. They used to be set on the
+     * column the answers are kept in, which the form does not render as a field - so three
+     * complaints appeared above the form with nothing marked in it.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testUnansweredChecksLandOnTheirOwnBoxes(): void
+    {
+        $types = $this->getTableLocator()->get('ServiceTypes');
+        $type = $types->get($this->getTableLocator()->get('Contracts')->get(self::CONTRACT_ID)->service_type_id);
+        $types->saveOrFail($types->patchEntity($type, [
+            'have_equipments' => true,
+            'normally_with_borrowed_equipment' => true,
+            'have_ip_addresses' => true,
+            'have_radius_accounts' => true,
+        ]), ['checkRules' => false]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481/contracts/'
+            . self::CONTRACT_ID . '/contract-version-proposals/add', [
+                'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
+                'effective_from' => '2026-11-01',
+                'acknowledgements' => ['fixed_term' => '1'],
+            ]);
+
+        $this->assertResponseOk();
+
+        $errors = $this->viewVariable('contractVersionProposal')->getErrors();
+        $this->assertArrayHasKey('acknowledgements', $errors);
+        // Nested under the field the boxes are named after, so the form marks them.
+        $this->assertArrayHasKey('own_equipment', $errors['acknowledgements']);
+        $this->assertArrayNotHasKey('snapshot', $errors);
+        $this->assertArrayNotHasKey('changes', $errors);
+    }
+
+    /**
+     * Answering them lets the proposal through.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testAnsweringTheChecksLetsItThrough(): void
+    {
+        $types = $this->getTableLocator()->get('ServiceTypes');
+        $type = $types->get($this->getTableLocator()->get('Contracts')->get(self::CONTRACT_ID)->service_type_id);
+        $types->saveOrFail($types->patchEntity($type, [
+            'have_equipments' => true,
+            'normally_with_borrowed_equipment' => true,
+            'have_ip_addresses' => true,
+        ]), ['checkRules' => false]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481/contracts/'
+            . self::CONTRACT_ID . '/contract-version-proposals/add', [
+                'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
+                'effective_from' => '2026-11-01',
+                'acknowledgements' => [
+                    'fixed_term' => '1',
+                    'own_equipment' => '1',
+                    'does_not_use_ip_addresses' => '1',
+                    'does_not_use_radius' => '1',
+                ],
+            ]);
+
+        $this->assertRedirect();
+    }
+
+    /**
      * The form of an existing proposal renders.
      *
      * @return void
@@ -175,7 +317,7 @@ class ContractVersionProposalsControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/contract-version-proposals/refresh-snapshot/' . self::PROPOSAL_ID, [
-            'confirmations' => [
+            'acknowledgements' => [
                 'fixed_term' => 1,
                 'own_equipment' => 1,
                 'does_not_use_ip_addresses' => 1,

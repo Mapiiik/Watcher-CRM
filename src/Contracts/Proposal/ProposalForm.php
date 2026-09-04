@@ -70,6 +70,9 @@ final class ProposalForm
     /**
      * What the operator confirmed, in the shape it is stored in.
      *
+     * The form names these after the column they are kept in, so that a complaint about an
+     * unanswered one lands on the box that answers it rather than on nothing at all.
+     *
      * @param array<string, mixed> $data What the form sent.
      * @return array<string, bool>
      */
@@ -77,7 +80,7 @@ final class ProposalForm
     {
         $confirmed = [];
 
-        foreach ((array)($data['confirmations'] ?? []) as $question => $answer) {
+        foreach ((array)($data['acknowledgements'] ?? []) as $question => $answer) {
             if (in_array($question, ProposalAcknowledgements::QUESTIONS, true)) {
                 $confirmed[(string)$question] = (bool)$answer;
             }

@@ -210,7 +210,8 @@ foreach ($proposals as $one) {
                     [
                         'controller' => 'ContractVersionProposals',
                         'action' => 'add',
-                        '?' => ['contract_id' => $contract->id],
+                        'customer_id' => $contract->customer_id,
+                        'contract_id' => $contract->id,
                     ],
                     ['class' => 'button button-small float-right win-link'],
                 ) ?>
