@@ -51,6 +51,8 @@ class ContractVersionsController extends AppController
             'all',
             contain: [
                 'Contracts',
+                // What the listing shows as "sent" is the latest of the version's proposals.
+                'ContractVersionProposals',
             ],
             conditions: $conditions,
         );
@@ -83,6 +85,7 @@ class ContractVersionsController extends AppController
                 'InstallationAddresses',
                 'ServiceTypes',
             ],
+            'ContractVersionProposals',
             'Creators',
             'Modifiers',
         ]);

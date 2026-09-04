@@ -194,7 +194,8 @@ final class UnsignedPaperwork
         $query = $this->versions->find();
 
         $query
-            ->contain(['Contracts' => ['Customers', 'ContractStates']])
+            // The sending is on the proposals now, and the listing shows it.
+            ->contain(['Contracts' => ['Customers', 'ContractStates'], 'ContractVersionProposals'])
             ->where([
                 'ContractVersions.conclusion_date IS' => null,
                 $this->consideredConditions($query, $today),

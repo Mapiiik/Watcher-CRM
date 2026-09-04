@@ -113,6 +113,25 @@
                     <?= $this->Text->autoParagraph(h($contractVersion->note)); ?>
                 </blockquote>
             </div>
+            <div class="related">
+                <?= $this->AuthLink->link(
+                    __('Draw Up a Proposal'),
+                    [
+                        'controller' => 'ContractVersionProposals',
+                        'action' => 'add',
+                        '?' => [
+                            'contract_id' => $contractVersion->contract_id,
+                            'contract_version_id' => $contractVersion->id,
+                        ],
+                    ],
+                    ['class' => 'button button-small float-right win-link'],
+                ) ?>
+                <h4><?= __('Proposals') ?></h4>
+                <?= $this->element('Contracts/ContractVersionProposals', [
+                    'contract_version_proposals' => $contractVersion->contract_version_proposals,
+                    'version_column' => false,
+                ]) ?>
+            </div>
         </div>
     </div>
 </div>

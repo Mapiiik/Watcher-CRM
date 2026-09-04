@@ -2,7 +2,10 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\ContractVersionProposal> $contract_version_proposals
+ * @var bool|null $version_column Off where the table is already inside one version.
  */
+
+$version_column ??= true;
 
 $howItStands = function ($proposal): string {
     return match (true) {
@@ -40,7 +43,9 @@ $whichVersion = function ($proposal): string {
     <thead>
         <tr>
             <th><?= __('Effective From') ?></th>
-            <th><?= __('Contract Version') ?></th>
+            <?php if ($version_column) : ?>
+                <th><?= __('Contract Version') ?></th>
+            <?php endif ?>
             <th><?= __('What it asks for') ?></th>
             <th><?= __('Sent To The Customer') ?></th>
             <th><?= __('Conclusion Date') ?></th>
@@ -52,7 +57,9 @@ $whichVersion = function ($proposal): string {
         <?php foreach ($contract_version_proposals as $proposal) : ?>
         <tr style="<?= $proposal->isOpen() ? '' : 'color: darkgray;' ?>">
             <td><?= h($proposal->effective_from) ?></td>
-            <td><?= h($whichVersion($proposal)) ?></td>
+            <?php if ($version_column) : ?>
+                <td><?= h($whichVersion($proposal)) ?></td>
+            <?php endif ?>
             <td><?= h($whatItAsksFor($proposal)) ?></td>
             <td><?= h($proposal->sent_date) ?></td>
             <td><?= h($proposal->conclusion_date) ?></td>

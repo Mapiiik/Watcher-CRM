@@ -117,6 +117,12 @@ class ContractVersionProposalsController extends AppController
             $proposal->contract_id = $this->contract_id;
         }
 
+        // Drawn up from a version's own page, the version it is for is already settled.
+        $named = $this->getRequest()->getQuery('contract_version_id');
+        if (is_string($named) && $named !== '') {
+            $proposal->contract_version_id = $named;
+        }
+
         if ($this->request->is('post')) {
             $proposal = $this->fillFromForm($proposal, $this->request->getData());
 

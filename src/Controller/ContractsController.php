@@ -159,6 +159,8 @@ class ContractsController extends AppController
             'Commissions',
             'ContractStates',
             'ContractVersions' => [
+                // What a version shows as "sent" is the latest of the proposals drawn up on it.
+                'ContractVersionProposals',
                 'conditions' => $show_historical_records ?
                     [] : [
                         'OR' => [
@@ -872,7 +874,7 @@ class ContractsController extends AppController
         $contract = $this->Contracts->get($id, contain: [
             'Commissions',
             'ContractStates',
-            'ContractVersions',
+            'ContractVersions' => ['ContractVersionProposals'],
             'Customers',
             'InstallationAddresses',
             'InstallationTechnicians',

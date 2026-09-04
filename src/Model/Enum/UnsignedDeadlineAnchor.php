@@ -102,9 +102,22 @@ enum UnsignedDeadlineAnchor: string implements EnumLabelInterface, SettingChoice
     {
         return match ($this) {
             self::Installation => 'Contracts.installation_date',
-            self::Sending => 'ContractVersions.sent_date',
+            self::Sending => self::LAST_SENDING,
             self::SendingOrInstallation =>
-                'COALESCE(ContractVersions.sent_date, Contracts.installation_date)',
+                'COALESCE(' . self::LAST_SENDING . ', Contracts.installation_date)',
         };
     }
+
+    /**
+     * When the papers for this version last went out.
+     *
+     * The sending is recorded on the proposal the papers were drawn from, because that is what a
+     * paper is: a version may have several behind it over the years. The latest one is what counts
+     * - sending the papers again is giving the customer a fresh chance, and the wait starts over.
+     */
+    private const LAST_SENDING = '(
+        SELECT MAX(SentProposals.sent_date)
+        FROM contract_version_proposals SentProposals
+        WHERE SentProposals.contract_version_id = ContractVersions.id
+    )';
 }

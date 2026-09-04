@@ -10,6 +10,7 @@ use App\Model\Table\ContractVersionsTable;
 use Cake\Cache\Cache;
 use Cake\Chronos\Chronos;
 use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -447,16 +448,38 @@ class UnsignedPaperworkTest extends TestCase
         ?string $conclusion_date = null,
         ?string $sent_date = null,
     ): void {
-        $this->ContractVersions->saveOrFail($this->ContractVersions->newEntity([
+        $version = $this->ContractVersions->newEntity([
             'contract_id' => self::CONTRACT_ID,
             'valid_from' => $valid_from,
             'valid_until' => $valid_until,
             'conclusion_date' => $conclusion_date,
-            'sent_date' => $sent_date,
-            'sent_by' => $sent_date === null ? null : ContractDeliveryMethod::Post->value,
             'number_of_amendments' => 0,
             'obligations_settled' => false,
-        ]));
+        ]);
+        $this->ContractVersions->saveOrFail($version);
+
+        if ($sent_date === null) {
+            return;
+        }
+
+        // The sending is on the papers, and the papers belong to the proposal they were drawn
+        // from - so that is where a test that is about the sending has to put it.
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $proposals->saveOrFail(
+            $proposals->newEntity([
+                'contract_id' => self::CONTRACT_ID,
+                'contract_version_id' => $version->id,
+                'effective_from' => $valid_from,
+                'snapshot' => [
+                    'contract' => [], 'customer' => [], 'version' => [], 'billings' => [],
+                ],
+                'snapshot_taken' => DateTime::now(),
+                'changes' => [],
+                'sent_date' => $sent_date,
+                'sent_by' => ContractDeliveryMethod::Post->value,
+            ]),
+            ['checkRules' => false],
+        );
     }
 
     /**
