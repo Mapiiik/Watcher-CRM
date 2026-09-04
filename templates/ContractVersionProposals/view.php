@@ -7,6 +7,7 @@
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
  * @var array<int|string, string> $deliveryMethods
+ * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool}> $rows
  */
 
 use App\Contracts\Proposal\ProposalConfirmations;
@@ -74,7 +75,7 @@ use App\Contracts\Proposal\ProposalConfirmations;
             ) ?>
         </div>
     </aside>
-    <div class="column column-80">
+    <div class="column column-90">
         <div class="contractVersionProposals view content">
             <h3><?= __('Proposal') ?></h3>
             <table>
@@ -128,42 +129,14 @@ use App\Contracts\Proposal\ProposalConfirmations;
                 <?php endif; ?>
             </table>
 
+            <?= $this->element('ContractVersionProposals/proposed_billings') ?>
+
             <h4><?= __('What it asks for') ?></h4>
             <?php if ($changes->isEmpty()) : ?>
                 <p><?= __('Nothing. The proposal is the record of the papers, not a change to'
                     . ' anything - which is what a new contract looks like, since its billings'
                     . ' were drawn up before them.') ?></p>
             <?php else : ?>
-                <?php if ($changes->billings !== []) : ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th><?= __('What is to happen') ?></th>
-                            <th><?= __('Service') ?></th>
-                            <th><?= __('Quantity') ?></th>
-                            <th><?= __('Price') ?></th>
-                            <th><?= __('Billing Until') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($changes->billings as $line) : ?>
-                        <tr>
-                            <?php $what = match (true) {
-                                $line->isAddition() => __('Add'),
-                                $line->terminatesOnly() => __('End'),
-                                default => __('Change'),
-                            }; ?>
-                            <td><?= $what ?></td>
-                            <td><?= h($line->service['name'] ?? $line->text ?? '') ?></td>
-                            <td><?= h($line->terminatesOnly() ? '' : $line->quantity) ?></td>
-                            <td><?= h($line->price?->toString()) ?></td>
-                            <td><?= h($line->billing_until) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <?php endif; ?>
-
                 <?php foreach ($changes->version->asked() as $field => $value) : ?>
                     <p><?= h(__('Contract version') . ' — ' . $field) ?>:
                         <?= $value === null ? __('cleared') : h($value) ?></p>

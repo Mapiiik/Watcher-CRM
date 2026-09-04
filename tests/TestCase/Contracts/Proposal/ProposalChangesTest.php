@@ -7,6 +7,7 @@ use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedContract;
 use App\Contracts\Proposal\ProposedVersion;
+use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -49,6 +50,7 @@ class ProposalChangesTest extends TestCase
         $stored = [
             'billings' => [
                 [
+                    'id' => 'l1000000-0000-4000-8000-000000000001',
                     'billing_id' => 'b1000000-0000-4000-8000-000000000001',
                     'terminates_only' => false,
                     'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
@@ -57,8 +59,9 @@ class ProposalChangesTest extends TestCase
                     'price' => '199.00',
                     'fixed_discount' => '10.00',
                     'percentage_discount' => 5,
-                    'separate_invoice' => true,
+                    'billing_from' => '2027-01-01',
                     'billing_until' => '2027-12-31',
+                    'separate_invoice' => true,
                     'note' => 'Lorem ipsum',
                     'service' => ['id' => 's2', 'name' => 'Internet 100'],
                 ],
@@ -68,6 +71,74 @@ class ProposalChangesTest extends TestCase
         ];
 
         $this->assertSame($stored, ProposalChanges::fromArray($stored)->toArray());
+    }
+
+    /**
+     * A line carries its own days, which is what lets one change be several: half price for a year
+     * and then full price is two lines, the first ending where the second picks up.
+     *
+     * @return void
+     */
+    public function testOneChangeMayBeSeveralLines(): void
+    {
+        $changes = ProposalChanges::fromArray(['billings' => [
+            [
+                'billing_id' => 'b1',
+                'service_id' => 's1',
+                'percentage_discount' => 50,
+                'billing_until' => '2026-12-31',
+            ],
+            ['billing_id' => null, 'service_id' => 's1', 'billing_from' => '2027-01-01'],
+        ]]);
+
+        [$discounted, $full] = $changes->billings;
+
+        $this->assertNull($discounted->billing_from, 'A line without a day of its own starts with the proposal.');
+        $this->assertSame('2026-12-31', $discounted->billing_until?->toDateString());
+        $this->assertSame('2027-01-01', $full->billing_from?->toDateString());
+
+        // Which is what it comes to once the proposal says when it takes effect.
+        $this->assertSame('2026-01-01', $discounted->startsOn(new Date('2026-01-01'))->toDateString());
+        $this->assertSame('2027-01-01', $full->startsOn(new Date('2026-01-01'))->toDateString());
+    }
+
+    /**
+     * Every line answers to a name of its own, so that it can be edited and dropped again without
+     * counting places in a list.
+     *
+     * @return void
+     */
+    public function testALineCanBeChangedAndDroppedByName(): void
+    {
+        $changes = ProposalChanges::fromArray(['billings' => [
+            ['id' => 'one', 'billing_id' => 'b1', 'terminates_only' => true],
+            ['id' => 'two', 'billing_id' => null, 'service_id' => 's1'],
+        ]]);
+
+        $this->assertNotNull($changes->line('one'));
+
+        $two = $changes->line('two');
+        $this->assertNotNull($two);
+
+        $changed = $changes->withLine($two->with(['quantity' => 5]));
+        $this->assertCount(2, $changed->billings);
+        $this->assertSame(5, $changed->line('two')?->quantity);
+
+        $dropped = $changed->withoutLine('one');
+        $this->assertCount(1, $dropped->billings);
+        $this->assertNull($dropped->line('one'));
+    }
+
+    /**
+     * A line drawn up without a name is given one, so that nothing in the store is nameless.
+     *
+     * @return void
+     */
+    public function testALineWithoutANameIsGivenOne(): void
+    {
+        $line = ProposedBilling::fromArray(['billing_id' => null, 'service_id' => 's1']);
+
+        $this->assertNotEmpty($line->id);
     }
 
     /**

@@ -99,15 +99,17 @@ final class ProposalTransfer
 
         $billings = $this->fetchTable('Billings');
         $contract = $this->fetchTable('Contracts')->get($proposal->contract_id);
-        $day_before = $proposal->effective_from->subDays(1);
 
         foreach ($changes->billings as $line) {
             $to_save = [];
+            $starts = $line->startsOn($proposal->effective_from);
 
             if (!$line->isAddition()) {
                 /** @var \App\Model\Entity\Billing $ending */
                 $ending = $billings->get($line->billing_id);
-                $to_save[] = $billings->patchEntity($ending, ['billing_until' => $day_before]);
+                $to_save[] = $billings->patchEntity($ending, [
+                    'billing_until' => $starts->subDays(1)->toDateString(),
+                ]);
             }
 
             if ($line->startsABilling()) {
@@ -137,7 +139,7 @@ final class ProposalTransfer
         $starting = $this->fetchTable('Billings')->newEntity([
             'customer_id' => $customer_id,
             'contract_id' => $proposal->contract_id,
-            'billing_from' => $proposal->effective_from->toDateString(),
+            'billing_from' => $line->startsOn($proposal->effective_from)->toDateString(),
             'billing_until' => $line->billing_until?->toDateString(),
             'service_id' => $line->service_id,
             'text' => $line->text,

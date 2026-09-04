@@ -113,6 +113,92 @@ final class ProposalChanges
     }
 
     /**
+     * One of the billing lines, by its own name.
+     *
+     * @param string $id Which line.
+     * @return \App\Contracts\Proposal\ProposedBilling|null
+     */
+    public function line(string $id): ?ProposedBilling
+    {
+        foreach ($this->billings as $line) {
+            if ($line->id === $id) {
+                return $line;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * The same changes with one line put in, replacing the one of that name where there is one.
+     *
+     * @param \App\Contracts\Proposal\ProposedBilling $line The line.
+     * @return self
+     */
+    public function withLine(ProposedBilling $line): self
+    {
+        $lines = [];
+        $replaced = false;
+
+        foreach ($this->billings as $one) {
+            if ($one->id === $line->id) {
+                $lines[] = $line;
+                $replaced = true;
+
+                continue;
+            }
+
+            $lines[] = $one;
+        }
+
+        if (!$replaced) {
+            $lines[] = $line;
+        }
+
+        return new self($lines, $this->version, $this->contract);
+    }
+
+    /**
+     * The same changes with one line taken out.
+     *
+     * @param string $id Which line.
+     * @return self
+     */
+    public function withoutLine(string $id): self
+    {
+        return new self(
+            array_values(array_filter(
+                $this->billings,
+                fn(ProposedBilling $one): bool => $one->id !== $id,
+            )),
+            $this->version,
+            $this->contract,
+        );
+    }
+
+    /**
+     * The same changes with something else said about the version.
+     *
+     * @param \App\Contracts\Proposal\ProposedVersion $version What the version is asked to become.
+     * @return self
+     */
+    public function withVersion(ProposedVersion $version): self
+    {
+        return new self($this->billings, $version, $this->contract);
+    }
+
+    /**
+     * The same changes with something else said about the contract.
+     *
+     * @param \App\Contracts\Proposal\ProposedContract $contract What the contract is asked to become.
+     * @return self
+     */
+    public function withContract(ProposedContract $contract): self
+    {
+        return new self($this->billings, $this->version, $contract);
+    }
+
+    /**
      * Reads the changes back from the stored shape.
      *
      * @param array<string, mixed> $stored The stored changes.

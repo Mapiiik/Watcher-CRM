@@ -3,16 +3,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalForm;
+use App\Contracts\Proposal\ProposalProjection;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
 use App\Contracts\Proposal\ProposalTransfer;
+use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ReadinessChecks;
 use App\Contracts\Proposal\TransferPreview;
+use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractDeliveryMethod;
 use App\Model\Table\BillingsTable;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
@@ -220,9 +225,205 @@ class ContractVersionProposalsController extends AppController
         }
 
         $this->set('contractVersionProposal', $proposal);
-        $this->setFormViewVars($proposal, fresh: true);
+        $this->setFormViewVars($proposal);
 
         return null;
+    }
+
+    /**
+     * Puts a line into the proposal, or changes one that is already there.
+     *
+     * A line is edited on a page of its own, the same way a billing on a contract is, so that the
+     * operator does what they are used to doing. What travels is one line, not a whole table.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @param string|null $line The line being changed; a new one when there is none.
+     * @return \Cake\Http\Response|null Redirects when saved, renders the form otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function billingLine(?string $id = null, ?string $line = null): ?Response
+    {
+        $proposal = $this->openProposal($id);
+
+        if (!$proposal instanceof ContractVersionProposal) {
+            return $proposal;
+        }
+
+        $changes = $proposal->proposedChanges();
+        $edited = $line === null ? null : $changes->line($line);
+
+        if ($line !== null && $edited === null) {
+            throw new RecordNotFoundException(__('There is no such line on this proposal.'));
+        }
+
+        // Changing something that is already billed for starts from what is there.
+        $replaces = $edited->billing_id ?? $this->named('replaces');
+        $replaced = $replaces === null ? null : $this->billingOnTheContract($proposal, $replaces);
+
+        $form = new ProposedBillingForm();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData();
+            $service_id = $data['service_id'] ?? null;
+
+            $written = $form->read(
+                $data + ['billing_id' => $replaces],
+                $edited,
+                $this->chosenService(is_string($service_id) ? $service_id : null),
+            );
+
+            if ($this->saveChanges($proposal, $changes->withLine($written))) {
+                return $this->redirect(['action' => 'view', $proposal->id]);
+            }
+        }
+
+        $this->set('contractVersionProposal', $proposal);
+        $this->set('line', $edited);
+        $this->set('replaced', $replaced);
+        $this->set('values', $form->fill($edited, $replaced));
+        $this->set('services', $this->servicesFor($proposal));
+
+        return null;
+    }
+
+    /**
+     * Stops billing for something, with nothing taking its place.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @param string|null $billing_id The billing that is to stop.
+     * @return \Cake\Http\Response|null Redirects to the proposal.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function endBilling(?string $id = null, ?string $billing_id = null): ?Response
+    {
+        $this->request->allowMethod(['post']);
+
+        $proposal = $this->openProposal($id);
+
+        if (!$proposal instanceof ContractVersionProposal) {
+            return $proposal;
+        }
+
+        $changes = $proposal->proposedChanges();
+
+        // One line to a billing: ending what is already being replaced replaces that line.
+        $existing = $changes->billingsByBillingId()[(string)$billing_id] ?? null;
+        if ($existing !== null) {
+            $changes = $changes->withoutLine($existing->id);
+        }
+
+        $this->saveChanges(
+            $proposal,
+            $changes->withLine((new ProposedBillingForm())->ending((string)$billing_id)),
+        );
+
+        return $this->redirect(['action' => 'view', $proposal->id]);
+    }
+
+    /**
+     * Takes a line back out of the proposal, leaving whatever it acted on as it was.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @param string|null $line Which line.
+     * @return \Cake\Http\Response|null Redirects to the proposal.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function dropBillingLine(?string $id = null, ?string $line = null): ?Response
+    {
+        $this->request->allowMethod(['post', 'delete']);
+
+        $proposal = $this->openProposal($id);
+
+        if (!$proposal instanceof ContractVersionProposal) {
+            return $proposal;
+        }
+
+        $this->saveChanges($proposal, $proposal->proposedChanges()->withoutLine((string)$line));
+
+        return $this->redirect(['action' => 'view', $proposal->id]);
+    }
+
+    /**
+     * The proposal, if it is one that may still be changed.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @return \App\Model\Entity\ContractVersionProposal|\Cake\Http\Response|null
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    private function openProposal(?string $id): ContractVersionProposal|Response|null
+    {
+        $proposal = $this->ContractVersionProposals->get($id);
+
+        if ($this->ContractVersionProposals->mayBeEdited($proposal)) {
+            return $proposal;
+        }
+
+        $this->Flash->error(__('This proposal can no longer be changed.'));
+
+        return $this->redirect(['action' => 'view', $id]);
+    }
+
+    /**
+     * Saves what the proposal now asks for.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Contracts\Proposal\ProposalChanges $changes What it asks for.
+     * @return bool
+     */
+    private function saveChanges(ContractVersionProposal $proposal, ProposalChanges $changes): bool
+    {
+        $proposal = $this->ContractVersionProposals->patchEntity($proposal, [
+            'changes' => $changes->toArray(),
+        ]);
+
+        if ($this->ContractVersionProposals->save($proposal)) {
+            $this->Flash->success(__('The proposal has been saved.'));
+
+            return true;
+        }
+
+        $this->flashValidationErrors($proposal->getErrors());
+        $this->Flash->error(__('The proposal could not be saved. Please, try again.'));
+
+        return false;
+    }
+
+    /**
+     * One of the billings the proposal's snapshot took down.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param string $billing_id Which billing.
+     * @return \App\Model\Entity\Billing|null
+     */
+    private function billingOnTheContract(
+        ContractVersionProposal $proposal,
+        string $billing_id,
+    ): ?Billing {
+        foreach ($proposal->stateOfThings()->hydrate()->billings as $billing) {
+            if ((string)$billing->id === $billing_id) {
+                return $billing;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * The services a line on this proposal may be for.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Service>
+     */
+    private function servicesFor(ContractVersionProposal $proposal): SelectQuery
+    {
+        $contract = $this->contractFor((string)$proposal->contract_id);
+
+        return $this->ContractVersionProposals->Contracts->Billings->Services
+            ->find('list', order: ['name'])
+            ->where($contract === null ? [] : ['OR' => [
+                'Services.service_type_id' => $contract->service_type_id,
+                'Services.service_type_id IS' => null,
+            ]]);
     }
 
     /**
@@ -410,29 +611,36 @@ class ContractVersionProposalsController extends AppController
         $data = $this->dataWithAdditionalParameters($this->ContractVersionProposals, $data);
 
         $form = new ProposalForm();
-        $data['changes'] = $form->changesFrom($data, $this->chosenServices($data));
+
+        // What the head of the form asks is laid over what the proposal already asks of the
+        // billings - those are edited a line at a time and never travel in this submission.
+        $data['changes'] = $form->changesFrom($data, $proposal->isNew()
+            ? ProposalChanges::nothing()
+            : $proposal->proposedChanges());
         $data['confirmations'] = $form->confirmationsFrom($data);
 
-        // The form speaks in its own terms - a line per billing, a date per record, a box per
-        // question - and they have all been read into `changes` by now. What is left has to go,
-        // because two of those names are associations on the proposal: handed `contract`, the
-        // marshaller would build a whole new contract out of one date and then complain that it
-        // has no customer, no service type and no state, on fields no form ever drew.
+        // The form's own fields have been read by now, and the marshaller must not see them: it
+        // would take a name it shares with an association for a record of its own.
         unset(
-            $data['lines'],
-            $data['additions'],
-            $data['version'],
-            $data['version_named'],
-            $data['contract'],
-            $data['contract_named'],
+            $data['version_change'],
+            $data['version_change_named'],
+            $data['contract_change'],
+            $data['contract_change_named'],
             $data['refresh'],
         );
 
+        // The day the papers take effect is the day their version does, unless they are an
+        // amendment to something already concluded - then it is their own and the form asks.
+        $version = $this->versionFor(
+            (string)($data['contract_version_id'] ?? $proposal->contract_version_id),
+        );
+
+        if ($version !== null && !$this->effectiveDateIsItsOwn($version)) {
+            $data['effective_from'] = $version->valid_from->toDateString();
+        }
+
         if (!$keepSnapshot) {
             $contract = $this->contractFor((string)($data['contract_id'] ?? $proposal->contract_id));
-            $version = $this->versionFor(
-                (string)($data['contract_version_id'] ?? $proposal->contract_version_id),
-            );
             $terminates = $data['terminates_contract_version_id']
                 ?? $proposal->terminates_contract_version_id;
             $terminated = $terminates === null ? null : $this->versionFor((string)$terminates);
@@ -463,6 +671,20 @@ class ContractVersionProposalsController extends AppController
         }
 
         return $this->ContractVersionProposals->patchEntity($proposal, $data);
+    }
+
+    /**
+     * Whether these papers take effect on a day of their own.
+     *
+     * They do when they amend something already concluded; otherwise they take effect with the
+     * version they are for, and asking twice would only invite the two to disagree.
+     *
+     * @param \App\Model\Entity\ContractVersion|null $version The version the papers are for.
+     * @return bool
+     */
+    private function effectiveDateIsItsOwn(?ContractVersion $version): bool
+    {
+        return $version?->conclusion_date !== null;
     }
 
     /**
@@ -529,48 +751,36 @@ class ContractVersionProposalsController extends AppController
     }
 
     /**
-     * The services the form's lines chose, as they stand now.
+     * The service a line chose, as it stands now.
      *
      * A line that puts a different service on a billing keeps it with it, because the contract's
      * own snapshot was taken before it was chosen.
      *
-     * @param array<string, mixed> $data What the form sent.
-     * @return array<string, array<string, mixed>>
+     * @param string|null $id Which service.
+     * @return array<string, mixed>|null
      */
-    private function chosenServices(array $data): array
+    private function chosenService(?string $id): ?array
     {
-        $wanted = [];
-
-        foreach (array_merge((array)($data['lines'] ?? []), (array)($data['additions'] ?? [])) as $line) {
-            $id = ((array)$line)['service_id'] ?? null;
-
-            if (is_string($id) && $id !== '') {
-                $wanted[$id] = $id;
-            }
-        }
-
-        if ($wanted === []) {
-            return [];
+        if ($id === null || $id === '') {
+            return null;
         }
 
         $services = $this->ContractVersionProposals->Contracts->Billings->Services
             ->find()
             ->contain(['Queues'])
-            ->where(['Services.id IN' => array_values($wanted)])
-            ->all();
+            ->where(['Services.id' => $id])
+            ->first();
 
-        $chosen = [];
-        foreach ($services as $service) {
-            $chosen[(string)$service->id] = $service->extract([
-                'id', 'name', 'price',
-            ]) + ['queue' => $service->queue?->extract([
+        if ($services === null) {
+            return null;
+        }
+
+        return $services->extract(['id', 'name', 'price'])
+            + ['queue' => $services->queue?->extract([
                 'id', 'name', 'caption', 'speed_down', 'speed_up',
                 'speed_down_common', 'speed_up_common', 'speed_down_minimum', 'speed_up_minimum',
                 'fup_limit', 'data_limit', 'overlimit_fragment', 'overlimit_cost', 'cto_category',
             ])];
-        }
-
-        return $chosen;
     }
 
     /**
@@ -626,10 +836,9 @@ class ContractVersionProposalsController extends AppController
      * What the form needs to draw itself.
      *
      * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
-     * @param bool $fresh Whether to show the state of things as it is now rather than as taken.
      * @return void
      */
-    private function setFormViewVars(ContractVersionProposal $proposal, bool $fresh = false): void
+    private function setFormViewVars(ContractVersionProposal $proposal): void
     {
         $contract = $this->contractFor(
             (string)($proposal->contract_id ?? $this->contract_id ?? $this->named('contract_id') ?? ''),
@@ -649,19 +858,6 @@ class ContractVersionProposalsController extends AppController
             ->where($contract === null ? ['1 = 0'] : ['ContractVersions.contract_id' => $contract->id])
             ->orderBy(['ContractVersions.valid_from' => 'DESC']);
 
-        $services = $this->ContractVersionProposals->Contracts->Billings->Services
-            ->find('list', order: ['name'])
-            ->where($contract === null ? [] : ['OR' => [
-                'Services.service_type_id' => $contract->service_type_id,
-                'Services.service_type_id IS' => null,
-            ]]);
-
-        // What the form lists as the billings to keep, change or end: the state of things as the
-        // proposal took it, unless the operator asked to see how it stands now.
-        $billings = $fresh || $proposal->isNew()
-            ? ($contract->billings ?? [])
-            : $proposal->stateOfThings()->hydrate()->billings;
-
         $questions = $contract === null ? [] : (new ReadinessChecks())->questionsFor($contract);
 
         // Contracts concluded before the renumbering carry the customer number, one contract to a
@@ -671,14 +867,17 @@ class ContractVersionProposalsController extends AppController
             $contract->customer->number ?? null,
         ])));
 
+        $effectiveDateIsItsOwn = $this->effectiveDateIsItsOwn(
+            $this->versionFor((string)$proposal->contract_version_id),
+        );
+
         $this->set(compact(
             'contract',
             'contracts',
             'versions',
-            'services',
-            'billings',
             'questions',
             'contractNumbers',
+            'effectiveDateIsItsOwn',
         ));
         $this->set('wording', ReadinessChecks::wording());
         $this->set('deliveryMethods', $this->deliveryMethodOptions());
@@ -692,8 +891,19 @@ class ContractVersionProposalsController extends AppController
      */
     private function setProposalViewVars(ContractVersionProposal $proposal): void
     {
-        $this->set('changes', $proposal->proposedChanges());
+        $changes = $proposal->proposedChanges();
+        $snapshot = $proposal->stateOfThings();
+
+        $this->set('changes', $changes);
         $this->set('confirmations', $proposal->confirmations());
+        // What would be billed for, each row saying where it comes from - the same projection the
+        // documents print from, so the table and the paper cannot disagree.
+        $this->set('rows', (new ProposalProjection())->explain(
+            $snapshot->hydrate()->billings,
+            $changes,
+            $proposal->effective_from,
+            $snapshot->servicesChosenBy($changes),
+        ));
         $this->set('mayBeEdited', $this->ContractVersionProposals->mayBeEdited($proposal));
         $this->set('mayBeDeleted', $this->ContractVersionProposals->mayBeDeleted($proposal));
         $this->set('deliveryMethods', $this->deliveryMethodOptions());

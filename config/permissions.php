@@ -439,6 +439,9 @@ $permissions = [
                 'addFromRange',
                 'edit',
                 'print',
+                'billingLine',
+                'dropBillingLine',
+                'endBilling',
                 'refreshSnapshot',
                 'revoke',
                 'send',
@@ -561,6 +564,9 @@ $permissions = [
             'action' => [
                 'edit',
                 'refreshSnapshot',
+                'billingLine',
+                'endBilling',
+                'dropBillingLine',
                 'delete',
             ],
             //The table says what may still be touched. The condition reads the record, so it also

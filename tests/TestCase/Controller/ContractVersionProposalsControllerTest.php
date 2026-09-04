@@ -39,6 +39,13 @@ class ContractVersionProposalsControllerTest extends TestCase
     private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
 
     /**
+     * A billing the fixture proposal's snapshot knows about.
+     *
+     * @var string
+     */
+    private const KNOWN_BILLING_ID = 'b2000000-0000-4000-8000-000000000002';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -268,10 +275,11 @@ class ContractVersionProposalsControllerTest extends TestCase
     }
 
     /**
-     * The form talks about the version and the contract in its own fields, and two of those names
-     * are associations on the proposal. Handed them, the marshaller would build a whole new
-     * contract out of one date and then complain that it has no customer, no service type and no
-     * state - three complaints on fields no form ever drew.
+     * The form talks about the version and the contract in fields of its own. They are named apart
+     * from the records they speak of, because two of those names are associations on the proposal:
+     * handed `contract`, the marshaller once built a whole new contract out of one date and then
+     * complained that it had no customer, no service type and no state - three complaints on fields
+     * no form ever drew.
      *
      * @return void
      * @link \App\Controller\ContractVersionProposalsController::add()
@@ -292,12 +300,10 @@ class ContractVersionProposalsControllerTest extends TestCase
                     'does_not_use_radius' => '1',
                 ],
                 // exactly what the form sends when nothing about them is ticked
-                'version_named' => ['valid_until' => '0', 'obligation_until' => '0'],
-                'version' => ['valid_until' => '', 'obligation_until' => ''],
-                'contract_named' => ['termination_date' => '0'],
-                'contract' => ['termination_date' => ''],
-                'lines' => [],
-                'additions' => [],
+                'version_change_named' => ['valid_until' => '0', 'obligation_until' => '0'],
+                'version_change' => ['valid_until' => '', 'obligation_until' => ''],
+                'contract_change_named' => ['termination_date' => '0'],
+                'contract_change' => ['termination_date' => ''],
             ]);
 
         $this->assertRedirect();
@@ -306,6 +312,169 @@ class ContractVersionProposalsControllerTest extends TestCase
         /** @var \App\Model\Entity\ContractVersionProposal $saved */
         $saved = $proposals->find()->orderByDesc('created')->firstOrFail();
         $this->assertTrue($saved->proposedChanges()->isEmpty());
+    }
+
+    /**
+     * A line is added on a page of its own, the way a billing on a contract is.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::billingLine()
+     */
+    public function testABillingIsAddedOnItsOwnPage(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID, [
+            'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
+            'quantity' => '2',
+            'price' => '299.00',
+        ]);
+
+        $this->assertRedirect();
+
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $lines = $proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings;
+
+        $this->assertCount(1, $lines);
+        $this->assertTrue($lines[0]->isAddition());
+        $this->assertSame('299.00', $lines[0]->price?->toString());
+        $this->assertNotEmpty($lines[0]->service, 'The chosen service did not come with the line.');
+    }
+
+    /**
+     * Changing something already billed for starts from what is there, so the operator changes the
+     * one thing they came to change.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::billingLine()
+     */
+    public function testChangingABillingStartsFromWhatIsThere(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID);
+
+        $this->assertResponseOk();
+        $this->assertSame(self::KNOWN_BILLING_ID, $this->viewVariable('values')['billing_id']);
+    }
+
+    /**
+     * One change may be several lines: half price until a day, full price from it. The second line
+     * carries its own start, and the first stops the day before it.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::billingLine()
+     */
+    public function testOneChangeMayBeSeveralLines(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID, [
+                'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
+                'quantity' => '1',
+                'percentage_discount' => '50',
+                'billing_until' => '2027-08-31',
+            ]);
+        $this->assertRedirect();
+
+        $this->post('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID, [
+            'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
+            'quantity' => '1',
+            'billing_from' => '2027-09-01',
+        ]);
+        $this->assertRedirect();
+
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $lines = $proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings;
+
+        $this->assertCount(2, $lines);
+        $this->assertSame(50, $lines[0]->percentage_discount);
+        $this->assertSame('2027-08-31', $lines[0]->billing_until?->toDateString());
+        $this->assertSame('2027-09-01', $lines[1]->billing_from?->toDateString());
+        $this->assertNull($lines[1]->percentage_discount);
+    }
+
+    /**
+     * A line can be taken back out again, leaving what it acted on as it stands.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::dropBillingLine()
+     */
+    public function testALineCanBeTakenBackOut(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID, [
+            'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
+            'quantity' => '1',
+        ]);
+
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $line = $proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings[0];
+
+        $this->post('/contract-version-proposals/drop-billing-line/'
+            . self::PROPOSAL_ID . '/' . $line->id);
+
+        $this->assertRedirect();
+        $this->assertTrue($proposals->get(self::PROPOSAL_ID)->proposedChanges()->isEmpty());
+    }
+
+    /**
+     * Ending a billing that is already being replaced replaces that line rather than adding a
+     * second one to the same billing.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::endBilling()
+     */
+    public function testEndingSomethingAlreadyBeingReplacedReplacesThatLine(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID, [
+                'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
+                'quantity' => '1',
+            ]);
+
+        $this->post('/contract-version-proposals/end-billing/'
+            . self::PROPOSAL_ID . '/' . self::KNOWN_BILLING_ID);
+        $this->assertRedirect();
+
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $lines = $proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings;
+
+        $this->assertCount(1, $lines);
+        $this->assertTrue($lines[0]->terminatesOnly());
+    }
+
+    /**
+     * A settled proposal has its lines left alone.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::billingLine()
+     */
+    public function testTheLinesOfASentProposalAreLeftAlone(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal->sent_date = new Date('2026-10-01');
+        $proposal->sent_by = ContractDeliveryMethod::Email;
+        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+
+        $this->login();
+        $this->get('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID);
+
+        $this->assertRedirect();
     }
 
     /**

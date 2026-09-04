@@ -46,9 +46,10 @@ final class ProposalProjection
                 continue;
             }
 
-            // What is replaced or ended stops the day before, and what takes its place starts on
-            // the day itself - the same two halves the transfer will write.
-            $projected[] = $this->ending($billing, $effective_from);
+            // What is replaced or ended stops the day before what replaces it starts - the same
+            // two halves the transfer will write. A line that starts later than the proposal
+            // leaves the old billing running until then.
+            $projected[] = $this->ending($billing, $line->startsOn($effective_from));
 
             if ($line->startsABilling()) {
                 $projected[] = $this->starting($line, $billing, $effective_from, $services);
@@ -62,6 +63,70 @@ final class ProposalProjection
         }
 
         return $this->inOrder($projected);
+    }
+
+    /**
+     * The same projection, with each line saying where it comes from.
+     *
+     * This is what the proposal's own table is drawn from: the operator reads what would be billed
+     * for and, on each row, whether it stands as it is, was changed, was added, or stops here.
+     *
+     * @param array<\App\Model\Entity\Billing> $billings The billings as the snapshot took them.
+     * @param \App\Contracts\Proposal\ProposalChanges $changes What the proposal asks for.
+     * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.
+     * @param array<string, \App\Model\Entity\Service> $services The services the lines name, by id.
+     * @return array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool}>
+     */
+    public function explain(
+        array $billings,
+        ProposalChanges $changes,
+        Date $effective_from,
+        array $services = [],
+    ): array {
+        $acted_on = $changes->billingsByBillingId();
+        $rows = [];
+
+        foreach ($billings as $billing) {
+            $line = $acted_on[(string)$billing->id] ?? null;
+
+            if ($line === null) {
+                $rows[] = ['billing' => $billing, 'line' => null, 'ending' => false];
+
+                continue;
+            }
+
+            $rows[] = [
+                'billing' => $this->ending($billing, $line->startsOn($effective_from)),
+                'line' => $line->terminatesOnly() ? $line : null,
+                'ending' => true,
+            ];
+
+            if ($line->startsABilling()) {
+                $rows[] = [
+                    'billing' => $this->starting($line, $billing, $effective_from, $services),
+                    'line' => $line,
+                    'ending' => false,
+                ];
+            }
+        }
+
+        foreach ($changes->billings as $line) {
+            if ($line->isAddition()) {
+                $rows[] = [
+                    'billing' => $this->starting($line, null, $effective_from, $services),
+                    'line' => $line,
+                    'ending' => false,
+                ];
+            }
+        }
+
+        usort(
+            $rows,
+            fn(array $one, array $other): int => [(string)$one['billing']->billing_from, (string)$one['billing']->name]
+                <=> [(string)$other['billing']->billing_from, (string)$other['billing']->name],
+        );
+
+        return $rows;
     }
 
     /**
@@ -100,16 +165,16 @@ final class ProposalProjection
     }
 
     /**
-     * The billing being replaced, stopped the day before the replacement starts.
+     * The billing being replaced, stopped the day before its replacement starts.
      *
      * @param \App\Model\Entity\Billing $billing What is being replaced.
-     * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.
+     * @param \Cake\I18n\Date $starts The day what replaces it starts.
      * @return \App\Model\Entity\Billing
      */
-    private function ending(Billing $billing, Date $effective_from): Billing
+    private function ending(Billing $billing, Date $starts): Billing
     {
         $ending = clone $billing;
-        $ending->set('billing_until', $effective_from->subDays(1));
+        $ending->set('billing_until', $starts->subDays(1));
 
         return $ending;
     }
@@ -136,7 +201,7 @@ final class ProposalProjection
 
         $starting->unset('id');
         $starting->patch([
-            'billing_from' => $effective_from,
+            'billing_from' => $line->startsOn($effective_from),
             'billing_until' => $line->billing_until,
             'service_id' => $line->service_id,
             'text' => $line->text,
