@@ -1103,7 +1103,7 @@ msgstr "Návrh byl uložen."
 #: src/Controller/ContractVersionProposalsController.php:423
 #: src/Controller/ContractVersionProposalsController.php:843
 msgid "The proposal could not be saved. Please, try again."
-msgstr "Návrh se nepodařilo uložit. Zkuste to prosím znovu."
+msgstr "Návrh nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractVersionProposalsController.php:482
 #: src/Controller/ContractVersionProposalsController.php:525
@@ -1118,7 +1118,7 @@ msgstr "Odeslání návrhu bylo zapsáno."
 
 #: src/Controller/ContractVersionProposalsController.php:500
 msgid "The sending could not be recorded. Please, try again."
-msgstr "Odeslání se nepodařilo zapsat. Zkuste to prosím znovu."
+msgstr "Odeslání nelze zapsat. Zkuste to prosím znovu."
 
 #: src/Controller/ContractVersionProposalsController.php:536
 msgid "The signature has been recorded."
@@ -1126,7 +1126,7 @@ msgstr "Podpis byl zapsán."
 
 #: src/Controller/ContractVersionProposalsController.php:542
 msgid "The signature could not be recorded. Please, try again."
-msgstr "Podpis se nepodařilo zapsat. Zkuste to prosím znovu."
+msgstr "Podpis nelze zapsat. Zkuste to prosím znovu."
 
 #: src/Controller/ContractVersionProposalsController.php:575
 #: templates/ContractVersionProposals/transfer.php:69
@@ -1159,7 +1159,7 @@ msgstr "Návrh byl odstraněn."
 
 #: src/Controller/ContractVersionProposalsController.php:645
 msgid "The proposal could not be deleted. Please, try again."
-msgstr "Návrh se nepodařilo odstranit. Zkuste to prosím znovu."
+msgstr "Návrh nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractVersionProposalsController.php:674
 msgid "The proposal has been revoked."
@@ -1167,7 +1167,7 @@ msgstr "Návrh byl zrušen."
 
 #: src/Controller/ContractVersionProposalsController.php:677
 msgid "The proposal could not be revoked. Please, try again."
-msgstr "Návrh se nepodařilo zrušit. Zkuste to prosím znovu."
+msgstr "Návrh nelze zrušit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractVersionProposalsController.php:757
 msgid "Choose which contract and which version of it these papers are for."
@@ -2604,7 +2604,7 @@ msgid ""
 "Revoke it instead."
 msgstr ""
 "Papíry k tomuto návrhu už šly ven, záznam o nich proto zůstává. Zrušte ho "
-"místo mazání."
+"místo odstranění."
 
 #: src/Model/Table/ContractVersionProposalsTable.php:310
 msgid "The proposed changes are not in a shape the application can read."
