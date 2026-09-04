@@ -45,11 +45,13 @@ $changes = $contractVersionProposal->isNew()
         'onchange' => $this::REFRESH_ON_CHANGE,
     ]);
 
-    // On an amendment the day it takes effect is its own; otherwise it is the day the version
-    // takes effect, and asking twice would only invite the two to disagree.
+    // Papers written over a version already concluded take effect on a day of their own - an
+    // amendment, an agreement to end it. Otherwise it is the day the version itself takes effect,
+    // and asking twice would only invite the two to disagree.
     if ($effectiveDateIsItsOwn) {
         echo $this->Form->control('effective_from', [
-            'label' => __('Effective date of the amendment'),
+            'label' => __('Effective From'),
+            'help' => __('The day these papers start to apply.'),
         ]);
     } else {
         echo '<p>' . __('These papers take effect with the contract version they are for.') . '</p>';

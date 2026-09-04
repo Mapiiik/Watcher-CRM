@@ -713,8 +713,9 @@ class ContractVersionProposalsController extends AppController
     /**
      * Whether these papers take effect on a day of their own.
      *
-     * They do when they amend something already concluded; otherwise they take effect with the
-     * version they are for, and asking twice would only invite the two to disagree.
+     * They do when they are written over a version already concluded - an amendment, an agreement
+     * to end it. Otherwise they take effect with the version they are for, and asking twice would
+     * only invite the two to disagree.
      *
      * @param \App\Model\Entity\ContractVersion|null $version The version the papers are for.
      * @return bool
