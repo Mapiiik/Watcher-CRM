@@ -204,8 +204,11 @@ class AppPDF extends TCPDF
      * This is how every document states what it is about - contract number, dates, the
      * number of the amendment - and the columns are shared out evenly across the width.
      *
+     * The columns divide the width the rule beneath them spans, not the narrower one the
+     * paragraphs are set to - the row sits between two rules and belongs to them.
+     *
      * @param array<int, array{0:string, 1:string}> $columns Label and value pairs
-     * @param float|null $width Column width, or null to divide the page evenly
+     * @param float|null $width Column width, or null to divide the row evenly
      * @param float $separatorOffset Indent of the closing rule
      * @return void
      */
@@ -214,21 +217,74 @@ class AppPDF extends TCPDF
         ?float $width = null,
         float $separatorOffset = self::SEPARATOR_OFFSET_X,
     ): void {
-        $width ??= static::TEXT_WIDTH / max(1, count($columns));
+        $widths = $width === null
+            ? $this->shareOutColumns($columns)
+            : array_fill(0, count($columns), $width);
 
         $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
-        foreach ($columns as [$label, $value]) {
-            $this->Cell($width, static::LINE_HEIGHT, $label, align: 'C');
+        foreach ($columns as $index => [$label, $value]) {
+            $this->Cell($widths[$index], static::LINE_HEIGHT, $label, align: 'C');
         }
         $this->Ln();
 
         $this->SetFont(static::FONT_FAMILY, 'B', static::BODY_FONT_SIZE);
-        foreach ($columns as [$label, $value]) {
-            $this->Cell($width, static::LINE_HEIGHT, $value, align: 'C');
+        foreach ($columns as $index => [$label, $value]) {
+            $this->Cell($widths[$index], static::LINE_HEIGHT, $value, align: 'C');
         }
         $this->Ln();
 
         $this->drawSeparator($separatorOffset, lnAfter: 3.0);
+    }
+
+    /**
+     * Divides the row between its columns.
+     *
+     * Every column starts with an equal share, and one whose heading will not fit that share
+     * takes what it needs from the columns that have room to spare. Dates are not all the same
+     * length in Czech, and a heading squeezed to fit while the column beside it sits half
+     * empty is the layout admitting it never looked.
+     *
+     * @param array<int, array{0:string, 1:string}> $columns Label and value pairs
+     * @return array<int, float> Width of each column, together the width of the row
+     */
+    private function shareOutColumns(array $columns): array
+    {
+        $count = max(1, count($columns));
+        $share = static::PAGE_WIDTH / $count;
+        $padding = $this->getCellPaddings();
+
+        $needed = [];
+        foreach ($columns as [$label, $value]) {
+            $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
+            $labelWidth = $this->GetStringWidth($label);
+            $this->SetFont(static::FONT_FAMILY, 'B', static::BODY_FONT_SIZE);
+            $needed[] = max($labelWidth, $this->GetStringWidth($value)) + $padding['L'] + $padding['R'];
+        }
+
+        $widths = array_map(fn(float $want): float => max($share, $want), $needed);
+        $spare = array_map(fn(float $has, float $want): float => $has - $want, $widths, $needed);
+
+        $excess = array_sum($widths) - static::PAGE_WIDTH;
+        $roomToGive = array_sum($spare);
+
+        if ($excess > 0.0 && $roomToGive > 0.0) {
+            $taken = min($excess, $roomToGive);
+            $widths = array_map(
+                fn(float $has, float $room): float => $has - $taken * $room / $roomToGive,
+                $widths,
+                $spare,
+            );
+        }
+
+        // If every column wanted more than its share there was nothing to give, and the row
+        // would run off the page. It is brought back to width and the cells condense what is
+        // left over, which is the same answer a single column too narrow already gets.
+        $total = array_sum($widths);
+        if ($total > static::PAGE_WIDTH) {
+            $widths = array_map(fn(float $has): float => $has * static::PAGE_WIDTH / $total, $widths);
+        }
+
+        return $widths;
     }
 
     /**

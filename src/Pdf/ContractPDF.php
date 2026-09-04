@@ -795,18 +795,23 @@ class ContractPDF extends AppPDF
 
         $this->printBillingHeading($this->contractText('sections.payment_info'), $format);
 
+        // The columns divide the width the rules above and below them span, so the row uses
+        // the whole of it rather than stopping seven millimetres short and condensing the one
+        // label that needs those millimetres.
+        $column = self::PAGE_WIDTH / 4;
+
         $this->SetFont(self::FONT_FAMILY, $format, self::BODY_FONT_SIZE);
-        $this->Cell(45, self::LINE_HEIGHT, $this->label('payment_period'), align: 'C');
-        $this->Cell(45, self::LINE_HEIGHT, $this->label('payment_method'), align: 'C');
-        $this->Cell(45, self::LINE_HEIGHT, $this->label('first_payment_date'), align: 'C');
-        $this->Cell(45, self::LINE_HEIGHT, $this->label('first_payment_total'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $this->label('payment_period'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $this->label('payment_method'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $this->label('first_payment_date'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $this->label('first_payment_total'), align: 'C');
         $this->Ln();
 
         $this->SetFont(self::FONT_FAMILY, 'B' . $format, self::BODY_FONT_SIZE);
-        $this->Cell(45, self::LINE_HEIGHT, $this->label('monthly'), align: 'C');
-        $this->Cell(45, self::LINE_HEIGHT, $this->label('bank_transfer'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $this->label('monthly'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $this->label('bank_transfer'), align: 'C');
         $this->Cell(
-            45,
+            $column,
             self::LINE_HEIGHT,
             'do ' . $billingReferenceDate->day(1)->addMonths(1)->addDays(9),
             align: 'C',
@@ -816,7 +821,7 @@ class ContractPDF extends AppPDF
         // why the figure is not what they will pay.
         if ($contract->customer->accounting_profile->reverse_charge) {
             $this->Cell(
-                45,
+                $column,
                 self::LINE_HEIGHT,
                 Number::currency(
                     Billing::calcVatBaseFromTotal(
@@ -839,22 +844,22 @@ class ContractPDF extends AppPDF
                 align: 'J',
             );
         } else {
-            $this->Cell(45, self::LINE_HEIGHT, Number::currency($totalCost->toFloat()), align: 'C');
+            $this->Cell($column, self::LINE_HEIGHT, Number::currency($totalCost->toFloat()), align: 'C');
             $this->Ln();
         }
 
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 1.0);
 
         $this->SetFont(self::FONT_FAMILY, $format, self::BODY_FONT_SIZE);
-        $this->Cell(90, self::LINE_HEIGHT, $this->label('provider_bank'), align: 'C');
-        $this->Cell(45, self::LINE_HEIGHT, $this->label('provider_account'), align: 'C');
-        $this->Cell(45, self::LINE_HEIGHT, $this->label('variable_symbol'), align: 'C');
+        $this->Cell($column * 2, self::LINE_HEIGHT, $this->label('provider_bank'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $this->label('provider_account'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $this->label('variable_symbol'), align: 'C');
         $this->Ln();
 
         $this->SetFont(self::FONT_FAMILY, 'B' . $format, self::BODY_FONT_SIZE);
-        $this->Cell(90, self::LINE_HEIGHT, Settings::getString('core.company.bank_name'), align: 'C');
-        $this->Cell(45, self::LINE_HEIGHT, Settings::getString('core.company.bank_account_number'), align: 'C');
-        $this->Cell(45, self::LINE_HEIGHT, $contract->customer->number . ' *', align: 'C');
+        $this->Cell($column * 2, self::LINE_HEIGHT, Settings::getString('core.company.bank_name'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, Settings::getString('core.company.bank_account_number'), align: 'C');
+        $this->Cell($column, self::LINE_HEIGHT, $contract->customer->number . ' *', align: 'C');
         $this->Ln();
 
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 1.0);
