@@ -60,6 +60,7 @@ class ProposalChangesTest extends TestCase
                     'separate_invoice' => true,
                     'billing_until' => '2027-12-31',
                     'note' => 'Lorem ipsum',
+                    'service' => ['id' => 's2', 'name' => 'Internet 100'],
                 ],
             ],
             'version' => ['valid_until' => '2026-03-31'],

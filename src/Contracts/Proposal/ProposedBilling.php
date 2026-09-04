@@ -32,6 +32,7 @@ final class ProposedBilling
      * @param bool $separate_invoice Whether the line is invoiced on its own.
      * @param \Cake\I18n\Date|null $billing_until The day the new line stops; null runs on.
      * @param string|null $note Whatever the operator wrote down.
+     * @param array<string, mixed>|null $service The service as it stood when it was chosen.
      */
     public function __construct(
         public readonly ?string $billing_id,
@@ -45,6 +46,7 @@ final class ProposedBilling
         public readonly bool $separate_invoice,
         public readonly ?Date $billing_until,
         public readonly ?string $note,
+        public readonly ?array $service = null,
     ) {
         if ($this->billing_id === null && $this->terminates_only) {
             throw new InvalidArgumentException('A line that adds nothing cannot end anything either.');
@@ -105,6 +107,7 @@ final class ProposedBilling
                 ? new Date((string)$line['billing_until'])
                 : null,
             note: self::text($line, 'note'),
+            service: isset($line['service']) ? (array)$line['service'] : null,
         );
     }
 
@@ -130,6 +133,7 @@ final class ProposedBilling
             'separate_invoice' => $this->separate_invoice,
             'billing_until' => $this->billing_until?->toDateString(),
             'note' => $this->note,
+            'service' => $this->service,
         ];
     }
 

@@ -74,6 +74,16 @@ abstract class ProposedDates
     }
 
     /**
+     * Every field the proposal names, with what it asks each to become.
+     *
+     * @return array<string, \Cake\I18n\Date|null>
+     */
+    public function asked(): array
+    {
+        return $this->fields;
+    }
+
+    /**
      * What the proposal asks the given field to become; null clears it.
      *
      * @param string $field Which field.

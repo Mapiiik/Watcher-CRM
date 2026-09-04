@@ -349,6 +349,39 @@ final class ProposalSnapshot
     }
 
     /**
+     * The services the proposal's own lines chose, as unsaved records.
+     *
+     * A line that puts a different service on a billing brings that service with it: the contract's
+     * snapshot was taken before it was chosen and has never heard of it, and the document has to
+     * name it and quote its speeds.
+     *
+     * @param \App\Contracts\Proposal\ProposalChanges $changes What the proposal asks for.
+     * @return array<string, \App\Model\Entity\Service> By the id the lines name them under.
+     */
+    public function servicesChosenBy(ProposalChanges $changes): array
+    {
+        $services = [];
+
+        foreach ($changes->billings as $line) {
+            if ($line->service_id === null || $line->service === null) {
+                continue;
+            }
+
+            /** @var \App\Model\Entity\Service|null $service */
+            $service = $this->record('Services', $line->service);
+
+            if ($service === null) {
+                continue;
+            }
+
+            $service->set('queue', $this->record('Queues', (array)($line->service['queue'] ?? [])));
+            $services[$line->service_id] = $service;
+        }
+
+        return $services;
+    }
+
+    /**
      * One record, put back together with the types it was kept in.
      *
      * The marshaller is what turns the stored text back into dates, money and enums, which is why
