@@ -634,6 +634,34 @@ class ContractVersionProposalsControllerTest extends TestCase
     }
 
     /**
+     * Nothing may be carried over without the day the customer agreed to it, so there is a way to
+     * record that day - and to correct it, for as long as the proposal is open.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::conclude()
+     */
+    public function testTheSignatureIsRecordedAndMayBeCorrected(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        foreach (['2026-10-05', '2026-10-06'] as $day) {
+            $this->post('/contract-version-proposals/conclude/' . self::PROPOSAL_ID, [
+                'conclusion_date' => $day,
+            ]);
+
+            $this->assertRedirect();
+            $this->assertSame(
+                $day,
+                $proposals->get(self::PROPOSAL_ID)->conclusion_date?->toDateString(),
+            );
+        }
+    }
+
+    /**
      * Recording that the papers went out settles what stands behind them: nothing about the
      * proposal may be changed afterwards.
      *

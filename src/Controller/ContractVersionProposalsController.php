@@ -497,6 +497,47 @@ class ContractVersionProposalsController extends AppController
     }
 
     /**
+     * Records the day the customer agreed to the proposal.
+     *
+     * Kept apart from sending because they are two different events, and because sending settles
+     * what stands behind the papers while this does not: a signature may be recorded, corrected and
+     * recorded again for as long as the proposal is open. Nothing may be carried over without it.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @return \Cake\Http\Response|null Redirects when recorded, renders the form otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function conclude(?string $id = null): ?Response
+    {
+        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+
+        if (!$proposal->isOpen()) {
+            $this->Flash->warning(__('This proposal has already been settled.'));
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $proposal = $this->ContractVersionProposals->patchEntity($proposal, [
+                'conclusion_date' => $this->request->getData('conclusion_date'),
+            ]);
+
+            if ($this->ContractVersionProposals->save($proposal)) {
+                $this->Flash->success(__('The signature has been recorded.'));
+
+                return $this->redirect(['action' => 'view', $proposal->id]);
+            }
+
+            $this->flashValidationErrors($proposal->getErrors());
+            $this->Flash->error(__('The signature could not be recorded. Please, try again.'));
+        }
+
+        $this->set('contractVersionProposal', $proposal);
+
+        return null;
+    }
+
+    /**
      * Shows what carrying the proposal over would do, and does it when told to.
      *
      * This is the one place a proposal touches anything outside itself. Up to here the live records

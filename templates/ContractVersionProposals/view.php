@@ -38,6 +38,13 @@ use App\Contracts\Proposal\ProposedVersion;
             <?php endif; ?>
             <?php if ($contractVersionProposal->isOpen()) : ?>
                 <?= $this->AuthLink->link(
+                    $contractVersionProposal->hasBeenConcluded()
+                        ? __('Correct the Signature')
+                        : __('Record the Signature'),
+                    ['action' => 'conclude', $contractVersionProposal->id],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('Carry Over'),
                     ['action' => 'transfer', $contractVersionProposal->id],
                     ['class' => 'side-nav-item'],

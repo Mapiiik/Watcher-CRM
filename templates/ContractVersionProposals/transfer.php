@@ -17,6 +17,13 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php if (!$contractVersionProposal->hasBeenConcluded()) : ?>
+                <?= $this->AuthLink->link(
+                    __('Record the Signature'),
+                    ['action' => 'conclude', $contractVersionProposal->id],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            <?php endif; ?>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
                 ['action' => 'view', $contractVersionProposal->id],

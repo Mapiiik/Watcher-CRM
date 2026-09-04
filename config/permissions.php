@@ -440,6 +440,7 @@ $permissions = [
                 'edit',
                 'print',
                 'billingLine',
+                'conclude',
                 'dropBillingLine',
                 'endBilling',
                 'refreshSnapshot',
