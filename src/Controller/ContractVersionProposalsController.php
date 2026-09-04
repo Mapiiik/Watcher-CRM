@@ -639,6 +639,11 @@ class ContractVersionProposalsController extends AppController
             $data['effective_from'] = $version->valid_from->toDateString();
         }
 
+        // A form asking to be drawn again is not an attempt to save, so nothing is held against it.
+        if ($redrawing) {
+            return $this->ContractVersionProposals->patchEntity($proposal, $data, ['validate' => false]);
+        }
+
         if (!$keepSnapshot) {
             $contract = $this->contractFor((string)($data['contract_id'] ?? $proposal->contract_id));
             $terminates = $data['terminates_contract_version_id']
@@ -646,12 +651,6 @@ class ContractVersionProposalsController extends AppController
             $terminated = $terminates === null ? null : $this->versionFor((string)$terminates);
 
             if ($contract === null || $version === null) {
-                if ($redrawing) {
-                    return $this->ContractVersionProposals->patchEntity($proposal, $data, [
-                        'validate' => false,
-                    ]);
-                }
-
                 // Without both there is nothing to take a snapshot of, and the columns that would
                 // hold one are not on the form - so it is said where the operator is looking,
                 // with everything they typed still in front of them.

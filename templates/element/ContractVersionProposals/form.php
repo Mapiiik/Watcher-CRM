@@ -27,13 +27,16 @@ $changes = $contractVersionProposal->isNew()
 <fieldset>
     <legend><?= __('What the papers are for') ?></legend>
     <?php
+    // Both the contract and the version redraw the form when they change, and the field they add
+    // to do it is not one the form declared - so it is unlocked whichever of them is on the page.
+    $this->Form->unlockField('refresh');
+
     if (!isset($contract_id)) {
         echo $this->Form->control('contract_id', [
             'options' => $contracts,
             'empty' => true,
             'onchange' => $this::REFRESH_ON_CHANGE,
         ]);
-        $this->Form->unlockField('refresh');
     }
     echo $this->Form->control('contract_version_id', [
         'options' => $versions,

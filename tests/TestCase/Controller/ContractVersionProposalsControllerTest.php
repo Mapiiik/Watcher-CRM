@@ -192,6 +192,7 @@ class ContractVersionProposalsControllerTest extends TestCase
         $this->post('/contract-version-proposals/add', [
             'refresh' => 'refresh',
             'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
         ]);
 
         $this->assertResponseOk();
@@ -312,6 +313,27 @@ class ContractVersionProposalsControllerTest extends TestCase
         /** @var \App\Model\Entity\ContractVersionProposal $saved */
         $saved = $proposals->find()->orderByDesc('created')->firstOrFail();
         $this->assertTrue($saved->proposedChanges()->isEmpty());
+    }
+
+    /**
+     * Both the contract and the version redraw the form when they change, and they do it by adding
+     * a field the form never declared. It has to be unlocked whichever of them is on the page, or
+     * the redraw is refused as tampering.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testTheFieldThatRedrawsTheFormIsUnlocked(): void
+    {
+        $this->login();
+        $this->get('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481/contracts/'
+            . self::CONTRACT_ID . '/contract-version-proposals/add');
+
+        $this->assertResponseOk();
+        // The contract is settled by the route, so its own selector is not drawn - and the version
+        // selector still has to be able to redraw the form.
+        $this->assertResponseContains('refresh');
+        $this->assertResponseNotContains('name="contract_id"');
     }
 
     /**
