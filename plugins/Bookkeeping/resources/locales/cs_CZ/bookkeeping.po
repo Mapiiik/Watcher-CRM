@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-31 17:38+0200\n"
+"POT-Creation-Date: 2026-09-04 23:49+0200\n"
 "PO-Revision-Date: 2026-08-26 13:21+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -295,7 +295,7 @@ msgstr ""
 "{customer_number}, příjemci: {recipients}"
 
 #: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:314
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:238
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:244
 msgid "Done"
 msgstr "Hotovo"
 
@@ -311,28 +311,28 @@ msgstr "Zpracování dlužníků se nezdařilo"
 msgid "Debtor processing failed."
 msgstr "Zpracování dlužníků se nezdařilo."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:100
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:101
 msgid "Number of emails to process."
 msgstr "Počet e-mailů ke zpracování."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:134
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:140
 msgid "Sending invoices:"
 msgstr "Odesílání faktur:"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:145
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:151
 msgid "Invoice - {0} - {1}"
 msgstr "Faktura - {0} - {1}"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:197
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:203
 msgid "Email was successfully sent."
 msgstr "E-mail byl úspěšně odeslán."
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:205
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:218
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:211
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:224
 msgid "Error sending email message with issued invoice ID {0}: {1}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}: {1}"
 
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:213
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:219
 msgid "Error sending email message with issued invoice ID {0}"
 msgstr "Chyba při odesílání e-mailové zprávy s ID vydané faktury {0}"
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-22 17:08+0200\n"
+"POT-Creation-Date: 2026-09-04 23:49+0200\n"
 "PO-Revision-Date: 2026-08-22 17:20+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -16,23 +16,23 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: plugins/Dashboard/src/Controller/Trait/DashboardControllerTrait.php:48
+#: plugins/Dashboard/src/Controller/Trait/DashboardControllerTrait.php:55
 msgid "There is no such card."
 msgstr "Taková karta neexistuje."
 
-#: plugins/Dashboard/templates/Dashboard/index.php:7
-#: plugins/Dashboard/templates/Dashboard/index.php:14
+#: plugins/Dashboard/templates/Dashboard/cards.php:7
+#: plugins/Dashboard/templates/Dashboard/cards.php:14
 msgid "Dashboard"
 msgstr "Nástěnka"
 
-#: plugins/Dashboard/templates/Dashboard/index.php:17
+#: plugins/Dashboard/templates/Dashboard/cards.php:17
 msgid "There is nothing on the dashboard for your role yet."
 msgstr "Na nástěnce zatím není pro vaši roli nic k dispozici."
 
-#: plugins/Dashboard/templates/Dashboard/index.php:27
+#: plugins/Dashboard/templates/Dashboard/cards.php:27
 msgid "The card could not be loaded."
 msgstr "Kartu se nepodařilo načíst."
 
-#: plugins/Dashboard/templates/Dashboard/index.php:29
+#: plugins/Dashboard/templates/Dashboard/cards.php:29
 msgid "Loading…"
 msgstr "Načítání…"
