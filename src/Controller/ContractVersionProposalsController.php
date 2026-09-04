@@ -466,6 +466,10 @@ class ContractVersionProposalsController extends AppController
     /**
      * Records that the papers went out, which is what settles what stands behind them.
      *
+     * It may be recorded again for as long as the proposal is open, because papers do go out
+     * again - by another means, or after the first attempt came back. The content stays locked
+     * either way; what moves is the day, and with it the deadline for an answer.
+     *
      * @param string|null $id Contract version proposal id.
      * @return \Cake\Http\Response|null Redirects when recorded, renders the form otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
@@ -473,6 +477,12 @@ class ContractVersionProposalsController extends AppController
     public function send(?string $id = null): ?Response
     {
         $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+
+        if (!$proposal->isOpen()) {
+            $this->Flash->warning(__('This proposal has already been settled.'));
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $proposal = $this->ContractVersionProposals->patchEntity($proposal, [

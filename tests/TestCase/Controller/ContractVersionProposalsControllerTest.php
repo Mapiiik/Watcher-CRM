@@ -634,6 +634,38 @@ class ContractVersionProposalsControllerTest extends TestCase
     }
 
     /**
+     * Papers go out more than once - by another means, or after the first attempt came back - so
+     * the day and the way they went may be recorded again. What they stand on stays settled.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::send()
+     */
+    public function testPapersMayGoOutAgain(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/contract-version-proposals/send/' . self::PROPOSAL_ID, [
+            'sent_date' => '2026-10-01',
+            'sent_by' => ContractDeliveryMethod::Email->value,
+        ]);
+        $this->assertRedirect();
+
+        $this->post('/contract-version-proposals/send/' . self::PROPOSAL_ID, [
+            'sent_date' => '2026-10-08',
+            'sent_by' => ContractDeliveryMethod::Post->value,
+        ]);
+        $this->assertRedirect();
+
+        $sent = $proposals->get(self::PROPOSAL_ID);
+        $this->assertSame('2026-10-08', $sent->sent_date?->toDateString());
+        $this->assertSame(ContractDeliveryMethod::Post, $sent->sent_by);
+    }
+
+    /**
      * Nothing may be carried over without the day the customer agreed to it, so there is a way to
      * record that day - and to correct it, for as long as the proposal is open.
      *

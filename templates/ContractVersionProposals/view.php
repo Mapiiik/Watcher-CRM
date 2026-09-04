@@ -30,13 +30,15 @@ use App\Contracts\Proposal\ProposedVersion;
                     ['action' => 'refreshSnapshot', $contractVersionProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
+            <?php endif; ?>
+            <?php if ($contractVersionProposal->isOpen()) : ?>
                 <?= $this->AuthLink->link(
-                    __('Record That the Papers Went Out'),
+                    $contractVersionProposal->hasBeenSent()
+                        ? __('Record That the Papers Went Out Again')
+                        : __('Record That the Papers Went Out'),
                     ['action' => 'send', $contractVersionProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
-            <?php endif; ?>
-            <?php if ($contractVersionProposal->isOpen()) : ?>
                 <?= $this->AuthLink->link(
                     $contractVersionProposal->hasBeenConcluded()
                         ? __('Correct the Signature')
