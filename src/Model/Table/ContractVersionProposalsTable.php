@@ -260,6 +260,21 @@ class ContractVersionProposalsTable extends AppTable
             ['errorField' => 'terminates_contract_version_id'],
         );
 
+        // A sent paper is the record of what went out and a carried-over one of what happened.
+        // Permissions keep the buttons away, but the last word is here, so that an administrator
+        // going straight at it is asked the same question.
+        $rules->addDelete(
+            fn(ContractVersionProposal $entity): bool => $this->mayBeDeleted($entity),
+            'settledProposalIsNotRemoved',
+            [
+                'errorField' => 'sent_date',
+                'message' => __(
+                    'The papers for this proposal have gone out, so the record of them stays.'
+                    . ' Revoke it instead.',
+                ),
+            ],
+        );
+
         $this->addShapeRules($rules);
         $this->addBelongingRules($rules);
         $this->addTerminationRules($rules);

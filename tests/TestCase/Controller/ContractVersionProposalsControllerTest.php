@@ -1,0 +1,287 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Test\TestCase\Controller;
+
+use App\Controller\ContractVersionProposalsController;
+use App\Model\Enum\ContractDeliveryMethod;
+use App\Test\Traits\ControllerTestTrait;
+use Cake\I18n\Date;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\UsesClass;
+
+/**
+ * App\Controller\ContractVersionProposalsController Test Case
+ *
+ * Mostly smoke tests: every action is requested once and has to answer. Two of them go further,
+ * because they are the ones that would let a paper and the record behind it part company - sending
+ * settles the proposal, and taking the snapshot again has to survive a billing having gone.
+ */
+#[UsesClass(ContractVersionProposalsController::class)]
+class ContractVersionProposalsControllerTest extends TestCase
+{
+    use ControllerTestTrait;
+    use IntegrationTestTrait;
+
+    /**
+     * Contract the nested routes hang off.
+     *
+     * @var string
+     */
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
+     * The proposal the fixture carries: open, unsent, changing nothing.
+     *
+     * @var string
+     */
+    private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
+
+    /**
+     * Fixtures
+     *
+     * @var array<string>
+     */
+    protected array $fixtures = [
+        'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Emails',
+        'app.Phones',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Queues',
+        'app.Services',
+        'app.Contracts',
+        'app.ContractVersions',
+        'app.Billings',
+        'app.EquipmentTypes',
+        'app.BorrowedEquipments',
+        'app.SoldEquipments',
+        'app.IpAddresses',
+        'app.IpNetworks',
+        'app.ContractVersionProposals',
+    ];
+
+    /**
+     * The listing renders.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::index()
+     */
+    public function testIndex(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The listing renders with the search and the settled ones asked for, which builds a different
+     * query than the plain listing does.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::index()
+     */
+    public function testIndexWithSearchAndSettled(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals?search=Lorem&show_settled=1');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The detail renders.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::view()
+     */
+    public function testView(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/view/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The form for a new proposal renders.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testAdd(): void
+    {
+        $this->login();
+        $this->get('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481/contracts/'
+            . self::CONTRACT_ID . '/contract-version-proposals/add');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The form of an existing proposal renders.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::edit()
+     */
+    public function testEdit(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/edit/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The form for taking the snapshot again renders, and says what it is about.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::refreshSnapshot()
+     */
+    public function testRefreshSnapshot(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Taking the snapshot again survives a billing having gone from the contract since - which is
+     * the very case somebody asks for it in, and which saving the snapshot on its own would have
+     * been refused for.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::refreshSnapshot()
+     */
+    public function testTheSnapshotIsTakenAgainEvenWhenABillingHasGone(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $billings = $this->getTableLocator()->get('Billings');
+
+        // The proposal's snapshot knows this billing; the contract will not.
+        $billings->deleteOrFail($billings->get('b2000000-0000-4000-8000-000000000002'));
+
+        $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/refresh-snapshot/' . self::PROPOSAL_ID, [
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        $after = $proposals->get(self::PROPOSAL_ID);
+        $this->assertTrue($after->snapshot_taken > $before, 'The snapshot was not taken again.');
+        $this->assertArrayNotHasKey(
+            'b2000000-0000-4000-8000-000000000002',
+            $after->stateOfThings()->billings(),
+        );
+    }
+
+    /**
+     * Recording that the papers went out settles what stands behind them: nothing about the
+     * proposal may be changed afterwards.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::send()
+     */
+    public function testSendingSettlesTheProposal(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/send/' . self::PROPOSAL_ID, [
+            'sent_date' => '2026-10-01',
+            'sent_by' => ContractDeliveryMethod::Email->value,
+        ]);
+
+        $this->assertRedirect();
+
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $sent = $proposals->get(self::PROPOSAL_ID);
+
+        $this->assertTrue($sent->hasBeenSent());
+        $this->assertFalse($proposals->mayBeEdited($sent));
+
+        $this->get('/contract-version-proposals/edit/' . self::PROPOSAL_ID);
+        $this->assertRedirect();
+    }
+
+    /**
+     * Giving up on a proposal touches nothing else, because the live records never moved.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::revoke()
+     */
+    public function testRevokingTouchesNothingLive(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $before = $billings->find()->count();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/revoke/' . self::PROPOSAL_ID);
+
+        $this->assertRedirect();
+
+        $proposal = $this->getTableLocator()->get('ContractVersionProposals')->get(self::PROPOSAL_ID);
+        $this->assertTrue($proposal->hasBeenRevoked());
+        $this->assertSame($before, $billings->find()->count());
+    }
+
+    /**
+     * A proposal that never went anywhere may be removed; one that did may not.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::delete()
+     */
+    public function testOnlyAProposalThatWentNowhereIsRemoved(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/delete/' . self::PROPOSAL_ID);
+        $this->assertRedirect();
+        $this->assertSame(0, $proposals->find()->where(['id' => self::PROPOSAL_ID])->count());
+    }
+
+    /**
+     * A sent proposal is not removed either.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::delete()
+     */
+    public function testASentProposalIsNotRemoved(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal->sent_date = new Date('2026-10-01');
+        $proposal->sent_by = ContractDeliveryMethod::Email;
+        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/delete/' . self::PROPOSAL_ID);
+
+        $this->assertSame(1, $proposals->find()->where(['id' => self::PROPOSAL_ID])->count());
+    }
+}

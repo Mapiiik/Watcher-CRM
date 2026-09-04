@@ -275,6 +275,7 @@ $permissions = [
                 'Addresses',
                 'Billings',
                 'ServiceOverrides',
+                'ContractVersionProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -361,6 +362,7 @@ $permissions = [
                 'Addresses',
                 'Billings',
                 'ServiceOverrides',
+                'ContractVersionProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -425,6 +427,7 @@ $permissions = [
                 'Addresses',
                 'Billings',
                 'ServiceOverrides',
+                'ContractVersionProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -436,7 +439,9 @@ $permissions = [
                 'addFromRange',
                 'edit',
                 'print',
+                'refreshSnapshot',
                 'revoke',
+                'send',
                 'serviceChange',
                 'setDatesForRelatedBorrowedEquipments',
                 'terminateRelatedBillings',
@@ -537,6 +542,56 @@ $permissions = [
                     ->first();
 
                 return $version !== null && $versions->mayBeDeleted($version);
+            },
+        ],
+        //a proposal is settled by sending it: what stood behind a paper that has left the
+        //building is neither changed nor removed afterwards
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'ContractVersionProposals',
+            ],
+            'action' => [
+                'edit',
+                'refreshSnapshot',
+                'delete',
+            ],
+            //The table says what may still be touched. The condition reads the record, so it also
+            //settles whether AuthLink draws the button - the link and the request that follows it
+            //are asked the very same question. Keep it last: the rule is read key by key and this
+            //one ends the reading, so the role has to be matched before it.
+            'allowed' => function ($_user, $_role, ServerRequest $request): bool {
+                $id = $request->getParam('pass.0');
+
+                if (!is_string($id) || !Validation::uuid($id)) {
+                    return false;
+                }
+
+                /** @var \App\Model\Table\ContractVersionProposalsTable $proposals */
+                $proposals = TableRegistry::getTableLocator()->get('ContractVersionProposals');
+                /** @var \App\Model\Entity\ContractVersionProposal|null $proposal */
+                $proposal = $proposals->find()
+                    ->select([
+                        'ContractVersionProposals.sent_date',
+                        'ContractVersionProposals.applied',
+                        'ContractVersionProposals.revoked',
+                    ])
+                    ->where(['ContractVersionProposals.id' => $id])
+                    ->first();
+
+                if ($proposal === null) {
+                    return false;
+                }
+
+                return $request->getParam('action') === 'delete'
+                    ? $proposals->mayBeDeleted($proposal)
+                    : $proposals->mayBeEdited($proposal);
             },
         ],
         //allow add/edit/delete of access credentials for network-managers
