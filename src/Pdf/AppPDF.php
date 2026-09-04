@@ -67,6 +67,12 @@ class AppPDF extends TCPDF
     protected const TABLE_ROW_HEIGHT = 5.0;
 
     /**
+     * TCPDF's conditional horizontal scaling: condense the text only when it would not
+     * otherwise fit its cell, and leave it alone when it does.
+     */
+    protected const STRETCH_TO_FIT = 1;
+
+    /**
      * Whether blocks are kept whole across a page break. Off here, because a document laid
      * out around the breaks it has must keep them; a document turns it on for itself.
      */
@@ -285,6 +291,11 @@ class AppPDF extends TCPDF
      * Weight is given per row, or per cell where a row states a figure against its label and
      * only the figure carries the weight.
      *
+     * A name too long for its cell is condensed to fit rather than allowed to run across the
+     * column beside it, the same way the billing table has always handled its service names.
+     * The scaling only engages when the text would not otherwise fit, so nothing that fits is
+     * touched, and the row keeps the height the rest of the table has.
+     *
      * @param array<int, string> $cells Cell contents
      * @param array<int, float|int> $widths Cell widths in mm
      * @param array<int, string> $aligns Cell alignments
@@ -300,7 +311,14 @@ class AppPDF extends TCPDF
         foreach ($cells as $index => $cell) {
             $weight = is_array($bold) ? ($bold[$index] ?? false) : $bold;
             $this->SetFont(static::FONT_FAMILY, $weight ? 'B' : '', static::BODY_FONT_SIZE);
-            $this->Cell($widths[$index], static::TABLE_ROW_HEIGHT, $cell, border: 1, align: $aligns[$index]);
+            $this->Cell(
+                $widths[$index],
+                static::TABLE_ROW_HEIGHT,
+                $cell,
+                border: 1,
+                align: $aligns[$index],
+                stretch: self::STRETCH_TO_FIT,
+            );
         }
 
         $this->Ln();
