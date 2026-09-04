@@ -21,6 +21,7 @@ class BillingsFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 'b1000000-0000-4000-8000-000000000001',
                 'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
                 'text' => 'Lorem ipsum dolor sit amet',
                 'price' => 1,
@@ -41,6 +42,7 @@ class BillingsFixture extends TestFixture
             // still open (billing_until IS NULL) — the "active service" counterpart
             // of the historical billing above, on the same contract
             [
+                'id' => 'b2000000-0000-4000-8000-000000000002',
                 'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
                 'text' => 'Sed do eiusmod tempor',
                 'price' => 2,
@@ -61,6 +63,7 @@ class BillingsFixture extends TestFixture
             // open, and on the other contract - a page showing one contract's billings has no
             // reason to read this one, and reading it is what a lost filter looks like
             [
+                'id' => 'b3000000-0000-4000-8000-000000000003',
                 'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
                 'text' => 'On the other contract',
                 'price' => 3,

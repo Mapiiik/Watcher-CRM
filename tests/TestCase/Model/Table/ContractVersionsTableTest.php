@@ -40,6 +40,7 @@ class ContractVersionsTableTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.ContractVersionProposals',
     ];
 
     /**
@@ -242,5 +243,20 @@ class ContractVersionsTableTest extends TestCase
             'number_of_amendments' => 0,
             'obligations_settled' => false,
         ]);
+    }
+
+    /**
+     * A version whose papers have been drawn up does not go on its own.
+     *
+     * An unsigned version from the current month may still be taken back, and its proposals are the
+     * record of what went out for it, so either both go or neither does.
+     *
+     * @return void
+     */
+    public function testAVersionWithProposalsIsNotDeleted(): void
+    {
+        $version = $this->ContractVersions->get('74824fba-20b2-46fc-806c-df795aa9e429');
+
+        $this->assertFalse($this->ContractVersions->delete($version));
     }
 }
