@@ -18,7 +18,6 @@
     <div class="column column-90">
         <div class="contractVersionProposals form content">
             <?= $this->Form->create($contractVersionProposal) ?>
-            <legend><?= __('Draw Up a Proposal') ?></legend>
             <?= $this->element('ContractVersionProposals/form') ?>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

@@ -22,8 +22,9 @@
     </aside>
     <div class="column column-90">
         <div class="contractVersionProposals form content">
+            <?= $this->element('ContractVersionProposals/heading') ?>
+
             <?= $this->Form->create($contractVersionProposal) ?>
-            <legend><?= __('Edit Proposal') ?></legend>
             <?= $this->element('ContractVersionProposals/form') ?>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

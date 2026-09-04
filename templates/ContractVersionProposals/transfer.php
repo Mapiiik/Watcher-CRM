@@ -26,15 +26,7 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
     </aside>
     <div class="column column-90">
         <div class="contractVersionProposals view content">
-            <h3><?= __('Carry the Proposal Over') ?></h3>
-
-            <?php if ($changesNothing) : ?>
-                <p><?= __('This proposal changes nothing; it is the record of the papers that went'
-                    . ' out. Carrying it over only marks it as dealt with, so that it stops being'
-                    . ' listed as waiting.') ?></p>
-            <?php else : ?>
-                <p><?= __('Until now the live records have not moved. This is where they do.') ?></p>
-            <?php endif; ?>
+            <?= $this->element('ContractVersionProposals/heading') ?>
 
             <?php if ($found !== []) : ?>
                 <h4><?= __('Worth knowing first') ?></h4>
@@ -63,22 +55,30 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
             <?php endif; ?>
         </div>
         <hr />
-        <?php if ($stopped) : ?>
-            <div class="contractVersionProposals form content">
-                <p><strong><?= __('This proposal cannot be carried over as it stands.') ?></strong></p>
-            </div>
-        <?php else : ?>
-            <div class="contractVersionProposals form content">
+        <div class="contractVersionProposals form content">
+            <?php if ($stopped) : ?>
+            <fieldset>
+                <legend><?= __('Carry the Proposal Over') ?></legend>
+                <p><?= __('This proposal cannot be carried over as it stands.') ?></p>
+            </fieldset>
+            <?php else : ?>
                 <?= $this->Form->create(null, ['method' => 'post']) ?>
+            <fieldset>
+                <legend><?= __('Carry the Proposal Over') ?></legend>
+                <?php if ($changesNothing) : ?>
+                    <p><?= __('This proposal changes nothing; it is the record of the papers that'
+                        . ' went out. Carrying it over only marks it as dealt with, so that it stops'
+                        . ' being listed as waiting.') ?></p>
+                <?php else : ?>
+                    <p><?= __('Until now the live records have not moved. This is where they do.') ?></p>
+                <?php endif; ?>
                 <?php if ($closed_period_override) : ?>
-                <fieldset>
-                    <legend><?= __('Periods Already Invoiced For') ?></legend>
                     <?= $this->Form->control(BillingsTable::ALLOW_CLOSED_PERIODS, [
                         'type' => 'checkbox',
                         'label' => __('Write into a period that has already been invoiced for'),
                     ]) ?>
-                </fieldset>
                 <?php endif; ?>
+            </fieldset>
                 <?= $this->Form->button(
                     $changesNothing ? __('Mark as Dealt With') : __('Carry Over'),
                     [
@@ -89,7 +89,7 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
                     ],
                 ) ?>
                 <?= $this->Form->end() ?>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </div>

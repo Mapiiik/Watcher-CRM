@@ -21,6 +21,8 @@ use Cake\I18n\Date;
     </aside>
     <div class="column column-90">
         <div class="contractVersionProposals form content">
+            <?= $this->element('ContractVersionProposals/heading') ?>
+
             <?= $this->Form->create($contractVersionProposal) ?>
             <fieldset>
                 <legend><?= __('Record That the Papers Went Out') ?></legend>

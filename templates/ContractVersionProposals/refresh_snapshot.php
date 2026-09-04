@@ -17,6 +17,8 @@
     </aside>
     <div class="column column-90">
         <div class="contractVersionProposals form content">
+            <?= $this->element('ContractVersionProposals/heading') ?>
+
             <?= $this->Form->create($contractVersionProposal) ?>
             <fieldset>
                 <legend><?= __('Take the Snapshot Again') ?></legend>

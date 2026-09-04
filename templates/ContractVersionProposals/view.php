@@ -79,7 +79,7 @@ use App\Contracts\Proposal\ProposedVersion;
     </aside>
     <div class="column column-90">
         <div class="contractVersionProposals view content">
-            <h3><?= __('Proposal') ?></h3>
+            <?= $this->element('ContractVersionProposals/heading') ?>
             <table>
                 <tr>
                     <th><?= __('Contract') ?></th>

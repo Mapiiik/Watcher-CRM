@@ -31,6 +31,8 @@
     </aside>
     <div class="column column-90">
         <div class="billings form content">
+            <?= $this->element('ContractVersionProposals/heading') ?>
+
             <?= $this->Form->create(null) ?>
             <fieldset>
                 <legend><?= $replaced === null

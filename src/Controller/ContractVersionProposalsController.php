@@ -166,7 +166,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $proposal = $this->ContractVersionProposals->get($id);
+        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
 
         if (!$this->ContractVersionProposals->mayBeEdited($proposal)) {
             $this->Flash->error(__('This proposal can no longer be changed.'));
@@ -201,7 +201,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function refreshSnapshot(?string $id = null): ?Response
     {
-        $proposal = $this->ContractVersionProposals->get($id);
+        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
 
         if (!$this->ContractVersionProposals->mayBeEdited($proposal)) {
             $this->Flash->error(__('This proposal can no longer be changed.'));
@@ -389,7 +389,7 @@ class ContractVersionProposalsController extends AppController
      */
     private function openProposal(?string $id): ContractVersionProposal|Response|null
     {
-        $proposal = $this->ContractVersionProposals->get($id);
+        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
 
         if ($this->ContractVersionProposals->mayBeEdited($proposal)) {
             return $proposal;
