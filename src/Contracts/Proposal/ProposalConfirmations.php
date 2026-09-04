@@ -50,6 +50,23 @@ final class ProposalConfirmations
     ];
 
     /**
+     * What to call one of these where somebody is reading rather than answering it.
+     *
+     * @param string $question Which question.
+     * @return string
+     */
+    public static function label(string $question): string
+    {
+        return match ($question) {
+            self::OWN_EQUIPMENT => __('The customer has equipment of their own'),
+            self::NO_IP_ADDRESSES => __('The customer uses no IP addresses'),
+            self::NO_RADIUS => __('The customer uses no RADIUS account'),
+            self::FIXED_TERM => __('A fixed-term contract, the obligation running to the end of it'),
+            default => $question,
+        };
+    }
+
+    /**
      * @param array<string, bool> $answers Only the questions that were answered.
      */
     private function __construct(private readonly array $answers)

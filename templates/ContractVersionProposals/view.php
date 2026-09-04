@@ -11,6 +11,8 @@
  */
 
 use App\Contracts\Proposal\ProposalConfirmations;
+use App\Contracts\Proposal\ProposedContract;
+use App\Contracts\Proposal\ProposedVersion;
 
 ?>
 <div class="row">
@@ -131,36 +133,42 @@ use App\Contracts\Proposal\ProposalConfirmations;
 
             <?= $this->element('ContractVersionProposals/proposed_billings') ?>
 
-            <h4><?= __('What it asks for') ?></h4>
-            <?php if ($changes->isEmpty()) : ?>
-                <p><?= __('Nothing. The proposal is the record of the papers, not a change to'
-                    . ' anything - which is what a new contract looks like, since its billings'
-                    . ' were drawn up before them.') ?></p>
-            <?php else : ?>
-                <?php foreach ($changes->version->asked() as $field => $value) : ?>
-                    <p><?= h(__('Contract version') . ' — ' . $field) ?>:
-                        <?= $value === null ? __('cleared') : h($value) ?></p>
-                <?php endforeach; ?>
-
-                <?php foreach ($changes->contract->asked() as $field => $value) : ?>
-                    <p><?= h(__('Contract') . ' — ' . $field) ?>:
-                        <?= $value === null ? __('cleared') : h($value) ?></p>
-                <?php endforeach; ?>
+            <?php
+            // What is billed for is the table above; here is only what the proposal says about the
+            // version and the contract themselves, which is usually nothing at all.
+            $asksOfRecords = !$changes->version->isEmpty() || !$changes->contract->isEmpty();
+            ?>
+            <?php if ($asksOfRecords) : ?>
+                <h4><?= __('The contract version and the contract') ?></h4>
+                <table>
+                    <?php foreach ($changes->version->asked() as $field => $value) : ?>
+                    <tr>
+                        <th><?= h(__('Contract Version') . ' — ' . ProposedVersion::label($field)) ?></th>
+                        <td><?= $value === null ? __('cleared') : h($value) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php foreach ($changes->contract->asked() as $field => $value) : ?>
+                    <tr>
+                        <th><?= h(__('Contract') . ' — ' . ProposedContract::label($field)) ?></th>
+                        <td><?= $value === null ? __('cleared') : h($value) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </table>
             <?php endif; ?>
 
-            <h4><?= __('What was confirmed') ?></h4>
             <?php $answered = $confirmations->toArray(); ?>
-            <?php if ($answered === []) : ?>
-                <p><?= __('Nothing was asked.') ?></p>
-            <?php else : ?>
-                <ul>
+            <?php if ($answered !== []) : ?>
+                <h4><?= __('What was confirmed') ?></h4>
+                <table>
                 <?php foreach (ProposalConfirmations::QUESTIONS as $question) : ?>
                     <?php if (array_key_exists($question, $answered)) : ?>
-                        <li><?= h($question) ?>:
-                            <?= $answered[$question] ? __('yes') : __('no') ?></li>
+                    <tr>
+                        <th><?= h(ProposalConfirmations::label($question)) ?></th>
+                        <td><?= $answered[$question] ? __('Yes') : __('No') ?></td>
+                    </tr>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                </ul>
+                </table>
             <?php endif; ?>
 
             <?php if (!empty($contractVersionProposal->note)) : ?>

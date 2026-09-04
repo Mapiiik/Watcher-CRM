@@ -18,6 +18,20 @@ final class ProposedContract extends ProposedDates
     ];
 
     /**
+     * What to call one of these fields where somebody is reading rather than filling it in.
+     *
+     * @param string $field Which field.
+     * @return string
+     */
+    public static function label(string $field): string
+    {
+        return match ($field) {
+            'termination_date' => __('Date of Termination of Services'),
+            default => $field,
+        };
+    }
+
+    /**
      * Whether the proposal puts an end date on the contract.
      *
      * @return bool

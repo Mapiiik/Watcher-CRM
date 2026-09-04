@@ -19,6 +19,21 @@ final class ProposedVersion extends ProposedDates
     ];
 
     /**
+     * What to call one of these fields where somebody is reading rather than filling it in.
+     *
+     * @param string $field Which field.
+     * @return string
+     */
+    public static function label(string $field): string
+    {
+        return match ($field) {
+            'valid_until' => __('Valid Until'),
+            'obligation_until' => __('Obligation Until'),
+            default => $field,
+        };
+    }
+
+    /**
      * Whether the proposal puts an end date on the version.
      *
      * Naming the field and clearing it is not putting an end on it, so both have to hold.
