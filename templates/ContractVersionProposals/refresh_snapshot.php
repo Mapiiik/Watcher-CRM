@@ -18,11 +18,19 @@
     <div class="column column-90">
         <div class="contractVersionProposals form content">
             <?= $this->Form->create($contractVersionProposal) ?>
-            <legend><?= __('Take the Snapshot Again') ?></legend>
-            <p><?= __(
-                'The billings below are as they stand now, not as the proposal took them.'
-                . ' Saying yes replaces both the snapshot and what the proposal asks for.',
-            ) ?></p>
+            <fieldset>
+                <legend><?= __('Take the Snapshot Again') ?></legend>
+                <p><?= __(
+                    'The snapshot is what the papers print from. Taking it again reads the contract'
+                    . ' as it stands now, so the papers say what is there today rather than what was'
+                    . ' there when the proposal was drawn up.',
+                ) ?></p>
+                <p><?= __(
+                    'What the proposal asks for is kept. Only a line about a billing that has since'
+                    . ' left the contract is taken back, because there is nothing left for it to'
+                    . ' act on.',
+                ) ?></p>
+            </fieldset>
             <?= $this->element('ContractVersionProposals/form') ?>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

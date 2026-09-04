@@ -25,7 +25,7 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals form content">
+        <div class="contractVersionProposals view content">
             <h3><?= __('Carry the Proposal Over') ?></h3>
 
             <?php if ($changesNothing) : ?>
@@ -61,22 +61,35 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
                 </div>
             </div>
             <?php endif; ?>
-
-            <?php if ($stopped) : ?>
+        </div>
+        <hr />
+        <?php if ($stopped) : ?>
+            <div class="contractVersionProposals form content">
                 <p><strong><?= __('This proposal cannot be carried over as it stands.') ?></strong></p>
-            <?php else : ?>
-                <?= $this->Form->create(null) ?>
+            </div>
+        <?php else : ?>
+            <div class="contractVersionProposals form content">
+                <?= $this->Form->create(null, ['method' => 'post']) ?>
                 <?php if ($closed_period_override) : ?>
+                <fieldset>
+                    <legend><?= __('Periods Already Invoiced For') ?></legend>
                     <?= $this->Form->control(BillingsTable::ALLOW_CLOSED_PERIODS, [
                         'type' => 'checkbox',
                         'label' => __('Write into a period that has already been invoiced for'),
                     ]) ?>
+                </fieldset>
                 <?php endif; ?>
-                <?= $this->Form->button($changesNothing
-                    ? __('Mark as Dealt With')
-                    : __('Carry Over')) ?>
+                <?= $this->Form->button(
+                    $changesNothing ? __('Mark as Dealt With') : __('Carry Over'),
+                    [
+                        'confirm' => $changesNothing
+                            ? __('Mark this proposal as dealt with?')
+                            : __('Do you really want to write what this proposal asks for into the'
+                                . ' live records?'),
+                    ],
+                ) ?>
                 <?= $this->Form->end() ?>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
     </div>
 </div>

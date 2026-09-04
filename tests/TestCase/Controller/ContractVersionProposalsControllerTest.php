@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Contracts\Proposal\ProposedBilling;
 use App\Controller\ContractVersionProposalsController;
 use App\Model\Enum\ContractDeliveryMethod;
 use App\Test\Traits\ControllerTestTrait;
@@ -540,8 +541,14 @@ class ContractVersionProposalsControllerTest extends TestCase
         $proposals = $this->getTableLocator()->get('ContractVersionProposals');
         $billings = $this->getTableLocator()->get('Billings');
 
+        // A line acting on that billing, put there while it was still on the contract.
+        $line = ProposedBilling::fromArray(['billing_id' => self::KNOWN_BILLING_ID, 'quantity' => 2]);
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal->set('changes', $proposal->proposedChanges()->withLine($line)->toArray());
+        $proposals->saveOrFail($proposal);
+
         // The proposal's snapshot knows this billing; the contract will not.
-        $billings->deleteOrFail($billings->get('b2000000-0000-4000-8000-000000000002'));
+        $billings->deleteOrFail($billings->get(self::KNOWN_BILLING_ID));
 
         $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
 
@@ -562,8 +569,12 @@ class ContractVersionProposalsControllerTest extends TestCase
         $after = $proposals->get(self::PROPOSAL_ID);
         $this->assertTrue($after->snapshot_taken > $before, 'The snapshot was not taken again.');
         $this->assertArrayNotHasKey(
-            'b2000000-0000-4000-8000-000000000002',
+            self::KNOWN_BILLING_ID,
             $after->stateOfThings()->billings(),
+        );
+        $this->assertNull(
+            $after->proposedChanges()->line($line->id),
+            'The line was left acting on a billing that is no longer there.',
         );
     }
 

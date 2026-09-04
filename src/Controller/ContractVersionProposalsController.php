@@ -211,23 +211,60 @@ class ContractVersionProposalsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $proposal = $this->fillFromForm($proposal, $this->request->getData());
+            $takenBack = $this->dropLinesWhoseBillingIsGone($proposal);
 
             if ($this->saveProposal($proposal)) {
-                $this->Flash->success(__('The snapshot has been taken again.'));
+                $this->Flash->success($takenBack === 0
+                    ? __('The snapshot has been taken again.')
+                    : __n(
+                        'The snapshot has been taken again. One line asked about a billing that is'
+                        . ' no longer on the contract and has been taken back.',
+                        'The snapshot has been taken again. {0} lines asked about billings that are'
+                        . ' no longer on the contract and have been taken back.',
+                        $takenBack,
+                        $takenBack,
+                    ));
 
                 return $this->redirect(['action' => 'view', $proposal->id]);
             }
-        } else {
-            $this->Flash->warning(__(
-                'Check what the proposal asks for against the state of things as it is now.'
-                . ' A billing that is no longer there cannot be changed by it.',
-            ));
         }
 
         $this->set('contractVersionProposal', $proposal);
         $this->setFormViewVars($proposal);
 
         return null;
+    }
+
+    /**
+     * Takes back the lines that ask about a billing the new snapshot no longer knows.
+     *
+     * Something moving underneath the proposal is why anybody asks for a fresh snapshot in the
+     * first place, so a line left pointing at a billing that is gone would only have the saving
+     * refused over a table this form does not even show.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal and its new snapshot.
+     * @return int How many lines were taken back.
+     */
+    private function dropLinesWhoseBillingIsGone(ContractVersionProposal $proposal): int
+    {
+        $snapshot = $proposal->stateOfThings();
+        $changes = $proposal->proposedChanges();
+        $takenBack = 0;
+
+        foreach ($changes->billings as $line) {
+            if ($line->billing_id === null || $snapshot->knowsBilling($line->billing_id)) {
+                continue;
+            }
+
+            $changes = $changes->withoutLine($line->id);
+            $takenBack++;
+        }
+
+        if ($takenBack > 0) {
+            $proposal->set('changes', $changes->toArray());
+        }
+
+        return $takenBack;
     }
 
     /**
