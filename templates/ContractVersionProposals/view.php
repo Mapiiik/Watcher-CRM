@@ -89,57 +89,64 @@ use App\Contracts\Proposal\ProposedVersion;
     <div class="column column-90">
         <div class="contractVersionProposals view content">
             <?= $this->element('ContractVersionProposals/heading') ?>
-            <table>
-                <tr>
-                    <th><?= __('Contract') ?></th>
-                    <td><?= $this->Html->link(
-                        h($contractVersionProposal->contract->number ?? ''),
-                        [
-                            'controller' => 'Contracts',
-                            'action' => 'view',
-                            $contractVersionProposal->contract_id,
-                        ],
-                    ) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('What This Is For') ?></th>
-                    <td><?= h($contractVersionProposal->purpose->label()) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Effective From') ?></th>
-                    <td><?= h($contractVersionProposal->effective_from) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Snapshot Taken') ?></th>
-                    <td><?= h($contractVersionProposal->snapshot_taken) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Sent To The Customer') ?></th>
-                    <td><?= h($contractVersionProposal->getSending()) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Conclusion Date') ?></th>
-                    <td><?= h($contractVersionProposal->conclusion_date) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Carried Over') ?></th>
-                    <td><?= h($contractVersionProposal->applied) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Revoked') ?></th>
-                    <td><?= h($contractVersionProposal->revoked) ?></td>
-                </tr>
-                <?php if ($contractVersionProposal->terminatesAnotherVersion()) : ?>
-                <tr>
-                    <th><?= __('Terminates Contract Version') ?></th>
-                    <td><?= h($contractVersionProposal->terminated_contract_version->valid_from ?? '') ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Number of the contract being terminated') ?></th>
-                    <td><?= h($contractVersionProposal->terminated_contract_number) ?></td>
-                </tr>
-                <?php endif; ?>
-            </table>
+            <div class="row">
+                <div class="column">
+                    <table>
+                        <tr>
+                            <th><?= __('Contract') ?></th>
+                            <td><?= $this->Html->link(
+                                h($contractVersionProposal->contract->number ?? ''),
+                                [
+                                    'controller' => 'Contracts',
+                                    'action' => 'view',
+                                    $contractVersionProposal->contract_id,
+                                ],
+                            ) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Purpose') ?></th>
+                            <td><?= h($contractVersionProposal->purpose->label()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Effective From') ?></th>
+                            <td><?= h($contractVersionProposal->effective_from) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Snapshot Taken') ?></th>
+                            <td><?= h($contractVersionProposal->snapshot_taken) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Sent To The Customer') ?></th>
+                            <td><?= h($contractVersionProposal->getSending()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Conclusion Date') ?></th>
+                            <td><?= h($contractVersionProposal->conclusion_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Carried Over') ?></th>
+                            <td><?= h($contractVersionProposal->applied) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Revoked') ?></th>
+                            <td><?= h($contractVersionProposal->revoked) ?></td>
+                        </tr>
+                        <?php if ($contractVersionProposal->terminatesAnotherVersion()) : ?>
+                        <tr>
+                            <th><?= __('Terminates Contract Version') ?></th>
+                            <td><?= h($contractVersionProposal->terminated_contract_version->valid_from ?? '') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Number of the contract being terminated') ?></th>
+                            <td><?= h($contractVersionProposal->terminated_contract_number) ?></td>
+                        </tr>
+                        <?php endif; ?>
+                    </table>
+                </div>
+                <div class="column">
+                    <?= $this->element('common/audit', ['entity' => $contractVersionProposal]) ?>
+                </div>
+            </div>
 
             <?= $this->element('ContractVersionProposals/proposed_billings') ?>
 
@@ -185,8 +192,6 @@ use App\Contracts\Proposal\ProposedVersion;
                 <h4><?= __('Note') ?></h4>
                 <blockquote><?= $this->Text->autoParagraph(h($contractVersionProposal->note)) ?></blockquote>
             <?php endif; ?>
-
-            <?= $this->element('common/audit', ['entity' => $contractVersionProposal]) ?>
         </div>
     </div>
 </div>

@@ -204,7 +204,7 @@ foreach ($proposals as $one) {
             <?php endif; ?>
             <div class="related">
                 <?= $this->AuthLink->link(
-                    __('Draw Up a Proposal'),
+                    __('New Proposal'),
                     [
                         'controller' => 'ContractVersionProposals',
                         'action' => 'add',
@@ -255,7 +255,7 @@ foreach ($proposals as $one) {
                             'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
                         echo $this->Form->control('signed', [
-                            'label' => __('Generate as signed'),
+                            'label' => __('Signed'),
                             'type' => 'checkbox',
                         ]);
                     }
@@ -263,7 +263,7 @@ foreach ($proposals as $one) {
                 ?>
             </fieldset>
             <?php if ($proposal !== null && $printType !== null) : ?>
-                <?= $this->Form->button(__('Generate PDF'), [
+                <?= $this->Form->button(__('Print to PDF'), [
                     'name' => 'submit_action',
                     'value' => 'pdf',
                 ]) ?>

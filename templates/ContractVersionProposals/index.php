@@ -25,7 +25,7 @@
 
 <div class="contractVersionProposals index content">
     <?= $this->AuthLink->link(
-        __('Draw Up a Proposal'),
+        __('New Proposal'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
@@ -36,7 +36,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('Contracts.number', __('Contract')) ?></th>
                     <th><?= $this->Paginator->sort('ContractVersions.valid_from', __('Contract Version')) ?></th>
-                    <th><?= $this->Paginator->sort('purpose', __('What This Is For')) ?></th>
+                    <th><?= $this->Paginator->sort('purpose') ?></th>
                     <th><?= $this->Paginator->sort('effective_from') ?></th>
                     <th><?= $this->Paginator->sort('sent_date', __('Sent To The Customer')) ?></th>
                     <th><?= $this->Paginator->sort('conclusion_date') ?></th>

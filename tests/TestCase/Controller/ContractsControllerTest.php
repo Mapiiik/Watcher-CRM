@@ -688,7 +688,7 @@ class ContractsControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains(__('Contract Versions'));
         $this->assertResponseContains(__('Proposals'));
-        $this->assertResponseContains(__('Draw Up a Proposal'));
+        $this->assertResponseContains(__('New Proposal'));
     }
 
     /**

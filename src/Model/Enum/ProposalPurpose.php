@@ -34,9 +34,9 @@ enum ProposalPurpose: string implements EnumLabelInterface
     public function label(): string
     {
         return match ($this) {
-            self::NewContract => __('A new contract'),
-            self::ServiceChange => __('A change of what is provided'),
-            self::Termination => __('Bringing it to an end'),
+            self::NewContract => __('New contract'),
+            self::ServiceChange => __('Change of services'),
+            self::Termination => __('Contract termination'),
         };
     }
 

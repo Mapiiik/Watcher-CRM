@@ -12,7 +12,7 @@ $whatItAsksFor = function ($proposal): string {
     $lines = count($changes->billings);
 
     return match (true) {
-        $changes->isEmpty() => __('Nothing. It is the record of the papers'),
+        $changes->isEmpty() => __('Nothing'),
         $changes->endsTheContract() => __('Ends the contract'),
         $lines > 0 => __n('{0} billing', '{0} billings', $lines, $lines),
         default => __('The contract version'),
@@ -36,7 +36,7 @@ $whichVersion = function ($proposal): string {
             <?php if ($version_column) : ?>
                 <th><?= __('Contract Version') ?></th>
             <?php endif ?>
-            <th><?= __('What This Is For') ?></th>
+            <th><?= __('Purpose') ?></th>
             <th><?= __('What it asks for') ?></th>
             <th><?= __('Sent To The Customer') ?></th>
             <th><?= __('Conclusion Date') ?></th>

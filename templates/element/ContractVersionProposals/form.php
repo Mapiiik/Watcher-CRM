@@ -42,7 +42,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
 
     echo $this->Form->control('purpose', [
         'options' => $purposes,
-        'label' => __('What this is for'),
+        'label' => __('Purpose'),
         'onchange' => $this::REFRESH_ON_CHANGE,
     ]);
 
@@ -130,19 +130,30 @@ $endsOn = $changes?->version->names('valid_until') ?? false
     <?php
     foreach (['valid_until', 'obligation_until'] as $field) {
         $named = $changes?->version->names($field) ?? false;
+        $id = 'version-change-' . str_replace('_', '-', $field);
+
+        // The box turns its own day on and off, the way the dates on a contract version do.
         echo $this->Form->control("version_change_named.{$field}", [
             'type' => 'checkbox',
             'checked' => $named,
             'label' => $field === 'valid_until'
                 ? __('Change the day the version stops being valid')
                 : __('Change the day the obligation runs out'),
+            'onclick' => sprintf('document.getElementById("%s").disabled = !this.checked;', $id),
         ]);
+
+        // A disabled field sends nothing, so an empty one is sent in its place - and form
+        // protection is told, because it counts what the markup declared.
+        echo $this->Form->hidden("version_change.{$field}", ['value' => '']);
         echo $this->Form->control("version_change.{$field}", [
+            'id' => $id,
             'type' => 'date',
             'empty' => true,
             'value' => $named ? $changes?->version->get($field) : null,
             'label' => false,
+            'disabled' => !$named,
         ]);
+        $this->Form->unlockField("version_change.{$field}");
     }
     ?>
 </fieldset>

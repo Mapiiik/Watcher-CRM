@@ -111,7 +111,7 @@
             </div>
             <div class="related">
                 <?= $this->AuthLink->link(
-                    __('Draw Up a Proposal'),
+                    __('New Proposal'),
                     [
                         'controller' => 'ContractVersionProposals',
                         'action' => 'add',
