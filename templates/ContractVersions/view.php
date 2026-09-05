@@ -36,8 +36,7 @@
     <div class="column column-90">
         <div class="contractVersions view content">
             <?= __('Contract No.') ?><h3><?= h($contractVersion->contract->number) ?></h3>
-            <?= __('Validity') ?><h3><?= h($contractVersion->valid_from) ?> - <?= $contractVersion->valid_until ?
-                h($contractVersion->valid_until) : __('indefinitely') ?></h3>
+            <?= __('Validity') ?><h3><?= h($contractVersion->name) ?></h3>
             <?php if ($contractVersion->contract !== null) : ?>
             <h5><?=
                 (

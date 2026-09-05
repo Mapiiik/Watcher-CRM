@@ -24,7 +24,7 @@ $whichVersion = function ($proposal): string {
 
     return $version === null
         ? ''
-        : $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
+        : $version->name;
 };
 ?>
 <?php if (!empty($contract_version_proposals)) : ?>

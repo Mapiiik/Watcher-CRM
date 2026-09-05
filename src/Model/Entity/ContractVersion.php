@@ -18,6 +18,7 @@ use RuntimeException;
  * @property \Cake\I18n\Date|null $obligation_until
  * @property bool $obligations_settled
  * @property \Cake\I18n\Date|null $conclusion_date
+ * @property-read string $name
  * @property int $number_of_amendments
  * @property string|null $note
  * @property int|null $minimum_duration
@@ -131,6 +132,20 @@ class ContractVersion extends AppEntity
         }
 
         return $latest;
+    }
+
+    /**
+     * How a version reads where one has to be named: the stretch it covers.
+     *
+     * A version has no name of its own - the contract carries the number - so wherever one is
+     * offered for choosing or pointed at, it is said by the days it runs between. Written here
+     * rather than at each of those places, which is where it used to live five times over.
+     *
+     * @return string
+     */
+    protected function _getName(): string
+    {
+        return $this->valid_from . ' - ' . ($this->valid_until ?: __('indefinitely'));
     }
 
     /**

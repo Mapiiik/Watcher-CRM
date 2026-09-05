@@ -1026,12 +1026,8 @@ class ContractVersionProposalsController extends AppController
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
 
-        $howAVersionReads = function (ContractVersion $version): string {
-            return $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
-        };
-
         $versions = $this->ContractVersionProposals->ContractVersions
-            ->find('list', valueField: $howAVersionReads)
+            ->find('list', valueField: 'name')
             ->where($contract === null ? ['1 = 0'] : ['ContractVersions.contract_id' => $contract->id])
             ->orderBy(['ContractVersions.valid_from' => 'DESC']);
 

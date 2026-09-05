@@ -13,11 +13,6 @@
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposedContract;
 use App\Contracts\Proposal\ProposedVersion;
-use App\Model\Entity\ContractVersion;
-
-$howAVersionReads = function (ContractVersion $version): string {
-    return $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
-};
 
 ?>
 <div class="row">
@@ -112,7 +107,7 @@ $howAVersionReads = function (ContractVersion $version): string {
                             <th><?= __('Contract Version') ?></th>
                             <td><?= $contractVersionProposal->contract_version !== null
                                 ? $this->Html->link(
-                                    $howAVersionReads($contractVersionProposal->contract_version),
+                                    $contractVersionProposal->contract_version->name,
                                     [
                                         'controller' => 'ContractVersions',
                                         'action' => 'view',
@@ -153,7 +148,7 @@ $howAVersionReads = function (ContractVersion $version): string {
                             <th><?= __('Terminates Contract Version') ?></th>
                             <td><?= $contractVersionProposal->terminated_contract_version !== null
                                 ? $this->Html->link(
-                                    $howAVersionReads($contractVersionProposal->terminated_contract_version),
+                                    $contractVersionProposal->terminated_contract_version->name,
                                     [
                                         'controller' => 'ContractVersions',
                                         'action' => 'view',

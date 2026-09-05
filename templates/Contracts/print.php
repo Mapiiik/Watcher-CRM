@@ -13,7 +13,7 @@ $howAProposalReads = function ($one): string {
     $version = $one->contract_version ?? null;
     $period = $version === null
         ? ''
-        : $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
+        : $version->name;
 
     return sprintf(
         '%s - %s - %s (%s)',

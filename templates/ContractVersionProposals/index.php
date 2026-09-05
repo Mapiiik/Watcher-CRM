@@ -63,7 +63,7 @@
                         ) : '' ?></td>
                     <td><?=
                         $version !== null ? $this->Html->link(
-                            $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely')),
+                            $version->name,
                             [
                                 'controller' => 'ContractVersions',
                                 'action' => 'view',
