@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Contracts\Proposal;
 use App\Contracts\Proposal\ProposalDocumentTypes;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ProposalPurpose;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -26,6 +27,7 @@ class ProposalDocumentTypesTest extends TestCase
     {
         return new ContractVersionProposal($says + [
             'id' => 'a1b2c3d4-0000-4000-8000-000000000001',
+            'purpose' => ProposalPurpose::NewContract,
             'effective_from' => new Date('2026-10-01'),
             'changes' => [],
             'terminates_contract_version_id' => null,
@@ -58,10 +60,13 @@ class ProposalDocumentTypesTest extends TestCase
      */
     private static function ending(): array
     {
-        return ['changes' => [
-            'version' => ['valid_until' => '2026-09-30'],
-            'contract' => ['termination_date' => '2026-09-30'],
-        ]];
+        return [
+            'purpose' => ProposalPurpose::Termination,
+            'changes' => [
+                'version' => ['valid_until' => '2026-09-30'],
+                'contract' => ['termination_date' => '2026-09-30'],
+            ],
+        ];
     }
 
     /**

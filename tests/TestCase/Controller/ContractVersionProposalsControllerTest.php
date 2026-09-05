@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Controller\ContractVersionProposalsController;
 use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -168,10 +169,10 @@ class ContractVersionProposalsControllerTest extends TestCase
     public function testTheDayThePapersApplyFromFollowsTheVersionWhenLeftEmpty(): void
     {
         $this->login();
-        $this->get('/contract-version-proposals/add?contract_version_id=' . self::CONTRACT_VERSION_ID);
+        $this->get('/contract-version-proposals/add?purpose=' . ProposalPurpose::ServiceChange->value
+            . '&contract_version_id=' . self::CONTRACT_VERSION_ID);
 
         $this->assertResponseOk();
-        $this->assertTrue($this->viewVariable('effectiveDateIsItsOwn'));
         $this->assertResponseNotContains('value="2022-11-30"');
         // The hint names that day, written the way the application writes days.
         $day = $this->getTableLocator()->get('ContractVersions')
@@ -182,6 +183,7 @@ class ContractVersionProposalsControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/contract-version-proposals/add', [
+            'purpose' => ProposalPurpose::ServiceChange->value,
             'contract_id' => self::CONTRACT_ID,
             'contract_version_id' => self::CONTRACT_VERSION_ID,
             'effective_from' => '',

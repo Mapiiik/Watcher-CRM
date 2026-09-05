@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\ContractVersionProposalsTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\DateTime;
@@ -144,6 +145,7 @@ class ContractVersionProposalsTableTest extends TestCase
         return $proposal + [
             'contract_id' => self::CONTRACT_ID,
             'contract_version_id' => $this->aVersion(),
+            'purpose' => ProposalPurpose::ServiceChange->value,
             'effective_from' => '2026-10-01',
             'snapshot' => $this->aSnapshot(),
             'snapshot_taken' => DateTime::now(),
@@ -270,49 +272,67 @@ class ContractVersionProposalsTableTest extends TestCase
     public function testAnUnconcludedVersionCannotBeEnded(): void
     {
         $proposal = $this->save([
+            'purpose' => ProposalPurpose::Termination->value,
             'contract_version_id' => $this->aVersion(['conclusion_date' => null]),
             'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
             'changes' => [
                 'version' => ['valid_until' => '2026-12-31'],
                 'contract' => ['termination_date' => '2026-12-31'],
             ],
-            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
 
         $this->assertArrayHasKey('changes', $proposal->getErrors());
     }
 
     /**
-     * Ending is one act written in two places, and half of it written alone is not an act.
+     * A version may end while the contract runs on: that is how an agreement to end one version
+     * and sign another is written, instead of the single paper that does both at once.
      *
      * @return void
      */
-    public function testEndingTheVersionAloneIsRefused(): void
+    public function testAVersionMayEndWhileTheContractRunsOn(): void
     {
         $proposal = $this->save([
+            'purpose' => ProposalPurpose::Termination->value,
             'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
             'changes' => ['version' => ['valid_until' => '2026-12-31']],
-            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
+        ]);
+
+        $this->assertEmpty($proposal->getErrors());
+    }
+
+    /**
+     * The other way round is not an act: a contract ends on the day its version stops being
+     * valid, so ending one without the other says nothing about when the service stops.
+     *
+     * @return void
+     */
+    public function testEndingTheContractAloneIsRefused(): void
+    {
+        $proposal = $this->save([
+            'purpose' => ProposalPurpose::Termination->value,
+            'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
+            'changes' => ['contract' => ['termination_date' => '2026-12-31']],
         ]);
 
         $this->assertArrayHasKey('changes', $proposal->getErrors());
     }
 
     /**
-     * And the two days have to be the same day, or the paper ends on one and the invoicing on
-     * another.
+     * And where both are said, they have to be the same day, or the paper ends on one and the
+     * invoicing on another.
      *
      * @return void
      */
     public function testTheTwoEndingDatesHaveToAgree(): void
     {
         $proposal = $this->save([
+            'purpose' => ProposalPurpose::Termination->value,
             'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
             'changes' => [
                 'version' => ['valid_until' => '2026-12-31'],
                 'contract' => ['termination_date' => '2027-01-31'],
             ],
-            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
 
         $this->assertArrayHasKey('changes', $proposal->getErrors());
@@ -327,11 +347,11 @@ class ContractVersionProposalsTableTest extends TestCase
     public function testEndingWithoutTheTerminatedNumberIsRefused(): void
     {
         $ending = [
+            'purpose' => ProposalPurpose::Termination->value,
             'changes' => [
-                'version' => ['valid_until' => '2026-12-31', 'obligation_until' => '2026-12-31'],
+                'version' => ['valid_until' => '2026-12-31'],
                 'contract' => ['termination_date' => '2026-12-31'],
             ],
-            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ];
 
         $without = $this->save($ending);
@@ -350,31 +370,79 @@ class ContractVersionProposalsTableTest extends TestCase
      */
     public function testAFixedTermHasToBeAcknowledgedAndMatchTheObligation(): void
     {
-        $ending = [
-            'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
+        $fixedTerm = [
+            'purpose' => ProposalPurpose::NewContract->value,
             'changes' => [
                 'version' => ['valid_until' => '2026-12-31', 'obligation_until' => '2026-12-31'],
-                'contract' => ['termination_date' => '2026-12-31'],
             ],
         ];
 
-        $unacknowledged = $this->save($ending);
+        $unacknowledged = $this->save($fixedTerm);
         $this->assertArrayHasKey('confirmations', $unacknowledged->getErrors());
 
         $mismatched = $this->save([
-            'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
+            'purpose' => ProposalPurpose::NewContract->value,
             'changes' => [
                 'version' => ['valid_until' => '2026-12-31', 'obligation_until' => '2027-06-30'],
-                'contract' => ['termination_date' => '2026-12-31'],
             ],
             'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
         $this->assertArrayHasKey('confirmations', $mismatched->getErrors());
 
-        $agreed = $this->save($ending + [
+        $agreed = $this->save($fixedTerm + [
             'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
         ]);
         $this->assertEmpty($agreed->getErrors());
+    }
+
+    /**
+     * An ending is never asked to confirm a fixed term, and never has its obligation moved.
+     *
+     * The two look alike from the outside - both put an end date on a version - and only the
+     * purpose tells them apart. Asked of an ending, the rule would have the obligation set to the
+     * day the customer left, and with it would go the fact that they left before it ran out, which
+     * is what says whether anything is still owed.
+     *
+     * @return void
+     */
+    public function testAnEndingIsNotHeldToTheFixedTermRule(): void
+    {
+        $proposal = $this->save([
+            'purpose' => ProposalPurpose::Termination->value,
+            'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
+            'changes' => [
+                'version' => ['valid_until' => '2026-12-31'],
+                'contract' => ['termination_date' => '2026-12-31'],
+            ],
+        ]);
+
+        $this->assertEmpty($proposal->getErrors());
+    }
+
+    /**
+     * The purpose is a stored answer, so nothing may be filed under one purpose while asking for
+     * what another one does - the form cannot, but a portal writing over the API could.
+     *
+     * @return void
+     */
+    public function testTheChangesHaveToMatchThePurpose(): void
+    {
+        $endingUnderAChange = $this->save([
+            'purpose' => ProposalPurpose::ServiceChange->value,
+            'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
+            'changes' => [
+                'version' => ['valid_until' => '2026-12-31'],
+                'contract' => ['termination_date' => '2026-12-31'],
+            ],
+            'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
+        ]);
+        $this->assertArrayHasKey('changes', $endingUnderAChange->getErrors());
+
+        $endingThatEndsNothing = $this->save([
+            'purpose' => ProposalPurpose::Termination->value,
+            'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
+        ]);
+        $this->assertArrayHasKey('changes', $endingThatEndsNothing->getErrors());
     }
 
     /**

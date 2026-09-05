@@ -27,8 +27,8 @@ use Cake\I18n\Date;
                 <legend><?= __('Record the Signature') ?></legend>
                 <p><?= __(
                     'Nothing is carried over into the live records without this day. What the'
-                    . ' proposal asks for stays as it is; only when it is carried over do the'
-                    . ' records move.',
+                    . ' proposal asks for stays as it is, and the records move only when it is'
+                    . ' carried over.',
                 ) ?></p>
                 <?= $this->Form->control('conclusion_date', [
                     'default' => Date::now(),

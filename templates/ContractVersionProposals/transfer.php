@@ -34,7 +34,6 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
     <div class="column column-90">
         <div class="contractVersionProposals view content">
             <?= $this->element('ContractVersionProposals/heading') ?>
-
             <?php if ($found !== []) : ?>
                 <h4><?= __('Worth knowing first') ?></h4>
                 <ul>
@@ -73,9 +72,9 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
             <fieldset>
                 <legend><?= __('Carry the Proposal Over') ?></legend>
                 <?php if ($changesNothing) : ?>
-                    <p><?= __('This proposal changes nothing; it is the record of the papers that'
-                        . ' went out. Carrying it over only marks it as dealt with, so that it stops'
-                        . ' being listed as waiting.') ?></p>
+                    <p><?= __('This proposal changes nothing. It is the record of the papers'
+                        . ' that went out, and carrying it over only marks it as dealt with, so'
+                        . ' that it stops being listed as waiting.') ?></p>
                 <?php else : ?>
                     <p><?= __('Until now the live records have not moved. This is where they do.') ?></p>
                 <?php endif; ?>

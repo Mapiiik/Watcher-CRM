@@ -906,6 +906,13 @@ class ContractsController extends AppController
 
         $documentTypes = $this->documentsFor($proposal);
 
+        // Before the operator has chosen, the proposal's own purpose says which paper it is for.
+        // Only a suggestion: what may be printed at all is worked out from the proposal itself.
+        if ($printType === null && $proposal !== null) {
+            $suggested = $proposal->purpose->suggests($proposal->terminatesAnotherVersion());
+            $printType = in_array($suggested, $documentTypes, true) ? $suggested : null;
+        }
+
         if (
             $this->getRequest()->getParam('_ext') === 'pdf'
             || $this->getRequest()->getQuery('submit_action') === 'pdf'

@@ -16,9 +16,11 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Exception;
@@ -128,8 +130,12 @@ class ContractVersionProposalsController extends AppController
             }
         }
 
+        $named = $this->named('purpose');
+        $proposal->set('purpose', ProposalPurpose::tryFrom((string)$named) ?? ProposalPurpose::NewContract);
+
         if ($this->request->is('post')) {
             $proposal = $this->fillFromForm($proposal, $this->request->getData());
+            $this->endWhatTheContractIsBilledFor($proposal);
 
             // Changing the contract redraws the form so that its versions and services are the
             // ones that contract has; it is not an attempt to save anything yet.
@@ -142,6 +148,40 @@ class ContractVersionProposalsController extends AppController
         $this->setFormViewVars($proposal);
 
         return null;
+    }
+
+    /**
+     * Stops everything the contract is billed for, where a proposal brings the contract to an end.
+     *
+     * An ending means nothing goes on being charged for, so the lines that say so are put there
+     * rather than clicked one at a time. They are the proposal's own lines, no different from any
+     * other, so anything that is to run on can be taken back off the proposal's table.
+     *
+     * A version ending while the contract runs on gets none of this: what is billed for hangs off
+     * the contract, which carries on, and the version that follows says what becomes of it.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal being drawn up.
+     * @return void
+     */
+    private function endWhatTheContractIsBilledFor(ContractVersionProposal $proposal): void
+    {
+        if ($proposal->purpose !== ProposalPurpose::Termination || !$proposal->endsTheContract()) {
+            return;
+        }
+
+        $changes = $proposal->proposedChanges();
+        $spokenFor = $changes->billingsByBillingId();
+        $lines = new ProposedBillingForm();
+
+        foreach (array_keys($proposal->stateOfThings()->billings()) as $billing_id) {
+            if (isset($spokenFor[(string)$billing_id])) {
+                continue;
+            }
+
+            $changes = $changes->withLine($lines->ending((string)$billing_id));
+        }
+
+        $proposal->set('changes', $changes->toArray());
     }
 
     /**
@@ -583,7 +623,7 @@ class ContractVersionProposalsController extends AppController
                     );
 
                     $this->Flash->success($proposal->proposedChanges()->isEmpty()
-                        ? __('The proposal has been marked as dealt with; it changed nothing.')
+                        ? __('The proposal has been marked as dealt with. It changed nothing.')
                         : __('The proposal has been carried over into the live records.'));
 
                     if ($proposal->proposedChanges()->contract->endsTheContract()) {
@@ -700,12 +740,14 @@ class ContractVersionProposalsController extends AppController
         $data = $this->dataWithAdditionalParameters($this->ContractVersionProposals, $data);
 
         $form = new ProposalForm();
+        $purpose = $this->purposeFrom($data, $proposal);
+        $data['purpose'] = $purpose->value;
 
         // What the head of the form asks is laid over what the proposal already asks of the
         // billings - those are edited a line at a time and never travel in this submission.
         $data['changes'] = $form->changesFrom($data, $proposal->isNew()
             ? ProposalChanges::nothing()
-            : $proposal->proposedChanges());
+            : $proposal->proposedChanges(), $purpose);
         $data['confirmations'] = $form->confirmationsFrom($data);
 
         // The form's own fields have been read by now, and the marshaller must not see them: it
@@ -713,8 +755,8 @@ class ContractVersionProposalsController extends AppController
         unset(
             $data['version_change'],
             $data['version_change_named'],
-            $data['contract_change'],
-            $data['contract_change_named'],
+            $data['ends_on'],
+            $data['version_only'],
             $data['refresh'],
         );
 
@@ -729,13 +771,19 @@ class ContractVersionProposalsController extends AppController
             return $this->ContractVersionProposals->patchEntity($proposal, $data, ['validate' => false]);
         }
 
-        // The day the papers take effect is asked for only over a version already concluded, and
-        // even there it may be left empty. Whatever is not said is the day the version itself
-        // takes effect.
+        // The day the papers take effect is asked for only where they are a change agreed while the
+        // version runs, and even there it may be left empty. An ending works it out from the day it
+        // ends on, because what is billed for stops the day before the papers apply; anything else
+        // takes effect with its version.
+        $ends = $this->endOfTheVersion($data);
         $said = $data['effective_from'] ?? null;
         $saidNothing = !is_string($said) || trim($said) === '';
 
-        if ($version !== null && ($saidNothing || !$this->effectiveDateIsItsOwn($version))) {
+        if ($purpose === ProposalPurpose::Termination) {
+            if ($ends !== null) {
+                $data['effective_from'] = $ends->addDays(1)->toDateString();
+            }
+        } elseif ($version !== null && ($saidNothing || !$purpose->asksForItsOwnDay())) {
             $data['effective_from'] = $version->valid_from->toDateString();
         }
 
@@ -768,18 +816,45 @@ class ContractVersionProposalsController extends AppController
     }
 
     /**
-     * Whether these papers take effect on a day of their own.
+     * What the papers are being drawn up for.
      *
-     * They do when they are written over a version already concluded - an amendment, an agreement
-     * to end it. Otherwise they take effect with the version they are for, and asking twice would
-     * only invite the two to disagree.
+     * The purpose settles what the rest of the submission means, so it is read before any of it.
+     * A form that has never named one is drawing up a new contract, which is the common case.
      *
-     * @param \App\Model\Entity\ContractVersion|null $version The version the papers are for.
-     * @return bool
+     * @param array<string, mixed> $data What the form sent.
+     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal being filled in.
+     * @return \App\Model\Enum\ProposalPurpose
      */
-    private function effectiveDateIsItsOwn(?ContractVersion $version): bool
+    private function purposeFrom(array $data, ContractVersionProposal $proposal): ProposalPurpose
     {
-        return $version?->conclusion_date !== null;
+        $said = $data['purpose'] ?? null;
+
+        if (is_string($said) && ProposalPurpose::tryFrom($said) !== null) {
+            return ProposalPurpose::from($said);
+        }
+
+        return $proposal->purpose ?? ProposalPurpose::NewContract;
+    }
+
+    /**
+     * The day an ending says the version stops being valid on, as the form gave it.
+     *
+     * @param array<string, mixed> $data What the form sent.
+     * @return \Cake\I18n\Date|null
+     */
+    private function endOfTheVersion(array $data): ?Date
+    {
+        $day = $data['ends_on'] ?? null;
+
+        if (!is_string($day) || trim($day) === '') {
+            return null;
+        }
+
+        try {
+            return new Date(trim($day));
+        } catch (Exception) {
+            return null;
+        }
     }
 
     /**
@@ -956,17 +1031,21 @@ class ContractVersionProposalsController extends AppController
         $questions = $contract === null ? [] : (new ReadinessChecks())->questionsFor($contract);
 
         // Contracts concluded before the renumbering carry the customer number, one contract to a
-        // customer, so both are worth offering and neither is worth looking further than.
-        $contractNumbers = $contract === null ? [] : array_values(array_unique(array_filter([
+        // customer, so both are worth offering and nothing else ever is - the number on the paper
+        // is one of these two, so it is chosen rather than typed.
+        $numbers = $contract === null ? [] : array_values(array_unique(array_filter([
             $contract->number,
             $contract->customer->number ?? null,
         ])));
+        $contractNumbers = array_combine($numbers, $numbers);
 
         $version = $this->versionFor((string)$proposal->contract_version_id);
-        $effectiveDateIsItsOwn = $this->effectiveDateIsItsOwn($version);
 
         // The day the field falls back on when it is left empty, so the hint can name it.
         $effectiveFromDefault = $version?->valid_from;
+
+        $purpose = $proposal->purpose ?? ProposalPurpose::NewContract;
+        $purposes = ProposalPurpose::options();
 
         $this->set(compact(
             'contract',
@@ -974,7 +1053,8 @@ class ContractVersionProposalsController extends AppController
             'versions',
             'questions',
             'contractNumbers',
-            'effectiveDateIsItsOwn',
+            'purpose',
+            'purposes',
             'effectiveFromDefault',
         ));
         $this->set('wording', ReadinessChecks::wording());

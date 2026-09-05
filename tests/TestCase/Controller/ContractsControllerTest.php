@@ -719,7 +719,7 @@ class ContractsControllerTest extends TestCase
      * @return void
      * @link \App\Controller\ContractVersionProposalsController::add()
      */
-    public function testTheNumberToBeTerminatedIsSuggestedOnTheProposal(): void
+    public function testTheNumberToBeTerminatedIsOfferedOnTheProposal(): void
     {
         $contract = $this->fetchTable('Contracts')->get($this->firstId('Contracts'), contain: ['Customers']);
 
@@ -728,7 +728,6 @@ class ContractsControllerTest extends TestCase
             . '/contract-version-proposals/add');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('<datalist id="contract-numbers-to-be-terminated">');
         $this->assertResponseContains('<option value="' . h($contract->number) . '">');
         $this->assertResponseContains('<option value="' . h($contract->customer->number) . '">');
     }

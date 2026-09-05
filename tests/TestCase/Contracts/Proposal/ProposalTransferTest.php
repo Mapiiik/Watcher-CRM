@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Contracts\Proposal;
 
 use App\Contracts\Proposal\ProposalTransfer;
 use App\Model\Entity\ContractVersionProposal;
+use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
@@ -196,6 +197,7 @@ class ProposalTransferTest extends TestCase
         $stateBefore = $contracts->get(self::CONTRACT_ID)->get('contract_state_id');
 
         $proposal = $this->proposal([
+            'purpose' => ProposalPurpose::Termination->value,
             'conclusion_date' => '2026-09-15',
             'effective_from' => '2026-10-01',
             'terminated_contract_number' => 'Lorem ipsum dolor sit amet',

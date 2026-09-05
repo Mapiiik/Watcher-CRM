@@ -102,6 +102,10 @@ use App\Contracts\Proposal\ProposedVersion;
                     ) ?></td>
                 </tr>
                 <tr>
+                    <th><?= __('What This Is For') ?></th>
+                    <td><?= h($contractVersionProposal->purpose->label()) ?></td>
+                </tr>
+                <tr>
                     <th><?= __('Effective From') ?></th>
                     <td><?= h($contractVersionProposal->effective_from) ?></td>
                 </tr>

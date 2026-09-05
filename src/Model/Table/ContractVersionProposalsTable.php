@@ -10,6 +10,7 @@ use App\Contracts\Proposal\ProposedVersion;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\ProposalPurpose;
 use Cake\Database\Type\EnumType;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
@@ -76,6 +77,10 @@ class ContractVersionProposalsTable extends AppTable
         $this->getSchema()->setColumnType(
             'sent_by',
             EnumType::from(ContractDeliveryMethod::class),
+        );
+        $this->getSchema()->setColumnType(
+            'purpose',
+            EnumType::from(ProposalPurpose::class),
         );
 
         $this->addBehavior('Timestamp');
@@ -172,6 +177,10 @@ class ContractVersionProposalsTable extends AppTable
             ->uuid('contract_version_id')
             ->requirePresence('contract_version_id', 'create')
             ->notEmptyString('contract_version_id');
+
+        $validator
+            ->requirePresence('purpose', 'create')
+            ->notEmptyString('purpose');
 
         $validator
             ->uuid('terminates_contract_version_id')
@@ -503,11 +512,13 @@ class ContractVersionProposalsTable extends AppTable
                 $endsVersion = $changes->version->endsTheVersion();
                 $endsContract = $changes->contract->endsTheContract();
 
-                if (!$endsVersion && !$endsContract) {
+                // A version ending while the contract runs on is how an agreement to end one
+                // version and sign another is written, so only the other direction is held to.
+                if (!$endsContract) {
                     return true;
                 }
 
-                if (!$endsVersion || !$endsContract) {
+                if (!$endsVersion) {
                     return false;
                 }
 
@@ -522,8 +533,33 @@ class ContractVersionProposalsTable extends AppTable
             [
                 'errorField' => 'changes',
                 'message' => __(
-                    'Say both when the contract version stops being valid and when the contract'
-                    . ' is terminated, and say the same day.',
+                    'A contract is terminated on the day its version stops being valid. Say both,'
+                    . ' and say the same day.',
+                ),
+            ],
+        );
+
+        // The purpose is a stored answer to a question the changes cannot be asked, so the two have
+        // to be held together. The form cannot produce a disagreement between them; a customer
+        // portal writing over the API could, and the purpose is the first thing it will send.
+        $rules->add(
+            function (ContractVersionProposal $entity): bool {
+                $changes = $this->readChanges($entity);
+
+                if ($changes === null) {
+                    return true;
+                }
+
+                return $entity->purpose === ProposalPurpose::Termination
+                    ? $changes->version->endsTheVersion()
+                    : !$changes->contract->endsTheContract();
+            },
+            'changesMatchThePurpose',
+            [
+                'errorField' => 'changes',
+                'message' => __(
+                    'What the proposal asks for does not match what it is for: only an ending ends'
+                    . ' the contract, and an ending has to say the day.',
                 ),
             ],
         );
@@ -532,9 +568,8 @@ class ContractVersionProposalsTable extends AppTable
         // in at every printing and thrown away afterwards.
         $rules->add(
             function (ContractVersionProposal $entity): bool {
-                $changes = $this->readChanges($entity);
                 $ends = $entity->terminatesAnotherVersion()
-                    || ($changes !== null && $changes->endsTheContract());
+                    || $entity->purpose === ProposalPurpose::Termination;
 
                 return !$ends || ($entity->terminated_contract_number ?? '') !== '';
             },
@@ -546,10 +581,16 @@ class ContractVersionProposalsTable extends AppTable
         );
 
         // An end date on a version does not say by itself that the contract is for a fixed term -
-        // it is also how a superseded version is recorded - and a fixed term is its own minimum
-        // period of performance, so the obligation has to reach the end of it.
+        // it is also how an ending is written down, and how a superseded version is recorded - and
+        // a fixed term is its own minimum period of performance, so the obligation has to reach the
+        // end of it. Which of the two it is only the purpose can say; asking it of an ending would
+        // have the obligation moved to the day the customer left, losing that they left early.
         $rules->add(
             function (ContractVersionProposal $entity): bool {
+                if ($entity->purpose === ProposalPurpose::Termination) {
+                    return true;
+                }
+
                 $ends = $this->versionEndAfterProposal($entity);
 
                 if ($ends === null) {

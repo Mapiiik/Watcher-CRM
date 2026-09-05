@@ -4,6 +4,10 @@
  * contract. What is billed for is not here - each line of that is edited on a page of its own,
  * from the proposal's own table, the same way a billing on a contract is.
  *
+ * What is asked follows the purpose. Asking everything at once was how this began, and it put an
+ * agreement to end a contract behind two checkboxes, two dates that had to match, and a question
+ * about a fixed term that an ending is not.
+ *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
  * @var \App\Model\Entity\Contract|null $contract
@@ -11,26 +15,36 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $versions
  * @var array<string> $questions
  * @var array<string, string> $wording
- * @var array<string> $contractNumbers
- * @var bool $effectiveDateIsItsOwn
+ * @var array<string, string> $contractNumbers
+ * @var array<string, string> $purposes
+ * @var \App\Model\Enum\ProposalPurpose $purpose
  * @var \Cake\I18n\Date|null $effectiveFromDefault
  */
+
+use App\Model\Enum\ProposalPurpose;
 
 $changes = $contractVersionProposal->isNew()
     ? null
     : $contractVersionProposal->proposedChanges();
+
+$ending = $purpose === ProposalPurpose::Termination;
+$endsOn = $changes?->version->names('valid_until') ?? false
+    ? $changes->version->get('valid_until')
+    : null;
 ?>
-<datalist id="contract-numbers-to-be-terminated">
-    <?php foreach ($contractNumbers as $contractNumber) : ?>
-        <option value="<?= h($contractNumber) ?>">
-    <?php endforeach; ?>
-</datalist>
 <fieldset>
     <legend><?= __('What the papers are for') ?></legend>
     <?php
-    // Both the contract and the version redraw the form when they change, and the field they add
-    // to do it is not one the form declared - so it is unlocked whichever of them is on the page.
+    // The purpose, the contract and the version all redraw the form when they change, and the
+    // field they add to do it is not one the form declared - so it is unlocked whichever of them
+    // is on the page.
     $this->Form->unlockField('refresh');
+
+    echo $this->Form->control('purpose', [
+        'options' => $purposes,
+        'label' => __('What this is for'),
+        'onchange' => $this::REFRESH_ON_CHANGE,
+    ]);
 
     if (!isset($contract_id)) {
         echo $this->Form->control('contract_id', [
@@ -46,10 +60,10 @@ $changes = $contractVersionProposal->isNew()
         'onchange' => $this::REFRESH_ON_CHANGE,
     ]);
 
-    // Papers written over a version already concluded take effect on a day of their own - an
-    // amendment, an agreement to end it. Otherwise it is the day the version itself takes effect,
-    // and asking twice would only invite the two to disagree.
-    if ($effectiveDateIsItsOwn) {
+    // A change is agreed while the version runs, so it says its own day. A new contract starts
+    // with its version, and an ending says the day it ends on - both are worked out rather than
+    // asked, because asking twice would only invite the two to disagree.
+    if ($purpose->asksForItsOwnDay()) {
         echo $this->Form->control('effective_from', [
             'label' => __('Effective From'),
             // Left empty it follows the version, so it is not filled in ahead of time: a day put
@@ -63,26 +77,56 @@ $changes = $contractVersionProposal->isNew()
                     $effectiveFromDefault,
                 ),
         ]);
-    } else {
+    } elseif (!$ending) {
         echo '<p>' . __('These papers take effect with the contract version they are for.') . '</p>';
     }
 
-    echo $this->Form->control('terminates_contract_version_id', [
-        'options' => $versions,
-        'empty' => true,
-        'label' => __('Terminates Contract Version'),
-    ]);
-    echo $this->Form->control('terminated_contract_number', [
-        'label' => __('Number of the contract being terminated'),
-        'list' => 'contract-numbers-to-be-terminated',
-    ]);
+    // Only a new contract may end an earlier version of the same contract, which is the one paper
+    // that does both at once. A change leaves the version where it is, by definition.
+    if ($purpose === ProposalPurpose::NewContract) {
+        echo $this->Form->control('terminates_contract_version_id', [
+            'options' => $versions,
+            'empty' => true,
+            'label' => __('Terminates Contract Version'),
+        ]);
+    }
+
+    // The number is what goes on the paper of anything that ends something, and both of those do.
+    if ($purpose !== ProposalPurpose::ServiceChange) {
+        echo $this->Form->control('terminated_contract_number', [
+            'options' => $contractNumbers,
+            'empty' => true,
+            'label' => __('Number of the contract being terminated'),
+        ]);
+    }
     echo $this->Form->control('note');
     ?>
 </fieldset>
 
+<?php if ($ending) : ?>
 <fieldset>
-    <legend><?= __('The contract version and the contract') ?></legend>
-    <p><?= __('Only what is ticked here is changed; the rest is left as it stands.') ?></p>
+    <legend><?= __('When it ends') ?></legend>
+    <?php
+    echo $this->Form->control('ends_on', [
+        'type' => 'date',
+        'empty' => true,
+        'value' => $endsOn,
+        'label' => __('Last day of the service'),
+        'help' => __('The version stops being valid on this day, and so does what is billed for.'),
+    ]);
+    echo $this->Form->control('version_only', [
+        'type' => 'checkbox',
+        'checked' => ($changes?->version->endsTheVersion() ?? false)
+            && !$changes->contract->endsTheContract(),
+        'label' => __('End this version only, and leave the contract running'),
+        'help' => __('For an agreement to end one version with another to follow it.'),
+    ]);
+    ?>
+</fieldset>
+<?php else : ?>
+<fieldset>
+    <legend><?= __('The contract version') ?></legend>
+    <p><?= __('Only what is ticked here is changed. The rest is left as it stands.') ?></p>
     <?php
     foreach (['valid_until', 'obligation_until'] as $field) {
         $named = $changes?->version->names($field) ?? false;
@@ -100,21 +144,9 @@ $changes = $contractVersionProposal->isNew()
             'label' => false,
         ]);
     }
-
-    $ends = $changes?->contract->names('termination_date') ?? false;
-    echo $this->Form->control('contract_change_named.termination_date', [
-        'type' => 'checkbox',
-        'checked' => $ends,
-        'label' => __('Terminate the contract'),
-    ]);
-    echo $this->Form->control('contract_change.termination_date', [
-        'type' => 'date',
-        'empty' => true,
-        'value' => $ends ? $changes?->contract->get('termination_date') : null,
-        'label' => false,
-    ]);
     ?>
 </fieldset>
+<?php endif; ?>
 
 <?php if ($questions !== []) : ?>
 <fieldset>
@@ -130,10 +162,12 @@ $changes = $contractVersionProposal->isNew()
 <?php endif; ?>
 
 <?php
-// An end date on a version is also how a superseded one is recorded, so printing it as a fixed-term
-// contract is said out loud rather than assumed.
-echo $this->Form->control('confirmations.fixed_term', [
-    'type' => 'checkbox',
-    'checked' => $contractVersionProposal->confirmations()->confirms('fixed_term'),
-    'label' => __('This is a fixed-term contract, and the obligation runs to the end of it.'),
-]);
+// An end date on a version is also how an ending and a superseded version are recorded, so a paper
+// meant to run for a fixed term is said out loud rather than assumed. An ending never asks.
+if (!$ending) {
+    echo $this->Form->control('confirmations.fixed_term', [
+        'type' => 'checkbox',
+        'checked' => $contractVersionProposal->confirmations()->confirms('fixed_term'),
+        'label' => __('This is a fixed-term contract, and the obligation runs to the end of it.'),
+    ]);
+}

@@ -17,6 +17,7 @@ use Cake\I18n\Date;
  * @property string $contract_version_id
  * @property string|null $terminates_contract_version_id
  * @property string|null $terminated_contract_number
+ * @property \App\Model\Enum\ProposalPurpose $purpose
  * @property \Cake\I18n\Date $effective_from
  * @property array<string, mixed> $snapshot
  * @property \Cake\I18n\DateTime $snapshot_taken
@@ -51,6 +52,7 @@ class ContractVersionProposal extends AppEntity
     protected array $_accessible = [
         'contract_id' => true,
         'contract_version_id' => true,
+        'purpose' => true,
         'terminates_contract_version_id' => true,
         'terminated_contract_number' => true,
         'effective_from' => true,

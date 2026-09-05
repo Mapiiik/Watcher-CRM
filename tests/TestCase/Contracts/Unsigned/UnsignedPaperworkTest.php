@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Contracts\Unsigned;
 
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\ProposalPurpose;
 use App\Model\Enum\UnsignedDeadlineAnchor;
 use App\Model\Table\ContractVersionsTable;
 use Cake\Cache\Cache;
@@ -469,6 +470,7 @@ class UnsignedPaperworkTest extends TestCase
             $proposals->newEntity([
                 'contract_id' => self::CONTRACT_ID,
                 'contract_version_id' => $version->id,
+                'purpose' => ProposalPurpose::NewContract->value,
                 'effective_from' => $valid_from,
                 'snapshot' => [
                     'contract' => [], 'customer' => [], 'version' => [], 'billings' => [],

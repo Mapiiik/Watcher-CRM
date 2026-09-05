@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use App\Contracts\Proposal\ProposalConfirmations;
+use App\Model\Enum\ProposalPurpose;
 use Cake\TestSuite\Fixture\TestFixture;
 use Override;
 
@@ -66,6 +67,7 @@ class ContractVersionProposalsFixture extends TestFixture
                 'id' => 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60',
                 'contract_id' => '7f76dc3f-a11b-4109-958b-4b0382545a66',
                 'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
+                'purpose' => ProposalPurpose::ServiceChange->value,
                 'terminates_contract_version_id' => null,
                 'terminated_contract_number' => null,
                 'effective_from' => '2026-09-01',

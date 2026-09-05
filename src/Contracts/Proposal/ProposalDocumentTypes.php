@@ -5,6 +5,7 @@ namespace App\Contracts\Proposal;
 
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ProposalPurpose;
 
 /**
  * Which documents a given proposal may be printed as.
@@ -14,9 +15,13 @@ use App\Model\Enum\ContractPrintType;
  * whatever the list was on the day. This way a new type gets its rule and works backwards as well.
  *
  * The rules are written as what is nonsense rather than as what was meant. They keep out a
- * replacement that replaces nothing, a termination that ends nothing and an amendment to a contract
- * nobody concluded; everything else stays open, because only the operator knows whether the paper
- * in hand is a fresh contract or a copy of the one already signed.
+ * replacement that replaces nothing, a termination on papers that are not an ending and an amendment
+ * to a contract nobody concluded; everything else stays open, because only the operator knows
+ * whether the paper in hand is a fresh contract or a copy of the one already signed.
+ *
+ * Two of them read the purpose. That is not the same as keeping the list: the purpose is a field on
+ * the proposal like any other, and it is the only one that tells an end date meant as a fixed term
+ * from an end date meant as an ending.
  */
 final class ProposalDocumentTypes
 {
@@ -34,7 +39,7 @@ final class ProposalDocumentTypes
         bool $version_concluded,
     ): array {
         $replaces = $proposal->terminatesAnotherVersion();
-        $ends = $proposal->endsTheContract();
+        $ends = $proposal->purpose === ProposalPurpose::Termination;
 
         return array_values(array_filter(
             ContractPrintType::cases(),
