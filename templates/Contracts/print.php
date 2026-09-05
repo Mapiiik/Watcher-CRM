@@ -15,7 +15,13 @@ $howAProposalReads = function ($one): string {
         ? ''
         : $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
 
-    return sprintf('%s - %s (%s)', $one->effective_from, $period, $one->getState());
+    return sprintf(
+        '%s - %s - %s (%s)',
+        $one->purpose->label(),
+        $one->effective_from,
+        $period,
+        $one->getState(),
+    );
 };
 
 $options = [];

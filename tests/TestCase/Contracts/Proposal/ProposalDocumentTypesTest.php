@@ -125,19 +125,27 @@ class ProposalDocumentTypesTest extends TestCase
     }
 
     /**
-     * An amendment wants a contract somebody concluded; there is nothing to amend otherwise.
+     * An amendment wants papers meant as a change, and a contract somebody concluded. Papers meant
+     * as a new contract are not an amendment however far along the version is, and there is
+     * nothing to amend before anybody signs.
      *
      * @return void
      */
-    public function testAmendingWantsAConcludedVersion(): void
+    public function testAmendingWantsAChangeToAConcludedVersion(): void
     {
+        $change = ['purpose' => ProposalPurpose::ServiceChange];
+
         $this->assertContains(
             ContractPrintType::ContractAmendment->value,
-            $this->offered($this->proposal(), concluded: true),
+            $this->offered($this->proposal($change), concluded: true),
         );
         $this->assertNotContains(
             ContractPrintType::ContractAmendment->value,
-            $this->offered($this->proposal(), concluded: false),
+            $this->offered($this->proposal($change), concluded: false),
+        );
+        $this->assertNotContains(
+            ContractPrintType::ContractAmendment->value,
+            $this->offered($this->proposal(), concluded: true),
         );
     }
 

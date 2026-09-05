@@ -749,6 +749,7 @@ class ContractVersionProposalsController extends AppController
             ? ProposalChanges::nothing()
             : $proposal->proposedChanges(), $purpose);
         $data['confirmations'] = $form->confirmationsFrom($data);
+        $ends = $this->endOfTheVersion($data);
 
         // The form's own fields have been read by now, and the marshaller must not see them: it
         // would take a name it shares with an association for a record of its own.
@@ -773,16 +774,22 @@ class ContractVersionProposalsController extends AppController
 
         // The day the papers take effect is asked for only where they are a change agreed while the
         // version runs, and even there it may be left empty. An ending works it out from the day it
-        // ends on, because what is billed for stops the day before the papers apply; anything else
+        // ends on, because what is billed for stops the day before the papers apply. Anything else
         // takes effect with its version.
-        $ends = $this->endOfTheVersion($data);
         $said = $data['effective_from'] ?? null;
         $saidNothing = !is_string($said) || trim($said) === '';
 
         if ($purpose === ProposalPurpose::Termination) {
-            if ($ends !== null) {
-                $data['effective_from'] = $ends->addDays(1)->toDateString();
+            if ($ends === null) {
+                $proposal = $this->ContractVersionProposals->patchEntity($proposal, $data, [
+                    'validate' => false,
+                ]);
+                $proposal->setError('ends_on', [__('Say which day the service runs to.')]);
+
+                return $proposal;
             }
+
+            $data['effective_from'] = $ends->addDays(1)->toDateString();
         } elseif ($version !== null && ($saidNothing || !$purpose->asksForItsOwnDay())) {
             $data['effective_from'] = $version->valid_from->toDateString();
         }

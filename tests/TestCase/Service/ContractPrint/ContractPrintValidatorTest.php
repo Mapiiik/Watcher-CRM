@@ -8,6 +8,7 @@ use App\Model\Entity\ContractVersion;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Entity\ServiceType;
 use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractPrintData;
 use App\Service\ContractPrint\ContractPrintValidator;
 use Cake\I18n\Date;
@@ -77,6 +78,7 @@ class ContractPrintValidatorTest extends TestCase
     {
         return new ContractVersionProposal($says + [
             'id' => 'a1b2c3d4-0000-4000-8000-000000000004',
+            'purpose' => ProposalPurpose::NewContract,
             'effective_from' => new Date('2026-10-01'),
             'changes' => [],
             'terminates_contract_version_id' => null,
@@ -151,19 +153,27 @@ class ContractPrintValidatorTest extends TestCase
     }
 
     /**
-     * An amendment wants a contract somebody concluded; there is nothing to amend otherwise.
+     * An amendment wants papers meant as a change, to a contract somebody concluded. There is
+     * nothing to amend before anybody signs, and papers meant as a new contract are not an
+     * amendment however far along the version is.
      *
      * @return void
      */
-    public function testAnAmendmentToAnUnconcludedContractIsRefused(): void
+    public function testAnAmendmentWantsAChangeToAConcludedContract(): void
     {
-        $errors = self::errorsFor(ContractPrintType::ContractAmendment, self::proposal(), concluded: false);
+        $change = self::proposal(['purpose' => ProposalPurpose::ServiceChange]);
 
-        $this->assertArrayHasKey('document_type', $errors);
-
+        $this->assertArrayHasKey(
+            'document_type',
+            self::errorsFor(ContractPrintType::ContractAmendment, $change, concluded: false),
+        );
+        $this->assertArrayHasKey(
+            'document_type',
+            self::errorsFor(ContractPrintType::ContractAmendment, self::proposal(), concluded: true),
+        );
         $this->assertSame(
             [],
-            self::errorsFor(ContractPrintType::ContractAmendment, self::proposal(), concluded: true),
+            self::errorsFor(ContractPrintType::ContractAmendment, $change, concluded: true),
         );
     }
 

@@ -39,22 +39,29 @@ final class ProposalDocumentTypes
         bool $version_concluded,
     ): array {
         $replaces = $proposal->terminatesAnotherVersion();
-        $ends = $proposal->purpose === ProposalPurpose::Termination;
+        $purpose = $proposal->purpose;
+        $ends = $purpose === ProposalPurpose::Termination;
 
         return array_values(array_filter(
             ContractPrintType::cases(),
             fn(ContractPrintType $type): bool => match ($type) {
-                ContractPrintType::ContractNew => !$replaces,
-                ContractPrintType::ContractNewX => $replaces,
-                ContractPrintType::ContractAmendment => $version_concluded,
+                ContractPrintType::ContractNew => $purpose === ProposalPurpose::NewContract
+                    && !$replaces,
+                ContractPrintType::ContractNewX => $purpose === ProposalPurpose::NewContract
+                    && $replaces,
+                ContractPrintType::ContractAmendment => $purpose === ProposalPurpose::ServiceChange
+                    && $version_concluded,
                 ContractPrintType::ContractTermination => $ends,
-                ContractPrintType::ContractSummary => true,
-                // The installation protocol hangs off the version, which every proposal has. The
-                // uninstallation one wants a version to end and a number to name, so it has nothing
-                // to go on unless the proposal ends something - and that is deliberate, because the
-                // contract is what says which equipment the customer has, so swapping a box is a
-                // new version rather than a protocol of its own.
-                ContractPrintType::HandoverInstallation => $has_equipment,
+                // The summary says what is on offer before anybody is bound by it, and an ending
+                // offers nothing.
+                ContractPrintType::ContractSummary => !$ends,
+                // The installation protocol hangs off the version, which every proposal has, but
+                // nothing is installed on the way out. The uninstallation one wants a version to
+                // end and a number to name, so it has nothing to go on unless the proposal ends
+                // something - and that is deliberate, because the contract is what says which
+                // equipment the customer has, so swapping a box is a new version rather than a
+                // protocol of its own.
+                ContractPrintType::HandoverInstallation => $has_equipment && !$ends,
                 ContractPrintType::HandoverUninstallation => $has_equipment && ($ends || $replaces),
             },
         ));

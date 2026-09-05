@@ -636,6 +636,76 @@ class ContractVersionProposalsControllerTest extends TestCase
     }
 
     /**
+     * An ending is drawn up from one day: the version stops being valid on it, the contract is
+     * terminated on it, and the papers take effect the day after, because what is billed for stops
+     * the day before they apply.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testAnEndingIsDrawnUpFromOneDay(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/add', [
+            'purpose' => ProposalPurpose::Termination->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => self::CONTRACT_VERSION_ID,
+            'terminated_contract_number' => '2022/0001',
+            'ends_on' => '2026-12-31',
+            'confirmations' => [
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertSame([], $this->viewVariable('contractVersionProposal')?->getErrors() ?? []);
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractVersionProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractVersionProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        $changes = $drawn->proposedChanges();
+        $this->assertSame('2026-12-31', $changes->version->get('valid_until')?->toDateString());
+        $this->assertSame('2026-12-31', $changes->contract->get('termination_date')?->toDateString());
+        $this->assertSame('2027-01-01', $drawn->effective_from->toDateString());
+    }
+
+    /**
+     * An ending with no day says so on the field that asks for it. The columns that would
+     * otherwise complain - the day the papers apply from, and what the proposal asks for - are not
+     * on this form, and a complaint about a field nobody can see reads as no complaint at all.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::add()
+     */
+    public function testAnEndingWithoutADaySaysSoWhereItIsAsked(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/add', [
+            'purpose' => ProposalPurpose::Termination->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => self::CONTRACT_VERSION_ID,
+            'terminated_contract_number' => '2022/0001',
+            'ends_on' => '',
+        ]);
+
+        $this->assertResponseOk();
+
+        $errors = $this->viewVariable('contractVersionProposal')->getErrors();
+        $this->assertArrayHasKey('ends_on', $errors);
+        $this->assertArrayNotHasKey('effective_from', $errors);
+        $this->assertArrayNotHasKey('changes', $errors);
+    }
+
+    /**
      * Papers go out more than once - by another means, or after the first attempt came back - so
      * the day and the way they went may be recorded again. What they stand on stays settled.
      *
