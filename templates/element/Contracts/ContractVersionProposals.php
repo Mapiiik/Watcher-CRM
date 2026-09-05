@@ -66,6 +66,34 @@ $whichVersion = function ($proposal): string {
                     ['controller' => 'ContractVersionProposals', 'action' => 'edit', $proposal->id],
                     ['class' => 'win-link'],
                 ) ?>
+                <?php if ($proposal->isOpen()) : ?>
+                    <?php
+                    // The steps a proposal goes through, offered where the papers are printed from:
+                    // that is where somebody stands when they have just sent them or heard back.
+                    // Carrying over is only offered once there is a signature to carry over.
+                    ?>
+                    <?= $this->AuthLink->link(
+                        $proposal->hasBeenSent()
+                            ? __('Record That the Papers Went Out Again')
+                            : __('Record That the Papers Went Out'),
+                        ['controller' => 'ContractVersionProposals', 'action' => 'send', $proposal->id],
+                        ['class' => 'win-link'],
+                    ) ?>
+                    <?= $this->AuthLink->link(
+                        $proposal->hasBeenConcluded()
+                            ? __('Correct the Signature')
+                            : __('Record the Signature'),
+                        ['controller' => 'ContractVersionProposals', 'action' => 'conclude', $proposal->id],
+                        ['class' => 'win-link'],
+                    ) ?>
+                    <?php if ($proposal->hasBeenConcluded()) : ?>
+                        <?= $this->AuthLink->link(
+                            __('Carry Over'),
+                            ['controller' => 'ContractVersionProposals', 'action' => 'transfer', $proposal->id],
+                            ['class' => 'win-link'],
+                        ) ?>
+                    <?php endif; ?>
+                <?php endif; ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
                     ['controller' => 'ContractVersionProposals', 'action' => 'delete', $proposal->id],
