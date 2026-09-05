@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-05 09:20+0200\n"
+"POT-Creation-Date: 2026-09-05 11:42+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -686,7 +686,7 @@ msgstr ""
 #: ./src/Contracts/Proposal/ProposedContract.php:29
 #: ./templates/Contracts/edit.php:126
 #: ./templates/Contracts/index.php:53
-#: ./templates/Contracts/print.php:176
+#: ./templates/Contracts/print.php:182
 #: ./templates/Contracts/view.php:295
 #: ./templates/Customers/view.php:597
 #: ./templates/Overviews/overview_of_contracts.php:91
@@ -698,7 +698,7 @@ msgid "Date of Termination of Services"
 msgstr ""
 
 #: ./src/Contracts/Proposal/ProposedVersion.php:30
-#: ./templates/ContractVersions/view.php:75
+#: ./templates/ContractVersions/view.php:74
 #: ./templates/ServiceOverrides/view.php:100
 #: ./templates/element/ContractChecks/contract_version_gap.php:21
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:21
@@ -709,7 +709,7 @@ msgid "Valid Until"
 msgstr ""
 
 #: ./src/Contracts/Proposal/ProposedVersion.php:31
-#: ./templates/ContractVersions/view.php:79
+#: ./templates/ContractVersions/view.php:78
 #: ./templates/Customers/view.php:598
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:22
 #: ./templates/element/ContractChecks/unsettled_obligation.php:26
@@ -983,111 +983,107 @@ msgstr ""
 msgid "The contract state could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:172
-#: ./src/Controller/ContractVersionProposalsController.php:207
-#: ./src/Controller/ContractVersionProposalsController.php:398
+#: ./src/Controller/ContractVersionProposalsController.php:212
+#: ./src/Controller/ContractVersionProposalsController.php:247
+#: ./src/Controller/ContractVersionProposalsController.php:438
 msgid "This proposal can no longer be changed."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:218
+#: ./src/Controller/ContractVersionProposalsController.php:258
 msgid "The snapshot has been taken again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:293
+#: ./src/Controller/ContractVersionProposalsController.php:333
 msgid "There is no such line on this proposal."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:417
-#: ./src/Controller/ContractVersionProposalsController.php:837
+#: ./src/Controller/ContractVersionProposalsController.php:457
+#: ./src/Controller/ContractVersionProposalsController.php:919
 msgid "The proposal has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:423
-#: ./src/Controller/ContractVersionProposalsController.php:843
+#: ./src/Controller/ContractVersionProposalsController.php:463
+#: ./src/Controller/ContractVersionProposalsController.php:925
 msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:482
-#: ./src/Controller/ContractVersionProposalsController.php:525
-#: ./src/Controller/ContractVersionProposalsController.php:568
-#: ./src/Controller/ContractVersionProposalsController.php:665
+#: ./src/Controller/ContractVersionProposalsController.php:522
+#: ./src/Controller/ContractVersionProposalsController.php:565
+#: ./src/Controller/ContractVersionProposalsController.php:608
+#: ./src/Controller/ContractVersionProposalsController.php:705
 msgid "This proposal has already been settled."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:494
+#: ./src/Controller/ContractVersionProposalsController.php:534
 msgid "The proposal has been recorded as sent."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:500
+#: ./src/Controller/ContractVersionProposalsController.php:540
 msgid "The sending could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:536
+#: ./src/Controller/ContractVersionProposalsController.php:576
 msgid "The signature has been recorded."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:542
+#: ./src/Controller/ContractVersionProposalsController.php:582
 msgid "The signature could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:575
-#: ./templates/ContractVersionProposals/transfer.php:69
+#: ./src/Controller/ContractVersionProposalsController.php:615
+#: ./templates/ContractVersionProposals/transfer.php:68
 msgid "This proposal cannot be carried over as it stands."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:586
-msgid "The proposal has been marked as dealt with; it changed nothing."
+#: ./src/Controller/ContractVersionProposalsController.php:626
+msgid "The proposal has been marked as dealt with. It changed nothing."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:587
+#: ./src/Controller/ContractVersionProposalsController.php:627
 msgid "The proposal has been carried over into the live records."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:590
+#: ./src/Controller/ContractVersionProposalsController.php:630
 msgid "The contract has been given an end date. Its state is left as it was, because that has its own requirements to satisfy."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:598
+#: ./src/Controller/ContractVersionProposalsController.php:638
 msgid "The proposal could not be carried over: {0}"
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:642
+#: ./src/Controller/ContractVersionProposalsController.php:682
 msgid "The proposal has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:645
+#: ./src/Controller/ContractVersionProposalsController.php:685
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:674
+#: ./src/Controller/ContractVersionProposalsController.php:714
 msgid "The proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:677
+#: ./src/Controller/ContractVersionProposalsController.php:717
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:757
+#: ./src/Controller/ContractVersionProposalsController.php:787
+msgid "Say which day the service runs to."
+msgstr ""
+
+#: ./src/Controller/ContractVersionProposalsController.php:812
 msgid "Choose which contract and which version of it these papers are for."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:826
+#: ./src/Controller/ContractVersionProposalsController.php:908
 msgid "Please answer this before the papers go out."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:830
+#: ./src/Controller/ContractVersionProposalsController.php:912
 msgid "The contract is not ready for papers to be drawn up."
 msgstr ""
 
-#: ./src/Controller/ContractVersionProposalsController.php:948
-#: ./templates/ContractVersionProposals/index.php:65
-#: ./templates/ContractVersions/view.php:40
-#: ./templates/Contracts/print.php:16
-#: ./templates/element/Contracts/ContractVersionProposals.php:27
-msgid "indefinitely"
-msgstr ""
-
-#: ./src/Controller/ContractVersionProposalsController.php:219
+#: ./src/Controller/ContractVersionProposalsController.php:259
 msgid "The snapshot has been taken again. One line asked about a billing that is no longer on the contract and has been taken back."
 msgid_plural "The snapshot has been taken again. {0} lines asked about billings that are no longer on the contract and have been taken back."
 msgstr[0] ""
@@ -1195,7 +1191,7 @@ msgstr ""
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:914
+#: ./src/Controller/ContractsController.php:921
 #: ./src/Controller/CustomersController.php:759
 msgid "Invalid type of document."
 msgstr ""
@@ -1767,7 +1763,7 @@ msgstr ""
 
 #: ./src/Controller/TasksController.php:565
 #: ./src/Model/Enum/AddressType.php:41
-#: ./templates/Contracts/print.php:92
+#: ./templates/Contracts/print.php:98
 #: ./templates/Contracts/view.php:192
 #: ./templates/Customers/view.php:592
 #: ./templates/element/AddressChecks/several_contracts_at_one_address.php:20
@@ -1970,31 +1966,35 @@ msgstr ""
 msgid "Contract versions data not available."
 msgstr ""
 
-#: ./src/Model/Entity/ContractVersion.php:118
+#: ./src/Model/Entity/ContractVersion.php:119
 msgid "Contract version proposal data not available."
 msgstr ""
 
-#: ./src/Model/Entity/ContractVersionProposal.php:173
+#: ./src/Model/Entity/ContractVersion.php:148
+msgid "indefinitely"
+msgstr ""
+
+#: ./src/Model/Entity/ContractVersionProposal.php:175
 msgid "Carried over"
 msgstr ""
 
-#: ./src/Model/Entity/ContractVersionProposal.php:174
-#: ./templates/ContractVersionProposals/view.php:125
+#: ./src/Model/Entity/ContractVersionProposal.php:176
+#: ./templates/ContractVersionProposals/view.php:143
 #: ./templates/ServiceOverrides/view.php:104
 #: ./templates/element/common/audit.php:74
 msgid "Revoked"
 msgstr ""
 
-#: ./src/Model/Entity/ContractVersionProposal.php:175
+#: ./src/Model/Entity/ContractVersionProposal.php:177
 msgid "Waiting to be carried over"
 msgstr ""
 
-#: ./src/Model/Entity/ContractVersionProposal.php:176
+#: ./src/Model/Entity/ContractVersionProposal.php:178
 #: ./src/Model/Enum/CustomerMessageDeliveryStatus.php:29
 msgid "Sent"
 msgstr ""
 
-#: ./src/Model/Entity/ContractVersionProposal.php:177
+#: ./src/Model/Entity/ContractVersionProposal.php:179
 msgid "Being drawn up"
 msgstr ""
 
@@ -2132,11 +2132,11 @@ msgstr ""
 #: ./templates/ContractStates/view.php:171
 #: ./templates/ContractStates/view.php:176
 #: ./templates/ContractStates/view.php:180
-#: ./templates/ContractVersionProposals/view.php:173
+#: ./templates/ContractVersionProposals/view.php:204
 #: ./templates/ContractVersions/index.php:65
-#: ./templates/ContractVersions/view.php:85
+#: ./templates/ContractVersions/view.php:84
 #: ./templates/Contracts/index.php:84
-#: ./templates/Contracts/print.php:121
+#: ./templates/Contracts/print.php:127
 #: ./templates/Contracts/view.php:240
 #: ./templates/Customers/print.php:109
 #: ./templates/Customers/print.php:132
@@ -2252,11 +2252,11 @@ msgstr ""
 #: ./templates/ContractStates/view.php:171
 #: ./templates/ContractStates/view.php:176
 #: ./templates/ContractStates/view.php:180
-#: ./templates/ContractVersionProposals/view.php:173
+#: ./templates/ContractVersionProposals/view.php:204
 #: ./templates/ContractVersions/index.php:65
-#: ./templates/ContractVersions/view.php:85
+#: ./templates/ContractVersions/view.php:84
 #: ./templates/Contracts/index.php:84
-#: ./templates/Contracts/print.php:121
+#: ./templates/Contracts/print.php:127
 #: ./templates/Contracts/view.php:240
 #: ./templates/Customers/print.php:109
 #: ./templates/Customers/print.php:132
@@ -2516,6 +2516,18 @@ msgstr ""
 msgid "Specialist"
 msgstr ""
 
+#: ./src/Model/Enum/ProposalPurpose.php:37
+msgid "New contract"
+msgstr ""
+
+#: ./src/Model/Enum/ProposalPurpose.php:38
+msgid "Change of services"
+msgstr ""
+
+#: ./src/Model/Enum/ProposalPurpose.php:39
+msgid "Contract termination"
+msgstr ""
+
 #: ./src/Model/Enum/ServiceCriticalityLevel.php:25
 msgid "Normal"
 msgstr ""
@@ -2574,75 +2586,79 @@ msgstr ""
 msgid "One of the roles named is not a role."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:271
+#: ./src/Model/Table/ContractVersionProposalsTable.php:280
 msgid "The papers for this proposal have gone out, so the record of them stays. Revoke it instead."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:310
+#: ./src/Model/Table/ContractVersionProposalsTable.php:319
 msgid "The proposed changes are not in a shape the application can read."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:327
+#: ./src/Model/Table/ContractVersionProposalsTable.php:336
 msgid "The snapshot does not carry everything the documents need."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:344
+#: ./src/Model/Table/ContractVersionProposalsTable.php:353
 msgid "The confirmations name a question nobody asks."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:369
+#: ./src/Model/Table/ContractVersionProposalsTable.php:378
 msgid "A proposed change acts on a billing the snapshot does not know."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:395
+#: ./src/Model/Table/ContractVersionProposalsTable.php:404
 msgid "Two proposed changes act on the same billing."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:417
+#: ./src/Model/Table/ContractVersionProposalsTable.php:426
 msgid "The contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:434
+#: ./src/Model/Table/ContractVersionProposalsTable.php:443
 msgid "The terminated contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:444
+#: ./src/Model/Table/ContractVersionProposalsTable.php:453
 msgid "A contract version cannot terminate itself."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:470
+#: ./src/Model/Table/ContractVersionProposalsTable.php:479
 msgid "The contract version being terminated has not been concluded."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:489
+#: ./src/Model/Table/ContractVersionProposalsTable.php:498
 msgid "A contract version that has not been concluded cannot be terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:524
-msgid "Say both when the contract version stops being valid and when the contract is terminated, and say the same day."
+#: ./src/Model/Table/ContractVersionProposalsTable.php:535
+msgid "A contract is terminated on the day its version stops being valid. Say both, and say the same day."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:544
+#: ./src/Model/Table/ContractVersionProposalsTable.php:560
+msgid "What the proposal asks for does not match what it is for: only an ending ends the contract, and an ending has to say the day."
+msgstr ""
+
+#: ./src/Model/Table/ContractVersionProposalsTable.php:579
 msgid "Please enter the number of the contract being terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:570
+#: ./src/Model/Table/ContractVersionProposalsTable.php:611
 msgid "The contract version ends on a given date, so the papers will be printed as a fixed-term contract. Please confirm that this is intended and set the obligation to the date until which the version is valid."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:594
+#: ./src/Model/Table/ContractVersionProposalsTable.php:635
 msgid "Say both when the papers were sent and how, or neither."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:617
+#: ./src/Model/Table/ContractVersionProposalsTable.php:658
 msgid "The papers for this proposal have already been sent, so what stands behind them is not changed here. Revoke it and draw up a new one."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:631
+#: ./src/Model/Table/ContractVersionProposalsTable.php:672
 msgid "A proposal cannot be carried over before it has been concluded."
 msgstr ""
 
-#: ./src/Model/Table/ContractVersionProposalsTable.php:640
+#: ./src/Model/Table/ContractVersionProposalsTable.php:681
 msgid "A proposal that has been carried over cannot also be revoked."
 msgstr ""
 
@@ -2880,7 +2896,7 @@ msgstr ""
 #: ./templates/ContractVersionProposals/billing_line.php:14
 #: ./templates/ContractVersionProposals/conclude.php:13
 #: ./templates/ContractVersionProposals/edit.php:10
-#: ./templates/ContractVersionProposals/index.php:43
+#: ./templates/ContractVersionProposals/index.php:44
 #: ./templates/ContractVersionProposals/refresh_snapshot.php:10
 #: ./templates/ContractVersionProposals/send.php:14
 #: ./templates/ContractVersionProposals/transfer.php:19
@@ -2892,7 +2908,7 @@ msgstr ""
 #: ./templates/Contracts/add.php:19
 #: ./templates/Contracts/edit.php:21
 #: ./templates/Contracts/index.php:56
-#: ./templates/Contracts/print.php:30
+#: ./templates/Contracts/print.php:36
 #: ./templates/Contracts/view.php:19
 #: ./templates/Countries/add.php:10
 #: ./templates/Countries/edit.php:10
@@ -3011,7 +3027,7 @@ msgstr ""
 #: ./templates/element/ContractVersionProposals/proposed_billings.php:40
 #: ./templates/element/Contracts/Billings.php:36
 #: ./templates/element/Contracts/BorrowedEquipments.php:21
-#: ./templates/element/Contracts/ContractVersionProposals.php:43
+#: ./templates/element/Contracts/ContractVersionProposals.php:44
 #: ./templates/element/Contracts/ContractVersions.php:22
 #: ./templates/element/Contracts/IpAddresses.php:25
 #: ./templates/element/Contracts/IpNetworks.php:23
@@ -3143,7 +3159,7 @@ msgstr ""
 #: ./templates/Commissions/view.php:78
 #: ./templates/ContractStates/edit.php:14
 #: ./templates/ContractStates/index.php:66
-#: ./templates/ContractVersionProposals/index.php:87
+#: ./templates/ContractVersionProposals/index.php:89
 #: ./templates/ContractVersionProposals/view.php:77
 #: ./templates/ContractVersions/edit.php:14
 #: ./templates/ContractVersions/index.php:80
@@ -3201,7 +3217,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:18
 #: ./templates/element/Contracts/Billings.php:87
 #: ./templates/element/Contracts/BorrowedEquipments.php:62
-#: ./templates/element/Contracts/ContractVersionProposals.php:68
+#: ./templates/element/Contracts/ContractVersionProposals.php:70
 #: ./templates/element/Contracts/ContractVersions.php:52
 #: ./templates/element/Contracts/IpAddresses.php:96
 #: ./templates/element/Contracts/IpNetworks.php:66
@@ -3237,7 +3253,7 @@ msgstr ""
 #: ./templates/ContractStates/edit.php:17
 #: ./templates/ContractStates/index.php:68
 #: ./templates/ContractStates/view.php:20
-#: ./templates/ContractVersionProposals/index.php:89
+#: ./templates/ContractVersionProposals/index.php:91
 #: ./templates/ContractVersions/edit.php:17
 #: ./templates/ContractVersions/index.php:82
 #: ./templates/ContractVersions/view.php:20
@@ -3316,7 +3332,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:15
 #: ./templates/element/Contracts/Billings.php:89
 #: ./templates/element/Contracts/BorrowedEquipments.php:69
-#: ./templates/element/Contracts/ContractVersionProposals.php:70
+#: ./templates/element/Contracts/ContractVersionProposals.php:72
 #: ./templates/element/Contracts/ContractVersions.php:54
 #: ./templates/element/Contracts/IpAddresses.php:98
 #: ./templates/element/Contracts/IpNetworks.php:69
@@ -3385,7 +3401,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/index.php:31
 #: ./templates/BorrowedEquipments/view.php:50
 #: ./templates/Contracts/index.php:39
-#: ./templates/Contracts/print.php:66
+#: ./templates/Contracts/print.php:72
 #: ./templates/Contracts/view.php:166
 #: ./templates/Countries/view.php:52
 #: ./templates/CustomerLabels/index.php:31
@@ -3434,7 +3450,7 @@ msgstr ""
 #: ./templates/Commissions/index.php:35
 #: ./templates/Commissions/view.php:69
 #: ./templates/ContractStates/index.php:57
-#: ./templates/ContractVersionProposals/index.php:78
+#: ./templates/ContractVersionProposals/index.php:80
 #: ./templates/ContractVersions/index.php:71
 #: ./templates/Contracts/index.php:116
 #: ./templates/Countries/index.php:37
@@ -3477,7 +3493,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:185
 #: ./templates/element/Contracts/Billings.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:45
-#: ./templates/element/Contracts/ContractVersionProposals.php:59
+#: ./templates/element/Contracts/ContractVersionProposals.php:61
 #: ./templates/element/Contracts/ContractVersions.php:43
 #: ./templates/element/Contracts/IpAddresses.php:87
 #: ./templates/element/Contracts/IpNetworks.php:57
@@ -3499,7 +3515,7 @@ msgstr ""
 #: ./templates/Commissions/index.php:37
 #: ./templates/Commissions/view.php:73
 #: ./templates/ContractStates/index.php:61
-#: ./templates/ContractVersionProposals/index.php:82
+#: ./templates/ContractVersionProposals/index.php:84
 #: ./templates/ContractVersions/index.php:75
 #: ./templates/Contracts/index.php:118
 #: ./templates/Countries/index.php:39
@@ -3538,7 +3554,7 @@ msgstr ""
 #: ./templates/element/ContractVersionProposals/proposed_billings.php:65
 #: ./templates/element/Contracts/Billings.php:82
 #: ./templates/element/Contracts/BorrowedEquipments.php:53
-#: ./templates/element/Contracts/ContractVersionProposals.php:63
+#: ./templates/element/Contracts/ContractVersionProposals.php:65
 #: ./templates/element/Contracts/ContractVersions.php:47
 #: ./templates/element/Contracts/IpAddresses.php:91
 #: ./templates/element/Contracts/IpNetworks.php:61
@@ -3559,7 +3575,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:35
 #: ./templates/Billings/view.php:39
 #: ./templates/BorrowedEquipments/view.php:43
-#: ./templates/Contracts/print.php:59
+#: ./templates/Contracts/print.php:65
 #: ./templates/Contracts/view.php:159
 #: ./templates/Countries/view.php:51
 #: ./templates/CustomerLabels/view.php:43
@@ -3612,9 +3628,9 @@ msgstr ""
 #: ./templates/Billings/view.php:50
 #: ./templates/BorrowedEquipments/view.php:56
 #: ./templates/ContractVersionProposals/index.php:37
-#: ./templates/ContractVersionProposals/view.php:94
-#: ./templates/ContractVersionProposals/view.php:158
-#: ./templates/ContractVersions/view.php:59
+#: ./templates/ContractVersionProposals/view.php:96
+#: ./templates/ContractVersionProposals/view.php:189
+#: ./templates/ContractVersions/view.php:58
 #: ./templates/Contracts/view.php:88
 #: ./templates/CustomerLabels/view.php:55
 #: ./templates/EquipmentTypes/view.php:70
@@ -3701,8 +3717,8 @@ msgstr ""
 #: ./templates/Billings/view.php:122
 #: ./templates/ContractStates/view.php:193
 #: ./templates/ContractVersionProposals/billing_line.php:112
-#: ./templates/ContractVersionProposals/view.php:181
-#: ./templates/ContractVersions/view.php:107
+#: ./templates/ContractVersionProposals/view.php:212
+#: ./templates/ContractVersions/view.php:106
 #: ./templates/Contracts/view.php:315
 #: ./templates/CustomerLabels/view.php:80
 #: ./templates/Customers/view.php:329
@@ -3787,7 +3803,7 @@ msgstr ""
 
 #: ./templates/AccountingProfiles/view.php:82
 #: ./templates/Addresses/view.php:75
-#: ./templates/Contracts/print.php:84
+#: ./templates/Contracts/print.php:90
 #: ./templates/Contracts/view.php:184
 #: ./templates/Countries/view.php:60
 #: ./templates/Customers/identity_number_check.php:13
@@ -3988,7 +4004,7 @@ msgstr ""
 
 #: ./templates/Api/NetworkManagementSystemBridge/access_points.php:14
 #: ./templates/Billings/bulk_service_change.php:47
-#: ./templates/Contracts/print.php:105
+#: ./templates/Contracts/print.php:111
 #: ./templates/Contracts/view.php:224
 #: ./templates/Customers/view.php:594
 #: ./templates/HistoricalConnections/index.php:41
@@ -4662,16 +4678,16 @@ msgid "Record the Signature"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/conclude.php:28
-msgid "Nothing is carried over into the live records without this day. What the proposal asks for stays as it is; only when it is carried over do the records move."
+msgid "Nothing is carried over into the live records without this day. What the proposal asks for stays as it is, and the records move only when it is carried over."
 msgstr ""
 
 #: ./templates/ContractVersionProposals/conclude.php:35
-#: ./templates/ContractVersionProposals/view.php:117
-#: ./templates/ContractVersions/view.php:93
+#: ./templates/ContractVersionProposals/view.php:135
+#: ./templates/ContractVersions/view.php:92
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:23
 #: ./templates/element/ContractChecks/unsigned_contract.php:33
 #: ./templates/element/ContractChecks/untransferred_proposal.php:24
-#: ./templates/element/Contracts/ContractVersionProposals.php:41
+#: ./templates/element/Contracts/ContractVersionProposals.php:42
 #: ./templates/element/Contracts/ContractVersions.php:19
 msgid "Conclusion Date"
 msgstr ""
@@ -4691,9 +4707,9 @@ msgid "Settled Proposals As Well"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/index.php:28
-#: ./templates/ContractVersions/view.php:114
-#: ./templates/Contracts/print.php:201
-msgid "Draw Up a Proposal"
+#: ./templates/ContractVersions/view.php:113
+#: ./templates/Contracts/print.php:207
+msgid "New Proposal"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/index.php:32
@@ -4701,26 +4717,27 @@ msgid "Contract Version Proposals"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/index.php:38
-#: ./templates/ContractVersionProposals/view.php:152
-#: ./templates/element/ContractVersionProposals/form.php:45
-#: ./templates/element/Contracts/ContractVersionProposals.php:37
+#: ./templates/ContractVersionProposals/view.php:107
+#: ./templates/ContractVersionProposals/view.php:183
+#: ./templates/element/ContractVersionProposals/form.php:59
+#: ./templates/element/Contracts/ContractVersionProposals.php:36
 msgid "Contract Version"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/index.php:40
+#: ./templates/ContractVersionProposals/index.php:41
 #: ./templates/ContractVersionProposals/send.php:51
-#: ./templates/ContractVersionProposals/view.php:113
+#: ./templates/ContractVersionProposals/view.php:131
 #: ./templates/ContractVersions/index.php:42
-#: ./templates/ContractVersions/view.php:89
+#: ./templates/ContractVersions/view.php:88
 #: ./templates/element/ContractChecks/unsigned_contract.php:32
 #: ./templates/element/ContractChecks/untransferred_proposal.php:25
-#: ./templates/element/Contracts/ContractVersionProposals.php:40
+#: ./templates/element/Contracts/ContractVersionProposals.php:41
 #: ./templates/element/Contracts/ContractVersions.php:18
 msgid "Sent To The Customer"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/index.php:42
-#: ./templates/element/Contracts/ContractVersionProposals.php:42
+#: ./templates/ContractVersionProposals/index.php:43
+#: ./templates/element/Contracts/ContractVersionProposals.php:43
 msgid "State"
 msgstr ""
 
@@ -4758,50 +4775,50 @@ msgstr ""
 msgid "Sent By"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:39
+#: ./templates/ContractVersionProposals/transfer.php:38
 msgid "Worth knowing first"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:50
+#: ./templates/ContractVersionProposals/transfer.php:49
 msgid "As it is now"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:56
+#: ./templates/ContractVersionProposals/transfer.php:55
 msgid "As it would be"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:68
-#: ./templates/ContractVersionProposals/transfer.php:74
+#: ./templates/ContractVersionProposals/transfer.php:67
+#: ./templates/ContractVersionProposals/transfer.php:73
 msgid "Carry the Proposal Over"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:76
-msgid "This proposal changes nothing; it is the record of the papers that went out. Carrying it over only marks it as dealt with, so that it stops being listed as waiting."
+#: ./templates/ContractVersionProposals/transfer.php:75
+msgid "This proposal changes nothing. It is the record of the papers that went out, and carrying it over only marks it as dealt with, so that it stops being listed as waiting."
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:80
+#: ./templates/ContractVersionProposals/transfer.php:79
 msgid "Until now the live records have not moved. This is where they do."
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:85
+#: ./templates/ContractVersionProposals/transfer.php:84
 msgid "Write into a period that has already been invoiced for"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:90
+#: ./templates/ContractVersionProposals/transfer.php:89
 msgid "Mark as Dealt With"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:90
+#: ./templates/ContractVersionProposals/transfer.php:89
 #: ./templates/ContractVersionProposals/view.php:50
 #: ./templates/element/ContractChecks/untransferred_proposal.php:41
 msgid "Carry Over"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:93
+#: ./templates/ContractVersionProposals/transfer.php:92
 msgid "Mark this proposal as dealt with?"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/transfer.php:94
+#: ./templates/ContractVersionProposals/transfer.php:93
 msgid "Do you really want to write what this proposal asks for into the live records?"
 msgstr ""
 
@@ -4831,43 +4848,49 @@ msgstr ""
 msgid "Are you sure?"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/view.php:105
+#: ./templates/ContractVersionProposals/view.php:119
 #: ./templates/element/ContractChecks/untransferred_proposal.php:23
-#: ./templates/element/ContractVersionProposals/form.php:54
-#: ./templates/element/ContractVersionProposals/heading.php:15
-#: ./templates/element/Contracts/ContractVersionProposals.php:35
+#: ./templates/element/ContractVersionProposals/form.php:68
+#: ./templates/element/ContractVersionProposals/heading.php:16
+#: ./templates/element/Contracts/ContractVersionProposals.php:38
 msgid "Effective From"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/view.php:109
+#: ./templates/ContractVersionProposals/view.php:123
+#: ./templates/CustomerMessages/add_bulk/step_purpose.php:28
+#: ./templates/element/ContractVersionProposals/form.php:45
+#: ./templates/element/Contracts/ContractVersionProposals.php:39
+msgid "Purpose"
+msgstr ""
+
+#: ./templates/ContractVersionProposals/view.php:127
 msgid "Snapshot Taken"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/view.php:121
+#: ./templates/ContractVersionProposals/view.php:139
 msgid "Carried Over"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/view.php:130
-#: ./templates/element/ContractVersionProposals/form.php:73
+#: ./templates/ContractVersionProposals/view.php:148
+#: ./templates/element/ContractVersionProposals/form.php:90
 msgid "Terminates Contract Version"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/view.php:134
-#: ./templates/element/ContractVersionProposals/form.php:76
+#: ./templates/ContractVersionProposals/view.php:160
+#: ./templates/element/ContractVersionProposals/form.php:99
 msgid "Number of the contract being terminated"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/view.php:148
-#: ./templates/element/ContractVersionProposals/form.php:84
+#: ./templates/ContractVersionProposals/view.php:179
 msgid "The contract version and the contract"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/view.php:153
-#: ./templates/ContractVersionProposals/view.php:159
+#: ./templates/ContractVersionProposals/view.php:184
+#: ./templates/ContractVersionProposals/view.php:190
 msgid "cleared"
 msgstr ""
 
-#: ./templates/ContractVersionProposals/view.php:167
+#: ./templates/ContractVersionProposals/view.php:198
 msgid "What was confirmed"
 msgstr ""
 
@@ -4893,13 +4916,13 @@ msgstr ""
 
 #: ./templates/ContractVersions/index.php:28
 #: ./templates/ContractVersions/view.php:30
-#: ./templates/Contracts/print.php:188
+#: ./templates/Contracts/print.php:194
 #: ./templates/Contracts/view.php:325
 msgid "New Contract Version"
 msgstr ""
 
 #: ./templates/ContractVersions/index.php:32
-#: ./templates/Contracts/print.php:192
+#: ./templates/Contracts/print.php:198
 #: ./templates/Contracts/view.php:93
 #: ./templates/Contracts/view.php:329
 msgid "Contract Versions"
@@ -4911,10 +4934,10 @@ msgstr ""
 
 #: ./templates/ContractVersions/view.php:38
 #: ./templates/Contracts/map.php:11
-#: ./templates/Contracts/print.php:50
+#: ./templates/Contracts/print.php:56
 #: ./templates/Contracts/view.php:150
 #: ./templates/ServiceOverrides/view.php:61
-#: ./templates/element/ContractVersionProposals/heading.php:14
+#: ./templates/element/ContractVersionProposals/heading.php:15
 msgid "Contract No."
 msgstr ""
 
@@ -4924,7 +4947,7 @@ msgstr ""
 msgid "Validity"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:71
+#: ./templates/ContractVersions/view.php:70
 #: ./templates/ServiceOverrides/view.php:96
 #: ./templates/element/ContractChecks/contract_version_gap.php:20
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:20
@@ -4935,24 +4958,24 @@ msgstr ""
 msgid "Valid From"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:83
+#: ./templates/ContractVersions/view.php:82
 #: ./templates/element/Contracts/ContractVersions.php:17
 msgid "Obligations Settled"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:97
+#: ./templates/ContractVersions/view.php:96
 #: ./templates/element/Contracts/ContractVersions.php:20
 msgid "Number Of Amendments"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:124
-#: ./templates/Contracts/print.php:210
+#: ./templates/ContractVersions/view.php:123
+#: ./templates/Contracts/print.php:216
 msgid "Proposals"
 msgstr ""
 
 #: ./templates/Contracts/add.php:20
 #: ./templates/Contracts/edit.php:27
-#: ./templates/Contracts/print.php:42
+#: ./templates/Contracts/print.php:48
 #: ./templates/Contracts/view.php:30
 #: ./templates/Overviews/index.php:74
 msgid "List Contracts"
@@ -4963,14 +4986,14 @@ msgid "Add Contract"
 msgstr ""
 
 #: ./templates/Contracts/edit.php:34
-#: ./templates/Contracts/print.php:37
+#: ./templates/Contracts/print.php:43
 #: ./templates/Contracts/view.php:21
 msgid "Edit Contract"
 msgstr ""
 
 #: ./templates/Contracts/edit.php:74
 #: ./templates/Contracts/index.php:46
-#: ./templates/Contracts/print.php:144
+#: ./templates/Contracts/print.php:150
 #: ./templates/Contracts/view.php:263
 #: ./templates/Customers/view.php:595
 #: ./templates/Overviews/overview_of_contracts.php:81
@@ -4981,7 +5004,7 @@ msgstr ""
 
 #: ./templates/Contracts/edit.php:100
 #: ./templates/Contracts/index.php:50
-#: ./templates/Contracts/print.php:160
+#: ./templates/Contracts/print.php:166
 #: ./templates/Contracts/view.php:279
 #: ./templates/Customers/view.php:596
 #: ./templates/Overviews/overview_of_contracts.php:86
@@ -5012,11 +5035,11 @@ msgstr ""
 msgid "Neither end of this contract has coordinates."
 msgstr ""
 
-#: ./templates/Contracts/print.php:32
+#: ./templates/Contracts/print.php:38
 msgid "View Contract"
 msgstr ""
 
-#: ./templates/Contracts/print.php:70
+#: ./templates/Contracts/print.php:76
 #: ./templates/Contracts/view.php:170
 #: ./templates/Customers/view.php:590
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
@@ -5027,7 +5050,7 @@ msgstr ""
 msgid "Contract State"
 msgstr ""
 
-#: ./templates/Contracts/print.php:77
+#: ./templates/Contracts/print.php:83
 #: ./templates/Contracts/view.php:177
 #: ./templates/Customers/view.php:591
 #: ./templates/Overviews/overview_of_active_services.php:64
@@ -5039,90 +5062,87 @@ msgstr ""
 msgid "Service Type"
 msgstr ""
 
-#: ./templates/Contracts/print.php:88
+#: ./templates/Contracts/print.php:94
 #: ./templates/Contracts/view.php:188
 #: ./templates/Customers/view.php:599
 msgid "Subscriber Verification Code"
 msgstr ""
 
-#: ./templates/Contracts/print.php:113
+#: ./templates/Contracts/print.php:119
 #: ./templates/Contracts/view.php:232
 #: ./templates/DealerCommissions/view.php:50
 #: ./templates/element/Contracts/related.php:38
 msgid "Commission"
 msgstr ""
 
-#: ./templates/Contracts/print.php:120
+#: ./templates/Contracts/print.php:126
 #: ./templates/Contracts/view.php:239
 #: ./templates/Customers/view.php:593
 #: ./templates/element/Contracts/related.php:30
 msgid "Vip"
 msgstr ""
 
-#: ./templates/Contracts/print.php:124
+#: ./templates/Contracts/print.php:130
 #: ./templates/Contracts/view.php:243
 #: ./templates/ServiceTypes/view.php:47
 msgid "Activation Fee"
 msgstr ""
 
-#: ./templates/Contracts/print.php:129
+#: ./templates/Contracts/print.php:135
 #: ./templates/Contracts/view.php:248
 #: ./templates/ServiceTypes/view.php:51
 msgid "Activation Fee With Obligation"
 msgstr ""
 
-#: ./templates/Contracts/print.php:148
+#: ./templates/Contracts/print.php:154
 #: ./templates/Contracts/view.php:267
 #: ./templates/element/Contracts/related.php:33
 msgid "Installation Technician"
 msgstr ""
 
-#: ./templates/Contracts/print.php:164
+#: ./templates/Contracts/print.php:170
 #: ./templates/Contracts/view.php:283
 #: ./templates/element/Contracts/related.php:35
 msgid "Uninstallation Technician"
 msgstr ""
 
-#: ./templates/Contracts/print.php:225
+#: ./templates/Contracts/print.php:231
 #: ./templates/Customers/print.php:160
 msgid "Print Documents"
 msgstr ""
 
-#: ./templates/Contracts/print.php:226
+#: ./templates/Contracts/print.php:232
 msgid "A document is printed from a proposal, so that the same paper printed twice is the same paper. What it says is what the proposal took down, not what the records happen to say today."
 msgstr ""
 
-#: ./templates/Contracts/print.php:231
+#: ./templates/Contracts/print.php:237
 msgid "There is no proposal on this contract yet."
 msgstr ""
 
-#: ./templates/Contracts/print.php:234
+#: ./templates/Contracts/print.php:240
 msgid "Proposal"
 msgstr ""
 
-#: ./templates/Contracts/print.php:244
+#: ./templates/Contracts/print.php:250
 #: ./templates/Customers/print.php:165
 msgid "Document Type"
 msgstr ""
 
-#: ./templates/Contracts/print.php:252
-msgid "Generate as signed"
+#: ./templates/Contracts/print.php:258
+msgid "Signed"
 msgstr ""
 
-#: ./templates/Contracts/print.php:260
-msgid "Generate PDF"
-msgstr ""
-
-#: ./templates/Contracts/view.php:26
-msgid "Delete Contract"
-msgstr ""
-
+#: ./templates/Contracts/print.php:266
 #: ./templates/Contracts/view.php:34
 #: ./templates/Contracts/view.php:145
 #: ./templates/Customers/print.php:180
 #: ./templates/Customers/view.php:54
 #: ./templates/Customers/view.php:175
 msgid "Print to PDF"
+msgstr ""
+
+#: ./templates/Contracts/view.php:26
+msgid "Delete Contract"
 msgstr ""
 
 #: ./templates/Contracts/view.php:40
@@ -5598,10 +5618,6 @@ msgstr ""
 #: ./templates/CustomerMessages/add_bulk/step_filters.php:78
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:39
 msgid "Continue"
-msgstr ""
-
-#: ./templates/CustomerMessages/add_bulk/step_purpose.php:28
-msgid "Purpose"
 msgstr ""
 
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:33
@@ -7372,43 +7388,64 @@ msgstr ""
 msgid "Nothing."
 msgstr ""
 
-#: ./templates/element/ContractVersionProposals/form.php:29
+#: ./templates/element/ContractVersionProposals/form.php:36
 msgid "What the papers are for"
 msgstr ""
 
-#: ./templates/element/ContractVersionProposals/form.php:59
+#: ./templates/element/ContractVersionProposals/form.php:73
 msgid "The day these papers start to apply."
 msgstr ""
 
-#: ./templates/element/ContractVersionProposals/form.php:60
+#: ./templates/element/ContractVersionProposals/form.php:74
 msgid "The day these papers start to apply. Empty takes the day the version does, {0}."
 msgstr ""
 
-#: ./templates/element/ContractVersionProposals/form.php:67
+#: ./templates/element/ContractVersionProposals/form.php:81
 msgid "These papers take effect with the contract version they are for."
 msgstr ""
 
-#: ./templates/element/ContractVersionProposals/form.php:85
-msgid "Only what is ticked here is changed; the rest is left as it stands."
-msgstr ""
-
-#: ./templates/element/ContractVersionProposals/form.php:93
-msgid "Change the day the version stops being valid"
-msgstr ""
-
-#: ./templates/element/ContractVersionProposals/form.php:94
-msgid "Change the day the obligation runs out"
-msgstr ""
-
 #: ./templates/element/ContractVersionProposals/form.php:108
-msgid "Terminate the contract"
+msgid "When it ends"
+msgstr ""
+
+#: ./templates/element/ContractVersionProposals/form.php:114
+msgid "Last day of the service"
+msgstr ""
+
+#: ./templates/element/ContractVersionProposals/form.php:115
+msgid "The version stops being valid on this day, and so does what is billed for."
 msgstr ""
 
 #: ./templates/element/ContractVersionProposals/form.php:121
+msgid "End this version only, and leave the contract running"
+msgstr ""
+
+#: ./templates/element/ContractVersionProposals/form.php:122
+msgid "For an agreement to end one version with another to follow it."
+msgstr ""
+
+#: ./templates/element/ContractVersionProposals/form.php:128
+#: ./templates/element/Contracts/ContractVersionProposals.php:18
+msgid "The contract version"
+msgstr ""
+
+#: ./templates/element/ContractVersionProposals/form.php:129
+msgid "Only what is ticked here is changed. The rest is left as it stands."
+msgstr ""
+
+#: ./templates/element/ContractVersionProposals/form.php:140
+msgid "Change the day the version stops being valid"
+msgstr ""
+
+#: ./templates/element/ContractVersionProposals/form.php:141
+msgid "Change the day the obligation runs out"
+msgstr ""
+
+#: ./templates/element/ContractVersionProposals/form.php:164
 msgid "Before the papers are drawn up"
 msgstr ""
 
-#: ./templates/element/ContractVersionProposals/form.php:138
+#: ./templates/element/ContractVersionProposals/form.php:182
 msgid "This is a fixed-term contract, and the obligation runs to the end of it."
 msgstr ""
 
@@ -7457,18 +7494,14 @@ msgid "Stop billing for this?"
 msgstr ""
 
 #: ./templates/element/Contracts/ContractVersionProposals.php:15
-msgid "Nothing; it is the record of the papers"
+msgid "Nothing"
 msgstr ""
 
 #: ./templates/element/Contracts/ContractVersionProposals.php:16
 msgid "Ends the contract"
 msgstr ""
 
-#: ./templates/element/Contracts/ContractVersionProposals.php:18
-msgid "The contract version"
-msgstr ""
-
-#: ./templates/element/Contracts/ContractVersionProposals.php:39
+#: ./templates/element/Contracts/ContractVersionProposals.php:40
 msgid "What it asks for"
 msgstr ""
 
