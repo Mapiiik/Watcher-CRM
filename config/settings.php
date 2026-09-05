@@ -295,6 +295,20 @@ return [
                         hint: __('Days after the version takes effect before the service is cut off. Both waits have to be up.'),
                     ),
                 ],
+                // The same wait, seen from the papers rather than from the version. What is
+                // reported here is nobody's disconnection - an unsigned amendment leaves the
+                // service running on the version behind it - so these two only decide when
+                // the office is told, and nothing is written to the customer about them.
+                'proposals' => [
+                    'unanswered_after_days' => NumberType::ofInt(
+                        default: 14,
+                        hint: __('Days after the papers went out before a missing signature is raised.'),
+                    ),
+                    'unsent_within_days' => NumberType::ofInt(
+                        default: 14,
+                        hint: __('How far ahead a proposal nobody has sent is worth raising. The papers have to be out before the version takes effect.'),
+                    ),
+                ],
             ],
         ],
 

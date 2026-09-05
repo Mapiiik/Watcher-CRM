@@ -229,6 +229,7 @@ class ContractsControllerTest extends TestCase
     public function testViewShowsWhatDoesNotAddUpOnTheContract(): void
     {
         $contract_id = $this->firstId('Contracts');
+        $this->noPaperworkIsPending($contract_id);
         $billings = $this->getTableLocator()->get('Billings');
         $billings->deleteAll(['contract_id' => $contract_id]);
 
@@ -303,6 +304,7 @@ class ContractsControllerTest extends TestCase
     public function testViewShowsNothingWhereTheContractAddsUp(): void
     {
         $contract_id = $this->firstId('Contracts');
+        $this->noPaperworkIsPending($contract_id);
 
         // One billing, open ended, covering today: a contract providing services with nothing
         // billed for them is itself a finding, so leaving it with none would not be clean.
@@ -336,6 +338,7 @@ class ContractsControllerTest extends TestCase
     public function testAShortBannerIsShownWholeWithNothingToOpen(): void
     {
         $contract_id = $this->firstId('Contracts');
+        $this->noPaperworkIsPending($contract_id);
         $billings = $this->getTableLocator()->get('Billings');
         $billings->deleteAll(['contract_id' => $contract_id]);
 
@@ -374,6 +377,7 @@ class ContractsControllerTest extends TestCase
     public function testTwoFindingsOfOneRowEachAreStillShownWhole(): void
     {
         $contract_id = $this->firstId('Contracts');
+        $this->noPaperworkIsPending($contract_id);
 
         // nothing billed and nowhere to install it: one row from each of two checks
         $this->getTableLocator()->get('Billings')->deleteAll(['contract_id' => $contract_id]);
@@ -537,6 +541,22 @@ class ContractsControllerTest extends TestCase
         $serviceType = $serviceTypes->get($serviceTypeId);
         $serviceType->set('subscriber_verification_code_format', "'CODE-' || nid");
         $serviceTypes->saveOrFail($serviceType);
+    }
+
+    /**
+     * Take the fixture's proposal off the contract.
+     *
+     * It was drawn up and never sent, which is a finding of its own - and the tests that count the
+     * findings on a card are about how the banner behaves when there are one or two of them, not
+     * about which ones the fixture happens to carry.
+     *
+     * @param string $contract_id The contract under test.
+     * @return void
+     */
+    private function noPaperworkIsPending(string $contract_id): void
+    {
+        $this->getTableLocator()->get('ContractVersionProposals')
+            ->deleteAll(['contract_id' => $contract_id]);
     }
 
     /**
