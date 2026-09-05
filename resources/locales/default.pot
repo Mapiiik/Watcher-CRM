@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-05 12:41+0200\n"
+"POT-Creation-Date: 2026-09-05 13:47+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -91,46 +91,54 @@ msgid "Days after the version takes effect before the service is cut off. Both w
 msgstr ""
 
 #: ./config/settings.php:305
-msgid "Labels that say the missing details are known about and accepted."
+msgid "Days after the papers went out before a missing signature is raised."
 msgstr ""
 
 #: ./config/settings.php:309
+msgid "How far ahead a proposal nobody has sent is worth raising. The papers have to be out before the version takes effect."
+msgstr ""
+
+#: ./config/settings.php:319
+msgid "Labels that say the missing details are known about and accepted."
+msgstr ""
+
+#: ./config/settings.php:323
 msgid "Labels that say the missing e-mail address is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:313
+#: ./config/settings.php:327
 msgid "Labels that say the missing consent is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:321
+#: ./config/settings.php:335
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 
-#: ./config/settings.php:327
+#: ./config/settings.php:341
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr ""
 
-#: ./config/settings.php:331
+#: ./config/settings.php:345
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 
-#: ./config/settings.php:338
+#: ./config/settings.php:352
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:655
+#: ./config/settings.php:669
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:706
+#: ./config/settings.php:720
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:711
+#: ./config/settings.php:725
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:789
+#: ./config/settings.php:803
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -643,6 +651,14 @@ msgstr ""
 msgid "No contract has two versions in force at the same time."
 msgstr ""
 
+#: ./src/Contracts/Check/UnsentProposalCheck.php:75
+msgid "Proposal That Never Went Out"
+msgstr ""
+
+#: ./src/Contracts/Check/UnsentProposalCheck.php:84
+msgid "Every proposal drawn up has gone out."
+msgstr ""
+
 #: ./src/Contracts/Check/UnsettledObligationCheck.php:64
 msgid "Unsettled Obligation Outliving the Contract"
 msgstr ""
@@ -657,6 +673,14 @@ msgstr ""
 
 #: ./src/Contracts/Check/UnsignedContractCheck.php:117
 msgid "Every contract version says when it was concluded."
+msgstr ""
+
+#: ./src/Contracts/Check/UnsignedProposalCheck.php:77
+msgid "Proposal Waiting for a Signature"
+msgstr ""
+
+#: ./src/Contracts/Check/UnsignedProposalCheck.php:86
+msgid "Every proposal that went out has come back signed."
 msgstr ""
 
 #: ./src/Contracts/Check/UntransferredProposalCheck.php:74
@@ -1895,8 +1919,8 @@ msgstr ""
 msgid "Debts Beyond Automatic Blocking"
 msgstr ""
 
-#: ./src/Dashboard/Card/UnsignedContractsCard.php:76
-msgid "Running Services Without Papers"
+#: ./src/Dashboard/Card/UnsignedContractsCard.php:89
+msgid "Outstanding Paperwork"
 msgstr ""
 
 #: ./src/Http/Answer.php:149
@@ -3023,6 +3047,8 @@ msgstr ""
 #: ./templates/Tasks/edit.php:16
 #: ./templates/Tasks/index.php:111
 #: ./templates/Tasks/view.php:10
+#: ./templates/element/ContractChecks/unsent_proposal.php:26
+#: ./templates/element/ContractChecks/unsigned_proposal.php:26
 #: ./templates/element/ContractChecks/untransferred_proposal.php:26
 #: ./templates/element/ContractVersionProposals/proposed_billings.php:40
 #: ./templates/element/Contracts/Billings.php:36
@@ -3217,7 +3243,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:18
 #: ./templates/element/Contracts/Billings.php:87
 #: ./templates/element/Contracts/BorrowedEquipments.php:62
-#: ./templates/element/Contracts/ContractVersionProposals.php:98
+#: ./templates/element/Contracts/ContractVersionProposals.php:110
 #: ./templates/element/Contracts/ContractVersions.php:52
 #: ./templates/element/Contracts/IpAddresses.php:96
 #: ./templates/element/Contracts/IpNetworks.php:66
@@ -3332,7 +3358,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:15
 #: ./templates/element/Contracts/Billings.php:89
 #: ./templates/element/Contracts/BorrowedEquipments.php:69
-#: ./templates/element/Contracts/ContractVersionProposals.php:100
+#: ./templates/element/Contracts/ContractVersionProposals.php:112
 #: ./templates/element/Contracts/ContractVersions.php:54
 #: ./templates/element/Contracts/IpAddresses.php:98
 #: ./templates/element/Contracts/IpNetworks.php:69
@@ -3666,8 +3692,10 @@ msgstr ""
 #: ./templates/element/ContractChecks/non_standard_service.php:21
 #: ./templates/element/ContractChecks/overlapping_billings.php:21
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:18
+#: ./templates/element/ContractChecks/unsent_proposal.php:21
 #: ./templates/element/ContractChecks/unsettled_obligation.php:21
 #: ./templates/element/ContractChecks/unsigned_contract.php:24
+#: ./templates/element/ContractChecks/unsigned_proposal.php:21
 #: ./templates/element/ContractChecks/untransferred_proposal.php:21
 #: ./templates/element/Contracts/Billings.php:21
 #: ./templates/element/Contracts/BorrowedEquipments.php:15
@@ -4676,7 +4704,8 @@ msgstr ""
 #: ./templates/ContractVersionProposals/edit.php:35
 #: ./templates/ContractVersionProposals/transfer.php:22
 #: ./templates/ContractVersionProposals/view.php:45
-#: ./templates/element/Contracts/ContractVersionProposals.php:85
+#: ./templates/element/ContractChecks/unsigned_proposal.php:41
+#: ./templates/element/Contracts/ContractVersionProposals.php:97
 msgid "Record the Signature"
 msgstr ""
 
@@ -4708,13 +4737,14 @@ msgstr ""
 #: ./templates/ContractVersionProposals/edit.php:28
 #: ./templates/ContractVersionProposals/send.php:46
 #: ./templates/ContractVersionProposals/view.php:38
-#: ./templates/element/Contracts/ContractVersionProposals.php:78
+#: ./templates/element/ContractChecks/unsent_proposal.php:51
+#: ./templates/element/Contracts/ContractVersionProposals.php:90
 msgid "Record the Sending"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/edit.php:34
 #: ./templates/ContractVersionProposals/view.php:44
-#: ./templates/element/Contracts/ContractVersionProposals.php:84
+#: ./templates/element/Contracts/ContractVersionProposals.php:96
 msgid "Correct the Signature"
 msgstr ""
 
@@ -4722,7 +4752,7 @@ msgstr ""
 #: ./templates/ContractVersionProposals/transfer.php:89
 #: ./templates/ContractVersionProposals/view.php:50
 #: ./templates/element/ContractChecks/untransferred_proposal.php:41
-#: ./templates/element/Contracts/ContractVersionProposals.php:91
+#: ./templates/element/Contracts/ContractVersionProposals.php:103
 msgid "Carry Over"
 msgstr ""
 
@@ -4754,6 +4784,7 @@ msgstr ""
 #: ./templates/ContractVersions/index.php:42
 #: ./templates/ContractVersions/view.php:88
 #: ./templates/element/ContractChecks/unsigned_contract.php:32
+#: ./templates/element/ContractChecks/unsigned_proposal.php:25
 #: ./templates/element/ContractChecks/untransferred_proposal.php:25
 #: ./templates/element/Contracts/ContractVersionProposals.php:41
 #: ./templates/element/Contracts/ContractVersions.php:18
@@ -4783,7 +4814,7 @@ msgstr ""
 
 #: ./templates/ContractVersionProposals/send.php:45
 #: ./templates/ContractVersionProposals/view.php:37
-#: ./templates/element/Contracts/ContractVersionProposals.php:77
+#: ./templates/element/Contracts/ContractVersionProposals.php:89
 msgid "Record the Sending Again"
 msgstr ""
 
@@ -4841,7 +4872,15 @@ msgid "Edit Proposal"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/view.php:56
-msgid "Print"
+#: ./templates/Contracts/print.php:266
+#: ./templates/Contracts/view.php:34
+#: ./templates/Contracts/view.php:145
+#: ./templates/Customers/print.php:180
+#: ./templates/Customers/view.php:54
+#: ./templates/Customers/view.php:175
+#: ./templates/element/ContractChecks/unsent_proposal.php:41
+#: ./templates/element/Contracts/ContractVersionProposals.php:76
+msgid "Print to PDF"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/view.php:67
@@ -4859,6 +4898,8 @@ msgid "Are you sure?"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/view.php:119
+#: ./templates/element/ContractChecks/unsent_proposal.php:24
+#: ./templates/element/ContractChecks/unsigned_proposal.php:24
 #: ./templates/element/ContractChecks/untransferred_proposal.php:23
 #: ./templates/element/ContractVersionProposals/form.php:68
 #: ./templates/element/ContractVersionProposals/heading.php:16
@@ -4868,6 +4909,8 @@ msgstr ""
 
 #: ./templates/ContractVersionProposals/view.php:123
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:28
+#: ./templates/element/ContractChecks/unsent_proposal.php:23
+#: ./templates/element/ContractChecks/unsigned_proposal.php:23
 #: ./templates/element/ContractVersionProposals/form.php:45
 #: ./templates/element/Contracts/ContractVersionProposals.php:39
 msgid "Purpose"
@@ -5140,15 +5183,6 @@ msgstr ""
 
 #: ./templates/Contracts/print.php:258
 msgid "Signed"
-msgstr ""
-
-#: ./templates/Contracts/print.php:266
-#: ./templates/Contracts/view.php:34
-#: ./templates/Contracts/view.php:145
-#: ./templates/Customers/print.php:180
-#: ./templates/Customers/view.php:54
-#: ./templates/Customers/view.php:175
-msgid "Print to PDF"
 msgstr ""
 
 #: ./templates/Contracts/view.php:26
@@ -6305,6 +6339,7 @@ msgid "Related Customer Labels"
 msgstr ""
 
 #: ./templates/Labels/view.php:102
+#: ./templates/element/ContractChecks/unsent_proposal.php:25
 #: ./templates/element/Tasks/email_detail.php:122
 #: ./templates/element/common/audit.php:14
 msgid "Created"
@@ -7361,6 +7396,10 @@ msgstr ""
 msgid "Second One In Force From"
 msgstr ""
 
+#: ./templates/element/ContractChecks/unsent_proposal.php:11
+msgid "The proposal was drawn up and never sent. The day it takes effect comes whether or not the customer has seen the papers."
+msgstr ""
+
 #: ./templates/element/ContractChecks/unsettled_obligation.php:11
 msgid "Either something is owed and nobody has asked for it, or it was waived and nobody has ticked \"obligations settled\"."
 msgstr ""
@@ -7388,6 +7427,10 @@ msgstr ""
 #: ./templates/element/ContractChecks/unsigned_contract.php:59
 msgctxt "sending date"
 msgid "Not recorded"
+msgstr ""
+
+#: ./templates/element/ContractChecks/unsigned_proposal.php:11
+msgid "The papers went out and have not come back signed. Nothing is carried over into the records until they do."
 msgstr ""
 
 #: ./templates/element/ContractChecks/untransferred_proposal.php:11
@@ -7630,23 +7673,39 @@ msgstr ""
 msgid "These keep running until somebody switches them off by hand."
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:14
+#: ./templates/element/Dashboard/unsigned_contracts.php:18
 msgid "in effect and unsigned, still inside every deadline"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:15
+#: ./templates/element/Dashboard/unsigned_contracts.php:19
 msgid "past the reminder deadline"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:16
+#: ./templates/element/Dashboard/unsigned_contracts.php:20
 msgid "past the disconnection deadline"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:20
-msgid "Every running service has paper behind it."
+#: ./templates/element/Dashboard/unsigned_contracts.php:26
+msgid "drawn up and never sent"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:28
+#: ./templates/element/Dashboard/unsigned_contracts.php:26
+msgid "Open the proposals nobody has sent"
+msgstr ""
+
+#: ./templates/element/Dashboard/unsigned_contracts.php:29
+msgid "sent to the customer and still not signed"
+msgstr ""
+
+#: ./templates/element/Dashboard/unsigned_contracts.php:31
+msgid "Open the proposals waiting for a signature"
+msgstr ""
+
+#: ./templates/element/Dashboard/unsigned_contracts.php:36
+msgid "Every running service has paper behind it, and nothing is waiting to go out."
+msgstr ""
+
+#: ./templates/element/Dashboard/unsigned_contracts.php:45
 msgid "Open the contract problems"
 msgstr ""
 
