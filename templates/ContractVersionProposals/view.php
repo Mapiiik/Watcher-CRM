@@ -53,7 +53,7 @@ use App\Contracts\Proposal\ProposedVersion;
                 ) ?>
             <?php endif; ?>
             <?= $this->AuthLink->link(
-                __('Print'),
+                __('Print to PDF'),
                 [
                     'controller' => 'Contracts',
                     'action' => 'print',

@@ -66,12 +66,24 @@ $whichVersion = function ($proposal): string {
                     ['controller' => 'ContractVersionProposals', 'action' => 'edit', $proposal->id],
                     ['class' => 'win-link'],
                 ) ?>
+                <?php
+                // The papers themselves, and then the steps a proposal goes through - offered
+                // where the papers are printed from, because that is where somebody stands when
+                // they have just sent them or heard back. Printing is offered whatever state the
+                // proposal is in: a settled one is still the paper that was agreed to.
+                ?>
+                <?= $this->AuthLink->link(
+                    __('Print to PDF'),
+                    [
+                        'controller' => 'Contracts',
+                        'action' => 'print',
+                        $proposal->contract_id,
+                        '?' => ['proposal_id' => $proposal->id],
+                    ],
+                    ['class' => 'win-link'],
+                ) ?>
                 <?php if ($proposal->isOpen()) : ?>
-                    <?php
-                    // The steps a proposal goes through, offered where the papers are printed from:
-                    // that is where somebody stands when they have just sent them or heard back.
-                    // Carrying over is only offered once there is a signature to carry over.
-                    ?>
+                    <?php // Carrying over is only offered once there is a signature to carry over. ?>
                     <?= $this->AuthLink->link(
                         $proposal->hasBeenSent()
                             ? __('Record the Sending Again')
