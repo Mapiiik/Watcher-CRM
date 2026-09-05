@@ -36,8 +36,8 @@
                 <tr>
                     <th><?= $this->Paginator->sort('Contracts.number', __('Contract')) ?></th>
                     <th><?= $this->Paginator->sort('ContractVersions.valid_from', __('Contract Version')) ?></th>
-                    <th><?= $this->Paginator->sort('purpose') ?></th>
                     <th><?= $this->Paginator->sort('effective_from') ?></th>
+                    <th><?= $this->Paginator->sort('purpose') ?></th>
                     <th><?= $this->Paginator->sort('sent_date', __('Sent To The Customer')) ?></th>
                     <th><?= $this->Paginator->sort('conclusion_date') ?></th>
                     <th><?= __('State') ?></th>
@@ -70,8 +70,8 @@
                                 $version->id,
                             ],
                         ) : '' ?></td>
-                    <td><?= h($contractVersionProposal->purpose->label()) ?></td>
                     <td><?= h($contractVersionProposal->effective_from) ?></td>
+                    <td><?= h($contractVersionProposal->purpose->label()) ?></td>
                     <td><?= h($contractVersionProposal->getSending()) ?></td>
                     <td><?= h($contractVersionProposal->conclusion_date) ?></td>
                     <td><?= h($contractVersionProposal->getState()) ?></td>
