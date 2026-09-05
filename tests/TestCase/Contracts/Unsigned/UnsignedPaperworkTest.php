@@ -73,6 +73,11 @@ class UnsignedPaperworkTest extends TestCase
     private UnsignedPaperwork $paperwork;
 
     /**
+     * What the clock was stopped at before this class moved it.
+     */
+    private ?Chronos $clock = null;
+
+    /**
      * @return void
      */
     #[Override]
@@ -87,6 +92,11 @@ class UnsignedPaperworkTest extends TestCase
         $this->paperwork = new UnsignedPaperwork($this->ContractVersions);
 
         Cache::clear('default');
+
+        // Held so that tearDown can put back what the suite was holding. Asking the clock what
+        // time it is while it is stopped answers with the time it is stopped at, so a tearDown
+        // that sets it to "now" leaves this class's day standing over everything that follows.
+        $this->clock = Chronos::getTestNow();
         Chronos::setTestNow(new Chronos(self::TODAY . ' 09:00:00'));
 
         // Said rather than inherited. The shipped defaults are the office's to move, and a
@@ -102,7 +112,7 @@ class UnsignedPaperworkTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        Chronos::setTestNow(Chronos::now());
+        Chronos::setTestNow($this->clock);
         Cache::clear('default');
 
         parent::tearDown();
