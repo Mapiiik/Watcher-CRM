@@ -5,6 +5,8 @@ namespace App\Dashboard;
 
 use App\Addresses\Check\AddressCheckRegistry;
 use App\Contracts\Check\ContractCheckRegistry;
+use App\Contracts\Check\UnsentProposalCheck;
+use App\Contracts\Check\UnsignedProposalCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Customers\Check\CustomerCheckRegistry;
 use App\Dashboard\Card\AddressProblemsCard;
@@ -18,6 +20,7 @@ use App\Dashboard\Card\ManualShutoffDebtorsCard;
 use App\Dashboard\Card\UnsignedContractsCard;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractStatesTable;
+use App\Model\Table\ContractVersionProposalsTable;
 use App\Model\Table\ContractVersionsTable;
 use App\Model\Table\LabelsTable;
 use App\Model\Table\TasksTable;
@@ -90,9 +93,14 @@ final class DashboardCardRegistry implements CardRegistryInterface
         // they are the contract office's work rather than the bookkeepers', and nothing
         // about them is asked of the accounting records - so this stands ahead of the
         // debtors, and stands whether or not the plugin is there.
+        /** @var \App\Model\Table\ContractVersionProposalsTable $proposals */
+        $proposals = $this->fetchTable(ContractVersionProposalsTable::class);
+
         $this->factories['unsigned_contracts'] =
             fn(): DashboardCardInterface => new UnsignedContractsCard(
                 new UnsignedPaperwork($contract_versions),
+                new UnsignedProposalCheck($proposals),
+                new UnsentProposalCheck($proposals),
             );
 
         // The debtor cards read the accounting records, which only exist with the plugin.

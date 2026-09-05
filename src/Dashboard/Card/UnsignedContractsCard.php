@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Dashboard\Card;
 
 use App\Contracts\Check\ContractCheckRegistry;
+use App\Contracts\Check\UnsentProposalCheck;
+use App\Contracts\Check\UnsignedProposalCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use Cake\I18n\Date;
 use Dashboard\Card\AbstractDashboardCard;
@@ -11,10 +13,10 @@ use Override;
 use Settings\Utility\Settings;
 
 /**
- * How many running services are being carried on paperwork nobody has signed.
+ * What paperwork is outstanding, and on whom it is waiting.
  *
- * The findings card already gives this a line among the other contract checks. It gets a
- * card of its own as well because the line answers "is there anything wrong" and the card
+ * The findings card already gives each of these a line among the other contract checks. They get
+ * a card of their own as well because the line answers "is there anything wrong" and the card
  * answers "how many people are we about to cut off", which is the question somebody has to
  * act on before the nightly run does it for them.
  *
@@ -23,6 +25,12 @@ use Settings\Utility\Settings;
  * deadline wants a phone call, what is being written to wants somebody to check the address
  * the letters are going to, and what is past the blocking deadline is about to cost the
  * customer their service. The three are cut so that they add up to the whole.
+ *
+ * Under them stand two counts of proposals, which are a different thing and so are not mixed in.
+ * A version reads as unsigned only where nothing was ever signed for it, so an amendment or an
+ * agreement to end a contract - drawn up on a version that is signed - is invisible to the three
+ * above however long it sits at the customer. Nobody is cut off over those, which is why they
+ * stand apart rather than being folded into the same wait.
  *
  * Versions rather than customers. One customer can be carrying several unsigned versions and
  * each is its own piece of paper to chase, so this is a count of work rather than of people -
@@ -53,9 +61,14 @@ class UnsignedContractsCard extends AbstractDashboardCard
 
     /**
      * @param \App\Contracts\Unsigned\UnsignedPaperwork $paperwork What counts as unsigned.
+     * @param \App\Contracts\Check\UnsignedProposalCheck $unsigned Papers out and not signed.
+     * @param \App\Contracts\Check\UnsentProposalCheck $unsent Papers drawn up and never sent.
      */
-    public function __construct(private UnsignedPaperwork $paperwork)
-    {
+    public function __construct(
+        private UnsignedPaperwork $paperwork,
+        private UnsignedProposalCheck $unsigned,
+        private UnsentProposalCheck $unsent,
+    ) {
     }
 
     /**
@@ -73,7 +86,7 @@ class UnsignedContractsCard extends AbstractDashboardCard
     #[Override]
     public function title(): string
     {
-        return __('Running Services Without Papers');
+        return __('Outstanding Paperwork');
     }
 
     /**
@@ -86,7 +99,7 @@ class UnsignedContractsCard extends AbstractDashboardCard
     }
 
     /**
-     * Two counts over every version on file is not something to make the dashboard wait for.
+     * Counting over every version on file is not something to make the dashboard wait for.
      *
      * @return bool
      */
@@ -127,7 +140,15 @@ class UnsignedContractsCard extends AbstractDashboardCard
             'waiting' => max(0, $total - $notified),
             'notifying' => max(0, $notified - $blocking),
             'blocking' => $blocking,
-            'url' => $this->overviewUrl(),
+            'url' => $this->overviewUrl('unsigned_contract'),
+            // The same wait seen from the papers rather than from the version, which is where
+            // an amendment or an agreement to end a contract shows up at all - the version
+            // behind those is signed, so the three counts above cannot see them. Asked of the
+            // checks themselves, so that the figure and the listing it links to agree.
+            'unanswered' => $this->unsigned->count(),
+            'unanswered_url' => $this->overviewUrl('unsigned_proposal'),
+            'unsent' => $this->unsent->count(),
+            'unsent_url' => $this->overviewUrl('unsent_proposal'),
         ];
     }
 
@@ -139,13 +160,14 @@ class UnsignedContractsCard extends AbstractDashboardCard
      * switched one on would arrive with the rest switched on beside it and hold a different
      * number than the card that led there.
      *
+     * @param string $wanted The id of the check the overview is to show.
      * @return array<string, mixed>
      */
-    private function overviewUrl(): array
+    private function overviewUrl(string $wanted): array
     {
         $checks = [];
         foreach ((new ContractCheckRegistry())->all() as $check) {
-            $checks[$check->id()] = (int)($check->id() === 'unsigned_contract');
+            $checks[$check->id()] = (int)($check->id() === $wanted);
         }
 
         return [

@@ -235,8 +235,8 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
-     * The card counts unsigned paperwork twice over, by two sets of deadlines, so both
-     * queries have to actually run.
+     * The card counts unsigned paperwork several times over - by two sets of deadlines, and then
+     * twice more over the proposals - so every one of those queries has to actually run.
      *
      * @return void
      * @link \App\Dashboard\Card\UnsignedContractsCard::data()
@@ -248,6 +248,9 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseNotContains('<html');
+
+        // the fixture carries a proposal drawn up, never sent, and due to take effect
+        $this->assertResponseContains('drawn up and never sent');
     }
 
     /**
