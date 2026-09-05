@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-05 13:47+0200\n"
+"POT-Creation-Date: 2026-09-05 13:58+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -3243,7 +3243,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:18
 #: ./templates/element/Contracts/Billings.php:87
 #: ./templates/element/Contracts/BorrowedEquipments.php:62
-#: ./templates/element/Contracts/ContractVersionProposals.php:110
+#: ./templates/element/Contracts/ContractVersionProposals.php:113
 #: ./templates/element/Contracts/ContractVersions.php:52
 #: ./templates/element/Contracts/IpAddresses.php:96
 #: ./templates/element/Contracts/IpNetworks.php:66
@@ -3358,7 +3358,7 @@ msgstr ""
 #: ./templates/Tasks/view.php:15
 #: ./templates/element/Contracts/Billings.php:89
 #: ./templates/element/Contracts/BorrowedEquipments.php:69
-#: ./templates/element/Contracts/ContractVersionProposals.php:112
+#: ./templates/element/Contracts/ContractVersionProposals.php:115
 #: ./templates/element/Contracts/ContractVersions.php:54
 #: ./templates/element/Contracts/IpAddresses.php:98
 #: ./templates/element/Contracts/IpNetworks.php:69
@@ -3519,7 +3519,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:185
 #: ./templates/element/Contracts/Billings.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:45
-#: ./templates/element/Contracts/ContractVersionProposals.php:61
+#: ./templates/element/Contracts/ContractVersionProposals.php:75
 #: ./templates/element/Contracts/ContractVersions.php:43
 #: ./templates/element/Contracts/IpAddresses.php:87
 #: ./templates/element/Contracts/IpNetworks.php:57
@@ -3580,7 +3580,7 @@ msgstr ""
 #: ./templates/element/ContractVersionProposals/proposed_billings.php:65
 #: ./templates/element/Contracts/Billings.php:82
 #: ./templates/element/Contracts/BorrowedEquipments.php:53
-#: ./templates/element/Contracts/ContractVersionProposals.php:65
+#: ./templates/element/Contracts/ContractVersionProposals.php:79
 #: ./templates/element/Contracts/ContractVersions.php:47
 #: ./templates/element/Contracts/IpAddresses.php:91
 #: ./templates/element/Contracts/IpNetworks.php:61
@@ -4705,7 +4705,7 @@ msgstr ""
 #: ./templates/ContractVersionProposals/transfer.php:22
 #: ./templates/ContractVersionProposals/view.php:45
 #: ./templates/element/ContractChecks/unsigned_proposal.php:41
-#: ./templates/element/Contracts/ContractVersionProposals.php:97
+#: ./templates/element/Contracts/ContractVersionProposals.php:100
 msgid "Record the Signature"
 msgstr ""
 
@@ -4738,13 +4738,13 @@ msgstr ""
 #: ./templates/ContractVersionProposals/send.php:46
 #: ./templates/ContractVersionProposals/view.php:38
 #: ./templates/element/ContractChecks/unsent_proposal.php:51
-#: ./templates/element/Contracts/ContractVersionProposals.php:90
+#: ./templates/element/Contracts/ContractVersionProposals.php:93
 msgid "Record the Sending"
 msgstr ""
 
 #: ./templates/ContractVersionProposals/edit.php:34
 #: ./templates/ContractVersionProposals/view.php:44
-#: ./templates/element/Contracts/ContractVersionProposals.php:96
+#: ./templates/element/Contracts/ContractVersionProposals.php:99
 msgid "Correct the Signature"
 msgstr ""
 
@@ -4752,7 +4752,7 @@ msgstr ""
 #: ./templates/ContractVersionProposals/transfer.php:89
 #: ./templates/ContractVersionProposals/view.php:50
 #: ./templates/element/ContractChecks/untransferred_proposal.php:41
-#: ./templates/element/Contracts/ContractVersionProposals.php:103
+#: ./templates/element/Contracts/ContractVersionProposals.php:106
 msgid "Carry Over"
 msgstr ""
 
@@ -4814,7 +4814,7 @@ msgstr ""
 
 #: ./templates/ContractVersionProposals/send.php:45
 #: ./templates/ContractVersionProposals/view.php:37
-#: ./templates/element/Contracts/ContractVersionProposals.php:89
+#: ./templates/element/Contracts/ContractVersionProposals.php:92
 msgid "Record the Sending Again"
 msgstr ""
 
@@ -4879,7 +4879,7 @@ msgstr ""
 #: ./templates/Customers/view.php:54
 #: ./templates/Customers/view.php:175
 #: ./templates/element/ContractChecks/unsent_proposal.php:41
-#: ./templates/element/Contracts/ContractVersionProposals.php:76
+#: ./templates/element/Contracts/ContractVersionProposals.php:66
 msgid "Print to PDF"
 msgstr ""
 

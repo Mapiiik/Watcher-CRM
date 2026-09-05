@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-05 13:47+0200\n"
+"POT-Creation-Date: 2026-09-05 13:58+0200\n"
 "PO-Revision-Date: 2026-08-26 13:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -138,7 +138,9 @@ msgstr "Kolik dní po odeslání papírů se začne hlásit chybějící podpis.
 msgid ""
 "How far ahead a proposal nobody has sent is worth raising. The papers have "
 "to be out before the version takes effect."
-msgstr "Jak dlouho dopředu hlásit návrh, který nikdo neodeslal. Papíry musí být venku dřív, než verze nabude účinnosti."
+msgstr ""
+"Jak dlouho dopředu hlásit návrh, který nikdo neodeslal. Papíry musí být "
+"venku dřív, než verze nabude účinnosti."
 
 #: config/settings.php:319
 msgid "Labels that say the missing details are known about and accepted."
@@ -3222,7 +3224,7 @@ msgstr "Potvrdit"
 #: templates/SoldEquipments/index.php:76 templates/Tasks/edit.php:18
 #: templates/element/Contracts/Billings.php:87
 #: templates/element/Contracts/BorrowedEquipments.php:62
-#: templates/element/Contracts/ContractVersionProposals.php:110
+#: templates/element/Contracts/ContractVersionProposals.php:113
 #: templates/element/Contracts/ContractVersions.php:52
 #: templates/element/Contracts/IpAddresses.php:96
 #: templates/element/Contracts/IpNetworks.php:66
@@ -3297,7 +3299,7 @@ msgstr "Odstranit"
 #: templates/Tasks/edit.php:20 templates/Tasks/view.php:15
 #: templates/element/Contracts/Billings.php:89
 #: templates/element/Contracts/BorrowedEquipments.php:69
-#: templates/element/Contracts/ContractVersionProposals.php:112
+#: templates/element/Contracts/ContractVersionProposals.php:115
 #: templates/element/Contracts/ContractVersions.php:54
 #: templates/element/Contracts/IpAddresses.php:98
 #: templates/element/Contracts/IpNetworks.php:69
@@ -3413,7 +3415,7 @@ msgstr "Číslo zákazníka"
 #: templates/Services/view.php:131 templates/SoldEquipments/index.php:69
 #: templates/Tasks/index.php:185 templates/element/Contracts/Billings.php:78
 #: templates/element/Contracts/BorrowedEquipments.php:45
-#: templates/element/Contracts/ContractVersionProposals.php:61
+#: templates/element/Contracts/ContractVersionProposals.php:75
 #: templates/element/Contracts/ContractVersions.php:43
 #: templates/element/Contracts/IpAddresses.php:87
 #: templates/element/Contracts/IpNetworks.php:57
@@ -3456,7 +3458,7 @@ msgstr "Zobrazit"
 #: templates/element/ContractVersionProposals/proposed_billings.php:65
 #: templates/element/Contracts/Billings.php:82
 #: templates/element/Contracts/BorrowedEquipments.php:53
-#: templates/element/Contracts/ContractVersionProposals.php:65
+#: templates/element/Contracts/ContractVersionProposals.php:79
 #: templates/element/Contracts/ContractVersions.php:47
 #: templates/element/Contracts/IpAddresses.php:91
 #: templates/element/Contracts/IpNetworks.php:61
@@ -4444,7 +4446,7 @@ msgstr "Prázdné začne s papíry."
 #: templates/ContractVersionProposals/transfer.php:22
 #: templates/ContractVersionProposals/view.php:45
 #: templates/element/ContractChecks/unsigned_proposal.php:41
-#: templates/element/Contracts/ContractVersionProposals.php:97
+#: templates/element/Contracts/ContractVersionProposals.php:100
 msgid "Record the Signature"
 msgstr "Zapsat podpis"
 
@@ -4482,13 +4484,13 @@ msgstr "Pořídit snímek znovu"
 #: templates/ContractVersionProposals/send.php:46
 #: templates/ContractVersionProposals/view.php:38
 #: templates/element/ContractChecks/unsent_proposal.php:51
-#: templates/element/Contracts/ContractVersionProposals.php:90
+#: templates/element/Contracts/ContractVersionProposals.php:93
 msgid "Record the Sending"
 msgstr "Zapsat odeslání"
 
 #: templates/ContractVersionProposals/edit.php:34
 #: templates/ContractVersionProposals/view.php:44
-#: templates/element/Contracts/ContractVersionProposals.php:96
+#: templates/element/Contracts/ContractVersionProposals.php:99
 msgid "Correct the Signature"
 msgstr "Opravit podpis"
 
@@ -4496,7 +4498,7 @@ msgstr "Opravit podpis"
 #: templates/ContractVersionProposals/transfer.php:89
 #: templates/ContractVersionProposals/view.php:50
 #: templates/element/ContractChecks/untransferred_proposal.php:41
-#: templates/element/Contracts/ContractVersionProposals.php:103
+#: templates/element/Contracts/ContractVersionProposals.php:106
 msgid "Carry Over"
 msgstr "Přenést"
 
@@ -4577,7 +4579,7 @@ msgstr ""
 
 #: templates/ContractVersionProposals/send.php:45
 #: templates/ContractVersionProposals/view.php:37
-#: templates/element/Contracts/ContractVersionProposals.php:89
+#: templates/element/Contracts/ContractVersionProposals.php:92
 msgid "Record the Sending Again"
 msgstr "Zapsat odeslání znovu"
 
@@ -4646,7 +4648,7 @@ msgstr "Upravit návrh"
 #: templates/Contracts/view.php:145 templates/Customers/print.php:180
 #: templates/Customers/view.php:54 templates/Customers/view.php:175
 #: templates/element/ContractChecks/unsent_proposal.php:41
-#: templates/element/Contracts/ContractVersionProposals.php:76
+#: templates/element/Contracts/ContractVersionProposals.php:66
 msgid "Print to PDF"
 msgstr "Tisk do PDF"
 
@@ -7047,7 +7049,9 @@ msgstr "Druhá platná od"
 msgid ""
 "The proposal was drawn up and never sent. The day it takes effect comes "
 "whether or not the customer has seen the papers."
-msgstr "Návrh je založený a nikdy neodešel. Den účinnosti nastane, ať už zákazník papíry viděl, nebo ne."
+msgstr ""
+"Návrh je založený a nikdy neodešel. Den účinnosti nastane, ať už zákazník "
+"papíry viděl, nebo ne."
 
 #: templates/element/ContractChecks/unsettled_obligation.php:11
 msgid ""
@@ -7090,7 +7094,9 @@ msgstr "Nezaznamenáno"
 msgid ""
 "The papers went out and have not come back signed. Nothing is carried over "
 "into the records until they do."
-msgstr "Papíry odešly a nevrátily se podepsané. Dokud se nevrátí, nic se do záznamů nepřenese."
+msgstr ""
+"Papíry odešly a nevrátily se podepsané. Dokud se nevrátí, nic se do záznamů "
+"nepřenese."
 
 #: templates/element/ContractChecks/untransferred_proposal.php:11
 msgid ""

@@ -57,20 +57,10 @@ $whichVersion = function ($proposal): string {
             <td><?= h($proposal->conclusion_date) ?></td>
             <td><?= h($proposal->getState()) ?></td>
             <td class="actions">
-                <?= $this->AuthLink->link(
-                    __('View'),
-                    ['controller' => 'ContractVersionProposals', 'action' => 'view', $proposal->id],
-                ) ?>
-                <?= $this->AuthLink->link(
-                    __('Edit'),
-                    ['controller' => 'ContractVersionProposals', 'action' => 'edit', $proposal->id],
-                    ['class' => 'win-link'],
-                ) ?>
                 <?php
-                // The papers themselves, and then the steps a proposal goes through - offered
-                // where the papers are printed from, because that is where somebody stands when
-                // they have just sent them or heard back. Printing is offered whatever state the
-                // proposal is in: a settled one is still the paper that was agreed to.
+                // The papers first: that is what a proposal is for, and what somebody is most
+                // often after when they find it here. Offered whatever state it is in, because a
+                // settled proposal is still the paper that was agreed to.
                 ?>
                 <?= $this->AuthLink->link(
                     __('Print to PDF'),
@@ -80,9 +70,22 @@ $whichVersion = function ($proposal): string {
                         $proposal->contract_id,
                         '?' => ['proposal_id' => $proposal->id],
                     ],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('View'),
+                    ['controller' => 'ContractVersionProposals', 'action' => 'view', $proposal->id],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Edit'),
+                    ['controller' => 'ContractVersionProposals', 'action' => 'edit', $proposal->id],
                     ['class' => 'win-link'],
                 ) ?>
                 <?php if ($proposal->isOpen()) : ?>
+                    <?php
+                    // Then the steps a proposal goes through, offered where the papers are printed
+                    // from - that is where somebody stands when they have just sent them or heard
+                    // back.
+                    ?>
                     <?php // Carrying over is only offered once there is a signature to carry over. ?>
                     <?= $this->AuthLink->link(
                         $proposal->hasBeenSent()
