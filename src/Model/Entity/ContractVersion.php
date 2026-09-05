@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Model\Entity\Trait\SendingTrait;
 use App\Model\Enum\ContractDeliveryMethod;
 use Cake\I18n\Date;
 use RuntimeException;
@@ -40,6 +41,8 @@ use RuntimeException;
  */
 class ContractVersion extends AppEntity
 {
+    use SendingTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

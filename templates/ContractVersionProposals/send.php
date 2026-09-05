@@ -48,7 +48,7 @@ $saying = $again
                 <?php
                 echo $this->Form->control('sent_date', [
                     'default' => Date::now(),
-                    'label' => __('Sent On'),
+                    'label' => __('Sent To The Customer'),
                     'help' => __('The day the papers went out to the customer.'),
                 ]);
                 echo $this->Form->control('sent_by', [

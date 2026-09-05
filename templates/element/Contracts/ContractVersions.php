@@ -16,7 +16,6 @@
             <th><?= __('Obligation Until') ?></th>
             <th><?= __('Obligations Settled') ?></th>
             <th><?= __('Sent To The Customer') ?></th>
-            <th><?= __('Sent By') ?></th>
             <th><?= __('Conclusion Date') ?></th>
             <th><?= __('Number Of Amendments') ?></th>
             <th><?= __('Note') ?></th>
@@ -35,8 +34,7 @@
             ?>"><?= h($contractVersion->obligation_until) ?></td>
             <td><?= isset($contractVersion->obligation_until) ?
                 ($contractVersion->obligations_settled ? __('Yes') : __('No')) : '' ?></td>
-            <td><?= h($contractVersion->sent_date) ?></td>
-            <td><?= h($contractVersion->sent_by?->label()) ?></td>
+            <td><?= h($contractVersion->getSending()) ?></td>
             <td><?= h($contractVersion->conclusion_date) ?></td>
             <td><?= $this->Number->format($contractVersion->number_of_amendments) ?></td>
             <td><?= h($contractVersion->note) ?></td>

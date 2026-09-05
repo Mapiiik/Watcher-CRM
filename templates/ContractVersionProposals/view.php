@@ -110,14 +110,11 @@ use App\Contracts\Proposal\ProposedVersion;
                     <td><?= h($contractVersionProposal->snapshot_taken) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Sent On') ?></th>
-                    <td><?= h($contractVersionProposal->sent_date) ?>
-                        <?= $contractVersionProposal->sent_by === null
-                            ? ''
-                            : h(' — ' . $contractVersionProposal->sent_by->label()) ?></td>
+                    <th><?= __('Sent To The Customer') ?></th>
+                    <td><?= h($contractVersionProposal->getSending()) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Concluded On') ?></th>
+                    <th><?= __('Conclusion Date') ?></th>
                     <td><?= h($contractVersionProposal->conclusion_date) ?></td>
                 </tr>
                 <tr>

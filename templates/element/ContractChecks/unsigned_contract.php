@@ -58,10 +58,7 @@ $today = Date::today();
                         <?php if ($version->sent_date === null) : ?>
                             <em><?= __x('sending date', 'Not recorded') ?></em>
                         <?php else : ?>
-                            <?= h($version->sent_date) ?>
-                            <?php if ($version->sent_by !== null) : ?>
-                                (<?= h($version->sent_by->label()) ?>)
-                            <?php endif ?>
+                            <?= h($version->getSending()) ?>
                         <?php endif ?>
                     </td>
                     <td>

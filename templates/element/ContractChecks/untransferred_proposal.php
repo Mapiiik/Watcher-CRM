@@ -35,7 +35,7 @@ $contract_column ??= true;
                     ]) ?>
                     <td><?= h($proposal->effective_from) ?></td>
                     <td><?= h($proposal->conclusion_date) ?></td>
-                    <td><?= h($proposal->sent_date) ?></td>
+                    <td><?= h($proposal->getSending()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('Carry Over'),

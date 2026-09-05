@@ -32,7 +32,7 @@ use Cake\I18n\Date;
                 ) ?></p>
                 <?= $this->Form->control('conclusion_date', [
                     'default' => Date::now(),
-                    'label' => __('Concluded On'),
+                    'label' => __('Conclusion Date'),
                     'help' => __('The day the customer agreed to it.'),
                 ]) ?>
             </fieldset>

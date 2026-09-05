@@ -13,8 +13,8 @@
     <thead>
         <tr>
             <th><?= __('Name') ?></th>
-            <th><?= __('From') ?></th>
-            <th><?= __('Until') ?></th>
+            <th><?= __('Billing From') ?></th>
+            <th><?= __('Billing Until') ?></th>
             <th><?= __('Total Price') ?></th>
         </tr>
     </thead>

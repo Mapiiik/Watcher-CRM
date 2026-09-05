@@ -6,6 +6,7 @@ namespace App\Model\Entity;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposalSnapshot;
+use App\Model\Entity\Trait\SendingTrait;
 use Cake\I18n\Date;
 
 /**
@@ -36,6 +37,8 @@ use Cake\I18n\Date;
  */
 class ContractVersionProposal extends AppEntity
 {
+    use SendingTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

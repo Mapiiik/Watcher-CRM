@@ -51,7 +51,7 @@ $whichVersion = function ($proposal): string {
                 <td><?= h($whichVersion($proposal)) ?></td>
             <?php endif ?>
             <td><?= h($whatItAsksFor($proposal)) ?></td>
-            <td><?= h($proposal->sent_date) ?></td>
+            <td><?= h($proposal->getSending()) ?></td>
             <td><?= h($proposal->conclusion_date) ?></td>
             <td><?= h($proposal->getState()) ?></td>
             <td class="actions">

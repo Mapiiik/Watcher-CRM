@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-04 23:49+0200\n"
+"POT-Creation-Date: 2026-09-05 09:20+0200\n"
 "PO-Revision-Date: 2026-08-26 13:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1182,7 +1182,7 @@ msgid "The contract is not ready for papers to be drawn up."
 msgstr "Smlouva není připravená na vystavení papírů."
 
 #: src/Controller/ContractVersionProposalsController.php:948
-#: templates/ContractVersionProposals/index.php:66
+#: templates/ContractVersionProposals/index.php:65
 #: templates/ContractVersions/view.php:40 templates/Contracts/print.php:16
 #: templates/element/Contracts/ContractVersionProposals.php:27
 msgid "indefinitely"
@@ -2095,31 +2095,31 @@ msgstr "Údaje o typu služby nejsou k dispozici."
 msgid "Contract versions data not available."
 msgstr "Údaje o verzích smluv nejsou k dispozici."
 
-#: src/Model/Entity/ContractVersion.php:115
+#: src/Model/Entity/ContractVersion.php:118
 msgid "Contract version proposal data not available."
 msgstr "Data návrhů k verzi smlouvy nejsou k dispozici."
 
-#: src/Model/Entity/ContractVersionProposal.php:170
+#: src/Model/Entity/ContractVersionProposal.php:173
 msgid "Carried over"
 msgstr "Přeneseno"
 
-#: src/Model/Entity/ContractVersionProposal.php:171
-#: templates/ContractVersionProposals/view.php:128
+#: src/Model/Entity/ContractVersionProposal.php:174
+#: templates/ContractVersionProposals/view.php:125
 #: templates/ServiceOverrides/view.php:104
 #: templates/element/common/audit.php:74
 msgid "Revoked"
 msgstr "Zrušeno"
 
-#: src/Model/Entity/ContractVersionProposal.php:172
+#: src/Model/Entity/ContractVersionProposal.php:175
 msgid "Waiting to be carried over"
 msgstr "Čeká na přenesení"
 
-#: src/Model/Entity/ContractVersionProposal.php:173
+#: src/Model/Entity/ContractVersionProposal.php:176
 #: src/Model/Enum/CustomerMessageDeliveryStatus.php:29
 msgid "Sent"
 msgstr "Odesláno"
 
-#: src/Model/Entity/ContractVersionProposal.php:174
+#: src/Model/Entity/ContractVersionProposal.php:177
 msgid "Being drawn up"
 msgstr "Připravuje se"
 
@@ -2241,8 +2241,8 @@ msgstr "Předávací protokol - Deinstalace připojení k internetu"
 #: templates/ContractStates/view.php:153 templates/ContractStates/view.php:162
 #: templates/ContractStates/view.php:166 templates/ContractStates/view.php:171
 #: templates/ContractStates/view.php:176 templates/ContractStates/view.php:180
-#: templates/ContractVersionProposals/view.php:176
-#: templates/ContractVersions/index.php:66
+#: templates/ContractVersionProposals/view.php:173
+#: templates/ContractVersions/index.php:65
 #: templates/ContractVersions/view.php:85 templates/Contracts/index.php:84
 #: templates/Contracts/print.php:121 templates/Contracts/view.php:240
 #: templates/Customers/print.php:109 templates/Customers/print.php:132
@@ -2281,7 +2281,7 @@ msgstr "Předávací protokol - Deinstalace připojení k internetu"
 #: templates/element/AddressChecks/installation_address.php:50
 #: templates/element/Contracts/Billings.php:72
 #: templates/element/Contracts/Billings.php:73
-#: templates/element/Contracts/ContractVersions.php:37
+#: templates/element/Contracts/ContractVersions.php:36
 #: templates/element/Contracts/related.php:70
 #: templates/element/Settings/FormFields.php:34
 msgid "No"
@@ -2309,8 +2309,8 @@ msgstr "Ne"
 #: templates/ContractStates/view.php:153 templates/ContractStates/view.php:162
 #: templates/ContractStates/view.php:166 templates/ContractStates/view.php:171
 #: templates/ContractStates/view.php:176 templates/ContractStates/view.php:180
-#: templates/ContractVersionProposals/view.php:176
-#: templates/ContractVersions/index.php:66
+#: templates/ContractVersionProposals/view.php:173
+#: templates/ContractVersions/index.php:65
 #: templates/ContractVersions/view.php:85 templates/Contracts/index.php:84
 #: templates/Contracts/print.php:121 templates/Contracts/view.php:240
 #: templates/Customers/print.php:109 templates/Customers/print.php:132
@@ -2349,7 +2349,7 @@ msgstr "Ne"
 #: templates/element/AddressChecks/installation_address.php:50
 #: templates/element/Contracts/Billings.php:72
 #: templates/element/Contracts/Billings.php:73
-#: templates/element/Contracts/ContractVersions.php:37
+#: templates/element/Contracts/ContractVersions.php:36
 #: templates/element/Contracts/related.php:70
 #: templates/element/Settings/FormFields.php:34
 msgid "Yes"
@@ -2956,13 +2956,13 @@ msgstr "Není nainstalováno přes Git"
 #: templates/ContractVersionProposals/billing_line.php:14
 #: templates/ContractVersionProposals/conclude.php:13
 #: templates/ContractVersionProposals/edit.php:10
-#: templates/ContractVersionProposals/index.php:44
+#: templates/ContractVersionProposals/index.php:43
 #: templates/ContractVersionProposals/refresh_snapshot.php:10
 #: templates/ContractVersionProposals/send.php:14
 #: templates/ContractVersionProposals/transfer.php:19
 #: templates/ContractVersionProposals/view.php:21
 #: templates/ContractVersions/add.php:13 templates/ContractVersions/edit.php:12
-#: templates/ContractVersions/index.php:46
+#: templates/ContractVersions/index.php:45
 #: templates/ContractVersions/view.php:10 templates/Contracts/add.php:19
 #: templates/Contracts/edit.php:21 templates/Contracts/index.php:56
 #: templates/Contracts/print.php:30 templates/Contracts/view.php:19
@@ -3044,7 +3044,7 @@ msgstr "Není nainstalováno přes Git"
 #: templates/element/Contracts/Billings.php:36
 #: templates/element/Contracts/BorrowedEquipments.php:21
 #: templates/element/Contracts/ContractVersionProposals.php:43
-#: templates/element/Contracts/ContractVersions.php:23
+#: templates/element/Contracts/ContractVersions.php:22
 #: templates/element/Contracts/IpAddresses.php:25
 #: templates/element/Contracts/IpNetworks.php:23
 #: templates/element/Contracts/RemovedIpAddresses.php:19
@@ -3139,10 +3139,10 @@ msgstr "Potvrdit"
 #: templates/BorrowedEquipments/index.php:84 templates/Commissions/edit.php:12
 #: templates/Commissions/index.php:42 templates/Commissions/view.php:78
 #: templates/ContractStates/edit.php:14 templates/ContractStates/index.php:66
-#: templates/ContractVersionProposals/index.php:89
+#: templates/ContractVersionProposals/index.php:87
 #: templates/ContractVersionProposals/view.php:77
 #: templates/ContractVersions/edit.php:14
-#: templates/ContractVersions/index.php:82 templates/Contracts/edit.php:23
+#: templates/ContractVersions/index.php:80 templates/Contracts/edit.php:23
 #: templates/Contracts/index.php:123 templates/Countries/edit.php:12
 #: templates/Countries/index.php:44 templates/Countries/view.php:117
 #: templates/CustomerLabels/edit.php:15 templates/CustomerLabels/index.php:73
@@ -3174,7 +3174,7 @@ msgstr "Potvrdit"
 #: templates/element/Contracts/Billings.php:87
 #: templates/element/Contracts/BorrowedEquipments.php:62
 #: templates/element/Contracts/ContractVersionProposals.php:68
-#: templates/element/Contracts/ContractVersions.php:54
+#: templates/element/Contracts/ContractVersions.php:52
 #: templates/element/Contracts/IpAddresses.php:96
 #: templates/element/Contracts/IpNetworks.php:66
 #: templates/element/Contracts/RemovedIpAddresses.php:50
@@ -3201,9 +3201,9 @@ msgstr "Odstranit"
 #: templates/Commissions/index.php:44 templates/Commissions/view.php:20
 #: templates/Commissions/view.php:80 templates/ContractStates/edit.php:17
 #: templates/ContractStates/index.php:68 templates/ContractStates/view.php:20
-#: templates/ContractVersionProposals/index.php:91
+#: templates/ContractVersionProposals/index.php:89
 #: templates/ContractVersions/edit.php:17
-#: templates/ContractVersions/index.php:84
+#: templates/ContractVersions/index.php:82
 #: templates/ContractVersions/view.php:20 templates/Contracts/edit.php:25
 #: templates/Contracts/index.php:125 templates/Contracts/view.php:28
 #: templates/Countries/edit.php:14 templates/Countries/index.php:46
@@ -3249,7 +3249,7 @@ msgstr "Odstranit"
 #: templates/element/Contracts/Billings.php:89
 #: templates/element/Contracts/BorrowedEquipments.php:69
 #: templates/element/Contracts/ContractVersionProposals.php:70
-#: templates/element/Contracts/ContractVersions.php:56
+#: templates/element/Contracts/ContractVersions.php:54
 #: templates/element/Contracts/IpAddresses.php:98
 #: templates/element/Contracts/IpNetworks.php:69
 #: templates/element/Contracts/RemovedIpAddresses.php:52
@@ -3336,8 +3336,8 @@ msgstr "Číslo zákazníka"
 #: templates/Billings/index.php:84 templates/BorrowedEquipments/index.php:77
 #: templates/Commissions/index.php:35 templates/Commissions/view.php:69
 #: templates/ContractStates/index.php:57
-#: templates/ContractVersionProposals/index.php:80
-#: templates/ContractVersions/index.php:73 templates/Contracts/index.php:116
+#: templates/ContractVersionProposals/index.php:78
+#: templates/ContractVersions/index.php:71 templates/Contracts/index.php:116
 #: templates/Countries/index.php:37 templates/Countries/view.php:108
 #: templates/CustomerLabels/index.php:66
 #: templates/CustomerMessages/index.php:71
@@ -3365,7 +3365,7 @@ msgstr "Číslo zákazníka"
 #: templates/Tasks/index.php:185 templates/element/Contracts/Billings.php:78
 #: templates/element/Contracts/BorrowedEquipments.php:45
 #: templates/element/Contracts/ContractVersionProposals.php:59
-#: templates/element/Contracts/ContractVersions.php:45
+#: templates/element/Contracts/ContractVersions.php:43
 #: templates/element/Contracts/IpAddresses.php:87
 #: templates/element/Contracts/IpNetworks.php:57
 #: templates/element/Contracts/RemovedIpAddresses.php:41
@@ -3383,8 +3383,8 @@ msgstr "Zobrazit"
 #: templates/Billings/index.php:86 templates/BorrowedEquipments/index.php:79
 #: templates/Commissions/index.php:37 templates/Commissions/view.php:73
 #: templates/ContractStates/index.php:61
-#: templates/ContractVersionProposals/index.php:84
-#: templates/ContractVersions/index.php:77 templates/Contracts/index.php:118
+#: templates/ContractVersionProposals/index.php:82
+#: templates/ContractVersions/index.php:75 templates/Contracts/index.php:118
 #: templates/Countries/index.php:39 templates/Countries/view.php:112
 #: templates/CustomerLabels/index.php:68
 #: templates/CustomerMessages/index.php:75
@@ -3408,7 +3408,7 @@ msgstr "Zobrazit"
 #: templates/element/Contracts/Billings.php:82
 #: templates/element/Contracts/BorrowedEquipments.php:53
 #: templates/element/Contracts/ContractVersionProposals.php:63
-#: templates/element/Contracts/ContractVersions.php:49
+#: templates/element/Contracts/ContractVersions.php:47
 #: templates/element/Contracts/IpAddresses.php:91
 #: templates/element/Contracts/IpNetworks.php:61
 #: templates/element/Contracts/RemovedIpAddresses.php:45
@@ -3469,7 +3469,7 @@ msgstr "Zákazník"
 #: templates/BorrowedEquipments/view.php:56
 #: templates/ContractVersionProposals/index.php:37
 #: templates/ContractVersionProposals/view.php:94
-#: templates/ContractVersionProposals/view.php:161
+#: templates/ContractVersionProposals/view.php:158
 #: templates/ContractVersions/view.php:59 templates/Contracts/view.php:88
 #: templates/CustomerLabels/view.php:55 templates/EquipmentTypes/view.php:70
 #: templates/EquipmentTypes/view.php:133
@@ -3544,8 +3544,8 @@ msgstr "Port"
 #: templates/Billings/service_change.php:118 templates/Billings/view.php:122
 #: templates/ContractStates/view.php:193
 #: templates/ContractVersionProposals/billing_line.php:112
-#: templates/ContractVersionProposals/view.php:184
-#: templates/ContractVersions/view.php:111 templates/Contracts/view.php:315
+#: templates/ContractVersionProposals/view.php:181
+#: templates/ContractVersions/view.php:107 templates/Contracts/view.php:315
 #: templates/CustomerLabels/view.php:80 templates/Customers/view.php:329
 #: templates/Customers/view.php:361 templates/Customers/view.php:410
 #: templates/Customers/view.php:519 templates/Customers/view.php:600
@@ -3554,7 +3554,7 @@ msgstr "Port"
 #: templates/Phones/view.php:65 templates/RemovedIpAddresses/view.php:93
 #: templates/RemovedIpNetworks/view.php:96 templates/Services/view.php:96
 #: templates/element/Contracts/Billings.php:34
-#: templates/element/Contracts/ContractVersions.php:22
+#: templates/element/Contracts/ContractVersions.php:21
 #: templates/element/Contracts/IpAddresses.php:21
 #: templates/element/Contracts/IpNetworks.php:21
 #: templates/element/Contracts/RemovedIpAddresses.php:17
@@ -3984,6 +3984,7 @@ msgstr "Text"
 #: templates/element/ContractChecks/impossible_billing_period.php:21
 #: templates/element/ContractChecks/non_standard_service.php:26
 #: templates/element/ContractChecks/overlapping_billings.php:24
+#: templates/element/ContractVersionProposals/billings.php:16
 #: templates/element/ContractVersionProposals/proposed_billings.php:35
 #: templates/element/Contracts/Billings.php:30
 msgid "Billing From"
@@ -3997,6 +3998,7 @@ msgstr "Fakturovat od"
 #: templates/element/ContractChecks/impossible_billing_period.php:22
 #: templates/element/ContractChecks/non_standard_service.php:27
 #: templates/element/ContractChecks/overlapping_billings.php:25
+#: templates/element/ContractVersionProposals/billings.php:17
 #: templates/element/ContractVersionProposals/proposed_billings.php:36
 #: templates/element/Contracts/Billings.php:31
 msgid "Billing Until"
@@ -4334,7 +4336,7 @@ msgctxt "service"
 msgid "None"
 msgstr "Žádná"
 
-#: templates/element/ContractChecks/unsigned_contract.php:69
+#: templates/element/ContractChecks/unsigned_contract.php:66
 msgctxt "conclusion date"
 msgid "None"
 msgstr "Žádné"
@@ -4401,9 +4403,15 @@ msgstr ""
 "zůstává beze změny; záznamy se hnou teprve přenesením."
 
 #: templates/ContractVersionProposals/conclude.php:35
-#: templates/ContractVersionProposals/view.php:120
-msgid "Concluded On"
-msgstr "Uzavřeno dne"
+#: templates/ContractVersionProposals/view.php:117
+#: templates/ContractVersions/view.php:93
+#: templates/element/ContractChecks/impossible_contract_version_period.php:23
+#: templates/element/ContractChecks/unsigned_contract.php:33
+#: templates/element/ContractChecks/untransferred_proposal.php:24
+#: templates/element/Contracts/ContractVersionProposals.php:41
+#: templates/element/Contracts/ContractVersions.php:19
+msgid "Conclusion Date"
+msgstr "Datum uzavření"
 
 #: templates/ContractVersionProposals/conclude.php:36
 msgid "The day the customer agreed to it."
@@ -4420,7 +4428,7 @@ msgid "Settled Proposals As Well"
 msgstr "Včetně vyřízených návrhů"
 
 #: templates/ContractVersionProposals/index.php:28
-#: templates/ContractVersions/view.php:118 templates/Contracts/print.php:201
+#: templates/ContractVersions/view.php:114 templates/Contracts/print.php:201
 msgid "Draw Up a Proposal"
 msgstr "Založit návrh"
 
@@ -4429,13 +4437,15 @@ msgid "Contract Version Proposals"
 msgstr "Návrhy k verzím smluv"
 
 #: templates/ContractVersionProposals/index.php:38
-#: templates/ContractVersionProposals/view.php:155
+#: templates/ContractVersionProposals/view.php:152
 #: templates/element/ContractVersionProposals/form.php:45
 #: templates/element/Contracts/ContractVersionProposals.php:37
 msgid "Contract Version"
 msgstr "Verze smlouvy"
 
 #: templates/ContractVersionProposals/index.php:40
+#: templates/ContractVersionProposals/send.php:51
+#: templates/ContractVersionProposals/view.php:113
 #: templates/ContractVersions/index.php:42
 #: templates/ContractVersions/view.php:89
 #: templates/element/ContractChecks/unsigned_contract.php:32
@@ -4445,7 +4455,7 @@ msgstr "Verze smlouvy"
 msgid "Sent To The Customer"
 msgstr "Odesláno zákazníkovi"
 
-#: templates/ContractVersionProposals/index.php:43
+#: templates/ContractVersionProposals/index.php:42
 #: templates/element/Contracts/ContractVersionProposals.php:42
 msgid "State"
 msgstr "Stav"
@@ -4496,19 +4506,11 @@ msgstr "Zapsat, že papíry šly ven znovu"
 msgid "Record That the Papers Went Out"
 msgstr "Zapsat, že papíry šly ven"
 
-#: templates/ContractVersionProposals/send.php:51
-#: templates/ContractVersionProposals/view.php:113
-msgid "Sent On"
-msgstr "Odesláno dne"
-
 #: templates/ContractVersionProposals/send.php:52
 msgid "The day the papers went out to the customer."
 msgstr "Den, kdy papíry šly zákazníkovi."
 
 #: templates/ContractVersionProposals/send.php:57
-#: templates/ContractVersions/index.php:43
-#: templates/ContractVersions/view.php:93
-#: templates/element/Contracts/ContractVersions.php:19
 msgid "Sent By"
 msgstr "Forma odeslání"
 
@@ -4604,31 +4606,31 @@ msgstr "Účinnost od"
 msgid "Snapshot Taken"
 msgstr "Snímek pořízen"
 
-#: templates/ContractVersionProposals/view.php:124
+#: templates/ContractVersionProposals/view.php:121
 msgid "Carried Over"
 msgstr "Přeneseno dne"
 
-#: templates/ContractVersionProposals/view.php:133
+#: templates/ContractVersionProposals/view.php:130
 #: templates/element/ContractVersionProposals/form.php:73
 msgid "Terminates Contract Version"
 msgstr "Ukončuje verzi smlouvy"
 
-#: templates/ContractVersionProposals/view.php:137
+#: templates/ContractVersionProposals/view.php:134
 #: templates/element/ContractVersionProposals/form.php:76
 msgid "Number of the contract being terminated"
 msgstr "Číslo ukončované smlouvy"
 
-#: templates/ContractVersionProposals/view.php:151
+#: templates/ContractVersionProposals/view.php:148
 #: templates/element/ContractVersionProposals/form.php:84
 msgid "The contract version and the contract"
 msgstr "Verze smlouvy a smlouva"
 
-#: templates/ContractVersionProposals/view.php:156
-#: templates/ContractVersionProposals/view.php:162
+#: templates/ContractVersionProposals/view.php:153
+#: templates/ContractVersionProposals/view.php:159
 msgid "cleared"
 msgstr "zrušeno"
 
-#: templates/ContractVersionProposals/view.php:170
+#: templates/ContractVersionProposals/view.php:167
 msgid "What was confirmed"
 msgstr "Co bylo potvrzeno"
 
@@ -4694,20 +4696,11 @@ msgid "Obligations Settled"
 msgstr "Závazky vypořádány"
 
 #: templates/ContractVersions/view.php:97
-#: templates/element/ContractChecks/impossible_contract_version_period.php:23
-#: templates/element/ContractChecks/unsigned_contract.php:33
-#: templates/element/ContractChecks/untransferred_proposal.php:24
-#: templates/element/Contracts/ContractVersionProposals.php:41
 #: templates/element/Contracts/ContractVersions.php:20
-msgid "Conclusion Date"
-msgstr "Datum uzavření"
-
-#: templates/ContractVersions/view.php:101
-#: templates/element/Contracts/ContractVersions.php:21
 msgid "Number Of Amendments"
 msgstr "Počet dodatků"
 
-#: templates/ContractVersions/view.php:128 templates/Contracts/print.php:210
+#: templates/ContractVersions/view.php:124 templates/Contracts/print.php:210
 msgid "Proposals"
 msgstr "Návrhy"
 
@@ -4969,7 +4962,7 @@ msgstr "Nová IP adresa z rozsahu"
 #: templates/Customers/view.php:728 templates/Customers/view.php:753
 #: templates/element/Contracts/Billings.php:102
 #: templates/element/Contracts/BorrowedEquipments.php:85
-#: templates/element/Contracts/ContractVersions.php:68
+#: templates/element/Contracts/ContractVersions.php:66
 msgid "Show historical records"
 msgstr "Zobrazit historické záznamy"
 
@@ -5725,14 +5718,12 @@ msgstr "Historická připojení"
 #: templates/HistoricalConnections/index.php:32
 #: templates/HistoricalConnections/view.php:64
 #: templates/HistoricalConnections/view.php:137
-#: templates/element/ContractVersionProposals/billings.php:16
 msgid "From"
 msgstr "Od"
 
 #: templates/HistoricalConnections/index.php:33
 #: templates/HistoricalConnections/view.php:74
 #: templates/HistoricalConnections/view.php:138
-#: templates/element/ContractVersionProposals/billings.php:17
 msgid "Until"
 msgstr "Do"
 
@@ -7004,15 +6995,15 @@ msgstr ""
 msgid "Deadline"
 msgstr "Lhůta"
 
-#: templates/element/ContractChecks/unsigned_contract.php:83
+#: templates/element/ContractChecks/unsigned_contract.php:80
 msgid "Due to be cut off"
 msgstr "K odpojení"
 
-#: templates/element/ContractChecks/unsigned_contract.php:85
+#: templates/element/ContractChecks/unsigned_contract.php:82
 msgid "Due a reminder"
 msgstr "K upomínce"
 
-#: templates/element/ContractChecks/unsigned_contract.php:87
+#: templates/element/ContractChecks/unsigned_contract.php:84
 msgid "In time until {0}"
 msgstr "V termínu do {0}"
 
@@ -7414,6 +7405,12 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:282
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Concluded On"
+#~ msgstr "Uzavřeno dne"
+
+#~ msgid "Sent On"
+#~ msgstr "Odesláno dne"
 
 #~ msgid "Handover Protocols"
 #~ msgstr "Předávací protokoly"
