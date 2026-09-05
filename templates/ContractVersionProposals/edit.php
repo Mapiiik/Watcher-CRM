@@ -18,6 +18,34 @@
                 ['action' => 'refreshSnapshot', $contractVersionProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?php
+            // What is written down about the proposal is offered here as well as on the detail:
+            // somebody filling in the day it went out or the day it was signed reaches for Edit
+            // first. No guard is needed - a proposal that may be edited is open and has not been
+            // sent.
+            ?>
+            <?= $this->AuthLink->link(
+                __('Record That the Papers Went Out'),
+                ['action' => 'send', $contractVersionProposal->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                $contractVersionProposal->hasBeenConcluded()
+                    ? __('Correct the Signature')
+                    : __('Record the Signature'),
+                ['action' => 'conclude', $contractVersionProposal->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Carry Over'),
+                ['action' => 'transfer', $contractVersionProposal->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('List Proposals'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
