@@ -288,6 +288,48 @@ class ProposalTransferTest extends TestCase
     }
 
     /**
+     * The signature is recorded on the proposal, and the version takes it from there when it is
+     * carried over. Without this the version would go on reading as unsigned, and the customer
+     * would be chased - and eventually cut off - for a paper that is on file.
+     *
+     * @return void
+     */
+    public function testTheVersionTakesTheSignatureFromTheProposal(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $versions->saveOrFail(
+            $versions->patchEntity($versions->get(self::VERSION_ID), ['conclusion_date' => null]),
+            ['checkRules' => false],
+        );
+
+        (new ProposalTransfer())->carryOver($this->proposal(['conclusion_date' => '2026-09-15']));
+
+        $this->assertSame(
+            '2026-09-15',
+            $versions->get(self::VERSION_ID)->conclusion_date?->toDateString(),
+        );
+    }
+
+    /**
+     * A version signed long ago and amended today keeps the day it was agreed on. The amendment's
+     * day is the proposal's business, and writing it over would say the customer agreed to the
+     * version itself later than they did.
+     *
+     * @return void
+     */
+    public function testAVersionThatIsAlreadySignedKeepsItsOwnDay(): void
+    {
+        (new ProposalTransfer())->carryOver($this->proposal(['conclusion_date' => '2026-09-15']));
+
+        $this->assertSame(
+            '2022-11-30',
+            $this->getTableLocator()->get('ContractVersions')
+                ->get(self::VERSION_ID)
+                ->conclusion_date?->toDateString(),
+        );
+    }
+
+    /**
      * The day the replacement starts is the proposal's own, not today's.
      *
      * @return void

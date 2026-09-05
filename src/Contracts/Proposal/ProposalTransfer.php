@@ -158,6 +158,15 @@ final class ProposalTransfer
     /**
      * Puts the proposal's dates onto the version it belongs to, and ends the one it replaces.
      *
+     * The signature comes over as well, though nobody asked for it: it is recorded on the proposal,
+     * and the version is what the checks, the reminders and the nightly blocking read. Without this
+     * a signed and carried-over proposal would leave its version looking unsigned, and the customer
+     * would be chased for a paper that is on file.
+     *
+     * Only onto a version that has none of its own. A version signed long ago and amended today was
+     * still agreed on the day it was agreed, and writing the amendment's day over it would lose
+     * that - and would trip the check that watches for paper younger than the version it belongs to.
+     *
      * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
      * @return void
      */
@@ -166,13 +175,19 @@ final class ProposalTransfer
         $versions = $this->fetchTable('ContractVersions');
         $asked = $proposal->proposedChanges()->version;
 
-        if (!$asked->isEmpty()) {
-            $version = $versions->get($proposal->contract_version_id);
+        $version = $versions->get($proposal->contract_version_id);
 
-            foreach ($asked->asked() as $field => $value) {
-                $version->set($field, $value);
-            }
+        foreach ($asked->asked() as $field => $value) {
+            $version->set($field, $value);
+        }
 
+        if ($version->conclusion_date === null) {
+            $version->set('conclusion_date', $proposal->conclusion_date);
+        }
+
+        // Nothing to write is the ordinary case - a proposal usually asks about the billings alone
+        // - and a save with nothing in it would only put the version's rules in the way.
+        if ($version->isDirty()) {
             $versions->saveOrFail($version);
         }
 
