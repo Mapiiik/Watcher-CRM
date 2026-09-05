@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-05 11:42+0200\n"
+"POT-Creation-Date: 2026-09-05 12:41+0200\n"
 "PO-Revision-Date: 2026-08-26 13:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -3117,7 +3117,7 @@ msgstr "IP adresa"
 #: templates/ContractVersionProposals/add.php:22
 #: templates/ContractVersionProposals/billing_line.php:116
 #: templates/ContractVersionProposals/conclude.php:39
-#: templates/ContractVersionProposals/edit.php:29
+#: templates/ContractVersionProposals/edit.php:57
 #: templates/ContractVersionProposals/refresh_snapshot.php:37
 #: templates/ContractVersionProposals/send.php:61
 #: templates/ContractVersions/add.php:77 templates/ContractVersions/edit.php:86
@@ -3194,7 +3194,7 @@ msgstr "Potvrdit"
 #: templates/SoldEquipments/index.php:76 templates/Tasks/edit.php:18
 #: templates/element/Contracts/Billings.php:87
 #: templates/element/Contracts/BorrowedEquipments.php:62
-#: templates/element/Contracts/ContractVersionProposals.php:70
+#: templates/element/Contracts/ContractVersionProposals.php:98
 #: templates/element/Contracts/ContractVersions.php:52
 #: templates/element/Contracts/IpAddresses.php:96
 #: templates/element/Contracts/IpNetworks.php:66
@@ -3269,7 +3269,7 @@ msgstr "Odstranit"
 #: templates/Tasks/edit.php:20 templates/Tasks/view.php:15
 #: templates/element/Contracts/Billings.php:89
 #: templates/element/Contracts/BorrowedEquipments.php:69
-#: templates/element/Contracts/ContractVersionProposals.php:72
+#: templates/element/Contracts/ContractVersionProposals.php:100
 #: templates/element/Contracts/ContractVersions.php:54
 #: templates/element/Contracts/IpAddresses.php:98
 #: templates/element/Contracts/IpNetworks.php:69
@@ -4363,6 +4363,7 @@ msgid "None"
 msgstr "Žádné"
 
 #: templates/ContractVersionProposals/add.php:12
+#: templates/ContractVersionProposals/edit.php:45
 #: templates/ContractVersionProposals/view.php:83
 msgid "List Proposals"
 msgstr "Seznam návrhů"
@@ -4409,8 +4410,10 @@ msgid "Empty starts with the papers."
 msgstr "Prázdné začne s papíry."
 
 #: templates/ContractVersionProposals/conclude.php:27
+#: templates/ContractVersionProposals/edit.php:35
 #: templates/ContractVersionProposals/transfer.php:22
 #: templates/ContractVersionProposals/view.php:45
+#: templates/element/Contracts/ContractVersionProposals.php:85
 msgid "Record the Signature"
 msgstr "Zapsat podpis"
 
@@ -4443,6 +4446,27 @@ msgstr "Den, kdy s tím zákazník souhlasil."
 #: templates/ContractVersionProposals/view.php:29
 msgid "Take the Snapshot Again"
 msgstr "Pořídit snímek znovu"
+
+#: templates/ContractVersionProposals/edit.php:28
+#: templates/ContractVersionProposals/send.php:46
+#: templates/ContractVersionProposals/view.php:38
+#: templates/element/Contracts/ContractVersionProposals.php:78
+msgid "Record the Sending"
+msgstr "Zapsat odeslání"
+
+#: templates/ContractVersionProposals/edit.php:34
+#: templates/ContractVersionProposals/view.php:44
+#: templates/element/Contracts/ContractVersionProposals.php:84
+msgid "Correct the Signature"
+msgstr "Opravit podpis"
+
+#: templates/ContractVersionProposals/edit.php:40
+#: templates/ContractVersionProposals/transfer.php:89
+#: templates/ContractVersionProposals/view.php:50
+#: templates/element/ContractChecks/untransferred_proposal.php:41
+#: templates/element/Contracts/ContractVersionProposals.php:91
+msgid "Carry Over"
+msgstr "Přenést"
 
 #: templates/ContractVersionProposals/index.php:17
 msgid "Settled Proposals As Well"
@@ -4520,13 +4544,9 @@ msgstr ""
 
 #: templates/ContractVersionProposals/send.php:45
 #: templates/ContractVersionProposals/view.php:37
-msgid "Record That the Papers Went Out Again"
-msgstr "Zapsat, že papíry šly ven znovu"
-
-#: templates/ContractVersionProposals/send.php:46
-#: templates/ContractVersionProposals/view.php:38
-msgid "Record That the Papers Went Out"
-msgstr "Zapsat, že papíry šly ven"
+#: templates/element/Contracts/ContractVersionProposals.php:77
+msgid "Record the Sending Again"
+msgstr "Zapsat odeslání znovu"
 
 #: templates/ContractVersionProposals/send.php:52
 msgid "The day the papers went out to the customer."
@@ -4574,12 +4594,6 @@ msgstr "Zapsat do období, které už je vyfakturované"
 msgid "Mark as Dealt With"
 msgstr "Označit za vyřízené"
 
-#: templates/ContractVersionProposals/transfer.php:89
-#: templates/ContractVersionProposals/view.php:50
-#: templates/element/ContractChecks/untransferred_proposal.php:41
-msgid "Carry Over"
-msgstr "Přenést"
-
 #: templates/ContractVersionProposals/transfer.php:92
 msgid "Mark this proposal as dealt with?"
 msgstr "Označit tento návrh za vyřízený?"
@@ -4593,10 +4607,6 @@ msgstr "Opravdu chcete zapsat to, co návrh žádá, do živých záznamů?"
 #: templates/ContractVersionProposals/view.php:24
 msgid "Edit Proposal"
 msgstr "Upravit návrh"
-
-#: templates/ContractVersionProposals/view.php:44
-msgid "Correct the Signature"
-msgstr "Opravit podpis"
 
 #: templates/ContractVersionProposals/view.php:56
 msgid "Print"
@@ -7443,6 +7453,12 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:282
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Record That the Papers Went Out Again"
+#~ msgstr "Zapsat, že papíry šly ven znovu"
+
+#~ msgid "Record That the Papers Went Out"
+#~ msgstr "Zapsat, že papíry šly ven"
 
 #~ msgid "The proposal has been marked as dealt with; it changed nothing."
 #~ msgstr "Návrh byl označen za vyřízený; nic neměnil."

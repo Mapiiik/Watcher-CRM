@@ -34,8 +34,8 @@ use App\Contracts\Proposal\ProposedVersion;
             <?php if ($contractVersionProposal->isOpen()) : ?>
                 <?= $this->AuthLink->link(
                     $contractVersionProposal->hasBeenSent()
-                        ? __('Record That the Papers Went Out Again')
-                        : __('Record That the Papers Went Out'),
+                        ? __('Record the Sending Again')
+                        : __('Record the Sending'),
                     ['action' => 'send', $contractVersionProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>

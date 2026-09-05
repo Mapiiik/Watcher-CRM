@@ -42,8 +42,8 @@ $saying = $again
             <?= $this->Form->create($contractVersionProposal) ?>
             <fieldset>
                 <legend><?= $again
-                    ? __('Record That the Papers Went Out Again')
-                    : __('Record That the Papers Went Out') ?></legend>
+                    ? __('Record the Sending Again')
+                    : __('Record the Sending') ?></legend>
                 <p><?= $saying ?></p>
                 <?php
                 echo $this->Form->control('sent_date', [

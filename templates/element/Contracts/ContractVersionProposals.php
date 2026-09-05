@@ -74,8 +74,8 @@ $whichVersion = function ($proposal): string {
                     ?>
                     <?= $this->AuthLink->link(
                         $proposal->hasBeenSent()
-                            ? __('Record That the Papers Went Out Again')
-                            : __('Record That the Papers Went Out'),
+                            ? __('Record the Sending Again')
+                            : __('Record the Sending'),
                         ['controller' => 'ContractVersionProposals', 'action' => 'send', $proposal->id],
                         ['class' => 'win-link'],
                     ) ?>

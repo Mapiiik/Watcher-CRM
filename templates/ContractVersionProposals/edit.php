@@ -25,7 +25,7 @@
             // sent.
             ?>
             <?= $this->AuthLink->link(
-                __('Record That the Papers Went Out'),
+                __('Record the Sending'),
                 ['action' => 'send', $contractVersionProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
