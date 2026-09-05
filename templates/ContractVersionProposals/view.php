@@ -13,6 +13,11 @@
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposedContract;
 use App\Contracts\Proposal\ProposedVersion;
+use App\Model\Entity\ContractVersion;
+
+$howAVersionReads = function (ContractVersion $version): string {
+    return $version->valid_from . ' - ' . ($version->valid_until ?: __('indefinitely'));
+};
 
 ?>
 <div class="row">
@@ -104,12 +109,24 @@ use App\Contracts\Proposal\ProposedVersion;
                             ) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Purpose') ?></th>
-                            <td><?= h($contractVersionProposal->purpose->label()) ?></td>
+                            <th><?= __('Contract Version') ?></th>
+                            <td><?= $contractVersionProposal->contract_version !== null
+                                ? $this->Html->link(
+                                    $howAVersionReads($contractVersionProposal->contract_version),
+                                    [
+                                        'controller' => 'ContractVersions',
+                                        'action' => 'view',
+                                        $contractVersionProposal->contract_version_id,
+                                    ],
+                                ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Effective From') ?></th>
                             <td><?= h($contractVersionProposal->effective_from) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Purpose') ?></th>
+                            <td><?= h($contractVersionProposal->purpose->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Snapshot Taken') ?></th>
@@ -134,7 +151,15 @@ use App\Contracts\Proposal\ProposedVersion;
                         <?php if ($contractVersionProposal->terminatesAnotherVersion()) : ?>
                         <tr>
                             <th><?= __('Terminates Contract Version') ?></th>
-                            <td><?= h($contractVersionProposal->terminated_contract_version->valid_from ?? '') ?></td>
+                            <td><?= $contractVersionProposal->terminated_contract_version !== null
+                                ? $this->Html->link(
+                                    $howAVersionReads($contractVersionProposal->terminated_contract_version),
+                                    [
+                                        'controller' => 'ContractVersions',
+                                        'action' => 'view',
+                                        $contractVersionProposal->terminates_contract_version_id,
+                                    ],
+                                ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Number of the contract being terminated') ?></th>

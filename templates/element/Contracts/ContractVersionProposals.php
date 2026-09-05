@@ -32,10 +32,10 @@ $whichVersion = function ($proposal): string {
     <table>
     <thead>
         <tr>
-            <th><?= __('Effective From') ?></th>
             <?php if ($version_column) : ?>
                 <th><?= __('Contract Version') ?></th>
             <?php endif ?>
+            <th><?= __('Effective From') ?></th>
             <th><?= __('Purpose') ?></th>
             <th><?= __('What it asks for') ?></th>
             <th><?= __('Sent To The Customer') ?></th>
@@ -47,10 +47,10 @@ $whichVersion = function ($proposal): string {
     <tbody>
         <?php foreach ($contract_version_proposals as $proposal) : ?>
         <tr style="<?= $proposal->isOpen() ? '' : 'color: darkgray;' ?>">
-            <td><?= h($proposal->effective_from) ?></td>
             <?php if ($version_column) : ?>
                 <td><?= h($whichVersion($proposal)) ?></td>
             <?php endif ?>
+            <td><?= h($proposal->effective_from) ?></td>
             <td><?= h($proposal->purpose->label()) ?></td>
             <td><?= h($whatItAsksFor($proposal)) ?></td>
             <td><?= h($proposal->getSending()) ?></td>
