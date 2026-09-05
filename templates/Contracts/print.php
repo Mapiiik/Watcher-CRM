@@ -17,8 +17,8 @@ $howAProposalReads = function ($one): string {
 
     return sprintf(
         '%s - %s - %s (%s)',
-        $one->purpose->label(),
         $one->effective_from,
+        $one->purpose->label(),
         $period,
         $one->getState(),
     );
