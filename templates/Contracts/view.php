@@ -319,6 +319,35 @@ $this->Html->css('problems', ['block' => true]);
                     </div>
                 </div>
             </div>
+            <?php
+            // What the papers say beyond the standard terms, in the order they are printed in.
+            // The service type's own terms are shown here as well, because from the customer's
+            // side they are part of this contract and the card should read like the paper.
+            //
+            // The row goes or stays whole. Most contracts have neither, and an empty pair of
+            // quotations on every one of them would say nothing twice over.
+            $service_terms = $contract->service_type->service_terms ?? null;
+            ?>
+            <?php if (!empty($service_terms) || !empty($contract->individual_terms)) : ?>
+            <div class="row">
+                <div class="column">
+                    <div class="text">
+                        <strong><?= __('Terms of the Services') ?></strong>
+                        <blockquote>
+                            <?= $this->Text->autoParagraph(h($service_terms)); ?>
+                        </blockquote>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="text">
+                        <strong><?= __('Individual Terms') ?></strong>
+                        <blockquote>
+                            <?= $this->Text->autoParagraph(h($contract->individual_terms)); ?>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
             <?php if ($contract->service_type !== null && $contract->service_type->have_contract_versions) : ?>
             <div class="related">
                 <?= $this->AuthLink->link(

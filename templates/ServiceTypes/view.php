@@ -56,6 +56,10 @@
                             <td><?= h($serviceType->invoice_text) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Service Terms') ?></th>
+                            <td><?= $this->Text->autoParagraph(h($serviceType->service_terms)) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Separate Invoice') ?></th>
                             <td><?= $serviceType->separate_invoice ? __('Yes') : __('No'); ?></td>
                         </tr>

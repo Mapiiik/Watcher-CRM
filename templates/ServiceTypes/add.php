@@ -23,6 +23,9 @@
                 echo $this->Form->control('activation_fee');
                 echo $this->Form->control('activation_fee_with_obligation');
                 echo $this->Form->control('invoice_text');
+                echo $this->Form->control('service_terms', [
+                    'help' => __('Printed on every contract of this kind of service.'),
+                ]);
                 echo $this->Form->control('separate_invoice');
                 echo $this->Form->control('invoice_with_items');
                 echo $this->Form->control('installation_address_required');

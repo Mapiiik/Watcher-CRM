@@ -63,6 +63,13 @@ use Settings\Utility\Settings;
                         ]);
                         echo $this->Form->control('activation_fee', ['empty' => true]);
                         echo $this->Form->control('activation_fee_with_obligation', ['empty' => true]);
+                        echo $this->Form->control('individual_terms', [
+                            'help' => __(
+                                'Printed on the contract, under whatever holds for the kind of'
+                                . ' service. A proposal already drawn up keeps what it took until'
+                                . ' its snapshot is taken again.',
+                            ),
+                        ]);
                         echo $this->Form->control('note');
                         ?>
                     </div>
