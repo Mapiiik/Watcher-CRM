@@ -5,6 +5,7 @@ namespace App\Contracts\Proposal;
 
 use App\Model\Entity\Billing;
 use App\Model\Entity\ContractVersionProposal;
+use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractVersionProposalsTable;
 use Cake\I18n\DateTime;
@@ -167,6 +168,11 @@ final class ProposalTransfer
      * still agreed on the day it was agreed, and writing the amendment's day over it would lose
      * that - and would trip the check that watches for paper younger than the version it belongs to.
      *
+     * An amendment carried over is also counted, and the count it leaves behind is the number that
+     * was printed on it - the snapshot's count plus one, the same arithmetic the paper did. Taking
+     * the number off the paper rather than adding one to whatever the version says now is what
+     * keeps the two saying the same thing: the version's count is the last amendment there is.
+     *
      * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
      * @return void
      */
@@ -177,12 +183,27 @@ final class ProposalTransfer
 
         $version = $versions->get($proposal->contract_version_id);
 
+        // Asked before the signature below fills it in: what makes this an amendment is that the
+        // version was already agreed to before this paper, which is the same thing the printing
+        // asks before it offers one.
+        $amends = $proposal->purpose === ProposalPurpose::ServiceChange
+            && $version->conclusion_date !== null;
+
         foreach ($asked->asked() as $field => $value) {
             $version->set($field, $value);
         }
 
         if ($version->conclusion_date === null) {
             $version->set('conclusion_date', $proposal->conclusion_date);
+        }
+
+        if ($amends) {
+            // What the papers were drawn from, falling back on the version for a snapshot taken
+            // before this field was kept in one.
+            $taken = $proposal->stateOfThings()->part('version');
+            $printed = (int)($taken['number_of_amendments'] ?? $version->number_of_amendments) + 1;
+
+            $version->set('number_of_amendments', $printed);
         }
 
         // Nothing to write is the ordinary case - a proposal usually asks about the billings alone

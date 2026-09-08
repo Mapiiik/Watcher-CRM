@@ -214,6 +214,8 @@ class ProposalTransferTest extends TestCase
 
         $version = $this->getTableLocator()->get('ContractVersions')->get(self::VERSION_ID);
         $this->assertSame('2026-09-30', $version->valid_until?->toDateString());
+        // an agreement to end a contract adds no amendment to what it ends
+        $this->assertSame(1, $version->get('number_of_amendments'));
 
         $contract = $contracts->get(self::CONTRACT_ID);
         $this->assertSame('2026-09-30', $contract->get('termination_date')?->toDateString());
@@ -308,6 +310,96 @@ class ProposalTransferTest extends TestCase
             '2026-09-15',
             $versions->get(self::VERSION_ID)->conclusion_date?->toDateString(),
         );
+    }
+
+    /**
+     * The papers number themselves from the count on the version - the one being printed is the
+     * next after it - so carrying an amendment over has to move it on. Left where it was, the
+     * second amendment would go out under the same number as the first.
+     *
+     * @return void
+     */
+    public function testAnAmendmentCarriedOverIsCounted(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $before = $versions->get(self::VERSION_ID)->get('number_of_amendments');
+
+        (new ProposalTransfer())->carryOver($this->proposal([
+            'purpose' => ProposalPurpose::ServiceChange->value,
+            'conclusion_date' => '2026-09-15',
+        ]));
+
+        $this->assertSame($before + 1, $versions->get(self::VERSION_ID)->get('number_of_amendments'));
+    }
+
+    /**
+     * And the count it leaves behind is the number printed on that paper, worked out from the
+     * snapshot - not one more than whatever the version happens to say when the button is pressed.
+     *
+     * @return void
+     */
+    public function testTheCountIsTheNumberThePaperCarries(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $versions->saveOrFail(
+            $versions->patchEntity($versions->get(self::VERSION_ID), ['number_of_amendments' => 5]),
+            ['checkRules' => false],
+        );
+
+        $proposal = $this->proposal(['purpose' => ProposalPurpose::ServiceChange->value]);
+        $taken = $proposal->get('snapshot');
+        $taken['version']['number_of_amendments'] = 1;
+
+        (new ProposalTransfer())->carryOver($this->proposal([
+            'snapshot' => $taken,
+            'conclusion_date' => '2026-09-15',
+        ]));
+
+        // the paper said "amendment no. 2", so that is what the version is left holding
+        $this->assertSame(2, $versions->get(self::VERSION_ID)->get('number_of_amendments'));
+    }
+
+    /**
+     * A new contract is not an amendment of the version it starts - it starts its own count.
+     *
+     * @return void
+     */
+    public function testANewContractIsNotCounted(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $before = $versions->get(self::VERSION_ID)->get('number_of_amendments');
+
+        (new ProposalTransfer())->carryOver($this->proposal([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'conclusion_date' => '2026-09-15',
+        ]));
+
+        $this->assertSame($before, $versions->get(self::VERSION_ID)->get('number_of_amendments'));
+    }
+
+    /**
+     * An unsigned version is not being amended, whatever the proposal says it is for - the printing
+     * would not have offered an amendment either. It takes the signature and stays at nought.
+     *
+     * @return void
+     */
+    public function testAVersionNobodyHadSignedIsNotAmended(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $before = $versions->get(self::VERSION_ID)->get('number_of_amendments');
+        $versions->saveOrFail(
+            $versions->patchEntity($versions->get(self::VERSION_ID), ['conclusion_date' => null]),
+            ['checkRules' => false],
+        );
+
+        (new ProposalTransfer())->carryOver($this->proposal([
+            'purpose' => ProposalPurpose::ServiceChange->value,
+            'conclusion_date' => '2026-09-15',
+        ]));
+
+        $version = $versions->get(self::VERSION_ID);
+        $this->assertSame('2026-09-15', $version->conclusion_date?->toDateString());
+        $this->assertSame($before, $version->get('number_of_amendments'));
     }
 
     /**
