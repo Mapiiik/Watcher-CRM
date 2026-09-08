@@ -455,6 +455,8 @@ return [
                             'billing_future_pricelist' => 'Seznam budoucích poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH',
                             'billing_future_individual' => 'Seznam budoucích poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH',
                             'payment_info' => 'Platební údaje',
+                            'service_terms' => 'Ujednání pro tyto služby',
+                            'individual_terms' => 'Individuální ujednání',
                             'final_statements' => 'Závěrečná ustanovení',
                     ],
 
@@ -518,6 +520,12 @@ return [
                                 <li>ke dni uzavření této smlouvy konkrétně v této sekci: <u>https://netair.cz/internet/vseobecne-informace</u></li>
                             </ul>
                             HTML,
+                        // Said out loud on the paper, because it is what these sections are for:
+                        // what the parties agreed between themselves takes precedence over the
+                        // terms everybody gets (§1751 odst. 1 občanského zákoníku). It leans on
+                        // the contract's own defined term rather than naming a document, and says
+                        // where that term is defined - the closing statements come further down.
+                        'terms_precedence' => 'V případě rozporu mají tato ujednání přednost před Dokumenty uvedenými v závěrečných ustanoveních této Smlouvy.',
                         'final_prices' => 'Všechny ceny uvedené v této smlouvě jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.',
                         'final_copies' => 'Tato smlouva (č. {contract_number}) je vyhotovena ve dvou stejnopisech.',
                     ],

@@ -935,6 +935,7 @@ class ContractPDF extends AppPDF
             $this->printActivationFee($contract, $executed, $type, false);
         }
 
+        $this->printAgreedTerms($contract);
         $this->printContractFinalStatements($contract);
     }
 
@@ -1079,6 +1080,58 @@ class ContractPDF extends AppPDF
             ]),
             bold: true,
         );
+    }
+
+    /**
+     * What was agreed beyond the standard terms, in the two places it can be agreed.
+     *
+     * The kind of service may carry terms of its own and this contract may have been given
+     * something nobody else has, and the two are printed one under the other rather than merged:
+     * read apart, one says what this service is and the other what this customer was given.
+     *
+     * It stands here, in the body of the contract and above the signatures, because a term nobody
+     * could reasonably expect to find where it was put does not bind (§1753 obč. zák.) - and the
+     * sentence that closes the article says out loud that what is agreed here comes before the
+     * terms everybody gets.
+     *
+     * The text is printed as it was typed. Blank lines separate paragraphs, and nothing else is
+     * read out of it: it is the office writing, not a template, so markup would only end up on
+     * the paper.
+     *
+     * @param \App\Model\Entity\Contract $contract The contract being printed
+     * @return void
+     */
+    private function printAgreedTerms(Contract $contract): void
+    {
+        $service_type = $contract->service_type ?? null;
+
+        $blocks = [
+            // General first, then what was agreed for this one contract.
+            'service_terms' => $service_type !== null && $service_type->has('service_terms')
+                ? trim((string)$service_type->service_terms)
+                : '',
+            'individual_terms' => $contract->has('individual_terms')
+                ? trim((string)$contract->individual_terms)
+                : '',
+        ];
+
+        if (implode('', $blocks) === '') {
+            return;
+        }
+
+        foreach ($blocks as $section => $text) {
+            if ($text === '') {
+                continue;
+            }
+
+            $this->printSectionHeading($this->contractText('sections.' . $section));
+
+            foreach (preg_split('/\R\s*\R/', $text) ?: [] as $paragraph) {
+                $this->printParagraph(trim($paragraph));
+            }
+        }
+
+        $this->printParagraph($this->contractText('texts.terms_precedence'));
     }
 
     /**

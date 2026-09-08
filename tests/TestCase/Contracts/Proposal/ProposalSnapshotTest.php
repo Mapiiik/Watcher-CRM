@@ -48,6 +48,18 @@ class ProposalSnapshotTest extends TestCase
     private const VERSION_ID = '74824fba-20b2-46fc-806c-df795aa9e429';
 
     /**
+     * What the contract and its kind of service say beyond the standard terms. Two paragraphs
+     * on the contract, because the printing splits them on the blank line between.
+     */
+    private const INDIVIDUAL_TERMS = <<<'TEXT'
+        The discount holds for the whole term.
+
+        Mounting on the mast is included in the price.
+        TEXT;
+
+    private const SERVICE_TERMS = 'The service is provided without contention.';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -135,6 +147,27 @@ class ProposalSnapshotTest extends TestCase
             'ip_network' => '192.0.2.0/29',
             'type_of_use' => IpAddressTypeOfUse::CustomerRADIUS->value,
         ]);
+
+        $this->agreeTerms();
+    }
+
+    /**
+     * Terms on both the contract and the kind of service it is.
+     *
+     * @param string|null $terms What the contract itself says, or null to say nothing.
+     * @return void
+     */
+    private function agreeTerms(?string $terms = self::INDIVIDUAL_TERMS): void
+    {
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $contract = $contracts->get(self::CONTRACT_ID);
+        $contract->set('individual_terms', $terms);
+        $contracts->saveOrFail($contract, ['checkRules' => false]);
+
+        $types = $this->getTableLocator()->get('ServiceTypes');
+        $type = $types->get($contract->get('service_type_id'));
+        $type->set('service_terms', $terms === null ? null : self::SERVICE_TERMS);
+        $types->saveOrFail($type, ['checkRules' => false]);
     }
 
     /**
@@ -305,6 +338,48 @@ class ProposalSnapshotTest extends TestCase
             $fromLive,
             $fromSnapshot,
             sprintf('The %s printed from the snapshot is not the one printed live.', $type->value),
+        );
+    }
+
+    /**
+     * What was agreed beyond the standard terms belongs on the contract itself and nowhere else.
+     *
+     * The paper is compared with and without the terms rather than read for the words: the text
+     * goes into the PDF through a subset font, so what comes out is glyph numbers. A document that
+     * prints them cannot come out the same as one that does not, and one that does not must.
+     *
+     * @param \App\Model\Enum\ContractPrintType $type Which document.
+     * @return void
+     */
+    #[DataProvider('documents')]
+    public function testTheAgreedTermsReachTheContractAndNoOtherDocument(ContractPrintType $type): void
+    {
+        $this->fillOutTheContract();
+
+        $version = $this->liveVersion();
+
+        $this->agreeTerms(null);
+        $without = $this->print($this->printData($type, $this->liveContract(), $version));
+
+        $this->agreeTerms();
+        $with = $this->print($this->printData($type, $this->liveContract(), $version));
+
+        $carries = $type === ContractPrintType::ContractNew || $type === ContractPrintType::ContractNewX;
+
+        if ($carries) {
+            $this->assertNotSame(
+                $without,
+                $with,
+                sprintf('The %s says nothing about what was agreed.', $type->value),
+            );
+
+            return;
+        }
+
+        $this->assertSame(
+            $without,
+            $with,
+            sprintf('The %s prints what was agreed, and it has no business saying it.', $type->value),
         );
     }
 

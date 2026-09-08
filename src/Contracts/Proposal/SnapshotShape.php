@@ -32,6 +32,10 @@ final class SnapshotShape
         'activation_fee',
         'activation_fee_with_obligation',
         'vip',
+        // What was agreed beyond the standard terms. It is kept here rather than read live for
+        // the same reason as everything else: reprinting a signed contract has to give back the
+        // paper that was signed, whatever the office has written on the contract since.
+        'individual_terms',
     ];
 
     /**
@@ -48,6 +52,7 @@ final class SnapshotShape
         'have_ip_addresses',
         'have_radius_accounts',
         'normally_with_borrowed_equipment',
+        'service_terms',
     ];
 
     /**
