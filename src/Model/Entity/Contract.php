@@ -30,6 +30,7 @@ use RuntimeException;
  * @property \Cake\I18n\Date|null $uninstallation_date
  * @property \Cake\I18n\Date|null $termination_date
  * @property string|null $access_description
+ * @property string|null $individual_terms
  * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee
  * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_with_obligation
  * @property \PhpCollective\DecimalObject\Decimal $activation_fee_sum
@@ -93,6 +94,7 @@ class Contract extends AppEntity
         'uninstallation_date' => true,
         'termination_date' => true,
         'access_description' => true,
+        'individual_terms' => true,
         'activation_fee' => true,
         'activation_fee_with_obligation' => true,
         'access_point_id' => true,

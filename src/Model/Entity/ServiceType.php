@@ -16,6 +16,7 @@ namespace App\Model\Entity;
  * @property bool $separate_invoice
  * @property bool $invoice_with_items
  * @property string|null $invoice_text
+ * @property string|null $service_terms
  * @property bool $installation_address_required
  * @property bool $access_point_required
  * @property bool $normally_with_borrowed_equipment
@@ -52,6 +53,7 @@ class ServiceType extends AppEntity
         'separate_invoice' => true,
         'invoice_with_items' => true,
         'invoice_text' => true,
+        'service_terms' => true,
         'installation_address_required' => true,
         'access_point_required' => true,
         'normally_with_borrowed_equipment' => true,

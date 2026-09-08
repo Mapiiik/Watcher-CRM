@@ -102,6 +102,10 @@ class ServiceTypesTable extends AppTable
             ->allowEmptyString('invoice_text');
 
         $validator
+            ->scalar('service_terms')
+            ->allowEmptyString('service_terms');
+
+        $validator
             ->boolean('installation_address_required')
             ->notEmptyString('installation_address_required');
 

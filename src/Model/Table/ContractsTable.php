@@ -252,6 +252,10 @@ class ContractsTable extends AppTable
             ->allowEmptyString('access_description');
 
         $validator
+            ->scalar('individual_terms')
+            ->allowEmptyString('individual_terms');
+
+        $validator
             ->decimal('activation_fee')
             ->allowEmptyString('activation_fee');
 
