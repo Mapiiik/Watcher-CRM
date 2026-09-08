@@ -472,6 +472,25 @@ nav.top-nav {
 }
 
 /* Forms */
+/*
+ * The line under a field saying what it is for. It belongs to the field above it, so it is
+ * pulled up against it and the air is left underneath - drawn as it comes, the field's own
+ * bottom margin puts the gap above the hint, and it ends up nearer the field that follows
+ * than the one it explains.
+ */
+.input > .hint {
+    display: block;
+    margin-top: -1.0rem;
+    margin-bottom: 1.5rem;
+}
+
+/* A tick carries no bottom margin of its own, so its hint has nothing to be pulled up over. */
+.input.radio > .hint,
+.input.checkbox > .hint,
+.input.multicheckbox > .hint {
+    margin-top: 0;
+}
+
 .input.radio,
 .input.checkbox,
 .input.multicheckbox {

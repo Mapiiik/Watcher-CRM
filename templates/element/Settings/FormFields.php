@@ -76,7 +76,6 @@ foreach ($default as $key => $defaultValue) {
 
             <?php if ($type->hint() !== null) : ?>
                 <small class="hint"><?= h($type->hint()) ?></small>
-                <br>
             <?php endif; ?>
 
             <small class="default-value">
