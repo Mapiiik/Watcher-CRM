@@ -56,6 +56,13 @@ class ContractVersionProposalsControllerTest extends TestCase
     private const KNOWN_BILLING_ID = 'b2000000-0000-4000-8000-000000000002';
 
     /**
+     * A service still sold, and one the fixtures mark as no longer offered.
+     */
+    private const OPEN_SERVICE_ID = '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2';
+
+    private const RETIRED_SERVICE_ID = 'eaacfeb3-1430-43ce-842e-497c5c95d953';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -423,6 +430,58 @@ class ContractVersionProposalsControllerTest extends TestCase
         $this->assertTrue($lines[0]->isAddition());
         $this->assertSame('299.00', $lines[0]->price?->toString());
         $this->assertNotEmpty($lines[0]->service, 'The chosen service did not come with the line.');
+    }
+
+    /**
+     * A proposal is where new arrangements are made, so what is no longer sold is not offered -
+     * the same as on a billing added to a contract.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::billingLine()
+     */
+    public function testARetiredServiceIsNotOffered(): void
+    {
+        $this->login();
+        $this->get('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+
+        $offered = $this->viewVariable('services')->toArray();
+        $this->assertArrayHasKey(self::OPEN_SERVICE_ID, $offered);
+        $this->assertArrayNotHasKey(self::RETIRED_SERVICE_ID, $offered);
+    }
+
+    /**
+     * Except the one the line is already on. Changing a line that runs on a tariff nobody may take
+     * any more is what somebody comes to this page for, and a list without it would move them onto
+     * another tariff without saying so.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::billingLine()
+     */
+    public function testARetiredServiceAlreadyChosenStaysOnTheList(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID, [
+            'service_id' => self::RETIRED_SERVICE_ID,
+            'quantity' => '1',
+            'price' => '299.00',
+        ]);
+        $this->assertRedirect();
+
+        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $line = $proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings[0];
+
+        $this->login();
+        $this->get('/contract-version-proposals/billing-line/' . self::PROPOSAL_ID . '/' . $line->id);
+
+        $this->assertResponseOk();
+        $this->assertArrayHasKey(
+            self::RETIRED_SERVICE_ID,
+            $this->viewVariable('services')->toArray(),
+        );
     }
 
     /**

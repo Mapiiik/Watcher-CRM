@@ -358,7 +358,10 @@ class ContractVersionProposalsController extends AppController
         $this->set('line', $edited);
         $this->set('replaced', $replaced);
         $this->set('values', $form->fill($edited, $replaced));
-        $this->set('services', $this->servicesFor($proposal));
+        $this->set('services', $this->servicesFor($proposal, [
+            $edited?->service_id,
+            $replaced?->service_id,
+        ]));
 
         return null;
     }
@@ -488,19 +491,36 @@ class ContractVersionProposalsController extends AppController
     /**
      * The services a line on this proposal may be for.
      *
+     * What is no longer sold is left out, the same as on a billing added to a contract - a proposal
+     * is where new arrangements are made, and offering a tariff nobody may take is offering to make
+     * a mistake.
+     *
+     * Except what is already chosen. Changing a line on a service that has since been retired is
+     * exactly what somebody comes to this page for, and a list without it would quietly move them
+     * onto another tariff.
+     *
      * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param array<int|string|null> $keep Services already chosen, which stay on the list whatever
+     *   they are.
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Service>
      */
-    private function servicesFor(ContractVersionProposal $proposal): SelectQuery
+    private function servicesFor(ContractVersionProposal $proposal, array $keep = []): SelectQuery
     {
         $contract = $this->contractFor((string)$proposal->contract_id);
+        $keep = array_values(array_filter($keep));
 
-        return $this->ContractVersionProposals->Contracts->Billings->Services
+        $query = $this->ContractVersionProposals->Contracts->Billings->Services
             ->find('list', order: ['name'])
             ->where($contract === null ? [] : ['OR' => [
                 'Services.service_type_id' => $contract->service_type_id,
                 'Services.service_type_id IS' => null,
             ]]);
+
+        $offered = ['Services.not_for_new_customers' => false];
+
+        return $query->where($keep === []
+            ? $offered
+            : ['OR' => [$offered, ['Services.id IN' => $keep]]]);
     }
 
     /**
