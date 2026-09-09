@@ -178,8 +178,8 @@ class BillingsController extends AppController
             ]]);
         }
 
-        // only services available for new customers
-        $services->andWhere(['Services.not_for_new_customers' => false]);
+        // only what is still on offer
+        $services->andWhere(['Services.currently_offered' => true]);
 
         $closed_period_override = $this->mayReachIntoClosedPeriods();
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-08 11:46+0200\n"
+"POT-Creation-Date: 2026-09-09 20:03+0200\n"
 "PO-Revision-Date: 2026-08-26 13:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1111,7 +1111,7 @@ msgstr "Stav smlouvy nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractVersionProposalsController.php:212
 #: src/Controller/ContractVersionProposalsController.php:247
-#: src/Controller/ContractVersionProposalsController.php:438
+#: src/Controller/ContractVersionProposalsController.php:441
 msgid "This proposal can no longer be changed."
 msgstr "Tento návrh už nelze měnit."
 
@@ -1123,53 +1123,53 @@ msgstr "Snímek byl pořízen znovu."
 msgid "There is no such line on this proposal."
 msgstr "Taková položka na návrhu není."
 
-#: src/Controller/ContractVersionProposalsController.php:457
-#: src/Controller/ContractVersionProposalsController.php:919
+#: src/Controller/ContractVersionProposalsController.php:460
+#: src/Controller/ContractVersionProposalsController.php:939
 msgid "The proposal has been saved."
 msgstr "Návrh byl uložen."
 
-#: src/Controller/ContractVersionProposalsController.php:463
-#: src/Controller/ContractVersionProposalsController.php:925
+#: src/Controller/ContractVersionProposalsController.php:466
+#: src/Controller/ContractVersionProposalsController.php:945
 msgid "The proposal could not be saved. Please, try again."
 msgstr "Návrh nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractVersionProposalsController.php:522
-#: src/Controller/ContractVersionProposalsController.php:565
-#: src/Controller/ContractVersionProposalsController.php:608
-#: src/Controller/ContractVersionProposalsController.php:705
+#: src/Controller/ContractVersionProposalsController.php:542
+#: src/Controller/ContractVersionProposalsController.php:585
+#: src/Controller/ContractVersionProposalsController.php:628
+#: src/Controller/ContractVersionProposalsController.php:725
 msgid "This proposal has already been settled."
 msgstr "Tento návrh je již vyřízený."
 
-#: src/Controller/ContractVersionProposalsController.php:534
+#: src/Controller/ContractVersionProposalsController.php:554
 msgid "The proposal has been recorded as sent."
 msgstr "Odeslání návrhu bylo zapsáno."
 
-#: src/Controller/ContractVersionProposalsController.php:540
+#: src/Controller/ContractVersionProposalsController.php:560
 msgid "The sending could not be recorded. Please, try again."
 msgstr "Odeslání nelze zapsat. Zkuste to prosím znovu."
 
-#: src/Controller/ContractVersionProposalsController.php:576
+#: src/Controller/ContractVersionProposalsController.php:596
 msgid "The signature has been recorded."
 msgstr "Podpis byl zapsán."
 
-#: src/Controller/ContractVersionProposalsController.php:582
+#: src/Controller/ContractVersionProposalsController.php:602
 msgid "The signature could not be recorded. Please, try again."
 msgstr "Podpis nelze zapsat. Zkuste to prosím znovu."
 
-#: src/Controller/ContractVersionProposalsController.php:615
+#: src/Controller/ContractVersionProposalsController.php:635
 #: templates/ContractVersionProposals/transfer.php:68
 msgid "This proposal cannot be carried over as it stands."
 msgstr "Návrh v tomto stavu nelze přenést."
 
-#: src/Controller/ContractVersionProposalsController.php:626
+#: src/Controller/ContractVersionProposalsController.php:646
 msgid "The proposal has been marked as dealt with. It changed nothing."
 msgstr "Návrh byl označen za vyřízený. Nic neměnil."
 
-#: src/Controller/ContractVersionProposalsController.php:627
+#: src/Controller/ContractVersionProposalsController.php:647
 msgid "The proposal has been carried over into the live records."
 msgstr "Návrh byl přenesen do živých záznamů."
 
-#: src/Controller/ContractVersionProposalsController.php:630
+#: src/Controller/ContractVersionProposalsController.php:650
 msgid ""
 "The contract has been given an end date. Its state is left as it was, "
 "because that has its own requirements to satisfy."
@@ -1177,39 +1177,39 @@ msgstr ""
 "Smlouva dostala datum ukončení. Její stav zůstal beze změny, protože má "
 "vlastní požadavky, které musí splnit."
 
-#: src/Controller/ContractVersionProposalsController.php:638
+#: src/Controller/ContractVersionProposalsController.php:658
 msgid "The proposal could not be carried over: {0}"
 msgstr "Návrh se nepodařilo přenést: {0}"
 
-#: src/Controller/ContractVersionProposalsController.php:682
+#: src/Controller/ContractVersionProposalsController.php:702
 msgid "The proposal has been deleted."
 msgstr "Návrh byl odstraněn."
 
-#: src/Controller/ContractVersionProposalsController.php:685
+#: src/Controller/ContractVersionProposalsController.php:705
 msgid "The proposal could not be deleted. Please, try again."
 msgstr "Návrh nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractVersionProposalsController.php:714
+#: src/Controller/ContractVersionProposalsController.php:734
 msgid "The proposal has been revoked."
 msgstr "Návrh byl zrušen."
 
-#: src/Controller/ContractVersionProposalsController.php:717
+#: src/Controller/ContractVersionProposalsController.php:737
 msgid "The proposal could not be revoked. Please, try again."
 msgstr "Návrh nelze zrušit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractVersionProposalsController.php:787
+#: src/Controller/ContractVersionProposalsController.php:807
 msgid "Say which day the service runs to."
 msgstr "Uveďte, do kterého dne služba běží."
 
-#: src/Controller/ContractVersionProposalsController.php:812
+#: src/Controller/ContractVersionProposalsController.php:832
 msgid "Choose which contract and which version of it these papers are for."
 msgstr "Vyberte, ke které smlouvě a ke které její verzi papíry patří."
 
-#: src/Controller/ContractVersionProposalsController.php:908
+#: src/Controller/ContractVersionProposalsController.php:928
 msgid "Please answer this before the papers go out."
 msgstr "Odpovězte prosím dříve, než papíry půjdou ven."
 
-#: src/Controller/ContractVersionProposalsController.php:912
+#: src/Controller/ContractVersionProposalsController.php:932
 msgid "The contract is not ready for papers to be drawn up."
 msgstr "Smlouva není připravená na vystavení papírů."
 
@@ -2521,7 +2521,7 @@ msgid "Customers"
 msgstr "Zákazníci"
 
 #: src/Model/Enum/LandingPage.php:39 templates/Contracts/view.php:123
-#: templates/Contracts/view.php:598 templates/Customers/view.php:153
+#: templates/Contracts/view.php:597 templates/Customers/view.php:153
 #: templates/Customers/view.php:847 templates/Tasks/index.php:91
 #: templates/Tasks/map.php:36 templates/layout/default.php:139
 msgid "Tasks"
@@ -3730,7 +3730,7 @@ msgid "Contracts"
 msgstr "Smlouvy"
 
 #: templates/AccountingProfiles/view.php:89 templates/Contracts/view.php:108
-#: templates/Contracts/view.php:471 templates/Customers/index.php:75
+#: templates/Contracts/view.php:470 templates/Customers/index.php:75
 #: templates/Customers/view.php:138
 #: templates/IpAddresses/bulk_reassignment.php:44
 #: templates/IpAddresses/index.php:21
@@ -3977,7 +3977,7 @@ msgstr ""
 
 #: templates/Billings/bulk_service_change.php:148
 #: templates/Billings/index.php:21 templates/Contracts/view.php:98
-#: templates/Contracts/view.php:387 templates/Customers/view.php:128
+#: templates/Contracts/view.php:386 templates/Customers/view.php:128
 #: templates/Overviews/overview_of_active_services.php:67
 msgid "Billings"
 msgstr "Fakturace"
@@ -4009,7 +4009,7 @@ msgid "Service Change"
 msgstr "Změna služby"
 
 #: templates/Billings/index.php:20 templates/Billings/service_change.php:25
-#: templates/Billings/view.php:24 templates/Contracts/view.php:370
+#: templates/Billings/view.php:24 templates/Contracts/view.php:369
 #: templates/Customers/view.php:653
 msgid "New Billing"
 msgstr "Nová fakturace"
@@ -4134,12 +4134,12 @@ msgid "Edit Borrowed Equipment"
 msgstr "Upravit zapůjčené zařízení"
 
 #: templates/BorrowedEquipments/index.php:21
-#: templates/BorrowedEquipments/view.php:30 templates/Contracts/view.php:409
+#: templates/BorrowedEquipments/view.php:30 templates/Contracts/view.php:408
 #: templates/Customers/view.php:679
 msgid "New Borrowed Equipment"
 msgstr "Nové zapůjčené zařízení"
 
-#: templates/BorrowedEquipments/index.php:25 templates/Contracts/view.php:431
+#: templates/BorrowedEquipments/index.php:25 templates/Contracts/view.php:430
 msgid "Borrowed Equipments"
 msgstr "Zapůjčená zařízení"
 
@@ -4736,12 +4736,12 @@ msgstr "Pouze končící závazky"
 
 #: templates/ContractVersions/index.php:28
 #: templates/ContractVersions/view.php:30 templates/Contracts/print.php:194
-#: templates/Contracts/view.php:355
+#: templates/Contracts/view.php:354
 msgid "New Contract Version"
 msgstr "Nová verze smlouvy"
 
 #: templates/ContractVersions/index.php:32 templates/Contracts/print.php:198
-#: templates/Contracts/view.php:93 templates/Contracts/view.php:359
+#: templates/Contracts/view.php:93 templates/Contracts/view.php:358
 msgid "Contract Versions"
 msgstr "Verze smlouvy"
 
@@ -4979,12 +4979,12 @@ msgstr "Sekce"
 msgid "Equipments"
 msgstr "Zařízení"
 
-#: templates/Contracts/view.php:113 templates/Contracts/view.php:549
+#: templates/Contracts/view.php:113 templates/Contracts/view.php:548
 #: templates/Customers/view.php:143
 msgid "RADIUS Accounts"
 msgstr "Účty RADIUS"
 
-#: templates/Contracts/view.php:118 templates/Contracts/view.php:585
+#: templates/Contracts/view.php:118 templates/Contracts/view.php:584
 #: templates/Customers/view.php:148 templates/Customers/view.php:834
 msgid "Invoices"
 msgstr "Faktury"
@@ -5001,7 +5001,7 @@ msgstr "Mapa sítě"
 msgid "Access Description"
 msgstr "Popis přístupu"
 
-#: templates/Contracts/view.php:333
+#: templates/Contracts/view.php:335
 msgid "Terms of the Services"
 msgstr "Ujednání pro tyto služby"
 
@@ -5009,19 +5009,19 @@ msgstr "Ujednání pro tyto služby"
 msgid "Individual Terms"
 msgstr "Individuální ujednání"
 
-#: templates/Contracts/view.php:376
+#: templates/Contracts/view.php:375
 msgid "Terminate Related Billings"
 msgstr "Ukončit související fakturace"
 
-#: templates/Contracts/view.php:379
+#: templates/Contracts/view.php:378
 msgid "Are you sure you want to terminate related billings for contract # {0}?"
 msgstr "Opravdu chcete ukončit související fakturace pro smlouvu č. {0}?"
 
-#: templates/Contracts/view.php:419
+#: templates/Contracts/view.php:418
 msgid "Set Dates Automatically"
 msgstr "Automaticky nastavit datumy"
 
-#: templates/Contracts/view.php:422
+#: templates/Contracts/view.php:421
 msgid ""
 "Are you sure you want to set dates for related borrowed equipments for "
 "contract # {0}?"
@@ -5029,25 +5029,25 @@ msgstr ""
 "Opravdu chcete nastavit datumy pro související zapůjčená zařízení pro "
 "smlouvu č. {0}?"
 
-#: templates/Contracts/view.php:442 templates/Customers/view.php:695
+#: templates/Contracts/view.php:441 templates/Customers/view.php:695
 #: templates/SoldEquipments/index.php:21 templates/SoldEquipments/view.php:30
 msgid "New Sold Equipment"
 msgstr "Nové prodané zařízení"
 
-#: templates/Contracts/view.php:446 templates/SoldEquipments/index.php:25
+#: templates/Contracts/view.php:445 templates/SoldEquipments/index.php:25
 msgid "Sold Equipments"
 msgstr "Prodaná zařízení"
 
-#: templates/Contracts/view.php:459 templates/Customers/view.php:711
+#: templates/Contracts/view.php:458 templates/Customers/view.php:711
 #: templates/IpAddresses/index.php:20 templates/IpAddresses/view.php:22
 msgid "New IP Address"
 msgstr "Nová IP adresa"
 
-#: templates/Contracts/view.php:467 templates/Customers/view.php:716
+#: templates/Contracts/view.php:466 templates/Customers/view.php:716
 msgid "New IP Address From Range"
 msgstr "Nová IP adresa z rozsahu"
 
-#: templates/Contracts/view.php:478 templates/Contracts/view.php:501
+#: templates/Contracts/view.php:477 templates/Contracts/view.php:500
 #: templates/Customers/view.php:728 templates/Customers/view.php:753
 #: templates/element/Contracts/Billings.php:102
 #: templates/element/Contracts/BorrowedEquipments.php:85
@@ -5055,61 +5055,61 @@ msgstr "Nová IP adresa z rozsahu"
 msgid "Show historical records"
 msgstr "Zobrazit historické záznamy"
 
-#: templates/Contracts/view.php:490 templates/Customers/view.php:740
+#: templates/Contracts/view.php:489 templates/Customers/view.php:740
 #: templates/IpNetworks/index.php:21 templates/IpNetworks/view.php:27
 msgid "New IP Network"
 msgstr "Nová IP síť"
 
-#: templates/Contracts/view.php:494 templates/IpNetworks/index.php:25
+#: templates/Contracts/view.php:493 templates/IpNetworks/index.php:25
 msgid "IP Networks"
 msgstr "IP sítě"
 
-#: templates/Contracts/view.php:516 templates/Customers/view.php:767
+#: templates/Contracts/view.php:515 templates/Customers/view.php:767
 #: templates/RemovedIpAddresses/index.php:21
 #: templates/RemovedIpAddresses/view.php:30
 msgid "New Removed IP Address"
 msgstr "Nová odstraněná IP adresa"
 
-#: templates/Contracts/view.php:520 templates/RemovedIpAddresses/index.php:25
+#: templates/Contracts/view.php:519 templates/RemovedIpAddresses/index.php:25
 msgid "Removed IP Addresses"
 msgstr "Odebrané IP adresy"
 
-#: templates/Contracts/view.php:529 templates/Customers/view.php:781
+#: templates/Contracts/view.php:528 templates/Customers/view.php:781
 #: templates/RemovedIpNetworks/index.php:21
 #: templates/RemovedIpNetworks/view.php:30
 msgid "New Removed IP Network"
 msgstr "Nová odebraná IP síť"
 
-#: templates/Contracts/view.php:533 templates/RemovedIpNetworks/index.php:25
+#: templates/Contracts/view.php:532 templates/RemovedIpNetworks/index.php:25
 msgid "Removed IP Networks"
 msgstr "Odebrané IP sítě"
 
-#: templates/Contracts/view.php:545 templates/Customers/view.php:796
+#: templates/Contracts/view.php:544 templates/Customers/view.php:796
 msgid "New RADIUS Account"
 msgstr "Nový účet RADIUS"
 
-#: templates/Contracts/view.php:560 templates/Customers/view.php:809
+#: templates/Contracts/view.php:559 templates/Customers/view.php:809
 msgid "Unblock Debtor"
 msgstr "Odblokovat dlužníka"
 
-#: templates/Contracts/view.php:569 templates/Customers/view.php:818
+#: templates/Contracts/view.php:568 templates/Customers/view.php:818
 msgid "Are you sure you want to unblock # {0}?"
 msgstr "Opravdu chcete odblokovat # {0}?"
 
-#: templates/Contracts/view.php:573 templates/Customers/view.php:822
+#: templates/Contracts/view.php:572 templates/Customers/view.php:822
 msgid "Block Debtor"
 msgstr "Blokovat dlužníka"
 
-#: templates/Contracts/view.php:582 templates/Customers/view.php:831
+#: templates/Contracts/view.php:581 templates/Customers/view.php:831
 msgid "Are you sure you want to block # {0}?"
 msgstr "Opravdu chcete blokovat # {0}?"
 
-#: templates/Contracts/view.php:594 templates/Customers/view.php:843
+#: templates/Contracts/view.php:593 templates/Customers/view.php:843
 #: templates/Tasks/index.php:89 templates/Tasks/view.php:18
 msgid "New Task"
 msgstr "Nový úkol"
 
-#: templates/Contracts/view.php:604
+#: templates/Contracts/view.php:603
 msgid "Other Customer Tasks"
 msgstr "Další úkoly zákazníka"
 
@@ -6405,8 +6405,8 @@ msgstr "Související služby"
 
 #: templates/Queues/view.php:117 templates/ServiceTypes/view.php:119
 #: templates/Services/view.php:68
-msgid "Not For New Customers"
-msgstr "Ne pro nové zákazníky"
+msgid "Currently Offered"
+msgstr "Aktuálně nabízeno"
 
 #: templates/RemovedIpAddresses/add.php:24
 msgid "Add Removed IP Address"
@@ -6614,7 +6614,7 @@ msgstr ""
 "Pokud pole ponecháte prázdné, nebude uloženo do databáze a bude použita "
 "výchozí hodnota."
 
-#: templates/Settings/edit.php:30 templates/element/Settings/FormFields.php:94
+#: templates/Settings/edit.php:30 templates/element/Settings/FormFields.php:93
 msgid "Setting: {path}"
 msgstr "Nastavení: {path}"
 
@@ -7425,8 +7425,8 @@ msgstr "Rozsah"
 msgid "Default"
 msgstr "Výchozí"
 
-#: templates/element/Settings/FormFields.php:83
-#: templates/element/Settings/FormFields.php:122
+#: templates/element/Settings/FormFields.php:82
+#: templates/element/Settings/FormFields.php:121
 msgid "Default value:"
 msgstr "Výchozí hodnota:"
 
@@ -7551,6 +7551,9 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:282
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Not For New Customers"
+#~ msgstr "Ne pro nové zákazníky"
 
 #~ msgid "Running Services Without Papers"
 #~ msgstr "Běžící služby bez podepsané smlouvy"

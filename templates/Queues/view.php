@@ -114,7 +114,7 @@ $derived = __('(derived)');
                             <th><?= __('Name') ?></th>
                             <th><?= __('Price') ?></th>
                             <th><?= __('Service Type') ?></th>
-                            <th><?= __('Not For New Customers') ?></th>
+                            <th><?= __('Currently Offered') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($queue->services as $service) : ?>
@@ -128,7 +128,7 @@ $derived = __('(derived)');
                                     ['controller' => 'ServiceTypes', 'action' => 'view', $service->service_type->id],
                                 ) : '' ?>
                             </td>
-                            <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
+                            <td><?= $service->currently_offered ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

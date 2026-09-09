@@ -516,7 +516,7 @@ class ContractVersionProposalsController extends AppController
                 'Services.service_type_id IS' => null,
             ]]);
 
-        $offered = ['Services.not_for_new_customers' => false];
+        $offered = ['Services.currently_offered' => true];
 
         return $query->where($keep === []
             ? $offered

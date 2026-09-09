@@ -65,8 +65,8 @@ use Cake\Collection\Collection;
                             <td><?= h($service->accounting_product_code) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Not For New Customers') ?></th>
-                            <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
+                            <th><?= __('Currently Offered') ?></th>
+                            <td><?= $service->currently_offered ? __('Yes') : __('No'); ?></td>
                         </tr>
                     </table>
                 </div>

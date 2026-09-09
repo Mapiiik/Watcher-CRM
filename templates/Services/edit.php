@@ -30,7 +30,7 @@
                     echo $this->Form->control('queue_id', ['options' => $queues, 'empty' => true]);
                     echo $this->Form->control('criticality_level');
                     echo $this->Form->control('accounting_product_code');
-                    echo $this->Form->control('not_for_new_customers');
+                    echo $this->Form->control('currently_offered');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

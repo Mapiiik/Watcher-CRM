@@ -116,7 +116,7 @@
                             <th><?= __('Queue') ?></th>
                             <th><?= __('Criticality Level') ?></th>
                             <th><?= __('Accounting Product Code') ?></th>
-                            <th><?= __('Not For New Customers') ?></th>
+                            <th><?= __('Currently Offered') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($serviceType->services as $service) : ?>
@@ -133,7 +133,7 @@
                             <td><?= $service->criticality_level === null ?
                                 '' : h($service->criticality_level->label()) ?></td>
                             <td><?= h($service->accounting_product_code) ?></td>
-                            <td><?= $service->not_for_new_customers ? __('Yes') : __('No'); ?></td>
+                            <td><?= $service->currently_offered ? __('Yes') : __('No'); ?></td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
                                     __('View'),

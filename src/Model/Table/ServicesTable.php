@@ -93,8 +93,8 @@ class ServicesTable extends AppTable
             ->allowEmptyString('accounting_product_code');
 
         $validator
-            ->boolean('not_for_new_customers')
-            ->notEmptyString('not_for_new_customers');
+            ->boolean('currently_offered')
+            ->notEmptyString('currently_offered');
 
         $validator
             ->requirePresence('criticality_level', 'create')

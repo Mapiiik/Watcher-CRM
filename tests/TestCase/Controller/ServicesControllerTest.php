@@ -149,7 +149,7 @@ class ServicesControllerTest extends TestCase
             'price' => '450',
             'service_type_id' => $this->firstId('ServiceTypes'),
             'queue_id' => $this->firstId('Queues'),
-            'not_for_new_customers' => '0',
+            'currently_offered' => '1',
             'criticality_level' => '10',
         ]);
 
