@@ -37,14 +37,12 @@ final class ContractPrintDataEnricher
      * It mutates the provided DTO by filling optional properties
      * based on document type and contract context.
      *
-     * @param array $query Original query parameters from the request
      * @return void
      */
     public function enrich(
         ContractPrintData $data,
-        array $query,
     ): void {
-        $this->enrichTechnicalDetails($data, $query);
+        $this->enrichTechnicalDetails($data);
         $this->enrichBillings($data);
     }
 
@@ -56,10 +54,9 @@ final class ContractPrintDataEnricher
      *  - RADIUS username
      *  - RADIUS password
      *
-     * Values are resolved in the following order:
-     *  1. Explicit values provided in the query string
-     *  2. Data derived from the contract entity
-     *  3. Data fetched from the RADIUS system (if available)
+     * The access point comes off the contract and the RADIUS pair off the account, where there is
+     * one to read. Only the pair is printed today; the access point is kept because the protocol
+     * is a template somebody may want to put it back into.
      *
      * For non-handover document types, this method does nothing.
      *
@@ -67,7 +64,6 @@ final class ContractPrintDataEnricher
      */
     private function enrichTechnicalDetails(
         ContractPrintData $data,
-        array $query,
     ): void {
         // Technical details are only relevant for handover protocol documents
         if (
@@ -103,21 +99,15 @@ final class ContractPrintDataEnricher
             $radiusConnected = false;
         }
 
-        if (!empty($query['access_point'])) {
-            $technicalData->accessPoint = (string)$query['access_point'];
-        } elseif ($data->contract->access_point->data?->name !== null) {
+        if ($data->contract->access_point->data?->name !== null) {
             $technicalData->accessPoint = $data->contract->access_point->data->name;
         }
 
-        if (!empty($query['radius_username'])) {
-            $technicalData->radiusUsername = (string)$query['radius_username'];
-        } elseif ($radiusConnected && isset($radiusAccount->username)) {
+        if ($radiusConnected && isset($radiusAccount->username)) {
             $technicalData->radiusUsername = (string)$radiusAccount->username;
         }
 
-        if (!empty($query['radius_password'])) {
-            $technicalData->radiusPassword = (string)$query['radius_password'];
-        } elseif ($radiusConnected && isset($radiusAccount->password)) {
+        if ($radiusConnected && isset($radiusAccount->password)) {
             $technicalData->radiusPassword = (string)$radiusAccount->password;
         }
 

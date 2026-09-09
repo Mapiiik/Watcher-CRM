@@ -942,7 +942,7 @@ class ContractsController extends AppController
                     return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
                 }
 
-                (new ContractPrintDataEnricher())->enrich($data, $query);
+                (new ContractPrintDataEnricher())->enrich($data);
 
                 return (new ContractPrintPdfOutput())->render($data);
             }

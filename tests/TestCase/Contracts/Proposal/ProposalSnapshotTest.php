@@ -238,7 +238,7 @@ class ProposalSnapshotTest extends TestCase
      */
     private function print(ContractPrintData $data): string
     {
-        (new ContractPrintDataEnricher())->enrich($data, []);
+        (new ContractPrintDataEnricher())->enrich($data);
 
         $pdf = $data->type === ContractPrintType::ContractSummary
             ? new ContractSummaryPDF('P', 'mm', 'A4')
