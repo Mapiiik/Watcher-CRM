@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Contracts\Proposal;
 
 use App\Contracts\Proposal\ProposalTransfer;
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\Date;
@@ -59,7 +59,7 @@ class ProposalTransferTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
-        'app.ContractVersionProposals',
+        'app.ContractProposals',
         'plugin.Settings.Settings',
     ];
 
@@ -67,11 +67,11 @@ class ProposalTransferTest extends TestCase
      * The proposal, with what the test wants it to say.
      *
      * @param array<string, mixed> $says What it says.
-     * @return \App\Model\Entity\ContractVersionProposal
+     * @return \App\Model\Entity\ContractProposal
      */
-    private function proposal(array $says = []): ContractVersionProposal
+    private function proposal(array $says = []): ContractProposal
     {
-        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposal = $proposals->get(self::PROPOSAL_ID);
 
         if ($says !== []) {
@@ -111,7 +111,7 @@ class ProposalTransferTest extends TestCase
         (new ProposalTransfer())->carryOver($proposal);
 
         $this->assertTrue(
-            $this->getTableLocator()->get('ContractVersionProposals')
+            $this->getTableLocator()->get('ContractProposals')
                 ->get(self::PROPOSAL_ID)
                 ->hasBeenApplied(),
         );
@@ -291,7 +291,7 @@ class ProposalTransferTest extends TestCase
             $this->getTableLocator()->get('Billings')->get(self::OPEN_BILLING_ID)->billing_until,
         );
         $this->assertFalse(
-            $this->getTableLocator()->get('ContractVersionProposals')
+            $this->getTableLocator()->get('ContractProposals')
                 ->get(self::PROPOSAL_ID)
                 ->hasBeenApplied(),
         );

@@ -9,9 +9,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 use Override;
 
 /**
- * ContractVersionProposalsFixture
+ * ContractProposalsFixture
  */
-class ContractVersionProposalsFixture extends TestFixture
+class ContractProposalsFixture extends TestFixture
 {
     /**
      * Init method
@@ -76,7 +76,7 @@ class ContractVersionProposalsFixture extends TestFixture
                 'changes' => [],
                 'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
                 'sent_date' => null,
-                'sent_by' => null,
+                'delivery_type' => null,
                 'conclusion_date' => null,
                 'applied' => null,
                 'applied_by' => null,

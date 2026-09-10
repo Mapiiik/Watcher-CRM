@@ -25,8 +25,8 @@ trait SendingTrait
 
         // A rule keeps the two together, so the way is only missing on records from before there
         // was one to keep.
-        return $this->sent_by === null
+        return $this->delivery_type === null
             ? (string)$this->sent_date
-            : sprintf('%s (%s)', $this->sent_date, $this->sent_by->label());
+            : sprintf('%s (%s)', $this->sent_date, $this->delivery_type->label());
     }
 }

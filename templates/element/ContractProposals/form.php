@@ -9,7 +9,7 @@
  * about a fixed term that an ending is not.
  *
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var \App\Model\Entity\Contract|null $contract
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $versions
@@ -23,9 +23,9 @@
 
 use App\Model\Enum\ProposalPurpose;
 
-$changes = $contractVersionProposal->isNew()
+$changes = $contractProposal->isNew()
     ? null
-    : $contractVersionProposal->proposedChanges();
+    : $contractProposal->proposedChanges();
 
 $ending = $purpose === ProposalPurpose::Termination;
 $endsOn = $changes?->version->names('valid_until') ?? false
@@ -165,7 +165,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
     <?php foreach ($questions as $question) : ?>
         <?= $this->Form->control("confirmations.{$question}", [
             'type' => 'checkbox',
-            'checked' => $contractVersionProposal->confirmations()->confirms($question),
+            'checked' => $contractProposal->confirmations()->confirms($question),
             'label' => $wording[$question] ?? $question,
         ]) ?>
     <?php endforeach; ?>
@@ -178,7 +178,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
 if (!$ending) {
     echo $this->Form->control('confirmations.fixed_term', [
         'type' => 'checkbox',
-        'checked' => $contractVersionProposal->confirmations()->confirms('fixed_term'),
+        'checked' => $contractProposal->confirmations()->confirms('fixed_term'),
         'label' => __('This is a fixed-term contract, and the obligation runs to the end of it.'),
     ]);
 }

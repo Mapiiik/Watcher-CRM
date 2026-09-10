@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Contracts\Proposal;
 
 use App\Model\Entity\Billing;
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 use App\Model\Table\BillingsTable;
-use App\Model\Table\ContractVersionProposalsTable;
+use App\Model\Table\ContractProposalsTable;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Text;
@@ -37,14 +37,14 @@ final class ProposalTransfer
      * nothing, because the billings were drawn up before them - would sit in the checks for ever
      * as signed and not carried over.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param string|null $by Who is carrying it over.
      * @param bool $reach_into_closed_periods Whether invoiced periods may be written into.
      * @return void
      * @throws \RuntimeException When the proposal is in no state to be carried over.
      */
     public function carryOver(
-        ContractVersionProposal $proposal,
+        ContractProposal $proposal,
         ?string $by = null,
         bool $reach_into_closed_periods = false,
     ): void {
@@ -89,11 +89,11 @@ final class ProposalTransfer
      * The billings are read live rather than from the snapshot: the snapshot says what was, and
      * what is being written has to be written onto what is.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param array<string, mixed> $options What to save with.
      * @return void
      */
-    private function carryBillingsOver(ContractVersionProposal $proposal, array $options): void
+    private function carryBillingsOver(ContractProposal $proposal, array $options): void
     {
         $changes = $proposal->proposedChanges();
 
@@ -133,13 +133,13 @@ final class ProposalTransfer
      * The billing a line puts in place.
      *
      * @param \App\Contracts\Proposal\ProposedBilling $line What the proposal asks for.
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param string $customer_id Who it belongs to.
      * @return \App\Model\Entity\Billing
      */
     private function startingBilling(
         ProposedBilling $line,
-        ContractVersionProposal $proposal,
+        ContractProposal $proposal,
         string $customer_id,
     ): Billing {
         /** @var \App\Model\Entity\Billing $starting */
@@ -169,11 +169,11 @@ final class ProposalTransfer
      * Which fields those are, and why some of them are written without anybody having asked, is
      * {@see \App\Contracts\Proposal\TransferPlan}'s to say. Here they are only applied.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
      * @return void
      */
-    private function carryVersionsOver(ContractVersionProposal $proposal, array $planned): void
+    private function carryVersionsOver(ContractProposal $proposal, array $planned): void
     {
         $versions = $this->fetchTable('ContractVersions');
 
@@ -209,11 +209,11 @@ final class ProposalTransfer
      * The state of the contract is deliberately left alone: it has its own set of requirements to
      * satisfy and switching it blind would only make the transfer fail in ways nobody asked about.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
      * @return void
      */
-    private function carryContractOver(ContractVersionProposal $proposal, array $planned): void
+    private function carryContractOver(ContractProposal $proposal, array $planned): void
     {
         $writes = array_filter(
             $planned,
@@ -258,12 +258,12 @@ final class ProposalTransfer
     }
 
     /**
-     * @return \App\Model\Table\ContractVersionProposalsTable
+     * @return \App\Model\Table\ContractProposalsTable
      */
-    private function proposals(): ContractVersionProposalsTable
+    private function proposals(): ContractProposalsTable
     {
-        /** @var \App\Model\Table\ContractVersionProposalsTable $proposals */
-        $proposals = $this->fetchTable('ContractVersionProposals');
+        /** @var \App\Model\Table\ContractProposalsTable $proposals */
+        $proposals = $this->fetchTable('ContractProposals');
 
         return $proposals;
     }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  */
 ?>
 <div class="row">
@@ -10,7 +10,7 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractVersionProposal->id],
+                ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -18,30 +18,30 @@
                 [
                     'controller' => 'Contracts',
                     'action' => 'print',
-                    $contractVersionProposal->contract_id,
-                    '?' => ['proposal_id' => $contractVersionProposal->id],
+                    $contractProposal->contract_id,
+                    '?' => ['proposal_id' => $contractProposal->id],
                 ],
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Contract Documents'),
-                ['controller' => 'Contracts', 'action' => 'documents', $contractVersionProposal->contract_id],
+                ['controller' => 'Contracts', 'action' => 'documents', $contractProposal->contract_id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('View Contract'),
-                ['controller' => 'Contracts', 'action' => 'view', $contractVersionProposal->contract_id],
+                ['controller' => 'Contracts', 'action' => 'view', $contractProposal->contract_id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals view content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+        <div class="contractProposals view content">
+            <?= $this->element('ContractProposals/heading') ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('Add Received Document'),
-                    ['action' => 'addPages', $contractVersionProposal->id],
+                    ['action' => 'addPages', $contractProposal->id],
                     ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4><?= __('Received Documents') ?></h4>
@@ -53,7 +53,7 @@
                     ?></p>
                 <?= $this->cell(
                     'Documents',
-                    ['proposal', $contractVersionProposal->id],
+                    ['proposal', $contractProposal->id],
                     ['ours' => false, 'manage' => true],
                 ) ?>
             </div>
@@ -69,7 +69,7 @@
                     ?></p>
                 <?= $this->cell(
                     'Documents',
-                    ['proposal', $contractVersionProposal->id],
+                    ['proposal', $contractProposal->id],
                     ['ours' => true, 'manage' => true],
                 ) ?>
             </div>

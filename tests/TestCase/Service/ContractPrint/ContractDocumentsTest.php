@@ -66,7 +66,7 @@ class ContractDocumentsTest extends TestCase
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.ContractVersions',
-        'app.ContractVersionProposals',
+        'app.ContractProposals',
         'app.IpAddresses',
         'app.IpNetworks',
         'app.SoldEquipments',

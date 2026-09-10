@@ -40,7 +40,7 @@ class ContractVersionsTableTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
-        'app.ContractVersionProposals',
+        'app.ContractProposals',
     ];
 
     /**

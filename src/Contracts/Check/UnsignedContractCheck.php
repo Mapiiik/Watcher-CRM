@@ -188,7 +188,7 @@ class UnsignedContractCheck extends AbstractContractCheck
             // The state comes along because the deadlines are only shown against a contract
             // that still serves somebody, and that is asked of the state.
             // The sending is on the proposals now, and the listing shows it.
-            ->contain(['Contracts' => ['Customers', 'ContractStates'], 'ContractVersionProposals'])
+            ->contain(['Contracts' => ['Customers', 'ContractStates'], 'ContractProposals'])
             ->where([
                 'OR' => [
                     // No paper at all is a finding whatever the version says about itself -

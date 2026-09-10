@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Contracts\Proposal;
 
 use App\Contracts\Proposal\ProposalDocumentTypes;
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\ProposalPurpose;
 use Cake\I18n\Date;
@@ -21,11 +21,11 @@ class ProposalDocumentTypesTest extends TestCase
      * A proposal that says what the test is about and nothing else.
      *
      * @param array<string, mixed> $says What it says.
-     * @return \App\Model\Entity\ContractVersionProposal
+     * @return \App\Model\Entity\ContractProposal
      */
-    private function proposal(array $says = []): ContractVersionProposal
+    private function proposal(array $says = []): ContractProposal
     {
-        return new ContractVersionProposal($says + [
+        return new ContractProposal($says + [
             'id' => 'a1b2c3d4-0000-4000-8000-000000000001',
             'purpose' => ProposalPurpose::NewContract,
             'effective_from' => new Date('2026-10-01'),
@@ -37,13 +37,13 @@ class ProposalDocumentTypesTest extends TestCase
     /**
      * What a proposal may be printed as.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param bool $has_equipment Whether the contract has equipment at all.
      * @param bool $concluded Whether the version has been concluded.
      * @return array<string>
      */
     private function offered(
-        ContractVersionProposal $proposal,
+        ContractProposal $proposal,
         bool $has_equipment = true,
         bool $concluded = true,
     ): array {

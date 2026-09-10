@@ -117,7 +117,7 @@ enum UnsignedDeadlineAnchor: string implements EnumLabelInterface, SettingChoice
      */
     private const LAST_SENDING = '(
         SELECT MAX(SentProposals.sent_date)
-        FROM contract_version_proposals SentProposals
+        FROM contract_proposals SentProposals
         WHERE SentProposals.contract_version_id = ContractVersions.id
     )';
 }

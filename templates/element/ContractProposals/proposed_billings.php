@@ -7,12 +7,12 @@
  * the proposal put there - and offers what may be done to it.
  *
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
  * @var bool $mayBeEdited
  */
 
-$proposalId = $contractVersionProposal->id;
+$proposalId = $contractProposal->id;
 ?>
 <div class="related">
     <?php if ($mayBeEdited) : ?>

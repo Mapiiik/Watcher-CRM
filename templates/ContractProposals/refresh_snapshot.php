@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  */
 ?>
 <div class="row">
@@ -10,16 +10,16 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractVersionProposal->id],
+                ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals form content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+        <div class="contractProposals form content">
+            <?= $this->element('ContractProposals/heading') ?>
 
-            <?= $this->Form->create($contractVersionProposal) ?>
+            <?= $this->Form->create($contractProposal) ?>
             <fieldset>
                 <legend><?= __('Take the Snapshot Again') ?></legend>
                 <p><?= __(
@@ -33,7 +33,7 @@
                     . ' act on.',
                 ) ?></p>
             </fieldset>
-            <?= $this->element('ContractVersionProposals/form') ?>
+            <?= $this->element('ContractProposals/form') ?>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
         </div>

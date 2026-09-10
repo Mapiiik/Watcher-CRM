@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\View\Cell;
 
-use App\Model\Table\ContractVersionProposalsTable;
+use App\Model\Table\ContractProposalsTable;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Query\SelectQuery;
 use Cake\View\Cell;
@@ -71,26 +71,26 @@ class DocumentsCell extends Cell
      *
      * @param string $of What is being looked at.
      * @param string $id Which one.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersionProposal>
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractProposal>
      */
     private function proposalsOf(string $of, string $id): SelectQuery
     {
-        /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersionProposal> $proposals */
-        $proposals = $this->fetchTable(ContractVersionProposalsTable::class)
+        /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractProposal> $proposals */
+        $proposals = $this->fetchTable(ContractProposalsTable::class)
             ->find()
             ->contain(['Contracts']);
 
         return match ($of) {
             'proposal' => $proposals
-                ->where(['ContractVersionProposals.id' => $id]),
+                ->where(['ContractProposals.id' => $id]),
             'contract' => $proposals
-                ->where(['ContractVersionProposals.contract_id' => $id])
-                ->orderBy(['ContractVersionProposals.effective_from' => 'DESC']),
+                ->where(['ContractProposals.contract_id' => $id])
+                ->orderBy(['ContractProposals.effective_from' => 'DESC']),
             'customer' => $proposals
                 ->where(['Contracts.customer_id' => $id])
                 ->orderBy([
                     'Contracts.number' => 'ASC',
-                    'ContractVersionProposals.effective_from' => 'DESC',
+                    'ContractProposals.effective_from' => 'DESC',
                 ]),
             default => throw new InvalidArgumentException(
                 sprintf('`%s` is not something documents hang on.', $of),

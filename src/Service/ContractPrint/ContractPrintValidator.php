@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Service\ContractPrint;
 
 use App\Contracts\Proposal\ProposalDocumentTypes;
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 
 /**
  * Validator for contract print requests.
@@ -67,7 +67,7 @@ final class ContractPrintValidator
             return $this->errors;
         }
 
-        if (!$data->proposal instanceof ContractVersionProposal) {
+        if (!$data->proposal instanceof ContractProposal) {
             $this->setError(
                 'proposal_id',
                 __('Please choose the proposal these papers are for, or draw one up.'),
@@ -93,7 +93,7 @@ final class ContractPrintValidator
      */
     private function documentSuitsTheProposal(ContractPrintData $data): bool
     {
-        /** @var \App\Model\Entity\ContractVersionProposal $proposal */
+        /** @var \App\Model\Entity\ContractProposal $proposal */
         $proposal = $data->proposal;
 
         return (new ProposalDocumentTypes())->allows(

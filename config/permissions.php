@@ -276,7 +276,7 @@ $permissions = [
                 'Addresses',
                 'Billings',
                 'ServiceOverrides',
-                'ContractVersionProposals',
+                'ContractProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -363,7 +363,7 @@ $permissions = [
                 'Addresses',
                 'Billings',
                 'ServiceOverrides',
-                'ContractVersionProposals',
+                'ContractProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -450,7 +450,7 @@ $permissions = [
                 'Addresses',
                 'Billings',
                 'ServiceOverrides',
-                'ContractVersionProposals',
+                'ContractProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -482,7 +482,7 @@ $permissions = [
             'controller' => [
                 'Customers',
                 'Contracts',
-                'ContractVersionProposals',
+                'ContractProposals',
             ],
             'action' => [
                 'documents',
@@ -498,7 +498,7 @@ $permissions = [
             ],
             'plugin' => null,
             'controller' => [
-                'ContractVersionProposals',
+                'ContractProposals',
             ],
             'action' => [
                 'addPages',
@@ -517,7 +517,7 @@ $permissions = [
             ],
             'plugin' => null,
             'controller' => [
-                'ContractVersionProposals',
+                'ContractProposals',
             ],
             'action' => [
                 'dropPage',
@@ -652,7 +652,7 @@ $permissions = [
             ],
             'plugin' => null,
             'controller' => [
-                'ContractVersionProposals',
+                'ContractProposals',
             ],
             'action' => [
                 'edit',
@@ -673,16 +673,16 @@ $permissions = [
                     return false;
                 }
 
-                /** @var \App\Model\Table\ContractVersionProposalsTable $proposals */
-                $proposals = TableRegistry::getTableLocator()->get('ContractVersionProposals');
-                /** @var \App\Model\Entity\ContractVersionProposal|null $proposal */
+                /** @var \App\Model\Table\ContractProposalsTable $proposals */
+                $proposals = TableRegistry::getTableLocator()->get('ContractProposals');
+                /** @var \App\Model\Entity\ContractProposal|null $proposal */
                 $proposal = $proposals->find()
                     ->select([
-                        'ContractVersionProposals.sent_date',
-                        'ContractVersionProposals.applied',
-                        'ContractVersionProposals.revoked',
+                        'ContractProposals.sent_date',
+                        'ContractProposals.applied',
+                        'ContractProposals.revoked',
                     ])
-                    ->where(['ContractVersionProposals.id' => $id])
+                    ->where(['ContractProposals.id' => $id])
                     ->first();
 
                 if ($proposal === null) {

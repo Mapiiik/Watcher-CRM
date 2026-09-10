@@ -10,7 +10,7 @@ use App\Model\Entity\Trait\SendingTrait;
 use Cake\I18n\Date;
 
 /**
- * ContractVersionProposal Entity
+ * ContractProposal Entity
  *
  * @property string $id
  * @property string $contract_id
@@ -24,7 +24,7 @@ use Cake\I18n\Date;
  * @property array<string, mixed> $changes
  * @property array<string, bool> $confirmations
  * @property \Cake\I18n\Date|null $sent_date
- * @property \App\Model\Enum\ContractDeliveryMethod|null $sent_by
+ * @property \App\Model\Enum\DocumentsDeliveryType|null $delivery_type
  * @property \Cake\I18n\Date|null $conclusion_date
  * @property \Cake\I18n\DateTime|null $applied
  * @property string|null $applied_by
@@ -36,7 +36,7 @@ use Cake\I18n\Date;
  * @property \App\Model\Entity\ContractVersion $contract_version
  * @property \App\Model\Entity\ContractVersion|null $terminated_contract_version
  */
-class ContractVersionProposal extends AppEntity
+class ContractProposal extends AppEntity
 {
     use SendingTrait;
 
@@ -61,7 +61,7 @@ class ContractVersionProposal extends AppEntity
         'changes' => true,
         'confirmations' => true,
         'sent_date' => true,
-        'sent_by' => true,
+        'delivery_type' => true,
         'conclusion_date' => true,
         'applied' => true,
         'applied_by' => true,

@@ -18,9 +18,9 @@ use App\Dashboard\Card\EndingObligationsCard;
 use App\Dashboard\Card\LabelsCard;
 use App\Dashboard\Card\ManualShutoffDebtorsCard;
 use App\Dashboard\Card\UnsignedContractsCard;
+use App\Model\Table\ContractProposalsTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractStatesTable;
-use App\Model\Table\ContractVersionProposalsTable;
 use App\Model\Table\ContractVersionsTable;
 use App\Model\Table\LabelsTable;
 use App\Model\Table\TasksTable;
@@ -93,8 +93,8 @@ final class DashboardCardRegistry implements CardRegistryInterface
         // they are the contract office's work rather than the bookkeepers', and nothing
         // about them is asked of the accounting records - so this stands ahead of the
         // debtors, and stands whether or not the plugin is there.
-        /** @var \App\Model\Table\ContractVersionProposalsTable $proposals */
-        $proposals = $this->fetchTable(ContractVersionProposalsTable::class);
+        /** @var \App\Model\Table\ContractProposalsTable $proposals */
+        $proposals = $this->fetchTable(ContractProposalsTable::class);
 
         $this->factories['unsigned_contracts'] =
             fn(): DashboardCardInterface => new UnsignedContractsCard(

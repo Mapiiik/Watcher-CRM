@@ -6,7 +6,7 @@ namespace App\Test\TestCase\Contracts\Proposal;
 use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalTransfer;
 use App\Contracts\Proposal\TransferPlan;
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\Date;
@@ -50,7 +50,7 @@ class TransferPlanTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
-        'app.ContractVersionProposals',
+        'app.ContractProposals',
         'plugin.Settings.Settings',
     ];
 
@@ -167,11 +167,11 @@ class TransferPlanTest extends TestCase
     /**
      * One of the planned writes, by the field it is for.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param string $field Which field.
      * @return \App\Contracts\Proposal\PlannedChange|null
      */
-    private function planned(ContractVersionProposal $proposal, string $field): ?PlannedChange
+    private function planned(ContractProposal $proposal, string $field): ?PlannedChange
     {
         foreach ((new TransferPlan())->of($proposal) as $write) {
             if ($write->field === $field) {
@@ -201,17 +201,17 @@ class TransferPlanTest extends TestCase
      * The proposal, with what the test wants it to say.
      *
      * @param array<string, mixed> $says What it says.
-     * @return \App\Model\Entity\ContractVersionProposal
+     * @return \App\Model\Entity\ContractProposal
      */
-    private function proposal(array $says): ContractVersionProposal
+    private function proposal(array $says): ContractProposal
     {
-        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposals->saveOrFail(
             $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), $says),
             ['checkRules' => false],
         );
 
-        /** @var \App\Model\Entity\ContractVersionProposal $proposal */
+        /** @var \App\Model\Entity\ContractProposal $proposal */
         $proposal = $proposals->get(self::PROPOSAL_ID);
 
         return $proposal;

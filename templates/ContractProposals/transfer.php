@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var array<int, array{what: string, said: string}> $found
  * @var bool $stopped
  * @var array<\App\Model\Entity\Billing> $billingsNow
@@ -12,29 +12,29 @@
 
 use App\Model\Table\BillingsTable;
 
-$changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
+$changesNothing = $contractProposal->proposedChanges()->isEmpty();
 ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?php if (!$contractVersionProposal->hasBeenConcluded()) : ?>
+            <?php if (!$contractProposal->hasBeenConcluded()) : ?>
                 <?= $this->AuthLink->link(
                     __('Record the Signature'),
-                    ['action' => 'conclude', $contractVersionProposal->id],
+                    ['action' => 'conclude', $contractProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractVersionProposal->id],
+                ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals view content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+        <div class="contractProposals view content">
+            <?= $this->element('ContractProposals/heading') ?>
             <?php if ($found !== []) : ?>
                 <h4><?= __('Worth knowing first') ?></h4>
                 <ul>
@@ -48,13 +48,13 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
             <div class="row">
                 <div class="column">
                     <h4><?= __('As it is now') ?></h4>
-                    <?= $this->element('ContractVersionProposals/billings', [
+                    <?= $this->element('ContractProposals/billings', [
                         'billings' => $billingsNow,
                     ]) ?>
                 </div>
                 <div class="column">
                     <h4><?= __('As it would be') ?></h4>
-                    <?= $this->element('ContractVersionProposals/billings', [
+                    <?= $this->element('ContractProposals/billings', [
                         'billings' => $billingsAfterwards,
                     ]) ?>
                 </div>
@@ -70,13 +70,13 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
                         . ' being replaced, whether or not the proposal says so.',
                     )
                     ?></p>
-                <?= $this->element('ContractVersionProposals/planned_changes', [
+                <?= $this->element('ContractProposals/planned_changes', [
                     'preview' => true,
                     ]) ?>
             <?php endif; ?>
         </div>
         <hr />
-        <div class="contractVersionProposals form content">
+        <div class="contractProposals form content">
             <?php if ($stopped) : ?>
             <fieldset>
                 <legend><?= __('Carry the Proposal Over') ?></legend>

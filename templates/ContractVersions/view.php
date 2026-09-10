@@ -112,7 +112,7 @@
                 <?= $this->AuthLink->link(
                     __('New Proposal'),
                     [
-                        'controller' => 'ContractVersionProposals',
+                        'controller' => 'ContractProposals',
                         'action' => 'add',
                         'customer_id' => $contractVersion->contract->customer_id,
                         'contract_id' => $contractVersion->contract_id,
@@ -121,8 +121,8 @@
                     ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4><?= __('Proposals') ?></h4>
-                <?= $this->element('Contracts/ContractVersionProposals', [
-                    'contract_version_proposals' => $contractVersion->contract_version_proposals,
+                <?= $this->element('Contracts/ContractProposals', [
+                    'contract_proposals' => $contractVersion->contract_proposals,
                     'version_column' => false,
                 ]) ?>
             </div>

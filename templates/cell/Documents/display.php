@@ -8,7 +8,7 @@
  * under them, so what belongs together reads as one block.
  *
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\ContractVersionProposal> $proposals
+ * @var iterable<\App\Model\Entity\ContractProposal> $proposals
  * @var array<string, array<string, array<string, array<\Files\Model\Entity\FileLink>>>> $filed
  * @var bool $ours Whether this is the side we drew up.
  * @var bool $showContract Whether the rows say which contract they belong to.
@@ -27,14 +27,14 @@ foreach ($proposals as $proposal) {
     );
     $proposalCell = $this->Html->link(
         h($proposal->effective_from) . ' - ' . h($proposal->purpose->label()),
-        ['controller' => 'ContractVersionProposals', 'action' => 'view', $proposal->id],
+        ['controller' => 'ContractProposals', 'action' => 'view', $proposal->id],
         ['escape' => false],
     );
     $papersLink = $this->AuthLink->link(
         __('Proposal Documents'),
         [
             'plugin' => null,
-            'controller' => 'ContractVersionProposals',
+            'controller' => 'ContractProposals',
             'action' => 'documents',
             $proposal->id,
         ],
@@ -195,7 +195,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             __('Up'),
                             [
                                 'plugin' => null,
-                                'controller' => 'ContractVersionProposals',
+                                'controller' => 'ContractProposals',
                                 'action' => 'movePage',
                                 $row['proposalId'],
                                 $row['link']->id,
@@ -208,7 +208,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             __('Down'),
                             [
                                 'plugin' => null,
-                                'controller' => 'ContractVersionProposals',
+                                'controller' => 'ContractProposals',
                                 'action' => 'movePage',
                                 $row['proposalId'],
                                 $row['link']->id,
@@ -221,7 +221,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             __('Remove'),
                             [
                                 'plugin' => null,
-                                'controller' => 'ContractVersionProposals',
+                                'controller' => 'ContractProposals',
                                 'action' => 'dropPage',
                                 $row['proposalId'],
                                 $row['link']->id,

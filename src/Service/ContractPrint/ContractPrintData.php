@@ -5,8 +5,8 @@ namespace App\Service\ContractPrint;
 
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
-use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractPrintType;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -83,7 +83,7 @@ final class ContractPrintData
      * Every document is printed from one: the snapshot it holds is what the pages are drawn from,
      * so that the same paper printed twice is the same paper.
      */
-    public ?ContractVersionProposal $proposal = null;
+    public ?ContractProposal $proposal = null;
 
     /**
      * The billings as the proposal would leave them, put together from its snapshot.

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\ContractVersionProposalsController;
+use App\Controller\ContractProposalsController;
 use App\Model\Enum\DocumentVariant;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
@@ -21,8 +21,8 @@ use PHPUnit\Framework\Attributes\UsesClass;
  * Kept apart from the proposal's own controller test, which is about drawing proposals up. What is
  * asked here is only ever about the shelf.
  */
-#[UsesClass(ContractVersionProposalsController::class)]
-class ContractVersionProposalsDocumentsTest extends TestCase
+#[UsesClass(ContractProposalsController::class)]
+class ContractProposalsDocumentsTest extends TestCase
 {
     use ControllerTestTrait;
     use IntegrationTestTrait;
@@ -64,7 +64,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.ContractVersions',
-        'app.ContractVersionProposals',
+        'app.ContractProposals',
         'app.IpAddresses',
         'app.IpNetworks',
         'app.SoldEquipments',
@@ -123,12 +123,12 @@ class ContractVersionProposalsDocumentsTest extends TestCase
     /**
      * The page renders with nothing on file, which is how every proposal starts.
      *
-     * @link \App\Controller\ContractVersionProposalsController::documents()
+     * @link \App\Controller\ContractProposalsController::documents()
      * @return void
      */
     public function testThePapersRenderBeforeAnythingHasBeenFiled(): void
     {
-        $this->get('/contract-version-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
     }
@@ -191,7 +191,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
      * The order the browser sends them in is the order they go on the shelf, because for a set of
      * scans that is usually their own numbering.
      *
-     * @link \App\Controller\ContractVersionProposalsController::addPages()
+     * @link \App\Controller\ContractProposalsController::addPages()
      * @return void
      */
     public function testPagesAreFiledInTheOrderTheyWerePicked(): void
@@ -204,7 +204,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
     /**
      * More pages go after the ones already there rather than among them.
      *
-     * @link \App\Controller\ContractVersionProposalsController::addPages()
+     * @link \App\Controller\ContractProposalsController::addPages()
      * @return void
      */
     public function testMorePagesGoOnTheEnd(): void
@@ -219,7 +219,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
     /**
      * A page moves past the one beside it, and stays where it is at either end.
      *
-     * @link \App\Controller\ContractVersionProposalsController::movePage()
+     * @link \App\Controller\ContractProposalsController::movePage()
      * @return void
      */
     public function testAPageMovesPastTheOneBesideIt(): void
@@ -239,7 +239,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
     /**
      * Letting go of a page closes the gap it leaves, so the position still means the page.
      *
-     * @link \App\Controller\ContractVersionProposalsController::dropPage()
+     * @link \App\Controller\ContractProposalsController::dropPage()
      * @return void
      */
     public function testDroppingAPageClosesTheGap(): void
@@ -255,7 +255,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
     /**
      * A page reached through the wrong proposal is not a page at all.
      *
-     * @link \App\Controller\ContractVersionProposalsController::dropPage()
+     * @link \App\Controller\ContractProposalsController::dropPage()
      * @return void
      */
     public function testAPageIsOnlyReachableThroughItsOwnProposal(): void
@@ -263,7 +263,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
         $this->addPages(['one.pdf']);
 
         $this->post(sprintf(
-            '/contract-version-proposals/drop-page/%s/%s',
+            '/contract-proposals/drop-page/%s/%s',
             'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f61',
             $this->linkOf('one.pdf'),
         ));
@@ -276,7 +276,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
      * Letting go of a paper we drew up is unfreezing it: the next request for the document draws
      * it afresh rather than handing back what is no longer there.
      *
-     * @link \App\Controller\ContractVersionProposalsController::dropPage()
+     * @link \App\Controller\ContractProposalsController::dropPage()
      * @return void
      */
     public function testLettingGoOfWhatWeDrewUpUnfreezesIt(): void
@@ -295,7 +295,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
      * Unfreezing is the administrator's to do. Everyone who files scans may correct their own,
      * but letting a drawn-up paper go changes what the customer would be handed next time.
      *
-     * @link \App\Controller\ContractVersionProposalsController::dropPage()
+     * @link \App\Controller\ContractProposalsController::dropPage()
      * @return void
      */
     public function testOnlyTheAdministratorMayUnfreezeADrawnUpPaper(): void
@@ -309,7 +309,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
 
         $this->login('sales-representative');
 
-        $this->post('/contract-version-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $drawn->get('id'));
+        $this->post('/contract-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $drawn->get('id'));
         $this->assertSame(
             1,
             $this->fetchTable('Files.FileLinks')->find()
@@ -318,7 +318,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
             'The paper we drew up was unfrozen by somebody who may not.',
         );
 
-        $this->post('/contract-version-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $this->linkOf('scan.pdf'));
+        $this->post('/contract-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $this->linkOf('scan.pdf'));
         $this->assertSame([], $this->namesOnFile());
     }
 
@@ -342,12 +342,12 @@ class ContractVersionProposalsDocumentsTest extends TestCase
     /**
      * The form asks before it files, like every other way of adding something.
      *
-     * @link \App\Controller\ContractVersionProposalsController::addPages()
+     * @link \App\Controller\ContractProposalsController::addPages()
      * @return void
      */
     public function testTheFormForANewDocumentRenders(): void
     {
-        $this->get('/contract-version-proposals/add-pages/' . self::PROPOSAL_ID);
+        $this->get('/contract-proposals/add-pages/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('papers[]');
@@ -357,21 +357,21 @@ class ContractVersionProposalsDocumentsTest extends TestCase
      * The signature form offers the documents this proposal was printed as, because nothing else
      * can have come back - and files what comes with it in one go.
      *
-     * @link \App\Controller\ContractVersionProposalsController::conclude()
+     * @link \App\Controller\ContractProposalsController::conclude()
      * @return void
      */
     public function testTheScansComeInWithTheSignature(): void
     {
         $this->print();
 
-        $this->get('/contract-version-proposals/conclude/' . self::PROPOSAL_ID);
+        $this->get('/contract-proposals/conclude/' . self::PROPOSAL_ID);
         $this->assertResponseOk();
         $this->assertResponseContains('papers[' . self::DOCUMENT . '][]');
 
         $this->replaceRequest(['files' => [
             'papers' => [self::DOCUMENT => [$this->upload($this->file('signed.pdf'))]],
         ]]);
-        $this->post('/contract-version-proposals/conclude/' . self::PROPOSAL_ID, [
+        $this->post('/contract-proposals/conclude/' . self::PROPOSAL_ID, [
             'conclusion_date' => '2026-10-05',
             'variants' => [self::DOCUMENT => DocumentVariant::ReceivedSignedByBoth->value],
         ]);
@@ -417,7 +417,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
         // replaceRequest rather than configRequest: the latter piles the scans of one request
         // onto the next, and what is left over would then reach a page that asked for nothing.
         $this->replaceRequest(['files' => ['papers' => $files]]);
-        $this->post('/contract-version-proposals/add-pages/' . self::PROPOSAL_ID, [
+        $this->post('/contract-proposals/add-pages/' . self::PROPOSAL_ID, [
             'document_type' => self::DOCUMENT,
             'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
         ]);
@@ -434,7 +434,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
     private function move(string $link, string $direction): void
     {
         $this->post(sprintf(
-            '/contract-version-proposals/move-page/%s/%s/%s',
+            '/contract-proposals/move-page/%s/%s/%s',
             self::PROPOSAL_ID,
             $link,
             $direction,
@@ -449,7 +449,7 @@ class ContractVersionProposalsDocumentsTest extends TestCase
      */
     private function drop(string $link): void
     {
-        $this->post('/contract-version-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $link);
+        $this->post('/contract-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $link);
 
         $this->assertRedirect();
     }

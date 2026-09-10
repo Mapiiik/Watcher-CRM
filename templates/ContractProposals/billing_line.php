@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var \App\Contracts\Proposal\ProposedBilling|null $line
  * @var \App\Model\Entity\Billing|null $replaced
  * @var array<string, mixed> $values
@@ -15,7 +15,7 @@
             <?php if ($line !== null) : ?>
                 <?= $this->AuthLink->postLink(
                     __('Take Back'),
-                    ['action' => 'dropBillingLine', $contractVersionProposal->id, $line->id],
+                    ['action' => 'dropBillingLine', $contractProposal->id, $line->id],
                     [
                         'confirm' => __('Leave this as it stands on the contract?'),
                         'class' => 'side-nav-item',
@@ -24,14 +24,14 @@
             <?php endif; ?>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractVersionProposal->id],
+                ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
         <div class="billings form content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+            <?= $this->element('ContractProposals/heading') ?>
 
             <?= $this->Form->create(null) ?>
             <fieldset>

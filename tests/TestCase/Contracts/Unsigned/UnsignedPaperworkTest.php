@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Contracts\Unsigned;
 
 use App\Contracts\Unsigned\UnsignedPaperwork;
-use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Enum\UnsignedDeadlineAnchor;
 use App\Model\Table\ContractVersionsTable;
@@ -475,7 +475,7 @@ class UnsignedPaperworkTest extends TestCase
 
         // The sending is on the papers, and the papers belong to the proposal they were drawn
         // from - so that is where a test that is about the sending has to put it.
-        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposals->saveOrFail(
             $proposals->newEntity([
                 'contract_id' => self::CONTRACT_ID,
@@ -488,7 +488,7 @@ class UnsignedPaperworkTest extends TestCase
                 'snapshot_taken' => DateTime::now(),
                 'changes' => [],
                 'sent_date' => $sent_date,
-                'sent_by' => ContractDeliveryMethod::Post->value,
+                'delivery_type' => DocumentsDeliveryType::Post->value,
             ]),
             ['checkRules' => false],
         );

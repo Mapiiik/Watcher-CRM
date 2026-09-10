@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\ContractVersionProposal> $contract_version_proposals
+ * @var iterable<\App\Model\Entity\ContractProposal> $contract_proposals
  * @var bool|null $version_column Off where the table is already inside one version.
  */
 
@@ -27,7 +27,7 @@ $whichVersion = function ($proposal): string {
         : $version->name;
 };
 ?>
-<?php if (!empty($contract_version_proposals)) : ?>
+<?php if (!empty($contract_proposals)) : ?>
 <div class="table-responsive">
     <table>
     <thead>
@@ -45,7 +45,7 @@ $whichVersion = function ($proposal): string {
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($contract_version_proposals as $proposal) : ?>
+        <?php foreach ($contract_proposals as $proposal) : ?>
         <tr style="<?= $proposal->isOpen() ? '' : 'color: darkgray;' ?>">
             <?php if ($version_column) : ?>
                 <td><?= h($whichVersion($proposal)) ?></td>
@@ -73,11 +73,11 @@ $whichVersion = function ($proposal): string {
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('View'),
-                    ['controller' => 'ContractVersionProposals', 'action' => 'view', $proposal->id],
+                    ['controller' => 'ContractProposals', 'action' => 'view', $proposal->id],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Edit'),
-                    ['controller' => 'ContractVersionProposals', 'action' => 'edit', $proposal->id],
+                    ['controller' => 'ContractProposals', 'action' => 'edit', $proposal->id],
                     ['class' => 'win-link'],
                 ) ?>
                 <?php if ($proposal->isOpen()) : ?>
@@ -91,27 +91,27 @@ $whichVersion = function ($proposal): string {
                         $proposal->hasBeenSent()
                             ? __('Record the Sending Again')
                             : __('Record the Sending'),
-                        ['controller' => 'ContractVersionProposals', 'action' => 'send', $proposal->id],
+                        ['controller' => 'ContractProposals', 'action' => 'send', $proposal->id],
                         ['class' => 'win-link'],
                     ) ?>
                     <?= $this->AuthLink->link(
                         $proposal->hasBeenConcluded()
                             ? __('Correct the Signature')
                             : __('Record the Signature'),
-                        ['controller' => 'ContractVersionProposals', 'action' => 'conclude', $proposal->id],
+                        ['controller' => 'ContractProposals', 'action' => 'conclude', $proposal->id],
                         ['class' => 'win-link'],
                     ) ?>
                     <?php if ($proposal->hasBeenConcluded()) : ?>
                         <?= $this->AuthLink->link(
                             __('Carry Over'),
-                            ['controller' => 'ContractVersionProposals', 'action' => 'transfer', $proposal->id],
+                            ['controller' => 'ContractProposals', 'action' => 'transfer', $proposal->id],
                             ['class' => 'win-link'],
                         ) ?>
                     <?php endif; ?>
                 <?php endif; ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
-                    ['controller' => 'ContractVersionProposals', 'action' => 'delete', $proposal->id],
+                    ['controller' => 'ContractProposals', 'action' => 'delete', $proposal->id],
                     ['confirm' => __('Are you sure you want to delete # {0}?', $proposal->id)],
                 ) ?>
             </td>

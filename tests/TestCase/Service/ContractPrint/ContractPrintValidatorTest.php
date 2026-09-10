@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Service\ContractPrint;
 
 use App\Model\Entity\Contract;
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
-use App\Model\Entity\ContractVersionProposal;
 use App\Model\Entity\ServiceType;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\ProposalPurpose;
@@ -21,7 +21,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
  * Very little is asked here any more, and that is the point. Whether the contract is ready for
  * papers is asked once when the proposal is drawn up, and what a proposal may say about ending
  * things is a rule of the proposals table - so those are tested where they now live, in
- * ContractVersionProposalsTableTest. What is left is that a document is printed from a proposal at
+ * ContractProposalsTableTest. What is left is that a document is printed from a proposal at
  * all, and that it is one that proposal may be printed as.
  */
 #[UsesClass(ContractPrintValidator::class)]
@@ -72,11 +72,11 @@ class ContractPrintValidatorTest extends TestCase
      * A proposal that changes nothing, which is the ordinary one.
      *
      * @param array<string, mixed> $says What it says beyond that.
-     * @return \App\Model\Entity\ContractVersionProposal
+     * @return \App\Model\Entity\ContractProposal
      */
-    private static function proposal(array $says = []): ContractVersionProposal
+    private static function proposal(array $says = []): ContractProposal
     {
-        return new ContractVersionProposal($says + [
+        return new ContractProposal($says + [
             'id' => 'a1b2c3d4-0000-4000-8000-000000000004',
             'purpose' => ProposalPurpose::NewContract,
             'effective_from' => new Date('2026-10-01'),
@@ -89,13 +89,13 @@ class ContractPrintValidatorTest extends TestCase
      * What the validator makes of the given document.
      *
      * @param \App\Model\Enum\ContractPrintType $type Which document.
-     * @param \App\Model\Entity\ContractVersionProposal|null $proposal The proposal, where there is one.
+     * @param \App\Model\Entity\ContractProposal|null $proposal The proposal, where there is one.
      * @param bool $concluded Whether the version has been concluded.
      * @return array<string, array<string>>
      */
     private static function errorsFor(
         ContractPrintType $type,
-        ?ContractVersionProposal $proposal,
+        ?ContractProposal $proposal,
         bool $concluded = true,
     ): array {
         $data = new ContractPrintData($type, self::contract(), self::version($concluded), null);

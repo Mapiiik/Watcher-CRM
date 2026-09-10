@@ -29,7 +29,7 @@ use Override;
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @property \App\Model\Table\BorrowedEquipmentsTable&\Cake\ORM\Association\HasMany $BorrowedEquipments
  * @property \App\Model\Table\ContractVersionsTable&\Cake\ORM\Association\HasMany $ContractVersions
- * @property \App\Model\Table\ContractVersionProposalsTable&\Cake\ORM\Association\HasMany $ContractVersionProposals
+ * @property \App\Model\Table\ContractProposalsTable&\Cake\ORM\Association\HasMany $ContractProposals
  * @property \App\Model\Table\IpAddressesTable&\Cake\ORM\Association\HasMany $IpAddresses
  * @property \App\Model\Table\RemovedIpAddressesTable&\Cake\ORM\Association\HasMany $RemovedIpAddresses
  * @property \App\Model\Table\IpNetworksTable&\Cake\ORM\Association\HasMany $IpNetworks
@@ -132,9 +132,9 @@ class ContractsTable extends AppTable
                 'ContractVersions.valid_from' => 'DESC',
             ],
         ]);
-        $this->hasMany('ContractVersionProposals', [
+        $this->hasMany('ContractProposals', [
             'foreignKey' => 'contract_id',
-            'sort' => ['ContractVersionProposals.effective_from' => 'DESC'],
+            'sort' => ['ContractProposals.effective_from' => 'DESC'],
         ]);
         $this->hasMany('IpAddresses', [
             'foreignKey' => 'contract_id',

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var array<string, string> $printed
  * @var array<string, string> $variants
  */
@@ -16,21 +16,21 @@ use Cake\I18n\Date;
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractVersionProposal->id],
+                ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Proposal Documents'),
-                ['action' => 'documents', $contractVersionProposal->id],
+                ['action' => 'documents', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals form content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+        <div class="contractProposals form content">
+            <?= $this->element('ContractProposals/heading') ?>
 
-            <?= $this->Form->create($contractVersionProposal, ['type' => 'file']) ?>
+            <?= $this->Form->create($contractProposal, ['type' => 'file']) ?>
             <fieldset>
                 <legend><?= __('Record the Signature') ?></legend>
                 <p><?= __(
@@ -80,7 +80,7 @@ use Cake\I18n\Date;
                 <p><?=
                     $this->AuthLink->link(
                         __('The rest of the papers'),
-                        ['action' => 'documents', $contractVersionProposal->id],
+                        ['action' => 'documents', $contractProposal->id],
                     )
                     ?></p>
             </fieldset>

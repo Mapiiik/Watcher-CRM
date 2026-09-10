@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Contracts\Check;
 
 use App\Contracts\Check\UnsignedProposalCheck;
-use App\Model\Table\ContractVersionProposalsTable;
+use App\Model\Table\ContractProposalsTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
@@ -48,7 +48,7 @@ class UnsignedProposalCheckTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
-        'app.ContractVersionProposals',
+        'app.ContractProposals',
         'plugin.Settings.Settings',
     ];
 
@@ -60,7 +60,7 @@ class UnsignedProposalCheckTest extends TestCase
      */
     private function proposalSays(array $says): void
     {
-        $proposals = $this->getTableLocator()->get('ContractVersionProposals');
+        $proposals = $this->getTableLocator()->get('ContractProposals');
 
         $proposals->saveOrFail(
             $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), $says),
@@ -91,8 +91,8 @@ class UnsignedProposalCheckTest extends TestCase
      */
     private function found(bool $ignore_inactive = true): array
     {
-        /** @var \App\Model\Table\ContractVersionProposalsTable $proposals */
-        $proposals = $this->getTableLocator()->get(ContractVersionProposalsTable::class);
+        /** @var \App\Model\Table\ContractProposalsTable $proposals */
+        $proposals = $this->getTableLocator()->get(ContractProposalsTable::class);
 
         return (new UnsignedProposalCheck($proposals, $ignore_inactive))
             ->find()

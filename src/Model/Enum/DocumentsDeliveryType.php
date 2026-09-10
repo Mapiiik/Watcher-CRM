@@ -14,7 +14,7 @@ use Override;
  * and handing it over in person carries neither. Which it was decides what can be shown if
  * the customer says the papers never came.
  */
-enum ContractDeliveryMethod: int implements EnumLabelInterface
+enum DocumentsDeliveryType: int implements EnumLabelInterface
 {
     case Email = 10;
     case Sms = 20;

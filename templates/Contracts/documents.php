@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
- * @var iterable<\App\Model\Entity\ContractVersionProposal> $proposals
+ * @var iterable<\App\Model\Entity\ContractProposal> $proposals
  * @var array<string, array<string, array<string, array<\Files\Model\Entity\FileLink>>>> $filed
  */
 ?>

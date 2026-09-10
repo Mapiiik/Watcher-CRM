@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\ContractVersionProposal> $records
+ * @var iterable<\App\Model\Entity\ContractProposal> $records
  * @var bool|null $contract_column
  */
 
@@ -50,7 +50,7 @@ $contract_column ??= true;
                         <?= $this->AuthLink->link(
                             __('Record the Sending'),
                             [
-                                'controller' => 'ContractVersionProposals',
+                                'controller' => 'ContractProposals',
                                 'action' => 'send',
                                 $proposal->id,
                             ],

@@ -88,7 +88,7 @@ class StorageControllerTest extends TestCase
         $storage = new FileStorage();
 
         $wanted = $storage->store('a paper somebody filed', 'application/pdf');
-        $storage->link($wanted, 'ContractVersionProposals', self::RECORD, 'contract-new', 'generated');
+        $storage->link($wanted, 'ContractProposals', self::RECORD, 'contract-new', 'generated');
 
         $orphan = $storage->store('bytes a torn backup left behind', 'application/pdf');
 
@@ -114,7 +114,7 @@ class StorageControllerTest extends TestCase
         $storage = new FileStorage();
         $file = $storage->store('a paper two records share', 'application/pdf');
 
-        $storage->link($file, 'ContractVersionProposals', self::RECORD, 'contract-new', 'generated');
+        $storage->link($file, 'ContractProposals', self::RECORD, 'contract-new', 'generated');
         $storage->link($file, 'Customers', self::RECORD, 'gdpr-new', 'generated');
 
         $this->get('/files/storage/view/' . $file->id);

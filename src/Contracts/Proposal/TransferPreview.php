@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Proposal;
 
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
@@ -51,10 +51,10 @@ final class TransferPreview
     /**
      * What stands in the way of carrying the proposal over, if anything.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return array<int, array{what: string, said: string}> In the order they are worth reading.
      */
-    public function of(ContractVersionProposal $proposal): array
+    public function of(ContractProposal $proposal): array
     {
         $found = [];
 
@@ -91,10 +91,10 @@ final class TransferPreview
     /**
      * What has happened to the billings since the snapshot was taken.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return array<int, array{what: string, said: string}>
      */
-    private function whatMovedInTheBillings(ContractVersionProposal $proposal): array
+    private function whatMovedInTheBillings(ContractProposal $proposal): array
     {
         $snapshot = $proposal->stateOfThings();
         /** @var array<string, \App\Model\Entity\Billing> $live */
@@ -153,10 +153,10 @@ final class TransferPreview
     /**
      * Whether the version still says what it said when the proposal was drawn up.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return array<int, array{what: string, said: string}>
      */
-    private function whatMovedOnTheVersion(ContractVersionProposal $proposal): array
+    private function whatMovedOnTheVersion(ContractProposal $proposal): array
     {
         $taken = $proposal->stateOfThings()->part('version');
         $version = $this->fetchTable('ContractVersions')
@@ -185,10 +185,10 @@ final class TransferPreview
     /**
      * Whether the day it takes effect has already been invoiced for.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return array<int, array{what: string, said: string}>
      */
-    private function whatHasBeenInvoicedFor(ContractVersionProposal $proposal): array
+    private function whatHasBeenInvoicedFor(ContractProposal $proposal): array
     {
         /** @var \App\Model\Table\BillingsTable $billings */
         $billings = $this->fetchTable('Billings');
@@ -210,10 +210,10 @@ final class TransferPreview
      * What the transfer would leave the billings looking like, for the operator to read against
      * what is there now.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return array<\App\Model\Entity\Billing>
      */
-    public function billingsAfterwards(ContractVersionProposal $proposal): array
+    public function billingsAfterwards(ContractProposal $proposal): array
     {
         $snapshot = $proposal->stateOfThings();
         $changes = $proposal->proposedChanges();
@@ -229,10 +229,10 @@ final class TransferPreview
     /**
      * The billings as they stand now.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return array<\App\Model\Entity\Billing>
      */
-    public function billingsNow(ContractVersionProposal $proposal): array
+    public function billingsNow(ContractProposal $proposal): array
     {
         /** @var array<\App\Model\Entity\Billing> $billings */
         $billings = $this->fetchTable('Billings')

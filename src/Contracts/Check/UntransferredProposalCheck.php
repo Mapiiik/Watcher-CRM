@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
-use App\Model\Table\ContractVersionProposalsTable;
+use App\Model\Table\ContractProposalsTable;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Override;
@@ -33,13 +33,13 @@ class UntransferredProposalCheck extends AbstractContractCheck
     private const WITHIN_DAYS_PATH = 'core.contracts.checks.untransferred_proposal_within_days';
 
     /**
-     * @param \App\Model\Table\ContractVersionProposalsTable $proposals Contract version proposals table.
+     * @param \App\Model\Table\ContractProposalsTable $proposals Contract version proposals table.
      * @param bool $ignore_inactive Whether to count only proposals whose day has come or is near.
      * @param string|null $contract_id The one contract being asked about, where there is one.
      * @param string|null $customer_id The one customer being asked about, where there is one.
      */
     public function __construct(
-        private ContractVersionProposalsTable $proposals,
+        private ContractProposalsTable $proposals,
         bool $ignore_inactive = true,
         ?string $contract_id = null,
         ?string $customer_id = null,
@@ -53,7 +53,7 @@ class UntransferredProposalCheck extends AbstractContractCheck
     #[Override]
     protected function contractField(): ?string
     {
-        return 'ContractVersionProposals.contract_id';
+        return 'ContractProposals.contract_id';
     }
 
     /**
@@ -96,13 +96,13 @@ class UntransferredProposalCheck extends AbstractContractCheck
         $query
             ->contain(['Contracts', 'ContractVersions'])
             ->innerJoinWith('Contracts')
-            ->orderBy(['ContractVersionProposals.effective_from' => 'ASC']);
+            ->orderBy(['ContractProposals.effective_from' => 'ASC']);
 
         if ($this->ignore_inactive) {
             $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
 
             $query->where([
-                'ContractVersionProposals.effective_from <=' => Date::now()->addDays($within),
+                'ContractProposals.effective_from <=' => Date::now()->addDays($within),
             ]);
         }
 

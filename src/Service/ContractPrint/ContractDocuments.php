@@ -33,7 +33,7 @@ final class ContractDocuments
      * What the papers hang on. A proposal rather than a contract: the proposal is what the paper
      * was drawn from, and it is the thing that does not move afterwards.
      */
-    public const MODEL = 'ContractVersionProposals';
+    public const MODEL = 'ContractProposals';
 
     /**
      * Where the papers are kept, and what draws one when there is none to hand over.
@@ -104,7 +104,7 @@ final class ContractDocuments
      * itself, and the shortcut on the contract's printing page - and they all ask it of the same
      * one asking, so that a contract with six proposals is one query rather than six.
      *
-     * @param iterable<\App\Model\Entity\ContractVersionProposal> $proposals Whose papers.
+     * @param iterable<\App\Model\Entity\ContractProposal> $proposals Whose papers.
      * @return array<string, array<string, array<string, list<\Files\Model\Entity\FileLink>>>>
      *   By proposal, then by document, then by variant.
      */

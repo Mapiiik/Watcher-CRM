@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\ContractVersionProposal> $contractVersionProposals
+ * @var iterable<\App\Model\Entity\ContractProposal> $contractProposals
  * @var bool $show_settled
  */
 ?>
@@ -23,13 +23,13 @@
 </div>
 <?= $this->Form->end() ?>
 
-<div class="contractVersionProposals index content">
+<div class="contractProposals index content">
     <?= $this->AuthLink->link(
         __('New Proposal'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __('Contract Version Proposals') ?></h3>
+    <h3><?= __('Contract Proposals') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>
@@ -45,12 +45,12 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($contractVersionProposals as $contractVersionProposal) : ?>
+                <?php foreach ($contractProposals as $contractProposal) : ?>
                     <?php
-                    $contract = $contractVersionProposal->contract;
-                    $version = $contractVersionProposal->contract_version;
+                    $contract = $contractProposal->contract;
+                    $version = $contractProposal->contract_version;
                     ?>
-                <tr style="<?= $contractVersionProposal->isOpen() ? '' : 'color: darkgray;' ?>">
+                <tr style="<?= $contractProposal->isOpen() ? '' : 'color: darkgray;' ?>">
                     <td><?=
                         $contract !== null ? $this->Html->link(
                             $contract->name ?? '(' . $contract->id . ')',
@@ -70,27 +70,27 @@
                                 $version->id,
                             ],
                         ) : '' ?></td>
-                    <td><?= h($contractVersionProposal->effective_from) ?></td>
-                    <td><?= h($contractVersionProposal->purpose->label()) ?></td>
-                    <td><?= h($contractVersionProposal->getSending()) ?></td>
-                    <td><?= h($contractVersionProposal->conclusion_date) ?></td>
-                    <td><?= h($contractVersionProposal->getState()) ?></td>
+                    <td><?= h($contractProposal->effective_from) ?></td>
+                    <td><?= h($contractProposal->purpose->label()) ?></td>
+                    <td><?= h($contractProposal->getSending()) ?></td>
+                    <td><?= h($contractProposal->conclusion_date) ?></td>
+                    <td><?= h($contractProposal->getState()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('View'),
-                            ['action' => 'view', $contractVersionProposal->id],
+                            ['action' => 'view', $contractProposal->id],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
-                            ['action' => 'edit', $contractVersionProposal->id],
+                            ['action' => 'edit', $contractProposal->id],
                             ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
                             __('Delete'),
-                            ['action' => 'delete', $contractVersionProposal->id],
+                            ['action' => 'delete', $contractProposal->id],
                             ['confirm' => __(
                                 'Are you sure you want to delete # {0}?',
-                                $contractVersionProposal->id,
+                                $contractProposal->id,
                             )],
                         ) ?>
                     </td>

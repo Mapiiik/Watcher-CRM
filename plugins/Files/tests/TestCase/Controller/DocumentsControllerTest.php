@@ -141,7 +141,7 @@ class DocumentsControllerTest extends TestCase
         $file = $storage->store('<script>alert(1)</script>', 'image/svg+xml');
         $link = $storage->link(
             $file,
-            'ContractVersionProposals',
+            'ContractProposals',
             self::RECORD,
             'contract-new',
             'received-signed-by-customer',
@@ -202,7 +202,7 @@ class DocumentsControllerTest extends TestCase
         $file = $storage->store($bytes, 'image/jpeg');
         $link = $storage->link(
             $file,
-            'ContractVersionProposals',
+            'ContractProposals',
             self::RECORD,
             'contract-new',
             'received-signed-by-customer',

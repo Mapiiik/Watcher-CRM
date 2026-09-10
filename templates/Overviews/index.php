@@ -107,8 +107,8 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Contract Version Proposals'),
-                    ['controller' => 'ContractVersionProposals', 'action' => 'index', 'plugin' => null],
+                    __('List Contract Proposals'),
+                    ['controller' => 'ContractProposals', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(

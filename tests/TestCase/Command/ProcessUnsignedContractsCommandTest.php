@@ -361,7 +361,7 @@ class ProcessUnsignedContractsCommandTest extends TestCase
 
         /** @var \App\Model\Entity\ContractVersion $version */
         $version = $this->ContractVersions->find()
-            ->contain(['ContractVersionProposals'])
+            ->contain(['ContractProposals'])
             ->firstOrFail();
 
         $this->assertNull($version->sent_date);

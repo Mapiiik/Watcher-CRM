@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
@@ -35,33 +35,33 @@ foreach ($filed as $byVariant) {
             <?php if ($mayBeEdited) : ?>
                 <?= $this->AuthLink->link(
                     __('Edit Proposal'),
-                    ['action' => 'edit', $contractVersionProposal->id],
+                    ['action' => 'edit', $contractProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Take the Snapshot Again'),
-                    ['action' => 'refreshSnapshot', $contractVersionProposal->id],
+                    ['action' => 'refreshSnapshot', $contractProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
-            <?php if ($contractVersionProposal->isOpen()) : ?>
+            <?php if ($contractProposal->isOpen()) : ?>
                 <?= $this->AuthLink->link(
-                    $contractVersionProposal->hasBeenSent()
+                    $contractProposal->hasBeenSent()
                         ? __('Record the Sending Again')
                         : __('Record the Sending'),
-                    ['action' => 'send', $contractVersionProposal->id],
+                    ['action' => 'send', $contractProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    $contractVersionProposal->hasBeenConcluded()
+                    $contractProposal->hasBeenConcluded()
                         ? __('Correct the Signature')
                         : __('Record the Signature'),
-                    ['action' => 'conclude', $contractVersionProposal->id],
+                    ['action' => 'conclude', $contractProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Carry Over'),
-                    ['action' => 'transfer', $contractVersionProposal->id],
+                    ['action' => 'transfer', $contractProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
@@ -70,20 +70,20 @@ foreach ($filed as $byVariant) {
                 [
                     'controller' => 'Contracts',
                     'action' => 'print',
-                    $contractVersionProposal->contract_id,
-                    '?' => ['proposal_id' => $contractVersionProposal->id],
+                    $contractProposal->contract_id,
+                    '?' => ['proposal_id' => $contractProposal->id],
                 ],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Proposal Documents'),
-                ['action' => 'documents', $contractVersionProposal->id],
+                ['action' => 'documents', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
-            <?php if ($contractVersionProposal->isOpen()) : ?>
+            <?php if ($contractProposal->isOpen()) : ?>
                 <?= $this->AuthLink->postLink(
                     __('Revoke'),
-                    ['action' => 'revoke', $contractVersionProposal->id],
+                    ['action' => 'revoke', $contractProposal->id],
                     [
                         'class' => 'side-nav-item',
                         'confirm' => __('Give up on this proposal? The live records never moved.'),
@@ -93,7 +93,7 @@ foreach ($filed as $byVariant) {
             <?php if ($mayBeDeleted) : ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
-                    ['action' => 'delete', $contractVersionProposal->id],
+                    ['action' => 'delete', $contractProposal->id],
                     ['class' => 'side-nav-item', 'confirm' => __('Are you sure?')],
                 ) ?>
             <?php endif; ?>
@@ -105,53 +105,53 @@ foreach ($filed as $byVariant) {
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals view content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+        <div class="contractProposals view content">
+            <?= $this->element('ContractProposals/heading') ?>
             <div class="row">
                 <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $this->Html->link(
-                                h($contractVersionProposal->contract->number ?? ''),
+                                h($contractProposal->contract->number ?? ''),
                                 [
                                     'controller' => 'Contracts',
                                     'action' => 'view',
-                                    $contractVersionProposal->contract_id,
+                                    $contractProposal->contract_id,
                                 ],
                             ) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Contract Version') ?></th>
-                            <td><?= $contractVersionProposal->contract_version !== null
+                            <td><?= $contractProposal->contract_version !== null
                                 ? $this->Html->link(
-                                    $contractVersionProposal->contract_version->name,
+                                    $contractProposal->contract_version->name,
                                     [
                                         'controller' => 'ContractVersions',
                                         'action' => 'view',
-                                        $contractVersionProposal->contract_version_id,
+                                        $contractProposal->contract_version_id,
                                     ],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Effective From') ?></th>
-                            <td><?= h($contractVersionProposal->effective_from) ?></td>
+                            <td><?= h($contractProposal->effective_from) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Purpose') ?></th>
-                            <td><?= h($contractVersionProposal->purpose->label()) ?></td>
+                            <td><?= h($contractProposal->purpose->label()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Snapshot Taken') ?></th>
-                            <td><?= h($contractVersionProposal->snapshot_taken) ?></td>
+                            <td><?= h($contractProposal->snapshot_taken) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Sent To The Customer') ?></th>
-                            <td><?= h($contractVersionProposal->getSending()) ?></td>
+                            <td><?= h($contractProposal->getSending()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Conclusion Date') ?></th>
-                            <td><?= h($contractVersionProposal->conclusion_date) ?></td>
+                            <td><?= h($contractProposal->conclusion_date) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Papers on File') ?></th>
@@ -164,48 +164,48 @@ foreach ($filed as $byVariant) {
                                             $ourPages,
                                             $theirPages,
                                         ),
-                                    ['action' => 'documents', $contractVersionProposal->id],
+                                    ['action' => 'documents', $contractProposal->id],
                                 )
                                 ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Carried Over') ?></th>
-                            <td><?= h($contractVersionProposal->applied) ?></td>
+                            <td><?= h($contractProposal->applied) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Revoked') ?></th>
-                            <td><?= h($contractVersionProposal->revoked) ?></td>
+                            <td><?= h($contractProposal->revoked) ?></td>
                         </tr>
-                        <?php if ($contractVersionProposal->terminatesAnotherVersion()) : ?>
+                        <?php if ($contractProposal->terminatesAnotherVersion()) : ?>
                         <tr>
                             <th><?= __('Terminates Contract Version') ?></th>
-                            <td><?= $contractVersionProposal->terminated_contract_version !== null
+                            <td><?= $contractProposal->terminated_contract_version !== null
                                 ? $this->Html->link(
-                                    $contractVersionProposal->terminated_contract_version->name,
+                                    $contractProposal->terminated_contract_version->name,
                                     [
                                         'controller' => 'ContractVersions',
                                         'action' => 'view',
-                                        $contractVersionProposal->terminates_contract_version_id,
+                                        $contractProposal->terminates_contract_version_id,
                                     ],
                                 ) : '' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Number of the contract being terminated') ?></th>
-                            <td><?= h($contractVersionProposal->terminated_contract_number) ?></td>
+                            <td><?= h($contractProposal->terminated_contract_number) ?></td>
                         </tr>
                         <?php endif; ?>
                     </table>
                 </div>
                 <div class="column">
-                    <?= $this->element('common/audit', ['entity' => $contractVersionProposal]) ?>
+                    <?= $this->element('common/audit', ['entity' => $contractProposal]) ?>
                 </div>
             </div>
 
-            <?= $this->element('ContractVersionProposals/proposed_billings') ?>
+            <?= $this->element('ContractProposals/proposed_billings') ?>
 
             <?php if ($planned !== []) : ?>
                 <h4><?= __('What it asks of the records') ?></h4>
-                <?= $this->element('ContractVersionProposals/planned_changes', [
+                <?= $this->element('ContractProposals/planned_changes', [
                     'preview' => false,
                 ]) ?>
             <?php endif; ?>
@@ -230,20 +230,20 @@ foreach ($filed as $byVariant) {
                 <h5><?= __('Received Documents') ?></h5>
                 <?= $this->cell(
                     'Documents',
-                    ['proposal', $contractVersionProposal->id],
+                    ['proposal', $contractProposal->id],
                     ['ours' => false],
                 ) ?>
                 <h5><?= __('Sent Documents') ?></h5>
                 <?= $this->cell(
                     'Documents',
-                    ['proposal', $contractVersionProposal->id],
+                    ['proposal', $contractProposal->id],
                     ['ours' => true],
                 ) ?>
             <?php endif; ?>
 
-            <?php if (!empty($contractVersionProposal->note)) : ?>
+            <?php if (!empty($contractProposal->note)) : ?>
                 <h4><?= __('Note') ?></h4>
-                <blockquote><?= $this->Text->autoParagraph(h($contractVersionProposal->note)) ?></blockquote>
+                <blockquote><?= $this->Text->autoParagraph(h($contractProposal->note)) ?></blockquote>
             <?php endif; ?>
         </div>
     </div>

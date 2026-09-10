@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
-use App\Model\Table\ContractVersionProposalsTable;
+use App\Model\Table\ContractProposalsTable;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Override;
@@ -34,13 +34,13 @@ class UnsentProposalCheck extends AbstractContractCheck
     private const WITHIN_DAYS_PATH = 'core.contracts.unsigned.proposals.unsent_within_days';
 
     /**
-     * @param \App\Model\Table\ContractVersionProposalsTable $proposals Contract version proposals table.
+     * @param \App\Model\Table\ContractProposalsTable $proposals Contract version proposals table.
      * @param bool $ignore_inactive Whether to keep to the contracts that serve somebody.
      * @param string|null $contract_id The one contract being asked about, where there is one.
      * @param string|null $customer_id The one customer being asked about, where there is one.
      */
     public function __construct(
-        private ContractVersionProposalsTable $proposals,
+        private ContractProposalsTable $proposals,
         bool $ignore_inactive = true,
         ?string $contract_id = null,
         ?string $customer_id = null,
@@ -54,7 +54,7 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     protected function contractField(): ?string
     {
-        return 'ContractVersionProposals.contract_id';
+        return 'ContractProposals.contract_id';
     }
 
     /**
@@ -100,14 +100,14 @@ class UnsentProposalCheck extends AbstractContractCheck
             ->contain(['Contracts', 'ContractVersions'])
             ->innerJoinWith('Contracts')
             ->where([
-                'ContractVersionProposals.sent_date IS' => null,
+                'ContractProposals.sent_date IS' => null,
                 // The wait holds whichever question is being asked. A proposal drawn up this
                 // morning for a version that starts in the spring is somebody's work in hand,
                 // and a contract's own card reporting it as a fault would be wrong in the one
                 // place where the person reading is the person who drew it up.
-                'ContractVersionProposals.effective_from <=' => Date::today()->addDays(max(0, $within)),
+                'ContractProposals.effective_from <=' => Date::today()->addDays(max(0, $within)),
             ])
-            ->orderBy(['ContractVersionProposals.effective_from' => 'ASC']);
+            ->orderBy(['ContractProposals.effective_from' => 'ASC']);
 
         if ($this->ignore_inactive) {
             $this->onlyRunningContracts($query);

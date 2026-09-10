@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Contracts\Proposal;
 
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
-use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ProposalPurpose;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
@@ -36,10 +36,10 @@ final class TransferPlan
     /**
      * What the transfer will write.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return list<\App\Contracts\Proposal\PlannedChange>
      */
-    public function of(ContractVersionProposal $proposal): array
+    public function of(ContractProposal $proposal): array
     {
         return array_merge(
             $this->onTheVersion($proposal),
@@ -51,10 +51,10 @@ final class TransferPlan
     /**
      * What it will write onto the version the proposal belongs to.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return list<\App\Contracts\Proposal\PlannedChange>
      */
-    private function onTheVersion(ContractVersionProposal $proposal): array
+    private function onTheVersion(ContractProposal $proposal): array
     {
         /** @var \App\Model\Entity\ContractVersion $version */
         $version = $this->fetchTable('ContractVersions')->get($proposal->contract_version_id);
@@ -115,11 +115,11 @@ final class TransferPlan
      * The snapshot's count plus one, the same arithmetic the paper did, rather than one more than
      * whatever the version says today - that is what keeps the paper and the record agreeing.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param \App\Model\Entity\ContractVersion $version The version it belongs to.
      * @return int
      */
-    private function amendmentsAfterwards(ContractVersionProposal $proposal, ContractVersion $version): int
+    private function amendmentsAfterwards(ContractProposal $proposal, ContractVersion $version): int
     {
         // What the papers were drawn from, falling back on the version for a snapshot taken before
         // this field was kept in one.
@@ -131,10 +131,10 @@ final class TransferPlan
     /**
      * What it will write onto the version the proposal replaces.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return list<\App\Contracts\Proposal\PlannedChange>
      */
-    private function onTheVersionItReplaces(ContractVersionProposal $proposal): array
+    private function onTheVersionItReplaces(ContractProposal $proposal): array
     {
         if (!$proposal->terminatesAnotherVersion()) {
             return [];
@@ -159,10 +159,10 @@ final class TransferPlan
     /**
      * What it will write onto the contract.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return list<\App\Contracts\Proposal\PlannedChange>
      */
-    private function onTheContract(ContractVersionProposal $proposal): array
+    private function onTheContract(ContractProposal $proposal): array
     {
         $asked = $proposal->proposedChanges()->contract;
 

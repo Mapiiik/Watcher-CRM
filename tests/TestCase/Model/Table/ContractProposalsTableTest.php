@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Contracts\Proposal\ProposalConfirmations;
-use App\Model\Entity\ContractVersionProposal;
-use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Entity\ContractProposal;
+use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalPurpose;
-use App\Model\Table\ContractVersionProposalsTable;
+use App\Model\Table\ContractProposalsTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
@@ -15,10 +15,10 @@ use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * App\Model\Table\ContractVersionProposalsTable Test Case
+ * App\Model\Table\ContractProposalsTable Test Case
  */
-#[CoversClass(ContractVersionProposalsTable::class)]
-class ContractVersionProposalsTableTest extends TestCase
+#[CoversClass(ContractProposalsTable::class)]
+class ContractProposalsTableTest extends TestCase
 {
     use TableTestTrait;
 
@@ -50,7 +50,7 @@ class ContractVersionProposalsTableTest extends TestCase
     /**
      * Test subject
      *
-     * @var \App\Model\Table\ContractVersionProposalsTable
+     * @var \App\Model\Table\ContractProposalsTable
      */
     protected $Proposals;
 
@@ -73,7 +73,7 @@ class ContractVersionProposalsTableTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
-        'app.ContractVersionProposals',
+        'app.ContractProposals',
         'plugin.Settings.Settings',
     ];
 
@@ -86,10 +86,10 @@ class ContractVersionProposalsTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('ContractVersionProposals')
+        $config = $this->getTableLocator()->exists('ContractProposals')
             ? []
-            : ['className' => ContractVersionProposalsTable::class];
-        $this->Proposals = $this->getTableLocator()->get('ContractVersionProposals', $config);
+            : ['className' => ContractProposalsTable::class];
+        $this->Proposals = $this->getTableLocator()->get('ContractProposals', $config);
     }
 
     /**
@@ -175,9 +175,9 @@ class ContractVersionProposalsTableTest extends TestCase
      * Saves a proposal and says what the table made of it.
      *
      * @param array<string, mixed> $proposal What this proposal says.
-     * @return \App\Model\Entity\ContractVersionProposal
+     * @return \App\Model\Entity\ContractProposal
      */
-    private function save(array $proposal = []): ContractVersionProposal
+    private function save(array $proposal = []): ContractProposal
     {
         $entity = $this->Proposals->newEntity($this->proposalData($proposal));
         $this->Proposals->save($entity);
@@ -510,14 +510,14 @@ class ContractVersionProposalsTableTest extends TestCase
     public function testSendingIsRecordedWhole(): void
     {
         $dayOnly = $this->save(['sent_date' => '2026-10-01']);
-        $this->assertArrayHasKey('sent_by', $dayOnly->getErrors());
+        $this->assertArrayHasKey('delivery_type', $dayOnly->getErrors());
 
-        $wayOnly = $this->save(['sent_by' => ContractDeliveryMethod::Email]);
-        $this->assertArrayHasKey('sent_by', $wayOnly->getErrors());
+        $wayOnly = $this->save(['delivery_type' => DocumentsDeliveryType::Email]);
+        $this->assertArrayHasKey('delivery_type', $wayOnly->getErrors());
 
         $both = $this->save([
             'sent_date' => '2026-10-01',
-            'sent_by' => ContractDeliveryMethod::Email,
+            'delivery_type' => DocumentsDeliveryType::Email,
         ]);
         $this->assertEmpty($both->getErrors());
     }
@@ -532,7 +532,7 @@ class ContractVersionProposalsTableTest extends TestCase
     {
         $proposal = $this->save([
             'sent_date' => '2026-10-01',
-            'sent_by' => ContractDeliveryMethod::Email,
+            'delivery_type' => DocumentsDeliveryType::Email,
         ]);
         $this->assertEmpty($proposal->getErrors());
 
@@ -602,7 +602,7 @@ class ContractVersionProposalsTableTest extends TestCase
 
         $sent = $this->Proposals->patchEntity($open, [
             'sent_date' => '2026-10-01',
-            'sent_by' => ContractDeliveryMethod::Email,
+            'delivery_type' => DocumentsDeliveryType::Email,
         ]);
         $this->Proposals->saveOrFail($sent);
         $this->assertFalse($this->Proposals->mayBeEdited($sent));

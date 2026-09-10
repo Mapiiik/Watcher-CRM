@@ -17,10 +17,10 @@ use App\Contracts\Proposal\TransferPlan;
 use App\Contracts\Proposal\TransferPreview;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
-use App\Model\Entity\ContractVersionProposal;
-use App\Model\Enum\ContractDeliveryMethod;
 use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
@@ -36,11 +36,11 @@ use Files\Model\Table\FileLinksTable;
 use Throwable;
 
 /**
- * ContractVersionProposals Controller
+ * ContractProposals Controller
  *
- * @property \App\Model\Table\ContractVersionProposalsTable $ContractVersionProposals
+ * @property \App\Model\Table\ContractProposalsTable $ContractProposals
  */
-class ContractVersionProposalsController extends AppController
+class ContractProposalsController extends AppController
 {
     /**
      * What a contract has to be loaded with for a snapshot to be taken of it - the same as printing
@@ -71,7 +71,7 @@ class ContractVersionProposalsController extends AppController
             $conditions += ['Contracts.customer_id' => $this->customer_id];
         }
         if ($this->contract_id !== null) {
-            $conditions += ['ContractVersionProposals.contract_id' => $this->contract_id];
+            $conditions += ['ContractProposals.contract_id' => $this->contract_id];
         }
 
         $request = $this->getRequest();
@@ -81,23 +81,23 @@ class ContractVersionProposalsController extends AppController
         if (!empty($search)) {
             $conditions[] = [
                 'OR' => [
-                    'ContractVersionProposals.note ILIKE' => '%' . trim((string)$search) . '%',
-                    'ContractVersionProposals.terminated_contract_number ILIKE'
+                    'ContractProposals.note ILIKE' => '%' . trim((string)$search) . '%',
+                    'ContractProposals.terminated_contract_number ILIKE'
                         => '%' . trim((string)$search) . '%',
                     'Contracts.number ILIKE' => '%' . trim((string)$search) . '%',
                 ],
             ];
         }
 
-        $query = $this->ContractVersionProposals
+        $query = $this->ContractProposals
             ->find($show_settled ? 'all' : 'open')
             ->contain(['Contracts', 'ContractVersions'])
             ->where($conditions)
-            ->orderBy(['ContractVersionProposals.effective_from' => 'DESC']);
+            ->orderBy(['ContractProposals.effective_from' => 'DESC']);
 
-        $contractVersionProposals = $this->paginate($query);
+        $contractProposals = $this->paginate($query);
 
-        $this->set(compact('contractVersionProposals', 'show_settled'));
+        $this->set(compact('contractProposals', 'show_settled'));
     }
 
     /**
@@ -109,7 +109,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function view(?string $id = null): void
     {
-        $contractVersionProposal = $this->ContractVersionProposals->get($id, contain: [
+        $contractProposal = $this->ContractProposals->get($id, contain: [
             'Contracts' => ['Customers', 'InstallationAddresses'],
             'ContractVersions',
             'TerminatedContractVersions',
@@ -117,8 +117,8 @@ class ContractVersionProposalsController extends AppController
             'Modifiers',
         ]);
 
-        $this->set(compact('contractVersionProposal'));
-        $this->setProposalViewVars($contractVersionProposal);
+        $this->set(compact('contractProposal'));
+        $this->setProposalViewVars($contractProposal);
     }
 
     /**
@@ -128,7 +128,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function add(): ?Response
     {
-        $proposal = $this->ContractVersionProposals->newEmptyEntity();
+        $proposal = $this->ContractProposals->newEmptyEntity();
 
         // Which contract the papers are for comes from the nested route the form was opened
         // under; a link from a version's own page settles the version as well.
@@ -154,7 +154,7 @@ class ContractVersionProposalsController extends AppController
             }
         }
 
-        $this->set('contractVersionProposal', $proposal);
+        $this->set('contractProposal', $proposal);
         $this->setFormViewVars($proposal);
 
         return null;
@@ -170,10 +170,10 @@ class ContractVersionProposalsController extends AppController
      * A version ending while the contract runs on gets none of this: what is billed for hangs off
      * the contract, which carries on, and the version that follows says what becomes of it.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal being drawn up.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal being drawn up.
      * @return void
      */
-    private function endWhatTheContractIsBilledFor(ContractVersionProposal $proposal): void
+    private function endWhatTheContractIsBilledFor(ContractProposal $proposal): void
     {
         if ($proposal->purpose !== ProposalPurpose::Termination || !$proposal->endsTheContract()) {
             return;
@@ -224,9 +224,9 @@ class ContractVersionProposalsController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
 
-        if (!$this->ContractVersionProposals->mayBeEdited($proposal)) {
+        if (!$this->ContractProposals->mayBeEdited($proposal)) {
             $this->Flash->error(__('This proposal can no longer be changed.'));
 
             return $this->redirect(['action' => 'view', $id]);
@@ -240,7 +240,7 @@ class ContractVersionProposalsController extends AppController
             }
         }
 
-        $this->set('contractVersionProposal', $proposal);
+        $this->set('contractProposal', $proposal);
         $this->setFormViewVars($proposal);
 
         return null;
@@ -259,9 +259,9 @@ class ContractVersionProposalsController extends AppController
      */
     public function refreshSnapshot(?string $id = null): ?Response
     {
-        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
 
-        if (!$this->ContractVersionProposals->mayBeEdited($proposal)) {
+        if (!$this->ContractProposals->mayBeEdited($proposal)) {
             $this->Flash->error(__('This proposal can no longer be changed.'));
 
             return $this->redirect(['action' => 'view', $id]);
@@ -287,7 +287,7 @@ class ContractVersionProposalsController extends AppController
             }
         }
 
-        $this->set('contractVersionProposal', $proposal);
+        $this->set('contractProposal', $proposal);
         $this->setFormViewVars($proposal);
 
         return null;
@@ -300,10 +300,10 @@ class ContractVersionProposalsController extends AppController
      * first place, so a line left pointing at a billing that is gone would only have the saving
      * refused over a table this form does not even show.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal and its new snapshot.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal and its new snapshot.
      * @return int How many lines were taken back.
      */
-    private function dropLinesWhoseBillingIsGone(ContractVersionProposal $proposal): int
+    private function dropLinesWhoseBillingIsGone(ContractProposal $proposal): int
     {
         $snapshot = $proposal->stateOfThings();
         $changes = $proposal->proposedChanges();
@@ -340,7 +340,7 @@ class ContractVersionProposalsController extends AppController
     {
         $proposal = $this->openProposal($id);
 
-        if (!$proposal instanceof ContractVersionProposal) {
+        if (!$proposal instanceof ContractProposal) {
             return $proposal;
         }
 
@@ -372,7 +372,7 @@ class ContractVersionProposalsController extends AppController
             }
         }
 
-        $this->set('contractVersionProposal', $proposal);
+        $this->set('contractProposal', $proposal);
         $this->set('line', $edited);
         $this->set('replaced', $replaced);
         $this->set('values', $form->fill($edited, $replaced));
@@ -398,7 +398,7 @@ class ContractVersionProposalsController extends AppController
 
         $proposal = $this->openProposal($id);
 
-        if (!$proposal instanceof ContractVersionProposal) {
+        if (!$proposal instanceof ContractProposal) {
             return $proposal;
         }
 
@@ -432,7 +432,7 @@ class ContractVersionProposalsController extends AppController
 
         $proposal = $this->openProposal($id);
 
-        if (!$proposal instanceof ContractVersionProposal) {
+        if (!$proposal instanceof ContractProposal) {
             return $proposal;
         }
 
@@ -445,14 +445,14 @@ class ContractVersionProposalsController extends AppController
      * The proposal, if it is one that may still be changed.
      *
      * @param string|null $id Contract version proposal id.
-     * @return \App\Model\Entity\ContractVersionProposal|\Cake\Http\Response|null
+     * @return \App\Model\Entity\ContractProposal|\Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    private function openProposal(?string $id): ContractVersionProposal|Response|null
+    private function openProposal(?string $id): ContractProposal|Response|null
     {
-        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
 
-        if ($this->ContractVersionProposals->mayBeEdited($proposal)) {
+        if ($this->ContractProposals->mayBeEdited($proposal)) {
             return $proposal;
         }
 
@@ -464,17 +464,17 @@ class ContractVersionProposalsController extends AppController
     /**
      * Saves what the proposal now asks for.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param \App\Contracts\Proposal\ProposalChanges $changes What it asks for.
      * @return bool
      */
-    private function saveChanges(ContractVersionProposal $proposal, ProposalChanges $changes): bool
+    private function saveChanges(ContractProposal $proposal, ProposalChanges $changes): bool
     {
-        $proposal = $this->ContractVersionProposals->patchEntity($proposal, [
+        $proposal = $this->ContractProposals->patchEntity($proposal, [
             'changes' => $changes->toArray(),
         ]);
 
-        if ($this->ContractVersionProposals->save($proposal)) {
+        if ($this->ContractProposals->save($proposal)) {
             $this->Flash->success(__('The proposal has been saved.'));
 
             return true;
@@ -489,12 +489,12 @@ class ContractVersionProposalsController extends AppController
     /**
      * One of the billings the proposal's snapshot took down.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param string $billing_id Which billing.
      * @return \App\Model\Entity\Billing|null
      */
     private function billingOnTheContract(
-        ContractVersionProposal $proposal,
+        ContractProposal $proposal,
         string $billing_id,
     ): ?Billing {
         foreach ($proposal->stateOfThings()->hydrate()->billings as $billing) {
@@ -517,17 +517,17 @@ class ContractVersionProposalsController extends AppController
      * exactly what somebody comes to this page for, and a list without it would quietly move them
      * onto another tariff.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param array<int|string|null> $keep Services already chosen, which stay on the list whatever
      *   they are.
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Service>
      */
-    private function servicesFor(ContractVersionProposal $proposal, array $keep = []): SelectQuery
+    private function servicesFor(ContractProposal $proposal, array $keep = []): SelectQuery
     {
         $contract = $this->contractFor((string)$proposal->contract_id);
         $keep = array_values(array_filter($keep));
 
-        $query = $this->ContractVersionProposals->Contracts->Billings->Services
+        $query = $this->ContractProposals->Contracts->Billings->Services
             ->find('list', order: ['name'])
             ->where($contract === null ? [] : ['OR' => [
                 'Services.service_type_id' => $contract->service_type_id,
@@ -554,7 +554,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function send(?string $id = null): ?Response
     {
-        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
 
         if (!$proposal->isOpen()) {
             $this->Flash->warning(__('This proposal has already been settled.'));
@@ -563,12 +563,12 @@ class ContractVersionProposalsController extends AppController
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $proposal = $this->ContractVersionProposals->patchEntity($proposal, [
+            $proposal = $this->ContractProposals->patchEntity($proposal, [
                 'sent_date' => $this->request->getData('sent_date'),
-                'sent_by' => $this->request->getData('sent_by'),
+                'delivery_type' => $this->request->getData('delivery_type'),
             ]);
 
-            if ($this->ContractVersionProposals->save($proposal)) {
+            if ($this->ContractProposals->save($proposal)) {
                 $this->Flash->success(__('The proposal has been recorded as sent.'));
 
                 return $this->redirect(['action' => 'view', $proposal->id]);
@@ -578,7 +578,7 @@ class ContractVersionProposalsController extends AppController
             $this->Flash->error(__('The sending could not be recorded. Please, try again.'));
         }
 
-        $this->set('contractVersionProposal', $proposal);
+        $this->set('contractProposal', $proposal);
         $this->set('deliveryMethods', $this->deliveryMethodOptions());
 
         return null;
@@ -597,7 +597,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function conclude(?string $id = null): ?Response
     {
-        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
 
         if (!$proposal->isOpen()) {
             $this->Flash->warning(__('This proposal has already been settled.'));
@@ -606,11 +606,11 @@ class ContractVersionProposalsController extends AppController
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $proposal = $this->ContractVersionProposals->patchEntity($proposal, [
+            $proposal = $this->ContractProposals->patchEntity($proposal, [
                 'conclusion_date' => $this->request->getData('conclusion_date'),
             ]);
 
-            if ($this->ContractVersionProposals->save($proposal)) {
+            if ($this->ContractProposals->save($proposal)) {
                 $this->Flash->success(__('The signature has been recorded.'));
                 $this->fileWhatCameWithIt($proposal);
 
@@ -621,7 +621,7 @@ class ContractVersionProposalsController extends AppController
             $this->Flash->error(__('The signature could not be recorded. Please, try again.'));
         }
 
-        $this->set('contractVersionProposal', $proposal);
+        $this->set('contractProposal', $proposal);
         // Only what was actually printed: nothing else can have come back.
         $this->set('printed', $this->whatWasPrinted($proposal));
         $this->set('variants', DocumentVariant::received());
@@ -635,10 +635,10 @@ class ContractVersionProposalsController extends AppController
      * After the day is recorded rather than with it: the day is what the records turn on, and a
      * scan that will not go on the shelf must not stand in the way of it.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal Whose papers.
+     * @param \App\Model\Entity\ContractProposal $proposal Whose papers.
      * @return void
      */
-    private function fileWhatCameWithIt(ContractVersionProposal $proposal): void
+    private function fileWhatCameWithIt(ContractProposal $proposal): void
     {
         $uploaded = $this->getRequest()->getUploadedFiles()['papers'] ?? [];
         if (!is_array($uploaded)) {
@@ -672,10 +672,10 @@ class ContractVersionProposalsController extends AppController
      * printed as it is usually one or two, which is what makes the form on the signature page
      * short enough to be worth having there at all.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal Whose papers.
+     * @param \App\Model\Entity\ContractProposal $proposal Whose papers.
      * @return array<string, string> The document type and how it reads.
      */
-    private function whatWasPrinted(ContractVersionProposal $proposal): array
+    private function whatWasPrinted(ContractProposal $proposal): array
     {
         $filed = (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? [];
 
@@ -710,7 +710,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function documents(?string $id = null): void
     {
-        $this->set('contractVersionProposal', $this->ContractVersionProposals->get($id, contain: ['Contracts']));
+        $this->set('contractProposal', $this->ContractProposals->get($id, contain: ['Contracts']));
     }
 
     /**
@@ -720,10 +720,10 @@ class ContractVersionProposalsController extends AppController
      * printing form offers. Anything with papers but no longer on offer follows it: a document
      * that has been drawn has to stay reachable whatever the proposal has become since.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal Whose documents.
+     * @param \App\Model\Entity\ContractProposal $proposal Whose documents.
      * @return array<string, string>
      */
-    private function documentLabels(ContractVersionProposal $proposal): array
+    private function documentLabels(ContractProposal $proposal): array
     {
         $documents = (new ProposalDocumentTypes())->options($proposal);
         $filed = (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? [];
@@ -747,7 +747,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function addPages(?string $id = null): ?Response
     {
-        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $document_type = (string)$this->getRequest()->getData('document_type');
@@ -777,7 +777,7 @@ class ContractVersionProposalsController extends AppController
             }
         }
 
-        $this->set('contractVersionProposal', $proposal);
+        $this->set('contractProposal', $proposal);
         $this->set('documentTypes', $this->documentLabels($proposal));
         $this->set('variants', DocumentVariant::received());
 
@@ -873,7 +873,7 @@ class ContractVersionProposalsController extends AppController
      */
     public function transfer(?string $id = null): ?Response
     {
-        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
 
         $preview = new TransferPreview();
         $found = $preview->of($proposal);
@@ -917,7 +917,7 @@ class ContractVersionProposalsController extends AppController
             }
         }
 
-        $this->set('contractVersionProposal', $proposal);
+        $this->set('contractProposal', $proposal);
         $this->set('found', $found);
         $this->set('stopped', $preview->anythingStopsIt($found));
         $this->set('billingsNow', $preview->billingsNow($proposal));
@@ -951,9 +951,9 @@ class ContractVersionProposalsController extends AppController
     public function delete(?string $id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
-        $proposal = $this->ContractVersionProposals->get($id);
+        $proposal = $this->ContractProposals->get($id);
 
-        if ($this->ContractVersionProposals->delete($proposal)) {
+        if ($this->ContractProposals->delete($proposal)) {
             $this->Flash->success(__('The proposal has been deleted.'));
         } else {
             $this->flashValidationErrors($proposal->getErrors());
@@ -974,7 +974,7 @@ class ContractVersionProposalsController extends AppController
     {
         $this->request->allowMethod(['post']);
 
-        $proposal = $this->ContractVersionProposals->get($id);
+        $proposal = $this->ContractProposals->get($id);
 
         if (!$proposal->isOpen()) {
             $this->Flash->warning(__('This proposal has already been settled.'));
@@ -985,7 +985,7 @@ class ContractVersionProposalsController extends AppController
         $proposal->revoked = DateTime::now();
         $proposal->revoked_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
-        if ($this->ContractVersionProposals->save($proposal, ['checkRules' => false])) {
+        if ($this->ContractProposals->save($proposal, ['checkRules' => false])) {
             $this->Flash->success(__('The proposal has been revoked.'));
         } else {
             $this->flashValidationErrors($proposal->getErrors());
@@ -998,21 +998,21 @@ class ContractVersionProposalsController extends AppController
     /**
      * Puts what the form said onto the proposal, taking a snapshot where one is wanted.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param array<string, mixed> $data What the form sent.
      * @param bool $keepSnapshot Whether the snapshot it already has stands.
-     * @return \App\Model\Entity\ContractVersionProposal
+     * @return \App\Model\Entity\ContractProposal
      */
     private function fillFromForm(
-        ContractVersionProposal $proposal,
+        ContractProposal $proposal,
         array $data,
         bool $keepSnapshot = false,
-    ): ContractVersionProposal {
+    ): ContractProposal {
         // The form asking to be drawn again is not an attempt to save, so a half-filled one is
         // expected rather than wrong.
         $redrawing = $this->isARedraw();
 
-        $data = $this->dataWithAdditionalParameters($this->ContractVersionProposals, $data);
+        $data = $this->dataWithAdditionalParameters($this->ContractProposals, $data);
 
         $form = new ProposalForm();
         $purpose = $this->purposeFrom($data, $proposal);
@@ -1044,7 +1044,7 @@ class ContractVersionProposalsController extends AppController
         // - and the day is left exactly as it was typed. Filling it in here is what would make the
         // day of one version stay behind in the field after another was chosen.
         if ($redrawing) {
-            return $this->ContractVersionProposals->patchEntity($proposal, $data, ['validate' => false]);
+            return $this->ContractProposals->patchEntity($proposal, $data, ['validate' => false]);
         }
 
         // The day the papers take effect is asked for only where they are a change agreed while the
@@ -1056,7 +1056,7 @@ class ContractVersionProposalsController extends AppController
 
         if ($purpose === ProposalPurpose::Termination) {
             if ($ends === null) {
-                $proposal = $this->ContractVersionProposals->patchEntity($proposal, $data, [
+                $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
                     'validate' => false,
                 ]);
                 $proposal->setError('ends_on', [__('Say which day the service runs to.')]);
@@ -1079,7 +1079,7 @@ class ContractVersionProposalsController extends AppController
                 // Without both there is nothing to take a snapshot of, and the columns that would
                 // hold one are not on the form - so it is said where the operator is looking,
                 // with everything they typed still in front of them.
-                $proposal = $this->ContractVersionProposals->patchEntity($proposal, $data, [
+                $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
                     'validate' => false,
                 ]);
                 $proposal->setError(
@@ -1094,7 +1094,7 @@ class ContractVersionProposalsController extends AppController
             $data['snapshot_taken'] = DateTime::now();
         }
 
-        return $this->ContractVersionProposals->patchEntity($proposal, $data);
+        return $this->ContractProposals->patchEntity($proposal, $data);
     }
 
     /**
@@ -1104,10 +1104,10 @@ class ContractVersionProposalsController extends AppController
      * A form that has never named one is drawing up a new contract, which is the common case.
      *
      * @param array<string, mixed> $data What the form sent.
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal being filled in.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal being filled in.
      * @return \App\Model\Enum\ProposalPurpose
      */
-    private function purposeFrom(array $data, ContractVersionProposal $proposal): ProposalPurpose
+    private function purposeFrom(array $data, ContractProposal $proposal): ProposalPurpose
     {
         $said = $data['purpose'] ?? null;
 
@@ -1156,10 +1156,10 @@ class ContractVersionProposalsController extends AppController
      * Saves the proposal, having first asked the contract whether it is ready to have papers drawn
      * up for it at all.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return bool
      */
-    private function saveProposal(ContractVersionProposal $proposal): bool
+    private function saveProposal(ContractProposal $proposal): bool
     {
         if ($proposal->getErrors() !== []) {
             $this->flashValidationErrors($proposal->getErrors());
@@ -1190,7 +1190,7 @@ class ContractVersionProposalsController extends AppController
             }
         }
 
-        if ($this->ContractVersionProposals->save($proposal)) {
+        if ($this->ContractProposals->save($proposal)) {
             $this->Flash->success(__('The proposal has been saved.'));
 
             return true;
@@ -1217,7 +1217,7 @@ class ContractVersionProposalsController extends AppController
             return null;
         }
 
-        $services = $this->ContractVersionProposals->Contracts->Billings->Services
+        $services = $this->ContractProposals->Contracts->Billings->Services
             ->find()
             ->contain(['Queues'])
             ->where(['Services.id' => $id])
@@ -1248,7 +1248,7 @@ class ContractVersionProposalsController extends AppController
         }
 
         /** @var \App\Model\Entity\Contract|null $contract */
-        $contract = $this->ContractVersionProposals->Contracts
+        $contract = $this->ContractProposals->Contracts
             ->find()
             ->contain(self::FOR_A_SNAPSHOT)
             ->contain('BorrowedEquipments.EquipmentTypes', fn(SelectQuery $q): SelectQuery => $q->where([
@@ -1276,7 +1276,7 @@ class ContractVersionProposalsController extends AppController
         }
 
         /** @var \App\Model\Entity\ContractVersion|null $version */
-        $version = $this->ContractVersionProposals->ContractVersions
+        $version = $this->ContractProposals->ContractVersions
             ->find()
             ->where(['ContractVersions.id' => $id])
             ->first();
@@ -1287,21 +1287,21 @@ class ContractVersionProposalsController extends AppController
     /**
      * What the form needs to draw itself.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return void
      */
-    private function setFormViewVars(ContractVersionProposal $proposal): void
+    private function setFormViewVars(ContractProposal $proposal): void
     {
         $contract = $this->contractFor(
             (string)($proposal->contract_id ?? $this->contract_id ?? $this->named('contract_id') ?? ''),
         );
 
-        $contracts = $this->ContractVersionProposals->Contracts->find('list', order: ['Contracts.number']);
+        $contracts = $this->ContractProposals->Contracts->find('list', order: ['Contracts.number']);
         if ($this->customer_id !== null) {
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
 
-        $versions = $this->ContractVersionProposals->ContractVersions
+        $versions = $this->ContractProposals->ContractVersions
             ->find('list', valueField: 'name')
             ->where($contract === null ? ['1 = 0'] : ['ContractVersions.contract_id' => $contract->id])
             ->orderBy(['ContractVersions.valid_from' => 'DESC']);
@@ -1342,10 +1342,10 @@ class ContractVersionProposalsController extends AppController
     /**
      * What the detail of a proposal needs to draw itself.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return void
      */
-    private function setProposalViewVars(ContractVersionProposal $proposal): void
+    private function setProposalViewVars(ContractProposal $proposal): void
     {
         $changes = $proposal->proposedChanges();
         $snapshot = $proposal->stateOfThings();
@@ -1359,8 +1359,8 @@ class ContractVersionProposalsController extends AppController
             $proposal->effective_from,
             $snapshot->servicesChosenBy($changes),
         ));
-        $this->set('mayBeEdited', $this->ContractVersionProposals->mayBeEdited($proposal));
-        $this->set('mayBeDeleted', $this->ContractVersionProposals->mayBeDeleted($proposal));
+        $this->set('mayBeEdited', $this->ContractProposals->mayBeEdited($proposal));
+        $this->set('mayBeDeleted', $this->ContractProposals->mayBeDeleted($proposal));
         $this->set('deliveryMethods', $this->deliveryMethodOptions());
         // Only the count: the table itself is drawn by a cell, which asks for what it draws.
         $this->set('filed', (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? []);
@@ -1380,6 +1380,6 @@ class ContractVersionProposalsController extends AppController
      */
     private function deliveryMethodOptions(): array
     {
-        return ContractDeliveryMethod::options();
+        return DocumentsDeliveryType::options();
     }
 }

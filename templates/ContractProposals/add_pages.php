@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var array<string, string> $documentTypes
  * @var array<string, string> $variants
  */
@@ -15,24 +15,24 @@ use App\Model\Enum\DocumentVariant;
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('Proposal Documents'),
-                ['action' => 'documents', $contractVersionProposal->id],
+                ['action' => 'documents', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractVersionProposal->id],
+                ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals form content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+        <div class="contractProposals form content">
+            <?= $this->element('ContractProposals/heading') ?>
 
             <?=
                 $this->Form->create(null, [
                     'type' => 'file',
-                    'url' => ['action' => 'addPages', $contractVersionProposal->id],
+                    'url' => ['action' => 'addPages', $contractProposal->id],
                 ])
                 ?>
             <fieldset>

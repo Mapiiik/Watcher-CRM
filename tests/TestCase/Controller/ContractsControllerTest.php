@@ -70,7 +70,7 @@ class ContractsControllerTest extends TestCase
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.ContractVersions',
-        'app.ContractVersionProposals',
+        'app.ContractProposals',
         'app.IpAddresses',
         'app.RemovedIpAddresses',
         'app.IpNetworks',
@@ -555,7 +555,7 @@ class ContractsControllerTest extends TestCase
      */
     private function noPaperworkIsPending(string $contract_id): void
     {
-        $this->getTableLocator()->get('ContractVersionProposals')
+        $this->getTableLocator()->get('ContractProposals')
             ->deleteAll(['contract_id' => $contract_id]);
     }
 
@@ -737,7 +737,7 @@ class ContractsControllerTest extends TestCase
      * every printing and thrown away with the query string.
      *
      * @return void
-     * @link \App\Controller\ContractVersionProposalsController::add()
+     * @link \App\Controller\ContractProposalsController::add()
      */
     public function testTheNumberToBeTerminatedIsOfferedOnTheProposal(): void
     {
@@ -745,7 +745,7 @@ class ContractsControllerTest extends TestCase
 
         $this->login();
         $this->get('/customers/' . $contract->customer_id . '/contracts/' . $contract->id
-            . '/contract-version-proposals/add');
+            . '/contract-proposals/add');
 
         $this->assertResponseOk();
         $this->assertResponseContains('<option value="' . h($contract->number) . '">');

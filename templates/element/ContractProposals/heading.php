@@ -9,10 +9,10 @@
  * legend reads as part of the heading.
  *
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  */
 ?>
-<?= __('Contract No.') ?><h3><?= h($contractVersionProposal->contract->number ?? '') ?></h3>
-<?= __('Effective From') ?><h3><?= h($contractVersionProposal->effective_from) ?></h3>
-<h5><?= h($contractVersionProposal->getState()) ?></h5>
+<?= __('Contract No.') ?><h3><?= h($contractProposal->contract->number ?? '') ?></h3>
+<?= __('Effective From') ?><h3><?= h($contractProposal->effective_from) ?></h3>
+<h5><?= h($contractProposal->getState()) ?></h5>
 <hr />

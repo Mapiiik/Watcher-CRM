@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var array<int|string, string> $deliveryMethods
  */
 
@@ -14,24 +14,24 @@ use Cake\I18n\Date;
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractVersionProposal->id],
+                ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals form content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+        <div class="contractProposals form content">
+            <?= $this->element('ContractProposals/heading') ?>
 
 <?php
 // Papers do go out more than once - by another means, or after the first attempt came back. What
 // they stand on was settled the first time; the day is what a second sending moves.
-$again = $contractVersionProposal->hasBeenSent();
+$again = $contractProposal->hasBeenSent();
 $saying = $again
     ? __(
         'They went out on {0}. Recording it again puts the new day in its place - which is what'
         . ' sending them again does, and the customer has from that day to answer.',
-        $contractVersionProposal->sent_date,
+        $contractProposal->sent_date,
     )
     : __(
         'Once this is recorded, what the papers stand on is settled: the snapshot, what the'
@@ -39,7 +39,7 @@ $saying = $again
         . ' new proposal.',
     );
 ?>
-            <?= $this->Form->create($contractVersionProposal) ?>
+            <?= $this->Form->create($contractProposal) ?>
             <fieldset>
                 <legend><?= $again
                     ? __('Record the Sending Again')
@@ -51,7 +51,7 @@ $saying = $again
                     'label' => __('Sent To The Customer'),
                     'help' => __('The day the papers went out to the customer.'),
                 ]);
-                echo $this->Form->control('sent_by', [
+                echo $this->Form->control('delivery_type', [
                     'options' => $deliveryMethods,
                     'empty' => true,
                     'label' => __('Sent By'),

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Proposal;
 
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\ProposalPurpose;
 
@@ -28,13 +28,13 @@ final class ProposalDocumentTypes
     /**
      * The documents this proposal may be printed as.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param bool $has_equipment Whether the contract is one that has equipment at all.
      * @param bool $version_concluded Whether the version the proposal belongs to has been concluded.
      * @return array<\App\Model\Enum\ContractPrintType>
      */
     public function for(
-        ContractVersionProposal $proposal,
+        ContractProposal $proposal,
         bool $has_equipment,
         bool $version_concluded,
     ): array {
@@ -71,14 +71,14 @@ final class ProposalDocumentTypes
      * Whether the given document may be printed from the given proposal.
      *
      * @param \App\Model\Enum\ContractPrintType $type Which document.
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param bool $has_equipment Whether the contract is one that has equipment at all.
      * @param bool $version_concluded Whether the version the proposal belongs to has been concluded.
      * @return bool
      */
     public function allows(
         ContractPrintType $type,
-        ContractVersionProposal $proposal,
+        ContractProposal $proposal,
         bool $has_equipment,
         bool $version_concluded,
     ): bool {
@@ -91,10 +91,10 @@ final class ProposalDocumentTypes
      * Two pages offer them - the printing form and the papers on a proposal - and neither has any
      * business knowing where in the snapshot the two answers are kept.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return array<string, string> The document type and how it reads.
      */
-    public function options(ContractVersionProposal $proposal): array
+    public function options(ContractProposal $proposal): array
     {
         $snapshot = $proposal->stateOfThings();
 

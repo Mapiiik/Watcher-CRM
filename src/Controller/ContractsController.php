@@ -10,7 +10,7 @@ use App\Contracts\Proposal\ProposalProjection;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Maps\ContractMap;
 use App\Model\Entity\Contract;
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\CustomerDealer;
 use App\Service\ContractPrint\ContractDocuments;
@@ -160,7 +160,7 @@ class ContractsController extends AppController
             'ContractStates',
             'ContractVersions' => [
                 // What a version shows as "sent" is the latest of the proposals drawn up on it.
-                'ContractVersionProposals',
+                'ContractProposals',
                 'conditions' => $show_historical_records ?
                     [] : [
                         'OR' => [
@@ -874,7 +874,7 @@ class ContractsController extends AppController
         $contract = $this->Contracts->get($id, contain: [
             'Commissions',
             'ContractStates',
-            'ContractVersions' => ['ContractVersionProposals'],
+            'ContractVersions' => ['ContractProposals'],
             'Customers',
             'InstallationAddresses',
             'InstallationTechnicians',
@@ -886,10 +886,10 @@ class ContractsController extends AppController
 
         // Every proposal on the contract, across all of its versions - which is why the version is
         // no longer chosen here: it follows from whichever proposal is chosen.
-        $proposals = $this->Contracts->ContractVersionProposals->find()
+        $proposals = $this->Contracts->ContractProposals->find()
             ->contain(['ContractVersions'])
-            ->where(['ContractVersionProposals.contract_id' => $contract->id])
-            ->orderBy(['ContractVersionProposals.effective_from' => 'DESC'])
+            ->where(['ContractProposals.contract_id' => $contract->id])
+            ->orderBy(['ContractProposals.effective_from' => 'DESC'])
             ->all();
 
         $query = $this->getRequest()->getQuery();
@@ -1006,11 +1006,11 @@ class ContractsController extends AppController
     /**
      * The proposal the papers are for, of the ones this contract has.
      *
-     * @param iterable<\App\Model\Entity\ContractVersionProposal> $proposals What it has.
+     * @param iterable<\App\Model\Entity\ContractProposal> $proposals What it has.
      * @param mixed $chosen What was asked for.
-     * @return \App\Model\Entity\ContractVersionProposal|null
+     * @return \App\Model\Entity\ContractProposal|null
      */
-    private function chosenProposal(iterable $proposals, mixed $chosen): ?ContractVersionProposal
+    private function chosenProposal(iterable $proposals, mixed $chosen): ?ContractProposal
     {
         if (!is_string($chosen) || $chosen === '') {
             return null;
@@ -1022,10 +1022,10 @@ class ContractsController extends AppController
     /**
      * The documents that proposal may be printed as.
      *
-     * @param \App\Model\Entity\ContractVersionProposal|null $proposal The chosen proposal.
+     * @param \App\Model\Entity\ContractProposal|null $proposal The chosen proposal.
      * @return array<string, string>
      */
-    private function documentsFor(?ContractVersionProposal $proposal): array
+    private function documentsFor(?ContractProposal $proposal): array
     {
         if ($proposal === null) {
             return [];
@@ -1039,13 +1039,13 @@ class ContractsController extends AppController
      *
      * @param \App\Model\Enum\ContractPrintType $type Which document.
      * @param \App\Model\Entity\Contract $contract The contract, for the page and its checks.
-     * @param \App\Model\Entity\ContractVersionProposal|null $proposal The chosen proposal.
+     * @param \App\Model\Entity\ContractProposal|null $proposal The chosen proposal.
      * @return \App\Service\ContractPrint\ContractPrintData
      */
     private function printDataFor(
         ContractPrintType $type,
         Contract $contract,
-        ?ContractVersionProposal $proposal,
+        ?ContractProposal $proposal,
     ): ContractPrintData {
         if ($proposal === null) {
             $data = new ContractPrintData($type, $contract, null, null);

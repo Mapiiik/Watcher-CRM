@@ -7,9 +7,9 @@ use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposalSnapshot;
 use App\Contracts\Proposal\ProposedVersion;
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
-use App\Model\Entity\ContractVersionProposal;
-use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalPurpose;
 use Cake\Database\Type\EnumType;
 use Cake\I18n\Date;
@@ -20,27 +20,27 @@ use InvalidArgumentException;
 use Override;
 
 /**
- * ContractVersionProposals Model
+ * ContractProposals Model
  *
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @property \App\Model\Table\ContractVersionsTable&\Cake\ORM\Association\BelongsTo $ContractVersions
  * @property \App\Model\Table\ContractVersionsTable&\Cake\ORM\Association\BelongsTo $TerminatedContractVersions
- * @method \App\Model\Entity\ContractVersionProposal newEmptyEntity()
- * @method \App\Model\Entity\ContractVersionProposal newEntity(array $data, array $options = [])
- * @method array<\App\Model\Entity\ContractVersionProposal> newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\ContractVersionProposal get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\ContractVersionProposal findOrCreate($search, ?callable $callback = null, array $options = [])
- * @method \App\Model\Entity\ContractVersionProposal patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method array<\App\Model\Entity\ContractVersionProposal> patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\ContractVersionProposal|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method \App\Model\Entity\ContractVersionProposal saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
- * @method iterable<\App\Model\Entity\ContractVersionProposal>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContractVersionProposal>|false saveMany(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\ContractVersionProposal>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContractVersionProposal> saveManyOrFail(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\ContractVersionProposal>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContractVersionProposal>|false deleteMany(iterable $entities, array $options = [])
- * @method iterable<\App\Model\Entity\ContractVersionProposal>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContractVersionProposal> deleteManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\ContractProposal newEmptyEntity()
+ * @method \App\Model\Entity\ContractProposal newEntity(array $data, array $options = [])
+ * @method array<\App\Model\Entity\ContractProposal> newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\ContractProposal get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\ContractProposal findOrCreate($search, ?callable $callback = null, array $options = [])
+ * @method \App\Model\Entity\ContractProposal patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method array<\App\Model\Entity\ContractProposal> patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\ContractProposal|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\ContractProposal saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method iterable<\App\Model\Entity\ContractProposal>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContractProposal>|false saveMany(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\ContractProposal>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContractProposal> saveManyOrFail(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\ContractProposal>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContractProposal>|false deleteMany(iterable $entities, array $options = [])
+ * @method iterable<\App\Model\Entity\ContractProposal>|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\ContractProposal> deleteManyOrFail(iterable $entities, array $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class ContractVersionProposalsTable extends AppTable
+class ContractProposalsTable extends AppTable
 {
     /**
      * What may no longer be touched once the papers have gone out.
@@ -67,7 +67,7 @@ class ContractVersionProposalsTable extends AppTable
     {
         parent::initialize($config);
 
-        $this->setTable('contract_version_proposals');
+        $this->setTable('contract_proposals');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -75,8 +75,8 @@ class ContractVersionProposalsTable extends AppTable
         $this->getSchema()->setColumnType('changes', 'json');
         $this->getSchema()->setColumnType('confirmations', 'json');
         $this->getSchema()->setColumnType(
-            'sent_by',
-            EnumType::from(ContractDeliveryMethod::class),
+            'delivery_type',
+            EnumType::from(DocumentsDeliveryType::class),
         );
         $this->getSchema()->setColumnType(
             'purpose',
@@ -105,8 +105,8 @@ class ContractVersionProposalsTable extends AppTable
     /**
      * Proposals nobody has settled yet, one way or the other.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersionProposal> $query Base query.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersionProposal>
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractProposal> $query Base query.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractProposal>
      */
     public function findOpen(SelectQuery $query): SelectQuery
     {
@@ -119,8 +119,8 @@ class ContractVersionProposalsTable extends AppTable
     /**
      * Proposals the customer has agreed to and nobody has carried over.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersionProposal> $query Base query.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersionProposal>
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractProposal> $query Base query.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractProposal>
      */
     public function findPendingTransfer(SelectQuery $query): SelectQuery
     {
@@ -134,10 +134,10 @@ class ContractVersionProposalsTable extends AppTable
      * Sending is what locks it, not signing: what stood behind a paper that has left the building
      * is not rewritten afterwards. A correction is a new proposal, and the old one is revoked.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal being asked about.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal being asked about.
      * @return bool
      */
-    public function mayBeEdited(ContractVersionProposal $proposal): bool
+    public function mayBeEdited(ContractProposal $proposal): bool
     {
         return !$proposal->hasBeenSent()
             && !$proposal->hasBeenApplied()
@@ -151,10 +151,10 @@ class ContractVersionProposalsTable extends AppTable
      * neither is ours to remove. A revoked proposal that never went anywhere is somebody's mistake
      * rather than history, so that one may go.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal being asked about.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal being asked about.
      * @return bool
      */
-    public function mayBeDeleted(ContractVersionProposal $proposal): bool
+    public function mayBeDeleted(ContractProposal $proposal): bool
     {
         return !$proposal->hasBeenSent() && !$proposal->hasBeenApplied();
     }
@@ -220,7 +220,7 @@ class ContractVersionProposalsTable extends AppTable
             ->allowEmptyDate('sent_date');
 
         $validator
-            ->allowEmptyString('sent_by');
+            ->allowEmptyString('delivery_type');
 
         $validator
             ->date('conclusion_date')
@@ -273,7 +273,7 @@ class ContractVersionProposalsTable extends AppTable
         // Permissions keep the buttons away, but the last word is here, so that an administrator
         // going straight at it is asked the same question.
         $rules->addDelete(
-            fn(ContractVersionProposal $entity): bool => $this->mayBeDeleted($entity),
+            fn(ContractProposal $entity): bool => $this->mayBeDeleted($entity),
             'settledProposalIsNotRemoved',
             [
                 'errorField' => 'sent_date',
@@ -304,7 +304,7 @@ class ContractVersionProposalsTable extends AppTable
     private function addShapeRules(RulesChecker $rules): void
     {
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 try {
                     $entity->proposedChanges();
                 } catch (InvalidArgumentException) {
@@ -321,7 +321,7 @@ class ContractVersionProposalsTable extends AppTable
         );
 
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 try {
                     $entity->stateOfThings();
                 } catch (InvalidArgumentException) {
@@ -338,7 +338,7 @@ class ContractVersionProposalsTable extends AppTable
         );
 
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 try {
                     $entity->confirmations();
                 } catch (InvalidArgumentException) {
@@ -357,7 +357,7 @@ class ContractVersionProposalsTable extends AppTable
         // A line may only act on a billing the snapshot knows; otherwise there is nothing to say
         // what it replaces, and the preview before transfer would have nothing to compare against.
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 $snapshot = $this->readSnapshot($entity);
 
                 if ($snapshot === null) {
@@ -381,7 +381,7 @@ class ContractVersionProposalsTable extends AppTable
 
         // Two lines on one billing would end it twice and start two replacements at once.
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 $named = [];
 
                 foreach ($this->readChanges($entity)->billings ?? [] as $line) {
@@ -415,7 +415,7 @@ class ContractVersionProposalsTable extends AppTable
     private function addBelongingRules(RulesChecker $rules): void
     {
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 $version = $this->versionOf($entity->contract_version_id);
 
                 return $version === null || $version->contract_id === $entity->contract_id;
@@ -428,7 +428,7 @@ class ContractVersionProposalsTable extends AppTable
         );
 
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 if (!$entity->terminatesAnotherVersion()) {
                     return true;
                 }
@@ -445,7 +445,7 @@ class ContractVersionProposalsTable extends AppTable
         );
 
         $rules->add(
-            fn(ContractVersionProposal $entity): bool => !$entity->terminatesAnotherVersion()
+            fn(ContractProposal $entity): bool => !$entity->terminatesAnotherVersion()
                 || $entity->terminates_contract_version_id !== $entity->contract_version_id,
             'terminatedVersionIsNotTheOneProposed',
             [
@@ -464,7 +464,7 @@ class ContractVersionProposalsTable extends AppTable
     private function addTerminationRules(RulesChecker $rules): void
     {
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 if (!$entity->terminatesAnotherVersion()) {
                     return true;
                 }
@@ -481,7 +481,7 @@ class ContractVersionProposalsTable extends AppTable
         );
 
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 $changes = $this->readChanges($entity);
 
                 if ($changes === null || !$changes->version->endsTheVersion()) {
@@ -502,7 +502,7 @@ class ContractVersionProposalsTable extends AppTable
         // Ending is one act written in two places, and letting the two dates drift apart would put
         // the paper's end on one day and the invoicing's on another.
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 $changes = $this->readChanges($entity);
 
                 if ($changes === null) {
@@ -543,7 +543,7 @@ class ContractVersionProposalsTable extends AppTable
         // to be held together. The form cannot produce a disagreement between them; a customer
         // portal writing over the API could, and the purpose is the first thing it will send.
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 $changes = $this->readChanges($entity);
 
                 if ($changes === null) {
@@ -567,7 +567,7 @@ class ContractVersionProposalsTable extends AppTable
         // The number goes on the paper, and a proposal is where it now stays; before, it was typed
         // in at every printing and thrown away afterwards.
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 $ends = $entity->terminatesAnotherVersion()
                     || $entity->purpose === ProposalPurpose::Termination;
 
@@ -586,7 +586,7 @@ class ContractVersionProposalsTable extends AppTable
         // end of it. Which of the two it is only the purpose can say; asking it of an ending would
         // have the obligation moved to the day the customer left, losing that they left early.
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 if ($entity->purpose === ProposalPurpose::Termination) {
                     return true;
                 }
@@ -628,10 +628,10 @@ class ContractVersionProposalsTable extends AppTable
         // A way with no day does not say when, a day with no way does not say how it could be
         // shown, and either on its own reads later as a record when it is half of one.
         $rules->add(
-            fn(ContractVersionProposal $entity): bool => ($entity->sent_date === null) === ($entity->sent_by === null),
+            fn(ContractProposal $entity): bool => ($entity->sent_date === null) === ($entity->delivery_type === null),
             'sendingIsRecordedWhole',
             [
-                'errorField' => 'sent_by',
+                'errorField' => 'delivery_type',
                 'message' => __('Say both when the papers were sent and how, or neither.'),
             ],
         );
@@ -639,7 +639,7 @@ class ContractVersionProposalsTable extends AppTable
         // Once the papers have gone out, what stood behind them is settled. Recording that they
         // went again, or that they came back signed, is not rewriting it.
         $rules->add(
-            function (ContractVersionProposal $entity): bool {
+            function (ContractProposal $entity): bool {
                 if ($entity->isNew() || $entity->getOriginal('sent_date') === null) {
                     return true;
                 }
@@ -665,7 +665,7 @@ class ContractVersionProposalsTable extends AppTable
         // The transfer offers itself only on a concluded proposal and checks again before it
         // writes, but the last word is here, so that no other way in can get around it.
         $rules->add(
-            fn(ContractVersionProposal $entity): bool => $entity->applied === null || $entity->conclusion_date !== null,
+            fn(ContractProposal $entity): bool => $entity->applied === null || $entity->conclusion_date !== null,
             'appliedNeedsAConclusion',
             [
                 'errorField' => 'applied',
@@ -674,7 +674,7 @@ class ContractVersionProposalsTable extends AppTable
         );
 
         $rules->add(
-            fn(ContractVersionProposal $entity): bool => $entity->applied === null || $entity->revoked === null,
+            fn(ContractProposal $entity): bool => $entity->applied === null || $entity->revoked === null,
             'appliedAndRevokedExcludeEachOther',
             [
                 'errorField' => 'revoked',
@@ -686,10 +686,10 @@ class ContractVersionProposalsTable extends AppTable
     /**
      * The day the version stops being valid once the proposal has been carried over.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $entity The proposal being asked about.
+     * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
      * @return \Cake\I18n\Date|null Null when the version runs on.
      */
-    private function versionEndAfterProposal(ContractVersionProposal $entity): ?Date
+    private function versionEndAfterProposal(ContractProposal $entity): ?Date
     {
         return $this->versionDateAfterProposal($entity, 'valid_until');
     }
@@ -697,10 +697,10 @@ class ContractVersionProposalsTable extends AppTable
     /**
      * The day the obligation runs out once the proposal has been carried over.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $entity The proposal being asked about.
+     * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
      * @return \Cake\I18n\Date|null Null when nothing binds the customer.
      */
-    private function versionObligationAfterProposal(ContractVersionProposal $entity): ?Date
+    private function versionObligationAfterProposal(ContractProposal $entity): ?Date
     {
         return $this->versionDateAfterProposal($entity, 'obligation_until');
     }
@@ -711,11 +711,11 @@ class ContractVersionProposalsTable extends AppTable
      * What the proposal names wins, including when it names it empty; what it does not name is
      * whatever the version says today.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $entity The proposal being asked about.
+     * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
      * @param string $field Which date.
      * @return \Cake\I18n\Date|null
      */
-    private function versionDateAfterProposal(ContractVersionProposal $entity, string $field): ?Date
+    private function versionDateAfterProposal(ContractProposal $entity, string $field): ?Date
     {
         $proposed = $this->readChanges($entity)->version ?? ProposedVersion::untouched();
 
@@ -752,10 +752,10 @@ class ContractVersionProposalsTable extends AppTable
      * The shape itself is somebody else's rule, so the rules that read the changes just stand
      * aside rather than reporting the same fault twice.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $entity The proposal being asked about.
+     * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
      * @return \App\Contracts\Proposal\ProposalChanges|null
      */
-    private function readChanges(ContractVersionProposal $entity): ?ProposalChanges
+    private function readChanges(ContractProposal $entity): ?ProposalChanges
     {
         try {
             return $entity->proposedChanges();
@@ -767,10 +767,10 @@ class ContractVersionProposalsTable extends AppTable
     /**
      * The snapshot, or null when it is in no shape to be read.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $entity The proposal being asked about.
+     * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
      * @return \App\Contracts\Proposal\ProposalSnapshot|null
      */
-    private function readSnapshot(ContractVersionProposal $entity): ?ProposalSnapshot
+    private function readSnapshot(ContractProposal $entity): ?ProposalSnapshot
     {
         try {
             return $entity->stateOfThings();
@@ -782,10 +782,10 @@ class ContractVersionProposalsTable extends AppTable
     /**
      * The confirmations, or null when they are in no shape to be read.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $entity The proposal being asked about.
+     * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
      * @return \App\Contracts\Proposal\ProposalConfirmations|null
      */
-    private function readConfirmations(ContractVersionProposal $entity): ?ProposalConfirmations
+    private function readConfirmations(ContractProposal $entity): ?ProposalConfirmations
     {
         try {
             return $entity->confirmations();

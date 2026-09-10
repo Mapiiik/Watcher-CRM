@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Model\Entity\Trait\SendingTrait;
-use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\DocumentsDeliveryType;
 use Cake\I18n\Date;
 use RuntimeException;
 
@@ -25,13 +25,13 @@ use RuntimeException;
  * @property string $style
  *
  * @property \App\Model\Entity\Contract $contract
- * @property array<\App\Model\Entity\ContractVersionProposal> $contract_version_proposals
+ * @property array<\App\Model\Entity\ContractProposal> $contract_proposals
  *
  * Of the proposals rather than of the version: when its papers last went out, and how. A version
  * that was fetched without them does not carry these - it raises instead of answering null, because
  * "nobody sent anything" and "nobody asked" are not the same.
  * @property \Cake\I18n\Date|null $sent_date
- * @property \App\Model\Enum\ContractDeliveryMethod|null $sent_by
+ * @property \App\Model\Enum\DocumentsDeliveryType|null $delivery_type
  *
  * Of the query rather than of the record, and only where
  * {@see \App\Contracts\Unsigned\UnsignedPaperwork::withDeadlines()} has put them there: the
@@ -99,29 +99,29 @@ class ContractVersion extends AppEntity
     }
 
     /**
-     * @return \App\Model\Enum\ContractDeliveryMethod|null
+     * @return \App\Model\Enum\DocumentsDeliveryType|null
      * @throws \RuntimeException When the proposals were not fetched.
      */
-    protected function _getSentBy(): ?ContractDeliveryMethod
+    protected function _getSentBy(): ?DocumentsDeliveryType
     {
-        return $this->lastSending()?->sent_by;
+        return $this->lastSending()?->delivery_type;
     }
 
     /**
      * The proposal whose papers went out last, of the ones drawn up on this version.
      *
-     * @return \App\Model\Entity\ContractVersionProposal|null
+     * @return \App\Model\Entity\ContractProposal|null
      * @throws \RuntimeException When the proposals were not fetched.
      */
-    private function lastSending(): ?ContractVersionProposal
+    private function lastSending(): ?ContractProposal
     {
-        if (!isset($this->contract_version_proposals)) {
+        if (!isset($this->contract_proposals)) {
             throw new RuntimeException(__('Contract version proposal data not available.'));
         }
 
         $latest = null;
 
-        foreach ($this->contract_version_proposals as $proposal) {
+        foreach ($this->contract_proposals as $proposal) {
             if ($proposal->sent_date === null) {
                 continue;
             }

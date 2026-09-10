@@ -7,8 +7,8 @@ use App\Check\AbstractCheckRegistry;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\BorrowedEquipmentsTable;
+use App\Model\Table\ContractProposalsTable;
 use App\Model\Table\ContractsTable;
-use App\Model\Table\ContractVersionProposalsTable;
 use App\Model\Table\ContractVersionsTable;
 
 /**
@@ -45,8 +45,8 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
         $billings = $this->fetchTable(BillingsTable::class);
         /** @var \App\Model\Table\ContractVersionsTable $versions */
         $versions = $this->fetchTable(ContractVersionsTable::class);
-        /** @var \App\Model\Table\ContractVersionProposalsTable $proposals */
-        $proposals = $this->fetchTable(ContractVersionProposalsTable::class);
+        /** @var \App\Model\Table\ContractProposalsTable $proposals */
+        $proposals = $this->fetchTable(ContractProposalsTable::class);
         /** @var \App\Model\Table\ContractsTable $contracts */
         $contracts = $this->fetchTable(ContractsTable::class);
         /** @var \App\Model\Table\BorrowedEquipmentsTable $equipments */

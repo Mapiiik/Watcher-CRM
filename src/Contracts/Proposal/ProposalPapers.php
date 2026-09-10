@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Proposal;
 
-use App\Model\Entity\ContractVersionProposal;
+use App\Model\Entity\ContractProposal;
 use App\Model\Enum\DocumentVariant;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -61,7 +61,7 @@ final class ProposalPapers
      * The order the browser sends them in is the order they were picked, which for a set of scans
      * is usually their own numbering - so the common case needs no putting right afterwards.
      *
-     * @param \App\Model\Entity\ContractVersionProposal $proposal Whose papers.
+     * @param \App\Model\Entity\ContractProposal $proposal Whose papers.
      * @param string $document_type Which document they are of.
      * @param \App\Model\Enum\DocumentVariant $variant Whose signatures they carry.
      * @param list<\Psr\Http\Message\UploadedFileInterface> $files What arrived.
@@ -69,7 +69,7 @@ final class ProposalPapers
      * @throws \RuntimeException When something arrived that is not a paper.
      */
     public function take(
-        ContractVersionProposal $proposal,
+        ContractProposal $proposal,
         string $document_type,
         DocumentVariant $variant,
         array $files,

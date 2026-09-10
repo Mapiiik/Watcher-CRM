@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  */
 ?>
 <div class="row">
@@ -16,9 +16,9 @@
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals form content">
-            <?= $this->Form->create($contractVersionProposal) ?>
-            <?= $this->element('ContractVersionProposals/form') ?>
+        <div class="contractProposals form content">
+            <?= $this->Form->create($contractProposal) ?>
+            <?= $this->element('ContractProposals/form') ?>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
         </div>

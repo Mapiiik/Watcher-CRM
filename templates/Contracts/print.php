@@ -4,8 +4,8 @@
  * @var \Cake\Form\Form $printForm
  * @var \App\Model\Enum\ContractPrintType|null $printType
  * @var \App\Model\Entity\Contract $contract
- * @var iterable<\App\Model\Entity\ContractVersionProposal> $proposals
- * @var \App\Model\Entity\ContractVersionProposal|null $proposal
+ * @var iterable<\App\Model\Entity\ContractProposal> $proposals
+ * @var \App\Model\Entity\ContractProposal|null $proposal
  * @var array<string, string> $documentTypes
  */
 
@@ -78,7 +78,7 @@ foreach ($proposals as $one) {
                 <?= $this->AuthLink->link(
                     __('New Proposal'),
                     [
-                        'controller' => 'ContractVersionProposals',
+                        'controller' => 'ContractProposals',
                         'action' => 'add',
                         'customer_id' => $contract->customer_id,
                         'contract_id' => $contract->id,
@@ -86,8 +86,8 @@ foreach ($proposals as $one) {
                     ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4><?= __('Proposals') ?></h4>
-                <?= $this->element('Contracts/ContractVersionProposals', [
-                    'contract_version_proposals' => $proposals,
+                <?= $this->element('Contracts/ContractProposals', [
+                    'contract_proposals' => $proposals,
                 ]) ?>
             </div>
             <br>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
+ * @var \App\Model\Entity\ContractProposal $contractProposal
  */
 ?>
 <div class="row">
@@ -10,12 +10,12 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractVersionProposal->id],
+                ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Take the Snapshot Again'),
-                ['action' => 'refreshSnapshot', $contractVersionProposal->id],
+                ['action' => 'refreshSnapshot', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?php
@@ -26,19 +26,19 @@
             ?>
             <?= $this->AuthLink->link(
                 __('Record the Sending'),
-                ['action' => 'send', $contractVersionProposal->id],
+                ['action' => 'send', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
-                $contractVersionProposal->hasBeenConcluded()
+                $contractProposal->hasBeenConcluded()
                     ? __('Correct the Signature')
                     : __('Record the Signature'),
-                ['action' => 'conclude', $contractVersionProposal->id],
+                ['action' => 'conclude', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Carry Over'),
-                ['action' => 'transfer', $contractVersionProposal->id],
+                ['action' => 'transfer', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -49,11 +49,11 @@
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractVersionProposals form content">
-            <?= $this->element('ContractVersionProposals/heading') ?>
+        <div class="contractProposals form content">
+            <?= $this->element('ContractProposals/heading') ?>
 
-            <?= $this->Form->create($contractVersionProposal) ?>
-            <?= $this->element('ContractVersionProposals/form') ?>
+            <?= $this->Form->create($contractProposal) ?>
+            <?= $this->element('ContractProposals/form') ?>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
