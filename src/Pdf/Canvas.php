@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Pdf;
 
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use Com\Tecnick\Pdf\Page\Unit;
 use Com\Tecnick\Pdf\Tcpdf as Engine;
 
@@ -789,7 +790,7 @@ class Canvas
     }
 
     /**
-     * Places an image at a fixed spot on the page.
+     * Places an image at a fixed spot on the page, where there is one to place.
      *
      * @param string $file The file
      * @param float $x Left edge
@@ -799,6 +800,16 @@ class Canvas
      */
     public function Image(string $file, float $x, float $y, float $w): void
     {
+        // A deployment that has not put its logo and signature in place prints without them,
+        // which is what these documents have always done. It is said out loud, with the path,
+        // because a paper quietly missing its letterhead is not something anyone would notice.
+        // Anything else the file turns out to be wrong about is still an error.
+        if (!is_readable($file)) {
+            Log::warning(sprintf('The document is printed without an image: %s cannot be read.', $file));
+
+            return;
+        }
+
         $id = $this->pdf()->image->add($file);
         $data = $this->pdf()->image->getImageDataByKey($this->pdf()->image->getKey($file));
 
