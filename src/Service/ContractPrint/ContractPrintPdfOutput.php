@@ -6,35 +6,35 @@ namespace App\Service\ContractPrint;
 use App\Model\Enum\ContractPrintType;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
-use App\Pdf\SignatureStampPDF;
-use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\I18n;
 use Settings\Utility\Settings;
 
 /**
- * View responsible for rendering contract-related PDF documents.
+ * Draws a contract document.
  *
- * This view:
+ * This:
  *  - receives fully prepared ContractPrintData
  *  - selects the appropriate PDF generation method
- *  - outputs the final PDF to the browser
+ *  - hands back the paper as bytes
  *
  * It does NOT:
  *  - perform validation
  *  - prepare or mutate data
  *  - access request query parameters
+ *  - put anybody's signature on the paper, or decide whether the paper should be drawn at all -
+ *    that is {@see \App\Service\ContractPrint\ContractDocuments}, which asks for this only when
+ *    there is nothing on file to hand over instead
  */
 final class ContractPrintPdfOutput
 {
     /**
-     * Renders a PDF document based on prepared contract print data.
+     * Draws the paper, with nobody's signature on it.
      *
-     * Returns a CakePHP Response containing the PDF output with appropriate headers.
-     *
-     * @return \Cake\Http\Response
+     * @param \App\Service\ContractPrint\ContractPrintData $data What to draw.
+     * @return \App\Service\ContractPrint\PrintedDocument
      */
-    public function render(ContractPrintData $data): Response
+    public function document(ContractPrintData $data): PrintedDocument
     {
         $this->initializeLocale();
 
@@ -54,26 +54,9 @@ final class ContractPrintPdfOutput
                 => $pdf->generateContract($data),
         };
 
-        $filename = $this->buildFilename($data);
+        $filename = $this->filename($data, false);
 
-        // The paper is set once, without anybody's signature on it, and ours is drawn onto that
-        // rather than into a second setting of the same document. Which is what lets a paper
-        // already on file be countersigned later and come out the same.
-        $printed = $pdf->Output($filename, 'S');
-
-        if ($data->signed) {
-            $printed = (new SignatureStampPDF())->stamp(
-                $printed,
-                $pdf->anchors(),
-                Date::now(),
-            );
-        }
-
-        return (new Response())
-            ->withType('application/pdf')
-            //->withDownload($this->buildFilename($data))
-            ->withHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-            ->withStringBody($printed);
+        return new PrintedDocument($pdf->Output($filename, 'S'), $filename);
     }
 
     /**
@@ -102,9 +85,14 @@ final class ContractPrintPdfOutput
      *  - relevant contract date
      *  - optional signed suffix
      *
+     * Whether it is the signed one is asked for rather than read off the request, because one
+     * request draws the unsigned paper and then names the signed one it makes from it.
+     *
+     * @param \App\Service\ContractPrint\ContractPrintData $data What the paper is.
+     * @param bool $signed Whether it is the copy carrying our signature.
      * @return string
      */
-    private function buildFilename(ContractPrintData $data): string
+    public function filename(ContractPrintData $data, bool $signed): string
     {
         $date = match ($data->type) {
             ContractPrintType::ContractAmendment,
@@ -128,7 +116,7 @@ final class ContractPrintPdfOutput
             $data->type->value,
             $typeSuffix,
             $date ? $date->i18nFormat('yyyy-MM-dd') : Date::now()->i18nFormat('yyyy-MM-dd'),
-            $data->signed ? '-signed' : '',
+            $signed ? '-signed' : '',
         );
     }
 }

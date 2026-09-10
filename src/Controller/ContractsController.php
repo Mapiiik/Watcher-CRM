@@ -13,10 +13,10 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\CustomerDealer;
+use App\Service\ContractPrint\ContractDocuments;
 use App\Service\ContractPrint\ContractPrintData;
-use App\Service\ContractPrint\ContractPrintDataEnricher;
-use App\Service\ContractPrint\ContractPrintPdfOutput;
 use App\Service\ContractPrint\ContractPrintValidator;
+use App\Service\ContractPrint\PrintedDocument;
 use App\View\PdfView;
 use Cake\Collection\Collection;
 use Cake\Form\Form;
@@ -942,9 +942,7 @@ class ContractsController extends AppController
                     return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
                 }
 
-                (new ContractPrintDataEnricher())->enrich($data);
-
-                return (new ContractPrintPdfOutput())->render($data);
+                return $this->handOver((new ContractDocuments())->for($data));
             }
         }
 
@@ -958,6 +956,23 @@ class ContractsController extends AppController
         ));
 
         return null;
+    }
+
+    /**
+     * Hands a paper over to whoever asked for it.
+     *
+     * Shown rather than downloaded: printing is what this is for, and a paper that opens is one
+     * fewer step than a paper that lands in a folder.
+     *
+     * @param \App\Service\ContractPrint\PrintedDocument $document The paper.
+     * @return \Cake\Http\Response
+     */
+    private function handOver(PrintedDocument $document): Response
+    {
+        return (new Response())
+            ->withType($document->mimeType)
+            ->withHeader('Content-Disposition', 'inline; filename="' . $document->filename . '"')
+            ->withStringBody($document->bytes);
     }
 
     /**
