@@ -959,6 +959,34 @@ class ContractsController extends AppController
     }
 
     /**
+     * Every paper this contract has, on both sides of it.
+     *
+     * The counterpart of printing, and laid out the same way, because it is the same question
+     * asked afterwards - what became of the papers rather than which one to draw. What came back
+     * comes first, since that is the half somebody is usually chasing.
+     *
+     * @param string|null $id Contract id.
+     * @return void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function documents(?string $id = null): void
+    {
+        $contract = $this->Contracts->get($id, contain: [
+            'Commissions',
+            'ContractStates',
+            'Customers',
+            'InstallationAddresses',
+            'InstallationTechnicians',
+            'ServiceTypes',
+            'UninstallationTechnicians',
+            'Creators',
+            'Modifiers',
+        ]);
+
+        $this->set(compact('contract'));
+    }
+
+    /**
      * Hands a paper over to whoever asked for it.
      *
      * Shown rather than downloaded: printing is what this is for, and a paper that opens is one
@@ -1003,19 +1031,7 @@ class ContractsController extends AppController
             return [];
         }
 
-        $snapshot = $proposal->stateOfThings();
-        $offered = (new ProposalDocumentTypes())->for(
-            $proposal,
-            (bool)($snapshot->part('contract')['service_type']['have_equipments'] ?? false),
-            ($snapshot->part('version')['conclusion_date'] ?? null) !== null,
-        );
-
-        $documents = [];
-        foreach ($offered as $document) {
-            $documents[$document->value] = $document->label();
-        }
-
-        return $documents;
+        return (new ProposalDocumentTypes())->options($proposal);
     }
 
     /**

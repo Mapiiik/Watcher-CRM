@@ -333,6 +333,12 @@ th:first-child {
     padding-left: 0.7rem;
 }
 
+/* A row whose leading cells are joined into the row above has no cell at the table's left edge,
+   so the gutter that belongs there must not land on whichever cell happens to come first. */
+tr.continued td:first-child {
+    padding-left: 0.2rem;
+}
+
 fieldset, input, select, textarea {
     margin-bottom: 1.0rem;
 }

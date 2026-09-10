@@ -93,7 +93,7 @@ return function (RouteBuilder $routes): void {
                 'controller' => 'Contracts',
             ])
             ->setPatterns([
-                'action' => 'edit|delete|print|map'
+                'action' => 'edit|delete|print|documents|map'
                     . '|set-dates-for-related-borrowed-equipments|terminate-related-billings',
                 'customer_id' => RouteBuilder::UUID,
                 'contract_id' => RouteBuilder::UUID,
@@ -134,7 +134,7 @@ return function (RouteBuilder $routes): void {
                 'controller' => 'Customers',
             ])
             ->setPatterns([
-                'action' => 'edit|delete|print',
+                'action' => 'edit|delete|print|documents',
                 'customer_id' => RouteBuilder::UUID,
             ])
             ->setPass(['customer_id']);

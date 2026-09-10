@@ -77,6 +77,11 @@
                     <td><?= $this->Number->toReadableSize($document->file->byte_size) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
+                            __d('files', 'Open'),
+                            ['action' => 'open', $document->id],
+                            ['target' => '_blank'],
+                        ) ?>
+                        <?= $this->AuthLink->link(
                             __d('files', 'Download'),
                             ['action' => 'download', $document->id],
                         ) ?>

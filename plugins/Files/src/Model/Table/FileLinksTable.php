@@ -130,6 +130,36 @@ class FileLinksTable extends AppTable
     }
 
     /**
+     * Everything a handful of records have, in one asking.
+     *
+     * A page that lists what several records hold - every proposal on a contract, say - would
+     * otherwise ask once per record, and the answer is the same query with a wider WHERE.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\FileLink> $query The query.
+     * @param string $model What kind of record.
+     * @param list<string> $foreign_keys Which ones.
+     * @return \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\FileLink>
+     */
+    public function findForAny(SelectQuery $query, string $model, array $foreign_keys): SelectQuery
+    {
+        if ($foreign_keys === []) {
+            return $query->where('1 = 0');
+        }
+
+        return $query
+            ->where([
+                $this->aliasField('model') => $model,
+                $this->aliasField('foreign_key') . ' IN' => $foreign_keys,
+            ])
+            ->orderBy([
+                $this->aliasField('foreign_key') => 'ASC',
+                $this->aliasField('document_type') => 'ASC',
+                $this->aliasField('variant') => 'ASC',
+                $this->aliasField('position') => 'ASC',
+            ]);
+    }
+
+    /**
      * One group: a record's pages of one document in one hand.
      *
      * @param \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\FileLink> $query The query.

@@ -7,10 +7,25 @@
  * @var bool $mayBeDeleted
  * @var array<int|string, string> $deliveryMethods
  * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
+ * @var array<string, array<string, array<\Files\Model\Entity\FileLink>>> $filed
+ * @var array<string, string> $documentTypes
  * @var list<\App\Contracts\Proposal\PlannedChange> $planned
  */
 
 use App\Contracts\Proposal\ProposalConfirmations;
+use App\Model\Enum\DocumentVariant;
+
+$ourPages = 0;
+$theirPages = 0;
+foreach ($filed as $byVariant) {
+    foreach ($byVariant as $variant => $links) {
+        if (DocumentVariant::tryFrom((string)$variant)?->isDrawnUpByUs() ?? false) {
+            $ourPages += count($links);
+        } else {
+            $theirPages += count($links);
+        }
+    }
+}
 
 ?>
 <div class="row">
@@ -58,6 +73,11 @@ use App\Contracts\Proposal\ProposalConfirmations;
                     $contractVersionProposal->contract_id,
                     '?' => ['proposal_id' => $contractVersionProposal->id],
                 ],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Proposal Documents'),
+                ['action' => 'documents', $contractVersionProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?php if ($contractVersionProposal->isOpen()) : ?>
@@ -134,6 +154,21 @@ use App\Contracts\Proposal\ProposalConfirmations;
                             <td><?= h($contractVersionProposal->conclusion_date) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Papers on File') ?></th>
+                            <td><?=
+                                $this->Html->link(
+                                    $ourPages + $theirPages === 0
+                                        ? __('None')
+                                        : __(
+                                            '{0} drawn up, {1} came back',
+                                            $ourPages,
+                                            $theirPages,
+                                        ),
+                                    ['action' => 'documents', $contractVersionProposal->id],
+                                )
+                                ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Carried Over') ?></th>
                             <td><?= h($contractVersionProposal->applied) ?></td>
                         </tr>
@@ -188,6 +223,22 @@ use App\Contracts\Proposal\ProposalConfirmations;
                     <?php endif; ?>
                 <?php endforeach; ?>
                 </table>
+            <?php endif; ?>
+
+            <?php if ($filed !== []) : ?>
+                <h4><?= __('Papers on File') ?></h4>
+                <h5><?= __('Received Documents') ?></h5>
+                <?= $this->cell(
+                    'Documents',
+                    ['proposal', $contractVersionProposal->id],
+                    ['ours' => false],
+                ) ?>
+                <h5><?= __('Sent Documents') ?></h5>
+                <?= $this->cell(
+                    'Documents',
+                    ['proposal', $contractVersionProposal->id],
+                    ['ours' => true],
+                ) ?>
             <?php endif; ?>
 
             <?php if (!empty($contractVersionProposal->note)) : ?>

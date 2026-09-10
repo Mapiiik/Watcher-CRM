@@ -9,6 +9,7 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+use App\Model\Enum\DocumentVariant;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -427,6 +428,7 @@ $permissions = [
             'action' => [
                 'index',
                 'download',
+                'open',
             ],
         ],
         //allow add/edit for sales and bookkeepers and network-managers
@@ -472,6 +474,75 @@ $permissions = [
                 'setDatesForRelatedBorrowedEquipments',
                 'terminateRelatedBillings',
             ],
+        ],
+        //the papers: anybody who may look at the record may see what it has on file
+        [
+            'role' => '*',
+            'plugin' => null,
+            'controller' => [
+                'Customers',
+                'Contracts',
+                'ContractVersionProposals',
+            ],
+            'action' => [
+                'documents',
+            ],
+        ],
+        //filing scans and putting them in order goes with drawing the papers up in the first place
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'ContractVersionProposals',
+            ],
+            'action' => [
+                'addPages',
+                'movePage',
+            ],
+        ],
+        //a scan that came back is the operator's own to correct, but letting go of a paper we drew
+        //up is unfreezing it - the document may then be printed afresh - so that stays with the
+        //administrator, who is matched by '*' and never reaches this rule
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'ContractVersionProposals',
+            ],
+            'action' => [
+                'dropPage',
+            ],
+            //The page says whether it may go. The condition reads the record, so it also settles
+            //whether AuthLink draws the button - the link and the request that follows it are asked
+            //the very same question.
+            'allowed' => function ($_user, $_role, ServerRequest $request): bool {
+                $id = $request->getParam('pass.1');
+
+                if (!is_string($id) || !Validation::uuid($id)) {
+                    return false;
+                }
+
+                /** @var \Files\Model\Table\FileLinksTable $links */
+                $links = TableRegistry::getTableLocator()->get('Files.FileLinks');
+                /** @var \Files\Model\Entity\FileLink|null $link */
+                $link = $links->find()
+                    ->select(['FileLinks.variant'])
+                    ->where(['FileLinks.id' => $id])
+                    ->first();
+
+                return $link !== null
+                    && (DocumentVariant::tryFrom((string)$link->variant)?->isReceived() ?? false);
+            },
         ],
         //allow delete of some items for sales and bookkeepers and network-managers
         [

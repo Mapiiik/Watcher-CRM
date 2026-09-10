@@ -111,6 +111,50 @@ class DocumentsControllerTest extends TestCase
     }
 
     /**
+     * Looking at a paper is a step shorter than keeping it, so it is offered for looking at.
+     *
+     * @link \Files\Controller\DocumentsController::open()
+     * @return void
+     */
+    public function testAPaperMayBeLookedAtRatherThanKept(): void
+    {
+        $link = $this->file('what the customer signed', 'IMG_001.jpg');
+
+        $this->get('/files/documents/open/' . $link->id);
+
+        $this->assertResponseOk();
+        $this->assertHeaderContains('Content-Disposition', 'inline');
+        $this->assertHeaderContains('Content-Disposition', 'IMG_001.jpg');
+    }
+
+    /**
+     * Anything the browser would run instead of draw is handed over to be kept, whatever was
+     * asked for. The content came from outside, and opening it in our own origin would be handing
+     * a stranger the session.
+     *
+     * @link \Files\Controller\DocumentsController::open()
+     * @return void
+     */
+    public function testWhatTheBrowserWouldRunIsNeverOpened(): void
+    {
+        $storage = new FileStorage();
+        $file = $storage->store('<script>alert(1)</script>', 'image/svg+xml');
+        $link = $storage->link(
+            $file,
+            'ContractVersionProposals',
+            self::RECORD,
+            'contract-new',
+            'received-signed-by-customer',
+            ['name' => 'drawing.svg'],
+        );
+
+        $this->get('/files/documents/open/' . $link->id);
+
+        $this->assertResponseOk();
+        $this->assertHeaderContains('Content-Disposition', 'attachment');
+    }
+
+    /**
      * A row whose bytes are gone is a torn backup, not a missing page, so it says so rather than
      * handing over nothing.
      *

@@ -32,6 +32,24 @@ class DocumentsController extends AppController
     protected ?string $defaultTable = 'Files.FileLinks';
 
     /**
+     * What the browser may be asked to draw in place of handing it to the operator.
+     *
+     * A list of what is allowed rather than of what is not, because the content came from outside
+     * and anything the browser would run instead of draw would run in our own origin. Kept here
+     * rather than beside the application's own list of what may be uploaded: that one says what
+     * is worth filing, this one says what is safe to open, and they answer to different things.
+     *
+     * @var array<string>
+     */
+    private const OPENS_SAFELY = [
+        'application/pdf',
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/webp',
+    ];
+
+    /**
      * Index method
      *
      * @return void Renders view
@@ -82,6 +100,34 @@ class DocumentsController extends AppController
      */
     public function download(?string $id = null): Response
     {
+        return $this->hand($id, false);
+    }
+
+    /**
+     * Hands the content over to be looked at rather than kept.
+     *
+     * Most of what is filed is looked at once to check it is the right paper, which is a step
+     * shorter without it landing in a folder first.
+     *
+     * @param string|null $id File link id.
+     * @return \Cake\Http\Response
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function open(?string $id = null): Response
+    {
+        return $this->hand($id, true);
+    }
+
+    /**
+     * The content, either way round.
+     *
+     * @param string|null $id File link id.
+     * @param bool $inline Whether to offer it for looking at rather than for keeping.
+     * @return \Cake\Http\Response
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    private function hand(?string $id, bool $inline): Response
+    {
         $link = $this->fileLinks()->get($id, contain: ['Files']);
 
         $storage = new FileStorage();
@@ -90,12 +136,21 @@ class DocumentsController extends AppController
             throw new NotFoundException(__d('files', 'The content of this document is not on the shelf.'));
         }
 
+        $response = $this->getResponse()->withType($link->file->mime_type);
+
+        // Anything the browser would run rather than draw is handed over to be kept, whatever was
+        // asked for. The content came from outside, so opening it in our own origin would be
+        // handing a stranger the session.
+        $response = $inline && in_array($link->file->mime_type, self::OPENS_SAFELY, true)
+            ? $response->withHeader(
+                'Content-Disposition',
+                'inline; filename="' . str_replace('"', '', $link->downloadName()) . '"',
+            )
+            : $response->withDownload($link->downloadName());
+
         // Handed over as a stream: a scan runs to hundreds of megabytes and there is no reason
         // for any of it to pass through memory on the way out.
-        return $this->getResponse()
-            ->withType($link->file->mime_type)
-            ->withDownload($link->downloadName())
-            ->withBody(new Stream($storage->readStream($link->file)));
+        return $response->withBody(new Stream($storage->readStream($link->file)));
     }
 
     /**

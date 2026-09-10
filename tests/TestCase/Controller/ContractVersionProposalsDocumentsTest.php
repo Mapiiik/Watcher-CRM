@@ -1,0 +1,563 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Test\TestCase\Controller;
+
+use App\Controller\ContractVersionProposalsController;
+use App\Model\Enum\DocumentVariant;
+use App\Service\ContractPrint\ContractDocuments;
+use App\Test\Traits\ControllerTestTrait;
+use Cake\Core\Configure;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
+use Files\Model\Entity\FileLink;
+use Laminas\Diactoros\UploadedFile;
+use Override;
+use PHPUnit\Framework\Attributes\UsesClass;
+
+/**
+ * The papers on a proposal: what arrives, what order it goes in, and what letting go of one means.
+ *
+ * Kept apart from the proposal's own controller test, which is about drawing proposals up. What is
+ * asked here is only ever about the shelf.
+ */
+#[UsesClass(ContractVersionProposalsController::class)]
+class ContractVersionProposalsDocumentsTest extends TestCase
+{
+    use ControllerTestTrait;
+    use IntegrationTestTrait;
+
+    /**
+     * The proposal the papers hang on, and the contract it belongs to.
+     *
+     * @var string
+     */
+    private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
+     * The document the scans are of.
+     *
+     * @var string
+     */
+    private const DOCUMENT = 'contract-summary';
+
+    /**
+     * Fixtures
+     *
+     * @var array<string>
+     */
+    protected array $fixtures = [
+        'app.AppUsers',
+        'app.AccountingProfiles',
+        'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
+        'app.Queues',
+        'app.Services',
+        'app.Billings',
+        'app.EquipmentTypes',
+        'app.BorrowedEquipments',
+        'app.ContractVersions',
+        'app.ContractVersionProposals',
+        'app.IpAddresses',
+        'app.IpNetworks',
+        'app.SoldEquipments',
+        'plugin.Files.Files',
+        'plugin.Files.FileLinks',
+    ];
+
+    /**
+     * Where the papers go while this runs, and the scans they are filed from.
+     *
+     * @var string
+     */
+    private string $root;
+
+    private string $scans;
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->root = TMP . 'proposal-papers-' . uniqid();
+        $this->scans = TMP . 'proposal-scans-' . uniqid();
+        mkdir($this->scans, 0777, true);
+        Configure::write('Files.root', $this->root);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        // PHP merges what was uploaded into the request body, and the real forms secure the field
+        // that carries it. Here the scans are handed over on their own, so the token knows nothing
+        // about them - which is a fact about the test harness rather than about the pages.
+        $this->setUnlockedFields(['papers']);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        Configure::delete('Files.root');
+        $this->removeDirectory($this->root);
+        $this->removeDirectory($this->scans);
+
+        parent::tearDown();
+    }
+
+    /**
+     * The page renders with nothing on file, which is how every proposal starts.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::documents()
+     * @return void
+     */
+    public function testThePapersRenderBeforeAnythingHasBeenFiled(): void
+    {
+        $this->get('/contract-version-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The overviews the two cards link to render, and what several pages have in common is said
+     * once down the side rather than repeated on every row.
+     *
+     * @link \App\Controller\ContractsController::documents()
+     * @link \App\Controller\CustomersController::documents()
+     * @return void
+     */
+    public function testTheOverviewsRender(): void
+    {
+        $this->addPages(['one.pdf', 'two.pdf', 'three.pdf']);
+
+        $this->get('/contracts/documents/' . self::CONTRACT_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains('two.pdf');
+        $this->assertResponseContains('rowspan="3"');
+
+        $this->get('/customers/documents/' . self::CUSTOMER_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains('two.pdf');
+        $this->assertResponseContains('rowspan="3"');
+    }
+
+    /**
+     * The overviews are reachable under the customer and the contract they belong to, the way
+     * printing is, and the pages link to each other in that shape.
+     *
+     * @link \App\Controller\ContractsController::documents()
+     * @link \App\Controller\CustomersController::documents()
+     * @return void
+     */
+    public function testTheOverviewsSitUnderWhatTheyBelongTo(): void
+    {
+        $nested = sprintf('/customers/%s/contracts/%s/documents', self::CUSTOMER_ID, self::CONTRACT_ID);
+
+        $this->get($nested);
+        $this->assertResponseOk();
+
+        $this->get(sprintf('/customers/%s/documents', self::CUSTOMER_ID));
+        $this->assertResponseOk();
+
+        // And the two pages point at each other, in the same shape and under the same name they
+        // are known by everywhere else.
+        $printing = sprintf('/customers/%s/contracts/%s/print', self::CUSTOMER_ID, self::CONTRACT_ID);
+
+        $this->get($printing);
+        $this->assertResponseOk();
+        $this->assertResponseContains($nested);
+
+        $this->get($nested);
+        $this->assertResponseContains($printing);
+        $this->assertResponseContains('Print to PDF');
+    }
+
+    /**
+     * The order the browser sends them in is the order they go on the shelf, because for a set of
+     * scans that is usually their own numbering.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::addPages()
+     * @return void
+     */
+    public function testPagesAreFiledInTheOrderTheyWerePicked(): void
+    {
+        $this->addPages(['one.pdf', 'two.png', 'three.pdf']);
+
+        $this->assertSame(['one.pdf', 'two.png', 'three.pdf'], $this->namesOnFile());
+    }
+
+    /**
+     * More pages go after the ones already there rather than among them.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::addPages()
+     * @return void
+     */
+    public function testMorePagesGoOnTheEnd(): void
+    {
+        $this->addPages(['one.pdf']);
+        $this->addPages(['two.pdf']);
+
+        $this->assertSame(['one.pdf', 'two.pdf'], $this->namesOnFile());
+        $this->assertSame([0, 1], $this->positionsOnFile());
+    }
+
+    /**
+     * A page moves past the one beside it, and stays where it is at either end.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::movePage()
+     * @return void
+     */
+    public function testAPageMovesPastTheOneBesideIt(): void
+    {
+        $this->addPages(['one.pdf', 'two.pdf', 'three.pdf']);
+
+        $this->move($this->linkOf('three.pdf'), 'up');
+        $this->assertSame(['one.pdf', 'three.pdf', 'two.pdf'], $this->namesOnFile());
+
+        $this->move($this->linkOf('one.pdf'), 'up');
+        $this->assertSame(['one.pdf', 'three.pdf', 'two.pdf'], $this->namesOnFile(), 'The first page moved up.');
+
+        $this->move($this->linkOf('two.pdf'), 'down');
+        $this->assertSame(['one.pdf', 'three.pdf', 'two.pdf'], $this->namesOnFile(), 'The last page moved down.');
+    }
+
+    /**
+     * Letting go of a page closes the gap it leaves, so the position still means the page.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::dropPage()
+     * @return void
+     */
+    public function testDroppingAPageClosesTheGap(): void
+    {
+        $this->addPages(['one.pdf', 'two.pdf', 'three.pdf']);
+
+        $this->drop($this->linkOf('two.pdf'));
+
+        $this->assertSame(['one.pdf', 'three.pdf'], $this->namesOnFile());
+        $this->assertSame([0, 1], $this->positionsOnFile());
+    }
+
+    /**
+     * A page reached through the wrong proposal is not a page at all.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::dropPage()
+     * @return void
+     */
+    public function testAPageIsOnlyReachableThroughItsOwnProposal(): void
+    {
+        $this->addPages(['one.pdf']);
+
+        $this->post(sprintf(
+            '/contract-version-proposals/drop-page/%s/%s',
+            'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f61',
+            $this->linkOf('one.pdf'),
+        ));
+
+        $this->assertResponseError();
+        $this->assertSame(['one.pdf'], $this->namesOnFile());
+    }
+
+    /**
+     * Letting go of a paper we drew up is unfreezing it: the next request for the document draws
+     * it afresh rather than handing back what is no longer there.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::dropPage()
+     * @return void
+     */
+    public function testLettingGoOfWhatWeDrewUpUnfreezesIt(): void
+    {
+        $this->print();
+        $drawn = $this->fetchTable('Files.FileLinks')->find()->firstOrFail();
+
+        $this->drop((string)$drawn->get('id'));
+        $this->assertSame(0, $this->fetchTable('Files.FileLinks')->find()->count());
+
+        $this->print();
+        $this->assertSame(1, $this->fetchTable('Files.FileLinks')->find()->count());
+    }
+
+    /**
+     * Unfreezing is the administrator's to do. Everyone who files scans may correct their own,
+     * but letting a drawn-up paper go changes what the customer would be handed next time.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::dropPage()
+     * @return void
+     */
+    public function testOnlyTheAdministratorMayUnfreezeADrawnUpPaper(): void
+    {
+        $this->addPages(['scan.pdf']);
+        $this->print();
+
+        $drawn = $this->fetchTable('Files.FileLinks')->find()
+            ->where(['variant' => DocumentVariant::Generated->value])
+            ->firstOrFail();
+
+        $this->login('sales-representative');
+
+        $this->post('/contract-version-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $drawn->get('id'));
+        $this->assertSame(
+            1,
+            $this->fetchTable('Files.FileLinks')->find()
+                ->where(['variant' => DocumentVariant::Generated->value])
+                ->count(),
+            'The paper we drew up was unfrozen by somebody who may not.',
+        );
+
+        $this->post('/contract-version-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $this->linkOf('scan.pdf'));
+        $this->assertSame([], $this->namesOnFile());
+    }
+
+    /**
+     * What is not a paper does not go on the shelf, and the operator is told why rather than
+     * being left to wonder.
+     *
+     * @link \App\Contracts\Proposal\ProposalPapers::take()
+     * @return void
+     */
+    public function testSomethingThatIsNotAPaperIsRefused(): void
+    {
+        $this->addPages(['notes.txt'], false);
+
+        $this->assertSame(0, $this->fetchTable('Files.FileLinks')->find()->count());
+        // The form comes back with the reason on it, so the flash has already been drawn into the
+        // page by the time the session is looked at.
+        $this->assertResponseContains('text/plain');
+    }
+
+    /**
+     * The form asks before it files, like every other way of adding something.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::addPages()
+     * @return void
+     */
+    public function testTheFormForANewDocumentRenders(): void
+    {
+        $this->get('/contract-version-proposals/add-pages/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('papers[]');
+    }
+
+    /**
+     * The signature form offers the documents this proposal was printed as, because nothing else
+     * can have come back - and files what comes with it in one go.
+     *
+     * @link \App\Controller\ContractVersionProposalsController::conclude()
+     * @return void
+     */
+    public function testTheScansComeInWithTheSignature(): void
+    {
+        $this->print();
+
+        $this->get('/contract-version-proposals/conclude/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains('papers[' . self::DOCUMENT . '][]');
+
+        $this->replaceRequest(['files' => [
+            'papers' => [self::DOCUMENT => [$this->upload($this->file('signed.pdf'))]],
+        ]]);
+        $this->post('/contract-version-proposals/conclude/' . self::PROPOSAL_ID, [
+            'conclusion_date' => '2026-10-05',
+            'variants' => [self::DOCUMENT => DocumentVariant::ReceivedSignedByBoth->value],
+        ]);
+
+        $this->assertRedirect();
+        $this->assertSame(1, $this->fetchTable('Files.FileLinks')->find()
+            ->where(['variant' => DocumentVariant::ReceivedSignedByBoth->value])
+            ->count());
+    }
+
+    /**
+     * Asks for the document the way the print page does, which is what puts a drawn-up paper on
+     * the shelf.
+     *
+     * @return void
+     */
+    private function print(): void
+    {
+        $this->get(sprintf(
+            '/contracts/print/%s.pdf?proposal_id=%s&document_type=%s',
+            self::CONTRACT_ID,
+            self::PROPOSAL_ID,
+            self::DOCUMENT,
+        ));
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Files the named scans against the proposal.
+     *
+     * @param array<string> $names What to send, named as they would arrive.
+     * @param bool $expectFiling Whether the form is expected to be done with rather than redrawn.
+     * @return void
+     */
+    private function addPages(array $names, bool $expectFiling = true): void
+    {
+        $files = [];
+        foreach ($names as $name) {
+            $files[] = $this->upload($this->file($name));
+        }
+
+        // replaceRequest rather than configRequest: the latter piles the scans of one request
+        // onto the next, and what is left over would then reach a page that asked for nothing.
+        $this->replaceRequest(['files' => ['papers' => $files]]);
+        $this->post('/contract-version-proposals/add-pages/' . self::PROPOSAL_ID, [
+            'document_type' => self::DOCUMENT,
+            'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
+        ]);
+
+        $expectFiling ? $this->assertRedirect() : $this->assertResponseOk();
+        $this->replaceRequest([]);
+    }
+
+    /**
+     * @param string $link Which page.
+     * @param string $direction Which way.
+     * @return void
+     */
+    private function move(string $link, string $direction): void
+    {
+        $this->post(sprintf(
+            '/contract-version-proposals/move-page/%s/%s/%s',
+            self::PROPOSAL_ID,
+            $link,
+            $direction,
+        ));
+
+        $this->assertRedirect();
+    }
+
+    /**
+     * @param string $link Which page.
+     * @return void
+     */
+    private function drop(string $link): void
+    {
+        $this->post('/contract-version-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $link);
+
+        $this->assertRedirect();
+    }
+
+    /**
+     * Writes a scan out for PHP to hand over, with content its own extension answers for.
+     *
+     * @param string $name What it arrived called.
+     * @return string Where it is.
+     */
+    private function file(string $name): string
+    {
+        $path = $this->scans . DS . uniqid() . '-' . $name;
+
+        file_put_contents($path, match (pathinfo($name, PATHINFO_EXTENSION)) {
+            'png' => (string)base64_decode(
+                'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+            ),
+            'pdf' => "%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<< /Root 1 0 R >>\n%%EOF\n",
+            default => "a note to self\n",
+        });
+
+        return $path;
+    }
+
+    /**
+     * The scan as PHP would hand it over.
+     *
+     * @param string $path Where it is.
+     * @return \Laminas\Diactoros\UploadedFile
+     */
+    private function upload(string $path): UploadedFile
+    {
+        return new UploadedFile(
+            $path,
+            (int)filesize($path),
+            UPLOAD_ERR_OK,
+            substr(basename($path), strpos(basename($path), '-') + 1),
+            null,
+        );
+    }
+
+    /**
+     * Takes a directory and everything under it away again.
+     *
+     * @param string $directory Which one.
+     * @return void
+     */
+    private function removeDirectory(string $directory): void
+    {
+        if (!is_dir($directory)) {
+            return;
+        }
+
+        foreach ((array)scandir($directory) as $entry) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            }
+
+            $path = $directory . DS . $entry;
+            is_dir($path) ? $this->removeDirectory($path) : unlink($path);
+        }
+
+        rmdir($directory);
+    }
+
+    /**
+     * @param string $name Which page.
+     * @return string Its link id.
+     */
+    private function linkOf(string $name): string
+    {
+        return (string)$this->fetchTable('Files.FileLinks')->find()
+            ->where(['name' => $name])
+            ->firstOrFail()
+            ->get('id');
+    }
+
+    /**
+     * @return array<string> The pages as they read.
+     */
+    private function namesOnFile(): array
+    {
+        return array_map(fn(FileLink $link): string => (string)$link->name, $this->group());
+    }
+
+    /**
+     * @return array<int> The numbers they carry.
+     */
+    private function positionsOnFile(): array
+    {
+        return array_map(fn(FileLink $link): int => $link->position, $this->group());
+    }
+
+    /**
+     * @return list<\Files\Model\Entity\FileLink> The scans, in order.
+     */
+    private function group(): array
+    {
+        /** @var list<\Files\Model\Entity\FileLink> $group */
+        $group = $this->fetchTable('Files.FileLinks')->find(
+            'group',
+            model: ContractDocuments::MODEL,
+            foreign_key: self::PROPOSAL_ID,
+            document_type: self::DOCUMENT,
+            variant: DocumentVariant::ReceivedSignedByCustomer->value,
+        )->all()->toList();
+
+        return $group;
+    }
+}

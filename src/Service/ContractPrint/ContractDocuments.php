@@ -98,6 +98,38 @@ final class ContractDocuments
     }
 
     /**
+     * What papers a handful of proposals have, sorted into the shape a page reads them in.
+     *
+     * Three pages ask this - the papers on a proposal, the summary of them on the proposal
+     * itself, and the shortcut on the contract's printing page - and they all ask it of the same
+     * one asking, so that a contract with six proposals is one query rather than six.
+     *
+     * @param iterable<\App\Model\Entity\ContractVersionProposal> $proposals Whose papers.
+     * @return array<string, array<string, array<string, list<\Files\Model\Entity\FileLink>>>>
+     *   By proposal, then by document, then by variant.
+     */
+    public function filedAgainst(iterable $proposals): array
+    {
+        $keys = [];
+        foreach ($proposals as $proposal) {
+            $keys[] = (string)$proposal->id;
+        }
+
+        /** @var \Files\Model\Table\FileLinksTable $links */
+        $links = $this->fetchTable(FileLinksTable::class);
+
+        /** @var iterable<\Files\Model\Entity\FileLink> $found */
+        $found = $links->find('forAny', model: self::MODEL, foreign_keys: $keys)->contain(['Files'])->all();
+
+        $filed = [];
+        foreach ($found as $link) {
+            $filed[$link->foreign_key][$link->document_type][$link->variant][] = $link;
+        }
+
+        return $filed;
+    }
+
+    /**
      * Draws the paper.
      *
      * The enrichment happens here rather than before, so that handing over a paper already on

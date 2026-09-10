@@ -84,4 +84,31 @@ final class ProposalDocumentTypes
     ): bool {
         return in_array($type, $this->for($proposal, $has_equipment, $version_concluded), true);
     }
+
+    /**
+     * The same documents as a list to choose from, read out of the proposal itself.
+     *
+     * Two pages offer them - the printing form and the papers on a proposal - and neither has any
+     * business knowing where in the snapshot the two answers are kept.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @return array<string, string> The document type and how it reads.
+     */
+    public function options(ContractVersionProposal $proposal): array
+    {
+        $snapshot = $proposal->stateOfThings();
+
+        $offered = $this->for(
+            $proposal,
+            (bool)($snapshot->part('contract')['service_type']['have_equipments'] ?? false),
+            ($snapshot->part('version')['conclusion_date'] ?? null) !== null,
+        );
+
+        $documents = [];
+        foreach ($offered as $document) {
+            $documents[$document->value] = $document->label();
+        }
+
+        return $documents;
+    }
 }

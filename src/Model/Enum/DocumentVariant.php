@@ -72,6 +72,16 @@ enum DocumentVariant: string implements EnumLabelInterface
     }
 
     /**
+     * Whether this paper came back to us rather than being made by us.
+     *
+     * @return bool
+     */
+    public function isReceived(): bool
+    {
+        return !$this->isDrawnUpByUs();
+    }
+
+    /**
      * Which paper a request to print asks for.
      *
      * @param bool $signed Whether the operator asked for a copy with our signature on it.
@@ -80,5 +90,26 @@ enum DocumentVariant: string implements EnumLabelInterface
     public static function forPrinting(bool $signed): self
     {
         return $signed ? self::GeneratedSignedByUs : self::Generated;
+    }
+
+    /**
+     * The ones a scan can be filed as, for a form to offer.
+     *
+     * Nobody uploads a paper we drew up - that arrives by being printed - so the two we made are
+     * not on offer.
+     *
+     * @return array<string, string>
+     */
+    public static function received(): array
+    {
+        $options = [];
+
+        foreach (self::cases() as $case) {
+            if ($case->isReceived()) {
+                $options[$case->value] = $case->label();
+            }
+        }
+
+        return $options;
     }
 }

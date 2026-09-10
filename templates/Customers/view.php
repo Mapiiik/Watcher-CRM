@@ -55,6 +55,11 @@ $remark = function (string $note, bool $wrong = false): string {
                 ['action' => 'print', $customer->id],
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
+            <?= $this->AuthLink->link(
+                __('Customer Documents'),
+                ['action' => 'documents', $customer->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
             <br>
             <?= $this->AuthLink->link(
                 __('List Customer Messages'),
@@ -172,13 +177,17 @@ $remark = function (string $note, bool $wrong = false): string {
                 data-trigger="load"
             ></div>
             <?= $this->AuthLink->link(
+                __('Customer Documents'),
+                ['action' => 'documents', $customer->id],
+                ['class' => 'button float-right'],
+            ) ?>
+            <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 ['action' => 'print', $customer->id],
                 ['class' => 'button float-right', 'target' => 'print'],
             ) ?>
             <a id="customer"></a>
-            <?= __('Customer No.') ?><h3><?= h($customer->number) ?></h3>
-            <h5><?= h($customer->name) ?></h5>
+            <?= $this->element('Customers/heading') ?>
             <div class="row">
                 <div class="column">
                     <table>

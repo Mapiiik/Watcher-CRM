@@ -8,7 +8,7 @@ use App\Model\Entity\AppEntity;
 /**
  * One record's use of some content.
  *
- * `model` and `foreign_key` say who has it, `document_type` which document it is, `role` whose
+ * `model` and `foreign_key` say who has it, `document_type` which document it is, `variant` whose
  * signatures it carries, and `position` which page it is where a document runs to several. The
  * last two are strings and a number here on purpose: what the values mean belongs to the
  * application, so that this plugin can be copied into another one without being taught the
@@ -59,6 +59,6 @@ class FileLink extends AppEntity
     {
         $name = trim((string)$this->name);
 
-        return $name !== '' ? $name : ($this->file->sha256 ?? $this->file_id);
+        return $name !== '' ? $name : ($this->file->hash ?? $this->file_id);
     }
 }

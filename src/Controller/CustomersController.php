@@ -446,6 +446,31 @@ class CustomersController extends AppController
     }
 
     /**
+     * Every paper this customer has, across all of their contracts.
+     *
+     * The same overview a contract has, one storey up. Which contract a paper belongs to is a
+     * column here rather than the heading, because that is the only thing that differs.
+     *
+     * @param string|null $id Customer id.
+     * @return void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function documents(?string $id = null): void
+    {
+        // The same as printing loads, because the page opens with the same facts about them.
+        $customer = $this->Customers->get($id, contain: [
+            'AccountingProfiles',
+            'Addresses' => ['Countries'],
+            'Emails',
+            'Phones',
+            'Creators',
+            'Modifiers',
+        ]);
+
+        $this->set(compact('customer'));
+    }
+
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.

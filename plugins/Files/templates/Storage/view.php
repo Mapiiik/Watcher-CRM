@@ -21,7 +21,7 @@
             ) ?>
         </div>
     </aside>
-    <div class="column column-80">
+    <div class="column column-90">
         <div class="files view content">
             <h3><?= h($file->hash) ?></h3>
 
@@ -38,6 +38,10 @@
             <?php endif; ?>
 
             <table>
+                <tr>
+                    <th><?= __d('files', 'Hash Type') ?></th>
+                    <td><?= h($file->hash_type) ?></td>
+                </tr>
                 <tr>
                     <th><?= __d('files', 'MIME Type') ?></th>
                     <td><?= h($file->mime_type) ?></td>
@@ -97,6 +101,11 @@
                                     <td><?= $this->Number->format($link->position) ?></td>
                                     <td><?= h($link->name) ?></td>
                                     <td class="actions">
+                                        <?= $this->AuthLink->link(
+                                            __d('files', 'Open'),
+                                            ['controller' => 'Documents', 'action' => 'open', $link->id],
+                                            ['target' => '_blank'],
+                                        ) ?>
                                         <?= $this->AuthLink->link(
                                             __d('files', 'Download'),
                                             ['controller' => 'Documents', 'action' => 'download', $link->id],

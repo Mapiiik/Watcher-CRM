@@ -5,7 +5,9 @@ namespace App\Controller;
 
 use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalChanges;
+use App\Contracts\Proposal\ProposalDocumentTypes;
 use App\Contracts\Proposal\ProposalForm;
+use App\Contracts\Proposal\ProposalPapers;
 use App\Contracts\Proposal\ProposalProjection;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
 use App\Contracts\Proposal\ProposalTransfer;
@@ -18,14 +20,20 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\ContractVersionProposal;
 use App\Model\Enum\ContractDeliveryMethod;
+use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
+use App\Service\ContractPrint\ContractDocuments;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Exception;
+use Files\Model\Entity\FileLink;
+use Files\Model\Table\FileLinksTable;
+use Throwable;
 
 /**
  * ContractVersionProposals Controller
@@ -604,6 +612,7 @@ class ContractVersionProposalsController extends AppController
 
             if ($this->ContractVersionProposals->save($proposal)) {
                 $this->Flash->success(__('The signature has been recorded.'));
+                $this->fileWhatCameWithIt($proposal);
 
                 return $this->redirect(['action' => 'view', $proposal->id]);
             }
@@ -613,8 +622,243 @@ class ContractVersionProposalsController extends AppController
         }
 
         $this->set('contractVersionProposal', $proposal);
+        // Only what was actually printed: nothing else can have come back.
+        $this->set('printed', $this->whatWasPrinted($proposal));
+        $this->set('variants', DocumentVariant::received());
 
         return null;
+    }
+
+    /**
+     * Files the scans that came in with the signature.
+     *
+     * After the day is recorded rather than with it: the day is what the records turn on, and a
+     * scan that will not go on the shelf must not stand in the way of it.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal Whose papers.
+     * @return void
+     */
+    private function fileWhatCameWithIt(ContractVersionProposal $proposal): void
+    {
+        $uploaded = $this->getRequest()->getUploadedFiles()['papers'] ?? [];
+        if (!is_array($uploaded)) {
+            return;
+        }
+
+        $papers = new ProposalPapers();
+        $filed = 0;
+
+        foreach ($uploaded as $document_type => $files) {
+            $variant = DocumentVariant::tryFrom(
+                (string)$this->getRequest()->getData('variants.' . $document_type),
+            ) ?? DocumentVariant::ReceivedSignedByCustomer;
+
+            try {
+                $filed += $papers->take($proposal, (string)$document_type, $variant, array_values((array)$files));
+            } catch (Throwable $e) {
+                $this->Flash->error($e->getMessage());
+            }
+        }
+
+        if ($filed > 0) {
+            $this->Flash->success(__n('{0} page has been filed.', '{0} pages have been filed.', $filed, $filed));
+        }
+    }
+
+    /**
+     * The documents this proposal has actually been drawn up as.
+     *
+     * Only those, because nothing else can have come back. Of the four a proposal might be
+     * printed as it is usually one or two, which is what makes the form on the signature page
+     * short enough to be worth having there at all.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal Whose papers.
+     * @return array<string, string> The document type and how it reads.
+     */
+    private function whatWasPrinted(ContractVersionProposal $proposal): array
+    {
+        $filed = (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? [];
+
+        $printed = [];
+        foreach ($filed as $document_type => $byVariant) {
+            $type = ContractPrintType::tryFrom((string)$document_type);
+            if ($type === null) {
+                continue;
+            }
+
+            foreach (array_keys($byVariant) as $variant) {
+                if (DocumentVariant::tryFrom((string)$variant)?->isDrawnUpByUs() ?? false) {
+                    $printed[$type->value] = $type->label();
+                    break;
+                }
+            }
+        }
+
+        return $printed;
+    }
+
+    /**
+     * The papers this proposal has: what we drew up, and what came back.
+     *
+     * Not gated on the state of the proposal. Scans arrive after it has been sent, after the
+     * signature has been recorded and sometimes after it has been carried over, and the papers
+     * stay worth looking at for as long as the contract does.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @return void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function documents(?string $id = null): void
+    {
+        $this->set('contractVersionProposal', $this->ContractVersionProposals->get($id, contain: ['Contracts']));
+    }
+
+    /**
+     * The documents to run through, in the order they read.
+     *
+     * What may still be printed comes first, so that the list reads the same as the one the
+     * printing form offers. Anything with papers but no longer on offer follows it: a document
+     * that has been drawn has to stay reachable whatever the proposal has become since.
+     *
+     * @param \App\Model\Entity\ContractVersionProposal $proposal Whose documents.
+     * @return array<string, string>
+     */
+    private function documentLabels(ContractVersionProposal $proposal): array
+    {
+        $documents = (new ProposalDocumentTypes())->options($proposal);
+        $filed = (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? [];
+
+        foreach (array_keys($filed) as $document_type) {
+            $type = ContractPrintType::tryFrom((string)$document_type);
+            if ($type !== null && !isset($documents[$type->value])) {
+                $documents[$type->value] = $type->label();
+            }
+        }
+
+        return $documents;
+    }
+
+    /**
+     * Files what came back, a document at a time.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @return \Cake\Http\Response|null Redirects when filed, renders the form otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function addPages(?string $id = null): ?Response
+    {
+        $proposal = $this->ContractVersionProposals->get($id, contain: ['Contracts']);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $document_type = (string)$this->getRequest()->getData('document_type');
+            $variant = DocumentVariant::tryFrom((string)$this->getRequest()->getData('variant'));
+            $files = $this->getRequest()->getUploadedFiles()['papers'] ?? [];
+
+            if ($variant === null || $document_type === '' || !is_array($files)) {
+                $this->Flash->error(__('It was not said what those pages are.'));
+
+                return null;
+            }
+
+            try {
+                $filed = (new ProposalPapers())->take($proposal, $document_type, $variant, array_values($files));
+
+                if ($filed > 0) {
+                    $this->Flash->success(
+                        __n('{0} page has been filed.', '{0} pages have been filed.', $filed, $filed),
+                    );
+
+                    return $this->redirect(['action' => 'documents', $id]);
+                }
+
+                $this->Flash->error(__('Nothing was chosen to file.'));
+            } catch (Throwable $e) {
+                $this->Flash->error($e->getMessage());
+            }
+        }
+
+        $this->set('contractVersionProposal', $proposal);
+        $this->set('documentTypes', $this->documentLabels($proposal));
+        $this->set('variants', DocumentVariant::received());
+
+        return null;
+    }
+
+    /**
+     * Lets go of one page.
+     *
+     * Letting go of something we drew up is not tidying: it puts the document back within reach,
+     * because what is on file is never drawn again while it is there.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @param string|null $link_id Which page.
+     * @return \Cake\Http\Response|null Redirects back to the papers.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function dropPage(?string $id = null, ?string $link_id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post', 'delete']);
+
+        $page = $this->thePage($id, $link_id);
+
+        try {
+            (new ProposalPapers())->drop($page);
+            $this->Flash->success(__('The page has been removed.'));
+        } catch (Throwable $e) {
+            $this->Flash->error(__('The page could not be removed: {0}', $e->getMessage()));
+        }
+
+        return $this->redirect(['action' => 'documents', $id]);
+    }
+
+    /**
+     * Moves one page past the one beside it.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @param string|null $link_id Which page.
+     * @param string|null $direction Which way - `up` or anything else for down.
+     * @return \Cake\Http\Response|null Redirects back to the papers.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function movePage(?string $id = null, ?string $link_id = null, ?string $direction = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post', 'put']);
+
+        $page = $this->thePage($id, $link_id);
+
+        try {
+            (new ProposalPapers())->move($page, $direction === 'up');
+        } catch (Throwable $e) {
+            $this->Flash->error(__('The pages could not be reordered: {0}', $e->getMessage()));
+        }
+
+        return $this->redirect(['action' => 'documents', $id]);
+    }
+
+    /**
+     * One of this proposal's pages.
+     *
+     * The proposal is checked as well as the page, so that an identifier from somewhere else
+     * cannot reach a paper through this door.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @param string|null $link_id Which page.
+     * @return \Files\Model\Entity\FileLink
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this proposal's.
+     */
+    private function thePage(?string $id, ?string $link_id): FileLink
+    {
+        /** @var \Files\Model\Table\FileLinksTable $links */
+        $links = $this->fetchTable(FileLinksTable::class);
+
+        /** @var \Files\Model\Entity\FileLink $link */
+        $link = $links->get($link_id);
+
+        if ($link->model !== ContractDocuments::MODEL || $link->foreign_key !== $id) {
+            throw new RecordNotFoundException(__('That page belongs to something else.'));
+        }
+
+        return $link;
     }
 
     /**
@@ -1118,6 +1362,8 @@ class ContractVersionProposalsController extends AppController
         $this->set('mayBeEdited', $this->ContractVersionProposals->mayBeEdited($proposal));
         $this->set('mayBeDeleted', $this->ContractVersionProposals->mayBeDeleted($proposal));
         $this->set('deliveryMethods', $this->deliveryMethodOptions());
+        // Only the count: the table itself is drawn by a cell, which asks for what it draws.
+        $this->set('filed', (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? []);
         // Only what the proposal asks for. The rest of what carrying it over would write is worked
         // out against the records as they stand today, so it means something on the preview, where
         // it is about to happen, and nothing here.
