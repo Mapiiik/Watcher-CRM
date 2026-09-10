@@ -109,6 +109,24 @@ running on the host (e.g. an existing PostgreSQL instance, external Redis,
 reverse proxy), removing bundled containers you don't need, or tweaking
 volumes / networks.
 
+### Backups
+
+A deployment keeps its state in two places: the database, and the data root
+(`DATA_ROOT`, the `app-data` volume by default) where the letterhead, the
+signature and the documents live. A dump of the database alone is therefore
+not a backup.
+
+```bash
+bin/cake backup /somewhere/outside   # a directory named after the moment
+bin/cake restore /somewhere/outside/2026-09-10-020000
+```
+
+The application image carries no PostgreSQL client, so under Docker the
+command prints what to run in the database container instead. See
+[docs/2026-backing-up-a-deployment.txt](docs/2026-backing-up-a-deployment.txt)
+for that, for the order the two halves have to be taken in, and for how to
+check that a backup is one.
+
 ## Development
 
 Two compose files target local development:

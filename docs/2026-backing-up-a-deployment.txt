@@ -1,0 +1,115 @@
+==============================================================================
+Backing up a deployment, and putting it back.
+
+A dump of the database stopped being the whole backup the day the papers began
+to live outside it. A deployment now holds its state in two places:
+
+  * the database          - every record
+  * the data root         - the letterhead and the signature the documents are
+                            drawn with, the invoices kept a copy of, and the
+                            contract documents: what was printed and what came
+                            back signed
+
+`DATA_ROOT` says where the second one is; without it, `data/` beside the
+application. Under the bundled production compose it is the `app-data` volume
+mounted at `/app/data`.
+
+What is deliberately NOT backed up: `app-cache` is a cache and rebuilds
+itself, and `app-acme` holds certificates that are issued again on demand. The
+RADIUS database belongs to FreeRADIUS on most deployments and is theirs to
+keep - `--with-radius` takes it where it is ours.
+
+==============================================================================
+ORDER, AND WHY IT IS THAT WAY ROUND
+
+Backing up:   the database first, the data root after it.
+Restoring:    the data root first, the database after it.
+
+Anything written while a backup runs then ends up as bytes nobody has a row
+for. That is rubbish: it can be found and thrown away. The other order would
+leave a row pointing at bytes that were never taken - a broken record, and
+nothing can be done about it afterwards.
+
+Restoring is the same rule seen from the other end: the files go back first so
+that a row is never written before the bytes it points at are there.
+
+The commands already do this. The order matters when the two halves are taken
+by hand instead.
+
+==============================================================================
+TAKING ONE
+
+    bin/cake backup /somewhere/outside
+
+A directory named after the moment is made inside it, and the backup written
+there, so a run never writes over what an earlier one made. Point it OUTSIDE
+the data root: a backup that lives in what it is backing up grows on every run
+and is lost with what it was meant to save.
+
+Cron is the operator's to set up. The command schedules nothing itself.
+
+==============================================================================
+UNDER DOCKER: WHERE THE CLIENT IS
+
+The application image carries no `pg_dump` or `pg_restore`, so running the
+command inside the application container gets as far as the data root and then
+stops. It prints the command to run instead, filled in from the same
+connection it just read, and that command belongs in the DATABASE container:
+its client matches its server by definition, which is what the version rule
+asks for - a client older than the server refuses to dump it.
+
+So the two halves are taken separately. Database first:
+
+    docker compose exec -T database \
+        pg_dump --host=... --username=... --dbname=... \
+                --format=custom --no-owner --no-privileges \
+                --file=/backup/database-default.dump
+
+Then the data root, from the container that has it mounted:
+
+    docker compose exec -T webserver tar --create --file=- -C /app/data . \
+        > /somewhere/outside/data.tar
+
+Both need somewhere to put the result. Mount it into whichever container is
+doing the writing, or redirect the output to the host as above.
+
+Adding a `postgresql<major>-client` to the production image makes
+`bin/cake backup` work in one go instead. The major has to match the server.
+
+==============================================================================
+PUTTING ONE BACK
+
+    bin/cake restore /somewhere/outside/2026-09-10-020000
+
+It refuses a database that already holds anything. `--force` drops what is
+there and puts the backup in its place - which is what a real restore is, and
+also why it is not the default.
+
+The command needs the application to stand up first: `bin/cake` wants
+`vendor/` and a configuration it can read. Onto a bare machine the order is
+therefore code, then this.
+
+Afterwards, in this order:
+
+    bin/cake cache clear_all
+    bin/cake schema_cache build
+
+Not done by the command itself: the schema has just changed underneath that
+very process, so what it cached is what it read before the restore.
+
+==============================================================================
+CHECKING THAT A BACKUP IS ONE
+
+A backup nobody has ever restored is a hope, not a backup. The only test that
+says anything is to put one back somewhere else and look:
+
+  1. a fresh database and an empty data root
+  2. `bin/cake restore <the backup>`
+  3. `bin/cake cache clear_all` and `bin/cake schema_cache build`
+  4. open a record whose file lives under the data root - an invoice with a
+     copy kept, a document printed before the backup was taken - and fetch it
+
+Step 4 is the one that matters. It is the only step that reads both halves at
+once, which is the only way to find out that they were taken of the same
+moment.
+==============================================================================
