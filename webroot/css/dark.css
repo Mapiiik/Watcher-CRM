@@ -58,6 +58,12 @@ nav.top-nav {
         0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
-pre {
+/*
+ * Milligram paints both of these a light grey and leaves the text to inherit, which on a dark
+ * page is light on light. The background follows the theme instead; the text needs nothing,
+ * because it already inherits the one the body is set in.
+ */
+pre,
+code {
     background: var(--color-table-bg);
 }
