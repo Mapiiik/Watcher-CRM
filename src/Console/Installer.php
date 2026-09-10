@@ -25,6 +25,7 @@ use Cake\Utility\Security;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use Exception;
+use josegonzalez\Dotenv\Loader;
 
 /**
  * Provides installation hooks for when this application is installed through
@@ -33,11 +34,7 @@ use Exception;
 class Installer
 {
     /**
-     * Directories the application has to find in place: the ones it writes to as it runs, and
-     * the ones a deployment puts its own files into - its letterhead and its signature under
-     * `data/images`, and the invoices it keeps a copy of.
-     *
-     * A directory comes before whatever sits inside it, because they are made one at a time.
+     * An array of directories to be made writable
      *
      * @var list<string>
      */
@@ -50,9 +47,20 @@ class Installer
         'tmp/cache/views',
         'tmp/sessions',
         'tmp/tests',
-        'data',
-        'data/images',
-        'data/invoices',
+    ];
+
+    /**
+     * What sits under the data root: where a deployment puts its letterhead and its signature,
+     * and where the invoices it keeps a copy of are written.
+     *
+     * These do not hang off the application directory - `DATA_ROOT` is free to point somewhere
+     * else entirely, and on a real deployment it does.
+     *
+     * @var list<string>
+     */
+    public const DATA_DIRS = [
+        'images',
+        'invoices',
     ];
 
     /**
@@ -70,6 +78,7 @@ class Installer
 
         static::createAppLocalConfig($rootDir, $io);
         static::createWritableDirectories($rootDir, $io);
+        static::createDataDirectories($rootDir, $io);
 
         static::setFolderPermissions($rootDir, $io);
         static::setSecuritySalt($rootDir, $io);
@@ -97,7 +106,7 @@ class Installer
     }
 
     /**
-     * Create the directories the application has to find in place.
+     * Create the `logs` and `tmp` directories.
      *
      * @param string $dir The application's root directory.
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
@@ -112,6 +121,58 @@ class Installer
                 $io->write('Created `' . $path . '` directory');
             }
         }
+    }
+
+    /**
+     * Create the directories under the data root.
+     *
+     * @param string $dir The application's root directory.
+     * @param \Composer\IO\IOInterface $io IO interface to write to console.
+     * @return void
+     */
+    public static function createDataDirectories(string $dir, IOInterface $io): void
+    {
+        $root = self::dataRoot($dir);
+
+        foreach (array_merge([''], static::DATA_DIRS) as $name) {
+            $path = $root . ($name === '' ? '' : DIRECTORY_SEPARATOR . $name);
+            if (file_exists($path)) {
+                continue;
+            }
+
+            if (mkdir($path, 0775, true)) {
+                $io->write('Created `' . $path . '` directory');
+            } else {
+                $io->write('<comment>Could not create `' . $path . '` directory</comment>');
+            }
+        }
+    }
+
+    /**
+     * Where the deployment keeps the files it owns.
+     *
+     * The application reads this from its environment, and from `config/.env` where it has
+     * one - which it has not been told to do yet at this point, so it is read here.
+     *
+     * @param string $dir The application's root directory.
+     * @return string
+     */
+    private static function dataRoot(string $dir): string
+    {
+        $root = getenv('DATA_ROOT');
+        if (is_string($root) && $root !== '') {
+            return rtrim($root, '/\\');
+        }
+
+        $envFile = $dir . '/config/.env';
+        if (file_exists($envFile)) {
+            $values = (new Loader([$envFile]))->parse()->toArray();
+            if (!empty($values['DATA_ROOT']) && is_string($values['DATA_ROOT'])) {
+                return rtrim($values['DATA_ROOT'], '/\\');
+            }
+        }
+
+        return $dir . DIRECTORY_SEPARATOR . 'data';
     }
 
     /**
