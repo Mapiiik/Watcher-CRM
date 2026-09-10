@@ -37,6 +37,11 @@ trait ProviderSignatureTrait
     protected const SIGNATURE_FONT_SIZE = 8.0;
 
     /**
+     * A signature to use instead of the installation's, where one is handed in.
+     */
+    protected ?string $signature = null;
+
+    /**
      * Puts our date and our signature onto whichever of the marks are on the page being drawn.
      *
      * @param \App\Pdf\SignatureAnchors $anchors The marks the paper carries.
@@ -54,8 +59,22 @@ trait ProviderSignatureTrait
 
         $signature = $anchors->find(SignatureAnchors::PROVIDER_SIGNATURE);
         if ($signature instanceof SignatureAnchor && $signature->page === $this->PageNo()) {
-            $this->Image(K_PATH_IMAGES . static::SIGNATURE_IMAGE, $signature->x, $signature->y, $signature->width);
+            $this->Image($this->signatureImage(), $signature->x, $signature->y, $signature->width);
         }
+    }
+
+    /**
+     * Where the signature is drawn from.
+     *
+     * What a deployment signs with lives under the data root, which the repository does not
+     * carry, so this can be pointed elsewhere. A test that wrote its own signature into that
+     * directory would be editing the installation in order to check itself.
+     *
+     * @return string
+     */
+    protected function signatureImage(): string
+    {
+        return $this->signature ?? K_PATH_IMAGES . static::SIGNATURE_IMAGE;
     }
 
     /**

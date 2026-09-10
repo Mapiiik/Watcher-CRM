@@ -7,9 +7,11 @@ use App\Pdf\AppPDF;
 use App\Pdf\SignatureAnchor;
 use App\Pdf\SignatureAnchors;
 use App\Pdf\SignatureStampPDF;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use DOMDocument;
+use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 
@@ -31,6 +33,69 @@ class SignatureAnchorsTest extends TestCase
      * @var string
      */
     private const SIGNED_ON = '2026-09-10';
+
+    /**
+     * A signature to draw with.
+     *
+     * What a deployment signs with lives under the data root, which the repository does not
+     * carry, so a test that leant on it would pass on a machine that happens to have one and fail
+     * on a build server - the worst way round, because the failure then says nothing about the
+     * change that set it off. This one brings its own and never touches the installation's.
+     *
+     * A single opaque pixel is enough: nothing here is asked of the image, only of where the page
+     * says it was put. Opaque on purpose - tc-lib-pdf draws a PNG carrying an alpha channel as
+     * nothing at all, and a transparent one would fail this test for a reason of its own making.
+     *
+     * @var string
+     */
+    private const A_PIXEL = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAA7EAAAO'
+        . 'xAGVKw4bAAAADElEQVQImWNgYGAAAAAEAAGjChXjAAAAAElFTkSuQmCC';
+
+    /**
+     * Where this test keeps it.
+     *
+     * Beside the installation's images rather than under the temporary directory, because the
+     * engine reads local files only from where it is told to and that is one of the two places.
+     * Under a name of its own, so that what a deployment signs with is never in reach.
+     *
+     * @var string
+     */
+    private string $signature = '';
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $images = Configure::read('Data.root') . DS . 'images' . DS;
+
+        if (!is_dir($images)) {
+            mkdir($images, 0777, true);
+        }
+
+        $this->signature = $images . 'signature-under-test-' . uniqid() . '.png';
+        file_put_contents($this->signature, (string)base64_decode(self::A_PIXEL));
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        if (is_file($this->signature)) {
+            unlink($this->signature);
+        }
+
+        parent::tearDown();
+    }
 
     /**
      * @link \App\Pdf\SignatureAnchors::toXmp()
@@ -166,7 +231,7 @@ class SignatureAnchorsTest extends TestCase
         $paper = $this->paper('double');
         $anchors = SignatureAnchors::fromPdf($paper);
 
-        $stamp = new SignatureStampPDF();
+        $stamp = new SignatureStampPDF($this->signature);
         $stamp->SetCompression(false);
         $stamped = $stamp->stamp($paper, $anchors, new Date(self::SIGNED_ON));
 

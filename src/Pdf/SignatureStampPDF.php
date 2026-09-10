@@ -24,6 +24,14 @@ final class SignatureStampPDF extends Canvas
     use ProviderSignatureTrait;
 
     /**
+     * @param string|null $signature A signature to draw with, where it is not the installation's.
+     */
+    public function __construct(?string $signature = null)
+    {
+        $this->signature = $signature;
+    }
+
+    /**
      * Draws our signature onto a finished paper and hands back the result.
      *
      * @param string $pdf The paper as it stands.
