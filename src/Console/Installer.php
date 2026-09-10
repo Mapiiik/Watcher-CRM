@@ -33,7 +33,11 @@ use Exception;
 class Installer
 {
     /**
-     * An array of directories to be made writable
+     * Directories the application has to find in place: the ones it writes to as it runs, and
+     * the ones a deployment puts its own files into - its letterhead and its signature under
+     * `data/images`, and the invoices it keeps a copy of.
+     *
+     * A directory comes before whatever sits inside it, because they are made one at a time.
      *
      * @var list<string>
      */
@@ -46,6 +50,9 @@ class Installer
         'tmp/cache/views',
         'tmp/sessions',
         'tmp/tests',
+        'data',
+        'data/images',
+        'data/invoices',
     ];
 
     /**
@@ -90,7 +97,7 @@ class Installer
     }
 
     /**
-     * Create the `logs` and `tmp` directories.
+     * Create the directories the application has to find in place.
      *
      * @param string $dir The application's root directory.
      * @param \Composer\IO\IOInterface $io IO interface to write to console.

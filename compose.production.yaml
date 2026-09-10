@@ -13,6 +13,7 @@ services:
       - /app/tmp:uid=1000,gid=1000
     volumes:
       - app-logs:/app/logs:uid=1000,gid=1000
+      - app-data:/app/data:uid=1000,gid=1000
       - app-acme:/acme
     working_dir: /app/
     restart: unless-stopped
@@ -55,4 +56,5 @@ volumes:
   app-database:
   app-cache:
   app-logs:
+  app-data:
   app-acme:
