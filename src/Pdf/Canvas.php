@@ -879,6 +879,18 @@ class Canvas
     }
 
     /**
+     * Where a new line begins. Everything that flows rather than being placed by hand starts
+     * here, so moving it moves the whole body of the document.
+     *
+     * @param float $margin Distance from the left edge of the page
+     * @return void
+     */
+    public function SetLeftMargin(float $margin): void
+    {
+        $this->lMargin = $margin;
+    }
+
+    /**
      * @return float
      */
     public function GetX(): float

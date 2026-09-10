@@ -11,7 +11,23 @@ use Settings\Utility\Settings;
 
 class AppPDF extends Canvas
 {
-    public const SEPARATOR_OFFSET_X = 4.0;
+    /**
+     * Where the page's furniture is drawn from: the rules, the headings and the blocks that
+     * span the whole width. The body of a section sits inside it.
+     */
+    public const FRAME_LEFT = 10.0;
+
+    /**
+     * How far inside the rules the body of a section sits. Half of what the rules have over
+     * the text, so the text stands the same distance from either end of the rule above it.
+     */
+    public const BODY_INDENT = (self::PAGE_WIDTH - self::TEXT_WIDTH) / 2;
+
+    /**
+     * A rule drawn to bracket the body rather than the section starts where the body does and
+     * keeps the overhang at its far end.
+     */
+    public const SEPARATOR_OFFSET_X = self::BODY_INDENT;
 
     /**
      * Typeface the documents are set in. The summary overrides it, because the regulation
@@ -50,12 +66,6 @@ class AppPDF extends Canvas
     protected const PAGE_WIDTH = 187.0;
 
     /**
-     * Left margin a table indents by, so its frame does not sit flush against the text. A
-     * document whose tables are meant to line up with its paragraphs sets it to nothing.
-     */
-    protected const TABLE_INDENT = 4.0;
-
-    /**
      * Air between the cells of the label and value table, in points. It is what the markup
      * that block used to be written as resolved to, and the documents are laid out to it.
      */
@@ -66,6 +76,11 @@ class AppPDF extends Canvas
      * the air a plain one does not.
      */
     protected const TABLE_ROW_HEIGHT = 5.0;
+
+    /**
+     * Air between a table's caption and the table itself.
+     */
+    protected const TABLE_CAPTION_GAP = 4.0;
 
     /**
      * TCPDF's conditional horizontal scaling: condense the text only when it would not
@@ -129,15 +144,18 @@ class AppPDF extends Canvas
      * across the page starting from the current X/Y position with the given
      * offset and width, then moves the cursor down by the specified amount.
      *
-     * @param float $offsetX Horizontal offset from the current X position (default 0.0)
-     * @param float $width   Total line width (default 187.0)
+     * A rule is furniture, so it is drawn from the page's left edge rather than from wherever
+     * the text has got to. That is what lets the body sit inside it.
+     *
+     * @param float $offsetX Horizontal offset from the page's left edge (default 0.0)
+     * @param float $width Total line width, measured from that same edge
      * @param float|null $lnBefore      Line break height before drawing (default null = disabled)
      * @param float|null $lnAfter      Line break height after drawing (default null = disabled)
      * @return void
      */
     protected function drawSeparator(
         float $offsetX = 0.0,
-        float $width = 187.0,
+        float $width = self::PAGE_WIDTH,
         ?float $lnBefore = null,
         ?float $lnAfter = null,
     ): void {
@@ -145,7 +163,8 @@ class AppPDF extends Canvas
             $this->Ln($lnBefore);
         }
 
-        $this->Line($this->GetX() + $offsetX, $this->GetY(), $this->GetX() + $width, $this->GetY());
+        $left = static::FRAME_LEFT;
+        $this->Line($left + $offsetX, $this->GetY(), $left + $width, $this->GetY());
 
         if (is_float($lnAfter)) {
             $this->Ln($lnAfter);
@@ -178,25 +197,109 @@ class AppPDF extends Canvas
     {
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
+
+        // Set once, for the whole document: what flows begins inside the rules, and what spans
+        // the width steps back out to them.
+        $this->SetLeftMargin(static::FRAME_LEFT + static::BODY_INDENT);
         $this->AddPage();
 
-        $this->Image(K_PATH_IMAGES . 'logo-contract.png', 10, 5, 28);
+        $this->Image(K_PATH_IMAGES . 'logo-contract.png', static::FRAME_LEFT, 5, 28);
 
         if ($overline !== null && $overline !== '') {
             $this->SetFont(static::FONT_FAMILY, 'B', static::BODY_FONT_SIZE);
-            $this->Cell(static::PAGE_WIDTH, 4, $overline, align: 'C');
+            $this->printFullWidth($overline, 4);
             $this->Ln(5);
         }
 
         $this->SetFont(static::FONT_FAMILY, 'B', static::TITLE_FONT_SIZE);
-        $this->Cell(static::PAGE_WIDTH, 6, $title, align: 'C');
+        $this->printFullWidth($title, 6);
         $this->Ln();
 
         $this->SetFont(static::FONT_FAMILY, 'B', static::SUBTITLE_FONT_SIZE);
-        $this->Cell(static::PAGE_WIDTH, 2, $subtitle, align: 'C');
+        $this->printFullWidth($subtitle, 2);
         $this->Ln(3);
 
         $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
+    }
+
+    /**
+     * Puts the cursor at the page's left edge, where the furniture is drawn from.
+     *
+     * Everything that spans the whole width - the headings, the party blocks, the rows of
+     * columns - starts here rather than where the body flows, so it lines up with the rules.
+     *
+     * @return void
+     */
+    protected function frameLeft(): void
+    {
+        $this->SetXY(static::FRAME_LEFT, $this->GetY());
+    }
+
+    /**
+     * A heading set from the page's left edge, wrapping back to it.
+     *
+     * @param string $text What to set
+     * @param float $height Height of a line
+     * @return void
+     */
+    protected function printFrameHeading(string $text, float $height): void
+    {
+        $this->writeFrom(static::FRAME_LEFT, $text, $height);
+    }
+
+    /**
+     * The line that introduces a table.
+     *
+     * It belongs to the table under it rather than to the prose around it, so it stands
+     * between the two: half the body's indent, close enough to the section heading to read as
+     * its own thing without lining up with it.
+     *
+     * The air below it is the caption's own, and it is less than a paragraph leaves behind. A
+     * caption that stands as far from its table as from the text above it belongs to neither.
+     *
+     * The face is the caller's, because one of these is underlined and another carries the
+     * weight of a statement.
+     *
+     * @param string $text What to set
+     * @return void
+     */
+    protected function printTableCaption(string $text): void
+    {
+        $this->writeFrom(static::FRAME_LEFT + static::BODY_INDENT / 2, $text, static::LINE_HEIGHT);
+        $this->Ln(static::TABLE_CAPTION_GAP);
+    }
+
+    /**
+     * Writes flowing text from somewhere other than where the body begins.
+     *
+     * `Write()` takes the left margin for the lines it wraps onto, so anything set outside the
+     * body would drop back into it on a second line. The margin is moved for the duration and
+     * put back, which is the only way the continuation lands under the line it belongs to.
+     *
+     * @param float $left Where the text begins and wraps back to
+     * @param string $text What to set
+     * @param float $height Height of a line
+     * @return void
+     */
+    private function writeFrom(float $left, string $text, float $height): void
+    {
+        $this->SetLeftMargin($left);
+        $this->SetXY($left, $this->GetY());
+        $this->Write($height, $text);
+        $this->SetLeftMargin(static::FRAME_LEFT + static::BODY_INDENT);
+    }
+
+    /**
+     * One line centred across the whole width, from the page's left edge.
+     *
+     * @param string $text What to set
+     * @param float $height Height of the line
+     * @return void
+     */
+    protected function printFullWidth(string $text, float $height): void
+    {
+        $this->frameLeft();
+        $this->Cell(static::PAGE_WIDTH, $height, $text, align: 'C');
     }
 
     /**
@@ -223,12 +326,14 @@ class AppPDF extends Canvas
             : array_fill(0, count($columns), $width);
 
         $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
+        $this->frameLeft();
         foreach ($columns as $index => [$label, $value]) {
             $this->Cell($widths[$index], static::LINE_HEIGHT, $label, align: 'C');
         }
         $this->Ln();
 
         $this->SetFont(static::FONT_FAMILY, 'B', static::BODY_FONT_SIZE);
+        $this->frameLeft();
         foreach ($columns as $index => [$label, $value]) {
             $this->Cell($widths[$index], static::LINE_HEIGHT, $value, align: 'C');
         }
@@ -300,8 +405,9 @@ class AppPDF extends Canvas
         $this->printCompanyDetails($roleLabel);
 
         $this->SetFont(static::FONT_FAMILY, 'B', static::HEADING_FONT_SIZE);
-        $this->Cell(static::PAGE_WIDTH, 4, $this->label('and'), align: 'C');
+        $this->printFullWidth($this->label('and'), 4);
         $this->Ln();
+        $this->frameLeft();
         $this->Cell(30, 4, $this->label('user'));
 
         $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
@@ -322,7 +428,7 @@ class AppPDF extends Canvas
         $this->keepTogether(static::HEADING_ORPHAN_GUARD);
 
         $this->SetFont(static::FONT_FAMILY, 'B', static::HEADING_FONT_SIZE);
-        $this->Write(4, $text);
+        $this->printFrameHeading($text, 4);
         $this->Ln();
 
         $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
@@ -375,10 +481,6 @@ class AppPDF extends Canvas
      */
     protected function printFramedRow(array $cells, array $widths, array $aligns, array|bool $bold = false): void
     {
-        if (static::TABLE_INDENT > 0.0) {
-            $this->Cell(static::TABLE_INDENT, static::TABLE_ROW_HEIGHT);
-        }
-
         foreach ($cells as $index => $cell) {
             $weight = is_array($bold) ? ($bold[$index] ?? false) : $bold;
             $this->SetFont(static::FONT_FAMILY, $weight ? 'B' : '', static::BODY_FONT_SIZE);
@@ -405,9 +507,6 @@ class AppPDF extends Canvas
     protected function printBlankRows(int $count, array $widths): void
     {
         for ($i = 1; $i <= $count; $i++) {
-            if (static::TABLE_INDENT > 0.0) {
-                $this->Cell(static::TABLE_INDENT, static::TABLE_ROW_HEIGHT);
-            }
             foreach ($widths as $width) {
                 $this->Cell($width, static::TABLE_ROW_HEIGHT, '', border: 1, align: 'C');
             }
@@ -452,16 +551,22 @@ class AppPDF extends Canvas
      *  - left and right vertical lines
      *  - two diagonals (\ and /)
      *
+     * Furniture, like the rules, so it is drawn from the page's left edge and stands around
+     * the body rather than starting where the body does.
+     *
      * @param float $lnBefore Line break height before drawing (default 5.0)
-     * @param float $width    Total width of the frame (default 187.0)
+     * @param float $width    Total width of the frame
      * @param float $bottomY  Y‑coordinate of the bottom line (default 285.0)
      * @return void
      */
-    protected function drawCross(float $lnBefore = 5.0, float $width = 187.0, float $bottomY = 285.0): void
-    {
+    protected function drawCross(
+        float $lnBefore = 5.0,
+        float $width = self::PAGE_WIDTH,
+        float $bottomY = 285.0,
+    ): void {
         $this->Ln($lnBefore);
 
-        $x = $this->GetX();
+        $x = static::FRAME_LEFT;
         $y = $this->GetY();
 
         // Top horizontal line
@@ -497,6 +602,7 @@ class AppPDF extends Canvas
     protected function printCompanyDetails(string $roleLabel): void
     {
         $this->SetFont('DejaVuSerif', 'B', 9);
+        $this->frameLeft();
         $this->Cell(45, 4, $roleLabel);
         $this->Ln();
 
@@ -506,6 +612,7 @@ class AppPDF extends Canvas
         // with text in it, blank columns included, so it is only condensed when it truly
         // overruns rather than whenever it crosses a spacer.
         $this->SetFont('DejaVuSerif', 'B', 8);
+        $this->frameLeft();
         $this->Cell(30, 4);
         $this->Cell(110, 4, Settings::getString('core.company.name'));
         $this->SetFont('DejaVuSerif', '', 8);
@@ -513,6 +620,7 @@ class AppPDF extends Canvas
         $this->Cell(40, 4, Settings::getString('core.company.phone'));
         $this->Ln();
 
+        $this->frameLeft();
         $this->Cell(30, 4);
         $this->Cell(60, 4, Settings::getString('core.company.address_line_1'));
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.identity_number'));
@@ -521,6 +629,7 @@ class AppPDF extends Canvas
         $this->Cell(40, 4, Settings::getString('core.company.mobile'));
         $this->Ln();
 
+        $this->frameLeft();
         $this->Cell(30, 4);
         $this->Cell(60, 4, Settings::getString('core.company.address_line_2'));
         $this->Cell(10, 4, Settings::getString('core.documents.common.labels.vat_number'));
@@ -531,8 +640,10 @@ class AppPDF extends Canvas
 
         $this->Ln(3);
         $this->SetFont('DejaVuSerif', '', 8);
+        $this->frameLeft();
         $this->Cell(30, 4);
         $this->MultiCell(157, 4, Settings::getString('core.company.executive_clause'), align: 'L');
+        $this->frameLeft();
         $this->Cell(30, 4);
         $this->MultiCell(157, 4, Settings::getString('core.company.registry_clause'), align: 'L');
 
@@ -550,8 +661,8 @@ class AppPDF extends Canvas
      * - Adds a page when near bottom (Y > 240), then inserts consistent spacing.
      * - Prints date line(s), then a fixed vertical gap, then dotted sign line(s),
      *   then party labels ("Privider"/"User").
-     * - For "double" layout with $signed=true: left date shows current date; also draws a signature image
-     *   at the same coordinates as before (x=38.0, width=35.0, y=currentY-19.0).
+     * - For "double" layout with $signed=true: left date shows current date; also draws a signature
+     *   image over the left signing line, placed from where the body begins.
      *
      * @param string $layout Layout identifier: 'single-right' or 'double'.
      * @param bool   $signed Whether the document is signed (affects left date and signature image in 'double').
@@ -592,7 +703,12 @@ class AppPDF extends Canvas
 
         // Signature image (only for double + signed)
         if ($double && $signed) {
-            $this->Image(K_PATH_IMAGES . 'signature.png', 38.0, $this->GetY() - 19.0, 35.0);
+            $this->Image(
+                K_PATH_IMAGES . 'signature.png',
+                static::FRAME_LEFT + static::BODY_INDENT + 24.5,
+                $this->GetY() - 19.0,
+                35.0,
+            );
         }
     }
 

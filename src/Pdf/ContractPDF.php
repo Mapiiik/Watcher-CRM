@@ -399,7 +399,7 @@ class ContractPDF extends AppPDF
     private function printBetween(string $text): void
     {
         $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
-        $this->Cell(self::PAGE_WIDTH, 2, $text, align: 'C');
+        $this->printFullWidth($text, 2);
         $this->Ln();
     }
 
@@ -672,6 +672,7 @@ class ContractPDF extends AppPDF
         $this->keepTogether(self::HEADING_ORPHAN_GUARD);
 
         $this->SetFont(self::FONT_FAMILY, 'B' . $format, self::HEADING_FONT_SIZE);
+        $this->frameLeft();
         $this->Cell(self::PAGE_WIDTH, 3, $text);
         $this->Ln();
 
@@ -687,7 +688,6 @@ class ContractPDF extends AppPDF
     private function printIndividualClause(string $format): void
     {
         $this->SetFont(self::FONT_FAMILY, $format, self::NOTE_FONT_SIZE);
-        $this->Cell(self::TABLE_INDENT, self::LINE_HEIGHT);
         $this->MultiCell(
             self::TEXT_WIDTH,
             self::LINE_HEIGHT,
@@ -708,7 +708,6 @@ class ContractPDF extends AppPDF
     private function billingTable(iterable $billings, Date $billingReferenceDate, string $format): Decimal
     {
         $this->SetFont(self::FONT_FAMILY, '' . $format, self::BODY_FONT_SIZE);
-        $this->Cell(self::TABLE_INDENT, self::LINE_HEIGHT);
         $this->Cell(140, self::LINE_HEIGHT, $this->billingText('service'));
         $this->Cell(35, self::LINE_HEIGHT, $this->billingText('price_per_month'), align: 'R');
         $this->Ln();
@@ -717,7 +716,6 @@ class ContractPDF extends AppPDF
 
         foreach ($billings as $billing) {
             $this->SetFont(self::FONT_FAMILY, 'B' . $format, self::BODY_FONT_SIZE);
-            $this->Cell(self::TABLE_INDENT, self::LINE_HEIGHT);
             $this->Cell(
                 140,
                 self::LINE_HEIGHT,
@@ -740,7 +738,6 @@ class ContractPDF extends AppPDF
 
             if ($billing->percentage_discount_sum->isPositive()) {
                 $this->SetFont(self::FONT_FAMILY, '' . $format, self::BODY_FONT_SIZE);
-                $this->Cell(self::TABLE_INDENT, self::LINE_HEIGHT);
                 $this->Cell(
                     140,
                     self::LINE_HEIGHT,
@@ -758,7 +755,6 @@ class ContractPDF extends AppPDF
             }
             if ($billing->fixed_discount_sum->isPositive()) {
                 $this->SetFont(self::FONT_FAMILY, '' . $format, self::BODY_FONT_SIZE);
-                $this->Cell(self::TABLE_INDENT, self::LINE_HEIGHT);
                 $this->Cell(140, self::LINE_HEIGHT, $this->billingText('fixed_discount'));
                 $this->Cell(
                     35,
@@ -801,6 +797,7 @@ class ContractPDF extends AppPDF
         $column = self::PAGE_WIDTH / 4;
 
         $this->SetFont(self::FONT_FAMILY, $format, self::BODY_FONT_SIZE);
+        $this->frameLeft();
         $this->Cell($column, self::LINE_HEIGHT, $this->label('payment_period'), align: 'C');
         $this->Cell($column, self::LINE_HEIGHT, $this->label('payment_method'), align: 'C');
         $this->Cell($column, self::LINE_HEIGHT, $this->label('first_payment_date'), align: 'C');
@@ -808,6 +805,7 @@ class ContractPDF extends AppPDF
         $this->Ln();
 
         $this->SetFont(self::FONT_FAMILY, 'B' . $format, self::BODY_FONT_SIZE);
+        $this->frameLeft();
         $this->Cell($column, self::LINE_HEIGHT, $this->label('monthly'), align: 'C');
         $this->Cell($column, self::LINE_HEIGHT, $this->label('bank_transfer'), align: 'C');
         $this->Cell(
@@ -838,7 +836,6 @@ class ContractPDF extends AppPDF
             $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 1.0);
 
             $this->SetFont(self::FONT_FAMILY, $format, self::NOTE_FONT_SIZE);
-            $this->Cell(self::TABLE_INDENT, self::LINE_HEIGHT);
             $this->MultiCell(
                 self::TEXT_WIDTH,
                 self::LINE_HEIGHT,
@@ -867,7 +864,6 @@ class ContractPDF extends AppPDF
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 1.0);
 
         $this->SetFont(self::FONT_FAMILY, $format, self::NOTE_FONT_SIZE);
-        $this->Cell(self::TABLE_INDENT, self::LINE_HEIGHT);
         $this->Cell(self::TEXT_WIDTH, self::LINE_HEIGHT, $this->contractText('texts.standing_order_note'));
         $this->Ln();
     }
@@ -918,7 +914,7 @@ class ContractPDF extends AppPDF
         $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
         $this->Ln();
         $this->Ln();
-        $this->Write(4, $this->contractText('texts.new_equipment_intro'));
+        $this->printFrameHeading($this->contractText('texts.new_equipment_intro'), 4);
         $this->Ln();
 
         $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
@@ -951,19 +947,16 @@ class ContractPDF extends AppPDF
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         if ($data->type === ContractPrintType::ContractNew) {
-            $this->Write(4, $this->contractText('texts.borrowed_equipment_intro_new'));
+            $this->printTableCaption($this->contractText('texts.borrowed_equipment_intro_new'));
         } else {
-            $this->Write(
-                4,
+            $this->printTableCaption(
                 strtr($this->contractText('texts.borrowed_equipment_intro_old'), [
                     '{old_conclusion_date}' => $this->terminatedVersion($data)->conclusion_date,
                 ]),
             );
         }
-        $this->Ln(5);
 
         $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
-        $this->Cell(self::TABLE_INDENT, self::TABLE_ROW_HEIGHT);
         $this->Cell(
             130,
             self::TABLE_ROW_HEIGHT,
@@ -981,7 +974,6 @@ class ContractPDF extends AppPDF
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         foreach ($contract->borrowed_equipments as $borrowed_equipment) {
-            $this->Cell(self::TABLE_INDENT, self::TABLE_ROW_HEIGHT);
             $this->Cell(130, self::TABLE_ROW_HEIGHT, $borrowed_equipment->equipment_type->name, 1);
             $this->Cell(
                 30,
@@ -1266,8 +1258,7 @@ class ContractPDF extends AppPDF
         $this->printSectionHeading($this->handoverText('sections.access_info'));
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->Write(4, $this->handoverText('texts.endpoint_auth'));
-        $this->Ln(5);
+        $this->printTableCaption($this->handoverText('texts.endpoint_auth'));
 
         $this->printFramedRow(
             [__d('documents', 'Username'), __d('documents', 'Password')],
@@ -1311,8 +1302,7 @@ class ContractPDF extends AppPDF
         }
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->Write(4, __d('documents', 'Assigned IP Addresses') . ':');
-        $this->Ln(5);
+        $this->printTableCaption(__d('documents', 'Assigned IP Addresses') . ':');
 
         $this->printFramedRow(
             [
@@ -1363,11 +1353,9 @@ class ContractPDF extends AppPDF
         }
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->Write(4, __d('documents', 'Assigned IP Networks') . ':');
-        $this->Ln(5);
+        $this->printTableCaption(__d('documents', 'Assigned IP Networks') . ':');
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->Cell(self::TABLE_INDENT, self::TABLE_ROW_HEIGHT);
         $this->MultiCell(
             self::TEXT_WIDTH,
             self::LINE_HEIGHT,
@@ -1387,8 +1375,7 @@ class ContractPDF extends AppPDF
     private function printDefaultNetworkSettings(): void
     {
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->Write(4, $this->handoverText('texts.default_network_intro'));
-        $this->Ln(5);
+        $this->printTableCaption($this->handoverText('texts.default_network_intro'));
 
         $this->printFramedRow(
             [
@@ -1437,8 +1424,7 @@ class ContractPDF extends AppPDF
         $this->printSectionHeading($this->handoverText('sections.borrowed_equipment'));
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->Write(4, $this->handoverText('texts.borrowed_equipment_intro'));
-        $this->Ln(5);
+        $this->printTableCaption($this->handoverText('texts.borrowed_equipment_intro'));
 
         $this->printBorrowedEquipmentTable($contract, padTo: 0);
 
@@ -1457,15 +1443,13 @@ class ContractPDF extends AppPDF
         $this->printSectionHeading($this->handoverText('sections.uninstallation_borrowed_equipment'));
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->Write(4, $this->handoverText('texts.uninstallation_borrowed_equipment_intro'));
-        $this->Ln(5);
+        $this->printTableCaption($this->handoverText('texts.uninstallation_borrowed_equipment_intro'));
 
         $this->printBorrowedEquipmentTable($contract, padTo: self::BORROWED_EQUIPMENT_ROWS);
 
         $this->Ln(2);
         $this->SetFont(self::FONT_FAMILY, 'U', self::BODY_FONT_SIZE);
-        $this->Write(4, $this->handoverText('texts.uninstallation_equipment_state'));
-        $this->Ln(5);
+        $this->printTableCaption($this->handoverText('texts.uninstallation_equipment_state'));
 
         $this->printParagraph($this->handoverText('texts.uninstallation_equipment_checks_text'), gap: 0.0);
     }
@@ -1522,13 +1506,12 @@ class ContractPDF extends AppPDF
         $this->printSectionHeading($this->handoverText('sections.activation_fee'));
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->printParagraph(
+        $this->printTableCaption(
             $this->handoverText(
                 count($contract->borrowed_equipments) > 0
                     ? 'texts.activation_fee_intro_with_equipment'
                     : 'texts.activation_fee_intro',
             ),
-            gap: 1.0,
         );
 
         $subtotal = $contract_version->minimum_duration <= 0
@@ -1544,8 +1527,7 @@ class ContractPDF extends AppPDF
         $this->Ln(2);
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->Write(4, $this->handoverText('texts.activation_fee_items_intro'));
-        $this->Ln(5);
+        $this->printTableCaption($this->handoverText('texts.activation_fee_items_intro'));
 
         $this->printFramedRow(
             [
@@ -1607,7 +1589,8 @@ class ContractPDF extends AppPDF
 
         $this->Ln(2);
 
-        $this->printParagraph($this->handoverText('texts.activation_fee_obligation'), bold: true, gap: 0.0);
+        $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
+        $this->printTableCaption($this->handoverText('texts.activation_fee_obligation'));
 
         // The total carries the weight of the statement above it, and is set to match.
         $this->printFramedRow(

@@ -43,7 +43,7 @@ class CustomerPDF extends AppPDF
 
         // Controller section
         $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
-        $this->Cell(self::PAGE_WIDTH, 2, $this->label('between'), align: 'C');
+        $this->printFullWidth($this->label('between'), 2);
         $this->Ln();
 
         $this->printParties($this->label('controller'), $customer);

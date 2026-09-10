@@ -72,10 +72,8 @@ class ContractSummaryPDF extends AppPDF
     protected const KEEPS_BLOCKS_WHOLE = true;
 
     /**
-     * The tables state the figures the offer is judged on, so they line up with the paragraphs
-     * around them rather than indenting off them, and their rows carry the taller body text.
+     * Rows taller than the contract's, because this document carries the taller body text.
      */
-    protected const TABLE_INDENT = 0.0;
     protected const TABLE_ROW_HEIGHT = 6.0;
 
     /**
@@ -210,7 +208,7 @@ class ContractSummaryPDF extends AppPDF
         // Headed and ruled like the sections below it, which is also how the contract heads its
         // own company block - and it gives the details underneath the whole width to sit in.
         $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
-        $this->Write(4, $this->summaryText('labels.provider'));
+        $this->printFrameHeading($this->summaryText('labels.provider'), 4);
         $this->Ln();
 
         $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
@@ -268,7 +266,7 @@ class ContractSummaryPDF extends AppPDF
         }
 
         $this->SetFont(self::FONT_FAMILY, 'B', self::HEADING_FONT_SIZE);
-        $this->Write(4, $this->summaryText('labels.complaints'));
+        $this->printFrameHeading($this->summaryText('labels.complaints'), 4);
         $this->Ln();
 
         $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
@@ -383,7 +381,7 @@ class ContractSummaryPDF extends AppPDF
         $label = fn(string $key): string => $this->summaryText('speed_labels.' . $key);
 
         // Ruled, because three numbers in each of two directions is a table and reads as one.
-        // The widths add up to the text width exactly so the frame lines up with the paragraphs.
+        // The widths add up to the text width, so the frame is as wide as the contract's.
         $columns = [48.0, 44.0, 44.0, 44.0];
 
         // Headings wrap, so each gets a cell of the row's own height instead of one line -
