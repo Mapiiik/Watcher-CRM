@@ -36,7 +36,7 @@ final class CustomerPrintPdfOutput
     {
         $this->initializeLocale();
 
-        $pdf = new CustomerPDF('P', 'mm', 'A4');
+        $pdf = new CustomerPDF();
 
         match ($data->type) {
             CustomerPrintType::GdprNew,

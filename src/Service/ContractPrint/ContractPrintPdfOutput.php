@@ -39,8 +39,8 @@ final class ContractPrintPdfOutput
 
         // The summary is its own document with its own layout, so it is its own generator too.
         $pdf = $data->type === ContractPrintType::ContractSummary
-            ? new ContractSummaryPDF('P', 'mm', 'A4')
-            : new ContractPDF('P', 'mm', 'A4');
+            ? new ContractSummaryPDF()
+            : new ContractPDF();
 
         match (true) {
             $pdf instanceof ContractSummaryPDF

@@ -9,6 +9,11 @@
         <exclude-pattern>config/Migrations/20221211110347_AddHaveContractVersionsAndHaveEquipmentsAndHaveIpAddressesAndHaveRadiusAccountsToServiceTypes.php</exclude-pattern>
     </rule>
     <rule ref="CakePHP"/>
+    <!-- The canvas keeps the old engine's method names so the documents' layout does not
+         have to change with the engine underneath it. -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName">
+        <exclude-pattern>src/Pdf/Canvas.php</exclude-pattern>
+    </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint">
         <exclude-pattern>*/src/Controller/*</exclude-pattern>
     </rule>

@@ -241,8 +241,8 @@ class ProposalSnapshotTest extends TestCase
         (new ContractPrintDataEnricher())->enrich($data);
 
         $pdf = $data->type === ContractPrintType::ContractSummary
-            ? new ContractSummaryPDF('P', 'mm', 'A4')
-            : new ContractPDF('P', 'mm', 'A4');
+            ? new ContractSummaryPDF()
+            : new ContractPDF();
 
         $pdf->setDocCreationTimestamp(0);
         $pdf->setDocModificationTimestamp(0);

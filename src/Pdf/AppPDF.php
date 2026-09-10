@@ -5,16 +5,11 @@ namespace App\Pdf;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
-use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Override;
 use Settings\Utility\Settings;
-use TCPDF;
 
-//set image path for TCPDF
-define('K_PATH_IMAGES', Configure::read('Data.root') . DS . 'images' . DS);
-
-class AppPDF extends TCPDF
+class AppPDF extends Canvas
 {
     public const SEPARATOR_OFFSET_X = 4.0;
 
@@ -59,6 +54,12 @@ class AppPDF extends TCPDF
      * document whose tables are meant to line up with its paragraphs sets it to nothing.
      */
     protected const TABLE_INDENT = 4.0;
+
+    /**
+     * Air between the cells of the label and value table, in points. It is what the markup
+     * that block used to be written as resolved to, and the documents are laid out to it.
+     */
+    protected const TABLE_CELL_SPACING = 2.0;
 
     /**
      * Height of a framed table row. Taller than a line of text, because a bordered cell needs
@@ -596,64 +597,117 @@ class AppPDF extends TCPDF
     }
 
     /**
-     * Render a flexible two-column table using TCPDF's writeHTML.
+     * A table of labels and the values against them.
      *
-     * Each cell may optionally define custom widths:
+     * Each cell may say how wide its label and its value are:
      *   ['label' => 'Name', 'value' => 'John Doe', 'label_width' => 25, 'value_width' => 80]
      *
-     * @param array<int,string> $headers Array of header titles (e.g. ["Personal data", "Business data"])
+     * The block used to be written as markup and set by the old engine's HTML renderer. It
+     * is drawn directly now, to the geometry that markup resolved to: cells a fixed gap
+     * apart, and a line box a quarter taller than the text standing in it.
+     *
+     * @param array<int,string> $headers Header titles, or nothing for a table without them
      * @param array<int,array<int,array{
      *     label:string,
      *     value:string,
      *     label_width?:int,
      *     value_width?:int
-     * }>> $rows Array of rows, each row is an array of associative arrays
+     * }>> $rows Rows, each a list of label and value pairs
      */
     protected function printTable(array $headers, array $rows): void
     {
-        $html = '<table border="0" cellpadding="0" cellspacing="2">';
+        $left = $this->GetX();
+        $top = $this->GetY();
 
-        // Header row
         if ($headers !== []) {
-            $html .= '<tr>';
-            foreach ($headers as $header) {
-                $html .= '<td width="' . (180 / count($headers)) . 'mm" align="left">'
-                    . '<b>' . htmlspecialchars($header) . '</b></td>';
-            }
-            $html .= '</tr>';
+            $width = 180 / count($headers);
+            $top = $this->printTableRow(
+                array_map(fn(string $header): array => [$header, $width, true, 'L'], $headers),
+                $left,
+                $top,
+            );
         }
 
-        // Data rows
         foreach ($rows as $row) {
-            $html .= '<tr>';
-            if (count($row) === 1) {
-                // Single cell row (e.g. phone/email)
-                $labelWidth = $row[0]['label_width'] ?? 30;
-                $valueWidth = $row[0]['value_width'] ?? 150;
-
-                $html .= '<td width="' . $labelWidth . 'mm" align="right">'
-                    . htmlspecialchars($row[0]['label']) . '</td>';
-                $html .= '<td width="' . $valueWidth . 'mm" colspan="' . (count($headers) * 2 - 1) . '">'
-                    . '<b>' . htmlspecialchars($row[0]['value']) . '</b></td>';
-            } else {
-                // Multi-column row
-                foreach ($row as $cell) {
-                    $labelWidth = (string)($cell['label_width'] ?? 30);
-                    $valueWidth = (string)($cell['value_width'] ?? 60);
-
-                    $html .= '<td width="' . $labelWidth . 'mm" align="right">'
-                        . htmlspecialchars($cell['label']) . '</td>';
-                    $html .= '<td width="' . $valueWidth . 'mm">'
-                        . '<b>' . htmlspecialchars($cell['value']) . '</b></td>';
-                }
+            $cells = [];
+            foreach ($row as $cell) {
+                // A label is set against its value rather than away from it, and a row with
+                // one thing in it gives that value the rest of the width.
+                $cells[] = [$cell['label'], (float)($cell['label_width'] ?? 30), false, 'R'];
+                $cells[] = [
+                    $cell['value'],
+                    (float)($cell['value_width'] ?? (count($row) === 1 ? 150 : 60)),
+                    true,
+                    'L',
+                ];
             }
-            $html .= '</tr>';
+
+            $top = $this->printTableRow($cells, $left, $top);
         }
 
-        $html .= '</table>';
+        // The gap runs all the way round, so the table closes with one under its last row
+        // the same way it opened with one above its first.
+        $this->SetXY($left, $top + (static::TABLE_CELL_SPACING / static::K));
+    }
 
-        $this->writeHTML($html, true, false, false, true, '');
-        $this->Ln(0);
+    /**
+     * One row of that table, and where the next one starts.
+     *
+     * The values are set bold and the labels are not, and the two do not sit on the same
+     * line: each cell hangs from the top of the row by its own height above the baseline,
+     * so a bold one sits a hair lower. That is what the old renderer did, and a row set any
+     * other way no longer lines up with the one above it.
+     *
+     * The last cell takes whatever width the row has left, the way a table cell does, and
+     * a cell wraps against its full width - the air it keeps to either side of its text is
+     * where the text starts, not what it is allowed to fill.
+     *
+     * @param array<int, array{0:string, 1:float, 2:bool, 3:string}> $cells Text, width,
+     *   weight and which edge of the cell the text is set against
+     *
+     * @param float $left Left edge of the table
+     * @param float $top Top edge of this row
+     * @return float Top edge of the row after it
+     */
+    private function printTableRow(array $cells, float $left, float $top): float
+    {
+        $spacing = static::TABLE_CELL_SPACING / static::K;
+        $lineHeight = static::BODY_FONT_SIZE * static::CELL_HEIGHT_RATIO / static::K;
+
+        $last = count($cells) - 1;
+        $spare = static::TEXT_WIDTH - array_sum(array_column($cells, 1));
+
+        $placed = [];
+        $depth = 1;
+        $x = $left + $spacing;
+
+        foreach ($cells as $index => [$text, $width, $bold, $align]) {
+            $width += $index === $last ? max(0.0, $spare) : 0.0;
+
+            $this->SetFont(static::FONT_FAMILY, $bold ? 'B' : '', static::BODY_FONT_SIZE);
+
+            $lines = $text === '' ? [] : $this->splitLines($text, $width);
+            $placed[] = [$x, $width, $lines, $bold, $align, $this->fontAscent()];
+            $depth = max($depth, count($lines));
+
+            $x += $width + $spacing;
+        }
+
+        foreach ($placed as [$x, $width, $lines, $bold, $align, $ascent]) {
+            $this->SetFont(static::FONT_FAMILY, $bold ? 'B' : '', static::BODY_FONT_SIZE);
+
+            foreach ($lines as $index => $line) {
+                $this->drawTextAt(
+                    $line,
+                    $align === 'R'
+                        ? $x + $width + $this->paddingX - $this->GetStringWidth($line)
+                        : $x + $this->paddingX,
+                    $top + $spacing + ($index * $lineHeight) + $ascent,
+                );
+            }
+        }
+
+        return $top + $spacing + ($depth * $lineHeight);
     }
 
     /**

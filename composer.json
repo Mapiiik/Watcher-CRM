@@ -31,7 +31,7 @@
         "mapik/pohoda-xml": "^1.25",
         "mlocati/ip-lib": "^1.22",
         "mobiledetect/mobiledetectlib": "^4.10",
-        "tecnickcom/tcpdf": "^6.11"
+        "tecnickcom/tc-lib-pdf": "^8"
     },
     "require-dev": {
         "cakedc/cakephp-phpstan": "^4.2",
