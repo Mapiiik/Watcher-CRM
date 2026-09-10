@@ -324,6 +324,15 @@ return [
         'root' => (string)env('DATA_ROOT', ROOT . DS . 'data'),
     ],
 
+    'Files' => [
+        // where a document leads back to, by the model it is filed against; what is not named
+        // here is simply not offered as a link
+        'records' => [
+            'ContractProposals' => ['plugin' => null, 'controller' => 'ContractProposals', 'action' => 'view'],
+            'CustomerProposals' => ['plugin' => null, 'controller' => 'CustomerProposals', 'action' => 'view'],
+        ],
+    ],
+
     'Phones' => [
         // the region numbers without a country prefix are read as; nothing named means none assumed
         'defaultRegion' => trim((string)env('APP_DEFAULT_PHONE_REGION', '')) ?: null,

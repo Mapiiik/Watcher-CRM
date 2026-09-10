@@ -69,7 +69,7 @@
                 <?php foreach ($documents as $document) : ?>
                 <tr>
                     <td><?= h($document->created) ?></td>
-                    <td><?= h($document->model) ?></td>
+                    <td><?= $this->Record->linkTo($document) ?></td>
                     <td><?= h($document->document_type) ?></td>
                     <td><?= h($document->variant) ?></td>
                     <td><?= $this->Number->format($document->position) ?></td>

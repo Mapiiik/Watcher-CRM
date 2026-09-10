@@ -50,6 +50,13 @@ class DocumentsControllerTest extends TestCase
     private string $root;
 
     /**
+     * What the application said records lead to before this ran.
+     *
+     * @var mixed
+     */
+    private mixed $records;
+
+    /**
      * setUp method
      *
      * @return void
@@ -61,6 +68,7 @@ class DocumentsControllerTest extends TestCase
 
         $this->root = TMP . 'documents-controller-' . uniqid();
         Configure::write('Files.root', $this->root);
+        $this->records = Configure::read('Files.records');
 
         $this->login();
     }
@@ -74,6 +82,7 @@ class DocumentsControllerTest extends TestCase
     protected function tearDown(): void
     {
         Configure::delete('Files.root');
+        Configure::write('Files.records', $this->records);
         $this->removeDirectory($this->root);
 
         parent::tearDown();
@@ -92,6 +101,45 @@ class DocumentsControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains('IMG_001.jpg');
         $this->assertResponseContains('contract-new');
+    }
+
+    /**
+     * A document says what it is filed against, and offers the way to it where the application
+     * has said where that model is to be found.
+     *
+     * @link \Files\View\Helper\RecordHelper::linkTo()
+     * @return void
+     */
+    public function testADocumentOffersTheWayToWhatItIsFiledAgainst(): void
+    {
+        Configure::write('Files.records', [
+            'ContractProposals' => ['plugin' => null, 'controller' => 'ContractProposals', 'action' => 'view'],
+        ]);
+        $this->file('a contract', 'IMG_001.jpg');
+
+        $this->get('/files');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('/contract-proposals/view/' . self::RECORD);
+    }
+
+    /**
+     * The plugin knows a record by the name of its model and nothing else, so a name nobody has
+     * declared is said plainly rather than guessed at.
+     *
+     * @link \Files\View\Helper\RecordHelper::urlFor()
+     * @return void
+     */
+    public function testAModelTheApplicationHasNotDeclaredIsNamedRatherThanGuessedAt(): void
+    {
+        Configure::write('Files.records', []);
+        $this->file('a contract', 'IMG_001.jpg');
+
+        $this->get('/files');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('ContractProposals');
+        $this->assertResponseNotContains('/contract-proposals/view/');
     }
 
     /**

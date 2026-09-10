@@ -94,7 +94,7 @@
                             <tbody>
                                 <?php foreach ($file->file_links as $link) : ?>
                                 <tr>
-                                    <td><?= h($link->model) ?></td>
+                                    <td><?= $this->Record->linkTo($link) ?></td>
                                     <td><code><?= h($link->foreign_key) ?></code></td>
                                     <td><?= h($link->document_type) ?></td>
                                     <td><?= h($link->variant) ?></td>
