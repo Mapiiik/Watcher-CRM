@@ -28,6 +28,10 @@
     --color-table-borders: #aaaaaa;
     --color-table-headings-bg: #c0e0ff;
 
+    /* A step off every other background, so a hash or a path reads as one thing set apart from
+       the sentence around it - wherever it sits, in a table cell or in a paragraph. */
+    --color-code-bg: #eef1f4;
+
     --color-message-success-bg: #e3fcec;
     --color-message-success-text: #1f9d55;
     --color-message-success-border: #51d88a;
@@ -189,6 +193,16 @@ body {
     font-weight: 400;
     color: var(--color-main);
     background: var(--color-main-bg);
+}
+
+/*
+ * Milligram gives both of these a light grey and leaves the text to inherit, which is unreadable
+ * the moment the page is dark. Said once here for every theme, with each theme naming its own
+ * shade; the text needs nothing, because it already inherits what the body is set in.
+ */
+pre,
+code {
+    background: var(--color-code-bg);
 }
 
 .top-nav-title,

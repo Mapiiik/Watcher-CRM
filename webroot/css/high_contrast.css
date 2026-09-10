@@ -25,6 +25,9 @@
     --color-table-borders: #000000;
     --color-table-headings-bg: #99ccff;
 
+    /* A firmer step than the light theme takes, because separating things is what this is for. */
+    --color-code-bg: #e3e9ee;
+
     --color-message-success-bg: #e3fcec;
     --color-message-success-text: #1f9d55;
     --color-message-success-border: #51d88a;

@@ -24,6 +24,9 @@
     --color-table-borders: #aaaaaa;
     --color-table-headings-bg: #283a4a;
 
+    /* A step lighter than the tables, so it stands off both them and the page behind them. */
+    --color-code-bg: #242c34;
+
     --color-message-success-bg: #13261b;
     --color-message-success-text: #08b453;
     --color-message-success-border: #318454;
@@ -56,14 +59,4 @@ nav.top-nav {
     box-shadow:
         0 7px 14px rgba(0, 0, 0, 0.2),
         0 0 0 1px rgba(255, 255, 255, 0.2);
-}
-
-/*
- * Milligram paints both of these a light grey and leaves the text to inherit, which on a dark
- * page is light on light. The background follows the theme instead; the text needs nothing,
- * because it already inherits the one the body is set in.
- */
-pre,
-code {
-    background: var(--color-table-bg);
 }
