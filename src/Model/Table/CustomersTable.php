@@ -123,6 +123,10 @@ class CustomersTable extends AppTable
                 'Contracts.id' => 'DESC',
             ],
         ]);
+        $this->hasMany('CustomerProposals', [
+            'foreignKey' => 'customer_id',
+            'sort' => ['CustomerProposals.effective_from' => 'DESC'],
+        ]);
         $this->hasMany('Emails', [
             'foreignKey' => 'customer_id',
             'sort' => [

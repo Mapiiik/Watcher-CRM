@@ -110,7 +110,7 @@ class ContractProposalsController extends AppController
     public function view(?string $id = null): void
     {
         $contractProposal = $this->ContractProposals->get($id, contain: [
-            'Contracts' => ['Customers', 'InstallationAddresses'],
+            'Contracts' => ['Customers', 'InstallationAddresses', 'ServiceTypes'],
             'ContractVersions',
             'TerminatedContractVersions',
             'Creators',
@@ -224,7 +224,9 @@ class ContractProposalsController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: [
+            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
 
         if (!$this->ContractProposals->mayBeEdited($proposal)) {
             $this->Flash->error(__('This proposal can no longer be changed.'));
@@ -259,7 +261,9 @@ class ContractProposalsController extends AppController
      */
     public function refreshSnapshot(?string $id = null): ?Response
     {
-        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: [
+            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
 
         if (!$this->ContractProposals->mayBeEdited($proposal)) {
             $this->Flash->error(__('This proposal can no longer be changed.'));
@@ -450,7 +454,9 @@ class ContractProposalsController extends AppController
      */
     private function openProposal(?string $id): ContractProposal|Response|null
     {
-        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: [
+            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
 
         if ($this->ContractProposals->mayBeEdited($proposal)) {
             return $proposal;
@@ -554,7 +560,9 @@ class ContractProposalsController extends AppController
      */
     public function send(?string $id = null): ?Response
     {
-        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: [
+            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
 
         if (!$proposal->isOpen()) {
             $this->Flash->warning(__('This proposal has already been settled.'));
@@ -597,7 +605,9 @@ class ContractProposalsController extends AppController
      */
     public function conclude(?string $id = null): ?Response
     {
-        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: [
+            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
 
         if (!$proposal->isOpen()) {
             $this->Flash->warning(__('This proposal has already been settled.'));
@@ -710,7 +720,9 @@ class ContractProposalsController extends AppController
      */
     public function documents(?string $id = null): void
     {
-        $this->set('contractProposal', $this->ContractProposals->get($id, contain: ['Contracts']));
+        $this->set('contractProposal', $this->ContractProposals->get($id, contain: [
+            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+        ]));
     }
 
     /**
@@ -747,7 +759,9 @@ class ContractProposalsController extends AppController
      */
     public function addPages(?string $id = null): ?Response
     {
-        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: [
+            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $document_type = (string)$this->getRequest()->getData('document_type');
@@ -873,7 +887,9 @@ class ContractProposalsController extends AppController
      */
     public function transfer(?string $id = null): ?Response
     {
-        $proposal = $this->ContractProposals->get($id, contain: ['Contracts']);
+        $proposal = $this->ContractProposals->get($id, contain: [
+            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
+        ]);
 
         $preview = new TransferPreview();
         $found = $preview->of($proposal);

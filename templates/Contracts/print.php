@@ -72,7 +72,6 @@ foreach ($proposals as $one) {
                     'contract_versions' => $contract->contract_versions,
                 ]) ?>
             </div>
-            <br>
             <?php endif; ?>
             <div class="related">
                 <?= $this->AuthLink->link(
@@ -144,7 +143,6 @@ foreach ($proposals as $one) {
             <?php endif; ?>
             <?= $this->Form->end() ?>
 
-            <br>
             <div class="related">
                 <h4><?= __('Papers Already Drawn Up') ?></h4>
                 <p><?=

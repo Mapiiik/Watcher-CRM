@@ -754,6 +754,7 @@ class CustomersController extends AppController
         $customer = $this->Customers->get($id, contain: [
             'AccountingProfiles',
             'Addresses' => ['Countries'],
+            'CustomerProposals',
             'Emails',
             'Phones',
             'Creators',

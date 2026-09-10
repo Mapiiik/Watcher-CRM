@@ -57,7 +57,6 @@
                     ['ours' => false, 'manage' => true],
                 ) ?>
             </div>
-            <br>
             <div class="related">
                 <h4><?= __('Sent Documents') ?></h4>
                 <p><?=

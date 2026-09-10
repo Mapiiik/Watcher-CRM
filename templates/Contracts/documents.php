@@ -36,7 +36,6 @@
         <div class="contracts view content">
             <?= $this->element('Contracts/heading') ?>
             <?= $this->element('Contracts/facts', ['showMap' => false]) ?>
-            <br>
             <div class="related">
                 <h4><?= __('Received Documents') ?></h4>
                 <p><?=
@@ -51,7 +50,6 @@
                     ['ours' => false],
                 ) ?>
             </div>
-            <br>
             <div class="related">
                 <h4><?= __('Sent Documents') ?></h4>
                 <p><?=

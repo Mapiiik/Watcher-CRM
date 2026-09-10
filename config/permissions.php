@@ -277,6 +277,7 @@ $permissions = [
                 'Billings',
                 'ServiceOverrides',
                 'ContractProposals',
+                'CustomerProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -364,6 +365,7 @@ $permissions = [
                 'Billings',
                 'ServiceOverrides',
                 'ContractProposals',
+                'CustomerProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -451,6 +453,7 @@ $permissions = [
                 'Billings',
                 'ServiceOverrides',
                 'ContractProposals',
+                'CustomerProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -692,6 +695,45 @@ $permissions = [
                 return $request->getParam('action') === 'delete'
                     ? $proposals->mayBeDeleted($proposal)
                     : $proposals->mayBeEdited($proposal);
+            },
+        ],
+        //a round of papers is settled by sending it, the same as a contract's proposal: what has
+        //left the building is not removed afterwards
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'CustomerProposals',
+            ],
+            'action' => [
+                'delete',
+            ],
+            //The table says what may still go. The condition reads the record, so it also settles
+            //whether AuthLink draws the button.
+            'allowed' => function ($_user, $_role, ServerRequest $request): bool {
+                $id = $request->getParam('pass.0');
+
+                if (!is_string($id) || !Validation::uuid($id)) {
+                    return false;
+                }
+
+                /** @var \App\Model\Table\CustomerProposalsTable $proposals */
+                $proposals = TableRegistry::getTableLocator()->get('CustomerProposals');
+                /** @var \App\Model\Entity\CustomerProposal|null $proposal */
+                $proposal = $proposals->find()
+                    ->select([
+                        'CustomerProposals.sent_date',
+                        'CustomerProposals.conclusion_date',
+                    ])
+                    ->where(['CustomerProposals.id' => $id])
+                    ->first();
+
+                return $proposal !== null && $proposals->mayBeDeleted($proposal);
             },
         ],
         //allow add/edit/delete of access credentials for network-managers

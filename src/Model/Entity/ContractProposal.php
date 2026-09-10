@@ -7,6 +7,7 @@ use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposalSnapshot;
 use App\Model\Entity\Trait\SendingTrait;
+use App\Proposals\ProposalLifecycleTrait;
 use Cake\I18n\Date;
 
 /**
@@ -38,6 +39,7 @@ use Cake\I18n\Date;
  */
 class ContractProposal extends AppEntity
 {
+    use ProposalLifecycleTrait;
     use SendingTrait;
 
     /**
@@ -108,29 +110,6 @@ class ContractProposal extends AppEntity
     }
 
     /**
-     * Whether the papers have gone out.
-     *
-     * This is what locks the proposal: what stood behind a paper that has left the building is not
-     * rewritten afterwards.
-     *
-     * @return bool
-     */
-    public function hasBeenSent(): bool
-    {
-        return $this->sent_date !== null;
-    }
-
-    /**
-     * Whether the customer has agreed to the proposal.
-     *
-     * @return bool
-     */
-    public function hasBeenConcluded(): bool
-    {
-        return $this->conclusion_date !== null;
-    }
-
-    /**
      * Whether the changes have been carried over into the live records.
      *
      * @return bool
@@ -141,23 +120,14 @@ class ContractProposal extends AppEntity
     }
 
     /**
-     * Whether the proposal was given up on.
+     * What settles a proposal of a contract: the changes reaching the records, or nobody wanting
+     * them to. Signing is only halfway - a signed proposal still has to be carried over.
      *
      * @return bool
      */
-    public function hasBeenRevoked(): bool
+    protected function hasBeenSettled(): bool
     {
-        return $this->revoked !== null;
-    }
-
-    /**
-     * Whether the proposal is still waiting to be settled one way or the other.
-     *
-     * @return bool
-     */
-    public function isOpen(): bool
-    {
-        return !$this->hasBeenApplied() && !$this->hasBeenRevoked();
+        return $this->hasBeenApplied() || $this->hasBeenRevoked();
     }
 
     /**

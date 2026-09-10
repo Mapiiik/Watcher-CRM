@@ -1,0 +1,111 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\CustomerProposal $customerProposal
+ * @var bool $mayBeEdited
+ * @var bool $mayBeDeleted
+ */
+?>
+<div class="row">
+    <aside class="column">
+        <div class="side-nav">
+            <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php if ($mayBeEdited) : ?>
+                <?= $this->AuthLink->link(
+                    __('Edit Proposal'),
+                    ['action' => 'edit', $customerProposal->id],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            <?php endif; ?>
+            <?php if ($customerProposal->isOpen()) : ?>
+                <?= $this->AuthLink->link(
+                    $customerProposal->hasBeenSent()
+                        ? __('Record the Sending Again')
+                        : __('Record the Sending'),
+                    ['action' => 'send', $customerProposal->id],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Record the Signature'),
+                    ['action' => 'conclude', $customerProposal->id],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->postLink(
+                    __('Revoke'),
+                    ['action' => 'revoke', $customerProposal->id],
+                    [
+                        'class' => 'side-nav-item',
+                        'confirm' => __('Give up on this round of papers?'),
+                    ],
+                ) ?>
+            <?php endif; ?>
+            <?= $this->AuthLink->link(
+                __('View Customer'),
+                ['controller' => 'Customers', 'action' => 'view', $customerProposal->customer_id],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?php if ($mayBeDeleted) : ?>
+                <?= $this->AuthLink->postLink(
+                    __('Delete'),
+                    ['action' => 'delete', $customerProposal->id],
+                    ['class' => 'side-nav-item', 'confirm' => __('Are you sure?')],
+                ) ?>
+            <?php endif; ?>
+            <?= $this->AuthLink->link(
+                __('List Proposals'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+        </div>
+    </aside>
+    <div class="column column-90">
+        <div class="customerProposals view content">
+            <?= $this->element('CustomerProposals/heading') ?>
+            <div class="row">
+                <div class="column">
+                    <table>
+                        <tr>
+                            <th><?= __('Customer') ?></th>
+                            <td><?= $this->Html->link(
+                                h($customerProposal->customer->name ?? ''),
+                                [
+                                    'controller' => 'Customers',
+                                    'action' => 'view',
+                                    $customerProposal->customer_id,
+                                ],
+                            ) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Purpose') ?></th>
+                            <td><?= h($customerProposal->purpose->label()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Effective From') ?></th>
+                            <td><?= h($customerProposal->effective_from) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Sent To The Customer') ?></th>
+                            <td><?= h($customerProposal->getSending()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Conclusion Date') ?></th>
+                            <td><?= h($customerProposal->conclusion_date) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Revoked') ?></th>
+                            <td><?= h($customerProposal->revoked) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column">
+                    <?= $this->element('common/audit', ['entity' => $customerProposal]) ?>
+                </div>
+            </div>
+
+            <?php if (!empty($customerProposal->note)) : ?>
+                <h4><?= __('Note') ?></h4>
+                <blockquote><?= $this->Text->autoParagraph(h($customerProposal->note)) ?></blockquote>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

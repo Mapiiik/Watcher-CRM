@@ -1,7 +1,7 @@
 <?php
 /**
- * Names the proposal the way a contract and a version name themselves: a label, what it is, and
- * a line underneath saying where it stands.
+ * Names the proposal: the contract it belongs to, said the way every page about that contract
+ * says it, and then the day these papers take effect and where they stand.
  *
  * Every page that acts on a proposal opens with this, so that the heading says which record is
  * being looked at rather than which button was pressed to get there. What the page then does is
@@ -12,7 +12,12 @@
  * @var \App\Model\Entity\ContractProposal $contractProposal
  */
 ?>
-<?= __('Contract No.') ?><h3><?= h($contractProposal->contract->number ?? '') ?></h3>
-<?= __('Effective From') ?><h3><?= h($contractProposal->effective_from) ?></h3>
+<?= $this->element('Contracts/heading', ['contract' => $contractProposal->contract]) ?>
+<br>
+<?= __('Purpose') ?><h3><?= h(__(
+    '{0} from {1}',
+    $contractProposal->purpose->label(),
+    $contractProposal->effective_from,
+)) ?></h3>
 <h5><?= h($contractProposal->getState()) ?></h5>
 <hr />

@@ -31,7 +31,6 @@
         <div class="customers view content">
             <?= $this->element('Customers/heading') ?>
             <?= $this->element('Customers/facts') ?>
-            <br>
             <div class="related">
                 <h4><?= __('Received Documents') ?></h4>
                 <p><?=
@@ -47,7 +46,6 @@
                     ['ours' => false],
                 ) ?>
             </div>
-            <br>
             <div class="related">
                 <h4><?= __('Sent Documents') ?></h4>
                 <p><?=
