@@ -186,6 +186,41 @@ class ProposalTransferTest extends TestCase
     }
 
     /**
+     * A billing that stopped of its own accord is left where it is.
+     *
+     * An ending only ever shortens. Writing the day before the papers take effect onto something
+     * that stopped years ago would stretch it back over everything in between, and the customer
+     * would be invoiced for all of it.
+     *
+     * @return void
+     */
+    public function testABillingThatAlreadyStoppedIsNotPutBackOnTheInvoice(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->saveOrFail(
+            $billings->patchEntity($billings->get(self::OPEN_BILLING_ID), ['billing_until' => '2022-06-30']),
+            ['checkRules' => false],
+        );
+
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => '2026-10-01',
+            'changes' => ['billings' => [[
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => true,
+            ]]],
+        ]);
+
+        (new ProposalTransfer())->carryOver($proposal);
+
+        $this->assertSame(
+            '2022-06-30',
+            $billings->get(self::OPEN_BILLING_ID)->billing_until?->toDateString(),
+            'A billing that stopped years ago was stretched back over everything in between.',
+        );
+    }
+
+    /**
      * What the proposal asks of the version and of the contract is written too, but the state of
      * the contract is left alone - it has its own requirements to satisfy.
      *

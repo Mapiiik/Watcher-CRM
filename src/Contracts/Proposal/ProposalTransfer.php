@@ -103,14 +103,17 @@ final class ProposalTransfer
 
         foreach ($changes->billings as $line) {
             $to_save = [];
-            $starts = $line->startsOn($proposal->effective_from);
 
             if (!$line->isAddition()) {
                 /** @var \App\Model\Entity\Billing $ending */
                 $ending = $billings->get($line->billing_id);
-                $to_save[] = $billings->patchEntity($ending, [
-                    'billing_until' => $starts->subDays(1)->toDateString(),
-                ]);
+                $ends = $line->endsTheBillingOn($proposal->effective_from, $ending->billing_until);
+
+                if ($ends !== null) {
+                    $to_save[] = $billings->patchEntity($ending, [
+                        'billing_until' => $ends->toDateString(),
+                    ]);
+                }
             }
 
             if ($line->startsABilling()) {

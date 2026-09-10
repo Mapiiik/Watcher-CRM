@@ -8,7 +8,7 @@
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
- * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool}> $rows
+ * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
  * @var bool $mayBeEdited
  */
 
@@ -47,6 +47,10 @@ $proposalId = $contractVersionProposal->id;
                 $line = $row['line'];
                 $comesFrom = match (true) {
                     $row['ending'] => __('Stops here'),
+                    // A line that asks to stop something that had already stopped. It is written
+                    // out rather than hidden, so that whoever drew it can take it back off.
+                    $line !== null && $line->terminatesOnly() => __('Had already stopped'),
+                    $line === null && $row['stopped'] => __('Stopped before this'),
                     $line === null => __('As it stands'),
                     $line->isAddition() => __('Added by this proposal'),
                     default => __('Changed by this proposal'),
@@ -70,7 +74,7 @@ $proposalId = $contractVersionProposal->id;
                                 ['action' => 'dropBillingLine', $proposalId, $line->id],
                                 ['confirm' => __('Leave this as it stands on the contract?')],
                             ) ?>
-                        <?php elseif ($mayBeEdited && !$row['ending']) : ?>
+                        <?php elseif ($mayBeEdited && !$row['ending'] && !$row['stopped']) : ?>
                             <?= $this->AuthLink->link(
                                 __('Change'),
                                 [

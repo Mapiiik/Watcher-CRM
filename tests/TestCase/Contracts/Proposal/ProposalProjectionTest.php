@@ -134,6 +134,34 @@ class ProposalProjectionTest extends TestCase
     }
 
     /**
+     * A billing that ran out before the papers take effect is left where it is, and the table says
+     * so rather than promising an ending that will not happen.
+     *
+     * The snapshot holds everything the contract has ever billed for, so an ending drawn up long
+     * after the fact used to stretch each of them back over every month in between.
+     *
+     * @return void
+     */
+    public function testABillingThatHadAlreadyStoppedIsLeftWhereItIs(): void
+    {
+        $stopped = $this->billing('b1');
+        $stopped->set('billing_until', new Date('2022-06-30'));
+
+        $changes = ['billings' => [['billing_id' => 'b1', 'terminates_only' => true]]];
+
+        $projected = $this->project([$stopped], $changes);
+        $this->assertSame('2022-06-30', $projected[0]->billing_until?->toDateString());
+
+        $rows = (new ProposalProjection())->explain(
+            [$stopped],
+            ProposalChanges::fromArray($changes),
+            new Date(self::EFFECTIVE_FROM),
+        );
+        $this->assertFalse($rows[0]['ending'], 'The table promised an ending the transfer will not do.');
+        $this->assertTrue($rows[0]['stopped']);
+    }
+
+    /**
      * A line without a billing puts one there that was not there before - which is how a contract
      * looks when its billings are only drawn up once the papers come back signed.
      *

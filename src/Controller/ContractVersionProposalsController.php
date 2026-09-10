@@ -173,8 +173,16 @@ class ContractVersionProposalsController extends AppController
         $spokenFor = $changes->billingsByBillingId();
         $lines = new ProposedBillingForm();
 
-        foreach (array_keys($proposal->stateOfThings()->billings()) as $billing_id) {
+        foreach ($proposal->stateOfThings()->billings() as $billing_id => $billing) {
             if (isset($spokenFor[(string)$billing_id])) {
+                continue;
+            }
+
+            // The snapshot holds everything the contract has ever billed for, and something that
+            // stopped years ago has nothing left to end. A line for it would read as a change on
+            // the proposal and would be a change in the records.
+            $stopped = $billing['billing_until'] ?? null;
+            if ($stopped !== null && new Date((string)$stopped) < $proposal->effective_from) {
                 continue;
             }
 

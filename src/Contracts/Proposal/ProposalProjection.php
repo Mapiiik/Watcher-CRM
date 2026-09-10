@@ -49,7 +49,7 @@ final class ProposalProjection
             // What is replaced or ended stops the day before what replaces it starts - the same
             // two halves the transfer will write. A line that starts later than the proposal
             // leaves the old billing running until then.
-            $projected[] = $this->ending($billing, $line->startsOn($effective_from));
+            $projected[] = $this->ending($billing, $line, $effective_from);
 
             if ($line->startsABilling()) {
                 $projected[] = $this->starting($line, $billing, $effective_from, $services);
@@ -75,7 +75,7 @@ final class ProposalProjection
      * @param \App\Contracts\Proposal\ProposalChanges $changes What the proposal asks for.
      * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.
      * @param array<string, \App\Model\Entity\Service> $services The services the lines name, by id.
-     * @return array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool}>
+     * @return array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}>
      */
     public function explain(
         array $billings,
@@ -89,16 +89,25 @@ final class ProposalProjection
         foreach ($billings as $billing) {
             $line = $acted_on[(string)$billing->id] ?? null;
 
+            // The snapshot holds everything the contract has ever billed for. What ran out before
+            // the papers take effect has nothing left to stop, so neither a line nor the button
+            // that would draw one has anything to do with it.
+            $stopped = $billing->billing_until !== null
+                && $billing->billing_until->lessThan($effective_from);
+
             if ($line === null) {
-                $rows[] = ['billing' => $billing, 'line' => null, 'ending' => false];
+                $rows[] = ['billing' => $billing, 'line' => null, 'ending' => false, 'stopped' => $stopped];
 
                 continue;
             }
 
             $rows[] = [
-                'billing' => $this->ending($billing, $line->startsOn($effective_from)),
+                'billing' => $this->ending($billing, $line, $effective_from),
                 'line' => $line->terminatesOnly() ? $line : null,
-                'ending' => true,
+                // Said only where it is true: the transfer leaves a billing that stopped of its
+                // own accord alone, and a row claiming otherwise would be a promise it breaks.
+                'ending' => $line->endsTheBillingOn($effective_from, $billing->billing_until) !== null,
+                'stopped' => $stopped,
             ];
 
             if ($line->startsABilling()) {
@@ -106,6 +115,7 @@ final class ProposalProjection
                     'billing' => $this->starting($line, $billing, $effective_from, $services),
                     'line' => $line,
                     'ending' => false,
+                    'stopped' => false,
                 ];
             }
         }
@@ -116,6 +126,7 @@ final class ProposalProjection
                     'billing' => $this->starting($line, null, $effective_from, $services),
                     'line' => $line,
                     'ending' => false,
+                    'stopped' => false,
                 ];
             }
         }
@@ -167,14 +178,24 @@ final class ProposalProjection
     /**
      * The billing being replaced, stopped the day before its replacement starts.
      *
+     * Handed back untouched where it stopped earlier of its own accord - the line has nothing
+     * left to end, and the table has to show what the transfer would actually do.
+     *
      * @param \App\Model\Entity\Billing $billing What is being replaced.
-     * @param \Cake\I18n\Date $starts The day what replaces it starts.
+     * @param \App\Contracts\Proposal\ProposedBilling $line The line that ends it.
+     * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.
      * @return \App\Model\Entity\Billing
      */
-    private function ending(Billing $billing, Date $starts): Billing
+    private function ending(Billing $billing, ProposedBilling $line, Date $effective_from): Billing
     {
+        $ends = $line->endsTheBillingOn($effective_from, $billing->billing_until);
+
+        if ($ends === null) {
+            return $billing;
+        }
+
         $ending = clone $billing;
-        $ending->set('billing_until', $starts->subDays(1));
+        $ending->set('billing_until', $ends);
 
         return $ending;
     }

@@ -56,6 +56,13 @@ class ContractVersionProposalsControllerTest extends TestCase
     private const KNOWN_BILLING_ID = 'b2000000-0000-4000-8000-000000000002';
 
     /**
+     * And one the fixtures stopped long before any of these papers.
+     *
+     * @var string
+     */
+    private const CLOSED_BILLING_ID = 'b1000000-0000-4000-8000-000000000001';
+
+    /**
      * A service still sold, and one the fixtures mark as no longer offered.
      */
     private const OPEN_SERVICE_ID = '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2';
@@ -733,6 +740,50 @@ class ContractVersionProposalsControllerTest extends TestCase
         $this->assertSame('2026-12-31', $changes->version->get('valid_until')?->toDateString());
         $this->assertSame('2026-12-31', $changes->contract->get('termination_date')?->toDateString());
         $this->assertSame('2027-01-01', $drawn->effective_from->toDateString());
+    }
+
+    /**
+     * An ending stops what the contract is still billed for, and leaves alone what stopped on its
+     * own before the papers take effect. A line for something long dead would read as a change on
+     * the proposal and would be one in the records.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionProposalsController::endWhatTheContractIsBilledFor()
+     */
+    public function testAnEndingLeavesAloneWhatHasAlreadyStopped(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-version-proposals/add', [
+            'purpose' => ProposalPurpose::Termination->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => self::CONTRACT_VERSION_ID,
+            'terminated_contract_number' => '2022/0001',
+            'ends_on' => '2026-12-31',
+            'confirmations' => [
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractVersionProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractVersionProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        $ended = array_keys($drawn->proposedChanges()->billingsByBillingId());
+
+        $this->assertContains(self::KNOWN_BILLING_ID, $ended, 'What is still billed for was not ended.');
+        $this->assertNotContains(
+            self::CLOSED_BILLING_ID,
+            $ended,
+            'A billing that stopped years ago was given an ending.',
+        );
     }
 
     /**

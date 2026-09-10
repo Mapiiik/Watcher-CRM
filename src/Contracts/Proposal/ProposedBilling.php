@@ -105,6 +105,29 @@ final class ProposedBilling
     }
 
     /**
+     * The last day the billing this line names is to be invoiced for.
+     *
+     * Only ever earlier than it already is. A billing that stopped before the papers take effect
+     * has nothing left to end, and writing the day before onto it would put every month in
+     * between back on the invoice - which is what a termination drawn up long after the fact used
+     * to do to everything the contract had ever billed for.
+     *
+     * Asked here rather than worked out where it is needed, because three places need it: the
+     * table that shows what would happen, the transfer that makes it happen, and the form that
+     * draws the lines up.
+     *
+     * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.
+     * @param \Cake\I18n\Date|null $ends_now The day the billing stops today, where it stops.
+     * @return \Cake\I18n\Date|null The day to write, or null where there is nothing to write.
+     */
+    public function endsTheBillingOn(Date $effective_from, ?Date $ends_now): ?Date
+    {
+        $ends = $this->startsOn($effective_from)->subDays(1);
+
+        return $ends_now === null || $ends_now->greaterThan($ends) ? $ends : null;
+    }
+
+    /**
      * The same line with something else said about it.
      *
      * @param array<string, mixed> $said What is said differently.

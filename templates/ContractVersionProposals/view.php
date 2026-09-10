@@ -7,7 +7,7 @@
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
  * @var array<int|string, string> $deliveryMethods
- * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool}> $rows
+ * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
  */
 
 use App\Contracts\Proposal\ProposalConfirmations;
