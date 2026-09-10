@@ -198,10 +198,8 @@ class AppPDF extends Canvas
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
 
-        // Set once, for the whole document: what flows begins inside the rules, and what spans
-        // the width steps back out to them.
-        $this->SetLeftMargin(static::FRAME_LEFT + static::BODY_INDENT);
         $this->AddPage();
+        $this->frameBody();
 
         $this->Image(K_PATH_IMAGES . 'logo-contract.png', static::FRAME_LEFT, 5, 28);
 
@@ -220,6 +218,23 @@ class AppPDF extends Canvas
         $this->Ln(3);
 
         $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
+    }
+
+    /**
+     * Sets the document's body inside the rules, once, for the whole document.
+     *
+     * Both margins are pulled in by the same indent, so a line that wraps ends as far inside
+     * the rules as it began inside them. What spans the whole width steps back out to them.
+     *
+     * @return void
+     */
+    protected function frameBody(): void
+    {
+        $this->SetLeftMargin(static::FRAME_LEFT + static::BODY_INDENT);
+        $this->SetRightMargin(
+            $this->getPageWidth() - static::FRAME_LEFT - static::PAGE_WIDTH + static::BODY_INDENT,
+        );
+        $this->SetXY(static::FRAME_LEFT + static::BODY_INDENT, $this->GetY());
     }
 
     /**

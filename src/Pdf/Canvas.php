@@ -891,6 +891,18 @@ class Canvas
     }
 
     /**
+     * Where a line that wraps has to stop, held as the distance from the right edge of the
+     * page the way the left margin is held from the left.
+     *
+     * @param float $margin Distance from the right edge of the page
+     * @return void
+     */
+    public function SetRightMargin(float $margin): void
+    {
+        $this->rMargin = $margin;
+    }
+
+    /**
      * @return float
      */
     public function GetX(): float
@@ -931,6 +943,14 @@ class Canvas
     {
         $this->SetY($y, false);
         $this->x = $x;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPageWidth(): float
+    {
+        return $this->pageWidth;
     }
 
     /**

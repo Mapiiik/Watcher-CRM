@@ -115,6 +115,7 @@ class CustomerPDF extends AppPDF
         $this->Write(3, $this->gdprText('declaration_text'), ln: true);
 
         // Checkboxes
+        $this->Ln();
         $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
         $this->Write(3, $this->gdprText('checkboxes.billing'), ln: true);
         $this->Write(3, $this->gdprText('checkboxes.outages'), ln: true);
