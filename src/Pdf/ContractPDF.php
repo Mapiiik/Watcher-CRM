@@ -76,7 +76,7 @@ class ContractPDF extends AppPDF
         $this->printAmendmentClosing($data->type);
         $this->printEquipmentAndFinalStatements($data);
 
-        $this->printSignatureSection('double', $data->signed);
+        $this->printSignatureSection('double');
 
         $this->Close();
     }
@@ -118,7 +118,7 @@ class ContractPDF extends AppPDF
             $this->printUninstallationProtocol($data);
         }
 
-        $this->printSignatureSection('double', $data->signed);
+        $this->printSignatureSection('double');
 
         $this->Close();
     }

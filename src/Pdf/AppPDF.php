@@ -5,12 +5,14 @@ namespace App\Pdf;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
-use Cake\I18n\Date;
+use App\Pdf\Trait\ProviderSignatureTrait;
 use Override;
 use Settings\Utility\Settings;
 
 class AppPDF extends Canvas
 {
+    use ProviderSignatureTrait;
+
     /**
      * Where the page's furniture is drawn from: the rules, the headings and the blocks that
      * span the whole width. The body of a section sits inside it.
@@ -28,6 +30,20 @@ class AppPDF extends Canvas
      * keeps the overhang at its far end.
      */
     public const SEPARATOR_OFFSET_X = self::BODY_INDENT;
+
+    /**
+     * The signature block: two columns of a fixed width, each row as tall as a line.
+     */
+    protected const SIGNATURE_COLUMN = 90.0;
+    protected const SIGNATURE_ROW = 4.0;
+
+    /**
+     * Where the signature itself is drawn: how far into its column, how wide, and how far above
+     * the line it is signed on it starts.
+     */
+    protected const SIGNATURE_INDENT = 24.5;
+    protected const SIGNATURE_WIDTH = 35.0;
+    protected const SIGNATURE_RISE = 11.0;
 
     /**
      * Typeface the documents are set in. The summary overrides it, because the regulation
@@ -676,14 +692,16 @@ class AppPDF extends Canvas
      * - Adds a page when near bottom (Y > 240), then inserts consistent spacing.
      * - Prints date line(s), then a fixed vertical gap, then dotted sign line(s),
      *   then party labels ("Privider"/"User").
-     * - For "double" layout with $signed=true: left date shows current date; also draws a signature
-     *   image over the left signing line, placed from where the body begins.
+     *
+     * Nobody's signature is set into it. The block comes out the same however far along the
+     * paperwork is, and a signature is drawn on top of it afterwards - which is what lets a paper
+     * already on file be countersigned rather than drawn again. Where the drawing goes is written
+     * down here, as marks the finished document carries.
      *
      * @param string $layout Layout identifier: 'single-right' or 'double'.
-     * @param bool   $signed Whether the document is signed (affects left date and signature image in 'double').
      * @return void
      */
-    protected function printSignatureSection(string $layout = 'double', bool $signed = false): void
+    protected function printSignatureSection(string $layout = 'double'): void
     {
         $this->SetFont('DejaVuSerif', '', 8);
 
@@ -700,31 +718,92 @@ class AppPDF extends Canvas
         $double = ($layout === 'double');
         $this->Ln(10);
 
-        // Date row
-        $leftDateText = $signed && $double ? Date::now()->__toString() : $dateLine;
-        $this->Cell(90, 4, $double ? $dateLabel . ' ' . $leftDateText : '', align: 'C');
-        $this->Cell(90, 4, $dateLabel . ' ' . $dateLine, align: 'C');
+        // Date row. The same line on both sides whoever has signed: a date is written on top of
+        // it afterwards rather than set in place of it, which is what lets a paper already on
+        // file be countersigned without being drawn a second time.
+        $dateText = $dateLabel . ' ' . $dateLine;
+        $left = $this->GetX();
+
+        $this->Cell(static::SIGNATURE_COLUMN, static::SIGNATURE_ROW, $double ? $dateText : '', align: 'C');
+        $this->Cell(static::SIGNATURE_COLUMN, static::SIGNATURE_ROW, $dateText, align: 'C');
+
+        // Read afterwards rather than before: a row that has broken onto the next page has taken
+        // both of its cells with it, and the mark has to say where they ended up.
+        if ($double) {
+            $this->markDate(SignatureAnchors::PROVIDER_DATE, $left, $dateText, $dateLabel . ' ');
+        }
+        $this->markDate(
+            SignatureAnchors::CUSTOMER_DATE,
+            $left + static::SIGNATURE_COLUMN,
+            $dateText,
+            $dateLabel . ' ',
+        );
+
         $this->Ln(20);
 
         // Sign line row
-        $this->Cell(90, 4, $double ? $signLine : '', align: 'C');
-        $this->Cell(90, 4, $signLine, align: 'C');
+        $left = $this->GetX();
+
+        $this->Cell(static::SIGNATURE_COLUMN, static::SIGNATURE_ROW, $double ? $signLine : '', align: 'C');
+        $this->Cell(static::SIGNATURE_COLUMN, static::SIGNATURE_ROW, $signLine, align: 'C');
+
+        if ($double) {
+            $this->markSignature(SignatureAnchors::PROVIDER_SIGNATURE, $left);
+        }
+        $this->markSignature(SignatureAnchors::CUSTOMER_SIGNATURE, $left + static::SIGNATURE_COLUMN);
+
         $this->Ln();
 
         // Role labels row
-        $this->Cell(90, 4, $double ? $provider : '', align: 'C');
-        $this->Cell(90, 4, $user, align: 'C');
+        $this->Cell(static::SIGNATURE_COLUMN, static::SIGNATURE_ROW, $double ? $provider : '', align: 'C');
+        $this->Cell(static::SIGNATURE_COLUMN, static::SIGNATURE_ROW, $user, align: 'C');
         $this->Ln();
+    }
 
-        // Signature image (only for double + signed)
-        if ($double && $signed) {
-            $this->Image(
-                K_PATH_IMAGES . 'signature.png',
-                static::FRAME_LEFT + static::BODY_INDENT + 24.5,
-                $this->GetY() - 19.0,
-                35.0,
-            );
-        }
+    /**
+     * Marks where a date is written on one side of the block.
+     *
+     * The mark covers the line and not the words before it, so that what is written lands where
+     * somebody signing by hand would write it.
+     *
+     * @param string $name What the mark is for.
+     * @param float $left Left edge of the column it is in.
+     * @param string $text The whole of what the cell says.
+     * @param string $label The part of it that is not the line.
+     * @return void
+     */
+    private function markDate(string $name, float $left, string $text, string $label): void
+    {
+        $whole = $this->GetStringWidth($text);
+        $words = $this->GetStringWidth($label);
+        $inset = $this->paddingX + ((static::SIGNATURE_COLUMN - (2 * $this->paddingX) - $whole) / 2);
+
+        $this->anchors()->add(new SignatureAnchor(
+            $name,
+            $this->PageNo(),
+            $left + $inset + $words,
+            $this->GetY(),
+            $whole - $words,
+            static::SIGNATURE_ROW,
+        ));
+    }
+
+    /**
+     * Marks where a signature goes on one side of the block.
+     *
+     * @param string $name What the mark is for.
+     * @param float $left Left edge of the column it is in.
+     * @return void
+     */
+    private function markSignature(string $name, float $left): void
+    {
+        $this->anchors()->add(new SignatureAnchor(
+            $name,
+            $this->PageNo(),
+            $left + static::SIGNATURE_INDENT,
+            $this->GetY() - static::SIGNATURE_RISE,
+            static::SIGNATURE_WIDTH,
+        ));
     }
 
     /**

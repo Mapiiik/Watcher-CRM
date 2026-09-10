@@ -124,7 +124,7 @@ class CustomerPDF extends AppPDF
         $this->Write(3, $this->gdprText('checkboxes.note'), ln: true);
 
         // Signature section
-        $this->printSignatureSection('single-right', false);
+        $this->printSignatureSection('single-right');
     }
 
     /**

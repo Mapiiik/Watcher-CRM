@@ -36,4 +36,26 @@ class File extends AppEntity
     protected array $_accessible = [
         'mime_type' => true,
     ];
+
+    /**
+     * Roughly what sort of thing it is, for a page that wants photographs and not papers.
+     *
+     * Worked out rather than stored: it can be had from the type at any time, and a column that
+     * could be filled in afterwards from what is already in the row is a second place for the
+     * same fact to be wrong.
+     *
+     * @return string
+     */
+    public function kind(): string
+    {
+        $type = (string)$this->mime_type;
+
+        return match (true) {
+            str_starts_with($type, 'image/') => 'image',
+            str_starts_with($type, 'video/') => 'video',
+            str_starts_with($type, 'audio/') => 'audio',
+            $type === 'application/pdf' => 'document',
+            default => 'other',
+        };
+    }
 }

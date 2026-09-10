@@ -114,6 +114,18 @@ class Canvas
     private ?int $created = null;
 
     /**
+     * Which page is being drawn, counting from one. The marks a paper carries name a page, and
+     * the engine has no notion of a current one to ask.
+     */
+    protected int $pages = 0;
+
+    /**
+     * Where on the paper it is signed. Filled in as the document is set, written into it when it
+     * is asked for, and read back out of it whenever anything is drawn onto it afterwards.
+     */
+    protected SignatureAnchors $anchors;
+
+    /**
      * Widths already measured, so a string is measured once per face and size.
      *
      * @var array<string, float>
@@ -165,6 +177,7 @@ class Canvas
     public function AddPage(): void
     {
         $page = $this->pdf()->addPage(['time' => $this->pageTimestamp()]);
+        $this->pages++;
 
         $this->pageWidth = $page['width'];
         $this->pageHeight = $page['height'];
@@ -1080,6 +1093,33 @@ class Canvas
     {
         $this->pdf()->setPDFFilename($name);
 
+        // Written last, so that everything the document was going to say about where it is signed
+        // has been said. Replaced rather than added to, because asking for the same document twice
+        // must not write the marks down twice.
+        if (!$this->anchors()->isEmpty()) {
+            $this->pdf()->setCustomXMP(SignatureAnchors::XMP_KEY, $this->anchors()->toXmp(), true);
+        }
+
         return $this->pdf()->getOutPDFString();
+    }
+
+    /**
+     * Which page is being drawn, counting from one.
+     *
+     * @return int
+     */
+    public function PageNo(): int
+    {
+        return $this->pages;
+    }
+
+    /**
+     * Where on the paper it is signed.
+     *
+     * @return \App\Pdf\SignatureAnchors
+     */
+    public function anchors(): SignatureAnchors
+    {
+        return $this->anchors ??= new SignatureAnchors();
     }
 }

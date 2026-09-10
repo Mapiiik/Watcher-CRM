@@ -6,6 +6,7 @@ namespace App\Service\ContractPrint;
 use App\Model\Enum\ContractPrintType;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
+use App\Pdf\SignatureStampPDF;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\I18n;
@@ -55,16 +56,24 @@ final class ContractPrintPdfOutput
 
         $filename = $this->buildFilename($data);
 
+        // The paper is set once, without anybody's signature on it, and ours is drawn onto that
+        // rather than into a second setting of the same document. Which is what lets a paper
+        // already on file be countersigned later and come out the same.
+        $printed = $pdf->Output($filename, 'S');
+
+        if ($data->signed) {
+            $printed = (new SignatureStampPDF())->stamp(
+                $printed,
+                $pdf->anchors(),
+                Date::now(),
+            );
+        }
+
         return (new Response())
             ->withType('application/pdf')
             //->withDownload($this->buildFilename($data))
             ->withHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-            ->withStringBody(
-                $pdf->Output(
-                    $filename,
-                    'S', // return as string
-                ),
-            );
+            ->withStringBody($printed);
     }
 
     /**

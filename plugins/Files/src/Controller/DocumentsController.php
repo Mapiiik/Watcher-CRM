@@ -21,9 +21,11 @@ class DocumentsController extends AppController
     /**
      * The table this reads.
      *
-     * Said outright because it cannot be worked out: the controller is named for the question it
-     * answers rather than for the table it asks, which is what keeps the path from saying "files"
-     * twice over.
+     * Said outright rather than taken from the controller's own name, because the controllers
+     * here are named for the questions they answer and not for the tables they ask. That is what
+     * lets several of them read the same table - this one is every use of some content, and one
+     * that wants only the photographs will be another - and it keeps the path from saying "files"
+     * twice over into the bargain.
      *
      * @var string|null
      */
