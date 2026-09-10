@@ -2,17 +2,15 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersionProposal $contractVersionProposal
- * @var \App\Contracts\Proposal\ProposalChanges $changes
  * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
  * @var array<int|string, string> $deliveryMethods
  * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
+ * @var list<\App\Contracts\Proposal\PlannedChange> $planned
  */
 
 use App\Contracts\Proposal\ProposalConfirmations;
-use App\Contracts\Proposal\ProposedContract;
-use App\Contracts\Proposal\ProposedVersion;
 
 ?>
 <div class="row">
@@ -170,27 +168,11 @@ use App\Contracts\Proposal\ProposedVersion;
 
             <?= $this->element('ContractVersionProposals/proposed_billings') ?>
 
-            <?php
-            // What is billed for is the table above; here is only what the proposal says about the
-            // version and the contract themselves, which is usually nothing at all.
-            $asksOfRecords = !$changes->version->isEmpty() || !$changes->contract->isEmpty();
-            ?>
-            <?php if ($asksOfRecords) : ?>
-                <h4><?= __('The contract version and the contract') ?></h4>
-                <table>
-                    <?php foreach ($changes->version->asked() as $field => $value) : ?>
-                    <tr>
-                        <th><?= h(__('Contract Version') . ' — ' . ProposedVersion::label($field)) ?></th>
-                        <td><?= $value === null ? __('cleared') : h($value) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                    <?php foreach ($changes->contract->asked() as $field => $value) : ?>
-                    <tr>
-                        <th><?= h(__('Contract') . ' — ' . ProposedContract::label($field)) ?></th>
-                        <td><?= $value === null ? __('cleared') : h($value) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </table>
+            <?php if ($planned !== []) : ?>
+                <h4><?= __('What it asks of the records') ?></h4>
+                <?= $this->element('ContractVersionProposals/planned_changes', [
+                    'preview' => false,
+                ]) ?>
             <?php endif; ?>
 
             <?php $answered = $confirmations->toArray(); ?>

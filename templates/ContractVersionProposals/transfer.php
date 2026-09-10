@@ -7,6 +7,7 @@
  * @var array<\App\Model\Entity\Billing> $billingsNow
  * @var array<\App\Model\Entity\Billing> $billingsAfterwards
  * @var bool $closed_period_override
+ * @var list<\App\Contracts\Proposal\PlannedChange> $planned
  */
 
 use App\Model\Table\BillingsTable;
@@ -58,6 +59,20 @@ $changesNothing = $contractVersionProposal->proposedChanges()->isEmpty();
                     ]) ?>
                 </div>
             </div>
+            <?php endif; ?>
+
+            <?php if ($planned !== []) : ?>
+                <h4><?= __('What else will be written') ?></h4>
+                <p><?=
+                    __(
+                        'Not all of it was asked for. Carrying the papers over records the'
+                        . ' signature on the version, counts an amendment and closes the version'
+                        . ' being replaced, whether or not the proposal says so.',
+                    )
+                    ?></p>
+                <?= $this->element('ContractVersionProposals/planned_changes', [
+                    'preview' => true,
+                    ]) ?>
             <?php endif; ?>
         </div>
         <hr />

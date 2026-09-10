@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalForm;
 use App\Contracts\Proposal\ProposalProjection;
@@ -10,6 +11,7 @@ use App\Contracts\Proposal\ProposalSnapshotBuilder;
 use App\Contracts\Proposal\ProposalTransfer;
 use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ReadinessChecks;
+use App\Contracts\Proposal\TransferPlan;
 use App\Contracts\Proposal\TransferPreview;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
@@ -676,6 +678,7 @@ class ContractVersionProposalsController extends AppController
         $this->set('stopped', $preview->anythingStopsIt($found));
         $this->set('billingsNow', $preview->billingsNow($proposal));
         $this->set('billingsAfterwards', $preview->billingsAfterwards($proposal));
+        $this->set('planned', (new TransferPlan())->of($proposal));
         $this->set('closed_period_override', $this->mayReachIntoClosedPeriods());
 
         return null;
@@ -1103,7 +1106,6 @@ class ContractVersionProposalsController extends AppController
         $changes = $proposal->proposedChanges();
         $snapshot = $proposal->stateOfThings();
 
-        $this->set('changes', $changes);
         $this->set('confirmations', $proposal->confirmations());
         // What would be billed for, each row saying where it comes from - the same projection the
         // documents print from, so the table and the paper cannot disagree.
@@ -1116,6 +1118,13 @@ class ContractVersionProposalsController extends AppController
         $this->set('mayBeEdited', $this->ContractVersionProposals->mayBeEdited($proposal));
         $this->set('mayBeDeleted', $this->ContractVersionProposals->mayBeDeleted($proposal));
         $this->set('deliveryMethods', $this->deliveryMethodOptions());
+        // Only what the proposal asks for. The rest of what carrying it over would write is worked
+        // out against the records as they stand today, so it means something on the preview, where
+        // it is about to happen, and nothing here.
+        $this->set('planned', array_values(array_filter(
+            (new TransferPlan())->of($proposal),
+            fn(PlannedChange $one): bool => $one->asked,
+        )));
     }
 
     /**

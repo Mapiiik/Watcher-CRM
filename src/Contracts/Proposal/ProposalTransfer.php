@@ -5,7 +5,6 @@ namespace App\Contracts\Proposal;
 
 use App\Model\Entity\Billing;
 use App\Model\Entity\ContractVersionProposal;
-use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractVersionProposalsTable;
 use Cake\I18n\DateTime;
@@ -69,9 +68,13 @@ final class ProposalTransfer
                     '_auditTransaction' => Text::uuid(),
                 ];
 
+                // Worked out once and then applied, so that what the preview showed and what is
+                // written here are the same list rather than the same rules run twice.
+                $planned = (new TransferPlan())->of($proposal);
+
                 $this->carryBillingsOver($proposal, $options);
-                $this->carryVersionsOver($proposal);
-                $this->carryContractOver($proposal);
+                $this->carryVersionsOver($proposal, $planned);
+                $this->carryContractOver($proposal, $planned);
 
                 $proposal->applied = DateTime::now();
                 $proposal->applied_by = $by;
@@ -160,90 +163,72 @@ final class ProposalTransfer
     }
 
     /**
-     * Puts the proposal's dates onto the version it belongs to, and ends the one it replaces.
+     * Writes what the plan says onto the version the proposal belongs to, and onto the one it
+     * replaces.
      *
-     * The signature comes over as well, though nobody asked for it: it is recorded on the proposal,
-     * and the version is what the checks, the reminders and the nightly blocking read. Without this
-     * a signed and carried-over proposal would leave its version looking unsigned, and the customer
-     * would be chased for a paper that is on file.
-     *
-     * Only onto a version that has none of its own. A version signed long ago and amended today was
-     * still agreed on the day it was agreed, and writing the amendment's day over it would lose
-     * that - and would trip the check that watches for paper younger than the version it belongs to.
-     *
-     * An amendment carried over is also counted, and the count it leaves behind is the number that
-     * was printed on it - the snapshot's count plus one, the same arithmetic the paper did. Taking
-     * the number off the paper rather than adding one to whatever the version says now is what
-     * keeps the two saying the same thing: the version's count is the last amendment there is.
+     * Which fields those are, and why some of them are written without anybody having asked, is
+     * {@see \App\Contracts\Proposal\TransferPlan}'s to say. Here they are only applied.
      *
      * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
      * @return void
      */
-    private function carryVersionsOver(ContractVersionProposal $proposal): void
+    private function carryVersionsOver(ContractVersionProposal $proposal, array $planned): void
     {
         $versions = $this->fetchTable('ContractVersions');
-        $asked = $proposal->proposedChanges()->version;
 
-        $version = $versions->get($proposal->contract_version_id);
+        $onto = [
+            TransferPlan::VERSION => $proposal->contract_version_id,
+            TransferPlan::REPLACED_VERSION => $proposal->terminates_contract_version_id,
+        ];
 
-        // Asked before the signature below fills it in: what makes this an amendment is that the
-        // version was already agreed to before this paper, which is the same thing the printing
-        // asks before it offers one.
-        $amends = $proposal->purpose === ProposalPurpose::ServiceChange
-            && $version->conclusion_date !== null;
+        foreach ($onto as $target => $id) {
+            $writes = array_filter($planned, fn(PlannedChange $one): bool => $one->target === $target);
 
-        foreach ($asked->asked() as $field => $value) {
-            $version->set($field, $value);
-        }
+            // Nothing to write is the ordinary case - a proposal usually asks about the billings
+            // alone - and a save with nothing in it would only put the version's rules in the way.
+            if ($writes === [] || $id === null) {
+                continue;
+            }
 
-        if ($version->conclusion_date === null) {
-            $version->set('conclusion_date', $proposal->conclusion_date);
-        }
+            $version = $versions->get($id);
 
-        if ($amends) {
-            // What the papers were drawn from, falling back on the version for a snapshot taken
-            // before this field was kept in one.
-            $taken = $proposal->stateOfThings()->part('version');
-            $printed = (int)($taken['number_of_amendments'] ?? $version->number_of_amendments) + 1;
+            foreach ($writes as $write) {
+                $version->set($write->field, $write->to);
+            }
 
-            $version->set('number_of_amendments', $printed);
-        }
-
-        // Nothing to write is the ordinary case - a proposal usually asks about the billings alone
-        // - and a save with nothing in it would only put the version's rules in the way.
-        if ($version->isDirty()) {
-            $versions->saveOrFail($version);
-        }
-
-        if ($proposal->terminatesAnotherVersion()) {
-            $replaced = $versions->get($proposal->terminates_contract_version_id);
-            $replaced->set('valid_until', $proposal->effective_from->subDays(1));
-            $versions->saveOrFail($replaced);
+            if ($version->isDirty()) {
+                $versions->saveOrFail($version);
+            }
         }
     }
 
     /**
-     * Puts the proposal's dates onto the contract.
+     * Writes what the plan says onto the contract.
      *
      * The state of the contract is deliberately left alone: it has its own set of requirements to
      * satisfy and switching it blind would only make the transfer fail in ways nobody asked about.
      *
      * @param \App\Model\Entity\ContractVersionProposal $proposal The proposal.
+     * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
      * @return void
      */
-    private function carryContractOver(ContractVersionProposal $proposal): void
+    private function carryContractOver(ContractVersionProposal $proposal, array $planned): void
     {
-        $asked = $proposal->proposedChanges()->contract;
+        $writes = array_filter(
+            $planned,
+            fn(PlannedChange $one): bool => $one->target === TransferPlan::CONTRACT,
+        );
 
-        if ($asked->isEmpty()) {
+        if ($writes === []) {
             return;
         }
 
         $contracts = $this->fetchTable('Contracts');
         $contract = $contracts->get($proposal->contract_id);
 
-        foreach ($asked->asked() as $field => $value) {
-            $contract->set($field, $value);
+        foreach ($writes as $write) {
+            $contract->set($write->field, $write->to);
         }
 
         $contracts->saveOrFail($contract);
