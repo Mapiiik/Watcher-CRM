@@ -6,8 +6,11 @@ namespace App\Test\TestCase\Command;
 use App\Backup\DatabaseDump;
 use App\Backup\Process;
 use App\Command\BackupCommand;
+use App\Test\Traits\ConfigureTestTrait;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -21,7 +24,9 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(BackupCommand::class)]
 class BackupCommandTest extends TestCase
 {
+    use ConfigureTestTrait;
     use ConsoleIntegrationTestTrait;
+    use EmailTrait;
 
     /**
      * @link \App\Command\BackupCommand::execute()
@@ -29,10 +34,29 @@ class BackupCommandTest extends TestCase
      */
     public function testABackupIsRefusedWhereItCannotBeWritten(): void
     {
+        // It runs from cron, and a deployment that believes it is being backed up and is not is
+        // the worst way round of all.
+        $this->withConfigure(['Report.errorEmails' => ['oncall@example.com']]);
+
         $this->exec('backup ' . TMP . 'there-is-no-such-directory-here');
 
         $this->assertExitError();
         $this->assertErrorContains('is not a directory that can be written to');
+        $this->assertMailSentTo('oncall@example.com');
+        $this->assertMailContains('The backup did not run');
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        $this->restoreConfigure();
+
+        parent::tearDown();
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Command;
 
 use App\Backup\DataArchive;
 use App\Backup\DatabaseDump;
+use App\Service\ErrorReport;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -104,6 +105,20 @@ class BackupCommand extends Command
             Log::error('Error during the backup: ' . $e->getMessage());
 
             $io->error(__('Error during the backup: {0}', $e->getMessage()));
+
+            // A backup runs from cron and nobody reads what cron said. A deployment that thinks
+            // it is being backed up and is not is the worst way round of all.
+            ErrorReport::send(
+                __('Backup failed'),
+                __(
+                    <<<'TEXT'
+                    The backup did not run, and nothing was left behind.
+
+                    Error: {0}
+                    TEXT,
+                    $e->getMessage(),
+                ),
+            );
 
             return static::CODE_ERROR;
         }
