@@ -32,6 +32,25 @@
             <td><?= h($proposal->conclusion_date) ?></td>
             <td><?= h($proposal->getState()) ?></td>
             <td class="actions">
+                <?php
+                // The papers first: that is what a round is for, and what somebody is most often
+                // after when they find it here. Offered whatever state it is in, because a
+                // settled round is still the paper that was agreed to.
+                ?>
+                <?= $this->AuthLink->link(
+                    __('Print to PDF'),
+                    [
+                        'controller' => 'Customers',
+                        'action' => 'print',
+                        $proposal->customer_id,
+                        '?' => ['proposal_id' => $proposal->id],
+                    ],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Proposal Documents'),
+                    ['controller' => 'CustomerProposals', 'action' => 'documents', $proposal->id],
+                    ['class' => 'win-link'],
+                ) ?>
                 <?= $this->AuthLink->link(
                     __('View'),
                     ['controller' => 'CustomerProposals', 'action' => 'view', $proposal->id],

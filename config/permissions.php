@@ -486,6 +486,7 @@ $permissions = [
                 'Customers',
                 'Contracts',
                 'ContractProposals',
+                'CustomerProposals',
             ],
             'action' => [
                 'documents',
@@ -502,6 +503,7 @@ $permissions = [
             'plugin' => null,
             'controller' => [
                 'ContractProposals',
+                'CustomerProposals',
             ],
             'action' => [
                 'addPages',
@@ -521,6 +523,7 @@ $permissions = [
             'plugin' => null,
             'controller' => [
                 'ContractProposals',
+                'CustomerProposals',
             ],
             'action' => [
                 'dropPage',

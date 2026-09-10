@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Service\CustomerPrint;
 
+use App\Documents\PrintedDocument;
 use App\Model\Enum\CustomerPrintType;
 use App\Pdf\CustomerPDF;
-use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\I18n;
 use Settings\Utility\Settings;
@@ -16,23 +16,25 @@ use Settings\Utility\Settings;
  * This view:
  *  - receives fully prepared CustomerPrintData
  *  - selects the appropriate PDF generation method
- *  - outputs the final PDF to the browser
+ *  - hands back the paper it drew
  *
  * It does NOT:
  *  - perform validation
  *  - prepare or mutate data
  *  - access request query parameters
+ *  - decide what becomes of the paper afterwards
  */
 final class CustomerPrintPdfOutput
 {
     /**
-     * Renders a PDF document based on prepared customer print data.
+     * Draws the paper the prepared data asks for.
      *
-     * Returns a CakePHP Response containing the PDF output with appropriate headers.
+     * What becomes of it - handed over, kept on the shelf, or both - is settled by whoever asked.
      *
-     * @return \Cake\Http\Response
+     * @param \App\Service\CustomerPrint\CustomerPrintData $data What is wanted.
+     * @return \App\Documents\PrintedDocument
      */
-    public function render(CustomerPrintData $data): Response
+    public function document(CustomerPrintData $data): PrintedDocument
     {
         $this->initializeLocale();
 
@@ -44,18 +46,9 @@ final class CustomerPrintPdfOutput
                 => $pdf->generateGDPRAgreement($data),
         };
 
-        $filename = $this->buildFilename($data);
+        $filename = $this->filename($data);
 
-        return (new Response())
-            ->withType('application/pdf')
-            //->withDownload($this->buildFilename($data))
-            ->withHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-            ->withStringBody(
-                $pdf->Output(
-                    $filename,
-                    'S', // return as string
-                ),
-            );
+        return new PrintedDocument($pdf->Output($filename, 'S'), $filename);
     }
 
     /**
@@ -83,9 +76,10 @@ final class CustomerPrintPdfOutput
      *  - document type
      *  - generation date
      *
+     * @param \App\Service\CustomerPrint\CustomerPrintData $data What the paper is.
      * @return string
      */
-    private function buildFilename(CustomerPrintData $data): string
+    public function filename(CustomerPrintData $data): string
     {
         $date = Date::now();
 

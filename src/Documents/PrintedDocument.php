@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\ContractPrint;
+namespace App\Documents;
 
 /**
  * A paper, as bytes and under a name.

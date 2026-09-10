@@ -54,6 +54,7 @@ use Cake\I18n\Date;
                         . ' and the day is recorded whether the scans are here or not.',
                     )
                     ?></p>
+                <br>
                 <?php foreach ($printed as $document_type => $label) : ?>
                 <div class="row">
                     <div class="column column-50">

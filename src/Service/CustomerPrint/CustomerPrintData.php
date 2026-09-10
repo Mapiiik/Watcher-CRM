@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Service\CustomerPrint;
 
 use App\Model\Entity\Customer;
+use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerPrintType;
 
 /**
@@ -33,13 +34,23 @@ final class CustomerPrintData
     public Customer $customer;
 
     /**
+     * The round the paper belongs to, where it belongs to one.
+     *
+     * What is drawn from a round is kept and handed back ever after, so this is what says where
+     * to keep it. A paper drawn from nothing is handed over and forgotten.
+     */
+    public ?CustomerProposal $proposal;
+
+    /**
      * Constructor.
      */
     public function __construct(
         CustomerPrintType $type,
         Customer $customer,
+        ?CustomerProposal $proposal = null,
     ) {
         $this->type = $type;
         $this->customer = $customer;
+        $this->proposal = $proposal;
     }
 }

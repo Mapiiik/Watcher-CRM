@@ -49,6 +49,7 @@ foreach ($proposals as $one) {
                 ['action' => 'documents', $contract->id],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <br>
             <?= $this->AuthLink->link(
                 __('Customer Documents'),
                 ['controller' => 'Customers', 'action' => 'documents', $contract->customer_id],

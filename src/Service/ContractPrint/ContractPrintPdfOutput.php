@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service\ContractPrint;
 
+use App\Documents\PrintedDocument;
 use App\Model\Enum\ContractPrintType;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
@@ -32,7 +33,7 @@ final class ContractPrintPdfOutput
      * Draws the paper, with nobody's signature on it.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What to draw.
-     * @return \App\Service\ContractPrint\PrintedDocument
+     * @return \App\Documents\PrintedDocument
      */
     public function document(ContractPrintData $data): PrintedDocument
     {

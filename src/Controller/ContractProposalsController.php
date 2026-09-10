@@ -7,7 +7,6 @@ use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalDocumentTypes;
 use App\Contracts\Proposal\ProposalForm;
-use App\Contracts\Proposal\ProposalPapers;
 use App\Contracts\Proposal\ProposalProjection;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
 use App\Contracts\Proposal\ProposalTransfer;
@@ -24,6 +23,7 @@ use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
+use App\Proposals\ProposalPapers;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
@@ -633,7 +633,7 @@ class ContractProposalsController extends AppController
 
         $this->set('contractProposal', $proposal);
         // Only what was actually printed: nothing else can have come back.
-        $this->set('printed', $this->whatWasPrinted($proposal));
+        $this->set('printed', (new ContractDocuments())->printedTypes($proposal));
         $this->set('variants', DocumentVariant::received());
 
         return null;
@@ -655,56 +655,22 @@ class ContractProposalsController extends AppController
             return;
         }
 
-        $papers = new ProposalPapers();
-        $filed = 0;
+        $came = (new ProposalPapers())->takeEach(
+            ContractDocuments::MODEL,
+            (string)$proposal->id,
+            $uploaded,
+            (array)$this->getRequest()->getData('variants'),
+        );
 
-        foreach ($uploaded as $document_type => $files) {
-            $variant = DocumentVariant::tryFrom(
-                (string)$this->getRequest()->getData('variants.' . $document_type),
-            ) ?? DocumentVariant::ReceivedSignedByCustomer;
-
-            try {
-                $filed += $papers->take($proposal, (string)$document_type, $variant, array_values((array)$files));
-            } catch (Throwable $e) {
-                $this->Flash->error($e->getMessage());
-            }
+        foreach ($came['problems'] as $problem) {
+            $this->Flash->error($problem);
         }
 
-        if ($filed > 0) {
-            $this->Flash->success(__n('{0} page has been filed.', '{0} pages have been filed.', $filed, $filed));
+        if ($came['filed'] > 0) {
+            $this->Flash->success(
+                __n('{0} page has been filed.', '{0} pages have been filed.', $came['filed'], $came['filed']),
+            );
         }
-    }
-
-    /**
-     * The documents this proposal has actually been drawn up as.
-     *
-     * Only those, because nothing else can have come back. Of the four a proposal might be
-     * printed as it is usually one or two, which is what makes the form on the signature page
-     * short enough to be worth having there at all.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal Whose papers.
-     * @return array<string, string> The document type and how it reads.
-     */
-    private function whatWasPrinted(ContractProposal $proposal): array
-    {
-        $filed = (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? [];
-
-        $printed = [];
-        foreach ($filed as $document_type => $byVariant) {
-            $type = ContractPrintType::tryFrom((string)$document_type);
-            if ($type === null) {
-                continue;
-            }
-
-            foreach (array_keys($byVariant) as $variant) {
-                if (DocumentVariant::tryFrom((string)$variant)?->isDrawnUpByUs() ?? false) {
-                    $printed[$type->value] = $type->label();
-                    break;
-                }
-            }
-        }
-
-        return $printed;
     }
 
     /**
@@ -775,7 +741,13 @@ class ContractProposalsController extends AppController
             }
 
             try {
-                $filed = (new ProposalPapers())->take($proposal, $document_type, $variant, array_values($files));
+                $filed = (new ProposalPapers())->take(
+                    ContractDocuments::MODEL,
+                    (string)$proposal->id,
+                    $document_type,
+                    $variant,
+                    array_values($files),
+                );
 
                 if ($filed > 0) {
                     $this->Flash->success(

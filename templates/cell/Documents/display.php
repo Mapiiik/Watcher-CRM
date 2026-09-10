@@ -1,74 +1,22 @@
 <?php
 /**
- * Every paper a set of proposals has on one side of them, one row to a page.
+ * Every paper a set of rounds has on one side of them, one row to a page.
  *
- * The one table for every place the papers are shown, so that a page filed against a proposal
- * reads the same wherever it is looked at. What several rows have in common is said once, down the
- * side: a contract, a proposal, a document and a hand each get one cell however many pages sit
- * under them, so what belongs together reads as one block.
+ * The one table for every place the papers are shown, so that a page filed against a round reads
+ * the same wherever it is looked at. What several rows have in common is said once, down the side:
+ * a contract, a round, a document and a hand each get one cell however many pages sit under them,
+ * so what belongs together reads as one block.
+ *
+ * Which rounds these are and what they are called is the cell's business. Here is only how it
+ * looks - a consent has no contract, and its rows simply leave that cell empty.
  *
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\ContractProposal> $proposals
- * @var array<string, array<string, array<string, array<\Files\Model\Entity\FileLink>>>> $filed
+ * @var list<array<string, mixed>> $rows
  * @var bool $ours Whether this is the side we drew up.
  * @var bool $showContract Whether the rows say which contract they belong to.
- * @var bool $showProposal Whether the rows say which proposal they belong to.
+ * @var bool $showProposal Whether the rows say which round they belong to.
  * @var bool $manage Whether the pages may be reordered and let go of from here.
  */
-
-use App\Model\Enum\ContractPrintType;
-use App\Model\Enum\DocumentVariant;
-
-$rows = [];
-foreach ($proposals as $proposal) {
-    $contractCell = $this->Html->link(
-        h($proposal->contract->number ?? ''),
-        ['controller' => 'Contracts', 'action' => 'view', $proposal->contract_id],
-    );
-    $proposalCell = $this->Html->link(
-        h($proposal->effective_from) . ' - ' . h($proposal->purpose->label()),
-        ['controller' => 'ContractProposals', 'action' => 'view', $proposal->id],
-        ['escape' => false],
-    );
-    $papersLink = $this->AuthLink->link(
-        __('Proposal Documents'),
-        [
-            'plugin' => null,
-            'controller' => 'ContractProposals',
-            'action' => 'documents',
-            $proposal->id,
-        ],
-        ['class' => 'win-link'],
-    );
-
-    foreach ($filed[$proposal->id] ?? [] as $document_type => $byVariant) {
-        foreach ($byVariant as $variant => $links) {
-            $case = DocumentVariant::tryFrom((string)$variant);
-            if ($case === null || $case->isDrawnUpByUs() !== $ours) {
-                continue;
-            }
-
-            foreach ($links as $link) {
-                $rows[] = [
-                    'contract' => $contractCell,
-                    'proposal' => $proposalCell,
-                    'papers' => $papersLink,
-                    'proposalId' => (string)$proposal->id,
-                    'document' => ContractPrintType::tryFrom((string)$document_type)?->label()
-                        ?? (string)$document_type,
-                    'variant' => $case->label(),
-                    'link' => $link,
-                    'keys' => [
-                        'contract' => (string)$proposal->contract_id,
-                        'proposal' => (string)$proposal->id,
-                        'document' => $proposal->id . '/' . $document_type,
-                        'variant' => $proposal->id . '/' . $document_type . '/' . $variant,
-                    ],
-                ];
-            }
-        }
-    }
-}
 
 /**
  * Where each run of rows saying the same thing starts and how far it reaches, for every row in it.
@@ -85,9 +33,12 @@ $runs = function (array $rows, string $of): array {
     $howMany = count($rows);
     $found = [];
     $start = 0;
+    $at = 0;
 
-    for ($at = 1; $at <= $howMany; $at++) {
+    while ($at <= $howMany) {
         if ($at < $howMany && $rows[$at]['keys'][$of] === $rows[$start]['keys'][$of]) {
+            $at++;
+
             continue;
         }
 
@@ -96,19 +47,20 @@ $runs = function (array $rows, string $of): array {
         }
 
         $start = $at;
+        $at++;
     }
 
     return $found;
 };
 
 $spans = [];
-foreach (['contract', 'proposal', 'document', 'variant'] as $of) {
+foreach (['contract', 'round', 'document', 'variant'] as $of) {
     $spans[$of] = $runs($rows, $of);
 }
 
 // Which column stands at the table's left edge, so that the rows carrying it can be told from the
 // ones whose left-hand cells are joined into the row above.
-$leftmost = $showContract ? 'contract' : ($showProposal ? 'proposal' : 'document');
+$leftmost = $showContract ? 'contract' : ($showProposal ? 'round' : 'document');
 
 /**
  * A cell standing for however many rows say the same thing, drawn only where its run starts.
@@ -158,13 +110,35 @@ $joined = function (array $run, int $index, string $content, string $class = '')
         <tbody>
         <?php foreach ($rows as $index => $row) : ?>
             <?php
+            $round = $row['round'];
             $page = $spans['variant'][$index];
             $first = $page['start'] === $index;
             $last = $page['start'] + $page['span'] - 1 === $index;
+
+            $contractCell = $round['contract_id'] === null
+                ? ''
+                : $this->Html->link(
+                    h($round['contract']),
+                    ['controller' => 'Contracts', 'action' => 'view', $round['contract_id']],
+                );
+            $roundCell = $this->Html->link(
+                h($round['label']),
+                ['controller' => $round['controller'], 'action' => 'view', $round['id']],
+            );
+            $papersLink = $this->AuthLink->link(
+                __('Proposal Documents'),
+                [
+                    'plugin' => null,
+                    'controller' => $round['controller'],
+                    'action' => 'documents',
+                    $round['id'],
+                ],
+                ['class' => 'win-link'],
+            );
             ?>
             <tr<?= $spans[$leftmost][$index]['start'] === $index ? '' : ' class="continued"' ?>>
-                <?= $showContract ? $joined($spans['contract'][$index], $index, $row['contract']) : '' ?>
-                <?= $showProposal ? $joined($spans['proposal'][$index], $index, $row['proposal']) : '' ?>
+                <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
+                <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>
                 <?= $joined($spans['document'][$index], $index, h($row['document'])) ?>
                 <?= $joined($page, $index, h($row['variant'])) ?>
                 <td><?= h($row['link']->downloadName()) ?></td>
@@ -195,9 +169,9 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             __('Up'),
                             [
                                 'plugin' => null,
-                                'controller' => 'ContractProposals',
+                                'controller' => $round['controller'],
                                 'action' => 'movePage',
-                                $row['proposalId'],
+                                $round['id'],
                                 $row['link']->id,
                                 'up',
                             ],
@@ -208,9 +182,9 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             __('Down'),
                             [
                                 'plugin' => null,
-                                'controller' => 'ContractProposals',
+                                'controller' => $round['controller'],
                                 'action' => 'movePage',
-                                $row['proposalId'],
+                                $round['id'],
                                 $row['link']->id,
                                 'down',
                             ],
@@ -221,9 +195,9 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             __('Remove'),
                             [
                                 'plugin' => null,
-                                'controller' => 'ContractProposals',
+                                'controller' => $round['controller'],
                                 'action' => 'dropPage',
-                                $row['proposalId'],
+                                $round['id'],
                                 $row['link']->id,
                             ],
                             ['confirm' => $ours
@@ -235,7 +209,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                         ) ?>
                     <?php endif; ?>
                 </td>
-                <?= $showProposal ? $joined($spans['proposal'][$index], $index, $row['papers'], 'actions') : '' ?>
+                <?= $showProposal ? $joined($spans['round'][$index], $index, $papersLink, 'actions') : '' ?>
             </tr>
         <?php endforeach; ?>
         </tbody>

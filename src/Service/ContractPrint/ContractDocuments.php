@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Service\ContractPrint;
 
+use App\Documents\PrintedDocument;
+use App\Model\Entity\ContractProposal;
+use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\DocumentVariant;
 use App\Pdf\SignatureAnchors;
 use App\Pdf\SignatureStampPDF;
@@ -55,7 +58,7 @@ final class ContractDocuments
      * The paper that was asked for.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What is wanted.
-     * @return \App\Service\ContractPrint\PrintedDocument
+     * @return \App\Documents\PrintedDocument
      */
     public function for(ContractPrintData $data): PrintedDocument
     {
@@ -89,7 +92,7 @@ final class ContractDocuments
     /**
      * Whether there is anywhere on this paper for our signature to go.
      *
-     * @param \App\Service\ContractPrint\PrintedDocument $base The paper as it stands.
+     * @param \App\Documents\PrintedDocument $base The paper as it stands.
      * @return bool
      */
     private function maySignIt(PrintedDocument $base): bool
@@ -130,6 +133,36 @@ final class ContractDocuments
     }
 
     /**
+     * The documents a proposal has actually been drawn up as.
+     *
+     * Only those, because nothing else can have come back. That is what makes offering them on
+     * the signature page short enough to be worth having there at all.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal Whose papers.
+     * @return array<string, string> The document type, and how it reads.
+     */
+    public function printedTypes(ContractProposal $proposal): array
+    {
+        $printed = [];
+
+        foreach ($this->filedAgainst([$proposal])[(string)$proposal->id] ?? [] as $document_type => $byVariant) {
+            $type = ContractPrintType::tryFrom((string)$document_type);
+            if ($type === null) {
+                continue;
+            }
+
+            foreach (array_keys($byVariant) as $variant) {
+                if (DocumentVariant::tryFrom((string)$variant)?->isDrawnUpByUs() ?? false) {
+                    $printed[$type->value] = $type->label();
+                    break;
+                }
+            }
+        }
+
+        return $printed;
+    }
+
+    /**
      * Draws the paper.
      *
      * The enrichment happens here rather than before, so that handing over a paper already on
@@ -138,7 +171,7 @@ final class ContractDocuments
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What to draw.
      * @param bool $signed Only what to call it - nothing is signed by drawing.
-     * @return \App\Service\ContractPrint\PrintedDocument
+     * @return \App\Documents\PrintedDocument
      */
     private function draw(ContractPrintData $data, bool $signed): PrintedDocument
     {
@@ -155,8 +188,8 @@ final class ContractDocuments
      * Puts our signature onto a paper that is already finished.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What the paper is.
-     * @param \App\Service\ContractPrint\PrintedDocument $base The paper as it stands.
-     * @return \App\Service\ContractPrint\PrintedDocument
+     * @param \App\Documents\PrintedDocument $base The paper as it stands.
+     * @return \App\Documents\PrintedDocument
      */
     private function stamp(ContractPrintData $data, PrintedDocument $base): PrintedDocument
     {
@@ -175,7 +208,7 @@ final class ContractDocuments
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What is wanted.
      * @param \App\Model\Enum\DocumentVariant $variant Which variant of the document.
-     * @return \App\Service\ContractPrint\PrintedDocument|null
+     * @return \App\Documents\PrintedDocument|null
      */
     private function onFile(ContractPrintData $data, DocumentVariant $variant): ?PrintedDocument
     {
@@ -196,9 +229,9 @@ final class ContractDocuments
      * Keeps a paper, and hands back what was kept.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What the paper is.
-     * @param \App\Service\ContractPrint\PrintedDocument $document The paper.
+     * @param \App\Documents\PrintedDocument $document The paper.
      * @param \App\Model\Enum\DocumentVariant $variant Which variant of the document.
-     * @return \App\Service\ContractPrint\PrintedDocument
+     * @return \App\Documents\PrintedDocument
      */
     private function keep(
         ContractPrintData $data,

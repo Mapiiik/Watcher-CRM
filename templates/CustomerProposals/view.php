@@ -25,11 +25,22 @@
                     ['action' => 'send', $customerProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
+            <?php endif; ?>
+            <?php if (!$customerProposal->hasBeenRevoked()) : ?>
                 <?= $this->AuthLink->link(
-                    __('Record the Signature'),
+                    $customerProposal->hasBeenConcluded()
+                        ? __('Correct the Signature')
+                        : __('Record the Signature'),
                     ['action' => 'conclude', $customerProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
+            <?php endif; ?>
+            <?= $this->AuthLink->link(
+                __('Proposal Documents'),
+                ['action' => 'documents', $customerProposal->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?php if ($customerProposal->isOpen()) : ?>
                 <?= $this->AuthLink->postLink(
                     __('Revoke'),
                     ['action' => 'revoke', $customerProposal->id],
@@ -39,11 +50,6 @@
                     ],
                 ) ?>
             <?php endif; ?>
-            <?= $this->AuthLink->link(
-                __('View Customer'),
-                ['controller' => 'Customers', 'action' => 'view', $customerProposal->customer_id],
-                ['class' => 'side-nav-item'],
-            ) ?>
             <?php if ($mayBeDeleted) : ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
@@ -54,6 +60,17 @@
             <?= $this->AuthLink->link(
                 __('List Proposals'),
                 ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <br>
+            <?= $this->AuthLink->link(
+                __('Print to PDF'),
+                [
+                    'controller' => 'Customers',
+                    'action' => 'print',
+                    $customerProposal->customer_id,
+                    '?' => ['proposal_id' => $customerProposal->id],
+                ],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>

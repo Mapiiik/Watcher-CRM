@@ -8,6 +8,7 @@ use App\Contracts\Check\ContractCheckRegistry;
 use App\Contracts\Proposal\ProposalDocumentTypes;
 use App\Contracts\Proposal\ProposalProjection;
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Documents\PrintedDocument;
 use App\Maps\ContractMap;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
@@ -16,7 +17,6 @@ use App\Model\Enum\CustomerDealer;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Service\ContractPrint\ContractPrintData;
 use App\Service\ContractPrint\ContractPrintValidator;
-use App\Service\ContractPrint\PrintedDocument;
 use App\View\PdfView;
 use Cake\Collection\Collection;
 use Cake\Form\Form;
@@ -992,7 +992,7 @@ class ContractsController extends AppController
      * Shown rather than downloaded: printing is what this is for, and a paper that opens is one
      * fewer step than a paper that lands in a folder.
      *
-     * @param \App\Service\ContractPrint\PrintedDocument $document The paper.
+     * @param \App\Documents\PrintedDocument $document The paper.
      * @return \Cake\Http\Response
      */
     private function handOver(PrintedDocument $document): Response

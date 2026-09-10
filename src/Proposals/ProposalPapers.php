@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Contracts\Proposal;
+namespace App\Proposals;
 
-use App\Model\Entity\ContractProposal;
 use App\Model\Enum\DocumentVariant;
-use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Files\Model\Entity\FileLink;
 use Files\Model\Table\FileLinksTable;
@@ -13,13 +11,18 @@ use Files\Service\FileStorage;
 use finfo;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
+use Throwable;
 
 /**
  * The papers on a proposal that somebody hands over rather than prints: the scans that come back.
  *
- * Kept apart from {@see \App\Service\ContractPrint\ContractDocuments}, which is about drawing a
- * paper and never drawing it twice. Nothing here draws anything - it takes what arrived, keeps it
- * as it arrived, and puts the pages in the order somebody says they go.
+ * Kept apart from the services that draw papers and never draw them twice. Nothing here draws
+ * anything - it takes what arrived, keeps it as it arrived, and puts the pages in the order
+ * somebody says they go.
+ *
+ * It is told which record the pages hang on rather than being handed one, because a scan of a
+ * contract's paper and a scan of a consent are the same act on two different agendas, and what
+ * differs between them is only the two words the store files them under.
  */
 final class ProposalPapers
 {
@@ -61,7 +64,8 @@ final class ProposalPapers
      * The order the browser sends them in is the order they were picked, which for a set of scans
      * is usually their own numbering - so the common case needs no putting right afterwards.
      *
-     * @param \App\Model\Entity\ContractProposal $proposal Whose papers.
+     * @param string $model What kind of record they hang on.
+     * @param string $foreign_key Which one.
      * @param string $document_type Which document they are of.
      * @param \App\Model\Enum\DocumentVariant $variant Whose signatures they carry.
      * @param list<\Psr\Http\Message\UploadedFileInterface> $files What arrived.
@@ -69,7 +73,8 @@ final class ProposalPapers
      * @throws \RuntimeException When something arrived that is not a paper.
      */
     public function take(
-        ContractProposal $proposal,
+        string $model,
+        string $foreign_key,
         string $document_type,
         DocumentVariant $variant,
         array $files,
@@ -86,8 +91,8 @@ final class ProposalPapers
 
             $this->storage->link(
                 $this->storage->storeFile($path, $mime_type),
-                ContractDocuments::MODEL,
-                (string)$proposal->id,
+                $model,
+                $foreign_key,
                 $document_type,
                 $variant->value,
                 ['name' => $file->getClientFilename()],
@@ -97,6 +102,45 @@ final class ProposalPapers
         }
 
         return $filed;
+    }
+
+    /**
+     * Files what came back for several documents at once, the way a form offering all of them does.
+     *
+     * One document refusing its pages does not stop the others: they are separate papers, and what
+     * can be filed is filed. What went wrong is handed back rather than thrown, because the caller
+     * is recording something else at the same time and that must not fall over with it.
+     *
+     * @param string $model What kind of record they hang on.
+     * @param string $foreign_key Which one.
+     * @param array<string, mixed> $uploaded What arrived, by document type.
+     * @param array<string, mixed> $variants Whose signatures each of them carries, by document type.
+     * @return array<string, mixed> How many pages were filed, and what would not go on the shelf.
+     * @phpstan-return array{filed: int, problems: list<string>}
+     */
+    public function takeEach(string $model, string $foreign_key, array $uploaded, array $variants): array
+    {
+        $filed = 0;
+        $problems = [];
+
+        foreach ($uploaded as $document_type => $files) {
+            $variant = DocumentVariant::tryFrom((string)($variants[$document_type] ?? ''))
+                ?? DocumentVariant::ReceivedSignedByCustomer;
+
+            try {
+                $filed += $this->take(
+                    $model,
+                    $foreign_key,
+                    (string)$document_type,
+                    $variant,
+                    array_values((array)$files),
+                );
+            } catch (Throwable $e) {
+                $problems[] = $e->getMessage();
+            }
+        }
+
+        return ['filed' => $filed, 'problems' => $problems];
     }
 
     /**

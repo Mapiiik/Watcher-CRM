@@ -66,16 +66,6 @@ foreach ($filed as $byVariant) {
                 ) ?>
             <?php endif; ?>
             <?= $this->AuthLink->link(
-                __('Print to PDF'),
-                [
-                    'controller' => 'Contracts',
-                    'action' => 'print',
-                    $contractProposal->contract_id,
-                    '?' => ['proposal_id' => $contractProposal->id],
-                ],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
                 __('Proposal Documents'),
                 ['action' => 'documents', $contractProposal->id],
                 ['class' => 'side-nav-item'],
@@ -100,6 +90,17 @@ foreach ($filed as $byVariant) {
             <?= $this->AuthLink->link(
                 __('List Proposals'),
                 ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <br>
+            <?= $this->AuthLink->link(
+                __('Print to PDF'),
+                [
+                    'controller' => 'Contracts',
+                    'action' => 'print',
+                    $contractProposal->contract_id,
+                    '?' => ['proposal_id' => $contractProposal->id],
+                ],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
@@ -230,13 +231,13 @@ foreach ($filed as $byVariant) {
                 <h5><?= __('Received Documents') ?></h5>
                 <?= $this->cell(
                     'Documents',
-                    ['proposal', $contractProposal->id],
+                    ['contractProposal', $contractProposal->id],
                     ['ours' => false],
                 ) ?>
                 <h5><?= __('Sent Documents') ?></h5>
                 <?= $this->cell(
                     'Documents',
-                    ['proposal', $contractProposal->id],
+                    ['contractProposal', $contractProposal->id],
                     ['ours' => true],
                 ) ?>
             <?php endif; ?>

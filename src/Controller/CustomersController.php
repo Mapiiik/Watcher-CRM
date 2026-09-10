@@ -9,10 +9,12 @@ use App\BusinessRegister\Registry;
 use App\Contracts\Check\ContractCheckRegistry;
 use App\Customers\Check\CustomerCheckRegistry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
+use App\Documents\PrintedDocument;
 use App\Model\Entity\Customer;
+use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerPrintType;
+use App\Service\CustomerPrint\CustomerDocuments;
 use App\Service\CustomerPrint\CustomerPrintData;
-use App\Service\CustomerPrint\CustomerPrintPdfOutput;
 use App\Service\CustomerPrint\CustomerPrintValidator;
 use App\View\PdfView;
 use Cake\Core\Configure;
@@ -740,13 +742,6 @@ class CustomersController extends AppController
      */
     public function print(?string $id = null, ?string $type = null): ?Response
     {
-        // prepare supported document types for selection in the print view
-        $documentTypes = [
-            CustomerPrintType::GdprNew->value => CustomerPrintType::GdprNew->label(),
-            CustomerPrintType::GdprChange->value => CustomerPrintType::GdprChange->label(),
-        ];
-        $this->set('documentTypes', $documentTypes);
-
         // initialize an empty form to be used for PDF generation (validation errors will be added to this form)
         $printForm = new Form();
 
@@ -767,12 +762,23 @@ class CustomersController extends AppController
         // keep only relevant query parameters for PDF generation in the query string
         unset($query['submit_action']);
 
+        // A paper is drawn from a round, so that the same paper printed twice is the same paper
+        // and a signed scan has something to be filed against.
+        $proposal = $this->chosenProposal($customer, $query['proposal_id'] ?? null);
+        $documentTypes = $this->documentsFor($proposal);
+
         // load the print type from the query string or use the one from the URL parameter
         try {
             $printType = CustomerPrintType::from($query['document_type'] ?? $type ?? '');
         } catch (ValueError) {
             // tolerate invalid or missing document type for UI rendering
             $printType = null;
+        }
+
+        // Before the operator has chosen, the round's own purpose says which paper it is for.
+        if ($printType === null && $proposal !== null) {
+            $suggested = $proposal->purpose->suggests($this->hasAgreedBefore($customer, $proposal));
+            $printType = isset($documentTypes[$suggested->value]) ? $suggested : null;
         }
 
         // PDF request: validate input, enrich data and render PDF output
@@ -791,6 +797,7 @@ class CustomersController extends AppController
             $data = new CustomerPrintData(
                 type: $printType,
                 customer: $customer,
+                proposal: $proposal,
             );
 
             // validate the data for the requested document type
@@ -817,8 +824,8 @@ class CustomersController extends AppController
                     return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
                 }
 
-                // render the PDF document based on the enriched data
-                return (new CustomerPrintPdfOutput())->render($data);
+                // The paper the round already has, or a fresh one kept against it.
+                return $this->handOver((new CustomerDocuments())->for($data));
             }
         }
 
@@ -827,9 +834,97 @@ class CustomersController extends AppController
             'printForm',
             'printType',
             'customer',
+            'proposal',
+            'documentTypes',
         ));
 
         return null;
+    }
+
+    /**
+     * Hands a paper over to whoever asked for it.
+     *
+     * Shown rather than downloaded: printing is what this is for, and a paper that opens is one
+     * fewer step than a paper that lands in a folder.
+     *
+     * @param \App\Documents\PrintedDocument $document The paper.
+     * @return \Cake\Http\Response
+     */
+    private function handOver(PrintedDocument $document): Response
+    {
+        return (new Response())
+            ->withType($document->mimeType)
+            ->withHeader('Content-Disposition', 'inline; filename="' . $document->filename . '"')
+            ->withStringBody($document->bytes);
+    }
+
+    /**
+     * The round the papers are for, of the ones this customer has.
+     *
+     * @param \App\Model\Entity\Customer $customer Whose rounds.
+     * @param mixed $chosen What was asked for.
+     * @return \App\Model\Entity\CustomerProposal|null
+     */
+    private function chosenProposal(Customer $customer, mixed $chosen): ?CustomerProposal
+    {
+        if (!is_string($chosen) || $chosen === '') {
+            return null;
+        }
+
+        foreach ($customer->customer_proposals ?? [] as $proposal) {
+            if ((string)$proposal->id === $chosen) {
+                return $proposal;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * The documents that round may be printed as.
+     *
+     * @param \App\Model\Entity\CustomerProposal|null $proposal The chosen round.
+     * @return array<string, string>
+     */
+    private function documentsFor(?CustomerProposal $proposal): array
+    {
+        if ($proposal === null) {
+            return [];
+        }
+
+        $documents = [];
+        foreach ($proposal->purpose->documents() as $document) {
+            $documents[$document->value] = $document->label();
+        }
+
+        return $documents;
+    }
+
+    /**
+     * Whether the customer agreed to this before the round being printed from.
+     *
+     * Read off the earlier rounds rather than off the customer's own flags: the flags say what
+     * stands today and never say when it was said, while a round drawn up months ago is asking
+     * about the state of things back then.
+     *
+     * @param \App\Model\Entity\Customer $customer Whose rounds.
+     * @param \App\Model\Entity\CustomerProposal $proposal The round being printed from.
+     * @return bool
+     */
+    private function hasAgreedBefore(Customer $customer, CustomerProposal $proposal): bool
+    {
+        foreach ($customer->customer_proposals ?? [] as $earlier) {
+            if (
+                (string)$earlier->id !== (string)$proposal->id
+                && $earlier->purpose === $proposal->purpose
+                && $earlier->hasBeenConcluded()
+                && $earlier->effective_from <= $proposal->effective_from
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

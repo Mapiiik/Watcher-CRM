@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractProposal $contractProposal
+ * @var \App\Model\Entity\CustomerProposal $customerProposal
  */
 ?>
 <div class="row">
@@ -10,34 +10,34 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['action' => 'view', $contractProposal->id],
+                ['action' => 'view', $customerProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <br>
             <?= $this->AuthLink->link(
                 __('Print to PDF'),
                 [
-                    'controller' => 'Contracts',
+                    'controller' => 'Customers',
                     'action' => 'print',
-                    $contractProposal->contract_id,
-                    '?' => ['proposal_id' => $contractProposal->id],
+                    $customerProposal->customer_id,
+                    '?' => ['proposal_id' => $customerProposal->id],
                 ],
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Contract Documents'),
-                ['controller' => 'Contracts', 'action' => 'documents', $contractProposal->contract_id],
+                __('Customer Documents'),
+                ['controller' => 'Customers', 'action' => 'documents', $customerProposal->customer_id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="contractProposals view content">
-            <?= $this->element('ContractProposals/heading') ?>
+        <div class="customerProposals view content">
+            <?= $this->element('CustomerProposals/heading') ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('Add Received Document'),
-                    ['action' => 'addPages', $contractProposal->id],
+                    ['action' => 'addPages', $customerProposal->id],
                     ['class' => 'button button-small float-right win-link'],
                 ) ?>
                 <h4><?= __('Received Documents') ?></h4>
@@ -49,7 +49,7 @@
                     ?></p>
                 <?= $this->cell(
                     'Documents',
-                    ['contractProposal', $contractProposal->id],
+                    ['customerProposal', $customerProposal->id],
                     ['ours' => false, 'manage' => true],
                 ) ?>
             </div>
@@ -64,7 +64,7 @@
                     ?></p>
                 <?= $this->cell(
                     'Documents',
-                    ['contractProposal', $contractProposal->id],
+                    ['customerProposal', $customerProposal->id],
                     ['ours' => true, 'manage' => true],
                 ) ?>
             </div>

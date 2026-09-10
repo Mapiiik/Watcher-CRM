@@ -326,7 +326,7 @@ class ContractProposalsDocumentsTest extends TestCase
      * What is not a paper does not go on the shelf, and the operator is told why rather than
      * being left to wonder.
      *
-     * @link \App\Contracts\Proposal\ProposalPapers::take()
+     * @link \App\Proposals\ProposalPapers::take()
      * @return void
      */
     public function testSomethingThatIsNotAPaperIsRefused(): void

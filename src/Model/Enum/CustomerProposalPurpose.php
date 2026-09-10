@@ -35,4 +35,35 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
             self::GdprConsent => __('Consent to the processing of personal data'),
         };
     }
+
+    /**
+     * The documents a round for this purpose may be printed as.
+     *
+     * @return array<\App\Model\Enum\CustomerPrintType>
+     */
+    public function documents(): array
+    {
+        return match ($this) {
+            self::GdprConsent => [CustomerPrintType::GdprNew, CustomerPrintType::GdprChange],
+        };
+    }
+
+    /**
+     * Which of them to put in front of the operator first.
+     *
+     * Asking somebody who has agreed before is not the same paper as asking somebody who never
+     * has, and only the earlier rounds know which it is. Only a suggestion - what is printed is
+     * whatever the operator picks.
+     *
+     * @param bool $asked_before Whether the customer has agreed to this before.
+     * @return \App\Model\Enum\CustomerPrintType
+     */
+    public function suggests(bool $asked_before): CustomerPrintType
+    {
+        return match ($this) {
+            self::GdprConsent => $asked_before
+                ? CustomerPrintType::GdprChange
+                : CustomerPrintType::GdprNew,
+        };
+    }
 }

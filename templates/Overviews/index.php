@@ -76,6 +76,11 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('List Customer Proposals'),
+                    ['controller' => 'CustomerProposals', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('List Customer Messages'),
                     ['controller' => 'CustomerMessages', 'action' => 'index'],
                     ['class' => 'side-nav-item'],

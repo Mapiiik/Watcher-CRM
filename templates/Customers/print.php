@@ -2,10 +2,26 @@
 /**
  * @var \App\View\AppView $this
  * @var \Cake\Form\Form $printForm
+ * @var \App\Model\Entity\CustomerProposal|null $proposal
+ * @var array<string, string> $documentTypes
  * @var \App\Model\Enum\CustomerPrintType|null $printType
  * @var \App\Model\Entity\Customer $customer
- * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $documentTypes
  */
+
+$howARoundReads = function ($one): string {
+    return sprintf(
+        '%s - %s (%s)',
+        $one->effective_from,
+        $one->purpose->label(),
+        $one->getState(),
+    );
+};
+
+$rounds = [];
+foreach ($customer->customer_proposals ?? [] as $one) {
+    $rounds[$one->id] = $howARoundReads($one);
+}
+
 ?>
 <div class="row">
     <aside class="column">
@@ -58,30 +74,61 @@
             ]) ?>
             <fieldset>
                 <legend><?= __('Print Documents') ?></legend>
-                <div class="row">
-                    <div class="column">
-                        <?php
+                <p><?= __('A document is printed from a round of papers, so that the same paper'
+                    . ' printed twice is the same paper and a signed scan has something to be'
+                    . ' filed against.') ?></p>
+                <?php
+                if ($rounds === []) {
+                    echo '<p>' . __('There is no round of papers for this customer yet.') . '</p>';
+                } else {
+                    echo $this->Form->control('proposal_id', [
+                        'label' => __('Proposal'),
+                        'options' => $rounds,
+                        'empty' => true,
+                        'value' => $proposal?->id,
+                        'required' => true,
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
+                    ]);
+
+                    if ($proposal !== null) {
                         echo $this->Form->control('document_type', [
                             'label' => __('Document Type'),
                             'options' => $documentTypes,
                             'empty' => true,
+                            'value' => $printType?->value,
                             'required' => true,
                             'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
-                        ?>
-                    </div>
-                    <div class="column">
-                    </div>
-                </div>
+                    }
+                }
+                ?>
             </fieldset>
             <?= $this->Form->hidden('submit_action', [
                 'value' => 'refresh',
             ]) ?>
-            <?= $this->Form->button(__('Print to PDF'), [
-                'name' => 'submit_action',
-                'value' => 'pdf',
-            ]) ?>
+            <?php if ($proposal !== null && $printType !== null) : ?>
+                <?= $this->Form->button(__('Print to PDF'), [
+                    'name' => 'submit_action',
+                    'value' => 'pdf',
+                ]) ?>
+            <?php endif; ?>
             <?= $this->Form->end() ?>
+
+            <div class="related">
+                <h4><?= __('Papers Already Drawn Up') ?></h4>
+                <p><?=
+                    __(
+                        'What this form has printed before. A paper is drawn once, so these are'
+                        . ' the ones the customer was given - fetching one back is quicker than'
+                        . ' printing it again, and it is the same file either way.',
+                    )
+                    ?></p>
+                <?= $this->cell(
+                    'Documents',
+                    ['customer', $customer->id],
+                    ['ours' => true, 'withContracts' => false],
+                ) ?>
+            </div>
         </div>
     </div>
 </div>

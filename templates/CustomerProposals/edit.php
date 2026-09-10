@@ -17,6 +17,21 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
+            <?php
+            // What is written down about the round is offered here as well as on the detail:
+            // somebody filling in the day it went out or the day it was signed reaches for Edit
+            // first. No guard is needed - a round that may be edited has not been given up on.
+            ?>
+            <?= $this->AuthLink->link(
+                __('Record the Sending'),
+                ['action' => 'send', $customerProposal->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Record the Signature'),
+                ['action' => 'conclude', $customerProposal->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
             <?= $this->AuthLink->link(
                 __('List Proposals'),
                 ['action' => 'index'],

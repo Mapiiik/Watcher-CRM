@@ -3,11 +3,19 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
+use App\Model\Enum\DocumentVariant;
+use App\Proposals\ProposalPapers;
+use App\Service\CustomerPrint\CustomerDocuments;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
+use Files\Model\Entity\FileLink;
+use Files\Model\Table\FileLinksTable;
+use Throwable;
 
 /**
  * CustomerProposals Controller
@@ -195,8 +203,8 @@ class CustomerProposalsController extends AppController
     {
         $proposal = $this->CustomerProposals->get($id, contain: ['Customers']);
 
-        if (!$proposal->isOpen()) {
-            $this->Flash->warning(__('This proposal has already been settled.'));
+        if ($proposal->hasBeenRevoked()) {
+            $this->Flash->warning(__('This round of papers has been given up on.'));
 
             return $this->redirect(['action' => 'view', $id]);
         }
@@ -208,6 +216,7 @@ class CustomerProposalsController extends AppController
 
             if ($this->CustomerProposals->save($proposal)) {
                 $this->Flash->success(__('The signature has been recorded.'));
+                $this->fileWhatCameWithIt($proposal);
 
                 return $this->redirect(['action' => 'view', $proposal->id]);
             }
@@ -217,8 +226,45 @@ class CustomerProposalsController extends AppController
         }
 
         $this->set('customerProposal', $proposal);
+        // Only what was actually printed: nothing else can have come back.
+        $this->set('printed', (new CustomerDocuments())->printedTypes($proposal));
+        $this->set('variants', DocumentVariant::received());
 
         return null;
+    }
+
+    /**
+     * Files the scans that came in with the signature.
+     *
+     * After the day is recorded rather than with it: the day is what the round turns on, and a
+     * scan that will not go on the shelf must not stand in the way of it.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal Whose papers.
+     * @return void
+     */
+    private function fileWhatCameWithIt(CustomerProposal $proposal): void
+    {
+        $uploaded = $this->getRequest()->getUploadedFiles()['papers'] ?? [];
+        if (!is_array($uploaded)) {
+            return;
+        }
+
+        $came = (new ProposalPapers())->takeEach(
+            CustomerDocuments::MODEL,
+            (string)$proposal->id,
+            $uploaded,
+            (array)$this->getRequest()->getData('variants'),
+        );
+
+        foreach ($came['problems'] as $problem) {
+            $this->Flash->error($problem);
+        }
+
+        if ($came['filed'] > 0) {
+            $this->Flash->success(
+                __n('{0} page has been filed.', '{0} pages have been filed.', $came['filed'], $came['filed']),
+            );
+        }
     }
 
     /**
@@ -280,6 +326,168 @@ class CustomerProposalsController extends AppController
         }
 
         return $this->afterDeleteRedirect(['action' => 'index']);
+    }
+
+    /**
+     * The papers this round has: what we drew up, and what came back.
+     *
+     * Not gated on the state of the round. Scans arrive after it has been sent and after the
+     * signature has been recorded, and the papers stay worth looking at for as long as the
+     * customer does.
+     *
+     * @param string|null $id Customer proposal id.
+     * @return void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function documents(?string $id = null): void
+    {
+        $this->set('customerProposal', $this->CustomerProposals->get($id, contain: ['Customers']));
+    }
+
+    /**
+     * Files what came back, a document at a time.
+     *
+     * @param string|null $id Customer proposal id.
+     * @return \Cake\Http\Response|null Redirects when filed, renders the form otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function addPages(?string $id = null): ?Response
+    {
+        $proposal = $this->CustomerProposals->get($id, contain: ['Customers']);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $document_type = (string)$this->getRequest()->getData('document_type');
+            $variant = DocumentVariant::tryFrom((string)$this->getRequest()->getData('variant'));
+            $files = $this->getRequest()->getUploadedFiles()['papers'] ?? [];
+
+            if ($variant === null || $document_type === '' || !is_array($files)) {
+                $this->Flash->error(__('It was not said what those pages are.'));
+
+                return null;
+            }
+
+            try {
+                $filed = (new ProposalPapers())->take(
+                    CustomerDocuments::MODEL,
+                    (string)$proposal->id,
+                    $document_type,
+                    $variant,
+                    array_values($files),
+                );
+
+                if ($filed > 0) {
+                    $this->Flash->success(
+                        __n('{0} page has been filed.', '{0} pages have been filed.', $filed, $filed),
+                    );
+
+                    return $this->redirect(['action' => 'documents', $id]);
+                }
+
+                $this->Flash->error(__('Nothing was chosen to file.'));
+            } catch (Throwable $e) {
+                $this->Flash->error($e->getMessage());
+            }
+        }
+
+        $this->set('customerProposal', $proposal);
+        $this->set('documentTypes', $this->documentLabels($proposal));
+        $this->set('variants', DocumentVariant::received());
+
+        return null;
+    }
+
+    /**
+     * Lets go of one page.
+     *
+     * Letting go of something we drew up is not tidying: it puts the document back within reach,
+     * because what is on file is never drawn again while it is there.
+     *
+     * @param string|null $id Customer proposal id.
+     * @param string|null $link_id Which page.
+     * @return \Cake\Http\Response|null Redirects back to the papers.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function dropPage(?string $id = null, ?string $link_id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post', 'delete']);
+
+        $page = $this->thePage($id, $link_id);
+
+        try {
+            (new ProposalPapers())->drop($page);
+            $this->Flash->success(__('The page has been removed.'));
+        } catch (Throwable $e) {
+            $this->Flash->error(__('The page could not be removed: {0}', $e->getMessage()));
+        }
+
+        return $this->redirect(['action' => 'documents', $id]);
+    }
+
+    /**
+     * Moves one page past the one beside it.
+     *
+     * @param string|null $id Customer proposal id.
+     * @param string|null $link_id Which page.
+     * @param string|null $direction Which way - `up` or anything else for down.
+     * @return \Cake\Http\Response|null Redirects back to the papers.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function movePage(?string $id = null, ?string $link_id = null, ?string $direction = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post', 'put']);
+
+        $page = $this->thePage($id, $link_id);
+
+        try {
+            (new ProposalPapers())->move($page, $direction === 'up');
+        } catch (Throwable $e) {
+            $this->Flash->error(__('The pages could not be reordered: {0}', $e->getMessage()));
+        }
+
+        return $this->redirect(['action' => 'documents', $id]);
+    }
+
+    /**
+     * One of this round's pages.
+     *
+     * The round is checked as well as the page, so that an identifier from somewhere else cannot
+     * reach a paper through this door.
+     *
+     * @param string|null $id Customer proposal id.
+     * @param string|null $link_id Which page.
+     * @return \Files\Model\Entity\FileLink
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this round's.
+     */
+    private function thePage(?string $id, ?string $link_id): FileLink
+    {
+        /** @var \Files\Model\Table\FileLinksTable $links */
+        $links = $this->fetchTable(FileLinksTable::class);
+
+        /** @var \Files\Model\Entity\FileLink $link */
+        $link = $links->get($link_id);
+
+        if ($link->model !== CustomerDocuments::MODEL || $link->foreign_key !== $id) {
+            throw new RecordNotFoundException(__('That page belongs to something else.'));
+        }
+
+        return $link;
+    }
+
+    /**
+     * The documents this round may be printed as, and so may have papers for.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The round.
+     * @return array<string, string>
+     */
+    private function documentLabels(CustomerProposal $proposal): array
+    {
+        $documents = [];
+
+        foreach ($proposal->purpose->documents() as $document) {
+            $documents[$document->value] = $document->label();
+        }
+
+        return $documents;
     }
 
     /**

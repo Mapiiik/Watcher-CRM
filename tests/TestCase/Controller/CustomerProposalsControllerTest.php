@@ -172,6 +172,34 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
+     * A round is settled by the signature, but the day it was signed is a typed-in date like any
+     * other, so it stays correctable until the round is given up on.
+     *
+     * @link \App\Controller\CustomerProposalsController::conclude()
+     * @return void
+     */
+    public function testTheDayOfTheSignatureStaysCorrectable(): void
+    {
+        $proposal = $this->drawOneUp();
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+
+        $this->post('/customer-proposals/conclude/' . $proposal->id, ['conclusion_date' => '2026-10-05']);
+        $this->assertRedirect();
+
+        $this->post('/customer-proposals/conclude/' . $proposal->id, ['conclusion_date' => '2026-10-06']);
+        $this->assertRedirect();
+        $this->assertSame('2026-10-06', $proposals->get($proposal->id)->conclusion_date?->toDateString());
+
+        // Giving up on a round is the one thing that closes the door, and it can only be done
+        // before there is a signature to speak of.
+        $abandoned = $this->drawOneUp();
+        $this->post('/customer-proposals/revoke/' . $abandoned->id);
+        $this->post('/customer-proposals/conclude/' . $abandoned->id, ['conclusion_date' => '2026-10-07']);
+        $this->assertRedirect();
+        $this->assertNull($proposals->get($abandoned->id)->conclusion_date);
+    }
+
+    /**
      * Giving up on a round settles it without pretending it never happened.
      *
      * @link \App\Controller\CustomerProposalsController::revoke()
