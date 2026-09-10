@@ -75,11 +75,26 @@ final class ContractDocuments
         $base = $this->onFile($data, DocumentVariant::Generated)
             ?? $this->keep($data, $this->draw($data, false), DocumentVariant::Generated);
 
-        if ($wanted === DocumentVariant::Generated) {
+        // A paper with nowhere to sign is handed over as it is. The summary is the one: it says
+        // what is on offer before anybody is bound by it, so it carries no signature block and no
+        // mark to put one in. Asked of the paper rather than of a list of which papers those are,
+        // because the paper is what knows.
+        if ($wanted === DocumentVariant::Generated || !$this->maySignIt($base)) {
             return $base;
         }
 
         return $this->keep($data, $this->stamp($data, $base), DocumentVariant::GeneratedSignedByUs);
+    }
+
+    /**
+     * Whether there is anywhere on this paper for our signature to go.
+     *
+     * @param \App\Service\ContractPrint\PrintedDocument $base The paper as it stands.
+     * @return bool
+     */
+    private function maySignIt(PrintedDocument $base): bool
+    {
+        return SignatureAnchors::fromPdf($base->bytes)->find(SignatureAnchors::PROVIDER_SIGNATURE) !== null;
     }
 
     /**

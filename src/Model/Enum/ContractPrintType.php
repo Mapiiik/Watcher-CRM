@@ -138,6 +138,23 @@ enum ContractPrintType: string implements EnumLabelInterface
     }
 
     /**
+     * Indicates whether this document has anywhere for our signature to go.
+     *
+     * Everything that binds somebody does. The summary does not: it says what is on offer before
+     * anybody is bound by it, so it carries no signature block at all.
+     *
+     * Only what the operator is offered. What actually happens is decided by the paper itself,
+     * which carries the marks that say where it is signed - so a document added later that
+     * forgets to answer here still cannot be signed by accident.
+     *
+     * @return bool
+     */
+    public function mayCarryOurSignature(): bool
+    {
+        return $this !== self::ContractSummary;
+    }
+
+    /**
      * Indicates whether this document type represents
      * a handover protocol and therefore requires
      * technical connection details enrichment.

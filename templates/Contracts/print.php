@@ -254,10 +254,12 @@ foreach ($proposals as $one) {
                             'required' => true,
                             'onchange' => $this::SUBMIT_ON_CHANGE,
                         ]);
-                        echo $this->Form->control('signed', [
-                            'label' => __('Signed'),
-                            'type' => 'checkbox',
-                        ]);
+                        if ($printType?->mayCarryOurSignature()) {
+                            echo $this->Form->control('signed', [
+                                'label' => __('Signed'),
+                                'type' => 'checkbox',
+                            ]);
+                        }
                     }
                 }
                 ?>

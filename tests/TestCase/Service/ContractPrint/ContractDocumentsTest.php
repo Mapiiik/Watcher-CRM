@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Service\ContractPrint;
 
 use App\Model\Enum\DocumentVariant;
+use App\Pdf\AppPDF;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
@@ -36,11 +37,13 @@ class ContractDocumentsTest extends TestCase
     private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
 
     /**
-     * The document that proposal may be printed as.
+     * The document that proposal may be printed as. The summary, which binds nobody and so has
+     * no signature block - which is what a couple of these tests turn on.
      *
      * @var string
      */
     private const DOCUMENT = 'contract-summary';
+    private const SIGNABLE = 'contract-amendment';
 
     /**
      * Fixtures
@@ -138,40 +141,78 @@ class ContractDocumentsTest extends TestCase
     }
 
     /**
-     * Asking for our signature on a paper nobody has drawn yet draws the unsigned one, keeps it,
-     * and stamps that - so two papers come out of one drawing.
+     * The signature goes onto the paper that is already on file, and that paper does not move.
+     *
+     * The base is put on the shelf by hand here, carrying the marks that say where it is signed.
+     * Which is a stand-in rather than a lie: the rule the code follows is "does this paper have a
+     * mark for our signature", and this one has, so it takes the path a contract would.
      *
      * @link \App\Service\ContractPrint\ContractDocuments::for()
-     * @return void
-     */
-    public function testTheSignedCopyIsTheUnsignedOneWithASignatureOnIt(): void
-    {
-        $signed = $this->print(true);
-
-        $this->assertSame(2, $this->stored());
-        $this->assertSame(1, $this->filed(DocumentVariant::Generated));
-        $this->assertSame(1, $this->filed(DocumentVariant::GeneratedSignedByUs));
-
-        // The unsigned one that was kept on the way is the one anybody else would have been given.
-        $this->assertSame($this->print(), $this->paperOf(DocumentVariant::Generated));
-        $this->assertNotSame($signed, $this->print());
-    }
-
-    /**
-     * And where the unsigned one is already on file, nothing is drawn at all - the signature goes
-     * onto the paper that is there.
-     *
-     * @link \App\Service\ContractPrint\ContractDocuments::for()
-     * @return void
      */
     public function testTheSignatureGoesOntoThePaperThatIsAlreadyOnFile(): void
     {
-        $base = $this->print();
+        $base = $this->fileAPaperThatCanBeSigned();
 
-        $this->print(true);
+        $signed = $this->print(true);
 
-        $this->assertSame(2, $this->stored());
+        $this->assertSame(2, $this->stored(), 'The signed copy was not filed beside the base.');
+        $this->assertSame(1, $this->filed(DocumentVariant::Generated));
+        $this->assertSame(1, $this->filed(DocumentVariant::GeneratedSignedByUs));
+
         $this->assertSame($base, $this->paperOf(DocumentVariant::Generated), 'The paper on file moved.');
+        $this->assertNotSame($base, $signed, 'Nothing was drawn onto it.');
+    }
+
+    /**
+     * And asking a second time hands back what was made rather than making it again.
+     *
+     * @link \App\Service\ContractPrint\ContractDocuments::for()
+     * @return void
+     */
+    public function testTheSignedCopyIsFrozenTheSameWayTheBaseIs(): void
+    {
+        $this->fileAPaperThatCanBeSigned();
+
+        $first = $this->print(true);
+        $second = $this->print(true);
+
+        $this->assertSame($first, $second);
+        $this->assertSame(2, $this->stored(), 'The signed copy was made twice.');
+    }
+
+    /**
+     * A paper with nowhere to sign is handed over as it stands.
+     *
+     * The summary says what is on offer before anybody is bound by it, so it carries no signature
+     * block. Asking for it signed used to hand back the same pages wrapped in a second document
+     * and file that as a copy we had signed - bigger, indistinguishable, and a lie on the shelf.
+     *
+     * @link \App\Service\ContractPrint\ContractDocuments::for()
+     * @return void
+     */
+    public function testAPaperWithNowhereToSignIsNotSigned(): void
+    {
+        $unsigned = $this->print();
+        $asked = $this->print(true);
+
+        $this->assertSame($unsigned, $asked, 'The summary came back as something else.');
+        $this->assertSame(1, $this->stored(), 'A second copy of the summary was filed.');
+        $this->assertSame(0, $this->filed(DocumentVariant::GeneratedSignedByUs));
+    }
+
+    /**
+     * And the operator is not offered a switch that would do nothing.
+     *
+     * @link \App\Model\Enum\ContractPrintType::mayCarryOurSignature()
+     * @return void
+     */
+    public function testTheSwitchIsOfferedOnlyWhereItWouldDoSomething(): void
+    {
+        $this->form(self::DOCUMENT);
+        $this->assertResponseNotContains('name="signed"');
+
+        $this->form(self::SIGNABLE);
+        $this->assertResponseContains('name="signed"');
     }
 
     /**
@@ -198,15 +239,16 @@ class ContractDocumentsTest extends TestCase
      * Asks for the paper the way the print page does.
      *
      * @param bool $signed Whether to ask for the copy carrying our signature.
+     * @param string|null $document Which document, where it is not the usual one.
      * @return string The paper.
      */
-    private function print(bool $signed = false): string
+    private function print(bool $signed = false, ?string $document = null): string
     {
         $this->get(sprintf(
             '/contracts/print/%s.pdf?proposal_id=%s&document_type=%s%s',
             self::CONTRACT_ID,
             self::PROPOSAL_ID,
-            self::DOCUMENT,
+            $document ?? self::DOCUMENT,
             $signed ? '&signed=1' : '',
         ));
 
@@ -214,6 +256,58 @@ class ContractDocumentsTest extends TestCase
         $this->assertNotNull($this->_response);
 
         return (string)$this->_response->getBody();
+    }
+
+    /**
+     * Opens the print page for one document, without asking for the document itself.
+     *
+     * @param string $document Which document.
+     * @return void
+     */
+    private function form(string $document): void
+    {
+        $this->get(sprintf(
+            '/contracts/print/%s?proposal_id=%s&document_type=%s',
+            self::CONTRACT_ID,
+            self::PROPOSAL_ID,
+            $document,
+        ));
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Puts a paper on the shelf that carries the marks saying where it is signed.
+     *
+     * @return string The paper.
+     */
+    private function fileAPaperThatCanBeSigned(): string
+    {
+        $pdf = new class extends AppPDF {
+            /**
+             * @return void
+             */
+            public function drawTheBlockThatIsSigned(): void
+            {
+                $this->AddPage();
+                $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
+                $this->printSignatureSection('double');
+            }
+        };
+        $pdf->drawTheBlockThatIsSigned();
+        $paper = $pdf->Output('base.pdf', 'S');
+
+        $storage = new FileStorage();
+        $storage->link(
+            $storage->store($paper, 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            self::DOCUMENT,
+            DocumentVariant::Generated->value,
+            ['name' => 'base.pdf'],
+        );
+
+        return $paper;
     }
 
     /**
