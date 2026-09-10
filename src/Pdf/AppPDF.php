@@ -32,10 +32,21 @@ class AppPDF extends Canvas
     public const SEPARATOR_OFFSET_X = self::BODY_INDENT;
 
     /**
-     * The signature block: two columns of a fixed width, each row as tall as a line.
+     * The signature block: two columns of a fixed width, each row as tall as a line, with air
+     * above the block and room between the dates and the lines they are signed on.
      */
     protected const SIGNATURE_COLUMN = 90.0;
     protected const SIGNATURE_ROW = 4.0;
+    protected const SIGNATURE_GAP_ABOVE = 10.0;
+    protected const SIGNATURE_GAP_WITHIN = 20.0;
+
+    /**
+     * How much room the whole block needs, worked out from its parts rather than stated, so that
+     * moving any of them keeps the block from being started where it will not fit.
+     */
+    protected const SIGNATURE_BLOCK = self::SIGNATURE_GAP_ABOVE
+        + self::SIGNATURE_GAP_WITHIN
+        + (2 * self::SIGNATURE_ROW);
 
     /**
      * Where the signature itself is drawn: how far into its column, how wide, and how far above
@@ -705,9 +716,10 @@ class AppPDF extends Canvas
     {
         $this->SetFont('DejaVuSerif', '', 8);
 
-        if ($this->GetY() > 240) {
-            $this->AddPage();
-        }
+        // The whole block or none of it. Asked as the room it actually needs rather than as a
+        // height the page happens to have reached: a block that starts low enough to be split
+        // leaves the signature on one page and the line it belongs to on the next.
+        $this->checkPageBreak(static::SIGNATURE_BLOCK);
 
         $dateLabel = Settings::getString('core.documents.common.signatures.date');
         $dateLine = Settings::getString('core.documents.common.signatures.date_line');
@@ -716,7 +728,7 @@ class AppPDF extends Canvas
         $user = Settings::getString('core.documents.common.signatures.user');
 
         $double = ($layout === 'double');
-        $this->Ln(10);
+        $this->Ln(static::SIGNATURE_GAP_ABOVE);
 
         // Date row. The same line on both sides whoever has signed: a date is written on top of
         // it afterwards rather than set in place of it, which is what lets a paper already on
@@ -739,7 +751,7 @@ class AppPDF extends Canvas
             $dateLabel . ' ',
         );
 
-        $this->Ln(20);
+        $this->Ln(static::SIGNATURE_GAP_WITHIN);
 
         // Sign line row
         $left = $this->GetX();

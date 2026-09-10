@@ -70,6 +70,40 @@ class SignatureAnchorsTest extends TestCase
     }
 
     /**
+     * A block that will not fit goes over whole rather than leaving its feet behind.
+     *
+     * The room it needs is a millimetre more than the page has left at this point, so under a
+     * guard that measures the page instead of the block the lines would stay here and the names
+     * under them would go over on their own.
+     *
+     * @link \App\Pdf\AppPDF::printSignatureSection()
+     * @return void
+     */
+    public function testABlockThatWillNotFitGoesOverWhole(): void
+    {
+        $read = SignatureAnchors::fromPdf($this->paper('double', false, 239.5));
+
+        foreach ($read->all() as $anchor) {
+            $this->assertSame(2, $anchor->page, $anchor->name . ' was left on the page before.');
+        }
+    }
+
+    /**
+     * And one that fits stays where it is.
+     *
+     * @link \App\Pdf\AppPDF::printSignatureSection()
+     * @return void
+     */
+    public function testABlockThatFitsStaysOnItsPage(): void
+    {
+        $read = SignatureAnchors::fromPdf($this->paper('double', false, 100.0));
+
+        foreach ($read->all() as $anchor) {
+            $this->assertSame(1, $anchor->page);
+        }
+    }
+
+    /**
      * The marks are still readable when the rest of the document is not, which is the whole
      * reason they go into the metadata rather than anywhere else.
      *
@@ -175,25 +209,32 @@ class SignatureAnchorsTest extends TestCase
      *
      * @param string $layout Which block - two columns or one.
      * @param bool $compress Whether the streams are squeezed, as a stored document's are.
+     * @param float|null $from How far down the page the block is started, where that matters.
      * @return string
      */
-    private function paper(string $layout, bool $compress = false): string
+    private function paper(string $layout, bool $compress = false, ?float $from = null): string
     {
         $pdf = new class extends AppPDF {
             /**
              * @param string $layout Which block.
+             * @param float|null $from How far down the page to start it.
              * @return void
              */
-            public function drawTheBlockThatIsSigned(string $layout): void
+            public function drawTheBlockThatIsSigned(string $layout, ?float $from = null): void
             {
                 $this->AddPage();
                 $this->SetFont(static::FONT_FAMILY, '', static::BODY_FONT_SIZE);
+
+                if ($from !== null) {
+                    $this->SetY($from);
+                }
+
                 $this->printSignatureSection($layout);
             }
         };
 
         $pdf->SetCompression($compress);
-        $pdf->drawTheBlockThatIsSigned($layout);
+        $pdf->drawTheBlockThatIsSigned($layout, $from);
 
         return $pdf->Output('paper.pdf', 'S');
     }
