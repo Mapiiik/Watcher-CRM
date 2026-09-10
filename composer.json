@@ -27,6 +27,7 @@
         "evilfreelancer/routeros-api-php": "^1.6",
         "giggsey/libphonenumber-for-php": "^9.0",
         "josegonzalez/dotenv": "^4.0",
+        "league/flysystem": "^3.36",
         "league/oauth2-google": "^5.0",
         "mapik/pohoda-xml": "^1.25",
         "mlocati/ip-lib": "^1.22",
@@ -56,6 +57,7 @@
             "App\\": "src/",
             "Bookkeeping\\": "plugins/Bookkeeping/src/",
             "Dashboard\\": "plugins/Dashboard/src/",
+            "Files\\": "plugins/Files/src/",
             "Maps\\": "plugins/Maps/src/",
             "Radius\\": "plugins/Radius/src/",
             "Settings\\": "plugins/Settings/src/",
@@ -67,6 +69,7 @@
             "App\\Test\\": "tests/",
             "Bookkeeping\\Test\\": "plugins/Bookkeeping/tests/",
             "Dashboard\\Test\\": "plugins/Dashboard/tests/",
+            "Files\\Test\\": "plugins/Files/tests/",
             "Maps\\Test\\": "plugins/Maps/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "Radius\\Test\\": "plugins/Radius/tests/",
@@ -106,7 +109,8 @@
             "bin/cake migrations migrate --plugin CakeDC/Users",
             "bin/cake migrations migrate",
             "bin/cake migrations migrate --plugin Settings",
-            "bin/cake migrations migrate --plugin Bookkeeping"
+            "bin/cake migrations migrate --plugin Bookkeeping",
+            "bin/cake migrations migrate --plugin Files"
         ],
         "plugin-assets": [
             "bin/cake plugin assets symlink"
@@ -122,6 +126,7 @@
         "translations-update": [
             "bin/cake i18n extract --extract-core no --overwrite -p Bookkeeping --paths plugins/Bookkeeping/src/,plugins/Bookkeeping/templates/,plugins/Bookkeeping/config/",
             "bin/cake i18n extract --extract-core no --overwrite -p Dashboard",
+            "bin/cake i18n extract --extract-core no --overwrite -p Files",
             "bin/cake i18n extract --extract-core no --overwrite -p Maps",
             "bin/cake i18n extract --extract-core no --overwrite -p Radius",
             "bin/cake i18n extract --extract-core no --overwrite -p Settings",

@@ -1,0 +1,191 @@
+<?php
+declare(strict_types=1);
+
+namespace Files\Test\TestCase\Controller;
+
+use App\Test\Traits\ControllerTestTrait;
+use Cake\Core\Configure;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
+use Files\Controller\DocumentsController;
+use Files\Model\Entity\FileLink;
+use Files\Service\FileStorage;
+use Override;
+use PHPUnit\Framework\Attributes\UsesClass;
+
+/**
+ * Files\Controller\DocumentsController Test Case
+ *
+ * @link \Files\Controller\DocumentsController
+ */
+#[UsesClass(DocumentsController::class)]
+class DocumentsControllerTest extends TestCase
+{
+    use ControllerTestTrait;
+    use IntegrationTestTrait;
+
+    /**
+     * Fixtures
+     *
+     * @var array<string>
+     */
+    protected array $fixtures = [
+        'app.AppUsers',
+        'plugin.Files.Files',
+        'plugin.Files.FileLinks',
+    ];
+
+    /**
+     * The record the documents in here hang on.
+     *
+     * @var string
+     */
+    private const RECORD = '11111111-2222-4333-8444-555555555555';
+
+    /**
+     * Where the bytes go while this runs.
+     *
+     * @var string
+     */
+    private string $root;
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->root = TMP . 'documents-controller-' . uniqid();
+        Configure::write('Files.root', $this->root);
+
+        $this->login();
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        Configure::delete('Files.root');
+        $this->removeDirectory($this->root);
+
+        parent::tearDown();
+    }
+
+    /**
+     * @link \Files\Controller\DocumentsController::index()
+     * @return void
+     */
+    public function testTheIndexListsWhatIsFiled(): void
+    {
+        $this->file('a contract', 'IMG_001.jpg');
+
+        $this->get('/files');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('IMG_001.jpg');
+        $this->assertResponseContains('contract-new');
+    }
+
+    /**
+     * @link \Files\Controller\DocumentsController::download()
+     * @return void
+     */
+    public function testTheContentComesBackUnderTheNameItArrivedWith(): void
+    {
+        $link = $this->file('what the customer signed', 'IMG_001.jpg');
+
+        $this->get('/files/documents/download/' . $link->id);
+
+        $this->assertResponseOk();
+        $this->assertHeaderContains('Content-Disposition', 'IMG_001.jpg');
+        $this->assertNotNull($this->_response);
+        $this->assertSame('what the customer signed', (string)$this->_response->getBody());
+    }
+
+    /**
+     * A row whose bytes are gone is a torn backup, not a missing page, so it says so rather than
+     * handing over nothing.
+     *
+     * @link \Files\Controller\DocumentsController::download()
+     * @return void
+     */
+    public function testContentThatIsNotOnTheShelfIsNotHandedOver(): void
+    {
+        $link = $this->file('a paper that went missing', 'IMG_001.jpg');
+
+        (new FileStorage())->filesystem()->delete($link->file->path);
+
+        $this->get('/files/documents/download/' . $link->id);
+
+        $this->assertResponseCode(404);
+    }
+
+    /**
+     * @link \Files\Controller\DocumentsController::delete()
+     * @return void
+     */
+    public function testUnfilingADocumentTakesTheBytesWithTheLastOfThem(): void
+    {
+        $link = $this->file('the only use of this content', 'IMG_001.jpg');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/files/documents/delete/' . $link->id);
+
+        $this->assertRedirect();
+        $this->assertSame(0, $this->fetchTable('Files.FileLinks')->find()->count());
+        $this->assertSame(0, $this->fetchTable('Files.Files')->find()->count());
+    }
+
+    /**
+     * Files something for the test to look at.
+     *
+     * @param string $bytes What is in it.
+     * @param string $name What it arrived called.
+     * @return \Files\Model\Entity\FileLink
+     */
+    private function file(string $bytes, string $name): FileLink
+    {
+        $storage = new FileStorage();
+        $file = $storage->store($bytes, 'image/jpeg');
+        $link = $storage->link(
+            $file,
+            'ContractVersionProposals',
+            self::RECORD,
+            'contract-new',
+            'received-signed-by-customer',
+            ['name' => $name],
+        );
+        $link->file = $file;
+
+        return $link;
+    }
+
+    /**
+     * Removes a directory and everything under it.
+     *
+     * @param string $directory The directory.
+     * @return void
+     */
+    private function removeDirectory(string $directory): void
+    {
+        if (!is_dir($directory)) {
+            return;
+        }
+
+        foreach (array_diff((array)scandir($directory), ['.', '..']) as $entry) {
+            $path = $directory . DS . $entry;
+            is_dir($path) ? $this->removeDirectory($path) : unlink($path);
+        }
+
+        rmdir($directory);
+    }
+}

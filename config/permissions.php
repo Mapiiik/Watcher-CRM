@@ -408,6 +408,27 @@ $permissions = [
                 'view',
             ],
         ],
+        //whoever may draw a paper up may see what has been filed and fetch it back
+        //
+        //Not narrowed to the record the file hangs on: printing is not either, so this is the
+        //same door that has always been open rather than a wider one. What is on the shelf,
+        //and unfiling anything, stays with the administrator.
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => 'Files',
+            'controller' => [
+                'Documents',
+            ],
+            'action' => [
+                'index',
+                'download',
+            ],
+        ],
         //allow add/edit for sales and bookkeepers and network-managers
         [
             'role' => [

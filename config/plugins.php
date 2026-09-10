@@ -38,6 +38,9 @@ return [
     // Settings
     'Settings' => [],
 
+    // Files
+    'Files' => [],
+
     // Bookkeeping
     'Bookkeeping' => [],
 

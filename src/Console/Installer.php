@@ -51,7 +51,8 @@ class Installer
 
     /**
      * What sits under the data root: where a deployment puts its letterhead and its signature,
-     * and where the invoices it keeps a copy of are written.
+     * where the invoices it keeps a copy of are written, and where the documents themselves are
+     * kept.
      *
      * These do not hang off the application directory - `DATA_ROOT` is free to point somewhere
      * else entirely, and on a real deployment it does.
@@ -61,6 +62,7 @@ class Installer
     public const DATA_DIRS = [
         'images',
         'invoices',
+        'files',
     ];
 
     /**

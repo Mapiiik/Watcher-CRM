@@ -13,6 +13,7 @@
     <testsuite name="plugins">
       <directory>plugins/Bookkeeping/tests/TestCase/</directory>
       <directory>plugins/Dashboard/tests/TestCase/</directory>
+      <directory>plugins/Files/tests/TestCase/</directory>
       <directory>plugins/Maps/tests/TestCase/</directory>
       <directory>plugins/Radius/tests/TestCase/</directory>
       <directory>plugins/Settings/tests/TestCase/</directory>

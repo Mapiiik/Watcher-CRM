@@ -1,0 +1,154 @@
+<?php
+declare(strict_types=1);
+
+namespace Files\Controller;
+
+use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
+use Files\Model\Table\FileLinksTable;
+use Files\Service\FileStorage;
+use Laminas\Diactoros\Stream;
+use Throwable;
+
+/**
+ * Documents Controller
+ *
+ * What is filed against what. This is the question somebody arrives at `/files` with, which is
+ * why it is the one that opens.
+ */
+class DocumentsController extends AppController
+{
+    /**
+     * The table this reads.
+     *
+     * Said outright because it cannot be worked out: the controller is named for the question it
+     * answers rather than for the table it asks, which is what keeps the path from saying "files"
+     * twice over.
+     *
+     * @var string|null
+     */
+    protected ?string $defaultTable = 'Files.FileLinks';
+
+    /**
+     * Index method
+     *
+     * @return void Renders view
+     */
+    public function index(): void
+    {
+        $conditions = [];
+
+        foreach (['model', 'collection', 'role'] as $field) {
+            $value = $this->getRequest()->getQuery($field);
+            if (is_string($value) && $value !== '') {
+                $conditions[$this->fileLinks()->aliasField($field)] = $value;
+            }
+        }
+
+        $search = $this->getRequest()->getQuery('search');
+        if (is_string($search) && trim($search) !== '') {
+            $conditions[$this->fileLinks()->aliasField('name') . ' ILIKE'] = '%' . trim($search) . '%';
+        }
+
+        $this->paginate = [
+            'order' => [
+                'created' => 'DESC',
+            ],
+        ];
+
+        $documents = $this->paginate($this->fileLinks()->find(
+            'all',
+            contain: ['Files'],
+            conditions: $conditions,
+        ));
+
+        $this->set(compact('documents'));
+        $this->set('models', $this->distinct('model'));
+        $this->set('collections', $this->distinct('collection'));
+        $this->set('roles', $this->distinct('role'));
+    }
+
+    /**
+     * Hands the content over under the name it arrived with.
+     *
+     * By the link rather than by the content, because the name belongs to the link: the same
+     * bytes filed twice may well have arrived called two different things.
+     *
+     * @param string|null $id File link id.
+     * @return \Cake\Http\Response
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function download(?string $id = null): Response
+    {
+        $link = $this->fileLinks()->get($id, contain: ['Files']);
+
+        $storage = new FileStorage();
+
+        if (!$storage->has($link->file)) {
+            throw new NotFoundException(__d('files', 'The content of this document is not on the shelf.'));
+        }
+
+        // Handed over as a stream: a scan runs to hundreds of megabytes and there is no reason
+        // for any of it to pass through memory on the way out.
+        return $this->getResponse()
+            ->withType($link->file->mime_type)
+            ->withDownload($link->downloadName())
+            ->withBody(new Stream($storage->readStream($link->file)));
+    }
+
+    /**
+     * Lets go of one use of some content. The bytes go with the last of them.
+     *
+     * @param string|null $id File link id.
+     * @return \Cake\Http\Response|null Redirects back to where it was asked from.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete(?string $id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post', 'delete']);
+
+        $link = $this->fileLinks()->get($id);
+
+        try {
+            (new FileStorage())->unlink($link);
+            $this->Flash->success(__d('files', 'The document has been removed.'));
+        } catch (Throwable $e) {
+            $this->Flash->error(__d('files', 'The document could not be removed: {0}', $e->getMessage()));
+        }
+
+        return $this->redirect($this->referer(['action' => 'index'], true));
+    }
+
+    /**
+     * The values a column actually holds, for the filters to offer.
+     *
+     * Read from what is on file rather than from a list, so that a plugin which knows nothing
+     * about the application's vocabulary can still offer it.
+     *
+     * @param string $field The column.
+     * @return array<string, string>
+     */
+    private function distinct(string $field): array
+    {
+        $values = $this->fileLinks()->find()
+            ->select([$field])
+            ->distinct([$this->fileLinks()->aliasField($field)])
+            ->orderBy([$this->fileLinks()->aliasField($field) => 'ASC'])
+            ->all()
+            ->extract($field)
+            ->toList();
+
+        return array_combine($values, $values);
+    }
+
+    /**
+     * @return \Files\Model\Table\FileLinksTable
+     */
+    private function fileLinks(): FileLinksTable
+    {
+        /** @var \Files\Model\Table\FileLinksTable $links */
+        $links = $this->fetchTable();
+
+        return $links;
+    }
+}
