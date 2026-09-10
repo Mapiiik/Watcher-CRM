@@ -10,7 +10,7 @@
 <div class="row">
     <div class="column">
         <?= $this->Form->control('mime_type', [
-            'label' => __d('files', 'Kind'),
+            'label' => __d('files', 'MIME Type'),
             'options' => $mimeTypes,
             'empty' => true,
             'onchange' => $this::SUBMIT_ON_CHANGE,
@@ -49,11 +49,11 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('created', __d('files', 'Stored')) ?></th>
-                    <th><?= $this->Paginator->sort('sha256', __d('files', 'Hash')) ?></th>
-                    <th><?= $this->Paginator->sort('mime_type', __d('files', 'Kind')) ?></th>
+                    <th><?= $this->Paginator->sort('created', __d('files', 'Created')) ?></th>
+                    <th><?= $this->Paginator->sort('hash', __d('files', 'Hash')) ?></th>
+                    <th><?= $this->Paginator->sort('mime_type', __d('files', 'MIME Type')) ?></th>
                     <th><?= $this->Paginator->sort('byte_size', __d('files', 'Size')) ?></th>
-                    <th><?= __d('files', 'Pointed At By') ?></th>
+                    <th><?= __d('files', 'File Links') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -61,7 +61,7 @@
                 <?php foreach ($files as $file) : ?>
                 <tr>
                     <td><?= h($file->created) ?></td>
-                    <td><code><?= h(substr($file->sha256, 0, 12)) ?></code></td>
+                    <td><code><?= h(substr($file->hash, 0, 12)) ?></code></td>
                     <td><?= h($file->mime_type) ?></td>
                     <td><?= $this->Number->toReadableSize($file->byte_size) ?></td>
                     <td>

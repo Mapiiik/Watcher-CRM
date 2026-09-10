@@ -32,9 +32,13 @@ use Override;
 class FilesTable extends AppTable
 {
     /**
-     * How long the hash of some content is, written out.
+     * What content is hashed with today.
+     *
+     * A row says which algorithm answered for it rather than the column being named after one,
+     * so changing this is a migration of the rows and not of the schema - and both can stand side
+     * by side while that happens, which is what they are unique over together.
      */
-    public const HASH_LENGTH = 64;
+    public const HASH_ALGORITHM = 'sha256';
 
     /**
      * Initialize method
@@ -48,7 +52,7 @@ class FilesTable extends AppTable
         parent::initialize($config);
 
         $this->setTable('files');
-        $this->setDisplayField('sha256');
+        $this->setDisplayField('hash');
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
@@ -76,14 +80,18 @@ class FilesTable extends AppTable
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->scalar('sha256')
-            ->lengthBetween('sha256', [self::HASH_LENGTH, self::HASH_LENGTH])
-            ->add('sha256', 'hexadecimal', [
+            ->scalar('hash')
+            ->add('hash', 'hexadecimal', [
                 'rule' => fn(string $value): bool => ctype_xdigit($value),
                 'message' => __d('files', 'The hash of the content is written in hexadecimal.'),
             ])
-            ->requirePresence('sha256', 'create')
-            ->notEmptyString('sha256');
+            ->requirePresence('hash', 'create')
+            ->notEmptyString('hash');
+
+        $validator
+            ->scalar('hash_type')
+            ->requirePresence('hash_type', 'create')
+            ->notEmptyString('hash_type');
 
         $validator
             ->nonNegativeInteger('byte_size')
@@ -92,13 +100,11 @@ class FilesTable extends AppTable
 
         $validator
             ->scalar('mime_type')
-            ->maxLength('mime_type', 255)
             ->requirePresence('mime_type', 'create')
             ->notEmptyString('mime_type');
 
         $validator
             ->scalar('path')
-            ->maxLength('path', 255)
             ->requirePresence('path', 'create')
             ->notEmptyString('path');
 
@@ -108,13 +114,20 @@ class FilesTable extends AppTable
     /**
      * The content this hash stands for, where it is already on file.
      *
+     * Both halves, because the algorithm is part of the answer: the same string worked out two
+     * ways is two different pieces of content as far as anything here is concerned.
+     *
      * @param \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\File> $query The query.
-     * @param string $sha256 The hash.
+     * @param string $hash The hash.
+     * @param string $hash_type What worked it out.
      * @return \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\File>
      */
-    public function findBySha256(SelectQuery $query, string $sha256): SelectQuery
+    public function findByHash(SelectQuery $query, string $hash, string $hash_type): SelectQuery
     {
-        return $query->where([$this->aliasField('sha256') => $sha256]);
+        return $query->where([
+            $this->aliasField('hash') => $hash,
+            $this->aliasField('hash_type') => $hash_type,
+        ]);
     }
 
     /**

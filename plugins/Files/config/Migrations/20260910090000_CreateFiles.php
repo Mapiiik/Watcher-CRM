@@ -7,7 +7,7 @@ use Migrations\Db\Literal;
 /**
  * What documents are made of: the bytes, once.
  *
- * A row here is content rather than a document. It is addressed by the SHA-256 of what is in it,
+ * A row here is content rather than a document. It is addressed by the hash of what is in it,
  * which is also what its path is derived from, so the same bytes arriving twice - the same paper
  * filed against two records, the same scan uploaded again - are stored once and pointed at twice.
  *
@@ -16,11 +16,11 @@ use Migrations\Db\Literal;
 class CreateFiles extends BaseMigration
 {
     /**
-     * Change Method.
+     * Up Method.
      *
      * @return void
      */
-    public function change(): void
+    public function up(): void
     {
         // create extension for full UUID support
         $this->execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
@@ -31,10 +31,18 @@ class CreateFiles extends BaseMigration
                 'limit' => null,
                 'null' => false,
             ])
-            // Hexadecimal and always the same length, which is what makes it a key worth having.
-            ->addColumn('sha256', 'char', [
+            // What is in the content, written out, and what worked it out. The algorithm is a
+            // column rather than the name of one, so that changing it one day is a migration of
+            // the rows instead of a migration of the schema - and so that both can stand side by
+            // side while that happens, which is what the two of them are unique over.
+            ->addColumn('hash', 'string', [
                 'default' => null,
-                'limit' => 64,
+                'limit' => null,
+                'null' => false,
+            ])
+            ->addColumn('hash_type', 'string', [
+                'default' => null,
+                'limit' => null,
                 'null' => false,
             ])
             ->addColumn('byte_size', 'biginteger', [
@@ -44,14 +52,14 @@ class CreateFiles extends BaseMigration
             ])
             ->addColumn('mime_type', 'string', [
                 'default' => null,
-                'limit' => 255,
+                'limit' => null,
                 'null' => false,
             ])
             // Derived from the hash rather than stored for its own sake, but written down all the
             // same: how it is derived may change, and what is already on the shelf may not.
             ->addColumn('path', 'string', [
                 'default' => null,
-                'limit' => 255,
+                'limit' => null,
                 'null' => false,
             ])
             ->addColumn('created', 'timestamp', [
@@ -76,9 +84,21 @@ class CreateFiles extends BaseMigration
                 'limit' => null,
                 'null' => true,
             ])
-            ->addIndex(['sha256'], ['unique' => true])
+            ->addIndex(['hash_type', 'hash'], ['unique' => true])
             ->addForeignKey('created_by', 'users', 'id')
             ->addForeignKey('modified_by', 'users', 'id')
             ->create();
+    }
+
+    /**
+     * Down Method.
+     *
+     * Written out rather than left to `change()`, which cannot take back the plain SQL above.
+     *
+     * @return void
+     */
+    public function down(): void
+    {
+        $this->table('files')->drop()->save();
     }
 }

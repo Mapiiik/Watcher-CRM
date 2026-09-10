@@ -8,10 +8,15 @@ use Migrations\Db\Literal;
  * Who has a file and why.
  *
  * Four coordinates say it: which record holds it (`model` and `foreign_key`), which document it
- * is (`collection`), what signatures it carries (`role`), and where a document runs to several
- * pages, which page this one is (`position`). The values in `collection` and `role` belong to the
- * application - here they are strings, so that a plugin copied into another application does not
- * have to be taught that one's vocabulary.
+ * is (`document_type`), which variant of that document this is (`variant`), and where a document
+ * runs to several pages, which page this one is (`position`).
+ *
+ * A variant rather than a state: the blank copy, the one we signed and the one that came back are
+ * four different files standing side by side, not four stages of one, and nothing ever moves from
+ * being one to being another.
+ *
+ * The values in `document_type` and `variant` belong to the application - here they are strings, so
+ * that a plugin copied into another application does not have to be taught that one's vocabulary.
  *
  * Two tables rather than one because the same content can hang on several records, and letting go
  * of one of them must not take the bytes away while another still wants them.
@@ -19,11 +24,11 @@ use Migrations\Db\Literal;
 class CreateFileLinks extends BaseMigration
 {
     /**
-     * Change Method.
+     * Up Method.
      *
      * @return void
      */
-    public function change(): void
+    public function up(): void
     {
         // create extension for full UUID support
         $this->execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
@@ -42,7 +47,7 @@ class CreateFileLinks extends BaseMigration
         ]);
         $table->addColumn('model', 'string', [
             'default' => null,
-            'limit' => 100,
+            'limit' => null,
             'null' => false,
         ]);
         $table->addColumn('foreign_key', 'uuid', [
@@ -50,14 +55,14 @@ class CreateFileLinks extends BaseMigration
             'limit' => null,
             'null' => false,
         ]);
-        $table->addColumn('collection', 'string', [
+        $table->addColumn('document_type', 'string', [
             'default' => null,
-            'limit' => 100,
+            'limit' => null,
             'null' => false,
         ]);
-        $table->addColumn('role', 'string', [
+        $table->addColumn('variant', 'string', [
             'default' => null,
-            'limit' => 50,
+            'limit' => null,
             'null' => false,
         ]);
         $table->addColumn('position', 'integer', [
@@ -70,7 +75,7 @@ class CreateFileLinks extends BaseMigration
         // order the pages were in.
         $table->addColumn('name', 'string', [
             'default' => null,
-            'limit' => 255,
+            'limit' => null,
             'null' => true,
         ]);
         $table->addColumn('meta', 'jsonb', [
@@ -100,7 +105,7 @@ class CreateFileLinks extends BaseMigration
 
         // Everything a record has, and the order it reads in.
         $table->addIndex(['model', 'foreign_key']);
-        $table->addIndex(['model', 'foreign_key', 'collection', 'role', 'position']);
+        $table->addIndex(['model', 'foreign_key', 'document_type', 'variant', 'position']);
         // Asked whenever the last use of some content is let go of.
         $table->addIndex(['file_id']);
 
@@ -117,8 +122,22 @@ class CreateFileLinks extends BaseMigration
         // index rather than as a unique over the position as well, so that the pages of a scan
         // stay free to be reordered.
         $this->execute(
-            'CREATE UNIQUE INDEX file_links_generated ON file_links (model, foreign_key, collection, role)'
-            . " WHERE role IN ('generated', 'generated-signed-by-us')",
+            'CREATE UNIQUE INDEX file_links_generated ON file_links (model, foreign_key, document_type, variant)'
+            . " WHERE variant IN ('generated', 'generated-signed-by-us')",
         );
+    }
+
+    /**
+     * Down Method.
+     *
+     * Written out rather than left to `change()`, which cannot take back an index it was handed
+     * as plain SQL - it replays it forwards instead, and the rollback fails on a column that has
+     * already gone. Dropping the table takes its indexes with it.
+     *
+     * @return void
+     */
+    public function down(): void
+    {
+        $this->table('file_links')->drop()->save();
     }
 }

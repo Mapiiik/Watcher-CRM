@@ -59,7 +59,7 @@ class FileStorage
     public function store(string $bytes, string $mime_type): File
     {
         return $this->keep(
-            hash('sha256', $bytes),
+            hash(FilesTable::HASH_ALGORITHM, $bytes),
             strlen($bytes),
             $mime_type,
             function (string $path) use ($bytes): void {
@@ -85,13 +85,13 @@ class FileStorage
             throw new RuntimeException(sprintf('There is nothing to store at %s.', $path));
         }
 
-        $sha256 = hash_file('sha256', $path);
-        if ($sha256 === false) {
+        $hash = hash_file(FilesTable::HASH_ALGORITHM, $path);
+        if ($hash === false) {
             throw new RuntimeException(sprintf('Could not read %s.', $path));
         }
 
         return $this->keep(
-            $sha256,
+            $hash,
             (int)filesize($path),
             $mime_type,
             function (string $target) use ($path): void {
@@ -117,8 +117,8 @@ class FileStorage
      * @param \Files\Model\Entity\File $file The content.
      * @param string $model What kind of record has it.
      * @param string $foreign_key Which one.
-     * @param string $collection Which document it is.
-     * @param string $role Whose signatures it carries.
+     * @param string $document_type Which document it is.
+     * @param string $variant Which variant of that document this is.
      * @param array<string, mixed> $options `position`, `name` and `meta`, where they are known.
      * @return \Files\Model\Entity\FileLink
      * @throws \RuntimeException When the link cannot be recorded.
@@ -127,8 +127,8 @@ class FileStorage
         File $file,
         string $model,
         string $foreign_key,
-        string $collection,
-        string $role,
+        string $document_type,
+        string $variant,
         array $options = [],
     ): FileLink {
         $links = $this->fileLinks();
@@ -136,9 +136,9 @@ class FileStorage
         $link = $links->newEntity([
             'model' => $model,
             'foreign_key' => $foreign_key,
-            'collection' => $collection,
-            'role' => $role,
-            'position' => $options['position'] ?? $this->nextPosition($model, $foreign_key, $collection, $role),
+            'document_type' => $document_type,
+            'variant' => $variant,
+            'position' => $options['position'] ?? $this->nextPosition($model, $foreign_key, $document_type, $variant),
             'name' => $options['name'] ?? null,
             'meta' => $options['meta'] ?? [],
         ]);
@@ -252,16 +252,16 @@ class FileStorage
     /**
      * Where content of this hash is written.
      *
-     * @param string $sha256 The hash.
+     * @param string $hash The hash.
      * @return string
      */
-    public static function pathFor(string $sha256): string
+    public static function pathFor(string $hash): string
     {
         $segments = [];
         for ($level = 0; $level < self::PATH_DEPTH; $level++) {
-            $segments[] = substr($sha256, $level * self::PATH_SEGMENT, self::PATH_SEGMENT);
+            $segments[] = substr($hash, $level * self::PATH_SEGMENT, self::PATH_SEGMENT);
         }
-        $segments[] = $sha256;
+        $segments[] = $hash;
 
         return implode('/', $segments);
     }
@@ -269,16 +269,16 @@ class FileStorage
     /**
      * Writes the bytes and records them, unless this content is already on file.
      *
-     * @param string $sha256 The hash of the content.
+     * @param string $hash The hash of the content.
      * @param int $byte_size How much of it there is.
      * @param string $mime_type What kind of content it is.
      * @param callable $write What puts the bytes where they go.
      * @return \Files\Model\Entity\File
      * @throws \RuntimeException When the content cannot be written or recorded.
      */
-    private function keep(string $sha256, int $byte_size, string $mime_type, callable $write): File
+    private function keep(string $hash, int $byte_size, string $mime_type, callable $write): File
     {
-        $existing = $this->onFile($sha256);
+        $existing = $this->onFile($hash);
         if ($existing instanceof File) {
             // The bytes may have gone missing under it - a restore taken of the wrong moment, a
             // hand in the wrong directory - so this is also where that is put right.
@@ -289,12 +289,13 @@ class FileStorage
             return $existing;
         }
 
-        $path = self::pathFor($sha256);
+        $path = self::pathFor($hash);
         $write($path);
 
         $files = $this->files();
         $file = $files->newEntity(['mime_type' => $mime_type]);
-        $file->set('sha256', $sha256);
+        $file->set('hash', $hash);
+        $file->set('hash_type', FilesTable::HASH_ALGORITHM);
         $file->set('byte_size', $byte_size);
         $file->set('path', $path);
 
@@ -305,7 +306,7 @@ class FileStorage
         } catch (Throwable $e) {
             // Two requests storing the same content at the same moment: the unique index lets
             // one of them through and the other finds it here, which is the right answer anyway.
-            $raced = $this->onFile($sha256);
+            $raced = $this->onFile($hash);
             if ($raced instanceof File) {
                 return $raced;
             }
@@ -319,13 +320,19 @@ class FileStorage
     /**
      * The row for this content, where there is one.
      *
-     * @param string $sha256 The hash.
+     * Only what was worked out the way we work it out today. Content hashed by an algorithm we
+     * have since left behind is a row that will not be found here, and will be written again
+     * under the new one - which is how a change of algorithm gets made, a file at a time.
+     *
+     * @param string $hash The hash.
      * @return \Files\Model\Entity\File|null
      */
-    private function onFile(string $sha256): ?File
+    private function onFile(string $hash): ?File
     {
         /** @var \Files\Model\Entity\File|null $file */
-        $file = $this->files()->find('bySha256', sha256: $sha256)->first();
+        $file = $this->files()
+            ->find('byHash', hash: $hash, hash_type: FilesTable::HASH_ALGORITHM)
+            ->first();
 
         return $file;
     }
@@ -335,11 +342,11 @@ class FileStorage
      *
      * @param string $model What kind of record.
      * @param string $foreign_key Which one.
-     * @param string $collection Which document.
-     * @param string $role Whose signatures it carries.
+     * @param string $document_type Which document.
+     * @param string $variant Which variant of that document this is.
      * @return int
      */
-    private function nextPosition(string $model, string $foreign_key, string $collection, string $role): int
+    private function nextPosition(string $model, string $foreign_key, string $document_type, string $variant): int
     {
         // Asked for as one number rather than by reading the group's last row. The group finder
         // sorts the pages into reading order, and a sort added to that is appended rather than
@@ -352,8 +359,8 @@ class FileStorage
             ->where([
                 $links->aliasField('model') => $model,
                 $links->aliasField('foreign_key') => $foreign_key,
-                $links->aliasField('collection') => $collection,
-                $links->aliasField('role') => $role,
+                $links->aliasField('document_type') => $document_type,
+                $links->aliasField('variant') => $variant,
             ])
             ->disableHydration()
             ->first();

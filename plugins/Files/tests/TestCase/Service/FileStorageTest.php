@@ -6,6 +6,7 @@ namespace Files\Test\TestCase\Service;
 use Cake\Core\Configure;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
+use Files\Model\Table\FilesTable;
 use Files\Service\FileStorage;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -85,10 +86,10 @@ class FileStorageTest extends TestCase
         $storage = new FileStorage();
         $file = $storage->store('a document', 'application/pdf');
 
-        $this->assertSame(hash('sha256', 'a document'), $file->sha256);
+        $this->assertSame(hash(FilesTable::HASH_ALGORITHM, 'a document'), $file->hash);
         $this->assertSame(strlen('a document'), $file->byte_size);
         $this->assertSame('application/pdf', $file->mime_type);
-        $this->assertSame(FileStorage::pathFor($file->sha256), $file->path);
+        $this->assertSame(FileStorage::pathFor($file->hash), $file->path);
         $this->assertTrue($storage->has($file));
         $this->assertSame('a document', $storage->read($file));
     }
@@ -133,7 +134,7 @@ class FileStorageTest extends TestCase
             unlink($incoming);
         }
 
-        $this->assertSame(hash('sha256', 'a scanned page'), $file->sha256);
+        $this->assertSame(hash(FilesTable::HASH_ALGORITHM, 'a scanned page'), $file->hash);
         $this->assertSame('a scanned page', $storage->read($file));
     }
 
@@ -216,9 +217,9 @@ class FileStorageTest extends TestCase
         $first = $storage->store('page one', 'image/jpeg');
         $second = $storage->store('page two', 'image/jpeg');
 
-        $role = 'received-signed-by-customer';
-        $storage->link($first, 'Contracts', self::RECORD, 'contract-new', $role, ['position' => 0]);
-        $storage->link($second, 'Contracts', self::RECORD, 'contract-new', $role, ['position' => 0]);
+        $variant = 'received-signed-by-customer';
+        $storage->link($first, 'Contracts', self::RECORD, 'contract-new', $variant, ['position' => 0]);
+        $storage->link($second, 'Contracts', self::RECORD, 'contract-new', $variant, ['position' => 0]);
 
         $this->assertSame(2, $this->fetchTable('Files.FileLinks')->find()->count());
     }
@@ -229,7 +230,7 @@ class FileStorageTest extends TestCase
      */
     public function testThePathIsSpreadOutSoNoOneDirectoryFillsUp(): void
     {
-        $hash = hash('sha256', 'anything');
+        $hash = hash(FilesTable::HASH_ALGORITHM, 'anything');
 
         $this->assertSame(
             substr($hash, 0, 2) . '/' . substr($hash, 2, 2) . '/' . $hash,

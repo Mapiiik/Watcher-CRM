@@ -43,7 +43,7 @@ class StorageController extends AppController
         // log names when it has something to complain about.
         $search = $this->getRequest()->getQuery('search');
         if (is_string($search) && trim($search) !== '') {
-            $query->where([$this->files()->aliasField('sha256') . ' LIKE' => trim($search) . '%']);
+            $query->where([$this->files()->aliasField('hash') . ' LIKE' => trim($search) . '%']);
         }
 
         if ($this->getRequest()->getQuery('unused') === '1') {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Service\ContractPrint;
 
-use App\Model\Enum\DocumentRole;
+use App\Model\Enum\DocumentVariant;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
@@ -118,7 +118,7 @@ class ContractDocumentsTest extends TestCase
 
         $this->assertStringStartsWith('%PDF', $paper);
         $this->assertSame(1, $this->stored());
-        $this->assertSame(1, $this->filed(DocumentRole::Generated));
+        $this->assertSame(1, $this->filed(DocumentVariant::Generated));
     }
 
     /**
@@ -149,11 +149,11 @@ class ContractDocumentsTest extends TestCase
         $signed = $this->print(true);
 
         $this->assertSame(2, $this->stored());
-        $this->assertSame(1, $this->filed(DocumentRole::Generated));
-        $this->assertSame(1, $this->filed(DocumentRole::GeneratedSignedByUs));
+        $this->assertSame(1, $this->filed(DocumentVariant::Generated));
+        $this->assertSame(1, $this->filed(DocumentVariant::GeneratedSignedByUs));
 
         // The unsigned one that was kept on the way is the one anybody else would have been given.
-        $this->assertSame($this->print(), $this->paperOf(DocumentRole::Generated));
+        $this->assertSame($this->print(), $this->paperOf(DocumentVariant::Generated));
         $this->assertNotSame($signed, $this->print());
     }
 
@@ -171,7 +171,7 @@ class ContractDocumentsTest extends TestCase
         $this->print(true);
 
         $this->assertSame(2, $this->stored());
-        $this->assertSame($base, $this->paperOf(DocumentRole::Generated), 'The paper on file moved.');
+        $this->assertSame($base, $this->paperOf(DocumentVariant::Generated), 'The paper on file moved.');
     }
 
     /**
@@ -225,25 +225,25 @@ class ContractDocumentsTest extends TestCase
     }
 
     /**
-     * @param \App\Model\Enum\DocumentRole $role Whose signatures it carries.
+     * @param \App\Model\Enum\DocumentVariant $variant Which variant of the document.
      * @return int How many papers the proposal has in that hand.
      */
-    private function filed(DocumentRole $role): int
+    private function filed(DocumentVariant $variant): int
     {
         return $this->fetchTable('Files.FileLinks')->find()
-            ->where(['role' => $role->value])
+            ->where(['variant' => $variant->value])
             ->count();
     }
 
     /**
-     * @param \App\Model\Enum\DocumentRole $role Whose signatures it carries.
+     * @param \App\Model\Enum\DocumentVariant $variant Which variant of the document.
      * @return string The paper on file in that hand.
      */
-    private function paperOf(DocumentRole $role): string
+    private function paperOf(DocumentVariant $variant): string
     {
         $link = $this->fetchTable('Files.FileLinks')->find()
             ->contain(['Files'])
-            ->where(['role' => $role->value])
+            ->where(['variant' => $variant->value])
             ->firstOrFail();
 
         return (new FileStorage())->read($link->get('file'));

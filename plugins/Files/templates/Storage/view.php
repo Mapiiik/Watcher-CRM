@@ -23,7 +23,7 @@
     </aside>
     <div class="column column-80">
         <div class="files view content">
-            <h3><?= h($file->sha256) ?></h3>
+            <h3><?= h($file->hash) ?></h3>
 
             <?php if (!$onTheShelf) : ?>
                 <p class="error-message">
@@ -39,7 +39,7 @@
 
             <table>
                 <tr>
-                    <th><?= __d('files', 'Kind') ?></th>
+                    <th><?= __d('files', 'MIME Type') ?></th>
                     <td><?= h($file->mime_type) ?></td>
                 </tr>
                 <tr>
@@ -51,17 +51,17 @@
                     <td><code><?= h($file->path) ?></code></td>
                 </tr>
                 <tr>
-                    <th><?= __d('files', 'Stored') ?></th>
+                    <th><?= __d('files', 'Created') ?></th>
                     <td><?= h($file->created) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __d('files', 'Stored By') ?></th>
+                    <th><?= __d('files', 'Created By') ?></th>
                     <td><?= h($file->creator->username ?? '') ?></td>
                 </tr>
             </table>
 
             <div class="related">
-                <h4><?= __d('files', 'Pointed At By') ?></h4>
+                <h4><?= __d('files', 'File Links') ?></h4>
                 <?php if (empty($file->file_links)) : ?>
                     <p>
                         <?=
@@ -78,11 +78,11 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th><?= __d('files', 'Held By') ?></th>
-                                    <th><?= __d('files', 'Record') ?></th>
-                                    <th><?= __d('files', 'Document') ?></th>
-                                    <th><?= __d('files', 'Signatures') ?></th>
-                                    <th><?= __d('files', 'Page') ?></th>
+                                    <th><?= __d('files', 'Model') ?></th>
+                                    <th><?= __d('files', 'Foreign Key') ?></th>
+                                    <th><?= __d('files', 'Document Type') ?></th>
+                                    <th><?= __d('files', 'Variant') ?></th>
+                                    <th><?= __d('files', 'Position') ?></th>
                                     <th><?= __d('files', 'Name') ?></th>
                                     <th class="actions"><?= __('Actions') ?></th>
                                 </tr>
@@ -92,9 +92,9 @@
                                 <tr>
                                     <td><?= h($link->model) ?></td>
                                     <td><code><?= h($link->foreign_key) ?></code></td>
-                                    <td><?= h($link->collection) ?></td>
-                                    <td><?= h($link->role) ?></td>
-                                    <td><?= $this->Number->format($link->position + 1) ?></td>
+                                    <td><?= h($link->document_type) ?></td>
+                                    <td><?= h($link->variant) ?></td>
+                                    <td><?= $this->Number->format($link->position) ?></td>
                                     <td><?= h($link->name) ?></td>
                                     <td class="actions">
                                         <?= $this->AuthLink->link(

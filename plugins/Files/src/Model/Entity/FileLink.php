@@ -8,7 +8,7 @@ use App\Model\Entity\AppEntity;
 /**
  * One record's use of some content.
  *
- * `model` and `foreign_key` say who has it, `collection` which document it is, `role` whose
+ * `model` and `foreign_key` say who has it, `document_type` which document it is, `role` whose
  * signatures it carries, and `position` which page it is where a document runs to several. The
  * last two are strings and a number here on purpose: what the values mean belongs to the
  * application, so that this plugin can be copied into another one without being taught the
@@ -18,8 +18,8 @@ use App\Model\Entity\AppEntity;
  * @property string $file_id
  * @property string $model
  * @property string $foreign_key
- * @property string $collection
- * @property string $role
+ * @property string $document_type
+ * @property string $variant
  * @property int $position
  * @property string|null $name
  * @property array<string, mixed> $meta
@@ -40,8 +40,8 @@ class FileLink extends AppEntity
     protected array $_accessible = [
         'model' => true,
         'foreign_key' => true,
-        'collection' => true,
-        'role' => true,
+        'document_type' => true,
+        'variant' => true,
         'position' => true,
         'name' => true,
         'meta' => true,

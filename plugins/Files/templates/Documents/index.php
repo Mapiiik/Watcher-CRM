@@ -3,32 +3,32 @@
  * @var \App\View\AppView $this
  * @var iterable<\Files\Model\Entity\FileLink> $documents
  * @var array<string, string> $models
- * @var array<string, string> $collections
- * @var array<string, string> $roles
+ * @var array<string, string> $documentTypes
+ * @var array<string, string> $variants
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
     <div class="column">
         <?= $this->Form->control('model', [
-            'label' => __d('files', 'Held By'),
+            'label' => __d('files', 'Model'),
             'options' => $models,
             'empty' => true,
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
-        <?= $this->Form->control('collection', [
-            'label' => __d('files', 'Document'),
-            'options' => $collections,
+        <?= $this->Form->control('document_type', [
+            'label' => __d('files', 'Document Type'),
+            'options' => $documentTypes,
             'empty' => true,
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
-        <?= $this->Form->control('role', [
-            'label' => __d('files', 'Signatures'),
-            'options' => $roles,
+        <?= $this->Form->control('variant', [
+            'label' => __d('files', 'Variant'),
+            'options' => $variants,
             'empty' => true,
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
@@ -55,11 +55,11 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= $this->Paginator->sort('created', __d('files', 'Filed')) ?></th>
-                    <th><?= $this->Paginator->sort('model', __d('files', 'Held By')) ?></th>
-                    <th><?= $this->Paginator->sort('collection', __d('files', 'Document')) ?></th>
-                    <th><?= $this->Paginator->sort('role', __d('files', 'Signatures')) ?></th>
-                    <th><?= $this->Paginator->sort('position', __d('files', 'Page')) ?></th>
+                    <th><?= $this->Paginator->sort('created', __d('files', 'Created')) ?></th>
+                    <th><?= $this->Paginator->sort('model', __d('files', 'Model')) ?></th>
+                    <th><?= $this->Paginator->sort('document_type', __d('files', 'Document Type')) ?></th>
+                    <th><?= $this->Paginator->sort('variant', __d('files', 'Variant')) ?></th>
+                    <th><?= $this->Paginator->sort('position', __d('files', 'Position')) ?></th>
                     <th><?= $this->Paginator->sort('name', __d('files', 'Name')) ?></th>
                     <th><?= __d('files', 'Size') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -70,9 +70,9 @@
                 <tr>
                     <td><?= h($document->created) ?></td>
                     <td><?= h($document->model) ?></td>
-                    <td><?= h($document->collection) ?></td>
-                    <td><?= h($document->role) ?></td>
-                    <td><?= $this->Number->format($document->position + 1) ?></td>
+                    <td><?= h($document->document_type) ?></td>
+                    <td><?= h($document->variant) ?></td>
+                    <td><?= $this->Number->format($document->position) ?></td>
                     <td><?= h($document->name) ?></td>
                     <td><?= $this->Number->toReadableSize($document->file->byte_size) ?></td>
                     <td class="actions">

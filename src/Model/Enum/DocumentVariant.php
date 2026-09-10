@@ -8,7 +8,7 @@ use Cake\Database\Type\EnumLabelInterface;
 use Override;
 
 /**
- * DocumentRole Enum
+ * DocumentVariant Enum
  *
  * Whose signatures a paper on file carries, and where it came from.
  *
@@ -16,7 +16,7 @@ use Override;
  * blank are both things we sent, so telling them apart by the sending tells them apart by nothing.
  * What separates every paper we keep is who has signed it, and whether we made it or it came back.
  */
-enum DocumentRole: string implements EnumLabelInterface
+enum DocumentVariant: string implements EnumLabelInterface
 {
     use EnumOptionsTrait;
 

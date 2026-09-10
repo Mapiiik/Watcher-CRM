@@ -3,6 +3,6 @@
 /phpunit.xml
 /.phpunit.result.cache
 /phpunit.phar
-/config/Migrations/schema-dump-default.lock
+/config/Migrations/schema-dump-*.lock
 /vendor/
 /.idea/

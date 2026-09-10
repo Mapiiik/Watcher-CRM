@@ -13,5 +13,5 @@ The bytes themselves go through `league/flysystem`, so moving them off local
 disk later is a change of adapter rather than a change of code.
 
 What a file *means* is the application's business, not this plugin's. The
-values in `collection` and `role` are the application's to choose; here they
+values in `document_type` and `role` are the application's to choose; here they
 are only strings.

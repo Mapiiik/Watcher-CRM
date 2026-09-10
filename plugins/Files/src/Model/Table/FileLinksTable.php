@@ -73,7 +73,6 @@ class FileLinksTable extends AppTable
 
         $validator
             ->scalar('model')
-            ->maxLength('model', 100)
             ->requirePresence('model', 'create')
             ->notEmptyString('model');
 
@@ -83,25 +82,22 @@ class FileLinksTable extends AppTable
             ->notEmptyString('foreign_key');
 
         $validator
-            ->scalar('collection')
-            ->maxLength('collection', 100)
-            ->requirePresence('collection', 'create')
-            ->notEmptyString('collection');
+            ->scalar('document_type')
+            ->requirePresence('document_type', 'create')
+            ->notEmptyString('document_type');
 
         $validator
-            ->scalar('role')
-            ->maxLength('role', 50)
-            ->requirePresence('role', 'create')
-            ->notEmptyString('role');
+            ->scalar('variant')
+            ->requirePresence('variant', 'create')
+            ->notEmptyString('variant');
 
         $validator
             ->nonNegativeInteger('position')
             ->notEmptyString('position');
 
-        // Kept as it arrived, so the only thing asked of it is that it fits.
+        // Kept exactly as it arrived, so nothing at all is asked of it.
         $validator
             ->scalar('name')
-            ->maxLength('name', 255)
             ->allowEmptyString('name');
 
         $validator
@@ -127,8 +123,8 @@ class FileLinksTable extends AppTable
                 $this->aliasField('foreign_key') => $foreign_key,
             ])
             ->orderBy([
-                $this->aliasField('collection') => 'ASC',
-                $this->aliasField('role') => 'ASC',
+                $this->aliasField('document_type') => 'ASC',
+                $this->aliasField('variant') => 'ASC',
                 $this->aliasField('position') => 'ASC',
             ]);
     }
@@ -139,23 +135,23 @@ class FileLinksTable extends AppTable
      * @param \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\FileLink> $query The query.
      * @param string $model What kind of record.
      * @param string $foreign_key Which one.
-     * @param string $collection Which document.
-     * @param string $role Whose signatures it carries.
+     * @param string $document_type Which document.
+     * @param string $variant Which variant of that document this is.
      * @return \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\FileLink>
      */
     public function findGroup(
         SelectQuery $query,
         string $model,
         string $foreign_key,
-        string $collection,
-        string $role,
+        string $document_type,
+        string $variant,
     ): SelectQuery {
         return $query
             ->where([
                 $this->aliasField('model') => $model,
                 $this->aliasField('foreign_key') => $foreign_key,
-                $this->aliasField('collection') => $collection,
-                $this->aliasField('role') => $role,
+                $this->aliasField('document_type') => $document_type,
+                $this->aliasField('variant') => $variant,
             ])
             ->orderBy([$this->aliasField('position') => 'ASC']);
     }

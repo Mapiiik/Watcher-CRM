@@ -95,14 +95,14 @@ class StorageControllerTest extends TestCase
         $this->get('/files/storage');
 
         $this->assertResponseOk();
-        $this->assertResponseContains(substr($wanted->sha256, 0, 12));
-        $this->assertResponseContains(substr($orphan->sha256, 0, 12));
+        $this->assertResponseContains(substr($wanted->hash, 0, 12));
+        $this->assertResponseContains(substr($orphan->hash, 0, 12));
 
         $this->get('/files/storage?unused=1');
 
         $this->assertResponseOk();
-        $this->assertResponseContains(substr($orphan->sha256, 0, 12));
-        $this->assertResponseNotContains(substr($wanted->sha256, 0, 12));
+        $this->assertResponseContains(substr($orphan->hash, 0, 12));
+        $this->assertResponseNotContains(substr($wanted->hash, 0, 12));
     }
 
     /**

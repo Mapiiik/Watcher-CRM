@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service\ContractPrint;
 
-use App\Model\Enum\DocumentRole;
+use App\Model\Enum\DocumentVariant;
 use App\Pdf\SignatureAnchors;
 use App\Pdf\SignatureStampPDF;
 use Cake\I18n\Date;
@@ -59,7 +59,7 @@ final class ContractDocuments
      */
     public function for(ContractPrintData $data): PrintedDocument
     {
-        $wanted = DocumentRole::forPrinting($data->signed);
+        $wanted = DocumentVariant::forPrinting($data->signed);
 
         // Nothing to file it against. Papers are drawn from a proposal and this is not one, so it
         // is handed over and forgotten rather than kept somewhere nothing can find it again.
@@ -72,14 +72,14 @@ final class ContractDocuments
             return $onFile;
         }
 
-        $base = $this->onFile($data, DocumentRole::Generated)
-            ?? $this->keep($data, $this->draw($data, false), DocumentRole::Generated);
+        $base = $this->onFile($data, DocumentVariant::Generated)
+            ?? $this->keep($data, $this->draw($data, false), DocumentVariant::Generated);
 
-        if ($wanted === DocumentRole::Generated) {
+        if ($wanted === DocumentVariant::Generated) {
             return $base;
         }
 
-        return $this->keep($data, $this->stamp($data, $base), DocumentRole::GeneratedSignedByUs);
+        return $this->keep($data, $this->stamp($data, $base), DocumentVariant::GeneratedSignedByUs);
     }
 
     /**
@@ -127,12 +127,12 @@ final class ContractDocuments
      * The paper in this hand, where the proposal already has one.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What is wanted.
-     * @param \App\Model\Enum\DocumentRole $role Whose signatures it carries.
+     * @param \App\Model\Enum\DocumentVariant $variant Which variant of the document.
      * @return \App\Service\ContractPrint\PrintedDocument|null
      */
-    private function onFile(ContractPrintData $data, DocumentRole $role): ?PrintedDocument
+    private function onFile(ContractPrintData $data, DocumentVariant $variant): ?PrintedDocument
     {
-        $link = $this->link($data, $role);
+        $link = $this->link($data, $variant);
 
         if (!$link instanceof FileLink) {
             return null;
@@ -150,13 +150,13 @@ final class ContractDocuments
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data What the paper is.
      * @param \App\Service\ContractPrint\PrintedDocument $document The paper.
-     * @param \App\Model\Enum\DocumentRole $role Whose signatures it carries.
+     * @param \App\Model\Enum\DocumentVariant $variant Which variant of the document.
      * @return \App\Service\ContractPrint\PrintedDocument
      */
     private function keep(
         ContractPrintData $data,
         PrintedDocument $document,
-        DocumentRole $role,
+        DocumentVariant $variant,
     ): PrintedDocument {
         $file = $this->storage->store($document->bytes, $document->mimeType);
 
@@ -166,13 +166,13 @@ final class ContractDocuments
                 self::MODEL,
                 (string)$data->proposal?->id,
                 $data->type->value,
-                $role->value,
+                $variant->value,
                 ['name' => $document->filename],
             );
         } catch (Throwable $e) {
             // Two people asking for the same paper at the same moment: one of them files it and
             // the other finds it here, which is the answer it wanted anyway.
-            $raced = $this->onFile($data, $role);
+            $raced = $this->onFile($data, $variant);
             if (!$raced instanceof PrintedDocument) {
                 throw $e;
             }
@@ -185,10 +185,10 @@ final class ContractDocuments
 
     /**
      * @param \App\Service\ContractPrint\ContractPrintData $data What is wanted.
-     * @param \App\Model\Enum\DocumentRole $role Whose signatures it carries.
+     * @param \App\Model\Enum\DocumentVariant $variant Which variant of the document.
      * @return \Files\Model\Entity\FileLink|null
      */
-    private function link(ContractPrintData $data, DocumentRole $role): ?FileLink
+    private function link(ContractPrintData $data, DocumentVariant $variant): ?FileLink
     {
         /** @var \Files\Model\Table\FileLinksTable $links */
         $links = $this->fetchTable(FileLinksTable::class);
@@ -198,8 +198,8 @@ final class ContractDocuments
             'group',
             model: self::MODEL,
             foreign_key: (string)$data->proposal?->id,
-            collection: $data->type->value,
-            role: $role->value,
+            document_type: $data->type->value,
+            variant: $variant->value,
         )
             ->contain(['Files'])
             ->first();

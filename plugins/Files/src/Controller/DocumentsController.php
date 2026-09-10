@@ -40,7 +40,7 @@ class DocumentsController extends AppController
     {
         $conditions = [];
 
-        foreach (['model', 'collection', 'role'] as $field) {
+        foreach (['model', 'document_type', 'variant'] as $field) {
             $value = $this->getRequest()->getQuery($field);
             if (is_string($value) && $value !== '') {
                 $conditions[$this->fileLinks()->aliasField($field)] = $value;
@@ -66,8 +66,8 @@ class DocumentsController extends AppController
 
         $this->set(compact('documents'));
         $this->set('models', $this->distinct('model'));
-        $this->set('collections', $this->distinct('collection'));
-        $this->set('roles', $this->distinct('role'));
+        $this->set('documentTypes', $this->distinct('document_type'));
+        $this->set('variants', $this->distinct('variant'));
     }
 
     /**
