@@ -93,9 +93,13 @@ Afterwards, in this order:
 
     bin/cake cache clear_all
     bin/cake schema_cache build
+    bin/cake check_files
 
 Not done by the command itself: the schema has just changed underneath that
-very process, so what it cached is what it read before the restore.
+very process, so what it cached is what it read before the restore. The check
+is last because it reads both halves at once - rows whose bytes are gone end
+the run badly, and bytes nobody has a row for are what a backup taken while
+something was being written leaves behind, which `--fix` throws away.
 
 ==============================================================================
 CHECKING THAT A BACKUP IS ONE
@@ -106,10 +110,11 @@ says anything is to put one back somewhere else and look:
   1. a fresh database and an empty data root
   2. `bin/cake restore <the backup>`
   3. `bin/cake cache clear_all` and `bin/cake schema_cache build`
-  4. open a record whose file lives under the data root - an invoice with a
+  4. `bin/cake check_files`, which must not end badly
+  5. open a record whose file lives under the data root - an invoice with a
      copy kept, a document printed before the backup was taken - and fetch it
 
-Step 4 is the one that matters. It is the only step that reads both halves at
+Step 5 is the one that matters. It is the only step that reads both halves at
 once, which is the only way to find out that they were taken of the same
 moment.
 ==============================================================================

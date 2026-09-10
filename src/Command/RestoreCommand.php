@@ -198,7 +198,9 @@ class RestoreCommand extends Command
      * What has to be done by hand afterwards.
      *
      * Not done here: the schema has just changed underneath this very process, so what it would
-     * cache is what it read before the restore.
+     * cache is what it read before the restore. The check comes last because it is the one thing
+     * that reads both halves at once, and so the only one that says they were taken of the same
+     * moment.
      *
      * @param \Cake\Console\ConsoleIo $io The console io.
      * @return void
@@ -209,5 +211,6 @@ class RestoreCommand extends Command
         $io->info(__('Now run these, in this order:'));
         $io->out('  bin/cake cache clear_all');
         $io->out('  bin/cake schema_cache build');
+        $io->out('  bin/cake check_files');
     }
 }
