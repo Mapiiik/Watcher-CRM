@@ -47,6 +47,11 @@ RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 # Memory limit 2 GB
 RUN echo "memory_limit = 2048M" > $PHP_INI_DIR/conf.d/memory_limit.ini
 
+# Uploads: a signed contract comes back as a handful of scanned pages, and a phone makes them
+# large. The POST limit is the higher of the two because it carries the rest of the form as well.
+RUN echo "upload_max_filesize = 250M" > $PHP_INI_DIR/conf.d/zz-uploads.ini \
+ && echo "post_max_size = 256M" >> $PHP_INI_DIR/conf.d/zz-uploads.ini
+
 # Install Composer globally
 #RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
