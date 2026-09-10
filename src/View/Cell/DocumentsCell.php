@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\View\Cell;
 
-use App\Model\Enum\ContractPrintType;
-use App\Model\Enum\CustomerPrintType;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Table\ContractProposalsTable;
 use App\Model\Table\CustomerProposalsTable;
@@ -94,9 +92,10 @@ class DocumentsCell extends Cell
     {
         $rows = [];
 
+        $papers = new CustomerDocuments();
         $customers = $this->customerProposals($of, $id);
-        $filed = (new CustomerDocuments())->filedAgainst($customers);
-        $documents = $this->labelled(CustomerPrintType::cases());
+        $filed = $papers->filedAgainst($customers);
+        $documents = $papers->documentLabels();
 
         foreach ($customers as $proposal) {
             $rows = array_merge($rows, $this->pagesOf([
@@ -110,9 +109,10 @@ class DocumentsCell extends Cell
             ], $filed));
         }
 
+        $papers = new ContractDocuments();
         $contracts = $this->contractProposals($of, $id);
-        $filed = (new ContractDocuments())->filedAgainst($contracts);
-        $documents = $this->labelled(ContractPrintType::cases());
+        $filed = $papers->filedAgainst($contracts);
+        $documents = $papers->documentLabels();
 
         foreach ($contracts as $proposal) {
             $rows = array_merge($rows, $this->pagesOf([
@@ -221,22 +221,5 @@ class DocumentsCell extends Cell
         $found = $query->orderByDesc('CustomerProposals.effective_from')->all()->toList();
 
         return $found;
-    }
-
-    /**
-     * A set of document types, by the value they are filed under.
-     *
-     * @param array<\App\Model\Enum\ContractPrintType|\App\Model\Enum\CustomerPrintType> $cases The types.
-     * @return array<string, string>
-     */
-    private function labelled(array $cases): array
-    {
-        $labelled = [];
-
-        foreach ($cases as $case) {
-            $labelled[$case->value] = $case->label();
-        }
-
-        return $labelled;
     }
 }

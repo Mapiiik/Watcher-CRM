@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace App\Service\CustomerPrint;
 
 use App\Documents\PrintedDocument;
-use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerPrintType;
 use App\Model\Enum\DocumentVariant;
-use Cake\ORM\Locator\LocatorAwareTrait;
+use App\Proposals\FiledPapersTrait;
 use Files\Model\Entity\FileLink;
-use Files\Model\Table\FileLinksTable;
 use Files\Service\FileStorage;
 use Throwable;
 
@@ -27,7 +25,7 @@ use Throwable;
  */
 final class CustomerDocuments
 {
-    use LocatorAwareTrait;
+    use FiledPapersTrait;
 
     /**
      * What the papers hang on. The round rather than the customer: a customer is asked more than
@@ -70,61 +68,19 @@ final class CustomerDocuments
     }
 
     /**
-     * What a handful of rounds have on file, sorted into the shape a page reads them in.
+     * The documents a round may be drawn up as.
      *
-     * @param iterable<\App\Model\Entity\CustomerProposal> $proposals Whose papers.
-     * @return array<string, array<string, array<string, list<\Files\Model\Entity\FileLink>>>>
-     *   By round, then by document, then by variant.
+     * @return array<string, string> By the value they are filed under.
      */
-    public function filedAgainst(iterable $proposals): array
+    public function documentLabels(): array
     {
-        $keys = [];
-        foreach ($proposals as $proposal) {
-            $keys[] = (string)$proposal->id;
+        $labels = [];
+
+        foreach (CustomerPrintType::cases() as $case) {
+            $labels[$case->value] = $case->label();
         }
 
-        /** @var iterable<\Files\Model\Entity\FileLink> $found */
-        $found = $this->fileLinks()
-            ->find('forAny', model: self::MODEL, foreign_keys: $keys)
-            ->contain(['Files'])
-            ->all();
-
-        $filed = [];
-        foreach ($found as $link) {
-            $filed[$link->foreign_key][$link->document_type][$link->variant][] = $link;
-        }
-
-        return $filed;
-    }
-
-    /**
-     * The documents a round has actually been drawn up as.
-     *
-     * Only those, because nothing else can have come back. That is what makes offering them on
-     * the signature page short enough to be worth having there at all.
-     *
-     * @param \App\Model\Entity\CustomerProposal $proposal Whose papers.
-     * @return array<string, string> The document type, and how it reads.
-     */
-    public function printedTypes(CustomerProposal $proposal): array
-    {
-        $printed = [];
-
-        foreach ($this->filedAgainst([$proposal])[(string)$proposal->id] ?? [] as $document_type => $byVariant) {
-            $type = CustomerPrintType::tryFrom((string)$document_type);
-            if ($type === null) {
-                continue;
-            }
-
-            foreach (array_keys($byVariant) as $variant) {
-                if (DocumentVariant::tryFrom((string)$variant)?->isDrawnUpByUs() ?? false) {
-                    $printed[$type->value] = $type->label();
-                    break;
-                }
-            }
-        }
-
-        return $printed;
+        return $labels;
     }
 
     /**
@@ -189,16 +145,5 @@ final class CustomerDocuments
         }
 
         return $document;
-    }
-
-    /**
-     * @return \Files\Model\Table\FileLinksTable
-     */
-    private function fileLinks(): FileLinksTable
-    {
-        /** @var \Files\Model\Table\FileLinksTable $links */
-        $links = $this->fetchTable(FileLinksTable::class);
-
-        return $links;
     }
 }

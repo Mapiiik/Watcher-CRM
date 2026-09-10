@@ -4,15 +4,13 @@ declare(strict_types=1);
 namespace App\Service\ContractPrint;
 
 use App\Documents\PrintedDocument;
-use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ContractPrintType;
 use App\Model\Enum\DocumentVariant;
 use App\Pdf\SignatureAnchors;
 use App\Pdf\SignatureStampPDF;
+use App\Proposals\FiledPapersTrait;
 use Cake\I18n\Date;
-use Cake\ORM\Locator\LocatorAwareTrait;
 use Files\Model\Entity\FileLink;
-use Files\Model\Table\FileLinksTable;
 use Files\Service\FileStorage;
 use Throwable;
 
@@ -30,7 +28,7 @@ use Throwable;
  */
 final class ContractDocuments
 {
-    use LocatorAwareTrait;
+    use FiledPapersTrait;
 
     /**
      * What the papers hang on. A proposal rather than a contract: the proposal is what the paper
@@ -101,65 +99,19 @@ final class ContractDocuments
     }
 
     /**
-     * What papers a handful of proposals have, sorted into the shape a page reads them in.
+     * The documents a proposal may be drawn up as.
      *
-     * Three pages ask this - the papers on a proposal, the summary of them on the proposal
-     * itself, and the shortcut on the contract's printing page - and they all ask it of the same
-     * one asking, so that a contract with six proposals is one query rather than six.
-     *
-     * @param iterable<\App\Model\Entity\ContractProposal> $proposals Whose papers.
-     * @return array<string, array<string, array<string, list<\Files\Model\Entity\FileLink>>>>
-     *   By proposal, then by document, then by variant.
+     * @return array<string, string> By the value they are filed under.
      */
-    public function filedAgainst(iterable $proposals): array
+    public function documentLabels(): array
     {
-        $keys = [];
-        foreach ($proposals as $proposal) {
-            $keys[] = (string)$proposal->id;
+        $labels = [];
+
+        foreach (ContractPrintType::cases() as $case) {
+            $labels[$case->value] = $case->label();
         }
 
-        /** @var \Files\Model\Table\FileLinksTable $links */
-        $links = $this->fetchTable(FileLinksTable::class);
-
-        /** @var iterable<\Files\Model\Entity\FileLink> $found */
-        $found = $links->find('forAny', model: self::MODEL, foreign_keys: $keys)->contain(['Files'])->all();
-
-        $filed = [];
-        foreach ($found as $link) {
-            $filed[$link->foreign_key][$link->document_type][$link->variant][] = $link;
-        }
-
-        return $filed;
-    }
-
-    /**
-     * The documents a proposal has actually been drawn up as.
-     *
-     * Only those, because nothing else can have come back. That is what makes offering them on
-     * the signature page short enough to be worth having there at all.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal Whose papers.
-     * @return array<string, string> The document type, and how it reads.
-     */
-    public function printedTypes(ContractProposal $proposal): array
-    {
-        $printed = [];
-
-        foreach ($this->filedAgainst([$proposal])[(string)$proposal->id] ?? [] as $document_type => $byVariant) {
-            $type = ContractPrintType::tryFrom((string)$document_type);
-            if ($type === null) {
-                continue;
-            }
-
-            foreach (array_keys($byVariant) as $variant) {
-                if (DocumentVariant::tryFrom((string)$variant)?->isDrawnUpByUs() ?? false) {
-                    $printed[$type->value] = $type->label();
-                    break;
-                }
-            }
-        }
-
-        return $printed;
+        return $labels;
     }
 
     /**
@@ -270,11 +222,8 @@ final class ContractDocuments
      */
     private function link(ContractPrintData $data, DocumentVariant $variant): ?FileLink
     {
-        /** @var \Files\Model\Table\FileLinksTable $links */
-        $links = $this->fetchTable(FileLinksTable::class);
-
         /** @var \Files\Model\Entity\FileLink|null $link */
-        $link = $links->find(
+        $link = $this->fileLinks()->find(
             'group',
             model: self::MODEL,
             foreign_key: (string)$data->proposal?->id,
