@@ -9,12 +9,12 @@ use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentVariant;
 use App\Service\CustomerPrint\CustomerDocuments;
 use App\Test\Traits\ControllerTestTrait;
-use Files\Model\Entity\FileLink;
-use Laminas\Diactoros\UploadedFile;
-use Files\Service\FileStorage;
 use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Files\Model\Entity\FileLink;
+use Files\Service\FileStorage;
+use Laminas\Diactoros\UploadedFile;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
