@@ -151,6 +151,13 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
                     $this->contract_id,
                     $this->customer_id,
                 ),
+            'unfiled_signature' =>
+                fn(): ContractCheckInterface => new UnfiledSignatureCheck(
+                    $proposals,
+                    $this->ignore_inactive,
+                    $this->contract_id,
+                    $this->customer_id,
+                ),
             'unsigned_contract' =>
                 fn(): ContractCheckInterface => new UnsignedContractCheck(
                     $versions,

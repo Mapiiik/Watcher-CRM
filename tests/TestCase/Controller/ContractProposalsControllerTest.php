@@ -944,6 +944,33 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * The papers are said out loud without standing in the way: the day the customer agreed is
+     * known before the post arrives, and holding the records back for a scan would leave the
+     * service waiting on the scanner.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\TransferPreview::of()
+     */
+    public function testAMissingScanIsSaidOutLoudAndStopsNothing(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal->conclusion_date = new Date('2026-09-15');
+        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+
+        $this->login();
+        $this->get('/contract-proposals/transfer/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(
+            __('The signature is written down, but no signed papers have been filed against this proposal.'),
+        );
+        // Said, not stopped: the button is still there. This proposal changes nothing, so it
+        // reads as marking the job done rather than as moving anything.
+        $this->assertResponseContains(__('Mark as Dealt With'));
+    }
+
+    /**
      * A signed proposal that changes nothing is carried over all the same, so that it stops being
      * listed as waiting - and nothing of the contract moves.
      *

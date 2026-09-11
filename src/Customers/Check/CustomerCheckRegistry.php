@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Customers\Check;
 
 use App\Check\AbstractCheckRegistry;
+use App\Model\Table\CustomerProposalsTable;
 use App\Model\Table\CustomersTable;
 
 /**
@@ -18,7 +19,8 @@ final class CustomerCheckRegistry extends AbstractCheckRegistry
 {
     /**
      * Registered in the order they are listed: who the customer is first, then how to reach
-     * them, then what they have been asked.
+     * them, then what they have been asked, and last the papers put to them that are not
+     * finished.
      *
      * @param bool $ignore_inactive Whether the checks keep to the customers with something
      *   running. What is on file about somebody we no longer serve is not worth chasing, and
@@ -30,6 +32,9 @@ final class CustomerCheckRegistry extends AbstractCheckRegistry
     {
         /** @var \App\Model\Table\CustomersTable $customers */
         $customers = $this->fetchTable(CustomersTable::class);
+
+        /** @var \App\Model\Table\CustomerProposalsTable $proposals */
+        $proposals = $this->fetchTable(CustomerProposalsTable::class);
 
         $this->factories = [
             'incomplete_identity' =>
@@ -53,6 +58,24 @@ final class CustomerCheckRegistry extends AbstractCheckRegistry
             'missing_gdpr_consent' =>
                 fn(): CustomerCheckInterface => new MissingGdprConsentCheck(
                     $customers,
+                    $this->ignore_inactive,
+                    $this->customer_id,
+                ),
+            'unsent_customer_proposal' =>
+                fn(): CustomerCheckInterface => new UnsentCustomerProposalCheck(
+                    $proposals,
+                    $this->ignore_inactive,
+                    $this->customer_id,
+                ),
+            'unsigned_customer_proposal' =>
+                fn(): CustomerCheckInterface => new UnsignedCustomerProposalCheck(
+                    $proposals,
+                    $this->ignore_inactive,
+                    $this->customer_id,
+                ),
+            'unfiled_customer_signature' =>
+                fn(): CustomerCheckInterface => new UnfiledCustomerSignatureCheck(
+                    $proposals,
                     $this->ignore_inactive,
                     $this->customer_id,
                 ),

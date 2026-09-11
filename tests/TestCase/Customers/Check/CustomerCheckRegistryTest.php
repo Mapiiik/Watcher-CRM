@@ -128,10 +128,11 @@ class CustomerCheckRegistryTest extends TestCase
 
             $this->assertNotNull($narrowed);
 
-            // the customer is the subject of every one of these, so they all narrow the
-            // same way
-            $this->assertStringContainsString(
-                'Customers.id = :',
+            // Every one of these is about the customer, but not every one of them reads the
+            // customers table - the papers put to them hang off the round - so what is asked is
+            // that the customer is named, not which table names them.
+            $this->assertMatchesRegularExpression(
+                '/(Customers\.id|\.customer_id) = :/',
                 $narrowed->find()->sql(),
                 sprintf('%s does not narrow to the customer it was asked about.', $check->id()),
             );

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Contracts\Proposal;
 
 use App\Model\Entity\ContractProposal;
+use App\Model\Enum\DocumentVariant;
+use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
@@ -49,6 +51,11 @@ final class TransferPreview
     public const CLOSED_PERIOD = 'closed_period';
 
     /**
+     * The signature is written down and the signed papers are on nobody's shelf.
+     */
+    public const NOTHING_SIGNED_ON_FILE = 'nothing_signed_on_file';
+
+    /**
      * What stands in the way of carrying the proposal over, if anything.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
@@ -65,6 +72,7 @@ final class TransferPreview
             ];
         }
 
+        $found = array_merge($found, $this->whatIsNotOnFile($proposal));
         $found = array_merge($found, $this->whatMovedInTheBillings($proposal));
         $found = array_merge($found, $this->whatMovedOnTheVersion($proposal));
 
@@ -86,6 +94,37 @@ final class TransferPreview
         }
 
         return false;
+    }
+
+    /**
+     * Whether the signed papers ever arrived.
+     *
+     * Stops nothing on purpose - holding the records back for a scan would leave the service
+     * waiting on the scanner - but this is the moment somebody is looking.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return array<int, array{what: string, said: string}>
+     */
+    private function whatIsNotOnFile(ContractProposal $proposal): array
+    {
+        if (!$proposal->hasBeenConcluded()) {
+            return [];
+        }
+
+        $filed = (new ContractDocuments())->filedAgainst([$proposal])[(string)$proposal->id] ?? [];
+
+        foreach ($filed as $byVariant) {
+            foreach (array_keys($byVariant) as $variant) {
+                if (DocumentVariant::tryFrom((string)$variant)?->carriesTheCustomersSignature() ?? false) {
+                    return [];
+                }
+            }
+        }
+
+        return [[
+            'what' => self::NOTHING_SIGNED_ON_FILE,
+            'said' => __('The signature is written down, but no signed papers have been filed against this proposal.'),
+        ]];
     }
 
     /**

@@ -9,6 +9,8 @@
  * @var array<string, mixed> $unanswered_url
  * @var int $unsent
  * @var array<string, mixed> $unsent_url
+ * @var int $unfiled
+ * @var array<string, mixed> $unfiled_url
  */
 
 // What is worth showing, widest first. A slice at zero is left out rather than drawn as a
@@ -30,9 +32,15 @@ $papers = [
         $unanswered_url,
         __('Open the proposals waiting for a signature'),
     ],
+    [
+        $unfiled,
+        __('signed, with the signed papers on nobody\'s shelf'),
+        $unfiled_url,
+        __('Open the signatures nobody filed'),
+    ],
 ];
 ?>
-<?php if ($waiting === 0 && $notifying === 0 && $blocking === 0 && $unsent === 0 && $unanswered === 0) : ?>
+<?php if (array_sum([$waiting, $notifying, $blocking, $unsent, $unanswered, $unfiled]) === 0) : ?>
     <p><?= __('Every running service has paper behind it, and nothing is waiting to go out.') ?></p>
 <?php else : ?>
     <?php if ($waiting > 0 || $notifying > 0 || $blocking > 0) : ?>

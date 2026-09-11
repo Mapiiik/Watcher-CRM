@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Contracts\Check;
 
 use App\Model\Table\ContractProposalsTable;
-use Cake\I18n\Date;
+use App\Proposals\LateProposals;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 use Settings\Utility\Settings;
@@ -33,7 +33,7 @@ class UnsignedProposalCheck extends AbstractContractCheck
      * than among the checks: it is the same question the reminders ask, measured from the day
      * the papers went out.
      */
-    private const AFTER_DAYS_PATH = 'core.contracts.unsigned.proposals.unanswered_after_days';
+    private const AFTER_DAYS_PATH = 'core.contracts.proposals.unanswered_after_days';
 
     /**
      * @param \App\Model\Table\ContractProposalsTable $proposals Contract version proposals table.
@@ -96,21 +96,14 @@ class UnsignedProposalCheck extends AbstractContractCheck
     {
         $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
-        $query = $this->proposals->find('open');
-
-        $query
+        $query = $this->proposals->find('open')
             ->contain(['Contracts', 'ContractVersions'])
-            ->innerJoinWith('Contracts')
-            ->where([
-                'ContractProposals.sent_date IS NOT' => null,
-                'ContractProposals.conclusion_date IS' => null,
-                // The wait holds whichever question is being asked. Papers posted this week are
-                // not a fault anywhere, a contract's own card included - what the wider reading
-                // adds is the contracts that serve nobody, not the post that is still in transit.
-                'ContractProposals.sent_date <=' => Date::today()->subDays(max(0, $after)),
-            ])
-            // Longest out first: that is the one somebody should be ringing about.
-            ->orderBy(['ContractProposals.sent_date' => 'ASC']);
+            ->innerJoinWith('Contracts');
+
+        // The wait holds whichever question is being asked. Papers posted this week are not a
+        // fault anywhere, a contract's own card included - what the wider reading adds is the
+        // contracts that serve nobody, not the post that is still in transit.
+        LateProposals::unanswered($query, 'ContractProposals', $after);
 
         if ($this->ignore_inactive) {
             $this->onlyRunningContracts($query);

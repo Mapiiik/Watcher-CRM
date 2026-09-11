@@ -5,6 +5,7 @@ namespace App\Dashboard;
 
 use App\Addresses\Check\AddressCheckRegistry;
 use App\Contracts\Check\ContractCheckRegistry;
+use App\Contracts\Check\UnfiledSignatureCheck;
 use App\Contracts\Check\UnsentProposalCheck;
 use App\Contracts\Check\UnsignedProposalCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
@@ -101,6 +102,7 @@ final class DashboardCardRegistry implements CardRegistryInterface
                 new UnsignedPaperwork($contract_versions),
                 new UnsignedProposalCheck($proposals),
                 new UnsentProposalCheck($proposals),
+                new UnfiledSignatureCheck($proposals),
             );
 
         // The debtor cards read the accounting records, which only exist with the plugin.

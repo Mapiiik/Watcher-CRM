@@ -5,36 +5,32 @@ namespace App\Contracts\Check;
 
 use App\Model\Table\ContractProposalsTable;
 use App\Proposals\LateProposals;
+use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 use Settings\Utility\Settings;
 
 /**
- * A proposal drawn up and never sent.
+ * The customer signed and the signed copy is on nobody's shelf.
  *
- * Nobody is waiting on the customer here - the papers never left the building. It belongs beside
- * the proposals waiting for a signature all the same, because from the office's side the two are
- * the same job half done, and this is the half nothing else reports: the day the version takes
- * effect arrives whether or not anybody printed anything.
- *
- * A proposal whose day is still far off is not shown at all, whichever question is asked: until
- * then there is nothing to do about it, and it would only be a list of things to leave alone.
- * Lifting the filter widens this one to the contracts that serve nobody, and to nothing else.
+ * Said out loud because nothing else would ever say it: the proposal is signed, it carries over,
+ * the service runs, and the paper stays in somebody's inbox for good. Carried-over proposals are
+ * reported too - that is where the papers are needed most.
  */
-class UnsentProposalCheck extends AbstractContractCheck
+class UnfiledSignatureCheck extends AbstractContractCheck
 {
     /**
-     * How far ahead a proposal nobody has sent is worth raising, if nothing says otherwise.
+     * How long after the signature the scan may be missing, if nothing says otherwise.
      */
-    private const WITHIN_DAYS = 14;
+    private const AFTER_DAYS = 7;
 
     /**
-     * Where the settings say how far ahead to look.
+     * Where the settings say how long that is.
      */
-    private const WITHIN_DAYS_PATH = 'core.contracts.proposals.unsent_within_days';
+    private const AFTER_DAYS_PATH = 'core.contracts.documents.unfiled_after_days';
 
     /**
-     * @param \App\Model\Table\ContractProposalsTable $proposals Contract version proposals table.
+     * @param \App\Model\Table\ContractProposalsTable $proposals Contract proposals table.
      * @param bool $ignore_inactive Whether to keep to the contracts that serve somebody.
      * @param string|null $contract_id The one contract being asked about, where there is one.
      * @param string|null $customer_id The one customer being asked about, where there is one.
@@ -63,7 +59,7 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     public function id(): string
     {
-        return 'unsent_proposal';
+        return 'unfiled_signature';
     }
 
     /**
@@ -72,7 +68,7 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     public function title(): string
     {
-        return __('Proposal That Never Went Out');
+        return __('Signature Nobody Filed');
     }
 
     /**
@@ -81,26 +77,24 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     public function emptyMessage(): string
     {
-        return __('Every proposal drawn up has gone out.');
+        return __('Every signature written down has the signed papers to go with it.');
     }
 
     /**
-     * Proposals nobody has sent to the customer.
+     * Proposals whose signed copy never arrived.
      *
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
     #[Override]
     public function find(): SelectQuery
     {
-        $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
+        $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
-        $query = $this->proposals->find('open')
+        $query = $this->proposals->find()
             ->contain(['Contracts', 'ContractVersions'])
             ->innerJoinWith('Contracts');
 
-        // The wait holds whichever question is being asked. What the wider reading adds is the
-        // contracts that serve nobody, not the proposals whose day has not come yet.
-        LateProposals::neverSent($query, 'ContractProposals', $within);
+        LateProposals::unfiled($query, 'ContractProposals', ContractDocuments::MODEL, $after);
 
         if ($this->ignore_inactive) {
             $this->onlyRunningContracts($query);

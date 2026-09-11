@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dashboard\Card;
 
 use App\Contracts\Check\ContractCheckRegistry;
+use App\Contracts\Check\UnfiledSignatureCheck;
 use App\Contracts\Check\UnsentProposalCheck;
 use App\Contracts\Check\UnsignedProposalCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
@@ -63,11 +64,13 @@ class UnsignedContractsCard extends AbstractDashboardCard
      * @param \App\Contracts\Unsigned\UnsignedPaperwork $paperwork What counts as unsigned.
      * @param \App\Contracts\Check\UnsignedProposalCheck $unsigned Papers out and not signed.
      * @param \App\Contracts\Check\UnsentProposalCheck $unsent Papers drawn up and never sent.
+     * @param \App\Contracts\Check\UnfiledSignatureCheck $unfiled Signed, and the scan never arrived.
      */
     public function __construct(
         private UnsignedPaperwork $paperwork,
         private UnsignedProposalCheck $unsigned,
         private UnsentProposalCheck $unsent,
+        private UnfiledSignatureCheck $unfiled,
     ) {
     }
 
@@ -149,6 +152,9 @@ class UnsignedContractsCard extends AbstractDashboardCard
             'unanswered_url' => $this->overviewUrl('unsigned_proposal'),
             'unsent' => $this->unsent->count(),
             'unsent_url' => $this->overviewUrl('unsent_proposal'),
+            // The end of the same job: signed, and the papers never reached the shelf.
+            'unfiled' => $this->unfiled->count(),
+            'unfiled_url' => $this->overviewUrl('unfiled_signature'),
         ];
     }
 
