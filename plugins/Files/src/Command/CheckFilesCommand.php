@@ -132,7 +132,12 @@ class CheckFilesCommand extends Command
         $stray = $this->stray($storage, $claimed);
         $unused = $files->find('unused')->count();
 
-        $io->out(__d('files', '{0} rows, {1} of them with their content stored.', count($claimed), count($claimed) - count($gone)));
+        $io->out(__d(
+            'files',
+            '{0} rows, {1} of them with their content stored.',
+            count($claimed),
+            count($claimed) - count($gone),
+        ));
 
         $this->report($io, __d('files', 'Rows whose bytes are gone'), array_map(
             fn(File $file): string => $file->path . '  ' . $file->hash,
