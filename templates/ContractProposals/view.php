@@ -161,7 +161,7 @@ foreach ($filed as $byVariant) {
                                     $ourPages + $theirPages === 0
                                         ? __('None')
                                         : __(
-                                            '{0} drawn up, {1} came back',
+                                            '{0} generated, {1} came back',
                                             $ourPages,
                                             $theirPages,
                                         ),
@@ -229,12 +229,24 @@ foreach ($filed as $byVariant) {
             <?php if ($filed !== []) : ?>
                 <h4><?= __('Papers on File') ?></h4>
                 <h5><?= __('Received Documents') ?></h5>
+                <p><?=
+                    __(
+                        'The papers that came back, whoever signed them. They are filed against the'
+                        . ' proposal they answer, so the row says which one that is.',
+                    )
+                    ?></p>
                 <?= $this->cell(
                     'Documents',
                     ['contractProposal', $contractProposal->id],
                     ['generatedByUs' => false],
                 ) ?>
                 <h5><?= __('Generated Documents') ?></h5>
+                <p><?=
+                    __(
+                        'What we generated. A document is generated once and handed back'
+                        . ' afterwards, so these are the very files the customer was given.',
+                    )
+                    ?></p>
                 <?= $this->cell(
                     'Documents',
                     ['contractProposal', $contractProposal->id],

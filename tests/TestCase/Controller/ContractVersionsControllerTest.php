@@ -4,11 +4,16 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractVersionsController;
+use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\DocumentVariant;
+use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Files\Service\FileStorage;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -39,6 +44,14 @@ class ContractVersionsControllerTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * The version the fixture proposal hangs on, and that proposal.
+     *
+     * @var string
+     */
+    private const VERSION_ID = '74824fba-20b2-46fc-806c-df795aa9e429';
+    private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -54,6 +67,9 @@ class ContractVersionsControllerTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.ContractProposals',
+        'plugin.Files.Files',
+        'plugin.Files.FileLinks',
     ];
 
     /**
@@ -97,6 +113,38 @@ class ContractVersionsControllerTest extends TestCase
         $this->get('/contract-versions/view/' . $this->firstId('ContractVersions'));
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * The papers of the version's proposals are on the version's own card, because that is where
+     * somebody looking at what was agreed to arrives.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::view()
+     */
+    public function testTheCardShowsThePapersFiledAgainstItsProposals(): void
+    {
+        $root = TMP . 'contract-version-papers-' . uniqid();
+        Configure::write('Files.root', $root);
+
+        $storage = new FileStorage();
+        $link = $storage->link(
+            $storage->store('%PDF-1.7 a scan', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractPrintType::ContractNew->value,
+            DocumentVariant::ReceivedSignedByCustomer->value,
+            ['name' => 'scan.pdf'],
+        );
+
+        $this->login();
+        $this->get('/contract-versions/view/' . self::VERSION_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Received Documents'));
+        $this->assertResponseContains(sprintf('/files/documents/download/%s', $link->id));
+
+        Configure::delete('Files.root');
     }
 
     /**
@@ -385,7 +433,9 @@ class ContractVersionsControllerTest extends TestCase
      */
     public function testAnAdminDeletesAVersionWhateverItSays(): void
     {
-        $versionId = $this->firstId('ContractVersions');
+        // Its own version, because a version a proposal hangs on is held by the proposal rather
+        // than by what the version says.
+        $versionId = (string)$this->contractVersion(['valid_from' => Date::today()])->get('id');
 
         $this->login();
         $this->enableCsrfToken();

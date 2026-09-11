@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\ContractPrint\ContractDocuments;
 use Cake\Http\Response;
 use Settings\Utility\Settings;
 
@@ -90,6 +91,9 @@ class ContractVersionsController extends AppController
             'Modifiers',
         ]);
 
+        // Only whether there is anything: the tables themselves are drawn by a cell, which asks
+        // for what it draws.
+        $this->set('filed', (new ContractDocuments())->filedAgainst($contractVersion->contract_proposals));
         $this->set(compact('contractVersion'));
     }
 

@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersion $contractVersion
+ * @var array<string, array<string, array<string, list<\Files\Model\Entity\FileLink>>>> $filed
  */
 ?>
 <div class="row">
@@ -126,6 +127,35 @@
                     'version_column' => false,
                 ]) ?>
             </div>
+            <?php if ($filed !== []) : ?>
+            <div class="related">
+                <h4><?= __('Documents') ?></h4>
+                <h5><?= __('Received Documents') ?></h5>
+                <p><?=
+                    __(
+                        'The papers that came back, whoever signed them. They are filed against the'
+                        . ' proposal they answer, so the row says which one that is.',
+                    )
+                    ?></p>
+                <?= $this->cell(
+                    'Documents',
+                    ['contractVersion', $contractVersion->id],
+                    ['generatedByUs' => false],
+                ) ?>
+                <h5><?= __('Generated Documents') ?></h5>
+                <p><?=
+                    __(
+                        'What we generated. A document is generated once and handed back'
+                        . ' afterwards, so these are the very files the customer was given.',
+                    )
+                    ?></p>
+                <?= $this->cell(
+                    'Documents',
+                    ['contractVersion', $contractVersion->id],
+                    ['generatedByUs' => true],
+                ) ?>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

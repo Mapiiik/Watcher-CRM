@@ -321,6 +321,25 @@ class CustomerDocumentsTest extends TestCase
     }
 
     /**
+     * The round's own card shows what is filed against it, so that somebody reading what was
+     * agreed to does not have to go looking for the papers.
+     *
+     * @link \App\Controller\CustomerProposalsController::view()
+     * @return void
+     */
+    public function testTheRoundsCardShowsThePapersFiledAgainstIt(): void
+    {
+        $round = $this->round();
+        $this->print($round);
+
+        $this->get('/customer-proposals/view/' . $round);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Papers on File'));
+        $this->assertResponseContains(sprintf('/files/documents/download/%s', $this->ourRound()->id));
+    }
+
+    /**
      * Asks for the paper the way the print page does.
      *
      * @param string $round Which round.

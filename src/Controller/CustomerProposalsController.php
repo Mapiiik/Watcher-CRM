@@ -77,6 +77,8 @@ class CustomerProposalsController extends AppController
         $this->set(compact('customerProposal'));
         $this->set('mayBeEdited', $this->CustomerProposals->mayBeEdited($customerProposal));
         $this->set('mayBeDeleted', $this->CustomerProposals->mayBeDeleted($customerProposal));
+        // Only the count: the tables themselves are drawn by a cell, which asks for what it draws.
+        $this->set('filed', (new CustomerDocuments())->filedAgainst([$customerProposal])[$customerProposal->id] ?? []);
     }
 
     /**

@@ -4,7 +4,23 @@
  * @var \App\Model\Entity\CustomerProposal $customerProposal
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
+ * @var array<string, array<string, list<\Files\Model\Entity\FileLink>>> $filed
  */
+
+use App\Model\Enum\DocumentVariant;
+
+$ourPages = 0;
+$theirPages = 0;
+foreach ($filed as $byVariant) {
+    foreach ($byVariant as $variant => $links) {
+        if (DocumentVariant::tryFrom((string)$variant)?->isGeneratedByUs() ?? false) {
+            $ourPages += count($links);
+        } else {
+            $theirPages += count($links);
+        }
+    }
+}
+
 ?>
 <div class="row">
     <aside class="column">
@@ -109,6 +125,21 @@
                             <td><?= h($customerProposal->conclusion_date) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Papers on File') ?></th>
+                            <td><?=
+                                $this->Html->link(
+                                    $ourPages + $theirPages === 0
+                                        ? __('None')
+                                        : __(
+                                            '{0} generated, {1} came back',
+                                            $ourPages,
+                                            $theirPages,
+                                        ),
+                                    ['action' => 'documents', $customerProposal->id],
+                                )
+                                ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Revoked') ?></th>
                             <td><?= h($customerProposal->revoked) ?></td>
                         </tr>
@@ -118,6 +149,34 @@
                     <?= $this->element('common/audit', ['entity' => $customerProposal]) ?>
                 </div>
             </div>
+
+            <?php if ($filed !== []) : ?>
+                <h4><?= __('Papers on File') ?></h4>
+                <h5><?= __('Received Documents') ?></h5>
+                <p><?=
+                    __(
+                        'The papers that came back, whoever signed them. They are filed against the'
+                        . ' proposal they answer, so the row says which one that is.',
+                    )
+                    ?></p>
+                <?= $this->cell(
+                    'Documents',
+                    ['customerProposal', $customerProposal->id],
+                    ['generatedByUs' => false],
+                ) ?>
+                <h5><?= __('Generated Documents') ?></h5>
+                <p><?=
+                    __(
+                        'What we generated. A document is generated once and handed back'
+                        . ' afterwards, so these are the very files the customer was given.',
+                    )
+                    ?></p>
+                <?= $this->cell(
+                    'Documents',
+                    ['customerProposal', $customerProposal->id],
+                    ['generatedByUs' => true],
+                ) ?>
+            <?php endif; ?>
 
             <?php if (!empty($customerProposal->note)) : ?>
                 <h4><?= __('Note') ?></h4>

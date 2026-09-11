@@ -32,7 +32,7 @@ class DocumentsCell extends Cell
      *
      * @var list<string>
      */
-    public const SCOPES = ['contractProposal', 'customerProposal', 'contract', 'customer'];
+    public const SCOPES = ['contractProposal', 'customerProposal', 'contractVersion', 'contract', 'customer'];
 
     /**
      * List of valid options that can be passed into this cell's constructor.
@@ -75,7 +75,7 @@ class DocumentsCell extends Cell
         $this->set('manage', $this->manage);
         // Neither column says anything the page it is on has not already said.
         $this->set('showContract', $of === 'customer' && $this->withContracts);
-        $this->set('showProposal', in_array($of, ['contract', 'customer'], true));
+        $this->set('showProposal', in_array($of, ['contractVersion', 'contract', 'customer'], true));
     }
 
     /**
@@ -185,6 +185,7 @@ class DocumentsCell extends Cell
         $query = $proposals->find()->contain(['Contracts']);
         $query = match ($of) {
             'contractProposal' => $query->where(['ContractProposals.id' => $id]),
+            'contractVersion' => $query->where(['ContractProposals.contract_version_id' => $id]),
             'contract' => $query->where(['ContractProposals.contract_id' => $id]),
             default => $query
                 ->where(['Contracts.customer_id' => $id])

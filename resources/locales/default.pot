@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-11 13:20+0200\n"
+"POT-Creation-Date: 2026-09-11 20:30+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -507,6 +507,7 @@ msgid "Builds the document every customer is found by in the advanced search aga
 msgstr ""
 
 #: ./src/Command/RebuildFulltextSearchCustomersCommand.php:65
+#: ./templates/ContractVersions/view.php:132
 msgid "Documents"
 msgstr ""
 
@@ -814,7 +815,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:56
 #: ./templates/ContractProposals/index.php:37
 #: ./templates/ContractProposals/view.php:115
-#: ./templates/ContractVersions/view.php:58
+#: ./templates/ContractVersions/view.php:59
 #: ./templates/Contracts/view.php:98
 #: ./templates/CustomerLabels/view.php:55
 #: ./templates/EquipmentTypes/view.php:70
@@ -907,7 +908,7 @@ msgid "Date of Termination of Services"
 msgstr ""
 
 #: ./src/Contracts/Proposal/ProposedVersion.php:30
-#: ./templates/ContractVersions/view.php:74
+#: ./templates/ContractVersions/view.php:75
 #: ./templates/ServiceOverrides/view.php:100
 #: ./templates/element/ContractChecks/contract_version_gap.php:21
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:21
@@ -918,7 +919,7 @@ msgid "Valid Until"
 msgstr ""
 
 #: ./src/Contracts/Proposal/ProposedVersion.php:31
-#: ./templates/ContractVersions/view.php:78
+#: ./templates/ContractVersions/view.php:79
 #: ./templates/Customers/view.php:618
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:22
 #: ./templates/element/ContractChecks/unsettled_obligation.php:26
@@ -941,7 +942,7 @@ msgstr ""
 #: ./src/Contracts/Proposal/TransferPlan.php:90
 #: ./templates/ContractProposals/conclude.php:43
 #: ./templates/ContractProposals/view.php:154
-#: ./templates/ContractVersions/view.php:92
+#: ./templates/ContractVersions/view.php:93
 #: ./templates/CustomerProposals/conclude.php:40
 #: ./templates/CustomerProposals/index.php:41
 #: ./templates/CustomerProposals/view.php:108
@@ -1377,21 +1378,21 @@ msgstr ""
 msgid "The contract state could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:115
-#: ./src/Controller/ContractVersionsController.php:157
+#: ./src/Controller/ContractVersionsController.php:119
+#: ./src/Controller/ContractVersionsController.php:161
 msgid "The contract version has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:119
-#: ./src/Controller/ContractVersionsController.php:161
+#: ./src/Controller/ContractVersionsController.php:123
+#: ./src/Controller/ContractVersionsController.php:165
 msgid "The contract version could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:198
+#: ./src/Controller/ContractVersionsController.php:202
 msgid "The contract version has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractVersionsController.php:201
+#: ./src/Controller/ContractVersionsController.php:205
 msgid "The contract version could not be deleted. Please, try again."
 msgstr ""
 
@@ -2445,7 +2446,7 @@ msgstr ""
 #: ./templates/ContractStates/view.php:176
 #: ./templates/ContractStates/view.php:180
 #: ./templates/ContractVersions/index.php:65
-#: ./templates/ContractVersions/view.php:84
+#: ./templates/ContractVersions/view.php:85
 #: ./templates/Contracts/index.php:84
 #: ./templates/Customers/view.php:305
 #: ./templates/Customers/view.php:328
@@ -2565,7 +2566,7 @@ msgstr ""
 #: ./templates/ContractStates/view.php:176
 #: ./templates/ContractStates/view.php:180
 #: ./templates/ContractVersions/index.php:65
-#: ./templates/ContractVersions/view.php:84
+#: ./templates/ContractVersions/view.php:85
 #: ./templates/Contracts/index.php:84
 #: ./templates/Customers/view.php:305
 #: ./templates/Customers/view.php:328
@@ -3267,7 +3268,7 @@ msgstr ""
 #: ./templates/ContractVersions/add.php:13
 #: ./templates/ContractVersions/edit.php:12
 #: ./templates/ContractVersions/index.php:45
-#: ./templates/ContractVersions/view.php:10
+#: ./templates/ContractVersions/view.php:11
 #: ./templates/Contracts/add.php:19
 #: ./templates/Contracts/documents.php:12
 #: ./templates/Contracts/edit.php:21
@@ -3643,7 +3644,7 @@ msgstr ""
 #: ./templates/ContractStates/view.php:20
 #: ./templates/ContractVersions/edit.php:17
 #: ./templates/ContractVersions/index.php:82
-#: ./templates/ContractVersions/view.php:20
+#: ./templates/ContractVersions/view.php:21
 #: ./templates/Contracts/edit.php:25
 #: ./templates/Contracts/index.php:125
 #: ./templates/Contracts/view.php:28
@@ -4053,9 +4054,9 @@ msgstr ""
 #: ./templates/Billings/service_change.php:118
 #: ./templates/Billings/view.php:122
 #: ./templates/ContractProposals/billing_line.php:112
-#: ./templates/ContractProposals/view.php:246
+#: ./templates/ContractProposals/view.php:258
 #: ./templates/ContractStates/view.php:193
-#: ./templates/ContractVersions/view.php:106
+#: ./templates/ContractVersions/view.php:107
 #: ./templates/Contracts/view.php:178
 #: ./templates/CustomerLabels/view.php:80
 #: ./templates/CustomerProposals/view.php:123
@@ -4940,6 +4941,7 @@ msgstr ""
 
 #: ./templates/ContractProposals/documents.php:43
 #: ./templates/ContractProposals/view.php:231
+#: ./templates/ContractVersions/view.php:133
 #: ./templates/Contracts/documents.php:41
 #: ./templates/CustomerProposals/documents.php:43
 #: ./templates/Customers/documents.php:35
@@ -4952,7 +4954,8 @@ msgid "Scans arrive a page at a time and often out of order. Add what has come, 
 msgstr ""
 
 #: ./templates/ContractProposals/documents.php:57
-#: ./templates/ContractProposals/view.php:237
+#: ./templates/ContractProposals/view.php:243
+#: ./templates/ContractVersions/view.php:145
 #: ./templates/Contracts/documents.php:55
 #: ./templates/CustomerProposals/documents.php:57
 #: ./templates/Customers/documents.php:50
@@ -5003,7 +5006,7 @@ msgid "Settled Proposals As Well"
 msgstr ""
 
 #: ./templates/ContractProposals/index.php:28
-#: ./templates/ContractVersions/view.php:113
+#: ./templates/ContractVersions/view.php:114
 #: ./templates/Contracts/print.php:79
 #: ./templates/CustomerProposals/index.php:28
 #: ./templates/Customers/print.php:53
@@ -5018,7 +5021,7 @@ msgstr ""
 #: ./templates/ContractProposals/send.php:51
 #: ./templates/ContractProposals/view.php:150
 #: ./templates/ContractVersions/index.php:42
-#: ./templates/ContractVersions/view.php:88
+#: ./templates/ContractVersions/view.php:89
 #: ./templates/CustomerProposals/index.php:40
 #: ./templates/CustomerProposals/send.php:46
 #: ./templates/CustomerProposals/view.php:104
@@ -5216,7 +5219,7 @@ msgid "None"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:163
-msgid "{0} drawn up, {1} came back"
+msgid "{0} generated, {1} came back"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:173
@@ -5239,6 +5242,19 @@ msgstr ""
 
 #: ./templates/ContractProposals/view.php:216
 msgid "What was confirmed"
+msgstr ""
+
+#: ./templates/ContractProposals/view.php:233
+#: ./templates/ContractVersions/view.php:135
+#: ./templates/Contracts/documents.php:43
+msgid "The papers that came back, whoever signed them. They are filed against the proposal they answer, so the row says which one that is."
+msgstr ""
+
+#: ./templates/ContractProposals/view.php:245
+#: ./templates/ContractVersions/view.php:147
+#: ./templates/Contracts/documents.php:57
+#: ./templates/Customers/documents.php:52
+msgid "What we generated. A document is generated once and handed back afterwards, so these are the very files the customer was given."
 msgstr ""
 
 #: ./templates/ContractStates/add.php:13
@@ -5407,7 +5423,7 @@ msgstr ""
 
 #: ./templates/ContractVersions/add.php:15
 #: ./templates/ContractVersions/edit.php:22
-#: ./templates/ContractVersions/view.php:25
+#: ./templates/ContractVersions/view.php:26
 #: ./templates/Overviews/index.php:110
 msgid "List Contract Versions"
 msgstr ""
@@ -5417,7 +5433,7 @@ msgid "Add Contract Version"
 msgstr ""
 
 #: ./templates/ContractVersions/edit.php:32
-#: ./templates/ContractVersions/view.php:12
+#: ./templates/ContractVersions/view.php:13
 msgid "Edit Contract Version"
 msgstr ""
 
@@ -5426,7 +5442,7 @@ msgid "Obligations Ending Soon Only"
 msgstr ""
 
 #: ./templates/ContractVersions/index.php:28
-#: ./templates/ContractVersions/view.php:30
+#: ./templates/ContractVersions/view.php:31
 #: ./templates/Contracts/print.php:67
 #: ./templates/Contracts/view.php:217
 msgid "New Contract Version"
@@ -5439,24 +5455,24 @@ msgstr ""
 msgid "Contract Versions"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:17
+#: ./templates/ContractVersions/view.php:18
 msgid "Delete Contract Version"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:38
+#: ./templates/ContractVersions/view.php:39
 #: ./templates/Contracts/map.php:11
 #: ./templates/ServiceOverrides/view.php:61
 #: ./templates/element/Contracts/heading.php:9
 msgid "Contract No."
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:39
+#: ./templates/ContractVersions/view.php:40
 #: ./templates/Labels/view.php:55
 #: ./templates/ServiceOverrides/view.php:65
 msgid "Validity"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:70
+#: ./templates/ContractVersions/view.php:71
 #: ./templates/ServiceOverrides/view.php:96
 #: ./templates/element/ContractChecks/contract_version_gap.php:20
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:20
@@ -5467,17 +5483,17 @@ msgstr ""
 msgid "Valid From"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:82
+#: ./templates/ContractVersions/view.php:83
 #: ./templates/element/Contracts/ContractVersions.php:17
 msgid "Obligations Settled"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:96
+#: ./templates/ContractVersions/view.php:97
 #: ./templates/element/Contracts/ContractVersions.php:20
 msgid "Number Of Amendments"
 msgstr ""
 
-#: ./templates/ContractVersions/view.php:123
+#: ./templates/ContractVersions/view.php:124
 #: ./templates/Contracts/print.php:88
 #: ./templates/Customers/print.php:61
 msgid "Proposals"
@@ -5513,15 +5529,6 @@ msgstr ""
 #: ./templates/Customers/view.php:52
 #: ./templates/Customers/view.php:178
 msgid "Customer Documents"
-msgstr ""
-
-#: ./templates/Contracts/documents.php:43
-msgid "The papers that came back, whoever signed them. They are filed against the proposal they answer, so the row says which one that is."
-msgstr ""
-
-#: ./templates/Contracts/documents.php:57
-#: ./templates/Customers/documents.php:52
-msgid "What we generated. A document is generated once and handed back afterwards, so these are the very files the customer was given."
 msgstr ""
 
 #: ./templates/Contracts/edit.php:67
