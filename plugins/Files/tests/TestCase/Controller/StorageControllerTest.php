@@ -137,7 +137,7 @@ class StorageControllerTest extends TestCase
         $this->get('/files/storage/view/' . $file->id);
 
         $this->assertResponseOk();
-        $this->assertResponseContains('not on the shelf');
+        $this->assertResponseContains('not in the store');
     }
 
     /**

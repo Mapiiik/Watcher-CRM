@@ -115,7 +115,7 @@ final class ProposalPapers
      * @param string $foreign_key Which one.
      * @param array<string, mixed> $uploaded What arrived, by document type.
      * @param array<string, mixed> $variants Whose signatures each of them carries, by document type.
-     * @return array<string, mixed> How many pages were filed, and what would not go on the shelf.
+     * @return array<string, mixed> How many pages were filed, and what would not be stored.
      * @phpstan-return array{filed: int, problems: list<string>}
      */
     public function takeEach(string $model, string $foreign_key, array $uploaded, array $variants): array

@@ -81,7 +81,7 @@
     <p>
         <?= __d(
             'files',
-            '{0} on the shelf, {1} in all, {2} of them pointed at by nothing.',
+            '{0} in the store, {1} in all, {2} of them pointed at by nothing.',
             $this->Number->format($totals['files']),
             $this->Number->toReadableSize($totals['bytes']),
             $this->Number->format($totals['unused']),

@@ -152,7 +152,7 @@ class UnsignedContractsCard extends AbstractDashboardCard
             'unanswered_url' => $this->overviewUrl('unsigned_proposal'),
             'unsent' => $this->unsent->count(),
             'unsent_url' => $this->overviewUrl('unsent_proposal'),
-            // The end of the same job: signed, and the papers never reached the shelf.
+            // The end of the same job: signed, and the papers never arrived.
             'unfiled' => $this->unfiled->count(),
             'unfiled_url' => $this->overviewUrl('unfiled_signature'),
         ];

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-11 02:12+0200\n"
+"POT-Creation-Date: 2026-09-11 09:07+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2157,7 +2157,7 @@ msgid "Consent Nobody Filed"
 msgstr ""
 
 #: ./src/Customers/Check/UnsentCustomerProposalCheck.php:44
-msgid "Papers For The Customer That Never Went Out"
+msgid "Papers for the Customer That Never Went Out"
 msgstr ""
 
 #: ./src/Customers/Check/UnsentCustomerProposalCheck.php:53
@@ -2165,7 +2165,7 @@ msgid "Every round of papers drawn up for a customer has gone out."
 msgstr ""
 
 #: ./src/Customers/Check/UnsignedCustomerProposalCheck.php:44
-msgid "Papers For The Customer With No Answer"
+msgid "Papers for the Customer Waiting for a Signature"
 msgstr ""
 
 #: ./src/Customers/Check/UnsignedCustomerProposalCheck.php:53
@@ -7950,7 +7950,7 @@ msgid "Second One In Force From"
 msgstr ""
 
 #: ./templates/element/ContractChecks/unfiled_signature.php:11
-msgid "The customer signed and the signed papers are on nobody's shelf. Nothing is held up by it, but what was agreed to cannot be shown to anybody either."
+msgid "The signature is written down and the papers behind it were never filed. Nothing is held up by it, but there is nothing to show for what was agreed either."
 msgstr ""
 
 #: ./templates/element/ContractChecks/unsent_proposal.php:11
@@ -8338,7 +8338,7 @@ msgid "Open the proposals waiting for a signature"
 msgstr ""
 
 #: ./templates/element/Dashboard/unsigned_contracts.php:37
-msgid "signed, with the signed papers on nobody's shelf"
+msgid "signed, with the signed papers not filed"
 msgstr ""
 
 #: ./templates/element/Dashboard/unsigned_contracts.php:39

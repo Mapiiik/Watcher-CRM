@@ -132,7 +132,7 @@ class DocumentsController extends AppController
         $storage = new FileStorage();
 
         if (!$storage->has($link->file)) {
-            throw new NotFoundException(__d('files', 'The content of this document is not on the shelf.'));
+            throw new NotFoundException(__d('files', 'The content of this document is not in the store.'));
         }
 
         $response = $this->getResponse()->withType($link->file->mime_type);

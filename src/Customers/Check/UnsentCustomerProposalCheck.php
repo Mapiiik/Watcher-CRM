@@ -41,7 +41,7 @@ class UnsentCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function title(): string
     {
-        return __('Papers For The Customer That Never Went Out');
+        return __('Papers for the Customer That Never Went Out');
     }
 
     /**

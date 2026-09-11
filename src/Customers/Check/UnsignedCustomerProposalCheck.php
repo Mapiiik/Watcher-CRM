@@ -41,7 +41,7 @@ class UnsignedCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function title(): string
     {
-        return __('Papers For The Customer With No Answer');
+        return __('Papers for the Customer Waiting for a Signature');
     }
 
     /**

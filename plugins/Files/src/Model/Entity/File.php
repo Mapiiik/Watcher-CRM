@@ -30,7 +30,7 @@ class File extends AppEntity
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
      * The hash, the size and the path are set by the storage as it writes the bytes, never from
-     * a form: a row whose hash does not answer for what is on the shelf is worse than no row.
+     * a form: a row whose hash does not answer for what is stored is worse than no row.
      *
      * @var array<string, bool>
      */

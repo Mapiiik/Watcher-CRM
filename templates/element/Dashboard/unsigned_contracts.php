@@ -34,7 +34,7 @@ $papers = [
     ],
     [
         $unfiled,
-        __('signed, with the signed papers on nobody\'s shelf'),
+        __('signed, with the signed papers not filed'),
         $unfiled_url,
         __('Open the signatures nobody filed'),
     ],

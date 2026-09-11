@@ -9,8 +9,8 @@ $contract_column ??= true;
 ?>
 <p>
     <?= __(
-        'The customer signed and the signed papers are on nobody\'s shelf. Nothing is held up by'
-        . ' it, but what was agreed to cannot be shown to anybody either.',
+        'The signature is written down and the papers behind it were never filed. Nothing is'
+        . ' held up by it, but there is nothing to show for what was agreed either.',
     ) ?>
 </p>
 <div class="table-responsive">

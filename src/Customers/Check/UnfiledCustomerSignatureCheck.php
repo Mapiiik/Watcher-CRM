@@ -10,7 +10,7 @@ use Override;
 use Settings\Utility\Settings;
 
 /**
- * The customer signed and the signed copy is on nobody's shelf.
+ * The customer signed and the signed copy has not been filed.
  *
  * The one of the three that matters most: a consent is the paper somebody may one day have to be
  * shown.

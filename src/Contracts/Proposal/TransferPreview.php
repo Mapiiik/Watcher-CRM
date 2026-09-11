@@ -51,7 +51,7 @@ final class TransferPreview
     public const CLOSED_PERIOD = 'closed_period';
 
     /**
-     * The signature is written down and the signed papers are on nobody's shelf.
+     * The signature is written down and the signed papers have not been filed.
      */
     public const NOTHING_SIGNED_ON_FILE = 'nothing_signed_on_file';
 

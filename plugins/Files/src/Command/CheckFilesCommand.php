@@ -17,7 +17,7 @@ use Override;
 /**
  * CheckFiles command.
  *
- * The shelf and the records are two halves of one thing, and nothing keeps them together but the
+ * The store and the records are two halves of one thing, and nothing keeps them together but the
  * order they are written in. This asks what the two have to say about each other.
  *
  * Only one of the answers is repairable. Bytes nobody has a row for are rubbish - that is what a
@@ -67,7 +67,7 @@ class CheckFilesCommand extends Command
     #[Override]
     public static function getDescription(): string
     {
-        return 'Checks what is on the shelf against what is on file.';
+        return 'Checks the stored content against what the records say.';
     }
 
     /**
@@ -84,7 +84,7 @@ class CheckFilesCommand extends Command
 
         $parser->setDescription(__d(
             'files',
-            'Checks what is on the shelf against what is on file, and says what does not match.',
+            'Checks the stored content against what the records say, and reports what does not match.',
         ));
 
         $parser->addOption('fix', [
@@ -132,7 +132,7 @@ class CheckFilesCommand extends Command
         $stray = $this->stray($storage, $claimed);
         $unused = $files->find('unused')->count();
 
-        $io->out(__d('files', '{0} rows, {1} of them on the shelf.', count($claimed), count($claimed) - count($gone)));
+        $io->out(__d('files', '{0} rows, {1} of them with their content stored.', count($claimed), count($claimed) - count($gone)));
 
         $this->report($io, __d('files', 'Rows whose bytes are gone'), array_map(
             fn(File $file): string => $file->path . '  ' . $file->hash,
@@ -165,7 +165,7 @@ class CheckFilesCommand extends Command
 
         if ($gone === [] && $short === []) {
             $io->success($stray === []
-                ? __d('files', 'The shelf and the records agree.')
+                ? __d('files', 'The store and the records agree.')
                 : __d('files', 'Nothing is missing. Run this again with --fix to throw the rest away.'));
 
             return static::CODE_SUCCESS;
@@ -205,7 +205,7 @@ class CheckFilesCommand extends Command
     }
 
     /**
-     * What is on the shelf that no row claims.
+     * What is in the store that no row claims.
      *
      * @param \Files\Service\FileStorage $storage Where the bytes live.
      * @param array<string, bool> $claimed The paths the rows stand for.

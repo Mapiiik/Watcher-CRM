@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-11 02:09+0200\n"
+"POT-Creation-Date: 2026-09-11 08:57+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: ./plugins/Files/src/Command/CheckFilesCommand.php:85
-msgid "Checks what is on the shelf against what is on file, and says what does not match."
+msgid "Checks the stored content against what the records say, and reports what does not match."
 msgstr ""
 
 #: ./plugins/Files/src/Command/CheckFilesCommand.php:91
@@ -23,7 +23,7 @@ msgid "Throw away the bytes nobody has a row for. Nothing else is touched."
 msgstr ""
 
 #: ./plugins/Files/src/Command/CheckFilesCommand.php:135
-msgid "{0} rows, {1} of them on the shelf."
+msgid "{0} rows, {1} of them with their content stored."
 msgstr ""
 
 #: ./plugins/Files/src/Command/CheckFilesCommand.php:137
@@ -47,7 +47,7 @@ msgid "{0} thrown away."
 msgstr ""
 
 #: ./plugins/Files/src/Command/CheckFilesCommand.php:168
-msgid "The shelf and the records agree."
+msgid "The store and the records agree."
 msgstr ""
 
 #: ./plugins/Files/src/Command/CheckFilesCommand.php:169
@@ -78,15 +78,15 @@ msgstr ""
 msgid "  ... and {0} more."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/DocumentsController.php:136
-msgid "The content of this document is not on the shelf."
+#: ./plugins/Files/src/Controller/DocumentsController.php:135
+msgid "The content of this document is not in the store."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/DocumentsController.php:171
+#: ./plugins/Files/src/Controller/DocumentsController.php:170
 msgid "The document has been removed."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/DocumentsController.php:173
+#: ./plugins/Files/src/Controller/DocumentsController.php:172
 msgid "The document could not be removed: {0}"
 msgstr ""
 
@@ -119,13 +119,13 @@ msgid "Name"
 msgstr ""
 
 #: ./plugins/Files/templates/Documents/index.php:48
-#: ./plugins/Files/templates/Storage/index.php:42
+#: ./plugins/Files/templates/Storage/index.php:40
 #: ./plugins/Files/templates/Storage/view.php:13
 msgid "Storage"
 msgstr ""
 
 #: ./plugins/Files/templates/Documents/index.php:52
-#: ./plugins/Files/templates/Storage/index.php:38
+#: ./plugins/Files/templates/Storage/index.php:36
 #: ./plugins/Files/templates/Storage/view.php:18
 msgid "Documents"
 msgstr ""
@@ -135,7 +135,7 @@ msgid "Every file the records have, and what each of them is filed as."
 msgstr ""
 
 #: ./plugins/Files/templates/Documents/index.php:58
-#: ./plugins/Files/templates/Storage/index.php:52
+#: ./plugins/Files/templates/Storage/index.php:50
 #: ./plugins/Files/templates/Storage/view.php:58
 msgid "Created"
 msgstr ""
@@ -146,13 +146,13 @@ msgid "Position"
 msgstr ""
 
 #: ./plugins/Files/templates/Documents/index.php:64
-#: ./plugins/Files/templates/Storage/index.php:55
+#: ./plugins/Files/templates/Storage/index.php:53
 #: ./plugins/Files/templates/Storage/view.php:50
 msgid "Size"
 msgstr ""
 
 #: ./plugins/Files/templates/Documents/index.php:65
-#: ./plugins/Files/templates/Storage/index.php:57
+#: ./plugins/Files/templates/Storage/index.php:55
 #: ./plugins/Files/templates/Storage/view.php:11
 #: ./plugins/Files/templates/Storage/view.php:91
 msgid "Actions"
@@ -181,46 +181,46 @@ msgid "Remove this document from the record? The content itself goes only if not
 msgstr ""
 
 #: ./plugins/Files/templates/Storage/index.php:13
-#: ./plugins/Files/templates/Storage/index.php:54
+#: ./plugins/Files/templates/Storage/index.php:52
 #: ./plugins/Files/templates/Storage/view.php:46
 msgid "MIME Type"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:21
-msgid "Hash Begins With"
-msgstr ""
-
-#: ./plugins/Files/templates/Storage/index.php:28
+#: ./plugins/Files/templates/Storage/index.php:19
 msgid "Nothing points at it"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:43
+#: ./plugins/Files/templates/Storage/index.php:26
+msgid "Hash Begins With"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:41
 msgid "Each piece of content once, however many records point at it. What nothing points at any more is here too - that is the state a torn backup leaves behind, and the harmless one."
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:53
+#: ./plugins/Files/templates/Storage/index.php:51
 msgid "Hash"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:56
+#: ./plugins/Files/templates/Storage/index.php:54
 #: ./plugins/Files/templates/Storage/view.php:68
 msgid "File Links"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:70
+#: ./plugins/Files/templates/Storage/index.php:68
 msgid "nothing"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:74
+#: ./plugins/Files/templates/Storage/index.php:72
 msgid "View"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:84
-msgid "{0} on the shelf, {1} in all, {2} of them pointed at by nothing."
+#: ./plugins/Files/templates/Storage/index.php:82
+msgid "{0} in the store, {1} in all, {2} of them pointed at by nothing."
 msgstr ""
 
 #: ./plugins/Files/templates/Storage/view.php:31
-msgid "The bytes this row stands for are not on the shelf. Nothing that points at it can be handed over until they are put back."
+msgid "The bytes this row stands for are not in the store. Nothing that points at it can be handed over until they are put back."
 msgstr ""
 
 #: ./plugins/Files/templates/Storage/view.php:42

@@ -33,7 +33,7 @@ class FileStorage
     /**
      * How many characters of the hash each level of the path takes, and how many levels there
      * are. Two levels of two keeps any one directory to a few hundred entries however much is
-     * on the shelf, which is what the tools that walk it want.
+     * stored, which is what the tools that walk it want.
      */
     private const PATH_SEGMENT = 2;
     private const PATH_DEPTH = 2;
@@ -47,7 +47,7 @@ class FileStorage
     }
 
     /**
-     * Puts content on the shelf and hands back the row that stands for it.
+     * Puts content in the store and hands back the row that stands for it.
      *
      * For what is already in memory - a document the application has just drawn.
      *
@@ -210,7 +210,7 @@ class FileStorage
     }
 
     /**
-     * Whether the bytes a row stands for are actually on the shelf.
+     * Whether the bytes a row stands for are actually stored.
      *
      * @param \Files\Model\Entity\File $file The content.
      * @return bool

@@ -9,7 +9,7 @@ use Files\Service\FileStorage;
 /**
  * Storage Controller
  *
- * What is actually on the shelf, each piece of content once - including the pieces nothing points
+ * What is actually in the store, each piece of content once - including the pieces nothing points
  * at any more, which is the whole reason this is a page of its own rather than a filter on the
  * documents.
  */
@@ -100,7 +100,7 @@ class StorageController extends AppController
     }
 
     /**
-     * The kinds of content on the shelf, for the filter to offer.
+     * The kinds of content in the store, for the filter to offer.
      *
      * @return array<string, string>
      */

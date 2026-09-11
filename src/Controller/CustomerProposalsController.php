@@ -237,7 +237,7 @@ class CustomerProposalsController extends AppController
      * Files the scans that came in with the signature.
      *
      * After the day is recorded rather than with it: the day is what the round turns on, and a
-     * scan that will not go on the shelf must not stand in the way of it.
+     * scan that will not be stored must not stand in the way of it.
      *
      * @param \App\Model\Entity\CustomerProposal $proposal Whose papers.
      * @return void

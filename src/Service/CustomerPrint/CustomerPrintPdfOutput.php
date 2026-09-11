@@ -29,7 +29,7 @@ final class CustomerPrintPdfOutput
     /**
      * Draws the paper the prepared data asks for.
      *
-     * What becomes of it - handed over, kept on the shelf, or both - is settled by whoever asked.
+     * What becomes of it - handed over, stored, or both - is settled by whoever asked.
      *
      * @param \App\Service\CustomerPrint\CustomerPrintData $data What is wanted.
      * @return \App\Documents\PrintedDocument

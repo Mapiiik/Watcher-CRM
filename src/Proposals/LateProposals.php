@@ -70,7 +70,7 @@ final class LateProposals
     }
 
     /**
-     * Signed, and the signed copy is on nobody's shelf.
+     * Signed, and the signed copy has not been filed.
      *
      * The gap between a day somebody typed in and a scan that has not arrived, rather than a fault
      * in either.

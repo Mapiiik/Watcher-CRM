@@ -56,7 +56,7 @@ class CreateFiles extends BaseMigration
                 'null' => false,
             ])
             // Derived from the hash rather than stored for its own sake, but written down all the
-            // same: how it is derived may change, and what is already on the shelf may not.
+            // same: how it is derived may change, and what is already stored may not.
             ->addColumn('path', 'string', [
                 'default' => null,
                 'limit' => null,

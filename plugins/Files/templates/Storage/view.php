@@ -30,7 +30,7 @@
                     <?=
                     __d(
                         'files',
-                        'The bytes this row stands for are not on the shelf. Nothing that points'
+                        'The bytes this row stands for are not in the store. Nothing that points'
                         . ' at it can be handed over until they are put back.',
                     )
                     ?>

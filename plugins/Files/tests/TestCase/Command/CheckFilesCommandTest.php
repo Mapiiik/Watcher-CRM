@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 /**
  * Files\Command\CheckFilesCommand Test Case
  *
- * The seam between the shelf and the records is torn here on purpose, one way at a time, because
+ * The seam between the store and the records is torn here on purpose, one way at a time, because
  * the whole point of the command is what it says when that has happened.
  */
 #[UsesClass(CheckFilesCommand::class)]
@@ -85,7 +85,7 @@ class CheckFilesCommandTest extends TestCase
         $this->exec('check_files');
 
         $this->assertExitSuccess();
-        $this->assertOutputContains('The shelf and the records agree.');
+        $this->assertOutputContains('The store and the records agree.');
     }
 
     /**
@@ -159,7 +159,7 @@ class CheckFilesCommandTest extends TestCase
     }
 
     /**
-     * Puts one paper on the shelf, filed against something.
+     * Puts one paper in the store, filed against something.
      *
      * @return \Files\Model\Entity\File
      */
