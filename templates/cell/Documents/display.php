@@ -133,7 +133,6 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                     'action' => 'documents',
                     $round['id'],
                 ],
-                ['class' => 'win-link'],
             );
             ?>
             <tr<?= $spans[$leftmost][$index]['start'] === $index ? '' : ' class="continued"' ?>>

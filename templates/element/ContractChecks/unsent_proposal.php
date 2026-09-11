@@ -45,7 +45,7 @@ $contract_column ??= true;
                                 $proposal->contract_id,
                                 '?' => ['proposal_id' => $proposal->id],
                             ],
-                            ['class' => 'win-link'],
+                            ['target' => 'print'],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Record the Sending'),

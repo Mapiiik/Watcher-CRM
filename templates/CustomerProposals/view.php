@@ -71,7 +71,7 @@
                     $customerProposal->customer_id,
                     '?' => ['proposal_id' => $customerProposal->id],
                 ],
-                ['class' => 'side-nav-item'],
+                ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
         </div>
     </aside>

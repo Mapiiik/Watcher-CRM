@@ -45,12 +45,10 @@ $customer_column ??= true;
                         <?= $this->AuthLink->link(
                             __('View Proposal'),
                             ['controller' => 'CustomerProposals', 'action' => 'view', $proposal->id],
-                            ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Proposal Documents'),
                             ['controller' => 'CustomerProposals', 'action' => 'documents', $proposal->id],
-                            ['class' => 'win-link'],
                         ) ?>
                     </td>
                 </tr>

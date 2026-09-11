@@ -44,7 +44,6 @@ $contract_column ??= true;
                                 'action' => 'documents',
                                 $proposal->id,
                             ],
-                            ['class' => 'win-link'],
                         ) ?>
                     </td>
                 </tr>

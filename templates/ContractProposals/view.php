@@ -101,7 +101,7 @@ foreach ($filed as $byVariant) {
                     $contractProposal->contract_id,
                     '?' => ['proposal_id' => $contractProposal->id],
                 ],
-                ['class' => 'side-nav-item'],
+                ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
         </div>
     </aside>
