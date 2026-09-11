@@ -6,6 +6,7 @@ namespace App\Test\TestCase\BusinessRegister\Source;
 use App\BusinessRegister\Source\ViesSource;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * App\BusinessRegister\ViesSource Test Case
@@ -16,6 +17,53 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(ViesSource::class)]
 class ViesSourceTest extends TestCase
 {
+    /**
+     * Two words are a verdict, and they are read as one.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\ViesSource::confirmed()
+     */
+    public function testAVerdictIsReadAsOne(): void
+    {
+        $this->assertTrue(ViesSource::confirmed(['isValid' => true, 'userError' => 'VALID']));
+        $this->assertFalse(ViesSource::confirmed(['isValid' => false, 'userError' => 'INVALID']));
+    }
+
+    /**
+     * A member state that is down, or too busy, or too slow, is not a number nobody holds - VIES
+     * says so in the same breath as a verdict, with `isValid` false either way, and that is the
+     * pair that once put a good VAT number in the cache as an invalid one.
+     *
+     * @param string $userError What VIES said instead of a verdict.
+     * @return void
+     * @link \App\BusinessRegister\Source\ViesSource::confirmed()
+     */
+    #[DataProvider('troubles')]
+    public function testTroubleIsNotAVerdict(string $userError): void
+    {
+        $this->assertNull(ViesSource::confirmed(['isValid' => false, 'userError' => $userError]));
+    }
+
+    /**
+     * Everything VIES answers with where it never got as far as checking.
+     *
+     * @return array<string, array{0: string}>
+     */
+    public static function troubles(): array
+    {
+        return [
+            'a member state that is down' => ['MS_UNAVAILABLE'],
+            'a member state that is busy' => ['MS_MAX_CONCURRENT_REQ'],
+            'a service that is busy' => ['GLOBAL_MAX_CONCURRENT_REQ'],
+            'a service that is down' => ['SERVICE_UNAVAILABLE'],
+            'a state that took too long' => ['TIMEOUT'],
+            'a number it could not read' => ['INVALID_INPUT'],
+            // read as a whitelist, so a word added later lands here rather than among the verdicts
+            'a word nobody has seen yet' => ['SOMETHING_NEW'],
+            'nothing at all' => [''],
+        ];
+    }
+
     /**
      * A confirmed number comes out in the shape every register answers in, with the address on
      * the one line a suggestion has room for.

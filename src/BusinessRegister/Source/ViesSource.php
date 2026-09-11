@@ -60,11 +60,23 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
     #[Override]
     public function byReference(string $reference): Answer
     {
-        return $this->ask($reference)->map(
-            fn(?array $asked): ?Subject => $asked === null
-                ? null
-                : self::toSubject(self::mapSubject($asked[2], $asked[0], $asked[1])),
-        );
+        $asked = $this->ask($reference);
+        if (!$asked->ok()) {
+            return Answer::sameFailure($asked);
+        }
+
+        // not a number VIES can be asked about at all
+        if ($asked->data === null) {
+            return Answer::of(null);
+        }
+
+        [$memberState, $number, $answer] = $asked->data;
+
+        if (self::confirmed($answer) === null) {
+            return $this->withoutAVerdict($memberState, $number, $answer);
+        }
+
+        return Answer::of(self::toSubject(self::mapSubject($answer, $memberState, $number)));
     }
 
     /**
@@ -78,19 +90,26 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
     #[Override]
     public function vatNumberCheck(string $vatNumber): Answer
     {
-        return $this->ask($vatNumber)->map(function (?array $asked): ?VatNumberCheck {
-            if ($asked === null) {
-                return null;
-            }
+        $asked = $this->ask($vatNumber);
+        if (!$asked->ok()) {
+            return Answer::sameFailure($asked);
+        }
 
-            $answer = $asked[2];
+        // not a number VIES can be asked about at all
+        if ($asked->data === null) {
+            return Answer::of(null);
+        }
 
-            if (($answer['isValid'] ?? false) !== true) {
-                return new VatNumberCheck(VatNumberStatus::Invalid);
-            }
+        [$memberState, $number, $answer] = $asked->data;
 
-            return new VatNumberCheck(VatNumberStatus::Registered, self::readValue($answer['name'] ?? null));
-        });
+        $confirmed = self::confirmed($answer);
+        if ($confirmed === null) {
+            return $this->withoutAVerdict($memberState, $number, $answer);
+        }
+
+        return Answer::of($confirmed
+            ? new VatNumberCheck(VatNumberStatus::Registered, self::readValue($answer['name'] ?? null))
+            : new VatNumberCheck(VatNumberStatus::Invalid));
     }
 
     /**
@@ -110,10 +129,63 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
 
         [, $memberState, $number] = $matches;
 
-        $path = sprintf('ms/%s/vat/%s', urlencode($memberState), urlencode($number));
+        $path = self::path($memberState, $number);
 
         return $this->readOrMissing(fn(): Response => $this->http()->get($this->endpoint($path)), $path)
             ->map(fn(?array $answer): ?array => $answer === null ? null : [$memberState, $number, $answer]);
+    }
+
+    /**
+     * What VIES made of the number: yes, no, or nothing at all.
+     *
+     * It answers HTTP 200 whether it checked the number or never got to - a member state that is
+     * down, a timeout, too many requests at once - and says which in `userError`, leaving
+     * `isValid` false either way. Only two of those words are a verdict, so only those two are
+     * read as one and anything else is nothing to go on.
+     *
+     * Read as a whitelist rather than a list of troubles on purpose: a word VIES adds later then
+     * falls on the side where it is taken for no answer, rather than for a number nobody holds.
+     *
+     * @param array<int|string, mixed> $answer The answer as VIES returned it.
+     * @return bool|null True where the number is registered, false where it is not, and null
+     *      where VIES did not get far enough to say.
+     */
+    public static function confirmed(array $answer): ?bool
+    {
+        return match ((string)($answer['userError'] ?? '')) {
+            'VALID' => true,
+            'INVALID' => false,
+            default => null,
+        };
+    }
+
+    /**
+     * VIES having answered without answering, said the way every other failure is said.
+     *
+     * @param string $memberState The two letter member state the number was asked against.
+     * @param string $number The number without its member state prefix.
+     * @param array<int|string, mixed> $answer The answer as VIES returned it.
+     * @return \App\Http\Answer<never>
+     */
+    private function withoutAVerdict(string $memberState, string $number, array $answer): Answer
+    {
+        return self::unexpected(
+            $this->service(),
+            $this->endpoint(self::path($memberState, $number)),
+            (string)($answer['userError'] ?? 'no verdict'),
+        );
+    }
+
+    /**
+     * Where VIES is asked about one number.
+     *
+     * @param string $memberState The two letter member state to ask.
+     * @param string $number The number without its member state prefix.
+     * @return string
+     */
+    private static function path(string $memberState, string $number): string
+    {
+        return sprintf('ms/%s/vat/%s', urlencode($memberState), urlencode($number));
     }
 
     /**
