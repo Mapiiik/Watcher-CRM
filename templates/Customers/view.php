@@ -5,9 +5,6 @@
  * @var bool $show_historical_records
  */
 
-use App\BusinessRegister\IdentityNumberStatus;
-use App\BusinessRegister\VatNumberStatus;
-
 // The RADIUS accounts below are drawn by a cell, and a cell renders in a view of its own, so
 // a block it asked for would never reach this page's layout - the script is asked for here.
 $this->Html->script('lazy-load.js', ['block' => true]);
@@ -15,10 +12,6 @@ $this->Html->script('lazy-load.js', ['block' => true]);
 // The findings banner is drawn by the ajax layout, which carries no css block, so its style is
 // asked for here - on the page that will be holding it.
 $this->Html->css('problems', ['block' => true]);
-
-// each reaches a register, so ask once and read the answer twice
-$identityNumberCheck = $customer->identityNumberCheck();
-$vatNumberCheck = $customer->vatNumberCheck();
 
 /**
  * A remark in brackets after a number, marked as an error where it is one.
@@ -228,17 +221,27 @@ $remark = function (string $note, bool $wrong = false): string {
                         </tr>
                         <tr>
                             <th><?= __('Identity Number') ?></th>
-                            <td><?= $customer->identity_number !== null ? (
-                                h($customer->identity_number)
-                                    . ($customer->verifyIdentityNumber()
-                                        ? $remark(__('OK'))
-                                        : $remark(__('Invalid'), wrong: true))
-                                    . ($identityNumberCheck !== null ? $remark(
-                                        $identityNumberCheck->note(),
-                                        wrong: $identityNumberCheck->status === IdentityNumberStatus::NotFound
-                                            || !$customer->isKnownAs($identityNumberCheck->company),
-                                    ) : '')
-                            ) : '' ?>
+                            <td><?php if ($customer->identity_number !== null) : ?>
+                                <?= h($customer->identity_number) ?>
+                                <?= $customer->verifyIdentityNumber()
+                                    ? $remark(__('OK'))
+                                    : $remark(__('Invalid'), wrong: true) ?>
+                                <?php // a register takes as long as it takes, which is none of what ?>
+                                <?php // the page was opened to read - so it is asked for afterwards, ?>
+                                <?php // the brackets standing there faded until the answer lands ?>
+                                <span
+                                    class="lazy-load"
+                                    data-url="<?= $this->Url->build([
+                                        'action' => 'registerNote',
+                                        $customer->id,
+                                        'identity',
+                                        'customer_id' => false,
+                                    ]) ?>"
+                                    data-error="<?= h(__('What the business register says could not be loaded.')) ?>"
+                                    data-trigger="load"
+                                    title="<?= h(__('Asking the business register…')) ?>"
+                                > (…)</span>
+                                <?php endif; ?>
                                 <?= $customer->identityNumberPortalUrl() !== null ? $this->Html->link(
                                     __('Register'),
                                     $customer->identityNumberPortalUrl(),
@@ -248,18 +251,21 @@ $remark = function (string $note, bool $wrong = false): string {
                         </tr>
                         <tr>
                             <th><?= __('VAT Number') ?></th>
-                            <td><?= h($customer->vat_number) ?><?= $vatNumberCheck !== null
-                                ? $remark(
-                                    $vatNumberCheck->status->label(),
-                                    wrong: $vatNumberCheck->status === VatNumberStatus::Invalid,
-                                )
-                                    . ($vatNumberCheck->company !== null
-                                        ? $remark(
-                                            $vatNumberCheck->company,
-                                            wrong: !$customer->isKnownAs($vatNumberCheck->company),
-                                        )
-                                        : '')
-                                : '' ?></td>
+                            <td><?php if ($customer->vat_number !== null) : ?>
+                                <?= h($customer->vat_number) ?>
+                                <span
+                                    class="lazy-load"
+                                    data-url="<?= $this->Url->build([
+                                        'action' => 'registerNote',
+                                        $customer->id,
+                                        'vat',
+                                        'customer_id' => false,
+                                    ]) ?>"
+                                    data-error="<?= h(__('What the business register says could not be loaded.')) ?>"
+                                    data-trigger="load"
+                                    title="<?= h(__('Asking the business register…')) ?>"
+                                > (…)</span>
+                                <?php endif; ?></td>
                         </tr>
                     </table>
                     <table>

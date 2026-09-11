@@ -878,6 +878,67 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * The page asks no register of its own: the notes are fetched once it is already up, so a
+     * register taking its time - VIES has taken six seconds over a personal VAT number - is no
+     * longer six seconds of the customer's detail not being there.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewLeavesTheRegistersToBeAskedAfterwards(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        $this->givenCustomerNumbers('27496139', 'CZ27496139');
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        // the numbers themselves, and what the check digit makes of them, are on the page at once
+        $this->assertResponseContains('27496139');
+        // what a register says is asked for separately, once for each number
+        $this->assertResponseContains('/customers/register-note/' . self::CUSTOMER_ID . '/identity');
+        $this->assertResponseContains('/customers/register-note/' . self::CUSTOMER_ID . '/vat');
+        $this->assertResponseNotContains('NETAIR, s.r.o. (');
+    }
+
+    /**
+     * There are two numbers to ask about and nothing else, so a third name is nowhere to be found
+     * rather than quietly answered with an empty note.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::registerNote()
+     */
+    public function testThereIsNoThirdNumberToAskAbout(): void
+    {
+        $this->login();
+        $this->get('/customers/register-note/' . self::CUSTOMER_ID . '/something-else');
+
+        $this->assertResponseCode(404);
+    }
+
+    /**
+     * Gives the fixture customer the numbers a register is asked about.
+     *
+     * @param string $identityNumber The identification number to give them.
+     * @param string $vatNumber The VAT number to give them.
+     * @return void
+     */
+    private function givenCustomerNumbers(string $identityNumber, string $vatNumber): void
+    {
+        $customers = $this->getTableLocator()->get('Customers');
+        /** @var \App\Model\Entity\Customer $customer */
+        $customer = $customers->get(self::CUSTOMER_ID);
+        $customer->company = 'NETAIR, s.r.o.';
+        $customer->identity_number = $identityNumber;
+        $customer->vat_number = $vatNumber;
+        $customers->saveOrFail($customer);
+    }
+
+    /**
      * A register naming somebody else under the customer's identification number is marked as the
      * mistake it is - the number checks out, so nothing else would show it.
      *
@@ -899,7 +960,7 @@ class CustomersControllerTest extends TestCase
         $customers->saveOrFail($customer);
 
         $this->login();
-        $this->get('/customers/view/' . self::CUSTOMER_ID);
+        $this->get('/customers/register-note/' . self::CUSTOMER_ID . '/identity');
 
         $this->assertResponseOk();
         $this->assertResponseContains('<span class="error-text"> (Somebody Else, a.s.)</span>');
@@ -927,7 +988,7 @@ class CustomersControllerTest extends TestCase
         $customers->saveOrFail($customer);
 
         $this->login();
-        $this->get('/customers/view/' . self::CUSTOMER_ID);
+        $this->get('/customers/register-note/' . self::CUSTOMER_ID . '/identity');
 
         $this->assertResponseOk();
         $this->assertResponseContains(' (NETAIR s. r. o.)');

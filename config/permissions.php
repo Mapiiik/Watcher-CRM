@@ -262,6 +262,7 @@ $permissions = [
             ],
             'action' => [
                 'problems',
+                'registerNote',
             ],
         ],
         [

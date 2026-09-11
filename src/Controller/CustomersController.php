@@ -20,6 +20,7 @@ use App\View\PdfView;
 use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Form\Form;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\ORM\Association;
@@ -925,6 +926,36 @@ class CustomersController extends AppController
         }
 
         return false;
+    }
+
+    /**
+     * What a business register says about one of the customer's numbers.
+     *
+     * Asking a register takes as long as the register takes - VIES has been known to think about
+     * a personal VAT number for the better part of ten seconds - and none of it is what the page
+     * was opened to read. So it is fetched once the page is already up, the way the findings
+     * banner is.
+     *
+     * @param string|null $id Customer id.
+     * @param string|null $number Which of the two numbers to ask about.
+     * @return void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function registerNote(?string $id = null, ?string $number = null): void
+    {
+        $customer = $this->Customers->get($id);
+
+        $identityNumberCheck = null;
+        $vatNumberCheck = null;
+
+        match ($number) {
+            'identity' => $identityNumberCheck = $customer->identityNumberCheck(),
+            'vat' => $vatNumberCheck = $customer->vatNumberCheck(),
+            default => throw new NotFoundException(__('There is no such number to ask about.')),
+        };
+
+        $this->viewBuilder()->setLayout('ajax');
+        $this->set(compact('customer', 'identityNumberCheck', 'vatNumberCheck'));
     }
 
     /**
