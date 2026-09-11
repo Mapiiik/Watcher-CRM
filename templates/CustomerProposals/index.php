@@ -9,15 +9,14 @@
 <div class="row">
     <div class="column">
         <?= $this->Form->control('search', [
-            'label' => __('Note'),
+            'label' => __('Search'),
             'type' => 'search',
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
-    </div>
-    <div class="column">
         <?= $this->Form->control('show_settled', [
+            'label' => __('Settled Proposals As Well'),
             'type' => 'checkbox',
-            'label' => __('Including settled ones'),
+            'checked' => $show_settled,
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
