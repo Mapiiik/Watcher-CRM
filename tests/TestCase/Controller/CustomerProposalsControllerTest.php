@@ -76,7 +76,7 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertSame(CustomerProposalPurpose::GdprConsent, $proposal->purpose);
         $this->assertSame(self::CUSTOMER_ID, $proposal->customer_id);
         $this->assertTrue($proposal->isOpen());
-        $this->assertSame(__('Being drawn up'), $proposal->getState());
+        $this->assertSame(__('Being prepared'), $proposal->getState());
     }
 
     /**

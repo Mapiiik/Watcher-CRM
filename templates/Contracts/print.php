@@ -145,18 +145,18 @@ foreach ($proposals as $one) {
             <?= $this->Form->end() ?>
 
             <div class="related">
-                <h4><?= __('Papers Already Drawn Up') ?></h4>
+                <h4><?= __('Documents Already Generated') ?></h4>
                 <p><?=
                     __(
-                        'What has been printed from this contract before. A paper is drawn once,'
-                        . ' so these are the ones the customer was given - fetching one back is'
+                        'What has been printed from this contract before. A document is generated'
+                        . ' once, so these are the ones the customer was given - fetching one back is'
                         . ' quicker than printing it again, and it is the same file either way.',
                     )
                     ?></p>
                 <?= $this->cell(
                     'Documents',
                     ['contract', $contract->id],
-                    ['ours' => true],
+                    ['generatedByUs' => true],
                 ) ?>
             </div>
         </div>

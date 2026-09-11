@@ -48,21 +48,21 @@
                 <?= $this->cell(
                     'Documents',
                     ['contract', $contract->id],
-                    ['ours' => false],
+                    ['generatedByUs' => false],
                 ) ?>
             </div>
             <div class="related">
-                <h4><?= __('Sent Documents') ?></h4>
+                <h4><?= __('Generated Documents') ?></h4>
                 <p><?=
                     __(
-                        'What we drew up. A paper is drawn once and handed back afterwards, so'
-                        . ' these are the very files the customer was given.',
+                        'What we generated. A document is generated once and handed back'
+                        . ' afterwards, so these are the very files the customer was given.',
                     )
                     ?></p>
                 <?= $this->cell(
                     'Documents',
                     ['contract', $contract->id],
-                    ['ours' => true],
+                    ['generatedByUs' => true],
                 ) ?>
             </div>
         </div>

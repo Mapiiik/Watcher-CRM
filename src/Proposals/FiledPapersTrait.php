@@ -77,7 +77,7 @@ trait FiledPapersTrait
             }
 
             foreach (array_keys($byVariant) as $variant) {
-                if (DocumentVariant::tryFrom((string)$variant)?->isDrawnUpByUs() ?? false) {
+                if (DocumentVariant::tryFrom((string)$variant)?->isGeneratedByUs() ?? false) {
                     $printed[$document_type] = $labels[$document_type];
                     break;
                 }

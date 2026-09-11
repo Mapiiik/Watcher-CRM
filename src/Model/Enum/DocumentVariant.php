@@ -32,8 +32,8 @@ enum DocumentVariant: string implements EnumLabelInterface
     public function label(): string
     {
         return match ($this) {
-            self::Generated => __('Drawn up, unsigned'),
-            self::GeneratedSignedByUs => __('Drawn up, signed by us'),
+            self::Generated => __('Generated, unsigned'),
+            self::GeneratedSignedByUs => __('Generated, signed by us'),
             self::ReceivedSignedByCustomer => __('Came back signed by the customer'),
             self::ReceivedSignedByBoth => __('Signed by both'),
         };
@@ -63,7 +63,7 @@ enum DocumentVariant: string implements EnumLabelInterface
      *
      * @return bool
      */
-    public function isDrawnUpByUs(): bool
+    public function isGeneratedByUs(): bool
     {
         return in_array($this, [
             self::Generated,
@@ -78,7 +78,7 @@ enum DocumentVariant: string implements EnumLabelInterface
      */
     public function isReceived(): bool
     {
-        return !$this->isDrawnUpByUs();
+        return !$this->isGeneratedByUs();
     }
 
     /**

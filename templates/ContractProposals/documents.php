@@ -50,22 +50,22 @@
                 <?= $this->cell(
                     'Documents',
                     ['contractProposal', $contractProposal->id],
-                    ['ours' => false, 'manage' => true],
+                    ['generatedByUs' => false, 'manage' => true],
                 ) ?>
             </div>
             <div class="related">
-                <h4><?= __('Sent Documents') ?></h4>
+                <h4><?= __('Generated Documents') ?></h4>
                 <p><?=
                     __(
-                        'A paper is drawn once and handed back afterwards, so what is here is what'
-                        . ' the customer was given. Letting go of one lets the document be drawn'
+                        'A document is generated once and handed back afterwards, so what is here'
+                        . ' is what the customer was given. Letting go of one lets it be generated'
                         . ' again.',
                     )
                     ?></p>
                 <?= $this->cell(
                     'Documents',
                     ['contractProposal', $contractProposal->id],
-                    ['ours' => true, 'manage' => true],
+                    ['generatedByUs' => true, 'manage' => true],
                 ) ?>
             </div>
         </div>

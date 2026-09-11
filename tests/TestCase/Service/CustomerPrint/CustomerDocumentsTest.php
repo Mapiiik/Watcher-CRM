@@ -236,7 +236,7 @@ class CustomerDocumentsTest extends TestCase
         $this->get(sprintf('/customers/%s/print', self::CUSTOMER_ID));
 
         $this->assertResponseOk();
-        $this->assertResponseContains(__('Papers Already Drawn Up'));
+        $this->assertResponseContains(__('Documents Already Generated'));
         // The label alone would be the round's own name as well, so the row is what is looked for.
         $this->assertResponseContains(sprintf('/files/documents/download/%s', $this->ourRound()->id));
         $this->assertResponseNotContains(

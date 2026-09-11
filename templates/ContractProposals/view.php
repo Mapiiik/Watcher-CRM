@@ -19,7 +19,7 @@ $ourPages = 0;
 $theirPages = 0;
 foreach ($filed as $byVariant) {
     foreach ($byVariant as $variant => $links) {
-        if (DocumentVariant::tryFrom((string)$variant)?->isDrawnUpByUs() ?? false) {
+        if (DocumentVariant::tryFrom((string)$variant)?->isGeneratedByUs() ?? false) {
             $ourPages += count($links);
         } else {
             $theirPages += count($links);
@@ -232,13 +232,13 @@ foreach ($filed as $byVariant) {
                 <?= $this->cell(
                     'Documents',
                     ['contractProposal', $contractProposal->id],
-                    ['ours' => false],
+                    ['generatedByUs' => false],
                 ) ?>
-                <h5><?= __('Sent Documents') ?></h5>
+                <h5><?= __('Generated Documents') ?></h5>
                 <?= $this->cell(
                     'Documents',
                     ['contractProposal', $contractProposal->id],
-                    ['ours' => true],
+                    ['generatedByUs' => true],
                 ) ?>
             <?php endif; ?>
 

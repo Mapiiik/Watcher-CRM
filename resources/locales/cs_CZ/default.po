@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-11 09:07+0200\n"
+"POT-Creation-Date: 2026-09-11 10:21+0200\n"
 "PO-Revision-Date: 2026-08-26 13:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -834,7 +834,7 @@ msgstr "Vše, na čem se zákazníci dohodli, je přeneseno."
 #: templates/Billings/service_change.php:46 templates/Billings/view.php:50
 #: templates/BorrowedEquipments/view.php:56 templates/ContractProposals/index.php:37
 #: templates/ContractProposals/view.php:115 templates/ContractVersions/view.php:58
-#: templates/Contracts/view.php:93 templates/CustomerLabels/view.php:55
+#: templates/Contracts/view.php:98 templates/CustomerLabels/view.php:55
 #: templates/EquipmentTypes/view.php:70 templates/EquipmentTypes/view.php:133
 #: templates/HistoricalConnections/index.php:38
 #: templates/HistoricalConnections/view.php:46
@@ -2215,7 +2215,7 @@ msgstr "Dlužníci k zablokování"
 msgid "Obligations Ending Soon"
 msgstr "Končící závazky"
 
-#: src/Dashboard/Card/LabelsCard.php:42 templates/Contracts/view.php:67
+#: src/Dashboard/Card/LabelsCard.php:42 templates/Contracts/view.php:72
 #: templates/Customers/view.php:92 templates/Labels/index.php:33
 msgid "Labels"
 msgstr "Štítky"
@@ -2309,7 +2309,7 @@ msgid "Sent"
 msgstr "Odesláno"
 
 #: src/Model/Entity/ContractProposal.php:149 src/Model/Entity/CustomerProposal.php:84
-msgid "Being drawn up"
+msgid "Being prepared"
 msgstr "Připravuje se"
 
 #: src/Model/Entity/ContractVersion.php:119
@@ -2606,12 +2606,12 @@ msgid "Consent to the processing of personal data (change)"
 msgstr "Souhlas se zpracováním osobních údajů (změna)"
 
 #: src/Model/Enum/DocumentVariant.php:35
-msgid "Drawn up, unsigned"
-msgstr "Vyrobeno, nepodepsané"
+msgid "Generated, unsigned"
+msgstr "Vygenerováno, nepodepsané"
 
 #: src/Model/Enum/DocumentVariant.php:36
-msgid "Drawn up, signed by us"
-msgstr "Vyrobeno, podepsané námi"
+msgid "Generated, signed by us"
+msgstr "Vygenerováno, podepsané námi"
 
 #: src/Model/Enum/DocumentVariant.php:37
 msgid "Came back signed by the customer"
@@ -2691,8 +2691,8 @@ msgstr "Nástěnka"
 msgid "Customers"
 msgstr "Zákazníci"
 
-#: src/Model/Enum/LandingPage.php:39 templates/Contracts/view.php:128
-#: templates/Contracts/view.php:455 templates/Customers/view.php:163
+#: src/Model/Enum/LandingPage.php:39 templates/Contracts/view.php:133
+#: templates/Contracts/view.php:460 templates/Customers/view.php:163
 #: templates/Customers/view.php:861 templates/Tasks/index.php:91
 #: templates/Tasks/map.php:36 templates/layout/default.php:139
 msgid "Tasks"
@@ -3241,7 +3241,7 @@ msgid "Actions"
 msgstr "Akce"
 
 #: templates/AccessCredentials/add.php:14 templates/AccessCredentials/edit.php:22
-#: templates/AccessCredentials/view.php:25 templates/Contracts/view.php:50
+#: templates/AccessCredentials/view.php:25 templates/Contracts/view.php:55
 #: templates/Customers/view.php:75 templates/Overviews/index.php:89
 msgid "List Access Credentials"
 msgstr "Seznam přístupových oprávnění"
@@ -3342,7 +3342,7 @@ msgstr "Potvrdit"
 #: templates/SoldEquipments/edit.php:15 templates/SoldEquipments/index.php:76
 #: templates/Tasks/edit.php:18 templates/element/Contracts/Billings.php:87
 #: templates/element/Contracts/BorrowedEquipments.php:62
-#: templates/element/Contracts/ContractProposals.php:113
+#: templates/element/Contracts/ContractProposals.php:114
 #: templates/element/Contracts/ContractVersions.php:52
 #: templates/element/Contracts/IpAddresses.php:96
 #: templates/element/Contracts/IpNetworks.php:66
@@ -3405,7 +3405,7 @@ msgstr "Odstranit"
 #: templates/SoldEquipments/view.php:20 templates/Tasks/edit.php:20
 #: templates/Tasks/view.php:15 templates/element/Contracts/Billings.php:89
 #: templates/element/Contracts/BorrowedEquipments.php:69
-#: templates/element/Contracts/ContractProposals.php:115
+#: templates/element/Contracts/ContractProposals.php:116
 #: templates/element/Contracts/ContractVersions.php:54
 #: templates/element/Contracts/IpAddresses.php:98
 #: templates/element/Contracts/IpNetworks.php:69
@@ -3506,7 +3506,7 @@ msgstr "Číslo zákazníka"
 #: templates/SoldEquipments/index.php:69 templates/Tasks/index.php:185
 #: templates/element/Contracts/Billings.php:78
 #: templates/element/Contracts/BorrowedEquipments.php:45
-#: templates/element/Contracts/ContractProposals.php:75
+#: templates/element/Contracts/ContractProposals.php:76
 #: templates/element/Contracts/ContractVersions.php:43
 #: templates/element/Contracts/IpAddresses.php:87
 #: templates/element/Contracts/IpNetworks.php:57
@@ -3545,7 +3545,7 @@ msgstr "Zobrazit"
 #: templates/element/ContractProposals/proposed_billings.php:69
 #: templates/element/Contracts/Billings.php:82
 #: templates/element/Contracts/BorrowedEquipments.php:53
-#: templates/element/Contracts/ContractProposals.php:79
+#: templates/element/Contracts/ContractProposals.php:80
 #: templates/element/Contracts/ContractVersions.php:47
 #: templates/element/Contracts/IpAddresses.php:91
 #: templates/element/Contracts/IpNetworks.php:61
@@ -3628,7 +3628,7 @@ msgstr "Port"
 #: templates/Billings/service_change.php:118 templates/Billings/view.php:122
 #: templates/ContractProposals/billing_line.php:112
 #: templates/ContractProposals/view.php:246 templates/ContractStates/view.php:193
-#: templates/ContractVersions/view.php:106 templates/Contracts/view.php:173
+#: templates/ContractVersions/view.php:106 templates/Contracts/view.php:178
 #: templates/CustomerLabels/view.php:80 templates/CustomerProposals/view.php:123
 #: templates/Customers/view.php:343 templates/Customers/view.php:375
 #: templates/Customers/view.php:424 templates/Customers/view.php:533
@@ -3750,8 +3750,8 @@ msgstr "Přípona"
 msgid "Contracts"
 msgstr "Smlouvy"
 
-#: templates/AccountingProfiles/view.php:89 templates/Contracts/view.php:113
-#: templates/Contracts/view.php:328 templates/Customers/index.php:75
+#: templates/AccountingProfiles/view.php:89 templates/Contracts/view.php:118
+#: templates/Contracts/view.php:333 templates/Customers/index.php:75
 #: templates/Customers/view.php:148 templates/IpAddresses/bulk_reassignment.php:44
 #: templates/IpAddresses/index.php:21
 msgid "IP Addresses"
@@ -3987,7 +3987,7 @@ msgstr ""
 "od nastaveného data?"
 
 #: templates/Billings/bulk_service_change.php:148 templates/Billings/index.php:21
-#: templates/Contracts/view.php:103 templates/Contracts/view.php:244
+#: templates/Contracts/view.php:108 templates/Contracts/view.php:249
 #: templates/Customers/view.php:138 templates/Overviews/overview_of_active_services.php:67
 msgid "Billings"
 msgstr "Fakturace"
@@ -4015,7 +4015,7 @@ msgid "Service Change"
 msgstr "Změna služby"
 
 #: templates/Billings/index.php:20 templates/Billings/service_change.php:25
-#: templates/Billings/view.php:24 templates/Contracts/view.php:227
+#: templates/Billings/view.php:24 templates/Contracts/view.php:232
 #: templates/Customers/view.php:667
 msgid "New Billing"
 msgstr "Nová fakturace"
@@ -4132,11 +4132,11 @@ msgid "Edit Borrowed Equipment"
 msgstr "Upravit zapůjčené zařízení"
 
 #: templates/BorrowedEquipments/index.php:21 templates/BorrowedEquipments/view.php:30
-#: templates/Contracts/view.php:266 templates/Customers/view.php:693
+#: templates/Contracts/view.php:271 templates/Customers/view.php:693
 msgid "New Borrowed Equipment"
 msgstr "Nové zapůjčené zařízení"
 
-#: templates/BorrowedEquipments/index.php:25 templates/Contracts/view.php:288
+#: templates/BorrowedEquipments/index.php:25 templates/Contracts/view.php:293
 msgid "Borrowed Equipments"
 msgstr "Zapůjčená zařízení"
 
@@ -4232,8 +4232,8 @@ msgstr "Seznam návrhů"
 #: templates/CustomerProposals/conclude.php:23 templates/CustomerProposals/view.php:39
 #: templates/cell/Documents/display.php:129
 #: templates/element/ContractChecks/unfiled_signature.php:41
-#: templates/element/CustomerChecks/customer_proposal.php:51
-#: templates/element/Customers/CustomerProposals.php:50
+#: templates/element/CustomerChecks/customer_proposal.php:50
+#: templates/element/Customers/CustomerProposals.php:51
 msgid "Proposal Documents"
 msgstr "Dokumenty návrhu"
 
@@ -4321,7 +4321,7 @@ msgstr "Prázdné začne s papíry."
 #: templates/CustomerProposals/conclude.php:35 templates/CustomerProposals/edit.php:31
 #: templates/CustomerProposals/view.php:33
 #: templates/element/ContractChecks/unsigned_proposal.php:41
-#: templates/element/Contracts/ContractProposals.php:100
+#: templates/element/Contracts/ContractProposals.php:101
 #: templates/element/Customers/CustomerProposals.php:72
 msgid "Record the Signature"
 msgstr "Zapsat podpis"
@@ -4358,7 +4358,7 @@ msgstr "Ostatní papíry"
 
 #: templates/ContractProposals/documents.php:18 templates/ContractProposals/view.php:97
 #: templates/Contracts/documents.php:24 templates/Contracts/print.php:140
-#: templates/Contracts/view.php:34 templates/Contracts/view.php:155
+#: templates/Contracts/view.php:34 templates/Contracts/view.php:160
 #: templates/CustomerProposals/documents.php:18 templates/CustomerProposals/view.php:67
 #: templates/Customers/documents.php:24 templates/Customers/print.php:110
 #: templates/Customers/view.php:54 templates/Customers/view.php:190
@@ -4369,7 +4369,7 @@ msgid "Print to PDF"
 msgstr "Tisk do PDF"
 
 #: templates/ContractProposals/documents.php:28 templates/Contracts/print.php:48
-#: templates/Contracts/view.php:39 templates/Contracts/view.php:150
+#: templates/Contracts/view.php:39 templates/Contracts/view.php:155
 msgid "Contract Documents"
 msgstr "Dokumenty smlouvy"
 
@@ -4391,17 +4391,17 @@ msgstr ""
 #: templates/ContractProposals/documents.php:57 templates/ContractProposals/view.php:237
 #: templates/Contracts/documents.php:55 templates/CustomerProposals/documents.php:57
 #: templates/Customers/documents.php:50
-msgid "Sent Documents"
-msgstr "Odeslané dokumenty"
+msgid "Generated Documents"
+msgstr "Vygenerované dokumenty"
 
 #: templates/ContractProposals/documents.php:59
 #: templates/CustomerProposals/documents.php:59
 msgid ""
-"A paper is drawn once and handed back afterwards, so what is here is what the customer "
-"was given. Letting go of one lets the document be drawn again."
+"A document is generated once and handed back afterwards, so what is here is what the "
+"customer was given. Letting go of one lets it be generated again."
 msgstr ""
-"Papír se vyrobí jednou a potom se už jen vydává, takže tady je to, co zákazník dostal. "
-"Odebráním se dokument rozmrazí a příště se vyrobí znovu."
+"Dokument se vygeneruje jednou a potom se už jen vydává, takže tady je to, co zákazník "
+"dostal. Odebráním se rozmrazí a příště se vygeneruje znovu."
 
 #: templates/ContractProposals/edit.php:17
 #: templates/ContractProposals/refresh_snapshot.php:24
@@ -4413,21 +4413,21 @@ msgstr "Pořídit snímek znovu"
 #: templates/ContractProposals/view.php:51 templates/CustomerProposals/edit.php:26
 #: templates/CustomerProposals/send.php:35 templates/CustomerProposals/view.php:24
 #: templates/element/ContractChecks/unsent_proposal.php:51
-#: templates/element/Contracts/ContractProposals.php:93
+#: templates/element/Contracts/ContractProposals.php:94
 #: templates/element/Customers/CustomerProposals.php:67
 msgid "Record the Sending"
 msgstr "Zapsat odeslání"
 
 #: templates/ContractProposals/edit.php:34 templates/ContractProposals/view.php:57
 #: templates/CustomerProposals/view.php:32
-#: templates/element/Contracts/ContractProposals.php:99
+#: templates/element/Contracts/ContractProposals.php:100
 msgid "Correct the Signature"
 msgstr "Opravit podpis"
 
 #: templates/ContractProposals/edit.php:40 templates/ContractProposals/transfer.php:104
 #: templates/ContractProposals/view.php:63
 #: templates/element/ContractChecks/untransferred_proposal.php:41
-#: templates/element/Contracts/ContractProposals.php:106
+#: templates/element/Contracts/ContractProposals.php:107
 msgid "Carry Over"
 msgstr "Přenést"
 
@@ -4500,7 +4500,7 @@ msgstr ""
 
 #: templates/ContractProposals/send.php:45 templates/ContractProposals/view.php:50
 #: templates/CustomerProposals/send.php:34 templates/CustomerProposals/view.php:23
-#: templates/element/Contracts/ContractProposals.php:92
+#: templates/element/Contracts/ContractProposals.php:93
 #: templates/element/Customers/CustomerProposals.php:66
 msgid "Record the Sending Again"
 msgstr "Zapsat odeslání znovu"
@@ -4842,12 +4842,12 @@ msgid "Obligations Ending Soon Only"
 msgstr "Pouze končící závazky"
 
 #: templates/ContractVersions/index.php:28 templates/ContractVersions/view.php:30
-#: templates/Contracts/print.php:67 templates/Contracts/view.php:212
+#: templates/Contracts/print.php:67 templates/Contracts/view.php:217
 msgid "New Contract Version"
 msgstr "Nová verze smlouvy"
 
 #: templates/ContractVersions/index.php:32 templates/Contracts/print.php:71
-#: templates/Contracts/view.php:98 templates/Contracts/view.php:216
+#: templates/Contracts/view.php:103 templates/Contracts/view.php:221
 msgid "Contract Versions"
 msgstr "Verze smlouvy"
 
@@ -4924,11 +4924,11 @@ msgstr ""
 
 #: templates/Contracts/documents.php:57 templates/Customers/documents.php:52
 msgid ""
-"What we drew up. A paper is drawn once and handed back afterwards, so these are the "
-"very files the customer was given."
+"What we generated. A document is generated once and handed back afterwards, so these "
+"are the very files the customer was given."
 msgstr ""
-"Co jsme vyrobili. Papír se vyrobí jednou a potom se už jen vydává, takže to jsou přesně "
-"ty soubory, které zákazník dostal."
+"Co jsme vygenerovali. Dokument se vygeneruje jednou a potom se už jen vydává, takže to "
+"jsou přesně ty soubory, které zákazník dostal."
 
 #: templates/Contracts/edit.php:67
 msgid ""
@@ -4996,16 +4996,16 @@ msgid "Proposal"
 msgstr "Návrh"
 
 #: templates/Contracts/print.php:148 templates/Customers/print.php:118
-msgid "Papers Already Drawn Up"
-msgstr "Už vyrobené papíry"
+msgid "Documents Already Generated"
+msgstr "Už vygenerované dokumenty"
 
 #: templates/Contracts/print.php:150
 msgid ""
-"What has been printed from this contract before. A paper is drawn once, so these are "
-"the ones the customer was given - fetching one back is quicker than printing it again, "
-"and it is the same file either way."
+"What has been printed from this contract before. A document is generated once, so these "
+"are the ones the customer was given - fetching one back is quicker than printing it "
+"again, and it is the same file either way."
 msgstr ""
-"Co se z této smlouvy už tisklo. Papír se vyrobí jednou, takže to jsou ty, které "
+"Co se z této smlouvy už tisklo. Dokument se vygeneruje jednou, takže to jsou ty, které "
 "zákazník dostal. Stáhnout je zpátky je rychlejší než tisknout znovu a je to stejně "
 "tentýž soubor."
 
@@ -5013,7 +5013,11 @@ msgstr ""
 msgid "Delete Contract"
 msgstr "Odstranit smlouvu"
 
-#: templates/Contracts/view.php:45 templates/CustomerMessages/add.php:13
+#: templates/Contracts/view.php:45 templates/Overviews/index.php:115
+msgid "List Contract Proposals"
+msgstr "Seznam návrhů ke smlouvám"
+
+#: templates/Contracts/view.php:50 templates/CustomerMessages/add.php:13
 #: templates/CustomerMessages/add_bulk/step_compose.php:31
 #: templates/CustomerMessages/add_bulk/step_done.php:36
 #: templates/CustomerMessages/add_bulk/step_filters.php:27
@@ -5023,93 +5027,93 @@ msgstr "Odstranit smlouvu"
 msgid "List Customer Messages"
 msgstr "Seznam zpráv pro zákazníky"
 
-#: templates/Contracts/view.php:55 templates/Customers/view.php:80
+#: templates/Contracts/view.php:60 templates/Customers/view.php:80
 #: templates/Overviews/index.php:125 templates/ServiceOverrides/add.php:17
 #: templates/ServiceOverrides/edit.php:36 templates/ServiceOverrides/view.php:37
 msgid "List Service Overrides"
 msgstr "Seznam dočasných úprav služby"
 
-#: templates/Contracts/view.php:60 templates/Customers/view.php:85
+#: templates/Contracts/view.php:65 templates/Customers/view.php:85
 #: templates/HistoricalConnections/view.php:13 templates/Overviews/index.php:160
 msgid "List Historical Connections"
 msgstr "Seznam historických připojení"
 
-#: templates/Contracts/view.php:84 templates/CustomerLabels/index.php:21
+#: templates/Contracts/view.php:89 templates/CustomerLabels/index.php:21
 #: templates/CustomerLabels/view.php:30 templates/Customers/view.php:109
 msgid "New Customer Label"
 msgstr "Nový štítek zákazníka"
 
-#: templates/Contracts/view.php:91 templates/Customers/view.php:116
+#: templates/Contracts/view.php:96 templates/Customers/view.php:116
 msgid "Sections"
 msgstr "Sekce"
 
-#: templates/Contracts/view.php:108 templates/Customers/view.php:143
+#: templates/Contracts/view.php:113 templates/Customers/view.php:143
 msgid "Equipments"
 msgstr "Zařízení"
 
-#: templates/Contracts/view.php:118 templates/Contracts/view.php:406
+#: templates/Contracts/view.php:123 templates/Contracts/view.php:411
 #: templates/Customers/view.php:153
 msgid "RADIUS Accounts"
 msgstr "Účty RADIUS"
 
-#: templates/Contracts/view.php:123 templates/Contracts/view.php:442
+#: templates/Contracts/view.php:128 templates/Contracts/view.php:447
 #: templates/Customers/view.php:158 templates/Customers/view.php:848
 msgid "Invoices"
 msgstr "Faktury"
 
-#: templates/Contracts/view.php:146
+#: templates/Contracts/view.php:151
 msgid "What does not add up on this contract could not be loaded."
 msgstr "Nesrovnalosti na této smlouvě se nepodařilo načíst."
 
-#: templates/Contracts/view.php:165
+#: templates/Contracts/view.php:170
 msgid "Access Description"
 msgstr "Popis přístupu"
 
-#: templates/Contracts/view.php:193
+#: templates/Contracts/view.php:198
 msgid "Terms of the Services"
 msgstr "Ujednání pro tyto služby"
 
-#: templates/Contracts/view.php:201
+#: templates/Contracts/view.php:206
 msgid "Individual Terms"
 msgstr "Individuální ujednání"
 
-#: templates/Contracts/view.php:233
+#: templates/Contracts/view.php:238
 msgid "Terminate Related Billings"
 msgstr "Ukončit související fakturace"
 
-#: templates/Contracts/view.php:236
+#: templates/Contracts/view.php:241
 msgid "Are you sure you want to terminate related billings for contract # {0}?"
 msgstr "Opravdu chcete ukončit související fakturace pro smlouvu č. {0}?"
 
-#: templates/Contracts/view.php:276
+#: templates/Contracts/view.php:281
 msgid "Set Dates Automatically"
 msgstr "Automaticky nastavit datumy"
 
-#: templates/Contracts/view.php:279
+#: templates/Contracts/view.php:284
 msgid ""
 "Are you sure you want to set dates for related borrowed equipments for contract # {0}?"
 msgstr ""
 "Opravdu chcete nastavit datumy pro související zapůjčená zařízení pro smlouvu č. {0}?"
 
-#: templates/Contracts/view.php:299 templates/Customers/view.php:709
+#: templates/Contracts/view.php:304 templates/Customers/view.php:709
 #: templates/SoldEquipments/index.php:21 templates/SoldEquipments/view.php:30
 msgid "New Sold Equipment"
 msgstr "Nové prodané zařízení"
 
-#: templates/Contracts/view.php:303 templates/SoldEquipments/index.php:25
+#: templates/Contracts/view.php:308 templates/SoldEquipments/index.php:25
 msgid "Sold Equipments"
 msgstr "Prodaná zařízení"
 
-#: templates/Contracts/view.php:316 templates/Customers/view.php:725
+#: templates/Contracts/view.php:321 templates/Customers/view.php:725
 #: templates/IpAddresses/index.php:20 templates/IpAddresses/view.php:22
 msgid "New IP Address"
 msgstr "Nová IP adresa"
 
-#: templates/Contracts/view.php:324 templates/Customers/view.php:730
+#: templates/Contracts/view.php:329 templates/Customers/view.php:730
 msgid "New IP Address From Range"
 msgstr "Nová IP adresa z rozsahu"
 
-#: templates/Contracts/view.php:335 templates/Contracts/view.php:358
+#: templates/Contracts/view.php:340 templates/Contracts/view.php:363
 #: templates/Customers/view.php:742 templates/Customers/view.php:767
 #: templates/element/Contracts/Billings.php:102
 #: templates/element/Contracts/BorrowedEquipments.php:85
@@ -5117,59 +5121,59 @@ msgstr "Nová IP adresa z rozsahu"
 msgid "Show historical records"
 msgstr "Zobrazit historické záznamy"
 
-#: templates/Contracts/view.php:347 templates/Customers/view.php:754
+#: templates/Contracts/view.php:352 templates/Customers/view.php:754
 #: templates/IpNetworks/index.php:21 templates/IpNetworks/view.php:27
 msgid "New IP Network"
 msgstr "Nová IP síť"
 
-#: templates/Contracts/view.php:351 templates/IpNetworks/index.php:25
+#: templates/Contracts/view.php:356 templates/IpNetworks/index.php:25
 msgid "IP Networks"
 msgstr "IP sítě"
 
-#: templates/Contracts/view.php:373 templates/Customers/view.php:781
+#: templates/Contracts/view.php:378 templates/Customers/view.php:781
 #: templates/RemovedIpAddresses/index.php:21 templates/RemovedIpAddresses/view.php:30
 msgid "New Removed IP Address"
 msgstr "Nová odstraněná IP adresa"
 
-#: templates/Contracts/view.php:377 templates/RemovedIpAddresses/index.php:25
+#: templates/Contracts/view.php:382 templates/RemovedIpAddresses/index.php:25
 msgid "Removed IP Addresses"
 msgstr "Odebrané IP adresy"
 
-#: templates/Contracts/view.php:386 templates/Customers/view.php:795
+#: templates/Contracts/view.php:391 templates/Customers/view.php:795
 #: templates/RemovedIpNetworks/index.php:21 templates/RemovedIpNetworks/view.php:30
 msgid "New Removed IP Network"
 msgstr "Nová odebraná IP síť"
 
-#: templates/Contracts/view.php:390 templates/RemovedIpNetworks/index.php:25
+#: templates/Contracts/view.php:395 templates/RemovedIpNetworks/index.php:25
 msgid "Removed IP Networks"
 msgstr "Odebrané IP sítě"
 
-#: templates/Contracts/view.php:402 templates/Customers/view.php:810
+#: templates/Contracts/view.php:407 templates/Customers/view.php:810
 msgid "New RADIUS Account"
 msgstr "Nový účet RADIUS"
 
-#: templates/Contracts/view.php:417 templates/Customers/view.php:823
+#: templates/Contracts/view.php:422 templates/Customers/view.php:823
 msgid "Unblock Debtor"
 msgstr "Odblokovat dlužníka"
 
-#: templates/Contracts/view.php:426 templates/Customers/view.php:832
+#: templates/Contracts/view.php:431 templates/Customers/view.php:832
 msgid "Are you sure you want to unblock # {0}?"
 msgstr "Opravdu chcete odblokovat # {0}?"
 
-#: templates/Contracts/view.php:430 templates/Customers/view.php:836
+#: templates/Contracts/view.php:435 templates/Customers/view.php:836
 msgid "Block Debtor"
 msgstr "Blokovat dlužníka"
 
-#: templates/Contracts/view.php:439 templates/Customers/view.php:845
+#: templates/Contracts/view.php:444 templates/Customers/view.php:845
 msgid "Are you sure you want to block # {0}?"
 msgstr "Opravdu chcete blokovat # {0}?"
 
-#: templates/Contracts/view.php:451 templates/Customers/view.php:857
+#: templates/Contracts/view.php:456 templates/Customers/view.php:857
 #: templates/Tasks/index.php:89 templates/Tasks/view.php:18
 msgid "New Task"
 msgstr "Nový úkol"
 
-#: templates/Contracts/view.php:461
+#: templates/Contracts/view.php:466
 msgid "Other Customer Tasks"
 msgstr "Další úkoly zákazníka"
 
@@ -5660,12 +5664,13 @@ msgstr "Pro tohoto zákazníka zatím není žádný návrh."
 
 #: templates/Customers/print.php:120
 msgid ""
-"What this form has printed before. A paper is drawn once, so these are the ones the "
-"customer was given - fetching one back is quicker than printing it again, and it is the "
-"same file either way."
+"What this form has printed before. A document is generated once, so these are the ones "
+"the customer was given - fetching one back is quicker than printing it again, and it is "
+"the same file either way."
 msgstr ""
-"Co tento formulář už vytiskl. Papír se vyrobí jednou, takže to jsou ty, které zákazník "
-"dostal. Stáhnout je zpátky je rychlejší než tisknout znovu a je to stejně tentýž soubor."
+"Co tento formulář už vytiskl. Dokument se vygeneruje jednou, takže to jsou ty, které "
+"zákazník dostal. Stáhnout je zpátky je rychlejší než tisknout znovu a je to stejně "
+"tentýž soubor."
 
 #: templates/Customers/view.php:46
 msgid "Delete Customer"
@@ -6211,10 +6216,6 @@ msgstr "Související se smlouvou"
 #: templates/Overviews/index.php:105 templates/Overviews/overview_of_contracts.php:19
 msgid "Overview of Contracts"
 msgstr "Přehled smluv"
-
-#: templates/Overviews/index.php:115
-msgid "List Contract Proposals"
-msgstr "Seznam návrhů ke smlouvám"
 
 #: templates/Overviews/index.php:135 templates/SoldEquipments/add.php:15
 #: templates/SoldEquipments/edit.php:23 templates/SoldEquipments/view.php:25
@@ -6977,8 +6978,8 @@ msgid "Task No."
 msgstr "Úkol č."
 
 #: templates/cell/Documents/display.php:87
-msgid "Nothing has been drawn up yet."
-msgstr "Zatím není nic vyrobeno."
+msgid "Nothing has been generated yet."
+msgstr "Zatím není nic vygenerováno."
 
 #: templates/cell/Documents/display.php:87
 msgid "Nothing has come back yet."
@@ -6988,33 +6989,33 @@ msgstr "Zatím nic nepřišlo zpátky."
 msgid "Proposal Actions"
 msgstr "Akce návrhu"
 
-#: templates/cell/Documents/display.php:149
+#: templates/cell/Documents/display.php:148
 msgid "Open"
 msgstr "Otevřít"
 
-#: templates/cell/Documents/display.php:159
+#: templates/cell/Documents/display.php:158
 msgid "Download"
 msgstr "Stáhnout"
 
-#: templates/cell/Documents/display.php:169
+#: templates/cell/Documents/display.php:168
 msgid "Up"
 msgstr "Nahoru"
 
-#: templates/cell/Documents/display.php:182
+#: templates/cell/Documents/display.php:181
 msgid "Down"
 msgstr "Dolů"
 
-#: templates/cell/Documents/display.php:195
+#: templates/cell/Documents/display.php:194
 msgid "Remove"
 msgstr "Odebrat"
 
-#: templates/cell/Documents/display.php:204
+#: templates/cell/Documents/display.php:203
 msgid ""
-"Remove this paper? The document stops being frozen and the next request for it draws it "
+"Remove this document? It stops being frozen and the next request for it generates it "
 "afresh."
-msgstr "Odebrat tento papír? Dokument se rozmrazí a při dalším vyžádání se vyrobí znovu."
+msgstr "Odebrat tento dokument? Rozmrazí se a při dalším vyžádání se vygeneruje znovu."
 
-#: templates/cell/Documents/display.php:208
+#: templates/cell/Documents/display.php:207
 msgid "Remove this page?"
 msgstr "Odebrat tuto stránku?"
 
@@ -7340,7 +7341,7 @@ msgstr "Jde o smlouvu na dobu určitou a závazek běží do jejího konce."
 #: templates/element/ContractProposals/heading.php:17
 #: templates/element/CustomerProposals/heading.php:12
 msgid "{0} from {1}"
-msgstr "{0} z {1}"
+msgstr "{0} od {1}"
 
 #: templates/element/ContractProposals/planned_changes.php:24
 msgid "Agenda"
@@ -7766,6 +7767,65 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:290
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Being drawn up"
+#~ msgstr "Připravuje se"
+
+#~ msgid "Drawn up, unsigned"
+#~ msgstr "Vyrobeno, nepodepsané"
+
+#~ msgid "Drawn up, signed by us"
+#~ msgstr "Vyrobeno, podepsané námi"
+
+#~ msgid "Drawn Up Documents"
+#~ msgstr "Vyrobené dokumenty"
+
+#~ msgid ""
+#~ "A paper is drawn once and handed back afterwards, so what is here is what the "
+#~ "customer was given. Letting go of one lets the document be drawn again."
+#~ msgstr ""
+#~ "Papír se vyrobí jednou a potom se už jen vydává, takže tady je to, co zákazník "
+#~ "dostal. Odebráním se dokument rozmrazí a příště se vyrobí znovu."
+
+#~ msgid ""
+#~ "What we drew up. A paper is drawn once and handed back afterwards, so these are the "
+#~ "very files the customer was given."
+#~ msgstr ""
+#~ "Co jsme vyrobili. Papír se vyrobí jednou a potom se už jen vydává, takže to jsou "
+#~ "přesně ty soubory, které zákazník dostal."
+
+#~ msgid "Papers Already Drawn Up"
+#~ msgstr "Už vyrobené papíry"
+
+#~ msgid ""
+#~ "What has been printed from this contract before. A paper is drawn once, so these are "
+#~ "the ones the customer was given - fetching one back is quicker than printing it "
+#~ "again, and it is the same file either way."
+#~ msgstr ""
+#~ "Co se z této smlouvy už tisklo. Papír se vyrobí jednou, takže to jsou ty, které "
+#~ "zákazník dostal. Stáhnout je zpátky je rychlejší než tisknout znovu a je to stejně "
+#~ "tentýž soubor."
+
+#~ msgid ""
+#~ "What this form has printed before. A paper is drawn once, so these are the ones the "
+#~ "customer was given - fetching one back is quicker than printing it again, and it is "
+#~ "the same file either way."
+#~ msgstr ""
+#~ "Co tento formulář už vytiskl. Papír se vyrobí jednou, takže to jsou ty, které "
+#~ "zákazník dostal. Stáhnout je zpátky je rychlejší než tisknout znovu a je to stejně "
+#~ "tentýž soubor."
+
+#~ msgid "Nothing has been drawn up yet."
+#~ msgstr "Zatím není nic vyrobeno."
+
+#~ msgid ""
+#~ "Remove this paper? The document stops being frozen and the next request for it draws "
+#~ "it afresh."
+#~ msgstr ""
+#~ "Odebrat tento papír? Dokument se rozmrazí a při dalším vyžádání se vyrobí znovu."
+
+#~ msgid "Sent Documents"
+#~ msgstr "Odeslané dokumenty"
 
 #~ msgid ""
 #~ "The customer signed and the signed papers have not been filed. Nothing is held up by "

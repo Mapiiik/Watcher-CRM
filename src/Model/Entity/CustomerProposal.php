@@ -81,7 +81,7 @@ class CustomerProposal extends AppEntity
             $this->hasBeenRevoked() => __('Revoked'),
             $this->hasBeenConcluded() => __('Signed'),
             $this->hasBeenSent() => __('Sent'),
-            default => __('Being drawn up'),
+            default => __('Being prepared'),
         };
     }
 }

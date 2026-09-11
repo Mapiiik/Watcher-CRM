@@ -12,7 +12,7 @@
  *
  * @var \App\View\AppView $this
  * @var list<array<string, mixed>> $rows
- * @var bool $ours Whether this is the side we drew up.
+ * @var bool $generatedByUs Whether this is the side we generated.
  * @var bool $showContract Whether the rows say which contract they belong to.
  * @var bool $showProposal Whether the rows say which round they belong to.
  * @var bool $manage Whether the pages may be reordered and let go of from here.
@@ -84,7 +84,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
 };
 ?>
 <?php if ($rows === []) : ?>
-    <p><?= $ours ? __('Nothing has been drawn up yet.') : __('Nothing has come back yet.') ?></p>
+    <p><?= $generatedByUs ? __('Nothing has been generated yet.') : __('Nothing has come back yet.') ?></p>
 <?php else : ?>
 <div class="table-responsive">
     <table>
@@ -199,10 +199,10 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                                 $round['id'],
                                 $row['link']->id,
                             ],
-                            ['confirm' => $ours
+                            ['confirm' => $generatedByUs
                                 ? __(
-                                    'Remove this paper? The document stops being frozen and the'
-                                    . ' next request for it draws it afresh.',
+                                    'Remove this document? It stops being frozen and the next'
+                                    . ' request for it generates it afresh.',
                                 )
                                 : __('Remove this page?')],
                         ) ?>

@@ -146,7 +146,7 @@ class ContractProposal extends AppEntity
             $this->hasBeenRevoked() => __('Revoked'),
             $this->hasBeenConcluded() => __('Waiting to be carried over'),
             $this->hasBeenSent() => __('Sent'),
-            default => __('Being drawn up'),
+            default => __('Being prepared'),
         };
     }
 

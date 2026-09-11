@@ -39,12 +39,12 @@ class DocumentsCell extends Cell
      *
      * @var list<string>
      */
-    protected array $_validCellOptions = ['ours', 'manage', 'withContracts'];
+    protected array $_validCellOptions = ['generatedByUs', 'manage', 'withContracts'];
 
     /**
-     * Whether this is the side we drew up rather than the scans that came back.
+     * Whether this is the side we generated rather than the scans that came back.
      */
-    protected bool $ours = false;
+    protected bool $generatedByUs = false;
 
     /**
      * Whether the pages may be reordered and let go of from here.
@@ -71,7 +71,7 @@ class DocumentsCell extends Cell
         }
 
         $this->set('rows', $id === null ? [] : $this->rows($of, $id));
-        $this->set('ours', $this->ours);
+        $this->set('generatedByUs', $this->generatedByUs);
         $this->set('manage', $this->manage);
         // Neither column says anything the page it is on has not already said.
         $this->set('showContract', $of === 'customer' && $this->withContracts);
@@ -142,7 +142,7 @@ class DocumentsCell extends Cell
         foreach ($filed[$round['id']] ?? [] as $document_type => $byVariant) {
             foreach ($byVariant as $variant => $links) {
                 $case = DocumentVariant::tryFrom((string)$variant);
-                if ($case === null || $case->isDrawnUpByUs() !== $this->ours) {
+                if ($case === null || $case->isGeneratedByUs() !== $this->generatedByUs) {
                     continue;
                 }
 
