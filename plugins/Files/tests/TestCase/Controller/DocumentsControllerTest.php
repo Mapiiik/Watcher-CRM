@@ -96,7 +96,7 @@ class DocumentsControllerTest extends TestCase
     {
         $this->file('a contract', 'IMG_001.jpg');
 
-        $this->get('/files');
+        $this->get('/files/documents');
 
         $this->assertResponseOk();
         $this->assertResponseContains('IMG_001.jpg');
@@ -117,7 +117,7 @@ class DocumentsControllerTest extends TestCase
         ]);
         $this->file('a contract', 'IMG_001.jpg');
 
-        $this->get('/files');
+        $this->get('/files/documents');
 
         $this->assertResponseOk();
         $this->assertResponseContains('/contract-proposals/view/' . self::RECORD);
@@ -135,7 +135,7 @@ class DocumentsControllerTest extends TestCase
         Configure::write('Files.records', []);
         $this->file('a contract', 'IMG_001.jpg');
 
-        $this->get('/files');
+        $this->get('/files/documents');
 
         $this->assertResponseOk();
         $this->assertResponseContains('ContractProposals');

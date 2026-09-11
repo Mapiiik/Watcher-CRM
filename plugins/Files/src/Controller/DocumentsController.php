@@ -13,8 +13,7 @@ use Throwable;
 /**
  * Documents Controller
  *
- * What is filed against what. This is the question somebody arrives at `/files` with, which is
- * why it is the one that opens.
+ * What is filed against what, which is the question somebody comes here with.
  */
 class DocumentsController extends AppController
 {

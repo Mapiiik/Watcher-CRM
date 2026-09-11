@@ -35,7 +35,8 @@ class FilesPlugin extends BasePlugin
      *
      * The controllers are named for what they answer rather than for the tables they read, so
      * that the plugin and its main table sharing a name does not turn into a path that says it
-     * twice. `/files` opens the documents, because that is the question somebody arrives with.
+     * twice. `/files` itself is left alone: the plugin's assets are linked into the webroot under
+     * that very name, and the web server answers a path of its own before anything reaches here.
      *
      * @param \Cake\Routing\RouteBuilder $routes The route builder to update.
      * @return void
@@ -47,8 +48,6 @@ class FilesPlugin extends BasePlugin
             'Files',
             ['path' => '/files'],
             function (RouteBuilder $builder): void {
-                $builder->connect('/', ['controller' => 'Documents', 'action' => 'index']);
-
                 $builder->fallbacks();
             },
         );
