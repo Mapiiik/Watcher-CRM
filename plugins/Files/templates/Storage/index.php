@@ -37,7 +37,7 @@
     <?= $this->AuthLink->link(
         __d('files', 'Documents'),
         ['controller' => 'Documents', 'action' => 'index'],
-        ['class' => 'button float-right win-link'],
+        ['class' => 'button float-right'],
     ) ?>
     <h3><?= __d('files', 'Storage') ?></h3>
     <p><?= __d(

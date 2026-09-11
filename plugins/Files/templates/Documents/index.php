@@ -47,7 +47,7 @@
     <?= $this->AuthLink->link(
         __d('files', 'Storage'),
         ['controller' => 'Storage', 'action' => 'index'],
-        ['class' => 'button float-right win-link'],
+        ['class' => 'button float-right'],
     ) ?>
     <h3><?= __d('files', 'Documents') ?></h3>
     <p><?= __d('files', 'Every file the records have, and what each of them is filed as.') ?></p>
