@@ -42,6 +42,11 @@ $this->Html->css('problems', ['block' => true]);
             ) ?>
             <br>
             <?= $this->AuthLink->link(
+                __('List Contract Proposals'),
+                ['controller' => 'ContractProposals', 'action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
                 __('List Customer Messages'),
                 ['controller' => 'CustomerMessages', 'action' => 'index'],
                 ['class' => 'side-nav-item'],
