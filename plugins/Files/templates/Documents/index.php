@@ -62,7 +62,7 @@
                     <th><?= $this->Paginator->sort('position', __d('files', 'Position')) ?></th>
                     <th><?= $this->Paginator->sort('name', __d('files', 'Name')) ?></th>
                     <th><?= __d('files', 'Size') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions"><?= __d('files', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -91,7 +91,7 @@
                             ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
-                            __('Delete'),
+                            __d('files', 'Delete'),
                             ['action' => 'delete', $document->id],
                             ['confirm' => __d(
                                 'files',

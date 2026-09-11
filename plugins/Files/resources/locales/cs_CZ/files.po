@@ -1,0 +1,273 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-09-11 02:09+0200\n"
+"PO-Revision-Date: 2026-09-11 02:09+0200\n"
+"Last-Translator: Martin Patočka <mapik@mapik.net>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:85
+msgid ""
+"Checks what is on the shelf against what is on file, and says what does not "
+"match."
+msgstr ""
+"Porovná, co leží na polici, s tím, co je evidované, a řekne, co nesedí."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:91
+msgid "Throw away the bytes nobody has a row for. Nothing else is touched."
+msgstr ""
+"Zahodit bajty, ke kterým nikdo nemá řádek. Ničeho jiného se to nedotkne."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:135
+msgid "{0} rows, {1} of them on the shelf."
+msgstr "Řádků {0}, z toho {1} na polici."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:137
+msgid "Rows whose bytes are gone"
+msgstr "Řádky, jejichž bajty zmizely"
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:142
+msgid "Rows whose bytes are not the size they say"
+msgstr "Řádky, jejichž bajty nemají udanou velikost"
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:147
+msgid "Bytes nobody has a row for"
+msgstr "Bajty, ke kterým nikdo nemá řádek"
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:150
+msgid ""
+"{0} rows nothing points at. They are safe to let go of one at a time from "
+"the storage page."
+msgstr ""
+"Na {0} řádků nic neukazuje. Jde je po jednom pustit ze stránky úložiště."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:162
+msgid "{0} thrown away."
+msgstr "Zahozeno: {0}."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:168
+msgid "The shelf and the records agree."
+msgstr "Police a evidence se shodují."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:169
+msgid "Nothing is missing. Run this again with --fix to throw the rest away."
+msgstr "Nic nechybí. Se zbytkem se vypořádá opakované spuštění s --fix."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:191
+msgid "The store no longer holds everything the records point at."
+msgstr "Úložiště už nedrží všechno, na co evidence ukazuje."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:193
+msgid "Rows whose bytes are gone: {0}"
+msgstr "Řádky, jejichž bajty zmizely: {0}"
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:194
+msgid "Rows whose bytes are not the size they say: {0}"
+msgstr "Řádky, jejichž bajty nemají udanou velikost: {0}"
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:196
+msgid ""
+"Run `bin/cake check_files` to see which. What is missing has to come back "
+"from a backup - neither can be put right from there."
+msgstr ""
+"Které to jsou, ukáže `bin/cake check_files`. Co chybí, se musí vrátit ze "
+"zálohy, odtamtud to spravit nejde."
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:204
+msgid "File store check failed"
+msgstr "Kontrola úložiště souborů selhala"
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:253
+msgid "  ... and {0} more."
+msgstr "  ... a dalších {0}."
+
+#: plugins/Files/src/Controller/DocumentsController.php:136
+msgid "The content of this document is not on the shelf."
+msgstr "Obsah tohoto dokumentu není na polici."
+
+#: plugins/Files/src/Controller/DocumentsController.php:171
+msgid "The document has been removed."
+msgstr "Dokument byl odebrán."
+
+#: plugins/Files/src/Controller/DocumentsController.php:173
+msgid "The document could not be removed: {0}"
+msgstr "Dokument se nepodařilo odebrat: {0}"
+
+#: plugins/Files/src/Model/Table/FilesTable.php:86
+msgid "The hash of the content is written in hexadecimal."
+msgstr "Otisk obsahu je zapsaný šestnáctkově."
+
+#: plugins/Files/templates/Documents/index.php:14
+#: plugins/Files/templates/Documents/index.php:59
+#: plugins/Files/templates/Storage/view.php:85
+msgid "Model"
+msgstr "Model"
+
+#: plugins/Files/templates/Documents/index.php:22
+#: plugins/Files/templates/Documents/index.php:60
+#: plugins/Files/templates/Storage/view.php:87
+msgid "Document Type"
+msgstr "Typ dokumentu"
+
+#: plugins/Files/templates/Documents/index.php:30
+#: plugins/Files/templates/Documents/index.php:61
+#: plugins/Files/templates/Storage/view.php:88
+msgid "Variant"
+msgstr "Varianta"
+
+#: plugins/Files/templates/Documents/index.php:38
+#: plugins/Files/templates/Documents/index.php:63
+#: plugins/Files/templates/Storage/view.php:90
+msgid "Name"
+msgstr "Název"
+
+#: plugins/Files/templates/Documents/index.php:48
+#: plugins/Files/templates/Storage/index.php:42
+#: plugins/Files/templates/Storage/view.php:13
+msgid "Storage"
+msgstr "Úložiště"
+
+#: plugins/Files/templates/Documents/index.php:52
+#: plugins/Files/templates/Storage/index.php:38
+#: plugins/Files/templates/Storage/view.php:18
+msgid "Documents"
+msgstr "Dokumenty"
+
+#: plugins/Files/templates/Documents/index.php:53
+msgid "Every file the records have, and what each of them is filed as."
+msgstr "Každý soubor, který evidence má, a jako co je založený."
+
+#: plugins/Files/templates/Documents/index.php:58
+#: plugins/Files/templates/Storage/index.php:52
+#: plugins/Files/templates/Storage/view.php:58
+msgid "Created"
+msgstr "Vytvořeno"
+
+#: plugins/Files/templates/Documents/index.php:62
+#: plugins/Files/templates/Storage/view.php:89
+msgid "Position"
+msgstr "Pozice"
+
+#: plugins/Files/templates/Documents/index.php:64
+#: plugins/Files/templates/Storage/index.php:55
+#: plugins/Files/templates/Storage/view.php:50
+msgid "Size"
+msgstr "Velikost"
+
+#: plugins/Files/templates/Documents/index.php:65
+#: plugins/Files/templates/Storage/index.php:57
+#: plugins/Files/templates/Storage/view.php:11
+#: plugins/Files/templates/Storage/view.php:91
+msgid "Actions"
+msgstr "Akce"
+
+#: plugins/Files/templates/Documents/index.php:80
+#: plugins/Files/templates/Storage/view.php:105
+msgid "Open"
+msgstr "Otevřít"
+
+#: plugins/Files/templates/Documents/index.php:85
+#: plugins/Files/templates/Storage/view.php:110
+msgid "Download"
+msgstr "Stáhnout"
+
+#: plugins/Files/templates/Documents/index.php:89
+msgid "Content"
+msgstr "Obsah"
+
+#: plugins/Files/templates/Documents/index.php:94
+msgid "Delete"
+msgstr "Odstranit"
+
+#: plugins/Files/templates/Documents/index.php:96
+msgid ""
+"Remove this document from the record? The content itself goes only if "
+"nothing else wants it."
+msgstr ""
+"Odebrat tenhle dokument ze záznamu? Samotný obsah zmizí, jen když ho nikdo "
+"jiný nechce."
+
+#: plugins/Files/templates/Storage/index.php:13
+#: plugins/Files/templates/Storage/index.php:54
+#: plugins/Files/templates/Storage/view.php:46
+msgid "MIME Type"
+msgstr "MIME typ"
+
+#: plugins/Files/templates/Storage/index.php:21
+msgid "Hash Begins With"
+msgstr "Otisk začíná na"
+
+#: plugins/Files/templates/Storage/index.php:28
+msgid "Nothing points at it"
+msgstr "Nic na něj neukazuje"
+
+#: plugins/Files/templates/Storage/index.php:43
+msgid ""
+"Each piece of content once, however many records point at it. What nothing "
+"points at any more is here too - that is the state a torn backup leaves "
+"behind, and the harmless one."
+msgstr ""
+"Každý obsah jednou, ať na něj ukazuje kolik chce záznamů. Je tu i to, na co "
+"už neukazuje nic, protože přesně to po sobě nechá přetržená záloha, a je to "
+"ta neškodná půlka."
+
+#: plugins/Files/templates/Storage/index.php:53
+msgid "Hash"
+msgstr "Otisk"
+
+#: plugins/Files/templates/Storage/index.php:56
+#: plugins/Files/templates/Storage/view.php:68
+msgid "File Links"
+msgstr "Vazby souboru"
+
+#: plugins/Files/templates/Storage/index.php:70
+msgid "nothing"
+msgstr "nic"
+
+#: plugins/Files/templates/Storage/index.php:74
+msgid "View"
+msgstr "Zobrazit"
+
+#: plugins/Files/templates/Storage/index.php:84
+msgid "{0} on the shelf, {1} in all, {2} of them pointed at by nothing."
+msgstr "{0} na polici, {1} celkem, na {2} z nich neukazuje nic."
+
+#: plugins/Files/templates/Storage/view.php:31
+msgid ""
+"The bytes this row stands for are not on the shelf. Nothing that points at "
+"it can be handed over until they are put back."
+msgstr ""
+"Bajty, které tenhle řádek zastupuje, nejsou na polici. Dokud se nevrátí, "
+"nejde vydat nic, co na ně ukazuje."
+
+#: plugins/Files/templates/Storage/view.php:42
+msgid "Hash Type"
+msgstr "Typ otisku"
+
+#: plugins/Files/templates/Storage/view.php:54
+msgid "Path"
+msgstr "Cesta"
+
+#: plugins/Files/templates/Storage/view.php:62
+msgid "Created By"
+msgstr "Vytvořil"
+
+#: plugins/Files/templates/Storage/view.php:72
+msgid ""
+"Nothing points at this content. It is what a backup taken while something "
+"was being written leaves behind, and it is safe to throw away."
+msgstr ""
+"Na tenhle obsah nic neukazuje. Nechá ho po sobě záloha pořízená ve chvíli, "
+"kdy se něco zapisovalo, a jde bez obav zahodit."
+
+#: plugins/Files/templates/Storage/view.php:86
+msgid "Foreign Key"
+msgstr "Cizí klíč"

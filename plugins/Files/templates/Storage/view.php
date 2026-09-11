@@ -8,7 +8,7 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('files', 'Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __d('files', 'Storage'),
                 ['action' => 'index'],
@@ -88,7 +88,7 @@
                                     <th><?= __d('files', 'Variant') ?></th>
                                     <th><?= __d('files', 'Position') ?></th>
                                     <th><?= __d('files', 'Name') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
+                                    <th class="actions"><?= __d('files', 'Actions') ?></th>
                                 </tr>
                             </thead>
                             <tbody>

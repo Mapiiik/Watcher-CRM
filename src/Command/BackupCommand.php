@@ -110,14 +110,11 @@ class BackupCommand extends Command
             // it is being backed up and is not is the worst way round of all.
             ErrorReport::send(
                 __('Backup failed'),
-                __(
-                    <<<'TEXT'
-                    The backup did not run, and nothing was left behind.
-
-                    Error: {0}
-                    TEXT,
-                    $e->getMessage(),
-                ),
+                implode("\n", [
+                    __('The backup did not run, and nothing was left behind.'),
+                    '',
+                    __('Error: {0}', $e->getMessage()),
+                ]),
             );
 
             return static::CODE_ERROR;

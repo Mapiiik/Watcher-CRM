@@ -1,0 +1,245 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-09-11 02:09+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:85
+msgid "Checks what is on the shelf against what is on file, and says what does not match."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:91
+msgid "Throw away the bytes nobody has a row for. Nothing else is touched."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:135
+msgid "{0} rows, {1} of them on the shelf."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:137
+msgid "Rows whose bytes are gone"
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:142
+msgid "Rows whose bytes are not the size they say"
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:147
+msgid "Bytes nobody has a row for"
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:150
+msgid "{0} rows nothing points at. They are safe to let go of one at a time from the storage page."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:162
+msgid "{0} thrown away."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:168
+msgid "The shelf and the records agree."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:169
+msgid "Nothing is missing. Run this again with --fix to throw the rest away."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:191
+msgid "The store no longer holds everything the records point at."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:193
+msgid "Rows whose bytes are gone: {0}"
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:194
+msgid "Rows whose bytes are not the size they say: {0}"
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:196
+msgid "Run `bin/cake check_files` to see which. What is missing has to come back from a backup - neither can be put right from there."
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:204
+msgid "File store check failed"
+msgstr ""
+
+#: ./plugins/Files/src/Command/CheckFilesCommand.php:253
+msgid "  ... and {0} more."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/DocumentsController.php:136
+msgid "The content of this document is not on the shelf."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/DocumentsController.php:171
+msgid "The document has been removed."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/DocumentsController.php:173
+msgid "The document could not be removed: {0}"
+msgstr ""
+
+#: ./plugins/Files/src/Model/Table/FilesTable.php:86
+msgid "The hash of the content is written in hexadecimal."
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:14
+#: ./plugins/Files/templates/Documents/index.php:59
+#: ./plugins/Files/templates/Storage/view.php:85
+msgid "Model"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:22
+#: ./plugins/Files/templates/Documents/index.php:60
+#: ./plugins/Files/templates/Storage/view.php:87
+msgid "Document Type"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:30
+#: ./plugins/Files/templates/Documents/index.php:61
+#: ./plugins/Files/templates/Storage/view.php:88
+msgid "Variant"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:38
+#: ./plugins/Files/templates/Documents/index.php:63
+#: ./plugins/Files/templates/Storage/view.php:90
+msgid "Name"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:48
+#: ./plugins/Files/templates/Storage/index.php:42
+#: ./plugins/Files/templates/Storage/view.php:13
+msgid "Storage"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:52
+#: ./plugins/Files/templates/Storage/index.php:38
+#: ./plugins/Files/templates/Storage/view.php:18
+msgid "Documents"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:53
+msgid "Every file the records have, and what each of them is filed as."
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:58
+#: ./plugins/Files/templates/Storage/index.php:52
+#: ./plugins/Files/templates/Storage/view.php:58
+msgid "Created"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:62
+#: ./plugins/Files/templates/Storage/view.php:89
+msgid "Position"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:64
+#: ./plugins/Files/templates/Storage/index.php:55
+#: ./plugins/Files/templates/Storage/view.php:50
+msgid "Size"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:65
+#: ./plugins/Files/templates/Storage/index.php:57
+#: ./plugins/Files/templates/Storage/view.php:11
+#: ./plugins/Files/templates/Storage/view.php:91
+msgid "Actions"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:80
+#: ./plugins/Files/templates/Storage/view.php:105
+msgid "Open"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:85
+#: ./plugins/Files/templates/Storage/view.php:110
+msgid "Download"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:89
+msgid "Content"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:94
+msgid "Delete"
+msgstr ""
+
+#: ./plugins/Files/templates/Documents/index.php:96
+msgid "Remove this document from the record? The content itself goes only if nothing else wants it."
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:13
+#: ./plugins/Files/templates/Storage/index.php:54
+#: ./plugins/Files/templates/Storage/view.php:46
+msgid "MIME Type"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:21
+msgid "Hash Begins With"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:28
+msgid "Nothing points at it"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:43
+msgid "Each piece of content once, however many records point at it. What nothing points at any more is here too - that is the state a torn backup leaves behind, and the harmless one."
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:53
+msgid "Hash"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:56
+#: ./plugins/Files/templates/Storage/view.php:68
+msgid "File Links"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:70
+msgid "nothing"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:74
+msgid "View"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/index.php:84
+msgid "{0} on the shelf, {1} in all, {2} of them pointed at by nothing."
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/view.php:31
+msgid "The bytes this row stands for are not on the shelf. Nothing that points at it can be handed over until they are put back."
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/view.php:42
+msgid "Hash Type"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/view.php:54
+msgid "Path"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/view.php:62
+msgid "Created By"
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/view.php:72
+msgid "Nothing points at this content. It is what a backup taken while something was being written leaves behind, and it is safe to throw away."
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/view.php:86
+msgid "Foreign Key"
+msgstr ""
+

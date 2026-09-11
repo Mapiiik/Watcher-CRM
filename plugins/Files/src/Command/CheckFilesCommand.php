@@ -185,20 +185,20 @@ class CheckFilesCommand extends Command
      */
     private function tell(int $gone, int $short): void
     {
-        $body = __d(
-            'files',
-            <<<'TEXT'
-            The store no longer holds everything the records point at.
-
-            Rows whose bytes are gone: {0}
-            Rows whose bytes are not the size they say: {1}
-
-            Run `bin/cake check_files` to see which. What is missing has to come back
-            from a backup - neither can be put right from there.
-            TEXT,
-            $gone,
-            $short,
-        );
+        // One sentence to a line, because a heredoc handed to __d() is not something the
+        // extractor can read.
+        $body = implode("\n", [
+            __d('files', 'The store no longer holds everything the records point at.'),
+            '',
+            __d('files', 'Rows whose bytes are gone: {0}', $gone),
+            __d('files', 'Rows whose bytes are not the size they say: {0}', $short),
+            '',
+            __d(
+                'files',
+                'Run `bin/cake check_files` to see which. What is missing has to come back from'
+                . ' a backup - neither can be put right from there.',
+            ),
+        ]);
 
         Log::error('check_files: ' . $gone . ' rows without bytes, ' . $short . ' of the wrong size.');
         ErrorReport::send(__d('files', 'File store check failed'), $body);

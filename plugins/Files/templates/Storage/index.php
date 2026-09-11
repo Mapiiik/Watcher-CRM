@@ -54,7 +54,7 @@
                     <th><?= $this->Paginator->sort('mime_type', __d('files', 'MIME Type')) ?></th>
                     <th><?= $this->Paginator->sort('byte_size', __d('files', 'Size')) ?></th>
                     <th><?= __d('files', 'File Links') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions"><?= __d('files', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -71,7 +71,7 @@
                             : $this->Number->format($uses) ?>
                     </td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $file->id]) ?>
+                        <?= $this->AuthLink->link(__d('files', 'View'), ['action' => 'view', $file->id]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
