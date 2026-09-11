@@ -19,6 +19,7 @@ RUN install-php-extensions \
     pdo_pgsql \
     simplexml \
     gd \
+    imagick \
     redis \
     sockets
 

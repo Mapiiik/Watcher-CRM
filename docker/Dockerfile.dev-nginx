@@ -25,6 +25,9 @@ RUN set -x \
  && echo "pcov.enabled = 0" > "$PHP_INI_DIR/conf.d/pcov.ini" \
  && docker-run-bootstrap
 
+# imagick, with the delegates for HEIC, TIFF and PDF, comes from the base image along with
+# ghostscript. It is the one that reads what a phone and a scanner send and gd cannot.
+
 # Uploads: a signed contract comes back as a handful of scanned pages, and a phone makes them
 # large. The base image allows 50M in three places at once, and the smallest of them decides -
 # so nginx is raised as well, or it refuses the request before PHP ever sees it. The POST limit
