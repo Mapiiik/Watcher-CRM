@@ -82,6 +82,11 @@ final class ProposalPapers
         $filed = 0;
 
         foreach ($files as $file) {
+            $refused = $this->refusalOf($file);
+            if ($refused !== null) {
+                throw new RuntimeException($refused);
+            }
+
             if ($file->getError() !== UPLOAD_ERR_OK || $file->getSize() === 0) {
                 continue;
             }
@@ -232,6 +237,31 @@ final class ProposalPapers
                 $links->saveOrFail($link);
             }
         });
+    }
+
+    /**
+     * Why the server would not take a file, when it would not.
+     *
+     * An empty slot is not a refusal: a form offering several documents at once has one for each
+     * and most of them are left alone. Anything else is, and has to be said out loud - a page
+     * turned away without a word is one the operator goes on believing is filed.
+     *
+     * @param \Psr\Http\Message\UploadedFileInterface $file What arrived.
+     * @return string|null Why it was turned away, or null when it was not.
+     */
+    private function refusalOf(UploadedFileInterface $file): ?string
+    {
+        $name = (string)($file->getClientFilename() ?? __('The file'));
+
+        return match ($file->getError()) {
+            UPLOAD_ERR_OK, UPLOAD_ERR_NO_FILE => null,
+            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => __(
+                '{0} is larger than this server takes in one go.',
+                $name,
+            ),
+            UPLOAD_ERR_PARTIAL => __('{0} only arrived in part.', $name),
+            default => __('{0} could not be taken in.', $name),
+        };
     }
 
     /**

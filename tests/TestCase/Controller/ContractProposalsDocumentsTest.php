@@ -340,6 +340,57 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
+     * A page the server would not take is named, rather than coming out as nothing having been
+     * chosen. That is what the operator saw when the limit was two megabytes.
+     *
+     * @link \App\Proposals\ProposalPapers::take()
+     * @return void
+     */
+    public function testAPageTheServerTurnedAwayIsNamed(): void
+    {
+        $path = $this->file('scan.png');
+
+        $this->replaceRequest(['files' => ['papers' => [
+            new UploadedFile($path, (int)filesize($path), UPLOAD_ERR_INI_SIZE, 'too-big.png', null),
+        ]]]);
+        $this->post('/contract-proposals/add-pages/' . self::PROPOSAL_ID, [
+            'document_type' => self::DOCUMENT,
+            'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
+        ]);
+        $this->replaceRequest([]);
+
+        $this->assertResponseOk();
+        // The name is what makes it actionable, and it is what the old answer never said.
+        $this->assertResponseContains('too-big.png');
+        $this->assertSame(0, $this->fetchTable('Files.FileLinks')->find()->count());
+    }
+
+    /**
+     * An empty slot is not a refusal. A form offering every document at once has one for each,
+     * and most of them are left alone.
+     *
+     * @link \App\Proposals\ProposalPapers::take()
+     * @return void
+     */
+    public function testASlotNobodyFilledInIsPassedOver(): void
+    {
+        $path = $this->file('scan.png');
+
+        $this->replaceRequest(['files' => ['papers' => [
+            new UploadedFile($path, 0, UPLOAD_ERR_NO_FILE, '', null),
+            $this->upload($this->file('scan.png')),
+        ]]]);
+        $this->post('/contract-proposals/add-pages/' . self::PROPOSAL_ID, [
+            'document_type' => self::DOCUMENT,
+            'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
+        ]);
+        $this->replaceRequest([]);
+
+        $this->assertRedirect();
+        $this->assertSame(1, $this->fetchTable('Files.FileLinks')->find()->count());
+    }
+
+    /**
      * The form asks before it files, like every other way of adding something.
      *
      * @link \App\Controller\ContractProposalsController::addPages()
