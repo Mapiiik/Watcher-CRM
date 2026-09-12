@@ -122,6 +122,12 @@ jobs:
           DATABASE_TEST_RADIUS_URL: postgres://postgres@127.0.0.1:${{ job.services['postgres-radius'].ports['5432'] }}/watcher_crm_test_radius
           DEBUG: 'true'
 
+      # A picture that would not be made says why in the log and nowhere else, so a red run that
+      # only names a missing file cannot be read from here at all.
+      - name: What the run wrote down
+        if: failure()
+        run: tail -n 200 logs/*.log || true
+
       - name: Keep the coverage report
         if: ${{ matrix.php-version == '8.4' && matrix.dependencies == 'locked' }}
         uses: actions/upload-artifact@v7

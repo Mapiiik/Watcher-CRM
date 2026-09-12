@@ -92,6 +92,11 @@ class GeneratePreviewsCommandTest extends TestCase
         $this->exec('generate_previews');
 
         $this->assertExitSuccess();
+        // What it says it did, before what is on disk. A picture that was refused and a picture
+        // written somewhere else are the same missing file, and the reason for a refusal goes to
+        // the log, where a failure here would never show it.
+        $this->assertOutputContains('1 made.');
+        $this->assertErrorEmpty();
 
         foreach ([Previews::THUMBNAIL, Previews::PREVIEW] as $size) {
             $this->assertFileExists(Previews::pathFor((string)$file->id, $size));
