@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c861995396fe9b01392e0c6dc4359031",
+    "content-hash": "aceaca55cb205dd5015771ca6c5f2291",
     "packages": [
         {
             "name": "cakedc/auth",
@@ -2090,6 +2090,73 @@
                 "source": "https://github.com/m1/Env/tree/2.2.0"
             },
             "time": "2020-02-19T09:02:13+00:00"
+        },
+        {
+            "name": "mapik/dbase",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mapiiik/dbase.git",
+                "reference": "da3270f41844105c072c12efd177c63c45132b9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mapiiik/dbase/zipball/da3270f41844105c072c12efd177c63c45132b9f",
+                "reference": "da3270f41844105c072c12efd177c63c45132b9f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.2",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "suggest": {
+                "ext-dbase": "The extension itself is faster. This package steps aside when it is loaded."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "dbase.inc.php"
+                ],
+                "psr-4": {
+                    "Mapik\\DBase\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "donfbecker",
+                    "homepage": "https://github.com/donfbecker/dbase"
+                },
+                {
+                    "name": "Martin Patocka",
+                    "homepage": "https://github.com/Mapiiik"
+                }
+            ],
+            "description": "A pure PHP implementation of the dBase functions, standing in for ext-dbase where it cannot be installed",
+            "homepage": "https://github.com/Mapiiik/dbase",
+            "keywords": [
+                "dbase",
+                "dbf",
+                "polyfill"
+            ],
+            "support": {
+                "issues": "https://github.com/Mapiiik/dbase/issues",
+                "source": "https://github.com/Mapiiik/dbase"
+            },
+            "time": "2026-09-12T09:08:57+00:00"
         },
         {
             "name": "mapik/pohoda-xml",
@@ -9383,7 +9450,12 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.2"
+        "php": ">=8.2",
+        "ext-bcmath": "*",
+        "ext-fileinfo": "*",
+        "ext-mbstring": "*",
+        "ext-pdo_pgsql": "*",
+        "ext-simplexml": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
