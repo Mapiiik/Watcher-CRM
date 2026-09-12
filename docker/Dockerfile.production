@@ -36,11 +36,15 @@ RUN rm -rf /app/docker
 # large. The base image allows 50M in three places at once, and the smallest of them decides -
 # so nginx is raised as well, or it refuses the request before PHP ever sees it. The POST limit
 # is the higher of the two because it carries the rest of the form beside the files.
+# How many, rather than how large, is its own limit - and the one that says nothing when
+# it bites: PHP takes the first `max_file_uploads` of them and drops the rest before the
+# application is running. Twenty is the default, and a round of photographs is more.
 # The ini sorts after the base image's own 98-webdevops.ini, which is what makes it win. The
 # nginx limit is rewritten rather than added to: the directive may not be given twice in one
 # context, so a second file holding it stops the server from starting at all.
 RUN echo "upload_max_filesize = 250M" > "$PHP_INI_DIR/conf.d/zz-uploads.ini" \
  && echo "post_max_size = 256M" >> "$PHP_INI_DIR/conf.d/zz-uploads.ini" \
+ && echo "max_file_uploads = 200" >> "$PHP_INI_DIR/conf.d/zz-uploads.ini" \
  && sed -i "s/^client_max_body_size .*/client_max_body_size 256m;/" /opt/docker/etc/nginx/vhost.common.d/10-general.conf
 
 # Composer install

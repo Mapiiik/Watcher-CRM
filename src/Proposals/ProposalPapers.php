@@ -240,6 +240,70 @@ final class ProposalPapers
     }
 
     /**
+     * Whether the server threw part of what was sent away before the application saw it.
+     *
+     * PHP takes `max_file_uploads` files out of a request and drops the rest on the floor. Not
+     * with an error on them - that is what the codes are for, and they are reported - but by
+     * never putting them in the request at all. Nothing can be said about a file that was never
+     * there, so what is left to notice is the count: a request carrying exactly the limit is a
+     * batch that was cut, and a batch that happened to fit exactly is the rare case where this
+     * says so when it need not have.
+     *
+     * Fifty-five photographs from an installation came in as twenty, and neither the person who
+     * sent them nor the application was told anything at all.
+     *
+     * @param array<mixed> $uploaded Everything the request carried, however deeply it is nested.
+     * @return bool
+     */
+    public static function cutShort(array $uploaded): bool
+    {
+        $limit = self::atMostAtOnce();
+
+        return $limit > 0 && self::howManyIn($uploaded) >= $limit;
+    }
+
+    /**
+     * How many files the server will take out of one request.
+     *
+     * @return int
+     */
+    public static function atMostAtOnce(): int
+    {
+        return (int)ini_get('max_file_uploads');
+    }
+
+    /**
+     * What to tell somebody whose batch was cut.
+     *
+     * @return string
+     */
+    public static function shortfall(): string
+    {
+        return __(
+            'This server takes at most {0} files at once, so whatever was chosen beyond that'
+            . ' never arrived. Send the rest as a second batch.',
+            self::atMostAtOnce(),
+        );
+    }
+
+    /**
+     * How many files are in there, wherever they sit.
+     *
+     * @param array<mixed> $uploaded The files, however they are nested.
+     * @return int
+     */
+    private static function howManyIn(array $uploaded): int
+    {
+        $found = 0;
+
+        foreach ($uploaded as $one) {
+            $found += is_array($one) ? self::howManyIn($one) : 1;
+        }
+
+        return $found;
+    }
+
+    /**
      * Why the server would not take a file, when it would not.
      *
      * An empty slot is not a refusal: a form offering several documents at once has one for each

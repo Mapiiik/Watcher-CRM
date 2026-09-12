@@ -55,8 +55,12 @@ RUN echo "memory_limit = 2048M" > $PHP_INI_DIR/conf.d/memory_limit.ini
 
 # Uploads: a signed contract comes back as a handful of scanned pages, and a phone makes them
 # large. The POST limit is the higher of the two because it carries the rest of the form as well.
+# How many, rather than how large, is its own limit - and the one that says nothing when
+# it bites: PHP takes the first `max_file_uploads` of them and drops the rest before the
+# application is running. Twenty is the default, and a round of photographs is more.
 RUN echo "upload_max_filesize = 250M" > $PHP_INI_DIR/conf.d/zz-uploads.ini \
- && echo "post_max_size = 256M" >> $PHP_INI_DIR/conf.d/zz-uploads.ini
+ && echo "post_max_size = 256M" >> $PHP_INI_DIR/conf.d/zz-uploads.ini \
+ && echo "max_file_uploads = 200" >> $PHP_INI_DIR/conf.d/zz-uploads.ini
 
 # Install Composer globally
 #RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

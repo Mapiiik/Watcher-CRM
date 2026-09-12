@@ -172,11 +172,13 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 <?= $joined($spans['document'][$index], $index, h($row['document'])) ?>
                 <?= $joined($page, $index, $variantCell) ?>
                 <?php if ($thumbnails) : ?>
-                <td><?= $this->Preview->pageMark(
-                    array_column(array_slice($rows, $page['start'], $page['span']), 'link'),
-                    $index - $page['start'],
-                    $row['keys']['variant'],
-                ) ?></td>
+                <td><?=
+                    $this->Preview->pageMark(
+                        array_column(array_slice($rows, $page['start'], $page['span']), 'link'),
+                        $index - $page['start'],
+                        $row['keys']['variant'],
+                    )
+                    ?></td>
                 <?php endif; ?>
                 <td><?= h($row['link']->downloadName()) ?></td>
                 <td><?= $this->Number->toReadableSize($row['link']->file->byte_size) ?></td>

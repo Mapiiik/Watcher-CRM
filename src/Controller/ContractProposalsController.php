@@ -666,6 +666,12 @@ class ContractProposalsController extends AppController
             $this->Flash->error($problem);
         }
 
+        // Said whether or not anything was filed: the ones that did arrive are filed and the
+        // rest were never here, so the person is the only one who can tell.
+        if (ProposalPapers::cutShort($this->getRequest()->getUploadedFiles())) {
+            $this->Flash->warning(ProposalPapers::shortfall());
+        }
+
         if ($came['filed'] > 0) {
             $this->Flash->success(
                 __n('{0} page has been filed.', '{0} pages have been filed.', $came['filed'], $came['filed']),
@@ -748,6 +754,12 @@ class ContractProposalsController extends AppController
                     $variant,
                     array_values($files),
                 );
+
+                // Said whether or not anything was filed: the ones that did arrive are filed
+                // and the rest were never here, so the person is the only one who can tell.
+                if (ProposalPapers::cutShort($this->getRequest()->getUploadedFiles())) {
+                    $this->Flash->warning(ProposalPapers::shortfall());
+                }
 
                 if ($filed > 0) {
                     $this->Flash->success(
