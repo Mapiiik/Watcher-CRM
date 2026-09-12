@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Files\View\Helper;
 
 use Cake\View\Helper;
+use Files\Service\FiledPages;
 
 /**
  * What a form that takes files has to say about the server it is sending them to.
@@ -84,6 +85,6 @@ class UploadHelper extends Helper
      */
     public static function limit(): int
     {
-        return (int)ini_get('max_file_uploads');
+        return FiledPages::atMostAtOnce();
     }
 }

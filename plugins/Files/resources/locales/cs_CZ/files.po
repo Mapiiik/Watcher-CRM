@@ -303,6 +303,24 @@ msgstr ""
 msgid "Foreign Key"
 msgstr "Cizí klíč"
 
+msgid "The file"
+msgstr "Soubor"
+
+msgid "{0} is larger than this server takes in one go."
+msgstr "{0} je větší, než tento server zvládne najednou."
+
+msgid "{0} only arrived in part."
+msgstr "{0} dorazil jen zčásti."
+
+msgid "{0} could not be taken in."
+msgstr "{0} se nepodařilo převzít."
+
+msgid "The uploaded file could not be read."
+msgstr "Nahraný soubor se nepodařilo přečíst."
+
+msgid "A {0} is not a document that can be filed."
+msgstr "{0} není dokument, který jde založit."
+
 #~ msgid ""
 #~ "Checks what is on the shelf against what is on file, and says what does "
 #~ "not match."
