@@ -48,6 +48,7 @@ class DocumentsControllerTest extends TestCase
      * @var string
      */
     private string $root;
+    private string $previews;
 
     /**
      * What the application said records lead to before this ran.
@@ -67,7 +68,9 @@ class DocumentsControllerTest extends TestCase
         parent::setUp();
 
         $this->root = TMP . 'documents-controller-' . uniqid();
+        $this->previews = TMP . 'documents-controller-previews-' . uniqid();
         Configure::write('Files.root', $this->root);
+        Configure::write('Files.previews', $this->previews);
         $this->records = Configure::read('Files.records');
 
         $this->login();
@@ -82,8 +85,10 @@ class DocumentsControllerTest extends TestCase
     protected function tearDown(): void
     {
         Configure::delete('Files.root');
+        Configure::delete('Files.previews');
         Configure::write('Files.records', $this->records);
         $this->removeDirectory($this->root);
+        $this->removeDirectory($this->previews);
 
         parent::tearDown();
     }
@@ -203,6 +208,58 @@ class DocumentsControllerTest extends TestCase
     }
 
     /**
+     * The picture goes through the same door as the document, so that whoever may look at one may
+     * look at the other and nobody else.
+     *
+     * @link \Files\Controller\DocumentsController::thumbnail()
+     * @link \Files\Controller\DocumentsController::preview()
+     * @return void
+     */
+    public function testAPictureOfAPageComesBackAsSomethingEveryBrowserDraws(): void
+    {
+        if (!extension_loaded('imagick')) {
+            $this->markTestSkipped('There are no pictures to be made without imagick.');
+        }
+
+        $link = $this->filed('picture.jpg', 'image/jpeg', 'IMG_001.jpg');
+
+        foreach (['thumbnail', 'preview'] as $size) {
+            $this->get('/files/documents/' . $size . '/' . $link->id);
+
+            $this->assertResponseOk();
+            $this->assertContentType('webp');
+            // Content addressed by what is in it cannot change, so it is worth keeping - but only
+            // in the browser that asked, since the door it came through has a login on it.
+            $this->assertHeaderContains('Cache-Control', 'private');
+        }
+    }
+
+    /**
+     * A spreadsheet has no picture. Saying so is better than a broken image, because the page
+     * that asked can then show something of its own.
+     *
+     * @link \Files\Controller\DocumentsController::thumbnail()
+     * @return void
+     */
+    public function testWhatHasNoPictureSaysSoRatherThanSendingABrokenOne(): void
+    {
+        $storage = new FileStorage();
+        $file = $storage->store('name,amount', 'text/csv');
+        $link = $storage->link(
+            $file,
+            'ContractProposals',
+            self::RECORD,
+            'contract-new',
+            'received-signed-by-customer',
+            ['name' => 'ledger.csv'],
+        );
+
+        $this->get('/files/documents/thumbnail/' . $link->id);
+
+        $this->assertResponseCode(404);
+    }
+
+    /**
      * A row whose bytes are gone is a torn backup, not a missing page, so it says so rather than
      * handing over nothing.
      *
@@ -248,6 +305,31 @@ class DocumentsControllerTest extends TestCase
     {
         $storage = new FileStorage();
         $file = $storage->store($bytes, 'image/jpeg');
+        $link = $storage->link(
+            $file,
+            'ContractProposals',
+            self::RECORD,
+            'contract-new',
+            'received-signed-by-customer',
+            ['name' => $name],
+        );
+        $link->file = $file;
+
+        return $link;
+    }
+
+    /**
+     * Files one of the files beside these tests, for the ones that need real content.
+     *
+     * @param string $content Which file.
+     * @param string $mime_type What to file it as.
+     * @param string $name What it arrived called.
+     * @return \Files\Model\Entity\FileLink
+     */
+    private function filed(string $content, string $mime_type, string $name): FileLink
+    {
+        $storage = new FileStorage();
+        $file = $storage->storeFile(dirname(__DIR__, 2) . DS . 'content' . DS . $content, $mime_type);
         $link = $storage->link(
             $file,
             'ContractProposals',

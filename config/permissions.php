@@ -432,6 +432,8 @@ $permissions = [
                 'index',
                 'download',
                 'open',
+                'thumbnail',
+                'preview',
             ],
         ],
         //allow add/edit for sales and bookkeepers and network-managers

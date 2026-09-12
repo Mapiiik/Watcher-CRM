@@ -7,6 +7,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Files\Model\Table\FileLinksTable;
 use Files\Service\FileStorage;
+use Files\Service\Previews;
 use Files\Service\Viewable;
 use Laminas\Diactoros\Stream;
 use Throwable;
@@ -30,6 +31,14 @@ class DocumentsController extends AppController
      * @var string|null
      */
     protected ?string $defaultTable = 'Files.FileLinks';
+
+    /**
+     * What a picture is handed over as. One kind whatever it was made from, which is the point
+     * of making it: a HEIC from a phone comes back as something a browser will show.
+     *
+     * @var string
+     */
+    private const SENT_AS = 'webp';
 
     /**
      * Index method
@@ -98,6 +107,63 @@ class DocumentsController extends AppController
     public function open(?string $id = null): Response
     {
         return $this->hand($id, true);
+    }
+
+    /**
+     * A small picture of what is filed, for saying which page this is.
+     *
+     * @param string|null $id File link id.
+     * @return \Cake\Http\Response
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function thumbnail(?string $id = null): Response
+    {
+        return $this->generated($id, Previews::THUMBNAIL);
+    }
+
+    /**
+     * A large one, for reading the page rather than recognising it.
+     *
+     * @param string|null $id File link id.
+     * @return \Cake\Http\Response
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function preview(?string $id = null): Response
+    {
+        return $this->generated($id, Previews::PREVIEW);
+    }
+
+    /**
+     * A picture of the content, either size.
+     *
+     * By the link rather than by the content, so that whoever may look at a document is exactly
+     * whoever may look at a picture of it. The picture itself is shared between the links, which
+     * is the storage's business and not the door's.
+     *
+     * @param string|null $id File link id.
+     * @param string $size Which size.
+     * @return \Cake\Http\Response
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When there is no picture to be had.
+     */
+    private function generated(?string $id, string $size): Response
+    {
+        $link = $this->fileLinks()->get($id, contain: ['Files']);
+
+        $picture = (new Previews())->generate($link->file, $size);
+        $handle = $picture === null ? false : fopen($picture, 'rb');
+
+        if ($handle === false) {
+            throw new NotFoundException(__d('files', 'There is no picture of this document.'));
+        }
+
+        // A picture answers for content that cannot change - the store is addressed by what is
+        // in it - so it is worth keeping for as long as the browser will. Privately, though: it
+        // is behind a login, and a shared cache has no business handing it to the next person.
+        return $this->getResponse()
+            ->withType(self::SENT_AS)
+            ->withHeader('Cache-Control', 'private, max-age=31536000, immutable')
+            ->withBody(new Stream($handle));
     }
 
     /**
