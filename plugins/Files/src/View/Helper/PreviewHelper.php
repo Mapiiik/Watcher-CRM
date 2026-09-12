@@ -148,6 +148,15 @@ class PreviewHelper extends Helper
                 'type' => $type,
                 'title' => $caption,
                 'description' => $this->descriptionOf($link, $at + 1, $of),
+                // What the strip under the page shows. The address is given whether or not there
+                // is anything at the end of it yet - the picture is made the first time it is
+                // asked for, and a strip that waited for the making would show nothing at all.
+                'thumb' => $this->Url->build([
+                    'plugin' => 'Files',
+                    'controller' => 'Documents',
+                    'action' => 'thumbnail',
+                    $link->id,
+                ]),
             ];
         }
 

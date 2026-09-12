@@ -483,6 +483,32 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
+     * The strip under the page being read needs a picture of each of the others, so every page
+     * carries where its own is to be had.
+     *
+     * Given whether or not there is anything at the end of it yet: a picture is made the first
+     * time it is asked for, and a strip that waited for the making would show nothing at all.
+     *
+     * @link \Files\View\Helper\PreviewHelper::flipThrough()
+     * @return void
+     */
+    public function testEachPageSaysWhereItsOwnPictureIs(): void
+    {
+        $this->addPages(['first.png', 'second.png']);
+
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+
+        foreach ($this->pagesOfTheMark() as $page) {
+            $this->assertArrayHasKey('thumb', $page);
+            $this->assertStringContainsString('/files/documents/thumbnail/', $page['thumb']);
+            // The picture of a page and the page itself are two different things to ask for.
+            $this->assertNotSame($page['href'], $page['thumb']);
+        }
+    }
+
+    /**
      * Where the table spans several rounds, the viewer says which round a page came from.
      *
      * And says it as a sentence. The column wants the day first so that a table reads down its
