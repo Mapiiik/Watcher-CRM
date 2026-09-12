@@ -40,6 +40,7 @@
                         . ' that is.',
                     )
                     ?></p>
+                <?php $this->Preview->load() ?>
                 <?= $this->cell(
                     'Documents',
                     ['customer', $customer->id],

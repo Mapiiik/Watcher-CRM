@@ -78,5 +78,8 @@ class AppView extends View
         parent::initialize();
         $this->addHelper('CakeDC/Users.User');
         $this->addHelper('CakeDC/Users.AuthLink');
+        // A page asks for the viewer before it draws documents. The table that draws them is a
+        // cell, and what a cell puts in a block the layout never reads.
+        $this->addHelper('Files.Preview');
     }
 }

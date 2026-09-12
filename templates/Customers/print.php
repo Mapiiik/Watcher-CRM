@@ -123,6 +123,7 @@ foreach ($customer->customer_proposals ?? [] as $one) {
                         . ' printing it again, and it is the same file either way.',
                     )
                     ?></p>
+                <?php $this->Preview->load() ?>
                 <?= $this->cell(
                     'Documents',
                     ['customer', $customer->id],

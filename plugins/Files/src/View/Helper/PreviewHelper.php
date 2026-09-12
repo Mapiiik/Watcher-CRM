@@ -20,6 +20,10 @@ use Files\Service\Viewable;
  * Where the viewer cannot run, the mark is a plain link to the first page - which is what the
  * table did before any of this.
  *
+ * The viewer itself is fetched by load(), which the page asks for before it draws the table. It
+ * cannot be asked for from inside the table: that is a cell, a cell renders in a view of its own,
+ * and a script asked for there lands in a block the layout never reads.
+ *
  * @property \Cake\View\Helper\HtmlHelper $Html
  * @property \Cake\View\Helper\UrlHelper $Url
  * @extends \Cake\View\Helper<\App\View\AppView>
@@ -34,9 +38,40 @@ class PreviewHelper extends Helper
     protected array $helpers = ['Html', 'Url'];
 
     /**
-     * Whether the viewer has been asked for on this page already.
+     * Whether this page has asked for the viewer already.
      */
     private bool $loaded = false;
+
+    /**
+     * Fetches the viewer, for a page that is about to draw documents.
+     *
+     * Asked for by the page rather than by the table, because the table is a cell and a cell
+     * renders in a view of its own - what it puts in a block, the layout never sees. Asking twice
+     * costs nothing, so a page drawing both sides of its papers need not keep track.
+     *
+     * A page that forgets loses the overlay and nothing else: the mark is still a link, and it
+     * still opens the document.
+     *
+     * @return void
+     */
+    public function load(): void
+    {
+        if ($this->loaded) {
+            return;
+        }
+
+        $this->loaded = true;
+
+        $this->Html->css(
+            'https://cdn.jsdelivr.net/npm/glightbox@3.3/dist/css/glightbox.min.css',
+            ['block' => true],
+        );
+        $this->Html->script(
+            'https://cdn.jsdelivr.net/npm/glightbox@3.3/dist/js/glightbox.min.js',
+            ['block' => true],
+        );
+        $this->Html->script('Files.viewer', ['block' => true]);
+    }
 
     /**
      * A mark that opens the pages of one document, one after another.
@@ -52,8 +87,6 @@ class PreviewHelper extends Helper
         if ($pages === []) {
             return '';
         }
-
-        $this->load();
 
         return $this->Html->link(
             __d('files', 'Look through ({0})', count($pages)),
@@ -102,32 +135,5 @@ class PreviewHelper extends Helper
         }
 
         return $pages;
-    }
-
-    /**
-     * Fetches the viewer, once for the page however many groups ask for it.
-     *
-     * Asked for from here rather than from the layout, so that a page with no documents on it
-     * does not fetch a viewer it has nothing to show in.
-     *
-     * @return void
-     */
-    private function load(): void
-    {
-        if ($this->loaded) {
-            return;
-        }
-
-        $this->loaded = true;
-
-        $this->Html->css(
-            'https://cdn.jsdelivr.net/npm/glightbox@3.3/dist/css/glightbox.min.css',
-            ['block' => true],
-        );
-        $this->Html->script(
-            'https://cdn.jsdelivr.net/npm/glightbox@3.3/dist/js/glightbox.min.js',
-            ['block' => true],
-        );
-        $this->Html->script('Files.viewer', ['block' => true]);
     }
 }

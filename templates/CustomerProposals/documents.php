@@ -47,6 +47,7 @@
                         . ' and put the pages the way the paper reads.',
                     )
                     ?></p>
+                <?php $this->Preview->load() ?>
                 <?= $this->cell(
                     'Documents',
                     ['customerProposal', $customerProposal->id],

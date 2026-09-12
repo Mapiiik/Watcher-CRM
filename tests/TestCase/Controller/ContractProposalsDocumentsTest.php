@@ -407,6 +407,8 @@ class ContractProposalsDocumentsTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains('data-files-gallery');
+        // Asked for by the page, because a cell cannot reach the blocks the layout reads.
+        $this->assertResponseContains('glightbox.min.js', 'the viewer itself is fetched');
 
         /** @var iterable<\Files\Model\Entity\FileLink> $links */
         $links = $this->fetchTable('Files.FileLinks')->find()->all();
@@ -417,20 +419,6 @@ class ContractProposalsDocumentsTest extends TestCase
         }
 
         $this->assertSame(2, $counted, 'both pages were filed');
-    }
-
-    /**
-     * A page with nothing filed against it does not fetch a viewer it has nothing to show in.
-     *
-     * @link \Files\View\Helper\PreviewHelper::load()
-     * @return void
-     */
-    public function testAPageWithNoDocumentsDoesNotFetchTheViewer(): void
-    {
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
-
-        $this->assertResponseOk();
-        $this->assertResponseNotContains('glightbox');
     }
 
     /**

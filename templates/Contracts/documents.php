@@ -45,6 +45,7 @@
                         . ' proposal they answer, so the row says which one that is.',
                     )
                     ?></p>
+                <?php $this->Preview->load() ?>
                 <?= $this->cell(
                     'Documents',
                     ['contract', $contract->id],

@@ -153,6 +153,7 @@ foreach ($proposals as $one) {
                         . ' quicker than printing it again, and it is the same file either way.',
                     )
                     ?></p>
+                <?php $this->Preview->load() ?>
                 <?= $this->cell(
                     'Documents',
                     ['contract', $contract->id],
