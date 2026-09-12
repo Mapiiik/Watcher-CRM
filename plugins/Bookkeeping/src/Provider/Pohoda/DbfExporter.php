@@ -73,7 +73,7 @@ class DbfExporter
      *
      * The structure mirrors the legacy DBFInvoices field definitions.
      *
-     * @return array<int, array<int, mixed>>
+     * @return list<array<int, mixed>>
      */
     private function buildDbfStructure(): array
     {
@@ -120,7 +120,8 @@ class DbfExporter
      *
      * Mirrors the legacy DBFInvoices::addRecord() implementation.
      *
-     * @param resource $dbf Open DBF resource.
+     * @param \Mapik\DBase\DBase|resource $dbf The open file - a resource from the extension, an
+     *   object from the package standing in for it.
      * @param \Bookkeeping\Model\ValueObject\InvoiceDraft $invoice Invoice draft.
      * @param \App\Model\Entity\AccountingProfile $accountingProfile Accounting profile context.
      * @return void

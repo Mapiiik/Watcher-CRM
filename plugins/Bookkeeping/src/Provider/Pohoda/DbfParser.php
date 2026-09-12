@@ -36,50 +36,58 @@ final class DbfParser
 
         $recordCount = dbase_numrecords($dbase);
 
-        for ($recordNumber = 1; $recordNumber <= $recordCount; $recordNumber++) {
-            $record = dbase_get_record_with_names($dbase, $recordNumber);
+        // The file is let go of however the reading ends.
+        try {
+            for ($recordNumber = 1; $recordNumber <= $recordCount; $recordNumber++) {
+                $record = dbase_get_record_with_names($dbase, $recordNumber);
+                if ($record === false) {
+                    throw new RuntimeException(
+                        __d('bookkeeping', 'Unable to read record {0} of the DBF file.', $recordNumber),
+                    );
+                }
 
-            $record = $this->normalizeRecord($record);
+                $record = $this->normalizeRecord($record);
 
-            $draft = new InvoiceDraft();
+                $draft = new InvoiceDraft();
 
-            // Invoice number
-            $draft->number = $record['CISLO'] ?? null;
+                // Invoice number
+                $draft->number = $record['CISLO'] ?? null;
 
-            // Variable symbol
-            $draft->variableSymbol = $record['VARSYM'] ?? null;
+                // Variable symbol
+                $draft->variableSymbol = $record['VARSYM'] ?? null;
 
-            // Customer number
-            $draft->customerNumber = $record['VARSYM'] ?? null;
+                // Customer number
+                $draft->customerNumber = $record['VARSYM'] ?? null;
 
-            // Dates
-            $draft->creationDate = $this->parseDate($record['DATUM'] ?? null);
-            $draft->dueDate = $this->parseDate($record['DATSPLAT'] ?? null);
-            $draft->paymentDate = $this->parseDate($record['DATLIKV'] ?? null);
+                // Dates
+                $draft->creationDate = $this->parseDate($record['DATUM'] ?? null);
+                $draft->dueDate = $this->parseDate($record['DATSPLAT'] ?? null);
+                $draft->paymentDate = $this->parseDate($record['DATLIKV'] ?? null);
 
-            // Text
-            $draft->text = $record['STEXT'] ?? null;
+                // Text
+                $draft->text = $record['STEXT'] ?? null;
 
-            // Amounts
-            $draft->total = Decimal::create(
-                (string)($record['KCCELKEM'] ?? 0),
-                2,
-            );
+                // Amounts
+                $draft->total = Decimal::create(
+                    (string)($record['KCCELKEM'] ?? 0),
+                    2,
+                );
 
-            $draft->debt = Decimal::create(
-                (string)($record['KCLIKV'] ?? 0),
-                2,
-            );
+                $draft->debt = Decimal::create(
+                    (string)($record['KCLIKV'] ?? 0),
+                    2,
+                );
 
-            // Optional metadata
-            $draft->metadata['source'] = 'pohoda-dbf';
-            $draft->metadata['record'] = $recordNumber;
+                // Optional metadata
+                $draft->metadata['source'] = 'pohoda-dbf';
+                $draft->metadata['record'] = $recordNumber;
 
-            $drafts[] = $draft;
+                $drafts[] = $draft;
+            }
+        } finally {
+            /** @psalm-suppress UnusedFunctionCall */
+            dbase_close($dbase);
         }
-
-        /** @psalm-suppress UnusedFunctionCall */
-        dbase_close($dbase);
 
         return $drafts;
     }

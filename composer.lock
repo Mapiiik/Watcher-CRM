@@ -2093,16 +2093,16 @@
         },
         {
             "name": "mapik/dbase",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mapiiik/dbase.git",
-                "reference": "da3270f41844105c072c12efd177c63c45132b9f"
+                "reference": "e22e9cb1871d43d7dc208b0fa7fe80ba9572c8bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mapiiik/dbase/zipball/da3270f41844105c072c12efd177c63c45132b9f",
-                "reference": "da3270f41844105c072c12efd177c63c45132b9f",
+                "url": "https://api.github.com/repos/Mapiiik/dbase/zipball/e22e9cb1871d43d7dc208b0fa7fe80ba9572c8bc",
+                "reference": "e22e9cb1871d43d7dc208b0fa7fe80ba9572c8bc",
                 "shasum": ""
             },
             "require": {
@@ -2156,7 +2156,7 @@
                 "issues": "https://github.com/Mapiiik/dbase/issues",
                 "source": "https://github.com/Mapiiik/dbase"
             },
-            "time": "2026-09-12T09:08:57+00:00"
+            "time": "2026-09-12T13:47:04+00:00"
         },
         {
             "name": "mapik/pohoda-xml",
