@@ -79,6 +79,19 @@ jobs:
         if: ${{ matrix.dependencies != 'locked' }}
         run: composer run-script post-install-cmd --no-interaction
 
+      # Drawing a page of a paper is ghostscript's work rather than ImageMagick's, and the
+      # extension brings the libraries without the program. The runner also carries the open
+      # policy, which the images replace - so without both of these the suite is asking a
+      # machine that cannot do what the containers do.
+      - name: Let ImageMagick read a paper
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ghostscript
+          for etc in /etc/ImageMagick-6 /etc/ImageMagick-7; do
+            if [ -d "$etc" ]; then sudo cp docker/imagemagick-policy.xml "$etc/policy.xml"; fi
+          done
+          gs --version
+
       # Coverage is measured on one combination of the matrix only. It is the same code whichever
       # PHP runs it, and measuring it six times would cost six times as long for one answer.
       - name: Test with phpunit

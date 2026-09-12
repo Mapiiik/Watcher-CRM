@@ -35,9 +35,12 @@
 
   <!--
     Nothing runs on our behalf except ghostscript, and that only to draw a page of a PDF. The
-    four names are the internal ones ImageMagick reaches for, one to a colour space.
+    right is written twice because the two major versions ask for it differently: seven names the
+    format being decoded and grants it on reading, six names the program and grants it on running.
+    Both lines say the one thing, so the file reads the same to whichever version has it.
   -->
   <policy domain="delegate" rights="none" pattern="*"/>
+  <policy domain="delegate" rights="execute" pattern="gs"/>
   <policy domain="delegate" rights="read" pattern="ps:alpha"/>
   <policy domain="delegate" rights="read" pattern="ps:cmyk"/>
   <policy domain="delegate" rights="read" pattern="ps:color"/>
