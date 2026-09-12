@@ -167,6 +167,66 @@ class PreviewHelper extends Helper
     }
 
     /**
+     * One of a folder's contents as a tile, whether or not there is a picture of it.
+     *
+     * The difference from a page in a table: a folder holds whatever the work produced, so a
+     * drawing or an archive stands beside the photographs and must not leave a hole in the wall.
+     * What has no picture gets a tile saying what kind of file it is, which is the one useful
+     * thing that can be said about something nothing can draw.
+     *
+     * @param list<\Files\Model\Entity\FileLink> $links What is in the folder, in order.
+     * @param int $at Which of them this is.
+     * @param string $gallery What the folder is called.
+     * @return string
+     */
+    public function tileMark(array $links, int $at, string $gallery): string
+    {
+        $link = $links[$at] ?? null;
+        if ($link === null) {
+            return '';
+        }
+
+        $shown = Previews::generates($link->file->mime_type ?? null)
+            ? $this->Html->image(
+                [
+                    'plugin' => 'Files',
+                    'controller' => 'Documents',
+                    'action' => 'thumbnail',
+                    $link->id,
+                ],
+                ['alt' => '', 'loading' => 'lazy', 'class' => 'files-thumb'],
+            )
+            : '<span class="files-kind">' . h($this->kindOf($link)) . '</span>';
+
+        $options = $this->markOptions($links, $at, $gallery);
+        $options['escape'] = false;
+        $options['class'] = trim('files-thumb-link ' . ($options['class'] ?? ''));
+
+        return $this->Html->link($shown, $this->addressOf($link), $options);
+    }
+
+    /**
+     * What kind of file it is, in the few letters a tile has room for.
+     *
+     * The end of its own name where it has one, since that is what the person who sent it called
+     * it, and what the store made of the content where it has not.
+     *
+     * @param \Files\Model\Entity\FileLink $link The file.
+     * @return string
+     */
+    private function kindOf(FileLink $link): string
+    {
+        $extension = pathinfo($link->downloadName(), PATHINFO_EXTENSION);
+
+        if ($extension === '') {
+            $mime_type = (string)($link->file->mime_type ?? '');
+            $extension = substr($mime_type, (int)strrpos($mime_type, '/') + 1);
+        }
+
+        return strtoupper(substr($extension, 0, 5));
+    }
+
+    /**
      * The same page as its own name, for a listing that has no room for pictures.
      *
      * The name is what somebody reads to find the page they want, so it is also the thing they
