@@ -51,11 +51,14 @@ class Installer
 
     /**
      * What sits under the data root: where a deployment puts its letterhead and its signature,
-     * where the invoices it keeps a copy of are written, and where the documents themselves are
-     * kept.
+     * where the invoices it keeps a copy of are written, where the documents themselves are kept,
+     * and where what has been drawn from them is cached.
      *
      * These do not hang off the application directory - `DATA_ROOT` is free to point somewhere
      * else entirely, and on a real deployment it does.
+     *
+     * The previews are the one of the four that may be thrown away: they are drawn from the
+     * documents on demand, so an emptied directory fills itself again and a backup may skip it.
      *
      * @var list<string>
      */
@@ -63,6 +66,7 @@ class Installer
         'images',
         'invoices',
         'files',
+        'files-previews',
     ];
 
     /**

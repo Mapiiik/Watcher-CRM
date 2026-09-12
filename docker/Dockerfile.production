@@ -22,6 +22,15 @@ RUN set -x \
 
 # imagick, with the delegates for HEIC, TIFF and PDF, comes from the base image along with
 # ghostscript. It is the one that reads what a phone and a scanner send and gd cannot.
+#
+# It is handed files uploaded from outside, and what it ships with is the open policy - which says
+# of itself that it is for a container behind a firewall. Ours names the formats a scan or a
+# photograph arrives in and refuses the rest.
+COPY docker/imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
+
+# Letting the file into the build context above also let it into `/app`, which is meant to be the
+# application and nothing else. It has been read by now and has no business staying there.
+RUN rm -rf /app/docker
 
 # Uploads: a signed contract comes back as a handful of scanned pages, and a phone makes them
 # large. The base image allows 50M in three places at once, and the smallest of them decides -

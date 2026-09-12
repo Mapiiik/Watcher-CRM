@@ -29,6 +29,11 @@ RUN install-php-extensions \
 	dbase \
     pcov
 
+# ImageMagick is handed files uploaded from outside, and what it ships with is the open policy -
+# which says of itself that it is for a container behind a firewall. Ours names the formats a scan
+# or a photograph arrives in and refuses the rest.
+COPY docker/imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
+
 # Coverage is measured when it is asked for rather than always. pcov costs something on every
 # request it is enabled for, and this container mostly serves pages instead of measuring them:
 #   php -d pcov.enabled=1 vendor/bin/phpunit --coverage-text

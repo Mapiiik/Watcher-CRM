@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policymap [
+<!ELEMENT policymap (policy)+>
+<!ATTLIST policymap xmlns CDATA #FIXED ''>
+<!ELEMENT policy EMPTY>
+<!ATTLIST policy xmlns CDATA #FIXED '' domain NMTOKEN #REQUIRED
+  name NMTOKEN #IMPLIED pattern CDATA #IMPLIED rights NMTOKEN #IMPLIED
+  stealth NMTOKEN #IMPLIED value CDATA #IMPLIED>
+]>
+<!--
+  What ImageMagick is allowed to open here.
+
+  The images ship the open policy, which says of itself that it is for a container behind a
+  firewall. Ours is handed files uploaded from outside, so it is told the handful of formats a
+  scan or a photograph arrives in and refused everything else.
+
+  Rules are read in order and the last one that matches decides, so each domain denies the lot
+  first and then names what comes back.
+-->
+<policymap>
+  <!--
+    A page is being turned into a picture, not being given the machine. These are ceilings for
+    one run, and the application may ask for less but not for more.
+  -->
+  <policy domain="resource" name="memory" value="512MiB"/>
+  <policy domain="resource" name="map" value="1GiB"/>
+  <policy domain="resource" name="area" value="256MP"/>
+  <policy domain="resource" name="disk" value="4GiB"/>
+  <policy domain="resource" name="width" value="32KP"/>
+  <policy domain="resource" name="height" value="32KP"/>
+  <policy domain="resource" name="list-length" value="256"/>
+  <policy domain="resource" name="time" value="120"/>
+  <policy domain="resource" name="thread" value="2"/>
+  <policy domain="system" name="max-memory-request" value="256MiB"/>
+
+  <!--
+    Nothing runs on our behalf except ghostscript, and that only to draw a page of a PDF. The
+    four names are the internal ones ImageMagick reaches for, one to a colour space.
+  -->
+  <policy domain="delegate" rights="none" pattern="*"/>
+  <policy domain="delegate" rights="read" pattern="ps:alpha"/>
+  <policy domain="delegate" rights="read" pattern="ps:cmyk"/>
+  <policy domain="delegate" rights="read" pattern="ps:color"/>
+  <policy domain="delegate" rights="read" pattern="ps:mono"/>
+
+  <!--
+    What a scanner and a phone send, and what we write back. The PNM family is in there because
+    it is what ghostscript hands over, so a PDF needs it as much as it needs the PDF coder.
+  -->
+  <policy domain="coder" rights="none" pattern="*"/>
+  <policy domain="coder" rights="read|write"
+    pattern="{JPEG,JPG,PNG,WEBP,GIF,HEIC,HEIF,AVIF,TIFF,PNM,PAM,PBM,PGM,PPM}"/>
+  <policy domain="coder" rights="read" pattern="PDF"/>
+
+  <!--
+    Said again for the ones that have been the way in before. They are covered by the denial
+    above, and naming them keeps a later allowance from quietly handing them back.
+  -->
+  <policy domain="coder" rights="none" pattern="{MSL,MVG,MSVG,SVG,EPHEMERAL,URL,HTTP,HTTPS,FTP}"/>
+  <policy domain="coder" rights="none" pattern="{TEXT,SHOW,WIN,PLT,LABEL,CAPTION,PANGO}"/>
+  <policy domain="filter" rights="none" pattern="*"/>
+
+  <!-- A filename beginning with @ means read the names from that file, which nothing here does. -->
+  <policy domain="path" rights="none" pattern="@*"/>
+</policymap>

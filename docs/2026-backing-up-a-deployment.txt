@@ -17,7 +17,10 @@ mounted at `/app/data`.
 What is deliberately NOT backed up: `app-cache` is a cache and rebuilds
 itself, and `app-acme` holds certificates that are issued again on demand. The
 RADIUS database belongs to FreeRADIUS on most deployments and is theirs to
-keep - `--with-radius` takes it where it is ours.
+keep - `--with-radius` takes it where it is ours. `files-previews/` under the
+data root is left out too: it is pictures drawn from the documents that are
+being backed up, and a restored deployment draws them again the first time
+somebody looks.
 
 ==============================================================================
 ORDER, AND WHY IT IS THAT WAY ROUND
@@ -67,7 +70,8 @@ So the two halves are taken separately. Database first:
 
 Then the data root, from the container that has it mounted:
 
-    docker compose exec -T webserver tar --create --file=- -C /app/data . \
+    docker compose exec -T webserver tar --create --file=- \
+        --exclude=./files-previews -C /app/data . \
         > /somewhere/outside/data.tar
 
 Both need somewhere to put the result. Mount it into whichever container is

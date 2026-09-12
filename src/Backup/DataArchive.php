@@ -24,6 +24,17 @@ final class DataArchive
     public const PROGRAM = 'tar';
 
     /**
+     * What is under the data root but stays out of the archive, as `tar` names it.
+     *
+     * The previews are drawn from the documents, which are in the archive already - packing them
+     * would be the same pictures a second time, and a restored deployment draws them again the
+     * first time somebody looks.
+     *
+     * @var list<string>
+     */
+    public const NOT_PACKED = ['./files-previews'];
+
+    /**
      * @param string $root The data root, wherever the deployment has pointed it.
      */
     public function __construct(private string $root)
@@ -38,7 +49,9 @@ final class DataArchive
      */
     public function packArguments(string $file): array
     {
-        return ['--create', '--file=' . $file, '--directory=' . $this->root, '.'];
+        $skip = array_map(fn(string $path): string => '--exclude=' . $path, self::NOT_PACKED);
+
+        return ['--create', '--file=' . $file, '--directory=' . $this->root, ...$skip, '.'];
     }
 
     /**

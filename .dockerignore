@@ -9,3 +9,4 @@
 !webroot
 !composer.json
 !composer.lock
+!docker/imagemagick-policy.xml

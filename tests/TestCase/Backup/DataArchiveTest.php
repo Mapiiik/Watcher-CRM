@@ -104,6 +104,30 @@ class DataArchiveTest extends TestCase
     }
 
     /**
+     * The previews are drawn from the documents beside them, so a backup carrying both would be
+     * carrying the same pictures twice.
+     *
+     * @link \App\Backup\DataArchive::pack()
+     * @return void
+     */
+    public function testWhatCanBeDrawnAgainIsNotPacked(): void
+    {
+        $source = $this->workspace . DS . 'source';
+        mkdir($source . DS . 'files-previews' . DS . 'thumb', 0770, true);
+        file_put_contents($source . DS . 'files-previews' . DS . 'thumb' . DS . 'a.webp', 'drawn from a page');
+        file_put_contents($source . DS . 'images' . DS . 'logo.png', 'a letterhead');
+
+        $archive = $this->workspace . DS . DataArchive::FILENAME;
+        (new DataArchive($source))->pack($archive);
+
+        $target = $this->workspace . DS . 'target';
+        (new DataArchive($target))->unpack($archive);
+
+        $this->assertFileExists($target . DS . 'images' . DS . 'logo.png');
+        $this->assertDirectoryDoesNotExist($target . DS . 'files-previews');
+    }
+
+    /**
      * @link \App\Backup\DataArchive::pack()
      * @return void
      */
