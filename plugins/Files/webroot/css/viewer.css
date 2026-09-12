@@ -86,7 +86,13 @@
     display: flex;
     gap: 8px;
     align-items: center;
+    /*
+     * Centred while they fit, and from the left once they do not. Plain centring puts the
+     * overflow on both sides, and what hangs off the left cannot be scrolled to at all - with
+     * fifty pages the first of them was simply unreachable.
+     */
     justify-content: center;
+    justify-content: safe center;
     overflow-x: auto;
     padding: 10px 16px;
 }
