@@ -1,0 +1,37 @@
+/**
+ * Keeping the line under a framed page from eating the page.
+ *
+ * A slide is laid out as a column: the frame, and under it the line naming the document. Both are
+ * free to grow, and the line takes what it likes - a filename ends up with half the screen while
+ * the frame, which asks for the whole height and is allowed to be shrunk, is squeezed away to
+ * nothing. The reader inside it then has no room to draw in, so the slide shows a name over an
+ * empty panel with nothing anywhere to say why.
+ *
+ * Holding the line to the size of its own text is the whole of the fix. The frame needs nothing
+ * said about it: once the line stops taking the column, its own `height: 100%` resolves and it
+ * fills what is left.
+ *
+ * Measured rather than reasoned: `height`, `flex` and `min-height` on the frame were all tried,
+ * and `height: auto` on it actually makes things worse.
+ *
+ * How big the panel is in the first place is not set here - that is what the viewer's own `width`
+ * and `height` settings are for, and they are passed in viewer.js.
+ */
+.ginner-container.desc-bottom .gslide-description {
+    flex: 0 0 auto;
+}
+
+/**
+ * And keeping the room around that line to what a filename needs.
+ *
+ * The spacing is built for a title with a paragraph under it. We give it a filename and nothing
+ * else, so the gap meant to separate the two has nothing to separate - and it is only closed
+ * where the name really is the last thing there.
+ */
+.glightbox-clean .gdesc-inner {
+    padding: 10px 20px;
+}
+
+.glightbox-clean .gslide-title:last-child {
+    margin-bottom: 0;
+}

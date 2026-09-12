@@ -71,6 +71,9 @@ class PreviewHelper extends Helper
             ['block' => true],
         );
         $this->Html->script('Files.viewer', ['block' => true]);
+
+        // After the viewer's own, so that what it puts right stays put right.
+        $this->Html->css('Files.viewer', ['block' => true]);
     }
 
     /**

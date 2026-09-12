@@ -30,6 +30,11 @@
 
             built.set(gallery, GLightbox({
                 elements: pages,
+                // How big the panel is. The library's own settings rather than a stylesheet,
+                // because that is what they are for - a paper wants more of the screen than the
+                // 900 by 506 a gallery of photographs is built around.
+                width: "85vw",
+                height: "95vh",
                 loop: pages.length > 2,
                 touchNavigation: true,
                 keyboardNavigation: true,
