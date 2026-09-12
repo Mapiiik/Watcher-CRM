@@ -154,25 +154,86 @@ class PreviewHelper extends Helper
             ],
         );
 
-        $options = ['target' => '_blank', 'rel' => 'noopener', 'escape' => false];
+        $options = $this->markOptions($links, $at, $gallery);
+        $options['escape'] = false;
 
-        $where = $this->positionOf($links, $at);
-        if ($where !== null) {
-            $options['class'] = 'files-viewer';
-            $options['data-files-gallery'] = $gallery;
-            $options['data-files-start'] = $where;
+        // Named whether or not it opens the viewer, so that a listing can place the picture
+        // without having to know which of the two kinds of page it got. Added to whatever class
+        // the mark already carries rather than put in its place, or a picture would stop opening
+        // the viewer the moment it was given a name of its own.
+        $options['class'] = trim('files-thumb-link ' . ($options['class'] ?? ''));
+
+        return $this->Html->link($picture, $this->addressOf($link), $options);
+    }
+
+    /**
+     * The same page as its own name, for a listing that has no room for pictures.
+     *
+     * The name is what somebody reads to find the page they want, so it is also the thing they
+     * reach for - and on a listing showing no pictures it is the only thing there is to reach
+     * for. Where the viewer cannot show that kind of file the name is a plain link to it, which
+     * is what the name of a file should do anyway.
+     *
+     * @param list<\Files\Model\Entity\FileLink> $links The pages of the run, in the order they read.
+     * @param int $at Which of them this is.
+     * @param string $gallery What the run is called.
+     * @return string
+     */
+    public function pageName(array $links, int $at, string $gallery): string
+    {
+        $link = $links[$at] ?? null;
+        if ($link === null) {
+            return '';
         }
 
         return $this->Html->link(
-            $picture,
-            [
-                'plugin' => 'Files',
-                'controller' => 'Documents',
-                'action' => 'open',
-                $link->id,
-            ],
-            $options,
+            $link->downloadName(),
+            $this->addressOf($link),
+            $this->markOptions($links, $at, $gallery),
         );
+    }
+
+    /**
+     * What tells the viewer which group a mark belongs to and where in it to open.
+     *
+     * Empty for a page the viewer cannot show, which leaves the mark an ordinary link to the
+     * file - and an ordinary link is what it should be, since there is no slide to open at.
+     *
+     * @param list<\Files\Model\Entity\FileLink> $links The pages of the run.
+     * @param int $at Which of them.
+     * @param string $gallery What the run is called.
+     * @return array<string, mixed>
+     */
+    private function markOptions(array $links, int $at, string $gallery): array
+    {
+        $options = ['target' => '_blank', 'rel' => 'noopener'];
+
+        $where = $this->positionOf($links, $at);
+        if ($where === null) {
+            return $options;
+        }
+
+        return $options + [
+            'class' => 'files-viewer',
+            'data-files-gallery' => $gallery,
+            'data-files-start' => $where,
+        ];
+    }
+
+    /**
+     * Where the file itself is.
+     *
+     * @param \Files\Model\Entity\FileLink $link The page.
+     * @return array<int|string, string>
+     */
+    private function addressOf(FileLink $link): array
+    {
+        return [
+            'plugin' => 'Files',
+            'controller' => 'Documents',
+            'action' => 'open',
+            $link->id,
+        ];
     }
 
     /**

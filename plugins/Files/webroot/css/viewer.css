@@ -145,10 +145,28 @@
  * Held to a height rather than a width, so that a column of them lines up whether the pages are
  * portrait or landscape.
  */
+/*
+ * Rows that line up at the top rather than on the last line of their tallest cell.
+ *
+ * A table cell sits on its baseline by default, and a cell holding a picture has its baseline at
+ * the foot of that picture - so the filename, the size and the day beside it were dragged down
+ * to the bottom of the row. The cells standing for several rows were already aligned this way,
+ * so this is the rest of the row catching up with them.
+ */
+.files-documents td {
+    vertical-align: top;
+}
+
+/* Centred in its column, whichever way round the page it is of happens to be. */
+.files-thumb-link {
+    display: block;
+}
+
 .files-thumb {
     display: block;
     height: 90px;
     width: auto;
+    margin-inline: auto;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;
 }

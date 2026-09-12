@@ -82,14 +82,14 @@ $joined = function (array $run, int $index, string $content, string $class = '')
     $reach = $run['span'] > 1 ? ' rowspan="' . $run['span'] . '"' : '';
     $named = $class === '' ? '' : ' class="' . $class . '"';
 
-    return '<td' . $reach . $named . ' style="vertical-align: top;">' . $content . '</td>';
+    return '<td' . $reach . $named . '>' . $content . '</td>';
 };
 ?>
 <?php if ($rows === []) : ?>
     <p><?= $generatedByUs ? __('Nothing has been generated yet.') : __('Nothing has come back yet.') ?></p>
 <?php else : ?>
 <div class="table-responsive">
-    <table>
+    <table class="files-documents">
         <thead>
             <tr>
                 <?php if ($showContract) : ?>
@@ -180,7 +180,13 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                     )
                     ?></td>
                 <?php endif; ?>
-                <td><?= h($row['link']->downloadName()) ?></td>
+                <td><?=
+                    $this->Preview->pageName(
+                        array_column(array_slice($rows, $page['start'], $page['span']), 'link'),
+                        $index - $page['start'],
+                        $row['keys']['variant'],
+                    )
+                    ?></td>
                 <td><?= $this->Number->toReadableSize($row['link']->file->byte_size) ?></td>
                 <td><?= h($row['link']->created) ?></td>
                 <td class="actions">

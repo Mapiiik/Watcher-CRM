@@ -536,6 +536,35 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
+     * The name of a page opens the group at that page, the same as its picture does.
+     *
+     * It is what somebody reads to find the page they want, and on a listing showing no pictures
+     * it is the only thing there is to reach for.
+     *
+     * @link \Files\View\Helper\PreviewHelper::pageName()
+     * @return void
+     */
+    public function testTheNameOfAPageOpensTheGroupThere(): void
+    {
+        $this->addPages(['first.png', 'second.png']);
+
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+
+        $body = (string)$this->_getBodyAsString();
+
+        // The name is a link to the file, and it says which page of the group it stands for.
+        $this->assertMatchesRegularExpression(
+            '~<a[^>]+data-files-start="1"[^>]*>second\.png</a>~',
+            $body,
+        );
+
+        // Still only the one carrier of the group, however many marks point at it.
+        $this->assertSame(1, substr_count($body, 'data-files-pages'));
+    }
+
+    /**
      * The strip under the page being read needs a picture of each of the others, so every page
      * carries where its own is to be had.
      *
