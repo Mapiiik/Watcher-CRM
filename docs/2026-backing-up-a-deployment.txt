@@ -105,6 +105,12 @@ is last because it reads both halves at once - rows whose bytes are gone end
 the run badly, and bytes nobody has a row for are what a backup taken while
 something was being written leaves behind, which `--fix` throws away.
 
+Not restored, and not missing either: `files-previews/` is not in the backup.
+The pictures are drawn from the documents, so they come back by themselves the
+first time somebody looks - fast enough that nobody waits on one. A deployment
+with a great many of them can have `bin/cake generate_previews` fill them in a
+batch instead, and it is worth a run after a restore of any size.
+
 ==============================================================================
 CHECKING THAT A BACKUP IS ONE
 
