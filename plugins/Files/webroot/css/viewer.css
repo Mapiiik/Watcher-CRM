@@ -54,6 +54,24 @@
  * about all of them, and the library lays a slide out without knowing anything is below it. The
  * panel is built shorter when there is a strip, which is what leaves this its room.
  */
+/*
+ * What the strip stands on, taken off the page rather than out of it.
+ *
+ * A slide is centred in what it is given, so the room for the strip has to be given away before
+ * the centring happens - making the page smaller alone would leave it centred where it was, with
+ * its foot under the strip. The picture is capped against the window for the same reason: that is
+ * what the library measures it against, and the window does not know about the strip.
+ */
+.glightbox-container.has-files-strip .gslide {
+    box-sizing: border-box;
+    padding-bottom: 128px;
+}
+
+.glightbox-container.has-files-strip .gslide-image img,
+.glightbox-container.has-files-strip .gslide-external {
+    max-height: calc(100vh - 240px) !important;
+}
+
 .files-strip {
     position: absolute;
     left: 0;
@@ -70,12 +88,12 @@
 
 .files-strip-page {
     flex: 0 0 auto;
-    width: 64px;
-    height: 84px;
+    width: 80px;
+    height: 108px;
     padding: 0;
     border: 2px solid transparent;
     border-radius: 3px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.45);
     cursor: pointer;
     opacity: 0.6;
 }
@@ -83,15 +101,19 @@
 /* A page with no picture of its own still says which one it is. */
 .files-strip-page.is-blank {
     color: #d7d7d7;
-    font: 14px/84px system-ui, sans-serif;
+    font: 15px/108px system-ui, sans-serif;
     text-align: center;
 }
 
+/*
+ * The whole page rather than as much of it as fills the box. A strip is for telling one page from
+ * another, and a cropped one throws away the part that usually says which it is.
+ */
 .files-strip-page img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .files-strip-page:hover,
@@ -112,7 +134,7 @@
  */
 .files-thumb {
     display: block;
-    height: 60px;
+    height: 90px;
     width: auto;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;

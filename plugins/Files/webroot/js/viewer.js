@@ -26,7 +26,6 @@
      */
     const WIDTH = "85vw";
     const TALL = "95vh";
-    const WITH_STRIP = "78vh";
 
     /**
      * The viewer for one group, made when it is first asked for.
@@ -59,7 +58,7 @@
             const viewer = GLightbox({
                 elements: pages,
                 width: WIDTH,
-                height: many ? WITH_STRIP : TALL,
+                height: TALL,
                 loop: pages.length > 2,
                 touchNavigation: true,
                 keyboardNavigation: true,
@@ -91,6 +90,11 @@
         if (container === null) {
             return null;
         }
+
+        // Said on the container so that the stylesheet can keep the page clear of the strip.
+        // The page is laid out in the middle of what it is given, so it has to be given less
+        // rather than merely made smaller - shrinking it would leave it centred where it was.
+        container.classList.add("has-files-strip");
 
         const strip = document.createElement("div");
         strip.className = "files-strip";
