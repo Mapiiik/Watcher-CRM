@@ -407,7 +407,7 @@ class ContractProposalsDocumentsTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains('data-files-gallery');
-        // Asked for by the page, because a cell cannot reach the blocks the layout reads.
+        // The viewer comes from the layout, because a cell cannot reach the layout's blocks.
         $this->assertResponseContains('glightbox.min.js', 'the viewer itself is fetched');
 
         /** @var iterable<\Files\Model\Entity\FileLink> $links */
@@ -419,6 +419,27 @@ class ContractProposalsDocumentsTest extends TestCase
         }
 
         $this->assertSame(2, $counted, 'both pages were filed');
+    }
+
+    /**
+     * A paper is shown in a frame, and the viewer has its own word for that.
+     *
+     * `external` is what it calls a framed page. `iframe` is not a kind it knows, and a kind it
+     * does not know is drawn as a picture - which for a PDF is a slide that stays blank, with no
+     * error anywhere to say so.
+     *
+     * @link \Files\Service\Viewable::typeOf()
+     * @return void
+     */
+    public function testAPaperIsOfferedAsSomethingToFrame(): void
+    {
+        $this->addPages(['scan.pdf']);
+
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('&quot;type&quot;:&quot;external&quot;');
+        $this->assertResponseNotContains('&quot;type&quot;:&quot;iframe&quot;');
     }
 
     /**

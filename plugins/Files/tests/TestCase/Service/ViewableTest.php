@@ -39,12 +39,31 @@ class ViewableTest extends TestCase
      */
     public function testEachKindIsShownTheWayItWants(): void
     {
-        $this->assertSame('iframe', Viewable::typeOf('application/pdf'));
+        // `external` is the viewer's word for a framed page. `iframe` is not a kind it knows, and
+        // an unknown kind is drawn as a picture - which for a PDF is an empty slide.
+        $this->assertSame('external', Viewable::typeOf('application/pdf'));
         $this->assertSame('image', Viewable::typeOf('image/jpeg'));
 
         // HEIC is filed but not shown: no browser draws it, and until a preview is made of it
         // there is nothing to put in a slide.
         $this->assertNull(Viewable::typeOf('image/heic'));
+    }
+
+    /**
+     * Every kind is named in words the viewer answers to.
+     *
+     * The list is GLightbox's own: anything else falls through to being drawn as a picture, and
+     * a PDF drawn as a picture is a slide that stays blank.
+     *
+     * @return void
+     */
+    public function testEveryKindIsNamedInTheViewersOwnWords(): void
+    {
+        $known = ['image', 'video', 'external', 'inline', 'audio', 'ajax'];
+
+        foreach (Viewable::safely() as $mime_type) {
+            $this->assertContains(Viewable::typeOf($mime_type), $known, $mime_type);
+        }
     }
 
     /**

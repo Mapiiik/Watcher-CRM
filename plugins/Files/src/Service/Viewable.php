@@ -22,10 +22,19 @@ class Viewable
      * A PDF goes in a frame so that the browser's own reader pages through it: the outer arrows
      * then move between documents and the inner bar between the pages of one.
      *
+     * These are the viewer's own words and not ours, and it has to be told them outright. Left to
+     * itself it reads the kind off the end of the address, and ours end in an id - so a scan would
+     * be taken for a page to frame rather than a picture to draw.
+     *
+     * A frame is `external` to it. `iframe` is not a kind it knows, and a kind it does not know
+     * is drawn as a picture, which for a paper is a slide that stays empty with nothing anywhere
+     * to say why. The word is not in its readme either - only in its source, where an address it
+     * cannot place comes back as `external`.
+     *
      * @var array<string, string>
      */
     private const AS_WHAT = [
-        'application/pdf' => 'iframe',
+        'application/pdf' => 'external',
         'image/jpeg' => 'image',
         'image/png' => 'image',
         'image/gif' => 'image',
