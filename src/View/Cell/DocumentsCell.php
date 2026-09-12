@@ -40,7 +40,7 @@ class DocumentsCell extends Cell
      *
      * @var list<string>
      */
-    protected array $_validCellOptions = ['generatedByUs', 'manage', 'withContracts'];
+    protected array $_validCellOptions = ['generatedByUs', 'manage', 'withContracts', 'thumbnails'];
 
     /**
      * Whether this is the side we generated rather than the scans that came back.
@@ -56,6 +56,17 @@ class DocumentsCell extends Cell
      * Whether the papers of the customer's contracts belong here too. Only asked on the customer.
      */
     protected bool $withContracts = true;
+
+    /**
+     * Whether each page shows what it looks like.
+     *
+     * Off unless asked for, and asked for separately from `manage`. That somebody may reorder the
+     * pages here and that they want to see them are two different questions: a page can want the
+     * pictures without being able to let go of anything, and the other way round. On the wide
+     * listings - a contract, a customer, a version, a printout - pictures would cost more in
+     * readability than they give back.
+     */
+    protected bool $thumbnails = false;
 
     /**
      * Initialization hook method.
@@ -91,6 +102,7 @@ class DocumentsCell extends Cell
         $this->set('rows', $id === null ? [] : $this->rows($of, $id));
         $this->set('generatedByUs', $this->generatedByUs);
         $this->set('manage', $this->manage);
+        $this->set('thumbnails', $this->thumbnails);
         // Neither column says anything the page it is on has not already said.
         $this->set('showContract', $of === 'customer' && $this->withContracts);
         $this->set('showProposal', in_array($of, ['contractVersion', 'contract', 'customer'], true));

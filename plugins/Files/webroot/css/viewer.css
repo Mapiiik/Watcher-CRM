@@ -103,3 +103,17 @@
     border-color: #fff;
     opacity: 1;
 }
+
+/**
+ * A page of a document in a listing that shows what each one looks like.
+ *
+ * Held to a height rather than a width, so that a column of them lines up whether the pages are
+ * portrait or landscape.
+ */
+.files-thumb {
+    display: block;
+    height: 60px;
+    width: auto;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}

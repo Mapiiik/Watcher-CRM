@@ -5,6 +5,7 @@ namespace Files\View\Helper;
 
 use Cake\View\Helper;
 use Files\Model\Entity\FileLink;
+use Files\Service\Previews;
 use Files\Service\Viewable;
 
 /**
@@ -110,6 +111,94 @@ class PreviewHelper extends Helper
                 'escape' => true,
             ],
         );
+    }
+
+    /**
+     * One page of a group, as a picture of itself that opens the group at it.
+     *
+     * For a listing that shows what each page looks like. The group is not repeated here - the
+     * mark only names it, and the viewer finds the pages on whichever mark carries them. A table
+     * of five pages would otherwise carry the same list five times over.
+     *
+     * The whole run is handed over rather than the one page, because which page of the viewer
+     * this is depends on the others: the viewer only holds the ones it can show, and a run may
+     * hold a scan in a format we can draw but no browser can. Such a page still gets its picture,
+     * and the picture is a plain link to the file, because there is no slide to open at.
+     *
+     * Empty where there is no picture to be had, so that a listing leaves the cell alone rather
+     * than drawing a broken one.
+     *
+     * @param list<\Files\Model\Entity\FileLink> $links The pages of the run, in the order they read.
+     * @param int $at Which of them this is.
+     * @param string $gallery What the run is called.
+     * @return string
+     */
+    public function pageMark(array $links, int $at, string $gallery): string
+    {
+        $link = $links[$at] ?? null;
+        if ($link === null || !Previews::generates($link->file->mime_type ?? null)) {
+            return '';
+        }
+
+        $picture = $this->Html->image(
+            [
+                'plugin' => 'Files',
+                'controller' => 'Documents',
+                'action' => 'thumbnail',
+                $link->id,
+            ],
+            [
+                'alt' => '',
+                'loading' => 'lazy',
+                'class' => 'files-thumb',
+            ],
+        );
+
+        $options = ['target' => '_blank', 'rel' => 'noopener', 'escape' => false];
+
+        $where = $this->positionOf($links, $at);
+        if ($where !== null) {
+            $options['class'] = 'files-viewer';
+            $options['data-files-gallery'] = $gallery;
+            $options['data-files-start'] = $where;
+        }
+
+        return $this->Html->link(
+            $picture,
+            [
+                'plugin' => 'Files',
+                'controller' => 'Documents',
+                'action' => 'open',
+                $link->id,
+            ],
+            $options,
+        );
+    }
+
+    /**
+     * Which page of the viewer one of a run is, or null where it is not one of them at all.
+     *
+     * @param list<\Files\Model\Entity\FileLink> $links The pages of the run.
+     * @param int $at Which of them.
+     * @return int|null
+     */
+    private function positionOf(array $links, int $at): ?int
+    {
+        $shown = 0;
+
+        foreach ($links as $index => $link) {
+            $shows = Viewable::typeOf($link->file->mime_type ?? null) !== null;
+
+            if ($index === $at) {
+                return $shows ? $shown : null;
+            }
+
+            if ($shows) {
+                $shown++;
+            }
+        }
+
+        return null;
     }
 
     /**

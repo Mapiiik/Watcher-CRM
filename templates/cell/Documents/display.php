@@ -17,6 +17,7 @@
  * @var bool $showContract Whether the rows say which contract they belong to.
  * @var bool $showProposal Whether the rows say which round they belong to.
  * @var bool $manage Whether the pages may be reordered and let go of from here.
+ * @var bool $thumbnails Whether each page shows what it looks like.
  */
 
 /**
@@ -99,6 +100,9 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 <?php endif; ?>
                 <th><?= __('Document Type') ?></th>
                 <th><?= __('Variant') ?></th>
+                <?php if ($thumbnails) : ?>
+                <th><?= __('Page') ?></th>
+                <?php endif; ?>
                 <th><?= __('Name') ?></th>
                 <th><?= __('Size') ?></th>
                 <th><?= __('Created') ?></th>
@@ -167,6 +171,13 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>
                 <?= $joined($spans['document'][$index], $index, h($row['document'])) ?>
                 <?= $joined($page, $index, $variantCell) ?>
+                <?php if ($thumbnails) : ?>
+                <td><?= $this->Preview->pageMark(
+                    array_column(array_slice($rows, $page['start'], $page['span']), 'link'),
+                    $index - $page['start'],
+                    $row['keys']['variant'],
+                ) ?></td>
+                <?php endif; ?>
                 <td><?= h($row['link']->downloadName()) ?></td>
                 <td><?= $this->Number->toReadableSize($row['link']->file->byte_size) ?></td>
                 <td><?= h($row['link']->created) ?></td>

@@ -35,9 +35,19 @@
         const gallery = mark.dataset.filesGallery;
 
         if (!built.has(gallery)) {
+            // One mark of the group carries the list and the others only name the group, so that
+            // a table showing every page does not carry the same list once per row.
+            const carrier = mark.dataset.filesPages
+                ? mark
+                : document.querySelector('[data-files-pages][data-files-gallery="' + gallery + '"]');
+
+            if (carrier === null) {
+                return null;
+            }
+
             let pages;
             try {
-                pages = JSON.parse(mark.dataset.filesPages);
+                pages = JSON.parse(carrier.dataset.filesPages);
             } catch (error) {
                 // A mark we cannot read is a mark we leave alone: the link under it still works.
                 console.error("Files viewer: could not read the pages of " + gallery, error);
@@ -163,7 +173,7 @@
     }
 
     document.addEventListener("click", function (event) {
-        const mark = event.target.closest("[data-files-pages]");
+        const mark = event.target.closest("[data-files-gallery]");
         if (!mark || typeof GLightbox !== "function") {
             return;
         }

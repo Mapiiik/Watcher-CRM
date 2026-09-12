@@ -483,6 +483,59 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
+     * Where the papers are worked on, each page shows what it looks like. Everywhere else the
+     * table stays words.
+     *
+     * A separate question from whether the pages may be reordered: a listing can want the
+     * pictures without being able to let go of anything, and the other way round.
+     *
+     * @link \App\View\Cell\DocumentsCell::display()
+     * @return void
+     */
+    public function testThePicturesAreOnlyWhereThePapersAreWorkedOn(): void
+    {
+        $this->addPages(['first.png', 'second.png']);
+
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('files-thumb');
+        $this->assertResponseContains('/files/documents/thumbnail/');
+
+        // The wide listings would lose more in readability than the pictures give back.
+        $this->get('/contracts/documents/' . self::CONTRACT_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('files-thumb');
+    }
+
+    /**
+     * A picture in the listing opens the group at its own page, and does it without carrying the
+     * group a second time.
+     *
+     * @link \Files\View\Helper\PreviewHelper::pageMark()
+     * @return void
+     */
+    public function testAPictureOpensTheGroupAtItsOwnPage(): void
+    {
+        $this->addPages(['first.png', 'second.png']);
+
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+
+        $body = (string)$this->_getBodyAsString();
+
+        // One mark carries the pages. The rest only name the group they belong to.
+        $this->assertSame(1, substr_count($body, 'data-files-pages'));
+        $this->assertGreaterThan(1, substr_count($body, 'data-files-gallery'));
+
+        // And each says which page of it to open at.
+        $this->assertMatchesRegularExpression('/data-files-start="0"/', $body);
+        $this->assertMatchesRegularExpression('/data-files-start="1"/', $body);
+    }
+
+    /**
      * The strip under the page being read needs a picture of each of the others, so every page
      * carries where its own is to be had.
      *

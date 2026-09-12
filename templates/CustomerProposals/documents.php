@@ -51,7 +51,7 @@
                 <?= $this->cell(
                     'Documents',
                     ['customerProposal', $customerProposal->id],
-                    ['generatedByUs' => false, 'manage' => true],
+                    ['generatedByUs' => false, 'manage' => true, 'thumbnails' => true],
                 ) ?>
             </div>
             <div class="related">
@@ -66,7 +66,7 @@
                 <?= $this->cell(
                     'Documents',
                     ['customerProposal', $customerProposal->id],
-                    ['generatedByUs' => true, 'manage' => true],
+                    ['generatedByUs' => true, 'manage' => true, 'thumbnails' => true],
                 ) ?>
             </div>
         </div>
