@@ -7,6 +7,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Files\Model\Table\FileLinksTable;
 use Files\Service\FileStorage;
+use Files\Service\Viewable;
 use Laminas\Diactoros\Stream;
 use Throwable;
 
@@ -29,24 +30,6 @@ class DocumentsController extends AppController
      * @var string|null
      */
     protected ?string $defaultTable = 'Files.FileLinks';
-
-    /**
-     * What the browser may be asked to draw in place of handing it to the operator.
-     *
-     * A list of what is allowed rather than of what is not, because the content came from outside
-     * and anything the browser would run instead of draw would run in our own origin. Kept here
-     * rather than beside the application's own list of what may be uploaded: that one says what
-     * is worth filing, this one says what is safe to open, and they answer to different things.
-     *
-     * @var array<string>
-     */
-    private const OPENS_SAFELY = [
-        'application/pdf',
-        'image/jpeg',
-        'image/png',
-        'image/gif',
-        'image/webp',
-    ];
 
     /**
      * Index method
@@ -140,7 +123,7 @@ class DocumentsController extends AppController
         // Anything the browser would run rather than draw is handed over to be kept, whatever was
         // asked for. The content came from outside, so opening it in our own origin would be
         // handing a stranger the session.
-        $response = $inline && in_array($link->file->mime_type, self::OPENS_SAFELY, true)
+        $response = $inline && Viewable::opens($link->file->mime_type)
             ? $response->withHeader(
                 'Content-Disposition',
                 'inline; filename="' . str_replace('"', '', $link->downloadName()) . '"',

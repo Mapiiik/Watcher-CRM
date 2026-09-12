@@ -10,6 +10,7 @@ use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\View\Cell;
 use InvalidArgumentException;
+use Override;
 
 /**
  * The documents filed against a record, wherever somebody is looking at that record.
@@ -55,6 +56,23 @@ class DocumentsCell extends Cell
      * Whether the papers of the customer's contracts belong here too. Only asked on the customer.
      */
     protected bool $withContracts = true;
+
+    /**
+     * Initialization hook method.
+     *
+     * The viewer is the plugin's, and it is asked for here rather than in the application's view:
+     * this is the only table that has documents to look through, and a page without one has no
+     * business loading a helper for them.
+     *
+     * @return void
+     */
+    #[Override]
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->viewBuilder()->addHelper('Files.Preview');
+    }
 
     /**
      * Default display method.

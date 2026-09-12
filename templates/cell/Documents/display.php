@@ -11,6 +11,7 @@
  * looks - a consent has no contract, and its rows simply leave that cell empty.
  *
  * @var \App\View\AppView $this
+ * @var \Files\View\Helper\PreviewHelper $Preview
  * @var list<array<string, mixed>> $rows
  * @var bool $generatedByUs Whether this is the side we generated.
  * @var bool $showContract Whether the rows say which contract they belong to.
@@ -125,6 +126,18 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 h($round['label']),
                 ['controller' => $round['controller'], 'action' => 'view', $round['id']],
             );
+            // The variant cell already spans exactly the pages of one document, so the way to look
+            // through them belongs in it. Built once where the run starts, since that is the only
+            // row the cell is drawn on.
+            $variantCell = h($row['variant']);
+            if ($first) {
+                $mark = $this->Preview->flipThrough(
+                    array_column(array_slice($rows, $page['start'], $page['span']), 'link'),
+                    $row['keys']['variant'],
+                );
+                $variantCell .= $mark === '' ? '' : '<br>' . $mark;
+            }
+
             $papersLink = $this->AuthLink->link(
                 __('Proposal Documents'),
                 [
@@ -139,7 +152,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
                 <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>
                 <?= $joined($spans['document'][$index], $index, h($row['document'])) ?>
-                <?= $joined($page, $index, h($row['variant'])) ?>
+                <?= $joined($page, $index, $variantCell) ?>
                 <td><?= h($row['link']->downloadName()) ?></td>
                 <td><?= $this->Number->toReadableSize($row['link']->file->byte_size) ?></td>
                 <td><?= h($row['link']->created) ?></td>

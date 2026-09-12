@@ -391,6 +391,49 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
+     * The pages of one document are offered as one group to look through.
+     *
+     * The variant cell already spans exactly those pages, so the mark sits in it and carries the
+     * whole group with it - the viewer never has to ask a second time.
+     *
+     * @link \Files\View\Helper\PreviewHelper::flipThrough()
+     * @return void
+     */
+    public function testThePagesOfOneDocumentAreOfferedAsOneGroup(): void
+    {
+        $this->addPages(['scan.png', 'scan.png']);
+
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('data-files-gallery');
+
+        /** @var iterable<\Files\Model\Entity\FileLink> $links */
+        $links = $this->fetchTable('Files.FileLinks')->find()->all();
+        $counted = 0;
+        foreach ($links as $link) {
+            $this->assertResponseContains((string)$link->id, 'every page travels with the mark');
+            $counted++;
+        }
+
+        $this->assertSame(2, $counted, 'both pages were filed');
+    }
+
+    /**
+     * A page with nothing filed against it does not fetch a viewer it has nothing to show in.
+     *
+     * @link \Files\View\Helper\PreviewHelper::load()
+     * @return void
+     */
+    public function testAPageWithNoDocumentsDoesNotFetchTheViewer(): void
+    {
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('glightbox');
+    }
+
+    /**
      * The form asks before it files, like every other way of adding something.
      *
      * @link \App\Controller\ContractProposalsController::addPages()
