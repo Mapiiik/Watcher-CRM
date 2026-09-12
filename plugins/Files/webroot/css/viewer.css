@@ -1,37 +1,48 @@
 /**
- * Keeping the line under a framed page from eating the page.
+ * The name of a page sits on the dark, not in a white slab.
  *
- * A slide is laid out as a column: the frame, and under it the line naming the document. Both are
- * free to grow, and the line takes what it likes - a filename ends up with half the screen while
- * the frame, which asks for the whole height and is allowed to be shrunk, is squeezed away to
- * nothing. The reader inside it then has no room to draw in, so the slide shows a name over an
- * empty panel with nothing anywhere to say why.
+ * The line naming the document is a caption, and a caption does not need a sheet of its own. Left
+ * white it took a share of the room and a share of the attention from the thing being read, so it
+ * loses the sheet and keeps the text.
  *
- * Holding the line to the size of its own text is the whole of the fix. The frame needs nothing
- * said about it: once the line stops taking the column, its own `height: 100%` resolves and it
- * fills what is left.
+ * Below the page rather than over it. Over it is what the viewer does on a narrow screen, and it
+ * reads well there - but the box is laid out against the slide and not against the page inside
+ * it, so on a wide screen it hangs out past the edge of what it is naming.
  *
- * Measured rather than reasoned: `height`, `flex` and `min-height` on the frame were all tried,
- * and `height: auto` on it actually makes things worse.
- *
- * How big the panel is in the first place is not set here - that is what the viewer's own `width`
- * and `height` settings are for, and they are passed in viewer.js.
+ * And holding the line to the size of its own text is what keeps the page itself whole. A slide
+ * is laid out as a column, and as long as both may grow the line takes what it likes while the
+ * page, which asks for the whole height and may be shrunk, is squeezed away to nothing.
  */
 .ginner-container.desc-bottom .gslide-description {
     flex: 0 0 auto;
+    background: transparent;
 }
 
 /**
- * And keeping the room around that line to what a filename needs.
- *
- * The spacing is built for a title with a paragraph under it. We give it a filename and nothing
- * else, so the gap meant to separate the two has nothing to separate - and it is only closed
- * where the name really is the last thing there.
+ * Two short lines, spaced for what they are. What is there is a name and a filename, where the
+ * spacing was built for a title with a paragraph under it.
  */
 .glightbox-clean .gdesc-inner {
     padding: 10px 20px;
 }
 
-.glightbox-clean .gslide-title:last-child {
-    margin-bottom: 0;
+.glightbox-clean .gslide-title {
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+/**
+ * The filename, and at the far end of the same line which page of how many this is. Beside the
+ * filename it would read as part of it, which is the one thing it is not.
+ */
+.glightbox-clean .gslide-desc {
+    display: flex;
+    justify-content: space-between;
+    gap: 2em;
+    color: #d7d7d7;
+}
+
+.glightbox-clean .gslide-desc .files-page {
+    flex: 0 0 auto;
+    white-space: nowrap;
 }
