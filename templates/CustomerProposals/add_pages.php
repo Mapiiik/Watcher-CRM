@@ -29,11 +29,12 @@ use App\Model\Enum\DocumentVariant;
         <div class="customerProposals form content">
             <?= $this->element('CustomerProposals/heading') ?>
 
+            <?php $this->Upload->load() ?>
             <?=
                 $this->Form->create(null, [
                     'type' => 'file',
                     'url' => ['action' => 'addPages', $customerProposal->id],
-                ])
+                ] + $this->Upload->atMost())
                 ?>
             <fieldset>
                 <legend><?= __('Add Received Document') ?></legend>

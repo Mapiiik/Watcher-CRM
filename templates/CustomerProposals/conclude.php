@@ -30,7 +30,8 @@ use Cake\I18n\Date;
         <div class="customerProposals form content">
             <?= $this->element('CustomerProposals/heading') ?>
 
-            <?= $this->Form->create($customerProposal, ['type' => 'file']) ?>
+            <?php $this->Upload->load() ?>
+            <?= $this->Form->create($customerProposal, ['type' => 'file'] + $this->Upload->atMost()) ?>
             <fieldset>
                 <legend><?= __('Record the Signature') ?></legend>
                 <p><?= __('This is where the round ends. Nothing stands behind it waiting to be'
