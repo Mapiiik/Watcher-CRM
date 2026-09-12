@@ -21,6 +21,9 @@
 /**
  * Two short lines, spaced for what they are. What is there is a name and a filename, where the
  * spacing was built for a title with a paragraph under it.
+ *
+ * The skin names Arial outright, which is the one thing here that is nobody's choice but the
+ * library's. Unset hands the lines back to whatever the page is set in.
  */
 .glightbox-clean .gdesc-inner {
     padding: 10px 20px;
@@ -29,6 +32,7 @@
 .glightbox-clean .gslide-title {
     color: #fff;
     margin-bottom: 2px;
+    font-family: unset;
 }
 
 /**
@@ -40,6 +44,7 @@
     justify-content: space-between;
     gap: 2em;
     color: #d7d7d7;
+    font-family: unset;
 }
 
 .glightbox-clean .gslide-desc .files-page {
@@ -101,7 +106,9 @@
 /* A page with no picture of its own still says which one it is. */
 .files-strip-page.is-blank {
     color: #d7d7d7;
-    font: 15px/108px system-ui, sans-serif;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 108px;
     text-align: center;
 }
 
