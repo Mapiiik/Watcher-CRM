@@ -29,7 +29,12 @@
   <policy domain="resource" name="width" value="32KP"/>
   <policy domain="resource" name="height" value="32KP"/>
   <policy domain="resource" name="list-length" value="256"/>
-  <policy domain="resource" name="time" value="120"/>
+  <!--
+    No ceiling on time. What ImageMagick offers counts the processor time of the whole process
+    rather than of the conversion, so on a build that reads it that way, anything long-lived -
+    a batch of previews, a worker answering all day - eventually cannot draw at all. What a
+    crafted file could spend is bounded by the sizes instead.
+  -->
   <policy domain="resource" name="thread" value="2"/>
   <policy domain="system" name="max-memory-request" value="256MiB"/>
 
