@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-04 23:49+0200\n"
+"POT-Creation-Date: 2026-09-12 21:40+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -514,13 +514,13 @@ msgid "Invalid invoice list received from Eurofaktura API."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:34
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:131
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:132
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:57
 msgid "Invalid invoice data for invoice number {0}."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:43
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:140
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:141
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:66
 msgid "Missing customer information or billing address for invoice number {0}."
 msgstr ""
@@ -533,12 +533,16 @@ msgstr ""
 msgid "Failed to generate Pohoda DBF export."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:219
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:220
 msgid "Failed to write DBF record for invoice {0}."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfParser.php:34
 msgid "Unable to open DBF file."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfParser.php:45
+msgid "Unable to read record {0} of the DBF file."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:78

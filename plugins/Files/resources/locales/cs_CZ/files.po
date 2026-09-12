@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-11 08:57+0200\n"
+"POT-Creation-Date: 2026-09-12 21:41+0200\n"
 "PO-Revision-Date: 2026-09-11 02:09+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -16,90 +16,125 @@ msgstr ""
 
 #: plugins/Files/src/Command/CheckFilesCommand.php:85
 msgid ""
-"Checks the stored content against what the records say, and reports what does not match."
+"Checks the stored content against what the records say, and reports what "
+"does not match."
 msgstr "Porovná uložený obsah s tím, co říká evidence, a nahlásí, co nesedí."
 
 #: plugins/Files/src/Command/CheckFilesCommand.php:91
 msgid "Throw away the bytes nobody has a row for. Nothing else is touched."
-msgstr "Zahodit bajty, ke kterým nikdo nemá řádek. Ničeho jiného se to nedotkne."
+msgstr ""
+"Zahodit bajty, ke kterým nikdo nemá řádek. Ničeho jiného se to nedotkne."
 
 #: plugins/Files/src/Command/CheckFilesCommand.php:135
 msgid "{0} rows, {1} of them with their content stored."
 msgstr "Řádků {0}, z toho {1} s uloženým obsahem."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:137
+#: plugins/Files/src/Command/CheckFilesCommand.php:142
 msgid "Rows whose bytes are gone"
 msgstr "Řádky, jejichž bajty zmizely"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:142
+#: plugins/Files/src/Command/CheckFilesCommand.php:147
 msgid "Rows whose bytes are not the size they say"
 msgstr "Řádky, jejichž bajty nemají udanou velikost"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:147
+#: plugins/Files/src/Command/CheckFilesCommand.php:152
 msgid "Bytes nobody has a row for"
 msgstr "Bajty, ke kterým nikdo nemá řádek"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:150
+#: plugins/Files/src/Command/CheckFilesCommand.php:155
 msgid ""
-"{0} rows nothing points at. They are safe to let go of one at a time from the storage "
-"page."
-msgstr "Na {0} řádků nic neukazuje. Lze je po jednom odebrat na stránce úložiště."
+"{0} rows nothing points at. They are safe to let go of one at a time from "
+"the storage page."
+msgstr ""
+"Na {0} řádků nic neukazuje. Lze je po jednom odebrat na stránce úložiště."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:162
+#: plugins/Files/src/Command/CheckFilesCommand.php:167
 msgid "{0} thrown away."
 msgstr "Zahozeno: {0}."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:168
+#: plugins/Files/src/Command/CheckFilesCommand.php:173
 msgid "The store and the records agree."
 msgstr "Úložiště a evidence se shodují."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:169
+#: plugins/Files/src/Command/CheckFilesCommand.php:174
 msgid "Nothing is missing. Run this again with --fix to throw the rest away."
 msgstr "Nic nechybí. Zbytek zahodí opakované spuštění s --fix."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:191
+#: plugins/Files/src/Command/CheckFilesCommand.php:196
 msgid "The store no longer holds everything the records point at."
 msgstr "Úložiště už nedrží všechno, na co evidence ukazuje."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:193
+#: plugins/Files/src/Command/CheckFilesCommand.php:198
 msgid "Rows whose bytes are gone: {0}"
 msgstr "Řádky, jejichž bajty zmizely: {0}"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:194
+#: plugins/Files/src/Command/CheckFilesCommand.php:199
 msgid "Rows whose bytes are not the size they say: {0}"
 msgstr "Řádky, jejichž bajty nemají udanou velikost: {0}"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:196
+#: plugins/Files/src/Command/CheckFilesCommand.php:201
 msgid ""
-"Run `bin/cake check_files` to see which. What is missing has to come back from a backup "
-"- neither can be put right from there."
+"Run `bin/cake check_files` to see which. What is missing has to come back "
+"from a backup - neither can be put right from there."
 msgstr ""
-"Které to jsou, ukáže `bin/cake check_files`. Co chybí, se musí vrátit ze zálohy, "
-"odtamtud to spravit nejde."
+"Které to jsou, ukáže `bin/cake check_files`. Co chybí, se musí vrátit ze "
+"zálohy, odtamtud to spravit nejde."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:204
+#: plugins/Files/src/Command/CheckFilesCommand.php:209
 msgid "File store check failed"
 msgstr "Kontrola úložiště souborů selhala"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:253
+#: plugins/Files/src/Command/CheckFilesCommand.php:258
 msgid "  ... and {0} more."
 msgstr "  ... a dalších {0}."
 
-#: plugins/Files/src/Controller/DocumentsController.php:135
+#: plugins/Files/src/Command/GeneratePreviewsCommand.php:80
+msgid ""
+"Makes the pictures of what is filed, so that nobody has to wait for them. "
+"They are made on demand too, so this only decides who does the waiting."
+msgstr "Vytvoří náhledy toho, co je založeno, aby na ně nikdo nemusel čekat. Vznikají i na vyžádání, takže tohle jen rozhoduje, kdo bude čekat."
+
+#: plugins/Files/src/Command/GeneratePreviewsCommand.php:87
+msgid "How many to make before stopping. Defaults to {0}."
+msgstr "Kolik jich vytvořit, než se má skončit. Výchozí je {0}."
+
+#: plugins/Files/src/Command/GeneratePreviewsCommand.php:144
+msgid "{0} made."
+msgstr "Vytvořeno {0}."
+
+#: plugins/Files/src/Command/GeneratePreviewsCommand.php:147
+msgid "{0} could not be made. The log says why."
+msgstr "{0} se nepodařilo vytvořit. Důvod je v logu."
+
+#: plugins/Files/src/Controller/DocumentsController.php:157
+msgid "There is no picture of this document."
+msgstr "K tomuto dokumentu není náhled."
+
+#: plugins/Files/src/Controller/DocumentsController.php:184
 msgid "The content of this document is not in the store."
 msgstr "Obsah tohoto dokumentu není v úložišti."
 
-#: plugins/Files/src/Controller/DocumentsController.php:170
+#: plugins/Files/src/Controller/DocumentsController.php:219
 msgid "The document has been removed."
 msgstr "Dokument byl odebrán."
 
-#: plugins/Files/src/Controller/DocumentsController.php:172
+#: plugins/Files/src/Controller/DocumentsController.php:221
 msgid "The document could not be removed: {0}"
 msgstr "Dokument se nepodařilo odebrat: {0}"
 
 #: plugins/Files/src/Model/Table/FilesTable.php:86
 msgid "The hash of the content is written in hexadecimal."
 msgstr "Otisk obsahu je zapsaný šestnáctkově."
+
+#: plugins/Files/src/View/Helper/PreviewHelper.php:102
+msgid "Look through ({0})"
+msgstr "Prohlédnout ({0})"
+
+#: plugins/Files/src/View/Helper/UploadHelper.php:71
+msgid ""
+"%d files are chosen and this server takes at most {0} at once. Choose fewer, "
+"or send them in more than one batch."
+msgstr "Vybráno je %d souborů a tento server jich přijme najednou nejvýš {0}. Vyberte jich méně, nebo je pošlete ve více dávkách."
 
 #: plugins/Files/templates/Documents/index.php:14
 #: plugins/Files/templates/Documents/index.php:59
@@ -160,7 +195,8 @@ msgstr "Velikost"
 
 #: plugins/Files/templates/Documents/index.php:65
 #: plugins/Files/templates/Storage/index.php:55
-#: plugins/Files/templates/Storage/view.php:11 plugins/Files/templates/Storage/view.php:91
+#: plugins/Files/templates/Storage/view.php:11
+#: plugins/Files/templates/Storage/view.php:91
 msgid "Actions"
 msgstr "Akce"
 
@@ -184,10 +220,11 @@ msgstr "Odstranit"
 
 #: plugins/Files/templates/Documents/index.php:96
 msgid ""
-"Remove this document from the record? The content itself goes only if nothing else "
-"wants it."
+"Remove this document from the record? The content itself goes only if "
+"nothing else wants it."
 msgstr ""
-"Odebrat tento dokument ze záznamu? Samotný obsah zmizí, jen když ho nikdo jiný nechce."
+"Odebrat tento dokument ze záznamu? Samotný obsah zmizí, jen když ho nikdo "
+"jiný nechce."
 
 #: plugins/Files/templates/Storage/index.php:13
 #: plugins/Files/templates/Storage/index.php:52
@@ -205,13 +242,13 @@ msgstr "Otisk začíná na"
 
 #: plugins/Files/templates/Storage/index.php:41
 msgid ""
-"Each piece of content once, however many records point at it. What nothing points at "
-"any more is here too - that is the state a torn backup leaves behind, and the harmless "
-"one."
+"Each piece of content once, however many records point at it. What nothing "
+"points at any more is here too - that is the state a torn backup leaves "
+"behind, and the harmless one."
 msgstr ""
-"Každý obsah jednou, bez ohledu na to, kolik záznamů na něj ukazuje. Je tu i to, na co "
-"už neukazuje nic, protože přesně to po sobě nechá přetržená záloha, a je to ta neškodná "
-"polovina."
+"Každý obsah jednou, bez ohledu na to, kolik záznamů na něj ukazuje. Je tu i "
+"to, na co už neukazuje nic, protože přesně to po sobě nechá přetržená "
+"záloha, a je to ta neškodná polovina."
 
 #: plugins/Files/templates/Storage/index.php:51
 msgid "Hash"
@@ -236,11 +273,11 @@ msgstr "{0} v úložišti, {1} celkem, na {2} z nich neukazuje nic."
 
 #: plugins/Files/templates/Storage/view.php:31
 msgid ""
-"The bytes this row stands for are not in the store. Nothing that points at it can be "
-"handed over until they are put back."
+"The bytes this row stands for are not in the store. Nothing that points at "
+"it can be handed over until they are put back."
 msgstr ""
-"Bajty, které tento řádek zastupuje, nejsou v úložišti. Dokud se nevrátí, nejde vydat "
-"nic, co na ně ukazuje."
+"Bajty, které tento řádek zastupuje, nejsou v úložišti. Dokud se nevrátí, "
+"nejde vydat nic, co na ně ukazuje."
 
 #: plugins/Files/templates/Storage/view.php:42
 msgid "Hash Type"
@@ -256,19 +293,21 @@ msgstr "Vytvořil"
 
 #: plugins/Files/templates/Storage/view.php:72
 msgid ""
-"Nothing points at this content. It is what a backup taken while something was being "
-"written leaves behind, and it is safe to throw away."
+"Nothing points at this content. It is what a backup taken while something "
+"was being written leaves behind, and it is safe to throw away."
 msgstr ""
-"Na tento obsah nic neukazuje. Nechá ho po sobě záloha pořízená ve chvíli, kdy se něco "
-"zapisovalo, a jde bez obav zahodit."
+"Na tento obsah nic neukazuje. Nechá ho po sobě záloha pořízená ve chvíli, "
+"kdy se něco zapisovalo, a jde bez obav zahodit."
 
 #: plugins/Files/templates/Storage/view.php:86
 msgid "Foreign Key"
 msgstr "Cizí klíč"
 
 #~ msgid ""
-#~ "Checks what is on the shelf against what is on file, and says what does not match."
-#~ msgstr "Porovná, co leží v úložišti, s tím, co je evidované, a řekne, co nesedí."
+#~ "Checks what is on the shelf against what is on file, and says what does "
+#~ "not match."
+#~ msgstr ""
+#~ "Porovná, co leží v úložišti, s tím, co je evidované, a řekne, co nesedí."
 
 #~ msgid "{0} rows, {1} of them on the shelf."
 #~ msgstr "Řádků {0}, z toho {1} v úložišti."
@@ -283,8 +322,8 @@ msgstr "Cizí klíč"
 #~ msgstr "{0} v úložišti, {1} celkem, na {2} z nich neukazuje nic."
 
 #~ msgid ""
-#~ "The bytes this row stands for are not on the shelf. Nothing that points at it can be "
-#~ "handed over until they are put back."
+#~ "The bytes this row stands for are not on the shelf. Nothing that points "
+#~ "at it can be handed over until they are put back."
 #~ msgstr ""
-#~ "Bajty, které tento řádek zastupuje, nejsou v úložišti. Dokud se nevrátí, nejde vydat "
-#~ "nic, co na ně ukazuje."
+#~ "Bajty, které tento řádek zastupuje, nejsou v úložišti. Dokud se nevrátí, "
+#~ "nejde vydat nic, co na ně ukazuje."
