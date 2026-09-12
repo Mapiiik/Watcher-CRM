@@ -6,7 +6,6 @@ namespace App\Test\TestCase\View\Cell;
 use Cake\TestSuite\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use SplFileInfo;
 
 /**
  * Every page that draws the documents table also fetches the viewer that opens them.
@@ -58,7 +57,7 @@ class DocumentsViewerTest extends TestCase
         $found = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root));
 
         foreach ($found as $file) {
-            /** @var SplFileInfo $file */
+            /** @var \SplFileInfo $file */
             if ($file->getExtension() !== 'php') {
                 continue;
             }
