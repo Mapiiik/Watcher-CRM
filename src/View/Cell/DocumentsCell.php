@@ -120,6 +120,9 @@ class DocumentsCell extends Cell
                 'id' => (string)$proposal->id,
                 'controller' => 'CustomerProposals',
                 'label' => $proposal->effective_from . ' - ' . $proposal->purpose->label(),
+                // The column reads down a table, where the day leads and the dashes line up. The
+                // viewer reads across one line, where it wants a sentence instead.
+                'says' => __('{0} from {1}', $proposal->purpose->label(), $proposal->effective_from),
                 // A consent belongs to nobody's contract, so the column stays empty on its rows.
                 'contract_id' => null,
                 'contract' => '',
@@ -137,6 +140,7 @@ class DocumentsCell extends Cell
                 'id' => (string)$proposal->id,
                 'controller' => 'ContractProposals',
                 'label' => $proposal->effective_from . ' - ' . $proposal->purpose->label(),
+                'says' => __('{0} from {1}', $proposal->purpose->label(), $proposal->effective_from),
                 'contract_id' => (string)$proposal->contract_id,
                 'contract' => (string)($proposal->contract->number ?? ''),
                 'documents' => $documents,

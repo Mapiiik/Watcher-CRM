@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Files\View\Helper;
 
 use Cake\View\Helper;
+use Files\Model\Entity\FileLink;
 use Files\Service\Viewable;
 
 /**
@@ -79,14 +80,19 @@ class PreviewHelper extends Helper
     /**
      * A mark that opens the pages of one document, one after another.
      *
+     * What the group is called is handed over rather than worked out here. A record is a model
+     * and a key to this plugin and nothing more, so which contract it belongs to and what it is
+     * for are the application's to say.
+     *
      * @param list<\Files\Model\Entity\FileLink> $links The pages, in the order they read.
      * @param string $gallery What tells this group apart from the others on the page.
+     * @param string $caption What the group is, in the application's own words.
      * @param int $startAt Which page it opens on.
      * @return string The mark, or an empty string where there is nothing to show.
      */
-    public function flipThrough(array $links, string $gallery, int $startAt = 0): string
+    public function flipThrough(array $links, string $gallery, string $caption = '', int $startAt = 0): string
     {
-        $pages = $this->pages($links);
+        $pages = $this->pages($links, $caption);
         if ($pages === []) {
             return '';
         }
@@ -110,21 +116,28 @@ class PreviewHelper extends Helper
      * What the viewer needs to know about each page it can show.
      *
      * Only what can be shown goes in. A file the browser would download rather than draw has no
-     * place in a gallery, and leaving it out is better than a slide that stays blank.
+     * place in a gallery, and leaving it out is better than a slide that stays blank. The pages
+     * are counted after that, so the count is of what can actually be turned to.
      *
      * @param list<\Files\Model\Entity\FileLink> $links The pages.
+     * @param string $caption What the group is, in the application's own words.
      * @return list<array<string, string>>
      */
-    private function pages(array $links): array
+    private function pages(array $links, string $caption): array
     {
-        $pages = [];
+        $shown = [];
 
         foreach ($links as $link) {
             $type = Viewable::typeOf($link->file->mime_type ?? null);
-            if ($type === null) {
-                continue;
+            if ($type !== null) {
+                $shown[] = [$link, $type];
             }
+        }
 
+        $pages = [];
+        $of = count($shown);
+
+        foreach ($shown as $at => [$link, $type]) {
             $pages[] = [
                 'href' => $this->Url->build([
                     'plugin' => 'Files',
@@ -133,10 +146,42 @@ class PreviewHelper extends Helper
                     $link->id,
                 ]),
                 'type' => $type,
-                'title' => $link->downloadName(),
+                'title' => $caption,
+                'description' => $this->descriptionOf($link, $at + 1, $of),
             ];
         }
 
         return $pages;
+    }
+
+    /**
+     * Which file that page is, when it was filed, and which of how many it is.
+     *
+     * The line under the name, and the only part of it this plugin is in a position to know. It
+     * is written as markup because the viewer puts it on the page as markup, which is also what
+     * lets the count sit at the far end of the line instead of trailing the filename.
+     *
+     * Which of how many is only said where there is more than one, since `1/1` tells nobody
+     * anything they did not already know.
+     *
+     * @param \Files\Model\Entity\FileLink $link The page.
+     * @param int $at Which page this is.
+     * @param int $of How many there are.
+     * @return string
+     */
+    private function descriptionOf(FileLink $link, int $at, int $of): string
+    {
+        // Written the way the application writes every other moment. Which format that is, is a
+        // matter for the installation and not for this plugin - and a scan filed in a batch is
+        // told apart from its neighbours by the seconds, so they are not taken away here.
+        $filed = (string)$link->created;
+        $named = $filed === '' ? $link->downloadName() : $link->downloadName() . ' (' . $filed . ')';
+
+        $said = '<span class="files-file">' . h($named) . '</span>';
+        if ($of > 1) {
+            $said .= '<span class="files-page">' . h($at . '/' . $of) . '</span>';
+        }
+
+        return $said;
     }
 }

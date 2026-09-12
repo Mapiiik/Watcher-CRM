@@ -131,9 +131,23 @@ $joined = function (array $run, int $index, string $content, string $class = '')
             // row the cell is drawn on.
             $variantCell = h($row['variant']);
             if ($first) {
+                // The whole of where a page came from, whichever page the table is drawn on. The
+                // columns leave out what the page they sit on already says, and the title does
+                // not follow them there: it belongs to the file rather than to the listing, so
+                // the same file is called the same thing wherever it is met. That it also stands
+                // on its own once the overlay covers the page is the same point from the other
+                // side.
+                $caption = implode(' - ', array_filter([
+                    $round['contract'],
+                    $round['says'],
+                    $row['document'],
+                    $row['variant'],
+                ]));
+
                 $mark = $this->Preview->flipThrough(
                     array_column(array_slice($rows, $page['start'], $page['span']), 'link'),
                     $row['keys']['variant'],
+                    $caption,
                 );
                 $variantCell .= $mark === '' ? '' : '<br>' . $mark;
             }

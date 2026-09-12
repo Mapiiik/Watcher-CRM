@@ -443,6 +443,113 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
+     * A page being looked at says what it is and which of how many it is.
+     *
+     * What the group is called comes from here rather than from the plugin, which knows a record
+     * as a model and a key and nothing else. Which page it is, and which file, the plugin can say
+     * for itself.
+     *
+     * Read out of the group the mark carries rather than looked for in the body: every one of
+     * these words is in the table as well, so a search over the page would pass without the
+     * viewer being told anything at all.
+     *
+     * @link \Files\View\Helper\PreviewHelper::flipThrough()
+     * @return void
+     */
+    public function testEachPageSaysWhatItIsAndWhereItSits(): void
+    {
+        $this->addPages(['first.png', 'second.png']);
+
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+
+        $pages = $this->pagesOfTheMark();
+        $this->assertCount(2, $pages);
+
+        // The variant is the application's word for it, and it reaches the viewer unchanged.
+        $variant = DocumentVariant::ReceivedSignedByCustomer->label();
+        $this->assertStringContainsString($variant, $pages[0]['title']);
+
+        // The file itself is the line underneath, because it is the only part that changes, and
+        // the count is held at the far end of that line rather than trailing the filename.
+        $this->assertStringContainsString('first.png', $pages[0]['description']);
+        $this->assertStringContainsString('second.png', $pages[1]['description']);
+
+        // Counted only where there is more than one, and counted over what can be shown.
+        $this->assertStringEndsWith('<span class="files-page">1/2</span>', $pages[0]['description']);
+        $this->assertStringEndsWith('<span class="files-page">2/2</span>', $pages[1]['description']);
+        $this->assertStringNotContainsString('1/2', $pages[0]['title']);
+    }
+
+    /**
+     * Where the table spans several rounds, the viewer says which round a page came from.
+     *
+     * And says it as a sentence. The column wants the day first so that a table reads down its
+     * left edge, but the viewer reads across one line, and a line of four things separated by
+     * dashes is not a line anybody reads.
+     *
+     * @link \App\View\Cell\DocumentsCell::rows()
+     * @return void
+     */
+    public function testOnAContractThePageSaysWhichRoundItCameFrom(): void
+    {
+        $this->addPages(['first.png', 'second.png']);
+
+        $this->get('/contracts/documents/' . self::CONTRACT_ID);
+
+        $this->assertResponseOk();
+
+        /** @var \App\Model\Entity\ContractProposal $proposal */
+        $proposal = $this->fetchTable('ContractProposals')->get(self::PROPOSAL_ID);
+        $title = $this->pagesOfTheMark()[0]['title'];
+
+        $this->assertStringContainsString(
+            __('{0} from {1}', $proposal->purpose->label(), $proposal->effective_from),
+            $title,
+        );
+        $this->assertStringNotContainsString(
+            $proposal->effective_from . ' - ' . $proposal->purpose->label(),
+            $title,
+            'the column reads down, the viewer reads across',
+        );
+    }
+
+    /**
+     * One page of a document carries no count, since `1/1` says nothing.
+     *
+     * @link \Files\View\Helper\PreviewHelper::titleOf()
+     * @return void
+     */
+    public function testOnePageIsNotCounted(): void
+    {
+        $this->addPages(['only.png']);
+
+        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+
+        $pages = $this->pagesOfTheMark();
+        $this->assertCount(1, $pages);
+        $this->assertStringNotContainsString('files-page', $pages[0]['description']);
+    }
+
+    /**
+     * The group as the mark hands it to the viewer.
+     *
+     * @return list<array<string, string>>
+     */
+    private function pagesOfTheMark(): array
+    {
+        preg_match('/data-files-pages="([^"]*)"/', (string)$this->_getBodyAsString(), $found);
+        $carried = $found[1] ?? '';
+        $this->assertNotSame('', $carried, 'the page carries a mark to look through');
+
+        /** @var list<array<string, string>> $pages */
+        $pages = json_decode(html_entity_decode($carried, ENT_QUOTES), true);
+
+        return $pages;
+    }
+
+    /**
      * The form asks before it files, like every other way of adding something.
      *
      * @link \App\Controller\ContractProposalsController::addPages()
