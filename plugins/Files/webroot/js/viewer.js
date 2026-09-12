@@ -95,6 +95,13 @@
         const strip = document.createElement("div");
         strip.className = "files-strip";
 
+        // The library closes on a click anywhere outside the page itself, and the strip is
+        // outside it. Turning the setting off would cost the dark surround its own job, so the
+        // strip keeps its clicks to itself instead.
+        strip.addEventListener("click", function (event) {
+            event.stopPropagation();
+        });
+
         pages.forEach(function (page, index) {
             const turn = document.createElement("button");
             turn.type = "button";
