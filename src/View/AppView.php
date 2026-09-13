@@ -119,12 +119,14 @@ class AppView extends View
         $request = $this->getRequest();
         $plugin = $request->getParam('plugin');
         $action = $request->getParam('action');
+        $agenda = str_replace(DIRECTORY_SEPARATOR, '/', $this->getTemplatePath());
 
-        // The plugin keeps the name it is addressed by, vendor prefix and all. Said as words,
-        // `CakeDC/Users` comes out as something nobody would recognise.
+        // The plugin keeps the name it is addressed by, vendor prefix and all - said as words,
+        // `CakeDC/Users` comes out as something nobody would recognise. A plugin whose main
+        // agenda is called the same thing as itself says it once.
         $address = [
-            is_string($plugin) ? $plugin : '',
-            $this->inWords(str_replace(DIRECTORY_SEPARATOR, '/', $this->getTemplatePath())),
+            is_string($plugin) && $plugin !== $agenda ? $plugin : '',
+            $this->inWords($agenda),
             is_string($action) ? $this->inWords($action) : '',
         ];
 

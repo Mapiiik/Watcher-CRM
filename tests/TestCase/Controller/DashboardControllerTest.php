@@ -110,6 +110,25 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
+     * The plugin drawing this page is named after the page, so the window says the name once
+     * rather than twice. The page used to name its own window, in Czech while every other
+     * window was named in English.
+     *
+     * @return void
+     */
+    public function testTheWindowIsNamedTheWayEveryOtherWindowIs(): void
+    {
+        $this->login();
+        $this->get('/dashboard/cards');
+
+        $this->assertResponseOk();
+        $this->assertMatchesRegularExpression(
+            '~<title>[^<]*\| Dashboard \| Cards</title>~',
+            (string)$this->_getBodyAsString(),
+        );
+    }
+
+    /**
      * Signing in has to arrive at the root rather than at a page named here, as the root is
      * where the page a user starts on is decided. Naming the dashboard in the setting would
      * put that choice out of reach of everybody who arrives by signing in.

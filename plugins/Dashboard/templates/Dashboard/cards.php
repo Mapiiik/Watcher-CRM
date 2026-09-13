@@ -4,7 +4,6 @@
  * @var list<\Dashboard\Card\DashboardCardInterface> $cards
  */
 
-$this->assign('title', __d('dashboard', 'Dashboard'));
 $this->Html->css('Dashboard.dashboard', ['block' => true]);
 // The deferred cards are the only thing here that fetches itself, so the script comes with
 // the page that needs it rather than with every page.
