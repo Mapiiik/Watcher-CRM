@@ -207,6 +207,27 @@ class FiledPagesTest extends TestCase
     }
 
     /**
+     * How large a request may be is the worse of the two limits to reach, and the one the server
+     * cannot report afterwards: past it there is no request left to report anything about.
+     *
+     * @link \Files\Service\FiledPages::bytesOf()
+     * @return void
+     */
+    public function testASizeIsReadTheWayTheConfigurationWritesOne(): void
+    {
+        $this->assertSame(268435456, FiledPages::bytesOf('256M'));
+        $this->assertSame(2147483648, FiledPages::bytesOf('2G'));
+        $this->assertSame(1024, FiledPages::bytesOf('1K'));
+        $this->assertSame(4096, FiledPages::bytesOf('4096'));
+        $this->assertSame(268435456, FiledPages::bytesOf(' 256M '));
+
+        // Nothing at all, and the two ways of turning the limit off.
+        $this->assertSame(0, FiledPages::bytesOf(''));
+        $this->assertSame(0, FiledPages::bytesOf('0'));
+        $this->assertSame(0, FiledPages::bytesOf('-1'));
+    }
+
+    /**
      * Files a page for each name, each with contents of its own so that the store keeps them
      * apart rather than recognising one it already has.
      *

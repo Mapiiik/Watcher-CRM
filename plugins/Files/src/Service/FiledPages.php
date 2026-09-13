@@ -178,6 +178,45 @@ class FiledPages
     }
 
     /**
+     * How large one request may be altogether.
+     *
+     * The count is not the only way a batch is cut, and this is the worse of the two: past it PHP
+     * throws the whole body away - no files, no fields, and nothing left for the application to
+     * notice it by.
+     *
+     * @return int Bytes, or zero where there is no limit to speak of.
+     */
+    public static function atMostBytes(): int
+    {
+        return self::bytesOf((string)ini_get('post_max_size'));
+    }
+
+    /**
+     * What a size the way PHP writes one comes to.
+     *
+     * `256M`, `2G`, a plain number of bytes, or nothing at all where the limit is off.
+     *
+     * @param string $said The size as the configuration gives it.
+     * @return int Bytes, or zero where there is no limit to speak of.
+     */
+    public static function bytesOf(string $said): int
+    {
+        $said = trim($said);
+        $size = (int)$said;
+
+        if ($size < 1) {
+            return 0;
+        }
+
+        return match (strtoupper(substr($said, -1))) {
+            'G' => $size * 1024 ** 3,
+            'M' => $size * 1024 ** 2,
+            'K' => $size * 1024,
+            default => $size,
+        };
+    }
+
+    /**
      * What to tell somebody whose batch was cut.
      *
      * @return string

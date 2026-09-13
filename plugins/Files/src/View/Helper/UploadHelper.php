@@ -17,6 +17,7 @@ use Files\Service\FiledPages;
  * server. Neither belongs in a template, and both are wanted at every form that takes files.
  *
  * @property \Cake\View\Helper\HtmlHelper $Html
+ * @property \Cake\View\Helper\NumberHelper $Number
  * @extends \Cake\View\Helper<\App\View\AppView>
  */
 class UploadHelper extends Helper
@@ -26,7 +27,7 @@ class UploadHelper extends Helper
      *
      * @var array<string>
      */
-    protected array $helpers = ['Html'];
+    protected array $helpers = ['Html', 'Number'];
 
     /**
      * Whether this page has asked for the script already.
@@ -59,23 +60,37 @@ class UploadHelper extends Helper
      */
     public function atMost(): array
     {
+        $said = [];
         $limit = self::limit();
+        $bytes = self::bytes();
 
-        if ($limit < 1) {
-            return [];
+        if ($limit > 0) {
+            $said += [
+                'data-files-at-most' => (string)$limit,
+                // The count is put in where the script finds the mark, so that the sentence is
+                // written here in words rather than glued together out of pieces over there.
+                'data-files-too-many' => __d(
+                    'files',
+                    '%d files are chosen and this server takes at most {0} at once. Choose fewer,'
+                    . ' or send them in more than one batch.',
+                    $limit,
+                ),
+            ];
         }
 
-        return [
-            'data-files-at-most' => (string)$limit,
-            // The count is put in where the script finds the mark, so that the sentence is
-            // written here in words rather than glued together out of pieces over there.
-            'data-files-too-many' => __d(
-                'files',
-                '%d files are chosen and this server takes at most {0} at once. Choose fewer, or'
-                . ' send them in more than one batch.',
-                $limit,
-            ),
-        ];
+        if ($bytes > 0) {
+            $said += [
+                'data-files-at-most-bytes' => (string)$bytes,
+                'data-files-too-large' => __d(
+                    'files',
+                    '%s are chosen and this server takes at most {0} in one go. Send them in more'
+                    . ' than one batch.',
+                    $this->Number->toReadableSize($bytes),
+                ),
+            ];
+        }
+
+        return $said;
     }
 
     /**
@@ -86,5 +101,18 @@ class UploadHelper extends Helper
     public static function limit(): int
     {
         return FiledPages::atMostAtOnce();
+    }
+
+    /**
+     * How much the server will take out of one request altogether.
+     *
+     * The worse of the two limits to reach: past the count, what is over is dropped and the rest
+     * arrives, while past this the whole request is thrown away before anything of ours runs.
+     *
+     * @return int
+     */
+    public static function bytes(): int
+    {
+        return FiledPages::atMostBytes();
     }
 }
