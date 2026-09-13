@@ -40,6 +40,11 @@
     </aside>
     <div class="column column-90">
         <div class="contracts view content">
+            <?= $this->AuthLink->link(
+                __('Print'),
+                ['action' => 'print', $contract->id],
+                ['class' => 'button float-right'],
+            ) ?>
             <?= $this->element('Contracts/heading', ['doing' => __('Documents')]) ?>
             <?= $this->element('Contracts/facts', ['showMap' => false]) ?>
             <div class="related">

@@ -59,6 +59,11 @@ foreach ($proposals as $one) {
     </aside>
     <div class="column column-90">
         <div class="contracts form content">
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                ['action' => 'documents', $contract->id],
+                ['class' => 'button float-right'],
+            ) ?>
             <?= $this->element('Contracts/heading', ['doing' => __('Print')]) ?>
             <?= $this->element('Contracts/facts', ['showMap' => false]) ?>
             <?php if ($contract->service_type !== null && $contract->service_type->have_contract_versions) : ?>

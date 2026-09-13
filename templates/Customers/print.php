@@ -46,6 +46,11 @@ foreach ($customer->customer_proposals ?? [] as $one) {
     </aside>
     <div class="column column-90">
         <div class="contracts form content">
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                ['action' => 'documents', $customer->id],
+                ['class' => 'button float-right'],
+            ) ?>
             <?= $this->element('Customers/heading', ['doing' => __('Print')]) ?>
             <?= $this->element('Customers/facts') ?>
             <div class="related">

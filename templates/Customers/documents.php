@@ -34,6 +34,11 @@
     </aside>
     <div class="column column-90">
         <div class="customers view content">
+            <?= $this->AuthLink->link(
+                __('Print'),
+                ['action' => 'print', $customer->id],
+                ['class' => 'button float-right'],
+            ) ?>
             <?= $this->element('Customers/heading', ['doing' => __('Documents')]) ?>
             <?= $this->element('Customers/facts') ?>
             <div class="related">
