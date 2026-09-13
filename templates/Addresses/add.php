@@ -34,7 +34,7 @@ $this->Html->script('addresses.js', ['block' => true]);
                 </div>
             </fieldset>
             <fieldset>
-                <legend><?= __('Add Address') ?></legend>
+                <?= $this->legend(__('Add Address')) ?>
                 <div class="row">
                     <div class="column">
                         <?php

@@ -20,7 +20,7 @@
         <div class="settings form content">
             <?= $this->Form->create() ?>
             <fieldset>
-                <legend><?= __('Edit Setting') ?></legend>
+                <?= $this->legend(__('Edit Setting')) ?>
                 <?= __(
                     'If you leave the field blank, it will not be saved in the DB and the default value will be used.',
                 ) ?>

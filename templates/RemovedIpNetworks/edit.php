@@ -29,7 +29,7 @@
         <div class="removedIpNetworks form content">
             <?= $this->Form->create($removedIpNetwork) ?>
             <fieldset>
-                <legend><?= __('Edit Removed IP Network') ?></legend>
+                <?= $this->legend(__('Edit Removed IP Network')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);

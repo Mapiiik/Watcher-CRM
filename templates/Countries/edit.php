@@ -20,7 +20,7 @@
         <div class="countries form content">
             <?= $this->Form->create($country) ?>
             <fieldset>
-                <legend><?= __('Edit Country') ?></legend>
+                <?= $this->legend(__('Edit Country')) ?>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('code');

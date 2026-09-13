@@ -4,7 +4,7 @@
  */
 ?>
 <div class="settings index content">
-    <h3><?= __d('radius', 'RADIUS Settings') ?></h3>
+    <?= $this->heading(__d('radius', 'RADIUS Settings')) ?>
     <div class="table-responsive">
         <div class="related">
             <h4><?= __d('radius', 'RADIUS Account Functions') ?></h4>

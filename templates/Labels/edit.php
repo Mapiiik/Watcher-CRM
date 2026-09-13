@@ -24,7 +24,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
         <div class="labels form content">
             <?= $this->Form->create($label) ?>
             <fieldset>
-                <legend><?= __('Edit Label') ?></legend>
+                <?= $this->legend(__('Edit Label')) ?>
                 <?php
                 echo $this->Form->control('name');
                 echo $this->Form->control('caption');

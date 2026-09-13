@@ -30,7 +30,7 @@
 
 <div class="contracts index content">
     <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Contracts') ?></h3>
+    <?= $this->heading(__('Contracts')) ?>
     <div class="table-responsive">
         <table>
             <thead>

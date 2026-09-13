@@ -27,7 +27,7 @@
         <div class="radgroupreply form content">
             <?= $this->Form->create($radgroupreply) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit RADIUS Group Reply') ?></legend>
+                <?= $this->legend(__d('radius', 'Edit RADIUS Group Reply')) ?>
                 <?php
                     echo $this->Form->control('groupname');
                     echo $this->Form->control('attribute');

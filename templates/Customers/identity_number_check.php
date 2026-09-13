@@ -5,7 +5,7 @@
  */
 ?>
 <div class="customers index content">
-    <h3><?= __('Customers') . ' - ' . __('Invalid Identity Numbers') ?></h3>
+    <?= $this->heading(__('Customers') . ' - ' . __('Invalid Identity Numbers')) ?>
     <div class="table-responsive">
         <table>
             <thead>

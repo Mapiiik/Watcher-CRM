@@ -27,7 +27,7 @@
         ['action' => 'add-bulk'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __('Customer Messages') ?></h3>
+    <?= $this->heading(__('Customer Messages')) ?>
     <div class="table-responsive">
         <table>
             <thead>

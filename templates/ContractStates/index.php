@@ -22,7 +22,7 @@
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __('Contract States') ?></h3>
+    <?= $this->heading(__('Contract States')) ?>
     <div class="table-responsive">
         <table>
             <thead>

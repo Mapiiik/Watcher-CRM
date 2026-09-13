@@ -22,7 +22,7 @@
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __d('tasks', 'Task States') ?></h3>
+    <?= $this->heading(__d('tasks', 'Task States')) ?>
     <div class="table-responsive">
         <table>
             <thead>

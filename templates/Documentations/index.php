@@ -37,7 +37,7 @@
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __d('app_files', 'Documentations') ?></h3>
+    <?= $this->heading(__d('app_files', 'Documentations')) ?>
     <div class="table-responsive">
         <table>
             <thead>

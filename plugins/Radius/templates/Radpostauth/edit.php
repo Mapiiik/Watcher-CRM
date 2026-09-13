@@ -28,7 +28,7 @@
         <div class="radpostauth form content">
             <?= $this->Form->create($radpostauth) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit RADIUS Post Authentication') ?></legend>
+                <?= $this->legend(__d('radius', 'Edit RADIUS Post Authentication')) ?>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('pass');

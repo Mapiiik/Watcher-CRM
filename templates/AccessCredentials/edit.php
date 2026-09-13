@@ -29,7 +29,7 @@
         <div class="accessCredentials form content">
             <?= $this->Form->create($accessCredential) ?>
             <fieldset>
-                <legend><?= __('Edit Access Credential') ?></legend>
+                <?= $this->legend(__('Edit Access Credential')) ?>
                 <?php
                 echo $this->Form->control('customer_id', [
                     'options' => $customers,

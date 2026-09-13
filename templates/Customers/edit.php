@@ -27,7 +27,7 @@ $this->Html->script('customers.js', ['block' => true]);
                 'valueSources' => ['context'],
             ]) ?>
             <fieldset>
-                <legend><?= __('Edit Customer') ?></legend>
+                <?= $this->legend(__('Edit Customer')) ?>
                 <div class="row">
                     <div class="column">
                         <?php

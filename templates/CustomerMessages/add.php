@@ -20,7 +20,7 @@
         <div class="customerMessages form content">
             <?= $this->Form->create($customerMessage) ?>
             <fieldset>
-                <legend><?= __('Add Customer Message') ?></legend>
+                <?= $this->legend(__('Add Customer Message')) ?>
                 <?php
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
                     echo $this->Form->control('type');

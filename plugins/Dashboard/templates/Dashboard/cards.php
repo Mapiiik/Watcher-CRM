@@ -10,7 +10,7 @@ $this->Html->css('Dashboard.dashboard', ['block' => true]);
 $this->Html->script('lazy-load.js', ['block' => true]);
 ?>
 <div class="dashboard cards content">
-    <h3><?= __d('dashboard', 'Dashboard') ?></h3>
+    <?= $this->heading(__d('dashboard', 'Dashboard')) ?>
 
     <?php if ($cards === []) : ?>
         <p><?= __d('dashboard', 'There is nothing on the dashboard for your role yet.') ?></p>

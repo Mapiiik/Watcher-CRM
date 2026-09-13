@@ -22,7 +22,7 @@
         <div class="ipAddresses form content">
             <?= $this->Form->create($ipAddress) ?>
             <fieldset>
-                <legend><?= __('Edit IP Address') ?></legend>
+                <?= $this->legend(__('Edit IP Address')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers]);

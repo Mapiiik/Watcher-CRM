@@ -13,7 +13,7 @@ $users = ${$tableAlias};
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __d('app_users', 'Users') ?></h3>
+    <?= $this->heading(__d('app_users', 'Users')) ?>
     <div class="table-responsive">
         <table>
             <thead>

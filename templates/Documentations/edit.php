@@ -20,7 +20,7 @@
         <div class="documentations form content">
             <?= $this->Form->create($documentation) ?>
             <fieldset>
-                <legend><?= __d('app_files', 'Edit Documentation') ?></legend>
+                <?= $this->legend(__d('app_files', 'Edit Documentation')) ?>
                 <?= $this->element('Documentations/fields', ['kinds' => $kinds]) ?>
             </fieldset>
             <?= $this->Form->button(__d('app_files', 'Submit')) ?>

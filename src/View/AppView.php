@@ -88,6 +88,50 @@ class AppView extends View
     }
 
     /**
+     * The heading of a page, which is also what its window is called.
+     *
+     * Saying it once is the point: a heading and a window name that are asked for separately
+     * drift apart, and then a row of tabs stops telling anybody where they are.
+     *
+     * @param string $what What this page is.
+     * @return string
+     */
+    public function heading(string $what): string
+    {
+        return $this->named($what, '<h3>%s</h3>');
+    }
+
+    /**
+     * The heading of a form, which is also what its window is called.
+     *
+     * @param string $what What this form does.
+     * @return string
+     */
+    public function legend(string $what): string
+    {
+        return $this->named($what, '<legend>%s</legend>');
+    }
+
+    /**
+     * Names the window after the page, and hands back the heading that was asked for.
+     *
+     * Whoever asks first wins, so that a page carrying more than one fieldset keeps the name of
+     * what it is about rather than the name of the last thing drawn on it.
+     *
+     * @param string $what What this page is.
+     * @param string $markup Where the words go.
+     * @return string
+     */
+    private function named(string $what, string $markup): string
+    {
+        if ($this->fetch('title') === '') {
+            $this->assign('title', $what);
+        }
+
+        return sprintf($markup, h($what));
+    }
+
+    /**
      * Names the window after the page, when the page has not named itself.
      *
      * @param string $content Content to render in a template, wrapped by the surrounding layout.

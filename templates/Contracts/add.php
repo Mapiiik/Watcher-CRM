@@ -24,7 +24,7 @@ use Settings\Utility\Settings;
         <div class="contracts form content">
             <?= $this->Form->create($contract) ?>
             <fieldset>
-                <legend><?= __('Add Contract') ?></legend>
+                <?= $this->legend(__('Add Contract')) ?>
                 <div class="row">
                     <div class="column">
                         <datalist id="access-descriptions">

@@ -16,7 +16,7 @@
     </aside>
     <div class="column column-90">
         <div class="overviews form content">
-            <h3><?= __('Overview of Contracts') ?></h3>
+            <?= $this->heading(__('Overview of Contracts')) ?>
 
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <fieldset>

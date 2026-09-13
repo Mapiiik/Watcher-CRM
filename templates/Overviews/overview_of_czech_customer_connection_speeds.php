@@ -14,9 +14,9 @@
     </aside>
     <div class="column column-90">
         <div class="overviews index content">
-            <h3><?= __('Overview of Customer Connection Speeds')
+            <?= $this->heading(__('Overview of Customer Connection Speeds')
                 . ' - '
-                . $month_to_display->i18nFormat('LLLL yyyy') ?></h3>
+                . $month_to_display->i18nFormat('LLLL yyyy')) ?>
 
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <div class="row">

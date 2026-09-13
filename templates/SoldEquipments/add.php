@@ -22,7 +22,7 @@
         <div class="soldEquipments form content">
             <?= $this->Form->create($soldEquipment) ?>
             <fieldset>
-                <legend><?= __('Add Sold Equipment') ?></legend>
+                <?= $this->legend(__('Add Sold Equipment')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);

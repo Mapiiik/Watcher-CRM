@@ -4,7 +4,7 @@
  */
 ?>
 <div class="settings index content">
-    <h3><?= __('Settings') ?></h3>
+    <?= $this->heading(__('Settings')) ?>
     <div class="table-responsive">
         <div class="related">
             <h4><?= __('User Related') ?></h4>

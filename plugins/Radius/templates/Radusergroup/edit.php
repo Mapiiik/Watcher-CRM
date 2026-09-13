@@ -29,7 +29,7 @@
         <div class="radusergroup form content">
             <?= $this->Form->create($radusergroup) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit RADIUS User Group') ?></legend>
+                <?= $this->legend(__d('radius', 'Edit RADIUS User Group')) ?>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('groupname', ['options' => $groupnames]);

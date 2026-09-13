@@ -18,7 +18,7 @@
 
 <div class="commissions index content">
     <?= $this->AuthLink->link(__('New Commission'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Commissions') ?></h3>
+    <?= $this->heading(__('Commissions')) ?>
     <div class="table-responsive">
         <table>
             <thead>

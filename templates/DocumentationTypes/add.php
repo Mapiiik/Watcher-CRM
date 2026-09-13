@@ -19,7 +19,7 @@
         <div class="documentationTypes form content">
             <?= $this->Form->create($documentationType) ?>
             <fieldset>
-                <legend><?= __d('app_files', 'Add Documentation Type') ?></legend>
+                <?= $this->legend(__d('app_files', 'Add Documentation Type')) ?>
                 <?= $this->element('DocumentationTypes/fields') ?>
             </fieldset>
             <?= $this->Form->button(__d('app_files', 'Submit')) ?>

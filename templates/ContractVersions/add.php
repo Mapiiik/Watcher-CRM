@@ -22,7 +22,7 @@ use Cake\I18n\Date;
         <div class="contractVersions form content">
             <?= $this->Form->create($contractVersion) ?>
             <fieldset>
-                <legend><?= __('Add Contract Version') ?></legend>
+                <?= $this->legend(__('Add Contract Version')) ?>
                 <?php
                 if (!isset($contract_id)) {
                     echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);

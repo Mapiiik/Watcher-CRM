@@ -23,7 +23,7 @@ $said = fn(bool $yes): string => $yes ? __d('app_files', 'Yes') : __d('app_files
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __d('app_files', 'Documentation Types') ?></h3>
+    <?= $this->heading(__d('app_files', 'Documentation Types')) ?>
     <p><?=
         __d(
             'app_files',

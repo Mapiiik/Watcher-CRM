@@ -22,7 +22,7 @@
         <div class="customerLabels form content">
             <?= $this->Form->create($customerLabel) ?>
             <fieldset>
-                <legend><?= __('Add Customer Label') ?></legend>
+                <?= $this->legend(__('Add Customer Label')) ?>
                 <?php
                 echo $this->Form->control('label_id', ['options' => $labels]);
                 if (!isset($customer_id)) {

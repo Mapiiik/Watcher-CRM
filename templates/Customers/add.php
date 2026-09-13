@@ -35,7 +35,7 @@ $this->Html->script('customers.js', ['block' => true]);
                 </div>
             </fieldset>
             <fieldset>
-                <legend><?= __('Add Customer') ?></legend>
+                <?= $this->legend(__('Add Customer')) ?>
                 <div class="row">
                     <div class="column">
                         <?php

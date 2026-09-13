@@ -29,7 +29,7 @@
         <div class="contractStates form content">
             <?= $this->Form->create($contractState) ?>
             <fieldset>
-                <legend><?= __('Edit Contract State') ?></legend>
+                <?= $this->legend(__('Edit Contract State')) ?>
 
                 <div class="row">
                     <div class="column">

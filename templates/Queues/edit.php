@@ -20,7 +20,7 @@
         <div class="queues form content">
             <?= $this->Form->create($queue) ?>
             <fieldset>
-                <legend><?= __('Edit Queue') ?></legend>
+                <?= $this->legend(__('Edit Queue')) ?>
                 <?php
                     $derivedHelp = __('Leave empty to derive it from the advertised speed.');
                     echo $this->Form->control('name');

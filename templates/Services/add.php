@@ -17,7 +17,7 @@
         <div class="services form content">
             <?= $this->Form->create($service) ?>
             <fieldset>
-                <legend><?= __('Add Service') ?></legend>
+                <?= $this->legend(__('Add Service')) ?>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('price');

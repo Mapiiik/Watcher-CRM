@@ -44,7 +44,7 @@
         ['controller' => 'Debtors', 'action' => 'index'],
         ['class' => 'button float-right'],
     ) ?>
-    <h3><?= __d('bookkeeping', 'Invoices') ?></h3>
+    <?= $this->heading(__d('bookkeeping', 'Invoices')) ?>
     <div class="table-responsive">
         <table>
             <thead>

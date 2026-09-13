@@ -27,7 +27,7 @@
         <div class="equipmentTypes form content">
             <?= $this->Form->create($equipmentType) ?>
             <fieldset>
-                <legend><?= __('Edit Equipment Type') ?></legend>
+                <?= $this->legend(__('Edit Equipment Type')) ?>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('price');

@@ -29,7 +29,7 @@
         <div class="dealerCommissions form content">
             <?= $this->Form->create($dealerCommission) ?>
             <fieldset>
-                <legend><?= __('Edit Dealer Commission') ?></legend>
+                <?= $this->legend(__('Edit Dealer Commission')) ?>
                 <?php
                     echo $this->Form->control('dealer_id', ['options' => $dealers, 'empty' => true]);
                     echo $this->Form->control('commission_id', ['options' => $commissions, 'empty' => true]);

@@ -22,7 +22,7 @@
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __('Dealer Commissions') ?></h3>
+    <?= $this->heading(__('Dealer Commissions')) ?>
     <div class="table-responsive">
         <table>
             <thead>

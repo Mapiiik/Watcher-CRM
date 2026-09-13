@@ -24,7 +24,7 @@ $showContract = $contract_id === null;
 <?= $this->Form->end() ?>
 
 <div class="historicalConnections index content">
-    <h3><?= __('Historical Connections') ?></h3>
+    <?= $this->heading(__('Historical Connections')) ?>
     <div class="table-responsive">
         <table>
             <thead>

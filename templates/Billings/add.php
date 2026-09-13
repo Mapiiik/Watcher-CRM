@@ -19,7 +19,7 @@
         <div class="billings form content">
             <?= $this->Form->create($billing) ?>
             <fieldset>
-                <legend><?= __('Add Billing') ?></legend>
+                <?= $this->legend(__('Add Billing')) ?>
                 <div class="row">
                     <div class="column">
                         <?php

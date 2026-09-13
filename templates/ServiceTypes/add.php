@@ -15,7 +15,7 @@
         <div class="serviceTypes form content">
             <?= $this->Form->create($serviceType) ?>
             <fieldset>
-                <legend><?= __('Add Service Type') ?></legend>
+                <?= $this->legend(__('Add Service Type')) ?>
                 <?php
                 echo $this->Form->control('name');
                 echo $this->Form->control('contract_number_format');

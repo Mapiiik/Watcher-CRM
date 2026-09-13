@@ -27,7 +27,7 @@
         <div class="Nas form content">
             <?= $this->Form->create($nas) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit RADIUS NAS') ?></legend>
+                <?= $this->legend(__d('radius', 'Edit RADIUS NAS')) ?>
                 <?php
                     echo $this->Form->control('nasname');
                     echo $this->Form->control('shortname');

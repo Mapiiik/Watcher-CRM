@@ -29,7 +29,7 @@
         <div class="accounts form content">
             <?= $this->Form->create($account) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit RADIUS Account') ?></legend>
+                <?= $this->legend(__d('radius', 'Edit RADIUS Account')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', [

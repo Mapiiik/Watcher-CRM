@@ -19,7 +19,7 @@
         <div class="accountingProfiles form content">
             <?= $this->Form->create($accountingProfile) ?>
             <fieldset>
-                <legend><?= __('Add Accounting Profile') ?></legend>
+                <?= $this->legend(__('Add Accounting Profile')) ?>
                 <?php
                     echo $this->Form->control('name');
                     echo $this->Form->control('vat_rate');

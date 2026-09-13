@@ -26,7 +26,7 @@
         <div class="billings form content">
             <?= $this->Form->create($billing) ?>
             <fieldset>
-                <legend><?= __('Edit Billing') ?></legend>
+                <?= $this->legend(__('Edit Billing')) ?>
                 <?php if (!empty($invoiced_for)) : ?>
                 <div class="message warning" role="alert">
                     <?= __('This billing has been invoiced for, so what it charges is no longer changed here.') ?>

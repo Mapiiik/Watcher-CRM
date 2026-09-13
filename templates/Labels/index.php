@@ -30,7 +30,7 @@
             'class' => 'button float-right',
         ],
     ) ?>
-    <h3><?= __('Labels') ?></h3>
+    <?= $this->heading(__('Labels')) ?>
     <div class="table-responsive">
         <table>
             <thead>

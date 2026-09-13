@@ -4,7 +4,7 @@
  */
 ?>
 <div class="overviews index content">
-    <h3><?= __('Overviews') ?></h3>
+    <?= $this->heading(__('Overviews')) ?>
     <div class="table-responsive">
         <div class="related">
             <h4><?= __('Documentation Related') ?></h4>

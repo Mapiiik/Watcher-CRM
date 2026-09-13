@@ -21,7 +21,7 @@
         <div class="phones form content">
             <?= $this->Form->create($phone) ?>
             <fieldset>
-                <legend><?= __('Edit Phone') ?></legend>
+                <?= $this->legend(__('Edit Phone')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers]);

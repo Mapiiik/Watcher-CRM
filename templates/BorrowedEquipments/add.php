@@ -22,7 +22,7 @@
         <div class="borrowedEquipments form content">
             <?= $this->Form->create($borrowedEquipment) ?>
             <fieldset>
-                <legend><?= __('Add Borrowed Equipment') ?></legend>
+                <?= $this->legend(__('Add Borrowed Equipment')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);

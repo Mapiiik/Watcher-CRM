@@ -27,7 +27,7 @@
         <div class="taskStates form content">
             <?= $this->Form->create($taskState) ?>
             <fieldset>
-                <legend><?= __d('tasks', 'Edit Task State') ?></legend>
+                <?= $this->legend(__d('tasks', 'Edit Task State')) ?>
                 <?php
                     echo $this->Form->control('name', ['label' => __d('tasks', 'Name')]);
                     echo $this->Form->control('color', ['type' => 'color', 'label' => __d('tasks', 'Color')]);

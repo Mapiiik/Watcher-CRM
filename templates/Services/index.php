@@ -18,7 +18,7 @@
 
 <div class="services index content">
     <?= $this->AuthLink->link(__('New Service'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Services') ?></h3>
+    <?= $this->heading(__('Services')) ?>
     <div class="table-responsive">
         <table>
             <thead>

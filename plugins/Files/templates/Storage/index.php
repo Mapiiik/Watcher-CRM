@@ -37,7 +37,7 @@
         ['controller' => 'Documents', 'action' => 'index'],
         ['class' => 'button float-right'],
     ) ?>
-    <h3><?= __d('files', 'Storage') ?></h3>
+    <?= $this->heading(__d('files', 'Storage')) ?>
     <p><?= __d(
         'files',
         'Each piece of content once, however many records point at it. What nothing points at any'

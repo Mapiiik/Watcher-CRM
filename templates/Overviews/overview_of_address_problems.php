@@ -8,7 +8,7 @@
  */
 ?>
 <div class="overviews index content">
-    <h3><?= __('Address Problems') ?></h3>
+    <?= $this->heading(__('Address Problems')) ?>
 
     <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => 'query']) ?>
     <fieldset>

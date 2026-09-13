@@ -21,7 +21,7 @@
         <div class="tasks form content">
             <?= $this->Form->create($task) ?>
             <fieldset>
-                <legend><?= __('Add Task') ?></legend>
+                <?= $this->legend(__('Add Task')) ?>
                 <div class="row">
                     <div class="column">
                         <?php

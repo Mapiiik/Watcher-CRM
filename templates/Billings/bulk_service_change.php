@@ -27,6 +27,8 @@ use App\Model\Entity\Billing;
     </aside>
     <div class="column column-90">
         <div class="billings form content">
+            <?= $this->heading(__('Billings') . ' - ' . __('Bulk Service Change')) ?>
+            <hr />
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <fieldset>
                 <legend><?= __('Original Service') ?></legend>
@@ -145,7 +147,7 @@ use App\Model\Entity\Billing;
         </div>
         <hr />
         <div class="billings index content">
-            <h3><?= __('Billings') . ' - ' . __('Bulk Service Change') ?></h3>
+            <h3><?= __('Related Billings') ?></h3>
             <?= $this->element('Contracts/Billings', [
                 'billings' => $billings,
                 'customer_column' => true,

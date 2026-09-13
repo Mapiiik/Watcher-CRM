@@ -47,7 +47,7 @@ use Bookkeeping\Debtors\Debtor;
             ),
         ],
     ) ?>
-    <h3><?= __d('bookkeeping', 'Debtors') ?></h3>
+    <?= $this->heading(__d('bookkeeping', 'Debtors')) ?>
     <div class="table-responsive">
         <table>
             <thead>

@@ -21,7 +21,7 @@
         <div class="removedIpAddresses form content">
             <?= $this->Form->create($removedIpAddress) ?>
             <fieldset>
-                <legend><?= __('Add Removed IP Address') ?></legend>
+                <?= $this->legend(__('Add Removed IP Address')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);

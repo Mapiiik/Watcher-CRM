@@ -18,7 +18,7 @@
 
 <div class="queues index content">
     <?= $this->AuthLink->link(__('New Queue'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Queues') ?></h3>
+    <?= $this->heading(__('Queues')) ?>
     <div class="table-responsive">
         <table>
             <thead>

@@ -28,7 +28,7 @@
         <div class="customerMessages form content">
             <?= $this->Form->create($customerMessage) ?>
             <fieldset>
-                <legend><?= __('Edit Customer Message') ?></legend>
+                <?= $this->legend(__('Edit Customer Message')) ?>
                 <?php
                     echo $this->Form->control('customer_id', ['options' => $customers]);
                     echo $this->Form->control('type');

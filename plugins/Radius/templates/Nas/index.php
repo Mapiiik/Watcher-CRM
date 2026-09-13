@@ -10,7 +10,7 @@
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __d('radius', 'RADIUS NAS') ?></h3>
+    <?= $this->heading(__d('radius', 'RADIUS NAS')) ?>
     <div class="table-responsive">
         <table>
             <thead>

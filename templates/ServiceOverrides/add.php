@@ -24,7 +24,7 @@ use Cake\I18n\Date;
         <div class="serviceOverrides form content">
             <?= $this->Form->create($serviceOverride) ?>
             <fieldset>
-                <legend><?= __('Add Service Override') ?></legend>
+                <?= $this->legend(__('Add Service Override')) ?>
                 <?php
                 if (!isset($contract_id)) {
                     echo $this->Form->control('contract_id', [

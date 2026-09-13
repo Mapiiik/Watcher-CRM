@@ -28,7 +28,7 @@ $this->Html->script('addresses.js', ['block' => true]);
                 'valueSources' => ['context'],
             ]) ?>
             <fieldset>
-                <legend><?= __('Edit Address') ?></legend>
+                <?= $this->legend(__('Edit Address')) ?>
                 <div class="row">
                     <div class="column">
                         <?php

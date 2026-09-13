@@ -29,7 +29,7 @@
         <div class="contractVersions form content">
             <?= $this->Form->create($contractVersion) ?>
             <fieldset>
-                <legend><?= __('Edit Contract Version') ?></legend>
+                <?= $this->legend(__('Edit Contract Version')) ?>
                 <?php
                 if (!isset($contract_id)) {
                     echo $this->Form->control('contract_id', ['options' => $contracts, 'empty' => true]);

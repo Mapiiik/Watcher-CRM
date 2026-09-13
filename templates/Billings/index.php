@@ -18,7 +18,7 @@
 
 <div class="billings index content">
     <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Billings') ?></h3>
+    <?= $this->heading(__('Billings')) ?>
     <div class="table-responsive">
         <table>
             <thead>

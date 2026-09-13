@@ -17,7 +17,7 @@
         <div class="ipAddresses form content">
             <?= $this->Form->create($ipAddress) ?>
             <fieldset>
-                <legend><?= __('Add IP Address') ?></legend>
+                <?= $this->legend(__('Add IP Address')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);

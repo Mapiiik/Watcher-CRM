@@ -16,7 +16,7 @@
         <div class="emails form content">
             <?= $this->Form->create($email) ?>
             <fieldset>
-                <legend><?= __('Add Email') ?></legend>
+                <?= $this->legend(__('Add Email')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers]);

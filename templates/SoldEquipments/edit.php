@@ -30,7 +30,7 @@
         <div class="soldEquipments form content">
             <?= $this->Form->create($soldEquipment) ?>
             <fieldset>
-                <legend><?= __('Edit Sold Equipment') ?></legend>
+                <?= $this->legend(__('Edit Sold Equipment')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers]);

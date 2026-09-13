@@ -43,7 +43,7 @@
         <div class="serviceOverrides form content">
             <?= $this->Form->create($serviceOverride) ?>
             <fieldset>
-                <legend><?= __('Edit Service Override') ?></legend>
+                <?= $this->legend(__('Edit Service Override')) ?>
                 <?php
                 if (!isset($contract_id)) {
                     echo $this->Form->control('contract_id', [

@@ -20,7 +20,7 @@
         <div class="radcheck form content">
             <?= $this->Form->create($radcheck) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Add RADIUS Check') ?></legend>
+                <?= $this->legend(__d('radius', 'Add RADIUS Check')) ?>
                 <?php
                 echo $this->Form->control('username', [
                     'options' => $accounts,

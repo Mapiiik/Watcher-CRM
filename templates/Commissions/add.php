@@ -15,7 +15,7 @@
         <div class="commissions form content">
             <?= $this->Form->create($commission) ?>
             <fieldset>
-                <legend><?= __('Add Commission') ?></legend>
+                <?= $this->legend(__('Add Commission')) ?>
                 <?php
                     echo $this->Form->control('name');
                 ?>

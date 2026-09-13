@@ -22,7 +22,7 @@
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <h3><?= __('Removed IP Networks') ?></h3>
+    <?= $this->heading(__('Removed IP Networks')) ?>
     <div class="table-responsive">
         <table>
             <thead>

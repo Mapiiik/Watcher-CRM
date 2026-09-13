@@ -18,7 +18,7 @@
         <div class="logins form content">
             <?= $this->Form->create($login) ?>
             <fieldset>
-                <legend><?= __('Add Login') ?></legend>
+                <?= $this->legend(__('Add Login')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers]);

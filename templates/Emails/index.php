@@ -18,7 +18,7 @@
 
 <div class="emails index content">
     <?= $this->AuthLink->link(__('New Email'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Emails') ?></h3>
+    <?= $this->heading(__('Emails')) ?>
     <div class="table-responsive">
         <table>
             <thead>

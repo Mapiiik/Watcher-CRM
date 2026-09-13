@@ -60,7 +60,7 @@
 
 <div class="customers index content">
     <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Customers') ?></h3>
+    <?= $this->heading(__('Customers')) ?>
     <div class="table-responsive">
         <table>
             <thead>

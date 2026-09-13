@@ -18,7 +18,7 @@
 
 <div class="countries index content">
     <?= $this->AuthLink->link(__('New Country'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
-    <h3><?= __('Countries') ?></h3>
+    <?= $this->heading(__('Countries')) ?>
     <div class="table-responsive">
         <table>
             <thead>

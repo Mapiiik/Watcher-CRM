@@ -25,9 +25,9 @@
                     ['class' => 'button float-right'],
                 ) ?>
             <?php endforeach; ?>
-            <h3><?= __('Overview of Customer Connection Points')
+            <?= $this->heading(__('Overview of Customer Connection Points')
                 . ' - '
-                . $month_to_display->i18nFormat('LLLL yyyy') ?></h3>
+                . $month_to_display->i18nFormat('LLLL yyyy')) ?>
 
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <div class="row">

@@ -14,9 +14,9 @@
     </aside>
     <div class="column column-90">
         <div class="overviews index content">
-            <h3><?= __('Overview of Dealer Commissions')
+            <?= $this->heading(__('Overview of Dealer Commissions')
                 . ' - '
-                . $month_to_display->i18nFormat('LLLL yyyy') ?></h3>
+                . $month_to_display->i18nFormat('LLLL yyyy')) ?>
 
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <div class="row">

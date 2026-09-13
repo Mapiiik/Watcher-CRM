@@ -28,7 +28,7 @@
         <div class="invoices form content">
             <?= $this->Form->create($invoice) ?>
             <fieldset>
-                <legend><?= __d('bookkeeping', 'Edit Invoice') ?></legend>
+                <?= $this->legend(__d('bookkeeping', 'Edit Invoice')) ?>
                 <?php
                 echo $this->Form->control('customer_id', [
                     'label' => __d('bookkeeping', 'Customer'),

@@ -110,9 +110,9 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
-     * The plugin drawing this page is named after the page, so the window says the name once
-     * rather than twice. The page used to name its own window, in Czech while every other
-     * window was named in English.
+     * The page names itself and its window in the one call that draws the heading, which is how
+     * every other page does it. It used to name its own window separately, and in Czech while
+     * every other window was named in English.
      *
      * @return void
      */
@@ -123,7 +123,7 @@ class DashboardControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertMatchesRegularExpression(
-            '~<title>[^<]*\| Dashboard \| Cards</title>~',
+            '~<title>[^<]*\| Dashboard</title>~',
             (string)$this->_getBodyAsString(),
         );
     }

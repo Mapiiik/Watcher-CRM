@@ -28,7 +28,7 @@
         <div class="radreply form content">
             <?= $this->Form->create($radreply) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit RADIUS Reply') ?></legend>
+                <?= $this->legend(__d('radius', 'Edit RADIUS Reply')) ?>
                 <?php
                     echo $this->Form->control('username', ['options' => $accounts]);
                     echo $this->Form->control('attribute');

@@ -28,7 +28,7 @@
         <div class="radacct form content">
             <?= $this->Form->create($radacct) ?>
             <fieldset>
-                <legend><?= __d('radius', 'Edit RADIUS Accounting') ?></legend>
+                <?= $this->legend(__d('radius', 'Edit RADIUS Accounting')) ?>
                 <?php
                     echo $this->Form->control('acctsessionid');
                     echo $this->Form->control('acctuniqueid');
