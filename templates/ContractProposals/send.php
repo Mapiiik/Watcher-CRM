@@ -43,6 +43,7 @@ $saying = $again
             <?= $this->Form->create($contractProposal) ?>
             <fieldset>
                 <p><?= $saying ?></p>
+                <br>
                 <?php
                 echo $this->Form->control('sent_date', [
                     'default' => Date::now(),

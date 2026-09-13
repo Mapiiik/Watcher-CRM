@@ -16,7 +16,7 @@
         'value' => 1,
         'onchange' => $this::SUBMIT_ON_CHANGE,
     ]) ?>
-    <hr />
+    <br>
     <div class="choices">
         <?php foreach ($checks as $check) : ?>
             <?= $this->Form->control('checks.' . $check->id(), [

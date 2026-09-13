@@ -21,4 +21,4 @@
     (string)$customerProposal->getState(),
     $doing ?? null,
 ) ?>
-<hr />
+<br>

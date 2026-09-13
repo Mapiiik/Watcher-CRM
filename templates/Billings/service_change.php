@@ -121,7 +121,7 @@
                 </blockquote>
             </div>
         </div>
-        <hr />
+        <br>
         <div class="billings form content">
             <?= $this->Form->create($billing, ['method' => 'post']) ?>
             <fieldset>

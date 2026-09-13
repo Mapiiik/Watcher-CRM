@@ -426,7 +426,7 @@ $this->Html->css('problems', ['block' => true]);
                 ) ?>
             </div>
             <?php endif; ?>
-            <hr />
+            <hr>
             <div class="related">
                 <?= $this->AuthLink->postLink(
                     __('Unblock Debtor'),

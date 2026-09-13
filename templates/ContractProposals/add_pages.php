@@ -44,6 +44,7 @@ use App\Model\Enum\DocumentVariant;
                         . ' scans is usually their own numbering.',
                     )
                     ?></p>
+                <br>
                 <?=
                     $this->Form->control('document_type', [
                         'label' => __('Document Type'),

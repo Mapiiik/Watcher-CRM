@@ -677,7 +677,7 @@ $remark = function (string $note, bool $wrong = false): string {
                 </div>
                 <?php endif; ?>
             </div>
-            <hr />
+            <hr>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('New Billing'),
@@ -833,7 +833,7 @@ $remark = function (string $note, bool $wrong = false): string {
                     [['Accounts.customer_id' => $customer->id]],
                 ) ?>
             </div>
-            <hr />
+            <hr>
             <div class="related">
                 <?= $this->AuthLink->postLink(
                     __('Unblock Debtor'),

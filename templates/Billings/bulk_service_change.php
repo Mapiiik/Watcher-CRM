@@ -26,9 +26,11 @@ use App\Model\Entity\Billing;
         </div>
     </aside>
     <div class="column column-90">
-        <div class="billings form content">
+        <div class="billings content">
             <?= $this->heading(__('Billings') . ' - ' . __('Bulk Service Change')) ?>
-            <hr />
+        </div>
+        <br>
+        <div class="billings form content">
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <fieldset>
                 <?= $this->legend(__('Original Service')) ?>
@@ -64,8 +66,6 @@ use App\Model\Entity\Billing;
                     'default' => true,
                     'onchange' => $this::SUBMIT_ON_CHANGE,
                 ]) ?>
-            </fieldset>
-            <fieldset>
                 <?= $this->Form->control('price', [
                     'label' => __('Price'),
                     'type' => 'number',
@@ -89,9 +89,9 @@ use App\Model\Entity\Billing;
                 ]) ?>
             </fieldset>
             <?= $this->Form->end() ?>
-
-            <hr />
-
+        </div>
+        <br>
+        <div class="billings form content">
             <?= $this->Form->create(new Billing()) ?>
             <fieldset>
                 <legend><?= __('New Service') ?></legend>
@@ -145,9 +145,9 @@ use App\Model\Entity\Billing;
             ) ?>
             <?= $this->Form->end() ?>
         </div>
-        <hr />
+        <br>
         <div class="billings index content">
-            <h3><?= __('Related Billings') ?></h3>
+            <h4><?= __('Related Billings') ?></h4>
             <?= $this->element('Contracts/Billings', [
                 'billings' => $billings,
                 'customer_column' => true,

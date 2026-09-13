@@ -38,6 +38,7 @@ $recording = $again ? __('Record the Sending Again') : __('Record the Sending');
                     )
                     : __('Once this is recorded, the round may no longer be changed. A correction'
                         . ' is a new round.') ?></p>
+                <br>
                 <?php
                 echo $this->Form->control('sent_date', [
                     'default' => Date::now(),

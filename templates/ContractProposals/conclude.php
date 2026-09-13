@@ -38,6 +38,7 @@ use Cake\I18n\Date;
                     . ' proposal asks for stays as it is, and the records move only when it is'
                     . ' carried over.',
                 ) ?></p>
+                <br>
                 <?= $this->Form->control('conclusion_date', [
                     'default' => Date::now(),
                     'label' => __('Conclusion Date'),

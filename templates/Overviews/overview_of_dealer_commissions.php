@@ -25,7 +25,7 @@
         . $month_to_display->i18nFormat('LLLL yyyy')) ?>
 
     <?php foreach ($dealers as $dealer => $dealerCommissions) : ?>
-        <hr>
+        <br>
         <h4><?= $dealer ?></h4>
 
         <?php foreach ($dealerCommissions as $dealerCommission) : ?>

@@ -31,6 +31,7 @@
                     . ' left the contract is taken back, because there is nothing left for it to'
                     . ' act on.',
                 ) ?></p>
+                <br>
             </fieldset>
             <?= $this->element('ContractProposals/form') ?>
             <?= $this->Form->button(__('Submit')) ?>

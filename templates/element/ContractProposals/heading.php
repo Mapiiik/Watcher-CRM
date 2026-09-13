@@ -9,7 +9,8 @@
  *
  * Every page that acts on a proposal opens with this, so that the heading says which record is
  * being looked at rather than which button was pressed to get there - and says which of those
- * pages it is, in front of it. The rule at the end keeps the heading off the form below.
+ * pages it is, in front of it. What follows draws its own line, so the heading only wants
+ * the room.
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractProposal $contractProposal
@@ -26,4 +27,4 @@
     (string)$contractProposal->getState(),
     $doing ?? null,
 ) ?>
-<hr />
+<br>

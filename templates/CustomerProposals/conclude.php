@@ -35,6 +35,7 @@ use Cake\I18n\Date;
             <fieldset>
                 <p><?= __('This is where the round ends. Nothing stands behind it waiting to be'
                     . ' written, so the day the customer agreed is the last thing it needs.') ?></p>
+                <br>
                 <?= $this->Form->control('conclusion_date', [
                     'default' => Date::now(),
                     'label' => __('Conclusion Date'),

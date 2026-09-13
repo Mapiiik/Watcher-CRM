@@ -75,7 +75,7 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
                     ]) ?>
             <?php endif; ?>
         </div>
-        <hr />
+        <br>
         <div class="contractProposals form content">
             <?php if ($stopped) : ?>
             <fieldset>
