@@ -15,7 +15,7 @@
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
-                __d('files', 'Documents'),
+                __d('files', 'File Links'),
                 ['controller' => 'FileLinks', 'action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
