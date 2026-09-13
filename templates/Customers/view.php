@@ -180,13 +180,13 @@ $remark = function (string $note, bool $wrong = false): string {
                 data-trigger="load"
             ></div>
             <?= $this->AuthLink->link(
-                __('Customer Documents'),
-                ['action' => 'documents', $customer->id],
+                __('Documentations'),
+                ['controller' => 'Documentations', 'action' => 'index'],
                 ['class' => 'button float-right'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Documentations'),
-                ['controller' => 'Documentations', 'action' => 'index'],
+                __('Documents'),
+                ['action' => 'documents', $customer->id],
                 ['class' => 'button float-right'],
             ) ?>
             <?= $this->AuthLink->link(
