@@ -36,28 +36,35 @@ $said = fn(bool $yes): string => $yes ? __d('app_files', 'Yes') : __d('app_files
     <div class="column column-90">
         <div class="documentationTypes view content">
             <?= $this->record(__d('app_files', 'Documentation Type'), (string)$documentationType->name) ?>
-            <table>
-                <tr>
-                    <th><?= __d('app_files', 'Position') ?></th>
-                    <td><?= $this->Number->format($documentationType->position) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('app_files', 'Currently Offered') ?></th>
-                    <td><?= $said($documentationType->currently_offered) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('app_files', 'Date Required') ?></th>
-                    <td><?= $said($documentationType->date_required) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('app_files', 'Customer Required') ?></th>
-                    <td><?= $said($documentationType->customer_required) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('app_files', 'Contract Required') ?></th>
-                    <td><?= $said($documentationType->contract_required) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column">
+                    <table>
+                        <tr>
+                            <th><?= __d('app_files', 'Position') ?></th>
+                            <td><?= $this->Number->format($documentationType->position) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('app_files', 'Currently Offered') ?></th>
+                            <td><?= $said($documentationType->currently_offered) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('app_files', 'Date Required') ?></th>
+                            <td><?= $said($documentationType->date_required) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('app_files', 'Customer Required') ?></th>
+                            <td><?= $said($documentationType->customer_required) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('app_files', 'Contract Required') ?></th>
+                            <td><?= $said($documentationType->contract_required) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column">
+                    <?= $this->element('common/audit', ['entity' => $documentationType]) ?>
+                </div>
+            </div>
             <div class="text">
                 <strong><?= __d('app_files', 'Note') ?></strong>
                 <blockquote><?= $this->Text->autoParagraph(h($documentationType->note)) ?></blockquote>
@@ -67,7 +74,6 @@ $said = fn(bool $yes): string => $yes ? __d('app_files', 'Yes') : __d('app_files
                 <?php $this->Preview->load() ?>
                 <?= $this->cell('Files.Documentations', [$documentationType->documentations ?? []]) ?>
             </div>
-            <?= $this->element('common/audit', ['entity' => $documentationType]) ?>
         </div>
     </div>
 </div>

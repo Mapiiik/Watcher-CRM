@@ -49,6 +49,7 @@
                     <th><?= __d('app_files', 'Documentation Type') ?></th>
                     <th><?= $this->Paginator->sort('happened_on', __d('app_files', 'Happened On')) ?></th>
                     <th><?= __d('app_files', 'Files') ?></th>
+                    <th><?= __d('app_files', 'Size') ?></th>
                     <th class="actions"><?= __d('app_files', 'Actions') ?></th>
                 </tr>
             </thead>
@@ -71,6 +72,10 @@
                     <td><?= h($documentation->documentation_type->name ?? '') ?></td>
                     <td><?= h($documentation->happened_on) ?></td>
                     <td><?= $this->Number->format(count($filed[$documentation->id] ?? [])) ?></td>
+                    <td><?= $this->Number->toReadableSize(array_sum(array_map(
+                        fn($link) => $link->file->byte_size ?? 0,
+                        $filed[$documentation->id] ?? [],
+                    ))) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __d('app_files', 'View'),

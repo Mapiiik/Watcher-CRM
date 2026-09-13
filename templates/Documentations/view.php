@@ -64,7 +64,16 @@
                         </tr>
                         <tr>
                             <th><?= __d('app_files', 'Documentation Type') ?></th>
-                            <td><?= h($documentation->documentation_type->name ?? '') ?></td>
+                            <td><?=
+                                $documentation->documentation_type === null ? '' : $this->Html->link(
+                                    $documentation->documentation_type->name,
+                                    [
+                                        'controller' => 'DocumentationTypes',
+                                        'action' => 'view',
+                                        $documentation->documentation_type_id,
+                                    ],
+                                )
+                                ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('app_files', 'Happened On') ?></th>
