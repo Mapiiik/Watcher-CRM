@@ -60,7 +60,7 @@
                     'class' => 'button float-right',
                 ],
             ) ?>
-            <h3><?= h($account->username) ?></h3>
+            <?= $this->record(__d('radius', 'RADIUS Account'), (string)$account->username) ?>
             <div class="row">
                 <div class="column">
                     <table>

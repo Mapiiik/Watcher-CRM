@@ -66,6 +66,15 @@ class AppView extends View
         JS;
 
     /**
+     * What the page said about itself, as far as it has said anything.
+     *
+     * @var string|null
+     */
+    private ?string $pageIsCalled = null;
+    private ?string $formIsCalled = null;
+    private ?string $recordIsCalled = null;
+
+    /**
      * Initialization hook method.
      *
      * Use this method to add common initialization code like adding helpers.
@@ -98,7 +107,9 @@ class AppView extends View
      */
     public function heading(string $what): string
     {
-        return $this->named($what, '<h3>%s</h3>');
+        $this->pageIsCalled ??= $what;
+
+        return '<h3>' . h($what) . '</h3>';
     }
 
     /**
@@ -109,26 +120,64 @@ class AppView extends View
      */
     public function legend(string $what): string
     {
-        return $this->named($what, '<legend>%s</legend>');
+        $this->formIsCalled ??= $what;
+
+        return '<legend>' . h($what) . '</legend>';
     }
 
     /**
-     * Names the window after the page, and hands back the heading that was asked for.
+     * The heading of a page about one record, which is also what its window is called.
      *
-     * Whoever asks first wins, so that a page carrying more than one fieldset keeps the name of
-     * what it is about rather than the name of the last thing drawn on it.
+     * What sort of record it is and then which one, because a heading reading only `42` leaves
+     * the reader to work out what they are even looking at.
      *
-     * @param string $what What this page is.
-     * @param string $markup Where the words go.
+     * Several pages are about the same record - it is looked at, its papers are gone through, it
+     * is printed - and without saying which of those this is they all carry the same heading and
+     * the same window name. So a page says that too, in front of the record: `Print - Customer
+     * No. 550001`. It holds what is being done with the record, or which part of it is being
+     * looked at, whichever the page is for.
+     *
+     * @param string $kind What sort of record this is.
+     * @param string $identity Which one, as the record is known by.
+     * @param string|null $about A line worth reading under it, if there is one.
+     * @param string|null $doing What this page is about that record, where it is not the record
+     *     itself that is being looked at.
      * @return string
      */
-    private function named(string $what, string $markup): string
-    {
-        if ($this->fetch('title') === '') {
-            $this->assign('title', $what);
-        }
+    public function record(
+        string $kind,
+        string $identity,
+        ?string $about = null,
+        ?string $doing = null,
+    ): string {
+        $said = $doing === null || $doing === '' ? $kind : $doing . ' - ' . $kind;
 
-        return sprintf($markup, h($what));
+        // A kind closed by an abbreviation has ended its own phrase and wants no more than a
+        // space after it, where one that has not needs something between it and the value.
+        $this->recordIsCalled ??= str_ends_with($said, '.')
+            ? $said . ' ' . $identity
+            : $said . ': ' . $identity;
+
+        return h($said) . '<h3>' . h($identity) . '</h3>'
+            . ($about === null || $about === '' ? '' : '<h5>' . h($about) . '</h5>');
+    }
+
+    /**
+     * What the page said it was, as the window is to be called.
+     *
+     * A page about a record is named after it, a page that names itself after that, and a form
+     * standing on its own after what it does. The record wins over the rest because a page about
+     * a record has the most to say about where somebody is.
+     *
+     * Of each of the three, whoever asks first wins - so a page carrying more than one fieldset,
+     * or one record shown inside another, keeps the name of what it is about rather than the name
+     * of the last thing drawn on it.
+     *
+     * @return string
+     */
+    private function whatThePageSaidItIs(): string
+    {
+        return $this->recordIsCalled ?? $this->pageIsCalled ?? $this->formIsCalled ?? '';
     }
 
     /**
@@ -142,7 +191,8 @@ class AppView extends View
     public function renderLayout(string $content, ?string $layout = null): string
     {
         if ($this->fetch('title') === '') {
-            $this->assign('title', $this->nameOfThePage());
+            $said = $this->whatThePageSaidItIs();
+            $this->assign('title', $said === '' ? $this->nameOfThePage() : $said);
         }
 
         return parent::renderLayout($content, $layout);

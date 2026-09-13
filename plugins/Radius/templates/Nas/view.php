@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="Nas view content">
-            <h3><?= h($nas->nasname) ?></h3>
+            <?= $this->record(__d('radius', 'RADIUS NAS'), (string)$nas->nasname) ?>
             <table>
                 <tr>
                     <th><?= __d('radius', 'Ports') ?></th>

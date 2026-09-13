@@ -40,7 +40,7 @@
     </aside>
     <div class="column column-90">
         <div class="customerMessages view content">
-            <h3><?= h($customerMessage->subject) ?></h3>
+            <?= $this->record(__('Customer Message'), (string)$customerMessage->subject) ?>
             <div class="row">
                 <div class="column">
                     <table>

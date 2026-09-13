@@ -24,7 +24,7 @@
     </aside>
     <div class="column column-90">
         <div class="emails view content">
-            <h3><?= h($email->email) ?></h3>
+            <?= $this->record(__('Email'), (string)$email->email) ?>
             <div class="row">
                 <div class="column">
                     <table>

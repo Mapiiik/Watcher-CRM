@@ -31,7 +31,7 @@ use App\Model\Entity\Billing;
             <hr />
             <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
             <fieldset>
-                <legend><?= __('Original Service') ?></legend>
+                <?= $this->legend(__('Original Service')) ?>
                 <?= $this->Form->control('original_service_id', [
                     'label' => __('Service'),
                     'options' => $services,

@@ -34,7 +34,7 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
     </aside>
     <div class="column column-90">
         <div class="contractProposals view content">
-            <?= $this->element('ContractProposals/heading') ?>
+            <?= $this->element('ContractProposals/heading', ['doing' => __('Carry the Proposal Over')]) ?>
             <?php if ($found !== []) : ?>
                 <h4><?= __('Worth knowing first') ?></h4>
                 <ul>
@@ -79,7 +79,6 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
         <div class="contractProposals form content">
             <?php if ($stopped) : ?>
             <fieldset>
-                <legend><?= __('Carry the Proposal Over') ?></legend>
                 <p><?= __('This proposal cannot be carried over as it stands.') ?></p>
             </fieldset>
             <?php else : ?>

@@ -7,6 +7,10 @@
  * @var array<string, mixed> $values
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
  */
+
+$changing = $replaced === null
+    ? __('Add to What Is Billed For')
+    : __('Change What Is Billed For');
 ?>
 <div class="row">
     <aside class="column">
@@ -31,13 +35,10 @@
     </aside>
     <div class="column column-90">
         <div class="billings form content">
-            <?= $this->element('ContractProposals/heading') ?>
+            <?= $this->element('ContractProposals/heading', ['doing' => $changing]) ?>
 
             <?= $this->Form->create(null) ?>
             <fieldset>
-                <legend><?= $replaced === null
-                    ? __('Add to What Is Billed For')
-                    : __('Change What Is Billed For') ?></legend>
 
                 <?php if ($replaced !== null) : ?>
                 <div class="message" role="status">

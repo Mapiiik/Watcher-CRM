@@ -24,7 +24,7 @@
     </aside>
     <div class="column column-90">
         <div class="countries view content">
-            <h3><?= h($country->name) ?></h3>
+            <?= $this->record(__('Country'), (string)$country->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

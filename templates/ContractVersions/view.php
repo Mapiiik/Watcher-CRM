@@ -36,7 +36,11 @@
     </aside>
     <div class="column column-90">
         <div class="contractVersions view content">
-            <?= __('Contract No.') ?><h3><?= h($contractVersion->contract->number) ?></h3>
+            <?= $this->record(
+                __('Contract No.'),
+                (string)$contractVersion->contract->number,
+                doing: __('Contract Version'),
+            ) ?>
             <?= __('Validity') ?><h3><?= h($contractVersion->name) ?></h3>
             <?php if ($contractVersion->contract !== null) : ?>
             <h5><?=

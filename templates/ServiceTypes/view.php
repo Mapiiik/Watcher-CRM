@@ -27,7 +27,7 @@
     </aside>
     <div class="column column-90">
         <div class="serviceTypes view content">
-            <h3><?= h($serviceType->name) ?></h3>
+            <?= $this->record(__('Service Type'), (string)$serviceType->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

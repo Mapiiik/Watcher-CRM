@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="removedIpAddresses view content">
-            <h3><?= h($removedIpAddress->ip_address) ?></h3>
+            <?= $this->record(__('Removed IP Address'), (string)$removedIpAddress->ip_address) ?>
             <div class="row">
                 <div class="column">
                     <table>

@@ -19,7 +19,7 @@
         <div class="accounts form content">
             <?= $this->Form->create() ?>
             <fieldset>
-                <legend><?= __d('radius', 'Update Related Records') ?></legend>
+                <?= $this->legend(__d('radius', 'Update Related Records')) ?>
                 <?php
                 echo $this->Form->control('state', [
                     'label' => __d('radius', 'State'),

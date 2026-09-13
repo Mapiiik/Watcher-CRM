@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="accessCredentials view content">
-            <h3><?= h($accessCredential->name) ?></h3>
+            <?= $this->record(__('Access Credential'), (string)$accessCredential->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

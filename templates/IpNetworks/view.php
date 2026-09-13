@@ -32,7 +32,7 @@
     </aside>
     <div class="column column-90">
         <div class="ipNetworks view content">
-            <h3><?= h($ipNetwork->ip_network) ?></h3>
+            <?= $this->record(__('IP Network'), (string)$ipNetwork->ip_network) ?>
             <div class="row">
                 <div class="column">
                     <table>

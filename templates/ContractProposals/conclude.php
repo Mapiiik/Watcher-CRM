@@ -28,12 +28,11 @@ use Cake\I18n\Date;
     </aside>
     <div class="column column-90">
         <div class="contractProposals form content">
-            <?= $this->element('ContractProposals/heading') ?>
+            <?= $this->element('ContractProposals/heading', ['doing' => __('Record the Signature')]) ?>
 
             <?php $this->Upload->load() ?>
             <?= $this->Form->create($contractProposal, ['type' => 'file'] + $this->Upload->atMost()) ?>
             <fieldset>
-                <legend><?= __('Record the Signature') ?></legend>
                 <p><?= __(
                     'Nothing is carried over into the live records without this day. What the'
                     . ' proposal asks for stays as it is, and the records move only when it is'

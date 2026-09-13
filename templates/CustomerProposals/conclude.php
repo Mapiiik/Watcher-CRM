@@ -28,12 +28,11 @@ use Cake\I18n\Date;
     </aside>
     <div class="column column-90">
         <div class="customerProposals form content">
-            <?= $this->element('CustomerProposals/heading') ?>
+            <?= $this->element('CustomerProposals/heading', ['doing' => __('Record the Signature')]) ?>
 
             <?php $this->Upload->load() ?>
             <?= $this->Form->create($customerProposal, ['type' => 'file'] + $this->Upload->atMost()) ?>
             <fieldset>
-                <legend><?= __('Record the Signature') ?></legend>
                 <p><?= __('This is where the round ends. Nothing stands behind it waiting to be'
                     . ' written, so the day the customer agreed is the last thing it needs.') ?></p>
                 <?= $this->Form->control('conclusion_date', [

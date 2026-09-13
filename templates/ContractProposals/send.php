@@ -7,6 +7,10 @@
 
 use Cake\I18n\Date;
 
+// Papers do go out more than once - by another means, or after the first attempt came back. What
+// they stand on was settled the first time; the day is what a second sending moves.
+$again = $contractProposal->hasBeenSent();
+$recording = $again ? __('Record the Sending Again') : __('Record the Sending');
 ?>
 <div class="row">
     <aside class="column">
@@ -21,12 +25,9 @@ use Cake\I18n\Date;
     </aside>
     <div class="column column-90">
         <div class="contractProposals form content">
-            <?= $this->element('ContractProposals/heading') ?>
+            <?= $this->element('ContractProposals/heading', ['doing' => $recording]) ?>
 
 <?php
-// Papers do go out more than once - by another means, or after the first attempt came back. What
-// they stand on was settled the first time; the day is what a second sending moves.
-$again = $contractProposal->hasBeenSent();
 $saying = $again
     ? __(
         'They went out on {0}. Recording it again puts the new day in its place - which is what'
@@ -41,9 +42,6 @@ $saying = $again
 ?>
             <?= $this->Form->create($contractProposal) ?>
             <fieldset>
-                <legend><?= $again
-                    ? __('Record the Sending Again')
-                    : __('Record the Sending') ?></legend>
                 <p><?= $saying ?></p>
                 <?php
                 echo $this->Form->control('sent_date', [

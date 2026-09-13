@@ -28,7 +28,7 @@ use Cake\Collection\Collection;
     </aside>
     <div class="column column-90">
         <div class="services view content">
-            <h3><?= h($service->name) ?></h3>
+            <?= $this->record(__('Service'), (string)$service->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

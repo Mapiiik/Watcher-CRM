@@ -27,7 +27,7 @@ use Bookkeeping\Model\Enum\InvoiceImportFormat;
                 ],
             ]) ?>
             <fieldset>
-                <legend><?= __d('bookkeeping', 'Import Invoices from File') ?></legend>
+                <?= $this->legend(__d('bookkeeping', 'Import Invoices from File')) ?>
                 <div class="row">
                     <div class="column">
                     <?php

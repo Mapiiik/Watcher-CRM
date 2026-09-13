@@ -33,7 +33,7 @@
     </aside>
     <div class="column column-90">
         <div class="customerProposals view content">
-            <?= $this->element('CustomerProposals/heading') ?>
+            <?= $this->element('CustomerProposals/heading', ['doing' => __('Documents')]) ?>
             <div class="related">
                 <?= $this->AuthLink->link(
                     __('Add Received Document'),

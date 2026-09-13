@@ -25,7 +25,7 @@ $this->Upload->load();
         <div class="documentations form content">
             <?= $this->Form->create(null, ['type' => 'file'] + $this->Upload->atMost()) ?>
             <fieldset>
-                <legend><?= __d('app_files', 'Add Files to {0}', $documentation->heading) ?></legend>
+                <?= $this->legend(__d('app_files', 'Add Files to {0}', $documentation->heading)) ?>
                 <?= $this->Form->control('files[]', [
                     'type' => 'file',
                     'multiple' => true,

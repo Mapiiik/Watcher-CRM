@@ -18,7 +18,7 @@
         <div class="invoices form content">
             <?= $this->Form->create(null) ?>
             <fieldset>
-                <legend><?= __d('bookkeeping', 'Send by email') ?></legend>
+                <?= $this->legend(__d('bookkeeping', 'Send by email')) ?>
                 <div class="row">
                     <div class="column">
                         <?php

@@ -31,7 +31,7 @@ use Cake\I18n\Date;
                 ['action' => 'serviceChange', $billing->id],
                 ['class' => 'button float-right win-link'],
             ) ?>
-            <h3><?= h($billing->name) ?></h3>
+            <?= $this->record(__('Billing'), (string)$billing->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

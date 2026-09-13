@@ -24,7 +24,7 @@
     </aside>
     <div class="column column-90">
         <div class="ipAddresses view content">
-            <h3><?= h($ipAddress->ip_address) ?></h3>
+            <?= $this->record(__('IP Address'), (string)$ipAddress->ip_address) ?>
             <div class="row">
                 <div class="column">
                     <table>

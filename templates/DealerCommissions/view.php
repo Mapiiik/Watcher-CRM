@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="dealerCommissions view content">
-            <h3><?= h($dealerCommission->id) ?></h3>
+            <?= $this->record(__('Dealer Commission'), (string)$dealerCommission->id) ?>
             <div class="row">
                 <div class="column">
                     <table>

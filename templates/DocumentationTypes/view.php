@@ -35,7 +35,7 @@ $said = fn(bool $yes): string => $yes ? __d('app_files', 'Yes') : __d('app_files
     </aside>
     <div class="column column-90">
         <div class="documentationTypes view content">
-            <h3><?= h($documentationType->name) ?></h3>
+            <?= $this->record(__d('app_files', 'Documentation Type'), (string)$documentationType->name) ?>
             <table>
                 <tr>
                     <th><?= __d('app_files', 'Position') ?></th>

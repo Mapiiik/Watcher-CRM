@@ -17,11 +17,10 @@
     </aside>
     <div class="column column-90">
         <div class="contractProposals form content">
-            <?= $this->element('ContractProposals/heading') ?>
+            <?= $this->element('ContractProposals/heading', ['doing' => __('Take the Snapshot Again')]) ?>
 
             <?= $this->Form->create($contractProposal) ?>
             <fieldset>
-                <legend><?= __('Take the Snapshot Again') ?></legend>
                 <p><?= __(
                     'The snapshot is what the papers print from. Taking it again reads the contract'
                     . ' as it stands now, so the papers say what is there today rather than what was'

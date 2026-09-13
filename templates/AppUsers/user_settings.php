@@ -28,7 +28,7 @@
         <div class="users form content">
             <?= $this->Form->create($user) ?>
             <fieldset>
-                <legend><?= __d('app_users', 'Edit User Settings') ?></legend>
+                <?= $this->legend(__d('app_users', 'Edit User Settings')) ?>
                 <?php
                 echo $this->Form->control('user_settings.language', [
                     'label' => __d('app_users', 'Language'),

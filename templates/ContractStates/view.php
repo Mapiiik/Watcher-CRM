@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="contractStates view content">
-            <h3><?= h($contractState->name) ?></h3>
+            <?= $this->record(__('Contract State'), (string)$contractState->name) ?>
 
             <div class="row">
                 <div class="column">

@@ -30,7 +30,7 @@ $user = ${$tableAlias};
         <div class="users form content">
             <?= $this->Form->create($user) ?>
             <fieldset>
-                <legend><?= __d('app_users', 'Edit User') ?></legend>
+                <?= $this->legend(__d('app_users', 'Edit User')) ?>
                 <div class="row">
                     <div class="column">
                     <?php

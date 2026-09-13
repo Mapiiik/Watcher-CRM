@@ -24,7 +24,7 @@
     </aside>
     <div class="column column-90">
         <div class="logins view content">
-            <h3><?= h($login->login) ?></h3>
+            <?= $this->record(__('Login'), (string)$login->login) ?>
             <div class="row">
                 <div class="column">
                     <table>

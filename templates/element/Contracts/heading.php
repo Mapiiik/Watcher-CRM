@@ -4,10 +4,13 @@
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Contract $contract
+ * @var string|null $doing What the page holding this is about the contract, if not the contract.
  */
-?>
-<?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
-<h5><?= h(
+
+echo $this->record(
+    __('Contract No.'),
+    (string)$contract->number,
     ($contract->service_type !== null ? $contract->service_type->name : '')
     . ($contract->installation_address !== null ? ' - ' . $contract->installation_address->address : ''),
-) ?></h5>
+    $doing ?? null,
+);

@@ -35,7 +35,7 @@ use Doctrine\SqlFormatter\SqlFormatter;
                     'class' => 'button float-right',
                 ],
             ) ?>
-            <h3><?= h($label->name) ?></h3>
+            <?= $this->record(__('Label'), (string)$label->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

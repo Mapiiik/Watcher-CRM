@@ -59,7 +59,11 @@
                 ],
             ) ?>
             <?= __('Contract No.') ?>
-            <h3><?= h($serviceOverride->contract->number) ?></h3>
+            <?= $this->record(
+                __('Contract No.'),
+                (string)$serviceOverride->contract->number,
+                doing: __('Service Override'),
+            ) ?>
             <?= __('Service') ?>
             <h3><?= h($serviceOverride->service->name) ?></h3>
             <?= __('Validity') ?>

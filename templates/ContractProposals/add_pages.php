@@ -27,7 +27,7 @@ use App\Model\Enum\DocumentVariant;
     </aside>
     <div class="column column-90">
         <div class="contractProposals form content">
-            <?= $this->element('ContractProposals/heading') ?>
+            <?= $this->element('ContractProposals/heading', ['doing' => __('Add Received Document')]) ?>
 
             <?php $this->Upload->load() ?>
             <?=
@@ -37,7 +37,6 @@ use App\Model\Enum\DocumentVariant;
                 ] + $this->Upload->atMost())
                 ?>
             <fieldset>
-                <legend><?= __('Add Received Document') ?></legend>
                 <p><?=
                     __(
                         'What came back, as it came back. Several pages of one document go in'

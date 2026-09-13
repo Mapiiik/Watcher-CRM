@@ -4,7 +4,12 @@
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
+ * @var string|null $doing What the page holding this is about the customer, if not the customer.
  */
-?>
-<?= __('Customer No.') ?><h3><?= h($customer->number) ?></h3>
-<h5><?= h($customer->name) ?></h5>
+
+echo $this->record(
+    __('Customer No.'),
+    (string)$customer->number,
+    (string)$customer->name,
+    $doing ?? null,
+);

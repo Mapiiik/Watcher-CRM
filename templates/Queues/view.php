@@ -25,7 +25,7 @@ $derived = __('(derived)');
     </aside>
     <div class="column column-90">
         <div class="queues view content">
-            <h3><?= h($queue->name) ?></h3>
+            <?= $this->record(__('Queue'), (string)$queue->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

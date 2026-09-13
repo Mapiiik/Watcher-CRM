@@ -27,7 +27,7 @@
     </aside>
     <div class="column column-90">
         <div class="billings view content">
-            <h3><?= h($billing->name) ?></h3>
+            <?= $this->record(__('Billing'), (string)$billing->name, doing: __('Service Change')) ?>
             <div class="row">
                 <div class="column">
                     <table>
@@ -125,7 +125,7 @@
         <div class="billings form content">
             <?= $this->Form->create($billing, ['method' => 'post']) ?>
             <fieldset>
-                <legend><?= __('New Service') ?></legend>
+                <?= $this->legend(__('New Service')) ?>
                 <?php
                 echo $this->Form->control('service_id', [
                     'label' => __('Service'),

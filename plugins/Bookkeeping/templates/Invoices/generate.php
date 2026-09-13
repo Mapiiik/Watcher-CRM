@@ -33,7 +33,7 @@ use Bookkeeping\Model\Enum\InvoiceExportFormat;
                 ],
             ]) ?>
             <fieldset>
-                <legend><?= __d('bookkeeping', 'Generate Invoices') ?></legend>
+                <?= $this->legend(__d('bookkeeping', 'Generate Invoices')) ?>
                 <div class="row">
                     <div class="column">
                     <?php

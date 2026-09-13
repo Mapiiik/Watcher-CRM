@@ -23,7 +23,7 @@
     </aside>
     <div class="column column-90">
         <div class="files view content">
-            <h3><?= h($file->hash) ?></h3>
+            <?= $this->record(__d('files', 'File'), (string)$file->hash) ?>
 
             <?php if (!$onTheShelf) : ?>
                 <p class="error-message">

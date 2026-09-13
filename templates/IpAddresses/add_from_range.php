@@ -18,7 +18,7 @@
         <div class="ipAddresses form content">
             <?= $this->Form->create($ipAddress) ?>
             <fieldset>
-                <legend><?= __('Add IP Address From Range') ?></legend>
+                <?= $this->legend(__('Add IP Address From Range')) ?>
                 <?php
                 if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', [

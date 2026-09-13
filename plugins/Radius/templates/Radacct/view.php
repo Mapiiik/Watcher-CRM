@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="radacct view content">
-            <h3><?= h($radacct->radacctid) ?></h3>
+            <?= $this->record(__d('radius', 'RADIUS Accounting No.'), (string)$radacct->radacctid) ?>
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>

@@ -20,7 +20,7 @@
         <div class="ipAddresses form content">
             <?= $this->Form->create($ipAddress) ?>
             <fieldset>
-                <legend><?= __('Bulk IP Address Reassignment') ?></legend>
+                <?= $this->legend(__('Bulk IP Address Reassignment')) ?>
                 <?php
                 echo $this->Form->control('access_point_id', [
                     'empty' => true,

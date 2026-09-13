@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="borrowedEquipments view content">
-            <h3><?= h($borrowedEquipment->id) ?></h3>
+            <?= $this->record(__('Borrowed Equipment'), (string)$borrowedEquipment->id) ?>
             <div class="row">
                 <div class="column">
                     <table>

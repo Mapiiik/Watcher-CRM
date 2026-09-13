@@ -24,7 +24,7 @@
     </aside>
     <div class="column column-90">
         <div class="phones view content">
-            <h3><?= h($phone->phone) ?></h3>
+            <?= $this->record(__('Phone'), (string)$phone->phone) ?>
             <div class="row">
                 <div class="column">
                     <table>

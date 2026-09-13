@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 <div class="users form content">
     <?= $this->Form->create($user); ?>
     <fieldset>
-        <legend><?= __d('app_users', 'Add User') ?></legend>
+        <?= $this->legend(__d('app_users', 'Add User')) ?>
         <?php
         echo $this->Form->control('username', ['label' => __d('app_users', 'Username')]);
         echo $this->Form->control('email', ['label' => __d('app_users', 'Email')]);

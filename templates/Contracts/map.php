@@ -8,7 +8,7 @@
  */
 ?>
 <div class="contracts map content">
-    <?= __('Contract No.') ?><h3><?= h($contract->number) ?></h3>
+    <?= $this->record(__('Contract No.'), (string)$contract->number, doing: __('Map')) ?>
     <?php if ($mapDistance !== null) : ?>
         <p>
             <?= __('Distance') ?>:

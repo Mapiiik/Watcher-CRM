@@ -27,7 +27,7 @@
     </aside>
     <div class="column column-90">
         <div class="commissions view content">
-            <h3><?= h($commission->name) ?></h3>
+            <?= $this->record(__('Commission'), (string)$commission->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

@@ -38,7 +38,7 @@ $user = ${$tableAlias};
     </aside>
     <div class="column column-90">
         <div class="users view content">
-            <h3><?= h($user->username) ?></h3>
+            <?= $this->record(__d('app_users', 'User'), (string)$user->username) ?>
             <div class="row">
                 <div class="column">
                     <table>

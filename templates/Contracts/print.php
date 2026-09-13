@@ -59,7 +59,7 @@ foreach ($proposals as $one) {
     </aside>
     <div class="column column-90">
         <div class="contracts form content">
-            <?= $this->element('Contracts/heading') ?>
+            <?= $this->element('Contracts/heading', ['doing' => __('Print')]) ?>
             <?= $this->element('Contracts/facts', ['showMap' => false]) ?>
             <?php if ($contract->service_type !== null && $contract->service_type->have_contract_versions) : ?>
             <div class="related">
@@ -100,7 +100,7 @@ foreach ($proposals as $one) {
                 ],
             ]) ?>
             <fieldset>
-                <legend><?= __('Print Documents') ?></legend>
+                <?= $this->legend(__('Print Documents')) ?>
                 <p><?= __('A document is printed from a proposal, so that the same paper printed'
                     . ' twice is the same paper. What it says is what the proposal took down, not'
                     . ' what the records happen to say today.') ?></p>

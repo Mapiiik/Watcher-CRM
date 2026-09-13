@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="radreply view content">
-            <h3><?= h($radreply->id) ?></h3>
+            <?= $this->record(__d('radius', 'RADIUS Reply No.'), (string)$radreply->id) ?>
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>

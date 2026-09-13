@@ -22,7 +22,7 @@ $user = ${$tableAlias};
         <div class="users form content">
             <?= $this->Form->create($user) ?>
             <fieldset>
-                <legend><?= __d('app_users', 'Add User') ?></legend>
+                <?= $this->legend(__d('app_users', 'Add User')) ?>
                 <?php
                     echo $this->Form->control('username');
                     echo $this->Form->control('email');

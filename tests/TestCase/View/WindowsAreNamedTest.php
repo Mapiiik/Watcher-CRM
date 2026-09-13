@@ -105,6 +105,80 @@ class WindowsAreNamedTest extends TestCase
     }
 
     /**
+     * @return void
+     */
+    public function testAPageAboutOneRecordIsCalledAfterIt(): void
+    {
+        $view = $this->aPage();
+
+        $view->record('Customer No.', '550001');
+        $view->renderLayout('', 'ajax');
+
+        // an abbreviation has closed its own phrase, so only a space follows it
+        $this->assertSame('Customer No. 550001', $view->fetch('title'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testAKindThatIsNotAnAbbreviationIsFollowedByAColon(): void
+    {
+        $view = $this->aPage();
+
+        $view->record('Country', 'Czechia');
+        $view->renderLayout('', 'ajax');
+
+        $this->assertSame('Country: Czechia', $view->fetch('title'));
+    }
+
+    /**
+     * What is being done with the record belongs in front of it, so that the papers of a customer
+     * and the customer are not two pages carrying the same heading and the same window name.
+     *
+     * @return void
+     */
+    public function testWhatIsDoneWithARecordComesFirst(): void
+    {
+        $view = $this->aPage();
+
+        $drawn = $view->record('Customer No.', '550001', doing: 'Print');
+        $view->renderLayout('', 'ajax');
+
+        $this->assertSame('Print - Customer No. 550001', $view->fetch('title'));
+        // and the page says it too, which is where the window got it from
+        $this->assertStringStartsWith('Print - Customer No.<h3>550001</h3>', $drawn);
+    }
+
+    /**
+     * A page that is not about a record is called what it calls itself, whatever its fieldsets
+     * are headed.
+     *
+     * @return void
+     */
+    public function testAFieldsetDoesNotNameAPageThatNamedItself(): void
+    {
+        $view = $this->aPage();
+
+        $view->heading('Billings - Bulk Service Change');
+        $view->legend('Original Service');
+        $view->renderLayout('', 'ajax');
+
+        $this->assertSame('Billings - Bulk Service Change', $view->fetch('title'));
+    }
+
+    /**
+     * A view to ask these of, standing at some address or other.
+     *
+     * @return \App\View\AppView
+     */
+    private function aPage(): AppView
+    {
+        return new AppView(new ServerRequest([
+            'params' => ['plugin' => null, 'controller' => 'Customers', 'action' => 'print'],
+        ]));
+    }
+
+    /**
      * The heading that names the window has to be the page's own.
      *
      * A page carries headings for its sections as well, and one of those sitting after a form
@@ -119,17 +193,20 @@ class WindowsAreNamedTest extends TestCase
 
         foreach ($this->templates() as $path) {
             $source = (string)file_get_contents($path);
-            $at = strpos($source, '$this->heading(');
-            if ($at === false) {
-                continue;
+
+            foreach (['$this->heading(', '$this->record('] as $call) {
+                $at = strpos($source, $call);
+                if ($at === false) {
+                    continue;
+                }
+
+                $looked++;
+
+                $this->assertFalse(
+                    str_contains(substr($source, 0, $at), '<legend>'),
+                    substr($path, strlen(ROOT)) . ' names its window after a heading that sits below a form',
+                );
             }
-
-            $looked++;
-
-            $this->assertFalse(
-                str_contains(substr($source, 0, $at), '<legend>'),
-                substr($path, strlen(ROOT)) . ' names its window after a heading that sits below a form',
-            );
         }
 
         $this->assertNotEmpty($looked, 'there is at least one page naming itself to check');

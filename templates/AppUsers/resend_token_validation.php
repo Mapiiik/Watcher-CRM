@@ -8,7 +8,7 @@
 <div class="users form content">
     <?= $this->Form->create($user); ?>
     <fieldset>
-        <legend><?= __d('app_users', 'Resend Validation email') ?></legend>
+        <?= $this->legend(__d('app_users', 'Resend Validation email')) ?>
         <?php
         echo $this->Form->control('reference', ['label' => __d('app_users', 'Email or username')]);
         ?>

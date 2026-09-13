@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="radgroupcheck view content">
-            <h3><?= h($radgroupcheck->id) ?></h3>
+            <?= $this->record(__d('radius', 'RADIUS Group Check No.'), (string)$radgroupcheck->id) ?>
             <table>
                 <tr>
                     <th><?= __d('radius', 'Groupname') ?></th>

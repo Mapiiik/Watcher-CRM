@@ -153,7 +153,7 @@ class CustomerProposalsController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $proposal = $this->CustomerProposals->get($id);
+        $proposal = $this->CustomerProposals->get($id, contain: ['Customers']);
 
         if (!$this->CustomerProposals->mayBeEdited($proposal)) {
             $this->Flash->warning(__('This proposal may no longer be changed.'));

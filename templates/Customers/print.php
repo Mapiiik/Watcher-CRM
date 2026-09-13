@@ -46,7 +46,7 @@ foreach ($customer->customer_proposals ?? [] as $one) {
     </aside>
     <div class="column column-90">
         <div class="contracts form content">
-            <?= $this->element('Customers/heading') ?>
+            <?= $this->element('Customers/heading', ['doing' => __('Print')]) ?>
             <?= $this->element('Customers/facts') ?>
             <div class="related">
                 <?= $this->AuthLink->link(
@@ -73,7 +73,7 @@ foreach ($customer->customer_proposals ?? [] as $one) {
                 ],
             ]) ?>
             <fieldset>
-                <legend><?= __('Print Documents') ?></legend>
+                <?= $this->legend(__('Print Documents')) ?>
                 <p><?= __('A document is printed from a round of papers, so that the same paper'
                     . ' printed twice is the same paper and a signed scan has something to be'
                     . ' filed against.') ?></p>
