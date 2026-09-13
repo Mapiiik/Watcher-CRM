@@ -9,7 +9,9 @@
  */
 ?>
 <fieldset>
-    <legend><?= __('What the papers are for') ?></legend>
+    <?= $this->legend($customerProposal->isNew()
+        ? __('Add Customer Proposal')
+        : __('Edit Customer Proposal')) ?>
     <?php
     // Which customer is settled by the page it was opened from, and a round never moves to
     // somebody else - the papers went to one person.

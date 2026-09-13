@@ -33,7 +33,9 @@ $endsOn = $changes?->version->names('valid_until') ?? false
     : null;
 ?>
 <fieldset>
-    <legend><?= __('What the papers are for') ?></legend>
+    <?= $this->legend($contractProposal->isNew()
+        ? __('Add Contract Proposal')
+        : __('Edit Contract Proposal')) ?>
     <?php
     // The purpose, the contract and the version all redraw the form when they change, and the
     // field they add to do it is not one the form declared - so it is unlocked whichever of them
@@ -125,7 +127,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
 </fieldset>
 <?php else : ?>
 <fieldset>
-    <legend><?= __('The contract version') ?></legend>
+    <legend><?= __('Contract Version') ?></legend>
     <p><?= __('Only what is ticked here is changed. The rest is left as it stands.') ?></p>
     <?php
     foreach (['valid_until', 'obligation_until'] as $field) {
