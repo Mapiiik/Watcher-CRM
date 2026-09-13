@@ -10,7 +10,7 @@
             <h4><?= __('Documentation Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __('Documentations'),
+                    __d('app_files', 'List Documentations'),
                     [
                         'controller' => 'Documentations',
                         'action' => 'index',
