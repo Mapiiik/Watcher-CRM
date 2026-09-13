@@ -184,7 +184,7 @@ class DocumentationsControllerTest extends TestCase
             Documentations::MODEL,
             (string)$documentation->id,
             Documentations::ATTACHMENT,
-            Documentations::FILED,
+            Documentations::UPLOADED,
         );
 
         $this->post('/documentations/delete/' . $documentation->id);

@@ -210,7 +210,7 @@ class DocumentationsTableTest extends TestCase
             Documentations::MODEL,
             (string)$folder->id,
             Documentations::ATTACHMENT,
-            Documentations::FILED,
+            Documentations::UPLOADED,
         );
 
         $this->assertCount(1, (new Documentations())->contentsOf($folder));

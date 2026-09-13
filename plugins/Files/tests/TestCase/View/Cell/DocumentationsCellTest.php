@@ -243,7 +243,7 @@ class DocumentationsCellTest extends TestCase
             Documentations::MODEL,
             (string)$folder->id,
             Documentations::ATTACHMENT,
-            Documentations::FILED,
+            Documentations::UPLOADED,
             ['name' => $name],
         );
     }

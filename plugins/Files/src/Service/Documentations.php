@@ -29,7 +29,7 @@ class Documentations
      */
     public const MODEL = 'Documentations';
     public const ATTACHMENT = 'attachment';
-    public const FILED = 'filed';
+    public const UPLOADED = 'uploaded';
 
     /**
      * The taking in and the ordering, and the store underneath both.
@@ -60,7 +60,7 @@ class Documentations
             self::MODEL,
             (string)$documentation->id,
             self::ATTACHMENT,
-            self::FILED,
+            self::UPLOADED,
             $files,
         );
     }
@@ -102,7 +102,7 @@ class Documentations
             model: self::MODEL,
             foreign_key: (string)$documentation->id,
             document_type: self::ATTACHMENT,
-            variant: self::FILED,
+            variant: self::UPLOADED,
         )->contain(['Files'])->all()->toList();
 
         return $found;
