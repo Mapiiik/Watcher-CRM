@@ -27,7 +27,7 @@
     <?= $this->AuthLink->link(
         __('New Proposal'),
         ['action' => 'add'],
-        ['class' => 'button float-right'],
+        ['class' => 'button float-right win-link'],
     ) ?>
     <?= $this->heading(__('Customer Proposals')) ?>
     <div class="table-responsive">

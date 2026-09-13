@@ -29,7 +29,7 @@
 <?= $this->Form->end() ?>
 
 <div class="contracts index content">
-    <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'button float-right win-link']) ?>
+    <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <?= $this->heading(__('Contracts')) ?>
     <div class="table-responsive">
         <table>
