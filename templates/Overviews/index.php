@@ -7,6 +7,23 @@
     <h3><?= __('Overviews') ?></h3>
     <div class="table-responsive">
         <div class="related">
+            <h4><?= __('Documentation Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('Documentations'),
+                    [
+                        'controller' => 'Documentations',
+                        'action' => 'index',
+                        'plugin' => null,
+                        'customer_id' => false,
+                        'contract_id' => false,
+                    ],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
             <h4><?= __('Service Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(

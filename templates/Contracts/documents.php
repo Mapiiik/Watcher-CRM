@@ -26,7 +26,7 @@
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Documentation'),
+                __('Documentations'),
                 ['controller' => 'Documentations', 'action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>

@@ -25,6 +25,11 @@
                 ['action' => 'print', $customer->id],
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
+            <?= $this->AuthLink->link(
+                __('Documentations'),
+                ['controller' => 'Documentations', 'action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">

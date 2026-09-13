@@ -63,7 +63,7 @@ $said = fn(bool $yes): string => $yes ? __d('app_files', 'Yes') : __d('app_files
                 <blockquote><?= $this->Text->autoParagraph(h($documentationType->note)) ?></blockquote>
             </div>
             <div class="related">
-                <h4><?= __d('app_files', 'Documentation') ?></h4>
+                <h4><?= __d('app_files', 'Documentations') ?></h4>
                 <?php $this->Preview->load() ?>
                 <?= $this->cell('Files.Documentations', [$documentationType->documentations ?? []]) ?>
             </div>

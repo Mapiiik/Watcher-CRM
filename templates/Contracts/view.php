@@ -40,6 +40,11 @@ $this->Html->css('problems', ['block' => true]);
                 ['action' => 'documents', $contract->id],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?= $this->AuthLink->link(
+                __('Documentations'),
+                ['controller' => 'Documentations', 'action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
             <br>
             <?= $this->AuthLink->link(
                 __('List Contract Proposals'),
@@ -154,6 +159,11 @@ $this->Html->css('problems', ['block' => true]);
             <?= $this->AuthLink->link(
                 __('Contract Documents'),
                 ['action' => 'documents', $contract->id],
+                ['class' => 'button float-right'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Documentations'),
+                ['controller' => 'Documentations', 'action' => 'index'],
                 ['class' => 'button float-right'],
             ) ?>
             <?= $this->AuthLink->link(

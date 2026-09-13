@@ -53,6 +53,11 @@ $remark = function (string $note, bool $wrong = false): string {
                 ['action' => 'documents', $customer->id],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?= $this->AuthLink->link(
+                __('Documentations'),
+                ['controller' => 'Documentations', 'action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
             <br>
             <?= $this->AuthLink->link(
                 __('List Customer Proposals'),
@@ -177,6 +182,11 @@ $remark = function (string $note, bool $wrong = false): string {
             <?= $this->AuthLink->link(
                 __('Customer Documents'),
                 ['action' => 'documents', $customer->id],
+                ['class' => 'button float-right'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Documentations'),
+                ['controller' => 'Documentations', 'action' => 'index'],
                 ['class' => 'button float-right'],
             ) ?>
             <?= $this->AuthLink->link(
