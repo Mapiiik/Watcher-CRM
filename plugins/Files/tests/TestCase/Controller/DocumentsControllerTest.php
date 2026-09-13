@@ -205,6 +205,41 @@ class DocumentsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertHeaderContains('Content-Disposition', 'attachment');
+        $this->assertHeader(
+            'X-Content-Type-Options',
+            'nosniff',
+            'Handed over as something to keep is only half of it while a browser may guess again.',
+        );
+    }
+
+    /**
+     * A folder takes whatever the work produced, so what comes back out is whatever the bytes
+     * turned out to be - and a browser left to guess at that can decide a file is something else
+     * entirely and run it.
+     *
+     * @link \Files\Controller\DocumentsController::download()
+     * @link \Files\Controller\DocumentsController::open()
+     * @return void
+     */
+    public function testNothingHandedOverIsLeftForTheBrowserToGuessAt(): void
+    {
+        $storage = new FileStorage();
+        $file = $storage->store('rack 3, port 12', 'text/plain');
+        $link = $storage->link(
+            $file,
+            'ContractProposals',
+            self::RECORD,
+            'contract-new',
+            'received-signed-by-customer',
+            ['name' => 'wiring.txt'],
+        );
+
+        foreach (['download', 'open'] as $door) {
+            $this->get('/files/documents/' . $door . '/' . $link->id);
+
+            $this->assertResponseOk();
+            $this->assertHeader('X-Content-Type-Options', 'nosniff', 'Going out through ' . $door . '.');
+        }
     }
 
     /**

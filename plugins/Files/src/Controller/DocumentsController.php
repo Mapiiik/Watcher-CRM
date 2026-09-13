@@ -41,6 +41,16 @@ class DocumentsController extends AppController
     private const SENT_AS = 'webp';
 
     /**
+     * What the content is, is what we say it is.
+     *
+     * Everything handed out here came from outside, and a folder takes whatever the work
+     * produced - so the kind is whatever the bytes turned out to be rather than anything we
+     * chose. A browser left to guess can decide a file is something else entirely and run it,
+     * which is the one thing a download must never become.
+     */
+    private const NEVER_GUESSED = ['X-Content-Type-Options' => 'nosniff'];
+
+    /**
      * Index method
      *
      * @return void Renders view
@@ -160,7 +170,7 @@ class DocumentsController extends AppController
         // A picture answers for content that cannot change - the store is addressed by what is
         // in it - so it is worth keeping for as long as the browser will. Privately, though: it
         // is behind a login, and a shared cache has no business handing it to the next person.
-        return $this->getResponse()
+        return $this->told($this->getResponse())
             ->withType(self::SENT_AS)
             ->withHeader('Cache-Control', 'private, max-age=31536000, immutable')
             ->withBody(new Stream($handle));
@@ -184,7 +194,7 @@ class DocumentsController extends AppController
             throw new NotFoundException(__d('files', 'The content of this document is not in the store.'));
         }
 
-        $response = $this->getResponse()->withType($link->file->mime_type);
+        $response = $this->told($this->getResponse())->withType($link->file->mime_type);
 
         // Anything the browser would run rather than draw is handed over to be kept, whatever was
         // asked for. The content came from outside, so opening it in our own origin would be
@@ -199,6 +209,21 @@ class DocumentsController extends AppController
         // Handed over as a stream: a scan runs to hundreds of megabytes and there is no reason
         // for any of it to pass through memory on the way out.
         return $response->withBody(new Stream($storage->readStream($link->file)));
+    }
+
+    /**
+     * The response with the headers every piece of content leaves under.
+     *
+     * @param \Cake\Http\Response $response What is going out.
+     * @return \Cake\Http\Response
+     */
+    private function told(Response $response): Response
+    {
+        foreach (self::NEVER_GUESSED as $header => $value) {
+            $response = $response->withHeader($header, $value);
+        }
+
+        return $response;
     }
 
     /**
