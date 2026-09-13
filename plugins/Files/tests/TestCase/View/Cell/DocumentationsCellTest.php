@@ -87,6 +87,39 @@ class DocumentationsCellTest extends TestCase
     }
 
     /**
+     * The wall says what the viewer is to show.
+     *
+     * Nothing else on such a page names the group, so if the tiles do not carry the pages the
+     * viewer is asked to open a gallery it knows nothing about, and nothing happens.
+     *
+     * @link \Files\View\Cell\DocumentationsCell::contents()
+     * @return void
+     */
+    public function testTheWallTellsTheViewerWhatToShow(): void
+    {
+        $folder = $this->folder();
+        $this->put($folder, 'roof.jpg', 'image/jpeg', (string)file_get_contents($this->content('picture.jpg')));
+        $this->put($folder, 'mast.jpg', 'image/jpeg', (string)file_get_contents($this->content('picture.jpg')));
+
+        $shown = $this->render('contents', [$folder]);
+
+        $this->assertSame(
+            1,
+            substr_count($shown, 'data-files-pages'),
+            'Once for the group, not once for every tile in it.',
+        );
+
+        // Read back rather than looked for: the pages are json inside an attribute, and unescaped
+        // they close it on their own first quote - which leaves the attribute there and useless.
+        $this->assertMatchesRegularExpression('~data-files-pages="([^"]+)"~', $shown);
+        preg_match('~data-files-pages="([^"]+)"~', $shown, $found);
+        $pages = json_decode(html_entity_decode($found[1] ?? '', ENT_QUOTES), true);
+
+        $this->assertIsArray($pages, 'What the viewer is handed has to be readable json.');
+        $this->assertCount(2, $pages, 'Both pictures are pages of the group.');
+    }
+
+    /**
      * Everything is in the table, and only what can be drawn is in the wall under it.
      *
      * A drawing standing in that wall left a hole in it and a name too small to read, so the

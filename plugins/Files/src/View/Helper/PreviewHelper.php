@@ -155,7 +155,9 @@ class PreviewHelper extends Helper
         );
 
         $options = $this->markOptions($links, $at, $gallery);
-        $options['escape'] = false;
+        // Only the mark itself is markup. `escape` would take the attributes with it, and
+        // the pages the viewer is handed are json, which is quotes all the way down.
+        $options['escapeTitle'] = false;
 
         // Named whether or not it opens the viewer, so that a listing can place the picture
         // without having to know which of the two kinds of page it got. Added to whatever class
@@ -198,8 +200,10 @@ class PreviewHelper extends Helper
             )
             : '<span class="files-kind">' . h($this->kindOf($link)) . '</span>';
 
-        $options = $this->markOptions($links, $at, $gallery);
-        $options['escape'] = false;
+        $options = $this->markOptions($links, $at, $gallery, declaring: true);
+        // Only the mark itself is markup. `escape` would take the attributes with it, and
+        // the pages the viewer is handed are json, which is quotes all the way down.
+        $options['escapeTitle'] = false;
         $options['class'] = trim('files-thumb-link ' . ($options['class'] ?? ''));
 
         return $this->Html->link($shown, $this->addressOf($link), $options);
@@ -264,7 +268,7 @@ class PreviewHelper extends Helper
      * @param string $gallery What the run is called.
      * @return array<string, mixed>
      */
-    private function markOptions(array $links, int $at, string $gallery): array
+    private function markOptions(array $links, int $at, string $gallery, bool $declaring = false): array
     {
         $options = ['target' => '_blank', 'rel' => 'noopener'];
 
@@ -273,11 +277,19 @@ class PreviewHelper extends Helper
             return $options;
         }
 
-        return $options + [
+        $options += [
             'class' => 'files-viewer',
             'data-files-gallery' => $gallery,
             'data-files-start' => $where,
         ];
+
+        // The viewer looks for the pages on whichever mark of the group carries them, so exactly
+        // one of them does - the first, where nothing else on the page has already said.
+        if ($declaring && $where === 0) {
+            $options['data-files-pages'] = json_encode($this->pages($links, ''));
+        }
+
+        return $options;
     }
 
     /**
