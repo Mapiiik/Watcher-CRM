@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="taskTypes view content">
-            <h3><?= h($taskType->name) ?></h3>
+            <?= $this->record(__d('app_tasks', 'Task Type'), (string)$taskType->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

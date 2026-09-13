@@ -19,7 +19,7 @@
         <div class="taskTypes form content">
             <?= $this->Form->create($taskType) ?>
             <fieldset>
-                <legend><?= __d('app_tasks', 'Add Task Type') ?></legend>
+                <?= $this->legend(__d('app_tasks', 'Add Task Type')) ?>
                 <?php
                     echo $this->Form->control('name', ['label' => __d('app_tasks', 'Name')]);
                     echo $this->Form->control('customer_required', ['label' => __d('app_tasks', 'Customer Required')]);
