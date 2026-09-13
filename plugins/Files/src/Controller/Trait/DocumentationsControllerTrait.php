@@ -27,7 +27,7 @@ use Throwable;
  * @method \Cake\Http\Response|null afterEditRedirect(array|string $url)
  * @method \Cake\Http\Response|null afterDeleteRedirect(array|string $url)
  * @method void flashValidationErrors(array $errors)
- * @method array<mixed> dataWithAdditionalParameters(\Cake\ORM\Table $table, array<mixed> $data)
+ * @method array<mixed> dataWithNesting(\Cake\ORM\Table $table, array<mixed> $data)
  * @psalm-require-extends \Cake\Controller\Controller
  */
 trait DocumentationsControllerTrait
@@ -120,7 +120,7 @@ trait DocumentationsControllerTrait
         if ($this->getRequest()->is('post')) {
             $documentation = $this->Documentations->patchEntity(
                 $documentation,
-                $this->dataWithAdditionalParameters($this->Documentations, $this->getRequest()->getData()),
+                $this->dataWithNesting($this->Documentations, $this->getRequest()->getData()),
             );
 
             if ($this->Documentations->save($documentation)) {

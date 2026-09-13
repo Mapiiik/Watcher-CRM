@@ -300,7 +300,7 @@ class ContractsController extends AppController
         if ($this->getRequest()->is('post')) {
             $contract = $this->Contracts->patchEntity(
                 $contract,
-                $this->dataWithAdditionalParameters($this->Contracts, $this->getRequest()->getData()),
+                $this->dataWithNesting($this->Contracts, $this->getRequest()->getData()),
             );
             if ($this->Contracts->save($contract)) {
                 $this->Flash->success(__('The contract has been saved.'));

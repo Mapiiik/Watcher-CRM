@@ -43,6 +43,39 @@ use Throwable;
 class ContractProposalsController extends AppController
 {
     /**
+     * Every page here is about one proposal, and the bar over it is what says whose papers
+     * these are - so a page asked for without the nesting is sent to where it belongs.
+     *
+     * @var list<string>
+     */
+    protected array $nestingAutoFix = [
+        'view',
+        'edit',
+        'documents',
+        'conclude',
+        'send',
+        'transfer',
+        'refreshSnapshot',
+        'addPages',
+        'billingLine',
+    ];
+
+    /**
+     * @var list<string>
+     */
+    protected array $nestingAutoAdd = [
+        'view',
+        'edit',
+        'documents',
+        'conclude',
+        'send',
+        'transfer',
+        'refreshSnapshot',
+        'addPages',
+        'billingLine',
+    ];
+
+    /**
      * What a contract has to be loaded with for a snapshot to be taken of it - the same as printing
      * used to load it, because that is what the documents read.
      *
@@ -1012,7 +1045,7 @@ class ContractProposalsController extends AppController
         // expected rather than wrong.
         $redrawing = $this->isARedraw();
 
-        $data = $this->dataWithAdditionalParameters($this->ContractProposals, $data);
+        $data = $this->dataWithNesting($this->ContractProposals, $data);
 
         $form = new ProposalForm();
         $purpose = $this->purposeFrom($data, $proposal);

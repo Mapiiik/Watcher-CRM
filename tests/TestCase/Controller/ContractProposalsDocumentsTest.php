@@ -32,6 +32,15 @@ class ContractProposalsDocumentsTest extends TestCase
      *
      * @var string
      */
+    /**
+     * Where these pages belong: a proposal is reached under the record it is for, and asked
+     * for anywhere else it is sent here.
+     *
+     * @var string
+     */
+    private const NESTED = '/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481'
+        . '/contracts/7f76dc3f-a11b-4109-958b-4b0382545a66';
+
     private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
@@ -128,7 +137,7 @@ class ContractProposalsDocumentsTest extends TestCase
      */
     public function testThePapersRenderBeforeAnythingHasBeenFiled(): void
     {
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
     }
@@ -403,7 +412,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['scan.png', 'scan.png']);
 
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('data-files-gallery');
@@ -435,7 +444,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['scan.pdf']);
 
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('&quot;type&quot;:&quot;external&quot;');
@@ -460,7 +469,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -496,7 +505,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('files-thumb');
@@ -520,7 +529,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -548,7 +557,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -578,7 +587,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -633,7 +642,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['only.png']);
 
-        $this->get('/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
 
         $pages = $this->pagesOfTheMark();
         $this->assertCount(1, $pages);
@@ -665,7 +674,7 @@ class ContractProposalsDocumentsTest extends TestCase
      */
     public function testTheFormForANewDocumentRenders(): void
     {
-        $this->get('/contract-proposals/add-pages/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/add-pages/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('papers[]');
@@ -682,7 +691,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->print();
 
-        $this->get('/contract-proposals/conclude/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/conclude/' . self::PROPOSAL_ID);
         $this->assertResponseOk();
         $this->assertResponseContains('papers[' . self::DOCUMENT . '][]');
 

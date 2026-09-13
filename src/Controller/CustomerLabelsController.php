@@ -89,7 +89,7 @@ class CustomerLabelsController extends AppController
         if ($this->getRequest()->is('post')) {
             $customerLabel = $this->CustomerLabels->patchEntity(
                 $customerLabel,
-                $this->dataWithAdditionalParameters($this->CustomerLabels, $this->getRequest()->getData()),
+                $this->dataWithNesting($this->CustomerLabels, $this->getRequest()->getData()),
             );
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh

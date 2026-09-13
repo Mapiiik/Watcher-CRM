@@ -97,7 +97,7 @@ class BorrowedEquipmentsController extends AppController
         if ($this->getRequest()->is('post')) {
             $borrowedEquipment = $this->BorrowedEquipments->patchEntity(
                 $borrowedEquipment,
-                $this->dataWithAdditionalParameters($this->BorrowedEquipments, $this->getRequest()->getData()),
+                $this->dataWithNesting($this->BorrowedEquipments, $this->getRequest()->getData()),
             );
 
             if ($this->BorrowedEquipments->save($borrowedEquipment)) {

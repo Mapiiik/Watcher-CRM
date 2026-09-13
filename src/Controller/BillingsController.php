@@ -115,7 +115,7 @@ class BillingsController extends AppController
         if ($this->getRequest()->is('post')) {
             $billing = $this->Billings->patchEntity(
                 $billing,
-                $this->dataWithAdditionalParameters($this->Billings, $this->getRequest()->getData()),
+                $this->dataWithNesting($this->Billings, $this->getRequest()->getData()),
             );
 
             if ($this->getRequest()->getData('refresh') == 'refresh') {

@@ -111,7 +111,7 @@ class AddressesController extends AppController
         if ($this->getRequest()->is('post')) {
             $address = $this->Addresses->patchEntity(
                 $address,
-                $this->dataWithAdditionalParameters($this->Addresses, $this->getRequest()->getData()),
+                $this->dataWithNesting($this->Addresses, $this->getRequest()->getData()),
             );
 
             // a key that was never offered is not one to look up

@@ -90,7 +90,13 @@ class CustomerProposalsControllerTest extends TestCase
         $proposal = $this->drawOneUp();
 
         foreach (['view', 'edit', 'send', 'conclude'] as $action) {
-            $this->get('/customer-proposals/' . $action . '/' . $proposal->id);
+            // under the customer, which is where these pages belong and where a bare address is sent
+            $this->get(sprintf(
+                '/customers/%s/customer-proposals/%s/%s',
+                $proposal->customer_id,
+                $action,
+                $proposal->id,
+            ));
             $this->assertResponseOk(sprintf('%s did not render.', $action));
         }
     }

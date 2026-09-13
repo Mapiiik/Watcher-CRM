@@ -96,7 +96,7 @@ class IpNetworksController extends AppController
         if ($this->getRequest()->is('post')) {
             $ipNetwork = $this->IpNetworks->patchEntity(
                 $ipNetwork,
-                $this->dataWithAdditionalParameters($this->IpNetworks, $this->getRequest()->getData()),
+                $this->dataWithNesting($this->IpNetworks, $this->getRequest()->getData()),
             );
             if ($this->IpNetworks->save($ipNetwork)) {
                 $this->Flash->success(__('The IP network has been saved.'));

@@ -36,6 +36,14 @@ class CustomerDocumentsTest extends TestCase
      *
      * @var string
      */
+    /**
+     * Where these pages belong: a proposal is reached under the record it is for, and asked
+     * for anywhere else it is sent here.
+     *
+     * @var string
+     */
+    private const NESTED = '/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
@@ -296,7 +304,7 @@ class CustomerDocumentsTest extends TestCase
         $this->enableSecurityToken();
         $this->setUnlockedFields(['papers']);
 
-        $this->get('/customer-proposals/conclude/' . $round);
+        $this->get(self::NESTED . '/customer-proposals/conclude/' . $round);
         $this->assertResponseOk();
         $this->assertResponseContains('papers[' . CustomerPrintType::GdprNew->value . '][]');
 
@@ -332,7 +340,7 @@ class CustomerDocumentsTest extends TestCase
         $round = $this->round();
         $this->print($round);
 
-        $this->get('/customer-proposals/view/' . $round);
+        $this->get(self::NESTED . '/customer-proposals/view/' . $round);
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Papers on File'));

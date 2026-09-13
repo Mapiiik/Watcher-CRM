@@ -29,6 +29,33 @@ use Throwable;
 class CustomerProposalsController extends AppController
 {
     /**
+     * Every page here is about one proposal, and the bar over it is what says whose papers
+     * these are - so a page asked for without the nesting is sent to where it belongs.
+     *
+     * @var list<string>
+     */
+    protected array $nestingAutoFix = [
+        'view',
+        'edit',
+        'documents',
+        'conclude',
+        'send',
+        'addPages',
+    ];
+
+    /**
+     * @var list<string>
+     */
+    protected array $nestingAutoAdd = [
+        'view',
+        'edit',
+        'documents',
+        'conclude',
+        'send',
+        'addPages',
+    ];
+
+    /**
      * Index method
      *
      * @return void Renders view

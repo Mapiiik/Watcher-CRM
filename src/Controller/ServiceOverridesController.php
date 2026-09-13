@@ -117,7 +117,7 @@ class ServiceOverridesController extends AppController
         if ($this->request->is('post')) {
             $serviceOverride = $this->ServiceOverrides->patchEntity(
                 $serviceOverride,
-                $this->dataWithAdditionalParameters($this->ServiceOverrides, $this->request->getData()),
+                $this->dataWithNesting($this->ServiceOverrides, $this->request->getData()),
             );
 
             if ($this->getRequest()->getData('refresh') == 'refresh') {

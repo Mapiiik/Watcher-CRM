@@ -96,7 +96,7 @@ class RemovedIpNetworksController extends AppController
         if ($this->getRequest()->is('post')) {
             $removedIpNetwork = $this->RemovedIpNetworks->patchEntity(
                 $removedIpNetwork,
-                $this->dataWithAdditionalParameters($this->RemovedIpNetworks, $this->getRequest()->getData()),
+                $this->dataWithNesting($this->RemovedIpNetworks, $this->getRequest()->getData()),
             );
 
             // TODO - add who and when deleted this

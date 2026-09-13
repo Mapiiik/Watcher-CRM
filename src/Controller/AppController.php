@@ -16,8 +16,8 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-use App\Controller\Traits\AdditionalParametersTrait;
 use App\Controller\Traits\ErrorFormatterTrait;
+use App\Controller\Traits\NestingTrait;
 use App\Controller\Traits\RedirectionTrait;
 use AuditStash\Meta\RequestMetadata;
 use Cake\Controller\Controller;
@@ -43,8 +43,8 @@ use Override;
  */
 class AppController extends Controller
 {
-    use AdditionalParametersTrait;
     use ErrorFormatterTrait;
+    use NestingTrait;
     use RedirectionTrait;
 
     /**
@@ -137,7 +137,7 @@ class AppController extends Controller
         $this->user_settings = is_array($settings) ? $settings : [];
 
         # Load additional parameters
-        $this->loadAdditionalParameters();
+        $this->loadNesting();
 
         # Determine if we want to set the language
         if ($this->getRequest()->getQuery('language')) {
@@ -209,8 +209,8 @@ class AppController extends Controller
 
         parent::beforeFilter($event);
 
-        # Answer a record asked for under a customer or contract it does not belong to where it does
-        $redirect = $this->redirectIfTheRouteNamesAnother();
+        # Answer a record where it belongs, when the address it was asked for at does not say so
+        $redirect = $this->redirectToWhereTheRecordBelongs();
         if ($redirect !== null) {
             // the result of `Controller.initialize` is what stands in for the action, and returning
             // it from a listener has been deprecated since 5.2

@@ -31,6 +31,15 @@ class ContractProposalsControllerTest extends TestCase
      *
      * @var string
      */
+    /**
+     * Where these pages belong: a proposal is reached under the record it is for, and asked
+     * for anywhere else it is sent here.
+     *
+     * @var string
+     */
+    private const NESTED = '/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481'
+        . '/contracts/7f76dc3f-a11b-4109-958b-4b0382545a66';
+
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
@@ -136,7 +145,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testView(): void
     {
         $this->login();
-        $this->get('/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
     }
@@ -417,7 +426,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testABillingIsAddedOnItsOwnPage(): void
     {
         $this->login();
-        $this->get('/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
         $this->assertResponseOk();
 
         $this->enableCsrfToken();
@@ -449,7 +458,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testARetiredServiceIsNotOffered(): void
     {
         $this->login();
-        $this->get('/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -482,7 +491,7 @@ class ContractProposalsControllerTest extends TestCase
         $line = $proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings[0];
 
         $this->login();
-        $this->get('/contract-proposals/billing-line/' . self::PROPOSAL_ID . '/' . $line->id);
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID . '/' . $line->id);
 
         $this->assertResponseOk();
         $this->assertArrayHasKey(
@@ -501,7 +510,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testChangingABillingStartsFromWhatIsThere(): void
     {
         $this->login();
-        $this->get('/contract-proposals/billing-line/' . self::PROPOSAL_ID
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
             . '?replaces=' . self::KNOWN_BILLING_ID);
 
         $this->assertResponseOk();
@@ -618,7 +627,7 @@ class ContractProposalsControllerTest extends TestCase
         $proposals->saveOrFail($proposal, ['checkRules' => false]);
 
         $this->login();
-        $this->get('/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
 
         $this->assertRedirect();
     }
@@ -632,7 +641,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testEdit(): void
     {
         $this->login();
-        $this->get('/contract-proposals/edit/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
     }
@@ -646,7 +655,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testRefreshSnapshot(): void
     {
         $this->login();
-        $this->get('/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
     }
@@ -900,7 +909,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->assertTrue($sent->hasBeenSent());
         $this->assertFalse($proposals->mayBeEdited($sent));
 
-        $this->get('/contract-proposals/edit/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
         $this->assertRedirect();
     }
 
@@ -936,7 +945,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testTheTransferPreviewSaysWhatStandsInTheWay(): void
     {
         $this->login();
-        $this->get('/contract-proposals/transfer/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/transfer/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         // Nobody has signed it, so it says so and does not offer the button.
@@ -959,7 +968,7 @@ class ContractProposalsControllerTest extends TestCase
         $proposals->saveOrFail($proposal, ['checkRules' => false]);
 
         $this->login();
-        $this->get('/contract-proposals/transfer/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/transfer/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains(
