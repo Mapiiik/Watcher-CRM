@@ -31,12 +31,16 @@
             <fieldset>
                 <?= $this->legend(__('Edit Access Credential')) ?>
                 <?php
-                echo $this->Form->control('customer_id', [
-                    'options' => $customers,
-                    'empty' => true,
-                    'onchange' => $this::REFRESH_ON_CHANGE,
-                ]);
-                if (isset($accessCredential->customer_id)) {
+                // Whose it is comes from the page it was opened from, the way it does everywhere
+                // else - and the contract is only worth asking about once a customer is settled.
+                if (!isset($customer_id)) {
+                    echo $this->Form->control('customer_id', [
+                        'options' => $customers,
+                        'empty' => true,
+                        'onchange' => $this::REFRESH_ON_CHANGE,
+                    ]);
+                }
+                if (!isset($contract_id) && isset($accessCredential->customer_id)) {
                     echo $this->Form->control('contract_id', [
                         'options' => $contracts,
                         'empty' => true,
@@ -44,9 +48,7 @@
                     ]);
                 }
                 $this->Form->unlockField('refresh'); //disable form security check
-                ?>
-                <hr>
-                <?php
+
                 echo $this->Form->control('name');
                 echo $this->Form->control('username');
                 echo $this->Form->control('password', ['type' => 'text']);

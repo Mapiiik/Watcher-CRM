@@ -170,6 +170,41 @@ class AccessCredentialsControllerTest extends TestCase
     }
 
     /**
+     * And the form does leave them out, which is what the test above only assumed.
+     *
+     * Asking whose it is on a page reached under that very record offers a way to file it
+     * somewhere else by mistake, and reads as a question the page has already answered.
+     *
+     * @return void
+     * @link \App\Controller\AccessCredentialsController::add()
+     */
+    public function testTheFormDoesNotAskWhoseItIsWhenThePageSaysSo(): void
+    {
+        $this->login();
+
+        $this->get('/access-credentials/add');
+        $this->assertResponseOk();
+        $this->assertResponseContains(
+            'name="customer_id"',
+            'Reached on its own, the form has to ask whose the credentials are.',
+        );
+
+        $this->get(
+            '/customers/' . self::CUSTOMER_ID
+            . '/contracts/' . self::CONTRACT_ID . '/access-credentials/add',
+        );
+        $this->assertResponseOk();
+        $this->assertResponseNotContains(
+            'name="customer_id"',
+            'The form asks which customer on a page that is already about one.',
+        );
+        $this->assertResponseNotContains(
+            'name="contract_id"',
+            'The form asks which contract on a page that is already about one.',
+        );
+    }
+
+    /**
      * A change made on the form reaches the record.
      *
      * @return void
