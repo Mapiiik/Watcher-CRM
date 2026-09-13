@@ -50,7 +50,7 @@
     </aside>
     <div class="column column-90">
         <div class="contractProposals form content">
-            <?= $this->element('ContractProposals/heading') ?>
+            <?= $this->element('ContractProposals/heading', ['doing' => __('Edit')]) ?>
 
             <?= $this->Form->create($contractProposal) ?>
             <?= $this->element('ContractProposals/form') ?>

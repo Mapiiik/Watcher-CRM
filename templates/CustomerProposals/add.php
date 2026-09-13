@@ -19,6 +19,8 @@
     </aside>
     <div class="column column-90">
         <div class="customerProposals form content">
+            <?= $this->heading(__('Add Customer Proposal')) ?>
+            <hr />
             <?= $this->Form->create($customerProposal) ?>
             <?= $this->element('CustomerProposals/form') ?>
             <?= $this->Form->button(__('Submit')) ?>

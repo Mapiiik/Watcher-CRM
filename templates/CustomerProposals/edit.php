@@ -41,7 +41,7 @@
     </aside>
     <div class="column column-90">
         <div class="customerProposals form content">
-            <?= $this->element('CustomerProposals/heading') ?>
+            <?= $this->element('CustomerProposals/heading', ['doing' => __('Edit')]) ?>
 
             <?= $this->Form->create($customerProposal) ?>
             <?= $this->element('CustomerProposals/form') ?>
