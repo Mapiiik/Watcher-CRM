@@ -143,7 +143,7 @@ class PreviewHelper extends Helper
         $picture = $this->Html->image(
             [
                 'plugin' => 'Files',
-                'controller' => 'Documents',
+                'controller' => 'FileLinks',
                 'action' => 'thumbnail',
                 $link->id,
             ],
@@ -192,7 +192,7 @@ class PreviewHelper extends Helper
             ? $this->Html->image(
                 [
                     'plugin' => 'Files',
-                    'controller' => 'Documents',
+                    'controller' => 'FileLinks',
                     'action' => 'thumbnail',
                     $link->id,
                 ],
@@ -302,7 +302,7 @@ class PreviewHelper extends Helper
     {
         return [
             'plugin' => 'Files',
-            'controller' => 'Documents',
+            'controller' => 'FileLinks',
             'action' => 'open',
             $link->id,
         ];
@@ -363,7 +363,7 @@ class PreviewHelper extends Helper
             $pages[] = [
                 'href' => $this->Url->build([
                     'plugin' => 'Files',
-                    'controller' => 'Documents',
+                    'controller' => 'FileLinks',
                     'action' => 'open',
                     $link->id,
                 ]),
@@ -375,7 +375,7 @@ class PreviewHelper extends Helper
                 // asked for, and a strip that waited for the making would show nothing at all.
                 'thumb' => $this->Url->build([
                     'plugin' => 'Files',
-                    'controller' => 'Documents',
+                    'controller' => 'FileLinks',
                     'action' => 'thumbnail',
                     $link->id,
                 ]),

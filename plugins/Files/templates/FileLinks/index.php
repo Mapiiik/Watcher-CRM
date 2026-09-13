@@ -49,7 +49,7 @@
         ['controller' => 'Storage', 'action' => 'index'],
         ['class' => 'button float-right'],
     ) ?>
-    <?= $this->heading(__d('files', 'Documents')) ?>
+    <?= $this->heading(__d('files', 'File Links')) ?>
     <p><?= __d('files', 'Every file the records have, and what each of them is filed as.') ?></p>
     <div class="table-responsive">
         <table>

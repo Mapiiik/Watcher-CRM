@@ -194,7 +194,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                         __('Open'),
                         [
                             'plugin' => 'Files',
-                            'controller' => 'Documents',
+                            'controller' => 'FileLinks',
                             'action' => 'open',
                             $row['link']->id,
                         ],
@@ -204,7 +204,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                         __('Download'),
                         [
                             'plugin' => 'Files',
-                            'controller' => 'Documents',
+                            'controller' => 'FileLinks',
                             'action' => 'download',
                             $row['link']->id,
                         ],

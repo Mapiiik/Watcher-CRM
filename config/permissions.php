@@ -426,7 +426,7 @@ $permissions = [
             ],
             'plugin' => 'Files',
             'controller' => [
-                'Documents',
+                'FileLinks',
             ],
             'action' => [
                 'index',

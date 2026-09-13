@@ -509,7 +509,7 @@ class ContractProposalsDocumentsTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains('files-thumb');
-        $this->assertResponseContains('/files/documents/thumbnail/');
+        $this->assertResponseContains('/files/file-links/thumbnail/');
 
         // The wide listings would lose more in readability than the pictures give back.
         $this->get('/contracts/documents/' . self::CONTRACT_ID);
@@ -593,7 +593,7 @@ class ContractProposalsDocumentsTest extends TestCase
 
         foreach ($this->pagesOfTheMark() as $page) {
             $this->assertArrayHasKey('thumb', $page);
-            $this->assertStringContainsString('/files/documents/thumbnail/', $page['thumb']);
+            $this->assertStringContainsString('/files/file-links/thumbnail/', $page['thumb']);
             // The picture of a page and the page itself are two different things to ask for.
             $this->assertNotSame($page['href'], $page['thumb']);
         }

@@ -7,19 +7,19 @@ use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Files\Controller\DocumentsController;
+use Files\Controller\FileLinksController;
 use Files\Model\Entity\FileLink;
 use Files\Service\FileStorage;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
- * Files\Controller\DocumentsController Test Case
+ * Files\Controller\FileLinksController Test Case
  *
- * @link \Files\Controller\DocumentsController
+ * @link \Files\Controller\FileLinksController
  */
-#[UsesClass(DocumentsController::class)]
-class DocumentsControllerTest extends TestCase
+#[UsesClass(FileLinksController::class)]
+class FileLinksControllerTest extends TestCase
 {
     use ControllerTestTrait;
     use IntegrationTestTrait;
@@ -94,14 +94,14 @@ class DocumentsControllerTest extends TestCase
     }
 
     /**
-     * @link \Files\Controller\DocumentsController::index()
+     * @link \Files\Controller\FileLinksController::index()
      * @return void
      */
     public function testTheIndexListsWhatIsFiled(): void
     {
         $this->file('a contract', 'IMG_001.jpg');
 
-        $this->get('/files/documents');
+        $this->get('/files/file-links');
 
         $this->assertResponseOk();
         $this->assertResponseContains('IMG_001.jpg');
@@ -122,7 +122,7 @@ class DocumentsControllerTest extends TestCase
         ]);
         $this->file('a contract', 'IMG_001.jpg');
 
-        $this->get('/files/documents');
+        $this->get('/files/file-links');
 
         $this->assertResponseOk();
         $this->assertResponseContains('/contract-proposals/view/' . self::RECORD);
@@ -140,7 +140,7 @@ class DocumentsControllerTest extends TestCase
         Configure::write('Files.records', []);
         $this->file('a contract', 'IMG_001.jpg');
 
-        $this->get('/files/documents');
+        $this->get('/files/file-links');
 
         $this->assertResponseOk();
         $this->assertResponseContains('ContractProposals');
@@ -148,14 +148,14 @@ class DocumentsControllerTest extends TestCase
     }
 
     /**
-     * @link \Files\Controller\DocumentsController::download()
+     * @link \Files\Controller\FileLinksController::download()
      * @return void
      */
     public function testTheContentComesBackUnderTheNameItArrivedWith(): void
     {
         $link = $this->file('what the customer signed', 'IMG_001.jpg');
 
-        $this->get('/files/documents/download/' . $link->id);
+        $this->get('/files/file-links/download/' . $link->id);
 
         $this->assertResponseOk();
         $this->assertHeaderContains('Content-Disposition', 'IMG_001.jpg');
@@ -166,14 +166,14 @@ class DocumentsControllerTest extends TestCase
     /**
      * Looking at a paper is a step shorter than keeping it, so it is offered for looking at.
      *
-     * @link \Files\Controller\DocumentsController::open()
+     * @link \Files\Controller\FileLinksController::open()
      * @return void
      */
     public function testAPaperMayBeLookedAtRatherThanKept(): void
     {
         $link = $this->file('what the customer signed', 'IMG_001.jpg');
 
-        $this->get('/files/documents/open/' . $link->id);
+        $this->get('/files/file-links/open/' . $link->id);
 
         $this->assertResponseOk();
         $this->assertHeaderContains('Content-Disposition', 'inline');
@@ -185,7 +185,7 @@ class DocumentsControllerTest extends TestCase
      * asked for. The content came from outside, and opening it in our own origin would be handing
      * a stranger the session.
      *
-     * @link \Files\Controller\DocumentsController::open()
+     * @link \Files\Controller\FileLinksController::open()
      * @return void
      */
     public function testWhatTheBrowserWouldRunIsNeverOpened(): void
@@ -201,7 +201,7 @@ class DocumentsControllerTest extends TestCase
             ['name' => 'drawing.svg'],
         );
 
-        $this->get('/files/documents/open/' . $link->id);
+        $this->get('/files/file-links/open/' . $link->id);
 
         $this->assertResponseOk();
         $this->assertHeaderContains('Content-Disposition', 'attachment');
@@ -217,8 +217,8 @@ class DocumentsControllerTest extends TestCase
      * turned out to be - and a browser left to guess at that can decide a file is something else
      * entirely and run it.
      *
-     * @link \Files\Controller\DocumentsController::download()
-     * @link \Files\Controller\DocumentsController::open()
+     * @link \Files\Controller\FileLinksController::download()
+     * @link \Files\Controller\FileLinksController::open()
      * @return void
      */
     public function testNothingHandedOverIsLeftForTheBrowserToGuessAt(): void
@@ -235,7 +235,7 @@ class DocumentsControllerTest extends TestCase
         );
 
         foreach (['download', 'open'] as $door) {
-            $this->get('/files/documents/' . $door . '/' . $link->id);
+            $this->get('/files/file-links/' . $door . '/' . $link->id);
 
             $this->assertResponseOk();
             $this->assertHeader('X-Content-Type-Options', 'nosniff', 'Going out through ' . $door . '.');
@@ -246,8 +246,8 @@ class DocumentsControllerTest extends TestCase
      * The picture goes through the same door as the document, so that whoever may look at one may
      * look at the other and nobody else.
      *
-     * @link \Files\Controller\DocumentsController::thumbnail()
-     * @link \Files\Controller\DocumentsController::preview()
+     * @link \Files\Controller\FileLinksController::thumbnail()
+     * @link \Files\Controller\FileLinksController::preview()
      * @return void
      */
     public function testAPictureOfAPageComesBackAsSomethingEveryBrowserDraws(): void
@@ -259,7 +259,7 @@ class DocumentsControllerTest extends TestCase
         $link = $this->filed('picture.jpg', 'image/jpeg', 'IMG_001.jpg');
 
         foreach (['thumbnail', 'preview'] as $size) {
-            $this->get('/files/documents/' . $size . '/' . $link->id);
+            $this->get('/files/file-links/' . $size . '/' . $link->id);
 
             $this->assertResponseOk();
             $this->assertContentType('webp');
@@ -273,7 +273,7 @@ class DocumentsControllerTest extends TestCase
      * A spreadsheet has no picture. Saying so is better than a broken image, because the page
      * that asked can then show something of its own.
      *
-     * @link \Files\Controller\DocumentsController::thumbnail()
+     * @link \Files\Controller\FileLinksController::thumbnail()
      * @return void
      */
     public function testWhatHasNoPictureSaysSoRatherThanSendingABrokenOne(): void
@@ -289,7 +289,7 @@ class DocumentsControllerTest extends TestCase
             ['name' => 'ledger.csv'],
         );
 
-        $this->get('/files/documents/thumbnail/' . $link->id);
+        $this->get('/files/file-links/thumbnail/' . $link->id);
 
         $this->assertResponseCode(404);
     }
@@ -298,7 +298,7 @@ class DocumentsControllerTest extends TestCase
      * A row whose bytes are gone is a torn backup, not a missing page, so it says so rather than
      * handing over nothing.
      *
-     * @link \Files\Controller\DocumentsController::download()
+     * @link \Files\Controller\FileLinksController::download()
      * @return void
      */
     public function testContentThatIsNotOnTheShelfIsNotHandedOver(): void
@@ -307,13 +307,13 @@ class DocumentsControllerTest extends TestCase
 
         (new FileStorage())->filesystem()->delete($link->file->path);
 
-        $this->get('/files/documents/download/' . $link->id);
+        $this->get('/files/file-links/download/' . $link->id);
 
         $this->assertResponseCode(404);
     }
 
     /**
-     * @link \Files\Controller\DocumentsController::delete()
+     * @link \Files\Controller\FileLinksController::delete()
      * @return void
      */
     public function testUnfilingADocumentTakesTheBytesWithTheLastOfThem(): void
@@ -322,7 +322,7 @@ class DocumentsControllerTest extends TestCase
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/files/documents/delete/' . $link->id);
+        $this->post('/files/file-links/delete/' . $link->id);
 
         $this->assertRedirect();
         $this->assertSame(0, $this->fetchTable('Files.FileLinks')->find()->count());

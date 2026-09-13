@@ -142,7 +142,7 @@ class ContractVersionsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Received Documents'));
-        $this->assertResponseContains(sprintf('/files/documents/download/%s', $link->id));
+        $this->assertResponseContains(sprintf('/files/file-links/download/%s', $link->id));
 
         Configure::delete('Files.root');
     }

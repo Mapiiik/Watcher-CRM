@@ -34,7 +34,7 @@
 <div class="files index content">
     <?= $this->AuthLink->link(
         __d('files', 'Documents'),
-        ['controller' => 'Documents', 'action' => 'index'],
+        ['controller' => 'FileLinks', 'action' => 'index'],
         ['class' => 'button float-right'],
     ) ?>
     <?= $this->heading(__d('files', 'Storage')) ?>

@@ -53,7 +53,7 @@
                             __d('files', 'Download'),
                             [
                                 'plugin' => 'Files',
-                                'controller' => 'Documents',
+                                'controller' => 'FileLinks',
                                 'action' => 'download',
                                 $link->id,
                             ],

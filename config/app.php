@@ -330,6 +330,7 @@ return [
         'records' => [
             'ContractProposals' => ['plugin' => null, 'controller' => 'ContractProposals', 'action' => 'view'],
             'CustomerProposals' => ['plugin' => null, 'controller' => 'CustomerProposals', 'action' => 'view'],
+            'Documentations' => ['plugin' => null, 'controller' => 'Documentations', 'action' => 'view'],
         ],
     ],
 

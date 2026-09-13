@@ -17,7 +17,7 @@ use Throwable;
  *
  * What is filed against what, which is the question somebody comes here with.
  */
-class DocumentsController extends AppController
+class FileLinksController extends AppController
 {
     /**
      * The table this reads.

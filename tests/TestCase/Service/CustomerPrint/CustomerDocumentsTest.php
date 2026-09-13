@@ -246,9 +246,9 @@ class CustomerDocumentsTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains(__('Documents Already Generated'));
         // The label alone would be the round's own name as well, so the row is what is looked for.
-        $this->assertResponseContains(sprintf('/files/documents/download/%s', $this->ourRound()->id));
+        $this->assertResponseContains(sprintf('/files/file-links/download/%s', $this->ourRound()->id));
         $this->assertResponseNotContains(
-            sprintf('/files/documents/download/%s', $theContracts->id),
+            sprintf('/files/file-links/download/%s', $theContracts->id),
             'A paper of a contract is not what this form draws.',
         );
     }
@@ -344,7 +344,7 @@ class CustomerDocumentsTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Papers on File'));
-        $this->assertResponseContains(sprintf('/files/documents/download/%s', $this->ourRound()->id));
+        $this->assertResponseContains(sprintf('/files/file-links/download/%s', $this->ourRound()->id));
     }
 
     /**

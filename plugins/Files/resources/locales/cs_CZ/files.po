@@ -106,19 +106,19 @@ msgstr "Vytvořeno {0}."
 msgid "{0} could not be made. The log says why."
 msgstr "{0} se nepodařilo vytvořit. Důvod je v logu."
 
-#: plugins/Files/src/Controller/DocumentsController.php:157
+#: plugins/Files/src/Controller/FileLinksController.php:157
 msgid "There is no picture of this document."
 msgstr "K tomuto dokumentu není náhled."
 
-#: plugins/Files/src/Controller/DocumentsController.php:184
+#: plugins/Files/src/Controller/FileLinksController.php:184
 msgid "The content of this document is not in the store."
 msgstr "Obsah tohoto dokumentu není v úložišti."
 
-#: plugins/Files/src/Controller/DocumentsController.php:219
+#: plugins/Files/src/Controller/FileLinksController.php:219
 msgid "The document has been removed."
 msgstr "Dokument byl odebrán."
 
-#: plugins/Files/src/Controller/DocumentsController.php:221
+#: plugins/Files/src/Controller/FileLinksController.php:221
 msgid "The document could not be removed: {0}"
 msgstr "Dokument se nepodařilo odebrat: {0}"
 

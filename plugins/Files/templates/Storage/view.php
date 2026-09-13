@@ -16,7 +16,7 @@
             ) ?>
             <?= $this->AuthLink->link(
                 __d('files', 'Documents'),
-                ['controller' => 'Documents', 'action' => 'index'],
+                ['controller' => 'FileLinks', 'action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>
@@ -103,12 +103,12 @@
                                     <td class="actions">
                                         <?= $this->AuthLink->link(
                                             __d('files', 'Open'),
-                                            ['controller' => 'Documents', 'action' => 'open', $link->id],
+                                            ['controller' => 'FileLinks', 'action' => 'open', $link->id],
                                             ['target' => '_blank'],
                                         ) ?>
                                         <?= $this->AuthLink->link(
                                             __d('files', 'Download'),
-                                            ['controller' => 'Documents', 'action' => 'download', $link->id],
+                                            ['controller' => 'FileLinks', 'action' => 'download', $link->id],
                                         ) ?>
                                     </td>
                                 </tr>
