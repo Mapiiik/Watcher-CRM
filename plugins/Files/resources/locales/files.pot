@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-12 21:41+0200\n"
+"POT-Creation-Date: 2026-09-13 19:40+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -94,117 +94,228 @@ msgstr ""
 msgid "{0} could not be made. The log says why."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/FileLinksController.php:157
+#: ./plugins/Files/src/Controller/FileLinksController.php:167
 msgid "There is no picture of this document."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/FileLinksController.php:184
+#: ./plugins/Files/src/Controller/FileLinksController.php:194
 msgid "The content of this document is not in the store."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/FileLinksController.php:219
+#: ./plugins/Files/src/Controller/FileLinksController.php:244
 msgid "The document has been removed."
 msgstr ""
 
-#: ./plugins/Files/src/Controller/FileLinksController.php:221
+#: ./plugins/Files/src/Controller/FileLinksController.php:246
 msgid "The document could not be removed: {0}"
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:98
+#: ./plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:130
+msgid "The documentation type has been saved."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:104
+#: ./plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:136
+msgid "The documentation type could not be saved. Please, try again."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:161
+msgid "The documentation type has been deleted."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:164
+msgid "The documentation type could not be deleted. Please, try again."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:142
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:177
+msgid "The documentation has been saved."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:148
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:183
+msgid "The documentation could not be saved. Please, try again."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:211
+msgid "The documentation has been deleted."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:214
+msgid "The documentation could not be deleted. Please, try again."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:258
+msgid "Nothing was chosen to file."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:283
+msgid "The file has been removed from the documentation."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:285
+msgid "The file could not be removed: {0}"
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:307
+msgid "The files could not be reordered: {0}"
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:333
+msgid "That file belongs to something else."
+msgstr ""
+
+#: ./plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:247
+msgid "{0} file has been filed."
+msgid_plural "{0} files have been filed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./plugins/Files/src/Model/Table/DocumentationsTable.php:123
+msgid "A documentation needs a name or a day. With neither there is nothing to tell it from the next one of its type."
+msgstr ""
+
+#: ./plugins/Files/src/Model/Table/DocumentationsTable.php:193
+msgid "This documentation type is filed under the day it is about."
 msgstr ""
 
 #: ./plugins/Files/src/Model/Table/FilesTable.php:86
 msgid "The hash of the content is written in hexadecimal."
 msgstr ""
 
+#: ./plugins/Files/src/Service/FiledPages.php:226
+msgid "This server takes at most {0} files at once, so whatever was chosen beyond that never arrived. Send the rest as a second batch."
+msgstr ""
+
+#: ./plugins/Files/src/Service/FiledPages.php:305
+msgid "The file"
+msgstr ""
+
+#: ./plugins/Files/src/Service/FiledPages.php:309
+msgid "{0} is larger than this server takes in one go."
+msgstr ""
+
+#: ./plugins/Files/src/Service/FiledPages.php:314
+msgid "{0} only arrived in part."
+msgstr ""
+
+#: ./plugins/Files/src/Service/FiledPages.php:315
+msgid "{0} could not be taken in."
+msgstr ""
+
+#: ./plugins/Files/src/Service/FiledPages.php:334
+msgid "The uploaded file could not be read."
+msgstr ""
+
+#: ./plugins/Files/src/Service/FiledPages.php:355
+msgid "A {0} is not a document that can be filed."
+msgstr ""
+
 #: ./plugins/Files/src/View/Helper/PreviewHelper.php:102
 msgid "Look through ({0})"
 msgstr ""
 
-#: ./plugins/Files/src/View/Helper/UploadHelper.php:71
+#: ./plugins/Files/src/View/Helper/UploadHelper.php:72
 msgid "%d files are chosen and this server takes at most {0} at once. Choose fewer, or send them in more than one batch."
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:14
-#: ./plugins/Files/templates/Documents/index.php:59
+#: ./plugins/Files/src/View/Helper/UploadHelper.php:84
+msgid "%s are chosen and this server takes at most {0} in one go. Send them in more than one batch."
+msgstr ""
+
+#: ./plugins/Files/templates/FileLinks/index.php:14
+#: ./plugins/Files/templates/FileLinks/index.php:59
 #: ./plugins/Files/templates/Storage/view.php:85
 msgid "Model"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:22
-#: ./plugins/Files/templates/Documents/index.php:60
+#: ./plugins/Files/templates/FileLinks/index.php:22
+#: ./plugins/Files/templates/FileLinks/index.php:60
 #: ./plugins/Files/templates/Storage/view.php:87
 msgid "Document Type"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:30
-#: ./plugins/Files/templates/Documents/index.php:61
+#: ./plugins/Files/templates/FileLinks/index.php:30
+#: ./plugins/Files/templates/FileLinks/index.php:61
 #: ./plugins/Files/templates/Storage/view.php:88
 msgid "Variant"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:38
-#: ./plugins/Files/templates/Documents/index.php:63
+#: ./plugins/Files/templates/FileLinks/index.php:38
+#: ./plugins/Files/templates/FileLinks/index.php:63
 #: ./plugins/Files/templates/Storage/view.php:90
+#: ./plugins/Files/templates/cell/Documentations/contents.php:39
 msgid "Name"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:48
+#: ./plugins/Files/templates/FileLinks/index.php:48
 #: ./plugins/Files/templates/Storage/index.php:40
 #: ./plugins/Files/templates/Storage/view.php:13
 msgid "Storage"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:52
+#: ./plugins/Files/templates/FileLinks/index.php:52
 #: ./plugins/Files/templates/Storage/index.php:36
+#: ./plugins/Files/templates/Storage/index.php:54
 #: ./plugins/Files/templates/Storage/view.php:18
-msgid "Documents"
+#: ./plugins/Files/templates/Storage/view.php:68
+msgid "File Links"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:53
+#: ./plugins/Files/templates/FileLinks/index.php:53
 msgid "Every file the records have, and what each of them is filed as."
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:58
+#: ./plugins/Files/templates/FileLinks/index.php:58
 #: ./plugins/Files/templates/Storage/index.php:50
 #: ./plugins/Files/templates/Storage/view.php:58
+#: ./plugins/Files/templates/cell/Documentations/contents.php:41
 msgid "Created"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:62
+#: ./plugins/Files/templates/FileLinks/index.php:62
 #: ./plugins/Files/templates/Storage/view.php:89
 msgid "Position"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:64
+#: ./plugins/Files/templates/FileLinks/index.php:64
 #: ./plugins/Files/templates/Storage/index.php:53
 #: ./plugins/Files/templates/Storage/view.php:50
+#: ./plugins/Files/templates/cell/Documentations/contents.php:40
+#: ./plugins/Files/templates/cell/Documentations/display.php:24
 msgid "Size"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:65
+#: ./plugins/Files/templates/FileLinks/index.php:65
 #: ./plugins/Files/templates/Storage/index.php:55
 #: ./plugins/Files/templates/Storage/view.php:11
 #: ./plugins/Files/templates/Storage/view.php:91
+#: ./plugins/Files/templates/cell/Documentations/contents.php:42
 msgid "Actions"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:80
+#: ./plugins/Files/templates/FileLinks/index.php:80
 #: ./plugins/Files/templates/Storage/view.php:105
 msgid "Open"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:85
+#: ./plugins/Files/templates/FileLinks/index.php:85
 #: ./plugins/Files/templates/Storage/view.php:110
+#: ./plugins/Files/templates/cell/Documentations/contents.php:53
 msgid "Download"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:89
+#: ./plugins/Files/templates/FileLinks/index.php:89
 msgid "Content"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:94
+#: ./plugins/Files/templates/FileLinks/index.php:94
+#: ./plugins/Files/templates/cell/Documentations/contents.php:62
 msgid "Delete"
 msgstr ""
 
-#: ./plugins/Files/templates/Documents/index.php:96
+#: ./plugins/Files/templates/FileLinks/index.php:96
 msgid "Remove this document from the record? The content itself goes only if nothing else wants it."
 msgstr ""
 
@@ -230,11 +341,6 @@ msgstr ""
 msgid "Hash"
 msgstr ""
 
-#: ./plugins/Files/templates/Storage/index.php:54
-#: ./plugins/Files/templates/Storage/view.php:68
-msgid "File Links"
-msgstr ""
-
 #: ./plugins/Files/templates/Storage/index.php:68
 msgid "nothing"
 msgstr ""
@@ -245,6 +351,10 @@ msgstr ""
 
 #: ./plugins/Files/templates/Storage/index.php:82
 msgid "{0} in the store, {1} in all, {2} of them pointed at by nothing."
+msgstr ""
+
+#: ./plugins/Files/templates/Storage/view.php:26
+msgid "File"
 msgstr ""
 
 #: ./plugins/Files/templates/Storage/view.php:31
@@ -270,4 +380,48 @@ msgstr ""
 #: ./plugins/Files/templates/Storage/view.php:86
 msgid "Foreign Key"
 msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/contents.php:23
+msgid "Nothing is filed in this documentation yet."
+msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/contents.php:70
+msgid "Take {0} out of this documentation?"
+msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/contents.php:26
+msgid "{0} file, {1}"
+msgid_plural "{0} files, {1}"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./plugins/Files/templates/cell/Documentations/display.php:14
+msgid "Nothing is filed here yet."
+msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/display.php:20
+msgid "Documentation"
+msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/display.php:21
+msgid "Documentation Type"
+msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/display.php:22
+msgid "Happened On"
+msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/display.php:23
+msgid "Files"
+msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/display.php:25
+msgid "Note"
+msgstr ""
+
+#: ./plugins/Files/templates/cell/Documentations/display.php:53
+msgid "{0} file"
+msgid_plural "{0} files"
+msgstr[0] ""
+msgstr[1] ""
 

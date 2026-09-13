@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-12 21:41+0200\n"
+"POT-Creation-Date: 2026-09-13 19:40+0200\n"
 "PO-Revision-Date: 2026-09-11 02:09+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -92,7 +92,9 @@ msgstr "  ... a dalších {0}."
 msgid ""
 "Makes the pictures of what is filed, so that nobody has to wait for them. "
 "They are made on demand too, so this only decides who does the waiting."
-msgstr "Vytvoří náhledy toho, co je založeno, aby na ně nikdo nemusel čekat. Vznikají i na vyžádání, takže tohle jen rozhoduje, kdo bude čekat."
+msgstr ""
+"Vytvoří náhledy toho, co je založeno, aby na ně nikdo nemusel čekat. "
+"Vznikají i na vyžádání, takže tohle jen rozhoduje, kdo bude čekat."
 
 #: plugins/Files/src/Command/GeneratePreviewsCommand.php:87
 msgid "How many to make before stopping. Defaults to {0}."
@@ -106,119 +108,245 @@ msgstr "Vytvořeno {0}."
 msgid "{0} could not be made. The log says why."
 msgstr "{0} se nepodařilo vytvořit. Důvod je v logu."
 
-#: plugins/Files/src/Controller/FileLinksController.php:157
+#: plugins/Files/src/Controller/FileLinksController.php:167
 msgid "There is no picture of this document."
 msgstr "K tomuto dokumentu není náhled."
 
-#: plugins/Files/src/Controller/FileLinksController.php:184
+#: plugins/Files/src/Controller/FileLinksController.php:194
 msgid "The content of this document is not in the store."
 msgstr "Obsah tohoto dokumentu není v úložišti."
 
-#: plugins/Files/src/Controller/FileLinksController.php:219
+#: plugins/Files/src/Controller/FileLinksController.php:244
 msgid "The document has been removed."
 msgstr "Dokument byl odebrán."
 
-#: plugins/Files/src/Controller/FileLinksController.php:221
+#: plugins/Files/src/Controller/FileLinksController.php:246
 msgid "The document could not be removed: {0}"
 msgstr "Dokument se nepodařilo odebrat: {0}"
+
+#: plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:98
+#: plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:130
+msgid "The documentation type has been saved."
+msgstr "Typ dokumentace byl uložen."
+
+#: plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:104
+#: plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:136
+msgid "The documentation type could not be saved. Please, try again."
+msgstr "Typ dokumentace se nepodařilo uložit. Zkuste to prosím znovu."
+
+#: plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:161
+msgid "The documentation type has been deleted."
+msgstr "Typ dokumentace byl odstraněn."
+
+#: plugins/Files/src/Controller/Trait/DocumentationTypesControllerTrait.php:164
+msgid "The documentation type could not be deleted. Please, try again."
+msgstr "Typ dokumentace se nepodařilo odstranit. Zkuste to prosím znovu."
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:142
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:177
+msgid "The documentation has been saved."
+msgstr "Dokumentace byla uložena."
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:148
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:183
+msgid "The documentation could not be saved. Please, try again."
+msgstr "Dokumentaci se nepodařilo uložit. Zkuste to prosím znovu."
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:211
+msgid "The documentation has been deleted."
+msgstr "Dokumentace byla odstraněna."
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:214
+msgid "The documentation could not be deleted. Please, try again."
+msgstr "Dokumentaci se nepodařilo odstranit. Zkuste to prosím znovu."
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:258
+msgid "Nothing was chosen to file."
+msgstr "Nebylo vybráno nic k založení."
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:283
+msgid "The file has been removed from the documentation."
+msgstr "Soubor byl z dokumentace odebrán."
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:285
+msgid "The file could not be removed: {0}"
+msgstr "Soubor se nepodařilo odebrat: {0}"
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:307
+msgid "The files could not be reordered: {0}"
+msgstr "Soubory se nepodařilo přeuspořádat: {0}"
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:333
+msgid "That file belongs to something else."
+msgstr "Ten soubor patří k něčemu jinému."
+
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:247
+msgid "{0} file has been filed."
+msgid_plural "{0} files have been filed."
+msgstr[0] "Byl založen {0} soubor."
+msgstr[1] "Byly založeny {0} soubory."
+msgstr[2] "Bylo založeno {0} souborů."
+
+#: plugins/Files/src/Model/Table/DocumentationsTable.php:123
+msgid ""
+"A documentation needs a name or a day. With neither there is nothing to tell "
+"it from the next one of its type."
+msgstr ""
+"Dokumentace potřebuje název nebo den. Bez obojího ji není čím odlišit od "
+"další dokumentace téhož typu."
+
+#: plugins/Files/src/Model/Table/DocumentationsTable.php:193
+msgid "This documentation type is filed under the day it is about."
+msgstr "Tento typ dokumentace se zakládá ke dni, kterého se týká."
 
 #: plugins/Files/src/Model/Table/FilesTable.php:86
 msgid "The hash of the content is written in hexadecimal."
 msgstr "Otisk obsahu je zapsaný šestnáctkově."
 
+#: plugins/Files/src/Service/FiledPages.php:226
+msgid ""
+"This server takes at most {0} files at once, so whatever was chosen beyond "
+"that never arrived. Send the rest as a second batch."
+msgstr ""
+"Tento server přijme najednou nejvýš {0} souborů, takže co bylo vybráno nad "
+"tento počet, vůbec nedorazilo. Zbytek pošlete jako druhou dávku."
+
+#: plugins/Files/src/Service/FiledPages.php:305
+msgid "The file"
+msgstr "Soubor"
+
+#: plugins/Files/src/Service/FiledPages.php:309
+msgid "{0} is larger than this server takes in one go."
+msgstr "{0} je větší, než tento server zvládne najednou."
+
+#: plugins/Files/src/Service/FiledPages.php:314
+msgid "{0} only arrived in part."
+msgstr "{0} dorazil jen zčásti."
+
+#: plugins/Files/src/Service/FiledPages.php:315
+msgid "{0} could not be taken in."
+msgstr "{0} se nepodařilo převzít."
+
+#: plugins/Files/src/Service/FiledPages.php:334
+msgid "The uploaded file could not be read."
+msgstr "Nahraný soubor se nepodařilo přečíst."
+
+#: plugins/Files/src/Service/FiledPages.php:355
+msgid "A {0} is not a document that can be filed."
+msgstr "{0} není dokument, který jde založit."
+
 #: plugins/Files/src/View/Helper/PreviewHelper.php:102
 msgid "Look through ({0})"
 msgstr "Prohlédnout ({0})"
 
-#: plugins/Files/src/View/Helper/UploadHelper.php:71
+#: plugins/Files/src/View/Helper/UploadHelper.php:72
 msgid ""
 "%d files are chosen and this server takes at most {0} at once. Choose fewer, "
 "or send them in more than one batch."
-msgstr "Vybráno je %d souborů a tento server jich přijme najednou nejvýš {0}. Vyberte jich méně, nebo je pošlete ve více dávkách."
+msgstr ""
+"Vybráno je %d souborů a tento server jich přijme najednou nejvýš {0}. "
+"Vyberte jich méně, nebo je pošlete ve více dávkách."
 
-#: plugins/Files/templates/Documents/index.php:14
-#: plugins/Files/templates/Documents/index.php:59
+#: plugins/Files/src/View/Helper/UploadHelper.php:84
+msgid ""
+"%s are chosen and this server takes at most {0} in one go. Send them in more "
+"than one batch."
+msgstr ""
+"Vybráno je %s a tento server jich najednou přijme nejvýše {0}. Pošlete je na "
+"víc dávek."
+
+#: plugins/Files/templates/FileLinks/index.php:14
+#: plugins/Files/templates/FileLinks/index.php:59
 #: plugins/Files/templates/Storage/view.php:85
 msgid "Model"
 msgstr "Model"
 
-#: plugins/Files/templates/Documents/index.php:22
-#: plugins/Files/templates/Documents/index.php:60
+#: plugins/Files/templates/FileLinks/index.php:22
+#: plugins/Files/templates/FileLinks/index.php:60
 #: plugins/Files/templates/Storage/view.php:87
 msgid "Document Type"
 msgstr "Typ dokumentu"
 
-#: plugins/Files/templates/Documents/index.php:30
-#: plugins/Files/templates/Documents/index.php:61
+#: plugins/Files/templates/FileLinks/index.php:30
+#: plugins/Files/templates/FileLinks/index.php:61
 #: plugins/Files/templates/Storage/view.php:88
 msgid "Variant"
 msgstr "Varianta"
 
-#: plugins/Files/templates/Documents/index.php:38
-#: plugins/Files/templates/Documents/index.php:63
+#: plugins/Files/templates/FileLinks/index.php:38
+#: plugins/Files/templates/FileLinks/index.php:63
 #: plugins/Files/templates/Storage/view.php:90
+#: plugins/Files/templates/cell/Documentations/contents.php:39
 msgid "Name"
 msgstr "Název"
 
-#: plugins/Files/templates/Documents/index.php:48
+#: plugins/Files/templates/FileLinks/index.php:48
 #: plugins/Files/templates/Storage/index.php:40
 #: plugins/Files/templates/Storage/view.php:13
 msgid "Storage"
 msgstr "Úložiště"
 
-#: plugins/Files/templates/Documents/index.php:52
+#: plugins/Files/templates/FileLinks/index.php:52
 #: plugins/Files/templates/Storage/index.php:36
+#: plugins/Files/templates/Storage/index.php:54
 #: plugins/Files/templates/Storage/view.php:18
-msgid "Documents"
-msgstr "Dokumenty"
+#: plugins/Files/templates/Storage/view.php:68
+msgid "File Links"
+msgstr "Vazby souboru"
 
-#: plugins/Files/templates/Documents/index.php:53
+#: plugins/Files/templates/FileLinks/index.php:53
 msgid "Every file the records have, and what each of them is filed as."
 msgstr "Každý soubor, který evidence má, a jako co je založený."
 
-#: plugins/Files/templates/Documents/index.php:58
+#: plugins/Files/templates/FileLinks/index.php:58
 #: plugins/Files/templates/Storage/index.php:50
 #: plugins/Files/templates/Storage/view.php:58
+#: plugins/Files/templates/cell/Documentations/contents.php:41
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: plugins/Files/templates/Documents/index.php:62
+#: plugins/Files/templates/FileLinks/index.php:62
 #: plugins/Files/templates/Storage/view.php:89
 msgid "Position"
 msgstr "Pozice"
 
-#: plugins/Files/templates/Documents/index.php:64
+#: plugins/Files/templates/FileLinks/index.php:64
 #: plugins/Files/templates/Storage/index.php:53
 #: plugins/Files/templates/Storage/view.php:50
+#: plugins/Files/templates/cell/Documentations/contents.php:40
+#: plugins/Files/templates/cell/Documentations/display.php:24
 msgid "Size"
 msgstr "Velikost"
 
-#: plugins/Files/templates/Documents/index.php:65
+#: plugins/Files/templates/FileLinks/index.php:65
 #: plugins/Files/templates/Storage/index.php:55
 #: plugins/Files/templates/Storage/view.php:11
 #: plugins/Files/templates/Storage/view.php:91
+#: plugins/Files/templates/cell/Documentations/contents.php:42
 msgid "Actions"
 msgstr "Akce"
 
-#: plugins/Files/templates/Documents/index.php:80
+#: plugins/Files/templates/FileLinks/index.php:80
 #: plugins/Files/templates/Storage/view.php:105
 msgid "Open"
 msgstr "Otevřít"
 
-#: plugins/Files/templates/Documents/index.php:85
+#: plugins/Files/templates/FileLinks/index.php:85
 #: plugins/Files/templates/Storage/view.php:110
+#: plugins/Files/templates/cell/Documentations/contents.php:53
 msgid "Download"
 msgstr "Stáhnout"
 
-#: plugins/Files/templates/Documents/index.php:89
+#: plugins/Files/templates/FileLinks/index.php:89
 msgid "Content"
 msgstr "Obsah"
 
-#: plugins/Files/templates/Documents/index.php:94
+#: plugins/Files/templates/FileLinks/index.php:94
+#: plugins/Files/templates/cell/Documentations/contents.php:62
 msgid "Delete"
 msgstr "Odstranit"
 
-#: plugins/Files/templates/Documents/index.php:96
+#: plugins/Files/templates/FileLinks/index.php:96
 msgid ""
 "Remove this document from the record? The content itself goes only if "
 "nothing else wants it."
@@ -254,11 +382,6 @@ msgstr ""
 msgid "Hash"
 msgstr "Otisk"
 
-#: plugins/Files/templates/Storage/index.php:54
-#: plugins/Files/templates/Storage/view.php:68
-msgid "File Links"
-msgstr "Vazby souboru"
-
 #: plugins/Files/templates/Storage/index.php:68
 msgid "nothing"
 msgstr "nic"
@@ -270,6 +393,10 @@ msgstr "Zobrazit"
 #: plugins/Files/templates/Storage/index.php:82
 msgid "{0} in the store, {1} in all, {2} of them pointed at by nothing."
 msgstr "{0} v úložišti, {1} celkem, na {2} z nich neukazuje nic."
+
+#: plugins/Files/templates/Storage/view.php:26
+msgid "File"
+msgstr "Soubor"
 
 #: plugins/Files/templates/Storage/view.php:31
 msgid ""
@@ -303,28 +430,54 @@ msgstr ""
 msgid "Foreign Key"
 msgstr "Cizí klíč"
 
-msgid "The file"
-msgstr "Soubor"
+#: plugins/Files/templates/cell/Documentations/contents.php:23
+msgid "Nothing is filed in this documentation yet."
+msgstr "V této dokumentaci zatím nic není založeno."
 
-msgid "{0} is larger than this server takes in one go."
-msgstr "{0} je větší, než tento server zvládne najednou."
+#: plugins/Files/templates/cell/Documentations/contents.php:70
+msgid "Take {0} out of this documentation?"
+msgstr "Odebrat {0} z této dokumentace?"
 
-msgid "{0} only arrived in part."
-msgstr "{0} dorazil jen zčásti."
+#: plugins/Files/templates/cell/Documentations/contents.php:26
+msgid "{0} file, {1}"
+msgid_plural "{0} files, {1}"
+msgstr[0] "{0} soubor, {1}"
+msgstr[1] "{0} soubory, {1}"
+msgstr[2] "{0} souborů, {1}"
 
-msgid "{0} could not be taken in."
-msgstr "{0} se nepodařilo převzít."
+#: plugins/Files/templates/cell/Documentations/display.php:14
+msgid "Nothing is filed here yet."
+msgstr "Zatím zde není nic založeno."
 
-msgid "The uploaded file could not be read."
-msgstr "Nahraný soubor se nepodařilo přečíst."
+#: plugins/Files/templates/cell/Documentations/display.php:20
+msgid "Documentation"
+msgstr "Dokumentace"
 
-msgid "A {0} is not a document that can be filed."
-msgstr "{0} není dokument, který jde založit."
+#: plugins/Files/templates/cell/Documentations/display.php:21
+msgid "Documentation Type"
+msgstr "Typ dokumentace"
 
-msgid ""
-"This server takes at most {0} files at once, so whatever was chosen beyond that never arrived. Send the rest as a second batch."
-msgstr ""
-"Tento server přijme najednou nejvýš {0} souborů, takže co bylo vybráno nad tento počet, vůbec nedorazilo. Zbytek pošlete jako druhou dávku."
+#: plugins/Files/templates/cell/Documentations/display.php:22
+msgid "Happened On"
+msgstr "Datum události"
+
+#: plugins/Files/templates/cell/Documentations/display.php:23
+msgid "Files"
+msgstr "Soubory"
+
+#: plugins/Files/templates/cell/Documentations/display.php:25
+msgid "Note"
+msgstr "Poznámka"
+
+#: plugins/Files/templates/cell/Documentations/display.php:53
+msgid "{0} file"
+msgid_plural "{0} files"
+msgstr[0] "{0} soubor"
+msgstr[1] "{0} soubory"
+msgstr[2] "{0} souborů"
+
+#~ msgid "Documents"
+#~ msgstr "Dokumenty"
 
 #~ msgid ""
 #~ "Checks what is on the shelf against what is on file, and says what does "

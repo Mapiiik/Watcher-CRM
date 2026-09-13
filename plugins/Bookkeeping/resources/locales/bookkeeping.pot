@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-12 21:40+0200\n"
+"POT-Creation-Date: 2026-09-13 19:40+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -942,6 +942,10 @@ msgstr ""
 
 #: ./plugins/Bookkeeping/templates/Invoices/view.php:36
 msgid "Download Invoice"
+msgstr ""
+
+#: ./plugins/Bookkeeping/templates/Invoices/view.php:44
+msgid "Invoice"
 msgstr ""
 
 #: ./plugins/Bookkeeping/templates/cell/Invoices/display.php:71

@@ -1,0 +1,260 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-09-13 19:42+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./templates/Contracts/documents.php:29
+#: ./templates/Contracts/view.php:44
+#: ./templates/Contracts/view.php:160
+#: ./templates/Customers/documents.php:29
+#: ./templates/Customers/view.php:57
+#: ./templates/Customers/view.php:183
+#: ./templates/DocumentationTypes/view.php:73
+#: ./templates/Documentations/index.php:41
+msgid "Documentations"
+msgstr ""
+
+#: ./templates/DocumentationTypes/add.php:10
+#: ./templates/DocumentationTypes/edit.php:10
+#: ./templates/DocumentationTypes/index.php:46
+#: ./templates/DocumentationTypes/view.php:11
+#: ./templates/Documentations/add.php:11
+#: ./templates/Documentations/add_files.php:16
+#: ./templates/Documentations/edit.php:11
+#: ./templates/Documentations/index.php:53
+#: ./templates/Documentations/view.php:12
+msgid "Actions"
+msgstr ""
+
+#: ./templates/DocumentationTypes/add.php:12
+#: ./templates/DocumentationTypes/edit.php:12
+#: ./templates/DocumentationTypes/view.php:30
+#: ./templates/Settings/index.php:262
+msgid "List Documentation Types"
+msgstr ""
+
+#: ./templates/DocumentationTypes/add.php:22
+msgid "Add Documentation Type"
+msgstr ""
+
+#: ./templates/DocumentationTypes/add.php:25
+#: ./templates/DocumentationTypes/edit.php:25
+#: ./templates/Documentations/add.php:26
+#: ./templates/Documentations/add_files.php:35
+#: ./templates/Documentations/edit.php:26
+msgid "Submit"
+msgstr ""
+
+#: ./templates/DocumentationTypes/edit.php:22
+msgid "Edit Documentation Type"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:6
+#: ./templates/DocumentationTypes/view.php:6
+msgid "Yes"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:6
+#: ./templates/DocumentationTypes/view.php:6
+msgid "No"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:12
+#: ./templates/Documentations/index.php:19
+msgid "Search"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:22
+msgid "New Documentation Type"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:26
+msgid "Documentation Types"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:28
+msgid "What documentation is filed as. A type decides what a documentation of that type has to say about itself, and one that is no longer offered stays on what is already filed under it."
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:39
+#: ./templates/DocumentationTypes/view.php:43
+#: ./templates/element/DocumentationTypes/fields.php:11
+msgid "Position"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:40
+#: ./templates/Documentations/index.php:48
+#: ./templates/Documentations/view.php:62
+#: ./templates/element/DocumentationTypes/fields.php:9
+#: ./templates/element/Documentations/fields.php:45
+msgid "Name"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:41
+#: ./templates/DocumentationTypes/view.php:47
+#: ./templates/element/DocumentationTypes/fields.php:15
+msgid "Currently Offered"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:42
+#: ./templates/DocumentationTypes/view.php:51
+#: ./templates/element/DocumentationTypes/fields.php:22
+msgid "Date Required"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:43
+#: ./templates/DocumentationTypes/view.php:55
+#: ./templates/element/DocumentationTypes/fields.php:28
+msgid "Customer Required"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:44
+#: ./templates/DocumentationTypes/view.php:59
+#: ./templates/element/DocumentationTypes/fields.php:29
+msgid "Contract Required"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:45
+#: ./templates/DocumentationTypes/view.php:69
+#: ./templates/element/DocumentationTypes/fields.php:30
+#: ./templates/element/Documentations/fields.php:48
+msgid "Note"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:61
+#: ./templates/Documentations/index.php:81
+msgid "View"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:65
+#: ./templates/DocumentationTypes/view.php:13
+#: ./templates/Documentations/index.php:85
+msgid "Edit"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:70
+#: ./templates/DocumentationTypes/view.php:18
+#: ./templates/Documentations/index.php:90
+msgid "Delete"
+msgstr ""
+
+#: ./templates/DocumentationTypes/index.php:72
+#: ./templates/DocumentationTypes/view.php:21
+msgid "Are you sure you want to delete {0}?"
+msgstr ""
+
+#: ./templates/DocumentationTypes/view.php:38
+#: ./templates/Documentations/index.php:26
+#: ./templates/Documentations/index.php:49
+#: ./templates/Documentations/view.php:66
+#: ./templates/element/Documentations/fields.php:31
+msgid "Documentation Type"
+msgstr ""
+
+#: ./templates/Documentations/add.php:13
+#: ./templates/Documentations/edit.php:13
+#: ./templates/Documentations/view.php:37
+#: ./templates/Overviews/index.php:13
+msgid "List Documentations"
+msgstr ""
+
+#: ./templates/Documentations/add.php:23
+msgid "Add Documentation"
+msgstr ""
+
+#: ./templates/Documentations/add_files.php:18
+msgid "Back to the Documentation"
+msgstr ""
+
+#: ./templates/Documentations/add_files.php:28
+msgid "Add Files to {0}"
+msgstr ""
+
+#: ./templates/Documentations/add_files.php:32
+#: ./templates/Documentations/index.php:51
+msgid "Files"
+msgstr ""
+
+#: ./templates/Documentations/edit.php:23
+#: ./templates/Documentations/view.php:19
+msgid "Edit Documentation"
+msgstr ""
+
+#: ./templates/Documentations/index.php:37
+msgid "New Documentation"
+msgstr ""
+
+#: ./templates/Documentations/index.php:46
+#: ./templates/Documentations/view.php:83
+#: ./templates/element/Documentations/fields.php:18
+msgid "Customer"
+msgstr ""
+
+#: ./templates/Documentations/index.php:47
+#: ./templates/Documentations/view.php:92
+#: ./templates/element/Documentations/fields.php:25
+msgid "Contract"
+msgstr ""
+
+#: ./templates/Documentations/index.php:50
+#: ./templates/Documentations/view.php:79
+#: ./templates/element/Documentations/fields.php:36
+msgid "Happened On"
+msgstr ""
+
+#: ./templates/Documentations/index.php:52
+msgid "Size"
+msgstr ""
+
+#: ./templates/Documentations/index.php:92
+#: ./templates/Documentations/view.php:27
+msgid "Delete {0} and everything in it?"
+msgstr ""
+
+#: ./templates/Documentations/view.php:14
+msgid "Add Files"
+msgstr ""
+
+#: ./templates/Documentations/view.php:24
+msgid "Delete Documentation"
+msgstr ""
+
+#: ./templates/Documentations/view.php:43
+msgid "Contract Documents"
+msgstr ""
+
+#: ./templates/Documentations/view.php:57
+msgid "Documentation"
+msgstr ""
+
+#: ./templates/element/DocumentationTypes/fields.php:12
+msgid "Where it sits in the list somebody picks from."
+msgstr ""
+
+#: ./templates/element/DocumentationTypes/fields.php:16
+msgid "A type that is no longer offered stays on what is already filed under it."
+msgstr ""
+
+#: ./templates/element/DocumentationTypes/fields.php:23
+msgid "For documentation about something that happened. What is kept up to date has no day to give."
+msgstr ""
+
+#: ./templates/element/Documentations/fields.php:38
+msgid "The day it is about. Documentation kept up to date rather than recording something has none, and goes by its name instead."
+msgstr ""
+
+#: ./templates/element/Documentations/fields.php:46
+msgid "Left empty, it reads as its day and its type."
+msgstr ""
+

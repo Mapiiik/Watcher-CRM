@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2026-09-04 23:49+0200\n"
+"POT-Creation-Date: 2026-09-13 19:40+0200\n"
 "PO-Revision-Date: 2026-08-21 11:32+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
@@ -337,6 +337,10 @@ msgstr ""
 #: templates/AppUsers/view.php:20
 msgid "Delete User"
 msgstr "Odstranit uživatele"
+
+#: templates/AppUsers/view.php:41
+msgid "User"
+msgstr "Uživatel"
 
 #: templates/AppUsers/view.php:54
 msgid "First Name"

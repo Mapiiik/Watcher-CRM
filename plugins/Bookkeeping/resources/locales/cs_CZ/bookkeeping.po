@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-12 21:40+0200\n"
+"POT-Creation-Date: 2026-09-13 19:40+0200\n"
 "PO-Revision-Date: 2026-08-26 13:21+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1029,6 +1029,10 @@ msgstr "Odstranit fakturu"
 #: plugins/Bookkeeping/templates/Invoices/view.php:36
 msgid "Download Invoice"
 msgstr "Stáhnout fakturu"
+
+#: plugins/Bookkeeping/templates/Invoices/view.php:44
+msgid "Invoice"
+msgstr "Faktura"
 
 #: plugins/Bookkeeping/templates/cell/Invoices/display.php:71
 msgid "Show also paid invoices"
