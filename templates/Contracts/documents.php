@@ -59,7 +59,7 @@
                 <?= $this->cell(
                     'Documents',
                     ['contract', $contract->id],
-                    ['generatedByUs' => false],
+                    ['generatedByUs' => false, 'withWhatIsMissing' => true],
                 ) ?>
             </div>
             <div class="related">

@@ -134,7 +134,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
             // through them belongs in it. Built once where the run starts, since that is the only
             // row the cell is drawn on.
             $variantCell = h($row['variant']);
-            if ($first) {
+            if ($first && $row['link'] !== null) {
                 // The whole of where a page came from, whichever page the table is drawn on. The
                 // columns leave out what the page they sit on already says, and the title does
                 // not follow them there: it belongs to the file rather than to the listing, so
@@ -166,6 +166,17 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 ],
             );
             ?>
+            <?php if ($row['link'] === null) : ?>
+            <tr>
+                <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
+                <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>
+                <td colspan="<?= $thumbnails ? 7 : 6 ?>">
+                    <span class="error-text"><?= __('Nothing yet') ?></span>
+                </td>
+                <?= $showProposal ? $joined($spans['round'][$index], $index, $papersLink, 'actions') : '' ?>
+            </tr>
+                <?php continue; ?>
+            <?php endif; ?>
             <tr<?= $spans[$leftmost][$index]['start'] === $index ? '' : ' class="continued"' ?>>
                 <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
                 <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>

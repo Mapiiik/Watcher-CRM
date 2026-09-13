@@ -40,7 +40,13 @@ class DocumentsCell extends Cell
      *
      * @var list<string>
      */
-    protected array $_validCellOptions = ['generatedByUs', 'manage', 'withContracts', 'thumbnails'];
+    protected array $_validCellOptions = [
+        'generatedByUs',
+        'manage',
+        'withContracts',
+        'thumbnails',
+        'withWhatIsMissing',
+    ];
 
     /**
      * Whether this is the side we generated rather than the scans that came back.
@@ -67,6 +73,18 @@ class DocumentsCell extends Cell
      * readability than they give back.
      */
     protected bool $thumbnails = false;
+
+    /**
+     * Whether a round with nothing on file is listed all the same.
+     *
+     * A page that only lists papers cannot be used to add the first one, because the round it
+     * would hang on is the one round with no row to start from. Off unless asked for: on a page
+     * that is about reading what is there, a run of empty rows only gets in the way.
+     *
+     * A round that was revoked is left out when it has nothing, since nothing is ever coming. What
+     * it does have stays listed, because those papers happened.
+     */
+    protected bool $withWhatIsMissing = false;
 
     /**
      * Initialization hook method.
@@ -138,6 +156,7 @@ class DocumentsCell extends Cell
                 // A consent belongs to nobody's contract, so the column stays empty on its rows.
                 'contract_id' => null,
                 'contract' => '',
+                'revoked' => $proposal->hasBeenRevoked(),
                 'documents' => $documents,
             ], $filed));
         }
@@ -155,6 +174,7 @@ class DocumentsCell extends Cell
                 'says' => __('{0} from {1}', $proposal->purpose->label(), $proposal->effective_from),
                 'contract_id' => (string)$proposal->contract_id,
                 'contract' => (string)($proposal->contract->number ?? ''),
+                'revoked' => $proposal->hasBeenRevoked(),
                 'documents' => $documents,
             ], $filed));
         }
@@ -195,6 +215,21 @@ class DocumentsCell extends Cell
                     ];
                 }
             }
+        }
+
+        if ($rows === [] && $this->withWhatIsMissing && $round['revoked'] !== true) {
+            $rows[] = [
+                'round' => $round,
+                'document' => '',
+                'variant' => '',
+                'link' => null,
+                'keys' => [
+                    'contract' => (string)($round['contract_id'] ?? ''),
+                    'round' => $round['id'],
+                    'document' => $round['id'] . '/-',
+                    'variant' => $round['id'] . '/-',
+                ],
+            ];
         }
 
         return $rows;

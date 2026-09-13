@@ -54,7 +54,7 @@
                 <?= $this->cell(
                     'Documents',
                     ['customer', $customer->id],
-                    ['generatedByUs' => false],
+                    ['generatedByUs' => false, 'withWhatIsMissing' => true],
                 ) ?>
             </div>
             <div class="related">
