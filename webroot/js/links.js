@@ -41,4 +41,13 @@ $(document).ready(function() {
             window.close();
         }
     });
+
+    $(".refresh-on-return").on("click", function() {
+        // What was handed over is written down where the page it was asked from lists it, so that
+        // list is out of date the moment it opens. Reading it again when the reader comes back
+        // covers both closing the document and only switching away from it.
+        $(window).off("focus.refresh").one("focus.refresh", function() {
+            location = location.href.split("#")[0];
+        });
+    });
 });
