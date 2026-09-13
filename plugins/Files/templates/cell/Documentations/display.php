@@ -17,10 +17,10 @@
     <table class="files-documentations">
         <thead>
             <tr>
-                <th><?= __d('files', 'Folder') ?></th>
-                <th><?= __d('files', 'Kind') ?></th>
-                <th><?= __d('files', 'Day') ?></th>
-                <th><?= __d('files', 'Contents') ?></th>
+                <th><?= __d('files', 'Documentation') ?></th>
+                <th><?= __d('files', 'Documentation Type') ?></th>
+                <th><?= __d('files', 'Happened On') ?></th>
+                <th><?= __d('files', 'Files') ?></th>
                 <th><?= __d('files', 'Size') ?></th>
                 <th><?= __d('files', 'Note') ?></th>
             </tr>

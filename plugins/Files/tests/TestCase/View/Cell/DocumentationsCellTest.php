@@ -9,7 +9,6 @@ use Cake\TestSuite\TestCase;
 use Cake\View\View;
 use Files\Model\Entity\Documentation;
 use Files\Model\Table\DocumentationsTable;
-use Files\Model\Table\DocumentationTypesTable;
 use Files\Service\Documentations;
 use Files\Service\FileStorage;
 use Files\View\Cell\DocumentationsCell;
@@ -66,7 +65,7 @@ class DocumentationsCellTest extends TestCase
         $this->loadPlugins(['Files' => ['routes' => true]]);
 
         /** @var \Files\Model\Table\DocumentationsTable $documentations */
-        $documentations = $this->fetchTable(DocumentationsTable::class);
+        $documentations = $this->fetchTable('Files.Documentations');
         $this->Documentations = $documentations;
 
         $this->root = TMP . 'documentations-cell-' . uniqid();
@@ -112,7 +111,7 @@ class DocumentationsCellTest extends TestCase
     public function testAnEmptyFolderSaysSoRatherThanShowingNothing(): void
     {
         $this->assertStringContainsString(
-            'This folder is empty.',
+            'Nothing is filed in this documentation yet.',
             $this->render('contents', [$this->folder()]),
         );
     }
@@ -165,7 +164,7 @@ class DocumentationsCellTest extends TestCase
     private function folder(array $said = []): Documentation
     {
         /** @var \Files\Model\Table\DocumentationTypesTable $types */
-        $types = $this->fetchTable(DocumentationTypesTable::class);
+        $types = $this->fetchTable('Files.DocumentationTypes');
 
         $kind = $types->saveOrFail($types->newEntity([
             'name' => 'Documentation',

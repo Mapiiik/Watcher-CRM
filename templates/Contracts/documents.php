@@ -25,6 +25,11 @@
                 ['action' => 'print', $contract->id],
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
+            <?= $this->AuthLink->link(
+                __('Documentation'),
+                ['controller' => 'Documentations', 'action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
             <br>
             <?= $this->AuthLink->link(
                 __('Customer Documents'),

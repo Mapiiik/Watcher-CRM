@@ -50,11 +50,11 @@ class DocumentationTypesTableTest extends TestCase
         parent::setUp();
 
         /** @var \Files\Model\Table\DocumentationTypesTable $types */
-        $types = $this->fetchTable(DocumentationTypesTable::class);
+        $types = $this->fetchTable('Files.DocumentationTypes');
         $this->DocumentationTypes = $types;
 
         /** @var \Files\Model\Table\DocumentationsTable $documentations */
-        $documentations = $this->fetchTable(DocumentationsTable::class);
+        $documentations = $this->fetchTable('Files.Documentations');
         $this->Documentations = $documentations;
     }
 

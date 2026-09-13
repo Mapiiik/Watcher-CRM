@@ -15,7 +15,7 @@
  */
 ?>
 <?php if ($contents === []) : ?>
-    <p><?= __d('files', 'This folder is empty.') ?></p>
+    <p><?= __d('files', 'Nothing is filed in this documentation yet.') ?></p>
 <?php else : ?>
 <p><?=
     __dn(

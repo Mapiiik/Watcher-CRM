@@ -321,6 +321,11 @@ msgstr "Nahraný soubor se nepodařilo přečíst."
 msgid "A {0} is not a document that can be filed."
 msgstr "{0} není dokument, který jde založit."
 
+msgid ""
+"This server takes at most {0} files at once, so whatever was chosen beyond that never arrived. Send the rest as a second batch."
+msgstr ""
+"Tento server přijme najednou nejvýš {0} souborů, takže co bylo vybráno nad tento počet, vůbec nedorazilo. Zbytek pošlete jako druhou dávku."
+
 #~ msgid ""
 #~ "Checks what is on the shelf against what is on file, and says what does "
 #~ "not match."

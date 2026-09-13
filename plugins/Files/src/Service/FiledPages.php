@@ -178,6 +178,21 @@ class FiledPages
     }
 
     /**
+     * What to tell somebody whose batch was cut.
+     *
+     * @return string
+     */
+    public static function shortfall(): string
+    {
+        return __d(
+            'files',
+            'This server takes at most {0} files at once, so whatever was chosen beyond that'
+            . ' never arrived. Send the rest as a second batch.',
+            self::atMostAtOnce(),
+        );
+    }
+
+    /**
      * How many files are in there, wherever they sit.
      *
      * @param array<mixed> $uploaded The files, however they are nested.

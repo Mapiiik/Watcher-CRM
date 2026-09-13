@@ -48,8 +48,8 @@ class DocumentationTypesTable extends AppTable
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
 
+        // By the alias rather than by the class, for the same reason as the other way round.
         $this->hasMany('Documentations', [
-            'className' => 'Files.Documentations',
             'foreignKey' => 'documentation_type_id',
         ]);
     }

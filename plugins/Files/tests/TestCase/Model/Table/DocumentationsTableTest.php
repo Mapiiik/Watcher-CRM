@@ -66,12 +66,15 @@ class DocumentationsTableTest extends TestCase
     {
         parent::setUp();
 
+        // Under the plugin's own name, not the bare one. An application puts its own table under
+        // the bare alias, and whichever of the two a run reaches first is the one the rest of it
+        // gets.
         /** @var \Files\Model\Table\DocumentationsTable $documentations */
-        $documentations = $this->fetchTable(DocumentationsTable::class);
+        $documentations = $this->fetchTable('Files.Documentations');
         $this->Documentations = $documentations;
 
         /** @var \Files\Model\Table\DocumentationTypesTable $types */
-        $types = $this->fetchTable(DocumentationTypesTable::class);
+        $types = $this->fetchTable('Files.DocumentationTypes');
         $this->DocumentationTypes = $types;
 
         $this->root = TMP . 'documentations-store-' . uniqid();

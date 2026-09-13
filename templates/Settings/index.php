@@ -256,6 +256,17 @@
         </div>
 
         <div class="related">
+            <h4><?= __('Documentation Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __('List Documentation Types'),
+                    ['controller' => 'DocumentationTypes', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            </div>
+        </div>
+
+        <div class="related">
             <h4><?= __('Task Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(

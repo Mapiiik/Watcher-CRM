@@ -167,10 +167,6 @@ final class ProposalPapers
      */
     public static function shortfall(): string
     {
-        return __(
-            'This server takes at most {0} files at once, so whatever was chosen beyond that'
-            . ' never arrived. Send the rest as a second batch.',
-            self::atMostAtOnce(),
-        );
+        return FiledPages::shortfall();
     }
 }

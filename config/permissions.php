@@ -495,6 +495,41 @@ $permissions = [
                 'documents',
             ],
         ],
+        //documentation: whoever may look at a record may look at what is kept about it
+        [
+            'role' => '*',
+            'plugin' => null,
+            'controller' => [
+                'Documentations',
+            ],
+            'action' => [
+                'index',
+                'view',
+            ],
+        ],
+        //and keeping it up to date goes with doing the work it records. Letting a folder go is
+        //here too, unlike a paper we drew up: nothing in one was generated, so nothing is
+        //unfrozen by removing it
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Documentations',
+            ],
+            'action' => [
+                'add',
+                'edit',
+                'delete',
+                'addFiles',
+                'dropFile',
+                'moveFile',
+            ],
+        ],
         //filing scans and putting them in order goes with drawing the papers up in the first place
         [
             'role' => [

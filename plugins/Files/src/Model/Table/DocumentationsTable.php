@@ -55,8 +55,9 @@ class DocumentationsTable extends AppTable
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
 
+        // By the alias rather than by the class, so that an application which puts its own
+        // beside this one gets its own.
         $this->belongsTo('DocumentationTypes', [
-            'className' => 'Files.DocumentationTypes',
             'foreignKey' => 'documentation_type_id',
             'joinType' => 'INNER',
         ]);
@@ -121,20 +122,21 @@ class DocumentationsTable extends AppTable
                 'errorField' => 'name',
                 'message' => __d(
                     'files',
-                    'A folder needs a name or a day. With neither there is nothing to tell it from'
-                    . ' the next one of its kind.',
+                    'A documentation needs a name or a day. With neither there is nothing to tell it'
+                    . ' from the next one of its type.',
                 ),
             ],
         );
 
-        $rules->add(
-            fn(Documentation $documentation): bool => $this->dayGivenWhereItIsAsked($documentation),
-            'the day its kind asks for',
-            [
-                'errorField' => 'happened_on',
-                'message' => __d('files', 'This kind of folder is filed under the day it is about.'),
-            ],
-        );
+        foreach ($this->askedFor() as $flag => $asked) {
+            $column = (string)$asked['column'];
+
+            $rules->add(
+                fn(Documentation $documentation): bool => $this->given($documentation, $flag, $column),
+                'what its kind asks for: ' . $column,
+                ['errorField' => $column, 'message' => (string)$asked['message']],
+            );
+        }
 
         return $rules;
     }
@@ -175,24 +177,47 @@ class DocumentationsTable extends AppTable
     }
 
     /**
-     * Whether this folder carries the day, where its kind says it has to.
+     * What a type's requirement is about, and what to say when it is not there.
      *
-     * The type is read rather than taken off the entity, which need not have it loaded.
+     * The day is here because every folder has one to give or not. What a folder may hang on is
+     * the application's, so each adds its own - a column in a migration, a flag beside it and an
+     * entry here, in that application's own words.
+     *
+     * @return array<string, array<string, string>> By the name of the requirement.
+     */
+    protected function askedFor(): array
+    {
+        return [
+            'date_required' => [
+                'column' => 'happened_on',
+                'message' => __d('files', 'This documentation type is filed under the day it is about.'),
+            ],
+        ];
+    }
+
+    /**
+     * Whether the folder carries something its kind says it has to.
+     *
+     * The type is read rather than taken off the entity, which need not have it loaded. Asked
+     * every time rather than only when something changed: a folder that does not agree with its
+     * own kind is wrong whenever it is written.
      *
      * @param \Files\Model\Entity\Documentation $documentation The folder.
+     * @param string $flag What the type calls the requirement.
+     * @param string $column What the folder calls the thing required.
      * @return bool
      */
-    private function dayGivenWhereItIsAsked(Documentation $documentation): bool
+    private function given(Documentation $documentation, string $flag, string $column): bool
     {
-        if ($documentation->happened_on !== null) {
+        if ($documentation->get($column) !== null) {
             return true;
         }
 
         $asked = $this->DocumentationTypes->find()
-            ->select(['DocumentationTypes.date_required'])
+            ->select(['DocumentationTypes.' . $flag])
             ->where(['DocumentationTypes.id' => $documentation->documentation_type_id])
             ->first();
 
-        return !($asked->date_required ?? false);
+        return !($asked?->get($flag) ?? false);
     }
 }
