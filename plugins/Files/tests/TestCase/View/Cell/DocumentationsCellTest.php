@@ -87,21 +87,31 @@ class DocumentationsCellTest extends TestCase
     }
 
     /**
+     * Everything is in the table, and only what can be drawn is in the wall under it.
+     *
+     * A drawing standing in that wall left a hole in it and a name too small to read, so the
+     * wall is for looking at and the table is for working with.
+     *
      * @link \Files\View\Cell\DocumentationsCell::contents()
      * @return void
      */
-    public function testWhatCanBeDrawnIsDrawnAndTheRestSaysWhatItIs(): void
+    public function testWhatCanBeDrawnIsDrawnAndEverythingIsListed(): void
     {
         $folder = $this->folder();
         $this->put($folder, 'roof.jpg', 'image/jpeg', (string)file_get_contents($this->content('picture.jpg')));
         $this->put($folder, 'rack.dwg', 'application/octet-stream', 'a drawing of the rack');
 
-        $wall = $this->render('contents', [$folder]);
+        $shown = $this->render('contents', [$folder]);
+        $wall = substr($shown, (int)strpos($shown, 'files-tiles'));
 
+        $this->assertStringContainsString('roof.jpg', $shown, 'The photograph should be listed.');
+        $this->assertStringContainsString('rack.dwg', $shown, 'The drawing should be listed.');
         $this->assertStringContainsString('files-thumb', $wall, 'The photograph should show itself.');
-        $this->assertStringContainsString('>DWG<', $wall, 'The drawing should say what kind of file it is.');
-        $this->assertStringContainsString('roof.jpg', $wall);
-        $this->assertStringContainsString('rack.dwg', $wall);
+        $this->assertStringNotContainsString(
+            'rack.dwg',
+            $wall,
+            'The drawing has nothing to show and has no place in the wall.',
+        );
     }
 
     /**

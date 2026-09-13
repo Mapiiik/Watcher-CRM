@@ -54,39 +54,46 @@
     </aside>
     <div class="column column-90">
         <div class="documentations view content">
-            <h3><?= h($documentation->heading) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __d('app_files', 'Documentation Type') ?></th>
-                    <td><?= h($documentation->documentation_type->name ?? '') ?></td>
-                </tr>
-                <tr>
-                    <th><?= __d('app_files', 'Happened On') ?></th>
-                    <td><?= h($documentation->happened_on) ?></td>
-                </tr>
-                <?php if ($documentation->customer !== null) : ?>
-                <tr>
-                    <th><?= __d('app_files', 'Customer') ?></th>
-                    <td><?=
-                        $this->AuthLink->link(
-                            $documentation->customer->name_for_lists,
-                            ['controller' => 'Customers', 'action' => 'view', $documentation->customer_id],
-                        )
-                        ?></td>
-                </tr>
-                <?php endif; ?>
-                <?php if ($documentation->contract !== null) : ?>
-                <tr>
-                    <th><?= __d('app_files', 'Contract') ?></th>
-                    <td><?=
-                        $this->AuthLink->link(
-                            (string)$documentation->contract->number,
-                            ['controller' => 'Contracts', 'action' => 'view', $documentation->contract_id],
-                        )
-                        ?></td>
-                </tr>
-                <?php endif; ?>
-            </table>
+            <?= $this->record(__d('app_files', 'Documentation'), (string)$documentation->heading) ?>
+            <div class="row">
+                <div class="column">
+                    <table>
+                        <tr>
+                            <th><?= __d('app_files', 'Name') ?></th>
+                            <td><?= h($documentation->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('app_files', 'Documentation Type') ?></th>
+                            <td><?= h($documentation->documentation_type->name ?? '') ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('app_files', 'Happened On') ?></th>
+                            <td><?= h($documentation->happened_on) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('app_files', 'Customer') ?></th>
+                            <td><?=
+                                $documentation->customer === null ? '' : $this->AuthLink->link(
+                                    $documentation->customer->name_for_lists,
+                                    ['controller' => 'Customers', 'action' => 'view', $documentation->customer_id],
+                                )
+                                ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('app_files', 'Contract') ?></th>
+                            <td><?=
+                                $documentation->contract === null ? '' : $this->AuthLink->link(
+                                    (string)$documentation->contract->number,
+                                    ['controller' => 'Contracts', 'action' => 'view', $documentation->contract_id],
+                                )
+                                ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column">
+                    <?= $this->element('common/audit', ['entity' => $documentation]) ?>
+                </div>
+            </div>
             <?php if (trim((string)$documentation->note) !== '') : ?>
             <div class="text">
                 <blockquote><?= $this->Text->autoParagraph(h($documentation->note)) ?></blockquote>
@@ -96,7 +103,6 @@
                 <?php $this->Preview->load() ?>
                 <?= $this->cell('Files.Documentations::contents', [$documentation]) ?>
             </div>
-            <?= $this->element('common/audit', ['entity' => $documentation]) ?>
         </div>
     </div>
 </div>

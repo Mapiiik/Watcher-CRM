@@ -33,6 +33,18 @@ use Throwable;
 trait DocumentationsControllerTrait
 {
     /**
+     * Anything else the form needs, which is the application's to say.
+     *
+     * What a folder hangs on differs between the two - a customer and a connection here, an access
+     * point there - so what may be chosen for it is offered by whoever knows.
+     *
+     * @return void
+     */
+    protected function setFormViewVars(): void
+    {
+    }
+
+    /**
      * Which records the route is standing under, by the column that names each of them.
      *
      * Only what the route actually carried. A listing under a customer is of everything filed
@@ -89,6 +101,8 @@ trait DocumentationsControllerTrait
 
         $this->set(compact('documentations'));
         $this->set('kinds', $this->kindsOnOffer());
+        // Only to say how many: one query for the page rather than one for each row.
+        $this->set('filed', (new Documentations())->contentsOfEach($documentations));
     }
 
     /**
@@ -108,8 +122,9 @@ trait DocumentationsControllerTrait
     /**
      * Add method
      *
-     * What it hangs on comes from the route rather than from the form, so a folder cannot be
-     * filed against a record the caller was not standing under.
+     * What it hangs on comes from the route where the route says it, so a folder opened under
+     * a record cannot be filed against another one. Opened from the shelf itself there is
+     * nothing to override, and the form asks.
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
@@ -135,6 +150,7 @@ trait DocumentationsControllerTrait
 
         $this->set(compact('documentation'));
         $this->set('kinds', $this->kindsOnOffer());
+        $this->setFormViewVars();
 
         return null;
     }
@@ -142,8 +158,9 @@ trait DocumentationsControllerTrait
     /**
      * Edit method
      *
-     * What it hangs on is not among what may be changed. A folder belongs where it was filed, and
-     * a route naming somewhere else must not quietly move it there.
+     * What it hangs on is read from the form rather than from the route, so that a route naming
+     * somewhere else cannot quietly move a folder there. Moving one on purpose is done in the
+     * form, where the field is offered once the address is not already answering for it.
      *
      * @param string|null $id Documentation id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
@@ -168,6 +185,7 @@ trait DocumentationsControllerTrait
 
         $this->set(compact('documentation'));
         $this->set('kinds', $this->kindsOnOffer((string)$documentation->documentation_type_id));
+        $this->setFormViewVars();
 
         return null;
     }

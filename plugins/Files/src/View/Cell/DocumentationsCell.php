@@ -6,6 +6,7 @@ namespace Files\View\Cell;
 use Cake\View\Cell;
 use Files\Model\Entity\Documentation;
 use Files\Service\Documentations;
+use Files\Service\Previews;
 use Override;
 
 /**
@@ -68,10 +69,12 @@ class DocumentationsCell extends Cell
     }
 
     /**
-     * What is in one folder, as a wall of what each of them looks like.
+     * What is in one folder, in two parts: what can be seen, and what can only be listed.
      *
-     * Tiles rather than a table. A folder of photographs from a roof is looked at rather than
-     * read, and thirty rows of filenames say nothing about which one shows the mast.
+     * A folder of photographs from a roof is looked at rather than read, and thirty rows of
+     * filenames say nothing about which one shows the mast - so those are a wall of tiles. A
+     * firmware image and an archive have nothing to show, and standing in that wall they left
+     * a hole in it and a name too small to read. Those are a table, the way documents are.
      *
      * @param \Files\Model\Entity\Documentation $documentation The folder.
      * @return void
@@ -79,9 +82,17 @@ class DocumentationsCell extends Cell
     public function contents(Documentation $documentation): void
     {
         $contents = (new Documentations())->contentsOf($documentation);
+        $seen = [];
+
+        foreach ($contents as $link) {
+            if (Previews::generates($link->file->mime_type ?? null)) {
+                $seen[] = $link;
+            }
+        }
 
         $this->set('documentation', $documentation);
         $this->set('contents', $contents);
+        $this->set('seen', $seen);
         $this->set('gallery', $this->galleryOf($documentation));
         $this->set('bytes', $this->bytesOf($contents));
     }

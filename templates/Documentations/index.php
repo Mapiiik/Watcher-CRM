@@ -9,6 +9,7 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Documentation> $documentations
  * @var array<string, string> $kinds
+ * @var array<string, list<\Files\Model\Entity\FileLink>> $filed What each of them holds
  */
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -42,21 +43,18 @@
         <table>
             <thead>
                 <tr>
-                    <th><?= __d('app_files', 'Documentation') ?></th>
-                    <th><?= __d('app_files', 'Documentation Type') ?></th>
-                    <th><?= $this->Paginator->sort('happened_on', __d('app_files', 'Happened On')) ?></th>
                     <th><?= __d('app_files', 'Customer') ?></th>
                     <th><?= __d('app_files', 'Contract') ?></th>
+                    <th><?= __d('app_files', 'Name') ?></th>
+                    <th><?= __d('app_files', 'Documentation Type') ?></th>
+                    <th><?= $this->Paginator->sort('happened_on', __d('app_files', 'Happened On')) ?></th>
+                    <th><?= __d('app_files', 'Files') ?></th>
                     <th class="actions"><?= __d('app_files', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($documentations as $documentation) : ?>
                 <tr>
-                    <?php $where = ['action' => 'view', $documentation->id] ?>
-                    <td><?= $this->AuthLink->link($documentation->heading, $where) ?></td>
-                    <td><?= h($documentation->documentation_type->name ?? '') ?></td>
-                    <td><?= h($documentation->happened_on) ?></td>
                     <td><?=
                         $documentation->customer === null ? '' : $this->AuthLink->link(
                             $documentation->customer->name_for_lists,
@@ -69,7 +67,15 @@
                             ['controller' => 'Contracts', 'action' => 'view', $documentation->contract_id],
                         )
                         ?></td>
+                    <td><?= h($documentation->name) ?></td>
+                    <td><?= h($documentation->documentation_type->name ?? '') ?></td>
+                    <td><?= h($documentation->happened_on) ?></td>
+                    <td><?= $this->Number->format(count($filed[$documentation->id] ?? [])) ?></td>
                     <td class="actions">
+                        <?= $this->AuthLink->link(
+                            __d('app_files', 'View'),
+                            ['action' => 'view', $documentation->id],
+                        ) ?>
                         <?= $this->AuthLink->link(
                             __d('app_files', 'Edit'),
                             ['action' => 'edit', $documentation->id],

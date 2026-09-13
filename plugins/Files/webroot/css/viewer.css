@@ -179,7 +179,7 @@
  */
 .files-tiles {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1rem;
     margin: 0;
     padding: 0;
@@ -194,7 +194,7 @@
 }
 
 .files-tile .files-thumb {
-    height: 120px;
+    height: 240px;
     max-width: 100%;
     object-fit: contain;
 }
@@ -207,11 +207,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 120px;
+    height: 240px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;
     background: rgba(0, 0, 0, 0.04);
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     letter-spacing: 0.05em;
     color: rgba(0, 0, 0, 0.55);
 }
@@ -219,12 +219,12 @@
 /* The name is what somebody reads to find the one they want, so it wraps rather than being cut. */
 .files-tile-name {
     overflow-wrap: anywhere;
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     line-height: 1.3;
 }
 
 .files-tile-size {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: rgba(0, 0, 0, 0.55);
 }
 

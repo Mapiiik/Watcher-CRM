@@ -44,4 +44,39 @@ class DocumentationsController extends AppController
     {
         return ['DocumentationTypes', 'Customers', 'Contracts'];
     }
+
+    /**
+     * What a folder may be filed against, where the address did not already say.
+     *
+     * Opened under a customer or a connection there is nothing to choose and nothing is offered.
+     * Opened from the shelf itself there is, because somebody now and then has a folder in hand
+     * before they have the record it belongs to.
+     *
+     * @return void
+     */
+    protected function setFormViewVars(): void
+    {
+        if ($this->customer_id === null) {
+            $this->set('customers', $this->Documentations->Customers->find('list', order: [
+                'company',
+                'last_name',
+                'first_name',
+            ]));
+        }
+
+        if ($this->contract_id === null) {
+            $contracts = $this->Documentations->Contracts->find(
+                'list',
+                contain: ['InstallationAddresses', 'ServiceTypes'],
+                order: ['Contracts.number'],
+            );
+
+            // under a customer the contract is still chosen, but only from among their own
+            if ($this->customer_id !== null) {
+                $contracts->where(['Contracts.customer_id' => $this->customer_id]);
+            }
+
+            $this->set('contracts', $contracts);
+        }
+    }
 }
