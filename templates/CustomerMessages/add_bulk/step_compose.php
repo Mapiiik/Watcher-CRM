@@ -62,7 +62,7 @@
             <br>
             <?php if ($saveFailures !== null) : ?>
                 <fieldset>
-                    <legend style="color: darkred;"><?= __('Nothing was sent') ?></legend>
+                    <legend class="error-text"><?= __('Nothing was sent') ?></legend>
                     <div class="text">
                         <p>
                             <?= __(
@@ -169,7 +169,7 @@
                                         $contract = $row['contract'];
                                         $noContact = $customer->emails === [] && $customer->phones === [];
                                     ?>
-                                    <tr<?= $noContact ? ' style="color: darkred;"' : '' ?>>
+                                    <tr<?= $noContact ? ' class="error-text"' : '' ?>>
                                         <td><input type="checkbox" name="send_to[]"
                                             value="<?= h($customer->id) ?>" checked></td>
                                         <td><?= $this->Html->link($customer->name, [

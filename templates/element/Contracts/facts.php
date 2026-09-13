@@ -62,7 +62,7 @@
                 <td class="actions">
                     <?php $address = $contract->installation_address ?>
                     <?= $address->gps_x !== null && $address->gps_y !== null ?
-                        '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
+                        '' : '<span class="error-text">' . __('unknown') . '</span>' ?>
                     <?= $this->element('Maps.Maps/links', [
                         'lat' => $address->gps_y,
                         'lng' => $address->gps_x,

@@ -62,7 +62,7 @@
                 echo $this->Form->control('valid_from', ['disabled' => $isRevoked || !$isFuture]);
                 echo $this->Form->control('valid_until', ['disabled' => $isRevoked]);
                 echo $isRevoked ?
-                    '<label><strong style="color: red;">'
+                    '<label><strong class="error-text">'
                         . __('Revoked on {0}', h($serviceOverride->revoked))
                         . '</strong></label><br>'
                     : '';

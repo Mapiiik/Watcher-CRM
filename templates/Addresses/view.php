@@ -113,7 +113,7 @@
                             <th class="actions"><?= __('Map location') ?></th>
                             <td class="actions">
                                 <?= $address->gps_x !== null && $address->gps_y !== null ?
-                                    '' : '<span style="color: red;">' . __('unknown') . '</span>' ?>
+                                    '' : '<span class="error-text">' . __('unknown') . '</span>' ?>
                                 <?= $this->element('Maps.Maps/links', [
                                     'lat' => $address->gps_y,
                                     'lng' => $address->gps_x,
@@ -125,7 +125,7 @@
                             <td><?=
                                 $address->address_registry_reference === null
                                 || $address->address_registry_source === null ?
-                                    '<span style="color: red;">' . __('unknown') . '</span>'
+                                    '<span class="error-text">' . __('unknown') . '</span>'
                                     :
                                     h($address->address_registry_reference)
                                         . ' (' . h(strtoupper($address->address_registry_source)) . ')'

@@ -77,7 +77,7 @@ $today = Date::today();
                         $notify_due = $version->has('notify_due') ? $version->notify_due : null;
                         ?>
                         <?php if ($block_due !== null && $block_due <= $today) : ?>
-                            <strong style="color: red;"><?= __('Due to be cut off') ?></strong>
+                            <strong class="error-text"><?= __('Due to be cut off') ?></strong>
                         <?php elseif ($notify_due !== null && $notify_due <= $today) : ?>
                             <?= __('Due a reminder') ?>
                         <?php elseif ($notify_due !== null) : ?>
