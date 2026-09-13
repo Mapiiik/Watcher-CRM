@@ -3900,16 +3900,16 @@
         },
         {
             "name": "tecnickcom/tc-lib-pdf",
-            "version": "8.73.6",
+            "version": "8.74.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/tc-lib-pdf.git",
-                "reference": "5a1dcccbb0d34d0fe93eea956a08e3bc913135b1"
+                "reference": "0fd482028e4a79d31a1f3f454fbccdc5b09aa1c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/tc-lib-pdf/zipball/5a1dcccbb0d34d0fe93eea956a08e3bc913135b1",
-                "reference": "5a1dcccbb0d34d0fe93eea956a08e3bc913135b1",
+                "url": "https://api.github.com/repos/tecnickcom/tc-lib-pdf/zipball/0fd482028e4a79d31a1f3f454fbccdc5b09aa1c2",
+                "reference": "0fd482028e4a79d31a1f3f454fbccdc5b09aa1c2",
                 "shasum": ""
             },
             "require": {
@@ -3931,7 +3931,7 @@
                 "tecnickcom/tc-lib-pdf-graph": "^2.17",
                 "tecnickcom/tc-lib-pdf-image": "^3.14",
                 "tecnickcom/tc-lib-pdf-page": "^4.16",
-                "tecnickcom/tc-lib-pdf-parser": "^3.15",
+                "tecnickcom/tc-lib-pdf-parser": "^3.16",
                 "tecnickcom/tc-lib-pdf-sign": "^2.0",
                 "tecnickcom/tc-lib-unicode": "^3.0",
                 "tecnickcom/tc-lib-unicode-data": "^3.0"
@@ -3981,7 +3981,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-07T09:51:52+00:00"
+            "time": "2026-09-13T09:40:26+00:00"
         },
         {
             "name": "tecnickcom/tc-lib-pdf-encrypt",
@@ -4379,16 +4379,16 @@
         },
         {
             "name": "tecnickcom/tc-lib-pdf-parser",
-            "version": "3.15.2",
+            "version": "3.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/tc-lib-pdf-parser.git",
-                "reference": "812608b1e534747f36d8ab907c07f5eb53bc38a7"
+                "reference": "3a3ba69111e8b3a701fb96af21884f169a2de34e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/tc-lib-pdf-parser/zipball/812608b1e534747f36d8ab907c07f5eb53bc38a7",
-                "reference": "812608b1e534747f36d8ab907c07f5eb53bc38a7",
+                "url": "https://api.github.com/repos/tecnickcom/tc-lib-pdf-parser/zipball/3a3ba69111e8b3a701fb96af21884f169a2de34e",
+                "reference": "3a3ba69111e8b3a701fb96af21884f169a2de34e",
                 "shasum": ""
             },
             "require": {
@@ -4436,7 +4436,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-05T07:37:01+00:00"
+            "time": "2026-09-13T09:23:18+00:00"
         },
         {
             "name": "tecnickcom/tc-lib-pdf-sign",
@@ -6152,11 +6152,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.13",
+            "version": "2.2.14",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9ba9ac76ee9c5cf5b56d58eb5deec6315b7a0260",
-                "reference": "9ba9ac76ee9c5cf5b56d58eb5deec6315b7a0260",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9c672e7a8e791dfc3d30e55f683e73fc0b63a3ac",
+                "reference": "9c672e7a8e791dfc3d30e55f683e73fc0b63a3ac",
                 "shasum": ""
             },
             "require": {
@@ -6212,7 +6212,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-03T20:38:19+00:00"
+            "time": "2026-09-12T21:39:33+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -6691,16 +6691,16 @@
         },
         {
             "name": "psalm/phar",
-            "version": "6.17.0",
+            "version": "6.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/phar.git",
-                "reference": "0b7e538597a2b010dfa4d0c2c9a41c0ae39ded83"
+                "reference": "fa2a6ff9c8831dcb783b87e163e81c0b5605b5ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/phar/zipball/0b7e538597a2b010dfa4d0c2c9a41c0ae39ded83",
-                "reference": "0b7e538597a2b010dfa4d0c2c9a41c0ae39ded83",
+                "url": "https://api.github.com/repos/psalm/phar/zipball/fa2a6ff9c8831dcb783b87e163e81c0b5605b5ab",
+                "reference": "fa2a6ff9c8831dcb783b87e163e81c0b5605b5ab",
                 "shasum": ""
             },
             "require": {
@@ -6720,9 +6720,9 @@
             "description": "Composer-based Psalm Phar",
             "support": {
                 "issues": "https://github.com/psalm/phar/issues",
-                "source": "https://github.com/psalm/phar/tree/6.17.0"
+                "source": "https://github.com/psalm/phar/tree/6.17.1"
             },
-            "time": "2026-09-10T12:47:11+00:00"
+            "time": "2026-09-12T13:55:13+00:00"
         },
         {
             "name": "react/promise",
