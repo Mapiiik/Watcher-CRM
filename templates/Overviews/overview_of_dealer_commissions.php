@@ -5,120 +5,111 @@
  * @var \Cake\I18n\Date $month_to_display
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-90">
-        <div class="overviews index content">
-            <?= $this->heading(__('Overview of Dealer Commissions')
-                . ' - '
-                . $month_to_display->i18nFormat('LLLL yyyy')) ?>
-
-            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
-            <div class="row">
-                <div class="column">
-                    <?= $this->Form->control('month_to_display', [
-                        'label' => __('Month To Display'),
-                        'placeholder' => __('YYYY-MM'),
-                        'type' => 'month',
-                        'onchange' => $this::SUBMIT_ON_CHANGE,
-                    ]) ?>
-                </div>
-            </div>
-            <?= $this->Form->end() ?>
-
-            <?php foreach ($dealers as $dealer => $dealerCommissions) : ?>
-                <hr>
-                <h4><?= $dealer ?></h4>
-
-                <?php foreach ($dealerCommissions as $dealerCommission) : ?>
-                    <div class="related">
-                        <h5><?= $dealerCommission->commission->name ?></h5>
-                        <div><?= __('Fixed') . ': '
-                            . $this->Number->currency($dealerCommission->fixed ?? 0)?></div>
-                        <div><?= __('Percentage') . ': '
-                            . $this->Number->toPercentage($dealerCommission->percentage ?? 0)?></div>
-
-                        <br>
-
-                        <?php if (!empty($dealerCommission->commission->contracts)) : ?>
-                            <?php
-                            $totalPrice = $dealerCommission->commission->get('total_price') ?? null;
-                            $totalPrice = is_numeric($totalPrice) ? (float)$totalPrice : null;
-                            ?>
-                        <div><?= __('Total Price') . ': '
-                            . $this->Number->currency($totalPrice) ?></div>
-                        <div class="table-responsive">
-                            <table>
-                                <tr>
-                                    <th><?= __('Customer') ?></th>
-                                    <th><?= __('Customer Number') ?></th>
-                                    <th><?= __('Contract') ?></th>
-                                    <th><?= __('Contract State') ?></th>
-                                    <th><?= __('Name') ?></th>
-                                    <th><?= __('Quantity') ?></th>
-                                    <th><?= __('Price') ?></th>
-                                    <th><?= __('Fixed Discount') ?></th>
-                                    <th><?= __('Percentage Discount') ?></th>
-                                    <th><?= __('Total Price') ?></th>
-                                    <th><?= __('Billing From') ?></th>
-                                    <th><?= __('Billing Until') ?></th>
-                                    <th class="actions"><?= __('Actions') ?></th>
-                                </tr>
-                                <?php foreach ($dealerCommission->commission->contracts as $contract) : ?>
-                                    <?php foreach ($contract->billings as $billing) : ?>
-                                    <tr>
-                                        <td><?= $contract->customer !== null ?
-                                            $this->Html->link(
-                                                $contract->customer->name ?? '(' . $contract->customer->id . ')',
-                                                [
-                                                    'controller' => 'Customers',
-                                                    'action' => 'view',
-                                                    $contract->customer->id,
-                                                ],
-                                            ) : '' ?></td>
-                                        <td><?= $contract->customer !== null
-                                            ? h($contract->customer->number) : '' ?></td>
-                                        <td><?=
-                                            $this->Html->link(
-                                                $contract->number ?? __('Unknown'),
-                                                [
-                                                    'controller' => 'Contracts',
-                                                    'action' => 'view',
-                                                    $contract->id,
-                                                    'customer_id' => $contract->customer_id,
-                                                ],
-                                            ) ?></td>
-                                        <td><?= $contract->contract_state !== null ?
-                                            h($contract->contract_state->name) : '' ?></td>
-                                        <td><?= h($billing->name) ?></td>
-                                        <td><?= h($billing->quantity) ?></td>
-                                        <td><?= h($billing->price) ?><?= $billing->service !== null ?
-                                            ' (' . h($billing->service->price) . ')' : '' ?></td>
-                                        <td><?= h($billing->fixed_discount) ?></td>
-                                        <td><?= h($billing->percentage_discount) ?></td>
-                                        <td><?= $this->Number->currency($billing->total_price) ?></td>
-                                        <td><?= h($billing->billing_from) ?></td>
-                                        <td><?= h($billing->billing_until) ?></td>
-                                        <td class="actions">
-                                            <?= $this->AuthLink->link(
-                                                __('View'),
-                                                ['controller' => 'Billings', 'action' => 'view', $billing->id],
-                                            ) ?>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                <?php endforeach; ?>
-                            </table>
-                        </div>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            <?php endforeach; ?>
-        </div>
+    <div class="column">
+        <?= $this->Form->control('month_to_display', [
+            'label' => __('Month To Display'),
+            'placeholder' => __('YYYY-MM'),
+            'type' => 'month',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
     </div>
+</div>
+<?= $this->Form->end() ?>
+
+<div class="overviews index content">
+    <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'button float-right']) ?>
+    <?= $this->heading(__('Overview of Dealer Commissions')
+        . ' - '
+        . $month_to_display->i18nFormat('LLLL yyyy')) ?>
+
+    <?php foreach ($dealers as $dealer => $dealerCommissions) : ?>
+        <hr>
+        <h4><?= $dealer ?></h4>
+
+        <?php foreach ($dealerCommissions as $dealerCommission) : ?>
+            <div class="related">
+                <h5><?= $dealerCommission->commission->name ?></h5>
+                <div><?= __('Fixed') . ': '
+                    . $this->Number->currency($dealerCommission->fixed ?? 0)?></div>
+                <div><?= __('Percentage') . ': '
+                    . $this->Number->toPercentage($dealerCommission->percentage ?? 0)?></div>
+
+                <br>
+
+                <?php if (!empty($dealerCommission->commission->contracts)) : ?>
+                    <?php
+                    $totalPrice = $dealerCommission->commission->get('total_price') ?? null;
+                    $totalPrice = is_numeric($totalPrice) ? (float)$totalPrice : null;
+                    ?>
+                <div><?= __('Total Price') . ': '
+                    . $this->Number->currency($totalPrice) ?></div>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th><?= __('Customer') ?></th>
+                            <th><?= __('Customer Number') ?></th>
+                            <th><?= __('Contract') ?></th>
+                            <th><?= __('Contract State') ?></th>
+                            <th><?= __('Name') ?></th>
+                            <th><?= __('Quantity') ?></th>
+                            <th><?= __('Price') ?></th>
+                            <th><?= __('Fixed Discount') ?></th>
+                            <th><?= __('Percentage Discount') ?></th>
+                            <th><?= __('Total Price') ?></th>
+                            <th><?= __('Billing From') ?></th>
+                            <th><?= __('Billing Until') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                        <?php foreach ($dealerCommission->commission->contracts as $contract) : ?>
+                            <?php foreach ($contract->billings as $billing) : ?>
+                            <tr>
+                                <td><?= $contract->customer !== null ?
+                                    $this->Html->link(
+                                        $contract->customer->name ?? '(' . $contract->customer->id . ')',
+                                        [
+                                            'controller' => 'Customers',
+                                            'action' => 'view',
+                                            $contract->customer->id,
+                                        ],
+                                    ) : '' ?></td>
+                                <td><?= $contract->customer !== null
+                                    ? h($contract->customer->number) : '' ?></td>
+                                <td><?=
+                                    $this->Html->link(
+                                        $contract->number ?? __('Unknown'),
+                                        [
+                                            'controller' => 'Contracts',
+                                            'action' => 'view',
+                                            $contract->id,
+                                            'customer_id' => $contract->customer_id,
+                                        ],
+                                    ) ?></td>
+                                <td><?= $contract->contract_state !== null ?
+                                    h($contract->contract_state->name) : '' ?></td>
+                                <td><?= h($billing->name) ?></td>
+                                <td><?= h($billing->quantity) ?></td>
+                                <td><?= h($billing->price) ?><?= $billing->service !== null ?
+                                    ' (' . h($billing->service->price) . ')' : '' ?></td>
+                                <td><?= h($billing->fixed_discount) ?></td>
+                                <td><?= h($billing->percentage_discount) ?></td>
+                                <td><?= $this->Number->currency($billing->total_price) ?></td>
+                                <td><?= h($billing->billing_from) ?></td>
+                                <td><?= h($billing->billing_until) ?></td>
+                                <td class="actions">
+                                    <?= $this->AuthLink->link(
+                                        __('View'),
+                                        ['controller' => 'Billings', 'action' => 'view', $billing->id],
+                                    ) ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
 </div>

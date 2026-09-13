@@ -7,19 +7,17 @@
  * @var array<string, \Cake\Datasource\ResultSetInterface<int, \Cake\Datasource\EntityInterface>> $results
  */
 ?>
-<div class="overviews index content">
-    <?= $this->heading(__('Customer Problems')) ?>
-
-    <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => 'query']) ?>
-    <fieldset>
-        <?= $this->Form->control('ignore_inactive', [
-            'type' => 'checkbox',
-            'label' => __('Ignore what is no longer running'),
-            'checked' => $ignore_inactive,
-            'value' => 1,
-            'onchange' => $this::SUBMIT_ON_CHANGE,
-        ]) ?>
-        <hr />
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => 'query']) ?>
+<fieldset>
+    <?= $this->Form->control('ignore_inactive', [
+        'type' => 'checkbox',
+        'label' => __('Ignore what is no longer running'),
+        'checked' => $ignore_inactive,
+        'value' => 1,
+        'onchange' => $this::SUBMIT_ON_CHANGE,
+    ]) ?>
+    <hr />
+    <div class="choices">
         <?php foreach ($checks as $check) : ?>
             <?= $this->Form->control('checks.' . $check->id(), [
                 'type' => 'checkbox',
@@ -29,8 +27,13 @@
                 'onchange' => $this::SUBMIT_ON_CHANGE,
             ]) ?>
         <?php endforeach ?>
-    </fieldset>
-    <?= $this->Form->end() ?>
+    </div>
+</fieldset>
+<?= $this->Form->end() ?>
+
+<div class="overviews index content">
+    <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'button float-right']) ?>
+    <?= $this->heading(__('Customer Problems')) ?>
 
     <div class="table-responsive">
         <?php foreach ($checks as $check) : ?>

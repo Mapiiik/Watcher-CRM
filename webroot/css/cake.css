@@ -721,3 +721,16 @@ input[type='color'] {
     opacity: 0.6;
     cursor: wait;
 }
+
+/* Choices */
+
+/* A long run of switches reads better across the page than down it. The browser fits as many
+   columns as the width allows, so this needs no breakpoints of its own, and a switch is kept
+   whole rather than broken over a column boundary. */
+.choices {
+    columns: 40rem;
+}
+
+.choices > * {
+    break-inside: avoid;
+}

@@ -6,143 +6,134 @@
  * @var bool $show_billings
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-90">
-        <div class="overviews index content">
-            <?= $this->heading(__('Overview of Active Services')
-                . ' - '
-                . $month_to_display->i18nFormat('LLLL yyyy')) ?>
+    <div class="column">
+        <?= $this->Form->control('month_to_display', [
+            'label' => __('Month To Display'),
+            'placeholder' => __('YYYY-MM'),
+            'type' => 'month',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+        <?= $this->Form->control('show_billings', [
+            'label' => __('Show Billings'),
+            'type' => 'checkbox',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('service_type_id', [
+            'empty' => true,
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('cto_category', [
+            'empty' => true,
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+    </div>
+    <div class="column">
+        <?= $this->Form->control('access_point_id', [
+            'empty' => true,
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
 
-            <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
-            <div class="row">
-                <div class="column">
-                    <?= $this->Form->control('month_to_display', [
-                        'label' => __('Month To Display'),
-                        'placeholder' => __('YYYY-MM'),
-                        'type' => 'month',
-                        'onchange' => $this::SUBMIT_ON_CHANGE,
-                    ]) ?>
-                    <?= $this->Form->control('show_billings', [
-                        'label' => __('Show Billings'),
-                        'type' => 'checkbox',
-                        'onchange' => $this::SUBMIT_ON_CHANGE,
-                    ]) ?>
-                </div>
-                <div class="column">
-                    <?= $this->Form->control('service_type_id', [
-                        'empty' => true,
-                        'onchange' => $this::SUBMIT_ON_CHANGE,
-                    ]) ?>
-                </div>
-                <div class="column">
-                    <?= $this->Form->control('cto_category', [
-                        'empty' => true,
-                        'onchange' => $this::SUBMIT_ON_CHANGE,
-                    ]) ?>
-                </div>
-                <div class="column">
-                    <?= $this->Form->control('access_point_id', [
-                        'empty' => true,
-                        'onchange' => $this::SUBMIT_ON_CHANGE,
-                    ]) ?>
-                </div>
-            </div>
-            <?= $this->Form->end() ?>
+<div class="overviews index content">
+    <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'button float-right']) ?>
+    <?= $this->heading(__('Overview of Active Services')
+        . ' - '
+        . $month_to_display->i18nFormat('LLLL yyyy')) ?>
 
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th><?= $this->Paginator->sort('name') ?></th>
-                            <th><?= $this->Paginator->sort('price') ?></th>
-                            <th><?= $this->Paginator->sort('ServiceTypes.name', __('Service Type')) ?></th>
-                            <th><?= $this->Paginator->sort('Queues.name', __('Queue')) ?></th>
-                            <?php if ($show_billings) : ?>
-                            <th><?= __('Billings') ?></th>
-                            <?php endif; ?>
-                            <th><?= __('Number of Uses') ?></th>
-                            <th><?= __('Number of Uses (nonbusiness)') ?></th>
-                            <th><?= __('Sum') ?></th>
-                            <th><?= __('Fixed Discount Sum') ?></th>
-                            <th><?= __('Percentage Discount Sum') ?></th>
-                            <th><?= __('Total Sum') ?></th>
-                            <th><?= __('Total Sum (nonbusiness)') ?></th>
-                            <th><?= __('Total Sum (unbilled)') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($services as $service) : ?>
-                        <tr>
-                            <td><?= h($service->name) ?></td>
-                            <td><?= $service->price === null ?
-                                '' : $this->Number->currency($service->price) ?></td>
-                            <td><?= $service->service_type !== null ?
-                                $this->Html->link(
-                                    $service->service_type->name ?? '(' . $service->service_type->id . ')',
-                                    [
-                                        'controller' => 'ServiceTypes',
-                                        'action' => 'view',
-                                        $service->service_type->id,
-                                    ],
-                                ) : '' ?></td>
-                            <td><?= $service->queue !== null ? $this->Html->link($service->queue->name, [
-                                'controller' => 'Queues',
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th><?= $this->Paginator->sort('name') ?></th>
+                    <th><?= $this->Paginator->sort('price') ?></th>
+                    <th><?= $this->Paginator->sort('ServiceTypes.name', __('Service Type')) ?></th>
+                    <th><?= $this->Paginator->sort('Queues.name', __('Queue')) ?></th>
+                    <?php if ($show_billings) : ?>
+                    <th><?= __('Billings') ?></th>
+                    <?php endif; ?>
+                    <th><?= __('Number of Uses') ?></th>
+                    <th><?= __('Number of Uses (nonbusiness)') ?></th>
+                    <th><?= __('Sum') ?></th>
+                    <th><?= __('Fixed Discount Sum') ?></th>
+                    <th><?= __('Percentage Discount Sum') ?></th>
+                    <th><?= __('Total Sum') ?></th>
+                    <th><?= __('Total Sum (nonbusiness)') ?></th>
+                    <th><?= __('Total Sum (unbilled)') ?></th>
+                    <th class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($services as $service) : ?>
+                <tr>
+                    <td><?= h($service->name) ?></td>
+                    <td><?= $service->price === null ?
+                        '' : $this->Number->currency($service->price) ?></td>
+                    <td><?= $service->service_type !== null ?
+                        $this->Html->link(
+                            $service->service_type->name ?? '(' . $service->service_type->id . ')',
+                            [
+                                'controller' => 'ServiceTypes',
                                 'action' => 'view',
-                                $service->queue->id,
-                            ]) : '' ?></td>
-                            <?php if ($show_billings) : ?>
-                            <td><?= $this->element('Contracts/Billings', [
-                                'billings' => $service['billings'],
-                                'customer_column' => true,
-                                'contract_column' => true,
-                                'disable_actions' => true,
-                            ]) ?></td>
-                            <?php endif; ?>
-                            <td><?= $service->number_of_uses === null ?
-                                '' : $this->Number->format($service->number_of_uses) ?></td>
-                            <td><?= $service->number_of_uses_nonbusiness === null ?
-                                '' : $this->Number->format($service->number_of_uses_nonbusiness) ?></td>
-                            <td><?= $service->sum === null ?
-                                '' : $this->Number->currency($service->sum) ?></td>
-                            <td><?= $service->fixed_discount_sum === null ?
-                                '' : $this->Number->currency($service->fixed_discount_sum) ?></td>
-                            <td><?= $service->percentage_discount_sum === null ?
-                                '' : $this->Number->currency($service->percentage_discount_sum) ?></td>
-                            <td><?= $service->total_sum === null ?
-                                '' : $this->Number->currency($service->total_sum) ?></td>
-                            <td><?= $service->total_sum_nonbusiness === null ?
-                                '' : $this->Number->currency($service->total_sum_nonbusiness) ?></td>
-                            <td><?= $service->total_sum_unbilled === null ?
-                                '' : $this->Number->currency($service->total_sum_unbilled) ?></td>
-                            <td class="actions">
-                                <?= $this->AuthLink->link(__('View'), [
-                                    'controller' => 'Services',
-                                    'action' => 'view',
-                                    $service->id,
-                                ]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-            <div>
-                <?php
-                /** @var \Cake\ORM\ResultSet<int, \App\Model\Entity\Service> $serviceItems */
-                $serviceItems = $services->items();
-                ?>
-                <?= __('Total Number of Uses') . ': '
-                    . $this->Number->format($serviceItems->sumOf('number_of_uses')) ?><br>
-                <?= __('Total Sum') . ': '
-                    . $this->Number->currency($serviceItems->sumOf('total_sum')) ?><br>
-            </div>
-        </div>
+                                $service->service_type->id,
+                            ],
+                        ) : '' ?></td>
+                    <td><?= $service->queue !== null ? $this->Html->link($service->queue->name, [
+                        'controller' => 'Queues',
+                        'action' => 'view',
+                        $service->queue->id,
+                    ]) : '' ?></td>
+                    <?php if ($show_billings) : ?>
+                    <td><?= $this->element('Contracts/Billings', [
+                        'billings' => $service['billings'],
+                        'customer_column' => true,
+                        'contract_column' => true,
+                        'disable_actions' => true,
+                    ]) ?></td>
+                    <?php endif; ?>
+                    <td><?= $service->number_of_uses === null ?
+                        '' : $this->Number->format($service->number_of_uses) ?></td>
+                    <td><?= $service->number_of_uses_nonbusiness === null ?
+                        '' : $this->Number->format($service->number_of_uses_nonbusiness) ?></td>
+                    <td><?= $service->sum === null ?
+                        '' : $this->Number->currency($service->sum) ?></td>
+                    <td><?= $service->fixed_discount_sum === null ?
+                        '' : $this->Number->currency($service->fixed_discount_sum) ?></td>
+                    <td><?= $service->percentage_discount_sum === null ?
+                        '' : $this->Number->currency($service->percentage_discount_sum) ?></td>
+                    <td><?= $service->total_sum === null ?
+                        '' : $this->Number->currency($service->total_sum) ?></td>
+                    <td><?= $service->total_sum_nonbusiness === null ?
+                        '' : $this->Number->currency($service->total_sum_nonbusiness) ?></td>
+                    <td><?= $service->total_sum_unbilled === null ?
+                        '' : $this->Number->currency($service->total_sum_unbilled) ?></td>
+                    <td class="actions">
+                        <?= $this->AuthLink->link(__('View'), [
+                            'controller' => 'Services',
+                            'action' => 'view',
+                            $service->id,
+                        ]) ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <?php
+        /** @var \Cake\ORM\ResultSet<int, \App\Model\Entity\Service> $serviceItems */
+        $serviceItems = $services->items();
+        ?>
+        <?= __('Total Number of Uses') . ': '
+            . $this->Number->format($serviceItems->sumOf('number_of_uses')) ?><br>
+        <?= __('Total Sum') . ': '
+            . $this->Number->currency($serviceItems->sumOf('total_sum')) ?><br>
     </div>
 </div>
