@@ -87,7 +87,7 @@ foreach ($filed as $byVariant) {
                     $customerProposal->customer_id,
                     '?' => ['proposal_id' => $customerProposal->id],
                 ],
-                ['class' => 'side-nav-item', 'target' => 'print'],
+                ['class' => 'side-nav-item'],
             ) ?>
         </div>
     </aside>

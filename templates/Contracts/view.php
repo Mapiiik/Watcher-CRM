@@ -33,7 +33,7 @@ $this->Html->css('problems', ['block' => true]);
             <?= $this->AuthLink->link(
                 __('Print'),
                 ['action' => 'print', $contract->id],
-                ['class' => 'side-nav-item', 'target' => 'print'],
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Contract Documents'),
@@ -169,7 +169,7 @@ $this->Html->css('problems', ['block' => true]);
             <?= $this->AuthLink->link(
                 __('Print'),
                 ['action' => 'print', $contract->id],
-                ['class' => 'button float-right', 'target' => 'print'],
+                ['class' => 'button float-right'],
             ) ?>
             <a id="contract"></a>
             <?= $this->element('Contracts/heading') ?>

@@ -22,7 +22,7 @@
                     $contractProposal->contract_id,
                     '?' => ['proposal_id' => $contractProposal->id],
                 ],
-                ['class' => 'side-nav-item', 'target' => 'print'],
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Contract Documents'),

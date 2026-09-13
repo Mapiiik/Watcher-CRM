@@ -23,7 +23,7 @@
             <?= $this->AuthLink->link(
                 __('Print'),
                 ['action' => 'print', $customer->id],
-                ['class' => 'side-nav-item', 'target' => 'print'],
+                ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('Documentations'),

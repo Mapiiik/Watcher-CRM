@@ -70,7 +70,6 @@ $whichVersion = function ($proposal): string {
                         $proposal->contract_id,
                         '?' => ['proposal_id' => $proposal->id],
                     ],
-                    ['target' => 'print'],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('View'),

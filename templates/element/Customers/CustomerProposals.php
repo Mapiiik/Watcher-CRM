@@ -45,7 +45,6 @@
                         $proposal->customer_id,
                         '?' => ['proposal_id' => $proposal->id],
                     ],
-                    ['target' => 'print'],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('Proposal Documents'),

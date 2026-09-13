@@ -107,9 +107,16 @@ foreach ($customer->customer_proposals ?? [] as $one) {
                 'value' => 'refresh',
             ]) ?>
             <?php if ($proposal !== null && $printType !== null) : ?>
+                <?php
+                // The paper gets a window of its own, but only when it is asked for - the fields
+                // above resubmit the form as they change, and a target on the form itself would
+                // open one for each of them.
+                ?>
                 <?= $this->Form->button(__('Print'), [
                     'name' => 'submit_action',
                     'value' => 'pdf',
+                    'formtarget' => '_blank',
+                    'class' => 'refresh-on-return',
                 ]) ?>
             <?php endif; ?>
             <?= $this->Form->end() ?>
