@@ -33,7 +33,7 @@
 
 <div class="tasks map content">
     <?= $this->AuthLink->link(__('List Tasks'), ['action' => 'index'], ['class' => 'button float-right']) ?>
-    <?= $this->heading(__('Tasks')) ?>
+    <?= $this->heading(__('Tasks') . ' - ' . __('Map')) ?>
     <?php if ($mapMarkers === []) : ?>
         <p><?= __('No open task has a place on the map.') ?></p>
     <?php else : ?>

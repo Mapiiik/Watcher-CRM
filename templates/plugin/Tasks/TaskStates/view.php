@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="taskStates view content">
-            <h3><?= h($taskState->name) ?></h3>
+            <?= $this->record(__d('app_tasks', 'Task State'), (string)$taskState->name) ?>
             <div class="row">
                 <div class="column">
                     <table>

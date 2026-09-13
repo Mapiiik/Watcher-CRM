@@ -20,7 +20,8 @@
 
 <div class="overviews index content">
     <?= $this->AuthLink->link(__('List Overviews'), ['action' => 'index'], ['class' => 'button float-right']) ?>
-    <?= $this->heading(__('Overview of Customer Connection Speeds')
+    <?= $this->heading(__('Overview of Czech Customer Connection Speeds')
+        . ' (' . __('Reports for CTO') . ')'
         . ' - '
         . $month_to_display->i18nFormat('LLLL yyyy')) ?>
 

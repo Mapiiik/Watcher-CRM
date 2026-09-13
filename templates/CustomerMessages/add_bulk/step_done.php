@@ -41,7 +41,7 @@
     </aside>
     <div class="column column-90">
         <div class="customerMessages content">
-            <h4><?= __('Bulk Customer Message') . ' — ' . __('Done') ?></h4>
+            <?= $this->heading(__('Bulk Customer Message') . ' - ' . __('Done')) ?>
             <p>
                 <?= __('Purpose: {0}', h($result['purpose'])) ?><br>
                 <?= __('{0} message(s) queued for sending ({1}).', $result['sent'], h($result['channel'])) ?><br>

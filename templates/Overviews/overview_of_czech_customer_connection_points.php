@@ -31,7 +31,8 @@
             ['class' => 'button float-right'],
         ) ?>
     <?php endforeach; ?>
-    <?= $this->heading(__('Overview of Customer Connection Points')
+    <?= $this->heading(__('Overview of Czech Customer Connection Points')
+        . ' (' . __('Reports for CTO') . ')'
         . ' - '
         . $month_to_display->i18nFormat('LLLL yyyy')) ?>
 
