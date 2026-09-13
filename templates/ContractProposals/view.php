@@ -94,7 +94,7 @@ foreach ($filed as $byVariant) {
             ) ?>
             <br>
             <?= $this->AuthLink->link(
-                __('Print to PDF'),
+                __('Print'),
                 [
                     'controller' => 'Contracts',
                     'action' => 'print',

@@ -38,7 +38,7 @@ $contract_column ??= true;
                     <td><?= h($proposal->created) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
-                            __('Print to PDF'),
+                            __('Print'),
                             [
                                 'controller' => 'Contracts',
                                 'action' => 'print',

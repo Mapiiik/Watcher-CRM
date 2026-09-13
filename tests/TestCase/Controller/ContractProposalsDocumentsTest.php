@@ -193,7 +193,7 @@ class ContractProposalsDocumentsTest extends TestCase
 
         $this->get($nested);
         $this->assertResponseContains($printing);
-        $this->assertResponseContains('Print to PDF');
+        $this->assertResponseContains('Print');
     }
 
     /**

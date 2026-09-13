@@ -15,7 +15,7 @@
             ) ?>
             <br>
             <?= $this->AuthLink->link(
-                __('Print to PDF'),
+                __('Print'),
                 [
                     'controller' => 'Customers',
                     'action' => 'print',

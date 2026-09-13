@@ -31,7 +31,7 @@ $this->Html->css('problems', ['block' => true]);
             <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
             <br>
             <?= $this->AuthLink->link(
-                __('Print to PDF'),
+                __('Print'),
                 ['action' => 'print', $contract->id],
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
@@ -167,7 +167,7 @@ $this->Html->css('problems', ['block' => true]);
                 ['class' => 'button float-right'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Print to PDF'),
+                __('Print'),
                 ['action' => 'print', $contract->id],
                 ['class' => 'button float-right', 'target' => 'print'],
             ) ?>

@@ -44,7 +44,7 @@ $remark = function (string $note, bool $wrong = false): string {
             <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
             <br>
             <?= $this->AuthLink->link(
-                __('Print to PDF'),
+                __('Print'),
                 ['action' => 'print', $customer->id],
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>
@@ -190,7 +190,7 @@ $remark = function (string $note, bool $wrong = false): string {
                 ['class' => 'button float-right'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Print to PDF'),
+                __('Print'),
                 ['action' => 'print', $customer->id],
                 ['class' => 'button float-right', 'target' => 'print'],
             ) ?>

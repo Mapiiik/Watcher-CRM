@@ -137,7 +137,7 @@ foreach ($proposals as $one) {
                 ?>
             </fieldset>
             <?php if ($proposal !== null && $printType !== null) : ?>
-                <?= $this->Form->button(__('Print to PDF'), [
+                <?= $this->Form->button(__('Print'), [
                     'name' => 'submit_action',
                     'value' => 'pdf',
                 ]) ?>

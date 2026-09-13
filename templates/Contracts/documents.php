@@ -21,7 +21,7 @@
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Print to PDF'),
+                __('Print'),
                 ['action' => 'print', $contract->id],
                 ['class' => 'side-nav-item', 'target' => 'print'],
             ) ?>

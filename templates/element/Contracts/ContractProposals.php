@@ -63,7 +63,7 @@ $whichVersion = function ($proposal): string {
                 // settled proposal is still the paper that was agreed to.
                 ?>
                 <?= $this->AuthLink->link(
-                    __('Print to PDF'),
+                    __('Print'),
                     [
                         'controller' => 'Contracts',
                         'action' => 'print',
