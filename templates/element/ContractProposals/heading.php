@@ -1,10 +1,11 @@
 <?php
 /**
- * Names the proposal: which contract it belongs to, what the papers are for, and where they stand.
+ * Names the proposal: what the papers are for, and where they stand.
  *
- * One heading rather than two. Opening with the contract the way a page about the contract opens
- * made every proposal page look like the contract's own, and the number says which contract it is
- * without a block of its own.
+ * Which contract it belongs to is not said here. The bar across the top of the page already
+ * carries it, and every page about a proposal is reached under the contract, so opening with the
+ * number said twice what the page had said once and pushed the papers themselves into second
+ * place.
  *
  * Every page that acts on a proposal opens with this, so that the heading says which record is
  * being looked at rather than which button was pressed to get there - and says which of those
@@ -16,13 +17,13 @@
  */
 ?>
 <?= $this->record(
-    __('Contract No.'),
-    $contractProposal->contract->number . ' - ' . __(
+    __('Contract Proposal'),
+    __(
         '{0} from {1}',
         $contractProposal->purpose->label(),
         $contractProposal->effective_from,
     ),
     (string)$contractProposal->getState(),
-    $doing ?? __('Contract Proposal'),
+    $doing ?? null,
 ) ?>
 <hr />

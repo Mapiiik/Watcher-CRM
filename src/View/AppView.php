@@ -133,9 +133,9 @@ class AppView extends View
      *
      * Several pages are about the same record - it is looked at, its papers are gone through, it
      * is printed - and without saying which of those this is they all carry the same heading and
-     * the same window name. So a page says that too, in front of the record: `Print - Customer
-     * No. 550001`. It holds what is being done with the record, or which part of it is being
-     * looked at, whichever the page is for.
+     * the same window name. So a page says that too, after the kind: `Customer - Print | 550001`.
+     * It holds what is being done with the record, or which part of it is being looked at,
+     * whichever the page is for.
      *
      * @param string $kind What sort of record this is.
      * @param string $identity Which one, as the record is known by.
@@ -150,13 +150,9 @@ class AppView extends View
         ?string $about = null,
         ?string $doing = null,
     ): string {
-        $said = $doing === null || $doing === '' ? $kind : $doing . ' - ' . $kind;
+        $said = $doing === null || $doing === '' ? $kind : $kind . ' - ' . $doing;
 
-        // A kind closed by an abbreviation has ended its own phrase and wants no more than a
-        // space after it, where one that has not needs something between it and the value.
-        $this->recordIsCalled ??= str_ends_with($said, '.')
-            ? $said . ' ' . $identity
-            : $said . ': ' . $identity;
+        $this->recordIsCalled ??= $said . ' | ' . $identity;
 
         return h($said) . '<h3>' . h($identity) . '</h3>'
             . ($about === null || $about === '' ? '' : '<h5>' . h($about) . '</h5>');

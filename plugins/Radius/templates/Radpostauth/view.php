@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="radpostauth view content">
-            <?= $this->record(__d('radius', 'RADIUS Post Authentication No.'), (string)$radpostauth->id) ?>
+            <?= $this->record(__d('radius', 'RADIUS Post Authentication'), (string)$radpostauth->id) ?>
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>

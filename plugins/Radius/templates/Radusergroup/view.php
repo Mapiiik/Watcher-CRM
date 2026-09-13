@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="radusergroup view content">
-            <?= $this->record(__d('radius', 'RADIUS User Group No.'), (string)$radusergroup->id) ?>
+            <?= $this->record(__d('radius', 'RADIUS User Group'), (string)$radusergroup->id) ?>
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>

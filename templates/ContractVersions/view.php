@@ -37,7 +37,7 @@
     <div class="column column-90">
         <div class="contractVersions view content">
             <?= $this->record(
-                __('Contract No.'),
+                __('Contract'),
                 (string)$contractVersion->contract->number,
                 doing: __('Contract Version'),
             ) ?>

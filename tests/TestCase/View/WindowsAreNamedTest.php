@@ -105,48 +105,37 @@ class WindowsAreNamedTest extends TestCase
     }
 
     /**
+     * The page has a line for the kind and another for the record. The window has one, so there
+     * they are joined by the same bar that separates everything else in it.
+     *
      * @return void
      */
     public function testAPageAboutOneRecordIsCalledAfterIt(): void
     {
         $view = $this->aPage();
 
-        $view->record('Customer No.', '550001');
+        $view->record('Customer', '550001');
         $view->renderLayout('', 'ajax');
 
-        // an abbreviation has closed its own phrase, so only a space follows it
-        $this->assertSame('Customer No. 550001', $view->fetch('title'));
+        $this->assertSame('Customer | 550001', $view->fetch('title'));
     }
 
     /**
-     * @return void
-     */
-    public function testAKindThatIsNotAnAbbreviationIsFollowedByAColon(): void
-    {
-        $view = $this->aPage();
-
-        $view->record('Country', 'Czechia');
-        $view->renderLayout('', 'ajax');
-
-        $this->assertSame('Country: Czechia', $view->fetch('title'));
-    }
-
-    /**
-     * What is being done with the record belongs in front of it, so that the papers of a customer
-     * and the customer are not two pages carrying the same heading and the same window name.
+     * What is being done with the record follows its kind, so that the papers of a customer and
+     * the customer are not two pages carrying the same heading and the same window name.
      *
      * @return void
      */
-    public function testWhatIsDoneWithARecordComesFirst(): void
+    public function testWhatIsDoneWithARecordFollowsItsKind(): void
     {
         $view = $this->aPage();
 
-        $drawn = $view->record('Customer No.', '550001', doing: 'Print');
+        $drawn = $view->record('Customer', '550001', doing: 'Print');
         $view->renderLayout('', 'ajax');
 
-        $this->assertSame('Print - Customer No. 550001', $view->fetch('title'));
+        $this->assertSame('Customer - Print | 550001', $view->fetch('title'));
         // and the page says it too, which is where the window got it from
-        $this->assertStringStartsWith('Print - Customer No.<h3>550001</h3>', $drawn);
+        $this->assertStringStartsWith('Customer - Print<h3>550001</h3>', $drawn);
     }
 
     /**

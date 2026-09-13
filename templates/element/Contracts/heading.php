@@ -8,7 +8,7 @@
  */
 
 echo $this->record(
-    __('Contract No.'),
+    __('Contract'),
     (string)$contract->number,
     ($contract->service_type !== null ? $contract->service_type->name : '')
     . ($contract->installation_address !== null ? ' - ' . $contract->installation_address->address : ''),

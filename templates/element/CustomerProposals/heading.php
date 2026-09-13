@@ -1,10 +1,10 @@
 <?php
 /**
- * Names the round of papers: whose they are, what they are for, and where they stand.
+ * Names the round of papers: what they are for, and where they stand.
  *
- * One heading rather than two. Opening with the customer the way a page about the customer opens
- * made every proposal page look like the customer's own, and the number says whose they are
- * without a block of its own.
+ * Whose they are is not said here. The bar across the top of the page already carries the
+ * customer, and every page about a round is reached under them, so opening with the number said
+ * twice what the page had said once and pushed the papers themselves into second place.
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerProposal $customerProposal
@@ -12,13 +12,13 @@
  */
 ?>
 <?= $this->record(
-    __('Customer No.'),
-    $customerProposal->customer->number . ' - ' . __(
+    __('Customer Proposal'),
+    __(
         '{0} from {1}',
         $customerProposal->purpose->label(),
         $customerProposal->effective_from,
     ),
     (string)$customerProposal->getState(),
-    $doing ?? __('Customer Proposal'),
+    $doing ?? null,
 ) ?>
 <hr />

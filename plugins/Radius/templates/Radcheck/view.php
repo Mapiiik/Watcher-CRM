@@ -35,7 +35,7 @@
     </aside>
     <div class="column column-90">
         <div class="radcheck view content">
-            <?= $this->record(__d('radius', 'RADIUS Check No.'), (string)$radcheck->id) ?>
+            <?= $this->record(__d('radius', 'RADIUS Check'), (string)$radcheck->id) ?>
             <table>
                 <tr>
                     <th><?= __d('radius', 'Username') ?></th>

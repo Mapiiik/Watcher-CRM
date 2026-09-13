@@ -41,7 +41,7 @@
     </aside>
     <div class="column column-90">
         <div class="invoices view content">
-            <?= $this->record(__d('bookkeeping', 'Invoice No.'), (string)$invoice->number) ?>
+            <?= $this->record(__d('bookkeeping', 'Invoice'), (string)$invoice->number) ?>
             <div class="row">
                 <div class="column">
                     <table>

@@ -8,7 +8,7 @@
  */
 
 echo $this->record(
-    __('Customer No.'),
+    __('Customer'),
     (string)$customer->number,
     (string)$customer->name,
     $doing ?? null,

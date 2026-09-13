@@ -58,9 +58,8 @@
                     'class' => 'button float-right',
                 ],
             ) ?>
-            <?= __('Contract No.') ?>
             <?= $this->record(
-                __('Contract No.'),
+                __('Contract'),
                 (string)$serviceOverride->contract->number,
                 doing: __('Service Override'),
             ) ?>

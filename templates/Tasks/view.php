@@ -28,7 +28,7 @@
                     ['fullBase' => true],
                 ),
             ]) ?>
-            <?= $this->record(__('Task No.'), (string)$task->number) ?>
+            <?= $this->record(__('Task'), (string)$task->number) ?>
             <div class="row">
                 <div class="column">
                     <table>
