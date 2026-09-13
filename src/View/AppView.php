@@ -117,19 +117,28 @@ class AppView extends View
     private function nameOfThePage(): string
     {
         $request = $this->getRequest();
+        $plugin = $request->getParam('plugin');
+        $action = $request->getParam('action');
+
+        // The plugin keeps the name it is addressed by, vendor prefix and all. Said as words,
+        // `CakeDC/Users` comes out as something nobody would recognise.
         $address = [
-            $request->getParam('plugin'),
-            str_replace(DIRECTORY_SEPARATOR, '/', $this->getTemplatePath()),
-            $request->getParam('action'),
+            is_string($plugin) ? $plugin : '',
+            $this->inWords(str_replace(DIRECTORY_SEPARATOR, '/', $this->getTemplatePath())),
+            is_string($action) ? $this->inWords($action) : '',
         ];
 
-        $parts = [];
-        foreach ($address as $part) {
-            if (is_string($part) && $part !== '') {
-                $parts[] = Inflector::humanize($part);
-            }
-        }
+        return implode(' | ', array_filter($address));
+    }
 
-        return implode(' | ', $parts);
+    /**
+     * A name the way it is written in code, said as words.
+     *
+     * @param string $name An agenda or an action, in either CamelCase or under_scores.
+     * @return string
+     */
+    private function inWords(string $name): string
+    {
+        return Inflector::humanize(Inflector::underscore($name));
     }
 }

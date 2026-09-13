@@ -34,6 +34,7 @@ class WindowsAreNamedTest extends TestCase
         'app.Customers',
         'app.Labels',
         'app.CustomerLabels',
+        'app.ContractStates',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
     ];
@@ -69,6 +70,18 @@ class WindowsAreNamedTest extends TestCase
 
         $this->assertStringEndsWith('Labels | Index', $listing);
         $this->assertStringEndsWith('Labels | Add', $form);
+    }
+
+    /**
+     * @return void
+     */
+    public function testAnAgendaOfMoreThanOneWordIsSaidAsWords(): void
+    {
+        $this->login();
+        $this->get('/contract-states');
+
+        $this->assertResponseOk();
+        $this->assertStringEndsWith('Contract States | Index', $this->titleOfTheResponse());
     }
 
     /**
