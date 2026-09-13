@@ -30,4 +30,15 @@ $(document).ready(function() {
             }  
         }, 100);            
     });
+
+    $(".leave-window").on("click", function(e) {
+        // The print page is opened into a window of its own, so a link out of it belongs in the
+        // window that opened it - otherwise the next print would reuse a tab showing something else.
+        if (window.opener && !window.opener.closed) {
+            e.preventDefault();
+            window.opener.location = this.href;
+            window.opener.focus();
+            window.close();
+        }
+    });
 });
