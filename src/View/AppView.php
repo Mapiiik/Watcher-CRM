@@ -15,6 +15,7 @@ declare(strict_types=1);
  */
 namespace App\View;
 
+use Cake\Utility\Inflector;
 use Cake\View\View;
 use Override;
 
@@ -84,5 +85,51 @@ class AppView extends View
         $this->addHelper('Files.Preview');
         // And a form that takes files says how many the server will take of them.
         $this->addHelper('Files.Upload');
+    }
+
+    /**
+     * Names the window after the page, when the page has not named itself.
+     *
+     * @param string $content Content to render in a template, wrapped by the surrounding layout.
+     * @param string|null $layout Layout name
+     * @return string Rendered output.
+     */
+    #[Override]
+    public function renderLayout(string $content, ?string $layout = null): string
+    {
+        if ($this->fetch('title') === '') {
+            $this->assign('title', $this->nameOfThePage());
+        }
+
+        return parent::renderLayout($content, $layout);
+    }
+
+    /**
+     * What to call a window over a page that has not named itself.
+     *
+     * The plugin, the agenda and the action, which together are the address the page was opened
+     * at. What Cake falls back to on its own is only the middle one, so every page of an agenda
+     * carries the same name and a row of tabs tells nothing apart. It stays English on purpose:
+     * too few of these names are in the catalogues for a translated one to come out whole.
+     *
+     * @return string
+     */
+    private function nameOfThePage(): string
+    {
+        $request = $this->getRequest();
+        $address = [
+            $request->getParam('plugin'),
+            str_replace(DIRECTORY_SEPARATOR, '/', $this->getTemplatePath()),
+            $request->getParam('action'),
+        ];
+
+        $parts = [];
+        foreach ($address as $part) {
+            if (is_string($part) && $part !== '') {
+                $parts[] = Inflector::humanize($part);
+            }
+        }
+
+        return implode(' | ', $parts);
     }
 }
