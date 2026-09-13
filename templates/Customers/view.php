@@ -54,7 +54,7 @@ $remark = function (string $note, bool $wrong = false): string {
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Documentations'),
+                __d('app_files', 'Documentations'),
                 ['controller' => 'Documentations', 'action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
@@ -180,7 +180,7 @@ $remark = function (string $note, bool $wrong = false): string {
                 data-trigger="load"
             ></div>
             <?= $this->AuthLink->link(
-                __('Documentations'),
+                __d('app_files', 'Documentations'),
                 ['controller' => 'Documentations', 'action' => 'index'],
                 ['class' => 'button float-right'],
             ) ?>

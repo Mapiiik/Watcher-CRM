@@ -259,7 +259,7 @@
             <h4><?= __('Documentation Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __('List Documentation Types'),
+                    __d('app_files', 'List Documentation Types'),
                     ['controller' => 'DocumentationTypes', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
                 ) ?>

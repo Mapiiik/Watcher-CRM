@@ -41,7 +41,7 @@ $this->Html->css('problems', ['block' => true]);
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
-                __('Documentations'),
+                __d('app_files', 'Documentations'),
                 ['controller' => 'Documentations', 'action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
@@ -157,7 +157,7 @@ $this->Html->css('problems', ['block' => true]);
                 data-trigger="load"
             ></div>
             <?= $this->AuthLink->link(
-                __('Documentations'),
+                __d('app_files', 'Documentations'),
                 ['controller' => 'Documentations', 'action' => 'index'],
                 ['class' => 'button float-right'],
             ) ?>
