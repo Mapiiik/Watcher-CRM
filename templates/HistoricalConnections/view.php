@@ -19,15 +19,21 @@
     <div class="column column-90">
         <div class="historicalConnections view content">
             <?php
-            // which interval is open, and whose: the period first, because that
-            // is what tells one interval of an account from the next
+            // Which interval is open, and whose: the period first, because that is what tells one
+            // interval of an account from the next. A start that is only a lower bound says so in
+            // words here rather than by a mark, since the heading is also what the window is
+            // called - and the table below carries the mark and the reason for it either way.
+            $from = $historicalConnection->first_seen_exact
+                ? (string)$historicalConnection->first_seen
+                : __('{0} or earlier', $historicalConnection->first_seen);
             ?>
-            <h3><?=
-                $this->element('HistoricalConnections/first_seen', ['interval' => $historicalConnection])
-                    . ' &ndash; ' . h($historicalConnection->last_seen)
-                    . ' &middot; ' . h($historicalConnection->source->referenceLabel())
-                    . ': ' . h($historicalConnection->source_reference)
-            ?></h3>
+            <?= $this->record(
+                __('Historical Connection'),
+                $from
+                    . ' – ' . $historicalConnection->last_seen
+                    . ' · ' . $historicalConnection->source->referenceLabel()
+                    . ': ' . $historicalConnection->source_reference,
+            ) ?>
             <div class="row">
                 <div class="column">
                     <table>

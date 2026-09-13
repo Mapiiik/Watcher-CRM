@@ -329,7 +329,7 @@ class HistoricalConnectionsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(
-            ' &middot; ' . HistoricalConnectionSource::Radius->referenceLabel() . ': smith.john</h3>',
+            ' · ' . HistoricalConnectionSource::Radius->referenceLabel() . ': smith.john</h3>',
         );
         $this->assertResponseNotContains('<h3>North Hill');
     }

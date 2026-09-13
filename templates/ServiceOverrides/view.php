@@ -58,17 +58,20 @@
                     'class' => 'button float-right',
                 ],
             ) ?>
+            <?php
+            // An override is known by the service it overrides. Which contract that is comes from
+            // the bar across the top, so the line under the name is how long it applies - and
+            // whether it was called off, which is the first thing to know about one.
+            $about = $serviceOverride->valid_from . ' - ' . $serviceOverride->valid_until
+                . ($serviceOverride->revoked
+                    ? ' (' . __('Revoked on {0}', $serviceOverride->revoked) . ')'
+                    : '');
+            ?>
             <?= $this->record(
-                __('Contract'),
-                (string)$serviceOverride->contract->number,
-                doing: __('Service Override'),
+                __('Service Override'),
+                (string)$serviceOverride->service->name,
+                $about,
             ) ?>
-            <?= __('Service') ?>
-            <h3><?= h($serviceOverride->service->name) ?></h3>
-            <?= __('Validity') ?>
-            <h3><?= h($serviceOverride->valid_from) ?> - <?= h($serviceOverride->valid_until) ?>
-            <?= $serviceOverride->revoked ?
-                '(' . __('Revoked on {0}', h($serviceOverride->revoked)) . ')' : '' ?></h3>
             <div class="row">
                 <div class="column">
                     <table>

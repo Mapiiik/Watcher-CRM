@@ -36,26 +36,25 @@
     </aside>
     <div class="column column-90">
         <div class="contractVersions view content">
+            <?php
+            // A version is known by how long it runs. Which contract it belongs to is carried by
+            // the bar across the top and by the address the page was reached at, so what is worth
+            // a line under the name is what the contract is for and where it is installed.
+            $about = [];
+            if ($contractVersion->contract !== null) {
+                if ($contractVersion->contract->service_type !== null) {
+                    $about[] = $contractVersion->contract->service_type->name;
+                }
+                if ($contractVersion->contract->installation_address !== null) {
+                    $about[] = $contractVersion->contract->installation_address->address;
+                }
+            }
+            ?>
             <?= $this->record(
-                __('Contract'),
-                (string)$contractVersion->contract->number,
-                doing: __('Contract Version'),
+                __('Contract Version'),
+                (string)$contractVersion->name,
+                implode(' - ', $about),
             ) ?>
-            <?= __('Validity') ?><h3><?= h($contractVersion->name) ?></h3>
-            <?php if ($contractVersion->contract !== null) : ?>
-            <h5><?=
-                (
-                    $contractVersion->contract->service_type !== null ?
-                        $contractVersion->contract->service_type->name :
-                        ''
-                )
-                . (
-                    $contractVersion->contract->installation_address !== null ?
-                        ' - ' . $contractVersion->contract->installation_address->address :
-                        ''
-                )
-                ?></h5>
-            <?php endif; ?>
             <div class="row">
                 <div class="column">
                     <table>
