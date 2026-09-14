@@ -9330,3 +9330,62 @@ msgid ""
 msgstr ""
 "Není nastaveno APP_FULL_BASE_URL, takže odkazy v tomto reportu jsou relativní "
 "a z e-mailu nikam nepovedou."
+
+#: src/Model/Enum/ContractPeriodSource.php:51
+msgid "From the contract versions"
+msgstr "Podle verzí smlouvy"
+
+#: src/Model/Enum/ContractPeriodSource.php:52
+msgid "From the installation and termination dates"
+msgstr "Podle data instalace/zřízení a ukončení poskytování služeb"
+
+#: src/Controller/OverviewsController.php:280
+msgid "The period ends before it begins, so nothing falls inside it."
+msgstr "Období končí dříve, než začíná, takže do něj nic nespadá."
+
+#: templates/Overviews/index.php:127
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:58
+msgid "Overview of New and Ending Contracts"
+msgstr "Přehled nových a končících smluv"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:25
+msgid "Read the Period From"
+msgstr "Období počítat"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:39
+msgid "To"
+msgstr "Do"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:48
+msgid "Installation City"
+msgstr "Město instalace"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:66
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:75
+msgid "Starting"
+msgstr "Začíná"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:67
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:84
+msgid "Ending"
+msgstr "Končí"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:68
+msgid "Net Change"
+msgstr "Čistá změna"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:69
+msgid "A contract that begins and ends within the period is in both listings."
+msgstr "Smlouva, která v období začne i skončí, je v obou tabulkách."
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:78
+msgid "Starts On"
+msgstr "Začátek"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:87
+msgid "Ends On"
+msgstr "Konec"
+
+#: src/Model/Enum/ContractPeriodSource.php:63
+msgid "From the installation and uninstallation dates"
+msgstr "Podle data instalace/zřízení a deinstalace/zrušení"

@@ -8608,3 +8608,62 @@ msgid ""
 "APP_FULL_BASE_URL is not set, so the links in this report are relative and "
 "will not lead anywhere from somebody's mail."
 msgstr ""
+
+#: src/Model/Enum/ContractPeriodSource.php:51
+msgid "From the contract versions"
+msgstr ""
+
+#: src/Model/Enum/ContractPeriodSource.php:52
+msgid "From the installation and termination dates"
+msgstr ""
+
+#: src/Controller/OverviewsController.php:280
+msgid "The period ends before it begins, so nothing falls inside it."
+msgstr ""
+
+#: templates/Overviews/index.php:127
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:58
+msgid "Overview of New and Ending Contracts"
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:25
+msgid "Read the Period From"
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:39
+msgid "To"
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:48
+msgid "Installation City"
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:66
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:75
+msgid "Starting"
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:67
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:84
+msgid "Ending"
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:68
+msgid "Net Change"
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:69
+msgid "A contract that begins and ends within the period is in both listings."
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:78
+msgid "Starts On"
+msgstr ""
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:87
+msgid "Ends On"
+msgstr ""
+
+#: src/Model/Enum/ContractPeriodSource.php:63
+msgid "From the installation and uninstallation dates"
+msgstr ""
