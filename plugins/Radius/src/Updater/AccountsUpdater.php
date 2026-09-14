@@ -259,6 +259,14 @@ class AccountsUpdater
                 ->setLayout('default')
                 ->setTemplate('Radius.UpdateRelatedRecordsSummary');
 
+            // Run from cron there is no request to take the host from, and the change log is
+            // nothing but links to the records it is about.
+            $linkWarning = OperatorReport::linkWarning();
+            if ($linkWarning !== null) {
+                Log::write('warning', $linkWarning);
+                $this->Messages->warning($linkWarning);
+            }
+
             $mailer->setViewVars([
                 'title' => __d('radius', 'These automatic RADIUS account changes have just taken place.'),
                 'changelog' => $changelog,
