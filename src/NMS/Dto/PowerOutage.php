@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\NMS\Dto;
 
 use App\Model\Enum\OutageCertainty;
+use Cake\I18n\DateTime;
 
 /**
  * One planned outage over one of the network's masts, as the network management system reports it.
@@ -22,8 +23,8 @@ final readonly class PowerOutage
      * @param string $accessPointId The number the network management system keeps the mast under.
      * @param string|null $accessPointName What the mast is called.
      * @param int $connections Active customer connections below the mast, its own and those fed from it.
-     * @param string|null $beginsAt When the power goes off, as the NMS wrote it.
-     * @param string|null $endsAt When it is expected back.
+     * @param \Cake\I18n\DateTime|null $beginsAt When the power goes off.
+     * @param \Cake\I18n\DateTime|null $endsAt When it is expected back.
      * @param \App\Model\Enum\OutageCertainty|null $certainty How much the match is worth, or nothing where
      *   the other application said a word this one does not know.
      * @param string|null $matchedBy What the match was made on - the supply point, an address, a street.
@@ -36,8 +37,8 @@ final readonly class PowerOutage
         public string $accessPointId,
         public ?string $accessPointName = null,
         public int $connections = 0,
-        public ?string $beginsAt = null,
-        public ?string $endsAt = null,
+        public ?DateTime $beginsAt = null,
+        public ?DateTime $endsAt = null,
         public ?OutageCertainty $certainty = null,
         public ?string $matchedBy = null,
         public ?string $matchNote = null,

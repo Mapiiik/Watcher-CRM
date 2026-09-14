@@ -10,6 +10,7 @@ use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Http\Client\Response;
 use Cake\Http\TestSuite\HttpClientTrait;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\LogTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -366,6 +367,32 @@ class ApiClientTest extends TestCase
         $this->assertSame('Main Street 12 (87 m)', $outage->matchNote);
         $this->assertSame(OutageCertainty::Probable, $outage->certainty);
         $this->assertFalse($outage->isCertain(), 'A match made on an address is a guess.');
+
+        // Read into a date, so a page draws it the way it draws every other date rather than
+        // printing the wire format at somebody.
+        $this->assertInstanceOf(DateTime::class, $outage->beginsAt);
+        $this->assertSame('2026-09-16 08:00:00', $outage->beginsAt->format('Y-m-d H:i:s'));
+        $this->assertInstanceOf(DateTime::class, $outage->endsAt);
+    }
+
+    /**
+     * A moment spelled in a way this application cannot read is nothing, not an exception.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::getPowerOutages()
+     */
+    public function testAMomentNobodyCanReadIsNotAMoment(): void
+    {
+        $this->mock('/api/power-outages.json', $this->jsonResponse(['powerOutages' => [[
+            'access_point_id' => '9c4f6b1e-2f0a-4d3c-9a71-6b0d5f8e2a14',
+            'access_point_name' => 'Hilltop',
+            'begins_at' => 'sometime next week',
+        ]]]));
+
+        $outage = ApiClient::getPowerOutages()->orFail()->first();
+
+        $this->assertSame('Hilltop', $outage?->accessPointName);
+        $this->assertNull($outage->beginsAt);
     }
 
     /**

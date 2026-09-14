@@ -10,6 +10,8 @@ use App\NMS\Dto\PowerOutage;
 use App\NMS\Dto\RouterosDevice;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\I18n\DateTime;
+use Throwable;
 
 /**
  * What the network management system answers with, turned into things.
@@ -115,8 +117,11 @@ final class NmsPayloadNormalizer
             accessPointId: $accessPointId,
             accessPointName: self::stringOrNull($entry['access_point_name'] ?? null),
             connections: self::intOrZero($entry['connections'] ?? null),
-            beginsAt: self::stringOrNull($entry['begins_at'] ?? null),
-            endsAt: self::stringOrNull($entry['ends_at'] ?? null),
+            // Read into a date rather than kept as the text it arrived as, so that a page draws
+            // it the way it draws every other date here. Left as text it reads as the wire format
+            // it is - `2026-09-15T09:00:00+02:00` in the middle of a card.
+            beginsAt: self::dateTimeOrNull($entry['begins_at'] ?? null),
+            endsAt: self::dateTimeOrNull($entry['ends_at'] ?? null),
             // `tryFrom`, not `from`: the other application is deployed on its own schedule, and a
             // word it starts using that this one has never heard of is not a reason to stop.
             certainty: OutageCertainty::tryFrom((string)self::stringOrNull($entry['certainty'] ?? null)),
@@ -267,5 +272,30 @@ final class NmsPayloadNormalizer
     private static function intOrZero(mixed $value): int
     {
         return is_scalar($value) && is_numeric($value) ? max(0, (int)$value) : 0;
+    }
+
+    /**
+     * A moment, or nothing where what arrived does not read as one.
+     *
+     * Forgiving like everything else here: the other application decides how it writes its dates,
+     * and a spelling this one cannot parse is read as the field not being there rather than as an
+     * exception in the middle of drawing a card.
+     *
+     * @param mixed $value Value to read.
+     * @return \Cake\I18n\DateTime|null
+     */
+    private static function dateTimeOrNull(mixed $value): ?DateTime
+    {
+        $when = self::stringOrNull($value);
+
+        if ($when === null) {
+            return null;
+        }
+
+        try {
+            return new DateTime($when);
+        } catch (Throwable) {
+            return null;
+        }
     }
 }
