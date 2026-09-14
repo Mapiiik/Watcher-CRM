@@ -9389,3 +9389,23 @@ msgstr "Konec"
 #: src/Model/Enum/ContractPeriodSource.php:63
 msgid "From the installation and uninstallation dates"
 msgstr "Podle data instalace/zřízení a deinstalace/zrušení"
+
+#: src/Dashboard/Card/PowerOutagesCard.php:41
+msgid "Planned Power Outages"
+msgstr "Plánované odstávky elektřiny"
+
+#: templates/element/Dashboard/power_outages.php:28
+msgid "No planned outage is known for any of our access points."
+msgstr "U žádného našeho přístupového bodu není známa plánovaná odstávka."
+
+#: templates/element/Dashboard/power_outages.php:48
+msgid "Certain"
+msgstr "Jisté"
+
+#: templates/element/Dashboard/power_outages.php:49
+msgid "Probable"
+msgstr "Pravděpodobné"
+
+#: templates/element/Dashboard/power_outages.php:55
+msgid "Customer connections affected"
+msgstr "Dotčené zákaznické přípojky"

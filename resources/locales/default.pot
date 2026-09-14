@@ -8667,3 +8667,23 @@ msgstr ""
 #: src/Model/Enum/ContractPeriodSource.php:63
 msgid "From the installation and uninstallation dates"
 msgstr ""
+
+#: src/Dashboard/Card/PowerOutagesCard.php:41
+msgid "Planned Power Outages"
+msgstr ""
+
+#: templates/element/Dashboard/power_outages.php:28
+msgid "No planned outage is known for any of our access points."
+msgstr ""
+
+#: templates/element/Dashboard/power_outages.php:48
+msgid "Certain"
+msgstr ""
+
+#: templates/element/Dashboard/power_outages.php:49
+msgid "Probable"
+msgstr ""
+
+#: templates/element/Dashboard/power_outages.php:55
+msgid "Customer connections affected"
+msgstr ""
