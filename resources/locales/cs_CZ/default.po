@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-13 19:42+0200\n"
+"POT-Creation-Date: 2026-09-14 18:17+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -263,8 +263,8 @@ msgstr "včetně podřízených přístupových bodů"
 
 #: src/BulkMessages/Filter/AccessPointFilter.php:164
 #: src/Controller/CustomerMessagesController.php:1017
-#: src/Controller/Traits/CommonViewVarListsTrait.php:62
-#: src/Controller/Traits/CommonViewVarListsTrait.php:80
+#: src/Controller/Traits/CommonViewVarListsTrait.php:112
+#: src/Controller/Traits/CommonViewVarListsTrait.php:130
 msgid "The access points list could not be loaded. Please, try again."
 msgstr "Seznam přístupových bodů nelze načíst. Zkuste to prosím znovu."
 
@@ -294,7 +294,7 @@ msgstr "Adresa instalace (registr)"
 #: src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: src/Controller/Api/CustomersController.php:178
 #: src/Controller/OverviewsController.php:80
-#: src/Controller/OverviewsController.php:474
+#: src/Controller/OverviewsController.php:577
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr "Nepodařilo se načíst adresy z národního adresního registru: {0}"
 
@@ -1268,6 +1268,7 @@ msgstr "Fakturace nelze odstranit. Opakujte akci."
 #: src/Controller/BillingsController.php:605
 #: templates/CustomerMessages/add_bulk/step_compose.php:160
 #: templates/CustomerMessages/add_bulk/step_done.php:108
+#: templates/element/Overviews/contracts_in_period.php:21
 msgid "Contract Number"
 msgstr "Číslo smlouvy"
 
@@ -2034,11 +2035,15 @@ msgstr "Přihlášení bylo odstraněno."
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/OverviewsController.php:530
+#: src/Controller/OverviewsController.php:279
+msgid "The period ends before it begins, so nothing falls inside it."
+msgstr "Období končí dříve, než začíná, takže do něj nic nespadá."
+
+#: src/Controller/OverviewsController.php:633
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 
-#: src/Controller/OverviewsController.php:532 templates/Addresses/index.php:80
+#: src/Controller/OverviewsController.php:635 templates/Addresses/index.php:80
 #: templates/Addresses/index.php:87 templates/Addresses/view.php:116
 #: templates/Addresses/view.php:128 templates/Countries/view.php:93
 #: templates/Countries/view.php:100 templates/Customers/view.php:573
@@ -2046,7 +2051,7 @@ msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 msgid "unknown"
 msgstr "neznámé"
 
-#: src/Controller/OverviewsController.php:817
+#: src/Controller/OverviewsController.php:920
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
@@ -2219,6 +2224,7 @@ msgstr "Úkol nelze uložit. Zkuste to prosím znovu."
 #: templates/element/AddressChecks/several_contracts_at_one_address.php:20
 #: templates/element/Contracts/facts.php:51
 #: templates/element/Contracts/related.php:29
+#: templates/element/Overviews/contracts_in_period.php:23
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
@@ -2259,7 +2265,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Bylo nalezeno {0} nedokončených úkolů, které nemají přiřazeného uživatele."
 
-#: src/Controller/Traits/CommonViewVarListsTrait.php:93
+#: src/Controller/Traits/CommonViewVarListsTrait.php:143
 msgid "archived"
 msgstr "archivováno"
 
@@ -2366,6 +2372,10 @@ msgstr "Štítky"
 msgid "Debts Beyond Automatic Blocking"
 msgstr "Dluhy mimo automatické blokování"
 
+#: src/Dashboard/Card/PowerOutagesCard.php:40
+msgid "Planned Power Outages"
+msgstr "Plánované odstávky elektřiny"
+
 #: src/Dashboard/Card/UnsignedContractsCard.php:92
 msgid "Outstanding Paperwork"
 msgstr "Nevyřízené papíry"
@@ -2418,17 +2428,17 @@ msgstr "API"
 msgid "Contract data not available."
 msgstr "Údaje o smlouvě nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:240 src/Model/Entity/Contract.php:255
-#: src/Model/Entity/Contract.php:270
+#: src/Model/Entity/Contract.php:248 src/Model/Entity/Contract.php:263
+#: src/Model/Entity/Contract.php:278
 msgid "Contract state data not available."
 msgstr "Údaje o stavu smlouvy nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:285 src/Model/Entity/Contract.php:300
-#: src/Model/Entity/Contract.php:315
+#: src/Model/Entity/Contract.php:293 src/Model/Entity/Contract.php:308
+#: src/Model/Entity/Contract.php:323
 msgid "Service type data not available."
 msgstr "Údaje o typu služby nejsou k dispozici."
 
-#: src/Model/Entity/Contract.php:327
+#: src/Model/Entity/Contract.php:335
 msgid "Contract versions data not available."
 msgstr "Údaje o verzích smluv nejsou k dispozici."
 
@@ -2516,6 +2526,18 @@ msgstr "Více adres trvalého pobytu"
 #: src/Model/Enum/BillingAddressProblem.php:49
 msgid "Several installation addresses"
 msgstr "Více instalačních adres"
+
+#: src/Model/Enum/ContractPeriodSource.php:67
+msgid "From the contract versions"
+msgstr "Podle verzí smlouvy"
+
+#: src/Model/Enum/ContractPeriodSource.php:68
+msgid "From the installation and termination dates"
+msgstr "Podle data instalace/zřízení a ukončení poskytování služeb"
+
+#: src/Model/Enum/ContractPeriodSource.php:69
+msgid "From the installation and uninstallation dates"
+msgstr "Podle data instalace/zřízení a deinstalace/zrušení"
 
 #: src/Model/Enum/ContractPrintType.php:33
 msgid "Contract for the provision of services"
@@ -2903,6 +2925,14 @@ msgstr "Administrátor"
 msgid "Specialist"
 msgstr "Specialista"
 
+#: src/Model/Enum/OutageCertainty.php:38
+msgid "Certain"
+msgstr "Jisté"
+
+#: src/Model/Enum/OutageCertainty.php:39
+msgid "Probable"
+msgstr "Pravděpodobné"
+
 #: src/Model/Enum/ProposalPurpose.php:37
 msgid "New contract"
 msgstr "Nová smlouva"
@@ -3091,17 +3121,17 @@ msgid ""
 "The minimum term cannot run out before the version it belongs to begins."
 msgstr "Závazek nemůže skončit dřív, než začne verze smlouvy, ke které patří."
 
-#: src/Model/Table/ContractsTable.php:346 src/Model/Table/TasksTable.php:119
+#: src/Model/Table/ContractsTable.php:430 src/Model/Table/TasksTable.php:119
 msgid "The specified access point is not one Watcher NMS keeps."
 msgstr "Uvedený přístupový bod není součástí databáze systému Watcher NMS."
 
-#: src/Model/Table/ContractsTable.php:369
+#: src/Model/Table/ContractsTable.php:453
 msgid ""
 "The specified service type requires the assignment of an installation "
 "address."
 msgstr "Zadaný typ služby vyžaduje přiřazení instalační adresy."
 
-#: src/Model/Table/ContractsTable.php:392
+#: src/Model/Table/ContractsTable.php:476
 msgid "The specified service type requires the assignment of an access point."
 msgstr "Zadaný typ služby vyžaduje přiřazení přístupového bodu."
 
@@ -3333,6 +3363,14 @@ msgstr "Historické připojení pro {0} nebylo možné prodloužit."
 msgid "The network management system could not be asked about {0}."
 msgstr "Systém správy sítě nebylo možné dotázat na {0}."
 
+#: src/Service/OperatorReport.php:47
+msgid ""
+"APP_FULL_BASE_URL is not set, so the links in this report are relative and "
+"will not lead anywhere from somebody's mail."
+msgstr ""
+"Není nastaveno APP_FULL_BASE_URL, takže odkazy v tomto reportu jsou "
+"relativní a z e-mailu nikam nepovedou."
+
 #: src/Versioning.php:53 src/Versioning.php:76
 msgid "Not installed via Git"
 msgstr "Není nainstalováno přes Git"
@@ -3476,6 +3514,7 @@ msgstr "{0} od {1}"
 #: templates/element/Contracts/related.php:40
 #: templates/element/CustomerChecks/customer_proposal.php:26
 #: templates/element/Customers/CustomerProposals.php:23
+#: templates/element/Overviews/contracts_in_period.php:25
 msgid "Actions"
 msgstr "Akce"
 
@@ -3806,6 +3845,7 @@ msgstr "Číslo zákazníka"
 #: templates/element/Contracts/Tasks.php:59
 #: templates/element/Contracts/related.php:104
 #: templates/element/Customers/CustomerProposals.php:54
+#: templates/element/Overviews/contracts_in_period.php:63
 #: vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1225
 msgid "View"
 msgstr "Zobrazit"
@@ -3903,6 +3943,7 @@ msgstr "Přístupové oprávnění"
 #: templates/element/CustomerChecks/customer_proposal.php:20
 #: templates/element/CustomerProposals/form.php:22
 #: templates/element/Customers/heading.php:11
+#: templates/element/Overviews/contracts_in_period.php:20
 #: templates/element/Tasks/email_detail.php:73
 msgid "Customer"
 msgstr "Zákazník"
@@ -4221,7 +4262,7 @@ msgstr "Starší"
 
 #: templates/Billings/add.php:15 templates/Billings/bulk_service_change.php:22
 #: templates/Billings/edit.php:22 templates/Billings/service_change.php:24
-#: templates/Billings/view.php:23 templates/Overviews/index.php:137
+#: templates/Billings/view.php:23 templates/Overviews/index.php:142
 msgid "List Billings"
 msgstr "Seznam fakturací"
 
@@ -4483,7 +4524,7 @@ msgstr "Náhled fakturace – konec"
 
 #: templates/BorrowedEquipments/add.php:15
 #: templates/BorrowedEquipments/edit.php:23
-#: templates/BorrowedEquipments/view.php:25 templates/Overviews/index.php:147
+#: templates/BorrowedEquipments/view.php:25 templates/Overviews/index.php:152
 msgid "List Borrowed Equipments"
 msgstr "Seznam zapůjčených zařízení"
 
@@ -5228,6 +5269,7 @@ msgstr "Odstranit stav smlouvy"
 #: templates/element/ContractChecks/inactive_with_billing.php:25
 #: templates/element/Contracts/facts.php:29
 #: templates/element/Contracts/related.php:24
+#: templates/element/Overviews/contracts_in_period.php:24
 msgid "Contract State"
 msgstr "Stav smlouvy"
 
@@ -5297,7 +5339,7 @@ msgid "Requires No Active Obligations"
 msgstr "Vyžaduje žádné aktivní závazky"
 
 #: templates/ContractVersions/add.php:15 templates/ContractVersions/edit.php:22
-#: templates/ContractVersions/view.php:26 templates/Overviews/index.php:127
+#: templates/ContractVersions/view.php:26 templates/Overviews/index.php:132
 msgid "List Contract Versions"
 msgstr "Seznam verzí smluv"
 
@@ -5472,7 +5514,7 @@ msgstr ""
 msgid "Delete Contract"
 msgstr "Odstranit smlouvu"
 
-#: templates/Contracts/view.php:50 templates/Overviews/index.php:132
+#: templates/Contracts/view.php:50 templates/Overviews/index.php:137
 msgid "List Contract Proposals"
 msgstr "Seznam návrhů ke smlouvám"
 
@@ -5488,7 +5530,7 @@ msgid "List Customer Messages"
 msgstr "Seznam zpráv pro zákazníky"
 
 #: templates/Contracts/view.php:65 templates/Customers/view.php:78
-#: templates/Overviews/index.php:142 templates/ServiceOverrides/add.php:17
+#: templates/Overviews/index.php:147 templates/ServiceOverrides/add.php:17
 #: templates/ServiceOverrides/edit.php:36
 #: templates/ServiceOverrides/view.php:37
 msgid "List Service Overrides"
@@ -5496,7 +5538,7 @@ msgstr "Seznam dočasných úprav služby"
 
 #: templates/Contracts/view.php:70 templates/Customers/view.php:83
 #: templates/HistoricalConnections/view.php:13
-#: templates/Overviews/index.php:177
+#: templates/Overviews/index.php:182
 msgid "List Historical Connections"
 msgstr "Seznam historických připojení"
 
@@ -6293,6 +6335,7 @@ msgstr "Poslední odepřená IP adresa"
 #: templates/element/ContractChecks/contract.php:28
 #: templates/element/Contracts/facts.php:36
 #: templates/element/Contracts/related.php:27
+#: templates/element/Overviews/contracts_in_period.php:22
 msgid "Service Type"
 msgstr "Typ služby"
 
@@ -6430,6 +6473,7 @@ msgstr "Historická připojení"
 #: templates/HistoricalConnections/index.php:32
 #: templates/HistoricalConnections/view.php:70
 #: templates/HistoricalConnections/view.php:143
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:32
 msgid "From"
 msgstr "Od"
 
@@ -6512,7 +6556,7 @@ msgstr ""
 #: templates/IpAddresses/add.php:13 templates/IpAddresses/add_from_range.php:14
 #: templates/IpAddresses/bulk_reassignment.php:16
 #: templates/IpAddresses/edit.php:18 templates/IpAddresses/view.php:21
-#: templates/Overviews/index.php:157
+#: templates/Overviews/index.php:162
 msgid "List IP Addresses"
 msgstr "Seznam IP adres"
 
@@ -6572,7 +6616,7 @@ msgid "Device"
 msgstr "Zařízení"
 
 #: templates/IpNetworks/add.php:14 templates/IpNetworks/edit.php:19
-#: templates/IpNetworks/view.php:22 templates/Overviews/index.php:162
+#: templates/IpNetworks/view.php:22 templates/Overviews/index.php:167
 msgid "List IP Networks"
 msgstr "Seznam IP sítí"
 
@@ -6742,18 +6786,23 @@ msgstr "Související se smlouvou"
 msgid "Overview of Contracts"
 msgstr "Přehled smluv"
 
-#: templates/Overviews/index.php:152 templates/SoldEquipments/add.php:15
+#: templates/Overviews/index.php:127
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:67
+msgid "Overview of New and Ending Contracts"
+msgstr "Přehled nových a končících smluv"
+
+#: templates/Overviews/index.php:157 templates/SoldEquipments/add.php:15
 #: templates/SoldEquipments/edit.php:23 templates/SoldEquipments/view.php:25
 msgid "List Sold Equipments"
 msgstr "Seznam prodaných zařízení"
 
-#: templates/Overviews/index.php:167 templates/RemovedIpAddresses/add.php:14
+#: templates/Overviews/index.php:172 templates/RemovedIpAddresses/add.php:14
 #: templates/RemovedIpAddresses/edit.php:22
 #: templates/RemovedIpAddresses/view.php:25
 msgid "List Removed IP Addresses"
 msgstr "Seznam odebraných IP adres"
 
-#: templates/Overviews/index.php:172 templates/RemovedIpNetworks/add.php:14
+#: templates/Overviews/index.php:177 templates/RemovedIpNetworks/add.php:14
 #: templates/RemovedIpNetworks/edit.php:22
 #: templates/RemovedIpNetworks/view.php:25
 msgid "List Removed IP Networks"
@@ -6785,6 +6834,7 @@ msgstr "Zobrazit fakturace"
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:22
 #: templates/Overviews/overview_of_czech_customer_connection_speeds.php:22
 #: templates/Overviews/overview_of_dealer_commissions.php:22
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:66
 msgid "List Overviews"
 msgstr "Seznam přehledů"
 
@@ -6934,6 +6984,44 @@ msgstr "(neobchodní)"
 #: templates/Overviews/overview_of_dealer_commissions.php:81
 msgid "Unknown"
 msgstr "Neznámé"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:25
+msgid "Read the Period From"
+msgstr "Období počítat"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:38
+msgid "To"
+msgstr "Do"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:55
+msgid "Installation City"
+msgstr "Město instalace"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:74
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:83
+msgid "Starting"
+msgstr "Začíná"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:75
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:92
+msgid "Ending"
+msgstr "Končí"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:76
+msgid "Net Change"
+msgstr "Čistá změna"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:77
+msgid "A contract that begins and ends within the period is in both listings."
+msgstr "Smlouva, která v období začne i skončí, je v obou tabulkách."
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:87
+msgid "Starts On"
+msgstr "Začátek"
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:96
+msgid "Ends On"
+msgstr "Konec"
 
 #: templates/Phones/add.php:19
 msgid "Add Phone"
@@ -8026,6 +8114,7 @@ msgstr "Stav se nepodařilo načíst."
 #: templates/element/Contracts/IpAddresses.php:69
 #: templates/element/Contracts/IpAddresses.php:82
 #: templates/element/Contracts/IpNetworks.php:52
+#: templates/element/Dashboard/power_outages.php:25
 #: templates/element/NMS/unavailable.php:20
 msgid "Data from Watcher NMS could not be loaded."
 msgstr "Data z Watcher NMS se nepodařilo načíst."
@@ -8152,6 +8241,7 @@ msgstr "V následujících {0} dnech nekončí žádný závazek."
 
 #: templates/element/Dashboard/ending_obligations.php:43
 #: templates/element/Dashboard/manual_shutoff_debtors.php:42
+#: templates/element/Dashboard/power_outages.php:66
 #: templates/element/Dashboard/task_list.php:68
 msgid "and {0} more"
 msgstr "a {0} dalších"
@@ -8171,6 +8261,14 @@ msgstr "Neběží nic, na co by automatické blokování nedosáhlo."
 #: templates/element/Dashboard/manual_shutoff_debtors.php:13
 msgid "These keep running until somebody switches them off by hand."
 msgstr "Tyto služby běží dál, dokud je někdo ručně nevypne."
+
+#: templates/element/Dashboard/power_outages.php:28
+msgid "No planned outage is known for any of our access points."
+msgstr "U žádného našeho přístupového bodu není známa plánovaná odstávka."
+
+#: templates/element/Dashboard/power_outages.php:56
+msgid "Customer connections affected"
+msgstr "Dotčené zákaznické přípojky"
 
 #: templates/element/Dashboard/unsigned_contracts.php:20
 msgid "in effect and unsigned, still inside every deadline"
@@ -9322,90 +9420,3 @@ msgstr "Verze"
 
 #~ msgid "Related Phones"
 #~ msgstr "Související telefony"
-
-#: src/Service/OperatorReport.php:47
-msgid ""
-"APP_FULL_BASE_URL is not set, so the links in this report are relative and "
-"will not lead anywhere from somebody's mail."
-msgstr ""
-"Není nastaveno APP_FULL_BASE_URL, takže odkazy v tomto reportu jsou relativní "
-"a z e-mailu nikam nepovedou."
-
-#: src/Model/Enum/ContractPeriodSource.php:51
-msgid "From the contract versions"
-msgstr "Podle verzí smlouvy"
-
-#: src/Model/Enum/ContractPeriodSource.php:52
-msgid "From the installation and termination dates"
-msgstr "Podle data instalace/zřízení a ukončení poskytování služeb"
-
-#: src/Controller/OverviewsController.php:280
-msgid "The period ends before it begins, so nothing falls inside it."
-msgstr "Období končí dříve, než začíná, takže do něj nic nespadá."
-
-#: templates/Overviews/index.php:127
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:58
-msgid "Overview of New and Ending Contracts"
-msgstr "Přehled nových a končících smluv"
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:25
-msgid "Read the Period From"
-msgstr "Období počítat"
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:39
-msgid "To"
-msgstr "Do"
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:48
-msgid "Installation City"
-msgstr "Město instalace"
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:66
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:75
-msgid "Starting"
-msgstr "Začíná"
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:67
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:84
-msgid "Ending"
-msgstr "Končí"
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:68
-msgid "Net Change"
-msgstr "Čistá změna"
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:69
-msgid "A contract that begins and ends within the period is in both listings."
-msgstr "Smlouva, která v období začne i skončí, je v obou tabulkách."
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:78
-msgid "Starts On"
-msgstr "Začátek"
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:87
-msgid "Ends On"
-msgstr "Konec"
-
-#: src/Model/Enum/ContractPeriodSource.php:63
-msgid "From the installation and uninstallation dates"
-msgstr "Podle data instalace/zřízení a deinstalace/zrušení"
-
-#: src/Dashboard/Card/PowerOutagesCard.php:41
-msgid "Planned Power Outages"
-msgstr "Plánované odstávky elektřiny"
-
-#: templates/element/Dashboard/power_outages.php:28
-msgid "No planned outage is known for any of our access points."
-msgstr "U žádného našeho přístupového bodu není známa plánovaná odstávka."
-
-#: templates/element/Dashboard/power_outages.php:48
-msgid "Certain"
-msgstr "Jisté"
-
-#: templates/element/Dashboard/power_outages.php:49
-msgid "Probable"
-msgstr "Pravděpodobné"
-
-#: templates/element/Dashboard/power_outages.php:55
-msgid "Customer connections affected"
-msgstr "Dotčené zákaznické přípojky"

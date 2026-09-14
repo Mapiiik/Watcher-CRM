@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-13 19:42+0200\n"
+"POT-Creation-Date: 2026-09-14 18:17+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -215,8 +215,8 @@ msgstr ""
 
 #: ./src/BulkMessages/Filter/AccessPointFilter.php:164
 #: ./src/Controller/CustomerMessagesController.php:1017
-#: ./src/Controller/Traits/CommonViewVarListsTrait.php:62
-#: ./src/Controller/Traits/CommonViewVarListsTrait.php:80
+#: ./src/Controller/Traits/CommonViewVarListsTrait.php:112
+#: ./src/Controller/Traits/CommonViewVarListsTrait.php:130
 msgid "The access points list could not be loaded. Please, try again."
 msgstr ""
 
@@ -244,7 +244,7 @@ msgstr ""
 #: ./src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: ./src/Controller/Api/CustomersController.php:178
 #: ./src/Controller/OverviewsController.php:80
-#: ./src/Controller/OverviewsController.php:474
+#: ./src/Controller/OverviewsController.php:577
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr ""
 
@@ -1170,6 +1170,7 @@ msgstr ""
 #: ./src/Controller/BillingsController.php:605
 #: ./templates/CustomerMessages/add_bulk/step_compose.php:160
 #: ./templates/CustomerMessages/add_bulk/step_done.php:108
+#: ./templates/element/Overviews/contracts_in_period.php:21
 msgid "Contract Number"
 msgstr ""
 
@@ -1895,11 +1896,15 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:530
+#: ./src/Controller/OverviewsController.php:279
+msgid "The period ends before it begins, so nothing falls inside it."
+msgstr ""
+
+#: ./src/Controller/OverviewsController.php:633
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:532
+#: ./src/Controller/OverviewsController.php:635
 #: ./templates/Addresses/index.php:80
 #: ./templates/Addresses/index.php:87
 #: ./templates/Addresses/view.php:116
@@ -1912,7 +1917,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:817
+#: ./src/Controller/OverviewsController.php:920
 msgid "unknown dealer"
 msgstr ""
 
@@ -2084,6 +2089,7 @@ msgstr ""
 #: ./templates/element/AddressChecks/several_contracts_at_one_address.php:20
 #: ./templates/element/Contracts/facts.php:51
 #: ./templates/element/Contracts/related.php:29
+#: ./templates/element/Overviews/contracts_in_period.php:23
 msgid "Installation Address"
 msgstr ""
 
@@ -2126,7 +2132,7 @@ msgid_plural "There were {0} unfinished tasks found that do not have a user assi
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Controller/Traits/CommonViewVarListsTrait.php:93
+#: ./src/Controller/Traits/CommonViewVarListsTrait.php:143
 msgid "archived"
 msgstr ""
 
@@ -2233,6 +2239,10 @@ msgstr ""
 msgid "Debts Beyond Automatic Blocking"
 msgstr ""
 
+#: ./src/Dashboard/Card/PowerOutagesCard.php:40
+msgid "Planned Power Outages"
+msgstr ""
+
 #: ./src/Dashboard/Card/UnsignedContractsCard.php:92
 msgid "Outstanding Paperwork"
 msgstr ""
@@ -2288,19 +2298,19 @@ msgstr ""
 msgid "Contract data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:240
-#: ./src/Model/Entity/Contract.php:255
-#: ./src/Model/Entity/Contract.php:270
+#: ./src/Model/Entity/Contract.php:248
+#: ./src/Model/Entity/Contract.php:263
+#: ./src/Model/Entity/Contract.php:278
 msgid "Contract state data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:285
-#: ./src/Model/Entity/Contract.php:300
-#: ./src/Model/Entity/Contract.php:315
+#: ./src/Model/Entity/Contract.php:293
+#: ./src/Model/Entity/Contract.php:308
+#: ./src/Model/Entity/Contract.php:323
 msgid "Service type data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:327
+#: ./src/Model/Entity/Contract.php:335
 msgid "Contract versions data not available."
 msgstr ""
 
@@ -2389,6 +2399,18 @@ msgstr ""
 
 #: ./src/Model/Enum/BillingAddressProblem.php:49
 msgid "Several installation addresses"
+msgstr ""
+
+#: ./src/Model/Enum/ContractPeriodSource.php:67
+msgid "From the contract versions"
+msgstr ""
+
+#: ./src/Model/Enum/ContractPeriodSource.php:68
+msgid "From the installation and termination dates"
+msgstr ""
+
+#: ./src/Model/Enum/ContractPeriodSource.php:69
+msgid "From the installation and uninstallation dates"
 msgstr ""
 
 #: ./src/Model/Enum/ContractPrintType.php:33
@@ -2880,6 +2902,14 @@ msgstr ""
 msgid "Specialist"
 msgstr ""
 
+#: ./src/Model/Enum/OutageCertainty.php:38
+msgid "Certain"
+msgstr ""
+
+#: ./src/Model/Enum/OutageCertainty.php:39
+msgid "Probable"
+msgstr ""
+
 #: ./src/Model/Enum/ProposalPurpose.php:37
 msgid "New contract"
 msgstr ""
@@ -3034,16 +3064,16 @@ msgstr ""
 msgid "The minimum term cannot run out before the version it belongs to begins."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:346
+#: ./src/Model/Table/ContractsTable.php:430
 #: ./src/Model/Table/TasksTable.php:119
 msgid "The specified access point is not one Watcher NMS keeps."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:369
+#: ./src/Model/Table/ContractsTable.php:453
 msgid "The specified service type requires the assignment of an installation address."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:392
+#: ./src/Model/Table/ContractsTable.php:476
 msgid "The specified service type requires the assignment of an access point."
 msgstr ""
 
@@ -3229,6 +3259,10 @@ msgstr ""
 
 #: ./src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:358
 msgid "The network management system could not be asked about {0}."
+msgstr ""
+
+#: ./src/Service/OperatorReport.php:47
+msgid "APP_FULL_BASE_URL is not set, so the links in this report are relative and will not lead anywhere from somebody's mail."
 msgstr ""
 
 #: ./src/Versioning.php:53
@@ -3432,6 +3466,7 @@ msgstr ""
 #: ./templates/element/Contracts/related.php:40
 #: ./templates/element/CustomerChecks/customer_proposal.php:26
 #: ./templates/element/Customers/CustomerProposals.php:23
+#: ./templates/element/Overviews/contracts_in_period.php:25
 msgid "Actions"
 msgstr ""
 
@@ -3910,6 +3945,7 @@ msgstr ""
 #: ./templates/element/Contracts/Tasks.php:59
 #: ./templates/element/Contracts/related.php:104
 #: ./templates/element/Customers/CustomerProposals.php:54
+#: ./templates/element/Overviews/contracts_in_period.php:63
 #: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1225
 msgid "View"
 msgstr ""
@@ -4036,6 +4072,7 @@ msgstr ""
 #: ./templates/element/CustomerChecks/customer_proposal.php:20
 #: ./templates/element/CustomerProposals/form.php:22
 #: ./templates/element/Customers/heading.php:11
+#: ./templates/element/Overviews/contracts_in_period.php:20
 #: ./templates/element/Tasks/email_detail.php:73
 msgid "Customer"
 msgstr ""
@@ -4419,7 +4456,7 @@ msgstr ""
 #: ./templates/Billings/edit.php:22
 #: ./templates/Billings/service_change.php:24
 #: ./templates/Billings/view.php:23
-#: ./templates/Overviews/index.php:137
+#: ./templates/Overviews/index.php:142
 msgid "List Billings"
 msgstr ""
 
@@ -4705,7 +4742,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/add.php:15
 #: ./templates/BorrowedEquipments/edit.php:23
 #: ./templates/BorrowedEquipments/view.php:25
-#: ./templates/Overviews/index.php:147
+#: ./templates/Overviews/index.php:152
 msgid "List Borrowed Equipments"
 msgstr ""
 
@@ -5431,6 +5468,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/inactive_with_billing.php:25
 #: ./templates/element/Contracts/facts.php:29
 #: ./templates/element/Contracts/related.php:24
+#: ./templates/element/Overviews/contracts_in_period.php:24
 msgid "Contract State"
 msgstr ""
 
@@ -5504,7 +5542,7 @@ msgstr ""
 #: ./templates/ContractVersions/add.php:15
 #: ./templates/ContractVersions/edit.php:22
 #: ./templates/ContractVersions/view.php:26
-#: ./templates/Overviews/index.php:127
+#: ./templates/Overviews/index.php:132
 msgid "List Contract Versions"
 msgstr ""
 
@@ -5682,7 +5720,7 @@ msgid "Delete Contract"
 msgstr ""
 
 #: ./templates/Contracts/view.php:50
-#: ./templates/Overviews/index.php:132
+#: ./templates/Overviews/index.php:137
 msgid "List Contract Proposals"
 msgstr ""
 
@@ -5701,7 +5739,7 @@ msgstr ""
 
 #: ./templates/Contracts/view.php:65
 #: ./templates/Customers/view.php:78
-#: ./templates/Overviews/index.php:142
+#: ./templates/Overviews/index.php:147
 #: ./templates/ServiceOverrides/add.php:17
 #: ./templates/ServiceOverrides/edit.php:36
 #: ./templates/ServiceOverrides/view.php:37
@@ -5711,7 +5749,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:70
 #: ./templates/Customers/view.php:83
 #: ./templates/HistoricalConnections/view.php:13
-#: ./templates/Overviews/index.php:177
+#: ./templates/Overviews/index.php:182
 msgid "List Historical Connections"
 msgstr ""
 
@@ -6535,6 +6573,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/contract.php:28
 #: ./templates/element/Contracts/facts.php:36
 #: ./templates/element/Contracts/related.php:27
+#: ./templates/element/Overviews/contracts_in_period.php:22
 msgid "Service Type"
 msgstr ""
 
@@ -6685,6 +6724,7 @@ msgstr ""
 #: ./templates/HistoricalConnections/index.php:32
 #: ./templates/HistoricalConnections/view.php:70
 #: ./templates/HistoricalConnections/view.php:143
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:32
 msgid "From"
 msgstr ""
 
@@ -6763,7 +6803,7 @@ msgstr ""
 #: ./templates/IpAddresses/bulk_reassignment.php:16
 #: ./templates/IpAddresses/edit.php:18
 #: ./templates/IpAddresses/view.php:21
-#: ./templates/Overviews/index.php:157
+#: ./templates/Overviews/index.php:162
 msgid "List IP Addresses"
 msgstr ""
 
@@ -6828,7 +6868,7 @@ msgstr ""
 #: ./templates/IpNetworks/add.php:14
 #: ./templates/IpNetworks/edit.php:19
 #: ./templates/IpNetworks/view.php:22
-#: ./templates/Overviews/index.php:162
+#: ./templates/Overviews/index.php:167
 msgid "List IP Networks"
 msgstr ""
 
@@ -7019,21 +7059,26 @@ msgstr ""
 msgid "Overview of Contracts"
 msgstr ""
 
-#: ./templates/Overviews/index.php:152
+#: ./templates/Overviews/index.php:127
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:67
+msgid "Overview of New and Ending Contracts"
+msgstr ""
+
+#: ./templates/Overviews/index.php:157
 #: ./templates/SoldEquipments/add.php:15
 #: ./templates/SoldEquipments/edit.php:23
 #: ./templates/SoldEquipments/view.php:25
 msgid "List Sold Equipments"
 msgstr ""
 
-#: ./templates/Overviews/index.php:167
+#: ./templates/Overviews/index.php:172
 #: ./templates/RemovedIpAddresses/add.php:14
 #: ./templates/RemovedIpAddresses/edit.php:22
 #: ./templates/RemovedIpAddresses/view.php:25
 msgid "List Removed IP Addresses"
 msgstr ""
 
-#: ./templates/Overviews/index.php:172
+#: ./templates/Overviews/index.php:177
 #: ./templates/RemovedIpNetworks/add.php:14
 #: ./templates/RemovedIpNetworks/edit.php:22
 #: ./templates/RemovedIpNetworks/view.php:25
@@ -7066,6 +7111,7 @@ msgstr ""
 #: ./templates/Overviews/overview_of_czech_customer_connection_points.php:22
 #: ./templates/Overviews/overview_of_czech_customer_connection_speeds.php:22
 #: ./templates/Overviews/overview_of_dealer_commissions.php:22
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:66
 msgid "List Overviews"
 msgstr ""
 
@@ -7215,6 +7261,44 @@ msgstr ""
 
 #: ./templates/Overviews/overview_of_dealer_commissions.php:81
 msgid "Unknown"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:25
+msgid "Read the Period From"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:38
+msgid "To"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:55
+msgid "Installation City"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:74
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:83
+msgid "Starting"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:75
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:92
+msgid "Ending"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:76
+msgid "Net Change"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:77
+msgid "A contract that begins and ends within the period is in both listings."
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:87
+msgid "Starts On"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:96
+msgid "Ends On"
 msgstr ""
 
 #: ./templates/Phones/add.php:19
@@ -8280,6 +8364,7 @@ msgstr ""
 #: ./templates/element/Contracts/IpAddresses.php:69
 #: ./templates/element/Contracts/IpAddresses.php:82
 #: ./templates/element/Contracts/IpNetworks.php:52
+#: ./templates/element/Dashboard/power_outages.php:25
 #: ./templates/element/NMS/unavailable.php:20
 msgid "Data from Watcher NMS could not be loaded."
 msgstr ""
@@ -8400,6 +8485,7 @@ msgstr ""
 
 #: ./templates/element/Dashboard/ending_obligations.php:43
 #: ./templates/element/Dashboard/manual_shutoff_debtors.php:42
+#: ./templates/element/Dashboard/power_outages.php:66
 #: ./templates/element/Dashboard/task_list.php:68
 msgid "and {0} more"
 msgstr ""
@@ -8418,6 +8504,14 @@ msgstr ""
 
 #: ./templates/element/Dashboard/manual_shutoff_debtors.php:13
 msgid "These keep running until somebody switches them off by hand."
+msgstr ""
+
+#: ./templates/element/Dashboard/power_outages.php:28
+msgid "No planned outage is known for any of our access points."
+msgstr ""
+
+#: ./templates/element/Dashboard/power_outages.php:56
+msgid "Customer connections affected"
 msgstr ""
 
 #: ./templates/element/Dashboard/unsigned_contracts.php:20
@@ -8602,88 +8696,3 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-
-#: src/Service/OperatorReport.php:47
-msgid ""
-"APP_FULL_BASE_URL is not set, so the links in this report are relative and "
-"will not lead anywhere from somebody's mail."
-msgstr ""
-
-#: src/Model/Enum/ContractPeriodSource.php:51
-msgid "From the contract versions"
-msgstr ""
-
-#: src/Model/Enum/ContractPeriodSource.php:52
-msgid "From the installation and termination dates"
-msgstr ""
-
-#: src/Controller/OverviewsController.php:280
-msgid "The period ends before it begins, so nothing falls inside it."
-msgstr ""
-
-#: templates/Overviews/index.php:127
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:58
-msgid "Overview of New and Ending Contracts"
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:25
-msgid "Read the Period From"
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:39
-msgid "To"
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:48
-msgid "Installation City"
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:66
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:75
-msgid "Starting"
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:67
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:84
-msgid "Ending"
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:68
-msgid "Net Change"
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:69
-msgid "A contract that begins and ends within the period is in both listings."
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:78
-msgid "Starts On"
-msgstr ""
-
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:87
-msgid "Ends On"
-msgstr ""
-
-#: src/Model/Enum/ContractPeriodSource.php:63
-msgid "From the installation and uninstallation dates"
-msgstr ""
-
-#: src/Dashboard/Card/PowerOutagesCard.php:41
-msgid "Planned Power Outages"
-msgstr ""
-
-#: templates/element/Dashboard/power_outages.php:28
-msgid "No planned outage is known for any of our access points."
-msgstr ""
-
-#: templates/element/Dashboard/power_outages.php:48
-msgid "Certain"
-msgstr ""
-
-#: templates/element/Dashboard/power_outages.php:49
-msgid "Probable"
-msgstr ""
-
-#: templates/element/Dashboard/power_outages.php:55
-msgid "Customer connections affected"
-msgstr ""
