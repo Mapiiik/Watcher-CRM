@@ -943,7 +943,6 @@ class DashboardControllerTest extends TestCase
         $this->assertResponseContains('209');
         // the way on leads over there, because that is where the mast is kept
         $this->assertResponseContains('https://nms.example.com/access-points/' . self::ACCESS_POINT_ID);
-
     }
 
     /**
@@ -967,7 +966,6 @@ class DashboardControllerTest extends TestCase
         $this->assertResponseNotContains(
             (string)__('No planned outage is known for any of our access points.'),
         );
-
     }
 
     /**
