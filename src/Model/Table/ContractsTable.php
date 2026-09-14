@@ -6,11 +6,13 @@ namespace App\Model\Table;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ServiceType;
 use App\Model\Enum\AddressType;
+use App\Model\Enum\ContractPeriodSource;
 use App\Model\Rule\ExistingAccessPointRule;
 use App\Model\Validation\ContractStateValidator;
 use ArrayObject;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
+use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -297,6 +299,88 @@ class ContractsTable extends AppTable
         return $query
             ->innerJoinWith('ContractStates')
             ->where(['ContractStates.active_services' => true]);
+    }
+
+    /**
+     * Contracts whose life begins within the period, with the day it begins on each row.
+     *
+     * The day arrives as `starts_on`. It belongs to the query rather than to the record: a
+     * contract fetched any other way does not carry it.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query Query to narrow.
+     * @param \App\Model\Enum\ContractPeriodSource $source Which dates the period is read from.
+     * @param \Cake\I18n\Date $from First day of the period, counted in.
+     * @param \Cake\I18n\Date $to Last day of the period, counted in.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    public function findStartingBetween(
+        SelectQuery $query,
+        ContractPeriodSource $source,
+        Date $from,
+        Date $to,
+    ): SelectQuery {
+        return $this->withinPeriod($query, 'starts_on', $source->startsOnSql(), $from, $to);
+    }
+
+    /**
+     * Contracts whose life ends within the period, with the day it ends on each row.
+     *
+     * The day arrives as `ends_on`, and a contract that has not ended has none - which is
+     * what keeps the one still running out of a list of endings.
+     *
+     * A contract can answer to this and to {@see self::findStartingBetween()} both, having
+     * begun and ended inside the same period. The two listings are not halves of the file.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query Query to narrow.
+     * @param \App\Model\Enum\ContractPeriodSource $source Which dates the period is read from.
+     * @param \Cake\I18n\Date $from First day of the period, counted in.
+     * @param \Cake\I18n\Date $to Last day of the period, counted in.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    public function findEndingBetween(
+        SelectQuery $query,
+        ContractPeriodSource $source,
+        Date $from,
+        Date $to,
+    ): SelectQuery {
+        return $this->withinPeriod($query, 'ends_on', $source->endsOnSql(), $from, $to);
+    }
+
+    /**
+     * A date worked out per contract, shown as a column and required to fall inside the period.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query Query to narrow.
+     * @param string $alias What the worked-out date is called on the row.
+     * @param string $sql How it is worked out.
+     * @param \Cake\I18n\Date $from First day of the period, counted in.
+     * @param \Cake\I18n\Date $to Last day of the period, counted in.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    private function withinPeriod(
+        SelectQuery $query,
+        string $alias,
+        string $sql,
+        Date $from,
+        Date $to,
+    ): SelectQuery {
+        $date = $query->expr($sql);
+
+        // `selectAlso` rather than `select`: it leaves the automatic fields on, so the
+        // contract's own columns and those of everything contained still come back. A bare
+        // `select()` puts the query into explicit-fields mode and every table has to be
+        // named again by hand.
+        $query->selectAlso([$alias => $date]);
+
+        // Said outright, because an expression carries no type of its own and this would
+        // otherwise come back as a string that sorts and prints by its spelling.
+        $query->getSelectTypeMap()->addDefaults([$alias => 'date']);
+
+        // Worked out a second time rather than referred to by the name the select gives it:
+        // SQL does not let a WHERE see an output column. An ORDER BY may, so that one goes
+        // by the name.
+        return $query
+            ->where($query->expr()->between($date, $from, $to, 'date'))
+            ->orderBy([$alias => 'ASC']);
     }
 
     /**

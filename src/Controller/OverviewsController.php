@@ -12,9 +12,9 @@ use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
 use App\Model\Entity\Service;
+use App\Model\Enum\ContractPeriodSource;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractsTable;
-use App\Model\Table\ContractStatesTable;
 use App\Model\Table\DealerCommissionsTable;
 use App\Model\Table\LabelsTable;
 use App\Model\Table\ServicesTable;
@@ -248,17 +248,120 @@ class OverviewsController extends AppController
             'contracts',
         ));
 
-        // load contract states
-        $this->set(
-            'contractStates',
-            $this->fetchTable(ContractStatesTable::class)->find('list', order: [
-                'name',
-            ]),
-        );
-
+        $this->setContractStatesViewVarList();
         $this->setServiceTypesViewVarList();
         $this->setCtoCategoriesViewVarList();
         $this->setAccessPointsViewVarList();
+    }
+
+    /**
+     * Overview of contracts beginning and ending within a period.
+     *
+     * Two listings rather than one, because the question behind them is what the month did
+     * to the file: what came in, what went out, and which way the difference ran. They are
+     * not halves of anything - a contract signed and given up inside the same period is in
+     * both, and the net change is still the arithmetic it looks like.
+     *
+     * @return void Renders view
+     */
+    public function overviewOfNewAndEndingContracts(): void
+    {
+        $source = ContractPeriodSource::fromQuery($this->getRequest()->getQuery('source'));
+
+        $today = new Date('now');
+        $from = $this->queryDate('from') ?? $today->firstOfMonth();
+        $to = $this->queryDate('to') ?? $today->lastOfMonth();
+
+        // Left the way round it was asked rather than swapped: the form would otherwise show
+        // one period while the tables below answered about another, which is worse than two
+        // empty tables and a word saying why.
+        if ($from > $to) {
+            $this->Flash->warning(__('The period ends before it begins, so nothing falls inside it.'));
+        }
+
+        $starting = $this->contractsInPeriod('startingBetween', $source, $from, $to)->all();
+        $ending = $this->contractsInPeriod('endingBetween', $source, $from, $to)->all();
+
+        $this->set(compact('starting', 'ending', 'source', 'from', 'to'));
+
+        $this->setContractStatesViewVarList();
+        $this->setServiceTypesViewVarList();
+        $this->setInstallationCitiesViewVarList();
+    }
+
+    /**
+     * A date the query string names, where what it names is a date at all.
+     *
+     * @param string $name The query string key to read.
+     * @return \Cake\I18n\Date|null
+     */
+    private function queryDate(string $name): ?Date
+    {
+        $value = $this->getRequest()->getQuery($name);
+
+        return is_string($value) && Validation::date($value) ? new Date($value) : null;
+    }
+
+    /**
+     * One of the two listings, with the filters and containments that apply to both.
+     *
+     * Built afresh for each of them: a query holds on to what it fetched, so one cannot be
+     * asked two questions.
+     *
+     * @param string $finder Which end of the contract's life the period is asked about.
+     * @param \App\Model\Enum\ContractPeriodSource $source Which dates that is read from.
+     * @param \Cake\I18n\Date $from First day of the period, counted in.
+     * @param \Cake\I18n\Date $to Last day of the period, counted in.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    private function contractsInPeriod(
+        string $finder,
+        ContractPeriodSource $source,
+        Date $from,
+        Date $to,
+    ): SelectQuery {
+        // Said outright: the finder is named by a variable, and the type of what comes back
+        // cannot be read off a string.
+        /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract> $query */
+        $query = $this->fetchTable(ContractsTable::class)
+            ->find($finder, source: $source, from: $from, to: $to)
+            // Contained rather than joined: all four are shown, and every one of them is a
+            // `belongsTo`, so containing them costs the one join that filtering on them
+            // would have cost anyway.
+            ->contain(['Customers', 'ServiceTypes', 'ContractStates', 'InstallationAddresses'])
+            // Appended after the date the finder ordered by, so the listing reads in the
+            // order the period ran and ties come back the same way twice.
+            ->orderBy([
+                'Customers.company' => 'ASC',
+                'Customers.last_name' => 'ASC',
+                'Customers.first_name' => 'ASC',
+            ]);
+
+        $service_type_id = $this->getRequest()->getQuery('service_type_id');
+        if (is_string($service_type_id) && Validation::uuid($service_type_id)) {
+            $query->where(['Contracts.service_type_id' => $service_type_id]);
+        }
+
+        $contract_state_id = $this->getRequest()->getQuery('contract_state_id');
+        if (is_string($contract_state_id) && Validation::uuid($contract_state_id)) {
+            $query->where(['Contracts.contract_state_id' => $contract_state_id]);
+        }
+
+        // The empty string is what the form helper puts beside a multiple select so that a
+        // form clearing one says so. It is not a town, and passed on as one it would match
+        // nothing and empty both tables.
+        $cities = array_values(array_filter(
+            (array)$this->getRequest()->getQuery('cities', []),
+            static fn(mixed $city): bool => is_string($city) && $city !== '',
+        ));
+        if ($cities !== []) {
+            // Bound rather than spelled into the SQL the way the label filter above does:
+            // that one gets away with it by checking every value is a UUID first, and a town
+            // is whatever somebody typed.
+            $query->where(['InstallationAddresses.city IN' => $cities]);
+        }
+
+        return $query;
     }
 
     /**

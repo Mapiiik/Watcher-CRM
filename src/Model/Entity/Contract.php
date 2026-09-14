@@ -43,6 +43,14 @@ use RuntimeException;
  * @property bool $billed
  * @property bool $blocked
  *
+ * Of the query rather than of the record, and only where
+ * {@see \App\Model\Table\ContractsTable::findStartingBetween()} or
+ * {@see \App\Model\Table\ContractsTable::findEndingBetween()} have put them there: the day
+ * the contract's life begins and the day it ends, as the chosen source reads them. Fetched
+ * any other way, a contract does not carry these.
+ * @property \Cake\I18n\Date|null $starts_on
+ * @property \Cake\I18n\Date|null $ends_on
+ *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Address $installation_address
  * @property \App\Model\Entity\Address $billing_address

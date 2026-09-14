@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\OverviewsController;
+use App\Model\Enum\ContractPeriodSource;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -36,6 +38,7 @@ class OverviewsControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
+        'app.ContractVersions',
         'app.Labels',
         'app.CustomerLabels',
         'app.Queues',
@@ -482,6 +485,183 @@ class OverviewsControllerTest extends TestCase
         $this->get('/overviews/overview-of-active-services');
 
         // a role that may not reach an action is sent away rather than shown it
+        $this->assertRedirect();
+    }
+
+    /**
+     * Asked nothing, the page answers about the month being lived through.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingContracts()
+     */
+    public function testOverviewOfNewAndEndingContractsDefaultsToThisMonth(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-contracts');
+
+        $this->assertResponseOk();
+
+        $today = new Date('now');
+        $this->assertEquals($today->firstOfMonth(), $this->viewVariable('from'));
+        $this->assertEquals($today->lastOfMonth(), $this->viewVariable('to'));
+        $this->assertSame(ContractPeriodSource::Versions, $this->viewVariable('source'));
+    }
+
+    /**
+     * The switch is read off the query string, where anybody can put anything - an array
+     * among other things, which is what a `?string` would have fatalled on.
+     *
+     * @param string $query What arrives under the name.
+     * @return void
+     * @link \App\Model\Enum\ContractPeriodSource::fromQuery()
+     */
+    #[DataProvider('nonsenseSources')]
+    public function testTheSourceFallsBackToTheVersions(string $query): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-contracts?' . $query);
+
+        $this->assertResponseOk();
+        $this->assertSame(ContractPeriodSource::Versions, $this->viewVariable('source'));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function nonsenseSources(): array
+    {
+        return [
+            'a word that names nothing' => ['source=nonsense'],
+            'the empty companion of a radio group' => ['source='],
+            'an array where a name was expected' => ['source[]=versions'],
+        ];
+    }
+
+    /**
+     * The period the form shows is the period the tables answered about.
+     *
+     * Neither value source has anything to say when the query string is empty, so without
+     * the value being passed outright the boxes open blank over tables that have already
+     * decided on this month.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingContracts()
+     */
+    public function testTheFormShowsThePeriodItActuallyUsed(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-contracts');
+
+        $this->assertResponseOk();
+
+        $today = new Date('now');
+        $this->assertResponseContains('value="' . $today->firstOfMonth()->toDateString() . '"');
+        $this->assertResponseContains('value="' . $today->lastOfMonth()->toDateString() . '"');
+        $this->assertResponseContains('type="radio"');
+        $this->assertResponseContains('checked="checked"');
+    }
+
+    /**
+     * Every control auto-submits, the radio among them - there being no submit button to
+     * fall back on anywhere in the rack.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingContracts()
+     */
+    public function testTheFilterSubmitsOnChange(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-contracts');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('onchange="this.form.submit();"');
+    }
+
+    /**
+     * A form clearing a multiple select sends an empty string beside it. Taken for a town,
+     * it matches nothing and empties both tables.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingContracts()
+     */
+    public function testClearingTheCityFilterIsNotFilteringByNothing(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-contracts?from=1900-01-01&to=2100-01-01');
+        $this->assertResponseOk();
+        $unfiltered = $this->viewVariable('starting')->count();
+
+        $this->get(
+            '/overviews/overview-of-new-and-ending-contracts?from=1900-01-01&to=2100-01-01&cities[]=',
+        );
+        $this->assertResponseOk();
+
+        $this->assertSame(
+            $unfiltered,
+            $this->viewVariable('starting')->count(),
+            'Clearing the towns asks about all of them, not about none.',
+        );
+    }
+
+    /**
+     * A town is whatever somebody typed, so it is bound rather than spelled into the SQL -
+     * unlike the labels beside it, which get away with it by being checked for UUIDs first.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingContracts()
+     */
+    public function testTheCityFilterIsBoundRatherThanSpelled(): void
+    {
+        $this->login();
+
+        $this->get(
+            '/overviews/overview-of-new-and-ending-contracts'
+            . '?from=1900-01-01&to=2100-01-01&cities[]=' . urlencode("' OR 1=1 --"),
+        );
+
+        $this->assertResponseOk();
+        $this->assertCount(0, $this->viewVariable('starting'));
+    }
+
+    /**
+     * What came in and what went out over a month is when invoicing starts and stops.
+     *
+     * @param string $role The office role to open it as.
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingContracts()
+     */
+    #[DataProvider('addressProblemRoles')]
+    public function testOverviewOfNewAndEndingContractsIsOpenToTheOfficeRoles(string $role): void
+    {
+        $this->login($role);
+
+        $this->get('/overviews/overview-of-new-and-ending-contracts');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Network managers are admitted to the checks because what does not add up in the file
+     * is theirs to look up. This is not a check but a commercial report, and the listing of
+     * contracts beside it has always been shut to them.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingContracts()
+     */
+    public function testOverviewOfNewAndEndingContractsStaysShutToNetworkManagers(): void
+    {
+        $this->login('network-manager');
+
+        $this->get('/overviews');
+        $this->assertResponseOk('A role that cannot open the rack proves nothing about the rest.');
+
+        $this->get('/overviews/overview-of-new-and-ending-contracts');
+
         $this->assertRedirect();
     }
 }
