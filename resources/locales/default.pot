@@ -8602,3 +8602,9 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
+
+#: src/Service/OperatorReport.php:47
+msgid ""
+"APP_FULL_BASE_URL is not set, so the links in this report are relative and "
+"will not lead anywhere from somebody's mail."
+msgstr ""

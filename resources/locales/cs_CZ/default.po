@@ -9322,3 +9322,11 @@ msgstr "Verze"
 
 #~ msgid "Related Phones"
 #~ msgstr "Související telefony"
+
+#: src/Service/OperatorReport.php:47
+msgid ""
+"APP_FULL_BASE_URL is not set, so the links in this report are relative and "
+"will not lead anywhere from somebody's mail."
+msgstr ""
+"Není nastaveno APP_FULL_BASE_URL, takže odkazy v tomto reportu jsou relativní "
+"a z e-mailu nikam nepovedou."
