@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\NMS\Provider;
 
+use App\Model\Enum\OutageCertainty;
 use App\NMS\Dto\AccessPoint;
 use App\NMS\Dto\IpAddressRange;
+use App\NMS\Dto\PowerOutage;
 use App\NMS\Dto\RouterosDevice;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -65,6 +67,63 @@ final class NmsPayloadNormalizer
             // coordinate is written, so `gps_y` is the latitude.
             latitude: self::floatOrNull($entry['gps_y'] ?? null),
             longitude: self::floatOrNull($entry['gps_x'] ?? null),
+            raw: $entry,
+        );
+    }
+
+    /**
+     * The planned outages of a listing.
+     *
+     * @param array<mixed> $entries The listing as it arrived.
+     * @return \Cake\Collection\CollectionInterface<int, \App\NMS\Dto\PowerOutage>
+     */
+    public static function powerOutages(array $entries): CollectionInterface
+    {
+        /** @var array<int, \App\NMS\Dto\PowerOutage> $outages */
+        $outages = [];
+
+        foreach ($entries as $entry) {
+            $outage = is_array($entry) ? self::powerOutage($entry) : null;
+
+            if ($outage !== null) {
+                $outages[] = $outage;
+            }
+        }
+
+        return new Collection($outages);
+    }
+
+    /**
+     * One planned outage.
+     *
+     * An entry naming no mast is passed over: an outage this application cannot tie to a place of
+     * the network is an outage it can say nothing about.
+     *
+     * @param array<mixed> $entry The outage as it arrived.
+     * @return \App\NMS\Dto\PowerOutage|null
+     */
+    public static function powerOutage(array $entry): ?PowerOutage
+    {
+        $accessPointId = self::stringOrNull($entry['access_point_id'] ?? null);
+
+        if ($accessPointId === null) {
+            return null;
+        }
+
+        /** @var array<string, mixed> $entry */
+        return new PowerOutage(
+            accessPointId: $accessPointId,
+            accessPointName: self::stringOrNull($entry['access_point_name'] ?? null),
+            connections: self::intOrZero($entry['connections'] ?? null),
+            beginsAt: self::stringOrNull($entry['begins_at'] ?? null),
+            endsAt: self::stringOrNull($entry['ends_at'] ?? null),
+            // `tryFrom`, not `from`: the other application is deployed on its own schedule, and a
+            // word it starts using that this one has never heard of is not a reason to stop.
+            certainty: OutageCertainty::tryFrom((string)self::stringOrNull($entry['certainty'] ?? null)),
+            matchedBy: self::stringOrNull($entry['matched_by'] ?? null),
+            matchNote: self::stringOrNull($entry['match_note'] ?? null),
+            summary: self::stringOrNull($entry['summary'] ?? null),
+            announcementUrl: self::stringOrNull($entry['announcement_url'] ?? null),
             raw: $entry,
         );
     }
@@ -193,5 +252,20 @@ final class NmsPayloadNormalizer
     private static function floatOrNull(mixed $value): ?float
     {
         return is_scalar($value) && is_numeric($value) ? (float)$value : null;
+    }
+
+    /**
+     * A count, or nothing counted.
+     *
+     * Read as zero rather than as null where it is missing or nonsense: a number that is not there
+     * has to draw as something, and "no connections known" and "none" are near enough the same
+     * news beside an outage.
+     *
+     * @param mixed $value Value to read.
+     * @return int
+     */
+    private static function intOrZero(mixed $value): int
+    {
+        return is_scalar($value) && is_numeric($value) ? max(0, (int)$value) : 0;
     }
 }

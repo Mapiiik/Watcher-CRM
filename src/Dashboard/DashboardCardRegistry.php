@@ -18,6 +18,7 @@ use App\Dashboard\Card\DebtorsCard;
 use App\Dashboard\Card\EndingObligationsCard;
 use App\Dashboard\Card\LabelsCard;
 use App\Dashboard\Card\ManualShutoffDebtorsCard;
+use App\Dashboard\Card\PowerOutagesCard;
 use App\Dashboard\Card\UnsignedContractsCard;
 use App\Model\Table\ContractProposalsTable;
 use App\Model\Table\ContractsTable;
@@ -116,6 +117,13 @@ final class DashboardCardRegistry implements CardRegistryInterface
             $this->factories['manual_shutoff_debtors'] =
                 fn(): DashboardCardInterface => new ManualShutoffDebtorsCard($contracts);
         }
+
+        // Last of all, because it is the only card here whose answer is somebody else's: it is
+        // read over the network, it is the one that can fail to arrive, and what it reports is
+        // not this office's work but a morning its telephone is going to be busy. Registered
+        // under the id the network management system uses, so the two dashboards name the same
+        // thing the same way.
+        $this->factories['power_outages'] = fn(): DashboardCardInterface => new PowerOutagesCard();
     }
 
     /**

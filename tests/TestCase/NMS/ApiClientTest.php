@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\NMS;
 
+use App\Model\Enum\OutageCertainty;
 use App\NMS\ApiClient;
 use App\NMS\Dto\AccessPoint;
 use Cake\Cache\Cache;
@@ -332,6 +333,120 @@ class ApiClientTest extends TestCase
 
         $this->assertSame('RB5009', $device?->systemDescription);
         $this->assertSame('Hilltop', $device->accessPoint?->name);
+    }
+
+    /**
+     * A planned outage comes over with its mast, its grounds and what it stands to take out.
+     *
+     * The count is the one field this application cannot check or work out for itself - which
+     * masts feed which is not written down here - so it is read exactly as it arrives.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::getPowerOutages()
+     */
+    public function testTheAnswerIsReadIntoPowerOutages(): void
+    {
+        $this->mock('/api/power-outages.json', $this->jsonResponse(['powerOutages' => [[
+            'access_point_id' => '9c4f6b1e-2f0a-4d3c-9a71-6b0d5f8e2a14',
+            'access_point_name' => 'Hilltop',
+            'connections' => 209,
+            'begins_at' => '2026-09-16T08:00:00+02:00',
+            'ends_at' => '2026-09-16T13:00:00+02:00',
+            'certainty' => 'probable',
+            'matched_by' => 'address',
+            'match_note' => 'Main Street 12 (87 m)',
+            'summary' => 'Hilltop, Main Street',
+            'announcement_url' => 'https://cdn.example.com/1.pdf',
+        ]]]));
+
+        $outage = ApiClient::getPowerOutages()->orFail()->first();
+
+        $this->assertSame('Hilltop', $outage?->accessPointName);
+        $this->assertSame(209, $outage->connections);
+        $this->assertSame('Main Street 12 (87 m)', $outage->matchNote);
+        $this->assertSame(OutageCertainty::Probable, $outage->certainty);
+        $this->assertFalse($outage->isCertain(), 'A match made on an address is a guess.');
+    }
+
+    /**
+     * A word for the certainty that this application has never heard of reads as nothing.
+     *
+     * The other application is deployed on its own schedule. A third kind of match appearing
+     * there must not pass for a certainty here, nor stop the card from drawing at all.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::getPowerOutages()
+     */
+    public function testACertaintyNobodyKnowsIsNotACertainty(): void
+    {
+        $this->mock('/api/power-outages.json', $this->jsonResponse(['powerOutages' => [[
+            'access_point_id' => '9c4f6b1e-2f0a-4d3c-9a71-6b0d5f8e2a14',
+            'access_point_name' => 'Hilltop',
+            'certainty' => 'possibly-maybe',
+        ]]]));
+
+        $outage = ApiClient::getPowerOutages()->orFail()->first();
+
+        $this->assertSame('Hilltop', $outage?->accessPointName);
+        $this->assertNull($outage->certainty);
+        $this->assertFalse($outage->isCertain());
+    }
+
+    /**
+     * An outage naming no mast is passed over: there is nothing here to tie it to.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::getPowerOutages()
+     */
+    public function testAnOutageWithoutAMastIsPassedOver(): void
+    {
+        $this->mock('/api/power-outages.json', $this->jsonResponse(['powerOutages' => [
+            ['access_point_name' => 'Nowhere', 'connections' => 9],
+            ['access_point_id' => '9c4f6b1e-2f0a-4d3c-9a71-6b0d5f8e2a14'],
+        ]]));
+
+        $outages = ApiClient::getPowerOutages()->orFail();
+
+        $this->assertCount(1, $outages->toList());
+    }
+
+    /**
+     * A count that is missing or nonsense draws as none rather than stopping the reading.
+     *
+     * The other application is deployed on its own schedule, so a field it has not got yet is not
+     * a reason to show nothing at all.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::getPowerOutages()
+     */
+    public function testAnOutageWithoutACountIsStillAnOutage(): void
+    {
+        $this->mock('/api/power-outages.json', $this->jsonResponse(['powerOutages' => [[
+            'access_point_id' => '9c4f6b1e-2f0a-4d3c-9a71-6b0d5f8e2a14',
+            'access_point_name' => 'Hilltop',
+            'connections' => 'lots',
+        ]]]));
+
+        $outage = ApiClient::getPowerOutages()->orFail()->first();
+
+        $this->assertSame('Hilltop', $outage?->accessPointName);
+        $this->assertSame(0, $outage->connections);
+    }
+
+    /**
+     * An answer to a different question is not read as no outages.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::getPowerOutages()
+     */
+    public function testOutagesAnsweredWithSomethingElseAreUnanswered(): void
+    {
+        $this->mock('/api/power-outages.json', $this->jsonResponse(['something' => 'else']));
+
+        $answer = ApiClient::getPowerOutages();
+
+        $this->assertFalse($answer->ok());
+        $this->assertTrue($answer->unanswered());
     }
 
     /**

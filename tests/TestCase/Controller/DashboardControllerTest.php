@@ -6,12 +6,14 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\DashboardController;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Test\Traits\ControllerTestTrait;
+use App\Test\Traits\WatcherNmsAnswersTrait;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\I18n\Date;
 use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 
@@ -23,6 +25,7 @@ class DashboardControllerTest extends TestCase
 {
     use ControllerTestTrait;
     use IntegrationTestTrait;
+    use WatcherNmsAnswersTrait;
 
     /**
      * Customer the invoice and the contracts of the fixtures belong to.
@@ -58,6 +61,23 @@ class DashboardControllerTest extends TestCase
         'app.TaskCollaborators',
         'plugin.Bookkeeping.Invoices',
     ];
+
+    /**
+     * tearDown method
+     *
+     * Whatever a test said about the other application is taken back here rather than at the end
+     * of the test that said it: a test that fails says nothing more, and the one after it would
+     * then be run against a configuration it never asked for.
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        $this->withoutWatcherNms();
+
+        parent::tearDown();
+    }
 
     /**
      * The page must not sit at the bare `/dashboard`, whatever the router would otherwise
@@ -886,5 +906,78 @@ class DashboardControllerTest extends TestCase
         foreach ($card->data()['rows'] as $row) {
             $this->assertGreaterThan(0, $row['total']);
         }
+    }
+
+    /**
+     * The outage card names the mast, what it stands to take out, and where to read more.
+     *
+     * The count is the reason this card is here rather than only over there: the other application
+     * has the mast, this one has the telephone that rings.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\PowerOutagesCard::data()
+     */
+    public function testThePowerOutageCardNamesTheMastAndWhatHangsBelowIt(): void
+    {
+        $this->withWatcherNms();
+
+        $this->mockClientGet(
+            $this->powerOutagesUrl(),
+            $this->newClientResponse(200, ['Content-Type: application/json'], (string)json_encode([
+                'powerOutages' => [[
+                    'access_point_id' => self::ACCESS_POINT_ID,
+                    'access_point_name' => 'Hilltop',
+                    'connections' => 209,
+                    'begins_at' => '2026-09-16T08:00:00+02:00',
+                    'certainty' => 'probable',
+                    'summary' => 'Hilltop, Main Street',
+                ]],
+            ])),
+        );
+
+        $this->login('network-manager');
+        $this->get('/dashboard/card/power_outages');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('Hilltop');
+        $this->assertResponseContains('209');
+        // the way on leads over there, because that is where the mast is kept
+        $this->assertResponseContains('https://nms.example.com/access-points/' . self::ACCESS_POINT_ID);
+
+    }
+
+    /**
+     * A card that could not be filled says so. An empty one would read as an afternoon with
+     * nothing coming, which is the opposite of what an outage means.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\PowerOutagesCard::data()
+     */
+    public function testThePowerOutageCardSaysWhenTheOtherApplicationDidNotAnswer(): void
+    {
+        $this->withWatcherNms();
+
+        $this->mockClientGet($this->powerOutagesUrl(), $this->newClientResponse(500));
+
+        $this->login('network-manager');
+        $this->get('/dashboard/card/power_outages');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Data from Watcher NMS could not be loaded.'));
+        $this->assertResponseNotContains(
+            (string)__('No planned outage is known for any of our access points.'),
+        );
+
+    }
+
+    /**
+     * Where the outages are asked for, spelled the way the client asks for them.
+     *
+     * @return string
+     */
+    private function powerOutagesUrl(): string
+    {
+        return 'https://nms.example.com/api/power-outages.json?'
+            . http_build_query(['api_key' => 'secret'], '', '&', PHP_QUERY_RFC3986);
     }
 }

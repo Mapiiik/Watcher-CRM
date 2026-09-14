@@ -36,6 +36,14 @@ class Links
     }
 
     /**
+     * The overview of the outages the distributor has published over the network.
+     */
+    public static function plannedPowerOutages(): ?string
+    {
+        return self::to('/overviews/overview-of-planned-power-outages');
+    }
+
+    /**
      * A RouterOS device.
      */
     public static function routerosDevice(string $id): ?string

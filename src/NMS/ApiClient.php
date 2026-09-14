@@ -71,6 +71,22 @@ class ApiClient
     }
 
     /**
+     * The outages the distributor has published over the masts of the network.
+     *
+     * Asked of Watcher NMS rather than worked out here, because the whole of it is theirs: whose
+     * mast the distributor named, how sure that match is, and how many connections hang below the
+     * mast once every mast fed from it is counted too. This application knows which contract names
+     * which mast and nothing at all about which mast feeds which.
+     *
+     * @return \App\Http\Answer<\Cake\Collection\CollectionInterface<int, \App\NMS\Dto\PowerOutage>>
+     */
+    public static function getPowerOutages(): Answer
+    {
+        return self::read('power_outages', '/api/power-outages.json', 'powerOutages')
+            ->map(NmsPayloadNormalizer::powerOutages(...));
+    }
+
+    /**
      * The one access point a record names, or null where Watcher NMS keeps no such point.
      *
      * Picked out of every point it keeps rather than asked after by itself. A listing shows many
