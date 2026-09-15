@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-13 19:42+0200\n"
+"POT-Creation-Date: 2026-09-16 00:53+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,14 +14,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./templates/Contracts/documents.php:29
 #: ./templates/Contracts/view.php:44
-#: ./templates/Contracts/view.php:160
-#: ./templates/Customers/documents.php:29
+#: ./templates/Contracts/view.php:155
 #: ./templates/Customers/view.php:57
-#: ./templates/Customers/view.php:183
+#: ./templates/Customers/view.php:178
 #: ./templates/DocumentationTypes/view.php:73
 #: ./templates/Documentations/index.php:41
+#: ./templates/Documents/manage.php:52
 msgid "Documentations"
 msgstr ""
 
@@ -95,7 +94,7 @@ msgstr ""
 
 #: ./templates/DocumentationTypes/index.php:40
 #: ./templates/Documentations/index.php:48
-#: ./templates/Documentations/view.php:62
+#: ./templates/Documentations/view.php:63
 #: ./templates/element/DocumentationTypes/fields.php:9
 #: ./templates/element/Documentations/fields.php:45
 msgid "Name"
@@ -157,7 +156,7 @@ msgstr ""
 #: ./templates/DocumentationTypes/view.php:38
 #: ./templates/Documentations/index.php:26
 #: ./templates/Documentations/index.php:49
-#: ./templates/Documentations/view.php:66
+#: ./templates/Documentations/view.php:67
 #: ./templates/element/Documentations/fields.php:31
 msgid "Documentation Type"
 msgstr ""
@@ -196,19 +195,19 @@ msgid "New Documentation"
 msgstr ""
 
 #: ./templates/Documentations/index.php:46
-#: ./templates/Documentations/view.php:83
+#: ./templates/Documentations/view.php:84
 #: ./templates/element/Documentations/fields.php:18
 msgid "Customer"
 msgstr ""
 
 #: ./templates/Documentations/index.php:47
-#: ./templates/Documentations/view.php:92
+#: ./templates/Documentations/view.php:93
 #: ./templates/element/Documentations/fields.php:25
 msgid "Contract"
 msgstr ""
 
 #: ./templates/Documentations/index.php:50
-#: ./templates/Documentations/view.php:79
+#: ./templates/Documentations/view.php:80
 #: ./templates/element/Documentations/fields.php:36
 msgid "Happened On"
 msgstr ""
@@ -231,10 +230,10 @@ msgid "Delete Documentation"
 msgstr ""
 
 #: ./templates/Documentations/view.php:43
-msgid "Contract Documents"
+msgid "Documents"
 msgstr ""
 
-#: ./templates/Documentations/view.php:57
+#: ./templates/Documentations/view.php:58
 msgid "Documentation"
 msgstr ""
 
