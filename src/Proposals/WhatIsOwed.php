@@ -43,6 +43,24 @@ final class WhatIsOwed
     }
 
     /**
+     * Whether the round has any paper of its own at all.
+     *
+     * A round put to the customer that asks nothing of them is there to hold the papers of their
+     * contracts, and holds none itself - so there is nothing of its own to draw, nothing that went
+     * out, and nothing that can come back. Different from owing nothing, which is what a round
+     * whose papers are all drawn already says.
+     *
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The round.
+     * @return bool
+     */
+    public function mayHoldPapers(ContractProposal|CustomerProposal $round): bool
+    {
+        return $round instanceof ContractProposal
+            ? (new ProposalDocumentTypes())->options($round) !== []
+            : $round->purpose !== null;
+    }
+
+    /**
      * What to call each of them.
      *
      * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The round.

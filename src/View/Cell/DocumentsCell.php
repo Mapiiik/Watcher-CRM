@@ -168,6 +168,7 @@ class DocumentsCell extends Cell
                 'controller' => 'CustomerProposals',
                 'of' => $proposal,
                 'owed' => $owed->of($proposal),
+                'holds' => $owed->mayHoldPapers($proposal),
                 'label' => $proposal->effective_from . ' - ' . $proposal->whatItIsFor(),
                 // The column reads down a table, where the day leads and the dashes line up. The
                 // viewer reads across one line, where it wants a sentence instead.
@@ -191,6 +192,7 @@ class DocumentsCell extends Cell
                 'controller' => 'ContractProposals',
                 'of' => $proposal,
                 'owed' => $owed->of($proposal),
+                'holds' => $owed->mayHoldPapers($proposal),
                 'label' => $proposal->effective_from . ' - ' . $proposal->purpose->label(),
                 'says' => __('{0} from {1}', $proposal->purpose->label(), $proposal->effective_from),
                 'contract_id' => (string)$proposal->contract_id,
@@ -262,7 +264,10 @@ class DocumentsCell extends Cell
             return array_merge($rows, $this->whatHasNotBeenDrawn($round, $drawn));
         }
 
-        if ($rows === []) {
+        // Only where something could come back. A round that asks nothing of the customer holds no
+        // paper of its own, so it never sent one and none is coming - saying "nothing yet" there
+        // would be asking for a scan of a paper that does not exist.
+        if ($rows === [] && ($round['holds'] ?? true)) {
             $rows[] = $this->nothingYet($round, '', '');
         }
 

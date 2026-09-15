@@ -138,6 +138,42 @@ class WhatIsMissingIsListedTest extends TestCase
     }
 
     /**
+     * A round that asks nothing of the customer holds only the papers of their contracts, so it
+     * has no paper of its own - nothing went out for it and nothing is coming. It says nothing on
+     * the side that comes back, rather than waiting for a scan that cannot exist. This is what a
+     * round made by the backfill looks like, so it is the common one.
+     *
+     * @return void
+     */
+    public function testARoundWithNoPaperOfItsOwnWaitsForNothing(): void
+    {
+        $rounds = $this->getTableLocator()->get('CustomerProposals');
+        $rounds->saveOrFail(
+            $rounds->patchEntity($rounds->get(self::ROUND_ID), ['purpose' => null]),
+            ['checkRules' => false],
+        );
+
+        $this->login();
+
+        foreach ($this->papersPages() as $whose => $url) {
+            $this->get($url);
+            $this->assertResponseOk();
+
+            // The round is still listed among the proposals, which is where it belongs - what it
+            // must not do is stand among the papers asking for a scan.
+            $this->assertResponseNotContains(
+                '/documents/add-pages?proposal_id=' . self::ROUND_ID,
+                'The papers of ' . $whose . ' ask for a scan of a paper the round never had.',
+            );
+            // Its contract's papers are still waiting for theirs.
+            $this->assertResponseContains(
+                '/documents/add-pages?proposal_id=' . self::PROPOSAL_ID,
+                'The papers of ' . $whose . ' forgot the contract that is waiting for a scan.',
+            );
+        }
+    }
+
+    /**
      * The card on the customer reads the papers too, and there an empty round is noise.
      *
      * @return void

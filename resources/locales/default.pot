@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 01:12+0200\n"
+"POT-Creation-Date: 2026-09-16 01:34+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1723,8 +1723,8 @@ msgstr ""
 
 #: ./src/Controller/DocumentsController.php:472
 #: ./src/Model/Entity/ContractProposal.php:252
-#: ./src/View/Cell/DocumentsCell.php:174
-#: ./src/View/Cell/DocumentsCell.php:195
+#: ./src/View/Cell/DocumentsCell.php:175
+#: ./src/View/Cell/DocumentsCell.php:197
 #: ./templates/ContractProposals/view.php:103
 #: ./templates/element/ContractProposals/heading.php:27
 #: ./templates/element/CustomerProposals/heading.php:16
