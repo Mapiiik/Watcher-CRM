@@ -152,6 +152,27 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
+     * Each step of the whereabouts lets go of every storey underneath it, not only the nearest.
+     * What the address carries is injected one key at a time, so a step that drops the contract
+     * and says nothing about the version takes the reader back to a contract still narrowed to
+     * one version of it.
+     *
+     * @link \App\Controller\DocumentsController::manage()
+     * @return void
+     */
+    public function testEachStepOfTheWhereaboutsLetsGoOfEverythingUnderIt(): void
+    {
+        $this->login();
+        $this->get(self::AT_THE_VERSION . '/documents/manage');
+
+        $this->assertResponseOk();
+        // Back to the contract, with the version behind.
+        $this->assertResponseContains(self::NESTED . '/documents/manage"');
+        // And back to the customer, with both behind.
+        $this->assertResponseContains('/customers/' . self::CUSTOMER_ID . '/documents/manage"');
+    }
+
+    /**
      * The register renders wherever it is asked for, and reads like the other listings - a filter
      * over it, a pager under it, and every row a way on to the papers themselves.
      *

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 01:34+0200\n"
+"POT-Creation-Date: 2026-09-16 01:53+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1857,7 +1857,7 @@ msgstr "Ta stránka patří k něčemu jinému."
 #: templates/ContractProposals/view.php:103
 #: templates/element/ContractProposals/heading.php:27
 #: templates/element/CustomerProposals/heading.php:16
-#: templates/element/Documents/whereabouts.php:57
+#: templates/element/Documents/whereabouts.php:62
 msgid "{0} from {1}"
 msgstr "{0} od {1}"
 
@@ -7384,6 +7384,7 @@ msgid "Nothing has come back yet."
 msgstr "Zatím nic nepřišlo zpátky."
 
 #: templates/cell/Documents/display.php:99
+#: templates/element/Documents/rounds.php:42
 msgid "Proposal"
 msgstr "Návrh"
 
@@ -8181,10 +8182,6 @@ msgstr "Otevřít problémy smluv"
 msgid "No papers have been drawn up here yet."
 msgstr "Zatím tu nebyly založené žádné papíry."
 
-#: templates/element/Documents/rounds.php:42
-msgid "Round"
-msgstr "Návrh"
-
 #: templates/element/Documents/rounds.php:43
 msgid "State"
 msgstr "Stav"
@@ -8337,6 +8334,9 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:287
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Round"
+#~ msgstr "Návrh"
 
 #~ msgid "What Came Back"
 #~ msgstr "Co přišlo zpátky"

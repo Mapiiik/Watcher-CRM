@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 01:34+0200\n"
+"POT-Creation-Date: 2026-09-16 01:53+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1728,7 +1728,7 @@ msgstr ""
 #: ./templates/ContractProposals/view.php:103
 #: ./templates/element/ContractProposals/heading.php:27
 #: ./templates/element/CustomerProposals/heading.php:16
-#: ./templates/element/Documents/whereabouts.php:57
+#: ./templates/element/Documents/whereabouts.php:62
 msgid "{0} from {1}"
 msgstr ""
 
@@ -7728,6 +7728,7 @@ msgid "Nothing has come back yet."
 msgstr ""
 
 #: ./templates/cell/Documents/display.php:99
+#: ./templates/element/Documents/rounds.php:42
 msgid "Proposal"
 msgstr ""
 
@@ -8412,10 +8413,6 @@ msgstr ""
 
 #: ./templates/element/Documents/rounds.php:33
 msgid "No papers have been drawn up here yet."
-msgstr ""
-
-#: ./templates/element/Documents/rounds.php:42
-msgid "Round"
 msgstr ""
 
 #: ./templates/element/Documents/rounds.php:43

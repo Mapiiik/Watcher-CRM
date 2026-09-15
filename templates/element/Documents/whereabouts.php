@@ -6,6 +6,9 @@
  * links to itself and lets go of everything under it. The last step is where the page already is,
  * so it is said rather than offered.
  *
+ * Every storey underneath has to be let go of by name: what the address carries is injected one
+ * key at a time, so dropping the contract does not take the version with it.
+ *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var \App\Model\Entity\Contract|null $contract
@@ -23,6 +26,7 @@ $steps[] = [
     'url' => [
         'action' => 'manage',
         'contract_id' => null,
+        'contract_version_id' => null,
         '?' => [],
     ],
 ];
@@ -32,6 +36,7 @@ if ($contract !== null) {
         'said' => $contract->getName(),
         'url' => [
             'action' => 'manage',
+            'contract_version_id' => null,
             '?' => [],
         ],
     ];

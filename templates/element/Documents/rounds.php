@@ -39,7 +39,7 @@ $heading = function (string $field, string $said) use ($paged): string {
                 <?php if ($showCustomer) : ?>
                 <th><?= __('Customer') ?></th>
                 <?php endif; ?>
-                <th><?= $heading('CustomerProposals.effective_from', __('Round')) ?></th>
+                <th><?= $heading('CustomerProposals.effective_from', __('Proposal')) ?></th>
                 <th><?= __('State') ?></th>
                 <th><?= $heading('CustomerProposals.sent_date', __('Sent')) ?></th>
                 <th><?= $heading('CustomerProposals.conclusion_date', __('Signed')) ?></th>
