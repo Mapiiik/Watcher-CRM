@@ -97,13 +97,16 @@ class UnsignedProposalCheck extends AbstractContractCheck
         $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
         $query = $this->proposals->find('open')
-            ->contain(['Contracts', 'ContractVersions'])
-            ->innerJoinWith('Contracts');
+            // Whether the papers went out and came back is the envelope's to say, and the rows
+            // print it, so it is read as well as joined.
+            ->contain(['Contracts', 'ContractVersions', 'CustomerProposals'])
+            ->innerJoinWith('Contracts')
+            ->innerJoinWith('CustomerProposals');
 
         // The wait holds whichever question is being asked. Papers posted this week are not a
         // fault anywhere, a contract's own card included - what the wider reading adds is the
         // contracts that serve nobody, not the post that is still in transit.
-        LateProposals::unanswered($query, 'ContractProposals', $after);
+        LateProposals::unanswered($query, 'ContractProposals', $after, 'CustomerProposals');
 
         if ($this->ignore_inactive) {
             $this->onlyRunningContracts($query);

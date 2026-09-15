@@ -26,13 +26,15 @@
         echo $this->Form->hidden('customer_id');
     }
 
+    // A round may be for nothing of the customer's own and only hold its contracts' papers, so
+    // this may be left alone.
     echo $this->Form->control('purpose', [
         'options' => $purposes,
-        'empty' => true,
+        'empty' => __('Nothing'),
         'label' => __('Purpose'),
-        'required' => true,
-        'help' => __('What the papers are for. Which document that turns into is settled when one'
-            . ' is printed.'),
+        'required' => false,
+        'help' => __('What the papers ask of the customer themselves. Left alone, the round only'
+            . ' holds the papers of their contracts.'),
     ]);
     echo $this->Form->control('effective_from', [
         'label' => __('Effective From'),
@@ -43,5 +45,10 @@
         'label' => __('Note'),
         'help' => __('For the office. It does not reach the paper.'),
     ]);
+
+    if ($customerProposal->isNew()) {
+        echo '<p>' . __('Papers of the contracts go out in this round as well. They are drawn up'
+            . ' one at a time, on the proposal of the contract they are about.') . '</p>';
+    }
     ?>
 </fieldset>

@@ -91,10 +91,19 @@ class UnfiledSignatureCheck extends AbstractContractCheck
         $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
         $query = $this->proposals->find()
-            ->contain(['Contracts', 'ContractVersions'])
-            ->innerJoinWith('Contracts');
+            // Whether the papers went out and came back is the envelope's to say, and the rows
+            // print it, so it is read as well as joined.
+            ->contain(['Contracts', 'ContractVersions', 'CustomerProposals'])
+            ->innerJoinWith('Contracts')
+            ->innerJoinWith('CustomerProposals');
 
-        LateProposals::unfiled($query, 'ContractProposals', ContractDocuments::MODEL, $after);
+        LateProposals::unfiled(
+            $query,
+            'ContractProposals',
+            ContractDocuments::MODEL,
+            $after,
+            'CustomerProposals',
+        );
 
         if ($this->ignore_inactive) {
             $this->onlyRunningContracts($query);

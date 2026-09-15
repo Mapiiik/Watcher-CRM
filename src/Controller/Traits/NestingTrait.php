@@ -65,6 +65,15 @@ trait NestingTrait
      */
     protected ?string $contract_id = null;
 
+    /*
+     * Contract version ID
+     *
+     * A storey the routes may carry under the contract, and the one the nesting is not answerable
+     * for: papers of a contract may speak about no version at all, so a page is never sent to a
+     * version it did not ask for. What it is read for is narrowing what a page shows.
+     */
+    protected ?string $contract_version_id = null;
+
     /**
      * Load and set the ids the route carries.
      *
@@ -79,6 +88,10 @@ trait NestingTrait
         # Load selected contract ID from request
         $this->contract_id = $this->getRequest()->getParam('contract_id');
         $this->set('contract_id', $this->contract_id);
+
+        # Load selected contract version ID from request
+        $this->contract_version_id = $this->getRequest()->getParam('contract_version_id');
+        $this->set('contract_version_id', $this->contract_version_id);
     }
 
     /**
@@ -286,6 +299,8 @@ trait NestingTrait
      */
     protected function dataWithNesting(Table $table, array $data): array
     {
+        // The version is deliberately left out: the forms under it render it as a field of
+        // their own, and a route quietly overruling what somebody chose would be a lie on screen.
         $parameters = [
             'customer_id' => $this->customer_id,
             'contract_id' => $this->contract_id,

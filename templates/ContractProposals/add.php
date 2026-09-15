@@ -8,9 +8,13 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php
+            // Where these papers live. The address the form was opened under comes along, so it
+            // lands on the customer or the contract being worked on.
+            ?>
             <?= $this->AuthLink->link(
-                __('List Proposals'),
-                ['action' => 'index'],
+                __('Documents'),
+                ['plugin' => null, 'controller' => 'Documents', 'action' => 'manage'],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>

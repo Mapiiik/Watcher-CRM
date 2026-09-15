@@ -75,6 +75,29 @@ return function (RouteBuilder $routes): void {
         $builder->setExtensions(['pdf', 'csv']);
 
         /*
+        * Contract versions - nested routes
+        *
+        * Connected before the contract's own, which would otherwise read the version's id as an
+        * action. Nothing is addressed at a version itself - it is a storey a page may stand on,
+        * not a page of its own.
+        */
+        $underAVersion = '/customers/{customer_id}/contracts/{contract_id}'
+            . '/contract-versions/{contract_version_id}';
+        $nestedIds = [
+            'customer_id' => RouteBuilder::UUID,
+            'contract_id' => RouteBuilder::UUID,
+            'contract_version_id' => RouteBuilder::UUID,
+        ];
+
+        $builder
+            ->connect($underAVersion . '/{controller}', ['action' => 'index'])
+            ->setPatterns($nestedIds);
+
+        $builder
+            ->connect($underAVersion . '/{controller}/{action}/*', [])
+            ->setPatterns($nestedIds);
+
+        /*
         * Contracts - nested routes
         */
         $builder
@@ -93,7 +116,7 @@ return function (RouteBuilder $routes): void {
                 'controller' => 'Contracts',
             ])
             ->setPatterns([
-                'action' => 'edit|delete|print|documents|map'
+                'action' => 'edit|delete|print|map'
                     . '|set-dates-for-related-borrowed-equipments|terminate-related-billings',
                 'customer_id' => RouteBuilder::UUID,
                 'contract_id' => RouteBuilder::UUID,
@@ -134,7 +157,7 @@ return function (RouteBuilder $routes): void {
                 'controller' => 'Customers',
             ])
             ->setPatterns([
-                'action' => 'edit|delete|print|documents',
+                'action' => 'edit|delete|print',
                 'customer_id' => RouteBuilder::UUID,
             ])
             ->setPass(['customer_id']);
@@ -319,7 +342,7 @@ return function (RouteBuilder $routes): void {
         //inject customer_id and contract_id, unless the caller asked for
         //something else - passing null opts out, for links meant to leave
         //the nesting behind. Note isset() would not see that null.
-        foreach (['customer_id', 'contract_id'] as $nesting) {
+        foreach (['customer_id', 'contract_id', 'contract_version_id'] as $nesting) {
             if ($request->getParam($nesting) && !array_key_exists($nesting, $params)) {
                 $params[$nesting] = $request->getParam($nesting);
             }
@@ -341,6 +364,13 @@ return function (RouteBuilder $routes): void {
         }
         if (!isset($params['controller']) && $request->getParam('controller') == 'Contracts') {
             unset($params['contract_id']);
+        }
+
+        if (isset($params['controller']) && $params['controller'] == 'ContractVersions') {
+            unset($params['contract_version_id']);
+        }
+        if (!isset($params['controller']) && $request->getParam('controller') == 'ContractVersions') {
+            unset($params['contract_version_id']);
         }
 
         return $params;

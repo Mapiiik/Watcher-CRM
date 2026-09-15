@@ -59,6 +59,7 @@ class ProposalTransferTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'plugin.Settings.Settings',
     ];
@@ -74,6 +75,23 @@ class ProposalTransferTest extends TestCase
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposal = $proposals->get(self::PROPOSAL_ID);
 
+        // The sending and the signature are the envelope's, so that half of what a test says is
+        // said there.
+        $ofTheRound = array_intersect_key(
+            $says,
+            array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
+        );
+
+        if ($ofTheRound !== []) {
+            $envelopes = $this->getTableLocator()->get('CustomerProposals');
+            $envelopes->saveOrFail(
+                $envelopes->patchEntity($envelopes->get($proposal->customer_proposal_id), $ofTheRound),
+                ['checkRules' => false],
+            );
+        }
+
+        $says = array_diff_key($says, $ofTheRound);
+
         if ($says !== []) {
             $proposals->saveOrFail(
                 $proposals->patchEntity($proposal, $says),
@@ -81,7 +99,8 @@ class ProposalTransferTest extends TestCase
             );
         }
 
-        return $proposals->get(self::PROPOSAL_ID);
+        // What it is read with is what asks about its state: the round it goes out in.
+        return $proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
     }
 
     /**
@@ -392,6 +411,90 @@ class ProposalTransferTest extends TestCase
 
         // the paper said "amendment no. 2", so that is what the version is left holding
         $this->assertSame(2, $versions->get(self::VERSION_ID)->get('number_of_amendments'));
+    }
+
+    /**
+     * The proposal as the form draws one up whose version is still to come: no version named, and
+     * a snapshot of the version as it will be rather than of one that is already there.
+     *
+     * @param array<string, mixed> $says What else it says.
+     * @return \App\Model\Entity\ContractProposal
+     */
+    private function proposalWithoutAVersion(array $says = []): ContractProposal
+    {
+        $proposal = $this->proposal();
+        $snapshot = $proposal->snapshot;
+
+        $snapshot['version'] = [
+            'id' => null,
+            'contract_id' => self::CONTRACT_ID,
+            'valid_from' => $says['effective_from'] ?? '2026-11-01',
+            'valid_until' => null,
+            'obligation_until' => null,
+            'conclusion_date' => null,
+            'number_of_amendments' => 0,
+        ];
+
+        return $this->proposal($says + [
+            'contract_version_id' => null,
+            'snapshot' => $snapshot,
+        ]);
+    }
+
+    /**
+     * Papers for a new contract may be drawn up before the version they are about exists, and
+     * carrying them over is what brings it into being. It starts on the day the papers take effect
+     * and takes the day they were signed, so the record says what the paper said.
+     *
+     * @return void
+     */
+    public function testAProposalWithoutAVersionStartsOneWhenItIsCarriedOver(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $before = $versions->find()->where(['contract_id' => self::CONTRACT_ID])->count();
+
+        $proposal = $this->proposalWithoutAVersion([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'effective_from' => '2026-11-01',
+            'conclusion_date' => '2026-10-20',
+        ]);
+
+        (new ProposalTransfer())->carryOver($proposal);
+
+        $this->assertSame(
+            $before + 1,
+            $versions->find()->where(['contract_id' => self::CONTRACT_ID])->count(),
+        );
+
+        $carried = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+        $this->assertNotNull($carried->contract_version_id, 'The papers did not keep their version.');
+
+        $started = $versions->get($carried->contract_version_id);
+        $this->assertSame('2026-11-01', $started->valid_from->toDateString());
+        $this->assertSame('2026-10-20', $started->conclusion_date?->toDateString());
+        $this->assertSame(0, $started->get('number_of_amendments'));
+    }
+
+    /**
+     * And a paper that starts a version does not amend it, whatever it is for - the version has no
+     * signature of its own until this very paper gives it one.
+     *
+     * @return void
+     */
+    public function testAVersionBeingStartedIsNeverAnAmendment(): void
+    {
+        $proposal = $this->proposalWithoutAVersion([
+            'purpose' => ProposalPurpose::ServiceChange->value,
+            'effective_from' => '2026-11-01',
+            'conclusion_date' => '2026-10-20',
+        ]);
+
+        (new ProposalTransfer())->carryOver($proposal);
+
+        $carried = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+        $started = $this->getTableLocator()->get('ContractVersions')->get($carried->contract_version_id);
+
+        $this->assertSame(0, $started->get('number_of_amendments'));
     }
 
     /**

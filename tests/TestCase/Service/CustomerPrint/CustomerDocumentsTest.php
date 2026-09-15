@@ -74,8 +74,8 @@ class CustomerDocumentsTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
-        'app.ContractProposals',
         'app.CustomerProposals',
+        'app.ContractProposals',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
         'plugin.Settings.Settings',
@@ -184,7 +184,7 @@ class CustomerDocumentsTest extends TestCase
     {
         $this->print($this->round());
 
-        $this->get(sprintf('/customers/%s/documents', self::CUSTOMER_ID));
+        $this->get(sprintf('/customers/%s/documents/manage', self::CUSTOMER_ID));
 
         $this->assertResponseOk();
         $this->assertResponseContains('Consent to the processing of personal data');
@@ -212,7 +212,7 @@ class CustomerDocumentsTest extends TestCase
             ContractPrintType::ContractAmendment->value,
         );
 
-        $this->get(sprintf('/customers/%s/documents', self::CUSTOMER_ID));
+        $this->get(sprintf('/customers/%s/documents/manage', self::CUSTOMER_ID));
 
         $this->assertResponseOk();
         $body = (string)$this->_response?->getBody();
@@ -241,15 +241,17 @@ class CustomerDocumentsTest extends TestCase
             DocumentVariant::Generated,
         );
 
-        $this->get(sprintf('/customers/%s/print', self::CUSTOMER_ID));
+        $this->get(sprintf('/customers/%s/documents/manage', self::CUSTOMER_ID));
 
         $this->assertResponseOk();
-        $this->assertResponseContains(__('Documents Already Generated'));
+        $this->assertResponseContains(__('Generated Documents'));
         // The label alone would be the round's own name as well, so the row is what is looked for.
         $this->assertResponseContains(sprintf('/files/file-links/download/%s', $this->ourRound()->id));
-        $this->assertResponseNotContains(
+        // Both sides at once is the point of standing on the customer: the papers of their
+        // contracts used to be somewhere else entirely.
+        $this->assertResponseContains(
             sprintf('/files/file-links/download/%s', $theContracts->id),
-            'A paper of a contract is not what this form draws.',
+            'The papers of the contracts are missing from the customer they belong to.',
         );
     }
 
@@ -257,7 +259,7 @@ class CustomerDocumentsTest extends TestCase
      * The signature is a date, and the scan of it arrives when the post does. Recording the one
      * therefore closes no door on the other.
      *
-     * @link \App\Controller\CustomerProposalsController::addPages()
+     * @link \App\Controller\DocumentsController::addPages()
      * @return void
      */
     public function testAScanIsStillFiledAfterTheSignatureHasBeenRecorded(): void
@@ -277,50 +279,13 @@ class CustomerDocumentsTest extends TestCase
         $this->replaceRequest(['files' => ['papers' => [
             new UploadedFile($scan, (int)filesize($scan), UPLOAD_ERR_OK, 'scan.pdf', null),
         ]]]);
-        $this->post('/customer-proposals/add-pages/' . $round, [
-            'document_type' => CustomerPrintType::GdprNew->value,
-            'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
-        ]);
-        $this->assertRedirect();
-        $this->replaceRequest([]);
-        unlink($scan);
-
-        $this->assertSame(1, $this->filed(DocumentVariant::ReceivedSignedByCustomer));
-    }
-
-    /**
-     * The signature form offers the documents the round was printed as, because nothing else can
-     * have come back - and files what comes with it in one go.
-     *
-     * @link \App\Controller\CustomerProposalsController::conclude()
-     * @return void
-     */
-    public function testTheScanComesInWithTheSignature(): void
-    {
-        $round = $this->round();
-        $this->print($round);
-
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->setUnlockedFields(['papers']);
-
-        $this->get(self::NESTED . '/customer-proposals/conclude/' . $round);
-        $this->assertResponseOk();
-        $this->assertResponseContains('papers[' . CustomerPrintType::GdprNew->value . '][]');
-
-        $scan = $this->scan();
-        $this->replaceRequest(['files' => ['papers' => [
-            CustomerPrintType::GdprNew->value => [
-                new UploadedFile($scan, (int)filesize($scan), UPLOAD_ERR_OK, 'signed.pdf', null),
+        $this->post(
+            '/documents/add-pages?proposal_id=' . $round . '&agenda=CustomerProposals',
+            [
+                'document_type' => $round . '/' . CustomerPrintType::GdprNew->value,
+                'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
             ],
-        ]]]);
-        $this->post('/customer-proposals/conclude/' . $round, [
-            'conclusion_date' => '2026-10-05',
-            'variants' => [
-                CustomerPrintType::GdprNew->value => DocumentVariant::ReceivedSignedByCustomer->value,
-            ],
-        ]);
-
+        );
         $this->assertRedirect();
         $this->replaceRequest([]);
         unlink($scan);
@@ -340,10 +305,17 @@ class CustomerDocumentsTest extends TestCase
         $round = $this->round();
         $this->print($round);
 
+        // The proposal's own page says how many there are and leads to them; the papers
+        // themselves are read where they are worked on.
         $this->get(self::NESTED . '/customer-proposals/view/' . $round);
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Papers on File'));
+        $this->assertResponseContains('proposal_id=' . $round);
+
+        $this->get(sprintf('/customers/%s/documents/manage?proposal_id=%s', self::CUSTOMER_ID, $round));
+
+        $this->assertResponseOk();
         $this->assertResponseContains(sprintf('/files/file-links/download/%s', $this->ourRound()->id));
     }
 
@@ -356,7 +328,7 @@ class CustomerDocumentsTest extends TestCase
     private function print(string $round): string
     {
         $this->get(sprintf(
-            '/customers/%s/print.pdf?proposal_id=%s&document_type=%s',
+            '/customers/%s/documents/generate.pdf?agenda=CustomerProposals&proposal_id=%s&document_type=%s',
             self::CUSTOMER_ID,
             $round,
             CustomerPrintType::GdprNew->value,

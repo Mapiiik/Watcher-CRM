@@ -35,22 +35,31 @@ use App\Contracts\Proposal\TransferPlan;
         </thead>
         <tbody>
         <?php foreach ($planned as $write) : ?>
+            <?php
+            // A record the papers are about to bring into being has nowhere to be looked at, so
+            // it is named and left at that.
+            $recordCell = h($write->record);
+
+            if ($write->id !== null) {
+                $recordCell = $this->Html->link(
+                    $write->record,
+                    [
+                        'controller' => $write->target === TransferPlan::CONTRACT
+                            ? 'Contracts'
+                            : 'ContractVersions',
+                        'action' => 'view',
+                        $write->id,
+                    ],
+                );
+            }
+
+            if ($write->target === TransferPlan::REPLACED_VERSION) {
+                $recordCell .= ' (' . __('being replaced') . ')';
+            }
+            ?>
             <tr>
                 <td><?= h($write->agenda()) ?></td>
-                <td><?=
-                    $this->Html->link(
-                        h($write->record),
-                        [
-                            'controller' => $write->target === TransferPlan::CONTRACT
-                                ? 'Contracts'
-                                : 'ContractVersions',
-                            'action' => 'view',
-                            $write->id,
-                        ],
-                    )
-                    ?><?= $write->target === TransferPlan::REPLACED_VERSION
-                    ? ' (' . __('being replaced') . ')'
-                    : '' ?></td>
+                <td><?= $recordCell ?></td>
                 <td><?= h($write->label) ?></td>
                 <?php if ($preview) : ?>
                 <td><?= h($write->from) ?></td>

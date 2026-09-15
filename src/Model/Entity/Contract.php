@@ -194,6 +194,28 @@ class Contract extends AppEntity
     }
 
     /**
+     * The contract written out in one line: what it is and where it is, and its number after it.
+     *
+     * The counterpart of {@see \App\Model\Entity\Customer::getName()}. Where neither the service
+     * nor the address has been loaded there is nothing to say but the number.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        $said = implode(' - ', array_filter([
+            $this->service_type?->name,
+            $this->installation_address?->address,
+        ]));
+
+        if ($said === '') {
+            return (string)$this->number;
+        }
+
+        return __('{0} ({1})', $said, $this->number);
+    }
+
+    /**
      * getter for acess point (try to load via ApiClient)
      *
      * @return \App\Http\Answer<\App\NMS\Dto\AccessPoint|null>

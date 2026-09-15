@@ -3,19 +3,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Contracts\Proposal\PlannedChange;
+use App\Contracts\Proposal\ProposalProjection;
+use App\Contracts\Proposal\ProposalTransfer;
+use App\Contracts\Proposal\TransferPlan;
+use App\Contracts\Proposal\TransferPreview;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
-use App\Model\Enum\DocumentVariant;
-use App\Proposals\ProposalPapers;
+use App\Model\Enum\ProposalStep;
+use App\Model\Table\BillingsTable;
+use App\Proposals\RoundOfPapers;
 use App\Service\CustomerPrint\CustomerDocuments;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
-use Files\Model\Entity\FileLink;
-use Files\Model\Table\FileLinksTable;
-use Throwable;
+use Exception;
 
 /**
  * CustomerProposals Controller
@@ -37,10 +40,9 @@ class CustomerProposalsController extends AppController
     protected array $nestingAutoFix = [
         'view',
         'edit',
-        'documents',
         'conclude',
         'send',
-        'addPages',
+        'transfer',
     ];
 
     /**
@@ -49,42 +51,10 @@ class CustomerProposalsController extends AppController
     protected array $nestingAutoAdd = [
         'view',
         'edit',
-        'documents',
         'conclude',
         'send',
-        'addPages',
+        'transfer',
     ];
-
-    /**
-     * Index method
-     *
-     * @return void Renders view
-     */
-    public function index(): void
-    {
-        $conditions = [];
-        if ($this->customer_id !== null) {
-            $conditions += ['CustomerProposals.customer_id' => $this->customer_id];
-        }
-
-        $request = $this->getRequest();
-        $show_settled = toBool($request->getQuery('show_settled')) ?? false;
-
-        $search = $request->getQuery('search');
-        if (!empty($search)) {
-            $conditions[] = ['CustomerProposals.note ILIKE' => '%' . trim((string)$search) . '%'];
-        }
-
-        $query = $this->CustomerProposals
-            ->find($show_settled ? 'all' : 'open')
-            ->contain(['Customers'])
-            ->where($conditions)
-            ->orderBy(['CustomerProposals.effective_from' => 'DESC']);
-
-        $customerProposals = $this->paginate($query);
-
-        $this->set(compact('customerProposals', 'show_settled'));
-    }
 
     /**
      * View method
@@ -97,11 +67,14 @@ class CustomerProposalsController extends AppController
     {
         $customerProposal = $this->CustomerProposals->get($id, contain: [
             'Customers',
+            'ContractProposals',
             'Creators',
             'Modifiers',
         ]);
 
         $this->set(compact('customerProposal'));
+        // What the proposal does for each contract, read - and changed - where the rest of it is.
+        $this->set('parts', $this->whatEachPartSays($customerProposal));
         $this->set('mayBeEdited', $this->CustomerProposals->mayBeEdited($customerProposal));
         $this->set('mayBeDeleted', $this->CustomerProposals->mayBeDeleted($customerProposal));
         // Only the count: the tables themselves are drawn by a cell, which asks for what it draws.
@@ -116,6 +89,7 @@ class CustomerProposalsController extends AppController
     public function add(): ?Response
     {
         $proposal = $this->CustomerProposals->newEmptyEntity();
+        $proposal->set('contract_proposals', []);
 
         if ($this->customer_id !== null) {
             $proposal->set('customer_id', $this->customer_id);
@@ -131,7 +105,10 @@ class CustomerProposalsController extends AppController
             if ($this->CustomerProposals->save($proposal)) {
                 $this->Flash->success(__('The proposal has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'view', $proposal->id]);
+                // A proposal is read after it is written, not the record it hangs on: what was
+                // just said about it is the thing worth seeing, and the way back to the card is
+                // on the page.
+                return $this->redirect(['action' => 'view', $proposal->id]);
             }
 
             $this->flashValidationErrors($proposal->getErrors());
@@ -153,7 +130,7 @@ class CustomerProposalsController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $proposal = $this->CustomerProposals->get($id, contain: ['Customers']);
+        $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
 
         if (!$this->CustomerProposals->mayBeEdited($proposal)) {
             $this->Flash->warning(__('This proposal may no longer be changed.'));
@@ -189,7 +166,7 @@ class CustomerProposalsController extends AppController
      */
     public function send(?string $id = null): ?Response
     {
-        $proposal = $this->CustomerProposals->get($id, contain: ['Customers']);
+        $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
 
         if (!$proposal->isOpen()) {
             $this->Flash->warning(__('This proposal has already been settled.'));
@@ -198,12 +175,13 @@ class CustomerProposalsController extends AppController
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $proposal = $this->CustomerProposals->patchEntity($proposal, [
+            $said = [
                 'sent_date' => $this->request->getData('sent_date'),
                 'delivery_type' => $this->request->getData('delivery_type'),
-            ]);
+            ];
+            $proposal = $this->CustomerProposals->patchEntity($proposal, $said);
 
-            if ($this->CustomerProposals->save($proposal)) {
+            if ($this->recordAcrossTheRound($proposal, ProposalStep::Delivered)) {
                 $this->Flash->success(__('The proposal has been recorded as sent.'));
 
                 return $this->redirect(['action' => 'view', $proposal->id]);
@@ -215,6 +193,10 @@ class CustomerProposalsController extends AppController
 
         $this->set('customerProposal', $proposal);
         $this->set('deliveryTypes', DocumentsDeliveryType::options());
+        $this->set('alsoInTheRound', (new RoundOfPapers())->whateverTheStepReaches(
+            $proposal->id,
+            ProposalStep::Delivered,
+        ));
 
         return null;
     }
@@ -230,7 +212,7 @@ class CustomerProposalsController extends AppController
      */
     public function conclude(?string $id = null): ?Response
     {
-        $proposal = $this->CustomerProposals->get($id, contain: ['Customers']);
+        $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
 
         if ($proposal->hasBeenRevoked()) {
             $this->Flash->warning(__('This round of papers has been given up on.'));
@@ -239,13 +221,11 @@ class CustomerProposalsController extends AppController
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $proposal = $this->CustomerProposals->patchEntity($proposal, [
-                'conclusion_date' => $this->request->getData('conclusion_date'),
-            ]);
+            $said = ['conclusion_date' => $this->request->getData('conclusion_date')];
+            $proposal = $this->CustomerProposals->patchEntity($proposal, $said);
 
-            if ($this->CustomerProposals->save($proposal)) {
+            if ($this->recordAcrossTheRound($proposal, ProposalStep::Signed)) {
                 $this->Flash->success(__('The signature has been recorded.'));
-                $this->fileWhatCameWithIt($proposal);
 
                 return $this->redirect(['action' => 'view', $proposal->id]);
             }
@@ -255,51 +235,217 @@ class CustomerProposalsController extends AppController
         }
 
         $this->set('customerProposal', $proposal);
-        // Only what was actually printed: nothing else can have come back.
-        $this->set('printed', (new CustomerDocuments())->printedTypes($proposal));
-        $this->set('variants', DocumentVariant::received());
+        $this->set('alsoInTheRound', (new RoundOfPapers())->whateverTheStepReaches(
+            $proposal->id,
+            ProposalStep::Signed,
+        ));
 
         return null;
     }
 
     /**
-     * Files the scans that came in with the signature.
+     * Writes the step onto the round, which is what everything in it reads.
      *
-     * After the day is recorded rather than with it: the day is what the round turns on, and a
-     * scan that will not be stored must not stand in the way of it.
+     * One place rather than one place per set of papers: the envelope went out in one piece and
+     * came back in one, so the day is the envelope's and the papers inside it answer with it.
      *
-     * @param \App\Model\Entity\CustomerProposal $proposal Whose papers.
-     * @return void
+     * A signed consent is also what the customer's own record has been waiting for. The flag used
+     * to be ticked by hand, so a customer could read as having refused while their signed consent
+     * sat on file - this is the same thing the contract's side does when papers are carried over.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The round.
+     * @param \App\Model\Enum\ProposalStep $step Which step is being taken.
+     * @return bool
      */
-    private function fileWhatCameWithIt(CustomerProposal $proposal): void
-    {
-        $uploaded = $this->getRequest()->getUploadedFiles()['papers'] ?? [];
-        if (!is_array($uploaded)) {
-            return;
-        }
+    private function recordAcrossTheRound(
+        CustomerProposal $proposal,
+        ProposalStep $step,
+    ): bool {
+        return (bool)$this->CustomerProposals->getConnection()->transactional(
+            function () use ($proposal, $step): bool {
+                if (!$this->CustomerProposals->save($proposal)) {
+                    return false;
+                }
 
-        $came = (new ProposalPapers())->takeEach(
-            CustomerDocuments::MODEL,
-            (string)$proposal->id,
-            $uploaded,
-            (array)$this->getRequest()->getData('variants'),
+                if ($step === ProposalStep::Signed && $proposal->purpose === CustomerProposalPurpose::GdprConsent) {
+                    $customers = $this->CustomerProposals->Customers;
+                    $customer = $customers->get($proposal->customer_id);
+
+                    if ($customer->agree_gdpr !== true) {
+                        $customers->saveOrFail($customers->patchEntity($customer, [
+                            'agree_gdpr' => true,
+                        ]));
+                    }
+                }
+
+                return true;
+            },
         );
+    }
 
-        foreach ($came['problems'] as $problem) {
-            $this->Flash->error($problem);
+    /**
+     * Carries what the whole proposal asks for into the live records.
+     *
+     * Spelled out a contract at a time, because that is what each part asks about and what each
+     * one would write - one merged list would say what is happening to nothing in particular.
+     *
+     * All or none. A package half written into the records is the worst of both: nothing says
+     * which half, and the papers it came from read as settled either way.
+     *
+     * @param string|null $id Customer proposal id.
+     * @return \Cake\Http\Response|null Redirects when carried over, renders the preview otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function transfer(?string $id = null): ?Response
+    {
+        $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
+
+        $preview = new TransferPreview();
+        $plan = new TransferPlan();
+        $parts = [];
+        $stopped = false;
+
+        foreach ((new RoundOfPapers())->partsOf((string)$proposal->id) as $papers) {
+            if (!$papers->isDueFor(ProposalStep::CarriedOver)) {
+                continue;
+            }
+
+            $found = $preview->of($papers);
+            $stopped = $stopped || $preview->anythingStopsIt($found);
+
+            $parts[] = [
+                'papers' => $papers,
+                'found' => $found,
+                'planned' => $plan->of($papers),
+                'billingsNow' => $preview->billingsNow($papers),
+                'billingsAfterwards' => $preview->billingsAfterwards($papers),
+            ];
         }
 
-        // Said whether or not anything was filed: the ones that did arrive are filed and the
-        // rest were never here, so the person is the only one who can tell.
-        if (ProposalPapers::cutShort($this->getRequest()->getUploadedFiles())) {
-            $this->Flash->warning(ProposalPapers::shortfall());
+        if ($parts === []) {
+            $this->Flash->warning(__('There is nothing in this proposal left to carry over.'));
+
+            return $this->redirect(['action' => 'view', $id]);
         }
 
-        if ($came['filed'] > 0) {
-            $this->Flash->success(
-                __n('{0} page has been filed.', '{0} pages have been filed.', $came['filed'], $came['filed']),
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            if ($stopped) {
+                $this->Flash->error(__('This proposal cannot be carried over as it stands.'));
+            } elseif ($this->carryTheWholePackageOver($parts)) {
+                return $this->redirect(['action' => 'view', $id]);
+            }
+        }
+
+        $this->set('customerProposal', $proposal);
+        $this->set('parts', $parts);
+        $this->set('stopped', $stopped);
+        $this->set('closed_period_override', $this->mayReachIntoClosedPeriods());
+
+        return null;
+    }
+
+    /**
+     * Writes every part of the package, or none of it.
+     *
+     * @param array<array<string, mixed>> $parts What is to be carried over.
+     * @return bool
+     */
+    private function carryTheWholePackageOver(array $parts): bool
+    {
+        $by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+        $reaching = $this->mayReachIntoClosedPeriods()
+            && $this->request->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1';
+
+        try {
+            $this->CustomerProposals->getConnection()->transactional(
+                function () use ($parts, $by, $reaching): void {
+                    foreach ($parts as $part) {
+                        (new ProposalTransfer())->carryOver($part['papers'], $by, $reaching);
+                    }
+                },
             );
+        } catch (Exception $failure) {
+            $this->Flash->error(__(
+                'The proposal could not be carried over: {0}',
+                $failure->getMessage(),
+            ));
+
+            return false;
         }
+
+        $this->Flash->success(__n(
+            'The proposal has been carried over into the live records.',
+            'The proposal and everything in it have been carried over into the live records.',
+            count($parts),
+        ));
+
+        foreach ($parts as $part) {
+            if ($part['papers']->proposedChanges()->contract->endsTheContract()) {
+                $this->Flash->warning(__(
+                    'Contract {0} has been given an end date. Its state is left as it was, because'
+                    . ' that has its own requirements to satisfy.',
+                    $part['papers']->contract->number ?? '',
+                ));
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * What the proposal says about each contract, in the shape the page that draws it wants.
+     *
+     * The same answers the papers of one contract give on their own page, because it is the same
+     * question - and there is one proposal, so it is asked in one place.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @return array<array<string, mixed>>
+     */
+    private function whatEachPartSays(CustomerProposal $proposal): array
+    {
+        $papers = $this->CustomerProposals->ContractProposals;
+        $said = [];
+
+        foreach ((new RoundOfPapers())->partsOf((string)$proposal->id) as $part) {
+            $changes = $part->proposedChanges();
+            $snapshot = $part->stateOfThings();
+
+            $said[] = [
+                'papers' => $part,
+                'confirmations' => $part->confirmations(),
+                'mayBeEdited' => $papers->mayBeEdited($part),
+                // The same projection the documents print from, so the table and the paper cannot
+                // disagree.
+                'rows' => (new ProposalProjection())->explain(
+                    $snapshot->hydrate()->billings,
+                    $changes,
+                    $part->effective_from,
+                    $snapshot->servicesChosenBy($changes),
+                ),
+                // Only what the papers ask for: the rest of what carrying them over would write is
+                // worked out against the records as they stand, which means something in the
+                // moment before it happens and nothing here.
+                'planned' => array_values(array_filter(
+                    (new TransferPlan())->of($part),
+                    fn(PlannedChange $one): bool => $one->asked,
+                )),
+            ];
+        }
+
+        return $said;
+    }
+
+    /**
+     * Whether this request is one that may be offered the way into an invoiced period at all.
+     *
+     * Offered to an administrator and to nobody else, and even there it is a box that has to be
+     * ticked - the same gate carrying one contract's papers over has always had.
+     *
+     * @return bool
+     */
+    private function mayReachIntoClosedPeriods(): bool
+    {
+        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
     }
 
     /**
@@ -313,7 +459,7 @@ class CustomerProposalsController extends AppController
     {
         $this->request->allowMethod(['post']);
 
-        $proposal = $this->CustomerProposals->get($id);
+        $proposal = $this->CustomerProposals->get($id, contain: ['ContractProposals']);
 
         if (!$proposal->isOpen()) {
             $this->Flash->warning(__('This proposal has already been settled.'));
@@ -345,7 +491,7 @@ class CustomerProposalsController extends AppController
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
 
-        $proposal = $this->CustomerProposals->get($id);
+        $proposal = $this->CustomerProposals->get($id, contain: ['ContractProposals']);
 
         if (!$this->CustomerProposals->mayBeDeleted($proposal)) {
             $this->Flash->warning(__('This proposal may no longer be removed.'));
@@ -360,175 +506,10 @@ class CustomerProposalsController extends AppController
             $this->Flash->error(__('The proposal could not be deleted. Please, try again.'));
         }
 
-        return $this->afterDeleteRedirect(['action' => 'index']);
-    }
-
-    /**
-     * The papers this round has: what we drew up, and what came back.
-     *
-     * Not gated on the state of the round. Scans arrive after it has been sent and after the
-     * signature has been recorded, and the papers stay worth looking at for as long as the
-     * customer does.
-     *
-     * @param string|null $id Customer proposal id.
-     * @return void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function documents(?string $id = null): void
-    {
-        $this->set('customerProposal', $this->CustomerProposals->get($id, contain: ['Customers']));
-    }
-
-    /**
-     * Files what came back, a document at a time.
-     *
-     * @param string|null $id Customer proposal id.
-     * @return \Cake\Http\Response|null Redirects when filed, renders the form otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function addPages(?string $id = null): ?Response
-    {
-        $proposal = $this->CustomerProposals->get($id, contain: ['Customers']);
-
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $document_type = (string)$this->getRequest()->getData('document_type');
-            $variant = DocumentVariant::tryFrom((string)$this->getRequest()->getData('variant'));
-            $files = $this->getRequest()->getUploadedFiles()['papers'] ?? [];
-
-            if ($variant === null || $document_type === '' || !is_array($files)) {
-                $this->Flash->error(__('It was not said what those pages are.'));
-
-                return null;
-            }
-
-            try {
-                $filed = (new ProposalPapers())->take(
-                    CustomerDocuments::MODEL,
-                    (string)$proposal->id,
-                    $document_type,
-                    $variant,
-                    array_values($files),
-                );
-
-                // Said whether or not anything was filed: the ones that did arrive are filed
-                // and the rest were never here, so the person is the only one who can tell.
-                if (ProposalPapers::cutShort($this->getRequest()->getUploadedFiles())) {
-                    $this->Flash->warning(ProposalPapers::shortfall());
-                }
-
-                if ($filed > 0) {
-                    $this->Flash->success(
-                        __n('{0} page has been filed.', '{0} pages have been filed.', $filed, $filed),
-                    );
-
-                    return $this->redirect(['action' => 'documents', $id]);
-                }
-
-                $this->Flash->error(__('Nothing was chosen to file.'));
-            } catch (Throwable $e) {
-                $this->Flash->error($e->getMessage());
-            }
-        }
-
-        $this->set('customerProposal', $proposal);
-        $this->set('documentTypes', $this->documentLabels($proposal));
-        $this->set('variants', DocumentVariant::received());
-
-        return null;
-    }
-
-    /**
-     * Lets go of one page.
-     *
-     * Letting go of something we drew up is not tidying: it puts the document back within reach,
-     * because what is on file is never drawn again while it is there.
-     *
-     * @param string|null $id Customer proposal id.
-     * @param string|null $link_id Which page.
-     * @return \Cake\Http\Response|null Redirects back to the papers.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function dropPage(?string $id = null, ?string $link_id = null): ?Response
-    {
-        $this->getRequest()->allowMethod(['post', 'delete']);
-
-        $page = $this->thePage($id, $link_id);
-
-        try {
-            (new ProposalPapers())->drop($page);
-            $this->Flash->success(__('The page has been removed.'));
-        } catch (Throwable $e) {
-            $this->Flash->error(__('The page could not be removed: {0}', $e->getMessage()));
-        }
-
-        return $this->redirect(['action' => 'documents', $id]);
-    }
-
-    /**
-     * Moves one page past the one beside it.
-     *
-     * @param string|null $id Customer proposal id.
-     * @param string|null $link_id Which page.
-     * @param string|null $direction Which way - `up` or anything else for down.
-     * @return \Cake\Http\Response|null Redirects back to the papers.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function movePage(?string $id = null, ?string $link_id = null, ?string $direction = null): ?Response
-    {
-        $this->getRequest()->allowMethod(['post', 'put']);
-
-        $page = $this->thePage($id, $link_id);
-
-        try {
-            (new ProposalPapers())->move($page, $direction === 'up');
-        } catch (Throwable $e) {
-            $this->Flash->error(__('The pages could not be reordered: {0}', $e->getMessage()));
-        }
-
-        return $this->redirect(['action' => 'documents', $id]);
-    }
-
-    /**
-     * One of this round's pages.
-     *
-     * The round is checked as well as the page, so that an identifier from somewhere else cannot
-     * reach a paper through this door.
-     *
-     * @param string|null $id Customer proposal id.
-     * @param string|null $link_id Which page.
-     * @return \Files\Model\Entity\FileLink
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this round's.
-     */
-    private function thePage(?string $id, ?string $link_id): FileLink
-    {
-        /** @var \Files\Model\Table\FileLinksTable $links */
-        $links = $this->fetchTable(FileLinksTable::class);
-
-        /** @var \Files\Model\Entity\FileLink $link */
-        $link = $links->get($link_id);
-
-        if ($link->model !== CustomerDocuments::MODEL || $link->foreign_key !== $id) {
-            throw new RecordNotFoundException(__('That page belongs to something else.'));
-        }
-
-        return $link;
-    }
-
-    /**
-     * The documents this round may be printed as, and so may have papers for.
-     *
-     * @param \App\Model\Entity\CustomerProposal $proposal The round.
-     * @return array<string, string>
-     */
-    private function documentLabels(CustomerProposal $proposal): array
-    {
-        $documents = [];
-
-        foreach ($proposal->purpose->documents() as $document) {
-            $documents[$document->value] = $document->label();
-        }
-
-        return $documents;
+        return $this->afterDeleteRedirect([
+            'controller' => 'Documents',
+            'action' => 'index',
+        ]);
     }
 
     /**

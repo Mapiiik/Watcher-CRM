@@ -37,7 +37,7 @@ $customer_column ??= true;
                             ) ?>
                         </td>
                     <?php endif ?>
-                    <td><?= h($proposal->purpose->label()) ?></td>
+                    <td><?= h($proposal->whatItIsFor()) ?></td>
                     <td><?= h($proposal->effective_from) ?></td>
                     <td><?= h($proposal->sent_date) ?></td>
                     <td><?= h($proposal->conclusion_date) ?></td>
@@ -47,8 +47,13 @@ $customer_column ??= true;
                             ['controller' => 'CustomerProposals', 'action' => 'view', $proposal->id],
                         ) ?>
                         <?= $this->AuthLink->link(
-                            __('Proposal Documents'),
-                            ['controller' => 'CustomerProposals', 'action' => 'documents', $proposal->id],
+                            __('Documents'),
+                            [
+                                'plugin' => null,
+                                'controller' => 'Documents',
+                                'action' => 'manage',
+                                '?' => ['proposal_id' => $proposal->id, 'agenda' => 'CustomerProposals'],
+                            ],
                         ) ?>
                     </td>
                 </tr>

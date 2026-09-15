@@ -8,7 +8,6 @@ use App\Controller\ContractProposalsController;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\ControllerTestTrait;
-use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -42,12 +41,22 @@ class ContractProposalsControllerTest extends TestCase
 
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
     /**
      * The proposal the fixture carries: open, unsent, changing nothing.
      *
      * @var string
      */
     private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
+
+    /**
+     * The proposal those papers are a part of. Sending, signing and carrying over happen
+     * there and reach everything in it.
+     *
+     * @var string
+     */
+    private const ROUND_ID = 'a7c1d5e2-3f48-4b90-9c61-2d0e7a5b8f34';
 
     /**
      * The version the fixture carries: concluded, so papers over it take effect on a day of their
@@ -104,37 +113,9 @@ class ContractProposalsControllerTest extends TestCase
         'app.SoldEquipments',
         'app.IpAddresses',
         'app.IpNetworks',
+        'app.CustomerProposals',
         'app.ContractProposals',
     ];
-
-    /**
-     * The listing renders.
-     *
-     * @return void
-     * @link \App\Controller\ContractProposalsController::index()
-     */
-    public function testIndex(): void
-    {
-        $this->login();
-        $this->get('/contract-proposals');
-
-        $this->assertResponseOk();
-    }
-
-    /**
-     * The listing renders with the search and the settled ones asked for, which builds a different
-     * query than the plain listing does.
-     *
-     * @return void
-     * @link \App\Controller\ContractProposalsController::index()
-     */
-    public function testIndexWithSearchAndSettled(): void
-    {
-        $this->login();
-        $this->get('/contract-proposals?search=Lorem&show_settled=1');
-
-        $this->assertResponseOk();
-    }
 
     /**
      * The detail renders.
@@ -234,6 +215,9 @@ class ContractProposalsControllerTest extends TestCase
      * columns behind the snapshot - those are not on the form, and an error nobody can see reads
      * as three required fields with nothing marked.
      *
+     * Asked of a change, because that is one of the purposes that has to name a version: it amends
+     * one that was already agreed to, so there is nothing for it to start.
+     *
      * @return void
      * @link \App\Controller\ContractProposalsController::add()
      */
@@ -243,6 +227,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::ServiceChange->value,
             'contract_id' => self::CONTRACT_ID,
             'effective_from' => '2026-11-01',
         ]);
@@ -253,6 +238,145 @@ class ContractProposalsControllerTest extends TestCase
         $this->assertArrayHasKey('contract_version_id', $errors);
         $this->assertArrayNotHasKey('snapshot', $errors);
         $this->assertArrayNotHasKey('snapshot_taken', $errors);
+    }
+
+    /**
+     * Papers for a new contract may be drawn up before the version they are about exists. The
+     * snapshot is taken of the version as it will be, so there is one to print from, and the
+     * version itself waits for the papers to be carried over.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testANewContractMayBeProposedBeforeItsVersionExists(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => '',
+            'effective_from' => '2026-11-01',
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        $this->assertNull($drawn->contract_version_id);
+        $this->assertSame('2026-11-01', $drawn->effective_from->toDateString());
+
+        // The papers have a version to print from all the same, and it starts the day they do.
+        $taken = $drawn->stateOfThings()->part('version');
+        $this->assertNull($taken['id']);
+        $this->assertSame('2026-11-01', $taken['valid_from']);
+    }
+
+    /**
+     * There is one proposal and it is put to the customer. Papers drawn up from the contract
+     * rather than from a proposal are given one of their own, so nothing stands outside one.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testPapersDrawnUpOnTheirOwnGetAProposalToBePartOf(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->getTableLocator()->get('CustomerProposals')->find()->count();
+
+        $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => '',
+            'effective_from' => '2026-11-01',
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        $this->assertNotNull($drawn->customer_proposal_id);
+        $this->assertSame(
+            $before + 1,
+            $this->getTableLocator()->get('CustomerProposals')->find()->count(),
+        );
+
+        // It asks nothing of the customer themselves: it is there to hold these papers.
+        $round = $this->getTableLocator()->get('CustomerProposals')->get($drawn->customer_proposal_id);
+        $this->assertNull($round->purpose);
+        $this->assertSame('2026-11-01', $round->effective_from->toDateString());
+    }
+
+    /**
+     * The preview of papers that bring their version into being has a version to say nothing
+     * about: there is none yet, so nothing can have moved on one.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\TransferPreview::of()
+     */
+    public function testThePreviewOfPapersWithoutAVersionRenders(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                'contract_version_id' => null,
+                'conclusion_date' => '2026-09-15',
+            ]),
+            ['checkRules' => false],
+        );
+
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Without a day there is nothing for the version to start on, so it is asked for rather than
+     * guessed at - there is no version to take it from.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testANewContractWithoutAVersionHasToSayWhichDayItStarts(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => '',
+            'effective_from' => '',
+        ]);
+
+        $this->assertResponseOk();
+
+        $errors = $this->viewVariable('contractProposal')->getErrors();
+        $this->assertArrayHasKey('effective_from', $errors);
     }
 
     /**
@@ -307,6 +431,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->enableSecurityToken();
         $this->post('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481/contracts/'
             . self::CONTRACT_ID . '/contract-proposals/add', [
+                'contract_id' => self::CONTRACT_ID,
                 'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
                 'effective_from' => '2026-11-01',
                 'confirmations' => ['fixed_term' => '1'],
@@ -343,6 +468,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->enableSecurityToken();
         $this->post('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481/contracts/'
             . self::CONTRACT_ID . '/contract-proposals/add', [
+                'contract_id' => self::CONTRACT_ID,
                 'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
                 'effective_from' => '2026-11-01',
                 'confirmations' => [
@@ -373,6 +499,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->enableSecurityToken();
         $this->post('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481/contracts/'
             . self::CONTRACT_ID . '/contract-proposals/add', [
+                'contract_id' => self::CONTRACT_ID,
                 'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
                 'effective_from' => '2026-11-01',
                 'confirmations' => [
@@ -411,10 +538,128 @@ class ContractProposalsControllerTest extends TestCase
             . self::CONTRACT_ID . '/contract-proposals/add');
 
         $this->assertResponseOk();
-        // The contract is settled by the route, so its own selector is not drawn - and the version
-        // selector still has to be able to redraw the form.
+        // Both selectors are drawn wherever the form was opened, and either has to be able to
+        // redraw it.
         $this->assertResponseContains('refresh');
-        $this->assertResponseNotContains('name="contract_id"');
+        $this->assertResponseContains('name="contract_id"');
+    }
+
+    /**
+     * Opened under a contract, the form fills its contract in rather than leaving it out. Every way
+     * in reaches the same page and only the breadcrumbs say which one it was, so a field that
+     * disappeared with the route is one the operator would go looking for.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testTheNestedFormOpensWithItsContractChosen(): void
+    {
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/add');
+
+        $this->assertResponseOk();
+        $this->assertSame(self::CONTRACT_ID, $this->viewVariable('contractProposal')->contract_id);
+    }
+
+    /**
+     * And choosing another one there stands. The address fills the field in and nothing more, or
+     * the papers would quietly be drawn up for the contract the operator came in under.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testTheContractChosenBeatsTheOneInTheAddress(): void
+    {
+        $another = '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90';
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/add', [
+            'contract_id' => $another,
+            'effective_from' => '2026-11-01',
+            'confirmations' => [
+                'fixed_term' => '1',
+                'own_equipment' => '1',
+                'does_not_use_ip_addresses' => '1',
+                'does_not_use_radius' => '1',
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        /** @var \App\Model\Entity\ContractProposal $saved */
+        $saved = $proposals->find()->orderByDesc('created')->firstOrFail();
+        $this->assertSame($another, $saved->contract_id);
+    }
+
+    /**
+     * Once the papers exist the contract is theirs to keep: the form says which one it is and does
+     * not offer it, and a contract arriving all the same is ignored. Moving them would leave the
+     * snapshot they print from, the version and every line of billing on a contract the papers no
+     * longer name.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::edit()
+     */
+    public function testPapersStayWithTheContractTheyWereDrawnUpFor(): void
+    {
+        $other = '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90';
+
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $elsewhere = $versions->newEntity([
+            'contract_id' => $other,
+            'valid_from' => '2026-01-01',
+            'conclusion_date' => '2026-01-01',
+            'number_of_amendments' => 0,
+            'obligations_settled' => false,
+        ]);
+        $versions->saveOrFail($elsewhere);
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="contract_id"');
+        $this->assertResponseContains('disabled="disabled"');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID, [
+            'contract_id' => $other,
+            'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
+            'confirmations' => [
+                'fixed_term' => '1',
+                'own_equipment' => '1',
+                'does_not_use_ip_addresses' => '1',
+                'does_not_use_radius' => '1',
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        $papers = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+        $this->assertSame(self::CONTRACT_ID, $papers->contract_id);
+        $this->assertSame(self::CONTRACT_ID, $papers->snapshot['contract']['id'] ?? null);
+    }
+
+    /**
+     * Says something of the round these papers go out in.
+     *
+     * The sending and the signature belong to the envelope, so a test that puts papers in either
+     * state puts the envelope in it.
+     *
+     * @param array<string, mixed> $says What the round says.
+     * @return void
+     */
+    private function theRoundSays(array $says): void
+    {
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $envelopes->saveOrFail(
+            $envelopes->patchEntity($envelopes->get(self::ROUND_ID), $says),
+            ['checkRules' => false],
+        );
     }
 
     /**
@@ -620,11 +865,7 @@ class ContractProposalsControllerTest extends TestCase
      */
     public function testTheLinesOfASentProposalAreLeftAlone(): void
     {
-        $proposals = $this->getTableLocator()->get('ContractProposals');
-        $proposal = $proposals->get(self::PROPOSAL_ID);
-        $proposal->sent_date = new Date('2026-10-01');
-        $proposal->delivery_type = DocumentsDeliveryType::Email;
-        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+        $this->theRoundSays(['sent_date' => '2026-10-01', 'delivery_type' => DocumentsDeliveryType::Email]);
 
         $this->login();
         $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
@@ -647,7 +888,9 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * The form for taking the snapshot again renders, and says what it is about.
+     * Taking the snapshot again is a box on the form the papers are edited on, because a fresh
+     * reading of the contract may want the dates of the version corrected in the same breath.
+     * What is bookmarked at the old address still arrives.
      *
      * @return void
      * @link \App\Controller\ContractProposalsController::refreshSnapshot()
@@ -655,9 +898,31 @@ class ContractProposalsControllerTest extends TestCase
     public function testRefreshSnapshot(): void
     {
         $this->login();
-        $this->get(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
+        $this->assertResponseContains('take_the_snapshot_again');
+        $this->assertResponseContains('confirmations[fixed_term]');
+
+        $this->get(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+
+        $this->assertRedirectContains('/contract-proposals/edit/' . self::PROPOSAL_ID);
+    }
+
+    /**
+     * And a paper being drawn up is never asked: it is photographed as it is saved, so there is
+     * nothing yet to read again.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testTheSnapshotIsNotOfferedWhileThePapersAreBeingDrawnUp(): void
+    {
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/add');
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('take_the_snapshot_again');
     }
 
     /**
@@ -666,7 +931,7 @@ class ContractProposalsControllerTest extends TestCase
      * been refused for.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::refreshSnapshot()
+     * @link \App\Controller\ContractProposalsController::edit()
      */
     public function testTheSnapshotIsTakenAgainEvenWhenABillingHasGone(): void
     {
@@ -687,7 +952,9 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID, [
+        $this->post(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID, [
+            'take_the_snapshot_again' => '1',
+            'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
             'confirmations' => [
                 'fixed_term' => 1,
                 'own_equipment' => 1,
@@ -839,19 +1106,20 @@ class ContractProposalsControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $this->post('/contract-proposals/send/' . self::PROPOSAL_ID, [
+        $this->post('/customer-proposals/send/' . self::ROUND_ID, [
             'sent_date' => '2026-10-01',
             'delivery_type' => DocumentsDeliveryType::Email->value,
         ]);
         $this->assertRedirect();
 
-        $this->post('/contract-proposals/send/' . self::PROPOSAL_ID, [
+        $this->post('/customer-proposals/send/' . self::ROUND_ID, [
             'sent_date' => '2026-10-08',
             'delivery_type' => DocumentsDeliveryType::Post->value,
         ]);
         $this->assertRedirect();
 
-        $sent = $proposals->get(self::PROPOSAL_ID);
+        // Read with the envelope, because that is where the papers read the sending from.
+        $sent = $proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
         $this->assertSame('2026-10-08', $sent->sent_date?->toDateString());
         $this->assertSame(DocumentsDeliveryType::Post, $sent->delivery_type);
     }
@@ -872,14 +1140,15 @@ class ContractProposalsControllerTest extends TestCase
         $this->enableSecurityToken();
 
         foreach (['2026-10-05', '2026-10-06'] as $day) {
-            $this->post('/contract-proposals/conclude/' . self::PROPOSAL_ID, [
+            $this->post('/customer-proposals/conclude/' . self::ROUND_ID, [
                 'conclusion_date' => $day,
             ]);
 
             $this->assertRedirect();
             $this->assertSame(
                 $day,
-                $proposals->get(self::PROPOSAL_ID)->conclusion_date?->toDateString(),
+                $proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals'])
+                    ->conclusion_date?->toDateString(),
             );
         }
     }
@@ -896,7 +1165,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/contract-proposals/send/' . self::PROPOSAL_ID, [
+        $this->post('/customer-proposals/send/' . self::ROUND_ID, [
             'sent_date' => '2026-10-01',
             'delivery_type' => DocumentsDeliveryType::Email->value,
         ]);
@@ -904,7 +1173,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->assertRedirect();
 
         $proposals = $this->getTableLocator()->get('ContractProposals');
-        $sent = $proposals->get(self::PROPOSAL_ID);
+        $sent = $proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
 
         $this->assertTrue($sent->hasBeenSent());
         $this->assertFalse($proposals->mayBeEdited($sent));
@@ -927,9 +1196,10 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/contract-proposals/revoke/' . self::PROPOSAL_ID);
+        $this->post(self::NESTED . '/contract-proposals/revoke/' . self::PROPOSAL_ID);
 
-        $this->assertRedirect();
+        // Given up on where it stands: the papers are still what the reader was looking at.
+        $this->assertRedirectContains('/contract-proposals/view/' . self::PROPOSAL_ID);
 
         $proposal = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
         $this->assertTrue($proposal->hasBeenRevoked());
@@ -945,7 +1215,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testTheTransferPreviewSaysWhatStandsInTheWay(): void
     {
         $this->login();
-        $this->get(self::NESTED . '/contract-proposals/transfer/' . self::PROPOSAL_ID);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
 
         $this->assertResponseOk();
         // Nobody has signed it, so it says so and does not offer the button.
@@ -962,13 +1232,10 @@ class ContractProposalsControllerTest extends TestCase
      */
     public function testAMissingScanIsSaidOutLoudAndStopsNothing(): void
     {
-        $proposals = $this->getTableLocator()->get('ContractProposals');
-        $proposal = $proposals->get(self::PROPOSAL_ID);
-        $proposal->conclusion_date = new Date('2026-09-15');
-        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
 
         $this->login();
-        $this->get(self::NESTED . '/contract-proposals/transfer/' . self::PROPOSAL_ID);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains(
@@ -989,9 +1256,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testAnEmptyProposalIsMarkedAsDealtWith(): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
-        $proposal = $proposals->get(self::PROPOSAL_ID);
-        $proposal->conclusion_date = new Date('2026-09-15');
-        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
 
         $billings = $this->getTableLocator()->get('Billings');
         $before = $billings->find()->count();
@@ -999,7 +1264,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/contract-proposals/transfer/' . self::PROPOSAL_ID);
+        $this->post('/customer-proposals/transfer/' . self::ROUND_ID);
 
         $this->assertRedirect();
         $this->assertTrue($proposals->get(self::PROPOSAL_ID)->hasBeenApplied());
@@ -1017,7 +1282,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/contract-proposals/transfer/' . self::PROPOSAL_ID);
+        $this->post('/customer-proposals/transfer/' . self::ROUND_ID);
 
         $this->assertFalse(
             $this->getTableLocator()->get('ContractProposals')
@@ -1053,10 +1318,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testASentProposalIsNotRemoved(): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
-        $proposal = $proposals->get(self::PROPOSAL_ID);
-        $proposal->sent_date = new Date('2026-10-01');
-        $proposal->delivery_type = DocumentsDeliveryType::Email;
-        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+        $this->theRoundSays(['sent_date' => '2026-10-01', 'delivery_type' => DocumentsDeliveryType::Email]);
 
         $this->login();
         $this->enableCsrfToken();

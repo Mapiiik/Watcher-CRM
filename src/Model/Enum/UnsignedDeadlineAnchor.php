@@ -111,13 +111,15 @@ enum UnsignedDeadlineAnchor: string implements EnumLabelInterface, SettingChoice
     /**
      * When the papers for this version last went out.
      *
-     * The sending is recorded on the proposal the papers were drawn from, because that is what a
-     * paper is: a version may have several behind it over the years. The latest one is what counts
-     * - sending the papers again is giving the customer a fresh chance, and the wait starts over.
+     * The sending is recorded on the round the papers went out in, because that is what goes out:
+     * one envelope, holding whatever was signed together. A version may have several behind it
+     * over the years, and the latest is what counts - sending the papers again is giving the
+     * customer a fresh chance, and the wait starts over.
      */
     private const LAST_SENDING = '(
-        SELECT MAX(SentProposals.sent_date)
+        SELECT MAX(SentRounds.sent_date)
         FROM contract_proposals SentProposals
+        JOIN customer_proposals SentRounds ON SentRounds.id = SentProposals.customer_proposal_id
         WHERE SentProposals.contract_version_id = ContractVersions.id
     )';
 }

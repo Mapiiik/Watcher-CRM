@@ -28,7 +28,9 @@ class DocumentsViewerTest extends TestCase
 
         foreach ($this->templates() as $path) {
             $source = (string)file_get_contents($path);
-            if (!str_contains($source, "'Documents',")) {
+            // The call itself, not the word: a link to the pages the papers are worked on names
+            // the same controller and draws nothing.
+            if (!preg_match("/cell\(\s*'Documents'/", $source)) {
                 continue;
             }
 
@@ -43,7 +45,8 @@ class DocumentsViewerTest extends TestCase
 
         // A guard on the guard: a change of shape that stopped finding the pages would otherwise
         // leave this passing over nothing at all.
-        $this->assertGreaterThanOrEqual(9, count($drawn), 'the pages that draw documents were found');
+        // One page draws them, which is the whole point of having a place they are worked on.
+        $this->assertGreaterThanOrEqual(1, count($drawn), 'the pages that draw documents were found');
     }
 
     /**

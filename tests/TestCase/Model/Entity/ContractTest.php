@@ -19,6 +19,29 @@ use RuntimeException;
 class ContractTest extends TestCase
 {
     /**
+     * Named in running text, the contract is what it is and where it is, with its number after it.
+     * Asked before anything has been loaded, there is nothing to say but the number.
+     *
+     * @return void
+     * @link \App\Model\Entity\Contract::getName()
+     */
+    public function testTheContractNamesItselfInOneLine(): void
+    {
+        $contract = new Contract([
+            'number' => '110946-4212',
+            'service_type' => new ServiceType(['name' => 'Wireless']),
+            'installation_address' => new Address(['street' => 'Main street', 'number' => '76']),
+        ]);
+
+        $this->assertSame(
+            'Wireless - ' . $contract->installation_address->address . ' (110946-4212)',
+            $contract->getName(),
+        );
+
+        $this->assertSame('110946-4212', (new Contract(['number' => '110946-4212']))->getName());
+    }
+
+    /**
      * Builds a contract with the given obligation dates as contract versions.
      *
      * @param array<string|null> $obligationDates Obligation dates, null for a version without an obligation.

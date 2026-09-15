@@ -6,6 +6,8 @@ namespace App\View\Cell;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Table\ContractProposalsTable;
 use App\Model\Table\CustomerProposalsTable;
+use App\Proposals\DrawnPaper;
+use App\Proposals\WhatIsOwed;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\View\Cell;
@@ -22,9 +24,10 @@ use Override;
  * Which columns those are follows from what is being looked at rather than being asked for: a
  * contract's own page has no business repeating the contract on every row.
  *
- * The two agendas share the table. A contract's papers hang off a proposal of that contract and a
- * customer's off a round put to the customer, and on the customer's own page both belong - a
- * consent has no contract, so that column is simply empty on its rows.
+ * The two agendas share the table. A contract's papers hang off a proposal of that contract, and
+ * that is a part of the proposal put to the customer - so a proposal shows the whole package, and
+ * so does the customer's own page. A paper of the customer's own belongs to no contract, and that
+ * column is simply empty on its rows.
  */
 class DocumentsCell extends Cell
 {
@@ -59,7 +62,11 @@ class DocumentsCell extends Cell
     protected bool $manage = false;
 
     /**
-     * Whether the papers of the customer's contracts belong here too. Only asked on the customer.
+     * Whether the papers of the contracts belong here too, beside those put to the customer.
+     *
+     * Asked where a record holds contracts under it - a customer, or one proposal put to them. A
+     * proposal is one envelope and its parts go out in it, so the answer is yes unless somebody
+     * says otherwise.
      */
     protected bool $withContracts = true;
 
@@ -121,9 +128,17 @@ class DocumentsCell extends Cell
         $this->set('generatedByUs', $this->generatedByUs);
         $this->set('manage', $this->manage);
         $this->set('thumbnails', $this->thumbnails);
-        // Neither column says anything the page it is on has not already said.
-        $this->set('showContract', $of === 'customer' && $this->withContracts);
-        $this->set('showProposal', in_array($of, ['contractVersion', 'contract', 'customer'], true));
+        // Neither column says anything the page it is on has not already said. A proposal is
+        // about several contracts at once, so there the column earns its place - as long as their
+        // papers are in view at all.
+        $this->set(
+            'showContract',
+            in_array($of, ['customerProposal', 'customer'], true) && $this->withContracts,
+        );
+        // The same holds for the round a paper belongs to: worth a column wherever more than
+        // one of them is in the table, which a proposal is as soon as its parts are in view.
+        $this->set('showProposal', in_array($of, ['contractVersion', 'contract', 'customer'], true)
+            || ($of === 'customerProposal' && $this->withContracts));
     }
 
     /**
@@ -145,14 +160,18 @@ class DocumentsCell extends Cell
         $filed = $papers->filedAgainst($customers);
         $documents = $papers->documentLabels();
 
+        $owed = new WhatIsOwed();
+
         foreach ($customers as $proposal) {
             $rows = array_merge($rows, $this->pagesOf([
                 'id' => (string)$proposal->id,
                 'controller' => 'CustomerProposals',
-                'label' => $proposal->effective_from . ' - ' . $proposal->purpose->label(),
+                'of' => $proposal,
+                'owed' => $owed->of($proposal),
+                'label' => $proposal->effective_from . ' - ' . $proposal->whatItIsFor(),
                 // The column reads down a table, where the day leads and the dashes line up. The
                 // viewer reads across one line, where it wants a sentence instead.
-                'says' => __('{0} from {1}', $proposal->purpose->label(), $proposal->effective_from),
+                'says' => __('{0} from {1}', $proposal->whatItIsFor(), $proposal->effective_from),
                 // A consent belongs to nobody's contract, so the column stays empty on its rows.
                 'contract_id' => null,
                 'contract' => '',
@@ -170,6 +189,8 @@ class DocumentsCell extends Cell
             $rows = array_merge($rows, $this->pagesOf([
                 'id' => (string)$proposal->id,
                 'controller' => 'ContractProposals',
+                'of' => $proposal,
+                'owed' => $owed->of($proposal),
                 'label' => $proposal->effective_from . ' - ' . $proposal->purpose->label(),
                 'says' => __('{0} from {1}', $proposal->purpose->label(), $proposal->effective_from),
                 'contract_id' => (string)$proposal->contract_id,
@@ -192,20 +213,33 @@ class DocumentsCell extends Cell
     private function pagesOf(array $round, array $filed): array
     {
         $rows = [];
+        $drawn = [];
+
+        $papers = new DrawnPaper();
 
         foreach ($filed[$round['id']] ?? [] as $document_type => $byVariant) {
+            // Our signature is stamped onto the paper that is already there rather than drawn
+            // afresh, so it is offered on that paper's own row and only while it is not there.
+            $mayBeSigned = $this->generatedByUs
+                && !isset($byVariant[DocumentVariant::GeneratedSignedByUs->value])
+                && $papers->mayCarryOurSignature($round['of'], (string)$document_type);
+
             foreach ($byVariant as $variant => $links) {
                 $case = DocumentVariant::tryFrom((string)$variant);
                 if ($case === null || $case->isGeneratedByUs() !== $this->generatedByUs) {
                     continue;
                 }
 
+                $drawn[(string)$document_type] = true;
+
                 foreach ($links as $link) {
                     $rows[] = [
                         'round' => $round,
                         'document' => $round['documents'][$document_type] ?? (string)$document_type,
+                        'document_type' => (string)$document_type,
                         'variant' => $case->label(),
                         'link' => $link,
+                        'mayBeSigned' => $mayBeSigned && $case === DocumentVariant::Generated,
                         'keys' => [
                             'contract' => (string)($round['contract_id'] ?? ''),
                             'round' => $round['id'],
@@ -217,22 +251,93 @@ class DocumentsCell extends Cell
             }
         }
 
-        if ($rows === [] && $this->withWhatIsMissing && $round['revoked'] !== true) {
-            $rows[] = [
-                'round' => $round,
-                'document' => '',
-                'variant' => '',
-                'link' => null,
-                'keys' => [
-                    'contract' => (string)($round['contract_id'] ?? ''),
-                    'round' => $round['id'],
-                    'document' => $round['id'] . '/-',
-                    'variant' => $round['id'] . '/-',
-                ],
-            ];
+        if (!$this->withWhatIsMissing || $round['revoked'] === true) {
+            return $rows;
+        }
+
+        // On the side we draw ourselves, what is missing is each paper that has not been drawn:
+        // the round knows which ones it owes, so the gap can be named rather than guessed at. On
+        // the side that comes back there is no such list - a round either has scans or it has not.
+        if ($this->generatedByUs) {
+            return array_merge($rows, $this->whatHasNotBeenDrawn($round, $drawn));
+        }
+
+        if ($rows === []) {
+            $rows[] = $this->nothingYet($round, '', '');
         }
 
         return $rows;
+    }
+
+    /**
+     * A row for each paper the round owes and does not have.
+     *
+     * Ordered as the round itself orders them, so that the same papers read the same way wherever
+     * they are listed.
+     *
+     * @param array<string, mixed> $round What the papers hang on.
+     * @param array<string, bool> $drawn Which of them are already on file.
+     * @return list<array<string, mixed>>
+     */
+    private function whatHasNotBeenDrawn(array $round, array $drawn): array
+    {
+        $rows = [];
+        $papers = new DrawnPaper();
+
+        /** @var array<string, bool> $owed */
+        $owed = $round['owed'] ?? [];
+
+        foreach ($owed as $document_type => $required) {
+            if (isset($drawn[(string)$document_type])) {
+                continue;
+            }
+
+            $rows[] = $this->nothingYet(
+                $round,
+                (string)$document_type,
+                $round['documents'][$document_type] ?? (string)$document_type,
+                $required,
+                $papers->mayCarryOurSignature($round['of'], (string)$document_type),
+            );
+        }
+
+        return $rows;
+    }
+
+    /**
+     * One row saying something is not there.
+     *
+     * @param array<string, mixed> $round What it would have hung on.
+     * @param string $document_type Which paper, where that is known.
+     * @param string $document What to call it.
+     * @param bool $required Whether its absence is a gap rather than a choice.
+     * @param bool $mayBeSigned Whether it may also be had with our signature on it.
+     * @return array<string, mixed>
+     */
+    private function nothingYet(
+        array $round,
+        string $document_type,
+        string $document,
+        bool $required = true,
+        bool $mayBeSigned = false,
+    ): array {
+        $of = $document_type === '' ? '-' : $document_type;
+
+        return [
+            'round' => $round,
+            'document' => $document,
+            'document_type' => $document_type,
+            'variant' => '',
+            'link' => null,
+            'required' => $required,
+            'mayBeSigned' => $mayBeSigned,
+            'keys' => [
+                'contract' => (string)($round['contract_id'] ?? ''),
+                'round' => $round['id'],
+                'document' => $round['id'] . '/' . $of,
+                'variant' => $round['id'] . '/' . $of,
+            ],
+        ];
     }
 
     /**
@@ -244,7 +349,7 @@ class DocumentsCell extends Cell
      */
     private function contractProposals(string $of, string $id): array
     {
-        if ($of === 'customerProposal' || ($of === 'customer' && !$this->withContracts)) {
+        if (!$this->withContracts && in_array($of, ['customerProposal', 'customer'], true)) {
             return [];
         }
 
@@ -256,6 +361,7 @@ class DocumentsCell extends Cell
             'contractProposal' => $query->where(['ContractProposals.id' => $id]),
             'contractVersion' => $query->where(['ContractProposals.contract_version_id' => $id]),
             'contract' => $query->where(['ContractProposals.contract_id' => $id]),
+            'customerProposal' => $query->where(['ContractProposals.customer_proposal_id' => $id]),
             default => $query
                 ->where(['Contracts.customer_id' => $id])
                 ->orderBy(['Contracts.number' => 'ASC']),
@@ -286,6 +392,9 @@ class DocumentsCell extends Cell
         $query = $of === 'customerProposal'
             ? $proposals->find()->where(['CustomerProposals.id' => $id])
             : $proposals->find()->where(['CustomerProposals.customer_id' => $id]);
+
+        // What a proposal calls itself takes in what it holds.
+        $query->contain(['ContractProposals']);
 
         /** @var list<\App\Model\Entity\CustomerProposal> $found */
         $found = $query->orderByDesc('CustomerProposals.effective_from')->all()->toList();

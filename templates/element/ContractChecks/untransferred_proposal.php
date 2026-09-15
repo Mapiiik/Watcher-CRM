@@ -40,9 +40,10 @@ $contract_column ??= true;
                         <?= $this->AuthLink->link(
                             __('Carry Over'),
                             [
-                                'controller' => 'ContractProposals',
+                                'plugin' => null,
+                                'controller' => 'CustomerProposals',
                                 'action' => 'transfer',
-                                $proposal->id,
+                                $proposal->customer_proposal_id,
                             ],
                         ) ?>
                     </td>

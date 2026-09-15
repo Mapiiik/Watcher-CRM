@@ -27,6 +27,7 @@ final class ProposedVersion extends ProposedDates
     public static function label(string $field): string
     {
         return match ($field) {
+            'valid_from' => __('Valid From'),
             'valid_until' => __('Valid Until'),
             'obligation_until' => __('Obligation Until'),
             default => $field,

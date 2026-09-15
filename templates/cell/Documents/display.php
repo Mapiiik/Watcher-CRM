@@ -156,22 +156,84 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 $variantCell .= $mark === '' ? '' : '<br>' . $mark;
             }
 
+            // Which round a link is about, said the way every other link here says it.
+            $whose = ['proposal_id' => $round['id'], 'agenda' => $round['controller']];
+
             $papersLink = $this->AuthLink->link(
-                __('Proposal Documents'),
+                __('Documents'),
                 [
                     'plugin' => null,
-                    'controller' => $round['controller'],
-                    'action' => 'documents',
-                    $round['id'],
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    '?' => $whose,
                 ],
             );
             ?>
             <?php if ($row['link'] === null) : ?>
+                <?php
+                // A paper that is owed and has not been drawn is said plainly; one that is only
+                // wanted sometimes is said more quietly. A round with nothing at all names nothing,
+                // because there is nothing yet to name.
+                $missing = $row['required'] ?? true ? 'error-text' : 'warning-text';
+                $named = ($row['document_type'] ?? '') !== '';
+                $saying = $named ? __('Not generated yet') : __('Nothing yet');
+
+                /**
+                 * Asking for it, with or without our signature on it.
+                 *
+                 * Drawing one writes it down in this very table, so the page is out of date the
+                 * moment the document opens and reads itself again when the reader comes back.
+                 * The signed copy is offered from here as well: asking for it draws the plain one
+                 * first and stamps that, so one click leaves both on file.
+                 *
+                 * @param string $saying What the link says.
+                 * @param bool $signed Whether to ask for the copy carrying our signature.
+                 * @return string
+                 */
+                $drawIt = function (string $saying, bool $signed) use ($round, $row): string {
+                    return $this->AuthLink->link(
+                        $saying,
+                        [
+                            'plugin' => null,
+                            'controller' => 'Documents',
+                            'action' => 'generate',
+                            '_ext' => 'pdf',
+                            '?' => array_filter([
+                                'proposal_id' => $round['id'],
+                                'agenda' => $round['controller'],
+                                'document_type' => $row['document_type'],
+                                'signed' => $signed ? '1' : null,
+                            ]),
+                        ],
+                        ['class' => 'refresh-on-return', 'target' => '_blank'],
+                    );
+                };
+    ?>
             <tr>
                 <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
                 <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>
-                <td colspan="<?= $thumbnails ? 7 : 6 ?>">
-                    <span class="error-text"><?= __('Nothing yet') ?></span>
+                <td><?= h($row['document']) ?></td>
+                <td colspan="<?= $thumbnails ? 5 : 4 ?>">
+                    <span class="<?= $missing ?>"><?= h($saying) ?></span>
+                </td>
+                <td class="actions">
+                    <?php if ($named) : ?>
+                        <?= $drawIt(__('Generate'), false) ?>
+                        <?php if ($row['mayBeSigned'] ?? false) : ?>
+                            <?= $drawIt(__('Generate Signed'), true) ?>
+                        <?php endif; ?>
+                    <?php elseif (!$generatedByUs) : ?>
+                        <?php
+                        // Nothing has come back for this round yet, and what says so is the very
+                        // place to offer the filing of it - wherever the table is being read.
+                        ?>
+                        <?= $this->AuthLink->link(__('Add Files'), [
+                            'plugin' => null,
+                            'controller' => 'Documents',
+                            'action' => 'addPages',
+                            '?' => $whose,
+                        ]) ?>
+                    <?php endif; ?>
                 </td>
                 <?= $showProposal ? $joined($spans['round'][$index], $index, $papersLink, 'actions') : '' ?>
             </tr>
@@ -220,16 +282,34 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             $row['link']->id,
                         ],
                     ) ?>
+                    <?php if ($row['mayBeSigned'] ?? false) : ?>
+                        <?= $this->AuthLink->link(
+                            __('Generate Signed'),
+                            [
+                                'plugin' => null,
+                                'controller' => 'Documents',
+                                'action' => 'generate',
+                                '_ext' => 'pdf',
+                                '?' => [
+                                    'proposal_id' => $round['id'],
+                                    'agenda' => $round['controller'],
+                                    'document_type' => $row['document_type'],
+                                    'signed' => '1',
+                                ],
+                            ],
+                            ['class' => 'refresh-on-return', 'target' => '_blank'],
+                        ) ?>
+                    <?php endif; ?>
                     <?php if ($manage && !$first) : ?>
                         <?= $this->AuthLink->postLink(
                             __('Up'),
                             [
                                 'plugin' => null,
-                                'controller' => $round['controller'],
+                                'controller' => 'Documents',
                                 'action' => 'movePage',
-                                $round['id'],
                                 $row['link']->id,
                                 'up',
+                                '?' => $whose,
                             ],
                         ) ?>
                     <?php endif; ?>
@@ -238,11 +318,11 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             __('Down'),
                             [
                                 'plugin' => null,
-                                'controller' => $round['controller'],
+                                'controller' => 'Documents',
                                 'action' => 'movePage',
-                                $round['id'],
                                 $row['link']->id,
                                 'down',
+                                '?' => $whose,
                             ],
                         ) ?>
                     <?php endif; ?>
@@ -251,10 +331,10 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             __('Remove'),
                             [
                                 'plugin' => null,
-                                'controller' => $round['controller'],
+                                'controller' => 'Documents',
                                 'action' => 'dropPage',
-                                $round['id'],
                                 $row['link']->id,
+                                '?' => $whose,
                             ],
                             ['confirm' => $generatedByUs
                                 ? __(

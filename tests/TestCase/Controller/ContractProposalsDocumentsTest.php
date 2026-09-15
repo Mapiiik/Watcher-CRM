@@ -41,7 +41,15 @@ class ContractProposalsDocumentsTest extends TestCase
     private const NESTED = '/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481'
         . '/contracts/7f76dc3f-a11b-4109-958b-4b0382545a66';
 
+    /**
+     * And the papers of a contract speak about one of its versions, which the address says too.
+     *
+     * @var string
+     */
+    private const AT_THE_VERSION = self::NESTED . '/contract-versions/74824fba-20b2-46fc-806c-df795aa9e429';
+
     private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
+    private const ROUND_ID = 'a7c1d5e2-3f48-4b90-9c61-2d0e7a5b8f34';
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
@@ -73,6 +81,7 @@ class ContractProposalsDocumentsTest extends TestCase
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.ContractVersions',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'app.IpAddresses',
         'app.IpNetworks',
@@ -137,8 +146,74 @@ class ContractProposalsDocumentsTest extends TestCase
      */
     public function testThePapersRenderBeforeAnythingHasBeenFiled(): void
     {
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
+        $this->assertResponseOk();
+    }
+
+    /**
+     * The register renders wherever it is asked for, and reads like the other listings - a filter
+     * over it, a pager under it, and every row a way on to the papers themselves.
+     *
+     * @link \App\Controller\DocumentsController::index()
+     * @return void
+     */
+    public function testTheRegisterRenders(): void
+    {
+        foreach (['/documents', '/customers/' . self::CUSTOMER_ID . '/documents'] as $at) {
+            $this->get($at);
+            $this->assertResponseOk();
+            $this->assertResponseContains('proposal_id=' . self::ROUND_ID);
+
+            // The filter is what the other listings carry, and the pager draws itself from the
+            // page the rows were taken from rather than from the rows.
+            $this->get($at . '?show_settled=1&search=lorem');
+            $this->assertResponseOk();
+        }
+    }
+
+    /**
+     * What somebody types into the register is what they have in front of them: the number of the
+     * customer, the number of a contract, or something out of the note.
+     *
+     * @link \App\Controller\DocumentsController::index()
+     * @return void
+     */
+    public function testTheRegisterIsSearchedByTheNumbersOnThePaperwork(): void
+    {
+        $customers = $this->fetchTable('Customers');
+        $customer = $customers->get(self::CUSTOMER_ID);
+        $contract = $this->fetchTable('Contracts')->get(self::CONTRACT_ID);
+
+        $found = function (string $search): array {
+            $this->get('/documents?search=' . urlencode($search));
+            $this->assertResponseOk();
+
+            return array_column((array)$this->viewVariable('rounds'), 'id');
+        };
+
+        $this->assertContains(self::ROUND_ID, $found((string)$customer->number));
+        $this->assertContains(self::ROUND_ID, $found((string)$contract->number));
+        $this->assertSame([], $found('nothing is called this'));
+    }
+
+    /**
+     * The papers say which contract and which version they speak about, so a link that named only
+     * the papers is answered at the address that says all three.
+     *
+     * @link \App\Controller\DocumentsController::manage()
+     * @return void
+     */
+    public function testTheAddressIsFilledInFromThePapersThemselves(): void
+    {
+        $asked = '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID;
+
+        $this->get('/customers/' . self::CUSTOMER_ID . $asked);
+        $this->assertRedirectContains(self::AT_THE_VERSION . '/documents/manage');
+        $this->assertRedirectContains('proposal_id=' . self::PROPOSAL_ID);
+
+        // And a page already standing where it belongs is left where it is.
+        $this->get(self::AT_THE_VERSION . $asked);
         $this->assertResponseOk();
     }
 
@@ -154,12 +229,12 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['one.pdf', 'two.pdf', 'three.pdf']);
 
-        $this->get('/contracts/documents/' . self::CONTRACT_ID);
+        $this->get(self::NESTED . '/documents/manage');
         $this->assertResponseOk();
         $this->assertResponseContains('two.pdf');
         $this->assertResponseContains('rowspan="3"');
 
-        $this->get('/customers/documents/' . self::CUSTOMER_ID);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/documents/manage');
         $this->assertResponseOk();
         $this->assertResponseContains('two.pdf');
         $this->assertResponseContains('rowspan="3"');
@@ -175,32 +250,28 @@ class ContractProposalsDocumentsTest extends TestCase
      */
     public function testTheOverviewsSitUnderWhatTheyBelongTo(): void
     {
-        $nested = sprintf('/customers/%s/contracts/%s/documents', self::CUSTOMER_ID, self::CONTRACT_ID);
+        $nested = sprintf(
+            '/customers/%s/contracts/%s/documents/manage',
+            self::CUSTOMER_ID,
+            self::CONTRACT_ID,
+        );
 
         $this->get($nested);
         $this->assertResponseOk();
 
-        $this->get(sprintf('/customers/%s/documents', self::CUSTOMER_ID));
+        $this->get(sprintf('/customers/%s/documents/manage', self::CUSTOMER_ID));
         $this->assertResponseOk();
 
-        // And the two pages point at each other, in the same shape and under the same name they
-        // are known by everywhere else.
-        $printing = sprintf('/customers/%s/contracts/%s/print', self::CUSTOMER_ID, self::CONTRACT_ID);
-
-        $this->get($printing);
-        $this->assertResponseOk();
-        $this->assertResponseContains($nested);
-
+        // Standing on one contract, the way back out to the whole customer is on the page.
         $this->get($nested);
-        $this->assertResponseContains($printing);
-        $this->assertResponseContains('Print');
+        $this->assertResponseContains(sprintf('/customers/%s/documents/manage', self::CUSTOMER_ID));
     }
 
     /**
      * The order the browser sends them in is the order they go on the shelf, because for a set of
      * scans that is usually their own numbering.
      *
-     * @link \App\Controller\ContractProposalsController::addPages()
+     * @link \App\Controller\DocumentsController::addPages()
      * @return void
      */
     public function testPagesAreFiledInTheOrderTheyWerePicked(): void
@@ -213,7 +284,7 @@ class ContractProposalsDocumentsTest extends TestCase
     /**
      * More pages go after the ones already there rather than among them.
      *
-     * @link \App\Controller\ContractProposalsController::addPages()
+     * @link \App\Controller\DocumentsController::addPages()
      * @return void
      */
     public function testMorePagesGoOnTheEnd(): void
@@ -228,7 +299,7 @@ class ContractProposalsDocumentsTest extends TestCase
     /**
      * A page moves past the one beside it, and stays where it is at either end.
      *
-     * @link \App\Controller\ContractProposalsController::movePage()
+     * @link \App\Controller\DocumentsController::movePage()
      * @return void
      */
     public function testAPageMovesPastTheOneBesideIt(): void
@@ -248,7 +319,7 @@ class ContractProposalsDocumentsTest extends TestCase
     /**
      * Letting go of a page closes the gap it leaves, so the position still means the page.
      *
-     * @link \App\Controller\ContractProposalsController::dropPage()
+     * @link \App\Controller\DocumentsController::dropPage()
      * @return void
      */
     public function testDroppingAPageClosesTheGap(): void
@@ -264,7 +335,7 @@ class ContractProposalsDocumentsTest extends TestCase
     /**
      * A page reached through the wrong proposal is not a page at all.
      *
-     * @link \App\Controller\ContractProposalsController::dropPage()
+     * @link \App\Controller\DocumentsController::dropPage()
      * @return void
      */
     public function testAPageIsOnlyReachableThroughItsOwnProposal(): void
@@ -285,7 +356,7 @@ class ContractProposalsDocumentsTest extends TestCase
      * Letting go of a paper we drew up is unfreezing it: the next request for the document draws
      * it afresh rather than handing back what is no longer there.
      *
-     * @link \App\Controller\ContractProposalsController::dropPage()
+     * @link \App\Controller\DocumentsController::dropPage()
      * @return void
      */
     public function testLettingGoOfWhatWeDrewUpUnfreezesIt(): void
@@ -304,7 +375,7 @@ class ContractProposalsDocumentsTest extends TestCase
      * Unfreezing is the administrator's to do. Everyone who files scans may correct their own,
      * but letting a drawn-up paper go changes what the customer would be handed next time.
      *
-     * @link \App\Controller\ContractProposalsController::dropPage()
+     * @link \App\Controller\DocumentsController::dropPage()
      * @return void
      */
     public function testOnlyTheAdministratorMayUnfreezeADrawnUpPaper(): void
@@ -318,7 +389,10 @@ class ContractProposalsDocumentsTest extends TestCase
 
         $this->login('sales-representative');
 
-        $this->post('/contract-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $drawn->get('id'));
+        $this->post(
+            '/documents/drop-page/' . $drawn->get('id')
+            . '?proposal_id=' . self::PROPOSAL_ID . '&agenda=ContractProposals',
+        );
         $this->assertSame(
             1,
             $this->fetchTable('Files.FileLinks')->find()
@@ -327,7 +401,10 @@ class ContractProposalsDocumentsTest extends TestCase
             'The paper we drew up was unfrozen by somebody who may not.',
         );
 
-        $this->post('/contract-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $this->linkOf('scan.pdf'));
+        $this->post(
+            '/documents/drop-page/' . $this->linkOf('scan.pdf')
+            . '?proposal_id=' . self::PROPOSAL_ID . '&agenda=ContractProposals',
+        );
         $this->assertSame([], $this->namesOnFile());
     }
 
@@ -362,10 +439,13 @@ class ContractProposalsDocumentsTest extends TestCase
         $this->replaceRequest(['files' => ['papers' => [
             new UploadedFile($path, (int)filesize($path), UPLOAD_ERR_INI_SIZE, 'too-big.png', null),
         ]]]);
-        $this->post('/contract-proposals/add-pages/' . self::PROPOSAL_ID, [
-            'document_type' => self::DOCUMENT,
-            'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
-        ]);
+        $this->post(
+            '/documents/add-pages?proposal_id=' . self::ROUND_ID . '&agenda=CustomerProposals',
+            [
+                'document_type' => self::PROPOSAL_ID . '/' . self::DOCUMENT,
+                'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
+            ],
+        );
         $this->replaceRequest([]);
 
         $this->assertResponseOk();
@@ -389,10 +469,13 @@ class ContractProposalsDocumentsTest extends TestCase
             new UploadedFile($path, 0, UPLOAD_ERR_NO_FILE, '', null),
             $this->upload($this->file('scan.png')),
         ]]]);
-        $this->post('/contract-proposals/add-pages/' . self::PROPOSAL_ID, [
-            'document_type' => self::DOCUMENT,
-            'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
-        ]);
+        $this->post(
+            '/documents/add-pages?proposal_id=' . self::ROUND_ID . '&agenda=CustomerProposals',
+            [
+                'document_type' => self::PROPOSAL_ID . '/' . self::DOCUMENT,
+                'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
+            ],
+        );
         $this->replaceRequest([]);
 
         $this->assertRedirect();
@@ -412,7 +495,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['scan.png', 'scan.png']);
 
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('data-files-gallery');
@@ -444,7 +527,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['scan.pdf']);
 
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('&quot;type&quot;:&quot;external&quot;');
@@ -469,7 +552,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -505,14 +588,14 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('files-thumb');
         $this->assertResponseContains('/files/file-links/thumbnail/');
 
         // The wide listings would lose more in readability than the pictures give back.
-        $this->get('/contracts/documents/' . self::CONTRACT_ID);
+        $this->get(self::NESTED . '/documents/manage');
 
         $this->assertResponseOk();
         $this->assertResponseNotContains('files-thumb');
@@ -529,7 +612,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -557,7 +640,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -587,7 +670,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
 
@@ -613,7 +696,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['first.png', 'second.png']);
 
-        $this->get('/contracts/documents/' . self::CONTRACT_ID);
+        $this->get(self::NESTED . '/documents/manage');
 
         $this->assertResponseOk();
 
@@ -642,7 +725,7 @@ class ContractProposalsDocumentsTest extends TestCase
     {
         $this->addPages(['only.png']);
 
-        $this->get(self::NESTED . '/contract-proposals/documents/' . self::PROPOSAL_ID);
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID);
 
         $pages = $this->pagesOfTheMark();
         $this->assertCount(1, $pages);
@@ -669,57 +752,129 @@ class ContractProposalsDocumentsTest extends TestCase
     /**
      * The form asks before it files, like every other way of adding something.
      *
-     * @link \App\Controller\ContractProposalsController::addPages()
+     * @link \App\Controller\DocumentsController::addPages()
      * @return void
      */
     public function testTheFormForANewDocumentRenders(): void
     {
-        $this->get(self::NESTED . '/contract-proposals/add-pages/' . self::PROPOSAL_ID);
+        $this->get('/documents/add-pages?proposal_id=' . self::ROUND_ID . '&agenda=CustomerProposals');
 
         $this->assertResponseOk();
         $this->assertResponseContains('papers[]');
+        // The whole package is offered, because the whole of it came back in one envelope.
+        $this->assertResponseContains(self::PROPOSAL_ID . '/' . self::DOCUMENT);
     }
 
     /**
-     * The signature form offers the documents this proposal was printed as, because nothing else
-     * can have come back - and files what comes with it in one go.
+     * Opened on the papers of one contract, the form offers those papers and not the rest of the
+     * envelope: what is being filed is what the page is about.
      *
-     * @link \App\Controller\ContractProposalsController::conclude()
+     * @link \App\Controller\DocumentsController::addPages()
      * @return void
      */
-    public function testTheScansComeInWithTheSignature(): void
+    public function testTheFormOffersWhatThePageIsAbout(): void
+    {
+        $this->login();
+        $this->get(
+            '/documents/add-pages?proposal_id=' . self::PROPOSAL_ID . '&agenda=ContractProposals',
+        );
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('papers[]');
+        $this->assertResponseContains(self::PROPOSAL_ID . '/');
+        // The customer's own papers are filed from the envelope, which is a page of its own.
+        $this->assertResponseNotContains(self::ROUND_ID . '/');
+    }
+
+    /**
+     * A scan is filed against the papers of a contract as readily as against the envelope, because
+     * one door answers for both.
+     *
+     * @link \App\Controller\DocumentsController::addPages()
+     * @return void
+     */
+    public function testAScanIsFiledAgainstThePapersOfAContract(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->setUnlockedFields(['papers']);
+
+        $this->replaceRequest(['files' => ['papers' => [$this->upload($this->file('scan.pdf'))]]]);
+        $this->post(
+            '/documents/add-pages?proposal_id=' . self::PROPOSAL_ID . '&agenda=ContractProposals',
+            [
+                'document_type' => self::PROPOSAL_ID . '/' . self::DOCUMENT,
+                'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
+            ],
+        );
+        $this->replaceRequest([]);
+
+        $this->assertRedirect();
+        $this->assertSame(['scan.pdf'], $this->namesOnFile());
+    }
+
+    /**
+     * The row saying nothing has come back is where the filing is offered, and it is offered from
+     * the wider views too - a scan is filed from wherever the round is being read.
+     *
+     * @link \App\View\Cell\DocumentsCell::display()
+     * @return void
+     */
+    public function testFilingIsOfferedWhereverThePapersAre(): void
+    {
+        $this->login();
+
+        $this->get(self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id='
+            . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains('/documents/add-pages');
+
+        // The same workbench without diving into a round, where the rounds are rows.
+        $this->get('/customers/' . self::CUSTOMER_ID . '/documents/manage');
+        $this->assertResponseOk();
+        $this->assertResponseContains('/documents/add-pages?proposal_id=' . self::PROPOSAL_ID);
+
+        // Once something has come back the row saying it had not is gone, and the way to file the
+        // rest is the round's own page - which offers it under the table whatever is on file.
+        $this->addPages(['scan.pdf']);
+        $this->get(self::NESTED . '/documents/manage?agenda=CustomerProposals&proposal_id='
+            . self::ROUND_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains('/documents/add-pages?proposal_id=' . self::ROUND_ID);
+    }
+
+    /**
+     * Recording the signature does not take the scans with it. Filing is the documents' own door,
+     * and the form says where that is rather than opening a second one.
+     *
+     * @link \App\Controller\CustomerProposalsController::conclude()
+     * @return void
+     */
+    public function testTheSignatureFormDoesNotTakeTheScans(): void
     {
         $this->print();
 
-        $this->get(self::NESTED . '/contract-proposals/conclude/' . self::PROPOSAL_ID);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/conclude/'
+            . self::ROUND_ID);
+
         $this->assertResponseOk();
-        $this->assertResponseContains('papers[' . self::DOCUMENT . '][]');
-
-        $this->replaceRequest(['files' => [
-            'papers' => [self::DOCUMENT => [$this->upload($this->file('signed.pdf'))]],
-        ]]);
-        $this->post('/contract-proposals/conclude/' . self::PROPOSAL_ID, [
-            'conclusion_date' => '2026-10-05',
-            'variants' => [self::DOCUMENT => DocumentVariant::ReceivedSignedByBoth->value],
-        ]);
-
-        $this->assertRedirect();
-        $this->assertSame(1, $this->fetchTable('Files.FileLinks')->find()
-            ->where(['variant' => DocumentVariant::ReceivedSignedByBoth->value])
-            ->count());
+        $this->assertResponseNotContains('papers[');
+        $this->assertResponseNotContains('type="file"');
+        // And says where they go instead.
+        $this->assertResponseContains('/documents/manage');
     }
 
     /**
-     * Asks for the document the way the print page does, which is what puts a drawn-up paper on
-     * the shelf.
+     * Draws the document up, so that there is something on file to work with.
      *
      * @return void
      */
     private function print(): void
     {
         $this->get(sprintf(
-            '/contracts/print/%s.pdf?proposal_id=%s&document_type=%s',
-            self::CONTRACT_ID,
+            '%s/documents/generate.pdf?agenda=ContractProposals&proposal_id=%s&document_type=%s',
+            self::NESTED,
             self::PROPOSAL_ID,
             self::DOCUMENT,
         ));
@@ -744,10 +899,15 @@ class ContractProposalsDocumentsTest extends TestCase
         // replaceRequest rather than configRequest: the latter piles the scans of one request
         // onto the next, and what is left over would then reach a page that asked for nothing.
         $this->replaceRequest(['files' => ['papers' => $files]]);
-        $this->post('/contract-proposals/add-pages/' . self::PROPOSAL_ID, [
-            'document_type' => self::DOCUMENT,
-            'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
-        ]);
+        // Taken in on the proposal, which is where anything that comes back in the envelope goes,
+        // and said to be of one paper of one of the records in it.
+        $this->post(
+            '/documents/add-pages?proposal_id=' . self::ROUND_ID . '&agenda=CustomerProposals',
+            [
+                'document_type' => self::PROPOSAL_ID . '/' . self::DOCUMENT,
+                'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
+            ],
+        );
 
         $expectFiling ? $this->assertRedirect() : $this->assertResponseOk();
         $this->replaceRequest([]);
@@ -761,10 +921,10 @@ class ContractProposalsDocumentsTest extends TestCase
     private function move(string $link, string $direction): void
     {
         $this->post(sprintf(
-            '/contract-proposals/move-page/%s/%s/%s',
-            self::PROPOSAL_ID,
+            '/documents/move-page/%s/%s?proposal_id=%s&agenda=ContractProposals',
             $link,
             $direction,
+            self::PROPOSAL_ID,
         ));
 
         $this->assertRedirect();
@@ -776,7 +936,10 @@ class ContractProposalsDocumentsTest extends TestCase
      */
     private function drop(string $link): void
     {
-        $this->post('/contract-proposals/drop-page/' . self::PROPOSAL_ID . '/' . $link);
+        $this->post(
+            '/documents/drop-page/' . $link
+            . '?proposal_id=' . self::PROPOSAL_ID . '&agenda=ContractProposals',
+        );
 
         $this->assertRedirect();
     }

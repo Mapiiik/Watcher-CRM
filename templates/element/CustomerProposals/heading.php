@@ -15,7 +15,7 @@
     __('Customer Proposal'),
     __(
         '{0} from {1}',
-        $customerProposal->purpose->label(),
+        $customerProposal->whatItIsFor(),
         $customerProposal->effective_from,
     ),
     (string)$customerProposal->getState(),

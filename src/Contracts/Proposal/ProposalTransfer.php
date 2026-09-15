@@ -5,6 +5,7 @@ namespace App\Contracts\Proposal;
 
 use App\Model\Entity\Billing;
 use App\Model\Entity\ContractProposal;
+use App\Model\Entity\ContractVersion;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractProposalsTable;
 use Cake\I18n\DateTime;
@@ -177,6 +178,19 @@ final class ProposalTransfer
     {
         $versions = $this->fetchTable('ContractVersions');
 
+        // Papers for a new contract may be drawn up before the version they are about exists. The
+        // version is the record of a paper's life, so it starts when the paper does rather than
+        // before anybody has signed it - and what it becomes is the same projection the papers
+        // themselves were printed from.
+        if ($proposal->contract_version_id === null) {
+            $version = $this->versionFromThePapers($proposal);
+            $versions->saveOrFail($version);
+
+            $proposal->set('contract_version_id', $version->id);
+
+            return;
+        }
+
         $onto = [
             TransferPlan::VERSION => $proposal->contract_version_id,
             TransferPlan::REPLACED_VERSION => $proposal->terminates_contract_version_id,
@@ -201,6 +215,36 @@ final class ProposalTransfer
                 $versions->saveOrFail($version);
             }
         }
+    }
+
+    /**
+     * The version the papers brought into being, as they said it would be.
+     *
+     * Drawn from the snapshot and the proposed changes rather than from anything live, so that the
+     * record ends up saying what the printed paper says. The day it starts is the day the papers
+     * take effect, which for a new contract is the same thing said twice.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return \App\Model\Entity\ContractVersion An unsaved record.
+     */
+    private function versionFromThePapers(ContractProposal $proposal): ContractVersion
+    {
+        $snapshot = $proposal->stateOfThings();
+        $projected = (new ProposalProjection())->projectVersion(
+            $snapshot->hydrateVersion(),
+            $proposal->proposedChanges()->version,
+        );
+
+        /** @var \App\Model\Entity\ContractVersion $version */
+        $version = $this->fetchTable('ContractVersions')->newEmptyEntity();
+
+        $version->set('contract_id', $proposal->contract_id);
+        $version->set('valid_from', $proposal->effective_from);
+        $version->set('valid_until', $projected->valid_until);
+        $version->set('obligation_until', $projected->obligation_until);
+        $version->set('conclusion_date', $proposal->conclusion_date);
+
+        return $version;
     }
 
     /**

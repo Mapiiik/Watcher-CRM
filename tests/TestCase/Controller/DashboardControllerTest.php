@@ -50,6 +50,7 @@ class DashboardControllerTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'app.IpAddresses',
         'app.IpNetworks',

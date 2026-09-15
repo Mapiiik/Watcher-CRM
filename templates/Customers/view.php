@@ -44,13 +44,13 @@ $remark = function (string $note, bool $wrong = false): string {
             <?= $this->AuthLink->link(__('New Customer'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
             <br>
             <?= $this->AuthLink->link(
-                __('Print'),
-                ['action' => 'print', $customer->id],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('Customer Documents'),
-                ['action' => 'documents', $customer->id],
+                __('Documents'),
+                [
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    'customer_id' => $customer->id,
+                    'contract_id' => null,
+                ],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -59,11 +59,6 @@ $remark = function (string $note, bool $wrong = false): string {
                 ['class' => 'side-nav-item'],
             ) ?>
             <br>
-            <?= $this->AuthLink->link(
-                __('List Customer Proposals'),
-                ['controller' => 'CustomerProposals', 'action' => 'index'],
-                ['class' => 'side-nav-item'],
-            ) ?>
             <?= $this->AuthLink->link(
                 __('List Customer Messages'),
                 ['controller' => 'CustomerMessages', 'action' => 'index'],
@@ -166,19 +161,19 @@ $remark = function (string $note, bool $wrong = false): string {
         <?php endif; ?>
     </aside>
     <div class="column column-90">
+        <?php // the checks come to about as much work as the rest of the page, and none of ?>
+        <?php // it is what the page was opened to read - so it is asked for afterwards ?>
+        <div
+            class="lazy-load"
+            data-url="<?= $this->Url->build([
+                'action' => 'problems',
+                $customer->id,
+                'customer_id' => false,
+            ]) ?>"
+            data-error="<?= h(__('What does not add up about this customer could not be loaded.')) ?>"
+            data-trigger="load"
+        ></div>
         <div class="customers view content">
-            <?php // the checks come to about as much work as the rest of the page, and none of ?>
-            <?php // it is what the page was opened to read - so it is asked for afterwards ?>
-            <div
-                class="lazy-load"
-                data-url="<?= $this->Url->build([
-                    'action' => 'problems',
-                    $customer->id,
-                    'customer_id' => false,
-                ]) ?>"
-                data-error="<?= h(__('What does not add up about this customer could not be loaded.')) ?>"
-                data-trigger="load"
-            ></div>
             <?= $this->AuthLink->link(
                 __d('app_files', 'Documentations'),
                 ['controller' => 'Documentations', 'action' => 'index'],
@@ -186,12 +181,12 @@ $remark = function (string $note, bool $wrong = false): string {
             ) ?>
             <?= $this->AuthLink->link(
                 __('Documents'),
-                ['action' => 'documents', $customer->id],
-                ['class' => 'button float-right'],
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('Print'),
-                ['action' => 'print', $customer->id],
+                [
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    'customer_id' => $customer->id,
+                    'contract_id' => null,
+                ],
                 ['class' => 'button float-right'],
             ) ?>
             <a id="customer"></a>
@@ -677,8 +672,10 @@ $remark = function (string $note, bool $wrong = false): string {
                 </div>
                 <?php endif; ?>
             </div>
-            <hr>
-            <div class="related">
+        </div>
+        <br>
+        <div class="customers view content">
+            <div>
                 <?= $this->AuthLink->link(
                     __('New Billing'),
                     ['controller' => 'Billings', 'action' => 'add'],
@@ -833,8 +830,10 @@ $remark = function (string $note, bool $wrong = false): string {
                     [['Accounts.customer_id' => $customer->id]],
                 ) ?>
             </div>
-            <hr>
-            <div class="related">
+        </div>
+        <br>
+        <div class="customers view content">
+            <div>
                 <?= $this->AuthLink->postLink(
                     __('Unblock Debtor'),
                     [
@@ -868,7 +867,10 @@ $remark = function (string $note, bool $wrong = false): string {
                     ['show_customers' => false],
                 ) ?>
             </div>
-            <div class="related">
+        </div>
+        <br>
+        <div class="customers view content">
+            <div>
                 <?= $this->AuthLink->link(
                     __('New Task'),
                     ['controller' => 'Tasks', 'action' => 'add'],

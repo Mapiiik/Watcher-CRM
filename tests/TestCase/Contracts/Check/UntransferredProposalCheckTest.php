@@ -43,6 +43,7 @@ class UntransferredProposalCheckTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'plugin.Settings.Settings',
     ];
@@ -56,11 +57,31 @@ class UntransferredProposalCheckTest extends TestCase
     private function proposalSays(array $says): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposal = $proposals->get(self::PROPOSAL_ID);
 
-        $proposals->saveOrFail(
-            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), $says),
-            ['checkRules' => false],
+        // The sending and the signature are the envelope's, so anything said about them is said
+        // there - the papers keep the day they take effect and whether they were given up on.
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $ofTheRound = array_intersect_key(
+            $says,
+            array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
         );
+
+        if ($ofTheRound !== []) {
+            $envelopes->saveOrFail(
+                $envelopes->patchEntity($envelopes->get($proposal->customer_proposal_id), $ofTheRound),
+                ['checkRules' => false],
+            );
+        }
+
+        $ofThePapers = array_diff_key($says, $ofTheRound);
+
+        if ($ofThePapers !== []) {
+            $proposals->saveOrFail(
+                $proposals->patchEntity($proposal, $ofThePapers),
+                ['checkRules' => false],
+            );
+        }
     }
 
     /**

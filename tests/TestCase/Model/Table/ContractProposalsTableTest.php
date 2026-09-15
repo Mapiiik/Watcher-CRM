@@ -6,13 +6,18 @@ namespace App\Test\TestCase\Model\Table;
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Model\Entity\ContractProposal;
 use App\Model\Enum\DocumentsDeliveryType;
+use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\ContractProposalsTable;
+use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\TableTestTrait;
+use Cake\Core\Configure;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
+use Files\Service\FileStorage;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
+use RuntimeException;
 
 /**
  * App\Model\Table\ContractProposalsTable Test Case
@@ -41,6 +46,16 @@ class ContractProposalsTableTest extends TestCase
      * The proposal the fixture carries: open, unsent, changing nothing.
      */
     private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
+
+    /**
+     * The proposal that proposal is a part of.
+     */
+    private const ROUND_ID = 'a7c1d5e2-3f48-4b90-9c61-2d0e7a5b8f34';
+
+    /**
+     * Whose papers all of these are.
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
      * A billing the fixture snapshot knows about.
@@ -73,7 +88,10 @@ class ContractProposalsTableTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
+        'app.CustomerProposals',
         'app.ContractProposals',
+        'plugin.Files.Files',
+        'plugin.Files.FileLinks',
         'plugin.Settings.Settings',
     ];
 
@@ -179,10 +197,153 @@ class ContractProposalsTableTest extends TestCase
      */
     private function save(array $proposal = []): ContractProposal
     {
-        $entity = $this->Proposals->newEntity($this->proposalData($proposal));
+        // The sending and the signature belong to the round the papers go out in, so a test that
+        // says a proposal has gone out is saying it of the envelope. Written in the order the
+        // office works in: papers into an open envelope, the envelope out, and only then may what
+        // it holds be carried over.
+        $ofTheRound = array_intersect_key(
+            $proposal,
+            array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
+        );
+        $afterwards = array_intersect_key($proposal, array_flip(['applied', 'applied_by']));
+
+        $round = $proposal['customer_proposal_id'] ?? $this->anEnvelope();
+
+        $entity = $this->Proposals->newEntity($this->proposalData(
+            array_diff_key($proposal, $ofTheRound + $afterwards)
+            + ['customer_proposal_id' => $round],
+        ));
         $this->Proposals->save($entity);
 
+        if ($ofTheRound !== []) {
+            $envelopes = $this->getTableLocator()->get('CustomerProposals');
+            $envelopes->saveOrFail(
+                $envelopes->patchEntity($envelopes->get($round), $ofTheRound),
+                ['checkRules' => false],
+            );
+        }
+
+        if ($afterwards !== [] && $entity->getErrors() === []) {
+            $this->Proposals->save($this->Proposals->patchEntity($entity, $afterwards));
+        }
+
         return $entity;
+    }
+
+    /**
+     * An envelope of its own, put there by the test rather than by a fixture.
+     *
+     * One apiece, because a round holds one set of papers for a contract and every proposal these
+     * tests draw up is for the same one.
+     *
+     * @return string Its id.
+     */
+    private function anEnvelope(): string
+    {
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+
+        $entity = $envelopes->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'effective_from' => '2026-10-01',
+        ]);
+
+        $envelopes->saveOrFail($entity, ['checkRules' => false]);
+
+        return (string)$entity->id;
+    }
+
+    /**
+     * Read without the round it goes out in, a set of papers says so rather than answering that
+     * nothing has gone out - which would be a different thing from not knowing.
+     *
+     * @return void
+     */
+    public function testPapersReadWithoutTheirRoundSaySo(): void
+    {
+        $papers = $this->Proposals->get(self::PROPOSAL_ID);
+
+        $this->expectException(RuntimeException::class);
+        $papers->hasBeenSent();
+    }
+
+    /**
+     * And read with it, they answer what it says.
+     *
+     * @return void
+     */
+    public function testPapersAnswerWithWhatTheirRoundSays(): void
+    {
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $envelopes->saveOrFail(
+            $envelopes->patchEntity($envelopes->get(self::ROUND_ID), [
+                'sent_date' => '2026-10-01',
+                'delivery_type' => DocumentsDeliveryType::Email,
+                'conclusion_date' => '2026-10-05',
+            ]),
+            ['checkRules' => false],
+        );
+
+        $papers = $this->Proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
+
+        $this->assertSame('2026-10-01', $papers->sent_date?->toDateString());
+        $this->assertSame(DocumentsDeliveryType::Email, $papers->delivery_type);
+        $this->assertSame('2026-10-05', $papers->conclusion_date?->toDateString());
+        $this->assertTrue($papers->hasBeenSent());
+        $this->assertTrue($papers->hasBeenConcluded());
+    }
+
+    /**
+     * Papers are put into a round that is still open. One that has gone out is not added to - the
+     * papers would otherwise read as having gone out with it when they were never in it.
+     *
+     * @return void
+     */
+    public function testPapersDoNotJoinARoundThatHasGoneOut(): void
+    {
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $round = $this->anEnvelope();
+        $envelopes->saveOrFail(
+            $envelopes->patchEntity($envelopes->get($round), [
+                'sent_date' => '2026-10-01',
+                'delivery_type' => DocumentsDeliveryType::Email,
+            ]),
+            ['checkRules' => false],
+        );
+
+        $papers = $this->save(['customer_proposal_id' => $round]);
+
+        $this->assertArrayHasKey('customer_proposal_id', $papers->getErrors());
+    }
+
+    /**
+     * Papers with a document filed against them are not removed: it is the record of something
+     * that happened, and it would be left pointing at nothing.
+     *
+     * @return void
+     */
+    public function testPapersWithSomethingFiledAgainstThemAreNotRemoved(): void
+    {
+        $papers = $this->Proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
+        $this->assertTrue($this->Proposals->mayBeDeleted($papers));
+
+        $root = TMP . 'papers-filed-' . uniqid();
+        Configure::write('Files.root', $root);
+
+        try {
+            $storage = new FileStorage();
+            $storage->link(
+                $storage->store('%PDF-1.7 drawn', 'application/pdf'),
+                ContractDocuments::MODEL,
+                self::PROPOSAL_ID,
+                'contract-new',
+                DocumentVariant::Generated->value,
+                ['name' => 'contract.pdf'],
+            );
+        } finally {
+            Configure::delete('Files.root');
+        }
+
+        $this->assertFalse($this->Proposals->mayBeDeleted($papers));
     }
 
     /**
@@ -209,6 +370,50 @@ class ContractProposalsTableTest extends TestCase
         $proposal = $this->save(['contract_id' => self::OTHER_CONTRACT_ID]);
 
         $this->assertArrayHasKey('contract_version_id', $proposal->getErrors());
+    }
+
+    /**
+     * An envelope holds one set of papers for a contract. Both would go out in the same letter and
+     * come back on the same day, so which of the two was agreed to would be nobody's to say.
+     *
+     * @return void
+     */
+    public function testAContractGetsOneSetOfPapersInARound(): void
+    {
+        $second = $this->save(['customer_proposal_id' => self::ROUND_ID]);
+
+        $this->assertArrayHasKey('customer_proposal_id', $second->getErrors());
+    }
+
+    /**
+     * Another contract in the same envelope is what an envelope is for.
+     *
+     * @return void
+     */
+    public function testAnotherContractShareTheSameRound(): void
+    {
+        $papers = $this->save([
+            'customer_proposal_id' => self::ROUND_ID,
+            'contract_id' => self::OTHER_CONTRACT_ID,
+            'contract_version_id' => $this->aVersion(['contract_id' => self::OTHER_CONTRACT_ID]),
+        ]);
+
+        $this->assertEmpty($papers->getErrors());
+    }
+
+    /**
+     * Papers given up on are not in the letter, so they leave the way clear for the ones drawn up
+     * to replace them.
+     *
+     * @return void
+     */
+    public function testPapersGivenUpOnLeaveTheirPlaceInTheRound(): void
+    {
+        $this->Proposals->updateAll(['revoked' => DateTime::now()], ['id' => self::PROPOSAL_ID]);
+
+        $again = $this->save(['customer_proposal_id' => self::ROUND_ID]);
+
+        $this->assertEmpty($again->getErrors());
     }
 
     /**
@@ -502,27 +707,6 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
-     * A way with no day does not say when, and a day with no way does not say how it could be
-     * shown; either on its own reads later as a record when it is half of one.
-     *
-     * @return void
-     */
-    public function testSendingIsRecordedWhole(): void
-    {
-        $dayOnly = $this->save(['sent_date' => '2026-10-01']);
-        $this->assertArrayHasKey('delivery_type', $dayOnly->getErrors());
-
-        $wayOnly = $this->save(['delivery_type' => DocumentsDeliveryType::Email]);
-        $this->assertArrayHasKey('delivery_type', $wayOnly->getErrors());
-
-        $both = $this->save([
-            'sent_date' => '2026-10-01',
-            'delivery_type' => DocumentsDeliveryType::Email,
-        ]);
-        $this->assertEmpty($both->getErrors());
-    }
-
-    /**
      * Once the papers have gone out, what stood behind them is settled - but recording that they
      * went again, or came back signed, is not rewriting it.
      *
@@ -562,13 +746,20 @@ class ContractProposalsTableTest extends TestCase
         $this->Proposals->save($applied);
         $this->assertArrayHasKey('applied', $applied->getErrors());
 
+        // The signature is the envelope's, and it is what opens the way.
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $envelopes->saveOrFail(
+            $envelopes->patchEntity(
+                $envelopes->get($proposal->customer_proposal_id),
+                ['conclusion_date' => '2026-10-05'],
+            ),
+            ['checkRules' => false],
+        );
+
         $proposal = $this->Proposals->get($proposal->id);
-        $concluded = $this->Proposals->patchEntity($proposal, [
-            'conclusion_date' => '2026-10-05',
-            'applied' => DateTime::now(),
-        ]);
-        $this->assertNotFalse($this->Proposals->save($concluded));
-        $this->assertEmpty($concluded->getErrors());
+        $carried = $this->Proposals->patchEntity($proposal, ['applied' => DateTime::now()]);
+        $this->assertNotFalse($this->Proposals->save($carried));
+        $this->assertEmpty($carried->getErrors());
     }
 
     /**
@@ -600,11 +791,17 @@ class ContractProposalsTableTest extends TestCase
         $this->assertTrue($this->Proposals->mayBeEdited($open));
         $this->assertTrue($this->Proposals->mayBeDeleted($open));
 
-        $sent = $this->Proposals->patchEntity($open, [
-            'sent_date' => '2026-10-01',
-            'delivery_type' => DocumentsDeliveryType::Email,
-        ]);
-        $this->Proposals->saveOrFail($sent);
+        // The envelope going out is what settles what is inside it.
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $envelopes->saveOrFail(
+            $envelopes->patchEntity($envelopes->get(self::ROUND_ID), [
+                'sent_date' => '2026-10-01',
+                'delivery_type' => DocumentsDeliveryType::Email,
+            ]),
+            ['checkRules' => false],
+        );
+
+        $sent = $this->Proposals->get(self::PROPOSAL_ID);
         $this->assertFalse($this->Proposals->mayBeEdited($sent));
         $this->assertFalse($this->Proposals->mayBeDeleted($sent));
     }

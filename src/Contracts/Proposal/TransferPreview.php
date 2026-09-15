@@ -197,6 +197,12 @@ final class TransferPreview
      */
     private function whatMovedOnTheVersion(ContractProposal $proposal): array
     {
+        // Papers that bring their version into being name none, and nothing can have moved on a
+        // version that is not there yet.
+        if ($proposal->contract_version_id === null) {
+            return [];
+        }
+
         $taken = $proposal->stateOfThings()->part('version');
         $version = $this->fetchTable('ContractVersions')
             ->find()

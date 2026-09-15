@@ -26,6 +26,16 @@ use App\Model\Enum\ProposalPurpose;
 final class ProposalDocumentTypes
 {
     /**
+     * The papers that are drawn up when somebody wants one rather than as a matter of course.
+     *
+     * @var array<\App\Model\Enum\ContractPrintType>
+     */
+    private const WHEN_SOMEBODY_WANTS_ONE = [
+        ContractPrintType::HandoverInstallation,
+        ContractPrintType::HandoverUninstallation,
+    ];
+
+    /**
      * The documents this proposal may be printed as.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
@@ -65,6 +75,53 @@ final class ProposalDocumentTypes
                 ContractPrintType::HandoverUninstallation => $has_equipment && ($ends || $replaces),
             },
         ));
+    }
+
+    /**
+     * The ones of them that have to exist, as against the ones that may.
+     *
+     * A handover protocol is drawn up when somebody wants one - equipment changes hands without a
+     * version ending, and an installation is not always signed for - so its absence is not a gap.
+     * Everything else here is the paper the papers are about.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param bool $has_equipment Whether the contract is one that has equipment at all.
+     * @param bool $version_concluded Whether the version the proposal belongs to has been concluded.
+     * @return array<\App\Model\Enum\ContractPrintType>
+     */
+    public function required(
+        ContractProposal $proposal,
+        bool $has_equipment,
+        bool $version_concluded,
+    ): array {
+        return array_values(array_filter(
+            $this->for($proposal, $has_equipment, $version_concluded),
+            fn(ContractPrintType $type): bool => !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true),
+        ));
+    }
+
+    /**
+     * The documents this proposal may be printed as, and whether each of them has to exist.
+     *
+     * Both answers at once, because a page that lists what is missing wants them together and
+     * working them out twice would be two chances to disagree.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return array<string, bool> The document type, and whether it is required.
+     */
+    public function expectedOf(ContractProposal $proposal): array
+    {
+        $snapshot = $proposal->stateOfThings();
+        $has_equipment = (bool)($snapshot->part('contract')['service_type']['have_equipments'] ?? false);
+        $version_concluded = ($snapshot->part('version')['conclusion_date'] ?? null) !== null;
+
+        $expected = [];
+
+        foreach ($this->for($proposal, $has_equipment, $version_concluded) as $type) {
+            $expected[$type->value] = !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true);
+        }
+
+        return $expected;
     }
 
     /**

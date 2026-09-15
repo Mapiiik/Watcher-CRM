@@ -79,6 +79,7 @@ class CustomersControllerTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'app.Queues',
         'app.Services',
@@ -795,9 +796,13 @@ class CustomersControllerTest extends TestCase
     public function testPrint(): void
     {
         $this->login();
-        $this->get('/customers/' . self::CUSTOMER_ID . '/print');
+        $this->get('/customers/' . self::CUSTOMER_ID . '/documents/manage');
 
         $this->assertResponseOk();
+
+        // The address printing used to have is in people's bookmarks, so it still leads somewhere.
+        $this->get('/customers/' . self::CUSTOMER_ID . '/print');
+        $this->assertRedirectContains('/customers/' . self::CUSTOMER_ID . '/documents/manage');
     }
 
     /**

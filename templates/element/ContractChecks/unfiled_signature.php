@@ -38,11 +38,15 @@ $contract_column ??= true;
                     <td><?= h($proposal->conclusion_date) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
-                            __('Proposal Documents'),
+                            __('Documents'),
                             [
-                                'controller' => 'ContractProposals',
-                                'action' => 'documents',
-                                $proposal->id,
+                                'plugin' => null,
+                                'controller' => 'Documents',
+                                'action' => 'manage',
+                                '?' => [
+                                    'proposal_id' => $proposal->id,
+                                    'agenda' => 'ContractProposals',
+                                ],
                             ],
                         ) ?>
                     </td>

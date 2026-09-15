@@ -12,13 +12,18 @@
  * pages it is, in front of it. What follows draws its own line, so the heading only wants
  * the room.
  *
+ * Papers that go out in a proposal put to the customer are a part of it rather than a proposal of
+ * their own, and are named so - the way back up to it is in the menu, where the ways out live.
+ *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var string|null $doing What the page holding this is about the proposal, if not the proposal.
  */
+
+$inARound = $contractProposal->customer_proposal_id !== null;
 ?>
 <?= $this->record(
-    __('Contract Proposal'),
+    $inARound ? __('Contract in a Proposal') : __('Contract Proposal'),
     __(
         '{0} from {1}',
         $contractProposal->purpose->label(),

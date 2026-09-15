@@ -42,6 +42,7 @@ class PagesAboutOneRecordTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'app.Queues',
         'app.Services',
@@ -83,50 +84,54 @@ class PagesAboutOneRecordTest extends TestCase
     }
 
     /**
+     * Printing and reading the papers are one page now, and the record leads to it above the
+     * heading rather than only from the links down the side.
+     *
      * @param string $nested Where the record is read.
      * @return void
      */
     #[DataProvider('records')]
-    public function testPrintingAndThePapersOfferEachOther(string $nested): void
+    public function testTheRecordLeadsToItsPapers(string $nested): void
     {
         $this->login();
 
-        $this->get($nested . '/print');
+        $this->get($nested);
         $this->assertResponseOk();
         $this->assertResponseContains(
-            $this->button($nested . '/documents'),
-            $nested . '/print does not lead to the papers.',
+            $this->button($nested . '/documents/manage'),
+            $nested . ' does not lead to its papers.',
         );
 
-        $this->get($nested . '/documents');
+        // And the papers lead back, so neither is a dead end.
+        $this->get($nested . '/documents/manage');
         $this->assertResponseOk();
         $this->assertResponseContains(
-            $this->button($nested . '/print'),
-            $nested . '/documents does not lead to printing.',
+            $nested,
+            $nested . '/documents/manage does not lead back to the record.',
         );
     }
 
     /**
      * The paper opens in a window of its own, and nothing else does.
      *
-     * The page where printing is set up used to be opened into a named window, so that an error
-     * sending it back would land in the one window rather than in a new one each time. What can
-     * be asked for there is now settled by the proposal, so the page is an ordinary one again and
-     * only the document it hands over wants a window.
+     * The page where printing was set up used to be opened into a named window, so that an error
+     * sending it back would land in the one window rather than in a new one each time. There is no
+     * such page any more - a paper is asked for beside the row it is missing from - so only the
+     * document itself wants a window.
      *
      * @return void
      */
     public function testOnlyTheDocumentItselfOpensInAWindowOfItsOwn(): void
     {
-        foreach (['Contracts', 'Customers'] as $agenda) {
-            $template = file_get_contents(ROOT . DS . 'templates' . DS . $agenda . DS . 'print.php');
+        $table = (string)file_get_contents(
+            ROOT . DS . 'templates' . DS . 'cell' . DS . 'Documents' . DS . 'display.php',
+        );
 
-            $this->assertStringContainsString(
-                "'formtarget' => '_blank'",
-                (string)$template,
-                $agenda . ' hands the document over into the page printing was set up on.',
-            );
-        }
+        $this->assertStringContainsString(
+            "'target' => '_blank'",
+            $table,
+            'The papers table hands a document over into the page it was asked for from.',
+        );
 
         $offenders = [];
         foreach ($this->templates() as $template) {

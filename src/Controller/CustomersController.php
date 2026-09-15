@@ -9,13 +9,7 @@ use App\BusinessRegister\Registry;
 use App\Contracts\Check\ContractCheckRegistry;
 use App\Customers\Check\CustomerCheckRegistry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
-use App\Documents\PrintedDocument;
 use App\Model\Entity\Customer;
-use App\Model\Entity\CustomerProposal;
-use App\Model\Enum\CustomerPrintType;
-use App\Service\CustomerPrint\CustomerDocuments;
-use App\Service\CustomerPrint\CustomerPrintData;
-use App\Service\CustomerPrint\CustomerPrintValidator;
 use App\View\PdfView;
 use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
@@ -29,7 +23,6 @@ use Cake\Validation\Validation;
 use Override;
 use RuntimeException;
 use Settings\Utility\Settings;
-use ValueError;
 
 /**
  * Customers Controller
@@ -449,31 +442,6 @@ class CustomersController extends AppController
     }
 
     /**
-     * Every paper this customer has, across all of their contracts.
-     *
-     * The same overview a contract has, one storey up. Which contract a paper belongs to is a
-     * column here rather than the heading, because that is the only thing that differs.
-     *
-     * @param string|null $id Customer id.
-     * @return void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function documents(?string $id = null): void
-    {
-        // The same as printing loads, because the page opens with the same facts about them.
-        $customer = $this->Customers->get($id, contain: [
-            'AccountingProfiles',
-            'Addresses' => ['Countries'],
-            'Emails',
-            'Phones',
-            'Creators',
-            'Modifiers',
-        ]);
-
-        $this->set(compact('customer'));
-    }
-
-    /**
      * Add method
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
@@ -713,6 +681,25 @@ class CustomersController extends AppController
     }
 
     /**
+     * Sends printing where it went.
+     *
+     * Printing and reading the papers are one page now. The address is kept because it is in
+     * people's bookmarks, and an address that used to work is cheaper to answer than to explain.
+     *
+     * @param string|null $id Customer id.
+     * @return \Cake\Http\Response
+     */
+    public function print(?string $id = null): ?Response
+    {
+        return $this->redirect([
+            'controller' => 'Documents',
+            'action' => 'manage',
+            'customer_id' => $id ?? $this->customer_id,
+            'contract_id' => null,
+        ]);
+    }
+
+    /**
      * Delete method
      *
      * @param string|null $id Customer id.
@@ -731,201 +718,6 @@ class CustomersController extends AppController
         }
 
         return $this->afterDeleteRedirect(['action' => 'index']);
-    }
-
-    /**
-     * Print method
-     *
-     * @param string|null $id Customer id.
-     * @param string|null $type Document type.
-     * @return \Cake\Http\Response|null Renders print.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function print(?string $id = null, ?string $type = null): ?Response
-    {
-        // initialize an empty form to be used for PDF generation (validation errors will be added to this form)
-        $printForm = new Form();
-
-        // load the customer with all related data needed for rendering the print views and generating the PDF documents
-        $customer = $this->Customers->get($id, contain: [
-            'AccountingProfiles',
-            'Addresses' => ['Countries'],
-            'CustomerProposals',
-            'Emails',
-            'Phones',
-            'Creators',
-            'Modifiers',
-        ]);
-
-        // load query parameters from the request
-        $query = $this->getRequest()->getQuery();
-
-        // keep only relevant query parameters for PDF generation in the query string
-        unset($query['submit_action']);
-
-        // A paper is drawn from a round, so that the same paper printed twice is the same paper
-        // and a signed scan has something to be filed against.
-        $proposal = $this->chosenProposal($customer, $query['proposal_id'] ?? null);
-        $documentTypes = $this->documentsFor($proposal);
-
-        // load the print type from the query string or use the one from the URL parameter
-        try {
-            $printType = CustomerPrintType::from($query['document_type'] ?? $type ?? '');
-        } catch (ValueError) {
-            // tolerate invalid or missing document type for UI rendering
-            $printType = null;
-        }
-
-        // Before the operator has chosen, the round's own purpose says which paper it is for.
-        if ($printType === null && $proposal !== null) {
-            $suggested = $proposal->purpose->suggests($this->hasAgreedBefore($customer, $proposal));
-            $printType = isset($documentTypes[$suggested->value]) ? $suggested : null;
-        }
-
-        // PDF request: validate input, enrich data and render PDF output
-        if (
-            $this->getRequest()->getParam('_ext') === 'pdf'
-            || $this->getRequest()->getQuery('submit_action') === 'pdf'
-        ) {
-            // if the print type is invalid or missing, show an error and redirect back to the print view
-            if ($printType === null) {
-                $this->Flash->error(__('Invalid type of document.'));
-
-                return $this->redirect(['action' => 'print', $id, '?' => $query]);
-            }
-
-            // prepare data for validation
-            $data = new CustomerPrintData(
-                type: $printType,
-                customer: $customer,
-                proposal: $proposal,
-            );
-
-            // validate the data for the requested document type
-            $errors = (new CustomerPrintValidator())->validate($data);
-
-            // if there are validation errors, process them
-            if ($errors !== []) {
-                // flash error messages for the user
-                foreach ($errors['Flash'] ?? [] as $error) {
-                    $this->Flash->error($error);
-                }
-                unset($errors['Flash']);
-
-                if ($this->getRequest()->getParam('_ext') !== 'pdf') {
-                    // Set validation errors on the form to be displayed in the print view
-                    $printForm->setErrors($errors);
-                } else {
-                    // if the request is already a PDF request, redirect to the same URL without the PDF extension
-                    return $this->redirect(['action' => 'print', $id, '?' => $query]);
-                }
-            } else {
-                // if the request is not already a PDF request, redirect to the same URL with the PDF extension to trigger PDF rendering
-                if ($this->getRequest()->getParam('_ext') !== 'pdf') {
-                    return $this->redirect(['action' => 'print', $id, '_ext' => 'pdf', '?' => $query]);
-                }
-
-                // The paper the round already has, or a fresh one kept against it.
-                return $this->handOver((new CustomerDocuments())->for($data));
-            }
-        }
-
-        // render the print view for HTML requests
-        $this->set(compact(
-            'printForm',
-            'printType',
-            'customer',
-            'proposal',
-            'documentTypes',
-        ));
-
-        return null;
-    }
-
-    /**
-     * Hands a paper over to whoever asked for it.
-     *
-     * Shown rather than downloaded: printing is what this is for, and a paper that opens is one
-     * fewer step than a paper that lands in a folder.
-     *
-     * @param \App\Documents\PrintedDocument $document The paper.
-     * @return \Cake\Http\Response
-     */
-    private function handOver(PrintedDocument $document): Response
-    {
-        return (new Response())
-            ->withType($document->mimeType)
-            ->withHeader('Content-Disposition', 'inline; filename="' . $document->filename . '"')
-            ->withStringBody($document->bytes);
-    }
-
-    /**
-     * The round the papers are for, of the ones this customer has.
-     *
-     * @param \App\Model\Entity\Customer $customer Whose rounds.
-     * @param mixed $chosen What was asked for.
-     * @return \App\Model\Entity\CustomerProposal|null
-     */
-    private function chosenProposal(Customer $customer, mixed $chosen): ?CustomerProposal
-    {
-        if (!is_string($chosen) || $chosen === '') {
-            return null;
-        }
-
-        foreach ($customer->customer_proposals ?? [] as $proposal) {
-            if ((string)$proposal->id === $chosen) {
-                return $proposal;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * The documents that round may be printed as.
-     *
-     * @param \App\Model\Entity\CustomerProposal|null $proposal The chosen round.
-     * @return array<string, string>
-     */
-    private function documentsFor(?CustomerProposal $proposal): array
-    {
-        if ($proposal === null) {
-            return [];
-        }
-
-        $documents = [];
-        foreach ($proposal->purpose->documents() as $document) {
-            $documents[$document->value] = $document->label();
-        }
-
-        return $documents;
-    }
-
-    /**
-     * Whether the customer agreed to this before the round being printed from.
-     *
-     * Read off the earlier rounds rather than off the customer's own flags: the flags say what
-     * stands today and never say when it was said, while a round drawn up months ago is asking
-     * about the state of things back then.
-     *
-     * @param \App\Model\Entity\Customer $customer Whose rounds.
-     * @param \App\Model\Entity\CustomerProposal $proposal The round being printed from.
-     * @return bool
-     */
-    private function hasAgreedBefore(Customer $customer, CustomerProposal $proposal): bool
-    {
-        foreach ($customer->customer_proposals ?? [] as $earlier) {
-            if (
-                (string)$earlier->id !== (string)$proposal->id
-                && $earlier->purpose === $proposal->purpose
-                && $earlier->hasBeenConcluded()
-                && $earlier->effective_from <= $proposal->effective_from
-            ) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

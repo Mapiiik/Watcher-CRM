@@ -38,20 +38,24 @@ $contract_column ??= true;
                     <td><?= h($proposal->created) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
-                            __('Print'),
+                            __('Documents'),
                             [
-                                'controller' => 'Contracts',
-                                'action' => 'print',
-                                $proposal->contract_id,
-                                '?' => ['proposal_id' => $proposal->id],
+                                'plugin' => null,
+                                'controller' => 'Documents',
+                                'action' => 'manage',
+                                '?' => [
+                                    'proposal_id' => $proposal->id,
+                                    'agenda' => 'ContractProposals',
+                                ],
                             ],
                         ) ?>
                         <?= $this->AuthLink->link(
                             __('Record the Sending'),
                             [
-                                'controller' => 'ContractProposals',
+                                'plugin' => null,
+                                'controller' => 'CustomerProposals',
                                 'action' => 'send',
-                                $proposal->id,
+                                $proposal->customer_proposal_id,
                             ],
                             ['class' => 'win-link'],
                         ) ?>

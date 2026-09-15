@@ -9,12 +9,14 @@ use App\Contracts\Proposal\ProposalSnapshot;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
-use App\Model\Enum\DocumentsDeliveryType;
+use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\ProposalPurpose;
+use App\Service\ContractPrint\ContractDocuments;
 use Cake\Database\Type\EnumType;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use InvalidArgumentException;
 use Override;
@@ -24,6 +26,7 @@ use Override;
  *
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @property \App\Model\Table\ContractVersionsTable&\Cake\ORM\Association\BelongsTo $ContractVersions
+ * @property \App\Model\Table\CustomerProposalsTable&\Cake\ORM\Association\BelongsTo $CustomerProposals
  * @property \App\Model\Table\ContractVersionsTable&\Cake\ORM\Association\BelongsTo $TerminatedContractVersions
  * @method \App\Model\Entity\ContractProposal newEmptyEntity()
  * @method \App\Model\Entity\ContractProposal newEntity(array $data, array $options = [])
@@ -75,10 +78,6 @@ class ContractProposalsTable extends AppTable
         $this->getSchema()->setColumnType('changes', 'json');
         $this->getSchema()->setColumnType('confirmations', 'json');
         $this->getSchema()->setColumnType(
-            'delivery_type',
-            EnumType::from(DocumentsDeliveryType::class),
-        );
-        $this->getSchema()->setColumnType(
             'purpose',
             EnumType::from(ProposalPurpose::class),
         );
@@ -91,8 +90,15 @@ class ContractProposalsTable extends AppTable
             'foreignKey' => 'contract_id',
             'joinType' => 'INNER',
         ]);
+        // Left, because a paper for a new contract may be drawn up before the version it is
+        // about exists - carrying it over is what brings that version into being.
         $this->belongsTo('ContractVersions', [
             'foreignKey' => 'contract_version_id',
+            'joinType' => 'LEFT',
+        ]);
+        // The envelope these papers go out in, and where the sending and the signature are kept.
+        $this->belongsTo('CustomerProposals', [
+            'foreignKey' => 'customer_proposal_id',
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('TerminatedContractVersions', [
@@ -124,8 +130,10 @@ class ContractProposalsTable extends AppTable
      */
     public function findPendingTransfer(SelectQuery $query): SelectQuery
     {
+        // The signature is on the envelope, so the papers are asked about through it.
         return $this->findOpen($query)
-            ->where([$this->aliasField('conclusion_date') . ' IS NOT' => null]);
+            ->innerJoinWith('CustomerProposals')
+            ->where(['CustomerProposals.conclusion_date IS NOT' => null]);
     }
 
     /**
@@ -139,7 +147,7 @@ class ContractProposalsTable extends AppTable
      */
     public function mayBeEdited(ContractProposal $proposal): bool
     {
-        return !$proposal->hasBeenSent()
+        return $this->CustomerProposals->mayBeEdited($this->theEnvelopeOf($proposal))
             && !$proposal->hasBeenApplied()
             && !$proposal->hasBeenRevoked();
     }
@@ -156,7 +164,53 @@ class ContractProposalsTable extends AppTable
      */
     public function mayBeDeleted(ContractProposal $proposal): bool
     {
-        return !$proposal->hasBeenSent() && !$proposal->hasBeenApplied();
+        // Asked of the envelope directly rather than through its own gate: what stops the envelope
+        // going is partly that these very papers are in it, which is no reason to keep them.
+        $envelope = $this->theEnvelopeOf($proposal);
+
+        return !$envelope->hasBeenSent()
+            && !$envelope->hasBeenConcluded()
+            && !$proposal->hasBeenApplied()
+            && !$this->anyPapersAreFiledAgainst($proposal);
+    }
+
+    /**
+     * The envelope a set of papers goes out in, fetched where it did not come with them.
+     *
+     * The gates are asked in places that load as little as they can - the permissions read three
+     * columns and nothing else - so the envelope is looked up rather than required.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The papers being asked about.
+     * @return \App\Model\Entity\CustomerProposal
+     */
+    private function theEnvelopeOf(ContractProposal $proposal): CustomerProposal
+    {
+        if (isset($proposal->customer_proposal)) {
+            return $proposal->customer_proposal;
+        }
+
+        /** @var \App\Model\Entity\CustomerProposal $envelope */
+        $envelope = $this->CustomerProposals->get($proposal->customer_proposal_id);
+
+        return $envelope;
+    }
+
+    /**
+     * Whether any paper is filed against these papers.
+     *
+     * A document that was drawn or came back is the record of something that happened, and letting
+     * the papers go would leave it pointing at nothing - reachable from nowhere, and holding on to
+     * its file for ever.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The papers being asked about.
+     * @return bool
+     */
+    private function anyPapersAreFiledAgainst(ContractProposal $proposal): bool
+    {
+        return TableRegistry::getTableLocator()->get('Files.FileLinks')->exists([
+            'FileLinks.model' => ContractDocuments::MODEL,
+            'FileLinks.foreign_key' => $proposal->id,
+        ]);
     }
 
     /**
@@ -173,10 +227,15 @@ class ContractProposalsTable extends AppTable
             ->requirePresence('contract_id', 'create')
             ->notEmptyString('contract_id');
 
+        // Empty says the version is still to come. Which purposes may say that is a rule rather
+        // than a matter of shape, so it is checked where the other rules are.
         $validator
             ->uuid('contract_version_id')
-            ->requirePresence('contract_version_id', 'create')
-            ->notEmptyString('contract_version_id');
+            ->allowEmptyString('contract_version_id');
+
+        $validator
+            ->uuid('customer_proposal_id')
+            ->allowEmptyString('customer_proposal_id');
 
         $validator
             ->requirePresence('purpose', 'create')
@@ -214,17 +273,6 @@ class ContractProposalsTable extends AppTable
         $validator
             ->array('confirmations')
             ->allowEmptyArray('confirmations');
-
-        $validator
-            ->date('sent_date')
-            ->allowEmptyDate('sent_date');
-
-        $validator
-            ->allowEmptyString('delivery_type');
-
-        $validator
-            ->date('conclusion_date')
-            ->allowEmptyDate('conclusion_date');
 
         $validator
             ->dateTime('applied')
@@ -276,10 +324,10 @@ class ContractProposalsTable extends AppTable
             fn(ContractProposal $entity): bool => $this->mayBeDeleted($entity),
             'settledProposalIsNotRemoved',
             [
-                'errorField' => 'sent_date',
+                'errorField' => 'customer_proposal_id',
                 'message' => __(
-                    'The papers for this proposal have gone out, so the record of them stays.'
-                    . ' Revoke it instead.',
+                    'The papers for this proposal have gone out or something is filed against'
+                    . ' them, so the record of them stays. Revoke it instead.',
                 ),
             ],
         );
@@ -424,6 +472,89 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'contract_version_id',
                 'message' => __('The contract version belongs to a different contract.'),
+            ],
+        );
+
+        // Papers for a new contract may be drawn up before the version they are about exists, and
+        // carrying them over brings it into being. Nothing else has anything to start: a change
+        // amends a version that was agreed to and an ending ends one that is running.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                return $entity->contract_version_id !== null
+                    || $entity->purpose->mayStartAVersion();
+            },
+            'onlyANewContractStartsItsVersion',
+            [
+                'errorField' => 'contract_version_id',
+                'message' => __('Papers for this purpose are about a version that already exists.'),
+            ],
+        );
+
+        // An envelope is the customer's, so it cannot hold papers of somebody else's contract.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                $round = $this->roundOf($entity->customer_proposal_id);
+                if ($round === null) {
+                    return true;
+                }
+
+                $contract = $this->Contracts->find()
+                    ->where(['Contracts.id' => $entity->contract_id])
+                    ->first();
+
+                return $contract === null || $contract->customer_id === $round->customer_id;
+            },
+            'proposalBelongsToItsRound',
+            [
+                'errorField' => 'customer_proposal_id',
+                'message' => __('That round of papers belongs to a different customer.'),
+            ],
+        );
+
+        // Adding papers to an envelope is changing the envelope, and one that has gone out or come
+        // back signed is not changed - the papers would otherwise read as having gone out with it
+        // when they were never in it. Whoever needs them draws up a proposal of their own.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                if (!$entity->isDirty('customer_proposal_id')) {
+                    return true;
+                }
+
+                return $this->CustomerProposals->mayBeEdited($this->theEnvelopeOf($entity));
+            },
+            'papersJoinAnOpenRound',
+            [
+                'errorField' => 'customer_proposal_id',
+                'message' => __('That proposal has already gone out, so nothing more goes in it.'),
+            ],
+        );
+
+        // One contract, one set of papers in an envelope. Two of them go out in the same letter
+        // and come back on the same day, so which of them was agreed to would be nobody's to say -
+        // and a contract that really wants two answers wants two proposals. Papers given up on are
+        // not in the letter, so they leave the way clear for the ones that replace them.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                if ($entity->customer_proposal_id === null || $entity->hasBeenRevoked()) {
+                    return true;
+                }
+
+                $conditions = [
+                    'ContractProposals.customer_proposal_id' => $entity->customer_proposal_id,
+                    'ContractProposals.contract_id' => $entity->contract_id,
+                    'ContractProposals.revoked IS' => null,
+                ];
+
+                if (!$entity->isNew()) {
+                    $conditions['ContractProposals.id !='] = $entity->id;
+                }
+
+                return !$this->exists($conditions);
+            },
+            'oneSetOfPapersPerContractInARound',
+            [
+                'errorField' => 'customer_proposal_id',
+                'message' => __('That proposal already holds papers for this contract.'),
             ],
         );
 
@@ -625,22 +756,11 @@ class ContractProposalsTable extends AppTable
      */
     private function addPaperworkRules(RulesChecker $rules): void
     {
-        // A way with no day does not say when, a day with no way does not say how it could be
-        // shown, and either on its own reads later as a record when it is half of one.
-        $rules->add(
-            fn(ContractProposal $entity): bool => ($entity->sent_date === null) === ($entity->delivery_type === null),
-            'sendingIsRecordedWhole',
-            [
-                'errorField' => 'delivery_type',
-                'message' => __('Say both when the papers were sent and how, or neither.'),
-            ],
-        );
-
         // Once the papers have gone out, what stood behind them is settled. Recording that they
         // went again, or that they came back signed, is not rewriting it.
         $rules->add(
             function (ContractProposal $entity): bool {
-                if ($entity->isNew() || $entity->getOriginal('sent_date') === null) {
+                if ($entity->isNew() || !$this->theEnvelopeOf($entity)->hasBeenSent()) {
                     return true;
                 }
 
@@ -665,7 +785,8 @@ class ContractProposalsTable extends AppTable
         // The transfer offers itself only on a concluded proposal and checks again before it
         // writes, but the last word is here, so that no other way in can get around it.
         $rules->add(
-            fn(ContractProposal $entity): bool => $entity->applied === null || $entity->conclusion_date !== null,
+            fn(ContractProposal $entity): bool => $entity->applied === null
+                || $this->theEnvelopeOf($entity)->hasBeenConcluded(),
             'appliedNeedsAConclusion',
             [
                 'errorField' => 'applied',
@@ -724,6 +845,26 @@ class ContractProposalsTable extends AppTable
         }
 
         return $this->versionOf($entity->contract_version_id)?->get($field);
+    }
+
+    /**
+     * The round a proposal says it went out in, or null when it names none that exists.
+     *
+     * @param string|null $id Which round.
+     * @return \App\Model\Entity\CustomerProposal|null
+     */
+    private function roundOf(?string $id): ?CustomerProposal
+    {
+        if ($id === null) {
+            return null;
+        }
+
+        /** @var \App\Model\Entity\CustomerProposal|null $round */
+        $round = $this->CustomerProposals->find()
+            ->where(['CustomerProposals.id' => $id])
+            ->first();
+
+        return $round;
     }
 
     /**

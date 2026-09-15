@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Proposals;
 
+use App\Model\Enum\ProposalStep;
+
 /**
  * Where a set of papers stands, for the records that keep one.
  *
@@ -10,9 +12,9 @@ namespace App\Proposals;
  * different fields, but the road the papers travel is the same one: drawn up, sent, agreed to, or
  * given up on. That much is here so that the two cannot answer it differently.
  *
- * What settles a proposal is not the same for both, so each says it for itself. A contract's is
- * settled by being carried over, because that is when what it asked for reaches the live records;
- * one put to a customer is settled by coming back signed, because nothing waits behind it.
+ * Where that road ends is not the same for both, and it is no longer the record's kind that says
+ * so - the purpose is asked how far its papers go, and {@see \App\Proposals\Settlement} works the
+ * rest out. Each record only has to hand over the fields it keeps.
  */
 trait ProposalLifecycleTrait
 {
@@ -60,9 +62,54 @@ trait ProposalLifecycleTrait
     }
 
     /**
-     * What counts as settled for this kind of proposal.
+     * Whether nobody is waiting for these papers any more.
      *
      * @return bool
      */
-    abstract protected function hasBeenSettled(): bool;
+    public function hasBeenSettled(): bool
+    {
+        return $this->settlement()->isSettled();
+    }
+
+    /**
+     * Where the papers stand, in one word for a listing to print.
+     *
+     * @return string
+     */
+    public function getState(): string
+    {
+        return $this->settlement()->state();
+    }
+
+    /**
+     * Whether these papers ever go through the given step at all.
+     *
+     * @param \App\Model\Enum\ProposalStep $step The step being asked about.
+     * @return bool
+     */
+    public function expects(ProposalStep $step): bool
+    {
+        return $this->settlement()->expects($step);
+    }
+
+    /**
+     * Whether the given step is the one to take next.
+     *
+     * What a page offers goes through here rather than through the fields, so that a paper which
+     * never gets signed is never asked for a signature.
+     *
+     * @param \App\Model\Enum\ProposalStep $step The step being asked about.
+     * @return bool
+     */
+    public function isDueFor(ProposalStep $step): bool
+    {
+        return $this->settlement()->isDueFor($step);
+    }
+
+    /**
+     * The fields this record keeps, handed to whatever reads them.
+     *
+     * @return \App\Proposals\Settlement
+     */
+    abstract protected function settlement(): Settlement;
 }

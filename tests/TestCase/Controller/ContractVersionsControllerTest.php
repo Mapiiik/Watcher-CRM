@@ -67,6 +67,7 @@ class ContractVersionsControllerTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
@@ -116,13 +117,81 @@ class ContractVersionsControllerTest extends TestCase
     }
 
     /**
-     * The papers of the version's proposals are on the version's own card, because that is where
-     * somebody looking at what was agreed to arrives.
+     * A version is a storey of the workbench's address of its own: sometimes what somebody is
+     * dealing with is one version of a contract and nothing else of it.
+     *
+     * @return void
+     * @link \App\Controller\DocumentsController::manage()
+     */
+    public function testThePapersMayBeWorkedOnForOneVersionAlone(): void
+    {
+        $versions = $this->fetchTable('ContractVersions');
+        $version = $versions->get(self::VERSION_ID);
+        $contract = $this->fetchTable('Contracts')->get($version->contract_id);
+
+        $this->login();
+        $this->get(sprintf(
+            '/customers/%s/contracts/%s/contract-versions/%s/documents/manage',
+            $contract->customer_id,
+            $contract->id,
+            self::VERSION_ID,
+        ));
+
+        $this->assertResponseOk();
+
+        // The version is a storey of the address, so the way back out says so.
+        $this->assertResponseContains(h((string)$version->name));
+        $this->assertNotSame([], (array)$this->viewVariable('rounds'));
+
+        // And the table of papers is drawn at the version, not at the contract it belongs to.
+        $this->assertSame(
+            ['contractVersion', self::VERSION_ID],
+            (array)$this->viewVariable('scope'),
+        );
+
+        // And only proposals that say something about this version are listed - the version
+        // narrows this table as well as the papers below it. Move the fixture's papers off it and
+        // the listing empties.
+        $papers = $this->fetchTable('ContractProposals');
+        $papers->saveOrFail(
+            $papers->patchEntity($papers->get(self::PROPOSAL_ID), ['contract_version_id' => null]),
+            ['checkRules' => false, 'validate' => false],
+        );
+
+        $this->get(sprintf(
+            '/customers/%s/contracts/%s/contract-versions/%s/documents/manage',
+            $contract->customer_id,
+            $contract->id,
+            self::VERSION_ID,
+        ));
+
+        $this->assertResponseOk();
+        $this->assertSame([], (array)$this->viewVariable('rounds'));
+    }
+
+    /**
+     * The papers of one version are reachable from it, above the heading and from the menu.
      *
      * @return void
      * @link \App\Controller\ContractVersionsController::view()
      */
-    public function testTheCardShowsThePapersFiledAgainstItsProposals(): void
+    public function testTheVersionLeadsToItsOwnPapers(): void
+    {
+        $this->login();
+        $this->get('/contract-versions/view/' . self::VERSION_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('/contract-versions/' . self::VERSION_ID . '/documents/manage');
+    }
+
+    /**
+     * A paper filed against one of the version's proposals is read where the papers are worked on,
+     * and the version's page says the way there.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::view()
+     */
+    public function testTheCardLeadsToThePapersOfItsProposals(): void
     {
         $root = TMP . 'contract-version-papers-' . uniqid();
         Configure::write('Files.root', $root);
@@ -140,8 +209,21 @@ class ContractVersionsControllerTest extends TestCase
         $this->login();
         $this->get('/contract-versions/view/' . self::VERSION_ID);
 
+        // The version's page is about the version. The papers are read where they are worked on,
+        // and the page says the way there.
         $this->assertResponseOk();
-        $this->assertResponseContains(__('Received Documents'));
+        $this->assertResponseNotContains(__('Received Documents'));
+        $this->assertResponseContains('/documents/manage');
+
+        $contracts = $this->fetchTable('Contracts');
+        $contract = $contracts->get($this->fetchTable('ContractVersions')->get(self::VERSION_ID)->contract_id);
+
+        $this->get(sprintf(
+            '/customers/%s/contracts/%s/documents/manage',
+            $contract->customer_id,
+            $contract->id,
+        ));
+        $this->assertResponseOk();
         $this->assertResponseContains(sprintf('/files/file-links/download/%s', $link->id));
 
         Configure::delete('Files.root');

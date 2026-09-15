@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractVersion $contractVersion
- * @var array<string, array<string, array<string, list<\Files\Model\Entity\FileLink>>>> $filed
  */
 ?>
 <div class="row">
@@ -32,10 +31,35 @@
                 ['action' => 'add'],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <br>
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                [
+                    'plugin' => null,
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    'customer_id' => $contractVersion->contract->customer_id,
+                    'contract_id' => $contractVersion->contract_id,
+                    'contract_version_id' => $contractVersion->id,
+                ],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
         <div class="contractVersions view content">
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                [
+                    'plugin' => null,
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    'customer_id' => $contractVersion->contract->customer_id,
+                    'contract_id' => $contractVersion->contract_id,
+                    'contract_version_id' => $contractVersion->id,
+                ],
+                ['class' => 'button float-right'],
+            ) ?>
             <?php
             // A version is known by how long it runs. Which contract it belongs to is carried by
             // the bar across the top and by the address the page was reached at, so what is worth
@@ -112,54 +136,6 @@
                     <?= $this->Text->autoParagraph(h($contractVersion->note)); ?>
                 </blockquote>
             </div>
-            <div class="related">
-                <?= $this->AuthLink->link(
-                    __('New Proposal'),
-                    [
-                        'controller' => 'ContractProposals',
-                        'action' => 'add',
-                        'customer_id' => $contractVersion->contract->customer_id,
-                        'contract_id' => $contractVersion->contract_id,
-                        '?' => ['contract_version_id' => $contractVersion->id],
-                    ],
-                    ['class' => 'button button-small float-right win-link'],
-                ) ?>
-                <h4><?= __('Proposals') ?></h4>
-                <?= $this->element('Contracts/ContractProposals', [
-                    'contract_proposals' => $contractVersion->contract_proposals,
-                    'version_column' => false,
-                ]) ?>
-            </div>
-            <?php if ($filed !== []) : ?>
-            <div class="related">
-                <h4><?= __('Documents') ?></h4>
-                <h5><?= __('Received Documents') ?></h5>
-                <p><?=
-                    __(
-                        'The papers that came back, whoever signed them. They are filed against the'
-                        . ' proposal they answer, so the row says which one that is.',
-                    )
-                    ?></p>
-                <?php $this->Preview->load() ?>
-                <?= $this->cell(
-                    'Documents',
-                    ['contractVersion', $contractVersion->id],
-                    ['generatedByUs' => false],
-                ) ?>
-                <h5><?= __('Generated Documents') ?></h5>
-                <p><?=
-                    __(
-                        'What we generated. A document is generated once and handed back'
-                        . ' afterwards, so these are the very files the customer was given.',
-                    )
-                    ?></p>
-                <?= $this->cell(
-                    'Documents',
-                    ['contractVersion', $contractVersion->id],
-                    ['generatedByUs' => true],
-                ) ?>
-            </div>
-            <?php endif; ?>
         </div>
     </div>
 </div>

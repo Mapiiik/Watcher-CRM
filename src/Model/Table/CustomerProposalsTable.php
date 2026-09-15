@@ -6,9 +6,11 @@ namespace App\Model\Table;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
+use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\Database\Type\EnumType;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Override;
 
@@ -16,6 +18,7 @@ use Override;
  * CustomerProposals Model
  *
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\ContractProposalsTable&\Cake\ORM\Association\HasMany $ContractProposals
  * @method \App\Model\Entity\CustomerProposal newEmptyEntity()
  * @method \App\Model\Entity\CustomerProposal newEntity(array $data, array $options = [])
  * @method array<\App\Model\Entity\CustomerProposal> newEntities(array $data, array $options = [])
@@ -65,6 +68,14 @@ class CustomerProposalsTable extends AppTable
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',
         ]);
+        // The papers of the customer's contracts that go out in this envelope. They are never
+        // taken with it: the envelope is where their sending and their signature are kept, so
+        // letting it go while they are in it would leave them saying nothing about either - which
+        // is why a rule stops it happening at all.
+        $this->hasMany('ContractProposals', [
+            'foreignKey' => 'customer_proposal_id',
+            'dependent' => false,
+        ]);
     }
 
     /**
@@ -108,7 +119,31 @@ class CustomerProposalsTable extends AppTable
      */
     public function mayBeDeleted(CustomerProposal $proposal): bool
     {
-        return !$proposal->hasBeenSent() && !$proposal->hasBeenConcluded();
+        return !$proposal->hasBeenSent()
+            && !$proposal->hasBeenConcluded()
+            && !$this->anythingHangsOn($proposal);
+    }
+
+    /**
+     * Whether anything would be left behind by letting the round go.
+     *
+     * Two things may: the papers of a contract, which keep their sending and their signature here
+     * and would have nowhere to keep them; and a document, which is the record of something that
+     * happened and would be left pointing at nothing, holding on to its file for ever.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The round being asked about.
+     * @return bool
+     */
+    private function anythingHangsOn(CustomerProposal $proposal): bool
+    {
+        if ($this->ContractProposals->exists(['ContractProposals.customer_proposal_id' => $proposal->id])) {
+            return true;
+        }
+
+        return TableRegistry::getTableLocator()->get('Files.FileLinks')->exists([
+            'FileLinks.model' => CustomerDocuments::MODEL,
+            'FileLinks.foreign_key' => $proposal->id,
+        ]);
     }
 
     /**
@@ -125,9 +160,10 @@ class CustomerProposalsTable extends AppTable
             ->requirePresence('customer_id', 'create')
             ->notEmptyString('customer_id');
 
+        // Empty says the round carries no paper of the customer's own and is only the envelope
+        // its contracts' papers went out in.
         $validator
-            ->requirePresence('purpose', 'create')
-            ->notEmptyString('purpose');
+            ->allowEmptyString('purpose');
 
         $validator
             ->date('effective_from')
@@ -176,6 +212,17 @@ class CustomerProposalsTable extends AppTable
             [
                 'errorField' => 'delivery_type',
                 'message' => __('Please say how the papers went out.'),
+            ],
+        );
+
+        $rules->addDelete(
+            fn(CustomerProposal $proposal): bool => $this->mayBeDeleted($proposal),
+            'nothingIsLeftBehind',
+            [
+                'errorField' => 'id',
+                'message' => __(
+                    'This proposal has gone out, or there are papers in it. Revoke it instead.',
+                ),
             ],
         );
 

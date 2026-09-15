@@ -50,6 +50,7 @@ class TransferPlanTest extends TestCase
         'app.Queues',
         'app.Services',
         'app.Billings',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'plugin.Settings.Settings',
     ];
@@ -165,6 +166,37 @@ class TransferPlanTest extends TestCase
     }
 
     /**
+     * A version the papers bring into being is not a record yet, so nothing planned for it points
+     * anywhere - a page drawing the list has to be able to tell that from a record it may open.
+     *
+     * @return void
+     */
+    public function testWhatStartsAVersionPointsAtNoRecord(): void
+    {
+        $proposal = $this->proposal([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_version_id' => null,
+            'conclusion_date' => '2026-09-15',
+        ]);
+
+        $planned = (new TransferPlan())->of($proposal);
+        $this->assertNotSame([], $planned, 'Starting a version was planned as nothing at all.');
+
+        $about = 0;
+
+        foreach ($planned as $write) {
+            if ($write->target !== TransferPlan::VERSION) {
+                continue;
+            }
+
+            $about++;
+            $this->assertNull($write->id, sprintf('%s was written as if the version were there.', $write->field));
+        }
+
+        $this->assertGreaterThan(0, $about, 'Nothing was planned for the version at all.');
+    }
+
+    /**
      * One of the planned writes, by the field it is for.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
@@ -206,13 +238,33 @@ class TransferPlanTest extends TestCase
     private function proposal(array $says): ContractProposal
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
-        $proposals->saveOrFail(
-            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), $says),
-            ['checkRules' => false],
+        $papers = $proposals->get(self::PROPOSAL_ID);
+
+        // The signature is the envelope's, so a test that gives the papers one gives it there.
+        $ofTheRound = array_intersect_key(
+            $says,
+            array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
         );
 
+        if ($ofTheRound !== []) {
+            $envelopes = $this->getTableLocator()->get('CustomerProposals');
+            $envelopes->saveOrFail(
+                $envelopes->patchEntity($envelopes->get($papers->customer_proposal_id), $ofTheRound),
+                ['checkRules' => false],
+            );
+        }
+
+        $says = array_diff_key($says, $ofTheRound);
+
+        if ($says !== []) {
+            $proposals->saveOrFail(
+                $proposals->patchEntity($papers, $says),
+                ['checkRules' => false],
+            );
+        }
+
         /** @var \App\Model\Entity\ContractProposal $proposal */
-        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal = $proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
 
         return $proposal;
     }

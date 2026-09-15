@@ -64,6 +64,35 @@ enum ProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
+     * How far papers drawn up for this purpose travel before nobody waits for them any more.
+     *
+     * Everything a proposal of a contract asks for reaches the records by being carried over, so
+     * every purpose here goes the whole way. A purpose that only hands a paper over would stop
+     * earlier, and the rest of the application would follow without being told twice.
+     *
+     * @return \App\Model\Enum\ProposalStep
+     */
+    public function lastStep(): ProposalStep
+    {
+        return match ($this) {
+            self::NewContract, self::ServiceChange, self::Termination => ProposalStep::CarriedOver,
+        };
+    }
+
+    /**
+     * Whether a proposal for this purpose may bring a version into being rather than name one.
+     *
+     * Only a new contract can: a change amends a version that was agreed to and an ending ends one
+     * that is running, so neither has anything to start.
+     *
+     * @return bool
+     */
+    public function mayStartAVersion(): bool
+    {
+        return $this === self::NewContract;
+    }
+
+    /**
      * The document to offer first, before the operator has chosen one.
      *
      * Only a suggestion: which documents may be printed at all is worked out from the proposal, so

@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerProposal $customerProposal
+ * @var array<\App\Model\Entity\ContractProposal> $alsoInTheRound
  * @var array<int|string, string> $deliveryTypes
  */
 
@@ -52,6 +53,9 @@ $recording = $again ? __('Record the Sending Again') : __('Record the Sending');
                 ]);
                 ?>
             </fieldset>
+            <?= $this->element('common/also_in_the_round', [
+                'saying' => __('These get the same day, because they went out together.'),
+            ]) ?>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>
         </div>

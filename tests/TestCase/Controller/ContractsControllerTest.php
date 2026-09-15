@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractsController;
 use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Table\BillingsTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
@@ -43,6 +44,11 @@ class ContractsControllerTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * The papers drawn up on that contract's version.
+     */
+    private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
+
+    /**
      * The access point that contract names, which lives in the other application.
      *
      * @var string
@@ -70,6 +76,7 @@ class ContractsControllerTest extends TestCase
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.ContractVersions',
+        'app.CustomerProposals',
         'app.ContractProposals',
         'app.IpAddresses',
         'app.RemovedIpAddresses',
@@ -125,6 +132,36 @@ class ContractsControllerTest extends TestCase
         $this->get('/contracts?search=Lorem');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * The card lists the contract's versions, and each says when its papers last went out - which
+     * the version reads off the proposals drawn on it, and each of those off the round it went
+     * out in. Two associations deep, so a card loaded without the second one renders nothing.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::view()
+     */
+    public function testTheCardSaysWhenTheVersionsPapersWentOut(): void
+    {
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $round = $this->getTableLocator()->get('ContractProposals')
+            ->get(self::PROPOSAL_ID)->customer_proposal_id;
+
+        $envelopes->saveOrFail(
+            $envelopes->patchEntity($envelopes->get($round), [
+                'sent_date' => '2026-10-01',
+                'delivery_type' => DocumentsDeliveryType::Post,
+            ]),
+            ['checkRules' => false],
+        );
+
+        $this->login();
+        // Asked for with the older versions, because the one these papers are about has run out.
+        $this->get('/contracts/view/' . self::CONTRACT_ID . '?show_historical_records=1');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('01.10.2026');
     }
 
     /**
@@ -694,39 +731,41 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
-     * The print page renders. It shows the contract, its versions and the proposals drawn up on it,
-     * because a document is chosen by choosing which proposal it is for.
+     * The workbench renders, and it shows the rounds drawn up on the contract - which is what a
+     * paper is printed from and what a signed scan is filed against.
      *
      * @return void
-     * @link \App\Controller\ContractsController::print()
+     * @link \App\Controller\DocumentsController::manage()
      */
     public function testPrint(): void
     {
         $this->login();
-        $this->get('/contracts/print/7f76dc3f-a11b-4109-958b-4b0382545a66');
+        $this->get('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481'
+            . '/contracts/7f76dc3f-a11b-4109-958b-4b0382545a66/documents/manage');
 
         $this->assertResponseOk();
-        $this->assertResponseContains(__('Contract Versions'));
         $this->assertResponseContains(__('Proposals'));
-        $this->assertResponseContains(__('New Proposal'));
+        $this->assertResponseContains(__('New Customer Proposal'));
     }
 
     /**
-     * Choosing a proposal offers the documents it may be printed as, and no others.
+     * A round lists the papers it owes and no others, so what is missing is named rather than
+     * chosen from a list of everything that exists.
      *
      * @return void
-     * @link \App\Controller\ContractsController::print()
+     * @link \App\Controller\DocumentsController::manage()
      */
     public function testPrintOffersWhatTheProposalMayBePrintedAs(): void
     {
         $this->login();
-        $this->get('/contracts/print/7f76dc3f-a11b-4109-958b-4b0382545a66'
-            . '?proposal_id=c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60');
+        $this->get('/customers/403bab0e-52cd-4a8e-83f8-43c2457d0481'
+            . '/contracts/7f76dc3f-a11b-4109-958b-4b0382545a66'
+            . '/contract-versions/74824fba-20b2-46fc-806c-df795aa9e429/documents/manage'
+            . '?agenda=ContractProposals&proposal_id=c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60');
 
         $this->assertResponseOk();
-        $this->assertResponseContains(__('Document Type'));
         $this->assertResponseContains(ContractPrintType::ContractSummary->label());
-        // It replaces nothing and ends nothing, so neither of those documents is on offer.
+        // It replaces nothing and ends nothing, so neither of those documents is owed.
         $this->assertResponseNotContains(ContractPrintType::ContractNewX->label());
         $this->assertResponseNotContains(ContractPrintType::ContractTermination->label());
     }

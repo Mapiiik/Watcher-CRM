@@ -365,8 +365,6 @@ $permissions = [
                 'Addresses',
                 'Billings',
                 'ServiceOverrides',
-                'ContractProposals',
-                'CustomerProposals',
                 'BorrowedEquipments',
                 'SoldEquipments',
                 'IpAddresses',
@@ -481,18 +479,33 @@ $permissions = [
                 'terminateRelatedBillings',
             ],
         ],
-        //the papers: anybody who may look at the record may see what it has on file
+        //the papers: anybody who may look at the record may see what it has on file, and the
+        //workbench is where they are looked at
         [
             'role' => '*',
             'plugin' => null,
             'controller' => [
-                'Customers',
-                'Contracts',
-                'ContractProposals',
-                'CustomerProposals',
+                'Documents',
             ],
             'action' => [
-                'documents',
+                'index',
+                'manage',
+            ],
+        ],
+        //drawing one up is the same act printing used to be, so it keeps the same company
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Documents',
+            ],
+            'action' => [
+                'generate',
             ],
         ],
         //documentation: whoever may look at a record may look at what is kept about it
@@ -540,8 +553,7 @@ $permissions = [
             ],
             'plugin' => null,
             'controller' => [
-                'ContractProposals',
-                'CustomerProposals',
+                'Documents',
             ],
             'action' => [
                 'addPages',
@@ -560,8 +572,7 @@ $permissions = [
             ],
             'plugin' => null,
             'controller' => [
-                'ContractProposals',
-                'CustomerProposals',
+                'Documents',
             ],
             'action' => [
                 'dropPage',
@@ -570,7 +581,7 @@ $permissions = [
             //whether AuthLink draws the button - the link and the request that follows it are asked
             //the very same question.
             'allowed' => function ($_user, $_role, ServerRequest $request): bool {
-                $id = $request->getParam('pass.1');
+                $id = $request->getParam('pass.0');
 
                 if (!is_string($id) || !Validation::uuid($id)) {
                     return false;
@@ -720,12 +731,19 @@ $permissions = [
                 /** @var \App\Model\Table\ContractProposalsTable $proposals */
                 $proposals = TableRegistry::getTableLocator()->get('ContractProposals');
                 /** @var \App\Model\Entity\ContractProposal|null $proposal */
+                // Whether the papers may still be touched is partly the envelope's to say, so it
+                // comes along - the gate would otherwise have to fetch it a second time.
                 $proposal = $proposals->find()
                     ->select([
-                        'ContractProposals.sent_date',
+                        'ContractProposals.id',
+                        'ContractProposals.customer_proposal_id',
                         'ContractProposals.applied',
                         'ContractProposals.revoked',
+                        'CustomerProposals.sent_date',
+                        'CustomerProposals.conclusion_date',
+                        'CustomerProposals.revoked',
                     ])
+                    ->contain(['CustomerProposals'])
                     ->where(['ContractProposals.id' => $id])
                     ->first();
 

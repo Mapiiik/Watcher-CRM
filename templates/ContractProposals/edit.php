@@ -13,37 +13,18 @@
                 ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
-            <?= $this->AuthLink->link(
-                __('Take the Snapshot Again'),
-                ['action' => 'refreshSnapshot', $contractProposal->id],
-                ['class' => 'side-nav-item'],
-            ) ?>
             <?php
-            // What is written down about the proposal is offered here as well as on the detail:
-            // somebody filling in the day it went out or the day it was signed reaches for Edit
-            // first. No guard is needed - a proposal that may be edited is open and has not been
-            // sent.
+            // Sending, signing and carrying over happen on the proposal and reach everything in
+            // it, so they are not offered here - the way up to them is.
             ?>
             <?= $this->AuthLink->link(
-                __('Record the Sending'),
-                ['action' => 'send', $contractProposal->id],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
-                $contractProposal->hasBeenConcluded()
-                    ? __('Correct the Signature')
-                    : __('Record the Signature'),
-                ['action' => 'conclude', $contractProposal->id],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('Carry Over'),
-                ['action' => 'transfer', $contractProposal->id],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('List Proposals'),
-                ['action' => 'index'],
+                __('The Proposal These Are Part Of'),
+                [
+                    'plugin' => null,
+                    'controller' => 'CustomerProposals',
+                    'action' => 'view',
+                    $contractProposal->customer_proposal_id,
+                ],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>

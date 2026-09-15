@@ -12,7 +12,6 @@
  * @var list<\App\Contracts\Proposal\PlannedChange> $planned
  */
 
-use App\Contracts\Proposal\ProposalConfirmations;
 use App\Model\Enum\DocumentVariant;
 
 $ourPages = 0;
@@ -38,36 +37,29 @@ foreach ($filed as $byVariant) {
                     ['action' => 'edit', $contractProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
-                <?= $this->AuthLink->link(
-                    __('Take the Snapshot Again'),
-                    ['action' => 'refreshSnapshot', $contractProposal->id],
-                    ['class' => 'side-nav-item'],
-                ) ?>
             <?php endif; ?>
-            <?php if ($contractProposal->isOpen()) : ?>
-                <?= $this->AuthLink->link(
-                    $contractProposal->hasBeenSent()
-                        ? __('Record the Sending Again')
-                        : __('Record the Sending'),
-                    ['action' => 'send', $contractProposal->id],
-                    ['class' => 'side-nav-item'],
-                ) ?>
-                <?= $this->AuthLink->link(
-                    $contractProposal->hasBeenConcluded()
-                        ? __('Correct the Signature')
-                        : __('Record the Signature'),
-                    ['action' => 'conclude', $contractProposal->id],
-                    ['class' => 'side-nav-item'],
-                ) ?>
-                <?= $this->AuthLink->link(
-                    __('Carry Over'),
-                    ['action' => 'transfer', $contractProposal->id],
-                    ['class' => 'side-nav-item'],
-                ) ?>
-            <?php endif; ?>
+            <?php
+            // Sending, signing and carrying over happen on the proposal and reach everything in
+            // it, so they are not offered here - the way up to them is.
+            ?>
             <?= $this->AuthLink->link(
-                __('Proposal Documents'),
-                ['action' => 'documents', $contractProposal->id],
+                __('The Proposal These Are Part Of'),
+                [
+                    'plugin' => null,
+                    'controller' => 'CustomerProposals',
+                    'action' => 'view',
+                    $contractProposal->customer_proposal_id,
+                ],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                [
+                    'plugin' => null,
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    '?' => ['proposal_id' => $contractProposal->id, 'agenda' => 'ContractProposals'],
+                ],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?php if ($contractProposal->isOpen()) : ?>
@@ -87,27 +79,34 @@ foreach ($filed as $byVariant) {
                     ['class' => 'side-nav-item', 'confirm' => __('Are you sure?')],
                 ) ?>
             <?php endif; ?>
-            <?= $this->AuthLink->link(
-                __('List Proposals'),
-                ['action' => 'index'],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <br>
-            <?= $this->AuthLink->link(
-                __('Print'),
-                [
-                    'controller' => 'Contracts',
-                    'action' => 'print',
-                    $contractProposal->contract_id,
-                    '?' => ['proposal_id' => $contractProposal->id],
-                ],
-                ['class' => 'side-nav-item'],
-            ) ?>
         </div>
     </aside>
     <div class="column column-90">
         <div class="contractProposals view content">
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                [
+                    'plugin' => null,
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    '?' => ['proposal_id' => $contractProposal->id, 'agenda' => 'ContractProposals'],
+                ],
+                ['class' => 'button float-right'],
+            ) ?>
             <?= $this->element('ContractProposals/heading') ?>
+            <?php if ($contractProposal->customer_proposal !== null) : ?>
+                <?php
+                // Papers of a contract are a part of a proposal put to the customer, and the way
+                // back up to it is said where the papers are read rather than only in the menu.
+                $round = $contractProposal->customer_proposal;
+                $itGoesOutIn = $this->Html->link(
+                    __('{0} from {1}', [$round->whatItIsFor(), $round->effective_from]),
+                    ['controller' => 'CustomerProposals', 'action' => 'view', $round->id],
+                );
+                ?>
+                <p><?= __('These papers go out in {0}', $itGoesOutIn) ?></p>
+                <br>
+            <?php endif; ?>
             <div class="row">
                 <div class="column">
                     <table>
@@ -165,7 +164,15 @@ foreach ($filed as $byVariant) {
                                             $ourPages,
                                             $theirPages,
                                         ),
-                                    ['action' => 'documents', $contractProposal->id],
+                                    [
+                                        'plugin' => null,
+                                        'controller' => 'Documents',
+                                        'action' => 'manage',
+                                        '?' => [
+                                            'proposal_id' => $contractProposal->id,
+                                            'agenda' => 'ContractProposals',
+                                        ],
+                                    ],
                                 )
                                 ?></td>
                         </tr>
@@ -202,58 +209,7 @@ foreach ($filed as $byVariant) {
                 </div>
             </div>
 
-            <?= $this->element('ContractProposals/proposed_billings') ?>
-
-            <?php if ($planned !== []) : ?>
-                <h4><?= __('What it asks of the records') ?></h4>
-                <?= $this->element('ContractProposals/planned_changes', [
-                    'preview' => false,
-                ]) ?>
-            <?php endif; ?>
-
-            <?php $answered = $confirmations->toArray(); ?>
-            <?php if ($answered !== []) : ?>
-                <h4><?= __('What was confirmed') ?></h4>
-                <table>
-                <?php foreach (ProposalConfirmations::QUESTIONS as $question) : ?>
-                    <?php if (array_key_exists($question, $answered)) : ?>
-                    <tr>
-                        <th><?= h(ProposalConfirmations::label($question)) ?></th>
-                        <td><?= $answered[$question] ? __('Yes') : __('No') ?></td>
-                    </tr>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-                </table>
-            <?php endif; ?>
-
-            <?php if ($filed !== []) : ?>
-                <h4><?= __('Papers on File') ?></h4>
-                <h5><?= __('Received Documents') ?></h5>
-                <p><?=
-                    __(
-                        'The papers that came back, whoever signed them. They are filed against the'
-                        . ' proposal they answer, so the row says which one that is.',
-                    )
-                    ?></p>
-                <?php $this->Preview->load() ?>
-                <?= $this->cell(
-                    'Documents',
-                    ['contractProposal', $contractProposal->id],
-                    ['generatedByUs' => false],
-                ) ?>
-                <h5><?= __('Generated Documents') ?></h5>
-                <p><?=
-                    __(
-                        'What we generated. A document is generated once and handed back'
-                        . ' afterwards, so these are the very files the customer was given.',
-                    )
-                    ?></p>
-                <?= $this->cell(
-                    'Documents',
-                    ['contractProposal', $contractProposal->id],
-                    ['generatedByUs' => true],
-                ) ?>
-            <?php endif; ?>
+            <?= $this->element('ContractProposals/what_it_says') ?>
 
             <?php if (!empty($contractProposal->note)) : ?>
                 <h4><?= __('Note') ?></h4>

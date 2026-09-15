@@ -168,7 +168,12 @@ class PagesSurviveADeadNmsTest extends TestCase
      */
     public function testThePrintedContractIsStillProduced(): void
     {
-        $this->get('/contracts/print/' . $this->firstId('Contracts'));
+        $contract = $this->fetchTable('Contracts')->get($this->firstId('Contracts'));
+        $this->get(sprintf(
+            '/customers/%s/contracts/%s/documents/manage',
+            $contract->customer_id,
+            $contract->id,
+        ));
 
         $this->assertResponseOk();
     }

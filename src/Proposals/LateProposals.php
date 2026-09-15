@@ -34,13 +34,18 @@ final class LateProposals
      * @param int $within How many days ahead to look.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    public static function neverSent(SelectQuery $query, string $alias, int $within): SelectQuery
-    {
+    public static function neverSent(
+        SelectQuery $query,
+        string $alias,
+        int $within,
+        ?string $dates = null,
+    ): SelectQuery {
         self::mustBeAnAgenda($alias);
+        $dates = self::whereTheDaysAre($alias, $dates);
 
         return $query
             ->where([
-                $alias . '.sent_date IS' => null,
+                $dates . '.sent_date IS' => null,
                 // A proposal for the spring is work in hand, not a fault.
                 $alias . '.effective_from <=' => Date::today()->addDays(max(0, $within)),
             ])
@@ -55,18 +60,23 @@ final class LateProposals
      * @param int $after How long the papers may be out first.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    public static function unanswered(SelectQuery $query, string $alias, int $after): SelectQuery
-    {
+    public static function unanswered(
+        SelectQuery $query,
+        string $alias,
+        int $after,
+        ?string $dates = null,
+    ): SelectQuery {
         self::mustBeAnAgenda($alias);
+        $dates = self::whereTheDaysAre($alias, $dates);
 
         return $query
             ->where([
-                $alias . '.sent_date IS NOT' => null,
-                $alias . '.conclusion_date IS' => null,
-                $alias . '.sent_date <=' => Date::today()->subDays(max(0, $after)),
+                $dates . '.sent_date IS NOT' => null,
+                $dates . '.conclusion_date IS' => null,
+                $dates . '.sent_date <=' => Date::today()->subDays(max(0, $after)),
             ])
             // Longest out first: that is the one somebody should be ringing about.
-            ->orderBy([$alias . '.sent_date' => 'ASC']);
+            ->orderBy([$dates . '.sent_date' => 'ASC']);
     }
 
     /**
@@ -81,15 +91,21 @@ final class LateProposals
      * @param int $after How long after the signature it is worth asking.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    public static function unfiled(SelectQuery $query, string $alias, string $model, int $after): SelectQuery
-    {
+    public static function unfiled(
+        SelectQuery $query,
+        string $alias,
+        string $model,
+        int $after,
+        ?string $dates = null,
+    ): SelectQuery {
         self::mustBeAnAgenda($alias);
+        $dates = self::whereTheDaysAre($alias, $dates);
 
         return $query
             ->where([
-                $alias . '.conclusion_date IS NOT' => null,
+                $dates . '.conclusion_date IS NOT' => null,
                 $alias . '.revoked IS' => null,
-                $alias . '.conclusion_date <=' => Date::today()->subDays(max(0, $after)),
+                $dates . '.conclusion_date <=' => Date::today()->subDays(max(0, $after)),
             ])
             ->where(function ($exp, SelectQuery $q) use ($alias, $model) {
                 $filed = $q->getConnection()->selectQuery()
@@ -104,7 +120,7 @@ final class LateProposals
 
                 return $exp->notExists($filed);
             })
-            ->orderBy([$alias . '.conclusion_date' => 'ASC']);
+            ->orderBy([$dates . '.conclusion_date' => 'ASC']);
     }
 
     /**
@@ -123,6 +139,28 @@ final class LateProposals
         }
 
         return $variants;
+    }
+
+    /**
+     * Which table the days of the sending are read from.
+     *
+     * Papers go out in an envelope and come back in one, so on the contract's side the days belong
+     * to the round they went in rather than to the papers themselves - the caller joins it and
+     * says so. A round put to the customer is its own envelope.
+     *
+     * @param string $alias The agenda being asked about.
+     * @param string|null $dates Where its days are kept, when that is somewhere else.
+     * @return string
+     */
+    private static function whereTheDaysAre(string $alias, ?string $dates): string
+    {
+        if ($dates === null) {
+            return $alias;
+        }
+
+        self::mustBeAnAgenda($dates);
+
+        return $dates;
     }
 
     /**

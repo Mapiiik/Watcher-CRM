@@ -178,6 +178,23 @@ class CustomerTest extends TestCase
     }
 
     /**
+     * Named in running text, the customer is who they are with their number after it.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::getName()
+     */
+    public function testTheCustomerNamesItselfInOneLine(): void
+    {
+        $customer = new Customer([
+            'nid' => 1234,
+            'first_name' => 'Jan',
+            'last_name' => 'Novak',
+        ]);
+
+        $this->assertSame('Jan Novak (1234)', $customer->getName());
+    }
+
+    /**
      * Test that the customer number is offset by the configured series.
      *
      * @return void

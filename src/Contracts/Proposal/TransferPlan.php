@@ -56,6 +56,10 @@ final class TransferPlan
      */
     private function onTheVersion(ContractProposal $proposal): array
     {
+        if ($proposal->contract_version_id === null) {
+            return $this->startingTheVersion($proposal);
+        }
+
         /** @var \App\Model\Entity\ContractVersion $version */
         $version = $this->fetchTable('ContractVersions')->get($proposal->contract_version_id);
 
@@ -103,6 +107,47 @@ final class TransferPlan
                 $version->number_of_amendments,
                 $this->amendmentsAfterwards($proposal, $version),
                 false,
+            );
+        }
+
+        return $planned;
+    }
+
+    /**
+     * What it will write when there is no version yet and the papers bring one into being.
+     *
+     * Every field reads as coming from nothing, because that is what is happening. Nothing counts
+     * itself as an amendment here: a paper that starts a version does not amend it.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return list<\App\Contracts\Proposal\PlannedChange>
+     */
+    private function startingTheVersion(ContractProposal $proposal): array
+    {
+        $projected = (new ProposalProjection())->projectVersion(
+            $proposal->stateOfThings()->hydrateVersion(),
+            $proposal->proposedChanges()->version,
+        );
+
+        $starting = [
+            'valid_from' => $proposal->effective_from,
+            'valid_until' => $projected->valid_until,
+            'obligation_until' => $projected->obligation_until,
+            'conclusion_date' => $proposal->conclusion_date,
+        ];
+
+        $planned = [];
+
+        foreach ($starting as $field => $value) {
+            $planned[] = new PlannedChange(
+                self::VERSION,
+                null,
+                __('A version that does not exist yet'),
+                $field,
+                $field === 'conclusion_date' ? __('Conclusion Date') : ProposedVersion::label($field),
+                null,
+                $value,
+                $proposal->proposedChanges()->version->sets($field),
             );
         }
 

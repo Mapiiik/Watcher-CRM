@@ -95,12 +95,15 @@ class UnsentProposalCheck extends AbstractContractCheck
         $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
 
         $query = $this->proposals->find('open')
-            ->contain(['Contracts', 'ContractVersions'])
-            ->innerJoinWith('Contracts');
+            // Whether the papers went out and came back is the envelope's to say, and the rows
+            // print it, so it is read as well as joined.
+            ->contain(['Contracts', 'ContractVersions', 'CustomerProposals'])
+            ->innerJoinWith('Contracts')
+            ->innerJoinWith('CustomerProposals');
 
         // The wait holds whichever question is being asked. What the wider reading adds is the
         // contracts that serve nobody, not the proposals whose day has not come yet.
-        LateProposals::neverSent($query, 'ContractProposals', $within);
+        LateProposals::neverSent($query, 'ContractProposals', $within, 'CustomerProposals');
 
         if ($this->ignore_inactive) {
             $this->onlyRunningContracts($query);

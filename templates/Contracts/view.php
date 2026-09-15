@@ -31,13 +31,13 @@ $this->Html->css('problems', ['block' => true]);
             <?= $this->AuthLink->link(__('New Contract'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
             <br>
             <?= $this->AuthLink->link(
-                __('Print'),
-                ['action' => 'print', $contract->id],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('Contract Documents'),
-                ['action' => 'documents', $contract->id],
+                __('Documents'),
+                [
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    'customer_id' => $contract->customer_id,
+                    'contract_id' => $contract->id,
+                ],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(
@@ -46,11 +46,6 @@ $this->Html->css('problems', ['block' => true]);
                 ['class' => 'side-nav-item'],
             ) ?>
             <br>
-            <?= $this->AuthLink->link(
-                __('List Contract Proposals'),
-                ['controller' => 'ContractProposals', 'action' => 'index'],
-                ['class' => 'side-nav-item'],
-            ) ?>
             <?= $this->AuthLink->link(
                 __('List Customer Messages'),
                 ['controller' => 'CustomerMessages', 'action' => 'index'],
@@ -143,19 +138,19 @@ $this->Html->css('problems', ['block' => true]);
         <?php endif; ?>
     </aside>
     <div class="column column-90">
+        <?php // the checks come to about as much work as the rest of the page, and none of ?>
+        <?php // it is what the page was opened to read - so it is asked for afterwards ?>
+        <div
+            class="lazy-load"
+            data-url="<?= $this->Url->build([
+                'action' => 'problems',
+                $contract->id,
+                'customer_id' => $contract->customer_id,
+            ]) ?>"
+            data-error="<?= h(__('What does not add up on this contract could not be loaded.')) ?>"
+            data-trigger="load"
+        ></div>
         <div class="contracts view content">
-            <?php // the checks come to about as much work as the rest of the page, and none of ?>
-            <?php // it is what the page was opened to read - so it is asked for afterwards ?>
-            <div
-                class="lazy-load"
-                data-url="<?= $this->Url->build([
-                    'action' => 'problems',
-                    $contract->id,
-                    'customer_id' => $contract->customer_id,
-                ]) ?>"
-                data-error="<?= h(__('What does not add up on this contract could not be loaded.')) ?>"
-                data-trigger="load"
-            ></div>
             <?= $this->AuthLink->link(
                 __d('app_files', 'Documentations'),
                 ['controller' => 'Documentations', 'action' => 'index'],
@@ -163,12 +158,12 @@ $this->Html->css('problems', ['block' => true]);
             ) ?>
             <?= $this->AuthLink->link(
                 __('Documents'),
-                ['action' => 'documents', $contract->id],
-                ['class' => 'button float-right'],
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('Print'),
-                ['action' => 'print', $contract->id],
+                [
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    'customer_id' => $contract->customer_id,
+                    'contract_id' => $contract->id,
+                ],
                 ['class' => 'button float-right'],
             ) ?>
             <a id="contract"></a>
@@ -426,8 +421,10 @@ $this->Html->css('problems', ['block' => true]);
                 ) ?>
             </div>
             <?php endif; ?>
-            <hr>
-            <div class="related">
+        </div>
+        <br>
+        <div class="contracts view content">
+            <div>
                 <?= $this->AuthLink->postLink(
                     __('Unblock Debtor'),
                     [
@@ -461,7 +458,10 @@ $this->Html->css('problems', ['block' => true]);
                     ['show_customers' => false],
                 ) ?>
             </div>
-            <div class="related">
+        </div>
+        <br>
+        <div class="contracts view content">
+            <div>
                 <?= $this->AuthLink->link(
                     __('New Task'),
                     ['controller' => 'Tasks', 'action' => 'add'],

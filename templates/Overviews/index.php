@@ -93,8 +93,8 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Customer Proposals'),
-                    ['controller' => 'CustomerProposals', 'action' => 'index', 'plugin' => null],
+                    __('List Documents'),
+                    ['controller' => 'Documents', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
@@ -131,11 +131,6 @@
                 <?= $this->AuthLink->link(
                     __('List Contract Versions'),
                     ['controller' => 'ContractVersions', 'action' => 'index', 'plugin' => null],
-                    ['class' => 'side-nav-item'],
-                ) ?>
-                <?= $this->AuthLink->link(
-                    __('List Contract Proposals'),
-                    ['controller' => 'ContractProposals', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(

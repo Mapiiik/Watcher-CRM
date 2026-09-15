@@ -18,7 +18,7 @@ $proposalId = $contractProposal->id;
     <?php if ($mayBeEdited) : ?>
         <?= $this->AuthLink->link(
             __('Add a Billing'),
-            ['action' => 'billingLine', $proposalId],
+            ['controller' => 'ContractProposals', 'action' => 'billingLine', $proposalId],
             ['class' => 'button button-small float-right win-link'],
         ) ?>
     <?php endif; ?>
@@ -67,17 +67,28 @@ $proposalId = $contractProposal->id;
                         <?php if ($mayBeEdited && $line !== null) : ?>
                             <?= $this->AuthLink->link(
                                 __('Edit'),
-                                ['action' => 'billingLine', $proposalId, $line->id],
+                                [
+                                    'controller' => 'ContractProposals',
+                                    'action' => 'billingLine',
+                                    $proposalId,
+                                    $line->id,
+                                ],
                             ) ?>
                             <?= $this->AuthLink->postLink(
                                 __('Take Back'),
-                                ['action' => 'dropBillingLine', $proposalId, $line->id],
+                                [
+                                    'controller' => 'ContractProposals',
+                                    'action' => 'dropBillingLine',
+                                    $proposalId,
+                                    $line->id,
+                                ],
                                 ['confirm' => __('Leave this as it stands on the contract?')],
                             ) ?>
                         <?php elseif ($mayBeEdited && !$row['ending'] && !$row['stopped']) : ?>
                             <?= $this->AuthLink->link(
                                 __('Change'),
                                 [
+                                    'controller' => 'ContractProposals',
                                     'action' => 'billingLine',
                                     $proposalId,
                                     '?' => ['replaces' => $billing->id],
@@ -85,7 +96,12 @@ $proposalId = $contractProposal->id;
                             ) ?>
                             <?= $this->AuthLink->postLink(
                                 __('End'),
-                                ['action' => 'endBilling', $proposalId, $billing->id],
+                                [
+                                    'controller' => 'ContractProposals',
+                                    'action' => 'endBilling',
+                                    $proposalId,
+                                    $billing->id,
+                                ],
                                 ['confirm' => __('Stop billing for this?')],
                             ) ?>
                         <?php endif; ?>

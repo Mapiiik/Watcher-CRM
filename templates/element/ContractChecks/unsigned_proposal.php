@@ -40,9 +40,10 @@ $contract_column ??= true;
                         <?= $this->AuthLink->link(
                             __('Record the Signature'),
                             [
-                                'controller' => 'ContractProposals',
+                                'plugin' => null,
+                                'controller' => 'CustomerProposals',
                                 'action' => 'conclude',
-                                $proposal->id,
+                                $proposal->customer_proposal_id,
                             ],
                             ['class' => 'win-link'],
                         ) ?>

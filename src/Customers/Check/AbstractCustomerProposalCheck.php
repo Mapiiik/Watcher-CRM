@@ -67,7 +67,7 @@ abstract class AbstractCustomerProposalCheck extends AbstractCheck implements Cu
      */
     protected function candidates(): SelectQuery
     {
-        $query = $this->proposals->find()->contain(['Customers']);
+        $query = $this->proposals->find()->contain(['Customers', 'ContractProposals']);
 
         if ($this->ignore_inactive) {
             $query->where(['CustomerProposals.customer_id IN' => $this->activeCustomerIds()]);

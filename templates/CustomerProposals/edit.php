@@ -32,11 +32,6 @@
                 ['action' => 'conclude', $customerProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
-            <?= $this->AuthLink->link(
-                __('List Proposals'),
-                ['action' => 'index'],
-                ['class' => 'side-nav-item'],
-            ) ?>
         </div>
     </aside>
     <div class="column column-90">

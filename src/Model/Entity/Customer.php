@@ -160,6 +160,19 @@ class Customer extends AppEntity
     }
 
     /**
+     * The customer written out in one line: who they are, and their number after it.
+     *
+     * The counterpart of {@see \App\Model\Entity\Contract::getName()} and read the same way,
+     * for the places that name a record in running text rather than in a column of its own.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return __('{0} ({1})', $this->name, $this->number);
+    }
+
+    /**
      * getter for full name with company and with customer number for lists
      *
      * @return string

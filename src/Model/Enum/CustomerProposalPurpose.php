@@ -37,6 +37,22 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
+     * How far papers drawn up for this purpose travel before nobody waits for them any more.
+     *
+     * A consent is asked for and comes back agreed to, and nothing stands behind it waiting to be
+     * written. A paper that is only handed over would say so here and would stop being offered a
+     * signature everywhere at once.
+     *
+     * @return \App\Model\Enum\ProposalStep
+     */
+    public function lastStep(): ProposalStep
+    {
+        return match ($this) {
+            self::GdprConsent => ProposalStep::Signed,
+        };
+    }
+
+    /**
      * The documents a round for this purpose may be printed as.
      *
      * @return array<\App\Model\Enum\CustomerPrintType>

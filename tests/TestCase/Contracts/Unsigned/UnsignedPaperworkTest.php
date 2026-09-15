@@ -37,6 +37,11 @@ class UnsignedPaperworkTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * Whose contract it is, which is who the papers go to.
+     */
+    private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+
+    /**
      * The day every case below is asked on.
      */
     private const TODAY = '2026-06-01';
@@ -473,12 +478,22 @@ class UnsignedPaperworkTest extends TestCase
             return;
         }
 
-        // The sending is on the papers, and the papers belong to the proposal they were drawn
-        // from - so that is where a test that is about the sending has to put it.
+        // The sending is on the envelope the papers went out in, so a test that is about the
+        // sending draws up an envelope and puts the papers in it.
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $envelope = $envelopes->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'effective_from' => $valid_from,
+            'sent_date' => $sent_date,
+            'delivery_type' => DocumentsDeliveryType::Post->value,
+        ]);
+        $envelopes->saveOrFail($envelope, ['checkRules' => false]);
+
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposals->saveOrFail(
             $proposals->newEntity([
                 'contract_id' => self::CONTRACT_ID,
+                'customer_proposal_id' => $envelope->id,
                 'contract_version_id' => $version->id,
                 'purpose' => ProposalPurpose::NewContract->value,
                 'effective_from' => $valid_from,
@@ -487,8 +502,6 @@ class UnsignedPaperworkTest extends TestCase
                 ],
                 'snapshot_taken' => DateTime::now(),
                 'changes' => [],
-                'sent_date' => $sent_date,
-                'delivery_type' => DocumentsDeliveryType::Post->value,
             ]),
             ['checkRules' => false],
         );

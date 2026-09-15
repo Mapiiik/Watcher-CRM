@@ -7,7 +7,6 @@ use App\Model\Enum\DocumentVariant;
 use Files\Model\Entity\FileLink;
 use Files\Service\FiledPages;
 use Files\Service\FileStorage;
-use Throwable;
 
 /**
  * The papers on a proposal that somebody hands over rather than prints: the scans that come back.
@@ -72,45 +71,6 @@ final class ProposalPapers
         array $files,
     ): int {
         return $this->pages->take($model, $foreign_key, $document_type, $variant->value, $files);
-    }
-
-    /**
-     * Files what came back for several documents at once, the way a form offering all of them does.
-     *
-     * One document refusing its pages does not stop the others: they are separate papers, and what
-     * can be filed is filed. What went wrong is handed back rather than thrown, because the caller
-     * is recording something else at the same time and that must not fall over with it.
-     *
-     * @param string $model What kind of record they hang on.
-     * @param string $foreign_key Which one.
-     * @param array<string, mixed> $uploaded What arrived, by document type.
-     * @param array<string, mixed> $variants Whose signatures each of them carries, by document type.
-     * @return array<string, mixed> How many pages were filed, and what would not be stored.
-     * @phpstan-return array{filed: int, problems: list<string>}
-     */
-    public function takeEach(string $model, string $foreign_key, array $uploaded, array $variants): array
-    {
-        $filed = 0;
-        $problems = [];
-
-        foreach ($uploaded as $document_type => $files) {
-            $variant = DocumentVariant::tryFrom((string)($variants[$document_type] ?? ''))
-                ?? DocumentVariant::ReceivedSignedByCustomer;
-
-            try {
-                $filed += $this->take(
-                    $model,
-                    $foreign_key,
-                    (string)$document_type,
-                    $variant,
-                    array_values((array)$files),
-                );
-            } catch (Throwable $e) {
-                $problems[] = $e->getMessage();
-            }
-        }
-
-        return ['filed' => $filed, 'problems' => $problems];
     }
 
     /**

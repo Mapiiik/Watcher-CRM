@@ -36,35 +36,37 @@ $clamped = count($problems) * 8 + $rows * 4 > $cut;
 $toggle = 'problems-toggle-' . uniqid();
 ?>
 <?php if ($problems !== []) : ?>
-    <div class="message warning" role="alert">
-        <?php // Not every check is a fault - a lapsed contract signed again looks exactly like ?>
-        <?php // a mistyped date - so this says what was found rather than what it means. ?>
-        <strong><?= __('These do not add up, so something here is probably not right') ?></strong>
-    </div>
+    <div class="problems content">
+        <div class="message warning" role="alert">
+            <?php // Not every check is a fault - a lapsed contract signed again looks exactly like ?>
+            <?php // a mistyped date - so this says what was found rather than what it means. ?>
+            <strong><?= __('These do not add up, so something here is probably not right') ?></strong>
+        </div>
 
-    <?php if ($clamped) : ?>
-        <input type="checkbox" id="<?= h($toggle) ?>" class="problems-toggle">
-    <?php endif ?>
-    <div
-        class="problems-viewport<?= $clamped ? ' clamped' : '' ?>"
-        style="--problems-cut: <?= $cut ?>rem"
-    >
-        <?php foreach ($problems as $problem) : ?>
-            <div class="related" id="problem-<?= h($problem['check']->id()) ?>">
-                <h4><?= h($problem['check']->title()) ?></h4>
-                <?= $this->element($problem['check']->element(), [
-                    'records' => $problem['records'],
-                    'contract_column' => $contract_column,
-                    'customer_column' => $customer_column,
-                ]) ?>
-            </div>
-        <?php endforeach ?>
+        <?php if ($clamped) : ?>
+            <input type="checkbox" id="<?= h($toggle) ?>" class="problems-toggle">
+        <?php endif ?>
+        <div
+            class="problems-viewport<?= $clamped ? ' clamped' : '' ?>"
+            style="--problems-cut: <?= $cut ?>rem"
+        >
+            <?php foreach ($problems as $problem) : ?>
+                <div class="related" id="problem-<?= h($problem['check']->id()) ?>">
+                    <h4><?= h($problem['check']->title()) ?></h4>
+                    <?= $this->element($problem['check']->element(), [
+                        'records' => $problem['records'],
+                        'contract_column' => $contract_column,
+                        'customer_column' => $customer_column,
+                    ]) ?>
+                </div>
+            <?php endforeach ?>
+        </div>
+        <?php if ($clamped) : ?>
+            <label for="<?= h($toggle) ?>" class="problems-more">
+                <span class="when-folded">⇣ <?= __('more') ?> ⇣</span>
+                <span class="when-unfolded">⇡ <?= __('less') ?> ⇡</span>
+            </label>
+        <?php endif ?>
     </div>
-    <?php if ($clamped) : ?>
-        <label for="<?= h($toggle) ?>" class="problems-more">
-            <span class="when-folded">⇣ <?= __('more') ?> ⇣</span>
-            <span class="when-unfolded">⇡ <?= __('less') ?> ⇡</span>
-        </label>
-    <?php endif ?>
-    <hr>
+    <br>
 <?php endif ?>

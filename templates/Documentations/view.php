@@ -40,12 +40,13 @@
             ) ?>
             <?php if ($documentation->contract_id !== null) : ?>
                 <?= $this->AuthLink->link(
-                    __d('app_files', 'Contract Documents'),
+                    __d('app_files', 'Documents'),
                     [
-                        'controller' => 'Contracts',
-                        'action' => 'documents',
-                        $documentation->contract_id,
+                        'plugin' => null,
+                        'controller' => 'Documents',
+                        'action' => 'manage',
                         'customer_id' => $documentation->customer_id,
+                        'contract_id' => $documentation->contract_id,
                     ],
                     ['class' => 'side-nav-item'],
                 ) ?>

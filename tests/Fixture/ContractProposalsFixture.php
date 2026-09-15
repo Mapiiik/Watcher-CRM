@@ -66,6 +66,7 @@ class ContractProposalsFixture extends TestFixture
             [
                 'id' => 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60',
                 'contract_id' => '7f76dc3f-a11b-4109-958b-4b0382545a66',
+                'customer_proposal_id' => 'a7c1d5e2-3f48-4b90-9c61-2d0e7a5b8f34',
                 'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
                 'purpose' => ProposalPurpose::ServiceChange->value,
                 'terminates_contract_version_id' => null,
@@ -75,9 +76,6 @@ class ContractProposalsFixture extends TestFixture
                 'snapshot_taken' => 1772582400,
                 'changes' => [],
                 'confirmations' => [ProposalConfirmations::FIXED_TERM => true],
-                'sent_date' => null,
-                'delivery_type' => null,
-                'conclusion_date' => null,
                 'applied' => null,
                 'applied_by' => null,
                 'revoked' => null,

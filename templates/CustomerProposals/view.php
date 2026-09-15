@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerProposal $customerProposal
+ * @var array<array<string, mixed>> $parts
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
  * @var array<string, array<string, list<\Files\Model\Entity\FileLink>>> $filed
@@ -52,8 +53,18 @@ foreach ($filed as $byVariant) {
                 ) ?>
             <?php endif; ?>
             <?= $this->AuthLink->link(
-                __('Proposal Documents'),
-                ['action' => 'documents', $customerProposal->id],
+                __('Carry Over'),
+                ['action' => 'transfer', $customerProposal->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                [
+                    'plugin' => null,
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    '?' => ['proposal_id' => $customerProposal->id, 'agenda' => 'CustomerProposals'],
+                ],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?php if ($customerProposal->isOpen()) : ?>
@@ -73,26 +84,20 @@ foreach ($filed as $byVariant) {
                     ['class' => 'side-nav-item', 'confirm' => __('Are you sure?')],
                 ) ?>
             <?php endif; ?>
-            <?= $this->AuthLink->link(
-                __('List Proposals'),
-                ['action' => 'index'],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <br>
-            <?= $this->AuthLink->link(
-                __('Print'),
-                [
-                    'controller' => 'Customers',
-                    'action' => 'print',
-                    $customerProposal->customer_id,
-                    '?' => ['proposal_id' => $customerProposal->id],
-                ],
-                ['class' => 'side-nav-item'],
-            ) ?>
         </div>
     </aside>
     <div class="column column-90">
         <div class="customerProposals view content">
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                [
+                    'plugin' => null,
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    '?' => ['proposal_id' => $customerProposal->id, 'agenda' => 'CustomerProposals'],
+                ],
+                ['class' => 'button float-right'],
+            ) ?>
             <?= $this->element('CustomerProposals/heading') ?>
             <div class="row">
                 <div class="column">
@@ -110,7 +115,7 @@ foreach ($filed as $byVariant) {
                         </tr>
                         <tr>
                             <th><?= __('Purpose') ?></th>
-                            <td><?= h($customerProposal->purpose->label()) ?></td>
+                            <td><?= h($customerProposal->whatItIsFor()) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Effective From') ?></th>
@@ -135,7 +140,15 @@ foreach ($filed as $byVariant) {
                                             $ourPages,
                                             $theirPages,
                                         ),
-                                    ['action' => 'documents', $customerProposal->id],
+                                    [
+                                        'plugin' => null,
+                                        'controller' => 'Documents',
+                                        'action' => 'manage',
+                                        '?' => [
+                                            'proposal_id' => $customerProposal->id,
+                                            'agenda' => 'CustomerProposals',
+                                        ],
+                                    ],
                                 )
                                 ?></td>
                         </tr>
@@ -149,40 +162,54 @@ foreach ($filed as $byVariant) {
                     <?= $this->element('common/audit', ['entity' => $customerProposal]) ?>
                 </div>
             </div>
-
-            <?php if ($filed !== []) : ?>
-                <h4><?= __('Papers on File') ?></h4>
-                <h5><?= __('Received Documents') ?></h5>
-                <p><?=
-                    __(
-                        'The papers that came back, whoever signed them. They are filed against the'
-                        . ' proposal they answer, so the row says which one that is.',
-                    )
-                    ?></p>
-                <?php $this->Preview->load() ?>
-                <?= $this->cell(
-                    'Documents',
-                    ['customerProposal', $customerProposal->id],
-                    ['generatedByUs' => false],
-                ) ?>
-                <h5><?= __('Generated Documents') ?></h5>
-                <p><?=
-                    __(
-                        'What we generated. A document is generated once and handed back'
-                        . ' afterwards, so these are the very files the customer was given.',
-                    )
-                    ?></p>
-                <?= $this->cell(
-                    'Documents',
-                    ['customerProposal', $customerProposal->id],
-                    ['generatedByUs' => true],
-                ) ?>
-            <?php endif; ?>
-
-            <?php if (!empty($customerProposal->note)) : ?>
-                <h4><?= __('Note') ?></h4>
-                <blockquote><?= $this->Text->autoParagraph(h($customerProposal->note)) ?></blockquote>
-            <?php endif; ?>
+            <?php
+            // Standing at the foot of the card, the button floats out of it unless the card is
+            // given something to grow to.
+            $another = $this->AuthLink->link(
+                __('New Contract Proposal'),
+                [
+                    'controller' => 'ContractProposals',
+                    'action' => 'add',
+                    '?' => ['proposal_id' => $customerProposal->id],
+                ],
+                ['class' => 'button button-small float-right win-link'],
+            );
+            ?>
+            <?= $this->Html->div('clearfix', $another) ?>
         </div>
+        <?php foreach ($parts as $part) : ?>
+        <br>
+        <div class="customerProposals view content">
+            <?php
+            $saidOf = $part['papers']->getName();
+            ?>
+            <h4><?= h($saidOf) ?></h4>
+            <p><?=
+                $this->Html->link(
+                    __('What these papers say'),
+                    [
+                        'controller' => 'ContractProposals',
+                        'action' => 'view',
+                        $part['papers']->id,
+                    ],
+                )
+                ?></p>
+            <?= $this->element('ContractProposals/what_it_says', [
+                'contractProposal' => $part['papers'],
+                'rows' => $part['rows'],
+                'planned' => $part['planned'],
+                'confirmations' => $part['confirmations'],
+                'mayBeEdited' => $part['mayBeEdited'],
+                ]) ?>
+        </div>
+        <?php endforeach; ?>
+
+        <?php if (!empty($customerProposal->note)) : ?>
+        <br>
+        <div class="customerProposals view content">
+            <h4><?= __('Note') ?></h4>
+            <blockquote><?= $this->Text->autoParagraph(h($customerProposal->note)) ?></blockquote>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
