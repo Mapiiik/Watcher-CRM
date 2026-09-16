@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Service\CustomerPrint;
 
 use App\Documents\PrintedDocument;
-use App\Model\Enum\CustomerPrintType;
+use App\Model\Enum\CustomerDocumentType;
 use App\Pdf\CustomerPDF;
 use Cake\I18n\Date;
 use Cake\I18n\I18n;
@@ -41,8 +41,8 @@ final class CustomerPrintPdfOutput
         $pdf = new CustomerPDF();
 
         match ($data->type) {
-            CustomerPrintType::GdprNew,
-            CustomerPrintType::GdprChange
+            CustomerDocumentType::GdprNew,
+            CustomerDocumentType::GdprChange
                 => $pdf->generateGDPRAgreement($data),
         };
 

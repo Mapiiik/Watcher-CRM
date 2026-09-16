@@ -5,7 +5,7 @@ namespace App\Service\ContractPrint;
 
 use App\Model\Entity\Billing;
 use App\Model\Entity\ContractVersion;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use Cake\Collection\Collection;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\I18n\Date;
@@ -70,8 +70,8 @@ final class ContractPrintDataEnricher
             !in_array(
                 $data->type,
                 [
-                    ContractPrintType::HandoverInstallation,
-                    ContractPrintType::HandoverUninstallation,
+                    ContractDocumentType::HandoverInstallation,
+                    ContractDocumentType::HandoverUninstallation,
                 ],
                 true,
             )
@@ -143,7 +143,7 @@ final class ContractPrintDataEnricher
         // Determine the reference date for billing relevance based on document type
         $referenceDate = $data->contractVersionToBeExecuted->valid_from;
         if (
-            $data->type === ContractPrintType::ContractAmendment
+            $data->type === ContractDocumentType::ContractAmendment
             && $data->effectiveDateOfAmendment instanceof Date
         ) {
             $referenceDate = $data->effectiveDateOfAmendment;

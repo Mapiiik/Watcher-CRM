@@ -3,35 +3,35 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Enum;
 
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
- * App\Model\Enum\ContractPrintType Test Case
+ * App\Model\Enum\ContractDocumentType Test Case
  *
  * Which document is being drawn up decides what the operator has to fill in, so these answers are
  * what the print form is validated against. Getting one of them wrong either asks for a version that
  * has nothing to do with the document, or lets a document through without the version it names.
  */
-#[UsesClass(ContractPrintType::class)]
-class ContractPrintTypeTest extends TestCase
+#[UsesClass(ContractDocumentType::class)]
+class ContractDocumentTypeTest extends TestCase
 {
     /**
      * Every document is offered under a name, and the value stored for it is the one the form posts.
      *
      * @return void
-     * @link \App\Model\Enum\ContractPrintType::label()
+     * @link \App\Model\Enum\ContractDocumentType::label()
      * @link \App\Model\Enum\Trait\EnumOptionsTrait::options()
      */
     public function testEveryDocumentIsOfferedUnderAName(): void
     {
-        $options = ContractPrintType::options();
+        $options = ContractDocumentType::options();
 
         $this->assertSame(
             array_map(
-                fn(ContractPrintType $type): string => $type->value,
-                ContractPrintType::cases(),
+                fn(ContractDocumentType $type): string => $type->value,
+                ContractDocumentType::cases(),
             ),
             array_keys($options),
         );
@@ -42,19 +42,19 @@ class ContractPrintTypeTest extends TestCase
      * The documents that put a version into effect are the ones that ask for it.
      *
      * @return void
-     * @link \App\Model\Enum\ContractPrintType::requiresContractVersionToBeExecuted()
+     * @link \App\Model\Enum\ContractDocumentType::requiresContractVersionToBeExecuted()
      */
     public function testTheDocumentsThatPutAVersionIntoEffectAskForIt(): void
     {
         $this->assertSame(
             [
-                ContractPrintType::ContractNew,
-                ContractPrintType::ContractNewX,
-                ContractPrintType::ContractAmendment,
-                ContractPrintType::ContractSummary,
-                ContractPrintType::HandoverInstallation,
+                ContractDocumentType::ContractNew,
+                ContractDocumentType::ContractNewX,
+                ContractDocumentType::ContractAmendment,
+                ContractDocumentType::ContractSummary,
+                ContractDocumentType::HandoverInstallation,
             ],
-            $this->typesWhere(fn(ContractPrintType $type): bool => $type->requiresContractVersionToBeExecuted()),
+            $this->typesWhere(fn(ContractDocumentType $type): bool => $type->requiresContractVersionToBeExecuted()),
         );
     }
 
@@ -63,24 +63,24 @@ class ContractPrintTypeTest extends TestCase
      * ask for its number under the same conditions - the two go together on the form.
      *
      * @return void
-     * @link \App\Model\Enum\ContractPrintType::requiresContractVersionToBeTerminated()
-     * @link \App\Model\Enum\ContractPrintType::requiresContractNumberToBeTerminated()
+     * @link \App\Model\Enum\ContractDocumentType::requiresContractVersionToBeTerminated()
+     * @link \App\Model\Enum\ContractDocumentType::requiresContractNumberToBeTerminated()
      */
     public function testTheDocumentsThatEndAContractAskWhichVersionAndUnderWhatNumber(): void
     {
         $ending = [
-            ContractPrintType::ContractNewX,
-            ContractPrintType::ContractTermination,
-            ContractPrintType::HandoverUninstallation,
+            ContractDocumentType::ContractNewX,
+            ContractDocumentType::ContractTermination,
+            ContractDocumentType::HandoverUninstallation,
         ];
 
         $this->assertSame(
             $ending,
-            $this->typesWhere(fn(ContractPrintType $type): bool => $type->requiresContractVersionToBeTerminated()),
+            $this->typesWhere(fn(ContractDocumentType $type): bool => $type->requiresContractVersionToBeTerminated()),
         );
         $this->assertSame(
             $ending,
-            $this->typesWhere(fn(ContractPrintType $type): bool => $type->requiresContractNumberToBeTerminated()),
+            $this->typesWhere(fn(ContractDocumentType $type): bool => $type->requiresContractNumberToBeTerminated()),
         );
     }
 
@@ -89,13 +89,13 @@ class ContractPrintTypeTest extends TestCase
      * already running, so the date is what says from when.
      *
      * @return void
-     * @link \App\Model\Enum\ContractPrintType::requiresEffectiveDateOfTheAmendment()
+     * @link \App\Model\Enum\ContractDocumentType::requiresEffectiveDateOfTheAmendment()
      */
     public function testOnlyAnAmendmentHasADayItTakesEffectOn(): void
     {
         $this->assertSame(
-            [ContractPrintType::ContractAmendment],
-            $this->typesWhere(fn(ContractPrintType $type): bool => $type->requiresEffectiveDateOfTheAmendment()),
+            [ContractDocumentType::ContractAmendment],
+            $this->typesWhere(fn(ContractDocumentType $type): bool => $type->requiresEffectiveDateOfTheAmendment()),
         );
     }
 
@@ -104,27 +104,27 @@ class ContractPrintTypeTest extends TestCase
      * what was set up there - the access point and the credentials the connection runs on.
      *
      * @return void
-     * @link \App\Model\Enum\ContractPrintType::isHandoverProtocol()
+     * @link \App\Model\Enum\ContractDocumentType::isHandoverProtocol()
      */
     public function testTheHandoverProtocolsAreTheOnesCarryingWhatWasSetUp(): void
     {
         $this->assertSame(
             [
-                ContractPrintType::HandoverInstallation,
-                ContractPrintType::HandoverUninstallation,
+                ContractDocumentType::HandoverInstallation,
+                ContractDocumentType::HandoverUninstallation,
             ],
-            $this->typesWhere(fn(ContractPrintType $type): bool => $type->isHandoverProtocol()),
+            $this->typesWhere(fn(ContractDocumentType $type): bool => $type->isHandoverProtocol()),
         );
     }
 
     /**
      * The document types the given question is answered yes for, in the order they are declared.
      *
-     * @param callable(\App\Model\Enum\ContractPrintType): bool $question Question to ask of each type.
-     * @return array<\App\Model\Enum\ContractPrintType>
+     * @param callable(\App\Model\Enum\ContractDocumentType): bool $question Question to ask of each type.
+     * @return array<\App\Model\Enum\ContractDocumentType>
      */
     private function typesWhere(callable $question): array
     {
-        return array_values(array_filter(ContractPrintType::cases(), $question));
+        return array_values(array_filter(ContractDocumentType::cases(), $question));
     }
 }

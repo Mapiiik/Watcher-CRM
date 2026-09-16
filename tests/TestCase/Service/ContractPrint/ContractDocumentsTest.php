@@ -206,7 +206,7 @@ class ContractDocumentsTest extends TestCase
     /**
      * And the operator is not offered a switch that would do nothing.
      *
-     * @link \App\Model\Enum\ContractPrintType::mayCarryOurSignature()
+     * @link \App\Model\Enum\ContractDocumentType::mayCarryOurSignature()
      * @return void
      */
     public function testTheSwitchIsOfferedOnlyWhereItWouldDoSomething(): void

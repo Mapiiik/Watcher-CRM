@@ -9,7 +9,7 @@ use App\Contracts\Proposal\SnapshotShape;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\AddressType;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
@@ -240,7 +240,7 @@ class ProposalSnapshotTest extends TestCase
     {
         (new ContractPrintDataEnricher())->enrich($data);
 
-        $pdf = $data->type === ContractPrintType::ContractSummary
+        $pdf = $data->type === ContractDocumentType::ContractSummary
             ? new ContractSummaryPDF()
             : new ContractPDF();
 
@@ -265,13 +265,13 @@ class ProposalSnapshotTest extends TestCase
     /**
      * What to print, for a contract and the version the papers are for.
      *
-     * @param \App\Model\Enum\ContractPrintType $type Which document.
+     * @param \App\Model\Enum\ContractDocumentType $type Which document.
      * @param \App\Model\Entity\Contract $contract The contract.
      * @param \App\Model\Entity\ContractVersion $version The version.
      * @return \App\Service\ContractPrint\ContractPrintData
      */
     private function printData(
-        ContractPrintType $type,
+        ContractDocumentType $type,
         Contract $contract,
         ContractVersion $version,
     ): ContractPrintData {
@@ -290,13 +290,13 @@ class ProposalSnapshotTest extends TestCase
     /**
      * Every document a proposal may be printed as.
      *
-     * @return array<array{\App\Model\Enum\ContractPrintType}>
+     * @return array<array{\App\Model\Enum\ContractDocumentType}>
      */
     public static function documents(): array
     {
         return array_map(
-            fn(ContractPrintType $type): array => [$type],
-            ContractPrintType::cases(),
+            fn(ContractDocumentType $type): array => [$type],
+            ContractDocumentType::cases(),
         );
     }
 
@@ -308,11 +308,11 @@ class ProposalSnapshotTest extends TestCase
      * production, because a field the documents read and the snapshot does not carry shows up
      * nowhere else. When it fails, the fix is a field in SnapshotShape, not a looser comparison.
      *
-     * @param \App\Model\Enum\ContractPrintType $type Which document.
+     * @param \App\Model\Enum\ContractDocumentType $type Which document.
      * @return void
      */
     #[DataProvider('documents')]
-    public function testADocumentPrintsTheSameFromASnapshot(ContractPrintType $type): void
+    public function testADocumentPrintsTheSameFromASnapshot(ContractDocumentType $type): void
     {
         $this->fillOutTheContract();
 
@@ -348,11 +348,11 @@ class ProposalSnapshotTest extends TestCase
      * goes into the PDF through a subset font, so what comes out is glyph numbers. A document that
      * prints them cannot come out the same as one that does not, and one that does not must.
      *
-     * @param \App\Model\Enum\ContractPrintType $type Which document.
+     * @param \App\Model\Enum\ContractDocumentType $type Which document.
      * @return void
      */
     #[DataProvider('documents')]
-    public function testTheAgreedTermsReachTheContractAndNoOtherDocument(ContractPrintType $type): void
+    public function testTheAgreedTermsReachTheContractAndNoOtherDocument(ContractDocumentType $type): void
     {
         $this->fillOutTheContract();
 
@@ -364,7 +364,7 @@ class ProposalSnapshotTest extends TestCase
         $this->agreeTerms();
         $with = $this->print($this->printData($type, $this->liveContract(), $version));
 
-        $carries = $type === ContractPrintType::ContractNew || $type === ContractPrintType::ContractNewX;
+        $carries = $type === ContractDocumentType::ContractNew || $type === ContractDocumentType::ContractNewX;
 
         if ($carries) {
             $this->assertNotSame(

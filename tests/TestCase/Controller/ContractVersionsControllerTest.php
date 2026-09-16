@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractVersionsController;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentVariant;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
@@ -201,7 +201,7 @@ class ContractVersionsControllerTest extends TestCase
             $storage->store('%PDF-1.7 a scan', 'application/pdf'),
             ContractDocuments::MODEL,
             self::PROPOSAL_ID,
-            ContractPrintType::ContractNew->value,
+            ContractDocumentType::ContractNew->value,
             DocumentVariant::ReceivedSignedByCustomer->value,
             ['name' => 'scan.pdf'],
         );

@@ -7,8 +7,8 @@ use App\Contracts\Proposal\ProposalProjection;
 use App\Documents\PrintedDocument;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\CustomerProposal;
-use App\Model\Enum\ContractPrintType;
-use App\Model\Enum\CustomerPrintType;
+use App\Model\Enum\ContractDocumentType;
+use App\Model\Enum\CustomerDocumentType;
 use App\Model\Enum\DocumentVariant;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Service\ContractPrint\ContractPrintData;
@@ -94,7 +94,7 @@ final class DrawnPaper
         bool $signed = false,
     ): array {
         if ($round instanceof CustomerProposal) {
-            $type = CustomerPrintType::tryFrom($document_type);
+            $type = CustomerDocumentType::tryFrom($document_type);
 
             if ($type === null) {
                 return [__('That is not a paper this round is for.')];
@@ -104,7 +104,7 @@ final class DrawnPaper
                 $this->whatTheCustomersSays($round, $document_type),
             );
         } else {
-            $type = ContractPrintType::tryFrom($document_type);
+            $type = ContractDocumentType::tryFrom($document_type);
 
             if ($type === null) {
                 return [__('That is not a paper this round is for.')];
@@ -155,7 +155,7 @@ final class DrawnPaper
         ]);
 
         return new CustomerPrintData(
-            type: CustomerPrintType::from($document_type),
+            type: CustomerDocumentType::from($document_type),
             customer: $customer,
             proposal: $round,
         );
@@ -199,7 +199,7 @@ final class DrawnPaper
         };
 
         $data = new ContractPrintData(
-            ContractPrintType::from($document_type),
+            ContractDocumentType::from($document_type),
             $asItStood,
             $executed,
             $terminated,
@@ -233,7 +233,7 @@ final class DrawnPaper
             return false;
         }
 
-        return ContractPrintType::tryFrom($document_type)?->mayCarryOurSignature() ?? false;
+        return ContractDocumentType::tryFrom($document_type)?->mayCarryOurSignature() ?? false;
     }
 
     /**

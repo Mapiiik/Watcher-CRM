@@ -6,7 +6,7 @@ namespace App\Pdf;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Pdf\Trait\ContractDurationTrait;
 use App\Service\ContractPrint\ContractPrintData;
@@ -96,7 +96,7 @@ class ContractPDF extends AppPDF
         $this->printDocumentHeader(
             $this->handoverText('title'),
             $this->handoverText(
-                $data->type === ContractPrintType::HandoverInstallation
+                $data->type === ContractDocumentType::HandoverInstallation
                     ? 'subtitle_installation'
                     : 'subtitle_uninstallation',
             ),
@@ -112,7 +112,7 @@ class ContractPDF extends AppPDF
         $this->printCustomerBlock($contract);
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 4.0);
 
-        if ($data->type === ContractPrintType::HandoverInstallation) {
+        if ($data->type === ContractDocumentType::HandoverInstallation) {
             $this->printInstallationProtocol($data);
         } else {
             $this->printUninstallationProtocol($data);
@@ -143,9 +143,9 @@ class ContractPDF extends AppPDF
             in_array(
                 $type,
                 [
-                    ContractPrintType::ContractNew,
-                    ContractPrintType::ContractNewX,
-                    ContractPrintType::ContractAmendment,
+                    ContractDocumentType::ContractNew,
+                    ContractDocumentType::ContractNewX,
+                    ContractDocumentType::ContractAmendment,
                 ],
                 true,
             )
@@ -159,8 +159,8 @@ class ContractPDF extends AppPDF
 
         if (
             (
-                $type === ContractPrintType::ContractNewX
-                || $type === ContractPrintType::ContractTermination
+                $type === ContractDocumentType::ContractNewX
+                || $type === ContractDocumentType::ContractTermination
             )
             && $data->contractVersionToBeTerminated === null
         ) {
@@ -172,8 +172,8 @@ class ContractPDF extends AppPDF
 
         if (
             (
-                $type === ContractPrintType::ContractNewX
-                || $type === ContractPrintType::ContractTermination
+                $type === ContractDocumentType::ContractNewX
+                || $type === ContractDocumentType::ContractTermination
             )
             && $data->contractVersionToBeTerminated->conclusion_date === null
         ) {
@@ -202,7 +202,7 @@ class ContractPDF extends AppPDF
 
         if (
             $data->contractVersionToBeExecuted === null
-            && $data->type === ContractPrintType::HandoverInstallation
+            && $data->type === ContractDocumentType::HandoverInstallation
         ) {
             throw new InvalidArgumentException(
                 'The contract version to be executed must be provided in order to generate'
@@ -212,7 +212,7 @@ class ContractPDF extends AppPDF
 
         if (
             $data->contractVersionToBeTerminated === null
-            && $data->type === ContractPrintType::HandoverUninstallation
+            && $data->type === ContractDocumentType::HandoverUninstallation
         ) {
             throw new InvalidArgumentException(
                 'The contract version to be terminated must be provided in order to generate'
@@ -285,24 +285,24 @@ class ContractPDF extends AppPDF
      * A replacement contract is a new contract as far as the customer is concerned, so it is
      * headed like one; what it replaces is said in the body.
      *
-     * @param \App\Model\Enum\ContractPrintType $type Contract print type
+     * @param \App\Model\Enum\ContractDocumentType $type Contract print type
      * @return array Title and subtitle
      * @throws \InvalidArgumentException When the type is not one this generator prints
      * @phpstan-return array{0: string, 1: string}
      */
-    private function contractTitle(ContractPrintType $type): array
+    private function contractTitle(ContractDocumentType $type): array
     {
         return match ($type) {
-            ContractPrintType::ContractNew,
-            ContractPrintType::ContractNewX => [
+            ContractDocumentType::ContractNew,
+            ContractDocumentType::ContractNewX => [
                 $this->contractText('title_new'),
                 $this->contractText('subtitle_new'),
             ],
-            ContractPrintType::ContractAmendment => [
+            ContractDocumentType::ContractAmendment => [
                 $this->contractText('title_amendment'),
                 $this->contractText('subtitle_amendment'),
             ],
-            ContractPrintType::ContractTermination => [
+            ContractDocumentType::ContractTermination => [
                 $this->contractText('title_termination'),
                 $this->contractText('subtitle_termination'),
             ],
@@ -328,8 +328,8 @@ class ContractPDF extends AppPDF
         $contract = $data->contract;
 
         [$columns, $width, $separatorOffset, $between] = match ($data->type) {
-            ContractPrintType::ContractNew,
-            ContractPrintType::ContractNewX => [
+            ContractDocumentType::ContractNew,
+            ContractDocumentType::ContractNewX => [
                 [
                     [$this->label('contract_number'), (string)$contract->number],
                     [$this->label('start_date'), (string)$this->executedVersion($data)->valid_from],
@@ -338,7 +338,7 @@ class ContractPDF extends AppPDF
                 AppPDF::SEPARATOR_OFFSET_X,
                 'between_new',
             ],
-            ContractPrintType::ContractAmendment => [
+            ContractDocumentType::ContractAmendment => [
                 [
                     [$this->label('contract_number'), (string)$contract->number],
                     [$this->label('conclusion_date'), (string)$this->executedVersion($data)->conclusion_date],
@@ -352,7 +352,7 @@ class ContractPDF extends AppPDF
                 AppPDF::SEPARATOR_OFFSET_X,
                 'between_amendment',
             ],
-            ContractPrintType::ContractTermination => [
+            ContractDocumentType::ContractTermination => [
                 [
                     [$this->label('contract_number'), (string)$data->contractNumberToBeTerminated],
                     [$this->label('conclusion_date'), (string)$this->terminatedVersion($data)->conclusion_date],
@@ -377,7 +377,7 @@ class ContractPDF extends AppPDF
      */
     private function printHandoverIdentification(ContractPrintData $data): void
     {
-        $columns = $data->type === ContractPrintType::HandoverInstallation
+        $columns = $data->type === ContractDocumentType::HandoverInstallation
             ? [
                 [$this->label('contract_number'), (string)$data->contract->number],
                 [$this->label('start_date'), (string)$this->executedVersion($data)->valid_from],
@@ -528,7 +528,7 @@ class ContractPDF extends AppPDF
     {
         $type = $data->type;
 
-        if ($type === ContractPrintType::ContractTermination) {
+        if ($type === ContractDocumentType::ContractTermination) {
             $terminated = $this->terminatedVersion($data);
 
             $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
@@ -544,7 +544,7 @@ class ContractPDF extends AppPDF
             $this->Ln();
         }
 
-        if ($type === ContractPrintType::ContractNew || $type === ContractPrintType::ContractNewX) {
+        if ($type === ContractDocumentType::ContractNew || $type === ContractDocumentType::ContractNewX) {
             $executed = $this->executedVersion($data);
 
             $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
@@ -564,7 +564,7 @@ class ContractPDF extends AppPDF
             $this->Ln();
             $this->Ln();
 
-            if ($type === ContractPrintType::ContractNewX) {
+            if ($type === ContractDocumentType::ContractNewX) {
                 $this->Write(4, strtr($this->contractText('texts.new_x_intro'), [
                     '{contract_number}' => (string)$data->contractNumberToBeTerminated,
                     '{old_conclusion_date}' => (string)$this->terminatedVersion($data)->conclusion_date,
@@ -575,7 +575,7 @@ class ContractPDF extends AppPDF
             }
         }
 
-        if ($type === ContractPrintType::ContractAmendment) {
+        if ($type === ContractDocumentType::ContractAmendment) {
             $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
             $this->Write(4, strtr($this->contractText('texts.amendment_intro'), [
                 '{valid_from}' => $data->effectiveDateOfAmendment,
@@ -599,9 +599,9 @@ class ContractPDF extends AppPDF
             !in_array(
                 $data->type,
                 [
-                    ContractPrintType::ContractNew,
-                    ContractPrintType::ContractNewX,
-                    ContractPrintType::ContractAmendment,
+                    ContractDocumentType::ContractNew,
+                    ContractDocumentType::ContractNewX,
+                    ContractDocumentType::ContractAmendment,
                 ],
                 true,
             )
@@ -609,7 +609,7 @@ class ContractPDF extends AppPDF
             return;
         }
 
-        if ($data->type === ContractPrintType::ContractAmendment) {
+        if ($data->type === ContractDocumentType::ContractAmendment) {
             // For amendments use the effective date of amendment as reference date for billing relevance
             $this->assertAmendmentData($data);
             $billingReferenceDate = $data->effectiveDateOfAmendment;
@@ -872,12 +872,12 @@ class ContractPDF extends AppPDF
      * What an amendment says once its figures have been stated: that the rest of the contract
      * stands as it was.
      *
-     * @param \App\Model\Enum\ContractPrintType $type Contract print type
+     * @param \App\Model\Enum\ContractDocumentType $type Contract print type
      * @return void
      */
-    private function printAmendmentClosing(ContractPrintType $type): void
+    private function printAmendmentClosing(ContractDocumentType $type): void
     {
-        if ($type !== ContractPrintType::ContractAmendment) {
+        if ($type !== ContractDocumentType::ContractAmendment) {
             return;
         }
 
@@ -901,7 +901,7 @@ class ContractPDF extends AppPDF
     {
         $type = $data->type;
 
-        if ($type !== ContractPrintType::ContractNew && $type !== ContractPrintType::ContractNewX) {
+        if ($type !== ContractDocumentType::ContractNew && $type !== ContractDocumentType::ContractNewX) {
             return;
         }
 
@@ -946,7 +946,7 @@ class ContractPDF extends AppPDF
         $contract = $data->contract;
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        if ($data->type === ContractPrintType::ContractNew) {
+        if ($data->type === ContractDocumentType::ContractNew) {
             $this->printTableCaption($this->contractText('texts.borrowed_equipment_intro_new'));
         } else {
             $this->printTableCaption(
@@ -986,7 +986,7 @@ class ContractPDF extends AppPDF
         }
         $this->Ln();
 
-        if ($data->type === ContractPrintType::ContractNewX) {
+        if ($data->type === ContractDocumentType::ContractNewX) {
             $this->printParagraph($this->contractText('texts.borrowed_equipment_continue'));
         }
 
@@ -1009,7 +1009,7 @@ class ContractPDF extends AppPDF
      *
      * @param \App\Model\Entity\Contract        $contract         Current contract instance containing fee sums.
      * @param \App\Model\Entity\ContractVersion $contract_version Current contract version with duration info.
-     * @param \App\Model\Enum\ContractPrintType $type             Contract print type.
+     * @param \App\Model\Enum\ContractDocumentType $type             Contract print type.
      * @param bool                              $withInstallation Whether installation of borrowed equipment
      *                                                            should be mentioned in the activation fee text.
      * @return void
@@ -1017,7 +1017,7 @@ class ContractPDF extends AppPDF
     private function printActivationFee(
         Contract $contract,
         ContractVersion $contract_version,
-        ContractPrintType $type,
+        ContractDocumentType $type,
         bool $withInstallation,
     ): void {
         if (!$contract->activation_fee_sum->isPositive()) {
@@ -1025,7 +1025,7 @@ class ContractPDF extends AppPDF
         }
 
         if ($contract_version->minimum_duration <= 0) {
-            if ($type === ContractPrintType::ContractNew) {
+            if ($type === ContractDocumentType::ContractNew) {
                 $key = $withInstallation
                     ? 'activation_fee_no_commitment_with_installation'
                     : 'activation_fee_no_commitment';
@@ -1041,7 +1041,7 @@ class ContractPDF extends AppPDF
             return;
         }
 
-        if ($type === ContractPrintType::ContractNew) {
+        if ($type === ContractDocumentType::ContractNew) {
             $key = $withInstallation
                 ? 'activation_fee_with_commitment_with_installation'
                 : 'activation_fee_with_commitment';

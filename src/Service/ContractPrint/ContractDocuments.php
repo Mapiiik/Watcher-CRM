@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Service\ContractPrint;
 
 use App\Documents\PrintedDocument;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentVariant;
 use App\Pdf\SignatureAnchors;
 use App\Pdf\SignatureStampPDF;
@@ -107,7 +107,7 @@ final class ContractDocuments
     {
         $labels = [];
 
-        foreach (ContractPrintType::cases() as $case) {
+        foreach (ContractDocumentType::cases() as $case) {
             $labels[$case->value] = $case->label();
         }
 

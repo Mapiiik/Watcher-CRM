@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Service\CustomerPrint;
 
 use App\Documents\PrintedDocument;
-use App\Model\Enum\CustomerPrintType;
+use App\Model\Enum\CustomerDocumentType;
 use App\Model\Enum\DocumentVariant;
 use App\Proposals\FiledPapersTrait;
 use Files\Model\Entity\FileLink;
@@ -76,7 +76,7 @@ final class CustomerDocuments
     {
         $labels = [];
 
-        foreach (CustomerPrintType::cases() as $case) {
+        foreach (CustomerDocumentType::cases() as $case) {
             $labels[$case->value] = $case->label();
         }
 

@@ -5,7 +5,7 @@ namespace App\Test\TestCase\Contracts\Proposal;
 
 use App\Contracts\Proposal\ProposalDocumentTypes;
 use App\Model\Entity\ContractProposal;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\ProposalPurpose;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
@@ -48,7 +48,7 @@ class ProposalDocumentTypesTest extends TestCase
         bool $concluded = true,
     ): array {
         return array_map(
-            fn(ContractPrintType $type): string => $type->value,
+            fn(ContractDocumentType $type): string => $type->value,
             (new ProposalDocumentTypes())->for($proposal, $has_equipment, $concluded),
         );
     }
@@ -79,14 +79,14 @@ class ProposalDocumentTypesTest extends TestCase
     {
         $offered = $this->offered($this->proposal(), concluded: false);
 
-        $this->assertContains(ContractPrintType::ContractNew->value, $offered);
-        $this->assertContains(ContractPrintType::ContractSummary->value, $offered);
-        $this->assertContains(ContractPrintType::HandoverInstallation->value, $offered);
+        $this->assertContains(ContractDocumentType::ContractNew->value, $offered);
+        $this->assertContains(ContractDocumentType::ContractSummary->value, $offered);
+        $this->assertContains(ContractDocumentType::HandoverInstallation->value, $offered);
 
-        $this->assertNotContains(ContractPrintType::ContractNewX->value, $offered);
-        $this->assertNotContains(ContractPrintType::ContractTermination->value, $offered);
-        $this->assertNotContains(ContractPrintType::ContractAmendment->value, $offered);
-        $this->assertNotContains(ContractPrintType::HandoverUninstallation->value, $offered);
+        $this->assertNotContains(ContractDocumentType::ContractNewX->value, $offered);
+        $this->assertNotContains(ContractDocumentType::ContractTermination->value, $offered);
+        $this->assertNotContains(ContractDocumentType::ContractAmendment->value, $offered);
+        $this->assertNotContains(ContractDocumentType::HandoverUninstallation->value, $offered);
     }
 
     /**
@@ -102,9 +102,9 @@ class ProposalDocumentTypesTest extends TestCase
 
         $offered = $this->offered($replacing);
 
-        $this->assertContains(ContractPrintType::ContractNewX->value, $offered);
-        $this->assertContains(ContractPrintType::HandoverUninstallation->value, $offered);
-        $this->assertNotContains(ContractPrintType::ContractNew->value, $offered);
+        $this->assertContains(ContractDocumentType::ContractNewX->value, $offered);
+        $this->assertContains(ContractDocumentType::HandoverUninstallation->value, $offered);
+        $this->assertNotContains(ContractDocumentType::ContractNew->value, $offered);
     }
 
     /**
@@ -115,11 +115,11 @@ class ProposalDocumentTypesTest extends TestCase
     public function testEndingTheContract(): void
     {
         $this->assertContains(
-            ContractPrintType::ContractTermination->value,
+            ContractDocumentType::ContractTermination->value,
             $this->offered($this->proposal(self::ending())),
         );
         $this->assertNotContains(
-            ContractPrintType::ContractTermination->value,
+            ContractDocumentType::ContractTermination->value,
             $this->offered($this->proposal()),
         );
     }
@@ -136,15 +136,15 @@ class ProposalDocumentTypesTest extends TestCase
         $change = ['purpose' => ProposalPurpose::ServiceChange];
 
         $this->assertContains(
-            ContractPrintType::ContractAmendment->value,
+            ContractDocumentType::ContractAmendment->value,
             $this->offered($this->proposal($change), concluded: true),
         );
         $this->assertNotContains(
-            ContractPrintType::ContractAmendment->value,
+            ContractDocumentType::ContractAmendment->value,
             $this->offered($this->proposal($change), concluded: false),
         );
         $this->assertNotContains(
-            ContractPrintType::ContractAmendment->value,
+            ContractDocumentType::ContractAmendment->value,
             $this->offered($this->proposal(), concluded: true),
         );
     }
@@ -159,8 +159,8 @@ class ProposalDocumentTypesTest extends TestCase
     {
         $offered = $this->offered($this->proposal(self::ending()), has_equipment: false);
 
-        $this->assertNotContains(ContractPrintType::HandoverInstallation->value, $offered);
-        $this->assertNotContains(ContractPrintType::HandoverUninstallation->value, $offered);
+        $this->assertNotContains(ContractDocumentType::HandoverInstallation->value, $offered);
+        $this->assertNotContains(ContractDocumentType::HandoverUninstallation->value, $offered);
     }
 
     /**
@@ -172,11 +172,11 @@ class ProposalDocumentTypesTest extends TestCase
     public function testTheUninstallationProtocolWantsAnEnding(): void
     {
         $this->assertNotContains(
-            ContractPrintType::HandoverUninstallation->value,
+            ContractDocumentType::HandoverUninstallation->value,
             $this->offered($this->proposal()),
         );
         $this->assertContains(
-            ContractPrintType::HandoverUninstallation->value,
+            ContractDocumentType::HandoverUninstallation->value,
             $this->offered($this->proposal(self::ending())),
         );
     }
@@ -190,7 +190,7 @@ class ProposalDocumentTypesTest extends TestCase
     {
         foreach ([true, false] as $concluded) {
             $this->assertContains(
-                ContractPrintType::ContractSummary->value,
+                ContractDocumentType::ContractSummary->value,
                 $this->offered($this->proposal(), concluded: $concluded),
             );
         }
@@ -206,7 +206,7 @@ class ProposalDocumentTypesTest extends TestCase
         $types = new ProposalDocumentTypes();
         $proposal = $this->proposal();
 
-        $this->assertTrue($types->allows(ContractPrintType::ContractNew, $proposal, true, true));
-        $this->assertFalse($types->allows(ContractPrintType::ContractNewX, $proposal, true, true));
+        $this->assertTrue($types->allows(ContractDocumentType::ContractNew, $proposal, true, true));
+        $this->assertFalse($types->allows(ContractDocumentType::ContractNewX, $proposal, true, true));
     }
 }

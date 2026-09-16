@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Service\ContractPrint;
 
 use App\Documents\PrintedDocument;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
 use Cake\I18n\Date;
@@ -40,7 +40,7 @@ final class ContractPrintPdfOutput
         $this->initializeLocale();
 
         // The summary is its own document with its own layout, so it is its own generator too.
-        $pdf = $data->type === ContractPrintType::ContractSummary
+        $pdf = $data->type === ContractDocumentType::ContractSummary
             ? new ContractSummaryPDF()
             : new ContractPDF();
 
@@ -96,17 +96,17 @@ final class ContractPrintPdfOutput
     public function filename(ContractPrintData $data, bool $signed): string
     {
         $date = match ($data->type) {
-            ContractPrintType::ContractAmendment,
+            ContractDocumentType::ContractAmendment,
                 => $data->effectiveDateOfAmendment,
-            ContractPrintType::ContractTermination,
-            ContractPrintType::HandoverUninstallation
+            ContractDocumentType::ContractTermination,
+            ContractDocumentType::HandoverUninstallation
                 => $data->contractVersionToBeTerminated?->valid_until,
             default
                 => $data->contractVersionToBeExecuted?->valid_from,
         };
 
         $typeSuffix = match ($data->type) {
-            ContractPrintType::ContractAmendment
+            ContractDocumentType::ContractAmendment
                 => '-' . (($data->contractVersionToBeExecuted->number_of_amendments ?? 0) + 1),
             default => '',
         };

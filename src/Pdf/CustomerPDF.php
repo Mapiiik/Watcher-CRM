@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Pdf;
 
-use App\Model\Enum\CustomerPrintType;
+use App\Model\Enum\CustomerDocumentType;
 use App\Service\CustomerPrint\CustomerPrintData;
 use InvalidArgumentException;
 use Settings\Utility\Settings;
@@ -32,8 +32,8 @@ class CustomerPDF extends AppPDF
         $this->printLabelledRow(
             [
                 [$this->label('new_or_change'), $this->label(match ($type) {
-                    CustomerPrintType::GdprNew => 'new',
-                    CustomerPrintType::GdprChange => 'change',
+                    CustomerDocumentType::GdprNew => 'new',
+                    CustomerDocumentType::GdprChange => 'change',
                 })],
                 [$this->label('agreement_number'), $customer->number],
                 [$this->label('agreement_duration'), $this->label('duration_indefinite')],

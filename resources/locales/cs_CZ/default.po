@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 19:23+0200\n"
+"POT-Creation-Date: 2026-09-16 19:57+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2558,6 +2558,36 @@ msgstr "Více adres trvalého pobytu"
 msgid "Several installation addresses"
 msgstr "Více instalačních adres"
 
+#: src/Model/Enum/ContractDocumentType.php:33
+msgid "Contract for the provision of services"
+msgstr "Smlouva o poskytování služeb"
+
+#: src/Model/Enum/ContractDocumentType.php:36
+msgid ""
+"Contract for the provision of services (with termination of the original "
+"contract)"
+msgstr "Smlouva o poskytování služeb (s ukončením původní smlouvy)"
+
+#: src/Model/Enum/ContractDocumentType.php:39
+msgid "Amendment to the contract for the provision of services"
+msgstr "Dodatek ke smlouvě o poskytování služeb"
+
+#: src/Model/Enum/ContractDocumentType.php:42
+msgid "Agreement to terminate contract for the provision of services"
+msgstr "Dohoda o ukončení smlouvy o poskytování služeb"
+
+#: src/Model/Enum/ContractDocumentType.php:45
+msgid "Contract summary"
+msgstr "Shrnutí smlouvy"
+
+#: src/Model/Enum/ContractDocumentType.php:48
+msgid "Handover protocol - Installation of internet connection"
+msgstr "Předávací protokol - Instalace připojení k internetu"
+
+#: src/Model/Enum/ContractDocumentType.php:51
+msgid "Handover protocol - Internet connection uninstallation"
+msgstr "Předávací protokol - Deinstalace připojení k internetu"
+
 #: src/Model/Enum/ContractPeriodSource.php:67
 msgid "From the contract versions"
 msgstr "Podle verzí smlouvy"
@@ -2569,36 +2599,6 @@ msgstr "Podle data instalace/zřízení a ukončení poskytování služeb"
 #: src/Model/Enum/ContractPeriodSource.php:69
 msgid "From the installation and uninstallation dates"
 msgstr "Podle data instalace/zřízení a deinstalace/zrušení"
-
-#: src/Model/Enum/ContractPrintType.php:33
-msgid "Contract for the provision of services"
-msgstr "Smlouva o poskytování služeb"
-
-#: src/Model/Enum/ContractPrintType.php:36
-msgid ""
-"Contract for the provision of services (with termination of the original "
-"contract)"
-msgstr "Smlouva o poskytování služeb (s ukončením původní smlouvy)"
-
-#: src/Model/Enum/ContractPrintType.php:39
-msgid "Amendment to the contract for the provision of services"
-msgstr "Dodatek ke smlouvě o poskytování služeb"
-
-#: src/Model/Enum/ContractPrintType.php:42
-msgid "Agreement to terminate contract for the provision of services"
-msgstr "Dohoda o ukončení smlouvy o poskytování služeb"
-
-#: src/Model/Enum/ContractPrintType.php:45
-msgid "Contract summary"
-msgstr "Shrnutí smlouvy"
-
-#: src/Model/Enum/ContractPrintType.php:48
-msgid "Handover protocol - Installation of internet connection"
-msgstr "Předávací protokol - Instalace připojení k internetu"
-
-#: src/Model/Enum/ContractPrintType.php:51
-msgid "Handover protocol - Internet connection uninstallation"
-msgstr "Předávací protokol - Deinstalace připojení k internetu"
 
 #: src/Model/Enum/CustomerDealer.php:25
 #: templates/AccountingProfiles/index.php:45
@@ -2742,6 +2742,15 @@ msgstr "aktuální"
 msgid "former"
 msgstr "bývalý"
 
+#: src/Model/Enum/CustomerDocumentType.php:27
+#: src/Model/Enum/CustomerProposalPurpose.php:35
+msgid "Consent to the processing of personal data"
+msgstr "Souhlas se zpracováním osobních údajů"
+
+#: src/Model/Enum/CustomerDocumentType.php:28
+msgid "Consent to the processing of personal data (change)"
+msgstr "Souhlas se zpracováním osobních údajů (změna)"
+
 #: src/Model/Enum/CustomerInvoiceDeliveryType.php:24
 msgid "Do not send"
 msgstr "Nezasílat"
@@ -2817,15 +2826,6 @@ msgstr "E-mail - podpora"
 #: src/Model/Enum/DocumentsDeliveryType.php:33
 msgid "SMS"
 msgstr "SMS"
-
-#: src/Model/Enum/CustomerPrintType.php:27
-#: src/Model/Enum/CustomerProposalPurpose.php:35
-msgid "Consent to the processing of personal data"
-msgstr "Souhlas se zpracováním osobních údajů"
-
-#: src/Model/Enum/CustomerPrintType.php:28
-msgid "Consent to the processing of personal data (change)"
-msgstr "Souhlas se zpracováním osobních údajů (změna)"
 
 #: src/Model/Enum/DocumentVariant.php:35
 msgid "Generated, unsigned"
@@ -3467,7 +3467,7 @@ msgstr "Není nainstalováno přes Git"
 #: templates/ContractProposals/view.php:33 templates/ContractStates/add.php:11
 #: templates/ContractStates/edit.php:12 templates/ContractStates/index.php:37
 #: templates/ContractStates/view.php:10 templates/ContractVersions/add.php:14
-#: templates/ContractVersions/edit.php:12
+#: templates/ContractVersions/edit.php:15
 #: templates/ContractVersions/index.php:45
 #: templates/ContractVersions/view.php:10 templates/Contracts/add.php:19
 #: templates/Contracts/edit.php:21 templates/Contracts/index.php:56
@@ -3609,7 +3609,7 @@ msgstr "IP adresa"
 #: templates/ContractProposals/billing_line.php:117
 #: templates/ContractProposals/edit.php:36 templates/ContractStates/add.php:112
 #: templates/ContractStates/edit.php:121 templates/ContractVersions/add.php:80
-#: templates/ContractVersions/edit.php:86 templates/Contracts/add.php:64
+#: templates/ContractVersions/edit.php:90 templates/Contracts/add.php:64
 #: templates/Contracts/edit.php:142 templates/Countries/add.php:24
 #: templates/Countries/edit.php:29 templates/CustomerLabels/add.php:40
 #: templates/CustomerLabels/edit.php:48 templates/CustomerMessages/add.php:37
@@ -3652,7 +3652,7 @@ msgstr "Potvrdit"
 #: templates/BorrowedEquipments/index.php:84 templates/Commissions/edit.php:12
 #: templates/Commissions/index.php:42 templates/Commissions/view.php:78
 #: templates/ContractProposals/view.php:77 templates/ContractStates/edit.php:14
-#: templates/ContractStates/index.php:66 templates/ContractVersions/edit.php:14
+#: templates/ContractStates/index.php:66 templates/ContractVersions/edit.php:17
 #: templates/ContractVersions/index.php:80 templates/Contracts/edit.php:23
 #: templates/Contracts/index.php:123 templates/Countries/edit.php:12
 #: templates/Countries/index.php:44 templates/Countries/view.php:117
@@ -3712,7 +3712,7 @@ msgstr "Odstranit"
 #: templates/Commissions/index.php:44 templates/Commissions/view.php:20
 #: templates/Commissions/view.php:80 templates/ContractStates/edit.php:17
 #: templates/ContractStates/index.php:68 templates/ContractStates/view.php:20
-#: templates/ContractVersions/edit.php:17
+#: templates/ContractVersions/edit.php:20
 #: templates/ContractVersions/index.php:82
 #: templates/ContractVersions/view.php:20 templates/Contracts/edit.php:25
 #: templates/Contracts/index.php:125 templates/Contracts/view.php:28
@@ -4987,7 +4987,7 @@ msgstr "Vyžaduje aktivní verzi smlouvy"
 msgid "Requires No Active Obligations"
 msgstr "Vyžaduje žádné aktivní závazky"
 
-#: templates/ContractVersions/add.php:16 templates/ContractVersions/edit.php:22
+#: templates/ContractVersions/add.php:16 templates/ContractVersions/edit.php:25
 #: templates/ContractVersions/view.php:25 templates/Overviews/index.php:132
 msgid "List Contract Versions"
 msgstr "Seznam verzí smluv"
@@ -4996,7 +4996,7 @@ msgstr "Seznam verzí smluv"
 msgid "Add Contract Version"
 msgstr "Přidat verzi smlouvy"
 
-#: templates/ContractVersions/edit.php:32
+#: templates/ContractVersions/edit.php:35
 #: templates/ContractVersions/view.php:12
 msgid "Edit Contract Version"
 msgstr "Upravit verzi smlouvy"

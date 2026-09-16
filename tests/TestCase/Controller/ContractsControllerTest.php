@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractsController;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Table\BillingsTable;
 use App\Test\Traits\ControllerTestTrait;
@@ -764,10 +764,10 @@ class ContractsControllerTest extends TestCase
             . '?agenda=ContractProposals&proposal_id=c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60');
 
         $this->assertResponseOk();
-        $this->assertResponseContains(ContractPrintType::ContractSummary->label());
+        $this->assertResponseContains(ContractDocumentType::ContractSummary->label());
         // It replaces nothing and ends nothing, so neither of those documents is owed.
-        $this->assertResponseNotContains(ContractPrintType::ContractNewX->label());
-        $this->assertResponseNotContains(ContractPrintType::ContractTermination->label());
+        $this->assertResponseNotContains(ContractDocumentType::ContractNewX->label());
+        $this->assertResponseNotContains(ContractDocumentType::ContractTermination->label());
     }
 
     /**

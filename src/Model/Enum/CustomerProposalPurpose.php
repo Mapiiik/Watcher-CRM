@@ -55,12 +55,12 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     /**
      * The documents a round for this purpose may be printed as.
      *
-     * @return array<\App\Model\Enum\CustomerPrintType>
+     * @return array<\App\Model\Enum\CustomerDocumentType>
      */
     public function documents(): array
     {
         return match ($this) {
-            self::GdprConsent => [CustomerPrintType::GdprNew, CustomerPrintType::GdprChange],
+            self::GdprConsent => [CustomerDocumentType::GdprNew, CustomerDocumentType::GdprChange],
         };
     }
 
@@ -72,14 +72,14 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
      * whatever the operator picks.
      *
      * @param bool $asked_before Whether the customer has agreed to this before.
-     * @return \App\Model\Enum\CustomerPrintType
+     * @return \App\Model\Enum\CustomerDocumentType
      */
-    public function suggests(bool $asked_before): CustomerPrintType
+    public function suggests(bool $asked_before): CustomerDocumentType
     {
         return match ($this) {
             self::GdprConsent => $asked_before
-                ? CustomerPrintType::GdprChange
-                : CustomerPrintType::GdprNew,
+                ? CustomerDocumentType::GdprChange
+                : CustomerDocumentType::GdprNew,
         };
     }
 }

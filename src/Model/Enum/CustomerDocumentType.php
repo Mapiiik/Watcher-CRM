@@ -8,9 +8,9 @@ use Cake\Database\Type\EnumLabelInterface;
 use Override;
 
 /**
- * CustomerPrintType Enum
+ * CustomerDocumentType Enum
  */
-enum CustomerPrintType: string implements EnumLabelInterface
+enum CustomerDocumentType: string implements EnumLabelInterface
 {
     use EnumOptionsTrait;
 

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service\CustomerPrint;
 
-use App\Model\Enum\CustomerPrintType;
+use App\Model\Enum\CustomerDocumentType;
 
 /**
  * Validator for customer print requests.
@@ -43,10 +43,10 @@ final class CustomerPrintValidator
         $this->validateCommon();
 
         match ($data->type) {
-            CustomerPrintType::GdprNew =>
+            CustomerDocumentType::GdprNew =>
                 $this->validateGdprNew(),
 
-            CustomerPrintType::GdprChange =>
+            CustomerDocumentType::GdprChange =>
                 $this->validateGdprChange(),
         };
 

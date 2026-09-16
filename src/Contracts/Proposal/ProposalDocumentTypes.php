@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Contracts\Proposal;
 
 use App\Model\Entity\ContractProposal;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\ProposalPurpose;
 
 /**
@@ -28,11 +28,11 @@ final class ProposalDocumentTypes
     /**
      * The papers that are drawn up when somebody wants one rather than as a matter of course.
      *
-     * @var array<\App\Model\Enum\ContractPrintType>
+     * @var array<\App\Model\Enum\ContractDocumentType>
      */
     private const WHEN_SOMEBODY_WANTS_ONE = [
-        ContractPrintType::HandoverInstallation,
-        ContractPrintType::HandoverUninstallation,
+        ContractDocumentType::HandoverInstallation,
+        ContractDocumentType::HandoverUninstallation,
     ];
 
     /**
@@ -41,7 +41,7 @@ final class ProposalDocumentTypes
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param bool $has_equipment Whether the contract is one that has equipment at all.
      * @param bool $version_concluded Whether the version the proposal belongs to has been concluded.
-     * @return array<\App\Model\Enum\ContractPrintType>
+     * @return array<\App\Model\Enum\ContractDocumentType>
      */
     public function for(
         ContractProposal $proposal,
@@ -53,26 +53,26 @@ final class ProposalDocumentTypes
         $ends = $purpose === ProposalPurpose::Termination;
 
         return array_values(array_filter(
-            ContractPrintType::cases(),
-            fn(ContractPrintType $type): bool => match ($type) {
-                ContractPrintType::ContractNew => $purpose === ProposalPurpose::NewContract
+            ContractDocumentType::cases(),
+            fn(ContractDocumentType $type): bool => match ($type) {
+                ContractDocumentType::ContractNew => $purpose === ProposalPurpose::NewContract
                     && !$replaces,
-                ContractPrintType::ContractNewX => $purpose === ProposalPurpose::NewContract
+                ContractDocumentType::ContractNewX => $purpose === ProposalPurpose::NewContract
                     && $replaces,
-                ContractPrintType::ContractAmendment => $purpose === ProposalPurpose::ServiceChange
+                ContractDocumentType::ContractAmendment => $purpose === ProposalPurpose::ServiceChange
                     && $version_concluded,
-                ContractPrintType::ContractTermination => $ends,
+                ContractDocumentType::ContractTermination => $ends,
                 // The summary says what is on offer before anybody is bound by it, and an ending
                 // offers nothing.
-                ContractPrintType::ContractSummary => !$ends,
+                ContractDocumentType::ContractSummary => !$ends,
                 // The installation protocol hangs off the version, which every proposal has, but
                 // nothing is installed on the way out. The uninstallation one wants a version to
                 // end and a number to name, so it has nothing to go on unless the proposal ends
                 // something - and that is deliberate, because the contract is what says which
                 // equipment the customer has, so swapping a box is a new version rather than a
                 // protocol of its own.
-                ContractPrintType::HandoverInstallation => $has_equipment && !$ends,
-                ContractPrintType::HandoverUninstallation => $has_equipment && ($ends || $replaces),
+                ContractDocumentType::HandoverInstallation => $has_equipment && !$ends,
+                ContractDocumentType::HandoverUninstallation => $has_equipment && ($ends || $replaces),
             },
         ));
     }
@@ -87,7 +87,7 @@ final class ProposalDocumentTypes
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param bool $has_equipment Whether the contract is one that has equipment at all.
      * @param bool $version_concluded Whether the version the proposal belongs to has been concluded.
-     * @return array<\App\Model\Enum\ContractPrintType>
+     * @return array<\App\Model\Enum\ContractDocumentType>
      */
     public function required(
         ContractProposal $proposal,
@@ -96,7 +96,7 @@ final class ProposalDocumentTypes
     ): array {
         return array_values(array_filter(
             $this->for($proposal, $has_equipment, $version_concluded),
-            fn(ContractPrintType $type): bool => !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true),
+            fn(ContractDocumentType $type): bool => !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true),
         ));
     }
 
@@ -127,14 +127,14 @@ final class ProposalDocumentTypes
     /**
      * Whether the given document may be printed from the given proposal.
      *
-     * @param \App\Model\Enum\ContractPrintType $type Which document.
+     * @param \App\Model\Enum\ContractDocumentType $type Which document.
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param bool $has_equipment Whether the contract is one that has equipment at all.
      * @param bool $version_concluded Whether the version the proposal belongs to has been concluded.
      * @return bool
      */
     public function allows(
-        ContractPrintType $type,
+        ContractDocumentType $type,
         ContractProposal $proposal,
         bool $has_equipment,
         bool $version_concluded,

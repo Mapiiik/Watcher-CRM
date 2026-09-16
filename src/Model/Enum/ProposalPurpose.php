@@ -99,16 +99,16 @@ enum ProposalPurpose: string implements EnumLabelInterface
      * that a type added later still prints from what is already on file.
      *
      * @param bool $replaces Whether the proposal terminates an earlier version of the same contract.
-     * @return \App\Model\Enum\ContractPrintType
+     * @return \App\Model\Enum\ContractDocumentType
      */
-    public function suggests(bool $replaces): ContractPrintType
+    public function suggests(bool $replaces): ContractDocumentType
     {
         return match ($this) {
             self::NewContract => $replaces
-                ? ContractPrintType::ContractNewX
-                : ContractPrintType::ContractNew,
-            self::ServiceChange => ContractPrintType::ContractAmendment,
-            self::Termination => ContractPrintType::ContractTermination,
+                ? ContractDocumentType::ContractNewX
+                : ContractDocumentType::ContractNew,
+            self::ServiceChange => ContractDocumentType::ContractAmendment,
+            self::Termination => ContractDocumentType::ContractTermination,
         };
     }
 }

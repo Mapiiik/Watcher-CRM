@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 19:23+0200\n"
+"POT-Creation-Date: 2026-09-16 19:57+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2435,6 +2435,34 @@ msgstr ""
 msgid "Several installation addresses"
 msgstr ""
 
+#: ./src/Model/Enum/ContractDocumentType.php:33
+msgid "Contract for the provision of services"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:36
+msgid "Contract for the provision of services (with termination of the original contract)"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:39
+msgid "Amendment to the contract for the provision of services"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:42
+msgid "Agreement to terminate contract for the provision of services"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:45
+msgid "Contract summary"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:48
+msgid "Handover protocol - Installation of internet connection"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:51
+msgid "Handover protocol - Internet connection uninstallation"
+msgstr ""
+
 #: ./src/Model/Enum/ContractPeriodSource.php:67
 msgid "From the contract versions"
 msgstr ""
@@ -2445,34 +2473,6 @@ msgstr ""
 
 #: ./src/Model/Enum/ContractPeriodSource.php:69
 msgid "From the installation and uninstallation dates"
-msgstr ""
-
-#: ./src/Model/Enum/ContractPrintType.php:33
-msgid "Contract for the provision of services"
-msgstr ""
-
-#: ./src/Model/Enum/ContractPrintType.php:36
-msgid "Contract for the provision of services (with termination of the original contract)"
-msgstr ""
-
-#: ./src/Model/Enum/ContractPrintType.php:39
-msgid "Amendment to the contract for the provision of services"
-msgstr ""
-
-#: ./src/Model/Enum/ContractPrintType.php:42
-msgid "Agreement to terminate contract for the provision of services"
-msgstr ""
-
-#: ./src/Model/Enum/ContractPrintType.php:45
-msgid "Contract summary"
-msgstr ""
-
-#: ./src/Model/Enum/ContractPrintType.php:48
-msgid "Handover protocol - Installation of internet connection"
-msgstr ""
-
-#: ./src/Model/Enum/ContractPrintType.php:51
-msgid "Handover protocol - Internet connection uninstallation"
 msgstr ""
 
 #: ./src/Model/Enum/CustomerDealer.php:25
@@ -2712,6 +2712,15 @@ msgstr ""
 msgid "former"
 msgstr ""
 
+#: ./src/Model/Enum/CustomerDocumentType.php:27
+#: ./src/Model/Enum/CustomerProposalPurpose.php:35
+msgid "Consent to the processing of personal data"
+msgstr ""
+
+#: ./src/Model/Enum/CustomerDocumentType.php:28
+msgid "Consent to the processing of personal data (change)"
+msgstr ""
+
 #: ./src/Model/Enum/CustomerInvoiceDeliveryType.php:24
 msgid "Do not send"
 msgstr ""
@@ -2787,15 +2796,6 @@ msgstr ""
 #: ./src/Model/Enum/CustomerMessageType.php:31
 #: ./src/Model/Enum/DocumentsDeliveryType.php:33
 msgid "SMS"
-msgstr ""
-
-#: ./src/Model/Enum/CustomerPrintType.php:27
-#: ./src/Model/Enum/CustomerProposalPurpose.php:35
-msgid "Consent to the processing of personal data"
-msgstr ""
-
-#: ./src/Model/Enum/CustomerPrintType.php:28
-msgid "Consent to the processing of personal data (change)"
 msgstr ""
 
 #: ./src/Model/Enum/DocumentVariant.php:35
@@ -3380,7 +3380,7 @@ msgstr ""
 #: ./templates/ContractStates/index.php:37
 #: ./templates/ContractStates/view.php:10
 #: ./templates/ContractVersions/add.php:14
-#: ./templates/ContractVersions/edit.php:12
+#: ./templates/ContractVersions/edit.php:15
 #: ./templates/ContractVersions/index.php:45
 #: ./templates/ContractVersions/view.php:10
 #: ./templates/Contracts/add.php:19
@@ -3577,7 +3577,7 @@ msgstr ""
 #: ./templates/ContractStates/add.php:112
 #: ./templates/ContractStates/edit.php:121
 #: ./templates/ContractVersions/add.php:80
-#: ./templates/ContractVersions/edit.php:86
+#: ./templates/ContractVersions/edit.php:90
 #: ./templates/Contracts/add.php:64
 #: ./templates/Contracts/edit.php:142
 #: ./templates/Countries/add.php:24
@@ -3648,7 +3648,7 @@ msgstr ""
 #: ./templates/ContractProposals/view.php:77
 #: ./templates/ContractStates/edit.php:14
 #: ./templates/ContractStates/index.php:66
-#: ./templates/ContractVersions/edit.php:14
+#: ./templates/ContractVersions/edit.php:17
 #: ./templates/ContractVersions/index.php:80
 #: ./templates/Contracts/edit.php:23
 #: ./templates/Contracts/index.php:123
@@ -3740,7 +3740,7 @@ msgstr ""
 #: ./templates/ContractStates/edit.php:17
 #: ./templates/ContractStates/index.php:68
 #: ./templates/ContractStates/view.php:20
-#: ./templates/ContractVersions/edit.php:17
+#: ./templates/ContractVersions/edit.php:20
 #: ./templates/ContractVersions/index.php:82
 #: ./templates/ContractVersions/view.php:20
 #: ./templates/Contracts/edit.php:25
@@ -5245,7 +5245,7 @@ msgid "Requires No Active Obligations"
 msgstr ""
 
 #: ./templates/ContractVersions/add.php:16
-#: ./templates/ContractVersions/edit.php:22
+#: ./templates/ContractVersions/edit.php:25
 #: ./templates/ContractVersions/view.php:25
 #: ./templates/Overviews/index.php:132
 msgid "List Contract Versions"
@@ -5255,7 +5255,7 @@ msgstr ""
 msgid "Add Contract Version"
 msgstr ""
 
-#: ./templates/ContractVersions/edit.php:32
+#: ./templates/ContractVersions/edit.php:35
 #: ./templates/ContractVersions/view.php:12
 msgid "Edit Contract Version"
 msgstr ""

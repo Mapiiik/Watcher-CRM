@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Service\CustomerPrint;
 
-use App\Model\Enum\ContractPrintType;
-use App\Model\Enum\CustomerPrintType;
+use App\Model\Enum\ContractDocumentType;
+use App\Model\Enum\CustomerDocumentType;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentVariant;
 use App\Service\CustomerPrint\CustomerDocuments;
@@ -204,20 +204,20 @@ class CustomerDocumentsTest extends TestCase
         $this->fileAgainst(
             CustomerDocuments::MODEL,
             $this->round(),
-            CustomerPrintType::GdprNew->value,
+            CustomerDocumentType::GdprNew->value,
         );
         $this->fileAgainst(
             'ContractProposals',
             self::CONTRACT_PROPOSAL_ID,
-            ContractPrintType::ContractAmendment->value,
+            ContractDocumentType::ContractAmendment->value,
         );
 
         $this->get(sprintf('/customers/%s/documents/manage', self::CUSTOMER_ID));
 
         $this->assertResponseOk();
         $body = (string)$this->_response?->getBody();
-        $consent = strpos($body, CustomerPrintType::GdprNew->label());
-        $amendment = strpos($body, ContractPrintType::ContractAmendment->label());
+        $consent = strpos($body, CustomerDocumentType::GdprNew->label());
+        $amendment = strpos($body, ContractDocumentType::ContractAmendment->label());
 
         $this->assertIsInt($consent);
         $this->assertIsInt($amendment);
@@ -237,7 +237,7 @@ class CustomerDocumentsTest extends TestCase
         $theContracts = $this->fileAgainst(
             'ContractProposals',
             self::CONTRACT_PROPOSAL_ID,
-            ContractPrintType::ContractAmendment->value,
+            ContractDocumentType::ContractAmendment->value,
             DocumentVariant::Generated,
         );
 
@@ -282,7 +282,7 @@ class CustomerDocumentsTest extends TestCase
         $this->post(
             '/documents/add-pages?proposal_id=' . $round . '&agenda=CustomerProposals',
             [
-                'document_type' => $round . '/' . CustomerPrintType::GdprNew->value,
+                'document_type' => $round . '/' . CustomerDocumentType::GdprNew->value,
                 'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
             ],
         );
@@ -331,7 +331,7 @@ class CustomerDocumentsTest extends TestCase
             '/customers/%s/documents/generate.pdf?agenda=CustomerProposals&proposal_id=%s&document_type=%s',
             self::CUSTOMER_ID,
             $round,
-            CustomerPrintType::GdprNew->value,
+            CustomerDocumentType::GdprNew->value,
         ));
 
         $this->assertResponseOk();

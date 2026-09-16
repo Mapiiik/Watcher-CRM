@@ -7,7 +7,7 @@ use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\I18n\Date;
@@ -32,7 +32,7 @@ final class ContractPrintData
     /**
      * Type of document being printed.
      */
-    public ContractPrintType $type;
+    public ContractDocumentType $type;
 
     /**
      * Contract being printed.
@@ -114,7 +114,7 @@ final class ContractPrintData
      * Constructor.
      */
     public function __construct(
-        ContractPrintType $type,
+        ContractDocumentType $type,
         Contract $contract,
         ?ContractVersion $contractVersionToBeExecuted,
         ?ContractVersion $contractVersionToBeTerminated,

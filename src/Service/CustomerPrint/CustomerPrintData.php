@@ -5,7 +5,7 @@ namespace App\Service\CustomerPrint;
 
 use App\Model\Entity\Customer;
 use App\Model\Entity\CustomerProposal;
-use App\Model\Enum\CustomerPrintType;
+use App\Model\Enum\CustomerDocumentType;
 
 /**
  * Data Transfer Object for customer PDF printing.
@@ -26,7 +26,7 @@ final class CustomerPrintData
     /**
      * Type of document being printed.
      */
-    public CustomerPrintType $type;
+    public CustomerDocumentType $type;
 
     /**
      * Customer being printed.
@@ -45,7 +45,7 @@ final class CustomerPrintData
      * Constructor.
      */
     public function __construct(
-        CustomerPrintType $type,
+        CustomerDocumentType $type,
         Customer $customer,
         ?CustomerProposal $proposal = null,
     ) {

@@ -7,7 +7,7 @@ use App\Customers\Check\AbstractCustomerProposalCheck;
 use App\Customers\Check\UnfiledCustomerSignatureCheck;
 use App\Customers\Check\UnsentCustomerProposalCheck;
 use App\Customers\Check\UnsignedCustomerProposalCheck;
-use App\Model\Enum\CustomerPrintType;
+use App\Model\Enum\CustomerDocumentType;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Table\CustomerProposalsTable;
@@ -233,7 +233,7 @@ class CustomerProposalChecksTest extends TestCase
             $storage->store('%PDF-1.7 ' . $round . $variant->value, 'application/pdf'),
             CustomerDocuments::MODEL,
             $round,
-            CustomerPrintType::GdprNew->value,
+            CustomerDocumentType::GdprNew->value,
             $variant->value,
             ['name' => 'scan.pdf'],
         );

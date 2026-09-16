@@ -7,7 +7,7 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\ServiceType;
-use App\Model\Enum\ContractPrintType;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractPrintData;
 use App\Service\ContractPrint\ContractPrintValidator;
@@ -88,13 +88,13 @@ class ContractPrintValidatorTest extends TestCase
     /**
      * What the validator makes of the given document.
      *
-     * @param \App\Model\Enum\ContractPrintType $type Which document.
+     * @param \App\Model\Enum\ContractDocumentType $type Which document.
      * @param \App\Model\Entity\ContractProposal|null $proposal The proposal, where there is one.
      * @param bool $concluded Whether the version has been concluded.
      * @return array<string, array<string>>
      */
     private static function errorsFor(
-        ContractPrintType $type,
+        ContractDocumentType $type,
         ?ContractProposal $proposal,
         bool $concluded = true,
     ): array {
@@ -112,7 +112,7 @@ class ContractPrintValidatorTest extends TestCase
      */
     public function testADocumentWithoutAProposalIsRefused(): void
     {
-        $errors = self::errorsFor(ContractPrintType::ContractNew, null);
+        $errors = self::errorsFor(ContractDocumentType::ContractNew, null);
 
         $this->assertArrayHasKey('proposal_id', $errors);
     }
@@ -124,7 +124,7 @@ class ContractPrintValidatorTest extends TestCase
      */
     public function testAProposalIsEnough(): void
     {
-        $this->assertSame([], self::errorsFor(ContractPrintType::ContractNew, self::proposal()));
+        $this->assertSame([], self::errorsFor(ContractDocumentType::ContractNew, self::proposal()));
     }
 
     /**
@@ -135,7 +135,7 @@ class ContractPrintValidatorTest extends TestCase
      */
     public function testADocumentTheProposalCannotBePrintedAsIsRefused(): void
     {
-        $errors = self::errorsFor(ContractPrintType::ContractNewX, self::proposal());
+        $errors = self::errorsFor(ContractDocumentType::ContractNewX, self::proposal());
 
         $this->assertArrayHasKey('document_type', $errors);
     }
@@ -147,7 +147,7 @@ class ContractPrintValidatorTest extends TestCase
      */
     public function testATerminationOfNothingIsRefused(): void
     {
-        $errors = self::errorsFor(ContractPrintType::ContractTermination, self::proposal());
+        $errors = self::errorsFor(ContractDocumentType::ContractTermination, self::proposal());
 
         $this->assertArrayHasKey('document_type', $errors);
     }
@@ -165,15 +165,15 @@ class ContractPrintValidatorTest extends TestCase
 
         $this->assertArrayHasKey(
             'document_type',
-            self::errorsFor(ContractPrintType::ContractAmendment, $change, concluded: false),
+            self::errorsFor(ContractDocumentType::ContractAmendment, $change, concluded: false),
         );
         $this->assertArrayHasKey(
             'document_type',
-            self::errorsFor(ContractPrintType::ContractAmendment, self::proposal(), concluded: true),
+            self::errorsFor(ContractDocumentType::ContractAmendment, self::proposal(), concluded: true),
         );
         $this->assertSame(
             [],
-            self::errorsFor(ContractPrintType::ContractAmendment, $change, concluded: true),
+            self::errorsFor(ContractDocumentType::ContractAmendment, $change, concluded: true),
         );
     }
 
@@ -187,7 +187,7 @@ class ContractPrintValidatorTest extends TestCase
     {
         $this->assertSame(
             [],
-            self::errorsFor(ContractPrintType::ContractSummary, self::proposal(), concluded: false),
+            self::errorsFor(ContractDocumentType::ContractSummary, self::proposal(), concluded: false),
         );
     }
 
@@ -200,7 +200,7 @@ class ContractPrintValidatorTest extends TestCase
     public function testAskingForASignedCopyIsCarriedThrough(): void
     {
         $data = new ContractPrintData(
-            ContractPrintType::ContractNew,
+            ContractDocumentType::ContractNew,
             self::contract(),
             self::version(),
             null,
