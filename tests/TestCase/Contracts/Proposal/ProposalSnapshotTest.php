@@ -290,13 +290,19 @@ class ProposalSnapshotTest extends TestCase
     /**
      * Every document a proposal may be printed as.
      *
+     * The papers the other side writes are not among them - nobody here draws a notice of
+     * termination or a death certificate, so there is nothing for a snapshot to print alike.
+     *
      * @return array<array{\App\Model\Enum\ContractDocumentType}>
      */
     public static function documents(): array
     {
         return array_map(
             fn(ContractDocumentType $type): array => [$type],
-            ContractDocumentType::cases(),
+            array_values(array_filter(
+                ContractDocumentType::cases(),
+                fn(ContractDocumentType $type): bool => $type->canBeGenerated(),
+            )),
         );
     }
 

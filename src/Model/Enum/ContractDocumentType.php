@@ -22,6 +22,12 @@ enum ContractDocumentType: string implements EnumLabelInterface
     case HandoverInstallation = 'handover-protocol-installation';
     case HandoverUninstallation = 'handover-protocol-uninstallation';
 
+    // Papers of an ending that come from the other side. Nobody draws them here - one is written
+    // by the customer and the other by an office - but they belong to the papers of the ending as
+    // much as anything we drew, so they are filed with them.
+    case TerminationNotice = 'termination-notice';
+    case DeathCertificate = 'death-certificate';
+
     /**
      * @return string
      */
@@ -49,6 +55,29 @@ enum ContractDocumentType: string implements EnumLabelInterface
 
             self::HandoverUninstallation =>
                 __('Handover protocol - Internet connection uninstallation'),
+
+            self::TerminationNotice =>
+                __('Notice of termination from the customer'),
+
+            self::DeathCertificate =>
+                __('Death certificate'),
+        };
+    }
+
+    /**
+     * Whether this is a paper the application generates.
+     *
+     * Most are: somebody asks for one and it is written here. Two are not - a notice of
+     * termination is the customer's own letter and a death certificate comes from an office - so
+     * they are only ever filed, never owed and never generated.
+     *
+     * @return bool
+     */
+    public function canBeGenerated(): bool
+    {
+        return match ($this) {
+            self::TerminationNotice, self::DeathCertificate => false,
+            default => true,
         };
     }
 

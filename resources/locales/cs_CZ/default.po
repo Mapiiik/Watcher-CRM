@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 19:57+0200\n"
+"POT-Creation-Date: 2026-09-16 20:18+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2558,35 +2558,43 @@ msgstr "Více adres trvalého pobytu"
 msgid "Several installation addresses"
 msgstr "Více instalačních adres"
 
-#: src/Model/Enum/ContractDocumentType.php:33
+#: src/Model/Enum/ContractDocumentType.php:39
 msgid "Contract for the provision of services"
 msgstr "Smlouva o poskytování služeb"
 
-#: src/Model/Enum/ContractDocumentType.php:36
+#: src/Model/Enum/ContractDocumentType.php:42
 msgid ""
 "Contract for the provision of services (with termination of the original "
 "contract)"
 msgstr "Smlouva o poskytování služeb (s ukončením původní smlouvy)"
 
-#: src/Model/Enum/ContractDocumentType.php:39
+#: src/Model/Enum/ContractDocumentType.php:45
 msgid "Amendment to the contract for the provision of services"
 msgstr "Dodatek ke smlouvě o poskytování služeb"
 
-#: src/Model/Enum/ContractDocumentType.php:42
+#: src/Model/Enum/ContractDocumentType.php:48
 msgid "Agreement to terminate contract for the provision of services"
 msgstr "Dohoda o ukončení smlouvy o poskytování služeb"
 
-#: src/Model/Enum/ContractDocumentType.php:45
+#: src/Model/Enum/ContractDocumentType.php:51
 msgid "Contract summary"
 msgstr "Shrnutí smlouvy"
 
-#: src/Model/Enum/ContractDocumentType.php:48
+#: src/Model/Enum/ContractDocumentType.php:54
 msgid "Handover protocol - Installation of internet connection"
 msgstr "Předávací protokol - Instalace připojení k internetu"
 
-#: src/Model/Enum/ContractDocumentType.php:51
+#: src/Model/Enum/ContractDocumentType.php:57
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr "Předávací protokol - Deinstalace připojení k internetu"
+
+#: src/Model/Enum/ContractDocumentType.php:60
+msgid "Notice of termination from the customer"
+msgstr "Výpověď od zákazníka"
+
+#: src/Model/Enum/ContractDocumentType.php:63
+msgid "Death certificate"
+msgstr "Úmrtní list"
 
 #: src/Model/Enum/ContractPeriodSource.php:67
 msgid "From the contract versions"
@@ -2827,21 +2835,25 @@ msgstr "E-mail - podpora"
 msgid "SMS"
 msgstr "SMS"
 
-#: src/Model/Enum/DocumentVariant.php:35
+#: src/Model/Enum/DocumentVariant.php:39
 msgid "Generated, unsigned"
 msgstr "Vygenerováno, nepodepsané"
 
-#: src/Model/Enum/DocumentVariant.php:36
+#: src/Model/Enum/DocumentVariant.php:40
 msgid "Generated, signed by us"
 msgstr "Vygenerováno, podepsané námi"
 
-#: src/Model/Enum/DocumentVariant.php:37
+#: src/Model/Enum/DocumentVariant.php:41
 msgid "Came back signed by the customer"
 msgstr "Vrátilo se podepsané zákazníkem"
 
-#: src/Model/Enum/DocumentVariant.php:38
+#: src/Model/Enum/DocumentVariant.php:42
 msgid "Signed by both"
 msgstr "Podepsané oběma"
+
+#: src/Model/Enum/DocumentVariant.php:43
+msgid "Came back"
+msgstr "Přišlo zpět"
 
 #: src/Model/Enum/DocumentsDeliveryType.php:32
 msgid "E-mail"

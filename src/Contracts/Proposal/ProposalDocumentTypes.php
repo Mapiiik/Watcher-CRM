@@ -73,6 +73,12 @@ final class ProposalDocumentTypes
                 // protocol of its own.
                 ContractDocumentType::HandoverInstallation => $has_equipment && !$ends,
                 ContractDocumentType::HandoverUninstallation => $has_equipment && ($ends || $replaces),
+                // What comes from the other side of an ending: the customer's own letter, or the
+                // certificate where there is nobody left to write one. Both belong to an ending
+                // and to nothing else, and neither is ever owed - an ending has one of them, and
+                // which one is not ours to say beforehand.
+                ContractDocumentType::TerminationNotice,
+                ContractDocumentType::DeathCertificate => $ends,
             },
         ));
     }
@@ -118,6 +124,13 @@ final class ProposalDocumentTypes
         $expected = [];
 
         foreach ($this->for($proposal, $has_equipment, $version_concluded) as $type) {
+            if (!$type->canBeGenerated()) {
+                // Waiting for a paper somebody else writes is not the same as owing one, and an
+                // ending never has both of them - so saying either is missing would be wrong
+                // whichever way it went.
+                continue;
+            }
+
             $expected[$type->value] = !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true);
         }
 
@@ -139,7 +152,8 @@ final class ProposalDocumentTypes
         bool $has_equipment,
         bool $version_concluded,
     ): bool {
-        return in_array($type, $this->for($proposal, $has_equipment, $version_concluded), true);
+        return $type->canBeGenerated()
+            && in_array($type, $this->for($proposal, $has_equipment, $version_concluded), true);
     }
 
     /**

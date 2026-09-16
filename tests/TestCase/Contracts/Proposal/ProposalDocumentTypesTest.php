@@ -125,6 +125,61 @@ class ProposalDocumentTypesTest extends TestCase
     }
 
     /**
+     * The papers the other side writes belong to an ending and to nothing else: the customer's own
+     * notice, or the certificate where there is nobody left to write one.
+     *
+     * @return void
+     */
+    public function testWhatComesFromTheOtherSideBelongsToAnEnding(): void
+    {
+        $theirs = [
+            ContractDocumentType::TerminationNotice->value,
+            ContractDocumentType::DeathCertificate->value,
+        ];
+
+        foreach ($theirs as $paper) {
+            $this->assertContains($paper, $this->offered($this->proposal(self::ending())));
+            $this->assertNotContains($paper, $this->offered($this->proposal()));
+        }
+    }
+
+    /**
+     * They are offered to be filed and nothing more. Nobody here draws them, so asking to print one
+     * is refused - and neither is ever owed, because an ending has one of them and which one is not
+     * ours to say beforehand.
+     *
+     * @return void
+     */
+    public function testWhatComesFromTheOtherSideIsNeitherPrintedNorOwed(): void
+    {
+        $papers = new ProposalDocumentTypes();
+
+        // What is owed is read off the snapshot, so this one carries the least it may.
+        $ending = $this->proposal(self::ending() + [
+            'snapshot' => [
+                'contract' => ['service_type' => ['have_equipments' => true]],
+                'customer' => [],
+                'version' => ['conclusion_date' => '2026-01-01'],
+                'billings' => [],
+            ],
+        ]);
+
+        foreach ([ContractDocumentType::TerminationNotice, ContractDocumentType::DeathCertificate] as $paper) {
+            $this->assertFalse(
+                $papers->allows($paper, $ending, true, true),
+                $paper->value . ' was offered to be printed, and nobody here draws it.',
+            );
+            $this->assertArrayNotHasKey($paper->value, $papers->expectedOf($ending));
+        }
+
+        // What we do draw for an ending is still owed, so nothing was swept out with them.
+        $this->assertArrayHasKey(
+            ContractDocumentType::ContractTermination->value,
+            $papers->expectedOf($ending),
+        );
+    }
+
+    /**
      * An amendment wants papers meant as a change, and a contract somebody concluded. Papers meant
      * as a new contract are not an amendment however far along the version is, and there is
      * nothing to amend before anybody signs.

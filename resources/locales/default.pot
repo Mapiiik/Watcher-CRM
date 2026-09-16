@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 19:57+0200\n"
+"POT-Creation-Date: 2026-09-16 20:18+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2435,32 +2435,40 @@ msgstr ""
 msgid "Several installation addresses"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:33
+#: ./src/Model/Enum/ContractDocumentType.php:39
 msgid "Contract for the provision of services"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:36
+#: ./src/Model/Enum/ContractDocumentType.php:42
 msgid "Contract for the provision of services (with termination of the original contract)"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:39
+#: ./src/Model/Enum/ContractDocumentType.php:45
 msgid "Amendment to the contract for the provision of services"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:42
+#: ./src/Model/Enum/ContractDocumentType.php:48
 msgid "Agreement to terminate contract for the provision of services"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:45
+#: ./src/Model/Enum/ContractDocumentType.php:51
 msgid "Contract summary"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:48
+#: ./src/Model/Enum/ContractDocumentType.php:54
 msgid "Handover protocol - Installation of internet connection"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:51
+#: ./src/Model/Enum/ContractDocumentType.php:57
 msgid "Handover protocol - Internet connection uninstallation"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:60
+msgid "Notice of termination from the customer"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:63
+msgid "Death certificate"
 msgstr ""
 
 #: ./src/Model/Enum/ContractPeriodSource.php:67
@@ -2798,20 +2806,24 @@ msgstr ""
 msgid "SMS"
 msgstr ""
 
-#: ./src/Model/Enum/DocumentVariant.php:35
+#: ./src/Model/Enum/DocumentVariant.php:39
 msgid "Generated, unsigned"
 msgstr ""
 
-#: ./src/Model/Enum/DocumentVariant.php:36
+#: ./src/Model/Enum/DocumentVariant.php:40
 msgid "Generated, signed by us"
 msgstr ""
 
-#: ./src/Model/Enum/DocumentVariant.php:37
+#: ./src/Model/Enum/DocumentVariant.php:41
 msgid "Came back signed by the customer"
 msgstr ""
 
-#: ./src/Model/Enum/DocumentVariant.php:38
+#: ./src/Model/Enum/DocumentVariant.php:42
 msgid "Signed by both"
+msgstr ""
+
+#: ./src/Model/Enum/DocumentVariant.php:43
+msgid "Came back"
 msgstr ""
 
 #: ./src/Model/Enum/DocumentsDeliveryType.php:32

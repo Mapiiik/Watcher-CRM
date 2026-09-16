@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractProposalsController;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
+use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
@@ -856,6 +858,43 @@ class ContractProposalsDocumentsTest extends TestCase
         $this->assertResponseContains('papers[]');
         // The whole package is offered, because the whole of it came back in one envelope.
         $this->assertResponseContains(self::PROPOSAL_ID . '/' . self::DOCUMENT);
+    }
+
+    /**
+     * The papers an ending gets from the other side are offered to be filed and refused to be
+     * drawn. Nobody here writes a notice of termination or a death certificate, so asking for one
+     * as a document says so rather than handing back an empty page.
+     *
+     * @link \App\Controller\DocumentsController::addPages()
+     * @return void
+     */
+    public function testThePapersTheOtherSideWritesAreFiledRatherThanDrawn(): void
+    {
+        $proposals = $this->fetchTable('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                'purpose' => ProposalPurpose::Termination,
+            ]),
+            ['checkRules' => false],
+        );
+
+        $notice = ContractDocumentType::TerminationNotice->value;
+
+        $this->get(
+            '/documents/add-pages?proposal_id=' . self::PROPOSAL_ID . '&agenda=ContractProposals',
+        );
+        $this->assertResponseOk();
+        $this->assertResponseContains(self::PROPOSAL_ID . '/' . $notice);
+
+        // And the one place that draws papers will not draw this one.
+        $this->get(sprintf(
+            '%s/documents/generate.pdf?agenda=ContractProposals&proposal_id=%s&document_type=%s',
+            self::NESTED,
+            self::PROPOSAL_ID,
+            $notice,
+        ));
+        $this->assertRedirect();
+        $this->assertSame(0, $this->fetchTable('Files.FileLinks')->find()->count());
     }
 
     /**

@@ -25,6 +25,10 @@ enum DocumentVariant: string implements EnumLabelInterface
     case ReceivedSignedByCustomer = 'received-signed-by-customer';
     case ReceivedSignedByBoth = 'received-signed-by-both';
 
+    // Not every paper that comes back is signed. A death certificate carries nobody's agreement
+    // and is not meant to - it is filed because it says why the contract ends.
+    case Received = 'received';
+
     /**
      * @return string
      */
@@ -36,6 +40,7 @@ enum DocumentVariant: string implements EnumLabelInterface
             self::GeneratedSignedByUs => __('Generated, signed by us'),
             self::ReceivedSignedByCustomer => __('Came back signed by the customer'),
             self::ReceivedSignedByBoth => __('Signed by both'),
+            self::Received => __('Came back'),
         };
     }
 

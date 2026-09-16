@@ -18,6 +18,27 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class ContractDocumentTypeTest extends TestCase
 {
     /**
+     * Two of them are papers the other side writes: the customer's own notice of termination and
+     * the certificate where there is nobody left to write one. Everything else is drawn here, and
+     * the difference is what keeps them out of the printing.
+     *
+     * @return void
+     * @link \App\Model\Enum\ContractDocumentType::canBeGenerated()
+     */
+    public function testThePapersTheOtherSideWritesAreNotDrawnHere(): void
+    {
+        $theirs = array_values(array_filter(
+            ContractDocumentType::cases(),
+            fn(ContractDocumentType $type): bool => !$type->canBeGenerated(),
+        ));
+
+        $this->assertSame(
+            [ContractDocumentType::TerminationNotice, ContractDocumentType::DeathCertificate],
+            $theirs,
+        );
+    }
+
+    /**
      * Every document is offered under a name, and the value stored for it is the one the form posts.
      *
      * @return void
