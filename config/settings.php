@@ -122,6 +122,10 @@ return [
         ],
 
         'contracts' => [
+            'obligation_months' => NumberType::ofInt(
+                default: 24,
+                hint: __('How long a minimum term usually runs, offered when one is agreed.'),
+            ),
             'access_descriptions_list' => ListType::ofStrings(
                 default: [
                     'žebřík není potřeba',

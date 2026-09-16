@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 01:53+0200\n"
+"POT-Creation-Date: 2026-09-16 19:23+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -26,129 +26,133 @@ msgstr ""
 msgid "The European VAT number check. It answers to a number, never to a name."
 msgstr ""
 
-#: ./config/settings.php:133
+#: ./config/settings.php:127
+msgid "How long a minimum term usually runs, offered when one is agreed."
+msgstr ""
+
+#: ./config/settings.php:137
 msgid "The suggestions offered under the access description on a contract."
 msgstr ""
 
-#: ./config/settings.php:142
+#: ./config/settings.php:146
 msgid "A date before this one is pointed out as mistyped."
 msgstr ""
 
-#: ./config/settings.php:146
+#: ./config/settings.php:150
 msgid "How far ahead a date may still reach before it is pointed out as mistyped."
 msgstr ""
 
-#: ./config/settings.php:150
+#: ./config/settings.php:154
 msgid "Days that stand for \"not known\" rather than for a day. The checks pass over them."
 msgstr ""
 
-#: ./config/settings.php:154
+#: ./config/settings.php:158
 msgid "How long before a contract version takes effect it may have been concluded."
 msgstr ""
 
-#: ./config/settings.php:158
+#: ./config/settings.php:162
 msgid "How far ahead a signed proposal nobody has carried over is worth raising. Until its day comes there is nothing to do about it."
 msgstr ""
 
-#: ./config/settings.php:167
+#: ./config/settings.php:171
 msgid "Contract versions taking effect before this day are left alone. What an import left behind is not work anybody is going to do, and mailing about it would be worse than leaving it."
 msgstr ""
 
-#: ./config/settings.php:171
+#: ./config/settings.php:175
 msgid "What the wait for a signature is counted from."
 msgstr ""
 
-#: ./config/settings.php:176
+#: ./config/settings.php:180
 msgid "Whether the customer is written to at all about papers nobody has signed."
 msgstr ""
 
-#: ./config/settings.php:180
+#: ./config/settings.php:184
 msgid "Days after the day above before the customer is reminded."
 msgstr ""
 
-#: ./config/settings.php:184
+#: ./config/settings.php:188
 msgid "Days after the version takes effect before the customer is reminded. Both waits have to be up."
 msgstr ""
 
-#: ./config/settings.php:188
+#: ./config/settings.php:192
 msgid "Which days after the wait runs out to write on. 0 is the day it runs out."
 msgstr ""
 
-#: ./config/settings.php:192
+#: ./config/settings.php:196
 msgid "Once the days above are used up, keep writing every day until the paper comes in."
 msgstr ""
 
-#: ./config/settings.php:287
+#: ./config/settings.php:291
 msgid "Whether unsigned paperwork cuts the service off, the same way an unpaid invoice does."
 msgstr ""
 
-#: ./config/settings.php:291
+#: ./config/settings.php:295
 msgid "Days after the day the wait is counted from before the service is cut off."
 msgstr ""
 
-#: ./config/settings.php:295
+#: ./config/settings.php:299
 msgid "Days after the version takes effect before the service is cut off. Both waits have to be up."
 msgstr ""
 
-#: ./config/settings.php:304
-#: ./config/settings.php:327
+#: ./config/settings.php:308
+#: ./config/settings.php:331
 msgid "Days after the papers went out before a missing signature is raised."
 msgstr ""
 
-#: ./config/settings.php:308
+#: ./config/settings.php:312
 msgid "How far ahead a proposal nobody has sent is worth raising. The papers have to be out before the version takes effect."
 msgstr ""
 
-#: ./config/settings.php:317
-#: ./config/settings.php:338
+#: ./config/settings.php:321
+#: ./config/settings.php:342
 msgid "Days after the signature was written down before the missing scan is raised."
 msgstr ""
 
-#: ./config/settings.php:331
+#: ./config/settings.php:335
 msgid "How far ahead a round nobody has sent is worth raising."
 msgstr ""
 
-#: ./config/settings.php:345
+#: ./config/settings.php:349
 msgid "Labels that say the missing details are known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:349
+#: ./config/settings.php:353
 msgid "Labels that say the missing e-mail address is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:353
+#: ./config/settings.php:357
 msgid "Labels that say the missing consent is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:361
+#: ./config/settings.php:365
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 
-#: ./config/settings.php:367
+#: ./config/settings.php:371
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr ""
 
-#: ./config/settings.php:371
+#: ./config/settings.php:375
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 
-#: ./config/settings.php:378
+#: ./config/settings.php:382
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:703
+#: ./config/settings.php:707
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:754
+#: ./config/settings.php:758
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:759
+#: ./config/settings.php:763
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:837
+#: ./config/settings.php:841
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -896,8 +900,8 @@ msgstr ""
 #: ./src/Contracts/Proposal/PlannedChange.php:51
 #: ./templates/ContractProposals/view.php:125
 #: ./templates/ContractVersions/view.php:78
-#: ./templates/element/ContractProposals/form.php:100
-#: ./templates/element/ContractProposals/form.php:177
+#: ./templates/element/ContractProposals/form.php:101
+#: ./templates/element/ContractProposals/form.php:182
 msgid "Contract Version"
 msgstr ""
 
@@ -1238,80 +1242,80 @@ msgstr ""
 msgid "The commission could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:224
-#: ./src/Controller/ContractProposalsController.php:445
+#: ./src/Controller/ContractProposalsController.php:225
+#: ./src/Controller/ContractProposalsController.php:446
 msgid "This proposal can no longer be changed."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:334
+#: ./src/Controller/ContractProposalsController.php:335
 msgid "There is no such line on this proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:464
-#: ./src/Controller/ContractProposalsController.php:818
+#: ./src/Controller/ContractProposalsController.php:465
+#: ./src/Controller/ContractProposalsController.php:819
 #: ./src/Controller/CustomerProposalsController.php:106
 #: ./src/Controller/CustomerProposalsController.php:145
 msgid "The proposal has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:470
-#: ./src/Controller/ContractProposalsController.php:824
+#: ./src/Controller/ContractProposalsController.php:471
+#: ./src/Controller/ContractProposalsController.php:825
 #: ./src/Controller/CustomerProposalsController.php:115
 #: ./src/Controller/CustomerProposalsController.php:151
 msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:543
+#: ./src/Controller/ContractProposalsController.php:544
 #: ./src/Controller/CustomerProposalsController.php:503
 msgid "The proposal has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:546
+#: ./src/Controller/ContractProposalsController.php:547
 #: ./src/Controller/CustomerProposalsController.php:506
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:569
+#: ./src/Controller/ContractProposalsController.php:570
 #: ./src/Controller/CustomerProposalsController.php:172
 #: ./src/Controller/CustomerProposalsController.php:465
 msgid "This proposal has already been settled."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:578
+#: ./src/Controller/ContractProposalsController.php:579
 #: ./src/Controller/CustomerProposalsController.php:474
 msgid "The proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:581
+#: ./src/Controller/ContractProposalsController.php:582
 #: ./src/Controller/CustomerProposalsController.php:477
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:660
+#: ./src/Controller/ContractProposalsController.php:661
 msgid "Say which day the service runs to."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:690
+#: ./src/Controller/ContractProposalsController.php:691
 msgid "Choose which contract and which version of it these papers are for."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:706
+#: ./src/Controller/ContractProposalsController.php:707
 msgid "Say which day the new contract starts."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:802
+#: ./src/Controller/ContractProposalsController.php:803
 msgid "Please answer this before the papers go out."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:806
+#: ./src/Controller/ContractProposalsController.php:807
 msgid "The contract is not ready for papers to be drawn up."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1047
+#: ./src/Controller/ContractProposalsController.php:1054
 msgid "These papers could not be given a proposal to be part of."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:245
+#: ./src/Controller/ContractProposalsController.php:246
 msgid "One line asked about a billing that is no longer on the contract and has been taken back."
 msgid_plural "{0} lines asked about billings that are no longer on the contract and have been taken back."
 msgstr[0] ""
@@ -1705,23 +1709,19 @@ msgstr ""
 msgid "Nothing was chosen to file."
 msgstr ""
 
-#: ./src/Controller/DocumentsController.php:272
-msgid "The page has been removed."
-msgstr ""
-
-#: ./src/Controller/DocumentsController.php:274
+#: ./src/Controller/DocumentsController.php:279
 msgid "The page could not be removed: {0}"
 msgstr ""
 
-#: ./src/Controller/DocumentsController.php:298
+#: ./src/Controller/DocumentsController.php:303
 msgid "The pages could not be reordered: {0}"
 msgstr ""
 
-#: ./src/Controller/DocumentsController.php:353
+#: ./src/Controller/DocumentsController.php:358
 msgid "That page belongs to something else."
 msgstr ""
 
-#: ./src/Controller/DocumentsController.php:472
+#: ./src/Controller/DocumentsController.php:477
 #: ./src/Model/Entity/ContractProposal.php:252
 #: ./src/View/Cell/DocumentsCell.php:175
 #: ./src/View/Cell/DocumentsCell.php:197
@@ -1732,13 +1732,19 @@ msgstr ""
 msgid "{0} from {1}"
 msgstr ""
 
-#: ./src/Controller/DocumentsController.php:725
+#: ./src/Controller/DocumentsController.php:730
 msgid "{0} ({1} - {2})"
 msgstr ""
 
 #: ./src/Controller/DocumentsController.php:233
 msgid "{0} page has been filed."
 msgid_plural "{0} pages have been filed."
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./src/Controller/DocumentsController.php:272
+msgid "The page has been removed."
+msgid_plural "{0} pages have been removed."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -3373,7 +3379,7 @@ msgstr ""
 #: ./templates/ContractStates/edit.php:12
 #: ./templates/ContractStates/index.php:37
 #: ./templates/ContractStates/view.php:10
-#: ./templates/ContractVersions/add.php:13
+#: ./templates/ContractVersions/add.php:14
 #: ./templates/ContractVersions/edit.php:12
 #: ./templates/ContractVersions/index.php:45
 #: ./templates/ContractVersions/view.php:10
@@ -3570,7 +3576,7 @@ msgstr ""
 #: ./templates/ContractProposals/edit.php:36
 #: ./templates/ContractStates/add.php:112
 #: ./templates/ContractStates/edit.php:121
-#: ./templates/ContractVersions/add.php:77
+#: ./templates/ContractVersions/add.php:80
 #: ./templates/ContractVersions/edit.php:86
 #: ./templates/Contracts/add.php:64
 #: ./templates/Contracts/edit.php:142
@@ -4974,7 +4980,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/unsent_proposal.php:24
 #: ./templates/element/ContractChecks/unsigned_proposal.php:24
 #: ./templates/element/ContractChecks/untransferred_proposal.php:23
-#: ./templates/element/ContractProposals/form.php:117
+#: ./templates/element/ContractProposals/form.php:118
 #: ./templates/element/CustomerChecks/customer_proposal.php:23
 #: ./templates/element/CustomerProposals/form.php:40
 msgid "Effective From"
@@ -4986,7 +4992,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/unfiled_signature.php:23
 #: ./templates/element/ContractChecks/unsent_proposal.php:23
 #: ./templates/element/ContractChecks/unsigned_proposal.php:23
-#: ./templates/element/ContractProposals/form.php:73
+#: ./templates/element/ContractProposals/form.php:74
 #: ./templates/element/CustomerChecks/customer_proposal.php:22
 #: ./templates/element/CustomerProposals/form.php:34
 msgid "Purpose"
@@ -5053,12 +5059,12 @@ msgid "Carried Over"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:189
-#: ./templates/element/ContractProposals/form.php:139
+#: ./templates/element/ContractProposals/form.php:144
 msgid "Terminates Contract Version"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:201
-#: ./templates/element/ContractProposals/form.php:148
+#: ./templates/element/ContractProposals/form.php:153
 msgid "Number of the contract being terminated"
 msgstr ""
 
@@ -5238,14 +5244,14 @@ msgstr ""
 msgid "Requires No Active Obligations"
 msgstr ""
 
-#: ./templates/ContractVersions/add.php:15
+#: ./templates/ContractVersions/add.php:16
 #: ./templates/ContractVersions/edit.php:22
 #: ./templates/ContractVersions/view.php:25
 #: ./templates/Overviews/index.php:132
 msgid "List Contract Versions"
 msgstr ""
 
-#: ./templates/ContractVersions/add.php:25
+#: ./templates/ContractVersions/add.php:26
 msgid "Add Contract Version"
 msgstr ""
 
@@ -8006,103 +8012,107 @@ msgstr ""
 msgid "Not all of it was asked for. Carrying the papers over records the signature on the version, counts an amendment and closes the version being replaced, whether or not the papers say so."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:38
+#: ./templates/element/ContractProposals/form.php:39
 msgid "Add Contract Proposal"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:39
+#: ./templates/element/ContractProposals/form.php:40
 msgid "Edit Contract Proposal"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:52
+#: ./templates/element/ContractProposals/form.php:53
 msgid "A proposal of their own"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:53
+#: ./templates/element/ContractProposals/form.php:54
 msgid "Part of the Customer Proposal"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:55
+#: ./templates/element/ContractProposals/form.php:56
 msgid "Papers that are part of one proposal go out together and come back together."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:66
+#: ./templates/element/ContractProposals/form.php:67
 msgid "Nothing asked of the customer themselves"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:67
+#: ./templates/element/ContractProposals/form.php:68
 msgid "Purpose of the New Customer Proposal"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:92
+#: ./templates/element/ContractProposals/form.php:93
 msgid "Papers are drawn up for one contract and stay with it."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:104
+#: ./templates/element/ContractProposals/form.php:105
 msgid "Left empty, the version is created when these papers are carried over."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:122
+#: ./templates/element/ContractProposals/form.php:127
 msgid "The day these papers start to apply, and the day the version starts on."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:123
+#: ./templates/element/ContractProposals/form.php:128
 msgid "The day these papers start to apply. Empty takes the day the version does, {0}."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:130
+#: ./templates/element/ContractProposals/form.php:135
 msgid "These papers take effect with the contract version they are for."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:157
+#: ./templates/element/ContractProposals/form.php:162
 msgid "When it ends"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:163
+#: ./templates/element/ContractProposals/form.php:168
 msgid "Last day of the service"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:164
+#: ./templates/element/ContractProposals/form.php:169
 msgid "The version stops being valid on this day, and so does what is billed for."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:170
+#: ./templates/element/ContractProposals/form.php:175
 msgid "End this version only, and leave the contract running"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:171
+#: ./templates/element/ContractProposals/form.php:176
 msgid "For an agreement to end one version with another to follow it."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:178
+#: ./templates/element/ContractProposals/form.php:183
 msgid "Only what is ticked here is changed. The rest is left as it stands."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:189
+#: ./templates/element/ContractProposals/form.php:194
 msgid "Change the day the version stops being valid"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:190
+#: ./templates/element/ContractProposals/form.php:195
 msgid "Change the day the obligation runs out"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:213
-msgid "Before the papers are drawn up"
-msgstr ""
-
-#: ./templates/element/ContractProposals/form.php:231
-msgid "This is a fixed-term contract, and the obligation runs to the end of it."
+#: ./templates/element/ContractProposals/form.php:218
+msgid "Set the obligation until {0}"
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:239
+msgid "Before the papers are drawn up"
+msgstr ""
+
+#: ./templates/element/ContractProposals/form.php:257
+msgid "This is a fixed-term contract, and the obligation runs to the end of it."
+msgstr ""
+
+#: ./templates/element/ContractProposals/form.php:265
 msgid "The papers are generated from what the contract looked like when this proposal was drawn up. Reading it again replaces that. Go ahead?"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:244
+#: ./templates/element/ContractProposals/form.php:270
 msgid "Take the snapshot again"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:245
+#: ./templates/element/ContractProposals/form.php:271
 msgid "Reads the contract as it stands now, so the papers are generated from what is there today rather than from what was there before. A line about a billing that has since left the contract is taken back, because there is nothing left for it to act on."
 msgstr ""
 

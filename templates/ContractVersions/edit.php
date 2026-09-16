@@ -5,6 +5,9 @@
  * @var \App\Model\Entity\ContractVersion $contractVersion
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
  */
+
+use App\Contracts\TheUsualTerm;
+
 ?>
 <div class="row">
     <aside class="column">
@@ -68,8 +71,9 @@
                 echo $this->Form->control('obligation_until', [
                     'empty' => true,
                     'disabled' => $contractVersion->obligation_until === null,
-                    'default' => $contractVersion->valid_from !== null ?
-                        $contractVersion->valid_from->addMonths(24)->subDays(1) : null,
+                    'default' => $contractVersion->valid_from === null
+                        ? null
+                        : TheUsualTerm::from($contractVersion->valid_from),
                 ]);
                 $this->Form->unlockField('obligation_until'); //disable form security check
 

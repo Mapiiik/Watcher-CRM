@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Contracts\Proposal\ProposedBilling;
+use App\Contracts\TheUsualTerm;
 use App\Controller\ContractProposalsController;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalPurpose;
@@ -660,6 +661,28 @@ class ContractProposalsControllerTest extends TestCase
             $envelopes->patchEntity($envelopes->get(self::ROUND_ID), $says),
             ['checkRules' => false],
         );
+    }
+
+    /**
+     * The usual minimum term is offered rather than typed: the form names the day it would run to,
+     * counted from the day the papers take effect, and clicking it fills the field in.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::edit()
+     */
+    public function testTheUsualTermIsOfferedBesideTheObligation(): void
+    {
+        $papers = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+        $offered = TheUsualTerm::from($papers->effective_from);
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        // The day is said out loud, so nobody has to click to find out what they would get.
+        $this->assertResponseContains(h((string)$offered));
+        // And the click fills that very day in.
+        $this->assertResponseContains($offered->toDateString());
     }
 
     /**

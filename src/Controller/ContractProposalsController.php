@@ -12,6 +12,7 @@ use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Contracts\Proposal\ReadinessChecks;
 use App\Contracts\Proposal\TransferPlan;
+use App\Contracts\TheUsualTerm;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
@@ -981,6 +982,11 @@ class ContractProposalsController extends AppController
         // The day the field falls back on when it is left empty, so the hint can name it.
         $effectiveFromDefault = $version?->valid_from;
 
+        // The day a minimum term usually runs to, offered rather than typed. Counted from the day
+        // the papers take effect, which is what the operator has said by now or the version says.
+        $takesEffect = $proposal->effective_from ?? $effectiveFromDefault;
+        $obligationOffered = $takesEffect === null ? null : TheUsualTerm::from($takesEffect);
+
         $purpose = $proposal->purpose ?? ProposalPurpose::NewContract;
         $purposes = ProposalPurpose::options();
 
@@ -1002,6 +1008,7 @@ class ContractProposalsController extends AppController
             'rounds',
             'roundPurposes',
             'effectiveFromDefault',
+            'obligationOffered',
         ));
         $this->set('wording', ReadinessChecks::wording());
         $this->set('deliveryMethods', $this->deliveryMethodOptions());

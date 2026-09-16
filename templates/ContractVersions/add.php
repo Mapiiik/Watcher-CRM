@@ -1,4 +1,5 @@
 <?php
+use App\Contracts\TheUsualTerm;
 use Cake\I18n\Date;
 
 /**
@@ -60,7 +61,9 @@ use Cake\I18n\Date;
                 echo $this->Form->control('obligation_until', [
                     'empty' => true,
                     'disabled' => $contractVersion->obligation_until === null,
-                    'default' => Date::now()->addMonths(24)->lastOfMonth(),
+                    // Counted from the day the version starts where that is known,
+                    // because that is the day the term is agreed from.
+                    'default' => TheUsualTerm::from($contractVersion->valid_from ?? Date::now()),
                 ]);
                 $this->Form->unlockField('obligation_until'); //disable form security check
 

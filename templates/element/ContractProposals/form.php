@@ -20,6 +20,7 @@
  * @var array<string, string> $purposes
  * @var \App\Model\Enum\ProposalPurpose $purpose
  * @var \Cake\I18n\Date|null $effectiveFromDefault
+ * @var \Cake\I18n\Date|null $obligationOffered The day a minimum term usually runs to.
  */
 
 use App\Model\Enum\ProposalPurpose;
@@ -115,6 +116,10 @@ $endsOn = $changes?->version->names('valid_until') ?? false
     if ($asksForTheDay) {
         echo $this->Form->control('effective_from', [
             'label' => __('Effective From'),
+            // The day a minimum term is offered from, so saying it draws the offer again - once
+            // the writing is finished, because a date field says it changed while a year is still
+            // half typed.
+            'onblur' => $this::REFRESH_ON_LEAVING,
             // Left empty it follows the version, so it is not filled in ahead of time: a day put
             // there for the operator would stay behind when they chose another version.
             'required' => false,
@@ -203,6 +208,27 @@ $endsOn = $changes?->version->names('valid_until') ?? false
             'disabled' => !$named,
         ]);
         $this->Form->unlockField("version_change.{$field}");
+
+        // A minimum term usually runs the same length, so it is offered rather than typed. Two
+        // gestures, neither of them surprising: the box says there is one, the offer fills the day
+        // in. What is offered is counted in PHP, so the reader sees the very day before clicking -
+        // and if the day the papers take effect moves, the form is drawn again and so is this.
+        if ($field === 'obligation_until' && $obligationOffered !== null) {
+            echo $this->Html->para('offered', $this->Html->link(
+                __('Set the obligation until {0}', $obligationOffered),
+                '#',
+                [
+                    'onclick' => sprintf(
+                        'document.getElementById("%s").checked = true;'
+                        . 'var day = document.getElementById("%s");'
+                        . 'day.disabled = false; day.value = "%s"; return false;',
+                        'version-change-named-' . str_replace('_', '-', $field),
+                        $id,
+                        h($obligationOffered->toDateString()),
+                    ),
+                ],
+            ));
+        }
     }
     ?>
 </fieldset>

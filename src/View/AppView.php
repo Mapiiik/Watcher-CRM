@@ -66,6 +66,30 @@ class AppView extends View
         JS;
 
     /**
+     * The same, for a control somebody types into rather than chooses from.
+     *
+     * A date field says it changed while the year is still half typed - the first of October in
+     * the year two is a date like any other as far as the browser is concerned - so the form would
+     * be drawn again in the middle of the writing. Waiting for the field to be left alone is what
+     * tells the difference, and a field left exactly as it was drawn has nothing to refresh.
+     *
+     * Goes on `onblur` rather than `onchange`, and wants `$this->Form->unlockField('refresh')`
+     * the same way.
+     *
+     * @var string
+     */
+    public const REFRESH_ON_LEAVING = <<<JS
+        if (this.value !== this.defaultValue) {
+            var refresh = document.createElement("input");
+            refresh.type = "hidden";
+            refresh.name = "refresh";
+            refresh.value = "refresh";
+            this.form.appendChild(refresh);
+            this.form.submit();
+        }
+        JS;
+
+    /**
      * What the page said about itself, as far as it has said anything.
      *
      * @var string|null
