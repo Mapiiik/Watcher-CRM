@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Contracts\MinimumConnectionPrice;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposalSnapshot;
@@ -452,31 +451,6 @@ class ContractProposalsTable extends AppTable
                 'errorField' => 'changes',
                 'message' => __('Two proposed changes act on the same billing.'),
             ],
-        );
-
-        // Refused while the line is being written, so that it is not the transfer that finds out.
-        $rules->add(
-            function (ContractProposal $entity): string|bool {
-                if (!$entity->isDirty('changes') || $this->readChanges($entity) === null) {
-                    return true;
-                }
-
-                if ($this->readSnapshot($entity) === null) {
-                    return true;
-                }
-
-                /** @var \App\Model\Table\BillingsTable $billings */
-                $billings = TableRegistry::getTableLocator()->get('Billings');
-                $minimum = $billings->minimumConnectionPriceOf($entity->contract_id);
-
-                if ($minimum === null || MinimumConnectionPrice::linesBelow($entity, $minimum) === []) {
-                    return true;
-                }
-
-                return MinimumConnectionPrice::refusal($minimum);
-            },
-            'connectionLinesKeepTheMinimum',
-            ['errorField' => 'changes'],
         );
     }
 

@@ -58,9 +58,11 @@ final class MinimumConnectionPrice
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param \PhpCollective\DecimalObject\Decimal|null $minimum The contract's minimum, if it has one.
+     * @param (callable(\App\Contracts\Proposal\ProposedBilling): bool)|null $asked Which lines to ask
+     *   about; all of them when not given.
      * @return list<\App\Contracts\Proposal\ProposedBilling>
      */
-    public static function linesBelow(ContractProposal $proposal, ?Decimal $minimum): array
+    public static function linesBelow(ContractProposal $proposal, ?Decimal $minimum, ?callable $asked = null): array
     {
         if ($minimum === null || $proposal->effective_from === null) {
             return [];
@@ -82,6 +84,7 @@ final class MinimumConnectionPrice
 
             if (
                 $line !== null
+                && ($asked === null || $asked($line))
                 && $line->startsABilling()
                 && !$line->below_minimum_allowed
                 && self::fallsBelow($row['billing'], $minimum)

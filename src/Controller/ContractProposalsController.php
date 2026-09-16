@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Contracts\MinimumConnectionPrice;
 use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalForm;
 use App\Contracts\Proposal\ProposalProjection;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
+use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Contracts\Proposal\ReadinessChecks;
@@ -341,6 +343,7 @@ class ContractProposalsController extends AppController
 
         $form = new ProposedBillingForm();
         $written = null;
+        $refused = null;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
@@ -353,7 +356,11 @@ class ContractProposalsController extends AppController
                 $this->isAdmin(),
             );
 
-            if ($this->saveChanges($proposal, $changes->withLine($written))) {
+            $refused = $this->belowTheMinimum($proposal, $changes->withLine($written), $written);
+
+            if ($refused !== null) {
+                $this->Flash->error($refused);
+            } elseif ($this->saveChanges($proposal, $changes->withLine($written))) {
                 return $this->redirect(['action' => 'view', $proposal->id]);
             }
         }
@@ -364,12 +371,52 @@ class ContractProposalsController extends AppController
         // a refused line comes back as it was typed, not as it was before
         $this->set('values', $written?->toArray() ?? $form->fill($edited, $replaced));
         $this->set('below_minimum_override', $this->isAdmin());
+        $this->set('below_minimum_refused', $refused);
         $this->set('services', $this->servicesFor($proposal, [
             $edited?->service_id,
             $replaced?->service_id,
         ]));
 
         return null;
+    }
+
+    /**
+     * Why the line just written may not stand, where it prices the connection below the minimum.
+     *
+     * Asked here because this is the one place a priced line is written, and of that line alone:
+     * the lines already standing were asked when they were written, and a minimum raised since is
+     * the transfer preview's to say. What guards the records is the billing itself when the
+     * proposal is carried over - this only saves the operator finding out there.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param \App\Contracts\Proposal\ProposalChanges $changes What it would ask for with the line in it.
+     * @param \App\Contracts\Proposal\ProposedBilling $written The line just written.
+     * @return string|null What the operator is told, or null where the line may stand.
+     */
+    private function belowTheMinimum(
+        ContractProposal $proposal,
+        ProposalChanges $changes,
+        ProposedBilling $written,
+    ): ?string {
+        /** @var \App\Model\Table\BillingsTable $billings */
+        $billings = $this->fetchTable('Billings');
+        $minimum = $billings->minimumConnectionPriceOf($proposal->contract_id);
+
+        if ($minimum === null) {
+            return null;
+        }
+
+        // The proposal as it would read with the line in it, without touching the one being edited.
+        $withTheLine = clone $proposal;
+        $withTheLine->set('changes', $changes->toArray());
+
+        $below = MinimumConnectionPrice::linesBelow(
+            $withTheLine,
+            $minimum,
+            fn(ProposedBilling $line): bool => $line->id === $written->id,
+        );
+
+        return $below === [] ? null : MinimumConnectionPrice::refusal($minimum);
     }
 
     /**

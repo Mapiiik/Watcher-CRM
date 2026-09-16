@@ -7,6 +7,7 @@
  * @var array<string, mixed> $values
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
  * @var bool $below_minimum_override
+ * @var string|null $below_minimum_refused Why the price was refused, where it was.
  */
 
 $changing = $replaced === null
@@ -78,6 +79,11 @@ $changing = $replaced === null
                             'label' => __('Price'),
                             'placeholder' => __('Price list'),
                         ]);
+                        // The form has no record to hang the refusal on, so it is said under the
+                        // price it is about, the way the form would say it.
+                        if (!empty($below_minimum_refused)) {
+                            echo $this->Html->div('error-message', h($below_minimum_refused));
+                        }
                         echo $this->Form->control('fixed_discount', [
                             'value' => $values['fixed_discount'] ?? null,
                             'label' => __('Fixed Discount'),

@@ -808,6 +808,7 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertNoRedirect();
         $this->assertSame('50', $this->viewVariable('values')['price'], 'What was typed was not kept.');
+        $this->assertResponseContains('<div class="error-message">');
         $this->assertSame(
             [],
             $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->proposedChanges()->billings,
@@ -1348,13 +1349,42 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * A minimum raised after a line was written is said before the button, and the administrator
-     * may carry the line over anyway by ticking the box.
+     * A minimum raised after a line was written does not hold the rest of the proposal up: the line
+     * was asked when it was written, and what it says now is the transfer's to tell.
      *
      * @return void
-     * @link \App\Contracts\Proposal\TransferPreview::of()
+     * @link \App\Controller\ContractProposalsController::edit()
      */
-    public function testAMinimumRaisedSinceIsSaidAndMayBeGoneBelowDeliberately(): void
+    public function testAMinimumRaisedSinceDoesNotHoldUpTheEdit(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $this->aConnectionLineAtFifty();
+        $this->agreeMinimum('100');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID, [
+            'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
+            'note' => 'Written after the minimum was raised',
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertRedirect();
+        $this->assertSame('Written after the minimum was raised', $proposals->get(self::PROPOSAL_ID)->note);
+    }
+
+    /**
+     * Puts a line on the proposal pricing the connection at fifty, bypassing the form.
+     *
+     * @return void
+     */
+    private function aConnectionLineAtFifty(): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposals->saveOrFail(
@@ -1376,6 +1406,19 @@ class ContractProposalsControllerTest extends TestCase
             ]),
             ['checkRules' => false],
         );
+    }
+
+    /**
+     * A minimum raised after a line was written is said before the button, and the administrator
+     * may carry the line over anyway by ticking the box.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\TransferPreview::of()
+     */
+    public function testAMinimumRaisedSinceIsSaidAndMayBeGoneBelowDeliberately(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $this->aConnectionLineAtFifty();
         $this->theRoundSays(['conclusion_date' => '2026-09-15']);
         $this->agreeMinimum('100');
 
