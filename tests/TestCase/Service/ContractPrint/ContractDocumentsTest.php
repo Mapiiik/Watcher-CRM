@@ -317,7 +317,8 @@ class ContractDocumentsTest extends TestCase
             [
                 '/\/ID \[[^\]]*\]/',
                 '/uuid:[0-9a-f-]+/',
-                '/\d{4}-\d{2}-\d{2}T[\d:]+[+-][\d:]+/',
+                // written as Z where the clock runs in UTC, as it does on CI
+                '/\d{4}-\d{2}-\d{2}T[\d:]+(?:Z|[+-][\d:]+)/',
                 '/D:\d{14}[^)]*/',
             ],
             ['/ID []', 'uuid:', 'when', 'D:when'],
