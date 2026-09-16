@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 20:18+0200\n"
+"POT-Creation-Date: 2026-09-16 20:22+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2815,15 +2815,15 @@ msgid "Generated, signed by us"
 msgstr ""
 
 #: ./src/Model/Enum/DocumentVariant.php:41
-msgid "Came back signed by the customer"
+msgid "Received signed by the customer"
 msgstr ""
 
 #: ./src/Model/Enum/DocumentVariant.php:42
-msgid "Signed by both"
+msgid "Received signed by both"
 msgstr ""
 
 #: ./src/Model/Enum/DocumentVariant.php:43
-msgid "Came back"
+msgid "Received"
 msgstr ""
 
 #: ./src/Model/Enum/DocumentsDeliveryType.php:32

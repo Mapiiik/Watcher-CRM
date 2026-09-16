@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 20:18+0200\n"
+"POT-Creation-Date: 2026-09-16 20:22+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2844,16 +2844,16 @@ msgid "Generated, signed by us"
 msgstr "Vygenerováno, podepsané námi"
 
 #: src/Model/Enum/DocumentVariant.php:41
-msgid "Came back signed by the customer"
-msgstr "Vrátilo se podepsané zákazníkem"
+msgid "Received signed by the customer"
+msgstr "Přijato podepsané zákazníkem"
 
 #: src/Model/Enum/DocumentVariant.php:42
-msgid "Signed by both"
-msgstr "Podepsané oběma"
+msgid "Received signed by both"
+msgstr "Přijato podepsané oběma"
 
 #: src/Model/Enum/DocumentVariant.php:43
-msgid "Came back"
-msgstr "Přišlo zpět"
+msgid "Received"
+msgstr "Přijato"
 
 #: src/Model/Enum/DocumentsDeliveryType.php:32
 msgid "E-mail"
@@ -8357,6 +8357,15 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:287
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Came back signed by the customer"
+#~ msgstr "Vrátilo se podepsané zákazníkem"
+
+#~ msgid "Signed by both"
+#~ msgstr "Podepsané oběma"
+
+#~ msgid "Came back"
+#~ msgstr "Přišlo zpět"
 
 #~ msgid "Round"
 #~ msgstr "Návrh"

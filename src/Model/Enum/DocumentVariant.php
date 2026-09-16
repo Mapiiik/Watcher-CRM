@@ -38,9 +38,9 @@ enum DocumentVariant: string implements EnumLabelInterface
         return match ($this) {
             self::Generated => __('Generated, unsigned'),
             self::GeneratedSignedByUs => __('Generated, signed by us'),
-            self::ReceivedSignedByCustomer => __('Came back signed by the customer'),
-            self::ReceivedSignedByBoth => __('Signed by both'),
-            self::Received => __('Came back'),
+            self::ReceivedSignedByCustomer => __('Received signed by the customer'),
+            self::ReceivedSignedByBoth => __('Received signed by both'),
+            self::Received => __('Received'),
         };
     }
 
