@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Proposal;
 
+use App\Contracts\MinimumConnectionPrice;
 use App\Model\Entity\ContractProposal;
 use App\Model\Enum\DocumentVariant;
 use App\Service\ContractPrint\ContractDocuments;
@@ -51,6 +52,11 @@ final class TransferPreview
     public const CLOSED_PERIOD = 'closed_period';
 
     /**
+     * A line prices the connection below the contract's minimum and nobody allowed it.
+     */
+    public const BELOW_MINIMUM = 'below_minimum';
+
+    /**
      * The signature is written down and the signed papers have not been filed.
      */
     public const NOTHING_SIGNED_ON_FILE = 'nothing_signed_on_file';
@@ -76,7 +82,9 @@ final class TransferPreview
         $found = array_merge($found, $this->whatMovedInTheBillings($proposal));
         $found = array_merge($found, $this->whatMovedOnTheVersion($proposal));
 
-        return array_merge($found, $this->whatHasBeenInvoicedFor($proposal));
+        $found = array_merge($found, $this->whatHasBeenInvoicedFor($proposal));
+
+        return array_merge($found, $this->whatFallsBelowTheMinimum($proposal));
     }
 
     /**
@@ -247,6 +255,32 @@ final class TransferPreview
             'said' => __(
                 'This proposal takes effect on a day that has already been invoiced for.'
                 . ' Only an administrator may write into an invoiced period, and only deliberately.',
+            ),
+        ]];
+    }
+
+    /**
+     * Whether a line prices the connection below the contract's minimum.
+     *
+     * The line was checked when it was written, so this is the minimum having been raised since.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return array<int, array{what: string, said: string}>
+     */
+    private function whatFallsBelowTheMinimum(ContractProposal $proposal): array
+    {
+        /** @var \App\Model\Table\BillingsTable $billings */
+        $billings = $this->fetchTable('Billings');
+        $minimum = $billings->minimumConnectionPriceOf($proposal->contract_id);
+
+        if ($minimum === null || MinimumConnectionPrice::linesBelow($proposal, $minimum) === []) {
+            return [];
+        }
+
+        return [[
+            'what' => self::BELOW_MINIMUM,
+            'said' => MinimumConnectionPrice::refusal($minimum) . ' ' . __(
+                'Only an administrator may carry it over, and only deliberately.',
             ),
         ]];
     }

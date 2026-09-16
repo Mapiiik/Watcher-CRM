@@ -10,6 +10,7 @@
  * @var array<array<string, mixed>> $parts
  * @var bool $stopped
  * @var bool $closed_period_override
+ * @var bool $below_minimum_override
  */
 
 use App\Model\Table\BillingsTable;
@@ -89,6 +90,12 @@ foreach ($parts as $part) {
                     <?= $this->Form->control(BillingsTable::ALLOW_CLOSED_PERIODS, [
                         'type' => 'checkbox',
                         'label' => __('Write into a period that has already been invoiced for'),
+                    ]) ?>
+                <?php endif; ?>
+                <?php if ($below_minimum_override) : ?>
+                    <?= $this->Form->control(BillingsTable::ALLOW_BELOW_MINIMUM, [
+                        'type' => 'checkbox',
+                        'label' => __('Allow a connection price below the contract minimum'),
                     ]) ?>
                 <?php endif; ?>
             </fieldset>

@@ -340,6 +340,7 @@ class CustomerProposalsController extends AppController
         $this->set('parts', $parts);
         $this->set('stopped', $stopped);
         $this->set('closed_period_override', $this->mayReachIntoClosedPeriods());
+        $this->set('below_minimum_override', $this->mayGoBelowMinimum());
 
         return null;
     }
@@ -355,12 +356,14 @@ class CustomerProposalsController extends AppController
         $by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
         $reaching = $this->mayReachIntoClosedPeriods()
             && $this->request->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1';
+        $belowMinimum = $this->mayGoBelowMinimum()
+            && $this->request->getData(BillingsTable::ALLOW_BELOW_MINIMUM) == '1';
 
         try {
             $this->CustomerProposals->getConnection()->transactional(
-                function () use ($parts, $by, $reaching): void {
+                function () use ($parts, $by, $reaching, $belowMinimum): void {
                     foreach ($parts as $part) {
-                        (new ProposalTransfer())->carryOver($part['papers'], $by, $reaching);
+                        (new ProposalTransfer())->carryOver($part['papers'], $by, $reaching, $belowMinimum);
                     }
                 },
             );
@@ -444,6 +447,17 @@ class CustomerProposalsController extends AppController
      * @return bool
      */
     private function mayReachIntoClosedPeriods(): bool
+    {
+        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+    }
+
+    /**
+     * Whether this request may carry over a connection priced below the contract's minimum that
+     * nobody allowed on the line itself.
+     *
+     * @return bool
+     */
+    private function mayGoBelowMinimum(): bool
     {
         return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
     }

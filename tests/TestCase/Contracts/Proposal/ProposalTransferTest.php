@@ -344,6 +344,86 @@ class ProposalTransferTest extends TestCase
     }
 
     /**
+     * A line pricing the connection below the contract's minimum is not carried over, which is the
+     * minimum having been raised after the line was written.
+     *
+     * @return void
+     */
+    public function testAConnectionBelowTheMinimumIsNotCarriedOver(): void
+    {
+        $proposal = $this->connectionBelowTheMinimum(allowed: false);
+        $before = $this->billingCount();
+
+        try {
+            (new ProposalTransfer())->carryOver($proposal);
+            $this->fail('The connection was carried over below the minimum.');
+        } catch (RuntimeException $refused) {
+            $this->assertStringContainsString('minimum agreed on the contract', $refused->getMessage());
+        }
+
+        $this->assertSame($before, $this->billingCount());
+    }
+
+    /**
+     * What an administrator allowed on the line is carried over by whoever presses the button.
+     *
+     * @return void
+     */
+    public function testALineAnAdministratorAllowedIsCarriedOver(): void
+    {
+        $before = $this->billingCount();
+
+        (new ProposalTransfer())->carryOver($this->connectionBelowTheMinimum(allowed: true));
+
+        $this->assertSame($before + 1, $this->billingCount());
+    }
+
+    /**
+     * And the administrator may allow it at the transfer itself.
+     *
+     * @return void
+     */
+    public function testTheMinimumMayBeGoneBelowDeliberately(): void
+    {
+        $before = $this->billingCount();
+
+        (new ProposalTransfer())->carryOver(
+            $this->connectionBelowTheMinimum(allowed: false),
+            null,
+            go_below_minimum: true,
+        );
+
+        $this->assertSame($before + 1, $this->billingCount());
+    }
+
+    /**
+     * A signed proposal replacing the connection with a cheaper one than the contract's minimum.
+     *
+     * @param bool $allowed Whether an administrator allowed it on the line.
+     * @return \App\Model\Entity\ContractProposal
+     */
+    private function connectionBelowTheMinimum(bool $allowed): ContractProposal
+    {
+        $this->getTableLocator()->get('Contracts')->updateAll(
+            ['minimum_connection_price' => '500'],
+            ['id' => self::CONTRACT_ID],
+        );
+
+        return $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => '2026-10-01',
+            'changes' => ['billings' => [[
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => false,
+                'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
+                'quantity' => 1,
+                'price' => '299.00',
+                'below_minimum_allowed' => $allowed,
+            ]]],
+        ]);
+    }
+
+    /**
      * The signature is recorded on the proposal, and the version takes it from there when it is
      * carried over. Without this the version would go on reading as unsigned, and the customer
      * would be chased - and eventually cut off - for a paper that is on file.

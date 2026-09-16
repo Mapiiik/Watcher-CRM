@@ -41,6 +41,7 @@ final class ProposalTransfer
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param string|null $by Who is carrying it over.
      * @param bool $reach_into_closed_periods Whether invoiced periods may be written into.
+     * @param bool $go_below_minimum Whether any line may price the connection below the minimum.
      * @return void
      * @throws \RuntimeException When the proposal is in no state to be carried over.
      */
@@ -48,6 +49,7 @@ final class ProposalTransfer
         ContractProposal $proposal,
         ?string $by = null,
         bool $reach_into_closed_periods = false,
+        bool $go_below_minimum = false,
     ): void {
         if (!$proposal->hasBeenConcluded()) {
             throw new RuntimeException('A proposal is not carried over before it has been concluded.');
@@ -60,7 +62,7 @@ final class ProposalTransfer
         $proposals = $this->proposals();
 
         $proposals->getConnection()->transactional(
-            function () use ($proposal, $by, $reach_into_closed_periods, $proposals): void {
+            function () use ($proposal, $by, $reach_into_closed_periods, $go_below_minimum, $proposals): void {
                 $options = [
                     BillingsTable::ALLOW_CLOSED_PERIODS => $reach_into_closed_periods,
                     // Without these, audit-stash either logs nothing for a batch or gives every
@@ -73,7 +75,7 @@ final class ProposalTransfer
                 // written here are the same list rather than the same rules run twice.
                 $planned = (new TransferPlan())->of($proposal);
 
-                $this->carryBillingsOver($proposal, $options);
+                $this->carryBillingsOver($proposal, $options, $go_below_minimum);
                 $this->carryVersionsOver($proposal, $planned);
                 $this->carryContractOver($proposal, $planned);
 
@@ -92,9 +94,10 @@ final class ProposalTransfer
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param array<string, mixed> $options What to save with.
+     * @param bool $go_below_minimum Whether any line may price the connection below the minimum.
      * @return void
      */
-    private function carryBillingsOver(ContractProposal $proposal, array $options): void
+    private function carryBillingsOver(ContractProposal $proposal, array $options, bool $go_below_minimum): void
     {
         $changes = $proposal->proposedChanges();
 
@@ -124,7 +127,10 @@ final class ProposalTransfer
                 $to_save[] = $this->startingBilling($line, $proposal, (string)$contract->customer_id);
             }
 
-            if ($billings->saveMany($to_save, $options) === false) {
+            // an administrator who allowed it on the line has already made the decision
+            $allowed = [BillingsTable::ALLOW_BELOW_MINIMUM => $go_below_minimum || $line->below_minimum_allowed];
+
+            if ($billings->saveMany($to_save, $allowed + $options) === false) {
                 throw new RuntimeException($this->whatWentWrong($to_save));
             }
         }

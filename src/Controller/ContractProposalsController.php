@@ -340,6 +340,7 @@ class ContractProposalsController extends AppController
         $replaced = $replaces === null ? null : $this->billingOnTheContract($proposal, $replaces);
 
         $form = new ProposedBillingForm();
+        $written = null;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
@@ -349,6 +350,7 @@ class ContractProposalsController extends AppController
                 $data + ['billing_id' => $replaces],
                 $edited,
                 $this->chosenService(is_string($service_id) ? $service_id : null),
+                $this->isAdmin(),
             );
 
             if ($this->saveChanges($proposal, $changes->withLine($written))) {
@@ -359,7 +361,9 @@ class ContractProposalsController extends AppController
         $this->set('contractProposal', $proposal);
         $this->set('line', $edited);
         $this->set('replaced', $replaced);
-        $this->set('values', $form->fill($edited, $replaced));
+        // a refused line comes back as it was typed, not as it was before
+        $this->set('values', $written?->toArray() ?? $form->fill($edited, $replaced));
+        $this->set('below_minimum_override', $this->isAdmin());
         $this->set('services', $this->servicesFor($proposal, [
             $edited?->service_id,
             $replaced?->service_id,
@@ -1157,5 +1161,15 @@ class ContractProposalsController extends AppController
     private function deliveryMethodOptions(): array
     {
         return DocumentsDeliveryType::options();
+    }
+
+    /**
+     * Whether whoever is asking is trusted with the whole application.
+     *
+     * @return bool
+     */
+    private function isAdmin(): bool
+    {
+        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
     }
 }

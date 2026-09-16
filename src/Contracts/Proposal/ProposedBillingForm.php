@@ -56,12 +56,15 @@ final class ProposedBillingForm
      * @param array<string, mixed> $data What the form sent.
      * @param \App\Contracts\Proposal\ProposedBilling|null $line The line being edited, if any.
      * @param array<string, mixed>|null $service The chosen service as it stands now.
+     * @param bool $may_allow_below_minimum Whether whoever fills it in may let the connection go
+     *   below the contract's minimum. Anybody else writing the line takes that permission away.
      * @return \App\Contracts\Proposal\ProposedBilling
      */
     public function read(
         array $data,
         ?ProposedBilling $line = null,
         ?array $service = null,
+        bool $may_allow_below_minimum = false,
     ): ProposedBilling {
         $said = [
             'id' => $line?->id,
@@ -80,6 +83,8 @@ final class ProposedBillingForm
             // A line that changes the service brings it with it: the contract's snapshot was taken
             // before the operator chose it and has never heard of it.
             'service' => $service ?? $line?->service,
+            'below_minimum_allowed' => $may_allow_below_minimum
+                && (bool)($data['below_minimum_allowed'] ?? false),
         ];
 
         return ProposedBilling::fromArray(array_filter(

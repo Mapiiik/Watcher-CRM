@@ -111,6 +111,10 @@
                     $contract->service_type !== null ?
                         ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
             </tr>
+            <tr>
+                <th><?= __('Minimum Connection Price') ?></th>
+                <td><?= h($contract->minimum_connection_price) ?></td>
+            </tr>
         </table>
     </div>
 </div>

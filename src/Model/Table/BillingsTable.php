@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Contracts\MinimumConnectionPrice;
 use App\Model\Entity\Billing;
 use Bookkeeping\Model\Enum\InvoicingSchedule;
 use Cake\I18n\Date;
@@ -11,6 +12,7 @@ use Cake\ORM\RulesChecker;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 use Override;
+use PhpCollective\DecimalObject\Decimal;
 use Settings\Utility\Settings;
 
 /**
@@ -49,6 +51,13 @@ class BillingsTable extends AppTable
      * @var string
      */
     public const ALLOW_CLOSED_PERIODS = 'allow_closed_periods';
+
+    /**
+     * The save option that lets the connection go below the minimum agreed on the contract.
+     *
+     * @var string
+     */
+    public const ALLOW_BELOW_MINIMUM = 'allow_below_minimum';
 
     /**
      * The fields saying what is being charged for and how much, as against over what period.
@@ -196,6 +205,135 @@ class BillingsTable extends AppTable
     public function endIsStillOpen(?Date $ends): bool
     {
         return $ends === null || $ends >= $this->lastClosedPeriodEnd();
+    }
+
+    /**
+     * The minimum the contract puts on its connection, if it puts one.
+     *
+     * @param string|null $contract_id The contract.
+     * @return \PhpCollective\DecimalObject\Decimal|null
+     */
+    public function minimumConnectionPriceOf(?string $contract_id): ?Decimal
+    {
+        if ($contract_id === null) {
+            return null;
+        }
+
+        /** @var \App\Model\Entity\Contract|null $contract */
+        $contract = $this->Contracts->find()
+            ->select(['Contracts.id', 'Contracts.minimum_connection_price'])
+            ->where(['Contracts.id' => $contract_id])
+            ->first();
+
+        return $contract?->minimum_connection_price;
+    }
+
+    /**
+     * A copy of the billing carrying the service it names now.
+     *
+     * A copy, so that the service loaded here is not saved along with the billing.
+     *
+     * @param \App\Model\Entity\Billing $billing The billing.
+     * @param string|int|null $service_id The service to carry; the billing's own when not given.
+     * @return \App\Model\Entity\Billing
+     */
+    private function withItsService(Billing $billing, string|int|null $service_id = null): Billing
+    {
+        $service_id ??= $billing->service_id;
+        $probe = clone $billing;
+
+        if ($service_id === null) {
+            $probe->unset('service');
+
+            return $probe;
+        }
+
+        if (($billing->service->id ?? null) != $service_id) {
+            $probe->set('service', $this->Services->find()->where(['Services.id' => $service_id])->first());
+        }
+
+        return $probe;
+    }
+
+    /**
+     * Whether the save may leave the connection priced as it is.
+     *
+     * @param \App\Model\Entity\Billing $entity The billing being saved.
+     * @return string|bool True where it may, what to tell the operator where it may not.
+     */
+    private function keepsTheMinimumConnectionPrice(Billing $entity): string|bool
+    {
+        $minimum = $this->minimumConnectionPriceOf($entity->contract_id);
+
+        if ($minimum === null) {
+            return true;
+        }
+
+        $billing = $this->withItsService($entity);
+
+        if (MinimumConnectionPrice::fallsBelow($billing, $minimum)) {
+            return MinimumConnectionPrice::refusal($minimum);
+        }
+
+        // moving the connection onto a service that is not one takes the connection away
+        if (
+            !$entity->isNew()
+            && $entity->isDirty('service_id')
+            && !MinimumConnectionPrice::isConnection($billing)
+            && MinimumConnectionPrice::isConnection(
+                $this->withItsService($entity, $entity->getOriginal('service_id')),
+            )
+        ) {
+            return MinimumConnectionPrice::refusal($minimum);
+        }
+
+        return true;
+    }
+
+    /**
+     * Whether deleting the billing leaves the connection above the minimum.
+     *
+     * It does where another connection meeting the minimum covers the first day the deleted one
+     * still counts for.
+     *
+     * @param \App\Model\Entity\Billing $entity The billing being deleted.
+     * @return string|bool True where it does, what to tell the operator where it does not.
+     */
+    private function deletionKeepsTheMinimumConnectionPrice(Billing $entity): string|bool
+    {
+        $minimum = $this->minimumConnectionPriceOf($entity->contract_id);
+
+        if ($minimum === null || !MinimumConnectionPrice::isConnection($this->withItsService($entity))) {
+            return true;
+        }
+
+        $day = max($entity->billing_from, $this->firstOpenPeriodStart());
+
+        if ($entity->billing_until !== null && $entity->billing_until < $day) {
+            return true;
+        }
+
+        $covering = $this->find()
+            ->contain(['Services'])
+            ->where([
+                'Billings.contract_id' => $entity->contract_id,
+                'Billings.id !=' => $entity->id,
+                'Billings.billing_from <=' => $day,
+                'OR' => [
+                    'Billings.billing_until IS' => null,
+                    'Billings.billing_until >=' => $day,
+                ],
+            ])
+            ->all();
+
+        foreach ($covering as $other) {
+            /** @var \App\Model\Entity\Billing $other */
+            if (MinimumConnectionPrice::isConnection($other) && !$other->total_price->lessThan($minimum)) {
+                return true;
+            }
+        }
+
+        return MinimumConnectionPrice::refusal($minimum);
     }
 
     /**
@@ -390,6 +528,36 @@ class BillingsTable extends AppTable
                 ],
             );
         }
+
+        // Only a change is measured, so a contract already below its minimum is not stuck. Ending
+        // a billing is not a change of price and is left alone.
+        $rules->add(
+            function (Billing $entity, array $options): string|bool {
+                if (!empty($options[self::ALLOW_BELOW_MINIMUM])) {
+                    return true;
+                }
+
+                if (!$entity->isNew() && array_filter(self::SETTLED_TERMS, $entity->isDirty(...)) === []) {
+                    return true;
+                }
+
+                return $this->keepsTheMinimumConnectionPrice($entity);
+            },
+            'connectionKeepsTheMinimum',
+            ['errorField' => 'price'],
+        );
+
+        $rules->addDelete(
+            function (Billing $entity, array $options): string|bool {
+                if (!empty($options[self::ALLOW_BELOW_MINIMUM])) {
+                    return true;
+                }
+
+                return $this->deletionKeepsTheMinimumConnectionPrice($entity);
+            },
+            'connectionIsNotLeftBelowMinimum',
+            ['errorField' => 'price'],
+        );
 
         return $rules;
     }

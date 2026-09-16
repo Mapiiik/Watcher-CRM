@@ -134,7 +134,7 @@ class BillingsController extends AppController
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
             } else {
-                if ($this->Billings->save($billing, $this->closedPeriodSaveOptions())) {
+                if ($this->Billings->save($billing, $this->saveOptions())) {
                     $this->Flash->success(__('The billing has been saved.'));
 
                     return $this->afterAddRedirect(['action' => 'view', $billing->id]);
@@ -182,8 +182,16 @@ class BillingsController extends AppController
         $services->andWhere(['Services.currently_offered' => true]);
 
         $closed_period_override = $this->mayReachIntoClosedPeriods();
+        $below_minimum_override = $this->mayGoBelowMinimum();
 
-        $this->set(compact('billing', 'customers', 'services', 'contracts', 'closed_period_override'));
+        $this->set(compact(
+            'billing',
+            'customers',
+            'services',
+            'contracts',
+            'closed_period_override',
+            'below_minimum_override',
+        ));
 
         return null;
     }
@@ -227,7 +235,7 @@ class BillingsController extends AppController
             ) {
                 $this->Flash->error(__('The service type does not match the selected contract.'));
             } else {
-                if ($this->Billings->save($billing, $this->closedPeriodSaveOptions())) {
+                if ($this->Billings->save($billing, $this->saveOptions())) {
                     $this->Flash->success(__('The billing has been saved.'));
 
                     return $this->afterEditRedirect(['action' => 'view', $billing->id]);
@@ -272,6 +280,7 @@ class BillingsController extends AppController
         }
 
         $closed_period_override = $this->mayReachIntoClosedPeriods();
+        $below_minimum_override = $this->mayGoBelowMinimum();
 
         $this->set(compact(
             'billing',
@@ -279,6 +288,7 @@ class BillingsController extends AppController
             'services',
             'contracts',
             'closed_period_override',
+            'below_minimum_override',
             'invoiced_for',
             'end_invoiced_for',
         ));
@@ -297,7 +307,8 @@ class BillingsController extends AppController
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $billing = $this->Billings->get($id);
-        if ($this->Billings->delete($billing)) {
+        // the confirmation behind the link is the deliberate act, there is no box to tick on it
+        if ($this->Billings->delete($billing, [BillingsTable::ALLOW_BELOW_MINIMUM => $this->mayGoBelowMinimum()])) {
             $this->Flash->success(__('The billing has been deleted.'));
         } else {
             $this->flashValidationErrors($billing->getErrors());
@@ -354,9 +365,16 @@ class BillingsController extends AppController
 
         // set data
         $closed_period_override = $this->mayReachIntoClosedPeriods();
+        $below_minimum_override = $this->mayGoBelowMinimum();
         $customer_notification = $this->mayNotifyTheCustomer();
 
-        $this->set(compact('billing', 'services', 'closed_period_override', 'customer_notification'));
+        $this->set(compact(
+            'billing',
+            'services',
+            'closed_period_override',
+            'below_minimum_override',
+            'customer_notification',
+        ));
 
         return null;
     }
@@ -477,7 +495,9 @@ class BillingsController extends AppController
         }
 
         // set data
-        $this->set(compact('billings', 'services'));
+        $below_minimum_override = $this->mayGoBelowMinimum();
+
+        $this->set(compact('billings', 'services', 'below_minimum_override'));
 
         return null;
     }
@@ -491,6 +511,16 @@ class BillingsController extends AppController
      * @return bool
      */
     private function mayReachIntoClosedPeriods(): bool
+    {
+        return $this->isAdmin();
+    }
+
+    /**
+     * Whether this request may be offered to price the connection below the contract's minimum.
+     *
+     * @return bool
+     */
+    private function mayGoBelowMinimum(): bool
     {
         return $this->isAdmin();
     }
@@ -519,16 +549,19 @@ class BillingsController extends AppController
     }
 
     /**
-     * What to save a billing with, having asked whether this request reaches into a closed period.
+     * What to save a billing with, having asked what this request may override and what it ticked.
      *
      * @return array<string, bool>
      */
-    private function closedPeriodSaveOptions(): array
+    private function saveOptions(): array
     {
         return [
             BillingsTable::ALLOW_CLOSED_PERIODS =>
                 $this->mayReachIntoClosedPeriods()
                 && $this->getRequest()->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1',
+            BillingsTable::ALLOW_BELOW_MINIMUM =>
+                $this->mayGoBelowMinimum()
+                && $this->getRequest()->getData(BillingsTable::ALLOW_BELOW_MINIMUM) == '1',
         ];
     }
 
@@ -590,7 +623,7 @@ class BillingsController extends AppController
                     $originalBilling,
                     $newBilling,
                 ],
-                $this->closedPeriodSaveOptions() + [
+                $this->saveOptions() + [
                     // saveMany audit options kept intentionally:
                     // - mapiiik/audit-log (5.x, 6.x) logs nothing without them
                     // - even audit-stash 2.0.1+ groups the batch under one transaction id only
@@ -600,6 +633,10 @@ class BillingsController extends AppController
                 ],
             ) === false
         ) {
+            $errors = $newBilling->getErrors() ?: $originalBilling->getErrors();
+            if ($errors !== []) {
+                $this->flashValidationErrors($errors);
+            }
             $this->Flash->error(
                 __('The billing could not be saved. Please, try again.')
                 . ' (' . __('Contract Number') . ': ' . $originalBilling->contract->number . ')',

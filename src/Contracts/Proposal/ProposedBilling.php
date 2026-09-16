@@ -41,6 +41,8 @@ final class ProposedBilling
      * @param bool $separate_invoice Whether the line is invoiced on its own.
      * @param string|null $note Whatever the operator wrote down.
      * @param array<string, mixed>|null $service The service as it stood when it was chosen.
+     * @param bool $below_minimum_allowed Whether an administrator let the connection go below the
+     *   contract's minimum on this line.
      */
     public function __construct(
         public readonly string $id,
@@ -57,6 +59,7 @@ final class ProposedBilling
         public readonly bool $separate_invoice,
         public readonly ?string $note,
         public readonly ?array $service = null,
+        public readonly bool $below_minimum_allowed = false,
     ) {
         if ($this->billing_id === null && $this->terminates_only) {
             throw new InvalidArgumentException('A line that adds nothing cannot end anything either.');
@@ -163,6 +166,7 @@ final class ProposedBilling
             separate_invoice: (bool)($line['separate_invoice'] ?? false),
             note: self::text($line, 'note'),
             service: isset($line['service']) && is_array($line['service']) ? $line['service'] : null,
+            below_minimum_allowed: (bool)($line['below_minimum_allowed'] ?? false),
         );
     }
 
@@ -191,6 +195,7 @@ final class ProposedBilling
             'separate_invoice' => $this->separate_invoice,
             'note' => $this->note,
             'service' => $this->service,
+            'below_minimum_allowed' => $this->below_minimum_allowed,
         ];
     }
 

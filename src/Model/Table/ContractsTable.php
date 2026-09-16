@@ -266,6 +266,11 @@ class ContractsTable extends AppTable
             ->allowEmptyString('activation_fee_with_obligation');
 
         $validator
+            ->decimal('minimum_connection_price')
+            ->greaterThanOrEqual('minimum_connection_price', 0)
+            ->allowEmptyString('minimum_connection_price');
+
+        $validator
             ->uuid('access_point_id')
             ->allowEmptyString('access_point_id');
 

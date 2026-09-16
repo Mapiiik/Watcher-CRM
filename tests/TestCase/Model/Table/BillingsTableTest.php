@@ -31,6 +31,13 @@ class BillingsTableTest extends TestCase
     protected $Billings;
 
     /**
+     * The fixture's service with a queue, which makes a billing of it the connection.
+     *
+     * @var string
+     */
+    private const CONNECTION = '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -436,6 +443,211 @@ class BillingsTableTest extends TestCase
             $this->Billings->mayBeDeleted($this->Billings->get($this->closedBillingId())),
             'A billing from years back was taken back.',
         );
+    }
+
+    /**
+     * A connection priced below what the contract agreed is refused, and the admin's box lets it through.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testAConnectionBelowTheMinimumIsRefused(): void
+    {
+        $this->agreeMinimum('100');
+
+        $refused = $this->newConnection('99.99');
+        $this->assertFalse($this->Billings->save($refused));
+        $this->assertArrayHasKey('connectionKeepsTheMinimum', $refused->getError('price'));
+
+        $this->assertNotFalse(
+            $this->Billings->save($this->newConnection('99.99'), [BillingsTable::ALLOW_BELOW_MINIMUM => true]),
+        );
+        $this->assertNotFalse($this->Billings->save($this->newConnection('100')));
+    }
+
+    /**
+     * A billing without a price of its own is priced by the list, and the list is what is measured.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testTheListPriceIsWhatIsMeasured(): void
+    {
+        $this->agreeMinimum('100');
+
+        $refused = $this->newConnection(null);
+
+        $this->assertFalse($this->Billings->save($refused));
+        $this->assertArrayHasKey('connectionKeepsTheMinimum', $refused->getError('price'));
+    }
+
+    /**
+     * A discount lowers the price as surely as the price itself does.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testADiscountOnTheConnectionIsHeldToTheMinimum(): void
+    {
+        $this->agreeMinimum('100');
+        $connection = $this->Billings->saveOrFail($this->newConnection('150'));
+
+        $refused = $this->Billings->patchEntity($connection, ['fixed_discount' => '60']);
+
+        $this->assertFalse($this->Billings->save($refused));
+        $this->assertArrayHasKey('connectionKeepsTheMinimum', $refused->getError('price'));
+    }
+
+    /**
+     * Only the connection is measured. A fee beside it, or a service without a queue, is not.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testWhatStandsBesideTheConnectionIsNotMeasured(): void
+    {
+        $this->agreeMinimum('100');
+
+        $this->assertNotFalse($this->Billings->save($this->newConnection('10', null)));
+        $this->assertNotFalse($this->Billings->save($this->newConnection('10', $this->serviceWithoutQueue())));
+    }
+
+    /**
+     * Without a minimum there is nothing to measure against.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testAContractWithoutMinimumIsNotLimited(): void
+    {
+        $this->assertNotFalse($this->Billings->save($this->newConnection('0.01')));
+    }
+
+    /**
+     * Ending a billing is not a change of price, so a contract being wound up or a service being
+     * replaced is not stopped here.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testEndingTheConnectionIsLeftAlone(): void
+    {
+        $this->agreeMinimum('100');
+
+        $ended = $this->Billings->patchEntity(
+            $this->Billings->get($this->runningBillingId()),
+            ['billing_until' => $this->Billings->firstOpenPeriodStart()->toDateString()],
+        );
+
+        $this->assertNotFalse($this->Billings->save($ended));
+    }
+
+    /**
+     * Moving the connection onto a service that is not one takes the connection away altogether.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testTheConnectionIsNotMovedOntoSomethingElse(): void
+    {
+        $this->agreeMinimum('100');
+        $connection = $this->Billings->saveOrFail($this->newConnection('150'));
+
+        $refused = $this->Billings->patchEntity($connection, ['service_id' => $this->serviceWithoutQueue()]);
+
+        $this->assertFalse($this->Billings->save($refused));
+        $this->assertArrayHasKey('connectionKeepsTheMinimum', $refused->getError('price'));
+    }
+
+    /**
+     * Deleting the connection leaves nothing meeting the minimum, unless another one takes its place.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testTheConnectionIsNotDeletedFromUnderTheMinimum(): void
+    {
+        $this->agreeMinimum('100');
+        $connection = $this->Billings->saveOrFail($this->newConnection('150'));
+
+        $this->assertFalse($this->Billings->delete($connection));
+        $this->assertArrayHasKey('connectionIsNotLeftBelowMinimum', $connection->getError('price'));
+
+        $this->Billings->saveOrFail($this->newConnection('120'));
+        $connection->setErrors([]);
+
+        $this->assertTrue($this->Billings->delete($connection));
+    }
+
+    /**
+     * Which the admin may still do, the confirmation behind the link being the deliberate act.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testTheConnectionCanBeDeletedWhenItIsAskedFor(): void
+    {
+        $this->agreeMinimum('100');
+        $connection = $this->Billings->saveOrFail($this->newConnection('150'));
+
+        $this->assertTrue($this->Billings->delete($connection, [BillingsTable::ALLOW_BELOW_MINIMUM => true]));
+    }
+
+    /**
+     * Puts a minimum on the fixture's contract.
+     *
+     * @param string $minimum The minimum.
+     * @return void
+     */
+    private function agreeMinimum(string $minimum): void
+    {
+        $existing = $this->Billings->get($this->closedBillingId());
+
+        $this->Billings->Contracts->updateAll(
+            ['minimum_connection_price' => $minimum],
+            ['id' => $existing->contract_id],
+        );
+    }
+
+    /**
+     * A billing for the connection on the fixture's contract, starting where nothing is invoiced yet.
+     *
+     * @param string|null $price The price; null takes the list.
+     * @param string|null $service_id The service; the fixture's one with a queue when not given.
+     * @return \App\Model\Entity\Billing
+     */
+    private function newConnection(?string $price, ?string $service_id = self::CONNECTION): Billing
+    {
+        $existing = $this->Billings->get($this->closedBillingId());
+
+        return $this->Billings->newEntity([
+            'customer_id' => $existing->customer_id,
+            'contract_id' => $existing->contract_id,
+            'service_id' => $service_id,
+            'text' => $service_id === null ? 'Beside the connection' : null,
+            'price' => $price,
+            'quantity' => 1,
+            'separate_invoice' => false,
+            'billing_from' => $this->Billings->firstOpenPeriodStart()->toDateString(),
+        ]);
+    }
+
+    /**
+     * A service that is not a connection.
+     *
+     * @return string
+     */
+    private function serviceWithoutQueue(): string
+    {
+        $service = $this->Billings->Services->newEntity([
+            'name' => 'Static address',
+            'price' => '50',
+            'accounting_product_code' => 'IP',
+            'currently_offered' => true,
+            'criticality_level' => 20,
+        ]);
+
+        return (string)$this->Billings->Services->saveOrFail($service)->id;
     }
 
     /**

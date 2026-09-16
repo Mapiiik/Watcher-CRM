@@ -35,6 +35,7 @@ use RuntimeException;
  * @property \PhpCollective\DecimalObject\Decimal|null $activation_fee_with_obligation
  * @property \PhpCollective\DecimalObject\Decimal $activation_fee_sum
  * @property \PhpCollective\DecimalObject\Decimal $activation_fee_with_obligation_sum
+ * @property \PhpCollective\DecimalObject\Decimal|null $minimum_connection_price
  * @property string|null $access_point_id
  * @property string $contract_state_id
  * @property string $name
@@ -105,6 +106,7 @@ class Contract extends AppEntity
         'individual_terms' => true,
         'activation_fee' => true,
         'activation_fee_with_obligation' => true,
+        'minimum_connection_price' => true,
         'access_point_id' => true,
         'contract_state_id' => true,
         'creator' => true,

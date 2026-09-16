@@ -91,6 +91,12 @@
                         'label' => __('Allow a change inside an already invoiced period'),
                     ]);
                 }
+                if (!empty($below_minimum_override)) {
+                    echo $this->Form->control('allow_below_minimum', [
+                        'type' => 'checkbox',
+                        'label' => __('Allow a connection price below the contract minimum'),
+                    ]);
+                }
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

@@ -64,6 +64,7 @@ class ProposalChangesTest extends TestCase
                     'separate_invoice' => true,
                     'note' => 'Lorem ipsum',
                     'service' => ['id' => 's2', 'name' => 'Internet 100'],
+                    'below_minimum_allowed' => true,
                 ],
             ],
             'version' => ['valid_until' => '2026-03-31'],

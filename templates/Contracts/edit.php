@@ -63,6 +63,10 @@ use Settings\Utility\Settings;
                         ]);
                         echo $this->Form->control('activation_fee', ['empty' => true]);
                         echo $this->Form->control('activation_fee_with_obligation', ['empty' => true]);
+                        echo $this->Form->control('minimum_connection_price', [
+                            'empty' => true,
+                            'help' => __('The connection is not billed below this monthly price.'),
+                        ]);
                         echo $this->Form->control('individual_terms', [
                             'help' => __(
                                 'Printed on the contract, under whatever holds for the kind of'

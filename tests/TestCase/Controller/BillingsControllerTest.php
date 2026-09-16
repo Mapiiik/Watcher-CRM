@@ -723,4 +723,122 @@ class BillingsControllerTest extends TestCase
         $this->assertNoRedirect();
         $this->assertEquals($priced, $billings->get($billingId)->price, 'The price was rewritten.');
     }
+
+    /**
+     * A connection below the contract's minimum is not saved, and a box sent by somebody who is not
+     * offered it changes nothing.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::add()
+     */
+    public function testTheFormRefusesAConnectionBelowTheMinimum(): void
+    {
+        $this->agreeMinimum('100');
+        $before = $this->idsIn('Billings');
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/add', $this->connectionPricedAt('50') + [
+            BillingsTable::ALLOW_BELOW_MINIMUM => '1',
+        ]);
+
+        $this->assertNoRedirect();
+        $this->assertSame($before, $this->idsIn('Billings'));
+    }
+
+    /**
+     * The admin is offered the box, and without ticking it is refused the same as anybody.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::add()
+     */
+    public function testAnAdminTickingTheBoxPricesTheConnectionBelowTheMinimum(): void
+    {
+        $this->agreeMinimum('100');
+        $before = $this->idsIn('Billings');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/add', $this->connectionPricedAt('50'));
+
+        $this->assertNoRedirect();
+        $this->assertResponseContains('allow_below_minimum');
+        $this->assertSame($before, $this->idsIn('Billings'));
+
+        $this->post('/billings/add', $this->connectionPricedAt('50') + [
+            BillingsTable::ALLOW_BELOW_MINIMUM => '1',
+        ]);
+
+        $this->assertRedirect();
+        $this->assertNotSame($before, $this->idsIn('Billings'));
+    }
+
+    /**
+     * A cheaper tariff below the minimum leaves the running one as it was, not ended with nothing
+     * after it.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::serviceChange()
+     */
+    public function testAServiceChangeBelowTheMinimumIsRefused(): void
+    {
+        $this->agreeMinimum('100');
+        $billings = $this->getTableLocator()->get('Billings');
+        $billing = $billings->find()
+            ->where(['Billings.billing_until IS' => null, 'Billings.contract_id' => self::CONTRACT_ID])
+            ->firstOrFail();
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+        $this->post('/billings/service-change/' . $billing->get('id'), [
+            'service_id' => $billing->get('service_id'),
+            'price' => '50',
+            'billing_from' => $billings->firstOpenPeriodStart()->toDateString(),
+        ]);
+
+        $this->assertNull($billings->get($billing->get('id'))->billing_until, 'The running billing was ended.');
+        // the refusal is said, not only the failure
+        $this->assertStringContainsString(
+            'minimum agreed on the contract',
+            (string)json_encode($this->_requestSession?->read('Flash')),
+        );
+    }
+
+    /**
+     * Puts a minimum on the contract the nested routes hang off.
+     *
+     * @param string $minimum The minimum.
+     * @return void
+     */
+    private function agreeMinimum(string $minimum): void
+    {
+        $this->getTableLocator()->get('Contracts')->updateAll(
+            ['minimum_connection_price' => $minimum],
+            ['id' => self::CONTRACT_ID],
+        );
+    }
+
+    /**
+     * What the form sends for a new connection on that contract.
+     *
+     * @param string $price The price.
+     * @return array<string, string>
+     */
+    private function connectionPricedAt(string $price): array
+    {
+        return [
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+            // the fixture's service with a queue
+            'service_id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2',
+            'price' => $price,
+            'quantity' => '1',
+            'separate_invoice' => '0',
+            'billing_from' => $this->getTableLocator()->get('Billings')->firstOpenPeriodStart()->toDateString(),
+        ];
+    }
 }

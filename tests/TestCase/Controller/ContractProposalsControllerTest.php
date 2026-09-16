@@ -786,6 +786,84 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * A line below the contract's minimum is not saved, and the box means nothing coming from
+     * somebody who is not offered it.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::billingLine()
+     */
+    public function testALineBelowTheMinimumIsRefusedOnTheForm(): void
+    {
+        $this->agreeMinimum('100');
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/billing-line/' . self::PROPOSAL_ID, [
+            'service_id' => self::OPEN_SERVICE_ID,
+            'quantity' => '1',
+            'price' => '50',
+            'below_minimum_allowed' => '1',
+        ]);
+
+        $this->assertNoRedirect();
+        $this->assertSame('50', $this->viewVariable('values')['price'], 'What was typed was not kept.');
+        $this->assertSame(
+            [],
+            $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->proposedChanges()->billings,
+        );
+    }
+
+    /**
+     * What an administrator allows stays on the line, until somebody else writes the line again.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::billingLine()
+     */
+    public function testAnAdministratorsAllowanceStaysOnTheLineUntilSomebodyElseWritesIt(): void
+    {
+        $this->agreeMinimum('100');
+        $line = [
+            'service_id' => self::OPEN_SERVICE_ID,
+            'quantity' => '1',
+            'price' => '50',
+            'below_minimum_allowed' => '1',
+        ];
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/billing-line/' . self::PROPOSAL_ID, $line);
+        $this->assertRedirect();
+
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $written = $proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings[0];
+        $this->assertTrue($written->below_minimum_allowed);
+
+        $this->login('bookkeeper');
+        $this->post('/contract-proposals/billing-line/' . self::PROPOSAL_ID . '/' . $written->id, [
+            'note' => 'Written again',
+        ] + $line);
+
+        $this->assertNoRedirect();
+        $this->assertNull($proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings[0]->note);
+    }
+
+    /**
+     * Puts a minimum on the contract the proposal is about.
+     *
+     * @param string $minimum The minimum.
+     * @return void
+     */
+    private function agreeMinimum(string $minimum): void
+    {
+        $this->getTableLocator()->get('Contracts')->updateAll(
+            ['minimum_connection_price' => $minimum],
+            ['id' => self::CONTRACT_ID],
+        );
+    }
+
+    /**
      * One change may be several lines: half price until a day, full price from it. The second line
      * carries its own start, and the first stops the day before it.
      *
@@ -1267,6 +1345,53 @@ class ContractProposalsControllerTest extends TestCase
         // Said, not stopped: the button is still there. This proposal changes nothing, so it
         // reads as marking the job done rather than as moving anything.
         $this->assertResponseContains(__('Mark as Dealt With'));
+    }
+
+    /**
+     * A minimum raised after a line was written is said before the button, and the administrator
+     * may carry the line over anyway by ticking the box.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\TransferPreview::of()
+     */
+    public function testAMinimumRaisedSinceIsSaidAndMayBeGoneBelowDeliberately(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                'changes' => ['billings' => [[
+                    'billing_id' => self::KNOWN_BILLING_ID,
+                    'terminates_only' => false,
+                    'service_id' => self::OPEN_SERVICE_ID,
+                    'quantity' => 1,
+                    'price' => '50.00',
+                    // the service comes with the line, the way the form brings it
+                    'service' => [
+                        'id' => self::OPEN_SERVICE_ID,
+                        'name' => 'Internet',
+                        'price' => '2',
+                        'queue' => ['id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4', 'name' => 'Internet'],
+                    ],
+                ]]],
+            ]),
+            ['checkRules' => false],
+        );
+        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+        $this->agreeMinimum('100');
+
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('minimum agreed on the contract');
+        $this->assertResponseContains('allow_below_minimum');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/customer-proposals/transfer/' . self::ROUND_ID, ['allow_below_minimum' => '1']);
+
+        $this->assertRedirect();
+        $this->assertTrue($proposals->get(self::PROPOSAL_ID)->hasBeenApplied());
     }
 
     /**

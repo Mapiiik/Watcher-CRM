@@ -649,6 +649,7 @@ class ContractsControllerTest extends TestCase
             // asking it are for
             'installation_address_id' => $existing->installation_address_id,
             'access_point_id' => $existing->access_point_id,
+            'minimum_connection_price' => '399.00',
         ]);
 
         $this->assertRedirect();
@@ -658,6 +659,7 @@ class ContractsControllerTest extends TestCase
             ->where(['number' => 'S-2026-0001'])
             ->firstOrFail();
         $this->assertSame($existing->customer_id, $stored->customer_id);
+        $this->assertSame('399.00', $stored->minimum_connection_price?->toString());
     }
 
     /**

@@ -6,6 +6,7 @@
  * @var \App\Model\Entity\Billing|null $replaced
  * @var array<string, mixed> $values
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
+ * @var bool $below_minimum_override
  */
 
 $changing = $replaced === null
@@ -112,6 +113,13 @@ $changing = $replaced === null
                     'value' => $values['note'] ?? null,
                     'label' => __('Note'),
                 ]);
+                if (!empty($below_minimum_override)) {
+                    echo $this->Form->control('below_minimum_allowed', [
+                        'type' => 'checkbox',
+                        'checked' => (bool)($values['below_minimum_allowed'] ?? false),
+                        'label' => __('Allow a connection price below the contract minimum'),
+                    ]);
+                }
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

@@ -689,6 +689,78 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
+     * A line pricing the connection below the contract's minimum is refused while it is written,
+     * so that it is not the transfer that finds out.
+     *
+     * @return void
+     */
+    public function testALineBelowTheMinimumIsRefused(): void
+    {
+        $this->agreeMinimum('100');
+
+        $refused = $this->save(['changes' => ['billings' => [$this->connectionLine('50')]]]);
+        $this->assertArrayHasKey('connectionLinesKeepTheMinimum', $refused->getErrors()['changes'] ?? []);
+
+        $meeting = $this->save(['changes' => ['billings' => [$this->connectionLine('100')]]]);
+        $this->assertSame([], $meeting->getErrors());
+    }
+
+    /**
+     * What an administrator allowed on the line stands, and ending a billing is not a price at all.
+     *
+     * @return void
+     */
+    public function testAnAllowedLineAndAnEndingAreNotHeldToTheMinimum(): void
+    {
+        $this->agreeMinimum('100');
+
+        $allowed = $this->save([
+            'changes' => ['billings' => [$this->connectionLine('50') + ['below_minimum_allowed' => true]]],
+        ]);
+        $this->assertSame([], $allowed->getErrors());
+
+        $ending = $this->save([
+            'changes' => ['billings' => [['billing_id' => self::KNOWN_BILLING_ID, 'terminates_only' => true]]],
+        ]);
+        $this->assertArrayNotHasKey('connectionLinesKeepTheMinimum', $ending->getErrors()['changes'] ?? []);
+    }
+
+    /**
+     * Puts a minimum on the contract the proposals are about.
+     *
+     * @param string $minimum The minimum.
+     * @return void
+     */
+    private function agreeMinimum(string $minimum): void
+    {
+        $this->getTableLocator()->get('Contracts')->updateAll(
+            ['minimum_connection_price' => $minimum],
+            ['id' => self::CONTRACT_ID],
+        );
+    }
+
+    /**
+     * A line adding a connection at the given price, carrying its service the way the form does.
+     *
+     * @param string $price The price.
+     * @return array<string, mixed>
+     */
+    private function connectionLine(string $price): array
+    {
+        return [
+            'service_id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2',
+            'quantity' => 1,
+            'price' => $price,
+            'service' => [
+                'id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2',
+                'name' => 'Internet',
+                'price' => '2',
+                'queue' => ['id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4', 'name' => 'Internet'],
+            ],
+        ];
+    }
+
+    /**
      * A shape the value objects will not answer for never reaches the column, because the only
      * place it would surface is printing.
      *

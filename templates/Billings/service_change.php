@@ -176,6 +176,14 @@
                 ]) ?>
             </fieldset>
             <?php endif; ?>
+            <?php if (!empty($below_minimum_override)) : ?>
+            <fieldset>
+                <?= $this->Form->control('allow_below_minimum', [
+                    'type' => 'checkbox',
+                    'label' => __('Allow a connection price below the contract minimum'),
+                ]) ?>
+            </fieldset>
+            <?php endif; ?>
             <?= $this->Form->button(
                 __('Submit'),
                 [
