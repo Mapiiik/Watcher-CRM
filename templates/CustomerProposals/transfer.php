@@ -95,7 +95,7 @@ foreach ($parts as $part) {
                 <?php if ($below_minimum_override) : ?>
                     <?= $this->Form->control(BillingsTable::ALLOW_BELOW_MINIMUM, [
                         'type' => 'checkbox',
-                        'label' => __('Allow a connection price below the contract minimum'),
+                        'label' => __('Allow a connection price below the minimum set on the contract'),
                     ]) ?>
                 <?php endif; ?>
             </fieldset>

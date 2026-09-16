@@ -358,7 +358,7 @@ class ProposalTransferTest extends TestCase
             (new ProposalTransfer())->carryOver($proposal);
             $this->fail('The connection was carried over below the minimum.');
         } catch (RuntimeException $refused) {
-            $this->assertStringContainsString('minimum agreed on the contract', $refused->getMessage());
+            $this->assertStringContainsString('minimum set on the contract', $refused->getMessage());
         }
 
         $this->assertSame($before, $this->billingCount());

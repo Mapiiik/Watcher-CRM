@@ -180,7 +180,7 @@
             <fieldset>
                 <?= $this->Form->control('allow_below_minimum', [
                     'type' => 'checkbox',
-                    'label' => __('Allow a connection price below the contract minimum'),
+                    'label' => __('Allow a connection price below the minimum set on the contract'),
                 ]) ?>
             </fieldset>
             <?php endif; ?>

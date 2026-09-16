@@ -1426,7 +1426,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
 
         $this->assertResponseOk();
-        $this->assertResponseContains('minimum agreed on the contract');
+        $this->assertResponseContains('minimum set on the contract');
         $this->assertResponseContains('allow_below_minimum');
 
         $this->enableCsrfToken();

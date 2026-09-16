@@ -123,7 +123,7 @@ $changing = $replaced === null
                     echo $this->Form->control('below_minimum_allowed', [
                         'type' => 'checkbox',
                         'checked' => (bool)($values['below_minimum_allowed'] ?? false),
-                        'label' => __('Allow a connection price below the contract minimum'),
+                        'label' => __('Allow a connection price below the minimum set on the contract'),
                     ]);
                 }
                 ?>

@@ -105,7 +105,7 @@ final class MinimumConnectionPrice
     public static function refusal(Decimal $minimum): string
     {
         return __(
-            'The connection price may not go below {0}, the minimum agreed on the contract.',
+            'The connection price may not be lower than {0}, the minimum set on the contract.',
             Number::currency($minimum->toString()),
         );
     }

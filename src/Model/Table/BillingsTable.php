@@ -53,7 +53,7 @@ class BillingsTable extends AppTable
     public const ALLOW_CLOSED_PERIODS = 'allow_closed_periods';
 
     /**
-     * The save option that lets the connection go below the minimum agreed on the contract.
+     * The save option that lets the connection go below the minimum set on the contract.
      *
      * @var string
      */

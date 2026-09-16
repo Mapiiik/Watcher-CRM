@@ -803,7 +803,7 @@ class BillingsControllerTest extends TestCase
         $this->assertNull($billings->get($billing->get('id'))->billing_until, 'The running billing was ended.');
         // the refusal is said, not only the failure
         $this->assertStringContainsString(
-            'minimum agreed on the contract',
+            'minimum set on the contract',
             (string)json_encode($this->_requestSession?->read('Flash')),
         );
     }

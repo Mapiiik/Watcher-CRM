@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 20:22+0200\n"
+"POT-Creation-Date: 2026-09-16 22:50+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -518,7 +518,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:160
 #: ./templates/CustomerProposals/add.php:18
 #: ./templates/CustomerProposals/conclude.php:21
-#: ./templates/CustomerProposals/transfer.php:30
+#: ./templates/CustomerProposals/transfer.php:31
 #: ./templates/CustomerProposals/view.php:61
 #: ./templates/CustomerProposals/view.php:92
 #: ./templates/Customers/view.php:47
@@ -834,6 +834,10 @@ msgstr ""
 msgid "Everything the customers have agreed to has been carried over."
 msgstr ""
 
+#: ./src/Contracts/MinimumConnectionPrice.php:107
+msgid "The connection price may not be lower than {0}, the minimum set on the contract."
+msgstr ""
+
 #: ./src/Contracts/Proposal/PlannedChange.php:50
 #: ./templates/AccessCredentials/view.php:51
 #: ./templates/Billings/service_change.php:46
@@ -922,14 +926,14 @@ msgid "A fixed-term contract, the obligation running to the end of it"
 msgstr ""
 
 #: ./src/Contracts/Proposal/ProposedContract.php:29
-#: ./templates/Contracts/edit.php:133
+#: ./templates/Contracts/edit.php:137
 #: ./templates/Contracts/index.php:53
 #: ./templates/Customers/view.php:622
 #: ./templates/Overviews/overview_of_contracts.php:80
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:24
 #: ./templates/element/ContractChecks/inactive_with_billing.php:26
 #: ./templates/element/ContractChecks/unsettled_obligation.php:25
-#: ./templates/element/Contracts/facts.php:154
+#: ./templates/element/Contracts/facts.php:158
 #: ./templates/element/Contracts/related.php:36
 msgid "Date of Termination of Services"
 msgstr ""
@@ -1001,32 +1005,36 @@ msgstr ""
 msgid "A version that does not exist yet"
 msgstr ""
 
-#: ./src/Contracts/Proposal/TransferPreview.php:71
+#: ./src/Contracts/Proposal/TransferPreview.php:77
 msgid "Nobody has signed this proposal yet, so there is nothing to carry over."
 msgstr ""
 
-#: ./src/Contracts/Proposal/TransferPreview.php:126
+#: ./src/Contracts/Proposal/TransferPreview.php:134
 msgid "The signature is written down, but no signed papers have been filed against this proposal."
 msgstr ""
 
-#: ./src/Contracts/Proposal/TransferPreview.php:156
+#: ./src/Contracts/Proposal/TransferPreview.php:164
 msgid "A billing this proposal changes is no longer on the contract. Take the snapshot again and look the proposal over."
 msgstr ""
 
-#: ./src/Contracts/Proposal/TransferPreview.php:170
+#: ./src/Contracts/Proposal/TransferPreview.php:178
 msgid "A billing this proposal changes has itself been changed since: {0}. Carrying the proposal over will overwrite that."
 msgstr ""
 
-#: ./src/Contracts/Proposal/TransferPreview.php:182
+#: ./src/Contracts/Proposal/TransferPreview.php:190
 msgid "A billing has been added to the contract that this proposal knows nothing about. It will be left as it is."
 msgstr ""
 
-#: ./src/Contracts/Proposal/TransferPreview.php:220
+#: ./src/Contracts/Proposal/TransferPreview.php:228
 msgid "The contract version has been changed since this proposal was drawn up."
 msgstr ""
 
-#: ./src/Contracts/Proposal/TransferPreview.php:247
+#: ./src/Contracts/Proposal/TransferPreview.php:255
 msgid "This proposal takes effect on a day that has already been invoiced for. Only an administrator may write into an invoiced period, and only deliberately."
+msgstr ""
+
+#: ./src/Contracts/Proposal/TransferPreview.php:282
+msgid "Only an administrator may carry it over, and only deliberately."
 msgstr ""
 
 #: ./src/Contracts/Unsigned/UnsignedPaperwork.php:84
@@ -1163,39 +1171,39 @@ msgid "Unable to find results on page {0}. Redirect to page 1."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:126
-#: ./src/Controller/BillingsController.php:219
+#: ./src/Controller/BillingsController.php:227
 msgid "Billing text must be entered or service selected."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:135
-#: ./src/Controller/BillingsController.php:228
+#: ./src/Controller/BillingsController.php:236
 msgid "The service type does not match the selected contract."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:138
-#: ./src/Controller/BillingsController.php:231
-#: ./src/Controller/BillingsController.php:340
-#: ./src/Controller/BillingsController.php:474
+#: ./src/Controller/BillingsController.php:239
+#: ./src/Controller/BillingsController.php:351
+#: ./src/Controller/BillingsController.php:492
 #: ./src/Controller/ContractsController.php:850
 msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:142
-#: ./src/Controller/BillingsController.php:235
-#: ./src/Controller/BillingsController.php:604
+#: ./src/Controller/BillingsController.php:243
+#: ./src/Controller/BillingsController.php:641
 #: ./src/Controller/ContractsController.php:854
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:301
+#: ./src/Controller/BillingsController.php:312
 msgid "The billing has been deleted."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:304
+#: ./src/Controller/BillingsController.php:315
 msgid "The billing could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/BillingsController.php:605
+#: ./src/Controller/BillingsController.php:642
 #: ./templates/CustomerMessages/add_bulk/step_compose.php:160
 #: ./templates/CustomerMessages/add_bulk/step_done.php:108
 #: ./templates/element/Overviews/contracts_in_period.php:21
@@ -1242,80 +1250,80 @@ msgstr ""
 msgid "The commission could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:225
-#: ./src/Controller/ContractProposalsController.php:446
+#: ./src/Controller/ContractProposalsController.php:227
+#: ./src/Controller/ContractProposalsController.php:497
 msgid "This proposal can no longer be changed."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:335
+#: ./src/Controller/ContractProposalsController.php:337
 msgid "There is no such line on this proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:465
-#: ./src/Controller/ContractProposalsController.php:819
+#: ./src/Controller/ContractProposalsController.php:516
+#: ./src/Controller/ContractProposalsController.php:870
 #: ./src/Controller/CustomerProposalsController.php:106
 #: ./src/Controller/CustomerProposalsController.php:145
 msgid "The proposal has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:471
-#: ./src/Controller/ContractProposalsController.php:825
+#: ./src/Controller/ContractProposalsController.php:522
+#: ./src/Controller/ContractProposalsController.php:876
 #: ./src/Controller/CustomerProposalsController.php:115
 #: ./src/Controller/CustomerProposalsController.php:151
 msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:544
-#: ./src/Controller/CustomerProposalsController.php:503
+#: ./src/Controller/ContractProposalsController.php:595
+#: ./src/Controller/CustomerProposalsController.php:517
 msgid "The proposal has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:547
-#: ./src/Controller/CustomerProposalsController.php:506
+#: ./src/Controller/ContractProposalsController.php:598
+#: ./src/Controller/CustomerProposalsController.php:520
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:570
+#: ./src/Controller/ContractProposalsController.php:621
 #: ./src/Controller/CustomerProposalsController.php:172
-#: ./src/Controller/CustomerProposalsController.php:465
+#: ./src/Controller/CustomerProposalsController.php:479
 msgid "This proposal has already been settled."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:579
-#: ./src/Controller/CustomerProposalsController.php:474
+#: ./src/Controller/ContractProposalsController.php:630
+#: ./src/Controller/CustomerProposalsController.php:488
 msgid "The proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:582
-#: ./src/Controller/CustomerProposalsController.php:477
+#: ./src/Controller/ContractProposalsController.php:633
+#: ./src/Controller/CustomerProposalsController.php:491
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:661
+#: ./src/Controller/ContractProposalsController.php:712
 msgid "Say which day the service runs to."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:691
+#: ./src/Controller/ContractProposalsController.php:742
 msgid "Choose which contract and which version of it these papers are for."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:707
+#: ./src/Controller/ContractProposalsController.php:758
 msgid "Say which day the new contract starts."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:803
+#: ./src/Controller/ContractProposalsController.php:854
 msgid "Please answer this before the papers go out."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:807
+#: ./src/Controller/ContractProposalsController.php:858
 msgid "The contract is not ready for papers to be drawn up."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1054
+#: ./src/Controller/ContractProposalsController.php:1105
 msgid "These papers could not be given a proposal to be part of."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:246
+#: ./src/Controller/ContractProposalsController.php:248
 msgid "One line asked about a billing that is no longer on the contract and has been taken back."
 msgid_plural "{0} lines asked about billings that are no longer on the contract and have been taken back."
 msgstr[0] ""
@@ -1623,19 +1631,19 @@ msgstr ""
 msgid "This proposal cannot be carried over as it stands."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:368
+#: ./src/Controller/CustomerProposalsController.php:371
 msgid "The proposal could not be carried over: {0}"
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:384
+#: ./src/Controller/CustomerProposalsController.php:387
 msgid "Contract {0} has been given an end date. Its state is left as it was, because that has its own requirements to satisfy."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:497
+#: ./src/Controller/CustomerProposalsController.php:511
 msgid "This proposal may no longer be removed."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:376
+#: ./src/Controller/CustomerProposalsController.php:379
 msgid "The proposal has been carried over into the live records."
 msgid_plural "The proposal and everything in it have been carried over into the live records."
 msgstr[0] ""
@@ -2330,24 +2338,24 @@ msgstr ""
 msgid "Contract data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:215
+#: ./src/Model/Entity/Contract.php:217
 #: ./src/Model/Entity/Customer.php:172
 msgid "{0} ({1})"
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:270
-#: ./src/Model/Entity/Contract.php:285
-#: ./src/Model/Entity/Contract.php:300
+#: ./src/Model/Entity/Contract.php:272
+#: ./src/Model/Entity/Contract.php:287
+#: ./src/Model/Entity/Contract.php:302
 msgid "Contract state data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:315
-#: ./src/Model/Entity/Contract.php:330
-#: ./src/Model/Entity/Contract.php:345
+#: ./src/Model/Entity/Contract.php:317
+#: ./src/Model/Entity/Contract.php:332
+#: ./src/Model/Entity/Contract.php:347
 msgid "Service type data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:357
+#: ./src/Model/Entity/Contract.php:359
 msgid "Contract versions data not available."
 msgstr ""
 
@@ -3002,19 +3010,19 @@ msgstr ""
 msgid "This account is still named on tasks. Move them to somebody else first."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:324
+#: ./src/Model/Table/BillingsTable.php:462
 msgid "The billing cannot end before it starts."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:344
+#: ./src/Model/Table/BillingsTable.php:482
 msgid "The billing may not start in a period that has already been invoiced."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:363
+#: ./src/Model/Table/BillingsTable.php:501
 msgid "The billing may not end before {0}, the last day that has been invoiced."
 msgstr ""
 
-#: ./src/Model/Table/BillingsTable.php:386
+#: ./src/Model/Table/BillingsTable.php:524
 msgid "What has already been invoiced for is not changed here. End this billing and start a new one from the day the change takes effect."
 msgstr ""
 
@@ -3119,16 +3127,16 @@ msgstr ""
 msgid "The minimum term cannot run out before the version it belongs to begins."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:430
+#: ./src/Model/Table/ContractsTable.php:435
 #: ./src/Model/Table/TasksTable.php:119
 msgid "The specified access point is not one Watcher NMS keeps."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:453
+#: ./src/Model/Table/ContractsTable.php:458
 msgid "The specified service type requires the assignment of an installation address."
 msgstr ""
 
-#: ./src/Model/Table/ContractsTable.php:476
+#: ./src/Model/Table/ContractsTable.php:481
 msgid "The specified service type requires the assignment of an access point."
 msgstr ""
 
@@ -3384,7 +3392,7 @@ msgstr ""
 #: ./templates/Commissions/view.php:10
 #: ./templates/Commissions/view.php:53
 #: ./templates/ContractProposals/add.php:10
-#: ./templates/ContractProposals/billing_line.php:18
+#: ./templates/ContractProposals/billing_line.php:20
 #: ./templates/ContractProposals/edit.php:10
 #: ./templates/ContractProposals/view.php:33
 #: ./templates/ContractStates/add.php:11
@@ -3420,7 +3428,7 @@ msgstr ""
 #: ./templates/CustomerProposals/conclude.php:14
 #: ./templates/CustomerProposals/edit.php:12
 #: ./templates/CustomerProposals/send.php:19
-#: ./templates/CustomerProposals/transfer.php:28
+#: ./templates/CustomerProposals/transfer.php:29
 #: ./templates/CustomerProposals/view.php:29
 #: ./templates/Customers/add.php:15
 #: ./templates/Customers/edit.php:15
@@ -3575,23 +3583,23 @@ msgstr ""
 #: ./templates/AccountingProfiles/edit.php:41
 #: ./templates/Addresses/add.php:93
 #: ./templates/Addresses/edit.php:97
-#: ./templates/Billings/add.php:65
-#: ./templates/Billings/bulk_service_change.php:138
-#: ./templates/Billings/edit.php:96
-#: ./templates/Billings/service_change.php:180
+#: ./templates/Billings/add.php:71
+#: ./templates/Billings/bulk_service_change.php:146
+#: ./templates/Billings/edit.php:102
+#: ./templates/Billings/service_change.php:188
 #: ./templates/BorrowedEquipments/add.php:39
 #: ./templates/BorrowedEquipments/edit.php:47
 #: ./templates/Commissions/add.php:23
 #: ./templates/Commissions/edit.php:31
 #: ./templates/ContractProposals/add.php:26
-#: ./templates/ContractProposals/billing_line.php:117
+#: ./templates/ContractProposals/billing_line.php:131
 #: ./templates/ContractProposals/edit.php:36
 #: ./templates/ContractStates/add.php:112
 #: ./templates/ContractStates/edit.php:121
 #: ./templates/ContractVersions/add.php:80
 #: ./templates/ContractVersions/edit.php:90
-#: ./templates/Contracts/add.php:64
-#: ./templates/Contracts/edit.php:142
+#: ./templates/Contracts/add.php:68
+#: ./templates/Contracts/edit.php:146
 #: ./templates/Countries/add.php:24
 #: ./templates/Countries/edit.php:29
 #: ./templates/CustomerLabels/add.php:40
@@ -4161,7 +4169,7 @@ msgstr ""
 #: ./templates/Addresses/view.php:155
 #: ./templates/Billings/service_change.php:118
 #: ./templates/Billings/view.php:122
-#: ./templates/ContractProposals/billing_line.php:113
+#: ./templates/ContractProposals/billing_line.php:120
 #: ./templates/ContractProposals/view.php:215
 #: ./templates/ContractStates/view.php:193
 #: ./templates/ContractVersions/view.php:134
@@ -4513,6 +4521,15 @@ msgstr ""
 msgid "Allow a change inside an already invoiced period"
 msgstr ""
 
+#: ./templates/Billings/add.php:66
+#: ./templates/Billings/bulk_service_change.php:141
+#: ./templates/Billings/edit.php:97
+#: ./templates/Billings/service_change.php:183
+#: ./templates/ContractProposals/billing_line.php:126
+#: ./templates/CustomerProposals/transfer.php:98
+msgid "Allow a connection price below the minimum set on the contract"
+msgstr ""
+
 #: ./templates/Billings/bulk_service_change.php:30
 #: ./templates/Billings/index.php:21
 #: ./templates/Contracts/view.php:108
@@ -4536,7 +4553,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:58
 #: ./templates/Billings/service_change.php:131
 #: ./templates/Billings/view.php:62
-#: ./templates/ContractProposals/billing_line.php:60
+#: ./templates/ContractProposals/billing_line.php:62
 #: ./templates/ServiceOverrides/view.php:91
 #: ./templates/Services/view.php:31
 #: ./templates/element/ContractChecks/billing_gap.php:24
@@ -4567,7 +4584,7 @@ msgstr ""
 #: ./templates/Billings/view.php:101
 #: ./templates/Billings/view.php:144
 #: ./templates/Billings/view.php:181
-#: ./templates/ContractProposals/billing_line.php:77
+#: ./templates/ContractProposals/billing_line.php:79
 #: ./templates/EquipmentTypes/view.php:47
 #: ./templates/Overviews/overview_of_dealer_commissions.php:57
 #: ./templates/Queues/view.php:115
@@ -4584,7 +4601,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:102
 #: ./templates/Billings/service_change.php:149
 #: ./templates/Billings/view.php:106
-#: ./templates/ContractProposals/billing_line.php:82
+#: ./templates/ContractProposals/billing_line.php:89
 #: ./templates/Overviews/overview_of_dealer_commissions.php:58
 #: ./templates/Services/view.php:89
 #: ./templates/element/Contracts/Billings.php:27
@@ -4596,7 +4613,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:106
 #: ./templates/Billings/service_change.php:153
 #: ./templates/Billings/view.php:110
-#: ./templates/ContractProposals/billing_line.php:87
+#: ./templates/ContractProposals/billing_line.php:94
 #: ./templates/Overviews/overview_of_dealer_commissions.php:59
 #: ./templates/Services/view.php:90
 #: ./templates/element/Contracts/Billings.php:28
@@ -4624,11 +4641,11 @@ msgstr ""
 msgid "Version without legislative information"
 msgstr ""
 
-#: ./templates/Billings/bulk_service_change.php:140
+#: ./templates/Billings/bulk_service_change.php:148
 msgid "Do you really want to change the original service to the new service for all the billings listed below from the date set?"
 msgstr ""
 
-#: ./templates/Billings/bulk_service_change.php:150
+#: ./templates/Billings/bulk_service_change.php:158
 #: ./templates/Customers/view.php:684
 #: ./templates/Services/view.php:78
 msgid "Related Billings"
@@ -4674,7 +4691,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:65
 #: ./templates/Billings/view.php:69
-#: ./templates/ContractProposals/billing_line.php:64
+#: ./templates/ContractProposals/billing_line.php:66
 #: ./templates/Services/view.php:86
 #: ./templates/Tasks/add.php:84
 #: ./templates/Tasks/edit.php:97
@@ -4689,7 +4706,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:71
 #: ./templates/Billings/view.php:75
-#: ./templates/ContractProposals/billing_line.php:97
+#: ./templates/ContractProposals/billing_line.php:104
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
 #: ./templates/Services/view.php:92
 #: ./templates/element/ContractChecks/impossible_billing_period.php:21
@@ -4703,7 +4720,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:75
 #: ./templates/Billings/view.php:79
-#: ./templates/ContractProposals/billing_line.php:104
+#: ./templates/ContractProposals/billing_line.php:111
 #: ./templates/Overviews/overview_of_dealer_commissions.php:62
 #: ./templates/Services/view.php:93
 #: ./templates/element/ContractChecks/billing_gap.php:25
@@ -4727,7 +4744,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:85
 #: ./templates/Billings/view.php:89
-#: ./templates/ContractProposals/billing_line.php:109
+#: ./templates/ContractProposals/billing_line.php:116
 #: ./templates/ServiceTypes/view.php:63
 #: ./templates/Services/view.php:95
 #: ./templates/element/Contracts/Billings.php:33
@@ -4736,7 +4753,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:93
 #: ./templates/Billings/view.php:97
-#: ./templates/ContractProposals/billing_line.php:73
+#: ./templates/ContractProposals/billing_line.php:75
 #: ./templates/Overviews/overview_of_dealer_commissions.php:56
 #: ./templates/Services/view.php:87
 #: ./templates/element/ContractProposals/proposed_billings.php:37
@@ -4755,7 +4772,7 @@ msgstr ""
 msgid "Total Price"
 msgstr ""
 
-#: ./templates/Billings/service_change.php:182
+#: ./templates/Billings/service_change.php:190
 msgid "Do you really want to change the original service to the new service for the billing listed above from the date set?"
 msgstr ""
 
@@ -4915,44 +4932,44 @@ msgstr ""
 msgid "Related Contracts"
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:12
+#: ./templates/ContractProposals/billing_line.php:14
 msgid "Add to What Is Billed For"
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:13
+#: ./templates/ContractProposals/billing_line.php:15
 msgid "Change What Is Billed For"
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:21
+#: ./templates/ContractProposals/billing_line.php:23
 #: ./templates/element/ContractProposals/proposed_billings.php:78
 msgid "Take Back"
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:24
+#: ./templates/ContractProposals/billing_line.php:26
 #: ./templates/element/ContractProposals/proposed_billings.php:85
 msgid "Leave this as it stands on the contract?"
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:30
+#: ./templates/ContractProposals/billing_line.php:32
 #: ./templates/ContractProposals/edit.php:12
 #: ./templates/CustomerProposals/conclude.php:16
 #: ./templates/CustomerProposals/edit.php:15
 #: ./templates/CustomerProposals/send.php:21
-#: ./templates/CustomerProposals/transfer.php:43
+#: ./templates/CustomerProposals/transfer.php:44
 #: ./templates/Documents/add_pages.php:41
 #: ./templates/element/CustomerChecks/customer_proposal.php:46
 msgid "View Proposal"
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:45
+#: ./templates/ContractProposals/billing_line.php:47
 msgid "Replacing {0}, billed from {1}. It stops the day before this one starts."
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:78
+#: ./templates/ContractProposals/billing_line.php:80
 msgid "Price list"
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:98
+#: ./templates/ContractProposals/billing_line.php:105
 msgid "Empty starts with the papers."
 msgstr ""
 
@@ -5313,31 +5330,36 @@ msgstr ""
 msgid "Add Contract"
 msgstr ""
 
+#: ./templates/Contracts/add.php:61
+#: ./templates/Contracts/edit.php:68
+msgid "The monthly price for the connection may not be lower than this."
+msgstr ""
+
 #: ./templates/Contracts/edit.php:34
 #: ./templates/Contracts/view.php:21
 msgid "Edit Contract"
 msgstr ""
 
-#: ./templates/Contracts/edit.php:67
+#: ./templates/Contracts/edit.php:71
 msgid "Printed on the contract, under whatever holds for the kind of service. A proposal already drawn up keeps what it took until its snapshot is taken again."
 msgstr ""
 
-#: ./templates/Contracts/edit.php:81
+#: ./templates/Contracts/edit.php:85
 #: ./templates/Contracts/index.php:46
 #: ./templates/Customers/view.php:620
 #: ./templates/Overviews/overview_of_contracts.php:70
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:22
-#: ./templates/element/Contracts/facts.php:122
+#: ./templates/element/Contracts/facts.php:126
 #: ./templates/element/Contracts/related.php:32
 msgid "Installation/Establishment Date"
 msgstr ""
 
-#: ./templates/Contracts/edit.php:107
+#: ./templates/Contracts/edit.php:111
 #: ./templates/Contracts/index.php:50
 #: ./templates/Customers/view.php:621
 #: ./templates/Overviews/overview_of_contracts.php:75
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:23
-#: ./templates/element/Contracts/facts.php:138
+#: ./templates/element/Contracts/facts.php:142
 #: ./templates/element/Contracts/related.php:34
 msgid "Uninstallation/Cancellation Date"
 msgstr ""
@@ -5972,47 +5994,47 @@ msgstr ""
 msgid "These get the same day, because they went out together."
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:52
-#: ./templates/CustomerProposals/transfer.php:79
+#: ./templates/CustomerProposals/transfer.php:53
+#: ./templates/CustomerProposals/transfer.php:80
 msgid "Carry the Proposal Over"
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:54
+#: ./templates/CustomerProposals/transfer.php:55
 msgid "Everything this proposal asks of the contracts, written into the live records in one go. Until now they have not moved."
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:73
+#: ./templates/CustomerProposals/transfer.php:74
 msgid "This proposal cannot be carried over as it stands. What stands in the way is said above, beside the contract it is about."
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:81
+#: ./templates/CustomerProposals/transfer.php:82
 msgid "This proposal changes nothing. It is the record of the papers that went out, and carrying it over only marks it as dealt with, so that it stops being listed as waiting."
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:85
+#: ./templates/CustomerProposals/transfer.php:86
 msgid "All of it or none of it. Half a package written into the records is worse than none, because nothing afterwards says which half."
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:91
+#: ./templates/CustomerProposals/transfer.php:92
 msgid "Write into a period that has already been invoiced for"
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:96
+#: ./templates/CustomerProposals/transfer.php:103
 msgid "Mark as Dealt With"
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:96
+#: ./templates/CustomerProposals/transfer.php:103
 #: ./templates/CustomerProposals/view.php:56
 #: ./templates/element/ContractChecks/untransferred_proposal.php:41
 #: ./templates/element/Documents/rounds.php:128
 msgid "Carry Over"
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:99
+#: ./templates/CustomerProposals/transfer.php:106
 msgid "Mark this proposal as dealt with?"
 msgstr ""
 
-#: ./templates/CustomerProposals/transfer.php:100
+#: ./templates/CustomerProposals/transfer.php:107
 msgid "Do you really want to write what this proposal asks for into the live records?"
 msgstr ""
 
@@ -8252,12 +8274,16 @@ msgstr ""
 msgid "Network Map"
 msgstr ""
 
-#: ./templates/element/Contracts/facts.php:126
+#: ./templates/element/Contracts/facts.php:115
+msgid "Minimum Connection Price"
+msgstr ""
+
+#: ./templates/element/Contracts/facts.php:130
 #: ./templates/element/Contracts/related.php:33
 msgid "Installation Technician"
 msgstr ""
 
-#: ./templates/element/Contracts/facts.php:142
+#: ./templates/element/Contracts/facts.php:146
 #: ./templates/element/Contracts/related.php:35
 msgid "Uninstallation Technician"
 msgstr ""
