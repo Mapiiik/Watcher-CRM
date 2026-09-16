@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ContractProposalsController;
+use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
@@ -11,6 +12,7 @@ use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Files\Model\Entity\FileLink;
+use Files\Service\FileStorage;
 use Laminas\Diactoros\UploadedFile;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -393,40 +395,110 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
-     * Unfreezing is the administrator's to do. Everyone who files scans may correct their own,
-     * but letting a drawn-up paper go changes what the customer would be handed next time.
+     * A paper we drew that has gone nowhere may be let go of by whoever draws papers: nobody was
+     * handed it, so it is a draft rather than a record. Once the envelope has gone out it is what
+     * the customer holds, and then it stays - for everybody but the administrator.
      *
      * @link \App\Controller\DocumentsController::dropPage()
      * @return void
      */
-    public function testOnlyTheAdministratorMayUnfreezeADrawnUpPaper(): void
+    public function testADrawnUpPaperGoesWhileItHasGoneNowhere(): void
     {
-        $this->addPages(['scan.pdf']);
         $this->print();
+        $this->login('sales-representative');
 
+        $drawn = fn(): int => $this->fetchTable('Files.FileLinks')->find()
+            ->where(['variant' => DocumentVariant::Generated->value])
+            ->count();
+
+        $this->assertSame(1, $drawn());
+
+        $this->dropTheDrawnPaper();
+        $this->assertSame(0, $drawn(), 'A paper that went nowhere was kept from the operator.');
+
+        // Drawn again, and this time the envelope goes out.
+        $this->print();
+        $this->theRoundHasGoneOut();
+
+        $this->dropTheDrawnPaper();
+        $this->assertSame(
+            1,
+            $drawn(),
+            'The paper the customer was handed was unfrozen by somebody who may not.',
+        );
+    }
+
+    /**
+     * A paper we drew and the copy carrying our signature are one document, so they go together -
+     * a stamped copy of something that is no longer there would say nothing anybody could check.
+     *
+     * @link \App\Proposals\ProposalPapers::drop()
+     * @return void
+     */
+    public function testTheStampedCopyGoesWithThePaperItWasMadeFrom(): void
+    {
+        // Put on the shelf rather than drawn: what this is about is the letting go, and the two
+        // forms of one paper are what the store holds either way.
+        $storage = new FileStorage();
+
+        foreach ([DocumentVariant::Generated, DocumentVariant::GeneratedSignedByUs] as $variant) {
+            $storage->link(
+                $storage->store('%PDF-1.7 ' . $variant->value, 'application/pdf'),
+                ContractDocuments::MODEL,
+                self::PROPOSAL_ID,
+                self::DOCUMENT,
+                $variant->value,
+                ['name' => $variant->value . '.pdf'],
+            );
+        }
+
+        $ours = fn(): int => $this->fetchTable('Files.FileLinks')->find()
+            ->where(['variant IN' => [
+                DocumentVariant::Generated->value,
+                DocumentVariant::GeneratedSignedByUs->value,
+            ]])
+            ->count();
+
+        $this->assertSame(2, $ours());
+
+        $this->dropTheDrawnPaper();
+
+        $this->assertSame(0, $ours(), 'The stamped copy was left without the paper behind it.');
+    }
+
+    /**
+     * Lets go of the paper we drew, whichever of its forms is asked for first.
+     *
+     * @return void
+     */
+    private function dropTheDrawnPaper(): void
+    {
         $drawn = $this->fetchTable('Files.FileLinks')->find()
             ->where(['variant' => DocumentVariant::Generated->value])
+            ->orderByDesc('created')
             ->firstOrFail();
-
-        $this->login('sales-representative');
 
         $this->post(
             '/documents/drop-page/' . $drawn->get('id')
             . '?proposal_id=' . self::PROPOSAL_ID . '&agenda=ContractProposals',
         );
-        $this->assertSame(
-            1,
-            $this->fetchTable('Files.FileLinks')->find()
-                ->where(['variant' => DocumentVariant::Generated->value])
-                ->count(),
-            'The paper we drew up was unfrozen by somebody who may not.',
-        );
+    }
 
-        $this->post(
-            '/documents/drop-page/' . $this->linkOf('scan.pdf')
-            . '?proposal_id=' . self::PROPOSAL_ID . '&agenda=ContractProposals',
+    /**
+     * Records that the envelope went out, which is what freezes what it holds.
+     *
+     * @return void
+     */
+    private function theRoundHasGoneOut(): void
+    {
+        $rounds = $this->fetchTable('CustomerProposals');
+        $rounds->saveOrFail(
+            $rounds->patchEntity($rounds->get(self::ROUND_ID), [
+                'sent_date' => '2026-10-01',
+                'delivery_type' => DocumentsDeliveryType::Post,
+            ]),
+            ['checkRules' => false],
         );
-        $this->assertSame([], $this->namesOnFile());
     }
 
     /**

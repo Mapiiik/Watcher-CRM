@@ -268,8 +268,13 @@ class DocumentsController extends AppController
         $page = $this->thePage($round, $link_id);
 
         try {
-            (new ProposalPapers())->drop($page);
-            $this->Flash->success(__('The page has been removed.'));
+            $dropped = (new ProposalPapers())->drop($page);
+            $this->Flash->success(__n(
+                'The page has been removed.',
+                '{0} pages have been removed.',
+                $dropped,
+                $dropped,
+            ));
         } catch (Throwable $e) {
             $this->Flash->error(__('The page could not be removed: {0}', $e->getMessage()));
         }

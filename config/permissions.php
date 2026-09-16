@@ -560,9 +560,9 @@ $permissions = [
                 'movePage',
             ],
         ],
-        //a scan that came back is the operator's own to correct, but letting go of a paper we drew
-        //up is unfreezing it - the document may then be printed afresh - so that stays with the
-        //administrator, who is matched by '*' and never reaches this rule
+        //a scan that came back is the operator's own to correct, and so is a paper we drew that has
+        //not gone anywhere - what is frozen is what somebody was handed, and nobody was handed
+        //this one yet
         [
             'role' => [
                 'network-manager',
@@ -591,12 +591,34 @@ $permissions = [
                 $links = TableRegistry::getTableLocator()->get('Files.FileLinks');
                 /** @var \Files\Model\Entity\FileLink|null $link */
                 $link = $links->find()
-                    ->select(['FileLinks.variant'])
+                    ->select(['FileLinks.model', 'FileLinks.foreign_key', 'FileLinks.variant'])
                     ->where(['FileLinks.id' => $id])
                     ->first();
 
-                return $link !== null
-                    && (DocumentVariant::tryFrom((string)$link->variant)?->isReceived() ?? false);
+                if ($link === null) {
+                    return false;
+                }
+
+                //a scan that came back is the operator's own to correct
+                if (DocumentVariant::tryFrom((string)$link->variant)?->isReceived() ?? false) {
+                    return true;
+                }
+
+                //letting go of a paper we drew up is unfreezing it - the document may then be
+                //drawn afresh - so it goes while what stands behind it may still be changed, and
+                //that is the very question the papers are already asked
+                $agenda = (string)$link->model;
+
+                if (!in_array($agenda, ['ContractProposals', 'CustomerProposals'], true)) {
+                    return false;
+                }
+
+                /** @var \App\Model\Table\ContractProposalsTable|\App\Model\Table\CustomerProposalsTable $rounds */
+                $rounds = TableRegistry::getTableLocator()->get($agenda);
+                /** @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round */
+                $round = $rounds->find()->where([$agenda . '.id' => $link->foreign_key])->first();
+
+                return $round !== null && $rounds->mayBeEdited($round);
             },
         ],
         //allow delete of some items for sales and bookkeepers and network-managers
