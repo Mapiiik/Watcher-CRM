@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Proposals;
 
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentVariant;
+use App\Service\ContractPrint\ContractDocuments;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use InvalidArgumentException;
@@ -108,13 +110,26 @@ final class LateProposals
                 $dates . '.conclusion_date <=' => Date::today()->subDays(max(0, $after)),
             ])
             ->where(function ($exp, SelectQuery $q) use ($alias, $model) {
+                // A signed copy of the agreement, or a paper that is the customer's answer by
+                // itself. A round put to the customer has one paper, so any signed copy is it.
+                $answered = ['FiledCheck.variant IN' => self::signedByTheCustomer()];
+
+                if ($model === ContractDocuments::MODEL) {
+                    $answered = ['OR' => [
+                        $answered + ['FiledCheck.document_type IN' => self::contractTypes(
+                            fn(ContractDocumentType $type): bool => $type->isTheAgreement(),
+                        )],
+                        ['FiledCheck.document_type IN' => self::contractTypes(
+                            fn(ContractDocumentType $type): bool => $type->speaksForItself(),
+                        )],
+                    ]];
+                }
+
                 $filed = $q->getConnection()->selectQuery()
                     ->select(['1'])
                     ->from(['FiledCheck' => 'file_links'])
-                    ->where([
-                        'FiledCheck.model' => $model,
-                        'FiledCheck.variant IN' => self::signedByTheCustomer(),
-                    ]);
+                    ->where(['FiledCheck.model' => $model])
+                    ->where($answered);
 
                 $filed->where($filed->expr()->equalFields('FiledCheck.foreign_key', $alias . '.id'));
 
@@ -139,6 +154,25 @@ final class LateProposals
         }
 
         return $variants;
+    }
+
+    /**
+     * The papers of a contract that answer the question asked, by the name they are filed under.
+     *
+     * @param callable(\App\Model\Enum\ContractDocumentType): bool $asked The question.
+     * @return list<string>
+     */
+    private static function contractTypes(callable $asked): array
+    {
+        $types = [];
+
+        foreach (ContractDocumentType::cases() as $case) {
+            if ($asked($case)) {
+                $types[] = $case->value;
+            }
+        }
+
+        return $types;
     }
 
     /**

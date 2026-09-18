@@ -6,11 +6,16 @@ namespace App\Test\TestCase\Controller;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\TheUsualTerm;
 use App\Controller\ContractProposalsController;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
+use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
+use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Files\Service\FileStorage;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -116,6 +121,8 @@ class ContractProposalsControllerTest extends TestCase
         'app.IpNetworks',
         'app.CustomerProposals',
         'app.ContractProposals',
+        'plugin.Files.Files',
+        'plugin.Files.FileLinks',
     ];
 
     /**
@@ -1436,8 +1443,43 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * The customer's own notice ending the contract is the answer by itself, so nothing is said
+     * about a missing scan once it is on file.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangePreview::of()
+     */
+    public function testANoticeOnFileIsTheAnswer(): void
+    {
+        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+
+        $root = TMP . 'notice-papers-' . uniqid();
+        Configure::write('Files.root', $root);
+        $storage = new FileStorage();
+        $storage->link(
+            $storage->store('%PDF-1.7 notice', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractDocumentType::TerminationNotice->value,
+            DocumentVariant::Received->value,
+            ['name' => 'notice.pdf'],
+        );
+
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains(
+            __('The signature is recorded, but no signed documents have been filed against this'
+                . ' proposal.'),
+        );
+
+        Configure::delete('Files.root');
+    }
+
+    /**
      * A minimum raised after a line was written does not hold the rest of the proposal up: the line
-     * was asked when it was written, and what it says now is applying the changes's to tell.
+     * was asked when it was written, and what it says now is for the preview to tell.
      *
      * @return void
      * @link \App\Controller\ContractProposalsController::edit()

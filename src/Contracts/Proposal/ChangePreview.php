@@ -5,6 +5,7 @@ namespace App\Contracts\Proposal;
 
 use App\Contracts\MinimumConnectionPrice;
 use App\Model\Entity\ContractProposal;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentVariant;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -123,7 +124,19 @@ final class ChangePreview
 
         $filed = (new ContractDocuments())->filedAgainst([$proposal])[(string)$proposal->id] ?? [];
 
-        foreach ($filed as $byVariant) {
+        foreach ($filed as $document_type => $byVariant) {
+            $type = ContractDocumentType::tryFrom((string)$document_type);
+
+            // A notice or a certificate is the answer by itself, however it came back.
+            if ($type?->speaksForItself() ?? false) {
+                return [];
+            }
+
+            // Otherwise it is a signed copy of the agreement; a signed protocol does not stand in.
+            if (!($type?->isTheAgreement() ?? false)) {
+                continue;
+            }
+
             foreach (array_keys($byVariant) as $variant) {
                 if (DocumentVariant::tryFrom((string)$variant)?->carriesTheCustomersSignature() ?? false) {
                     return [];

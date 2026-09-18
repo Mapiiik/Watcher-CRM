@@ -82,6 +82,43 @@ enum ContractDocumentType: string implements EnumLabelInterface
     }
 
     /**
+     * Whether this is the agreement itself, the paper the customer's signature is about.
+     *
+     * A signed copy of one of these is what a recorded signature waits for. The summary and the
+     * handover protocols go with the agreement and may be signed too, but they do not stand in for
+     * it. Named one by one, so that a new type is asked on its own.
+     *
+     * @return bool
+     */
+    public function isTheAgreement(): bool
+    {
+        return match ($this) {
+            self::ContractNew, self::ContractNewX, self::ContractAmendment, self::ContractTermination => true,
+            default => false,
+        };
+    }
+
+    /**
+     * Whether having the paper on file is having the other side's answer.
+     *
+     * The customer's own letter says what they want without being signed on a paper of ours, and a
+     * certificate from an office needs nobody's signature at all. Filed as they came back, they
+     * settle a signature the way a signed copy of ours would.
+     *
+     * Named one by one rather than read off whether the paper is generated: a paper that only
+     * comes back is not by that alone somebody's answer, and each new type is asked on its own.
+     *
+     * @return bool
+     */
+    public function speaksForItself(): bool
+    {
+        return match ($this) {
+            self::TerminationNotice, self::DeathCertificate => true,
+            default => false,
+        };
+    }
+
+    /**
      * Indicates whether this document type requires selecting
      * a contract version to be executed.
      *

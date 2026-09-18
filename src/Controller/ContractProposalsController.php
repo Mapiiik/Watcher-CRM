@@ -448,7 +448,7 @@ class ContractProposalsController extends AppController
      *
      * Asked here because this is the one place a priced line is written, and of that line alone:
      * the lines already standing were asked when they were written, and a minimum raised since is
-     * the preview of the changes's to say. What guards the records is the billing itself when the
+     * for the preview of the changes to say. What guards the records is the billing itself when the
      * proposal is applied - this only saves the operator finding out there.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.

@@ -132,6 +132,48 @@ class UnfiledSignatureCheckTest extends TestCase
     }
 
     /**
+     * An ending is answered by the customer's own notice, or by a death certificate, filed as they
+     * came back - neither is signed on a paper of ours.
+     *
+     * @return void
+     */
+    public function testANoticeOrACertificateAnswersForTheSignature(): void
+    {
+        $this->proposalSays(['conclusion_date' => Date::now()->subDays(30)]);
+
+        foreach (['termination-notice', 'death-certificate'] as $document) {
+            $this->getTableLocator()->get('Files.FileLinks')->deleteAll([]);
+            $this->fileAScan(DocumentVariant::Received, $document);
+
+            $this->assertNotContains(self::PROPOSAL_ID, $this->found(), $document . ' was not enough.');
+        }
+
+        // Filed as merely received, a paper of ours is still not the signature.
+        $this->getTableLocator()->get('Files.FileLinks')->deleteAll([]);
+        $this->fileAScan(DocumentVariant::Received, 'contract-termination');
+
+        $this->assertContains(self::PROPOSAL_ID, $this->found());
+    }
+
+    /**
+     * A signed handover protocol goes with the agreement but does not stand in for it: it is the
+     * signed agreement that is waited for.
+     *
+     * @return void
+     */
+    public function testASignedProtocolIsNotTheAgreement(): void
+    {
+        $this->proposalSays(['conclusion_date' => Date::now()->subDays(30)]);
+        $this->fileAScan(DocumentVariant::ReceivedSignedByCustomer, 'handover-protocol-installation');
+
+        $this->assertContains(self::PROPOSAL_ID, $this->found());
+
+        $this->fileAScan(DocumentVariant::ReceivedSignedByCustomer, 'contract-new');
+
+        $this->assertNotContains(self::PROPOSAL_ID, $this->found());
+    }
+
+    /**
      * What we drew up ourselves is not what is being waited for - it is the customer's signature
      * that has to come back.
      *
@@ -212,9 +254,10 @@ class UnfiledSignatureCheckTest extends TestCase
      * Files one page against the proposal.
      *
      * @param \App\Model\Enum\DocumentVariant $variant Whose signatures it carries.
+     * @param string $document Which paper it is.
      * @return void
      */
-    private function fileAScan(DocumentVariant $variant): void
+    private function fileAScan(DocumentVariant $variant, string $document = 'contract-new'): void
     {
         $storage = new FileStorage();
 
@@ -222,7 +265,7 @@ class UnfiledSignatureCheckTest extends TestCase
             $storage->store('%PDF-1.7 ' . $variant->value, 'application/pdf'),
             ContractDocuments::MODEL,
             self::PROPOSAL_ID,
-            'contract-new',
+            $document,
             $variant->value,
             ['name' => 'scan.pdf'],
         );
