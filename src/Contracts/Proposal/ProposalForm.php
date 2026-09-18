@@ -28,10 +28,25 @@ final class ProposalForm
      * @param array<string, mixed> $data What the form sent.
      * @param \App\Contracts\Proposal\ProposalChanges $existing What the proposal asks for now.
      * @param \App\Model\Enum\ProposalPurpose $purpose What the papers are being drawn up for.
+     * @param bool $keepsVersions Whether the contract keeps versions at all.
      * @return array<string, mixed>
      */
-    public function changesFrom(array $data, ProposalChanges $existing, ProposalPurpose $purpose): array
-    {
+    public function changesFrom(
+        array $data,
+        ProposalChanges $existing,
+        ProposalPurpose $purpose,
+        bool $keepsVersions = true,
+    ): array {
+        // A contract that keeps no versions has none to change: an ending ends the contract alone.
+        if (!$keepsVersions) {
+            return $existing
+                ->withVersion(ProposedVersion::fromArray([]))
+                ->withContract(ProposedContract::fromArray($purpose === ProposalPurpose::Termination
+                    ? $this->contractEnd($this->endsOn($data))
+                    : []))
+                ->toArray();
+        }
+
         if ($purpose === ProposalPurpose::Termination) {
             return $this->ending($data, $existing);
         }
@@ -58,8 +73,7 @@ final class ProposalForm
      */
     private function ending(array $data, ProposalChanges $existing): array
     {
-        $day = $data['ends_on'] ?? null;
-        $said = is_string($day) && trim($day) !== '' ? [self::ENDS_ON => trim($day)] : [];
+        $said = $this->endsOn($data);
 
         return $existing
             ->withVersion(ProposedVersion::fromArray($said))
@@ -67,6 +81,19 @@ final class ProposalForm
                 empty($data['version_only']) ? $this->contractEnd($said) : [],
             ))
             ->toArray();
+    }
+
+    /**
+     * The day an ending ends on, where the form gave one.
+     *
+     * @param array<string, mixed> $data What the form sent.
+     * @return array<string, string>
+     */
+    private function endsOn(array $data): array
+    {
+        $day = $data['ends_on'] ?? null;
+
+        return is_string($day) && trim($day) !== '' ? [self::ENDS_ON => trim($day)] : [];
     }
 
     /**

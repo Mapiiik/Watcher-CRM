@@ -48,6 +48,7 @@ final class SnapshotShape
         'name',
         'activation_fee',
         'activation_fee_with_obligation',
+        'have_contract_versions',
         'have_equipments',
         'have_ip_addresses',
         'have_radius_accounts',

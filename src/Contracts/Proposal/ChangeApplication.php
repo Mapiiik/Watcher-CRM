@@ -76,7 +76,12 @@ final class ChangeApplication
                 $planned = (new ChangePlan())->of($proposal);
 
                 $this->applyTheBillings($proposal, $options, $go_below_minimum);
-                $this->applyTheVersions($proposal, $planned);
+
+                // A contract that keeps no versions never gets one, not even from a new contract.
+                if ($proposal->keepsVersions()) {
+                    $this->applyTheVersions($proposal, $planned);
+                }
+
                 $this->applyToTheContract($proposal, $planned);
 
                 $proposal->applied = DateTime::now();

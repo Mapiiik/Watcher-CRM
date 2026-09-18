@@ -95,7 +95,10 @@ class UnfiledSignatureCheck extends AbstractContractCheck
             // print it, so it is read as well as joined.
             ->contain(['Contracts' => ['Customers'], 'ContractVersions', 'CustomerProposals'])
             ->innerJoinWith('Contracts')
-            ->innerJoinWith('CustomerProposals');
+            ->innerJoinWith('CustomerProposals')
+            // Nothing of ours is signed for a contract whose service keeps no versions.
+            ->innerJoinWith('Contracts.ServiceTypes')
+            ->where(['ServiceTypes.have_contract_versions' => true]);
 
         LateProposals::unfiled(
             $query,

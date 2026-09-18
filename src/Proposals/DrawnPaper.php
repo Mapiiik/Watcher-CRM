@@ -104,6 +104,12 @@ final class DrawnPaper
                 $this->whatTheCustomersSays($round, $document_type),
             );
         } else {
+            // Asked first: there is no version to print from, and nothing of ours to print.
+            if (!$round->keepsVersions()) {
+                return [__('No documents of ours are generated for a contract whose service keeps no'
+                    . ' contract versions.')];
+            }
+
             $type = ContractDocumentType::tryFrom($document_type);
 
             if ($type === null) {

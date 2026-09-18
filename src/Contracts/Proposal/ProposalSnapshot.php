@@ -106,6 +106,20 @@ final class ProposalSnapshot
     }
 
     /**
+     * Whether the contract's service keeps versions - and so papers - at all.
+     *
+     * Some services are only passed on: the customer is the provider's client, not ours, and no
+     * contract is concluded with us. Snapshots taken before this was kept were all of contracts
+     * that do keep them, since no other could have a proposal.
+     *
+     * @return bool
+     */
+    public function keepsVersions(): bool
+    {
+        return ($this->part('contract')['service_type']['have_contract_versions'] ?? true) !== false;
+    }
+
+    /**
      * The billings as they stood, by their id.
      *
      * @return array<string, array<string, mixed>>

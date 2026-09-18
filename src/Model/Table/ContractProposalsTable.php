@@ -481,13 +481,35 @@ class ContractProposalsTable extends AppTable
         $rules->add(
             function (ContractProposal $entity): bool {
                 return $entity->contract_version_id !== null
-                    || $entity->purpose->mayStartAVersion();
+                    || $entity->purpose->mayStartAVersion()
+                    || !$entity->keepsVersions();
             },
             'onlyANewContractStartsItsVersion',
             [
                 'errorField' => 'contract_version_id',
                 'message' => __('A contract proposal for this purpose is about a version that'
                     . ' already exists.'),
+            ],
+        );
+
+        // A contract whose service keeps no versions has none to name, end or change: the proposal
+        // is about its billings and the contract alone.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                if ($entity->keepsVersions()) {
+                    return true;
+                }
+
+                $changes = $this->readChanges($entity);
+
+                return $entity->contract_version_id === null
+                    && $entity->terminates_contract_version_id === null
+                    && ($changes === null || $changes->version->isEmpty());
+            },
+            'noVersionWhereTheServiceKeepsNone',
+            [
+                'errorField' => 'contract_version_id',
+                'message' => __('The service of this contract keeps no contract versions.'),
             ],
         );
 
@@ -642,6 +664,11 @@ class ContractProposalsTable extends AppTable
                     return true;
                 }
 
+                // Without versions the contract's own end is all there is to agree with.
+                if (!$entity->keepsVersions()) {
+                    return true;
+                }
+
                 $endsVersion = $changes->version->endsTheVersion();
                 $endsContract = $changes->contract->endsTheContract();
 
@@ -683,9 +710,14 @@ class ContractProposalsTable extends AppTable
                     return true;
                 }
 
-                return $entity->purpose === ProposalPurpose::Termination
+                if ($entity->purpose !== ProposalPurpose::Termination) {
+                    return !$changes->contract->endsTheContract();
+                }
+
+                // An ending says its day on the version, or on the contract where there is none.
+                return $entity->keepsVersions()
                     ? $changes->version->endsTheVersion()
-                    : !$changes->contract->endsTheContract();
+                    : $changes->contract->endsTheContract();
             },
             'changesMatchThePurpose',
             [
@@ -704,7 +736,8 @@ class ContractProposalsTable extends AppTable
                 $ends = $entity->terminatesAnotherVersion()
                     || $entity->purpose === ProposalPurpose::Termination;
 
-                return !$ends || ($entity->terminated_contract_number ?? '') !== '';
+                // Nothing is printed for a contract that keeps no versions, so nothing to put it on.
+                return !$ends || !$entity->keepsVersions() || ($entity->terminated_contract_number ?? '') !== '';
             },
             'terminatedContractNumberIsGiven',
             [

@@ -32,13 +32,14 @@ final class ProposalSnapshotBuilder
      */
     public function take(
         Contract $contract,
-        ContractVersion $version,
+        ?ContractVersion $version,
         ?ContractVersion $terminated = null,
     ): array {
         return [
             'contract' => $this->contract($contract),
             'customer' => $this->customer($contract),
-            'version' => $this->fields($version, SnapshotShape::VERSION),
+            // A contract whose service keeps no versions has none to photograph.
+            'version' => $version === null ? null : $this->fields($version, SnapshotShape::VERSION),
             'terminated_version' => $terminated === null
                 ? null
                 : $this->fields($terminated, SnapshotShape::VERSION),

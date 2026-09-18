@@ -12,6 +12,7 @@
  * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $versions
+ * @var bool|null $keepsVersions Whether the contract's service keeps versions at all.
  * @var array<string, string> $rounds
  * @var array<string, string> $roundPurposes
  * @var array<string> $questions
@@ -30,6 +31,7 @@ $changes = $contractProposal->isNew()
     : $contractProposal->proposedChanges();
 
 $ending = $purpose === ProposalPurpose::Termination;
+$keepsVersions ??= true;
 $endsOn = $changes?->version->names('valid_until') ?? false
     ? $changes->version->get('valid_until')
     : null;
@@ -95,21 +97,28 @@ $endsOn = $changes?->version->names('valid_until') ?? false
     // A new contract may be put on paper before the version it is about exists: left empty, the
     // version comes into being when the papers are applied. Everything else is about a
     // version that is already there.
-    echo $this->Form->control('contract_version_id', [
-        'options' => $versions,
-        'empty' => true,
-        'label' => __('Contract Version'),
-        'onchange' => $this::REFRESH_ON_CHANGE,
-        'required' => !$purpose->mayStartAVersion(),
-        'help' => $purpose->mayStartAVersion()
-            ? __('Left empty, the version is created when the changes of this contract proposal'
-                . ' are applied.')
-            : null,
-    ]);
+    if ($keepsVersions) {
+        echo $this->Form->control('contract_version_id', [
+            'options' => $versions,
+            'empty' => true,
+            'label' => __('Contract Version'),
+            'onchange' => $this::REFRESH_ON_CHANGE,
+            'required' => !$purpose->mayStartAVersion(),
+            'help' => $purpose->mayStartAVersion()
+                ? __('Left empty, the version is created when the changes of this contract proposal'
+                    . ' are applied.')
+                : null,
+        ]);
+    } else {
+        // Some services are only passed on, and the customer's contract is with the provider.
+        echo '<p>' . __('The service of this contract keeps no contract versions, so none of our'
+            . ' documents are generated for this proposal.') . '</p>';
+    }
 
     // Without a version there is no day to take, so it is asked for here as well.
     $asksForTheDay = $purpose->asksForItsOwnDay()
-        || ($purpose->mayStartAVersion() && $contractProposal->contract_version_id === null);
+        || ($purpose->mayStartAVersion() && $contractProposal->contract_version_id === null)
+        || (!$keepsVersions && !$ending);
 
     // A change is agreed while the version runs, so it says its own day. A new contract starts
     // with its version, and an ending says the day it ends on - both are worked out rather than
@@ -123,15 +132,17 @@ $endsOn = $changes?->version->names('valid_until') ?? false
             'onblur' => $this::REFRESH_ON_LEAVING,
             // Left empty it follows the version, so it is not filled in ahead of time: a day put
             // there for the operator would stay behind when they chose another version.
-            'required' => false,
-            'help' => $effectiveFromDefault === null
-                ? __('The day this contract proposal takes effect, and the day the version'
-                    . ' starts on.')
-                : __(
+            'required' => !$keepsVersions,
+            'help' => match (true) {
+                !$keepsVersions => __('The day this contract proposal takes effect.'),
+                $effectiveFromDefault === null => __('The day this contract proposal takes effect,'
+                    . ' and the day the version starts on.'),
+                default => __(
                     'The day this contract proposal takes effect. Empty takes the day the'
                     . ' version does, {0}.',
                     $effectiveFromDefault,
                 ),
+            },
         ]);
     } elseif (!$ending) {
         echo '<p>' . __('This contract proposal takes effect with the contract version it is for.') . '</p>';
@@ -139,7 +150,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
 
     // Only a new contract may end an earlier version of the same contract, which is the one paper
     // that does both at once. A change leaves the version where it is, by definition.
-    if ($purpose === ProposalPurpose::NewContract) {
+    if ($purpose === ProposalPurpose::NewContract && $keepsVersions) {
         echo $this->Form->control('terminates_contract_version_id', [
             'options' => $versions,
             'empty' => true,
@@ -148,7 +159,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
     }
 
     // The number is what goes on the paper of anything that ends something, and both of those do.
-    if ($purpose !== ProposalPurpose::ServiceChange) {
+    if ($purpose !== ProposalPurpose::ServiceChange && $keepsVersions) {
         echo $this->Form->control('terminated_contract_number', [
             'options' => $contractNumbers,
             'empty' => true,
@@ -168,18 +179,22 @@ $endsOn = $changes?->version->names('valid_until') ?? false
         'empty' => true,
         'value' => $endsOn,
         'label' => __('Last day of the service'),
-        'help' => __('The version stops being valid on this day, and so does what is billed for.'),
+        'help' => $keepsVersions
+            ? __('The version stops being valid on this day, and so does what is billed for.')
+            : __('The contract ends on this day, and so does what is billed for.'),
     ]);
-    echo $this->Form->control('version_only', [
-        'type' => 'checkbox',
-        'checked' => ($changes?->version->endsTheVersion() ?? false)
-            && !$changes->contract->endsTheContract(),
-        'label' => __('End this version only, and leave the contract running'),
-        'help' => __('For an agreement to end one version with another to follow it.'),
-    ]);
+    if ($keepsVersions) {
+        echo $this->Form->control('version_only', [
+            'type' => 'checkbox',
+            'checked' => ($changes?->version->endsTheVersion() ?? false)
+                && !$changes->contract->endsTheContract(),
+            'label' => __('End this version only, and leave the contract running'),
+            'help' => __('For an agreement to end one version with another to follow it.'),
+        ]);
+    }
     ?>
 </fieldset>
-<?php else : ?>
+<?php elseif ($keepsVersions) : ?>
 <fieldset>
     <legend><?= __('Contract Version') ?></legend>
     <p><?= __('Only what is ticked here is changed. The rest is left as it stands.') ?></p>
@@ -252,7 +267,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
 <?php
 // An end date on a version is also how an ending and a superseded version are recorded, so a paper
 // meant to run for a fixed term is said out loud rather than assumed. An ending never asks.
-if (!$ending) {
+if (!$ending && $keepsVersions) {
     echo $this->Form->control('confirmations.fixed_term', [
         'type' => 'checkbox',
         'checked' => $contractProposal->confirmations()->confirms('fixed_term'),

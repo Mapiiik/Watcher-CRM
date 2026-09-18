@@ -12,6 +12,7 @@ use App\Model\Enum\ProposalStep;
 use App\Proposals\ProposalLifecycleTrait;
 use App\Proposals\Settlement;
 use Cake\I18n\Date;
+use InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -212,6 +213,25 @@ class ContractProposal extends AppEntity
         }
 
         return $this->customer_proposal;
+    }
+
+    /**
+     * Whether the contract keeps versions, and so whether these changes are put on paper.
+     *
+     * Where it does not, the proposal still changes the billings and the contract, and still goes
+     * the whole way with the rest of the customer proposal - it only never touches a version and
+     * never has a document of ours. Read from the snapshot, so that it says what the proposal was
+     * created against; a proposal with no snapshot yet is asked about nothing.
+     *
+     * @return bool
+     */
+    public function keepsVersions(): bool
+    {
+        try {
+            return $this->stateOfThings()->keepsVersions();
+        } catch (InvalidArgumentException) {
+            return true;
+        }
     }
 
     /**

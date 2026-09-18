@@ -116,7 +116,8 @@ final class ChangePreview
      */
     private function whatIsNotOnFile(ContractProposal $proposal): array
     {
-        if (!$proposal->hasBeenConcluded()) {
+        // Nothing of ours is signed for a contract that keeps no versions, so nothing is missing.
+        if (!$proposal->hasBeenConcluded() || !$proposal->keepsVersions()) {
             return [];
         }
 

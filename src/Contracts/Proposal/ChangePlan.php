@@ -41,6 +41,11 @@ final class ChangePlan
      */
     public function of(ContractProposal $proposal): array
     {
+        // A contract that keeps no versions has only itself to write onto.
+        if (!$proposal->keepsVersions()) {
+            return $this->onTheContract($proposal);
+        }
+
         return array_merge(
             $this->onTheVersion($proposal),
             $this->onTheVersionItReplaces($proposal),

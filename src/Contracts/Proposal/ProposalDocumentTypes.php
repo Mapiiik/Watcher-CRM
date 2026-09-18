@@ -52,6 +52,36 @@ final class ProposalDocumentTypes
         $purpose = $proposal->purpose;
         $ends = $purpose === ProposalPurpose::Termination;
 
+        // Where the contract keeps no versions nothing of ours is signed, so only what the other
+        // side writes may be filed - a notice the customer sent to the provider, say - and since
+        // none of it is ever owed, nothing is missing either.
+        $ours = $proposal->keepsVersions();
+
+        return array_values(array_filter(
+            $this->byPurpose($proposal, $has_equipment, $version_concluded, $ends, $replaces),
+            fn(ContractDocumentType $type): bool => $ours || !$type->canBeGenerated(),
+        ));
+    }
+
+    /**
+     * Every document the proposal may have, before asking whether the contract keeps any of ours.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param bool $has_equipment Whether the contract is one that has equipment at all.
+     * @param bool $version_concluded Whether the version the proposal belongs to has been concluded.
+     * @param bool $ends Whether the proposal ends the contract.
+     * @param bool $replaces Whether it ends an earlier version of the contract.
+     * @return array<\App\Model\Enum\ContractDocumentType>
+     */
+    private function byPurpose(
+        ContractProposal $proposal,
+        bool $has_equipment,
+        bool $version_concluded,
+        bool $ends,
+        bool $replaces,
+    ): array {
+        $purpose = $proposal->purpose;
+
         return array_values(array_filter(
             ContractDocumentType::cases(),
             fn(ContractDocumentType $type): bool => match ($type) {

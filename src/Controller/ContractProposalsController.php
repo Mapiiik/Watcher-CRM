@@ -282,9 +282,11 @@ class ContractProposalsController extends AppController
         }
 
         $contract = $this->contractFor((string)$proposal->contract_id);
-        $terminates = $proposal->terminates_contract_version_id;
+        // A contract whose service keeps no versions is photographed without one.
+        $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
+        $terminates = $keepsVersions ? $proposal->terminates_contract_version_id : null;
         $version = match (true) {
-            $contract === null => null,
+            $contract === null, !$keepsVersions => null,
             $proposal->contract_version_id !== null => $this->versionFor($proposal->contract_version_id),
             default => $this->versionToCome($contract->id, [
                 'effective_from' => $proposal->effective_from?->toDateString(),
@@ -292,7 +294,7 @@ class ContractProposalsController extends AppController
             ]),
         };
 
-        if ($contract === null || $version === null) {
+        if ($contract === null || ($version === null && $keepsVersions)) {
             $this->Flash->error(__('Choose which contract and which version of it this contract'
                 . ' proposal is for.'));
 
@@ -736,11 +738,24 @@ class ContractProposalsController extends AppController
         $purpose = $this->purposeFrom($data, $proposal);
         $data['purpose'] = $purpose->value;
 
+        // A contract whose service keeps no versions has none to choose, change or photograph.
+        // Asked of the contract when the snapshot is taken now, and of the snapshot otherwise, so
+        // that a proposal goes on saying what it was created against.
+        $contract = $this->contractFor((string)($data['contract_id'] ?? $proposal->contract_id));
+        $keepsVersions = $keepSnapshot && !$proposal->isNew()
+            ? $proposal->keepsVersions()
+            : ($contract?->service_type->have_contract_versions ?? true);
+
+        if (!$keepsVersions) {
+            $data['contract_version_id'] = null;
+            $data['terminates_contract_version_id'] = null;
+        }
+
         // What the head of the form asks is laid over what the proposal already asks of the
         // billings - those are edited a line at a time and never travel in this submission.
         $data['changes'] = $form->changesFrom($data, $proposal->isNew()
             ? ProposalChanges::nothing()
-            : $proposal->proposedChanges(), $purpose);
+            : $proposal->proposedChanges(), $purpose, $keepsVersions);
         $data['confirmations'] = $form->confirmationsFrom($data);
         $ends = $this->endOfTheVersion($data);
 
@@ -783,12 +798,24 @@ class ContractProposalsController extends AppController
             }
 
             $data['effective_from'] = $ends->addDays(1)->toDateString();
+        } elseif (!$keepsVersions) {
+            // With no version to take the day from, the day has to be said.
+            if ($saidNothing) {
+                $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
+                    'validate' => false,
+                ]);
+                $proposal->setError('effective_from', [__('Say which day the proposal takes effect.')]);
+
+                return $proposal;
+            }
         } elseif ($version !== null && ($saidNothing || !$purpose->asksForItsOwnDay())) {
             $data['effective_from'] = $version->valid_from->toDateString();
         }
 
-        if (!$keepSnapshot) {
-            $contract = $this->contractFor((string)($data['contract_id'] ?? $proposal->contract_id));
+        if (!$keepSnapshot && $contract !== null && !$keepsVersions) {
+            $data['snapshot'] = (new ProposalSnapshotBuilder())->take($contract, null);
+            $data['snapshot_taken'] = DateTime::now();
+        } elseif (!$keepSnapshot) {
             $terminates = $data['terminates_contract_version_id']
                 ?? $proposal->terminates_contract_version_id;
             $terminated = $terminates === null ? null : $this->versionFor((string)$terminates);
@@ -909,7 +936,8 @@ class ContractProposalsController extends AppController
 
         $contract = $this->contractFor((string)$proposal->contract_id);
 
-        if ($contract !== null) {
+        // The questions are about what goes on paper, and a contract that keeps no versions has none.
+        if ($contract !== null && $proposal->keepsVersions()) {
             $unanswered = (new ReadinessChecks())
                 ->unansweredFor($contract, $proposal->confirmations());
 
@@ -1087,12 +1115,19 @@ class ContractProposalsController extends AppController
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
 
+        // A contract whose service keeps no versions offers none, and asks nothing about paper.
+        $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
+
         $versions = $this->ContractProposals->ContractVersions
             ->find('list', valueField: 'name')
-            ->where($contract === null ? ['1 = 0'] : ['ContractVersions.contract_id' => $contract->id])
+            ->where($contract === null || !$keepsVersions
+                ? ['1 = 0']
+                : ['ContractVersions.contract_id' => $contract->id])
             ->orderBy(['ContractVersions.valid_from' => 'DESC']);
 
-        $questions = $contract === null ? [] : (new ReadinessChecks())->questionsFor($contract);
+        $questions = $contract === null || !$keepsVersions
+            ? []
+            : (new ReadinessChecks())->questionsFor($contract);
 
         // Contracts concluded before the renumbering carry the customer number, one contract to a
         // customer, so both are worth offering and nothing else ever is - the number on the paper
@@ -1126,6 +1161,7 @@ class ContractProposalsController extends AppController
 
         $this->set(compact(
             'contracts',
+            'keepsVersions',
             'versions',
             'questions',
             'contractNumbers',

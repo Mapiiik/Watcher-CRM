@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-18 20:17+0200\n"
+"POT-Creation-Date: 2026-09-18 21:11+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -837,13 +837,13 @@ msgstr ""
 msgid "The connection price may not be lower than {0}, the minimum set on the contract."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePlan.php:94
-#: ./src/Contracts/Proposal/ChangePlan.php:147
+#: ./src/Contracts/Proposal/ChangePlan.php:99
+#: ./src/Contracts/Proposal/ChangePlan.php:152
 #: ./templates/ContractProposals/view.php:169
 #: ./templates/ContractVersions/view.php:120
 #: ./templates/CustomerProposals/conclude.php:44
 #: ./templates/CustomerProposals/view.php:132
-#: ./templates/element/ContractChecks/impossible_contract_version_period.php:23
+#: ./templates/element/ContractChecks/impossible_contract_version_period.php:28
 #: ./templates/element/ContractChecks/proposal_table.php:19
 #: ./templates/element/ContractChecks/unsigned_contract.php:33
 #: ./templates/element/Contracts/ContractVersions.php:19
@@ -851,11 +851,11 @@ msgstr ""
 msgid "Conclusion Date"
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePlan.php:106
+#: ./src/Contracts/Proposal/ChangePlan.php:111
 msgid "Number of Amendments"
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePlan.php:145
+#: ./src/Contracts/Proposal/ChangePlan.php:150
 msgid "A version that does not exist yet"
 msgstr ""
 
@@ -863,31 +863,31 @@ msgstr ""
 msgid "Nobody has signed this proposal yet, so there are no changes to apply."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:135
+#: ./src/Contracts/Proposal/ChangePreview.php:136
 msgid "The signature is recorded, but no signed documents have been filed against this proposal."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:166
+#: ./src/Contracts/Proposal/ChangePreview.php:167
 msgid "A billing this proposal changes is no longer on the contract. Take the snapshot again and look the proposal over."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:180
+#: ./src/Contracts/Proposal/ChangePreview.php:181
 msgid "A billing this proposal changes has itself been changed since: {0}. Applying the changes will overwrite that."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:192
+#: ./src/Contracts/Proposal/ChangePreview.php:193
 msgid "A billing has been added to the contract that this proposal knows nothing about. It will be left as it is."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:230
+#: ./src/Contracts/Proposal/ChangePreview.php:231
 msgid "The contract version has been changed since this proposal was created."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:257
+#: ./src/Contracts/Proposal/ChangePreview.php:258
 msgid "This proposal takes effect on a day that has already been invoiced for. Only an administrator may write into an invoiced period, and only deliberately."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:284
+#: ./src/Contracts/Proposal/ChangePreview.php:285
 msgid "Only an administrator may apply it, and only deliberately."
 msgstr ""
 
@@ -922,22 +922,22 @@ msgstr ""
 #: ./templates/cell/Documents/display.php:96
 #: ./templates/cell/ServiceOverridesStatus/display.php:22
 #: ./templates/cell/ServiceOverridesStatus/display.php:45
-#: ./templates/element/AddressChecks/missing_installation_address.php:14
-#: ./templates/element/ContractChecks/billing_gap.php:22
-#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:18
-#: ./templates/element/ContractChecks/contract.php:23
-#: ./templates/element/ContractChecks/contract_version_gap.php:18
-#: ./templates/element/ContractChecks/impossible_billing_period.php:18
-#: ./templates/element/ContractChecks/impossible_borrowed_period.php:21
-#: ./templates/element/ContractChecks/impossible_contract_dates.php:19
-#: ./templates/element/ContractChecks/impossible_contract_version_period.php:18
-#: ./templates/element/ContractChecks/inactive_with_billing.php:20
-#: ./templates/element/ContractChecks/non_standard_service.php:21
-#: ./templates/element/ContractChecks/overlapping_billings.php:21
-#: ./templates/element/ContractChecks/overlapping_contract_versions.php:18
-#: ./templates/element/ContractChecks/proposal_table.php:27
-#: ./templates/element/ContractChecks/unsettled_obligation.php:21
-#: ./templates/element/ContractChecks/unsigned_contract.php:24
+#: ./templates/element/AddressChecks/missing_installation_address.php:17
+#: ./templates/element/ContractChecks/billing_gap.php:27
+#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:23
+#: ./templates/element/ContractChecks/contract.php:26
+#: ./templates/element/ContractChecks/contract_version_gap.php:23
+#: ./templates/element/ContractChecks/impossible_billing_period.php:23
+#: ./templates/element/ContractChecks/impossible_borrowed_period.php:26
+#: ./templates/element/ContractChecks/impossible_contract_dates.php:24
+#: ./templates/element/ContractChecks/impossible_contract_version_period.php:23
+#: ./templates/element/ContractChecks/inactive_with_billing.php:23
+#: ./templates/element/ContractChecks/non_standard_service.php:26
+#: ./templates/element/ContractChecks/overlapping_billings.php:26
+#: ./templates/element/ContractChecks/overlapping_contract_versions.php:23
+#: ./templates/element/ContractChecks/proposal_table.php:30
+#: ./templates/element/ContractChecks/unsettled_obligation.php:26
+#: ./templates/element/ContractChecks/unsigned_contract.php:27
 #: ./templates/element/Contracts/Billings.php:21
 #: ./templates/element/Contracts/BorrowedEquipments.php:15
 #: ./templates/element/Contracts/IpAddresses.php:17
@@ -954,8 +954,8 @@ msgstr ""
 #: ./src/Contracts/Proposal/PlannedChange.php:51
 #: ./templates/ContractProposals/view.php:141
 #: ./templates/ContractVersions/view.php:78
-#: ./templates/element/ContractProposals/form.php:101
-#: ./templates/element/ContractProposals/form.php:184
+#: ./templates/element/ContractProposals/form.php:104
+#: ./templates/element/ContractProposals/form.php:199
 msgid "Contract Version"
 msgstr ""
 
@@ -980,9 +980,9 @@ msgstr ""
 #: ./templates/Contracts/index.php:53
 #: ./templates/Customers/view.php:622
 #: ./templates/Overviews/overview_of_contracts.php:80
-#: ./templates/element/ContractChecks/impossible_contract_dates.php:24
+#: ./templates/element/ContractChecks/impossible_contract_dates.php:28
 #: ./templates/element/ContractChecks/inactive_with_billing.php:26
-#: ./templates/element/ContractChecks/unsettled_obligation.php:25
+#: ./templates/element/ContractChecks/unsettled_obligation.php:30
 #: ./templates/element/Contracts/facts.php:158
 #: ./templates/element/Contracts/related.php:36
 msgid "Date of Termination of Services"
@@ -991,10 +991,10 @@ msgstr ""
 #: ./src/Contracts/Proposal/ProposedVersion.php:30
 #: ./templates/ContractVersions/view.php:98
 #: ./templates/ServiceOverrides/view.php:102
-#: ./templates/element/ContractChecks/contract_version_gap.php:20
-#: ./templates/element/ContractChecks/impossible_contract_version_period.php:20
-#: ./templates/element/ContractChecks/overlapping_contract_versions.php:20
-#: ./templates/element/ContractChecks/unsettled_obligation.php:23
+#: ./templates/element/ContractChecks/contract_version_gap.php:25
+#: ./templates/element/ContractChecks/impossible_contract_version_period.php:25
+#: ./templates/element/ContractChecks/overlapping_contract_versions.php:25
+#: ./templates/element/ContractChecks/unsettled_obligation.php:28
 #: ./templates/element/ContractChecks/unsigned_contract.php:29
 #: ./templates/element/Contracts/ContractVersions.php:14
 msgid "Valid From"
@@ -1003,10 +1003,10 @@ msgstr ""
 #: ./src/Contracts/Proposal/ProposedVersion.php:31
 #: ./templates/ContractVersions/view.php:102
 #: ./templates/ServiceOverrides/view.php:106
-#: ./templates/element/ContractChecks/contract_version_gap.php:21
-#: ./templates/element/ContractChecks/impossible_contract_version_period.php:21
-#: ./templates/element/ContractChecks/overlapping_contract_versions.php:21
-#: ./templates/element/ContractChecks/unsettled_obligation.php:24
+#: ./templates/element/ContractChecks/contract_version_gap.php:26
+#: ./templates/element/ContractChecks/impossible_contract_version_period.php:26
+#: ./templates/element/ContractChecks/overlapping_contract_versions.php:26
+#: ./templates/element/ContractChecks/unsettled_obligation.php:29
 #: ./templates/element/Contracts/ContractVersions.php:15
 msgid "Valid Until"
 msgstr ""
@@ -1014,8 +1014,8 @@ msgstr ""
 #: ./src/Contracts/Proposal/ProposedVersion.php:32
 #: ./templates/ContractVersions/view.php:106
 #: ./templates/Customers/view.php:623
-#: ./templates/element/ContractChecks/impossible_contract_version_period.php:22
-#: ./templates/element/ContractChecks/unsettled_obligation.php:26
+#: ./templates/element/ContractChecks/impossible_contract_version_period.php:27
+#: ./templates/element/ContractChecks/unsettled_obligation.php:31
 #: ./templates/element/Contracts/ContractVersions.php:16
 msgid "Obligation Until"
 msgstr ""
@@ -1247,80 +1247,84 @@ msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:227
 #: ./src/Controller/ContractProposalsController.php:279
-#: ./src/Controller/ContractProposalsController.php:558
+#: ./src/Controller/ContractProposalsController.php:560
 msgid "This proposal can no longer be changed."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:296
-#: ./src/Controller/ContractProposalsController.php:810
+#: ./src/Controller/ContractProposalsController.php:298
+#: ./src/Controller/ContractProposalsController.php:837
 msgid "Choose which contract and which version of it this contract proposal is for."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:398
+#: ./src/Controller/ContractProposalsController.php:400
 msgid "There is no such line on this proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:577
-#: ./src/Controller/ContractProposalsController.php:940
+#: ./src/Controller/ContractProposalsController.php:579
+#: ./src/Controller/ContractProposalsController.php:968
 #: ./src/Controller/CustomerProposalsController.php:107
 #: ./src/Controller/CustomerProposalsController.php:146
 msgid "The proposal has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:583
-#: ./src/Controller/ContractProposalsController.php:946
+#: ./src/Controller/ContractProposalsController.php:585
+#: ./src/Controller/ContractProposalsController.php:974
 #: ./src/Controller/CustomerProposalsController.php:116
 #: ./src/Controller/CustomerProposalsController.php:152
 msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:660
+#: ./src/Controller/ContractProposalsController.php:662
 #: ./src/Controller/CustomerProposalsController.php:540
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:665
+#: ./src/Controller/ContractProposalsController.php:667
 #: ./src/Controller/CustomerProposalsController.php:545
 msgid "The proposal has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:689
+#: ./src/Controller/ContractProposalsController.php:691
 #: ./src/Controller/CustomerProposalsController.php:173
 #: ./src/Controller/CustomerProposalsController.php:499
 msgid "This proposal has already been settled."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:698
+#: ./src/Controller/ContractProposalsController.php:700
 #: ./src/Controller/CustomerProposalsController.php:507
 msgid "The proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:701
+#: ./src/Controller/ContractProposalsController.php:703
 #: ./src/Controller/CustomerProposalsController.php:510
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:780
+#: ./src/Controller/ContractProposalsController.php:795
 msgid "Say which day the service runs to."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:827
+#: ./src/Controller/ContractProposalsController.php:807
+msgid "Say which day the proposal takes effect."
+msgstr ""
+
+#: ./src/Controller/ContractProposalsController.php:854
 msgid "Say which day the new contract starts."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:923
+#: ./src/Controller/ContractProposalsController.php:951
 msgid "Please answer this before the proposal is sent."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:928
+#: ./src/Controller/ContractProposalsController.php:956
 msgid "The contract is not ready for a contract proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1175
+#: ./src/Controller/ContractProposalsController.php:1216
 msgid "This contract proposal could not be given a customer proposal to be part of."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:333
+#: ./src/Controller/ContractProposalsController.php:335
 msgid "One line asked about a billing that is no longer on the contract and has been taken back."
 msgid_plural "{0} lines asked about billings that are no longer on the contract and have been taken back."
 msgstr[0] ""
@@ -1728,7 +1732,7 @@ msgid "That page belongs to something else."
 msgstr ""
 
 #: ./src/Controller/DocumentsController.php:484
-#: ./src/Model/Entity/ContractProposal.php:252
+#: ./src/Model/Entity/ContractProposal.php:272
 #: ./src/View/Cell/DocumentsCell.php:188
 #: ./src/View/Cell/DocumentsCell.php:210
 #: ./templates/ContractProposals/view.php:119
@@ -2357,11 +2361,11 @@ msgstr ""
 msgid "Contract versions data not available."
 msgstr ""
 
-#: ./src/Model/Entity/ContractProposal.php:211
+#: ./src/Model/Entity/ContractProposal.php:212
 msgid "Customer proposal data not available."
 msgstr ""
 
-#: ./src/Model/Entity/ContractProposal.php:255
+#: ./src/Model/Entity/ContractProposal.php:275
 msgid "{0} - {1} from {2}"
 msgstr ""
 
@@ -3052,63 +3056,67 @@ msgstr ""
 msgid "The contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:489
+#: ./src/Model/Table/ContractProposalsTable.php:490
 msgid "A contract proposal for this purpose is about a version that already exists."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:511
+#: ./src/Model/Table/ContractProposalsTable.php:512
+msgid "The service of this contract keeps no contract versions."
+msgstr ""
+
+#: ./src/Model/Table/ContractProposalsTable.php:533
 msgid "That customer proposal belongs to a different customer."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:529
+#: ./src/Model/Table/ContractProposalsTable.php:551
 msgid "That proposal has already gone out, so nothing more goes in it."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:558
+#: ./src/Model/Table/ContractProposalsTable.php:580
 msgid "That customer proposal already holds a contract proposal for this contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:576
+#: ./src/Model/Table/ContractProposalsTable.php:598
 msgid "The terminated contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:586
+#: ./src/Model/Table/ContractProposalsTable.php:608
 msgid "A contract version cannot terminate itself."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:612
+#: ./src/Model/Table/ContractProposalsTable.php:634
 msgid "The contract version being terminated has not been concluded."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:631
+#: ./src/Model/Table/ContractProposalsTable.php:653
 msgid "A contract version that has not been concluded cannot be terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:668
+#: ./src/Model/Table/ContractProposalsTable.php:695
 msgid "A contract is terminated on the day its version stops being valid. Say both, and say the same day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:693
+#: ./src/Model/Table/ContractProposalsTable.php:725
 msgid "What the proposal asks for does not match what it is for: only an ending ends the contract, and an ending has to say the day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:712
+#: ./src/Model/Table/ContractProposalsTable.php:745
 msgid "Please enter the number of the contract being terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:744
+#: ./src/Model/Table/ContractProposalsTable.php:777
 msgid "The contract version ends on a given date, so the documents will be printed as a fixed-term contract. Please confirm that this is intended and set the obligation to the date until which the version is valid."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:780
+#: ./src/Model/Table/ContractProposalsTable.php:813
 msgid "This proposal has already been sent, so what it says is not changed here. Revoke it and create a new one."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:795
+#: ./src/Model/Table/ContractProposalsTable.php:828
 msgid "The changes of a proposal cannot be applied before it has been signed."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:805
+#: ./src/Model/Table/ContractProposalsTable.php:838
 msgid "A proposal whose changes have been applied cannot also be revoked."
 msgstr ""
 
@@ -3303,8 +3311,12 @@ msgid "Active contractual obligations must be finished before changing to this c
 msgstr ""
 
 #: ./src/Proposals/DrawnPaper.php:100
-#: ./src/Proposals/DrawnPaper.php:110
+#: ./src/Proposals/DrawnPaper.php:116
 msgid "That is not a document this proposal is for."
+msgstr ""
+
+#: ./src/Proposals/DrawnPaper.php:109
+msgid "No documents of ours are generated for a contract whose service keeps no contract versions."
 msgstr ""
 
 #: ./src/Proposals/Settlement.php:116
@@ -4108,15 +4120,25 @@ msgstr ""
 #: ./templates/Tasks/index.php:103
 #: ./templates/Tasks/view.php:90
 #: ./templates/element/AddressChecks/duplicate_address.php:16
-#: ./templates/element/AddressChecks/installation_address.php:16
-#: ./templates/element/AddressChecks/missing_installation_address.php:16
+#: ./templates/element/AddressChecks/installation_address.php:15
+#: ./templates/element/AddressChecks/missing_installation_address.php:15
 #: ./templates/element/AddressChecks/several_contracts_at_one_address.php:18
 #: ./templates/element/AddressChecks/unclear_billing_address.php:15
-#: ./templates/element/ContractChecks/contract.php:26
-#: ./templates/element/ContractChecks/impossible_contract_dates.php:20
-#: ./templates/element/ContractChecks/inactive_with_billing.php:23
-#: ./templates/element/ContractChecks/proposal_table.php:30
-#: ./templates/element/ContractChecks/unsigned_contract.php:27
+#: ./templates/element/ContractChecks/billing_gap.php:24
+#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:20
+#: ./templates/element/ContractChecks/contract.php:23
+#: ./templates/element/ContractChecks/contract_version_gap.php:20
+#: ./templates/element/ContractChecks/impossible_billing_period.php:20
+#: ./templates/element/ContractChecks/impossible_borrowed_period.php:23
+#: ./templates/element/ContractChecks/impossible_contract_dates.php:21
+#: ./templates/element/ContractChecks/impossible_contract_version_period.php:20
+#: ./templates/element/ContractChecks/inactive_with_billing.php:20
+#: ./templates/element/ContractChecks/non_standard_service.php:23
+#: ./templates/element/ContractChecks/overlapping_billings.php:23
+#: ./templates/element/ContractChecks/overlapping_contract_versions.php:20
+#: ./templates/element/ContractChecks/proposal_table.php:27
+#: ./templates/element/ContractChecks/unsettled_obligation.php:23
+#: ./templates/element/ContractChecks/unsigned_contract.php:24
 #: ./templates/element/Contracts/Billings.php:17
 #: ./templates/element/Contracts/facts.php:18
 #: ./templates/element/Contracts/related.php:20
@@ -4396,7 +4418,7 @@ msgstr ""
 #: ./templates/Addresses/view.php:27
 #: ./templates/Overviews/overview_of_czech_customer_connection_points.php:57
 #: ./templates/element/AddressChecks/duplicate_address.php:19
-#: ./templates/element/AddressChecks/installation_address.php:14
+#: ./templates/element/AddressChecks/installation_address.php:17
 msgid "Address"
 msgstr ""
 
@@ -4552,11 +4574,11 @@ msgstr ""
 #: ./templates/ContractProposals/billing_line.php:62
 #: ./templates/ServiceOverrides/view.php:91
 #: ./templates/Services/view.php:31
-#: ./templates/element/ContractChecks/billing_gap.php:24
-#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:20
-#: ./templates/element/ContractChecks/impossible_billing_period.php:20
-#: ./templates/element/ContractChecks/non_standard_service.php:23
-#: ./templates/element/ContractChecks/overlapping_billings.php:23
+#: ./templates/element/ContractChecks/billing_gap.php:29
+#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:25
+#: ./templates/element/ContractChecks/impossible_billing_period.php:25
+#: ./templates/element/ContractChecks/non_standard_service.php:28
+#: ./templates/element/ContractChecks/overlapping_billings.php:28
 #: ./templates/element/Contracts/Billings.php:23
 msgid "Service"
 msgstr ""
@@ -4587,7 +4609,7 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:115
 #: ./templates/Services/view.php:54
 #: ./templates/Services/view.php:88
-#: ./templates/element/ContractChecks/non_standard_service.php:25
+#: ./templates/element/ContractChecks/non_standard_service.php:30
 #: ./templates/element/Contracts/Billings.php:26
 msgid "Price"
 msgstr ""
@@ -4693,7 +4715,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:97
 #: ./templates/Tasks/index.php:102
 #: ./templates/Tasks/view.php:151
-#: ./templates/element/ContractChecks/non_standard_service.php:24
+#: ./templates/element/ContractChecks/non_standard_service.php:29
 #: ./templates/element/Contracts/Billings.php:24
 #: ./templates/element/Contracts/Tasks.php:21
 #: ./templates/element/Tasks/email_detail.php:156
@@ -4705,9 +4727,9 @@ msgstr ""
 #: ./templates/ContractProposals/billing_line.php:104
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
 #: ./templates/Services/view.php:92
-#: ./templates/element/ContractChecks/impossible_billing_period.php:21
-#: ./templates/element/ContractChecks/non_standard_service.php:26
-#: ./templates/element/ContractChecks/overlapping_billings.php:24
+#: ./templates/element/ContractChecks/impossible_billing_period.php:26
+#: ./templates/element/ContractChecks/non_standard_service.php:31
+#: ./templates/element/ContractChecks/overlapping_billings.php:29
 #: ./templates/element/ContractProposals/billings.php:16
 #: ./templates/element/ContractProposals/proposed_billings.php:35
 #: ./templates/element/Contracts/Billings.php:30
@@ -4719,10 +4741,10 @@ msgstr ""
 #: ./templates/ContractProposals/billing_line.php:111
 #: ./templates/Overviews/overview_of_dealer_commissions.php:62
 #: ./templates/Services/view.php:93
-#: ./templates/element/ContractChecks/billing_gap.php:25
-#: ./templates/element/ContractChecks/impossible_billing_period.php:22
-#: ./templates/element/ContractChecks/non_standard_service.php:27
-#: ./templates/element/ContractChecks/overlapping_billings.php:25
+#: ./templates/element/ContractChecks/billing_gap.php:30
+#: ./templates/element/ContractChecks/impossible_billing_period.php:27
+#: ./templates/element/ContractChecks/non_standard_service.php:32
+#: ./templates/element/ContractChecks/overlapping_billings.php:30
 #: ./templates/element/ContractProposals/billings.php:17
 #: ./templates/element/ContractProposals/proposed_billings.php:36
 #: ./templates/element/Contracts/Billings.php:31
@@ -4834,7 +4856,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/view.php:68
 #: ./templates/EquipmentTypes/view.php:38
 #: ./templates/SoldEquipments/view.php:67
-#: ./templates/element/ContractChecks/impossible_borrowed_period.php:23
+#: ./templates/element/ContractChecks/impossible_borrowed_period.php:28
 #: ./templates/element/Contracts/BorrowedEquipments.php:17
 #: ./templates/element/Contracts/SoldEquipments.php:15
 msgid "Equipment Type"
@@ -4844,7 +4866,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/view.php:71
 #: ./templates/EquipmentTypes/view.php:134
 #: ./templates/SoldEquipments/view.php:78
-#: ./templates/element/ContractChecks/impossible_borrowed_period.php:24
+#: ./templates/element/ContractChecks/impossible_borrowed_period.php:29
 #: ./templates/element/Contracts/BorrowedEquipments.php:18
 #: ./templates/element/Contracts/SoldEquipments.php:16
 msgid "Serial Number"
@@ -4852,14 +4874,14 @@ msgstr ""
 
 #: ./templates/BorrowedEquipments/view.php:84
 #: ./templates/EquipmentTypes/view.php:72
-#: ./templates/element/ContractChecks/impossible_borrowed_period.php:25
+#: ./templates/element/ContractChecks/impossible_borrowed_period.php:30
 #: ./templates/element/Contracts/BorrowedEquipments.php:19
 msgid "Borrowed From"
 msgstr ""
 
 #: ./templates/BorrowedEquipments/view.php:88
 #: ./templates/EquipmentTypes/view.php:73
-#: ./templates/element/ContractChecks/impossible_borrowed_period.php:26
+#: ./templates/element/ContractChecks/impossible_borrowed_period.php:31
 #: ./templates/element/Contracts/BorrowedEquipments.php:20
 msgid "Borrowed Until"
 msgstr ""
@@ -4980,12 +5002,12 @@ msgid "Edit Proposal"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:45
-#: ./templates/element/ContractProposals/form.php:272
+#: ./templates/element/ContractProposals/form.php:287
 msgid "Take the snapshot again"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:49
-#: ./templates/element/ContractProposals/form.php:267
+#: ./templates/element/ContractProposals/form.php:282
 msgid "The documents are generated from what the contract looked like when this proposal was created. Taking the snapshot again replaces that. Go ahead?"
 msgstr ""
 
@@ -5012,7 +5034,7 @@ msgstr ""
 #: ./templates/ContractProposals/view.php:153
 #: ./templates/CustomerProposals/view.php:124
 #: ./templates/element/ContractChecks/proposal_table.php:33
-#: ./templates/element/ContractProposals/form.php:119
+#: ./templates/element/ContractProposals/form.php:128
 #: ./templates/element/CustomerChecks/customer_proposal.php:23
 #: ./templates/element/CustomerProposals/form.php:40
 msgid "Effective From"
@@ -5022,7 +5044,7 @@ msgstr ""
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:28
 #: ./templates/CustomerProposals/view.php:120
 #: ./templates/element/ContractChecks/proposal_table.php:32
-#: ./templates/element/ContractProposals/form.php:74
+#: ./templates/element/ContractProposals/form.php:76
 #: ./templates/element/CustomerChecks/customer_proposal.php:22
 #: ./templates/element/CustomerProposals/form.php:34
 msgid "Purpose"
@@ -5063,12 +5085,12 @@ msgctxt "address"
 msgid "None"
 msgstr ""
 
-#: ./templates/element/ContractChecks/inactive_with_billing.php:50
+#: ./templates/element/ContractChecks/inactive_with_billing.php:44
 msgctxt "termination date"
 msgid "None"
 msgstr ""
 
-#: ./templates/element/ContractChecks/non_standard_service.php:39
+#: ./templates/element/ContractChecks/non_standard_service.php:48
 msgctxt "service"
 msgid "None"
 msgstr ""
@@ -5088,12 +5110,12 @@ msgid "Changes Applied"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:205
-#: ./templates/element/ContractProposals/form.php:146
+#: ./templates/element/ContractProposals/form.php:157
 msgid "Terminates Contract Version"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:217
-#: ./templates/element/ContractProposals/form.php:155
+#: ./templates/element/ContractProposals/form.php:166
 msgid "Number of the contract being terminated"
 msgstr ""
 
@@ -5348,7 +5370,7 @@ msgstr ""
 #: ./templates/Contracts/index.php:46
 #: ./templates/Customers/view.php:620
 #: ./templates/Overviews/overview_of_contracts.php:70
-#: ./templates/element/ContractChecks/impossible_contract_dates.php:22
+#: ./templates/element/ContractChecks/impossible_contract_dates.php:26
 #: ./templates/element/Contracts/facts.php:126
 #: ./templates/element/Contracts/related.php:32
 msgid "Installation/Establishment Date"
@@ -5358,7 +5380,7 @@ msgstr ""
 #: ./templates/Contracts/index.php:50
 #: ./templates/Customers/view.php:621
 #: ./templates/Overviews/overview_of_contracts.php:75
-#: ./templates/element/ContractChecks/impossible_contract_dates.php:23
+#: ./templates/element/ContractChecks/impossible_contract_dates.php:27
 #: ./templates/element/Contracts/facts.php:142
 #: ./templates/element/Contracts/related.php:34
 msgid "Uninstallation/Cancellation Date"
@@ -7885,55 +7907,55 @@ msgstr ""
 msgid "Search address…"
 msgstr ""
 
-#: ./templates/element/ContractChecks/billing_gap.php:12
+#: ./templates/element/ContractChecks/billing_gap.php:14
 msgid "The billing shown is the last one before the break. Either it ends too early, or the one after it starts too late."
 msgstr ""
 
-#: ./templates/element/ContractChecks/billing_gap.php:26
+#: ./templates/element/ContractChecks/billing_gap.php:31
 msgid "Billing Resumes"
 msgstr ""
 
-#: ./templates/element/ContractChecks/billing_gap.php:27
+#: ./templates/element/ContractChecks/billing_gap.php:32
 msgid "Days Not Billed"
 msgstr ""
 
-#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:11
+#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:13
 msgid "Every report that counts what is sold by kind of service counts these under the wrong heading."
 msgstr ""
 
-#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:21
+#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:26
 msgid "The Service Is For"
 msgstr ""
 
-#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:22
+#: ./templates/element/ContractChecks/billing_service_type_mismatch.php:27
 msgid "The Contract Is For"
 msgstr ""
 
-#: ./templates/element/ContractChecks/contract_version_gap.php:11
+#: ./templates/element/ContractChecks/contract_version_gap.php:13
 msgid "Not always a fault: a contract can lapse and be signed again. The other reading is a mistyped date."
 msgstr ""
 
-#: ./templates/element/ContractChecks/contract_version_gap.php:22
+#: ./templates/element/ContractChecks/contract_version_gap.php:27
 msgid "Next One In Force From"
 msgstr ""
 
-#: ./templates/element/ContractChecks/contract_version_gap.php:23
+#: ./templates/element/ContractChecks/contract_version_gap.php:28
 msgid "Days Without a Version"
 msgstr ""
 
-#: ./templates/element/ContractChecks/impossible_billing_period.php:11
+#: ./templates/element/ContractChecks/impossible_billing_period.php:13
 msgid "A billing that ends before it begins invoices nothing at all."
 msgstr ""
 
-#: ./templates/element/ContractChecks/impossible_borrowed_period.php:11
+#: ./templates/element/ContractChecks/impossible_borrowed_period.php:13
 msgid "Equipment cannot come back before it went out. Until the day is right it is counted somewhere it is not."
 msgstr ""
 
-#: ./templates/element/ContractChecks/impossible_contract_dates.php:12
+#: ./templates/element/ContractChecks/impossible_contract_dates.php:14
 msgid "A service cannot be taken away or stopped before it was ever installed."
 msgstr ""
 
-#: ./templates/element/ContractChecks/impossible_contract_version_period.php:11
+#: ./templates/element/ContractChecks/impossible_contract_version_period.php:13
 msgid "A version cannot end before it begins, and its minimum term cannot be over before the version exists."
 msgstr ""
 
@@ -7945,33 +7967,33 @@ msgstr ""
 msgid "Billed Until"
 msgstr ""
 
-#: ./templates/element/ContractChecks/inactive_with_billing.php:57
-#: ./templates/element/ContractChecks/overlapping_billings.php:41
-#: ./templates/element/ContractChecks/overlapping_contract_versions.php:35
+#: ./templates/element/ContractChecks/inactive_with_billing.php:51
+#: ./templates/element/ContractChecks/overlapping_billings.php:50
+#: ./templates/element/ContractChecks/overlapping_contract_versions.php:44
 msgid "open"
 msgstr ""
 
-#: ./templates/element/ContractChecks/non_standard_service.php:11
+#: ./templates/element/ContractChecks/non_standard_service.php:13
 msgid "Not a fault on its own. Where the same thing is written by hand again and again, it is a service the price list is still missing."
 msgstr ""
 
-#: ./templates/element/ContractChecks/overlapping_billings.php:11
+#: ./templates/element/ContractChecks/overlapping_billings.php:13
 msgid "The billing shown is the earlier of the two. Usually it was left open when the next one was written - and two tariffs at once are an overlap however differently they are named."
 msgstr ""
 
-#: ./templates/element/ContractChecks/overlapping_billings.php:26
+#: ./templates/element/ContractChecks/overlapping_billings.php:31
 msgid "Billed Twice From"
 msgstr ""
 
-#: ./templates/element/ContractChecks/overlapping_billings.php:27
+#: ./templates/element/ContractChecks/overlapping_billings.php:32
 msgid "Overlaps With"
 msgstr ""
 
-#: ./templates/element/ContractChecks/overlapping_contract_versions.php:11
+#: ./templates/element/ContractChecks/overlapping_contract_versions.php:13
 msgid "The version shown is the earlier of the two. While both are in force nothing can say which terms apply."
 msgstr ""
 
-#: ./templates/element/ContractChecks/overlapping_contract_versions.php:22
+#: ./templates/element/ContractChecks/overlapping_contract_versions.php:27
 msgid "Second One In Force From"
 msgstr ""
 
@@ -7987,7 +8009,7 @@ msgstr ""
 msgid "The proposal was created and never sent. The day it takes effect comes whether or not the customer has seen it."
 msgstr ""
 
-#: ./templates/element/ContractChecks/unsettled_obligation.php:11
+#: ./templates/element/ContractChecks/unsettled_obligation.php:13
 msgid "Either something is owed and nobody has asked for it, or it was waived and nobody has ticked \"obligations settled\"."
 msgstr ""
 
@@ -8050,99 +8072,111 @@ msgstr ""
 msgid "Nothing."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:39
+#: ./templates/element/ContractProposals/form.php:41
 msgid "Add Contract Proposal"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:40
+#: ./templates/element/ContractProposals/form.php:42
 msgid "Edit Contract Proposal"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:53
+#: ./templates/element/ContractProposals/form.php:55
 msgid "A proposal of their own"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:54
+#: ./templates/element/ContractProposals/form.php:56
 msgid "Part of the Customer Proposal"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:56
+#: ./templates/element/ContractProposals/form.php:58
 msgid "Contract proposals that are part of one customer proposal are sent and signed together."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:67
+#: ./templates/element/ContractProposals/form.php:69
 msgid "Nothing asked of the customer themselves"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:68
+#: ./templates/element/ContractProposals/form.php:70
 msgid "Purpose of the New Customer Proposal"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:93
+#: ./templates/element/ContractProposals/form.php:95
 msgid "A contract proposal is created for one contract and stays with it."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:105
+#: ./templates/element/ContractProposals/form.php:108
 msgid "Left empty, the version is created when the changes of this contract proposal are applied."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:128
-msgid "The day this contract proposal takes effect, and the day the version starts on."
-msgstr ""
-
-#: ./templates/element/ContractProposals/form.php:130
-msgid "The day this contract proposal takes effect. Empty takes the day the version does, {0}."
+#: ./templates/element/ContractProposals/form.php:114
+msgid "The service of this contract keeps no contract versions, so none of our documents are generated for this proposal."
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:137
+msgid "The day this contract proposal takes effect."
+msgstr ""
+
+#: ./templates/element/ContractProposals/form.php:138
+msgid "The day this contract proposal takes effect, and the day the version starts on."
+msgstr ""
+
+#: ./templates/element/ContractProposals/form.php:140
+msgid "The day this contract proposal takes effect. Empty takes the day the version does, {0}."
+msgstr ""
+
+#: ./templates/element/ContractProposals/form.php:148
 msgid "This contract proposal takes effect with the contract version it is for."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:164
+#: ./templates/element/ContractProposals/form.php:175
 msgid "When it ends"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:170
+#: ./templates/element/ContractProposals/form.php:181
 msgid "Last day of the service"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:171
+#: ./templates/element/ContractProposals/form.php:183
 msgid "The version stops being valid on this day, and so does what is billed for."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:177
+#: ./templates/element/ContractProposals/form.php:184
+msgid "The contract ends on this day, and so does what is billed for."
+msgstr ""
+
+#: ./templates/element/ContractProposals/form.php:191
 msgid "End this version only, and leave the contract running"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:178
+#: ./templates/element/ContractProposals/form.php:192
 msgid "For an agreement to end one version with another to follow it."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:185
+#: ./templates/element/ContractProposals/form.php:200
 msgid "Only what is ticked here is changed. The rest is left as it stands."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:196
+#: ./templates/element/ContractProposals/form.php:211
 msgid "Change the day the version stops being valid"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:197
+#: ./templates/element/ContractProposals/form.php:212
 msgid "Change the day the obligation runs out"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:220
+#: ./templates/element/ContractProposals/form.php:235
 msgid "Set the obligation until {0}"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:241
+#: ./templates/element/ContractProposals/form.php:256
 msgid "Before the contract proposal is created"
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:259
+#: ./templates/element/ContractProposals/form.php:274
 msgid "This is a fixed-term contract, and the obligation runs to the end of it."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:273
+#: ./templates/element/ContractProposals/form.php:288
 msgid "Reads the contract as it stands now, so the documents are generated from what is there today rather than from what was there before. A line about a billing that has since left the contract is taken back, because there is nothing left for it to act on."
 msgstr ""
 
