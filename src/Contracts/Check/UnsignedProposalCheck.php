@@ -99,7 +99,7 @@ class UnsignedProposalCheck extends AbstractContractCheck
         $query = $this->proposals->find('open')
             // Whether the papers went out and came back is the envelope's to say, and the rows
             // print it, so it is read as well as joined.
-            ->contain(['Contracts', 'ContractVersions', 'CustomerProposals'])
+            ->contain(['Contracts' => ['Customers'], 'ContractVersions', 'CustomerProposals'])
             ->innerJoinWith('Contracts')
             ->innerJoinWith('CustomerProposals');
 

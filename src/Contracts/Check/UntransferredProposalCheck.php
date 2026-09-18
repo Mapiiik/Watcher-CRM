@@ -95,7 +95,7 @@ class UntransferredProposalCheck extends AbstractContractCheck
 
         $query
             // The signature the rows print is the envelope's, so it comes with them.
-            ->contain(['Contracts', 'ContractVersions', 'CustomerProposals'])
+            ->contain(['Contracts' => ['Customers'], 'ContractVersions', 'CustomerProposals'])
             ->innerJoinWith('Contracts')
             ->orderBy(['ContractProposals.effective_from' => 'ASC']);
 

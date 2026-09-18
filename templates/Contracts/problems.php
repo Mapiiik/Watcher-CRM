@@ -6,4 +6,9 @@
  * @var list<array{check: \App\Check\CheckInterface, records: iterable<\Cake\Datasource\EntityInterface>}> $problems
  */
 
-echo $this->element('common/problems', ['problems' => $problems, 'contract_column' => false]);
+// The contract is the page's and so is its customer, so neither is repeated on every row.
+echo $this->element('common/problems', [
+    'problems' => $problems,
+    'contract_column' => false,
+    'customer_column' => false,
+]);

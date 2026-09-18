@@ -3,9 +3,11 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\ContractProposal> $records
  * @var bool|null $contract_column
+ * @var bool|null $customer_column
  */
 
 $contract_column ??= true;
+$customer_column ??= true;
 ?>
 <p>
     <?= __(
@@ -13,42 +15,10 @@ $contract_column ??= true;
         . ' so the service runs and is invoiced on the old terms until somebody carries it over.',
     ) ?>
 </p>
-<div class="table-responsive">
-    <table>
-        <thead>
-            <tr>
-                <?php if ($contract_column) : ?>
-                    <th><?= __('Contract') ?></th>
-                <?php endif ?>
-                <th><?= __('Effective From') ?></th>
-                <th><?= __('Conclusion Date') ?></th>
-                <th><?= __('Sent To The Customer') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($records as $proposal) : ?>
-                <tr>
-                    <?= $this->element('ContractChecks/contract_cell', [
-                        'contract' => $proposal->contract,
-                        'contract_column' => $contract_column,
-                    ]) ?>
-                    <td><?= h($proposal->effective_from) ?></td>
-                    <td><?= h($proposal->conclusion_date) ?></td>
-                    <td><?= h($proposal->getSending()) ?></td>
-                    <td class="actions">
-                        <?= $this->AuthLink->link(
-                            __('Carry Over'),
-                            [
-                                'plugin' => null,
-                                'controller' => 'CustomerProposals',
-                                'action' => 'transfer',
-                                $proposal->customer_proposal_id,
-                            ],
-                        ) ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+<?= $this->element('ContractChecks/proposal_table', [
+    'records' => $records,
+    'contract_column' => $contract_column,
+    'customer_column' => $customer_column,
+    'dates' => ['concluded', 'sent'],
+    'steps' => ['transfer'],
+]) ?>

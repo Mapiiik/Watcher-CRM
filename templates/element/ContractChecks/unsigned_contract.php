@@ -43,16 +43,10 @@ $today = Date::today();
                         'contract' => $version->contract,
                         'contract_column' => $contract_column,
                     ]) ?>
-                    <?php if ($customer_column) : ?>
-                        <td class="dashboard-wrap">
-                            <?php if ($version->contract?->customer !== null) : ?>
-                                <?= $this->Html->link(
-                                    $version->contract->customer->name_for_lists,
-                                    ['controller' => 'Customers', 'action' => 'view', $version->contract->customer->id],
-                                ) ?>
-                            <?php endif ?>
-                        </td>
-                    <?php endif ?>
+                    <?= $this->element('ContractChecks/customer_cell', [
+                        'customer' => $version->contract?->customer,
+                        'customer_column' => $customer_column,
+                    ]) ?>
                     <td><?= h($version->valid_from) ?></td>
                     <td>
                         <?php if ($version->sent_date === null) : ?>

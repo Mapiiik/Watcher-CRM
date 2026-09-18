@@ -3,9 +3,11 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\ContractProposal> $records
  * @var bool|null $contract_column
+ * @var bool|null $customer_column
  */
 
 $contract_column ??= true;
+$customer_column ??= true;
 ?>
 <p>
     <?= __(
@@ -13,45 +15,10 @@ $contract_column ??= true;
         . ' held up by it, but there is nothing to show for what was agreed either.',
     ) ?>
 </p>
-<div class="table-responsive">
-    <table>
-        <thead>
-            <tr>
-                <?php if ($contract_column) : ?>
-                    <th><?= __('Contract') ?></th>
-                <?php endif ?>
-                <th><?= __('Purpose') ?></th>
-                <th><?= __('Effective From') ?></th>
-                <th><?= __('Conclusion Date') ?></th>
-                <th class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($records as $proposal) : ?>
-                <tr>
-                    <?= $this->element('ContractChecks/contract_cell', [
-                        'contract' => $proposal->contract,
-                        'contract_column' => $contract_column,
-                    ]) ?>
-                    <td><?= h($proposal->purpose->label()) ?></td>
-                    <td><?= h($proposal->effective_from) ?></td>
-                    <td><?= h($proposal->conclusion_date) ?></td>
-                    <td class="actions">
-                        <?= $this->AuthLink->link(
-                            __('Documents'),
-                            [
-                                'plugin' => null,
-                                'controller' => 'Documents',
-                                'action' => 'manage',
-                                '?' => [
-                                    'proposal_id' => $proposal->id,
-                                    'agenda' => 'ContractProposals',
-                                ],
-                            ],
-                        ) ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+<?= $this->element('ContractChecks/proposal_table', [
+    'records' => $records,
+    'contract_column' => $contract_column,
+    'customer_column' => $customer_column,
+    'dates' => ['concluded'],
+    'steps' => ['documents'],
+]) ?>
