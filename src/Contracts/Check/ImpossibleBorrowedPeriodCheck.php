@@ -76,7 +76,7 @@ class ImpossibleBorrowedPeriodCheck extends AbstractContractCheck
         $query = $this->equipments->find();
 
         $query
-            ->contain(['Contracts', 'EquipmentTypes'])
+            ->contain(['Contracts' => ['Customers'], 'EquipmentTypes'])
             ->where([
                 $query->expr()->or([
                     // back before it went out

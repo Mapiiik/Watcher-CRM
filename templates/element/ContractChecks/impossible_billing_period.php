@@ -3,9 +3,11 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Billing> $records
  * @var bool|null $contract_column
+ * @var bool|null $customer_column
  */
 
 $contract_column ??= true;
+$customer_column ??= true;
 ?>
 <p>
     <?= __('A billing that ends before it begins invoices nothing at all.') ?>
@@ -14,6 +16,9 @@ $contract_column ??= true;
     <table>
         <thead>
             <tr>
+                <?php if ($customer_column) : ?>
+                    <th><?= __('Customer') ?></th>
+                <?php endif ?>
                 <?php if ($contract_column) : ?>
                     <th><?= __('Contract') ?></th>
                 <?php endif ?>
@@ -25,6 +30,10 @@ $contract_column ??= true;
         <tbody>
             <?php foreach ($records as $billing) : ?>
                 <tr>
+                    <?= $this->element('ContractChecks/customer_cell', [
+                        'customer' => $billing->contract?->customer,
+                        'customer_column' => $customer_column,
+                    ]) ?>
                     <?= $this->element('ContractChecks/contract_cell', [
                         'contract' => $billing->contract,
                         'contract_column' => $contract_column,

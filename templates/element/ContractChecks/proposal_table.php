@@ -23,11 +23,11 @@ $headings = [
     <table>
         <thead>
             <tr>
-                <?php if ($contract_column) : ?>
-                    <th><?= __('Contract') ?></th>
-                <?php endif ?>
                 <?php if ($customer_column) : ?>
                     <th><?= __('Customer') ?></th>
+                <?php endif ?>
+                <?php if ($contract_column) : ?>
+                    <th><?= __('Contract') ?></th>
                 <?php endif ?>
                 <th><?= __('Purpose') ?></th>
                 <th><?= __('Effective From') ?></th>
@@ -47,13 +47,13 @@ $headings = [
                 ];
                 ?>
                 <tr>
-                    <?= $this->element('ContractChecks/contract_cell', [
-                        'contract' => $proposal->contract,
-                        'contract_column' => $contract_column,
-                    ]) ?>
                     <?= $this->element('ContractChecks/customer_cell', [
                         'customer' => $proposal->contract?->customer,
                         'customer_column' => $customer_column,
+                    ]) ?>
+                    <?= $this->element('ContractChecks/contract_cell', [
+                        'contract' => $proposal->contract,
+                        'contract_column' => $contract_column,
                     ]) ?>
                     <td><?= h($proposal->purpose->label()) ?></td>
                     <td><?= h($proposal->effective_from) ?></td>

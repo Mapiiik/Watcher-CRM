@@ -20,11 +20,11 @@ $today = Date::today();
     <table>
         <thead>
             <tr>
-                <?php if ($contract_column) : ?>
-                    <th><?= __('Contract') ?></th>
-                <?php endif ?>
                 <?php if ($customer_column) : ?>
                     <th><?= __('Customer') ?></th>
+                <?php endif ?>
+                <?php if ($contract_column) : ?>
+                    <th><?= __('Contract') ?></th>
                 <?php endif ?>
                 <th><?= __('Valid From') ?></th>
                 <?php // whether the papers ever went out is the first thing to know before
@@ -39,13 +39,13 @@ $today = Date::today();
         <tbody>
             <?php foreach ($records as $version) : ?>
                 <tr>
-                    <?= $this->element('ContractChecks/contract_cell', [
-                        'contract' => $version->contract,
-                        'contract_column' => $contract_column,
-                    ]) ?>
                     <?= $this->element('ContractChecks/customer_cell', [
                         'customer' => $version->contract?->customer,
                         'customer_column' => $customer_column,
+                    ]) ?>
+                    <?= $this->element('ContractChecks/contract_cell', [
+                        'contract' => $version->contract,
+                        'contract_column' => $contract_column,
                     ]) ?>
                     <td><?= h($version->valid_from) ?></td>
                     <td>

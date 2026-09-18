@@ -152,7 +152,7 @@ class OverlappingBillingsCheck extends AbstractContractCheck
             ->select($this->billings)
             ->select($this->billings->Contracts)
             ->select($this->billings->Services)
-            ->contain(['Contracts', 'Services'])
+            ->contain(['Contracts' => ['Customers'], 'Services'])
             ->where([$query->expr(self::RUNS_INTO_ANOTHER)])
             ->orderBy(['Billings.billing_from' => 'ASC']);
 

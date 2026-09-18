@@ -16,11 +16,11 @@ $customer_column ??= true;
     <table>
         <thead>
             <tr>
-                <?php if ($contract_column) : ?>
-                    <th><?= __('Contract') ?></th>
-                <?php endif ?>
                 <?php if ($customer_column) : ?>
                     <th><?= __('Customer') ?></th>
+                <?php endif ?>
+                <?php if ($contract_column) : ?>
+                    <th><?= __('Contract') ?></th>
                 <?php endif ?>
                 <th><?= __('Contract State') ?></th>
                 <th><?= __('Date of Termination of Services') ?></th>
@@ -30,20 +30,14 @@ $customer_column ??= true;
         <tbody>
             <?php foreach ($records as $contract) : ?>
                 <tr>
+                    <?= $this->element('ContractChecks/customer_cell', [
+                        'customer' => $contract->customer,
+                        'customer_column' => $customer_column,
+                    ]) ?>
                     <?= $this->element('ContractChecks/contract_cell', [
                         'contract' => $contract,
                         'contract_column' => $contract_column,
                     ]) ?>
-                    <?php if ($customer_column) : ?>
-                        <td class="dashboard-wrap">
-                            <?php if ($contract->customer !== null) : ?>
-                                <?= $this->Html->link(
-                                    $contract->customer->name_for_lists,
-                                    ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
-                                ) ?>
-                            <?php endif ?>
-                        </td>
-                    <?php endif ?>
                     <td><?= h($contract->contract_state?->name) ?></td>
                     <td>
                         <?php if ($contract->termination_date === null) : ?>

@@ -11,10 +11,10 @@ $customer_column ??= true;
 <table>
     <thead>
         <tr>
-            <th><?= __('Contract') ?></th>
             <?php if ($customer_column) : ?>
                 <th><?= __('Customer') ?></th>
             <?php endif ?>
+            <th><?= __('Contract') ?></th>
             <th><?= __('Service Type') ?></th>
             <th><?= __('Contract State') ?></th>
         </tr>
@@ -22,17 +22,6 @@ $customer_column ??= true;
     <tbody>
         <?php foreach ($records as $contract) : ?>
             <tr>
-                <td>
-                    <?= $this->Html->link(
-                        $contract->number ?? (string)$contract->nid,
-                        [
-                            'controller' => 'Contracts',
-                            'action' => 'view',
-                            $contract->id,
-                            'customer_id' => $contract->customer_id,
-                        ],
-                    ) ?>
-                </td>
                 <?php if ($customer_column) : ?>
                     <td>
                         <?php if ($contract->customer !== null) : ?>
@@ -48,6 +37,17 @@ $customer_column ??= true;
                         <?php endif ?>
                     </td>
                 <?php endif ?>
+                <td>
+                    <?= $this->Html->link(
+                        $contract->number ?? (string)$contract->nid,
+                        [
+                            'controller' => 'Contracts',
+                            'action' => 'view',
+                            $contract->id,
+                            'customer_id' => $contract->customer_id,
+                        ],
+                    ) ?>
+                </td>
                 <td><?= h($contract->service_type?->name) ?></td>
                 <td><?= h($contract->contract_state?->name) ?></td>
             </tr>

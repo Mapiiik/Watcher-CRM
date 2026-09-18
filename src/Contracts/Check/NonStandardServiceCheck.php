@@ -100,7 +100,7 @@ class NonStandardServiceCheck extends AbstractContractCheck
         $query = $this->billings->find($this->ignore_inactive ? 'activeOrFuture' : 'all');
 
         $query
-            ->contain(['Contracts', 'Services'])
+            ->contain(['Contracts' => ['Customers'], 'Services'])
             ->where([
                 'OR' => [
                     'Billings.text IS NOT' => null,

@@ -76,7 +76,7 @@ class BillingServiceTypeMismatchCheck extends AbstractContractCheck
         $query = $this->billings->find();
 
         $query
-            ->contain(['Contracts' => ['ServiceTypes'], 'Services' => ['ServiceTypes']])
+            ->contain(['Contracts' => ['Customers', 'ServiceTypes'], 'Services' => ['ServiceTypes']])
             ->innerJoinWith('Services')
             ->innerJoinWith('Contracts')
             ->where([

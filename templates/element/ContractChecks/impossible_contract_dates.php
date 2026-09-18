@@ -3,10 +3,12 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Contract> $records
  * @var bool|null $contract_column
+ * @var bool|null $customer_column
  */
 
 // the subject here is the contract itself, so the column is the record rather than a pointer
 $contract_column ??= true;
+$customer_column ??= true;
 ?>
 <p>
     <?= __('A service cannot be taken away or stopped before it was ever installed.') ?>
@@ -15,9 +17,11 @@ $contract_column ??= true;
     <table>
         <thead>
             <tr>
+                <?php if ($customer_column) : ?>
+                    <th><?= __('Customer') ?></th>
+                <?php endif ?>
                 <?php if ($contract_column) : ?>
                     <th><?= __('Contract') ?></th>
-                    <th><?= __('Customer') ?></th>
                 <?php endif ?>
                 <th><?= __('Installation/Establishment Date') ?></th>
                 <th><?= __('Uninstallation/Cancellation Date') ?></th>
@@ -27,20 +31,14 @@ $contract_column ??= true;
         <tbody>
             <?php foreach ($records as $contract) : ?>
                 <tr>
+                    <?= $this->element('ContractChecks/customer_cell', [
+                        'customer' => $contract->customer,
+                        'customer_column' => $customer_column,
+                    ]) ?>
                     <?= $this->element('ContractChecks/contract_cell', [
                         'contract' => $contract,
                         'contract_column' => $contract_column,
                     ]) ?>
-                    <?php if ($contract_column) : ?>
-                        <td class="dashboard-wrap">
-                            <?php if ($contract->customer !== null) : ?>
-                                <?= $this->Html->link(
-                                    $contract->customer->name_for_lists,
-                                    ['controller' => 'Customers', 'action' => 'view', $contract->customer->id],
-                                ) ?>
-                            <?php endif ?>
-                        </td>
-                    <?php endif ?>
                     <td><?= h($contract->installation_date) ?></td>
                     <td><?= h($contract->uninstallation_date) ?></td>
                     <td><?= h($contract->termination_date) ?></td>

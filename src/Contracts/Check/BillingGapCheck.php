@@ -177,7 +177,7 @@ class BillingGapCheck extends AbstractContractCheck
             ->select($this->billings)
             ->select($this->billings->Contracts)
             ->select($this->billings->Services)
-            ->contain(['Contracts', 'Services'])
+            ->contain(['Contracts' => ['Customers'], 'Services'])
             ->where([
                 'Billings.billing_until IS NOT' => null,
                 $query->expr(self::RESUMES_LATER),

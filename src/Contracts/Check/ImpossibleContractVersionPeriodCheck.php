@@ -80,7 +80,7 @@ class ImpossibleContractVersionPeriodCheck extends AbstractContractCheck
         $query = $this->versions->find();
 
         $query
-            ->contain(['Contracts'])
+            ->contain(['Contracts' => ['Customers']])
             ->where([
                 $this->knownDate($query, 'ContractVersions.valid_from'),
                 $query->expr()->or([

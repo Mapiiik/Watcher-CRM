@@ -153,7 +153,7 @@ class ContractVersionGapCheck extends AbstractContractCheck
             ->select(['resumes_on' => $query->expr(self::RESUMES_ON)])
             ->select($this->versions)
             ->select($this->versions->Contracts)
-            ->contain(['Contracts'])
+            ->contain(['Contracts' => ['Customers']])
             ->where([
                 'ContractVersions.valid_until IS NOT' => null,
                 $this->knownDate($query, 'ContractVersions.valid_from'),

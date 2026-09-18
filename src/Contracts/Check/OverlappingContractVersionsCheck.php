@@ -112,7 +112,7 @@ class OverlappingContractVersionsCheck extends AbstractContractCheck
             ->select(['overlaps_from' => $query->expr(self::OVERLAPS_FROM)])
             ->select($this->versions)
             ->select($this->versions->Contracts)
-            ->contain(['Contracts'])
+            ->contain(['Contracts' => ['Customers']])
             ->where([
                 $this->knownDate($query, 'ContractVersions.valid_from'),
                 $query->expr(self::RUNS_INTO_ANOTHER),

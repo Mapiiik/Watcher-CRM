@@ -84,6 +84,8 @@ class ProposalChecksRenderTest extends TestCase
 
         $this->assertStringContainsString('2026/0042', $drawn);
         $this->assertStringContainsString('Nested Customer', $drawn);
+        // The customer comes first, the way every listing in the application has it.
+        $this->assertLessThan(strpos($drawn, '2026/0042'), strpos($drawn, 'Nested Customer'));
         $this->assertStringContainsString(h(ProposalPurpose::ServiceChange->label()), $drawn);
 
         // Said the way the page says any day, which is the locale's business rather than this test's.

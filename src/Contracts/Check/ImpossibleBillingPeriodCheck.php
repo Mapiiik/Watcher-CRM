@@ -80,7 +80,7 @@ class ImpossibleBillingPeriodCheck extends AbstractContractCheck
         $query = $this->billings->find();
 
         $query
-            ->contain(['Contracts', 'Services'])
+            ->contain(['Contracts' => ['Customers'], 'Services'])
             ->where([
                 $query->expr()->or([
                     // ends before it begins, so it bills nothing at all

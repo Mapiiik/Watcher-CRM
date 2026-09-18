@@ -11,27 +11,16 @@ $customer_column ??= true;
 <table>
     <thead>
         <tr>
-            <th><?= __('Address') ?></th>
             <?php if ($customer_column) : ?>
                 <th><?= __('Customer') ?></th>
             <?php endif ?>
+            <th><?= __('Address') ?></th>
             <th><?= __('Coordinates Set by Hand') ?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($records as $address) : ?>
             <tr>
-                <td class="dashboard-wrap">
-                    <?= $this->Html->link(
-                        $address->full_address,
-                        [
-                            'controller' => 'Addresses',
-                            'action' => 'view',
-                            $address->id,
-                            'customer_id' => $address->customer_id,
-                        ],
-                    ) ?>
-                </td>
                 <?php if ($customer_column) : ?>
                     <td>
                         <?php if ($address->customer !== null) : ?>
@@ -47,6 +36,17 @@ $customer_column ??= true;
                         <?php endif ?>
                     </td>
                 <?php endif ?>
+                <td class="dashboard-wrap">
+                    <?= $this->Html->link(
+                        $address->full_address,
+                        [
+                            'controller' => 'Addresses',
+                            'action' => 'view',
+                            $address->id,
+                            'customer_id' => $address->customer_id,
+                        ],
+                    ) ?>
+                </td>
                 <td><?= $address->manual_coordinate_setting ? __('Yes') : __('No') ?></td>
             </tr>
         <?php endforeach ?>
