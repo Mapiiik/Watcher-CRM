@@ -8,6 +8,7 @@ use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\Database\Type\EnumType;
+use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\TableRegistry;
@@ -90,6 +91,51 @@ class CustomerProposalsTable extends AppTable
             $this->aliasField('conclusion_date') . ' IS' => null,
             $this->aliasField('revoked') . ' IS' => null,
         ]);
+    }
+
+    /**
+     * Gives up on the round, and on everything still standing in it.
+     *
+     * Written into the papers rather than read back from here afterwards. Giving up is final and
+     * nothing joins a round that has been given up on, so the one word written across them cannot
+     * come apart the way a copied date would - and the papers go on answering for themselves
+     * wherever they are read without their envelope.
+     *
+     * What was already carried over keeps what it says: an envelope does not undo what has reached
+     * the live records. So does anything given up on earlier, which has its own day and its own
+     * name against it.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The round.
+     * @param string|null $by Who is giving up on it.
+     * @return bool Whether it was written.
+     */
+    public function giveUpOnTheRound(CustomerProposal $proposal, ?string $by): bool
+    {
+        $proposal->revoked = DateTime::now();
+        $proposal->revoked_by = $by;
+
+        return (bool)$this->getConnection()->transactional(function () use ($proposal): bool {
+            if (!$this->save($proposal, ['checkRules' => false])) {
+                return false;
+            }
+
+            $standing = $this->ContractProposals->find()->where([
+                'ContractProposals.customer_proposal_id' => $proposal->id,
+                'ContractProposals.revoked IS' => null,
+                'ContractProposals.applied IS' => null,
+            ]);
+
+            foreach ($standing as $papers) {
+                $papers->revoked = $proposal->revoked;
+                $papers->revoked_by = $proposal->revoked_by;
+
+                if (!$this->ContractProposals->save($papers, ['checkRules' => false])) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
     }
 
     /**

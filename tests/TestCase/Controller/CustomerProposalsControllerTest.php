@@ -9,6 +9,7 @@ use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -698,22 +699,51 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Giving up on the round leaves the papers of the contracts standing: they are the record of
-     * papers that happened, and one already carried over cannot be undone by an envelope.
+     * Giving up on the round gives up on the papers it holds: they went out in it and there is
+     * nothing left for them to travel in, so they stop waiting for anybody.
      *
-     * @link \App\Controller\CustomerProposalsController::revoke()
+     * @link \App\Model\Table\CustomerProposalsTable::giveUpOnTheRound()
      * @return void
      */
-    public function testGivingUpOnTheRoundLeavesThePapersInItStanding(): void
+    public function testGivingUpOnTheRoundGivesUpOnThePapersInIt(): void
     {
         $round = $this->drawOneUpWithPapers();
 
         $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/revoke/' . $round->id);
         $this->assertRedirect();
 
-        foreach ($this->papersOf((string)$round->id) as $papers) {
-            $this->assertFalse($papers->hasBeenRevoked());
+        $papers = $this->papersOf((string)$round->id);
+        $this->assertNotSame([], $papers);
+
+        foreach ($papers as $of) {
+            $this->assertTrue($of->hasBeenRevoked(), 'The papers were left waiting in an envelope nobody sent.');
+            $this->assertFalse($of->isOpen());
         }
+    }
+
+    /**
+     * Papers given up on by themselves keep the day and the name that are against them, because
+     * that is when somebody gave up on those papers.
+     *
+     * @link \App\Model\Table\CustomerProposalsTable::giveUpOnTheRound()
+     * @return void
+     */
+    public function testPapersGivenUpOnEarlierKeepTheirOwnDay(): void
+    {
+        $round = $this->drawOneUpWithPapers();
+        $papers = $this->getTableLocator()->get('ContractProposals');
+        $of = $papers->get($this->papersOf((string)$round->id)[0]->id);
+
+        $of->revoked = new DateTime('2026-09-01 08:00:00');
+        $papers->saveOrFail($of, ['checkRules' => false]);
+
+        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/revoke/' . $round->id);
+        $this->assertRedirect();
+
+        $this->assertSame(
+            '2026-09-01 08:00:00',
+            $papers->get($of->id)->revoked?->format('Y-m-d H:i:s'),
+        );
     }
 
     /**

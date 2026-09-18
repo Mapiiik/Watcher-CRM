@@ -17,7 +17,6 @@ use App\Proposals\RoundOfPapers;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\Http\Response;
 use Cake\I18n\Date;
-use Cake\I18n\DateTime;
 use Exception;
 
 /**
@@ -463,7 +462,7 @@ class CustomerProposalsController extends AppController
     }
 
     /**
-     * Gives up on the papers.
+     * Gives up on the papers, and on the papers of the contracts they hold.
      *
      * @param string|null $id Customer proposal id.
      * @return \Cake\Http\Response|null Redirects back to the proposal.
@@ -481,10 +480,9 @@ class CustomerProposalsController extends AppController
             return $this->redirect(['action' => 'view', $id]);
         }
 
-        $proposal->revoked = DateTime::now();
-        $proposal->revoked_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+        $by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
-        if ($this->CustomerProposals->save($proposal, ['checkRules' => false])) {
+        if ($this->CustomerProposals->giveUpOnTheRound($proposal, is_string($by) ? $by : null)) {
             $this->Flash->success(__('The proposal has been revoked.'));
         } else {
             $this->flashValidationErrors($proposal->getErrors());
