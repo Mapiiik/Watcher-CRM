@@ -321,10 +321,12 @@ class CustomerProposalsControllerTest extends TestCase
         );
 
         $this->post('/customer-proposals/delete/' . $stays->id);
+        $this->assertRedirectContains('/customer-proposals/view/' . $stays->id);
         $this->assertNotNull($proposals->find()->where(['id' => $stays->id])->first());
 
         $goes = $this->drawOneUp();
         $this->post('/customer-proposals/delete/' . $goes->id);
+        $this->assertRedirectContains('/customers/' . self::CUSTOMER_ID . '/documents/manage');
         $this->assertNull($proposals->find()->where(['id' => $goes->id])->first());
     }
 

@@ -582,8 +582,11 @@ class ContractProposalsController extends AppController
     /**
      * Delete method
      *
+     * Afterwards the reader is on the proposal put to the customer that held these papers, which
+     * is still there. What could not be deleted leaves them on the papers themselves.
+     *
      * @param string|null $id Contract version proposal id.
-     * @return \Cake\Http\Response|null Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to the proposal that held it, or back to it.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null): ?Response
@@ -591,16 +594,20 @@ class ContractProposalsController extends AppController
         $this->getRequest()->allowMethod(['post', 'delete']);
         $proposal = $this->ContractProposals->get($id, contain: ['CustomerProposals']);
 
-        if ($this->ContractProposals->delete($proposal)) {
-            $this->Flash->success(__('The proposal has been deleted.'));
-        } else {
+        if (!$this->ContractProposals->delete($proposal)) {
             $this->flashValidationErrors($proposal->getErrors());
             $this->Flash->error(__('The proposal could not be deleted. Please, try again.'));
+
+            return $this->redirect(['action' => 'view', $id]);
         }
 
-        return $this->afterDeleteRedirect([
-            'controller' => 'Documents',
-            'action' => 'index',
+        $this->Flash->success(__('The proposal has been deleted.'));
+
+        return $this->redirect([
+            'controller' => 'CustomerProposals',
+            'action' => 'view',
+            $proposal->customer_proposal_id,
+            'customer_id' => $proposal->customer_proposal->customer_id,
         ]);
     }
 

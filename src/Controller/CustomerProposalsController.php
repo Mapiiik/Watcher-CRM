@@ -495,8 +495,11 @@ class CustomerProposalsController extends AppController
     /**
      * Delete method
      *
+     * Afterwards the reader is on the customer's workbench, where the rest of their papers are.
+     * What could not be deleted leaves them on the proposal.
+     *
      * @param string|null $id Customer proposal id.
-     * @return \Cake\Http\Response|null Redirects to index.
+     * @return \Cake\Http\Response|null Redirects to the workbench, or back to the proposal.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null): ?Response
@@ -511,16 +514,19 @@ class CustomerProposalsController extends AppController
             return $this->redirect(['action' => 'view', $id]);
         }
 
-        if ($this->CustomerProposals->delete($proposal)) {
-            $this->Flash->success(__('The proposal has been deleted.'));
-        } else {
+        if (!$this->CustomerProposals->delete($proposal)) {
             $this->flashValidationErrors($proposal->getErrors());
             $this->Flash->error(__('The proposal could not be deleted. Please, try again.'));
+
+            return $this->redirect(['action' => 'view', $id]);
         }
 
-        return $this->afterDeleteRedirect([
+        $this->Flash->success(__('The proposal has been deleted.'));
+
+        return $this->redirect([
             'controller' => 'Documents',
-            'action' => 'index',
+            'action' => 'manage',
+            'customer_id' => $proposal->customer_id,
         ]);
     }
 

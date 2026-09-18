@@ -1496,7 +1496,10 @@ class ContractProposalsControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/contract-proposals/delete/' . self::PROPOSAL_ID);
-        $this->assertRedirect();
+        // The papers are gone, the proposal that held them is not.
+        $this->assertRedirectContains(
+            '/customers/' . self::CUSTOMER_ID . '/customer-proposals/view/' . self::ROUND_ID,
+        );
         $this->assertSame(0, $proposals->find()->where(['id' => self::PROPOSAL_ID])->count());
     }
 
@@ -1516,6 +1519,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->enableSecurityToken();
         $this->post('/contract-proposals/delete/' . self::PROPOSAL_ID);
 
+        $this->assertRedirectContains('/contract-proposals/view/' . self::PROPOSAL_ID);
         $this->assertSame(1, $proposals->find()->where(['id' => self::PROPOSAL_ID])->count());
     }
 }
