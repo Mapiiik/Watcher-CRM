@@ -37,6 +37,19 @@ foreach ($filed as $byVariant) {
                     ['action' => 'edit', $contractProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
+                <?php
+                // Asked the same question as the box on the edit form, which does the same thing
+                // for somebody who wants the version's dates put right in one go.
+                ?>
+                <?= $this->AuthLink->postLink(
+                    __('Take the snapshot again'),
+                    ['action' => 'refreshSnapshot', $contractProposal->id],
+                    [
+                        'class' => 'side-nav-item',
+                        'confirm' => __('The papers are generated from what the contract looked like'
+                            . ' when this proposal was drawn up. Reading it again replaces that. Go ahead?'),
+                    ],
+                ) ?>
             <?php endif; ?>
             <?php
             // Sending, signing and carrying over happen on the proposal and reach everything in

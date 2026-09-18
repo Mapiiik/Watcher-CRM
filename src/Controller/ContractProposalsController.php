@@ -244,16 +244,7 @@ class ContractProposalsController extends AppController
             $takenBack = $takeSnapshot ? $this->dropLinesWhoseBillingIsGone($proposal) : 0;
 
             if (!$this->isARedraw() && $this->saveProposal($proposal)) {
-                if ($takenBack > 0) {
-                    $this->Flash->warning(__n(
-                        'One line asked about a billing that is no longer on the contract and has'
-                        . ' been taken back.',
-                        '{0} lines asked about billings that are no longer on the contract and have'
-                        . ' been taken back.',
-                        $takenBack,
-                        $takenBack,
-                    ));
-                }
+                $this->sayWhatWasTakenBack($takenBack);
 
                 return $this->redirect(['action' => 'view', $proposal->id]);
             }
@@ -266,17 +257,86 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * Where taking the snapshot again used to live.
+     * Takes the snapshot again, and nothing else.
      *
-     * It is a box on the form now, because a fresh reading of the contract may want the version's
-     * dates corrected in the same submission. Kept so that what is bookmarked still arrives.
+     * The common case is a button: the contract moved underneath the papers and nothing about them
+     * changes. Where the version's dates want correcting in the same breath, the box on the edit
+     * form does both - which is also where a bookmark to this address still arrives.
      *
      * @param string|null $id Contract version proposal id.
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Http\Response|null Redirects to the proposal, or to the form when asked by GET.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function refreshSnapshot(?string $id = null): ?Response
     {
-        return $this->redirect(['action' => 'edit', $id]);
+        if (!$this->request->is('post')) {
+            return $this->redirect(['action' => 'edit', $id]);
+        }
+
+        $proposal = $this->ContractProposals->get($id, contain: ['CustomerProposals']);
+
+        if (!$this->ContractProposals->mayBeEdited($proposal)) {
+            $this->Flash->error(__('This proposal can no longer be changed.'));
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        $contract = $this->contractFor((string)$proposal->contract_id);
+        $terminates = $proposal->terminates_contract_version_id;
+        $version = match (true) {
+            $contract === null => null,
+            $proposal->contract_version_id !== null => $this->versionFor($proposal->contract_version_id),
+            default => $this->versionToCome($contract->id, [
+                'effective_from' => $proposal->effective_from?->toDateString(),
+                'changes' => $proposal->changes,
+            ]),
+        };
+
+        if ($contract === null || $version === null) {
+            $this->Flash->error(__('Choose which contract and which version of it these papers are for.'));
+
+            return $this->redirect(['action' => 'edit', $id]);
+        }
+
+        $proposal->set('snapshot', (new ProposalSnapshotBuilder())->take(
+            $contract,
+            $version,
+            $terminates === null ? null : $this->versionFor($terminates),
+        ));
+        $proposal->set('snapshot_taken', DateTime::now());
+        $takenBack = $this->dropLinesWhoseBillingIsGone($proposal);
+
+        if (!$this->saveProposal($proposal)) {
+            // A fresh reading may raise a question nobody has answered yet, and the form is where
+            // it is asked - with the box that takes the snapshot again in the same submission.
+            return $this->redirect(['action' => 'edit', $id]);
+        }
+
+        $this->sayWhatWasTakenBack($takenBack);
+
+        return $this->redirect(['action' => 'view', $id]);
+    }
+
+    /**
+     * Tells the operator how many lines a fresh snapshot took back, where it took any.
+     *
+     * @param int $takenBack How many.
+     * @return void
+     */
+    private function sayWhatWasTakenBack(int $takenBack): void
+    {
+        if ($takenBack === 0) {
+            return;
+        }
+
+        $this->Flash->warning(__n(
+            'One line asked about a billing that is no longer on the contract and has'
+            . ' been taken back.',
+            '{0} lines asked about billings that are no longer on the contract and have'
+            . ' been taken back.',
+            $takenBack,
+            $takenBack,
+        ));
     }
 
     /**

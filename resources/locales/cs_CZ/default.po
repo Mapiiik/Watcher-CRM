@@ -7893,7 +7893,7 @@ msgstr ""
 
 #: templates/element/ContractProposals/form.php:270
 msgid "Take the snapshot again"
-msgstr "Vyfotit smlouvu znovu"
+msgstr "Pořídit snímek znovu"
 
 #: templates/element/ContractProposals/form.php:271
 msgid ""

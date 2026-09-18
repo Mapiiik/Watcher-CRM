@@ -1012,6 +1012,70 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * The button on the proposal takes the snapshot again by itself, and takes back what the new
+     * reading no longer knows - the same as the box on the form, without the form.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::refreshSnapshot()
+     */
+    public function testTheButtonTakesTheSnapshotAgain(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $billings = $this->getTableLocator()->get('Billings');
+
+        $line = ProposedBilling::fromArray(['billing_id' => self::KNOWN_BILLING_ID, 'quantity' => 2]);
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal->set('changes', $proposal->proposedChanges()->withLine($line)->toArray());
+        // Answered the way the form answers them, since saving asks whether the contract is ready.
+        $proposal->set('confirmations', [
+            'fixed_term' => true,
+            'own_equipment' => true,
+            'does_not_use_ip_addresses' => true,
+            'does_not_use_radius' => true,
+        ]);
+        $proposals->saveOrFail($proposal);
+        $billings->deleteOrFail($billings->get(self::KNOWN_BILLING_ID));
+
+        $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->assertResponseContains('/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+
+        $this->assertRedirectContains('/contract-proposals/view/' . self::PROPOSAL_ID);
+
+        $after = $proposals->get(self::PROPOSAL_ID);
+        $this->assertTrue($after->snapshot_taken > $before, 'The snapshot was not taken again.');
+        $this->assertArrayNotHasKey(self::KNOWN_BILLING_ID, $after->stateOfThings()->billings());
+        $this->assertNull($after->proposedChanges()->line($line->id));
+    }
+
+    /**
+     * Where the new reading raises a question nobody has answered, the button sends the operator
+     * to the form, which is where the question is asked - and the snapshot stays as it was.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::refreshSnapshot()
+     */
+    public function testAnUnansweredQuestionSendsTheButtonToTheForm(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+
+        $this->assertRedirectContains('/contract-proposals/edit/' . self::PROPOSAL_ID);
+        $this->assertEquals($before, $proposals->get(self::PROPOSAL_ID)->snapshot_taken);
+    }
+
+    /**
      * And a paper being drawn up is never asked: it is photographed as it is saved, so there is
      * nothing yet to read again.
      *
