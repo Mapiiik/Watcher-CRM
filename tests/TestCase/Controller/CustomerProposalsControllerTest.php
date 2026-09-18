@@ -751,6 +751,64 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
+     * Carrying the package over passes by the papers given up on inside it: they stay given up
+     * on, and the rest of the package is carried over all the same.
+     *
+     * @link \App\Controller\CustomerProposalsController::transfer()
+     * @return void
+     */
+    public function testCarryingOverPassesByThePapersGivenUpOn(): void
+    {
+        $round = $this->drawOneUpWithPapers();
+        $given_up = $this->papersOf((string)$round->id)[0];
+
+        $this->post('/customers/' . self::CUSTOMER_ID . '/contract-proposals/add', [
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::OTHER_CONTRACT_ID,
+            'customer_proposal_id' => $round->id,
+            'contract_version_id' => '',
+            'effective_from' => $round->effective_from->toDateString(),
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+        $this->assertRedirectContains('/contract-proposals/view/');
+
+        $this->post('/contract-proposals/revoke/' . $given_up->id);
+
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $this->post($at . 'send/' . $round->id, [
+            'sent_date' => '2026-10-01',
+            'delivery_type' => DocumentsDeliveryType::Post->value,
+        ]);
+        $this->post($at . 'conclude/' . $round->id, ['conclusion_date' => '2026-10-05']);
+
+        $this->get($at . 'transfer/' . $round->id);
+        $this->assertResponseOk();
+        $offered = array_map(
+            fn(array $part): string => (string)$part['papers']->id,
+            (array)$this->viewVariable('parts'),
+        );
+        $this->assertNotContains((string)$given_up->id, $offered, 'The preview offered papers given up on.');
+        $this->assertCount(1, $offered);
+
+        $this->post($at . 'transfer/' . $round->id);
+        $this->assertRedirectContains('/customer-proposals/view/' . $round->id);
+
+        foreach ($this->papersOf((string)$round->id) as $papers) {
+            if ($papers->id === $given_up->id) {
+                $this->assertTrue($papers->hasBeenRevoked());
+                $this->assertFalse($papers->hasBeenApplied(), 'Papers given up on were carried over.');
+            } else {
+                $this->assertTrue($papers->hasBeenApplied(), 'The rest of the package was not carried over.');
+            }
+        }
+    }
+
+    /**
      * Papers given up on by themselves keep the day and the name that are against them, because
      * that is when somebody gave up on those papers.
      *
