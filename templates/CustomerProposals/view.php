@@ -59,16 +59,6 @@ foreach ($filed as $byVariant) {
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
-            <?= $this->AuthLink->link(
-                __('Documents'),
-                [
-                    'plugin' => null,
-                    'controller' => 'Documents',
-                    'action' => 'manage',
-                    '?' => ['proposal_id' => $customerProposal->id, 'agenda' => 'CustomerProposals'],
-                ],
-                ['class' => 'side-nav-item'],
-            ) ?>
             <?php if ($customerProposal->isOpen()) : ?>
                 <?= $this->AuthLink->postLink(
                     __('Revoke'),
@@ -86,6 +76,17 @@ foreach ($filed as $byVariant) {
                     ['class' => 'side-nav-item', 'confirm' => __('Are you sure?')],
                 ) ?>
             <?php endif; ?>
+            <br>
+            <?= $this->AuthLink->link(
+                __('Documents'),
+                [
+                    'plugin' => null,
+                    'controller' => 'Documents',
+                    'action' => 'manage',
+                    '?' => ['proposal_id' => $customerProposal->id, 'agenda' => 'CustomerProposals'],
+                ],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">

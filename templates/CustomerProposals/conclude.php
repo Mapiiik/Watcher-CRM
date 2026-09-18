@@ -17,6 +17,7 @@ use Cake\I18n\Date;
                 ['action' => 'view', $customerProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <br>
             <?= $this->AuthLink->link(
                 __('Documents'),
                 [

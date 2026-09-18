@@ -4975,7 +4975,7 @@ msgstr ""
 
 #: ./templates/ContractProposals/edit.php:21
 #: ./templates/ContractProposals/view.php:46
-msgid "The Proposal These Are Part Of"
+msgid "View Customer Proposal"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:36

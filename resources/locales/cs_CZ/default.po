@@ -4742,8 +4742,8 @@ msgstr "Prázdné začne s papíry."
 
 #: templates/ContractProposals/edit.php:21
 #: templates/ContractProposals/view.php:46
-msgid "The Proposal These Are Part Of"
-msgstr "Návrh, jehož jsou součástí"
+msgid "View Customer Proposal"
+msgstr "Zobrazit návrh zákazníkovi"
 
 #: templates/ContractProposals/view.php:36
 #: templates/CustomerProposals/view.php:32

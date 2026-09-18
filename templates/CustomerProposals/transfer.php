@@ -28,6 +28,12 @@ foreach ($parts as $part) {
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
+                __('View Proposal'),
+                ['action' => 'view', $customerProposal->id],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <br>
+            <?= $this->AuthLink->link(
                 __('Documents'),
                 [
                     'plugin' => null,
@@ -38,11 +44,6 @@ foreach ($parts as $part) {
                         'agenda' => 'CustomerProposals',
                     ],
                 ],
-                ['class' => 'side-nav-item'],
-            ) ?>
-            <?= $this->AuthLink->link(
-                __('View Proposal'),
-                ['action' => 'view', $customerProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>

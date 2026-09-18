@@ -13,12 +13,14 @@
                 ['action' => 'view', $contractProposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <br>
             <?php
-            // Sending, signing and carrying over happen on the proposal and reach everything in
-            // it, so they are not offered here - the way up to them is.
+            // What leads elsewhere sits apart from what is done here. Sending, signing and
+            // carrying over happen on the proposal and reach everything in it, so they are not
+            // offered here - the way up to them is.
             ?>
             <?= $this->AuthLink->link(
-                __('The Proposal These Are Part Of'),
+                __('View Customer Proposal'),
                 [
                     'plugin' => null,
                     'controller' => 'CustomerProposals',

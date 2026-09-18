@@ -51,12 +51,31 @@ foreach ($filed as $byVariant) {
                     ],
                 ) ?>
             <?php endif; ?>
+            <?php if ($contractProposal->isOpen()) : ?>
+                <?= $this->AuthLink->postLink(
+                    __('Revoke'),
+                    ['action' => 'revoke', $contractProposal->id],
+                    [
+                        'class' => 'side-nav-item',
+                        'confirm' => __('Give up on this proposal? The live records never moved.'),
+                    ],
+                ) ?>
+            <?php endif; ?>
+            <?php if ($mayBeDeleted) : ?>
+                <?= $this->AuthLink->postLink(
+                    __('Delete'),
+                    ['action' => 'delete', $contractProposal->id],
+                    ['class' => 'side-nav-item', 'confirm' => __('Are you sure?')],
+                ) ?>
+            <?php endif; ?>
+            <br>
             <?php
-            // Sending, signing and carrying over happen on the proposal and reach everything in
-            // it, so they are not offered here - the way up to them is.
+            // What leads elsewhere sits apart from what is done here. Sending, signing and
+            // carrying over happen on the proposal and reach everything in it, so they are not
+            // offered here - the way up to them is.
             ?>
             <?= $this->AuthLink->link(
-                __('The Proposal These Are Part Of'),
+                __('View Customer Proposal'),
                 [
                     'plugin' => null,
                     'controller' => 'CustomerProposals',
@@ -75,23 +94,6 @@ foreach ($filed as $byVariant) {
                 ],
                 ['class' => 'side-nav-item'],
             ) ?>
-            <?php if ($contractProposal->isOpen()) : ?>
-                <?= $this->AuthLink->postLink(
-                    __('Revoke'),
-                    ['action' => 'revoke', $contractProposal->id],
-                    [
-                        'class' => 'side-nav-item',
-                        'confirm' => __('Give up on this proposal? The live records never moved.'),
-                    ],
-                ) ?>
-            <?php endif; ?>
-            <?php if ($mayBeDeleted) : ?>
-                <?= $this->AuthLink->postLink(
-                    __('Delete'),
-                    ['action' => 'delete', $contractProposal->id],
-                    ['class' => 'side-nav-item', 'confirm' => __('Are you sure?')],
-                ) ?>
-            <?php endif; ?>
         </div>
     </aside>
     <div class="column column-90">
