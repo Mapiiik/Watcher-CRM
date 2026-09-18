@@ -123,6 +123,30 @@ class CustomerProposal extends AppEntity
     }
 
     /**
+     * Whether anything in the round may still be carried over into the live records.
+     *
+     * Asked before the signature too, since what carrying over would do may be looked at early.
+     * A round given up on has nothing to carry over, whatever its papers still say.
+     *
+     * @return bool
+     * @throws \RuntimeException When what the round holds was not loaded.
+     */
+    public function hasSomethingToCarryOver(): bool
+    {
+        if ($this->hasBeenRevoked()) {
+            return false;
+        }
+
+        foreach ($this->contractProposals() as $part) {
+            if ($part->isStillToBeCarriedOver()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Whether there is nothing left to do about the round at all.
      *
      * Not the same as settled, which is the signature: the papers of a contract are written into

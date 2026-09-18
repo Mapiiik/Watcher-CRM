@@ -724,6 +724,33 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
+     * Carrying over is offered while something is left to carry over, and a round given up on has
+     * nothing - so neither the page nor the action lead anywhere from it.
+     *
+     * @link \App\Model\Entity\CustomerProposal::hasSomethingToCarryOver()
+     * @link \App\Controller\CustomerProposalsController::transfer()
+     * @return void
+     */
+    public function testARevokedRoundOffersNothingToCarryOver(): void
+    {
+        $round = $this->drawOneUpWithPapers();
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $carryOver = 'customer-proposals/transfer/' . $round->id;
+
+        $this->get($at . 'view/' . $round->id);
+        $this->assertResponseContains($carryOver);
+
+        $this->post($at . 'revoke/' . $round->id);
+
+        $this->get($at . 'view/' . $round->id);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains($carryOver);
+
+        $this->get($at . 'transfer/' . $round->id);
+        $this->assertRedirectContains('/customer-proposals/view/' . $round->id);
+    }
+
+    /**
      * Papers given up on by themselves keep the day and the name that are against them, because
      * that is when somebody gave up on those papers.
      *

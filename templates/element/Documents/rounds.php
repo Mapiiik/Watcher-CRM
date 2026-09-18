@@ -125,11 +125,13 @@ $heading = function (string $field, string $said) use ($paged): string {
                                     $one->id,
                                 ]) ?>
                             <?php endif; ?>
-                            <?= $this->AuthLink->link(__('Carry Over'), [
-                                'controller' => 'CustomerProposals',
-                                'action' => 'transfer',
-                                $one->id,
-                            ]) ?>
+                            <?php if ($one->hasSomethingToCarryOver()) : ?>
+                                <?= $this->AuthLink->link(__('Carry Over'), [
+                                    'controller' => 'CustomerProposals',
+                                    'action' => 'transfer',
+                                    $one->id,
+                                ]) ?>
+                            <?php endif; ?>
                         <?php endif; ?>
                     <?php else : ?>
                         <?= $this->Html->link(__('Documents'), [

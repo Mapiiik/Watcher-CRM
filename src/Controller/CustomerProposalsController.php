@@ -299,6 +299,12 @@ class CustomerProposalsController extends AppController
     {
         $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
 
+        if ($proposal->hasBeenRevoked()) {
+            $this->Flash->warning(__('This round of papers has been given up on.'));
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
         $preview = new TransferPreview();
         $plan = new TransferPlan();
         $parts = [];
