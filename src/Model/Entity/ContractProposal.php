@@ -117,7 +117,7 @@ class ContractProposal extends AppEntity
     }
 
     /**
-     * Whether the changes have been carried over into the live records.
+     * Whether the changes have been applied to the live records.
      *
      * @return bool
      */
@@ -129,7 +129,7 @@ class ContractProposal extends AppEntity
     /**
      * The fields the proposal keeps.
      *
-     * Everything a proposal of a contract asks for reaches the records by being carried over, so
+     * Everything a proposal of a contract asks for reaches the records by being applied, so
      * signing is only halfway and the purpose says as much.
      *
      * @return \App\Proposals\Settlement
@@ -184,14 +184,14 @@ class ContractProposal extends AppEntity
      * Whether what these papers ask for still has to be written into the live records.
      *
      * Asked without the envelope, unlike everything else about where the papers stand, because it
-     * is what the envelope asks of what it holds: what has been carried over is done, and what was
-     * given up on is never carried over at all.
+     * is what the envelope asks of what it holds: what has been applied is done, and what was
+     * given up on is never applied at all.
      *
      * @return bool
      */
-    public function isStillToBeCarriedOver(): bool
+    public function isStillToBeApplied(): bool
     {
-        return $this->purpose->lastStep() === ProposalStep::CarriedOver
+        return $this->purpose->lastStep() === ProposalStep::Applied
             && $this->applied === null
             && $this->revoked === null;
     }

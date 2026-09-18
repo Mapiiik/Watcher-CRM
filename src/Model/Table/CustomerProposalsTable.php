@@ -101,7 +101,7 @@ class CustomerProposalsTable extends AppTable
      * come apart the way a copied date would - and the papers go on answering for themselves
      * wherever they are read without their envelope.
      *
-     * What was already carried over keeps what it says: an envelope does not undo what has reached
+     * What was already applied keeps what it says: an envelope does not undo what has reached
      * the live records. So does anything given up on earlier, which has its own day and its own
      * name against it.
      *

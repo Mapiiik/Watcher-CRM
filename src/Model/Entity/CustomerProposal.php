@@ -112,7 +112,7 @@ class CustomerProposal extends AppEntity
         $carried = false;
 
         foreach ($this->contractProposals() as $part) {
-            if ($part->isStillToBeCarriedOver()) {
+            if ($part->isStillToBeApplied()) {
                 return __('Waiting to be carried over');
             }
 
@@ -123,22 +123,22 @@ class CustomerProposal extends AppEntity
     }
 
     /**
-     * Whether anything in the round may still be carried over into the live records.
+     * Whether anything in the round may still be applied to the live records.
      *
-     * Asked before the signature too, since what carrying over would do may be looked at early.
-     * A round given up on has nothing to carry over, whatever its papers still say.
+     * Asked before the signature too, since what applying the changes would do may be looked at early.
+     * A round given up on has nothing to apply, whatever its papers still say.
      *
      * @return bool
      * @throws \RuntimeException When what the round holds was not loaded.
      */
-    public function hasSomethingToCarryOver(): bool
+    public function hasChangesToApply(): bool
     {
         if ($this->hasBeenRevoked()) {
             return false;
         }
 
         foreach ($this->contractProposals() as $part) {
-            if ($part->isStillToBeCarriedOver()) {
+            if ($part->isStillToBeApplied()) {
                 return true;
             }
         }
@@ -163,7 +163,7 @@ class CustomerProposal extends AppEntity
         }
 
         foreach ($this->contractProposals() as $part) {
-            if ($part->isStillToBeCarriedOver()) {
+            if ($part->isStillToBeApplied()) {
                 return false;
             }
         }

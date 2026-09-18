@@ -22,7 +22,7 @@ use InvalidArgumentException;
  * what lets the changes be edited without the snapshot having to be recomputed.
  *
  * It doubles as the record of what the terms were before, so nothing has to be kept twice: before
- * carrying a proposal over, the billings here are held up against the live ones to see what moved
+ * applying a proposal, the billings here are held up against the live ones to see what moved
  * in the meantime.
  */
 final class ProposalSnapshot
@@ -42,7 +42,7 @@ final class ProposalSnapshot
     ];
 
     /**
-     * The terms that are held up against the live billing before a proposal is carried over.
+     * The terms that are held up against the live billing before a proposal is applied.
      *
      * The same list the billings table refuses to have rewritten once it has been invoiced for,
      * plus the days the line runs between.

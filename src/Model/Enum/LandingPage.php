@@ -48,7 +48,7 @@ enum LandingPage: string implements EnumLabelInterface
      * Where the page lives, as the navigation names it.
      *
      * The nesting a URL is built under is left alone: this is only ever built on the root,
-     * where there is no customer or contract for the URL filter to carry over.
+     * where there is no customer or contract for the URL filter to apply.
      *
      * @return array<string, mixed>
      */

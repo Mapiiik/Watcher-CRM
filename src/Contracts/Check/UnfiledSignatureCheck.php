@@ -13,7 +13,7 @@ use Settings\Utility\Settings;
 /**
  * The customer signed and the signed copy has not been filed.
  *
- * Said out loud because nothing else would ever say it: the proposal is signed, it carries over,
+ * Said out loud because nothing else would ever say it: the proposal is signed, it applies,
  * the service runs, and the paper stays in somebody's inbox for good. Carried-over proposals are
  * reported too - that is where the papers are needed most.
  */

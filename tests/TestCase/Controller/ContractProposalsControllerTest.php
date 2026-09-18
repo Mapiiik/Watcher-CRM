@@ -52,7 +52,7 @@ class ContractProposalsControllerTest extends TestCase
     private const PROPOSAL_ID = 'c9a1f2b3-4d5e-4f60-8a71-9b2c3d4e5f60';
 
     /**
-     * The proposal those papers are a part of. Sending, signing and carrying over happen
+     * The proposal those papers are a part of. Sending, signing and applying the changes happen
      * there and reach everything in it.
      *
      * @var string
@@ -244,7 +244,7 @@ class ContractProposalsControllerTest extends TestCase
     /**
      * Papers for a new contract may be drawn up before the version they are about exists. The
      * snapshot is taken of the version as it will be, so there is one to print from, and the
-     * version itself waits for the papers to be carried over.
+     * version itself waits for the papers to be applied.
      *
      * @return void
      * @link \App\Controller\ContractProposalsController::add()
@@ -336,7 +336,7 @@ class ContractProposalsControllerTest extends TestCase
      * about: there is none yet, so nothing can have moved on one.
      *
      * @return void
-     * @link \App\Contracts\Proposal\TransferPreview::of()
+     * @link \App\Contracts\Proposal\ChangePreview::of()
      */
     public function testThePreviewOfPapersWithoutAVersionRenders(): void
     {
@@ -350,7 +350,7 @@ class ContractProposalsControllerTest extends TestCase
         );
 
         $this->login();
-        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
 
         $this->assertResponseOk();
     }
@@ -1291,7 +1291,7 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * Nothing may be carried over without the day the customer agreed to it, so there is a way to
+     * Nothing may be applied without the day the customer agreed to it, so there is a way to
      * record that day - and to correct it, for as long as the proposal is open.
      *
      * @return void
@@ -1373,15 +1373,15 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * The preview says what the transfer would run into before anybody presses the button.
+     * The preview says what applying the changes would run into before anybody presses the button.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::transfer()
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
      */
-    public function testTheTransferPreviewSaysWhatStandsInTheWay(): void
+    public function testThePreviewOfTheChangesSaysWhatStandsInTheWay(): void
     {
         $this->login();
-        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
 
         $this->assertResponseOk();
         // Nobody has signed it, so it says so and does not offer the button.
@@ -1394,14 +1394,14 @@ class ContractProposalsControllerTest extends TestCase
      * service waiting on the scanner.
      *
      * @return void
-     * @link \App\Contracts\Proposal\TransferPreview::of()
+     * @link \App\Contracts\Proposal\ChangePreview::of()
      */
     public function testAMissingScanIsSaidOutLoudAndStopsNothing(): void
     {
         $this->theRoundSays(['conclusion_date' => '2026-09-15']);
 
         $this->login();
-        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains(
@@ -1414,7 +1414,7 @@ class ContractProposalsControllerTest extends TestCase
 
     /**
      * A minimum raised after a line was written does not hold the rest of the proposal up: the line
-     * was asked when it was written, and what it says now is the transfer's to tell.
+     * was asked when it was written, and what it says now is applying the changes's to tell.
      *
      * @return void
      * @link \App\Controller\ContractProposalsController::edit()
@@ -1474,10 +1474,10 @@ class ContractProposalsControllerTest extends TestCase
 
     /**
      * A minimum raised after a line was written is said before the button, and the administrator
-     * may carry the line over anyway by ticking the box.
+     * may apply the line anyway by ticking the box.
      *
      * @return void
-     * @link \App\Contracts\Proposal\TransferPreview::of()
+     * @link \App\Contracts\Proposal\ChangePreview::of()
      */
     public function testAMinimumRaisedSinceIsSaidAndMayBeGoneBelowDeliberately(): void
     {
@@ -1487,7 +1487,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->agreeMinimum('100');
 
         $this->login();
-        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/transfer/' . self::ROUND_ID);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
 
         $this->assertResponseOk();
         $this->assertResponseContains('minimum set on the contract');
@@ -1495,18 +1495,18 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/customer-proposals/transfer/' . self::ROUND_ID, ['allow_below_minimum' => '1']);
+        $this->post('/customer-proposals/apply-changes/' . self::ROUND_ID, ['allow_below_minimum' => '1']);
 
         $this->assertRedirect();
         $this->assertTrue($proposals->get(self::PROPOSAL_ID)->hasBeenApplied());
     }
 
     /**
-     * A signed proposal that changes nothing is carried over all the same, so that it stops being
+     * A signed proposal that changes nothing is applied all the same, so that it stops being
      * listed as waiting - and nothing of the contract moves.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::transfer()
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
      */
     public function testAnEmptyProposalIsMarkedAsDealtWith(): void
     {
@@ -1519,7 +1519,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/customer-proposals/transfer/' . self::ROUND_ID);
+        $this->post('/customer-proposals/apply-changes/' . self::ROUND_ID);
 
         $this->assertRedirect();
         $this->assertTrue($proposals->get(self::PROPOSAL_ID)->hasBeenApplied());
@@ -1527,17 +1527,17 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * An unsigned proposal is not carried over even when the request is made straight at it.
+     * An unsigned proposal is not applied even when the request is made straight at it.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::transfer()
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
      */
-    public function testAnUnsignedProposalIsNotCarriedOver(): void
+    public function testAnUnsignedProposalIsNotApplied(): void
     {
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/customer-proposals/transfer/' . self::ROUND_ID);
+        $this->post('/customer-proposals/apply-changes/' . self::ROUND_ID);
 
         $this->assertFalse(
             $this->getTableLocator()->get('ContractProposals')

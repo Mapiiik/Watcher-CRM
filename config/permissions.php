@@ -473,6 +473,7 @@ $permissions = [
                 'refreshSnapshot',
                 'revoke',
                 'send',
+                'applyChanges',
                 'transfer',
                 'serviceChange',
                 'setDatesForRelatedBorrowedEquipments',

@@ -130,8 +130,8 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
                     $this->contract_id,
                     $this->customer_id,
                 ),
-            'untransferred_proposal' =>
-                fn(): ContractCheckInterface => new UntransferredProposalCheck(
+            'unapplied_proposal' =>
+                fn(): ContractCheckInterface => new UnappliedProposalCheck(
                     $proposals,
                     $this->ignore_inactive,
                     $this->contract_id,

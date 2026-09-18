@@ -93,15 +93,15 @@ class SettlementTest extends TestCase
      *
      * @return void
      */
-    public function testPapersThatAreCarriedOverAreNotSettledByTheSignature(): void
+    public function testPapersThatAreAppliedAreNotSettledByTheSignature(): void
     {
-        $signed = new Settlement(ProposalStep::CarriedOver, $this->day(), $this->day());
+        $signed = new Settlement(ProposalStep::Applied, $this->day(), $this->day());
         $this->assertFalse($signed->isSettled());
         $this->assertSame('Waiting to be carried over', $signed->state());
-        $this->assertTrue($signed->isDueFor(ProposalStep::CarriedOver));
+        $this->assertTrue($signed->isDueFor(ProposalStep::Applied));
 
         $carried = new Settlement(
-            ProposalStep::CarriedOver,
+            ProposalStep::Applied,
             $this->day(),
             $this->day(),
             $this->moment(),
@@ -128,14 +128,14 @@ class SettlementTest extends TestCase
 
     /**
      * What has already happened comes before what only moved the papers along, so papers that were
-     * carried over do not still read as sent.
+     * applied do not still read as sent.
      *
      * @return void
      */
     public function testWhatSettledThePapersIsReadBeforeWhatMovedThemAlong(): void
     {
         $both = new Settlement(
-            ProposalStep::CarriedOver,
+            ProposalStep::Applied,
             $this->day(),
             $this->day(),
             $this->moment(),
@@ -153,11 +153,11 @@ class SettlementTest extends TestCase
      */
     public function testAStepDoesNotWaitForTheOnesBeforeIt(): void
     {
-        $fresh = new Settlement(ProposalStep::CarriedOver, null, null);
+        $fresh = new Settlement(ProposalStep::Applied, null, null);
 
         $this->assertTrue($fresh->isDueFor(ProposalStep::Delivered));
         $this->assertTrue($fresh->isDueFor(ProposalStep::Signed));
-        $this->assertTrue($fresh->isDueFor(ProposalStep::CarriedOver));
+        $this->assertTrue($fresh->isDueFor(ProposalStep::Applied));
     }
 
     /**
@@ -171,6 +171,6 @@ class SettlementTest extends TestCase
 
         $this->assertFalse($issued->isDueFor(ProposalStep::Delivered));
         $this->assertFalse($issued->isDueFor(ProposalStep::Signed));
-        $this->assertFalse($issued->isDueFor(ProposalStep::CarriedOver));
+        $this->assertFalse($issued->isDueFor(ProposalStep::Applied));
     }
 }

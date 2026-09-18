@@ -157,7 +157,7 @@ return [
                     default: 3,
                     hint: __('How long before a contract version takes effect it may have been concluded.'),
                 ),
-                'untransferred_proposal_within_days' => NumberType::ofInt(
+                'unapplied_proposal_within_days' => NumberType::ofInt(
                     default: 14,
                     hint: __('How far ahead a signed proposal nobody has carried over is worth raising. Until its day comes there is nothing to do about it.'),
                 ),

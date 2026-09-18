@@ -313,14 +313,14 @@ class UnsignedContractCheckTest extends TestCase
     }
 
     /**
-     * Paper carried over from the previous version is worth putting straight, but it is not
+     * Paper applied from the previous version is worth putting straight, but it is not
      * what anybody gets written to or cut off for: for that, the version has to say nothing
      * at all about when it was concluded.
      *
      * @return void
      * @link \App\Contracts\Check\UnsignedContractCheck::find()
      */
-    public function testPaperCarriedOverFromAnEarlierVersionIsHistoryRatherThanTheDaysWork(): void
+    public function testPaperAppliedFromAnEarlierVersionIsHistoryRatherThanTheDaysWork(): void
     {
         $this->onDay('2026-06-01', function (): void {
             $this->agreed(valid_from: '2026-05-01', conclusion_date: '2022-06-01');

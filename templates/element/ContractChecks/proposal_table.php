@@ -10,7 +10,7 @@
  * @var bool $contract_column
  * @var bool $customer_column
  * @var list<string> $dates Which days the rows show: `created`, `sent` or `concluded`.
- * @var list<string> $steps What the rows offer: `documents`, `send`, `conclude` or `transfer`.
+ * @var list<string> $steps What the rows offer: `documents`, `send`, `conclude` or `apply`.
  */
 
 $headings = [
@@ -99,13 +99,13 @@ $headings = [
                                 ['class' => 'win-link'],
                             ) ?>
                         <?php endif ?>
-                        <?php if (in_array('transfer', $steps, true)) : ?>
+                        <?php if (in_array('apply', $steps, true)) : ?>
                             <?= $this->AuthLink->link(
                                 __('Carry Over'),
                                 [
                                     'plugin' => null,
                                     'controller' => 'CustomerProposals',
-                                    'action' => 'transfer',
+                                    'action' => 'applyChanges',
                                     $proposal->customer_proposal_id,
                                 ],
                             ) ?>

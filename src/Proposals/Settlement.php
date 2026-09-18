@@ -39,7 +39,7 @@ final class Settlement
      * Whether anybody is still waiting for these papers.
      *
      * Being given up on settles anything. Otherwise it is the last step that says so, and only that
-     * one - a paper carried over is settled by the carrying over, however long it was signed first.
+     * one - a paper applied is settled by applying the changes, however long it was signed first.
      *
      * @return bool
      */
@@ -49,7 +49,7 @@ final class Settlement
             return true;
         }
 
-        return $this->ends_at === ProposalStep::CarriedOver
+        return $this->ends_at === ProposalStep::Applied
             ? $this->applied !== null
             : $this->concluded !== null;
     }
@@ -80,7 +80,7 @@ final class Settlement
             ProposalStep::Issued => true,
             ProposalStep::Delivered => $this->sent !== null,
             ProposalStep::Signed => $this->concluded !== null,
-            ProposalStep::CarriedOver => $this->applied !== null,
+            ProposalStep::Applied => $this->applied !== null,
         };
     }
 
@@ -104,14 +104,14 @@ final class Settlement
      *
      * Read backwards, so that what settled them comes before what only moved them along. Which word
      * the last step gets is the point: papers that are only handed over are issued rather than
-     * signed, and ones that carry something over are not finished by the signature.
+     * signed, and ones that change something are not finished by the signature.
      *
      * @return string
      */
     public function state(): string
     {
         return match (true) {
-            $this->applied !== null && $this->expects(ProposalStep::CarriedOver) => __('Carried over'),
+            $this->applied !== null && $this->expects(ProposalStep::Applied) => __('Carried over'),
             $this->revoked !== null => __('Revoked'),
             $this->concluded !== null => $this->wordForConcluded(),
             $this->sent !== null && $this->expects(ProposalStep::Delivered) => __('Sent'),
@@ -130,7 +130,7 @@ final class Settlement
             ProposalStep::Issued => __('Issued'),
             ProposalStep::Delivered => __('Delivered'),
             ProposalStep::Signed => __('Signed'),
-            ProposalStep::CarriedOver => __('Waiting to be carried over'),
+            ProposalStep::Applied => __('Waiting to be carried over'),
         };
     }
 }

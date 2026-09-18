@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Contracts\Proposal\ChangeApplication;
+use App\Contracts\Proposal\ChangePlan;
+use App\Contracts\Proposal\ChangePreview;
 use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalProjection;
-use App\Contracts\Proposal\ProposalTransfer;
-use App\Contracts\Proposal\TransferPlan;
-use App\Contracts\Proposal\TransferPreview;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
@@ -41,6 +41,7 @@ class CustomerProposalsController extends AppController
         'edit',
         'conclude',
         'send',
+        'applyChanges',
         'transfer',
     ];
 
@@ -52,6 +53,7 @@ class CustomerProposalsController extends AppController
         'edit',
         'conclude',
         'send',
+        'applyChanges',
         'transfer',
     ];
 
@@ -203,7 +205,7 @@ class CustomerProposalsController extends AppController
     /**
      * Records the day the customer signed.
      *
-     * This is where a round ends: nothing stands behind it waiting to be carried over.
+     * This is where a round ends: nothing stands behind it waiting to be applied.
      *
      * @param string|null $id Customer proposal id.
      * @return \Cake\Http\Response|null Redirects when recorded, renders the form otherwise.
@@ -250,7 +252,7 @@ class CustomerProposalsController extends AppController
      *
      * A signed consent is also what the customer's own record has been waiting for. The flag used
      * to be ticked by hand, so a customer could read as having refused while their signed consent
-     * sat on file - this is the same thing the contract's side does when papers are carried over.
+     * sat on file - this is the same thing the contract's side does when papers are applied.
      *
      * @param \App\Model\Entity\CustomerProposal $proposal The round.
      * @param \App\Model\Enum\ProposalStep $step Which step is being taken.
@@ -283,7 +285,18 @@ class CustomerProposalsController extends AppController
     }
 
     /**
-     * Carries what the whole proposal asks for into the live records.
+     * Where applying the changes used to live, kept so that what is bookmarked still arrives.
+     *
+     * @param string|null $id Customer proposal id.
+     * @return \Cake\Http\Response|null
+     */
+    public function transfer(?string $id = null): ?Response
+    {
+        return $this->redirect(['action' => 'applyChanges', $id]);
+    }
+
+    /**
+     * Applies what the whole proposal asks for to the live records.
      *
      * Spelled out a contract at a time, because that is what each part asks about and what each
      * one would write - one merged list would say what is happening to nothing in particular.
@@ -292,10 +305,10 @@ class CustomerProposalsController extends AppController
      * which half, and the papers it came from read as settled either way.
      *
      * @param string|null $id Customer proposal id.
-     * @return \Cake\Http\Response|null Redirects when carried over, renders the preview otherwise.
+     * @return \Cake\Http\Response|null Redirects when applied, renders the preview otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function transfer(?string $id = null): ?Response
+    public function applyChanges(?string $id = null): ?Response
     {
         $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
 
@@ -305,13 +318,13 @@ class CustomerProposalsController extends AppController
             return $this->redirect(['action' => 'view', $id]);
         }
 
-        $preview = new TransferPreview();
-        $plan = new TransferPlan();
+        $preview = new ChangePreview();
+        $plan = new ChangePlan();
         $parts = [];
         $stopped = false;
 
         foreach ((new RoundOfPapers())->partsOf((string)$proposal->id) as $papers) {
-            if (!$papers->isDueFor(ProposalStep::CarriedOver)) {
+            if (!$papers->isDueFor(ProposalStep::Applied)) {
                 continue;
             }
 
@@ -336,7 +349,7 @@ class CustomerProposalsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             if ($stopped) {
                 $this->Flash->error(__('This proposal cannot be carried over as it stands.'));
-            } elseif ($this->carryTheWholePackageOver($parts)) {
+            } elseif ($this->applyTheWholePackage($parts)) {
                 return $this->redirect(['action' => 'view', $id]);
             }
         }
@@ -353,10 +366,10 @@ class CustomerProposalsController extends AppController
     /**
      * Writes every part of the package, or none of it.
      *
-     * @param array<array<string, mixed>> $parts What is to be carried over.
+     * @param array<array<string, mixed>> $parts What is to be applied.
      * @return bool
      */
-    private function carryTheWholePackageOver(array $parts): bool
+    private function applyTheWholePackage(array $parts): bool
     {
         $by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
         $reaching = $this->mayReachIntoClosedPeriods()
@@ -368,7 +381,7 @@ class CustomerProposalsController extends AppController
             $this->CustomerProposals->getConnection()->transactional(
                 function () use ($parts, $by, $reaching, $belowMinimum): void {
                     foreach ($parts as $part) {
-                        (new ProposalTransfer())->carryOver($part['papers'], $by, $reaching, $belowMinimum);
+                        (new ChangeApplication())->apply($part['papers'], $by, $reaching, $belowMinimum);
                     }
                 },
             );
@@ -430,11 +443,11 @@ class CustomerProposalsController extends AppController
                     $part->effective_from,
                     $snapshot->servicesChosenBy($changes),
                 ),
-                // Only what the papers ask for: the rest of what carrying them over would write is
+                // Only what the papers ask for: the rest of what applying them would write is
                 // worked out against the records as they stand, which means something in the
                 // moment before it happens and nothing here.
                 'planned' => array_values(array_filter(
-                    (new TransferPlan())->of($part),
+                    (new ChangePlan())->of($part),
                     fn(PlannedChange $one): bool => $one->asked,
                 )),
             ];
@@ -457,7 +470,7 @@ class CustomerProposalsController extends AppController
     }
 
     /**
-     * Whether this request may carry over a connection priced below the contract's minimum that
+     * Whether this request may apply a connection priced below the contract's minimum that
      * nobody allowed on the line itself.
      *
      * @return bool

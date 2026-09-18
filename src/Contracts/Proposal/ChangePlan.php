@@ -9,7 +9,7 @@ use App\Model\Enum\ProposalPurpose;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
- * Everything carrying a proposal over will write, apart from the billings.
+ * Everything applying a proposal will write, apart from the billings.
  *
  * The billings have had their own before-and-after on the preview from the start, because that is
  * what a proposal is usually about. The rest of it - the version, the version it replaces and the
@@ -18,14 +18,14 @@ use Cake\ORM\Locator\LocatorAwareTrait;
  * being replaced is given the day before as its last.
  *
  * Held as a list of what will be written rather than worked out where it is needed, so that the
- * page that shows it and the transfer that does it cannot come to different answers.
+ * page that shows it and applying the changes that does it cannot come to different answers.
  */
-final class TransferPlan
+final class ChangePlan
 {
     use LocatorAwareTrait;
 
     /**
-     * The records a transfer writes to.
+     * The records applying the changes writes to.
      *
      * @var string
      */
@@ -34,7 +34,7 @@ final class TransferPlan
     public const CONTRACT = 'contract';
 
     /**
-     * What the transfer will write.
+     * What applying the changes will write.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return list<\App\Contracts\Proposal\PlannedChange>

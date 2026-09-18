@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Proposal;
 
+use App\Contracts\Proposal\ChangeApplication;
+use App\Contracts\Proposal\ChangePlan;
 use App\Contracts\Proposal\PlannedChange;
-use App\Contracts\Proposal\ProposalTransfer;
-use App\Contracts\Proposal\TransferPlan;
 use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\TableTestTrait;
@@ -14,14 +14,14 @@ use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * App\Contracts\Proposal\TransferPlan Test Case
+ * App\Contracts\Proposal\ChangePlan Test Case
  *
  * What is asked of it is the promise it is there for: that the list the preview draws is the list
- * the transfer writes, down to the fields nobody asked for.
+ * applying the changes writes, down to the fields nobody asked for.
  */
-#[CoversClass(TransferPlan::class)]
+#[CoversClass(ChangePlan::class)]
 #[CoversClass(PlannedChange::class)]
-class TransferPlanTest extends TestCase
+class ChangePlanTest extends TestCase
 {
     use TableTestTrait;
 
@@ -69,7 +69,7 @@ class TransferPlanTest extends TestCase
 
         $this->assertNotNull($write);
         $this->assertFalse($write->asked, 'The signature was put down as something asked for.');
-        $this->assertSame(TransferPlan::VERSION, $write->target);
+        $this->assertSame(ChangePlan::VERSION, $write->target);
         $this->assertInstanceOf(Date::class, $write->to);
         $this->assertSame('2026-09-15', $write->to->toDateString());
     }
@@ -122,12 +122,12 @@ class TransferPlanTest extends TestCase
         ]);
 
         $agendas = [];
-        foreach ((new TransferPlan())->of($proposal) as $write) {
+        foreach ((new ChangePlan())->of($proposal) as $write) {
             $agendas[$write->target] = $write->agenda();
         }
 
-        $this->assertSame('Contract Version', $agendas[TransferPlan::VERSION] ?? null);
-        $this->assertSame('Contract', $agendas[TransferPlan::CONTRACT] ?? null);
+        $this->assertSame('Contract Version', $agendas[ChangePlan::VERSION] ?? null);
+        $this->assertSame('Contract', $agendas[ChangePlan::CONTRACT] ?? null);
     }
 
     /**
@@ -144,16 +144,16 @@ class TransferPlanTest extends TestCase
             'conclusion_date' => '2026-09-15',
         ]);
 
-        $planned = (new TransferPlan())->of($proposal);
+        $planned = (new ChangePlan())->of($proposal);
         $this->assertNotSame([], $planned, 'The plan had nothing in it to check.');
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
 
         $versions = $this->getTableLocator()->get('ContractVersions');
         $contracts = $this->getTableLocator()->get('Contracts');
 
         foreach ($planned as $write) {
-            $afterwards = $write->target === TransferPlan::CONTRACT
+            $afterwards = $write->target === ChangePlan::CONTRACT
                 ? $contracts->get($write->id)->get($write->field)
                 : $versions->get($write->id)->get($write->field);
 
@@ -179,13 +179,13 @@ class TransferPlanTest extends TestCase
             'conclusion_date' => '2026-09-15',
         ]);
 
-        $planned = (new TransferPlan())->of($proposal);
+        $planned = (new ChangePlan())->of($proposal);
         $this->assertNotSame([], $planned, 'Starting a version was planned as nothing at all.');
 
         $about = 0;
 
         foreach ($planned as $write) {
-            if ($write->target !== TransferPlan::VERSION) {
+            if ($write->target !== ChangePlan::VERSION) {
                 continue;
             }
 
@@ -205,7 +205,7 @@ class TransferPlanTest extends TestCase
      */
     private function planned(ContractProposal $proposal, string $field): ?PlannedChange
     {
-        foreach ((new TransferPlan())->of($proposal) as $write) {
+        foreach ((new ChangePlan())->of($proposal) as $write) {
             if ($write->field === $field) {
                 return $write;
             }

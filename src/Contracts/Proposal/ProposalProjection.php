@@ -8,7 +8,7 @@ use App\Model\Entity\ContractVersion;
 use Cake\I18n\Date;
 
 /**
- * How things would stand if a proposal were carried over.
+ * How things would stand if a proposal were applied.
  *
  * This is what the documents are drawn from: the snapshot as it was taken, with the proposed
  * changes laid over it. Nothing here touches the live records - a paper describes what is being
@@ -47,7 +47,7 @@ final class ProposalProjection
             }
 
             // What is replaced or ended stops the day before what replaces it starts - the same
-            // two halves the transfer will write. A line that starts later than the proposal
+            // two halves applying the changes will write. A line that starts later than the proposal
             // leaves the old billing running until then.
             $projected[] = $this->ending($billing, $line, $effective_from);
 
@@ -104,7 +104,7 @@ final class ProposalProjection
             $rows[] = [
                 'billing' => $this->ending($billing, $line, $effective_from),
                 'line' => $line->terminatesOnly() ? $line : null,
-                // Said only where it is true: the transfer leaves a billing that stopped of its
+                // Said only where it is true: applying the changes leaves a billing that stopped of its
                 // own accord alone, and a row claiming otherwise would be a promise it breaks.
                 'ending' => $line->endsTheBillingOn($effective_from, $billing->billing_until) !== null,
                 'stopped' => $stopped,
@@ -179,7 +179,7 @@ final class ProposalProjection
      * The billing being replaced, stopped the day before its replacement starts.
      *
      * Handed back untouched where it stopped earlier of its own accord - the line has nothing
-     * left to end, and the table has to show what the transfer would actually do.
+     * left to end, and the table has to show what applying the changes would actually do.
      *
      * @param \App\Model\Entity\Billing $billing What is being replaced.
      * @param \App\Contracts\Proposal\ProposedBilling $line The line that ends it.

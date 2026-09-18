@@ -10,19 +10,19 @@ use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
- * What carrying a proposal over would run into, said before anybody presses the button.
+ * What applying a proposal would run into, said before anybody presses the button.
  *
  * A proposal is drawn up against how things stood, and then it waits - for the papers to go out, to
  * come back signed, to be got round to. Meanwhile somebody may have changed a billing by hand,
- * ended one, added one, or moved the version's dates. None of that stops the transfer, because the
+ * ended one, added one, or moved the version's dates. None of that stops applying the changes, because the
  * operator may well know about it and want to go ahead anyway; it is said out loud instead.
  */
-final class TransferPreview
+final class ChangePreview
 {
     use LocatorAwareTrait;
 
     /**
-     * The proposal has not been signed, so there is nothing to carry over yet.
+     * The proposal has not been signed, so there is nothing to apply yet.
      */
     public const NOT_CONCLUDED = 'not_concluded';
 
@@ -62,7 +62,7 @@ final class TransferPreview
     public const NOTHING_SIGNED_ON_FILE = 'nothing_signed_on_file';
 
     /**
-     * What stands in the way of carrying the proposal over, if anything.
+     * What stands in the way of applying the proposal, if anything.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return array<int, array{what: string, said: string}> In the order they are worth reading.
@@ -88,7 +88,7 @@ final class TransferPreview
     }
 
     /**
-     * Whether anything here would stop the transfer rather than merely be worth knowing.
+     * Whether anything here would stop applying the changes rather than merely be worth knowing.
      *
      * @param array<int, array{what: string, said: string}> $found What the preview found.
      * @return bool
@@ -286,7 +286,7 @@ final class TransferPreview
     }
 
     /**
-     * What the transfer would leave the billings looking like, for the operator to read against
+     * What applying the changes would leave the billings looking like, for the operator to read against
      * what is there now.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.

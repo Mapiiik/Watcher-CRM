@@ -1,6 +1,6 @@
 <?php
 /**
- * Carrying the whole proposal over: what each of its contracts would get, and the one button.
+ * Applying the changes of the whole proposal: what each of its contracts would get, and the one button.
  *
  * All or none. A package half written into the records is the worst of both - nothing says which
  * half, and the papers it came from read as settled either way.
@@ -15,7 +15,7 @@
 
 use App\Model\Table\BillingsTable;
 
-// A package that asks for nothing still has to be carried over, or it reads as waiting for ever -
+// A package that asks for nothing still has to be applied, or it reads as waiting for ever -
 // but what happens then is that it stops being listed, and the button says so.
 $changesNothing = true;
 
@@ -59,7 +59,7 @@ foreach ($parts as $part) {
         <br>
             <?php foreach ($parts as $part) : ?>
                 <div class="customerProposals view content">
-                <?= $this->element('ContractProposals/carrying_over', [
+                <?= $this->element('ContractProposals/applying_changes', [
                     'contractProposal' => $part['papers'],
                     'found' => $part['found'],
                     'planned' => $part['planned'],

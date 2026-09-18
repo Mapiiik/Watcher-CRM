@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
-use App\Contracts\Check\UntransferredProposalCheck;
+use App\Contracts\Check\UnappliedProposalCheck;
 use App\Model\Table\ContractProposalsTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\Date;
@@ -12,10 +12,10 @@ use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * App\Contracts\Check\UntransferredProposalCheck Test Case
+ * App\Contracts\Check\UnappliedProposalCheck Test Case
  */
-#[CoversClass(UntransferredProposalCheck::class)]
-class UntransferredProposalCheckTest extends TestCase
+#[CoversClass(UnappliedProposalCheck::class)]
+class UnappliedProposalCheckTest extends TestCase
 {
     use TableTestTrait;
 
@@ -95,7 +95,7 @@ class UntransferredProposalCheckTest extends TestCase
         /** @var \App\Model\Table\ContractProposalsTable $proposals */
         $proposals = $this->getTableLocator()->get(ContractProposalsTable::class);
 
-        return (new UntransferredProposalCheck($proposals, $ignore_inactive))
+        return (new UnappliedProposalCheck($proposals, $ignore_inactive))
             ->find()
             ->all()
             ->extract('id')
@@ -104,7 +104,7 @@ class UntransferredProposalCheckTest extends TestCase
 
     /**
      * A proposal the customer has signed and nobody has acted on is what this is about: the service
-     * runs and is invoiced on the old terms until somebody carries it over.
+     * runs and is invoiced on the old terms until somebody applies it.
      *
      * @return void
      */
@@ -119,7 +119,7 @@ class UntransferredProposalCheckTest extends TestCase
     }
 
     /**
-     * One nobody has signed is not: there is nothing to carry over, and the unsigned paperwork is
+     * One nobody has signed is not: there is nothing to apply, and the unsigned paperwork is
      * chased elsewhere.
      *
      * @return void
@@ -135,7 +135,7 @@ class UntransferredProposalCheckTest extends TestCase
     }
 
     /**
-     * Nor one that has already been carried over or given up on.
+     * Nor one that has already been applied or given up on.
      *
      * @return void
      */

@@ -1,11 +1,11 @@
 <?php
 /**
- * What a transfer would write onto the records, a row to a field.
+ * What applying the changes would write onto the records, a row to a field.
  *
  * Read in two places, and only one of them may say anything about the records themselves. The
  * preview is read in the moment before the button is pressed, so what the records say today is
  * what is about to be written over, and the fields nobody asked for are worked out against it.
- * The proposal's own page is read whenever - months later, or after it has been carried over - so
+ * The proposal's own page is read whenever - months later, or after it has been applied - so
  * all it can stand behind is what it asks for. What the records happened to say when the page was
  * opened would be a fact about today rather than about the proposal.
  *
@@ -14,7 +14,7 @@
  * @var bool $preview Whether this is the moment before it happens rather than the record of it.
  */
 
-use App\Contracts\Proposal\TransferPlan;
+use App\Contracts\Proposal\ChangePlan;
 
 ?>
 <div class="table-responsive">
@@ -44,7 +44,7 @@ use App\Contracts\Proposal\TransferPlan;
                 $recordCell = $this->Html->link(
                     $write->record,
                     [
-                        'controller' => $write->target === TransferPlan::CONTRACT
+                        'controller' => $write->target === ChangePlan::CONTRACT
                             ? 'Contracts'
                             : 'ContractVersions',
                         'action' => 'view',
@@ -53,7 +53,7 @@ use App\Contracts\Proposal\TransferPlan;
                 );
             }
 
-            if ($write->target === TransferPlan::REPLACED_VERSION) {
+            if ($write->target === ChangePlan::REPLACED_VERSION) {
                 $recordCell .= ' (' . __('being replaced') . ')';
             }
             ?>

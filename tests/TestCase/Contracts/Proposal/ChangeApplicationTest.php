@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Proposal;
 
-use App\Contracts\Proposal\ProposalTransfer;
+use App\Contracts\Proposal\ChangeApplication;
 use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\TableTestTrait;
@@ -13,10 +13,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use RuntimeException;
 
 /**
- * App\Contracts\Proposal\ProposalTransfer Test Case
+ * App\Contracts\Proposal\ChangeApplication Test Case
  */
-#[CoversClass(ProposalTransfer::class)]
-class ProposalTransferTest extends TestCase
+#[CoversClass(ChangeApplication::class)]
+class ChangeApplicationTest extends TestCase
 {
     use TableTestTrait;
 
@@ -117,17 +117,17 @@ class ProposalTransferTest extends TestCase
     }
 
     /**
-     * The ordinary proposal behind a new contract's papers changes nothing, and is carried over all
+     * The ordinary proposal behind a new contract's papers changes nothing, and is applied all
      * the same - otherwise it would sit in the checks for ever as signed and not dealt with.
      *
      * @return void
      */
-    public function testAProposalThatChangesNothingIsStillCarriedOver(): void
+    public function testAProposalThatChangesNothingIsStillApplied(): void
     {
         $proposal = $this->proposal(['conclusion_date' => '2026-09-15']);
         $before = $this->billingCount();
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
 
         $this->assertTrue(
             $this->getTableLocator()->get('ContractProposals')
@@ -138,16 +138,16 @@ class ProposalTransferTest extends TestCase
     }
 
     /**
-     * The transfer refuses what nobody has signed. The table refuses it too, but the service is
+     * Applying the changes refuses what nobody has signed. The table refuses it too, but the service is
      * asked first, so it says so in its own words.
      *
      * @return void
      */
-    public function testNothingIsCarriedOverBeforeItIsConcluded(): void
+    public function testNothingIsAppliedBeforeItIsConcluded(): void
     {
         $this->expectException(RuntimeException::class);
 
-        (new ProposalTransfer())->carryOver($this->proposal());
+        (new ChangeApplication())->apply($this->proposal());
     }
 
     /**
@@ -155,7 +155,7 @@ class ProposalTransferTest extends TestCase
      *
      * @return void
      */
-    public function testASettledProposalIsNotCarriedOverAgain(): void
+    public function testASettledProposalIsNotAppliedAgain(): void
     {
         $proposal = $this->proposal([
             'conclusion_date' => '2026-09-15',
@@ -164,7 +164,7 @@ class ProposalTransferTest extends TestCase
 
         $this->expectException(RuntimeException::class);
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
     }
 
     /**
@@ -187,7 +187,7 @@ class ProposalTransferTest extends TestCase
             ]]],
         ]);
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
 
         $billings = $this->getTableLocator()->get('Billings');
 
@@ -230,7 +230,7 @@ class ProposalTransferTest extends TestCase
             ]]],
         ]);
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
 
         $this->assertSame(
             '2022-06-30',
@@ -264,7 +264,7 @@ class ProposalTransferTest extends TestCase
             ],
         ]);
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
 
         $version = $this->getTableLocator()->get('ContractVersions')->get(self::VERSION_ID);
         $this->assertSame('2026-09-30', $version->valid_until?->toDateString());
@@ -277,8 +277,8 @@ class ProposalTransferTest extends TestCase
     }
 
     /**
-     * When one part of the transfer will not go through, none of it does. Half a carried-over
-     * proposal is worse than none: the paper would describe one thing and the records another.
+     * When one part of applying the changes will not go through, none of it does. A proposal half
+     * applied is worse than none: the paper would describe one thing and the records another.
      *
      * @return void
      */
@@ -299,7 +299,7 @@ class ProposalTransferTest extends TestCase
         $before = $this->billingCount();
 
         try {
-            (new ProposalTransfer())->carryOver($proposal);
+            (new ChangeApplication())->apply($proposal);
             $this->fail('The transfer wrote into an invoiced period.');
         } catch (RuntimeException) {
             // what it says is the billings table's business; that it wrote nothing is ours
@@ -333,7 +333,7 @@ class ProposalTransferTest extends TestCase
             ]]],
         ]);
 
-        (new ProposalTransfer())->carryOver($proposal, null, reach_into_closed_periods: true);
+        (new ChangeApplication())->apply($proposal, null, reach_into_closed_periods: true);
 
         $this->assertSame(
             '2023-01-31',
@@ -344,18 +344,18 @@ class ProposalTransferTest extends TestCase
     }
 
     /**
-     * A line pricing the connection below the contract's minimum is not carried over, which is the
+     * A line pricing the connection below the contract's minimum is not applied, which is the
      * minimum having been raised after the line was written.
      *
      * @return void
      */
-    public function testAConnectionBelowTheMinimumIsNotCarriedOver(): void
+    public function testAConnectionBelowTheMinimumIsNotApplied(): void
     {
         $proposal = $this->connectionBelowTheMinimum(allowed: false);
         $before = $this->billingCount();
 
         try {
-            (new ProposalTransfer())->carryOver($proposal);
+            (new ChangeApplication())->apply($proposal);
             $this->fail('The connection was carried over below the minimum.');
         } catch (RuntimeException $refused) {
             $this->assertStringContainsString('minimum set on the contract', $refused->getMessage());
@@ -365,21 +365,21 @@ class ProposalTransferTest extends TestCase
     }
 
     /**
-     * What an administrator allowed on the line is carried over by whoever presses the button.
+     * What an administrator allowed on the line is applied by whoever presses the button.
      *
      * @return void
      */
-    public function testALineAnAdministratorAllowedIsCarriedOver(): void
+    public function testALineAnAdministratorAllowedIsApplied(): void
     {
         $before = $this->billingCount();
 
-        (new ProposalTransfer())->carryOver($this->connectionBelowTheMinimum(allowed: true));
+        (new ChangeApplication())->apply($this->connectionBelowTheMinimum(allowed: true));
 
         $this->assertSame($before + 1, $this->billingCount());
     }
 
     /**
-     * And the administrator may allow it at the transfer itself.
+     * And the administrator may allow it when the changes are applied.
      *
      * @return void
      */
@@ -387,7 +387,7 @@ class ProposalTransferTest extends TestCase
     {
         $before = $this->billingCount();
 
-        (new ProposalTransfer())->carryOver(
+        (new ChangeApplication())->apply(
             $this->connectionBelowTheMinimum(allowed: false),
             null,
             go_below_minimum: true,
@@ -425,7 +425,7 @@ class ProposalTransferTest extends TestCase
 
     /**
      * The signature is recorded on the proposal, and the version takes it from there when it is
-     * carried over. Without this the version would go on reading as unsigned, and the customer
+     * applied. Without this the version would go on reading as unsigned, and the customer
      * would be chased - and eventually cut off - for a paper that is on file.
      *
      * @return void
@@ -438,7 +438,7 @@ class ProposalTransferTest extends TestCase
             ['checkRules' => false],
         );
 
-        (new ProposalTransfer())->carryOver($this->proposal(['conclusion_date' => '2026-09-15']));
+        (new ChangeApplication())->apply($this->proposal(['conclusion_date' => '2026-09-15']));
 
         $this->assertSame(
             '2026-09-15',
@@ -448,17 +448,17 @@ class ProposalTransferTest extends TestCase
 
     /**
      * The papers number themselves from the count on the version - the one being printed is the
-     * next after it - so carrying an amendment over has to move it on. Left where it was, the
+     * next after it - so applying an amendment has to move it on. Left where it was, the
      * second amendment would go out under the same number as the first.
      *
      * @return void
      */
-    public function testAnAmendmentCarriedOverIsCounted(): void
+    public function testAnAmendmentAppliedIsCounted(): void
     {
         $versions = $this->getTableLocator()->get('ContractVersions');
         $before = $versions->get(self::VERSION_ID)->get('number_of_amendments');
 
-        (new ProposalTransfer())->carryOver($this->proposal([
+        (new ChangeApplication())->apply($this->proposal([
             'purpose' => ProposalPurpose::ServiceChange->value,
             'conclusion_date' => '2026-09-15',
         ]));
@@ -484,7 +484,7 @@ class ProposalTransferTest extends TestCase
         $taken = $proposal->get('snapshot');
         $taken['version']['number_of_amendments'] = 1;
 
-        (new ProposalTransfer())->carryOver($this->proposal([
+        (new ChangeApplication())->apply($this->proposal([
             'snapshot' => $taken,
             'conclusion_date' => '2026-09-15',
         ]));
@@ -523,12 +523,12 @@ class ProposalTransferTest extends TestCase
 
     /**
      * Papers for a new contract may be drawn up before the version they are about exists, and
-     * carrying them over is what brings it into being. It starts on the day the papers take effect
+     * applying them is what brings it into being. It starts on the day the papers take effect
      * and takes the day they were signed, so the record says what the paper said.
      *
      * @return void
      */
-    public function testAProposalWithoutAVersionStartsOneWhenItIsCarriedOver(): void
+    public function testAProposalWithoutAVersionStartsOneWhenItIsApplied(): void
     {
         $versions = $this->getTableLocator()->get('ContractVersions');
         $before = $versions->find()->where(['contract_id' => self::CONTRACT_ID])->count();
@@ -539,7 +539,7 @@ class ProposalTransferTest extends TestCase
             'conclusion_date' => '2026-10-20',
         ]);
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
 
         $this->assertSame(
             $before + 1,
@@ -569,7 +569,7 @@ class ProposalTransferTest extends TestCase
             'conclusion_date' => '2026-10-20',
         ]);
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
 
         $carried = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
         $started = $this->getTableLocator()->get('ContractVersions')->get($carried->contract_version_id);
@@ -587,7 +587,7 @@ class ProposalTransferTest extends TestCase
         $versions = $this->getTableLocator()->get('ContractVersions');
         $before = $versions->get(self::VERSION_ID)->get('number_of_amendments');
 
-        (new ProposalTransfer())->carryOver($this->proposal([
+        (new ChangeApplication())->apply($this->proposal([
             'purpose' => ProposalPurpose::NewContract->value,
             'conclusion_date' => '2026-09-15',
         ]));
@@ -610,7 +610,7 @@ class ProposalTransferTest extends TestCase
             ['checkRules' => false],
         );
 
-        (new ProposalTransfer())->carryOver($this->proposal([
+        (new ChangeApplication())->apply($this->proposal([
             'purpose' => ProposalPurpose::ServiceChange->value,
             'conclusion_date' => '2026-09-15',
         ]));
@@ -629,7 +629,7 @@ class ProposalTransferTest extends TestCase
      */
     public function testAVersionThatIsAlreadySignedKeepsItsOwnDay(): void
     {
-        (new ProposalTransfer())->carryOver($this->proposal(['conclusion_date' => '2026-09-15']));
+        (new ChangeApplication())->apply($this->proposal(['conclusion_date' => '2026-09-15']));
 
         $this->assertSame(
             '2022-11-30',
@@ -655,7 +655,7 @@ class ProposalTransferTest extends TestCase
             ]]],
         ]);
 
-        (new ProposalTransfer())->carryOver($proposal);
+        (new ChangeApplication())->apply($proposal);
 
         $this->assertSame(
             (new Date('2026-10-31'))->toDateString(),

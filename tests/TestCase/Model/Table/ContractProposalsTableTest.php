@@ -200,7 +200,7 @@ class ContractProposalsTableTest extends TestCase
         // The sending and the signature belong to the round the papers go out in, so a test that
         // says a proposal has gone out is saying it of the envelope. Written in the order the
         // office works in: papers into an open envelope, the envelope out, and only then may what
-        // it holds be carried over.
+        // it holds be applied.
         $ofTheRound = array_intersect_key(
             $proposal,
             array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
@@ -652,7 +652,7 @@ class ContractProposalsTableTest extends TestCase
 
     /**
      * A line has to act on a billing the snapshot knows, or there is nothing to say what it
-     * replaces and nothing to hold the live record up against before carrying it over.
+     * replaces and nothing to hold the live record up against before applying it.
      *
      * @return void
      */
@@ -733,12 +733,12 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
-     * The transfer checks before it writes, but the last word is here, so that no other way in can
-     * carry a proposal over that nobody has agreed to.
+     * Applying the changes checks before it writes, but the last word is here, so that no other way in can
+     * apply a proposal that nobody has agreed to.
      *
      * @return void
      */
-    public function testNothingIsCarriedOverBeforeItIsConcluded(): void
+    public function testNothingIsAppliedBeforeItIsConcluded(): void
     {
         $proposal = $this->save();
 
@@ -767,7 +767,7 @@ class ContractProposalsTableTest extends TestCase
      *
      * @return void
      */
-    public function testAProposalIsEitherCarriedOverOrGivenUpOn(): void
+    public function testAProposalIsEitherAppliedOrGivenUpOn(): void
     {
         $proposal = $this->save(['conclusion_date' => '2026-10-05']);
 
@@ -781,7 +781,7 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
-     * Sending locks the proposal; carrying it over or giving up on it settles it.
+     * Sending locks the proposal; applying it or giving up on it settles it.
      *
      * @return void
      */
@@ -837,7 +837,7 @@ class ContractProposalsTableTest extends TestCase
         $this->assertNotContains($done->id, $open);
         $this->assertContains(self::PROPOSAL_ID, $open);
 
-        $pending = $this->Proposals->find('pendingTransfer')->all()->extract('id')->toArray();
+        $pending = $this->Proposals->find('waitingToBeApplied')->all()->extract('id')->toArray();
         $this->assertContains($waiting->id, $pending);
         $this->assertNotContains(self::PROPOSAL_ID, $pending);
     }

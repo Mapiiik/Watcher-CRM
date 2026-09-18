@@ -18,7 +18,7 @@ use Cake\ORM\Locator\LocatorAwareTrait;
  * at a time, each on the form for the papers it is - this only knows how to move the lot along.
  *
  * Which step is being taken has to be asked rather than assumed: a proposal of a contract stays
- * open until it is carried over, long after it was signed, so "what is still open" and "what is
+ * open until it is applied, long after it was signed, so "what is still open" and "what is
  * still waiting for this" are not the same question.
  */
 final class RoundOfPapers

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Contracts\MinimumConnectionPrice;
+use App\Contracts\Proposal\ChangePlan;
 use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalForm;
@@ -13,7 +14,6 @@ use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Contracts\Proposal\ReadinessChecks;
-use App\Contracts\Proposal\TransferPlan;
 use App\Contracts\TheUsualTerm;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
@@ -445,8 +445,8 @@ class ContractProposalsController extends AppController
      *
      * Asked here because this is the one place a priced line is written, and of that line alone:
      * the lines already standing were asked when they were written, and a minimum raised since is
-     * the transfer preview's to say. What guards the records is the billing itself when the
-     * proposal is carried over - this only saves the operator finding out there.
+     * the preview of the changes's to say. What guards the records is the billing itself when the
+     * proposal is applied - this only saves the operator finding out there.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param \App\Contracts\Proposal\ProposalChanges $changes What it would ask for with the line in it.
@@ -1009,7 +1009,7 @@ class ContractProposalsController extends AppController
     /**
      * The version the papers will bring into being, as they say it will be.
      *
-     * Unsaved, and only ever photographed: what actually creates it is carrying the proposal over.
+     * Unsaved, and only ever photographed: what actually creates it is applying the proposal.
      * It starts on the day the papers take effect, which for a new contract is the same day said
      * twice, so without that day there is nothing to draw.
      *
@@ -1258,11 +1258,11 @@ class ContractProposalsController extends AppController
         $this->set('deliveryMethods', $this->deliveryMethodOptions());
         // Only the count: the table itself is drawn by a cell, which asks for what it draws.
         $this->set('filed', (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? []);
-        // Only what the proposal asks for. The rest of what carrying it over would write is worked
+        // Only what the proposal asks for. The rest of what applying it would write is worked
         // out against the records as they stand today, so it means something on the preview, where
         // it is about to happen, and nothing here.
         $this->set('planned', array_values(array_filter(
-            (new TransferPlan())->of($proposal),
+            (new ChangePlan())->of($proposal),
             fn(PlannedChange $one): bool => $one->asked,
         )));
     }

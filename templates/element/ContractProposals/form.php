@@ -93,7 +93,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
             'help' => __('Papers are drawn up for one contract and stay with it.'),
         ]);
     // A new contract may be put on paper before the version it is about exists: left empty, the
-    // version comes into being when the papers are carried over. Everything else is about a
+    // version comes into being when the papers are applied. Everything else is about a
     // version that is already there.
     echo $this->Form->control('contract_version_id', [
         'options' => $versions,

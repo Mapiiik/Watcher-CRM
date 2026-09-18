@@ -1,6 +1,6 @@
 <?php
 /**
- * What would be billed for if the proposal were carried over, and how to change it.
+ * What would be billed for if the proposal were applied, and how to change it.
  *
  * The table is the projection the documents print from, so what the operator reads here is what
  * will be on the paper. Each row says where it comes from - the contract as it stands, or a line

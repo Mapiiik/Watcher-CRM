@@ -20,5 +20,5 @@ $customer_column ??= true;
     'contract_column' => $contract_column,
     'customer_column' => $customer_column,
     'dates' => ['concluded', 'sent'],
-    'steps' => ['transfer'],
+    'steps' => ['apply'],
 ]) ?>

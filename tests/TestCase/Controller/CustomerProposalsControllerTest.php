@@ -177,7 +177,7 @@ class CustomerProposalsControllerTest extends TestCase
      *
      * @link \App\Controller\CustomerProposalsController::send()
      * @link \App\Controller\CustomerProposalsController::conclude()
-     * @link \App\Controller\CustomerProposalsController::transfer()
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
      * @link \App\Controller\CustomerProposalsController::revoke()
      * @return void
      */
@@ -196,8 +196,12 @@ class CustomerProposalsControllerTest extends TestCase
         $this->post($at . 'conclude/' . $round->id, ['conclusion_date' => '2026-10-05']);
         $this->assertRedirectContains($its);
 
-        $this->post($at . 'transfer/' . $round->id);
+        $this->post($at . 'apply-changes/' . $round->id);
         $this->assertRedirectContains($its);
+
+        // The step used to be called applying the changes, and a bookmark to it still arrives.
+        $this->get($at . 'transfer/' . $round->id);
+        $this->assertRedirectContains('/customer-proposals/apply-changes/' . $round->id);
 
         $this->post($at . 'revoke/' . $round->id);
         $this->assertRedirectContains($its);
@@ -222,7 +226,7 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Signing ends the round. Nothing stands behind it waiting to be carried over, so there is
+     * Signing ends the round. Nothing stands behind it waiting to be applied, so there is
      * nothing left to do with it afterwards.
      *
      * @link \App\Controller\CustomerProposalsController::conclude()
@@ -724,40 +728,40 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Carrying over is offered while something is left to carry over, and a round given up on has
+     * Applying the changes is offered while something is left to apply, and a round given up on has
      * nothing - so neither the page nor the action lead anywhere from it.
      *
-     * @link \App\Model\Entity\CustomerProposal::hasSomethingToCarryOver()
-     * @link \App\Controller\CustomerProposalsController::transfer()
+     * @link \App\Model\Entity\CustomerProposal::hasChangesToApply()
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
      * @return void
      */
-    public function testARevokedRoundOffersNothingToCarryOver(): void
+    public function testARevokedRoundOffersNothingToApply(): void
     {
         $round = $this->drawOneUpWithPapers();
         $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
-        $carryOver = 'customer-proposals/transfer/' . $round->id;
+        $applyChanges = 'customer-proposals/apply-changes/' . $round->id;
 
         $this->get($at . 'view/' . $round->id);
-        $this->assertResponseContains($carryOver);
+        $this->assertResponseContains($applyChanges);
 
         $this->post($at . 'revoke/' . $round->id);
 
         $this->get($at . 'view/' . $round->id);
         $this->assertResponseOk();
-        $this->assertResponseNotContains($carryOver);
+        $this->assertResponseNotContains($applyChanges);
 
-        $this->get($at . 'transfer/' . $round->id);
+        $this->get($at . 'apply-changes/' . $round->id);
         $this->assertRedirectContains('/customer-proposals/view/' . $round->id);
     }
 
     /**
-     * Carrying the package over passes by the papers given up on inside it: they stay given up
-     * on, and the rest of the package is carried over all the same.
+     * Applying the package passes by the papers given up on inside it: they stay given up
+     * on, and the rest of the package is applied all the same.
      *
-     * @link \App\Controller\CustomerProposalsController::transfer()
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
      * @return void
      */
-    public function testCarryingOverPassesByThePapersGivenUpOn(): void
+    public function testApplyingTheChangesPassesByThePapersGivenUpOn(): void
     {
         $round = $this->drawOneUpWithPapers();
         $given_up = $this->papersOf((string)$round->id)[0];
@@ -786,7 +790,7 @@ class CustomerProposalsControllerTest extends TestCase
         ]);
         $this->post($at . 'conclude/' . $round->id, ['conclusion_date' => '2026-10-05']);
 
-        $this->get($at . 'transfer/' . $round->id);
+        $this->get($at . 'apply-changes/' . $round->id);
         $this->assertResponseOk();
         $offered = array_map(
             fn(array $part): string => (string)$part['papers']->id,
@@ -795,7 +799,7 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertNotContains((string)$given_up->id, $offered, 'The preview offered papers given up on.');
         $this->assertCount(1, $offered);
 
-        $this->post($at . 'transfer/' . $round->id);
+        $this->post($at . 'apply-changes/' . $round->id);
         $this->assertRedirectContains('/customer-proposals/view/' . $round->id);
 
         foreach ($this->papersOf((string)$round->id) as $papers) {

@@ -37,7 +37,7 @@ class CustomerProposalTest extends TestCase
     /**
      * A set of papers as it stands at a given step of its own road.
      *
-     * @param \Cake\I18n\DateTime|null $applied When it was carried over, if it was.
+     * @param \Cake\I18n\DateTime|null $applied When it was applied, if it was.
      * @param \Cake\I18n\DateTime|null $revoked When it was given up on, if it was.
      * @return \App\Model\Entity\ContractProposal
      */
@@ -82,7 +82,7 @@ class CustomerProposalTest extends TestCase
         $this->assertSame(__('Carried over'), $done->getState());
         $this->assertTrue($done->hasBeenDealtWith());
 
-        // Papers given up on were never carried over, and nothing waits for them either.
+        // Papers given up on were never applied, and nothing waits for them either.
         $abandoned = $this->signedRoundHolding([$this->papers(revoked: DateTime::now())]);
         $this->assertSame(__('Signed'), $abandoned->getState());
         $this->assertTrue($abandoned->hasBeenDealtWith());

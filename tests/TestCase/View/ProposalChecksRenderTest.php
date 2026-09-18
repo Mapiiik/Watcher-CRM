@@ -53,9 +53,9 @@ class ProposalChecksRenderTest extends TestCase
             'unsigned' => ['unsigned_proposal', [new Date(self::SENT)], ['customer-proposals/conclude/']],
             'unfiled' => ['unfiled_signature', [new Date(self::CONCLUDED)], ['documents/manage']],
             'untransferred' => [
-                'untransferred_proposal',
+                'unapplied_proposal',
                 [new Date(self::CONCLUDED), new Date(self::SENT)],
-                ['customer-proposals/transfer/'],
+                ['customer-proposals/apply-changes/'],
             ],
         ];
     }

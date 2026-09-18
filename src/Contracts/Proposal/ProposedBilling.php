@@ -116,7 +116,7 @@ final class ProposedBilling
      * to do to everything the contract had ever billed for.
      *
      * Asked here rather than worked out where it is needed, because three places need it: the
-     * table that shows what would happen, the transfer that makes it happen, and the form that
+     * table that shows what would happen, applying the changes that makes it happen, and the form that
      * draws the lines up.
      *
      * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.

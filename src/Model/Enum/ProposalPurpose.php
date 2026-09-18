@@ -66,7 +66,7 @@ enum ProposalPurpose: string implements EnumLabelInterface
     /**
      * How far papers drawn up for this purpose travel before nobody waits for them any more.
      *
-     * Everything a proposal of a contract asks for reaches the records by being carried over, so
+     * Everything a proposal of a contract asks for reaches the records by being applied, so
      * every purpose here goes the whole way. A purpose that only hands a paper over would stop
      * earlier, and the rest of the application would follow without being told twice.
      *
@@ -75,7 +75,7 @@ enum ProposalPurpose: string implements EnumLabelInterface
     public function lastStep(): ProposalStep
     {
         return match ($this) {
-            self::NewContract, self::ServiceChange, self::Termination => ProposalStep::CarriedOver,
+            self::NewContract, self::ServiceChange, self::Termination => ProposalStep::Applied,
         };
     }
 

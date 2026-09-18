@@ -71,7 +71,7 @@ foreach ($filed as $byVariant) {
             <br>
             <?php
             // What leads elsewhere sits apart from what is done here. Sending, signing and
-            // carrying over happen on the proposal and reach everything in it, so they are not
+            // applying the changes happen on the proposal and reach everything in it, so they are not
             // offered here - the way up to them is.
             ?>
             <?= $this->AuthLink->link(

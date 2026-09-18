@@ -17,7 +17,7 @@ enum ProposalStep: int
     case Issued = 1;
     case Delivered = 2;
     case Signed = 3;
-    case CarriedOver = 4;
+    case Applied = 4;
 
     /**
      * Whether a paper going this far goes through the given step as well.

@@ -92,7 +92,7 @@ class ProposalProjectionTest extends TestCase
 
     /**
      * A replaced billing stops the day before, and what takes its place starts on the day itself -
-     * the same two halves the transfer will write.
+     * the same two halves applying the changes will write.
      *
      * @return void
      */

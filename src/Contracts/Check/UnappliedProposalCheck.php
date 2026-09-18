@@ -10,7 +10,7 @@ use Override;
 use Settings\Utility\Settings;
 
 /**
- * A signed proposal nobody has carried over.
+ * A signed proposal nobody has applied.
  *
  * The customer has agreed to something and the records still say the old thing. Until somebody
  * presses the button, the service runs on the old terms and is invoiced on them - which is the one
@@ -20,7 +20,7 @@ use Settings\Utility\Settings;
  * A proposal whose day has not come yet is not shown by default. There is nothing to do about it
  * until it does, and it would only be a list of things to leave alone.
  */
-class UntransferredProposalCheck extends AbstractContractCheck
+class UnappliedProposalCheck extends AbstractContractCheck
 {
     /**
      * How far ahead a proposal is worth raising, if nothing says otherwise.
@@ -30,7 +30,7 @@ class UntransferredProposalCheck extends AbstractContractCheck
     /**
      * Where the settings say how far ahead to look.
      */
-    private const WITHIN_DAYS_PATH = 'core.contracts.checks.untransferred_proposal_within_days';
+    private const WITHIN_DAYS_PATH = 'core.contracts.checks.unapplied_proposal_within_days';
 
     /**
      * @param \App\Model\Table\ContractProposalsTable $proposals Contract version proposals table.
@@ -62,7 +62,7 @@ class UntransferredProposalCheck extends AbstractContractCheck
     #[Override]
     public function id(): string
     {
-        return 'untransferred_proposal';
+        return 'unapplied_proposal';
     }
 
     /**
@@ -91,7 +91,7 @@ class UntransferredProposalCheck extends AbstractContractCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $query = $this->proposals->find('pendingTransfer');
+        $query = $this->proposals->find('waitingToBeApplied');
 
         $query
             // The signature the rows print is the envelope's, so it comes with them.

@@ -15,7 +15,7 @@ use RuntimeException;
 use SplObjectStorage;
 
 /**
- * Carries what a proposal asks for into the live records.
+ * Applies what a proposal asks for to the live records.
  *
  * This is the only place the proposal touches anything outside itself, and it happens once, when
  * somebody who has seen the preview presses the button. Everything before it - drawing the proposal
@@ -26,26 +26,26 @@ use SplObjectStorage;
  * behind every changed billing, the version, the contract and the proposal itself are one act in
  * the log rather than several.
  */
-final class ProposalTransfer
+final class ChangeApplication
 {
     use LocatorAwareTrait;
 
     /**
-     * Carries the proposal over.
+     * Applies the changes of the proposal.
      *
-     * A proposal that asks for nothing is carried over too: it goes through no steps and is marked
+     * A proposal that asks for nothing is applied too: it goes through no steps and is marked
      * as done. Without that, the ordinary proposal behind a new contract's papers - which changes
      * nothing, because the billings were drawn up before them - would sit in the checks for ever
-     * as signed and not carried over.
+     * as signed and not applied.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
-     * @param string|null $by Who is carrying it over.
+     * @param string|null $by Who is applying it.
      * @param bool $reach_into_closed_periods Whether invoiced periods may be written into.
      * @param bool $go_below_minimum Whether any line may price the connection below the minimum.
      * @return void
-     * @throws \RuntimeException When the proposal is in no state to be carried over.
+     * @throws \RuntimeException When the proposal is in no state to be applied.
      */
-    public function carryOver(
+    public function apply(
         ContractProposal $proposal,
         ?string $by = null,
         bool $reach_into_closed_periods = false,
@@ -66,18 +66,18 @@ final class ProposalTransfer
                 $options = [
                     BillingsTable::ALLOW_CLOSED_PERIODS => $reach_into_closed_periods,
                     // Without these, audit-stash either logs nothing for a batch or gives every
-                    // record a transaction of its own; the carrying over is one act.
+                    // record a transaction of its own; applying the changes is one act.
                     '_auditQueue' => new SplObjectStorage(),
                     '_auditTransaction' => Text::uuid(),
                 ];
 
                 // Worked out once and then applied, so that what the preview showed and what is
                 // written here are the same list rather than the same rules run twice.
-                $planned = (new TransferPlan())->of($proposal);
+                $planned = (new ChangePlan())->of($proposal);
 
-                $this->carryBillingsOver($proposal, $options, $go_below_minimum);
-                $this->carryVersionsOver($proposal, $planned);
-                $this->carryContractOver($proposal, $planned);
+                $this->applyTheBillings($proposal, $options, $go_below_minimum);
+                $this->applyTheVersions($proposal, $planned);
+                $this->applyToTheContract($proposal, $planned);
 
                 $proposal->applied = DateTime::now();
                 $proposal->applied_by = $by;
@@ -97,7 +97,7 @@ final class ProposalTransfer
      * @param bool $go_below_minimum Whether any line may price the connection below the minimum.
      * @return void
      */
-    private function carryBillingsOver(ContractProposal $proposal, array $options, bool $go_below_minimum): void
+    private function applyTheBillings(ContractProposal $proposal, array $options, bool $go_below_minimum): void
     {
         $changes = $proposal->proposedChanges();
 
@@ -174,13 +174,13 @@ final class ProposalTransfer
      * replaces.
      *
      * Which fields those are, and why some of them are written without anybody having asked, is
-     * {@see \App\Contracts\Proposal\TransferPlan}'s to say. Here they are only applied.
+     * {@see \App\Contracts\Proposal\ChangePlan}'s to say. Here they are only applied.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
      * @return void
      */
-    private function carryVersionsOver(ContractProposal $proposal, array $planned): void
+    private function applyTheVersions(ContractProposal $proposal, array $planned): void
     {
         $versions = $this->fetchTable('ContractVersions');
 
@@ -198,8 +198,8 @@ final class ProposalTransfer
         }
 
         $onto = [
-            TransferPlan::VERSION => $proposal->contract_version_id,
-            TransferPlan::REPLACED_VERSION => $proposal->terminates_contract_version_id,
+            ChangePlan::VERSION => $proposal->contract_version_id,
+            ChangePlan::REPLACED_VERSION => $proposal->terminates_contract_version_id,
         ];
 
         foreach ($onto as $target => $id) {
@@ -257,17 +257,17 @@ final class ProposalTransfer
      * Writes what the plan says onto the contract.
      *
      * The state of the contract is deliberately left alone: it has its own set of requirements to
-     * satisfy and switching it blind would only make the transfer fail in ways nobody asked about.
+     * satisfy and switching it blind would only make applying the changes fail in ways nobody asked about.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
      * @return void
      */
-    private function carryContractOver(ContractProposal $proposal, array $planned): void
+    private function applyToTheContract(ContractProposal $proposal, array $planned): void
     {
         $writes = array_filter(
             $planned,
-            fn(PlannedChange $one): bool => $one->target === TransferPlan::CONTRACT,
+            fn(PlannedChange $one): bool => $one->target === ChangePlan::CONTRACT,
         );
 
         if ($writes === []) {

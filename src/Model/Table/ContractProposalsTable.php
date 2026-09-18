@@ -91,7 +91,7 @@ class ContractProposalsTable extends AppTable
             'joinType' => 'INNER',
         ]);
         // Left, because a paper for a new contract may be drawn up before the version it is
-        // about exists - carrying it over is what brings that version into being.
+        // about exists - applying it is what brings that version into being.
         $this->belongsTo('ContractVersions', [
             'foreignKey' => 'contract_version_id',
             'joinType' => 'LEFT',
@@ -123,12 +123,12 @@ class ContractProposalsTable extends AppTable
     }
 
     /**
-     * Proposals the customer has agreed to and nobody has carried over.
+     * Proposals the customer has agreed to and nobody has applied.
      *
      * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractProposal> $query Base query.
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractProposal>
      */
-    public function findPendingTransfer(SelectQuery $query): SelectQuery
+    public function findWaitingToBeApplied(SelectQuery $query): SelectQuery
     {
         // The signature is on the envelope, so the papers are asked about through it.
         return $this->findOpen($query)
@@ -403,7 +403,7 @@ class ContractProposalsTable extends AppTable
         );
 
         // A line may only act on a billing the snapshot knows; otherwise there is nothing to say
-        // what it replaces, and the preview before transfer would have nothing to compare against.
+        // what it replaces, and the preview before the changes are applied would have nothing to compare against.
         $rules->add(
             function (ContractProposal $entity): bool {
                 $snapshot = $this->readSnapshot($entity);
@@ -476,7 +476,7 @@ class ContractProposalsTable extends AppTable
         );
 
         // Papers for a new contract may be drawn up before the version they are about exists, and
-        // carrying them over brings it into being. Nothing else has anything to start: a change
+        // applying them brings it into being. Nothing else has anything to start: a change
         // amends a version that was agreed to and an ending ends one that is running.
         $rules->add(
             function (ContractProposal $entity): bool {
@@ -782,7 +782,7 @@ class ContractProposalsTable extends AppTable
             ],
         );
 
-        // The transfer offers itself only on a concluded proposal and checks again before it
+        // Applying the changes offers itself only on a concluded proposal and checks again before it
         // writes, but the last word is here, so that no other way in can get around it.
         $rules->add(
             fn(ContractProposal $entity): bool => $entity->applied === null
@@ -805,7 +805,7 @@ class ContractProposalsTable extends AppTable
     }
 
     /**
-     * The day the version stops being valid once the proposal has been carried over.
+     * The day the version stops being valid once the proposal has been applied.
      *
      * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
      * @return \Cake\I18n\Date|null Null when the version runs on.
@@ -816,7 +816,7 @@ class ContractProposalsTable extends AppTable
     }
 
     /**
-     * The day the obligation runs out once the proposal has been carried over.
+     * The day the obligation runs out once the proposal has been applied.
      *
      * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
      * @return \Cake\I18n\Date|null Null when nothing binds the customer.
@@ -827,7 +827,7 @@ class ContractProposalsTable extends AppTable
     }
 
     /**
-     * One of the version's dates as it will stand once the proposal has been carried over.
+     * One of the version's dates as it will stand once the proposal has been applied.
      *
      * What the proposal names wins, including when it names it empty; what it does not name is
      * whatever the version says today.

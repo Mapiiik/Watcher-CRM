@@ -148,7 +148,7 @@ class UnsentProposalCheckTest extends TestCase
     }
 
     /**
-     * Nor one that has already been carried over or given up on.
+     * Nor one that has already been applied or given up on.
      *
      * @return void
      */

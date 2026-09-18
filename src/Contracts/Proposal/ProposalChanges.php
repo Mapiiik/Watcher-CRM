@@ -15,7 +15,7 @@ use InvalidArgumentException;
  * behind them is only a stamp.
  *
  * Equipment and IP addresses will be asked for here in time; the snapshot already carries them,
- * so it will take a value object and a step in the transfer, and no migration.
+ * so it will take a value object and a step in applying the changes, and no migration.
  */
 final class ProposalChanges
 {

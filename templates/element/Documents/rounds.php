@@ -75,7 +75,7 @@ $heading = function (string $field, string $said) use ($paged): string {
 
                 // A round nobody has anything left to do about is read rather than worked on, so
                 // it steps back - which is not the same as settled, because what it holds may
-                // still be waiting to be carried over.
+                // still be waiting to be applied.
                 ?>
             <tr style="<?= $one->hasBeenDealtWith() ? 'color: darkgray;' : '' ?>">
                 <?php if ($showCustomer) : ?>
@@ -125,10 +125,10 @@ $heading = function (string $field, string $said) use ($paged): string {
                                     $one->id,
                                 ]) ?>
                             <?php endif; ?>
-                            <?php if ($one->hasSomethingToCarryOver()) : ?>
+                            <?php if ($one->hasChangesToApply()) : ?>
                                 <?= $this->AuthLink->link(__('Carry Over'), [
                                     'controller' => 'CustomerProposals',
-                                    'action' => 'transfer',
+                                    'action' => 'applyChanges',
                                     $one->id,
                                 ]) ?>
                             <?php endif; ?>

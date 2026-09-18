@@ -52,10 +52,10 @@ foreach ($filed as $byVariant) {
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
-            <?php if ($customerProposal->hasSomethingToCarryOver()) : ?>
+            <?php if ($customerProposal->hasChangesToApply()) : ?>
                 <?= $this->AuthLink->link(
                     __('Carry Over'),
-                    ['action' => 'transfer', $customerProposal->id],
+                    ['action' => 'applyChanges', $customerProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>

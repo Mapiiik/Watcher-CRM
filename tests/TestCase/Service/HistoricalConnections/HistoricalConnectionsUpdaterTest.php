@@ -244,7 +244,7 @@ class HistoricalConnectionsUpdaterTest extends TestCase
         $this->assertSame(self::CUSTOMER_B, $recorded[1]->customer_id);
         $this->assertSame(FirstSeenSource::AccountChange, $recorded[1]->first_seen_source);
         $this->assertSame('2026-01-15 08:30:00', $recorded[1]->first_seen->format('Y-m-d H:i:s'));
-        // the place carried over, the customer did not physically move
+        // the place applied, the customer did not physically move
         $this->assertSame('10.0.0.1', $recorded[1]->nas_ip_address);
         // and the sessions that followed the move extended it
         $this->assertSame('2026-02-20 12:00:00', $recorded[1]->last_seen->format('Y-m-d H:i:s'));
