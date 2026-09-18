@@ -304,6 +304,15 @@ class ContractProposalsDocumentsTest extends TestCase
         $this->assertRedirectContains(self::AT_THE_VERSION . '/documents/manage');
         $this->assertRedirectContains('proposal_id=' . self::PROPOSAL_ID);
 
+        // Linked from a page that stands under nobody - an overview, the dashboard - the papers
+        // say whose they are too, rather than the link falling through to the register.
+        $this->get($asked);
+        $this->assertRedirectContains(self::AT_THE_VERSION . '/documents/manage');
+
+        $this->get('/documents/manage?agenda=CustomerProposals&proposal_id=' . self::ROUND_ID);
+        $this->assertRedirectContains('/customers/' . self::CUSTOMER_ID . '/documents/manage');
+        $this->assertRedirectContains('proposal_id=' . self::ROUND_ID);
+
         // And a page already standing where it belongs is left where it is.
         $this->get(self::AT_THE_VERSION . $asked);
         $this->assertResponseOk();

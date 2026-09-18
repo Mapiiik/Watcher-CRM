@@ -90,6 +90,17 @@ class DocumentsController extends AppController
      */
     public function manage(): ?Response
     {
+        $round = $this->roundAsked();
+        $version = $this->versionAsked();
+
+        // Asked first, because the papers say whose they are: a link from a page that stands
+        // under nobody - an overview, the dashboard - only has to say which papers it means.
+        $sentOn = $this->whereTheRoundIsWorkedOn($round, $version);
+
+        if ($sentOn !== null) {
+            return $sentOn;
+        }
+
         if ($this->customer_id === null) {
             // There is no managing the papers of everybody at once, and the listing is what a page
             // asked for without a customer was really after.
@@ -119,15 +130,6 @@ class DocumentsController extends AppController
                 'Creators',
                 'Modifiers',
             ]);
-        }
-
-        $round = $this->roundAsked();
-        $version = $this->versionAsked();
-
-        $sentOn = $this->whereTheRoundIsWorkedOn($round, $version);
-
-        if ($sentOn !== null) {
-            return $sentOn;
         }
 
         $this->set('customer', $customer);
@@ -410,8 +412,8 @@ class DocumentsController extends AppController
     /**
      * The address the papers are worked on at, where it is not the one that was asked for.
      *
-     * Papers of a contract know which contract and which version they speak about, so a link that
-     * only said which papers gets the rest of the address filled in. The whereabouts, the heading
+     * Papers know whose they are, and those of a contract which contract and which version they
+     * speak about, so a link that only said which papers gets the rest of the address filled in. The whereabouts, the heading
      * and what is listed all read the address, so an address that says less shows less than it
      * could - and a bookmark is put right the same way a link is.
      *
@@ -428,15 +430,19 @@ class DocumentsController extends AppController
         }
 
         $known = [
+            'customer_id' => $this->customer_id,
             'contract_id' => $this->contract_id,
             'contract_version_id' => $this->contract_version_id,
         ];
 
-        $its = ['contract_id' => null, 'contract_version_id' => null];
+        $its = ['customer_id' => null, 'contract_id' => null, 'contract_version_id' => null];
 
         if ($round instanceof ContractProposal) {
+            $its['customer_id'] = $round->contract?->customer_id;
             $its['contract_id'] = $round->contract_id;
             $its['contract_version_id'] = $round->contract_version_id;
+        } elseif ($round instanceof CustomerProposal) {
+            $its['customer_id'] = $round->customer_id;
         } elseif ($version !== null) {
             $its['contract_id'] = $version->contract_id;
             $its['contract_version_id'] = (string)$version->id;
