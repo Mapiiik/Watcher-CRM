@@ -1076,6 +1076,27 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * The contracts are offered the way every other form offers them - number, service and where
+     * it is - rather than as bare numbers nobody remembers.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testTheContractsAreNamedAsElsewhere(): void
+    {
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/add');
+
+        $this->assertResponseOk();
+        $contract = $this->getTableLocator()->get('Contracts')
+            ->get(self::CONTRACT_ID, contain: ['InstallationAddresses', 'ServiceTypes']);
+        $offered = iterator_to_array($this->viewVariable('contracts'));
+
+        $this->assertSame($contract->name, $offered[self::CONTRACT_ID] ?? null);
+        $this->assertNotSame((string)$contract->number, $contract->name, 'The fixture names nothing but the number.');
+    }
+
+    /**
      * And a paper being drawn up is never asked: it is photographed as it is saved, so there is
      * nothing yet to read again.
      *

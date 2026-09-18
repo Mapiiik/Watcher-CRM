@@ -1077,7 +1077,12 @@ class ContractProposalsController extends AppController
             (string)($proposal->contract_id ?? $this->contract_id ?? $this->named('contract_id') ?? ''),
         );
 
-        $contracts = $this->ContractProposals->Contracts->find('list', order: ['Contracts.number']);
+        // Named the way every other form names a contract: its number, the service and where it is.
+        $contracts = $this->ContractProposals->Contracts->find(
+            'list',
+            contain: ['InstallationAddresses', 'ServiceTypes'],
+            order: ['Contracts.number'],
+        );
         if ($this->customer_id !== null) {
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }
