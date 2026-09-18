@@ -110,6 +110,9 @@ class ContractVersion extends AppEntity
     /**
      * The proposal whose papers went out last, of the ones drawn up on this version.
      *
+     * Papers given up on do not count: whatever went out with them is not what the customer is
+     * being asked to sign any more.
+     *
      * @return \App\Model\Entity\ContractProposal|null
      * @throws \RuntimeException When the proposals were not fetched.
      */
@@ -122,7 +125,7 @@ class ContractVersion extends AppEntity
         $latest = null;
 
         foreach ($this->contract_proposals as $proposal) {
-            if ($proposal->sent_date === null) {
+            if ($proposal->sent_date === null || $proposal->hasBeenRevoked()) {
                 continue;
             }
 

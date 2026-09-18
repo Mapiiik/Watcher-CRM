@@ -301,6 +301,31 @@ class UnsignedPaperworkTest extends TestCase
     }
 
     /**
+     * Papers that were given up on buy the customer no time: the wait counts from what is still
+     * being asked of them, and with nothing else it falls back as though nothing went out.
+     *
+     * @return void
+     * @link \App\Model\Enum\UnsignedDeadlineAnchor::sql()
+     */
+    public function testASendingGivenUpOnCountsForNothing(): void
+    {
+        $this->agreed(valid_from: '2026-01-10', sent_date: '2026-05-28');
+        Settings::set(
+            UnsignedDeadlineAnchor::SETTINGS_PATH,
+            UnsignedDeadlineAnchor::SendingOrInstallation->value,
+        );
+
+        $this->assertSame([], $this->due(), 'The papers went out four days ago.');
+
+        $this->getTableLocator()->get('ContractProposals')->updateAll(
+            ['revoked' => DateTime::now()],
+            ['contract_id' => self::CONTRACT_ID],
+        );
+
+        $this->assertCount(1, $this->due(), 'The sending of papers given up on held the wait off.');
+    }
+
+    /**
      * The strict sending anchor has nothing to count from where nobody recorded a sending,
      * so it lets that version off. This is the cost of the setting, and it is a case rather
      * than a footnote because it is the one way the automation can go quiet.

@@ -114,12 +114,14 @@ enum UnsignedDeadlineAnchor: string implements EnumLabelInterface, SettingChoice
      * The sending is recorded on the round the papers went out in, because that is what goes out:
      * one envelope, holding whatever was signed together. A version may have several behind it
      * over the years, and the latest is what counts - sending the papers again is giving the
-     * customer a fresh chance, and the wait starts over.
+     * customer a fresh chance, and the wait starts over. Papers given up on are not that chance,
+     * so their sending counts for nothing.
      */
     private const LAST_SENDING = '(
         SELECT MAX(SentRounds.sent_date)
         FROM contract_proposals SentProposals
         JOIN customer_proposals SentRounds ON SentRounds.id = SentProposals.customer_proposal_id
         WHERE SentProposals.contract_version_id = ContractVersions.id
+        AND SentProposals.revoked IS NULL
     )';
 }
