@@ -47,7 +47,7 @@ use Cake\I18n\Date;
             <fieldset>
                 <p><?=
                     $this->AuthLink->link(
-                        __('The papers that came back are filed with the documents.'),
+                        __('The documents that came back are filed with the rest.'),
                         [
                             'plugin' => null,
                             'controller' => 'Documents',

@@ -80,7 +80,7 @@ class CustomerProposal extends AppEntity
 
         $said = array_filter([
             $this->purpose?->label(),
-            $parts === [] ? null : __('Papers of the contracts'),
+            $parts === [] ? null : __('Documents of the contracts'),
         ]);
 
         return $said === [] ? __('Nothing asked for yet') : implode(' + ', $said);

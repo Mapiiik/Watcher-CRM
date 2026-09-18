@@ -30,7 +30,7 @@ $heading = function (string $field, string $said) use ($paged): string {
 };
 ?>
 <?php if ($rounds === []) : ?>
-    <p><?= __('No papers have been drawn up here yet.') ?></p>
+    <p><?= __('No documents have been drawn up here yet.') ?></p>
 <?php else : ?>
 <div class="table-responsive">
     <table>

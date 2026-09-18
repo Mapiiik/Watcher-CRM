@@ -310,7 +310,7 @@ class CustomerDocumentsTest extends TestCase
         $this->get(self::NESTED . '/customer-proposals/view/' . $round);
 
         $this->assertResponseOk();
-        $this->assertResponseContains(__('Papers on File'));
+        $this->assertResponseContains(__('Documents on File'));
         $this->assertResponseContains('proposal_id=' . $round);
 
         $this->get(sprintf('/customers/%s/documents/manage?proposal_id=%s', self::CUSTOMER_ID, $round));

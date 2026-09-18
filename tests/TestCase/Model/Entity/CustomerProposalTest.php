@@ -121,10 +121,10 @@ class CustomerProposalTest extends TestCase
 
         $this->assertSame($asked->label(), $this->roundOf($asked, 0)->whatItIsFor());
         $this->assertSame(
-            $asked->label() . ' + ' . __('Papers of the contracts'),
+            $asked->label() . ' + ' . __('Documents of the contracts'),
             $this->roundOf($asked, 1)->whatItIsFor(),
         );
-        $this->assertSame(__('Papers of the contracts'), $this->roundOf(null, 2)->whatItIsFor());
+        $this->assertSame(__('Documents of the contracts'), $this->roundOf(null, 2)->whatItIsFor());
     }
 
     /**

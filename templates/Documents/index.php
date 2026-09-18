@@ -24,7 +24,7 @@
                 . ' note.'),
         ]) ?>
         <?= $this->Form->control('show_settled', [
-            'label' => __('Settled Proposals As Well'),
+            'label' => __('Show settled proposals'),
             'type' => 'checkbox',
             'checked' => $show_settled,
             'onchange' => $this::SUBMIT_ON_CHANGE,

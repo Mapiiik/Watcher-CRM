@@ -154,7 +154,7 @@ foreach ($filed as $byVariant) {
                             <td><?= h($contractProposal->conclusion_date) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Papers on File') ?></th>
+                            <th><?= __('Documents on File') ?></th>
                             <td><?=
                                 $this->Html->link(
                                     $ourPages + $theirPages === 0

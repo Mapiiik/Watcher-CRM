@@ -117,7 +117,7 @@ $carrying = function (array $fields): string {
             <h4><?= __('Proposals') ?></h4>
             <p><?= __('Every proposal in view. A proposal is put to the customer, and what it does'
                 . ' for each of their contracts is a part of it - so the row names those contracts'
-                . ' and what is asked of each, and the papers of all of them are below.') ?></p>
+                . ' and what is asked of each, and the documents of all of them are below.') ?></p>
             <?= $this->element('Documents/rounds', ['working' => true]) ?>
             <?php
             // Under the table rather than over it: the buttons above have the corner, and what
@@ -144,7 +144,7 @@ $carrying = function (array $fields): string {
                 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
                 <?= $carrying(['agenda', 'proposal_id', 'show_revoked']) ?>
                 <?= $this->Form->control('with_contracts', [
-                    'label' => __('Papers of the Contracts As Well'),
+                    'label' => __('Show documents of the contracts'),
                     'type' => 'checkbox',
                     'checked' => $with_contracts,
                     'onchange' => $this::SUBMIT_ON_CHANGE,
