@@ -11,6 +11,7 @@ use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Files\Model\Entity\FileLink;
@@ -195,6 +196,72 @@ class ContractProposalsDocumentsTest extends TestCase
             $this->get($at . '?show_settled=1&search=lorem');
             $this->assertResponseOk();
         }
+    }
+
+    /**
+     * A round given up on is out of the workbench until somebody asks for it, and the one whose
+     * papers are on the page stays whatever became of it.
+     *
+     * @link \App\Controller\DocumentsController::manage()
+     * @return void
+     */
+    public function testWhatWasGivenUpOnStepsOutOfTheWorkbench(): void
+    {
+        $at = '/customers/' . self::CUSTOMER_ID . '/documents/manage';
+        $rounds = $this->fetchTable('CustomerProposals');
+        $rounds->saveOrFail(
+            $rounds->patchEntity($rounds->get(self::ROUND_ID), ['revoked' => DateTime::now()]),
+            ['checkRules' => false],
+        );
+
+        $listed = function (string $address): array {
+            $this->get($address);
+            $this->assertResponseOk();
+
+            return array_column((array)$this->viewVariable('rounds'), 'id');
+        };
+
+        $this->assertNotContains(self::ROUND_ID, $listed($at));
+        $this->assertContains(self::ROUND_ID, $listed($at . '?show_revoked=1'));
+
+        // Standing on those very papers, the row they belong to is what the page is about. Asked
+        // at the address the papers themselves name, which is where the workbench sends anybody
+        // who opens them from elsewhere.
+        $this->assertContains(self::ROUND_ID, $listed(
+            self::AT_THE_VERSION . '/documents/manage?agenda=ContractProposals&proposal_id=' . self::PROPOSAL_ID,
+        ));
+    }
+
+    /**
+     * The documents underneath follow the table above them, so that a paper is never in one and
+     * missing from the other on the same screen.
+     *
+     * @link \App\View\Cell\DocumentsCell::display()
+     * @return void
+     */
+    public function testTheDocumentsOfWhatWasGivenUpOnFollowTheTable(): void
+    {
+        $storage = new FileStorage();
+        $storage->link(
+            $storage->store('%PDF-1.7 given up on', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            self::DOCUMENT,
+            DocumentVariant::Generated->value,
+            ['name' => 'given-up-on.pdf'],
+        );
+
+        $rounds = $this->fetchTable('CustomerProposals');
+        $rounds->giveUpOnTheRound($rounds->get(self::ROUND_ID), null);
+
+        $at = '/customers/' . self::CUSTOMER_ID . '/documents/manage';
+
+        $this->get($at . '?show_revoked=1');
+        $this->assertResponseContains('given-up-on.pdf');
+
+        $this->get($at);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('given-up-on.pdf');
     }
 
     /**

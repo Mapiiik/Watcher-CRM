@@ -15,6 +15,7 @@
  * @var array{0: string, 1: string} $scope
  * @var string $about The innermost thing the address names, which is what the papers are of.
  * @var bool $with_contracts
+ * @var bool $show_revoked
  * @var bool $showCustomer
  */
 
@@ -26,6 +27,26 @@ $inside = $round !== null;
 
 // Only where something is held underneath is there anything to leave out.
 $holdsContracts = in_array($scope[0], ['customer', 'customerProposal'], true);
+
+/**
+ * What the rest of the address is carrying, so that one switch does not turn the others off.
+ *
+ * @param array<string> $fields Which of them this form has to take along.
+ * @return string
+ */
+$carrying = function (array $fields): string {
+    $carried = '';
+
+    foreach ($fields as $field) {
+        $said = $this->getRequest()->getQuery($field);
+
+        if ($said !== null) {
+            $carried .= $this->Form->hidden($field, ['value' => $said]);
+        }
+    }
+
+    return $carried;
+};
 ?>
 <div class="row">
     <aside class="column">
@@ -98,19 +119,30 @@ $holdsContracts = in_array($scope[0], ['customer', 'customerProposal'], true);
                 . ' for each of their contracts is a part of it - so the row names those contracts'
                 . ' and what is asked of each, and the papers of all of them are below.') ?></p>
             <?= $this->element('Documents/rounds', ['working' => true]) ?>
+            <?php
+            // Under the table rather than over it: the buttons above have the corner, and what
+            // this switch does is only worth asking once somebody has read what is there.
+            ?>
+            <div class="clearfix">
+                <div class="float-right">
+                    <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+                    <?= $carrying(['agenda', 'proposal_id', 'with_contracts']) ?>
+                    <?= $this->Form->control('show_revoked', [
+                        'label' => __('Show revoked proposals'),
+                        'type' => 'checkbox',
+                        'checked' => $show_revoked,
+                        'onchange' => $this::SUBMIT_ON_CHANGE,
+                    ]) ?>
+                    <?= $this->Form->end() ?>
+                </div>
+            </div>
         </div>
         <br>
         <div class="documents content">
             <?php if ($holdsContracts) : ?>
             <div class="float-right">
                 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
-                <?php foreach (['agenda', 'proposal_id'] as $carried) : ?>
-                    <?php if ($this->getRequest()->getQuery($carried) !== null) : ?>
-                        <?= $this->Form->hidden($carried, [
-                            'value' => $this->getRequest()->getQuery($carried),
-                        ]) ?>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                <?= $carrying(['agenda', 'proposal_id', 'show_revoked']) ?>
                 <?= $this->Form->control('with_contracts', [
                     'label' => __('Papers of the Contracts As Well'),
                     'type' => 'checkbox',
@@ -149,6 +181,7 @@ $holdsContracts = in_array($scope[0], ['customer', 'customerProposal'], true);
                     'generatedByUs' => false,
                     'withWhatIsMissing' => true,
                     'withContracts' => $with_contracts,
+                    'withRevoked' => $show_revoked,
                     'manage' => $inside,
                     'thumbnails' => $inside,
                 ]) ?>
@@ -162,6 +195,7 @@ $holdsContracts = in_array($scope[0], ['customer', 'customerProposal'], true);
                     'generatedByUs' => true,
                     'withWhatIsMissing' => true,
                     'withContracts' => $with_contracts,
+                    'withRevoked' => $show_revoked,
                     'manage' => $inside,
                     'thumbnails' => $inside,
                 ]) ?>

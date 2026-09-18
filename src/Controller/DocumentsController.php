@@ -134,12 +134,13 @@ class DocumentsController extends AppController
         $this->set('contract', $contract);
         $this->set('version', $version);
         $this->set('round', $round);
-        $this->set('rounds', $this->asRows($this->roundsInView($version)));
+        $this->set('rounds', $this->asRows($this->whatIsStillWorkedOn($this->roundsInView($version), $round)));
         $this->set('scope', $this->scopeOfTheTable($round, $version));
         $this->set('about', $this->whatTheTableIsOf($round, $version, $contract, $customer));
         // The papers of the contracts go out in the same envelope, so they are in view unless the
         // page was asked to leave them out.
         $this->set('with_contracts', toBool($this->getRequest()->getQuery('with_contracts')) ?? true);
+        $this->set('show_revoked', $this->alsoWhatWasGivenUpOn());
         $this->set('showCustomer', false);
 
         return null;
@@ -631,6 +632,45 @@ class DocumentsController extends AppController
         }
 
         return $proposals;
+    }
+
+    /**
+     * The rounds the table is really about, which are the ones somebody may still do something
+     * with.
+     *
+     * A round given up on is not work any more and would only stand between the reader and what
+     * is, so it steps out until they ask for it. Whatever the page is standing on stays listed
+     * either way: leaving out the very round whose papers are underneath would say the workbench
+     * is about nothing.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $rounds The rounds in view.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $inView What the page is on.
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     */
+    private function whatIsStillWorkedOn(
+        SelectQuery $rounds,
+        ContractProposal|CustomerProposal|null $inView,
+    ): SelectQuery {
+        if ($this->alsoWhatWasGivenUpOn()) {
+            return $rounds;
+        }
+
+        $standing = ['CustomerProposals.revoked IS' => null];
+        $stoodOn = $inView instanceof ContractProposal ? $inView->customer_proposal_id : $inView?->id;
+
+        return $rounds->where(
+            $stoodOn === null ? $standing : ['OR' => [$standing, ['CustomerProposals.id' => $stoodOn]]],
+        );
+    }
+
+    /**
+     * Whether the reader asked to see what was given up on as well.
+     *
+     * @return bool
+     */
+    private function alsoWhatWasGivenUpOn(): bool
+    {
+        return toBool($this->getRequest()->getQuery('show_revoked')) ?? false;
     }
 
     /**

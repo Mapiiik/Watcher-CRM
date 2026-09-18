@@ -47,6 +47,7 @@ class DocumentsCell extends Cell
         'generatedByUs',
         'manage',
         'withContracts',
+        'withRevoked',
         'thumbnails',
         'withWhatIsMissing',
     ];
@@ -69,6 +70,18 @@ class DocumentsCell extends Cell
      * says otherwise.
      */
     protected bool $withContracts = true;
+
+    /**
+     * Whether the papers of rounds given up on belong here.
+     *
+     * On unless asked otherwise, because most pages are a record of what happened. Where a page
+     * offers the switch, the table underneath follows it - papers that are in one table and not
+     * in the other, on one screen, is how somebody comes to believe a document is missing.
+     *
+     * A round the page is actually about is never left out by this: whoever opened it wants to
+     * see what is in it, whatever became of it.
+     */
+    protected bool $withRevoked = true;
 
     /**
      * Whether each page shows what it looks like.
@@ -372,6 +385,10 @@ class DocumentsCell extends Cell
                 ->orderBy(['Contracts.number' => 'ASC']),
         };
 
+        if (!$this->withRevoked && $of !== 'contractProposal') {
+            $query->where(['ContractProposals.revoked IS' => null]);
+        }
+
         /** @var list<\App\Model\Entity\ContractProposal> $found */
         $found = $query->orderByDesc('ContractProposals.effective_from')->all()->toList();
 
@@ -400,6 +417,10 @@ class DocumentsCell extends Cell
 
         // What a proposal calls itself takes in what it holds.
         $query->contain(['ContractProposals']);
+
+        if (!$this->withRevoked && $of !== 'customerProposal') {
+            $query->where(['CustomerProposals.revoked IS' => null]);
+        }
 
         /** @var list<\App\Model\Entity\CustomerProposal> $found */
         $found = $query->orderByDesc('CustomerProposals.effective_from')->all()->toList();
