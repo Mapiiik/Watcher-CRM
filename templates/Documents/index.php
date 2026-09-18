@@ -40,7 +40,7 @@
         ['class' => 'button float-right win-link'],
     ) ?>
     <?= $this->heading(__('Documents')) ?>
-    <p><?= __('Every proposal, and what state it is in. The papers themselves are one link'
+    <p><?= __('Every proposal, and what state it is in. The documents themselves are one link'
         . ' away.') ?></p>
     <?= $this->element('Documents/rounds', ['working' => false, 'paged' => true]) ?>
     <?= $this->element('common/paginator') ?>

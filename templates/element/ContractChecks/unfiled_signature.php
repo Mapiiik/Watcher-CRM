@@ -11,8 +11,8 @@ $customer_column ??= true;
 ?>
 <p>
     <?= __(
-        'The signature is written down and the papers behind it were never filed. Nothing is'
-        . ' held up by it, but there is nothing to show for what was agreed either.',
+        'The signature is recorded and the signed documents were never filed. Nothing is held'
+        . ' up by it, but there is nothing to show for what was agreed either.',
     ) ?>
 </p>
 <?= $this->element('ContractChecks/proposal_table', [

@@ -102,7 +102,7 @@ $changing = $replaced === null
                     'empty' => true,
                     'value' => $values['billing_from'] ?? null,
                     'label' => __('Billing From'),
-                    'help' => __('Empty starts with the papers.'),
+                    'help' => __('Empty starts with the contract proposal.'),
                 ]);
                 echo $this->Form->control('billing_until', [
                     'type' => 'date',

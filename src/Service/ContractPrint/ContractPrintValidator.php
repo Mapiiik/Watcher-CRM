@@ -70,7 +70,8 @@ final class ContractPrintValidator
         if (!$data->proposal instanceof ContractProposal) {
             $this->setError(
                 'proposal_id',
-                __('Please choose the proposal these papers are for, or draw one up.'),
+                __('Please choose the customer proposal this contract proposal is part of, or'
+                    . ' create one.'),
             );
 
             return $this->errors;

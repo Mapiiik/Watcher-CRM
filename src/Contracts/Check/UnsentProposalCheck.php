@@ -81,7 +81,7 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     public function emptyMessage(): string
     {
-        return __('Every proposal drawn up has gone out.');
+        return __('Every contract proposal created has been sent.');
     }
 
     /**

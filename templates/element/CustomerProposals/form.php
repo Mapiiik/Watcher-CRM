@@ -33,22 +33,22 @@
         'empty' => __('Nothing'),
         'label' => __('Purpose'),
         'required' => false,
-        'help' => __('What the papers ask of the customer themselves. Left alone, the round only'
-            . ' holds the papers of their contracts.'),
+        'help' => __('What the proposal asks of the customer themselves. Left empty, the'
+            . ' customer proposal only holds the proposals of their contracts.'),
     ]);
     echo $this->Form->control('effective_from', [
         'label' => __('Effective From'),
-        'help' => __('The day the papers speak about - today, or the day of whatever they go out'
-            . ' with.'),
+        'help' => __('The day the proposal speaks about - today, or the day of whatever it is'
+            . ' sent with.'),
     ]);
     echo $this->Form->control('note', [
         'label' => __('Note'),
-        'help' => __('For the office. It does not reach the paper.'),
+        'help' => __('For the office. It is not printed on the documents.'),
     ]);
 
     if ($customerProposal->isNew()) {
-        echo '<p>' . __('Papers of the contracts go out in this round as well. They are drawn up'
-            . ' one at a time, on the proposal of the contract they are about.') . '</p>';
+        echo '<p>' . __('The contract proposals are part of this customer proposal as well.'
+            . ' They are created one at a time, for the contract they are about.') . '</p>';
     }
     ?>
 </fieldset>

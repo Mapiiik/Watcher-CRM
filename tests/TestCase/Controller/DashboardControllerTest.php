@@ -290,7 +290,7 @@ class DashboardControllerTest extends TestCase
         $this->assertResponseNotContains('<html');
 
         // the fixture carries a proposal drawn up, never sent, and due to take effect
-        $this->assertResponseContains('drawn up and never sent');
+        $this->assertResponseContains('created and never sent');
     }
 
     /**

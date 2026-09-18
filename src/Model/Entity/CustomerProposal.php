@@ -80,7 +80,7 @@ class CustomerProposal extends AppEntity
 
         $said = array_filter([
             $this->purpose?->label(),
-            $parts === [] ? null : __('Documents of the contracts'),
+            $parts === [] ? null : __('Contract proposals'),
         ]);
 
         return $said === [] ? __('Nothing asked for yet') : implode(' + ', $said);
@@ -113,13 +113,13 @@ class CustomerProposal extends AppEntity
 
         foreach ($this->contractProposals() as $part) {
             if ($part->isStillToBeApplied()) {
-                return __('Waiting to be carried over');
+                return __('Waiting for the changes to be applied');
             }
 
             $carried = $carried || $part->hasBeenApplied();
         }
 
-        return $carried ? __('Carried over') : $said;
+        return $carried ? __('Changes applied') : $said;
     }
 
     /**

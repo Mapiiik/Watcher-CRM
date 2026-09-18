@@ -111,7 +111,8 @@ final class Settlement
     public function state(): string
     {
         return match (true) {
-            $this->applied !== null && $this->expects(ProposalStep::Applied) => __('Carried over'),
+            $this->applied !== null && $this->expects(ProposalStep::Applied) => __('Changes'
+                . ' applied'),
             $this->revoked !== null => __('Revoked'),
             $this->concluded !== null => $this->wordForConcluded(),
             $this->sent !== null && $this->expects(ProposalStep::Delivered) => __('Sent'),
@@ -130,7 +131,7 @@ final class Settlement
             ProposalStep::Issued => __('Issued'),
             ProposalStep::Delivered => __('Delivered'),
             ProposalStep::Signed => __('Signed'),
-            ProposalStep::Applied => __('Waiting to be carried over'),
+            ProposalStep::Applied => __('Waiting for the changes to be applied'),
         };
     }
 }

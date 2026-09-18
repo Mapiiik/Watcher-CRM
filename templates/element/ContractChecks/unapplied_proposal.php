@@ -11,8 +11,8 @@ $customer_column ??= true;
 ?>
 <p>
     <?= __(
-        'The customer has agreed to something and the records still say the old thing,'
-        . ' so the service runs and is invoiced on the old terms until somebody carries it over.',
+        'The customer has agreed to something and the records still say the old thing, so the'
+        . ' service runs and is invoiced on the old terms until somebody applies the changes.',
     ) ?>
 </p>
 <?= $this->element('ContractChecks/proposal_table', [

@@ -77,7 +77,7 @@ class UnfiledSignatureCheck extends AbstractContractCheck
     #[Override]
     public function emptyMessage(): string
     {
-        return __('Every signature written down has the signed papers to go with it.');
+        return __('Every signature recorded has its signed documents on file.');
     }
 
     /**

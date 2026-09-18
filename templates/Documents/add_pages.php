@@ -60,9 +60,10 @@ foreach ($printed as $holder => $whose) {
                 <p><?=
                     __(
                         'What came back, as it came back - anything the whole proposal was'
-                        . ' printed as, its own papers and those of its contracts. Several pages of'
-                        . ' one document go in together and are filed in the order they are picked,'
-                        . ' which for a set of scans is usually their own numbering.',
+                        . ' printed as, its own documents and those of its contract proposals.'
+                        . ' Several pages of one document go in together and are filed in the'
+                        . ' order they are picked, which for a set of scans is usually their own'
+                        . ' numbering.',
                     )
                     ?></p>
                 <br>

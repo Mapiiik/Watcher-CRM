@@ -293,7 +293,8 @@ class ContractProposalsController extends AppController
         };
 
         if ($contract === null || $version === null) {
-            $this->Flash->error(__('Choose which contract and which version of it these papers are for.'));
+            $this->Flash->error(__('Choose which contract and which version of it this contract'
+                . ' proposal is for.'));
 
             return $this->redirect(['action' => 'edit', $id]);
         }
@@ -806,7 +807,8 @@ class ContractProposalsController extends AppController
                 ]);
                 $proposal->setError(
                     $contract === null ? 'contract_id' : 'contract_version_id',
-                    [__('Choose which contract and which version of it these papers are for.')],
+                    [__('Choose which contract and which version of it this contract proposal'
+                        . ' is for.')],
                 );
 
                 return $proposal;
@@ -918,11 +920,12 @@ class ContractProposalsController extends AppController
 
                 foreach ($unanswered as $question) {
                     $proposal->setError('confirmations.' . $question, [
-                        $wording[$question] ?? __('Please answer this before the papers go out.'),
+                        $wording[$question] ?? __('Please answer this before the proposal is'
+                            . ' sent.'),
                     ]);
                 }
 
-                $this->Flash->error(__('The contract is not ready for papers to be drawn up.'));
+                $this->Flash->error(__('The contract is not ready for a contract proposal.'));
 
                 return false;
             }
@@ -1169,7 +1172,7 @@ class ContractProposalsController extends AppController
 
         if (!$rounds->save($round)) {
             $proposal->setError('customer_proposal_id', [
-                __('These papers could not be given a proposal to be part of.'),
+                __('This contract proposal could not be given a customer proposal to be part of.'),
             ]);
 
             return false;

@@ -11,8 +11,8 @@ $customer_column ??= true;
 ?>
 <p>
     <?= __(
-        'The proposal was drawn up and never sent. The day it takes effect comes whether or not'
-        . ' the customer has seen the papers.',
+        'The proposal was created and never sent. The day it takes effect comes whether or not'
+        . ' the customer has seen it.',
     ) ?>
 </p>
 <?= $this->element('ContractChecks/proposal_table', [

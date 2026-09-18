@@ -41,7 +41,7 @@ class UnsignedCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function title(): string
     {
-        return __('Papers for the Customer Waiting for a Signature');
+        return __('Customer Proposal Waiting for a Signature');
     }
 
     /**
@@ -50,7 +50,7 @@ class UnsignedCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function emptyMessage(): string
     {
-        return __('Every round of papers that went out has come back signed.');
+        return __('Every customer proposal sent has come back signed.');
     }
 
     /**

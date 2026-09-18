@@ -257,7 +257,7 @@ class CustomerProposalsTable extends AppTable
             'sendingSaysHow',
             [
                 'errorField' => 'delivery_type',
-                'message' => __('Please say how the papers went out.'),
+                'message' => __('Please say how the proposal was sent.'),
             ],
         );
 
@@ -267,7 +267,8 @@ class CustomerProposalsTable extends AppTable
             [
                 'errorField' => 'id',
                 'message' => __(
-                    'This proposal has gone out, or there are papers in it. Revoke it instead.',
+                    'This customer proposal has been sent, or there are contract proposals in'
+                    . ' it. Revoke it instead.',
                 ),
             ],
         );

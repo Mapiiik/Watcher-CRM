@@ -67,9 +67,11 @@ enum UnsignedDeadlineAnchor: string implements EnumLabelInterface, SettingChoice
     {
         return match ($this) {
             self::Installation => __('From the day the service was installed'),
-            self::Sending => __('From the day the papers were sent, and only where that is recorded'),
+            self::Sending => __('From the day the proposal was sent, and only where that is'
+                . ' recorded'),
             self::SendingOrInstallation =>
-                __('From the day the papers were sent, or from the installation where that is not recorded'),
+                __('From the day the proposal was sent, or from the installation where that is'
+                    . ' not recorded'),
         };
     }
 

@@ -54,7 +54,7 @@ foreach ($filed as $byVariant) {
             <?php endif; ?>
             <?php if ($customerProposal->hasChangesToApply()) : ?>
                 <?= $this->AuthLink->link(
-                    __('Carry Over'),
+                    __('Apply Changes'),
                     ['action' => 'applyChanges', $customerProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
@@ -65,7 +65,7 @@ foreach ($filed as $byVariant) {
                     ['action' => 'revoke', $customerProposal->id],
                     [
                         'class' => 'side-nav-item',
-                        'confirm' => __('Give up on this round of papers?'),
+                        'confirm' => __('Revoke this customer proposal?'),
                     ],
                 ) ?>
             <?php endif; ?>
@@ -189,7 +189,7 @@ foreach ($filed as $byVariant) {
             <h4><?= h($saidOf) ?></h4>
             <p><?=
                 $this->Html->link(
-                    __('What these papers say'),
+                    __('View Contract Proposal'),
                     [
                         'controller' => 'ContractProposals',
                         'action' => 'view',

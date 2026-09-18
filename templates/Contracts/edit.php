@@ -70,7 +70,7 @@ use Settings\Utility\Settings;
                         echo $this->Form->control('individual_terms', [
                             'help' => __(
                                 'Printed on the contract, under whatever holds for the kind of'
-                                . ' service. A proposal already drawn up keeps what it took until'
+                                . ' service. A proposal already created keeps what it took until'
                                 . ' its snapshot is taken again.',
                             ),
                         ]);

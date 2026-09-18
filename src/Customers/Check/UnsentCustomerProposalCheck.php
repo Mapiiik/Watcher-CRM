@@ -41,7 +41,7 @@ class UnsentCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function title(): string
     {
-        return __('Papers for the Customer That Never Went Out');
+        return __('Customer Proposal That Was Never Sent');
     }
 
     /**
@@ -50,7 +50,7 @@ class UnsentCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function emptyMessage(): string
     {
-        return __('Every round of papers drawn up for a customer has gone out.');
+        return __('Every customer proposal created has been sent.');
     }
 
     /**

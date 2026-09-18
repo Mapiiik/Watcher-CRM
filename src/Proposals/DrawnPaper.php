@@ -97,7 +97,7 @@ final class DrawnPaper
             $type = CustomerDocumentType::tryFrom($document_type);
 
             if ($type === null) {
-                return [__('That is not a paper this round is for.')];
+                return [__('That is not a document this proposal is for.')];
             }
 
             $errors = (new CustomerPrintValidator())->validate(
@@ -107,7 +107,7 @@ final class DrawnPaper
             $type = ContractDocumentType::tryFrom($document_type);
 
             if ($type === null) {
-                return [__('That is not a paper this round is for.')];
+                return [__('That is not a document this proposal is for.')];
             }
 
             $errors = (new ContractPrintValidator())->validate(

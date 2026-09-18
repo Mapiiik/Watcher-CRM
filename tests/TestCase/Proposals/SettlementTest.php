@@ -97,7 +97,7 @@ class SettlementTest extends TestCase
     {
         $signed = new Settlement(ProposalStep::Applied, $this->day(), $this->day());
         $this->assertFalse($signed->isSettled());
-        $this->assertSame('Waiting to be carried over', $signed->state());
+        $this->assertSame('Waiting for the changes to be applied', $signed->state());
         $this->assertTrue($signed->isDueFor(ProposalStep::Applied));
 
         $carried = new Settlement(
@@ -107,7 +107,7 @@ class SettlementTest extends TestCase
             $this->moment(),
         );
         $this->assertTrue($carried->isSettled());
-        $this->assertSame('Carried over', $carried->state());
+        $this->assertSame('Changes applied', $carried->state());
     }
 
     /**
@@ -142,7 +142,7 @@ class SettlementTest extends TestCase
             $this->moment(),
         );
 
-        $this->assertSame('Carried over', $both->state());
+        $this->assertSame('Changes applied', $both->state());
     }
 
     /**

@@ -51,7 +51,7 @@ foreach ($parts as $part) {
     <div class="column column-90">
         <div class="customerProposals view content">
             <?= $this->element('CustomerProposals/heading', [
-                'doing' => __('Carry the Proposal Over'),
+                'doing' => __('Apply the Proposal\'s Changes'),
             ]) ?>
             <p><?= __('Everything this proposal asks of the contracts, written into the live'
                 . ' records in one go. Until now they have not moved.') ?></p>
@@ -72,17 +72,17 @@ foreach ($parts as $part) {
         <div class="customerProposals form content">
             <?php if ($stopped) : ?>
             <fieldset>
-                <p><?= __('This proposal cannot be carried over as it stands. What stands in the'
-                    . ' way is said above, beside the contract it is about.') ?></p>
+                <p><?= __('The changes of this proposal cannot be applied as it stands. What'
+                    . ' stands in the way is said above, beside the contract it is about.') ?></p>
             </fieldset>
             <?php else : ?>
                 <?= $this->Form->create(null, ['method' => 'post']) ?>
             <fieldset>
-                <?= $this->legend(__('Carry the Proposal Over')) ?>
+                <?= $this->legend(__('Apply the Proposal\'s Changes')) ?>
                 <?php if ($changesNothing) : ?>
-                    <p><?= __('This proposal changes nothing. It is the record of the papers that'
-                        . ' went out, and carrying it over only marks it as dealt with, so that it'
-                        . ' stops being listed as waiting.') ?></p>
+                    <p><?= __('This proposal changes nothing. It is the record of what was'
+                        . ' sent, and applying it only marks it as dealt with, so that it stops'
+                        . ' being listed as waiting.') ?></p>
                 <?php else : ?>
                     <p><?= __('All of it or none of it. Half a package written into the records is'
                         . ' worse than none, because nothing afterwards says which half.') ?></p>
@@ -101,7 +101,7 @@ foreach ($parts as $part) {
                 <?php endif; ?>
             </fieldset>
                 <?= $this->Form->button(
-                    $changesNothing ? __('Mark as Dealt With') : __('Carry Over'),
+                    $changesNothing ? __('Mark as Dealt With') : __('Apply Changes'),
                     [
                         'confirm' => $changesNothing
                             ? __('Mark this proposal as dealt with?')

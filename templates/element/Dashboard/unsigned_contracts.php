@@ -25,7 +25,7 @@ $slices = [
 // The proposals, each with the listing it belongs to. They are counted apart from the three
 // above and link somewhere else, so they carry their own link rather than share the one below.
 $papers = [
-    [$unsent, __('drawn up and never sent'), $unsent_url, __('Open the proposals nobody has sent')],
+    [$unsent, __('created and never sent'), $unsent_url, __('Open the proposals nobody has sent')],
     [
         $unanswered,
         __('sent to the customer and still not signed'),
@@ -34,14 +34,14 @@ $papers = [
     ],
     [
         $unfiled,
-        __('signed, with the signed papers not filed'),
+        __('signed, with the signed documents not filed'),
         $unfiled_url,
         __('Open the signatures nobody filed'),
     ],
 ];
 ?>
 <?php if (array_sum([$waiting, $notifying, $blocking, $unsent, $unanswered, $unfiled]) === 0) : ?>
-    <p><?= __('Every running service has paper behind it, and nothing is waiting to go out.') ?></p>
+    <p><?= __('Every running service has a signed contract, and nothing is waiting to be sent.') ?></p>
 <?php else : ?>
     <?php if ($waiting > 0 || $notifying > 0 || $blocking > 0) : ?>
         <?php foreach ($slices as [$count, $caption]) : ?>

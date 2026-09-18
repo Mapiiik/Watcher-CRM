@@ -145,7 +145,7 @@ class ProcessUnsignedContractsCommand extends Command
             $due = $this->dueToday();
 
             if ($due === []) {
-                $io->info(__('Nobody is due to hear about unsigned paperwork today.'));
+                $io->info(__('Nobody is due to hear about unsigned documents today.'));
 
                 return static::CODE_SUCCESS;
             }
@@ -362,7 +362,7 @@ class ProcessUnsignedContractsCommand extends Command
         }
 
         $io->warning(__(
-            'Customer {0} has unsigned paperwork but nobody to tell about it.',
+            'Customer {0} has unsigned documents but nobody to tell about it.',
             $customer->number,
         ));
     }

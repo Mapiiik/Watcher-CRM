@@ -89,7 +89,7 @@ class UnsignedContractsCard extends AbstractDashboardCard
     #[Override]
     public function title(): string
     {
-        return __('Outstanding Paperwork');
+        return __('Unsigned Documents');
     }
 
     /**

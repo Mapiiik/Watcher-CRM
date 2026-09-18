@@ -1385,7 +1385,8 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertResponseOk();
         // Nobody has signed it, so it says so and does not offer the button.
-        $this->assertResponseContains(__('Nobody has signed this proposal yet, so there is nothing to carry over.'));
+        $this->assertResponseContains(__('Nobody has signed this proposal yet, so there are no'
+            . ' changes to apply.'));
     }
 
     /**
@@ -1405,7 +1406,8 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(
-            __('The signature is written down, but no signed papers have been filed against this proposal.'),
+            __('The signature is recorded, but no signed documents have been filed against this'
+                . ' proposal.'),
         );
         // Said, not stopped: the button is still there. This proposal changes nothing, so it
         // reads as marking the job done rather than as moving anything.

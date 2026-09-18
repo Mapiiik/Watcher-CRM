@@ -159,7 +159,9 @@ return [
                 ),
                 'unapplied_proposal_within_days' => NumberType::ofInt(
                     default: 14,
-                    hint: __('How far ahead a signed proposal nobody has carried over is worth raising. Until its day comes there is nothing to do about it.'),
+                    hint: __('How far ahead a signed proposal whose changes nobody has applied'
+                        . ' is worth raising. Until its day comes there is nothing to do about'
+                        . ' it.'),
                 ),
             ],
 
@@ -177,7 +179,8 @@ return [
                 'notifications' => [
                     'enabled' => new BoolType(
                         default: false,
-                        hint: __('Whether the customer is written to at all about papers nobody has signed.'),
+                        hint: __('Whether the customer is written to at all about documents'
+                            . ' nobody has signed.'),
                     ),
                     'after_installation_days' => NumberType::ofInt(
                         default: 5,
@@ -193,7 +196,8 @@ return [
                     ),
                     'remind_daily_after' => new BoolType(
                         default: false,
-                        hint: __('Once the days above are used up, keep writing every day until the paper comes in.'),
+                        hint: __('Once the days above are used up, keep writing every day until'
+                            . ' the signed contract comes in.'),
                     ),
                     'channels' => [
                         'email' => ['enabled' => new BoolType(default: true)],
@@ -288,7 +292,8 @@ return [
                 'blocking' => [
                     'enabled' => new BoolType(
                         default: false,
-                        hint: __('Whether unsigned paperwork cuts the service off, the same way an unpaid invoice does.'),
+                        hint: __('Whether unsigned documents cut the service off, the same way'
+                            . ' an unpaid invoice does.'),
                     ),
                     'after_installation_days' => NumberType::ofInt(
                         default: 10,
@@ -305,11 +310,13 @@ return [
             'proposals' => [
                 'unanswered_after_days' => NumberType::ofInt(
                     default: 14,
-                    hint: __('Days after the papers went out before a missing signature is raised.'),
+                    hint: __('Days after the proposal was sent before a missing signature is'
+                        . ' raised.'),
                 ),
                 'unsent_within_days' => NumberType::ofInt(
                     default: 14,
-                    hint: __('How far ahead a proposal nobody has sent is worth raising. The papers have to be out before the version takes effect.'),
+                    hint: __('How far ahead a contract proposal nobody has sent is worth'
+                        . ' raising. It has to be sent before the version takes effect.'),
                 ),
             ],
 
@@ -328,11 +335,12 @@ return [
             'proposals' => [
                 'unanswered_after_days' => NumberType::ofInt(
                     default: 14,
-                    hint: __('Days after the papers went out before a missing signature is raised.'),
+                    hint: __('Days after the proposal was sent before a missing signature is'
+                        . ' raised.'),
                 ),
                 'unsent_within_days' => NumberType::ofInt(
                     default: 14,
-                    hint: __('How far ahead a round nobody has sent is worth raising.'),
+                    hint: __('How far ahead a customer proposal nobody has sent is worth raising.'),
                 ),
             ],
 

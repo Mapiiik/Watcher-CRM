@@ -27,8 +27,8 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
 <?php endif; ?>
 
 <?php if ($changesNothing) : ?>
-    <p><?= __('These papers change nothing. They are the record of what went out, and carrying'
-        . ' them over only marks them as dealt with.') ?></p>
+    <p><?= __('This contract proposal changes nothing. It is the record of what was sent, and'
+        . ' applying it only marks it as dealt with.') ?></p>
 <?php else : ?>
 <div class="row">
     <div class="column">
@@ -46,9 +46,9 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
     <h5><?= __('What else will be written') ?></h5>
     <p><?=
         __(
-            'Not all of it was asked for. Carrying the papers over records the signature on the'
-            . ' version, counts an amendment and closes the version being replaced, whether or not'
-            . ' the papers say so.',
+            'Not all of it was asked for. Applying the changes records the signature on the'
+            . ' version, counts an amendment and closes the version being replaced, whether or'
+            . ' not the proposal says so.',
         )
         ?></p>
     <?= $this->element('ContractProposals/planned_changes', [

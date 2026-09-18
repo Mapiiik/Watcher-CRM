@@ -53,8 +53,8 @@ $endsOn = $changes?->version->names('valid_until') ?? false
             'empty' => __('A proposal of their own'),
             'label' => __('Part of the Customer Proposal'),
             'onchange' => $this::REFRESH_ON_CHANGE,
-            'help' => __('Papers that are part of one proposal go out together and come back'
-                . ' together.'),
+            'help' => __('Contract proposals that are part of one customer proposal are sent'
+                . ' and signed together.'),
         ]);
     }
 
@@ -90,7 +90,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
         : [
             'options' => $contracts,
             'disabled' => true,
-            'help' => __('Papers are drawn up for one contract and stay with it.'),
+            'help' => __('A contract proposal is created for one contract and stays with it.'),
         ]);
     // A new contract may be put on paper before the version it is about exists: left empty, the
     // version comes into being when the papers are applied. Everything else is about a
@@ -102,7 +102,8 @@ $endsOn = $changes?->version->names('valid_until') ?? false
         'onchange' => $this::REFRESH_ON_CHANGE,
         'required' => !$purpose->mayStartAVersion(),
         'help' => $purpose->mayStartAVersion()
-            ? __('Left empty, the version is created when these papers are carried over.')
+            ? __('Left empty, the version is created when the changes of this contract proposal'
+                . ' are applied.')
             : null,
     ]);
 
@@ -124,15 +125,16 @@ $endsOn = $changes?->version->names('valid_until') ?? false
             // there for the operator would stay behind when they chose another version.
             'required' => false,
             'help' => $effectiveFromDefault === null
-                ? __('The day these papers start to apply, and the day the version starts on.')
+                ? __('The day this contract proposal takes effect, and the day the version'
+                    . ' starts on.')
                 : __(
-                    'The day these papers start to apply. Empty takes the day the version does,'
-                    . ' {0}.',
+                    'The day this contract proposal takes effect. Empty takes the day the'
+                    . ' version does, {0}.',
                     $effectiveFromDefault,
                 ),
         ]);
     } elseif (!$ending) {
-        echo '<p>' . __('These papers take effect with the contract version they are for.') . '</p>';
+        echo '<p>' . __('This contract proposal takes effect with the contract version it is for.') . '</p>';
     }
 
     // Only a new contract may end an earlier version of the same contract, which is the one paper
@@ -236,7 +238,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
 
 <?php if ($questions !== []) : ?>
 <fieldset>
-    <legend><?= __('Before the papers are drawn up') ?></legend>
+    <legend><?= __('Before the contract proposal is created') ?></legend>
     <?php foreach ($questions as $question) : ?>
         <?= $this->Form->control("confirmations.{$question}", [
             'type' => 'checkbox',
@@ -262,16 +264,16 @@ if (!$ending) {
 // it is asked for out loud. Papers being drawn up now are photographed anyway, so it is only ever
 // a question for papers that already exist.
 if (!$contractProposal->isNew()) {
-    $asking = __('The papers are generated from what the contract looked like when this proposal'
-        . ' was drawn up. Reading it again replaces that. Go ahead?');
+    $asking = __('The documents are generated from what the contract looked like when this'
+        . ' proposal was created. Taking the snapshot again replaces that. Go ahead?');
 
     echo $this->Form->control('take_the_snapshot_again', [
         'type' => 'checkbox',
         'label' => __('Take the snapshot again'),
-        'help' => __('Reads the contract as it stands now, so the papers are generated from what is'
-            . ' there today rather than from what was there before. A line about a billing that has'
-            . ' since left the contract is taken back, because there is nothing left for it to act'
-            . ' on.'),
+        'help' => __('Reads the contract as it stands now, so the documents are generated from'
+            . ' what is there today rather than from what was there before. A line about a'
+            . ' billing that has since left the contract is taken back, because there is nothing'
+            . ' left for it to act on.'),
         'onclick' => sprintf(
             'if (this.checked && !confirm(%s)) { this.checked = false; }',
             json_encode($asking, JSON_UNESCAPED_UNICODE),

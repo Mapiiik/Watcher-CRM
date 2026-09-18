@@ -75,11 +75,11 @@ class CustomerProposalTest extends TestCase
     public function testASignedRoundSaysWhatIsLeftToDoInIt(): void
     {
         $waiting = $this->signedRoundHolding([$this->papers(), $this->papers(DateTime::now())]);
-        $this->assertSame(__('Waiting to be carried over'), $waiting->getState());
+        $this->assertSame(__('Waiting for the changes to be applied'), $waiting->getState());
         $this->assertFalse($waiting->hasBeenDealtWith());
 
         $done = $this->signedRoundHolding([$this->papers(DateTime::now())]);
-        $this->assertSame(__('Carried over'), $done->getState());
+        $this->assertSame(__('Changes applied'), $done->getState());
         $this->assertTrue($done->hasBeenDealtWith());
 
         // Papers given up on were never applied, and nothing waits for them either.
@@ -121,10 +121,10 @@ class CustomerProposalTest extends TestCase
 
         $this->assertSame($asked->label(), $this->roundOf($asked, 0)->whatItIsFor());
         $this->assertSame(
-            $asked->label() . ' + ' . __('Documents of the contracts'),
+            $asked->label() . ' + ' . __('Contract proposals'),
             $this->roundOf($asked, 1)->whatItIsFor(),
         );
-        $this->assertSame(__('Documents of the contracts'), $this->roundOf(null, 2)->whatItIsFor());
+        $this->assertSame(__('Contract proposals'), $this->roundOf(null, 2)->whatItIsFor());
     }
 
     /**

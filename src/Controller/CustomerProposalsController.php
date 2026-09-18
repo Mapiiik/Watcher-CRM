@@ -216,7 +216,7 @@ class CustomerProposalsController extends AppController
         $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
 
         if ($proposal->hasBeenRevoked()) {
-            $this->Flash->warning(__('This round of papers has been given up on.'));
+            $this->Flash->warning(__('This customer proposal has been revoked.'));
 
             return $this->redirect(['action' => 'view', $id]);
         }
@@ -313,7 +313,7 @@ class CustomerProposalsController extends AppController
         $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
 
         if ($proposal->hasBeenRevoked()) {
-            $this->Flash->warning(__('This round of papers has been given up on.'));
+            $this->Flash->warning(__('This customer proposal has been revoked.'));
 
             return $this->redirect(['action' => 'view', $id]);
         }
@@ -341,14 +341,15 @@ class CustomerProposalsController extends AppController
         }
 
         if ($parts === []) {
-            $this->Flash->warning(__('There is nothing in this proposal left to carry over.'));
+            $this->Flash->warning(__('There are no changes left to apply in this proposal.'));
 
             return $this->redirect(['action' => 'view', $id]);
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             if ($stopped) {
-                $this->Flash->error(__('This proposal cannot be carried over as it stands.'));
+                $this->Flash->error(__('The changes of this proposal cannot be applied as it'
+                    . ' stands.'));
             } elseif ($this->applyTheWholePackage($parts)) {
                 return $this->redirect(['action' => 'view', $id]);
             }
@@ -387,7 +388,7 @@ class CustomerProposalsController extends AppController
             );
         } catch (Exception $failure) {
             $this->Flash->error(__(
-                'The proposal could not be carried over: {0}',
+                'The changes of the proposal could not be applied: {0}',
                 $failure->getMessage(),
             ));
 
@@ -395,8 +396,9 @@ class CustomerProposalsController extends AppController
         }
 
         $this->Flash->success(__n(
-            'The proposal has been carried over into the live records.',
-            'The proposal and everything in it have been carried over into the live records.',
+            'The changes of the proposal have been applied to the live records.',
+            'The changes of the proposal and everything in it have been applied to the live'
+            . ' records.',
             count($parts),
         ));
 

@@ -326,8 +326,8 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'customer_proposal_id',
                 'message' => __(
-                    'The papers for this proposal have gone out or something is filed against'
-                    . ' them, so the record of them stays. Revoke it instead.',
+                    'This proposal has been sent or has documents on file, so the record of it'
+                    . ' stays. Revoke it instead.',
                 ),
             ],
         );
@@ -486,7 +486,8 @@ class ContractProposalsTable extends AppTable
             'onlyANewContractStartsItsVersion',
             [
                 'errorField' => 'contract_version_id',
-                'message' => __('Papers for this purpose are about a version that already exists.'),
+                'message' => __('A contract proposal for this purpose is about a version that'
+                    . ' already exists.'),
             ],
         );
 
@@ -507,7 +508,7 @@ class ContractProposalsTable extends AppTable
             'proposalBelongsToItsRound',
             [
                 'errorField' => 'customer_proposal_id',
-                'message' => __('That round of papers belongs to a different customer.'),
+                'message' => __('That customer proposal belongs to a different customer.'),
             ],
         );
 
@@ -554,7 +555,8 @@ class ContractProposalsTable extends AppTable
             'oneSetOfPapersPerContractInARound',
             [
                 'errorField' => 'customer_proposal_id',
-                'message' => __('That proposal already holds papers for this contract.'),
+                'message' => __('That customer proposal already holds a contract proposal for'
+                    . ' this contract.'),
             ],
         );
 
@@ -740,9 +742,9 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'confirmations',
                 'message' => __(
-                    'The contract version ends on a given date, so the papers will be printed as a'
-                    . ' fixed-term contract. Please confirm that this is intended and set the'
-                    . ' obligation to the date until which the version is valid.',
+                    'The contract version ends on a given date, so the documents will be'
+                    . ' printed as a fixed-term contract. Please confirm that this is intended'
+                    . ' and set the obligation to the date until which the version is valid.',
                 ),
             ],
         );
@@ -776,8 +778,8 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'changes',
                 'message' => __(
-                    'The papers for this proposal have already been sent, so what stands behind'
-                    . ' them is not changed here. Revoke it and draw up a new one.',
+                    'This proposal has already been sent, so what it says is not changed here.'
+                    . ' Revoke it and create a new one.',
                 ),
             ],
         );
@@ -790,7 +792,8 @@ class ContractProposalsTable extends AppTable
             'appliedNeedsAConclusion',
             [
                 'errorField' => 'applied',
-                'message' => __('A proposal cannot be carried over before it has been concluded.'),
+                'message' => __('The changes of a proposal cannot be applied before it has been'
+                    . ' signed.'),
             ],
         );
 
@@ -799,7 +802,8 @@ class ContractProposalsTable extends AppTable
             'appliedAndRevokedExcludeEachOther',
             [
                 'errorField' => 'revoked',
-                'message' => __('A proposal that has been carried over cannot also be revoked.'),
+                'message' => __('A proposal whose changes have been applied cannot also be'
+                    . ' revoked.'),
             ],
         );
     }

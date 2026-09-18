@@ -17,7 +17,7 @@ if ($alsoInTheRound === []) {
 }
 ?>
 <div class="related">
-    <h4><?= __('Also in this envelope') ?></h4>
+    <h4><?= __('Also in this customer proposal') ?></h4>
     <p><?= h($saying) ?></p>
     <ul>
         <?php foreach ($alsoInTheRound as $papers) : ?>

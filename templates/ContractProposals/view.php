@@ -46,8 +46,9 @@ foreach ($filed as $byVariant) {
                     ['action' => 'refreshSnapshot', $contractProposal->id],
                     [
                         'class' => 'side-nav-item',
-                        'confirm' => __('The papers are generated from what the contract looked like'
-                            . ' when this proposal was drawn up. Reading it again replaces that. Go ahead?'),
+                        'confirm' => __('The documents are generated from what the contract'
+                            . ' looked like when this proposal was created. Taking the snapshot'
+                            . ' again replaces that. Go ahead?'),
                     ],
                 ) ?>
             <?php endif; ?>
@@ -119,7 +120,7 @@ foreach ($filed as $byVariant) {
                     ['controller' => 'CustomerProposals', 'action' => 'view', $round->id],
                 );
                 ?>
-                <p><?= __('These papers go out in {0}', $itGoesOutIn) ?></p>
+                <p><?= __('This contract proposal is part of the customer proposal: {0}', $itGoesOutIn) ?></p>
                 <br>
             <?php endif; ?>
             <div class="row">
@@ -192,7 +193,7 @@ foreach ($filed as $byVariant) {
                                 ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Carried Over') ?></th>
+                            <th><?= __('Changes Applied') ?></th>
                             <td><?= h($contractProposal->applied) ?></td>
                         </tr>
                         <tr>

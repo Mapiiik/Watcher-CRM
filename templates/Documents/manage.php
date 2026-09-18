@@ -115,9 +115,9 @@ $carrying = function (array $fields): string {
                 ['class' => 'button button-small float-right win-link'],
             ) ?>
             <h4><?= __('Proposals') ?></h4>
-            <p><?= __('Every proposal in view. A proposal is put to the customer, and what it does'
-                . ' for each of their contracts is a part of it - so the row names those contracts'
-                . ' and what is asked of each, and the documents of all of them are below.') ?></p>
+            <p><?= __('Every proposal in view. A customer proposal holds the contract proposals'
+                . ' of the customer\'s contracts, so the row names those contracts and what is'
+                . ' asked of each, and the documents of all of them are below.') ?></p>
             <?= $this->element('Documents/rounds', ['working' => true]) ?>
             <?php
             // Under the table rather than over it: the buttons above have the corner, and what
@@ -144,7 +144,7 @@ $carrying = function (array $fields): string {
                 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
                 <?= $carrying(['agenda', 'proposal_id', 'show_revoked']) ?>
                 <?= $this->Form->control('with_contracts', [
-                    'label' => __('Show documents of the contracts'),
+                    'label' => __('Show documents of the contract proposals'),
                     'type' => 'checkbox',
                     'checked' => $with_contracts,
                     'onchange' => $this::SUBMIT_ON_CHANGE,
@@ -174,8 +174,8 @@ $carrying = function (array $fields): string {
                     ) ?>
                 <?php endif; ?>
                 <h5><?= __('Received Documents') ?></h5>
-                <p><?= __('The papers that came back. They are filed against the round they answer,'
-                    . ' so the row says which one that is.') ?></p>
+                <p><?= __('The documents that came back. They are filed against the proposal'
+                    . ' they answer, so the row says which one that is.') ?></p>
                 <?php $this->Preview->load() ?>
                 <?= $this->cell('Documents', $scope, [
                     'generatedByUs' => false,
@@ -188,9 +188,10 @@ $carrying = function (array $fields): string {
             </div>
             <div class="related">
                 <h5><?= __('Generated Documents') ?></h5>
-                <p><?= __('What we generated, and what is still to be. A document is generated once'
-                    . ' and handed back afterwards, so these are the very files the customer was'
-                    . ' given - and a row that has none yet is a paper waiting to be drawn.') ?></p>
+                <p><?= __('What we generated, and what is still to be. A document is generated'
+                    . ' once and handed back afterwards, so these are the very files the'
+                    . ' customer was given - and a row that has none yet is a document waiting'
+                    . ' to be generated.') ?></p>
                 <?= $this->cell('Documents', $scope, [
                     'generatedByUs' => true,
                     'withWhatIsMissing' => true,

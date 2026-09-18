@@ -101,7 +101,7 @@ $headings = [
                         <?php endif ?>
                         <?php if (in_array('apply', $steps, true)) : ?>
                             <?= $this->AuthLink->link(
-                                __('Carry Over'),
+                                __('Apply Changes'),
                                 [
                                     'plugin' => null,
                                     'controller' => 'CustomerProposals',

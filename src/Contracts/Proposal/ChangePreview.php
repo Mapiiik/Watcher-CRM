@@ -74,7 +74,8 @@ final class ChangePreview
         if (!$proposal->hasBeenConcluded()) {
             $found[] = [
                 'what' => self::NOT_CONCLUDED,
-                'said' => __('Nobody has signed this proposal yet, so there is nothing to carry over.'),
+                'said' => __('Nobody has signed this proposal yet, so there are no changes to'
+                    . ' apply.'),
             ];
         }
 
@@ -131,7 +132,8 @@ final class ChangePreview
 
         return [[
             'what' => self::NOTHING_SIGNED_ON_FILE,
-            'said' => __('The signature is written down, but no signed papers have been filed against this proposal.'),
+            'said' => __('The signature is recorded, but no signed documents have been filed'
+                . ' against this proposal.'),
         ]];
     }
 
@@ -176,8 +178,8 @@ final class ChangePreview
                 $found[] = [
                     'what' => self::BILLING_MOVED,
                     'said' => __(
-                        'A billing this proposal changes has itself been changed since:'
-                        . ' {0}. Carrying the proposal over will overwrite that.',
+                        'A billing this proposal changes has itself been changed since: {0}.'
+                        . ' Applying the changes will overwrite that.',
                         implode(', ', $moved),
                     ),
                 ];
@@ -226,7 +228,7 @@ final class ChangePreview
                 return [[
                     'what' => self::VERSION_MOVED,
                     'said' => __(
-                        'The contract version has been changed since this proposal was drawn up.',
+                        'The contract version has been changed since this proposal was created.',
                     ),
                 ]];
             }
@@ -280,7 +282,7 @@ final class ChangePreview
         return [[
             'what' => self::BELOW_MINIMUM,
             'said' => MinimumConnectionPrice::refusal($minimum) . ' ' . __(
-                'Only an administrator may carry it over, and only deliberately.',
+                'Only an administrator may apply it, and only deliberately.',
             ),
         ]];
     }

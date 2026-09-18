@@ -37,14 +37,14 @@ $recording = $again ? __('Record the Sending Again') : __('Record the Sending');
                         'They went out on {0}. Recording it again puts the new day in its place.',
                         $customerProposal->sent_date,
                     )
-                    : __('Once this is recorded, the round may no longer be changed. A correction'
-                        . ' is a new round.') ?></p>
+                    : __('Once this is recorded, the customer proposal may no longer be'
+                        . ' changed. A correction is a new customer proposal.') ?></p>
                 <br>
                 <?php
                 echo $this->Form->control('sent_date', [
                     'default' => Date::now(),
                     'label' => __('Sent To The Customer'),
-                    'help' => __('The day the papers went out to the customer.'),
+                    'help' => __('The day the proposal was sent to the customer.'),
                 ]);
                 echo $this->Form->control('delivery_type', [
                     'options' => $deliveryTypes,

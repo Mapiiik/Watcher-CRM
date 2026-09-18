@@ -71,7 +71,7 @@ class UnappliedProposalCheck extends AbstractContractCheck
     #[Override]
     public function title(): string
     {
-        return __('Signed Proposal Nobody Has Carried Over');
+        return __('Signed Proposal Whose Changes Were Never Applied');
     }
 
     /**
@@ -80,7 +80,7 @@ class UnappliedProposalCheck extends AbstractContractCheck
     #[Override]
     public function emptyMessage(): string
     {
-        return __('Everything the customers have agreed to has been carried over.');
+        return __('The changes of everything the customers have agreed to have been applied.');
     }
 
     /**

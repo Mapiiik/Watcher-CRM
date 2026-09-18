@@ -105,7 +105,7 @@ class UnsignedContractCheck extends AbstractContractCheck
     #[Override]
     public function title(): string
     {
-        return __('Contract Version With No Paper Behind It');
+        return __('Contract Version Without Signed Documents');
     }
 
     /**
