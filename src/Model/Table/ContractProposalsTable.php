@@ -618,6 +618,31 @@ class ContractProposalsTable extends AppTable
      */
     private function addTerminationRules(RulesChecker $rules): void
     {
+        // A change is an amendment, and there is nothing to amend until the contract is signed.
+        // Asked when the proposal is created or moved to another version, so that one already
+        // being worked on is not locked by it.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                if (
+                    $entity->purpose !== ProposalPurpose::ServiceChange
+                    || !$entity->keepsVersions()
+                    || !($entity->isNew() || $entity->isDirty('contract_version_id'))
+                ) {
+                    return true;
+                }
+
+                $version = $this->versionOf($entity->contract_version_id);
+
+                return $version === null || $version->conclusion_date !== null;
+            },
+            'aChangeAmendsASignedVersion',
+            [
+                'errorField' => 'contract_version_id',
+                'message' => __('A change amends a signed contract. Record the signature of this'
+                    . ' contract version first.'),
+            ],
+        );
+
         $rules->add(
             function (ContractProposal $entity): bool {
                 if (!$entity->terminatesAnotherVersion()) {

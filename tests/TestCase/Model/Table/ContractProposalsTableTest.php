@@ -689,6 +689,46 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
+     * A change is an amendment, and there is nothing to amend before the contract is signed. A new
+     * contract on the same version is not a change, and a change already being worked on is not
+     * locked by the rule.
+     *
+     * @return void
+     */
+    public function testAChangeAmendsOnlyASignedVersion(): void
+    {
+        $unsigned = $this->aVersion(['conclusion_date' => null]);
+
+        $refused = $this->save(['contract_version_id' => $unsigned]);
+        $this->assertArrayHasKey(
+            'aChangeAmendsASignedVersion',
+            $refused->getErrors()['contract_version_id'] ?? [],
+        );
+
+        $newContract = $this->save([
+            'contract_version_id' => $unsigned,
+            'purpose' => ProposalPurpose::NewContract->value,
+        ]);
+        $this->assertArrayNotHasKey(
+            'aChangeAmendsASignedVersion',
+            $newContract->getErrors()['contract_version_id'] ?? [],
+        );
+
+        $standing = $this->Proposals->newEntity($this->proposalData([
+            'contract_version_id' => $unsigned,
+            'customer_proposal_id' => self::ROUND_ID,
+        ]));
+        $this->Proposals->saveOrFail($standing, ['checkRules' => false]);
+        $standing = $this->Proposals->patchEntity($this->Proposals->get($standing->id), ['note' => 'Still worked on']);
+        $this->Proposals->save($standing);
+
+        $this->assertArrayNotHasKey(
+            'aChangeAmendsASignedVersion',
+            $standing->getErrors()['contract_version_id'] ?? [],
+        );
+    }
+
+    /**
      * A shape the value objects will not answer for never reaches the column, because the only
      * place it would surface is printing.
      *

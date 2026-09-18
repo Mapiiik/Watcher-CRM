@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-18 21:11+0200\n"
+"POT-Creation-Date: 2026-09-18 22:22+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -859,35 +859,35 @@ msgstr ""
 msgid "A version that does not exist yet"
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:77
+#: ./src/Contracts/Proposal/ChangePreview.php:78
 msgid "Nobody has signed this proposal yet, so there are no changes to apply."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:136
+#: ./src/Contracts/Proposal/ChangePreview.php:149
 msgid "The signature is recorded, but no signed documents have been filed against this proposal."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:167
+#: ./src/Contracts/Proposal/ChangePreview.php:180
 msgid "A billing this proposal changes is no longer on the contract. Take the snapshot again and look the proposal over."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:181
+#: ./src/Contracts/Proposal/ChangePreview.php:194
 msgid "A billing this proposal changes has itself been changed since: {0}. Applying the changes will overwrite that."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:193
+#: ./src/Contracts/Proposal/ChangePreview.php:206
 msgid "A billing has been added to the contract that this proposal knows nothing about. It will be left as it is."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:231
+#: ./src/Contracts/Proposal/ChangePreview.php:244
 msgid "The contract version has been changed since this proposal was created."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:258
+#: ./src/Contracts/Proposal/ChangePreview.php:271
 msgid "This proposal takes effect on a day that has already been invoiced for. Only an administrator may write into an invoiced period, and only deliberately."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:285
+#: ./src/Contracts/Proposal/ChangePreview.php:298
 msgid "Only an administrator may apply it, and only deliberately."
 msgstr ""
 
@@ -3084,39 +3084,43 @@ msgstr ""
 msgid "A contract version cannot terminate itself."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:634
+#: ./src/Model/Table/ContractProposalsTable.php:641
+msgid "A change amends a signed contract. Record the signature of this contract version first."
+msgstr ""
+
+#: ./src/Model/Table/ContractProposalsTable.php:659
 msgid "The contract version being terminated has not been concluded."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:653
+#: ./src/Model/Table/ContractProposalsTable.php:678
 msgid "A contract version that has not been concluded cannot be terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:695
+#: ./src/Model/Table/ContractProposalsTable.php:720
 msgid "A contract is terminated on the day its version stops being valid. Say both, and say the same day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:725
+#: ./src/Model/Table/ContractProposalsTable.php:750
 msgid "What the proposal asks for does not match what it is for: only an ending ends the contract, and an ending has to say the day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:745
+#: ./src/Model/Table/ContractProposalsTable.php:770
 msgid "Please enter the number of the contract being terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:777
+#: ./src/Model/Table/ContractProposalsTable.php:802
 msgid "The contract version ends on a given date, so the documents will be printed as a fixed-term contract. Please confirm that this is intended and set the obligation to the date until which the version is valid."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:813
+#: ./src/Model/Table/ContractProposalsTable.php:838
 msgid "This proposal has already been sent, so what it says is not changed here. Revoke it and create a new one."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:828
+#: ./src/Model/Table/ContractProposalsTable.php:853
 msgid "The changes of a proposal cannot be applied before it has been signed."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:838
+#: ./src/Model/Table/ContractProposalsTable.php:863
 msgid "A proposal whose changes have been applied cannot also be revoked."
 msgstr ""
 

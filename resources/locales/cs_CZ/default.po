@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-18 21:11+0200\n"
+"POT-Creation-Date: 2026-09-18 22:22+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -928,11 +928,11 @@ msgstr "Počet dodatků"
 msgid "A version that does not exist yet"
 msgstr "Verze, která zatím neexistuje"
 
-#: src/Contracts/Proposal/ChangePreview.php:77
+#: src/Contracts/Proposal/ChangePreview.php:78
 msgid "Nobody has signed this proposal yet, so there are no changes to apply."
 msgstr "Návrh zatím nikdo nepodepsal, nejsou tedy žádné změny k aplikování."
 
-#: src/Contracts/Proposal/ChangePreview.php:136
+#: src/Contracts/Proposal/ChangePreview.php:149
 msgid ""
 "The signature is recorded, but no signed documents have been filed against "
 "this proposal."
@@ -940,7 +940,7 @@ msgstr ""
 "Podpis je zapsaný, ale k tomuto návrhu nejsou nahrané žádné podepsané "
 "dokumenty."
 
-#: src/Contracts/Proposal/ChangePreview.php:167
+#: src/Contracts/Proposal/ChangePreview.php:180
 msgid ""
 "A billing this proposal changes is no longer on the contract. Take the "
 "snapshot again and look the proposal over."
@@ -948,7 +948,7 @@ msgstr ""
 "Fakturace, kterou návrh mění, už na smlouvě není. Pořiďte snímek znovu a "
 "návrh překontrolujte."
 
-#: src/Contracts/Proposal/ChangePreview.php:181
+#: src/Contracts/Proposal/ChangePreview.php:194
 msgid ""
 "A billing this proposal changes has itself been changed since: {0}. Applying "
 "the changes will overwrite that."
@@ -956,17 +956,17 @@ msgstr ""
 "Fakturace, kterou návrh mění, se mezitím sama změnila: {0}. Aplikováním změn "
 "se to přepíše."
 
-#: src/Contracts/Proposal/ChangePreview.php:193
+#: src/Contracts/Proposal/ChangePreview.php:206
 msgid ""
 "A billing has been added to the contract that this proposal knows nothing "
 "about. It will be left as it is."
 msgstr "Na smlouvu přibyla fakturace, o které návrh neví. Zůstane beze změny."
 
-#: src/Contracts/Proposal/ChangePreview.php:231
+#: src/Contracts/Proposal/ChangePreview.php:244
 msgid "The contract version has been changed since this proposal was created."
 msgstr "Verze smlouvy se od vytvoření návrhu změnila."
 
-#: src/Contracts/Proposal/ChangePreview.php:258
+#: src/Contracts/Proposal/ChangePreview.php:271
 msgid ""
 "This proposal takes effect on a day that has already been invoiced for. Only "
 "an administrator may write into an invoiced period, and only deliberately."
@@ -974,7 +974,7 @@ msgstr ""
 "Návrh je účinný ke dni, který už je vyfakturovaný. Do vyfakturovaného období "
 "smí zapisovat jen administrátor, a jen vědomě."
 
-#: src/Contracts/Proposal/ChangePreview.php:285
+#: src/Contracts/Proposal/ChangePreview.php:298
 msgid "Only an administrator may apply it, and only deliberately."
 msgstr "Aplikovat ho smí jen administrátor, a jen vědomě."
 
@@ -3129,15 +3129,23 @@ msgstr "Ukončovaná verze smlouvy patří jiné smlouvě."
 msgid "A contract version cannot terminate itself."
 msgstr "Verze smlouvy nemůže ukončit sama sebe."
 
-#: src/Model/Table/ContractProposalsTable.php:634
+#: src/Model/Table/ContractProposalsTable.php:641
+msgid ""
+"A change amends a signed contract. Record the signature of this contract "
+"version first."
+msgstr ""
+"Změna služby je dodatkem k podepsané smlouvě. Nejdřív zapište podpis této "
+"verze smlouvy."
+
+#: src/Model/Table/ContractProposalsTable.php:659
 msgid "The contract version being terminated has not been concluded."
 msgstr "Ukončovaná verze smlouvy není uzavřená."
 
-#: src/Model/Table/ContractProposalsTable.php:653
+#: src/Model/Table/ContractProposalsTable.php:678
 msgid "A contract version that has not been concluded cannot be terminated."
 msgstr "Verzi smlouvy, která není uzavřená, nelze ukončit."
 
-#: src/Model/Table/ContractProposalsTable.php:695
+#: src/Model/Table/ContractProposalsTable.php:720
 msgid ""
 "A contract is terminated on the day its version stops being valid. Say both, "
 "and say the same day."
@@ -3145,7 +3153,7 @@ msgstr ""
 "Smlouva se ukončuje ke dni, kdy končí platnost její verze. Uveďte obojí, a "
 "ke stejnému dni."
 
-#: src/Model/Table/ContractProposalsTable.php:725
+#: src/Model/Table/ContractProposalsTable.php:750
 msgid ""
 "What the proposal asks for does not match what it is for: only an ending "
 "ends the contract, and an ending has to say the day."
@@ -3153,11 +3161,11 @@ msgstr ""
 "To, co návrh žádá, neodpovídá jeho účelu: smlouvu ukončuje jen ukončení, a "
 "ukončení musí uvést den."
 
-#: src/Model/Table/ContractProposalsTable.php:745
+#: src/Model/Table/ContractProposalsTable.php:770
 msgid "Please enter the number of the contract being terminated."
 msgstr "Zadejte prosím číslo ukončované smlouvy."
 
-#: src/Model/Table/ContractProposalsTable.php:777
+#: src/Model/Table/ContractProposalsTable.php:802
 msgid ""
 "The contract version ends on a given date, so the documents will be printed "
 "as a fixed-term contract. Please confirm that this is intended and set the "
@@ -3167,7 +3175,7 @@ msgstr ""
 "smlouva na dobu určitou. Potvrďte prosím, že je to záměr, a nastavte závazek "
 "ke dni, do kterého verze platí."
 
-#: src/Model/Table/ContractProposalsTable.php:813
+#: src/Model/Table/ContractProposalsTable.php:838
 msgid ""
 "This proposal has already been sent, so what it says is not changed here. "
 "Revoke it and create a new one."
@@ -3175,11 +3183,11 @@ msgstr ""
 "Tento návrh už byl odeslán, to, co říká, se tu proto nemění. Zrušte ho a "
 "vytvořte nový."
 
-#: src/Model/Table/ContractProposalsTable.php:828
+#: src/Model/Table/ContractProposalsTable.php:853
 msgid "The changes of a proposal cannot be applied before it has been signed."
 msgstr "Změny návrhu nelze aplikovat dříve, než je podepsaný."
 
-#: src/Model/Table/ContractProposalsTable.php:838
+#: src/Model/Table/ContractProposalsTable.php:863
 msgid "A proposal whose changes have been applied cannot also be revoked."
 msgstr "Návrh s aplikovanými změnami už nelze zrušit."
 
