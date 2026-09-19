@@ -12,6 +12,7 @@ use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\DocumentVariant;
 use App\Proposals\DrawnPaper;
 use App\Proposals\ProposalPapers;
+use App\Proposals\ProposalRows;
 use App\Proposals\RoundOfPapers;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
@@ -77,7 +78,7 @@ class DocumentsController extends AppController
 
         // The rows the table reads, and beside them the page they were taken from - the pager
         // draws itself from whichever view variable holds one.
-        $this->set('rounds', $this->asRows($page));
+        $this->set('rounds', (new ProposalRows())->of($page));
         $this->set('paginated', $page);
         $this->set('show_settled', $show_settled);
         $this->set('showCustomer', $this->customer_id === null);
@@ -136,7 +137,9 @@ class DocumentsController extends AppController
         $this->set('contract', $contract);
         $this->set('version', $version);
         $this->set('round', $round);
-        $this->set('rounds', $this->asRows($this->whatIsStillWorkedOn($this->roundsInView($version), $round)));
+        $this->set('rounds', (new ProposalRows())->of(
+            $this->whatIsStillWorkedOn($this->roundsInView($version), $round),
+        ));
         $this->set('scope', $this->scopeOfTheTable($round, $version));
         $this->set('about', $this->whatTheTableIsOf($round, $version, $contract, $customer));
         // The papers of the contracts go out in the same envelope, so they are in view unless the
@@ -708,83 +711,6 @@ class DocumentsController extends AppController
         }
 
         return ['OR' => $said];
-    }
-
-    /**
-     * The proposals as the table reads them.
-     *
-     * @param iterable<\Cake\Datasource\EntityInterface> $proposals The ones in view.
-     * @return array<array<string, mixed>>
-     */
-    private function asRows(iterable $proposals): array
-    {
-        $listed = [];
-
-        foreach ($proposals as $proposal) {
-            /** @var \App\Model\Entity\CustomerProposal $proposal */
-            $listed[] = $this->asARow($proposal);
-        }
-
-        return $listed;
-    }
-
-    /**
-     * One round, as a listing wants it.
-     *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The round.
-     * @return array<string, mixed>
-     */
-    private function asARow(ContractProposal|CustomerProposal $round): array
-    {
-        $ofAContract = $round instanceof ContractProposal;
-
-        return [
-            'id' => (string)$round->id,
-            'agenda' => $ofAContract ? 'ContractProposals' : 'CustomerProposals',
-            'round' => $round,
-            'customer' => $ofAContract
-                ? ($round->contract->customer ?? null)
-                : ($round->customer ?? null),
-            'contract' => $ofAContract ? ($round->contract ?? null) : null,
-            'covers' => $ofAContract ? [] : $this->contractsCovered($round),
-            'version' => $ofAContract ? ($round->contract_version ?? null) : null,
-            'purpose' => $ofAContract ? $round->purpose->label() : $round->whatItIsFor(),
-        ];
-    }
-
-    /**
-     * Which contracts a proposal says something about, by their numbers.
-     *
-     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
-     * @return array<string>
-     */
-    private function contractsCovered(CustomerProposal $proposal): array
-    {
-        $covered = [];
-
-        foreach ($proposal->contract_proposals ?? [] as $papers) {
-            $number = (string)($papers->contract->number ?? '');
-
-            if ($number === '') {
-                continue;
-            }
-
-            // The number says which contract, the day and the purpose what is asked of it and
-            // from when. Together they are the whole of what a part amounts to, which is why the
-            // parts are not listed a second time underneath - and the day is the part's own,
-            // which need not be the day the proposal speaks from.
-            $said = __(
-                '{0} ({1} - {2})',
-                $number,
-                (string)$papers->effective_from,
-                $papers->purpose->label(),
-            );
-            $covered[$said] = $said;
-        }
-
-        sort($covered);
-
-        return $covered;
     }
 
     /**

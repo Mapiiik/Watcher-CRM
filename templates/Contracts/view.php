@@ -12,6 +12,9 @@ $this->Html->script('lazy-load.js', ['block' => true]);
 // The findings banner is drawn by the ajax layout, which carries no css block, so its style is
 // asked for here - on the page that will be holding it.
 $this->Html->css('problems', ['block' => true]);
+
+// Drawn ahead, because the sections down the side only offer it when there is anything in it.
+$inProgress = (string)$this->cell('ProposalsInProgress', ['contract', $contract->id]);
 ?>
 <div class="row">
     <aside class="column">
@@ -99,6 +102,13 @@ $this->Html->css('problems', ['block' => true]);
                 ['action' => 'view', $contract->id, '#' => 'contract'],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?php if ($inProgress !== '') : ?>
+                <?= $this->AuthLink->link(
+                    __('Proposals in Progress'),
+                    ['action' => 'view', $contract->id, '#' => 'proposals'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            <?php endif; ?>
             <?= $this->AuthLink->link(
                 __('Contract Versions'),
                 ['action' => 'view', $contract->id, '#' => 'contract-versions'],
@@ -216,6 +226,11 @@ $this->Html->css('problems', ['block' => true]);
                 </div>
             </div>
             <?php endif; ?>
+            <?php
+            // Above the versions and the billings, because what is in progress is about to change
+            // them - seen first, it is not done again by hand beside the proposal.
+            ?>
+            <?= $inProgress ?>
             <?php if ($contract->service_type !== null && $contract->service_type->have_contract_versions) : ?>
             <div class="related">
                 <?= $this->AuthLink->link(

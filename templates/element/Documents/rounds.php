@@ -102,6 +102,8 @@ $heading = function (string $field, string $said) use ($paged): string {
                 <td class="actions">
                     <?php if ($working) : ?>
                         <?= $this->Html->link(__('Documents'), [
+                            'plugin' => null,
+                            'controller' => 'Documents',
                             'action' => 'manage',
                             '?' => ['proposal_id' => $one->id, 'agenda' => $row['agenda']],
                         ]) ?>
@@ -135,6 +137,8 @@ $heading = function (string $field, string $said) use ($paged): string {
                         <?php endif; ?>
                     <?php else : ?>
                         <?= $this->Html->link(__('Documents'), [
+                            'plugin' => null,
+                            'controller' => 'Documents',
                             'action' => 'manage',
                             'customer_id' => $row['customer']?->id,
                             'contract_id' => $row['contract']?->id,

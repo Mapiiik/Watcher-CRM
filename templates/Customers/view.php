@@ -25,6 +25,9 @@ $remark = function (string $note, bool $wrong = false): string {
 
     return $wrong ? '<span class="error-text">' . $note . '</span>' : $note;
 };
+
+// Drawn ahead, because the sections down the side only offer it when there is anything in it.
+$inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer->id]);
 ?>
 <div class="row">
     <aside class="column">
@@ -127,6 +130,13 @@ $remark = function (string $note, bool $wrong = false): string {
                 ['action' => 'view', $customer->id, '#' => 'contracts'],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?php if ($inProgress !== '') : ?>
+                <?= $this->AuthLink->link(
+                    __('Proposals in Progress'),
+                    ['action' => 'view', $customer->id, '#' => 'proposals'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            <?php endif; ?>
             <?= $this->AuthLink->link(
                 __('Billings'),
                 ['action' => 'view', $customer->id, '#' => 'billings'],
@@ -672,6 +682,11 @@ $remark = function (string $note, bool $wrong = false): string {
                 </div>
                 <?php endif; ?>
             </div>
+            <?php
+            // Under the contracts rather than over them: here it is to know about, while the
+            // contract's own card puts it first, above what it is about to change.
+            ?>
+            <?= $inProgress ?>
         </div>
         <br>
         <div class="customers view content">
