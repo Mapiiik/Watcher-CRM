@@ -75,16 +75,17 @@ final class ReadinessChecks
     {
         return [
             ProposalConfirmations::OWN_EQUIPMENT => __(
-                'A borrowed equipment is not assigned, although it should normally be for this type'
-                . ' of service. Please confirm that the customer has their own equipment or add it.',
+                'No borrowed equipment is assigned, although this type of service usually has'
+                . ' some. Please confirm that the customer has their own equipment, or add it.',
             ),
             ProposalConfirmations::NO_IP_ADDRESSES => __(
-                'IP addresses are not assigned, although they usually should be for this type of'
-                . ' service. Please confirm that the customer does not use IP addresses or add them.',
+                'No IP addresses are assigned, although this type of service usually has some.'
+                . ' Please confirm that the customer does not use IP addresses, or add them.',
             ),
             ProposalConfirmations::NO_RADIUS => __(
-                'RADIUS accounts are not assigned, although they usually should be for this type of'
-                . ' service. Please confirm that the customer does not use RADIUS accounts or add them.',
+                'No RADIUS accounts are assigned, although this type of service usually has'
+                . ' some. Please confirm that the customer does not use RADIUS accounts, or add'
+                . ' them.',
             ),
         ];
     }

@@ -133,13 +133,13 @@ foreach ($filed as $byVariant) {
                             <td><?= h($customerProposal->conclusion_date) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Documents on File') ?></th>
+                            <th><?= __('Stored Documents') ?></th>
                             <td><?=
                                 $this->Html->link(
                                     $ourPages + $theirPages === 0
                                         ? __('None')
                                         : __(
-                                            '{0} generated, {1} came back',
+                                            '{0} generated, {1} received',
                                             $ourPages,
                                             $theirPages,
                                         ),
@@ -175,7 +175,7 @@ foreach ($filed as $byVariant) {
                     'action' => 'add',
                     '?' => ['proposal_id' => $customerProposal->id],
                 ],
-                ['class' => 'button button-small float-right win-link'],
+                ['class' => 'button button-small float-right'],
             );
             ?>
             <?= $this->Html->div('clearfix', $another) ?>

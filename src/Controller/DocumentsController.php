@@ -214,7 +214,7 @@ class DocumentsController extends AppController
             $model = $printed[$holder]['model'] ?? null;
 
             if ($variant === null || $document_type === '' || $model === null || !is_array($files)) {
-                $this->Flash->error(__('It was not said what those pages are.'));
+                $this->Flash->error(__('Choose which document the pages belong to.'));
 
                 return null;
             }
@@ -242,7 +242,7 @@ class DocumentsController extends AppController
                     return $this->backToTheWorkbench($round);
                 }
 
-                $this->Flash->error(__('Nothing was chosen to file.'));
+                $this->Flash->error(__('No files were selected.'));
             } catch (Throwable $e) {
                 $this->Flash->error($e->getMessage());
             }
@@ -361,7 +361,7 @@ class DocumentsController extends AppController
             : ContractDocuments::MODEL;
 
         if ($round === null || $link->model !== $model || $link->foreign_key !== $round->id) {
-            throw new RecordNotFoundException(__('That page belongs to something else.'));
+            throw new RecordNotFoundException(__('That page belongs to a different proposal.'));
         }
 
         return $link;

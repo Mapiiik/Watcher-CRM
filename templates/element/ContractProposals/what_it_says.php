@@ -31,7 +31,7 @@ $answered = $confirmations->toArray();
 ]) ?>
 
 <?php if ($planned !== []) : ?>
-    <h4><?= __('What it asks of the records') ?></h4>
+    <h4><?= __('Changes to the records') ?></h4>
     <?= $this->element('ContractProposals/planned_changes', [
         'preview' => false,
         'planned' => $planned,

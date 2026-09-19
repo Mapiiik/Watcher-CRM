@@ -86,7 +86,8 @@ $joined = function (array $run, int $index, string $content, string $class = '')
 };
 ?>
 <?php if ($rows === []) : ?>
-    <p><?= $generatedByUs ? __('Nothing has been generated yet.') : __('Nothing has come back yet.') ?></p>
+    <p><?= $generatedByUs ? __('Nothing has been generated yet.') : __('Nothing has been'
+        . ' received yet.') ?></p>
 <?php else : ?>
 <div class="table-responsive">
     <table class="files-documents">
@@ -338,8 +339,8 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             ],
                             ['confirm' => $generatedByUs
                                 ? __(
-                                    'Remove this document? It stops being frozen and the next'
-                                    . ' request for it generates it afresh.',
+                                    'Remove this document? The next time it is requested, it'
+                                    . ' will be generated again.',
                                 )
                                 : __('Remove this page?')],
                         ) ?>

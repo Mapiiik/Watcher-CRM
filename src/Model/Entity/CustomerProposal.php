@@ -83,7 +83,7 @@ class CustomerProposal extends AppEntity
             $parts === [] ? null : __('Contract proposals'),
         ]);
 
-        return $said === [] ? __('Nothing asked for yet') : implode(' + ', $said);
+        return $said === [] ? __('Empty') : implode(' + ', $said);
     }
 
     /**

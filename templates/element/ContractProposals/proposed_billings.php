@@ -22,7 +22,7 @@ $proposalId = $contractProposal->id;
             ['class' => 'button button-small float-right win-link'],
         ) ?>
     <?php endif; ?>
-    <h4><?= __('What would be billed for') ?></h4>
+    <h4><?= __('Billing after the change') ?></h4>
 
     <?php if ($rows === []) : ?>
         <p><?= __('Nothing is billed for on this contract.') ?></p>
@@ -36,7 +36,7 @@ $proposalId = $contractProposal->id;
                     <th><?= __('Billing Until') ?></th>
                     <th><?= __('Quantity') ?></th>
                     <th><?= __('Total Price') ?></th>
-                    <th><?= __('Where it comes from') ?></th>
+                    <th><?= __('Source') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -46,11 +46,11 @@ $proposalId = $contractProposal->id;
                 $billing = $row['billing'];
                 $line = $row['line'];
                 $comesFrom = match (true) {
-                    $row['ending'] => __('Stops here'),
+                    $row['ending'] => __('Ends with this proposal'),
                     // A line that asks to stop something that had already stopped. It is written
                     // out rather than hidden, so that whoever drew it can take it back off.
-                    $line !== null && $line->terminatesOnly() => __('Had already stopped'),
-                    $line === null && $row['stopped'] => __('Stopped before this'),
+                    $line !== null && $line->terminatesOnly() => __('Already ended'),
+                    $line === null && $row['stopped'] => __('Ended earlier'),
                     $line === null => __('As it stands'),
                     $line->isAddition() => __('Added by this proposal'),
                     default => __('Changed by this proposal'),
@@ -82,7 +82,7 @@ $proposalId = $contractProposal->id;
                                     $proposalId,
                                     $line->id,
                                 ],
-                                ['confirm' => __('Leave this as it stands on the contract?')],
+                                ['confirm' => __('Leave this as it is on the contract?')],
                             ) ?>
                         <?php elseif ($mayBeEdited && !$row['ending'] && !$row['stopped']) : ?>
                             <?= $this->AuthLink->link(
@@ -102,7 +102,7 @@ $proposalId = $contractProposal->id;
                                     $proposalId,
                                     $billing->id,
                                 ],
-                                ['confirm' => __('Stop billing for this?')],
+                                ['confirm' => __('End this billing?')],
                             ) ?>
                         <?php endif; ?>
                     </td>

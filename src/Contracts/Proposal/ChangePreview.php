@@ -75,8 +75,8 @@ final class ChangePreview
         if (!$proposal->hasBeenConcluded()) {
             $found[] = [
                 'what' => self::NOT_CONCLUDED,
-                'said' => __('Nobody has signed this proposal yet, so there are no changes to'
-                    . ' apply.'),
+                'said' => __('This proposal has not been signed yet, so its changes cannot be'
+                    . ' applied.'),
             ];
         }
 
@@ -146,8 +146,8 @@ final class ChangePreview
 
         return [[
             'what' => self::NOTHING_SIGNED_ON_FILE,
-            'said' => __('The signature is recorded, but no signed documents have been filed'
-                . ' against this proposal.'),
+            'said' => __('The signature is recorded, but no signed documents have been uploaded'
+                . ' for this proposal.'),
         ]];
     }
 
@@ -192,8 +192,8 @@ final class ChangePreview
                 $found[] = [
                     'what' => self::BILLING_MOVED,
                     'said' => __(
-                        'A billing this proposal changes has itself been changed since: {0}.'
-                        . ' Applying the changes will overwrite that.',
+                        'A billing changed by this proposal has been edited in the meantime:'
+                        . ' {0}. Applying the changes will overwrite that edit.',
                         implode(', ', $moved),
                     ),
                 ];
@@ -204,8 +204,8 @@ final class ChangePreview
             $found[] = [
                 'what' => self::BILLING_APPEARED,
                 'said' => __(
-                    'A billing has been added to the contract that this proposal knows nothing'
-                    . ' about. It will be left as it is.',
+                    'A billing this proposal does not cover has been added to the contract. It'
+                    . ' will be left unchanged.',
                 ),
             ];
         }
@@ -269,8 +269,9 @@ final class ChangePreview
         return [[
             'what' => self::CLOSED_PERIOD,
             'said' => __(
-                'This proposal takes effect on a day that has already been invoiced for.'
-                . ' Only an administrator may write into an invoiced period, and only deliberately.',
+                'This proposal takes effect in a period that has already been invoiced. Only an'
+                . ' administrator can make changes in an invoiced period, and only after'
+                . ' allowing it explicitly.',
             ),
         ]];
     }
@@ -296,7 +297,7 @@ final class ChangePreview
         return [[
             'what' => self::BELOW_MINIMUM,
             'said' => MinimumConnectionPrice::refusal($minimum) . ' ' . __(
-                'Only an administrator may apply it, and only deliberately.',
+                'Only an administrator can apply it, and only after allowing it explicitly.',
             ),
         ]];
     }

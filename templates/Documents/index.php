@@ -20,8 +20,7 @@
             'label' => __('Search'),
             'type' => 'search',
             'onchange' => $this::SUBMIT_ON_CHANGE,
-            'help' => __('The number of the customer or of a contract, or anything out of the'
-                . ' note.'),
+            'help' => __('Customer or contract number, or any text from the note.'),
         ]) ?>
         <?= $this->Form->control('show_settled', [
             'label' => __('Show settled proposals'),
@@ -37,11 +36,10 @@
     <?= $this->AuthLink->link(
         __('New Customer Proposal'),
         ['controller' => 'CustomerProposals', 'action' => 'add'],
-        ['class' => 'button float-right win-link'],
+        ['class' => 'button float-right'],
     ) ?>
     <?= $this->heading(__('Documents')) ?>
-    <p><?= __('Every proposal, and what state it is in. The documents themselves are one link'
-        . ' away.') ?></p>
+    <p><?= __('All proposals and their state. Each one links to its documents.') ?></p>
     <?= $this->element('Documents/rounds', ['working' => false, 'paged' => true]) ?>
     <?= $this->element('common/paginator') ?>
 </div>

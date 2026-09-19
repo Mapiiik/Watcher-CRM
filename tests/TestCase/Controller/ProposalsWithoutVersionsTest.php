@@ -93,7 +93,7 @@ class ProposalsWithoutVersionsTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseNotContains('name="contract_version_id"');
-        $this->assertResponseContains('keeps no contract versions');
+        $this->assertResponseContains('does not use contract versions');
         $this->assertResponseContains('name="effective_from"');
     }
 

@@ -18,7 +18,7 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
 <h4><?= h($contractProposal->getName()) ?></h4>
 
 <?php if ($found !== []) : ?>
-    <h5><?= __('Worth knowing first') ?></h5>
+    <h5><?= __('Before you continue') ?></h5>
     <ul>
         <?php foreach ($found as $one) : ?>
             <li><?= h($one['said']) ?></li>
@@ -27,8 +27,8 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
 <?php endif; ?>
 
 <?php if ($changesNothing) : ?>
-    <p><?= __('This contract proposal changes nothing. It is the record of what was sent, and'
-        . ' applying it only marks it as dealt with.') ?></p>
+    <p><?= __('This contract proposal changes nothing. It records what was sent, and applying'
+        . ' it only marks it as settled.') ?></p>
 <?php else : ?>
 <div class="row">
     <div class="column">
@@ -43,12 +43,12 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
 <?php endif; ?>
 
 <?php if ($planned !== []) : ?>
-    <h5><?= __('What else will be written') ?></h5>
+    <h5><?= __('What else will be recorded') ?></h5>
     <p><?=
         __(
-            'Not all of it was asked for. Applying the changes records the signature on the'
-            . ' version, counts an amendment and closes the version being replaced, whether or'
-            . ' not the proposal says so.',
+            'Applying the changes also records the signature on the version, counts the'
+            . ' amendment and ends the version being replaced, even if the proposal does not say'
+            . ' so.',
         )
         ?></p>
     <?= $this->element('ContractProposals/planned_changes', [

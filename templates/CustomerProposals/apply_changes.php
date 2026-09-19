@@ -53,8 +53,8 @@ foreach ($parts as $part) {
             <?= $this->element('CustomerProposals/heading', [
                 'doing' => __('Apply the Proposal\'s Changes'),
             ]) ?>
-            <p><?= __('Everything this proposal asks of the contracts, written into the live'
-                . ' records in one go. Until now they have not moved.') ?></p>
+            <p><?= __('Everything this proposal changes on the contracts is recorded at once.'
+                . ' Until then, nothing on them has changed.') ?></p>
         </div>
         <br>
             <?php foreach ($parts as $part) : ?>
@@ -72,25 +72,25 @@ foreach ($parts as $part) {
         <div class="customerProposals form content">
             <?php if ($stopped) : ?>
             <fieldset>
-                <p><?= __('The changes of this proposal cannot be applied as it stands. What'
-                    . ' stands in the way is said above, beside the contract it is about.') ?></p>
+                <p><?= __('The changes of this proposal cannot be applied in its current state.'
+                    . ' What prevents it is shown above, next to the contract concerned.') ?></p>
             </fieldset>
             <?php else : ?>
                 <?= $this->Form->create(null, ['method' => 'post']) ?>
             <fieldset>
                 <?= $this->legend(__('Apply the Proposal\'s Changes')) ?>
                 <?php if ($changesNothing) : ?>
-                    <p><?= __('This proposal changes nothing. It is the record of what was'
-                        . ' sent, and applying it only marks it as dealt with, so that it stops'
-                        . ' being listed as waiting.') ?></p>
+                    <p><?= __('This proposal changes nothing. It records what was sent, and'
+                        . ' applying it only marks it as settled so that it is no longer listed'
+                        . ' as pending.') ?></p>
                 <?php else : ?>
-                    <p><?= __('All of it or none of it. Half a package written into the records is'
-                        . ' worse than none, because nothing afterwards says which half.') ?></p>
+                    <p><?= __('Either all of the changes are applied, or none of them. A partly'
+                        . ' applied proposal would leave no trace of which part went through.') ?></p>
                 <?php endif; ?>
                 <?php if ($closed_period_override) : ?>
                     <?= $this->Form->control(BillingsTable::ALLOW_CLOSED_PERIODS, [
                         'type' => 'checkbox',
-                        'label' => __('Write into a period that has already been invoiced for'),
+                        'label' => __('Allow changes in an already invoiced period'),
                     ]) ?>
                 <?php endif; ?>
                 <?php if ($below_minimum_override) : ?>
@@ -101,12 +101,11 @@ foreach ($parts as $part) {
                 <?php endif; ?>
             </fieldset>
                 <?= $this->Form->button(
-                    $changesNothing ? __('Mark as Dealt With') : __('Apply Changes'),
+                    $changesNothing ? __('Mark as Settled') : __('Apply Changes'),
                     [
                         'confirm' => $changesNothing
-                            ? __('Mark this proposal as dealt with?')
-                            : __('Do you really want to write what this proposal asks for into the'
-                                . ' live records?'),
+                            ? __('Mark this proposal as settled?')
+                            : __('Do you really want to apply the changes of this proposal?'),
                     ],
                 ) ?>
                 <?= $this->Form->end() ?>

@@ -443,7 +443,7 @@ class CustomerProposalsControllerTest extends TestCase
         $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/view/' . $round->id);
         $this->assertResponseOk();
 
-        $this->assertResponseContains(__('What would be billed for'));
+        $this->assertResponseContains(__('Billing after the change'));
         $this->assertResponseContains('billing-line/' . $papers->id);
     }
 

@@ -326,8 +326,8 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'customer_proposal_id',
                 'message' => __(
-                    'This proposal has been sent or has documents on file, so the record of it'
-                    . ' stays. Revoke it instead.',
+                    'This proposal has been sent or has documents, so it cannot be deleted.'
+                    . ' Revoke it instead.',
                 ),
             ],
         );
@@ -364,7 +364,7 @@ class ContractProposalsTable extends AppTable
             'changesAreShaped',
             [
                 'errorField' => 'changes',
-                'message' => __('The proposed changes are not in a shape the application can read.'),
+                'message' => __('The proposed changes are in an invalid format.'),
             ],
         );
 
@@ -381,7 +381,7 @@ class ContractProposalsTable extends AppTable
             'snapshotIsShaped',
             [
                 'errorField' => 'snapshot',
-                'message' => __('The snapshot does not carry everything the documents need.'),
+                'message' => __('The snapshot is missing data the documents need.'),
             ],
         );
 
@@ -398,7 +398,7 @@ class ContractProposalsTable extends AppTable
             'confirmationsAreShaped',
             [
                 'errorField' => 'confirmations',
-                'message' => __('The confirmations name a question nobody asks.'),
+                'message' => __('The confirmations include an unknown question.'),
             ],
         );
 
@@ -423,7 +423,8 @@ class ContractProposalsTable extends AppTable
             'billingIsInTheSnapshot',
             [
                 'errorField' => 'changes',
-                'message' => __('A proposed change acts on a billing the snapshot does not know.'),
+                'message' => __('A proposed change refers to a billing that is not in the'
+                    . ' snapshot.'),
             ],
         );
 
@@ -449,7 +450,7 @@ class ContractProposalsTable extends AppTable
             'noTwoItemsOnTheSameBilling',
             [
                 'errorField' => 'changes',
-                'message' => __('Two proposed changes act on the same billing.'),
+                'message' => __('Two proposed changes refer to the same billing.'),
             ],
         );
     }
@@ -487,8 +488,8 @@ class ContractProposalsTable extends AppTable
             'onlyANewContractStartsItsVersion',
             [
                 'errorField' => 'contract_version_id',
-                'message' => __('A contract proposal for this purpose is about a version that'
-                    . ' already exists.'),
+                'message' => __('A contract proposal for this purpose cannot refer to an'
+                    . ' existing version.'),
             ],
         );
 
@@ -509,7 +510,8 @@ class ContractProposalsTable extends AppTable
             'noVersionWhereTheServiceKeepsNone',
             [
                 'errorField' => 'contract_version_id',
-                'message' => __('The service of this contract keeps no contract versions.'),
+                'message' => __('The service type of this contract does not use contract'
+                    . ' versions.'),
             ],
         );
 
@@ -548,7 +550,8 @@ class ContractProposalsTable extends AppTable
             'papersJoinAnOpenRound',
             [
                 'errorField' => 'customer_proposal_id',
-                'message' => __('That proposal has already gone out, so nothing more goes in it.'),
+                'message' => __('That customer proposal has already been sent, so nothing more'
+                    . ' can be added to it.'),
             ],
         );
 
@@ -565,7 +568,8 @@ class ContractProposalsTable extends AppTable
             'papersJoinARoundThatIsSigned',
             [
                 'errorField' => 'customer_proposal_id',
-                'message' => __('That customer proposal is only handed over, so no contract proposal goes in it.'),
+                'message' => __('That customer proposal is only handed over, so it cannot hold'
+                    . ' contract proposals.'),
             ],
         );
 
@@ -735,8 +739,8 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'changes',
                 'message' => __(
-                    'A contract is terminated on the day its version stops being valid. Say both,'
-                    . ' and say the same day.',
+                    'A contract ends on the day its version stops being valid. Enter both dates'
+                    . ' and make them the same day.',
                 ),
             ],
         );
@@ -765,8 +769,8 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'changes',
                 'message' => __(
-                    'What the proposal asks for does not match what it is for: only an ending ends'
-                    . ' the contract, and an ending has to say the day.',
+                    'The changes do not match the purpose of the proposal. Only a termination'
+                    . ' ends the contract, and a termination has to state the day.',
                 ),
             ],
         );
@@ -853,8 +857,8 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'changes',
                 'message' => __(
-                    'This proposal has already been sent, so what it says is not changed here.'
-                    . ' Revoke it and create a new one.',
+                    'This proposal has already been sent, so its content can no longer be'
+                    . ' changed. Revoke it and create a new one.',
                 ),
             ],
         );
@@ -877,8 +881,7 @@ class ContractProposalsTable extends AppTable
             'appliedAndRevokedExcludeEachOther',
             [
                 'errorField' => 'revoked',
-                'message' => __('A proposal whose changes have been applied cannot also be'
-                    . ' revoked.'),
+                'message' => __('A proposal whose changes have been applied cannot be revoked.'),
             ],
         );
     }

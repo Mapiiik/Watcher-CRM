@@ -36,19 +36,19 @@ use Cake\I18n\Date;
 
             <?= $this->Form->create($customerProposal) ?>
             <fieldset>
-                <p><?= __('This is where the customer proposal ends. It has no changes waiting'
-                    . ' to be applied, so the day the customer signed is the last thing it needs.') ?></p>
+                <p><?= __('Enter the day the customer signed the proposal. If it holds contract'
+                    . ' proposals, their changes are applied afterwards.') ?></p>
                 <br>
                 <?= $this->Form->control('conclusion_date', [
                     'default' => Date::now(),
                     'label' => __('Conclusion Date'),
-                    'help' => __('The day the customer agreed to it.'),
+                    'help' => __('The day the customer signed.'),
                 ]) ?>
             </fieldset>
             <fieldset>
                 <p><?=
                     $this->AuthLink->link(
-                        __('The documents that came back are filed with the rest.'),
+                        __('Upload the signed documents on the documents page.'),
                         [
                             'plugin' => null,
                             'controller' => 'Documents',
@@ -63,7 +63,8 @@ use Cake\I18n\Date;
             </fieldset>
             <?=
                 $this->element('common/also_in_the_round', [
-                    'saying' => __('These get the same day, because they came back together.'),
+                    'saying' => __('The same date is recorded for these as well, because they'
+                        . ' came back together.'),
                 ])
                 ?>
             <?= $this->Form->button(__('Submit')) ?>

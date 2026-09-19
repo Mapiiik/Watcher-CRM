@@ -46,9 +46,9 @@ foreach ($filed as $byVariant) {
                     ['action' => 'refreshSnapshot', $contractProposal->id],
                     [
                         'class' => 'side-nav-item',
-                        'confirm' => __('The documents are generated from what the contract'
-                            . ' looked like when this proposal was created. Taking the snapshot'
-                            . ' again replaces that. Go ahead?'),
+                        'confirm' => __('The documents are generated from the contract as it'
+                            . ' was when this proposal was created. A new snapshot replaces that'
+                            . ' state. Continue?'),
                     ],
                 ) ?>
             <?php endif; ?>
@@ -58,7 +58,8 @@ foreach ($filed as $byVariant) {
                     ['action' => 'revoke', $contractProposal->id],
                     [
                         'class' => 'side-nav-item',
-                        'confirm' => __('Give up on this proposal? The live records never moved.'),
+                        'confirm' => __('Revoke this proposal? Nothing has been changed on the'
+                            . ' contract yet.'),
                     ],
                 ) ?>
             <?php endif; ?>
@@ -170,13 +171,13 @@ foreach ($filed as $byVariant) {
                             <td><?= h($contractProposal->conclusion_date) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Documents on File') ?></th>
+                            <th><?= __('Stored Documents') ?></th>
                             <td><?=
                                 $this->Html->link(
                                     $ourPages + $theirPages === 0
                                         ? __('None')
                                         : __(
-                                            '{0} generated, {1} came back',
+                                            '{0} generated, {1} received',
                                             $ourPages,
                                             $theirPages,
                                         ),

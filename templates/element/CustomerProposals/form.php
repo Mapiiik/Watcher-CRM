@@ -33,13 +33,13 @@
         'empty' => __('Nothing'),
         'label' => __('Purpose'),
         'required' => false,
-        'help' => __('What the proposal asks of the customer themselves. Left empty, the'
-            . ' customer proposal only holds the proposals of their contracts.'),
+        'help' => __('What the customer proposal itself is for. If left empty, it only holds'
+            . ' the proposals of the customer\'s contracts.'),
     ]);
     echo $this->Form->control('effective_from', [
         'label' => __('Effective From'),
-        'help' => __('The day the proposal speaks about - today, or the day of whatever it is'
-            . ' sent with.'),
+        'help' => __('The day the proposal takes effect, usually today or the day of the'
+            . ' changes it is sent with.'),
     ]);
     echo $this->Form->control('note', [
         'label' => __('Note'),
@@ -47,8 +47,8 @@
     ]);
 
     if ($customerProposal->isNew()) {
-        echo '<p>' . __('The contract proposals are part of this customer proposal as well.'
-            . ' They are created one at a time, for the contract they are about.') . '</p>';
+        echo '<p>' . __('The customer proposal also holds contract proposals. They are created'
+            . ' one at a time, each for its own contract.') . '</p>';
     }
     ?>
 </fieldset>

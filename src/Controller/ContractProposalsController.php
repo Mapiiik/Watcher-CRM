@@ -792,7 +792,7 @@ class ContractProposalsController extends AppController
                 $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
                     'validate' => false,
                 ]);
-                $proposal->setError('ends_on', [__('Say which day the service runs to.')]);
+                $proposal->setError('ends_on', [__('Enter the last day of the service.')]);
 
                 return $proposal;
             }
@@ -804,7 +804,8 @@ class ContractProposalsController extends AppController
                 $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
                     'validate' => false,
                 ]);
-                $proposal->setError('effective_from', [__('Say which day the proposal takes effect.')]);
+                $proposal->setError('effective_from', [__('Enter the day the proposal takes'
+                    . ' effect.')]);
 
                 return $proposal;
             }
@@ -851,7 +852,7 @@ class ContractProposalsController extends AppController
                 ]);
                 $proposal->setError(
                     'effective_from',
-                    [__('Say which day the new contract starts.')],
+                    [__('Enter the day the new contract starts.')],
                 );
 
                 return $proposal;
@@ -1213,7 +1214,7 @@ class ContractProposalsController extends AppController
 
         if (!$rounds->save($round)) {
             $proposal->setError('customer_proposal_id', [
-                __('This contract proposal could not be given a customer proposal to be part of.'),
+                __('A customer proposal for this contract proposal could not be created.'),
             ]);
 
             return false;

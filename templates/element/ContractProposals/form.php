@@ -52,7 +52,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
     if ($rounds !== []) {
         echo $this->Form->control('customer_proposal_id', [
             'options' => $rounds,
-            'empty' => __('A proposal of their own'),
+            'empty' => __('A new customer proposal'),
             'label' => __('Part of the Customer Proposal'),
             'onchange' => $this::REFRESH_ON_CHANGE,
             'help' => __('Contract proposals that are part of one customer proposal are sent'
@@ -66,7 +66,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
     if ($contractProposal->isNew() && $contractProposal->customer_proposal_id === null) {
         echo $this->Form->control('new_round_purpose', [
             'options' => $roundPurposes,
-            'empty' => __('Nothing asked of the customer themselves'),
+            'empty' => __('No purpose of its own'),
             'label' => __('Purpose of the New Customer Proposal'),
         ]);
     }
@@ -92,7 +92,8 @@ $endsOn = $changes?->version->names('valid_until') ?? false
         : [
             'options' => $contracts,
             'disabled' => true,
-            'help' => __('A contract proposal is created for one contract and stays with it.'),
+            'help' => __('A contract proposal belongs to one contract and cannot be moved to'
+                . ' another.'),
         ]);
     // A new contract may be put on paper before the version it is about exists: left empty, the
     // version comes into being when the papers are applied. Everything else is about a
@@ -105,14 +106,13 @@ $endsOn = $changes?->version->names('valid_until') ?? false
             'onchange' => $this::REFRESH_ON_CHANGE,
             'required' => !$purpose->mayStartAVersion(),
             'help' => $purpose->mayStartAVersion()
-                ? __('Left empty, the version is created when the changes of this contract proposal'
-                    . ' are applied.')
+                ? __('If left empty, the version is created when the changes are applied.')
                 : null,
         ]);
     } else {
         // Some services are only passed on, and the customer's contract is with the provider.
-        echo '<p>' . __('The service of this contract keeps no contract versions, so none of our'
-            . ' documents are generated for this proposal.') . '</p>';
+        echo '<p>' . __('The service type of this contract does not use contract versions, so'
+            . ' no documents are generated for this proposal.') . '</p>';
     }
 
     // Without a version there is no day to take, so it is asked for here as well.
@@ -138,8 +138,8 @@ $endsOn = $changes?->version->names('valid_until') ?? false
                 $effectiveFromDefault === null => __('The day this contract proposal takes effect,'
                     . ' and the day the version starts on.'),
                 default => __(
-                    'The day this contract proposal takes effect. Empty takes the day the'
-                    . ' version does, {0}.',
+                    'The day this contract proposal takes effect. If left empty, the start of'
+                    . ' the version is used ({0}).',
                     $effectiveFromDefault,
                 ),
             },
@@ -180,8 +180,8 @@ $endsOn = $changes?->version->names('valid_until') ?? false
         'value' => $endsOn,
         'label' => __('Last day of the service'),
         'help' => $keepsVersions
-            ? __('The version stops being valid on this day, and so does what is billed for.')
-            : __('The contract ends on this day, and so does what is billed for.'),
+            ? __('The version and its billing end on this day.')
+            : __('The contract and its billing end on this day.'),
     ]);
     if ($keepsVersions) {
         echo $this->Form->control('version_only', [
@@ -189,7 +189,7 @@ $endsOn = $changes?->version->names('valid_until') ?? false
             'checked' => ($changes?->version->endsTheVersion() ?? false)
                 && !$changes->contract->endsTheContract(),
             'label' => __('End this version only, and leave the contract running'),
-            'help' => __('For an agreement to end one version with another to follow it.'),
+            'help' => __('Use this when one version ends and another follows it.'),
         ]);
     }
     ?>
@@ -279,16 +279,15 @@ if (!$ending && $keepsVersions) {
 // it is asked for out loud. Papers being drawn up now are photographed anyway, so it is only ever
 // a question for papers that already exist.
 if (!$contractProposal->isNew()) {
-    $asking = __('The documents are generated from what the contract looked like when this'
-        . ' proposal was created. Taking the snapshot again replaces that. Go ahead?');
+    $asking = __('The documents are generated from the contract as it was when this proposal'
+        . ' was created. A new snapshot replaces that state. Continue?');
 
     echo $this->Form->control('take_the_snapshot_again', [
         'type' => 'checkbox',
         'label' => __('Take the snapshot again'),
-        'help' => __('Reads the contract as it stands now, so the documents are generated from'
-            . ' what is there today rather than from what was there before. A line about a'
-            . ' billing that has since left the contract is taken back, because there is nothing'
-            . ' left for it to act on.'),
+        'help' => __('Reloads the contract as it is now, so the documents are generated from'
+            . ' today\'s data. Changes to billings that have since been removed from the'
+            . ' contract are dropped.'),
         'onclick' => sprintf(
             'if (this.checked && !confirm(%s)) { this.checked = false; }',
             json_encode($asking, JSON_UNESCAPED_UNICODE),

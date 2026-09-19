@@ -135,7 +135,7 @@ class CustomerProposalTest extends TestCase
      */
     public function testARoundThatCarriesNothingSaysSo(): void
     {
-        $this->assertSame(__('Nothing asked for yet'), $this->roundOf(null, 0)->whatItIsFor());
+        $this->assertSame(__('Empty'), $this->roundOf(null, 0)->whatItIsFor());
     }
 
     /**

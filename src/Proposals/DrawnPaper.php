@@ -100,7 +100,7 @@ final class DrawnPaper
             $type = CustomerDocumentType::tryFrom($document_type);
 
             if ($type === null) {
-                return [__('That is not a document this proposal is for.')];
+                return [__('This document does not belong to this proposal.')];
             }
 
             $errors = (new CustomerPrintValidator())->validate(
@@ -109,14 +109,14 @@ final class DrawnPaper
         } else {
             // Asked first: there is no version to print from, and nothing of ours to print.
             if (!$round->keepsVersions()) {
-                return [__('No documents of ours are generated for a contract whose service keeps no'
-                    . ' contract versions.')];
+                return [__('No documents are generated for a contract whose service type does'
+                    . ' not use contract versions.')];
             }
 
             $type = ContractDocumentType::tryFrom($document_type);
 
             if ($type === null) {
-                return [__('That is not a document this proposal is for.')];
+                return [__('This document does not belong to this proposal.')];
             }
 
             $errors = (new ContractPrintValidator())->validate(

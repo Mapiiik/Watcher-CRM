@@ -190,7 +190,7 @@ class ContractProposalsControllerTest extends TestCase
         $day = $this->getTableLocator()->get('ContractVersions')
             ->get(self::CONTRACT_VERSION_ID)
             ->get('valid_from');
-        $this->assertResponseContains('the version does, ' . $day);
+        $this->assertResponseContains('the start of the version is used (' . $day . ')');
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
@@ -1413,8 +1413,8 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertResponseOk();
         // Nobody has signed it, so it says so and does not offer the button.
-        $this->assertResponseContains(__('Nobody has signed this proposal yet, so there are no'
-            . ' changes to apply.'));
+        $this->assertResponseContains(__('This proposal has not been signed yet, so its changes'
+            . ' cannot be applied.'));
     }
 
     /**
@@ -1434,12 +1434,12 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(
-            __('The signature is recorded, but no signed documents have been filed against this'
+            __('The signature is recorded, but no signed documents have been uploaded for this'
                 . ' proposal.'),
         );
         // Said, not stopped: the button is still there. This proposal changes nothing, so it
         // reads as marking the job done rather than as moving anything.
-        $this->assertResponseContains(__('Mark as Dealt With'));
+        $this->assertResponseContains(__('Mark as Settled'));
     }
 
     /**
@@ -1470,7 +1470,7 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseNotContains(
-            __('The signature is recorded, but no signed documents have been filed against this'
+            __('The signature is recorded, but no signed documents have been uploaded for this'
                 . ' proposal.'),
         );
 

@@ -11,8 +11,8 @@
  */
 
 $changing = $replaced === null
-    ? __('Add to What Is Billed For')
-    : __('Change What Is Billed For');
+    ? __('Add a Billing')
+    : __('Change a Billing');
 ?>
 <div class="row">
     <aside class="column">
@@ -23,7 +23,7 @@ $changing = $replaced === null
                     __('Take Back'),
                     ['action' => 'dropBillingLine', $contractProposal->id, $line->id],
                     [
-                        'confirm' => __('Leave this as it stands on the contract?'),
+                        'confirm' => __('Leave this as it is on the contract?'),
                         'class' => 'side-nav-item',
                     ],
                 ) ?>
@@ -45,7 +45,8 @@ $changing = $replaced === null
                 <?php if ($replaced !== null) : ?>
                 <div class="message" role="status">
                     <?= __(
-                        'Replacing {0}, billed from {1}. It stops the day before this one starts.',
+                        'Replaces {0}, billed from {1}, which ends the day before this item'
+                        . ' starts.',
                         h($replaced->name),
                         h($replaced->billing_from),
                     ) ?>
@@ -102,7 +103,8 @@ $changing = $replaced === null
                     'empty' => true,
                     'value' => $values['billing_from'] ?? null,
                     'label' => __('Billing From'),
-                    'help' => __('Empty starts with the contract proposal.'),
+                    'help' => __('If left empty, billing starts on the day the contract'
+                        . ' proposal takes effect.'),
                 ]);
                 echo $this->Form->control('billing_until', [
                     'type' => 'date',

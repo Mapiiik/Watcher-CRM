@@ -134,7 +134,7 @@ class CustomerProposalsController extends AppController
         $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
 
         if (!$this->CustomerProposals->mayBeEdited($proposal)) {
-            $this->Flash->warning(__('This proposal may no longer be changed.'));
+            $this->Flash->warning(__('This proposal can no longer be changed.'));
 
             return $this->redirect(['action' => 'view', $id]);
         }
@@ -354,8 +354,8 @@ class CustomerProposalsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             if ($stopped) {
-                $this->Flash->error(__('The changes of this proposal cannot be applied as it'
-                    . ' stands.'));
+                $this->Flash->error(__('The changes of this proposal cannot be applied in its'
+                    . ' current state.'));
             } elseif ($this->applyTheWholePackage($parts)) {
                 return $this->redirect(['action' => 'view', $id]);
             }
@@ -411,8 +411,8 @@ class CustomerProposalsController extends AppController
         foreach ($parts as $part) {
             if ($part['papers']->proposedChanges()->contract->endsTheContract()) {
                 $this->Flash->warning(__(
-                    'Contract {0} has been given an end date. Its state is left as it was, because'
-                    . ' that has its own requirements to satisfy.',
+                    'Contract {0} now has an end date. Its state was not changed, because a'
+                    . ' change of state has requirements of its own.',
                     $part['papers']->contract->number ?? '',
                 ));
             }
@@ -536,7 +536,7 @@ class CustomerProposalsController extends AppController
         $proposal = $this->CustomerProposals->get($id, contain: ['ContractProposals']);
 
         if (!$this->CustomerProposals->mayBeDeleted($proposal)) {
-            $this->Flash->warning(__('This proposal may no longer be removed.'));
+            $this->Flash->warning(__('This proposal can no longer be deleted.'));
 
             return $this->redirect(['action' => 'view', $id]);
         }

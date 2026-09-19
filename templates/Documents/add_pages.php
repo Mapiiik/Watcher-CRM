@@ -59,11 +59,9 @@ foreach ($printed as $holder => $whose) {
             <fieldset>
                 <p><?=
                     __(
-                        'What came back, as it came back - anything the whole proposal was'
-                        . ' printed as, its own documents and those of its contract proposals.'
-                        . ' Several pages of one document go in together and are filed in the'
-                        . ' order they are picked, which for a set of scans is usually their own'
-                        . ' numbering.',
+                        'Upload the documents that came back for this proposal. The pages of'
+                        . ' one document are uploaded together and filed in the order you select'
+                        . ' them.',
                     )
                     ?></p>
                 <br>

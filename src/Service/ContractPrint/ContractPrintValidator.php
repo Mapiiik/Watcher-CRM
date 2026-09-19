@@ -80,7 +80,7 @@ final class ContractPrintValidator
         if (!$this->documentSuitsTheProposal($data)) {
             $this->setError(
                 'document_type',
-                __('This proposal cannot be printed as that document.'),
+                __('This document cannot be generated for this proposal.'),
             );
         }
 

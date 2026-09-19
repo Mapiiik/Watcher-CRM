@@ -101,7 +101,7 @@ $carrying = function (array $fields): string {
                     'action' => 'add',
                     'contract_id' => null,
                 ],
-                ['class' => 'button button-small float-right win-link'],
+                ['class' => 'button button-small float-right'],
             ) ?>
             <?= $this->AuthLink->link(
                 __('New Contract Proposal'),
@@ -112,12 +112,12 @@ $carrying = function (array $fields): string {
                     // anywhere else the form asks which proposal they belong to, or draws one up.
                     '?' => $inARound ? ['proposal_id' => $round->id] : [],
                 ],
-                ['class' => 'button button-small float-right win-link'],
+                ['class' => 'button button-small float-right'],
             ) ?>
             <h4><?= __('Proposals') ?></h4>
-            <p><?= __('Every proposal in view. A customer proposal holds the contract proposals'
-                . ' of the customer\'s contracts, so the row names those contracts and what is'
-                . ' asked of each, and the documents of all of them are below.') ?></p>
+            <p><?= __('The proposals shown here. A customer proposal holds the proposals of the'
+                . ' customer\'s contracts. Its row lists those contracts and what changes on'
+                . ' each, and all of their documents are below.') ?></p>
             <?= $this->element('Documents/rounds', ['working' => true]) ?>
             <?php
             // Under the table rather than over it: the buttons above have the corner, and what
@@ -174,8 +174,8 @@ $carrying = function (array $fields): string {
                     ) ?>
                 <?php endif; ?>
                 <h5><?= __('Received Documents') ?></h5>
-                <p><?= __('The documents that came back. They are filed against the proposal'
-                    . ' they answer, so the row says which one that is.') ?></p>
+                <p><?= __('Documents received from the customer. Each one is filed with the'
+                    . ' proposal it belongs to, as its row shows.') ?></p>
                 <?php $this->Preview->load() ?>
                 <?= $this->cell('Documents', $scope, [
                     'generatedByUs' => false,
@@ -188,10 +188,10 @@ $carrying = function (array $fields): string {
             </div>
             <div class="related">
                 <h5><?= __('Generated Documents') ?></h5>
-                <p><?= __('What we generated, and what is still to be. A document is generated'
-                    . ' once and handed back afterwards, so these are the very files the'
-                    . ' customer was given - and a row that has none yet is a document waiting'
-                    . ' to be generated.') ?></p>
+                <p><?= __('Documents we have generated, and those still to be generated. A'
+                    . ' document is generated only once and the same file is returned'
+                    . ' afterwards, so these are exactly the files the customer received. A row'
+                    . ' without a file is a document still to be generated.') ?></p>
                 <?= $this->cell('Documents', $scope, [
                     'generatedByUs' => true,
                     'withWhatIsMissing' => true,

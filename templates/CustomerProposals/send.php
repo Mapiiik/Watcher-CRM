@@ -34,11 +34,11 @@ $recording = $again ? __('Record the Sending Again') : __('Record the Sending');
             <fieldset>
                 <p><?= $again
                     ? __(
-                        'They went out on {0}. Recording it again puts the new day in its place.',
+                        'It was sent on {0}. Recording the sending again replaces that date.',
                         $customerProposal->sent_date,
                     )
-                    : __('Once this is recorded, the customer proposal may no longer be'
-                        . ' changed. A correction is a new customer proposal.') ?></p>
+                    : __('Once the sending is recorded, the customer proposal can no longer be'
+                        . ' changed. A correction needs a new customer proposal.') ?></p>
                 <br>
                 <?php
                 echo $this->Form->control('sent_date', [
@@ -49,12 +49,13 @@ $recording = $again ? __('Record the Sending Again') : __('Record the Sending');
                 echo $this->Form->control('delivery_type', [
                     'options' => $deliveryTypes,
                     'empty' => true,
-                    'label' => __('Sent By'),
+                    'label' => __('Delivery Type'),
                 ]);
                 ?>
             </fieldset>
             <?= $this->element('common/also_in_the_round', [
-                'saying' => __('These get the same day, because they went out together.'),
+                'saying' => __('The same date is recorded for these as well, because they were'
+                    . ' sent together.'),
             ]) ?>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

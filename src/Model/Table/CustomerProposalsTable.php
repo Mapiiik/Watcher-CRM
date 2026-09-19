@@ -284,8 +284,8 @@ class CustomerProposalsTable extends AppTable
             [
                 'errorField' => 'id',
                 'message' => __(
-                    'This customer proposal has been sent, or there are contract proposals in'
-                    . ' it. Revoke it instead.',
+                    'This customer proposal has been sent or holds contract proposals, so it'
+                    . ' cannot be deleted. Revoke it instead.',
                 ),
             ],
         );
