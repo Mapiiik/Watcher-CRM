@@ -9,6 +9,7 @@ use Cake\ORM\Association;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
+use Radius\Model\Entity\Account;
 use Radius\Model\Enum\AccountType;
 
 /**
@@ -160,6 +161,15 @@ class AccountsTable extends AppTable
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
 
+        // deactivating is where the access point gets cleaned up, so it has to come first
+        $rules->addDelete(
+            fn(Account $account): bool => !$account->active,
+            'isNotActive',
+            [
+                'errorField' => 'active',
+                'message' => __d('radius', 'An active RADIUS account cannot be deleted. Deactivate it first.'),
+            ],
+        );
         $rules->addDelete($rules->isNotLinkedTo('Radacct'));
         $rules->addDelete($rules->isNotLinkedTo('Radpostauth'));
 

@@ -194,6 +194,61 @@ class AccountsControllerTest extends TestCase
     }
 
     /**
+     * Unticking Active draws the form again with the offer to clean up the access point, ticked in
+     * advance.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::edit()
+     */
+    public function testEditOffersToRemoveTheMacAddressWhenDeactivating(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/edit/' . self::ACCOUNT_ID, [
+            'active' => 0,
+            'refresh' => 'refresh',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('id="remove-mac-address" checked="checked"');
+    }
+
+    /**
+     * An account that stays active has nothing to clean up, so the offer is not there.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::edit()
+     */
+    public function testEditDoesNotOfferToRemoveTheMacAddressOtherwise(): void
+    {
+        $this->login();
+        $this->get('/radius/accounts/edit/' . self::ACCOUNT_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('remove_mac_address');
+    }
+
+    /**
+     * An active account is not deleted, it has to be deactivated first.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::delete()
+     */
+    public function testDeleteRefusesAnActiveAccount(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+        $this->post('/radius/accounts/delete/' . self::ACCOUNT_ID);
+
+        $this->assertRedirect();
+        $this->assertFlashMessageContains('An active RADIUS account cannot be deleted. Deactivate it first.');
+        $this->assertTrue($this->fetchTable('Radius.Accounts')->exists(['id' => self::ACCOUNT_ID]));
+    }
+
+    /**
      * The delete action runs and redirects. Whether the account really goes depends on what else
      * still references it, which is the application rules' business rather than this test's.
      *

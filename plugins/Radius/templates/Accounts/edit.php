@@ -4,6 +4,7 @@
  * @var \Radius\Model\Entity\Account $account
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $customers
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
+ * @var bool $deactivating
  */
 ?>
 <div class="row">
@@ -57,7 +58,17 @@
                     'label' => __d('radius', 'Password'),
                     'type' => 'text',
                 ]);
-                echo $this->Form->control('active', ['label' => __d('radius', 'Active')]);
+                echo $this->Form->control('active', [
+                    'label' => __d('radius', 'Active'),
+                    'onchange' => $this::REFRESH_ON_CHANGE,
+                ]);
+                if ($deactivating) {
+                    echo $this->Form->control('remove_mac_address', [
+                        'label' => __d('radius', 'Remove the MAC address from the access point'),
+                        'type' => 'checkbox',
+                        'default' => true,
+                    ]);
+                }
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('radius', 'Submit')) ?>
