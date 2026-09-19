@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-19 11:23+0200\n"
+"POT-Creation-Date: 2026-09-19 11:27+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2742,7 +2742,7 @@ msgstr ""
 
 #: ./src/Model/Enum/CustomerDocumentType.php:30
 #: ./src/Model/Enum/CustomerProposalPurpose.php:38
-msgid "List of the user's contracts and services provided"
+msgid "List of the customer's contracts and services provided"
 msgstr ""
 
 #: ./src/Model/Enum/CustomerInvoiceDeliveryType.php:24
