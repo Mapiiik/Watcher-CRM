@@ -149,6 +149,12 @@ class TasksController extends AppController
                 $this->getRequest()->getQuery('user_id'),
             );
         }
+        if (!is_null($this->getRequest()->getQuery('ignore_collaborators'))) {
+            $this->getRequest()->getSession()->write(
+                'Config.Tasks.filter.ignore_collaborators',
+                $this->getRequest()->getQuery('ignore_collaborators'),
+            );
+        }
         if (!is_null($this->getRequest()->getQuery('task_type_ids'))) {
             $this->getRequest()->getSession()->write(
                 'Config.Tasks.filter.task_type_ids',
@@ -213,10 +219,19 @@ class TasksController extends AppController
         }
         // Narrowed by the finders rather than by a condition of its own, so that the listing
         // holds what the dashboard card pointing at it holds: somebody's work is the work they
-        // hold and the work they were put on, and nobody's is nobody's at all.
+        // hold and the work they were put on, and nobody's is nobody's at all. Asked to leave
+        // the collaborators out, it goes by who holds the task alone.
+        $ignore_collaborators = toBool($filter['ignore_collaborators'] ?? null) ?? false;
         $narrowToUser = null;
         if (!empty($user_id)) {
-            if ($user_id === 'none') {
+            if ($ignore_collaborators) {
+                $held_by = $user_id === 'none' ? null : $user_id;
+                if ($held_by === null || (is_string($held_by) && Validation::uuid($held_by))) {
+                    $narrowToUser = fn(SelectQuery $query): SelectQuery => $query->where([
+                        'Tasks.user_id IS' => $held_by,
+                    ]);
+                }
+            } elseif ($user_id === 'none') {
                 $narrowToUser = fn(SelectQuery $query): SelectQuery => $query->find('unassigned');
             } elseif (is_string($user_id) && Validation::uuid($user_id)) {
                 $narrowToUser = fn(SelectQuery $query): SelectQuery => $query->find(
@@ -279,6 +294,7 @@ class TasksController extends AppController
             'pressing' => $pressing,
             'stale' => $stale,
             'user_id' => $user_id,
+            'ignore_collaborators' => $ignore_collaborators,
             'task_type_ids' => $task_type_ids,
             'task_state_ids' => $task_state_ids,
             'access_point_id' => $access_point_id,

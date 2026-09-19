@@ -1062,6 +1062,41 @@ class TasksControllerTest extends TestCase
     }
 
     /**
+     * Asked to leave the collaborators out, the listing goes by who holds the task alone - the
+     * work somebody was only put on drops out, and nobody's means nobody holds it.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testTheListingMayLeaveTheCollaboratorsOut(): void
+    {
+        $helper = $this->somebodyElse('helper');
+
+        $tasks = $this->getTableLocator()->get('Tasks');
+        $links = $this->getTableLocator()->get('TaskCollaborators');
+        $links->saveOrFail($links->newEntity([
+            'task_id' => $this->firstId('Tasks'),
+            'user_id' => $helper,
+        ]));
+        $tasks->updateAll(['user_id' => null], []);
+        $count = $tasks->find()->count();
+
+        $this->login();
+        $this->get('/tasks?show_completed=1&ignore_collaborators=1&user_id=' . $helper);
+
+        $this->assertResponseOk();
+        $this->assertCount(0, (array)$this->viewVariable('tasks')->toArray());
+
+        // nobody's is every task nobody holds, helpers or not
+        $this->get('/tasks?show_completed=1&ignore_collaborators=1&user_id=none');
+        $this->assertResponseOk();
+        $this->assertCount($count, (array)$this->viewVariable('tasks')->toArray());
+
+        $this->get('/tasks?show_completed=1&ignore_collaborators=0&user_id=none');
+        $this->assertCount($count - 1, (array)$this->viewVariable('tasks')->toArray());
+    }
+
+    /**
      * Somebody else with an account, so that a task can name two people.
      *
      * The password goes in past its setter, which reaches for a hasher the test environment does

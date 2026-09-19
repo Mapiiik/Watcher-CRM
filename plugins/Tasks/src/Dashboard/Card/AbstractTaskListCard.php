@@ -86,6 +86,7 @@ abstract class AbstractTaskListCard extends AbstractDashboardCard
             'customer_id' => false,
             '?' => $filter + [
                 'user_id' => '',
+                'ignore_collaborators' => 0,
                 'pressing' => 0,
                 'stale' => 0,
                 'show_completed' => 0,

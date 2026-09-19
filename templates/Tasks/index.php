@@ -53,8 +53,8 @@ $this->Html->script('expandable-text.js', ['block' => true]);
 </div>
 <div class="row">
     <div class="column">
-        <?= $this->Form->control('show_completed', [
-            'label' => __('Show Completed'),
+        <?= $this->Form->control('ignore_collaborators', [
+            'label' => __('Ignore Collaborators'),
             'type' => 'checkbox',
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
@@ -67,13 +67,18 @@ $this->Html->script('expandable-text.js', ['block' => true]);
         ]) ?>
     </div>
     <div class="column">
-        <?= $this->Form->control('stale', [
-            'label' => __('Untouched for a While Only'),
+        <?= $this->Form->control('show_completed', [
+            'label' => __('Show Completed'),
             'type' => 'checkbox',
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
     </div>
     <div class="column">
+        <?= $this->Form->control('stale', [
+            'label' => __('Untouched for a While Only'),
+            'type' => 'checkbox',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
     </div>
     <div class="column">
         <?= $this->Form->control('expandable_text', [
