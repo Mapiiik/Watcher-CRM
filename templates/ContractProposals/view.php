@@ -129,7 +129,7 @@ foreach ($filed as $byVariant) {
                         <tr>
                             <th><?= __('Contract') ?></th>
                             <td><?= $this->Html->link(
-                                h($contractProposal->contract->number ?? ''),
+                                $contractProposal->contract->number ?? '',
                                 [
                                     'controller' => 'Contracts',
                                     'action' => 'view',

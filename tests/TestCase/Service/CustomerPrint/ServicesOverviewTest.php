@@ -141,6 +141,8 @@ class ServicesOverviewTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(h(CustomerDocumentType::ServicesOverview->label()));
+        // Escaped once, by whatever draws it - the apostrophe in the name reads as one.
+        $this->assertResponseNotContains('&amp;#039;');
         $this->assertResponseContains('document_type=' . CustomerDocumentType::ServicesOverview->value);
     }
 

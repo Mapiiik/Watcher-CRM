@@ -108,7 +108,7 @@ foreach ($filed as $byVariant) {
                         <tr>
                             <th><?= __('Customer') ?></th>
                             <td><?= $this->Html->link(
-                                h($customerProposal->customer->name ?? ''),
+                                $customerProposal->customer->name ?? '',
                                 [
                                     'controller' => 'Customers',
                                     'action' => 'view',

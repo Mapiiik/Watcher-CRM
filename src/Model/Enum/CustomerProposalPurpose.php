@@ -35,7 +35,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     {
         return match ($this) {
             self::GdprConsent => __('Consent to the processing of personal data'),
-            self::ServicesOverview => __("List of the user's contracts and services provided"),
+            self::ServicesOverview => __("List of the customer's contracts and services provided"),
         };
     }
 

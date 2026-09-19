@@ -123,11 +123,11 @@ $joined = function (array $run, int $index, string $content, string $class = '')
             $contractCell = $round['contract_id'] === null
                 ? ''
                 : $this->Html->link(
-                    h($round['contract']),
+                    (string)$round['contract'],
                     ['controller' => 'Contracts', 'action' => 'view', $round['contract_id']],
                 );
             $roundCell = $this->Html->link(
-                h($round['label']),
+                $round['label'],
                 ['controller' => $round['controller'], 'action' => 'view', $round['id']],
             );
             // The variant cell already spans exactly the pages of one document, so the way to look

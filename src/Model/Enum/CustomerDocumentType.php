@@ -27,7 +27,7 @@ enum CustomerDocumentType: string implements EnumLabelInterface
         return match ($this) {
             self::GdprNew => __('Consent to the processing of personal data'),
             self::GdprChange => __('Consent to the processing of personal data (change)'),
-            self::ServicesOverview => __("List of the user's contracts and services provided"),
+            self::ServicesOverview => __("List of the customer's contracts and services provided"),
         };
     }
 }
