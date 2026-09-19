@@ -180,6 +180,12 @@ class CustomerProposalsController extends AppController
                 'sent_date' => $this->request->getData('sent_date'),
                 'delivery_type' => $this->request->getData('delivery_type'),
             ];
+            // A paper that is only handed over is done with once it has been, so the day it went out
+            // is the day it stopped being work - which is what everything that asks reads.
+            if (!$proposal->expects(ProposalStep::Signed)) {
+                $said['conclusion_date'] = $said['sent_date'];
+            }
+
             $proposal = $this->CustomerProposals->patchEntity($proposal, $said);
 
             if ($this->recordAcrossTheRound($proposal, ProposalStep::Delivered)) {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Customers\Check;
 
+use App\Model\Enum\CustomerProposalPurpose;
 use App\Proposals\LateProposals;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\ORM\Query\SelectQuery;
@@ -64,7 +65,12 @@ class UnfiledCustomerSignatureCheck extends AbstractCustomerProposalCheck
     {
         $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
-        $query = $this->candidates();
+        // A round that is only handed over is concluded by delivering it, and nothing signed is
+        // ever coming back for it.
+        $query = $this->candidates()->where(['OR' => [
+            'CustomerProposals.purpose IS' => null,
+            'CustomerProposals.purpose IN' => CustomerProposalPurpose::signed(),
+        ]]);
 
         LateProposals::unfiled($query, 'CustomerProposals', CustomerDocuments::MODEL, $after);
 

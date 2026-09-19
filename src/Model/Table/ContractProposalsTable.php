@@ -552,6 +552,23 @@ class ContractProposalsTable extends AppTable
             ],
         );
 
+        // A contract proposal comes back signed, and a customer proposal that is only handed over
+        // never does, so the two cannot go out together.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                if (!$entity->isDirty('customer_proposal_id')) {
+                    return true;
+                }
+
+                return $this->roundOf($entity->customer_proposal_id)?->purpose?->comesBackSigned() ?? true;
+            },
+            'papersJoinARoundThatIsSigned',
+            [
+                'errorField' => 'customer_proposal_id',
+                'message' => __('That customer proposal is only handed over, so no contract proposal goes in it.'),
+            ],
+        );
+
         // One contract, one set of papers in an envelope. Two of them go out in the same letter
         // and come back on the same day, so which of them was agreed to would be nobody's to say -
         // and a contract that really wants two answers wants two proposals. Papers given up on are

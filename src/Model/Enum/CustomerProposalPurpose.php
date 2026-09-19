@@ -16,14 +16,16 @@ use Override;
  * given one and a consent asked again after what we hold about them changed are one purpose and
  * two papers.
  *
- * One case today. The others - a summary of what is provided, a final settlement - arrive with the
- * documents that print them rather than ahead of them.
+ * A consent is asked for and comes back signed. A list of what is provided is only handed over:
+ * nothing is asked of the customer, so nothing comes back. Others - a final settlement - arrive
+ * with the documents that print them rather than ahead of them.
  */
 enum CustomerProposalPurpose: string implements EnumLabelInterface
 {
     use EnumOptionsTrait;
 
     case GdprConsent = 'gdpr-consent';
+    case ServicesOverview = 'services-overview';
 
     /**
      * @return string
@@ -33,6 +35,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     {
         return match ($this) {
             self::GdprConsent => __('Consent to the processing of personal data'),
+            self::ServicesOverview => __("List of the user's contracts and services provided"),
         };
     }
 
@@ -49,7 +52,45 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     {
         return match ($this) {
             self::GdprConsent => ProposalStep::Signed,
+            self::ServicesOverview => ProposalStep::Delivered,
         };
+    }
+
+    /**
+     * Whether a round for this purpose waits for the customer's signature.
+     *
+     * One that is only handed over does not, so no signed copy of it is ever missing, and no
+     * contract proposal can go out with it - those come back signed and could not be concluded.
+     *
+     * @return bool
+     */
+    public function comesBackSigned(): bool
+    {
+        return $this->lastStep()->goesThrough(ProposalStep::Signed);
+    }
+
+    /**
+     * The purposes a round holding contract proposals may have.
+     *
+     * @return array<string, string>
+     */
+    public static function forContractProposals(): array
+    {
+        return array_filter(
+            self::options(),
+            static fn(string $value): bool => self::from($value)->comesBackSigned(),
+            ARRAY_FILTER_USE_KEY,
+        );
+    }
+
+    /**
+     * The purposes whose rounds come back signed, as they are stored.
+     *
+     * @return list<string>
+     */
+    public static function signed(): array
+    {
+        return array_keys(self::forContractProposals());
     }
 
     /**
@@ -61,6 +102,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     {
         return match ($this) {
             self::GdprConsent => [CustomerDocumentType::GdprNew, CustomerDocumentType::GdprChange],
+            self::ServicesOverview => [CustomerDocumentType::ServicesOverview],
         };
     }
 
@@ -80,6 +122,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
             self::GdprConsent => $asked_before
                 ? CustomerDocumentType::GdprChange
                 : CustomerDocumentType::GdprNew,
+            self::ServicesOverview => CustomerDocumentType::ServicesOverview,
         };
     }
 }

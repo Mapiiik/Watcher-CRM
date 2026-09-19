@@ -48,6 +48,9 @@ final class CustomerPrintValidator
 
             CustomerDocumentType::GdprChange =>
                 $this->validateGdprChange(),
+
+            CustomerDocumentType::ServicesOverview =>
+                $this->validateServicesOverview($data),
         };
 
         return $this->errors;
@@ -76,5 +79,22 @@ final class CustomerPrintValidator
     private function validateGdprChange(): void
     {
         // Currently no additional validation required
+    }
+
+    /**
+     * Validation for the list of contracts and services provided.
+     *
+     * The list is addressed like the invoices it tells the customer about, and a list naming
+     * nothing is not worth handing over.
+     */
+    private function validateServicesOverview(CustomerPrintData $data): void
+    {
+        if ($data->customer->billing_address === null) {
+            $this->errors['customer'][] = __('The customer has no billing address.');
+        }
+
+        if (empty($data->customer->contracts)) {
+            $this->errors['contracts'][] = __('The customer has no contracts whose services are provided.');
+        }
     }
 }

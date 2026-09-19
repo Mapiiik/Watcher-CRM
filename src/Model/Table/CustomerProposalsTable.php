@@ -261,6 +261,23 @@ class CustomerProposalsTable extends AppTable
             ],
         );
 
+        // The other side of the rule the contract proposals keep: a customer proposal that already
+        // holds some cannot turn into one that is only handed over.
+        $rules->add(
+            fn(CustomerProposal $proposal): bool => $proposal->isNew()
+                || !$proposal->isDirty('purpose')
+                || ($proposal->purpose?->comesBackSigned() ?? true)
+                || !$this->ContractProposals->exists([
+                    'ContractProposals.customer_proposal_id' => $proposal->id,
+                    'ContractProposals.revoked IS' => null,
+                ]),
+            'purposeFitsItsContractProposals',
+            [
+                'errorField' => 'purpose',
+                'message' => __('This customer proposal holds contract proposals, which have to be signed.'),
+            ],
+        );
+
         $rules->addDelete(
             fn(CustomerProposal $proposal): bool => $this->mayBeDeleted($proposal),
             'nothingIsLeftBehind',

@@ -1157,7 +1157,7 @@ class ContractProposalsController extends AppController
 
         // And what a proposal drawn up here and now would ask of the customer themselves, which
         // is most often nothing: the papers of the contract are the point of it.
-        $roundPurposes = CustomerProposalPurpose::options();
+        $roundPurposes = CustomerProposalPurpose::forContractProposals();
 
         $this->set(compact(
             'contracts',
@@ -1267,6 +1267,10 @@ class ContractProposalsController extends AppController
         $found = [];
 
         foreach ($rounds as $round) {
+            if ($round->purpose !== null && !$round->purpose->comesBackSigned()) {
+                continue;
+            }
+
             $found[(string)$round->id] = sprintf(
                 '%s - %s',
                 $round->effective_from,

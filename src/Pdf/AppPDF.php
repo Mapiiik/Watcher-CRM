@@ -210,6 +210,17 @@ class AppPDF extends Canvas
     }
 
     /**
+     * Reads one of the texts every document says about paying.
+     *
+     * @param string $key Key under the common payment block
+     * @return string
+     */
+    protected function paymentText(string $key): string
+    {
+        return Settings::getString('core.documents.common.payment.' . $key);
+    }
+
+    /**
      * Opens a document: logo, title, subtitle and the rule that closes the block.
      *
      * Every document this application prints starts the same way, and it is what makes a

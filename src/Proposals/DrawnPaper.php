@@ -16,7 +16,10 @@ use App\Service\ContractPrint\ContractPrintValidator;
 use App\Service\CustomerPrint\CustomerDocuments;
 use App\Service\CustomerPrint\CustomerPrintData;
 use App\Service\CustomerPrint\CustomerPrintValidator;
+use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Query\SelectQuery;
+use Closure;
 use RuntimeException;
 
 /**
@@ -153,18 +156,58 @@ final class DrawnPaper
         CustomerProposal $round,
         string $document_type,
     ): CustomerPrintData {
-        $customer = $this->fetchTable('Customers')->get($round->customer_id, contain: [
+        $type = CustomerDocumentType::from($document_type);
+
+        $contain = [
             'AccountingProfiles',
             'Addresses' => ['Countries'],
             'Emails',
             'Phones',
-        ]);
+        ];
+
+        if ($type === CustomerDocumentType::ServicesOverview) {
+            $contain['Contracts'] = $this->whatIsProvided(Date::now());
+        }
+
+        $customer = $this->fetchTable('Customers')->get($round->customer_id, contain: $contain);
 
         return new CustomerPrintData(
-            type: CustomerDocumentType::from($document_type),
+            type: $type,
             customer: $customer,
             proposal: $round,
         );
+    }
+
+    /**
+     * The contracts a list of what is provided names, with what it says about each.
+     *
+     * Those whose services are provided or about to be, a notice period included. One that has
+     * ended is not on the list even while it is still being billed for the last time. Billings
+     * that ended before the day are history, and those still to start are listed as such.
+     *
+     * @param \Cake\I18n\Date $day The day the list is drawn up on.
+     * @return \Closure(\Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>): \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>
+     */
+    private function whatIsProvided(Date $day): Closure
+    {
+        return static fn(SelectQuery $contracts): SelectQuery => $contracts
+            ->contain([
+                'ContractStates',
+                'ServiceTypes',
+                'InstallationAddresses',
+                'ContractVersions',
+                'Billings' => static fn(SelectQuery $billings): SelectQuery => $billings
+                    ->contain(['Services'])
+                    ->where([
+                        'OR' => [
+                            'Billings.billing_until IS' => null,
+                            'Billings.billing_until >=' => $day,
+                        ],
+                    ])
+                    ->orderBy(['Billings.billing_from' => 'ASC', 'Billings.id' => 'ASC']),
+            ])
+            ->where(['ContractStates.active_services' => true])
+            ->orderBy(['Contracts.nid' => 'ASC']);
     }
 
     /**

@@ -443,6 +443,31 @@ return [
                     'controller' => 'Správcem:',
                     'personal_data' => 'Osobní údaje:',
                     'business_data' => 'Obchodní údaje:',
+                    'customer_number' => 'číslo zákazníka:',
+                ],
+
+                // The table of services, printed on the contract and on the list of services alike.
+                'billing' => [
+                    'service' => 'služba:',
+                    'price_per_month' => 'cena / měsíc:',
+                    'from' => 'od {date}',
+                    'until' => 'do {date}',
+                    'percentage_discount' => ' - sleva ve výši {percentage} % z ceny této služby',
+                    'fixed_discount' => ' - sleva v pevné výši z ceny této služby',
+
+                    'sections' => [
+                        'billing_pricelist' => 'Seznam poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH',
+                        'billing_individual' => 'Seznam poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH',
+                        'billing_future_pricelist' => 'Seznam budoucích poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH',
+                        'billing_future_individual' => 'Seznam budoucích poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH',
+                    ],
+                ],
+
+                // How to pay, the same wherever it is said.
+                'payment' => [
+                    'heading' => 'Platební údaje',
+                    'reverse_charge_clause' => '*faktury budou vystaveny v režimu přenesení daňové povinnosti dle § 92a zákona č. 235/2004 Sb., o dani z přidané hodnoty, s údajem „daň odvede zákazník“ – daň je povinen přiznat plátce, pro kterého je plnění uskutečněno',
+                    'standing_order_note' => '*doporučujeme nastavit si trvalý příkaz dle předepsaných platebních údajů, údaje lze použít i pro jednotlivé platby',
                 ],
 
                 'user_types' => [
@@ -470,15 +495,6 @@ return [
                     'definite' => 'na dobu určitou do {valid_until}',
                 ],
 
-                'billing' => [
-                    'service' => 'služba:',
-                    'price_per_month' => 'cena / měsíc:',
-                    'from' => 'od {date}',
-                    'until' => 'do {date}',
-                    'percentage_discount' => ' - sleva ve výši {percentage} % z ceny této služby',
-                    'fixed_discount' => ' - sleva v pevné výši z ceny této služby',
-                ],
-
                 'contract' => [
                     'title_new' => 'SMLOUVA',
                     'subtitle_new' => 'o poskytování služeb',
@@ -488,11 +504,6 @@ return [
                     'subtitle_termination' => 'o ukončení Smlouvy o poskytování služeb',
 
                     'sections' => [
-                            'billing_pricelist' => 'Seznam poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH',
-                            'billing_individual' => 'Seznam poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH',
-                            'billing_future_pricelist' => 'Seznam budoucích poskytovaných služeb a údaje o jejich aktuálních cenách dle Ceníku včetně DPH',
-                            'billing_future_individual' => 'Seznam budoucích poskytovaných služeb a údaje o jejich individuálních cenách včetně DPH',
-                            'payment_info' => 'Platební údaje',
                             'service_terms' => 'Ujednání pro tyto služby',
                             'individual_terms' => 'Individuální ujednání',
                             'final_statements' => 'Závěrečná ustanovení',
@@ -510,8 +521,6 @@ return [
 
                         'amendment_intro' => 'Tento dodatek mění Seznam poskytovaných služeb a Platební údaje původní smlouvy ve znění případných předchozích dodatků s účinností od {valid_from} takto:',
                         'individual_clause' => 'Smluvní strany ujednávají, že výše cen za Poskytovatelovy služby je touto smlouvou ujednána oproti Ceníku v individuální výši. Včetně všech svých složek má proto povahu Poskytovatelova obchodního tajemství dle § 504 zákona č. 89/2012 Sb., občanského zákoníku.',
-                        'reverse_charge_clause' => '*faktury budou vystaveny v režimu přenesení daňové povinnosti dle § 92a zákona č. 235/2004 Sb., o dani z přidané hodnoty, s údajem „daň odvede zákazník“ – daň je povinen přiznat plátce, pro kterého je plnění uskutečněno',
-                        'standing_order_note' => '*doporučujeme nastavit si trvalý příkaz dle předepsaných platebních údajů, údaje lze použít i pro jednotlivé platby',
                         'amendment_final_clause' => 'Ustanovení smlouvy (ve znění případných předchozích dodatků) nedotčená tímto dodatkem zůstávají beze změn.',
                         'amendment_final_statement' => 'Tento dodatek je vyhotoven ve dvou stejnopisech.',
                         'new_equipment_intro' => 'Poskytnutá zařízení, aktivační poplatek a náhrada nákladů spojených s telekomunikačními zařízeními poskytnutými Uživateli za zvýhodněných podmínek',
@@ -888,6 +897,46 @@ return [
                     'outages' => '▢ souhlasím se zasíláním informací o odstávkách a poruchách *',
                     'marketing' => '▢ souhlasím se zasíláním obchodních sdělení *',
                     'note' => '* zaškrtněte prosím jaké typy zpráv chcete dostávat',
+                ],
+            ],
+
+            'services_overview' => [
+                'title' => 'SEZNAM',
+                'subtitle' => 'Uživatelových smluv a poskytovaných služeb',
+
+                'labels' => [
+                    'as_of' => 'stav ke dni:',
+                    'installation_address' => 'adresa instalace:',
+                    'validity' => 'platnost smlouvy:',
+                    'duration' => 'doba trvání:',
+                    'contract_total' => 'celkem za smlouvu měsíčně',
+                    'invoice' => 'faktura:',
+                    'monthly_amount' => 'částka / měsíc:',
+                    'payment_due' => 'splatnost:',
+                ],
+
+                'sections' => [
+                    'contract' => 'Smlouva č. {number} – {service_type}',
+                ],
+
+                'invoices' => [
+                    'common' => 'společná faktura za služby',
+                    'contract' => 'samostatná faktura za smlouvu č. {number}',
+                    'billing' => 'samostatná faktura za službu {name}',
+                    'due' => 'do {day}. dne následujícího měsíce',
+                ],
+
+                'periods' => [
+                    'nothing' => 'žádná platba',
+                ],
+
+                'texts' => [
+                    'intro' => 'Seznam uvádí smlouvy, které má Uživatel s Poskytovatelem ke dni {date} uzavřené, služby na nich poskytované a jejich měsíční ceny.',
+                    'no_services' => 'Na této smlouvě se ke dni vystavení seznamu žádné služby neposkytují.',
+                    'not_concluded' => 'zatím neuzavřeno',
+                    'billed_in_arrears' => 'Služby se fakturují měsíčně zpětně, vždy za uplynulý kalendářní měsíc.',
+                    'no_payments' => 'Ke dni vystavení seznamu se Uživateli žádné služby nefakturují.',
+                    'final_prices' => 'Všechny ceny uvedené v tomto seznamu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.',
                 ],
             ],
         ],

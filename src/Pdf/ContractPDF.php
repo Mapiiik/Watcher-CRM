@@ -8,6 +8,7 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\IpAddressTypeOfUse;
+use App\Pdf\Trait\BillingTableTrait;
 use App\Pdf\Trait\ContractDurationTrait;
 use App\Service\ContractPrint\ContractPrintData;
 use Cake\I18n\Date;
@@ -27,6 +28,7 @@ use Settings\Utility\Settings;
  */
 class ContractPDF extends AppPDF
 {
+    use BillingTableTrait;
     use ContractDurationTrait;
 
     // constant for empty (null) serial numbers in the borrowed/sold equipment tables
@@ -621,62 +623,17 @@ class ContractPDF extends AppPDF
             $format = '';
         }
 
-        // sum of all items
-        $totalCost = Decimal::create(0, 2);
-
-        if (count($data->getActiveStandardBillings()) > 0) {
-            $this->printBillingHeading($this->contractText('sections.billing_pricelist'), $format);
-            $totalCost = $totalCost->add(
-                $this->billingTable($data->getActiveStandardBillings(), $billingReferenceDate, $format),
-            );
-            $this->Ln();
-        }
-
-        if (count($data->getActiveIndividualBillings()) > 0) {
-            $this->printBillingHeading($this->contractText('sections.billing_individual'), $format);
-            $totalCost = $totalCost->add(
-                $this->billingTable($data->getActiveIndividualBillings(), $billingReferenceDate, $format),
-            );
-            $this->printIndividualClause($format);
-        }
-
-        // What is agreed now but starts later is shown, and left out of the total, because the
-        // total is what the first invoice will say.
-        if (count($data->getFutureStandardBillings()) > 0) {
-            $this->printBillingHeading($this->contractText('sections.billing_future_pricelist'), $format);
-            $this->billingTable($data->getFutureStandardBillings(), $billingReferenceDate, $format);
-            $this->Ln();
-        }
-
-        if (count($data->getFutureIndividualBillings()) > 0) {
-            $this->printBillingHeading($this->contractText('sections.billing_future_individual'), $format);
-            $this->billingTable($data->getFutureIndividualBillings(), $billingReferenceDate, $format);
-            $this->printIndividualClause($format);
-        }
+        // The total is what the first invoice will say.
+        $totalCost = $this->printServices(
+            $data->getActiveStandardBillings(),
+            $data->getActiveIndividualBillings(),
+            $data->getFutureStandardBillings(),
+            $data->getFutureIndividualBillings(),
+            $billingReferenceDate,
+            $format,
+        );
 
         $this->printPaymentInformation($data, $billingReferenceDate, $totalCost, $format);
-    }
-
-    /**
-     * Heads one of the billing tables.
-     *
-     * These sit closer to their table than an ordinary section heading does, and they carry
-     * the block's own font style, so they are set here rather than through the shared one.
-     *
-     * @param string $text The heading
-     * @param string $format Additional font format
-     * @return void
-     */
-    private function printBillingHeading(string $text, string $format): void
-    {
-        $this->keepTogether(self::HEADING_ORPHAN_GUARD);
-
-        $this->SetFont(self::FONT_FAMILY, 'B' . $format, self::HEADING_FONT_SIZE);
-        $this->frameLeft();
-        $this->Cell(self::PAGE_WIDTH, 3, $text);
-        $this->Ln();
-
-        $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
     }
 
     /**
@@ -685,7 +642,7 @@ class ContractPDF extends AppPDF
      * @param string $format Additional font format
      * @return void
      */
-    private function printIndividualClause(string $format): void
+    protected function afterIndividualPrices(string $format): void
     {
         $this->SetFont(self::FONT_FAMILY, $format, self::NOTE_FONT_SIZE);
         $this->MultiCell(
@@ -695,81 +652,6 @@ class ContractPDF extends AppPDF
             align: 'L',
         );
         $this->Ln();
-    }
-
-    /**
-     * Prints billing table.
-     *
-     * @param iterable<\App\Model\Entity\Billing> $billings Billings
-     * @param \Cake\I18n\Date $billingReferenceDate Reference date for billing relevance
-     * @param string $format Additional font format
-     * @return \PhpCollective\DecimalObject\Decimal Total cost
-     */
-    private function billingTable(iterable $billings, Date $billingReferenceDate, string $format): Decimal
-    {
-        $this->SetFont(self::FONT_FAMILY, '' . $format, self::BODY_FONT_SIZE);
-        $this->Cell(140, self::LINE_HEIGHT, $this->billingText('service'));
-        $this->Cell(35, self::LINE_HEIGHT, $this->billingText('price_per_month'), align: 'R');
-        $this->Ln();
-
-        $totalCost = Decimal::create(0, 2);
-
-        foreach ($billings as $billing) {
-            $this->SetFont(self::FONT_FAMILY, 'B' . $format, self::BODY_FONT_SIZE);
-            $this->Cell(
-                140,
-                self::LINE_HEIGHT,
-                $billing->name
-                . ($billing->billing_from > $billingReferenceDate
-                    ? ' ' . strtr($this->billingText('from'), [
-                        '{date}' => (string)$billing->billing_from,
-                    ])
-                    : '')
-                . ($billing->billing_until
-                    ? ' ' . strtr($this->billingText('until'), [
-                        '{date}' => (string)$billing->billing_until,
-                    ])
-                    : ''),
-                align: 'L',
-                stretch: 1,
-            );
-            $this->Cell(35, self::LINE_HEIGHT, Number::currency($billing->sum->toFloat()), align: 'R');
-            $this->Ln();
-
-            if ($billing->percentage_discount_sum->isPositive()) {
-                $this->SetFont(self::FONT_FAMILY, '' . $format, self::BODY_FONT_SIZE);
-                $this->Cell(
-                    140,
-                    self::LINE_HEIGHT,
-                    strtr($this->billingText('percentage_discount'), [
-                        '{percentage}' => (string)$billing->percentage_discount,
-                    ]),
-                );
-                $this->Cell(
-                    35,
-                    self::LINE_HEIGHT,
-                    Number::currency($billing->percentage_discount_sum->negate()->toFloat()),
-                    align: 'R',
-                );
-                $this->Ln();
-            }
-            if ($billing->fixed_discount_sum->isPositive()) {
-                $this->SetFont(self::FONT_FAMILY, '' . $format, self::BODY_FONT_SIZE);
-                $this->Cell(140, self::LINE_HEIGHT, $this->billingText('fixed_discount'));
-                $this->Cell(
-                    35,
-                    self::LINE_HEIGHT,
-                    Number::currency($billing->fixed_discount_sum->negate()->toFloat()),
-                    align: 'R',
-                );
-                $this->Ln();
-            }
-
-            /** @psalm-suppress ImplicitToStringCast */
-            $totalCost = $totalCost->add($billing->total_price);
-        }
-
-        return $totalCost;
     }
 
     /**
@@ -789,7 +671,7 @@ class ContractPDF extends AppPDF
     ): void {
         $contract = $data->contract;
 
-        $this->printBillingHeading($this->contractText('sections.payment_info'), $format);
+        $this->printBillingHeading($this->paymentText('heading'), $format);
 
         // The columns divide the width the rules above and below them span, so the row uses
         // the whole of it rather than stopping seven millimetres short and condensing the one
@@ -839,7 +721,7 @@ class ContractPDF extends AppPDF
             $this->MultiCell(
                 self::TEXT_WIDTH,
                 self::LINE_HEIGHT,
-                $this->contractText('texts.reverse_charge_clause') . PHP_EOL,
+                $this->paymentText('reverse_charge_clause') . PHP_EOL,
                 align: 'J',
             );
         } else {
@@ -864,7 +746,7 @@ class ContractPDF extends AppPDF
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 1.0);
 
         $this->SetFont(self::FONT_FAMILY, $format, self::NOTE_FONT_SIZE);
-        $this->Cell(self::TEXT_WIDTH, self::LINE_HEIGHT, $this->contractText('texts.standing_order_note'));
+        $this->Cell(self::TEXT_WIDTH, self::LINE_HEIGHT, $this->paymentText('standing_order_note'));
         $this->Ln();
     }
 
@@ -1656,16 +1538,5 @@ class ContractPDF extends AppPDF
     private function handoverText(string $key): string
     {
         return Settings::getString('core.documents.contracts.handover.' . $key);
-    }
-
-    /**
-     * Reads one of the labels the billing tables share.
-     *
-     * @param string $key Key under the billing block
-     * @return string
-     */
-    private function billingText(string $key): string
-    {
-        return Settings::getString('core.documents.contracts.billing.' . $key);
     }
 }

@@ -44,6 +44,9 @@ final class CustomerPrintPdfOutput
             CustomerDocumentType::GdprNew,
             CustomerDocumentType::GdprChange
                 => $pdf->generateGDPRAgreement($data),
+
+            CustomerDocumentType::ServicesOverview
+                => $pdf->generateServicesOverview($data),
         };
 
         $filename = $this->filename($data);
