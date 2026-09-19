@@ -164,4 +164,43 @@ class ContractsTableTest extends TestCase
 
         $this->assertNotFalse($this->Contracts->save($contract));
     }
+
+    /**
+     * The minimum is set once by whoever writes the contract, and after that only with the option
+     * the controller passes to whom the permissions let.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractsTable::buildRules()
+     */
+    public function testTheMinimumConnectionPriceIsSetOnce(): void
+    {
+        $this->answerWithAFailure();
+        $id = $this->Contracts->find()->firstOrFail()->get('id');
+
+        $set = $this->Contracts->patchEntity($this->Contracts->get($id), ['minimum_connection_price' => '100']);
+        $this->assertNotFalse($this->Contracts->save($set), 'Setting a minimum where there was none was refused.');
+
+        $unchanged = $this->Contracts->patchEntity(
+            $this->Contracts->get($id),
+            ['minimum_connection_price' => '100.00', 'note' => 'Something else'],
+        );
+        $this->assertNotFalse($this->Contracts->save($unchanged), 'Saving the minimum as it was was refused.');
+
+        foreach (['150', null] as $changed) {
+            $refused = $this->Contracts->patchEntity(
+                $this->Contracts->get($id),
+                ['minimum_connection_price' => $changed],
+            );
+            $this->assertFalse($this->Contracts->save($refused));
+            $this->assertArrayHasKey(
+                'minimumConnectionPriceIsSetOnce',
+                $refused->getError('minimum_connection_price'),
+            );
+        }
+
+        $allowed = $this->Contracts->patchEntity($this->Contracts->get($id), ['minimum_connection_price' => '150']);
+        $this->assertNotFalse(
+            $this->Contracts->save($allowed, [ContractsTable::CHANGE_MINIMUM_CONNECTION_PRICE => true]),
+        );
+    }
 }

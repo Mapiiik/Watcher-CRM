@@ -10,6 +10,7 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $installationTechnicians
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $uninstallationTechnicians
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $commissions
+ * @var bool $minimum_connection_price_locked
  */
 
 use Settings\Utility\Settings;
@@ -65,6 +66,7 @@ use Settings\Utility\Settings;
                         echo $this->Form->control('activation_fee_with_obligation', ['empty' => true]);
                         echo $this->Form->control('minimum_connection_price', [
                             'empty' => true,
+                            'readonly' => !empty($minimum_connection_price_locked),
                             'help' => __('The monthly price for the connection may not be lower than this.'),
                         ]);
                         echo $this->Form->control('individual_terms', [

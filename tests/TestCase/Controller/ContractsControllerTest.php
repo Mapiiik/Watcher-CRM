@@ -716,6 +716,65 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * Whoever writes contracts sets a minimum where there is none. Once set, it is shown to them
+     * read only and a changed value sent anyway is not stored.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::edit()
+     */
+    public function testTheMinimumConnectionPriceIsSetOnceByWhoeverWritesContracts(): void
+    {
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $contractId = $this->firstId('Contracts');
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->letTheNetworkKeepTheAccessPoint();
+
+        $this->post('/contracts/edit/' . $contractId, ['minimum_connection_price' => '100']);
+        $this->assertRedirect();
+        $this->assertSame('100.00', $contracts->get($contractId)->minimum_connection_price?->toString());
+
+        $this->get('/contracts/edit/' . $contractId);
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('minimum_connection_price_locked'));
+        $this->assertMatchesRegularExpression(
+            '/<input[^>]*name="minimum_connection_price"[^>]*readonly/',
+            (string)$this->_response?->getBody(),
+        );
+
+        $this->post('/contracts/edit/' . $contractId, ['minimum_connection_price' => '50']);
+        $this->assertNoRedirect();
+        $this->assertSame('100.00', $contracts->get($contractId)->minimum_connection_price?->toString());
+    }
+
+    /**
+     * An administrator changes a minimum already set, the permissions giving them every action.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::edit()
+     */
+    public function testAnAdministratorChangesTheMinimumConnectionPrice(): void
+    {
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $contractId = $this->firstId('Contracts');
+        $contracts->updateAll(['minimum_connection_price' => '100'], ['id' => $contractId]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->letTheNetworkKeepTheAccessPoint();
+
+        $this->get('/contracts/edit/' . $contractId);
+        $this->assertFalse($this->viewVariable('minimum_connection_price_locked'));
+
+        $this->post('/contracts/edit/' . $contractId, ['minimum_connection_price' => '50']);
+        $this->assertRedirect();
+        $this->assertSame('50.00', $contracts->get($contractId)->minimum_connection_price?->toString());
+    }
+
+    /**
      * The delete action runs and redirects. Whether the contract really goes depends on what else
      * still references it, which is the application rules' business rather than this test's.
      *

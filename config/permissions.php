@@ -98,6 +98,8 @@ $permissions = [
             'bypassAuth' => true,
         ],
         //admin role allowed to all the things
+        // (Contracts::changeMinimumConnectionPrice is not a page: it says who may change a minimum
+        // connection price already set, so another role is given it with a row of its own)
         [
             'role' => 'admin',
             'prefix' => '*',

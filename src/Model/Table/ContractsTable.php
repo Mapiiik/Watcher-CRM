@@ -57,6 +57,13 @@ use Override;
 class ContractsTable extends AppTable
 {
     /**
+     * The save option that lets a minimum connection price already set be changed.
+     *
+     * @var string
+     */
+    public const CHANGE_MINIMUM_CONNECTION_PRICE = 'change_minimum_connection_price';
+
+    /**
      * Initialize method
      *
      * @param array<string, mixed> $config The configuration for the Table.
@@ -493,6 +500,27 @@ class ContractsTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('SoldEquipments'));
         $rules->addDelete($rules->isNotLinkedTo('Tasks'));
         $rules->addDelete($rules->isNotLinkedTo('CustomerLabels'));
+
+        // Set once by whoever writes the contract, and changed afterwards only by whom the
+        // permissions let - which the controller asks and passes on.
+        $rules->add(
+            function (Contract $entity, array $options): bool {
+                if (
+                    !empty($options[self::CHANGE_MINIMUM_CONNECTION_PRICE])
+                    || $entity->isNew()
+                    || !$entity->isDirty('minimum_connection_price')
+                ) {
+                    return true;
+                }
+
+                return $entity->getOriginal('minimum_connection_price') === null;
+            },
+            'minimumConnectionPriceIsSetOnce',
+            [
+                'errorField' => 'minimum_connection_price',
+                'message' => __('The minimum connection price has already been set, and you may not change it.'),
+            ],
+        );
 
         return $rules;
     }

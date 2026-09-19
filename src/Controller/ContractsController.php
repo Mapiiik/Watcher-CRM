@@ -7,7 +7,9 @@ use App\Addresses\Check\AddressCheckRegistry;
 use App\Contracts\Check\ContractCheckRegistry;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Maps\ContractMap;
+use App\Model\Entity\Contract;
 use App\Model\Enum\CustomerDealer;
+use App\Model\Table\ContractsTable;
 use App\View\PdfView;
 use Cake\Collection\Collection;
 use Cake\Http\Response;
@@ -17,6 +19,7 @@ use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 use Cake\View\Helper\HtmlHelper;
 use Cake\View\View;
+use CakeDC\Auth\Traits\IsAuthorizedTrait;
 use Override;
 
 /**
@@ -27,6 +30,7 @@ use Override;
 class ContractsController extends AppController
 {
     use CommonViewVarListsTrait;
+    use IsAuthorizedTrait;
 
     /**
      * Returns supported output types
@@ -403,9 +407,16 @@ class ContractsController extends AppController
     {
         $contract = $this->Contracts->get($id);
 
+        // asked of the record as it stands, before the form has had its say
+        $minimum_connection_price_locked = !$this->mayChangeMinimumConnectionPrice($contract);
+
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $contract = $this->Contracts->patchEntity($contract, $this->getRequest()->getData());
-            if ($this->Contracts->save($contract)) {
+            if (
+                $this->Contracts->save($contract, [
+                    ContractsTable::CHANGE_MINIMUM_CONNECTION_PRICE => !$minimum_connection_price_locked,
+                ])
+            ) {
                 $this->Flash->success(__('The contract has been saved.'));
 
                 if (empty($contract->number)) {
@@ -490,12 +501,28 @@ class ContractsController extends AppController
             'installationTechnicians',
             'uninstallationTechnicians',
             'commissions',
+            'minimum_connection_price_locked',
         ));
 
         // load access points with ranges from NMS if possible
         $this->setAccessPointsViewVarListWithRanges(onlyActive: false);
 
         return null;
+    }
+
+    /**
+     * Whether the contract's minimum connection price is this request's to set.
+     *
+     * Anybody sets it while there is none. Once set, it is changed by whom the permissions let,
+     * asked as an action of its own so that a role is given it in the permissions alone.
+     *
+     * @param \App\Model\Entity\Contract $contract The contract as it stands.
+     * @return bool
+     */
+    private function mayChangeMinimumConnectionPrice(Contract $contract): bool
+    {
+        return $contract->minimum_connection_price === null
+            || $this->isAuthorized(['controller' => 'Contracts', 'action' => 'changeMinimumConnectionPrice']);
     }
 
     /**
