@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-14 18:17+0200\n"
+"POT-Creation-Date: 2026-09-19 12:50+0200\n"
 "PO-Revision-Date: 2026-08-22 17:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -41,7 +41,7 @@ msgstr "Odeslání protokolu změn e-mailem."
 
 #: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:96
 #: plugins/Radius/templates/Accounts/add.php:30
-#: plugins/Radius/templates/Accounts/edit.php:36
+#: plugins/Radius/templates/Accounts/edit.php:37
 #: plugins/Radius/templates/Accounts/index.php:35
 #: plugins/Radius/templates/Accounts/monitoring.php:93
 #: plugins/Radius/templates/Accounts/view.php:68
@@ -51,7 +51,7 @@ msgstr "Zákazník"
 
 #: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:97
 #: plugins/Radius/templates/Accounts/add.php:38
-#: plugins/Radius/templates/Accounts/edit.php:43
+#: plugins/Radius/templates/Accounts/edit.php:44
 #: plugins/Radius/templates/Accounts/index.php:37
 #: plugins/Radius/templates/Accounts/monitoring.php:109
 #: plugins/Radius/templates/Accounts/view.php:84
@@ -107,49 +107,25 @@ msgstr "Aktualizace účtů RADIUS se nezdařila"
 msgid "RADIUS accounts update failed."
 msgstr "Aktualizace účtů RADIUS se nezdařila."
 
-#: plugins/Radius/src/Controller/AccountsController.php:179
-#: plugins/Radius/src/Controller/AccountsController.php:290
+#: plugins/Radius/src/Controller/AccountsController.php:175
+#: plugins/Radius/src/Controller/AccountsController.php:288
 msgid "The RADIUS account has been saved."
 msgstr "Účet RADIUS byl uložen."
 
-#: plugins/Radius/src/Controller/AccountsController.php:183
-#: plugins/Radius/src/Controller/AccountsController.php:294
+#: plugins/Radius/src/Controller/AccountsController.php:179
+#: plugins/Radius/src/Controller/AccountsController.php:299
 msgid "The RADIUS account could not be saved. Please, try again."
 msgstr "Účet RADIUS nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:341
+#: plugins/Radius/src/Controller/AccountsController.php:346
 msgid "The RADIUS account has been deleted."
 msgstr "Účet RADIUS byl odstraněn."
 
-#: plugins/Radius/src/Controller/AccountsController.php:344
+#: plugins/Radius/src/Controller/AccountsController.php:349
 msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr "Účet RADIUS nelze odstranit. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Controller/AccountsController.php:369
-msgid "No RADIUS session for {0} found."
-msgstr "Nebyla nalezena žádná relace RADIUS pro {0}."
-
-#: plugins/Radius/src/Controller/AccountsController.php:390
-msgid "Problem connecting to an access point: {0}"
-msgstr "Problém s připojením k přístupovému bodu: {0}"
-
-#: plugins/Radius/src/Controller/AccountsController.php:414
-msgid "Removed MAC address entry {0} on interface {1} from router {2}."
-msgstr "Odstraněn záznam adresy MAC {0} na rozhraní {1} ze směrovače {2}."
-
-#: plugins/Radius/src/Controller/AccountsController.php:425
-msgid "Access point updated."
-msgstr "Přístupový bod aktualizován."
-
-#: plugins/Radius/src/Controller/AccountsController.php:426
-msgid "Nothing has changed."
-msgstr "Nic se nezměnilo."
-
-#: plugins/Radius/src/Controller/AccountsController.php:430
-msgid "Invalid RADIUS session for {0}."
-msgstr "Neplatná relace RADIUS pro {0}."
-
-#: plugins/Radius/src/Controller/AccountsController.php:461
+#: plugins/Radius/src/Controller/AccountsController.php:393
 #: plugins/Radius/src/Updater/AccountsUpdater.php:200
 msgid "No active RADIUS session for {0} found."
 msgstr "Nebyla nalezena žádná aktivní relace RADIUS pro {0}."
@@ -302,6 +278,30 @@ msgstr "Skupinu uživatelů RADIUS nelze odstranit. Zkuste to prosím znovu."
 msgid "PPPoE"
 msgstr "PPPoE"
 
+#: plugins/Radius/src/Model/Table/AccountsTable.php:170
+msgid "An active RADIUS account cannot be deleted. Deactivate it first."
+msgstr "Aktivní účet RADIUS nelze odstranit. Nejprve ho deaktivujte."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:63
+msgid "No RADIUS session for {0} found."
+msgstr "Nebyla nalezena žádná relace RADIUS pro {0}."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:79
+msgid "Problem connecting to an access point: {0}"
+msgstr "Problém s připojením k přístupovému bodu: {0}"
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:106
+msgid "Removed MAC address entry {0} on interface {1} from router {2}."
+msgstr "Odstraněn záznam adresy MAC {0} na rozhraní {1} ze směrovače {2}."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:118
+msgid "Access point updated."
+msgstr "Přístupový bod aktualizován."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:119
+msgid "Nothing has changed."
+msgstr "Nic se nezměnilo."
+
 #: plugins/Radius/src/Updater/AccountsUpdater.php:96
 msgid "The RADIUS account has been updated."
 msgstr "Účet RADIUS byl aktualizován."
@@ -385,7 +385,7 @@ msgid "The RADIUS session for {0} started on {1} has been disconnected ({2})."
 msgstr "Relace RADIUS pro {0} zahájená {1} byla odpojena ({2})."
 
 #: plugins/Radius/templates/Accounts/add.php:14
-#: plugins/Radius/templates/Accounts/edit.php:12
+#: plugins/Radius/templates/Accounts/edit.php:13
 #: plugins/Radius/templates/Accounts/index.php:44
 #: plugins/Radius/templates/Accounts/monitoring.php:18
 #: plugins/Radius/templates/Accounts/monitoring.php:232
@@ -436,7 +436,7 @@ msgid "Actions"
 msgstr "Akce"
 
 #: plugins/Radius/templates/Accounts/add.php:16
-#: plugins/Radius/templates/Accounts/edit.php:22
+#: plugins/Radius/templates/Accounts/edit.php:23
 #: plugins/Radius/templates/Accounts/monitoring.php:33
 #: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:12
 #: plugins/Radius/templates/Accounts/view.php:25
@@ -449,7 +449,7 @@ msgid "Add RADIUS Account"
 msgstr "Přidat účet RADIUS"
 
 #: plugins/Radius/templates/Accounts/add.php:47
-#: plugins/Radius/templates/Accounts/edit.php:52
+#: plugins/Radius/templates/Accounts/edit.php:53
 #: plugins/Radius/templates/Accounts/index.php:38
 #: plugins/Radius/templates/Accounts/monitoring.php:122
 #: plugins/Radius/templates/Accounts/monitoring.php:325
@@ -466,7 +466,7 @@ msgid "Username"
 msgstr "Uživatelské jméno"
 
 #: plugins/Radius/templates/Accounts/add.php:52
-#: plugins/Radius/templates/Accounts/edit.php:57
+#: plugins/Radius/templates/Accounts/edit.php:58
 #: plugins/Radius/templates/Accounts/index.php:39
 #: plugins/Radius/templates/Accounts/monitoring.php:126
 #: plugins/Radius/templates/Accounts/view.php:101
@@ -475,7 +475,7 @@ msgid "Password"
 msgstr "Heslo"
 
 #: plugins/Radius/templates/Accounts/add.php:56
-#: plugins/Radius/templates/Accounts/edit.php:60
+#: plugins/Radius/templates/Accounts/edit.php:62
 #: plugins/Radius/templates/Accounts/index.php:40
 #: plugins/Radius/templates/Accounts/monitoring.php:134
 #: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:29
@@ -485,7 +485,7 @@ msgid "Active"
 msgstr "Aktivní"
 
 #: plugins/Radius/templates/Accounts/add.php:59
-#: plugins/Radius/templates/Accounts/edit.php:63
+#: plugins/Radius/templates/Accounts/edit.php:74
 #: plugins/Radius/templates/Accounts/update_related_records_for_all_accounts.php:56
 #: plugins/Radius/templates/Nas/add.php:34
 #: plugins/Radius/templates/Nas/edit.php:42
@@ -506,13 +506,13 @@ msgstr "Aktivní"
 msgid "Submit"
 msgstr "Potvrdit"
 
-#: plugins/Radius/templates/Accounts/edit.php:14
+#: plugins/Radius/templates/Accounts/edit.php:15
 #: plugins/Radius/templates/Accounts/monitoring.php:25
 #: plugins/Radius/templates/Accounts/view.php:17
 msgid "Delete RADIUS Account"
 msgstr "Odstranit účet RADIUS"
 
-#: plugins/Radius/templates/Accounts/edit.php:17
+#: plugins/Radius/templates/Accounts/edit.php:18
 #: plugins/Radius/templates/Accounts/index.php:89
 #: plugins/Radius/templates/Accounts/monitoring.php:28
 #: plugins/Radius/templates/Accounts/monitoring.php:300
@@ -553,11 +553,15 @@ msgstr "Odstranit účet RADIUS"
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
 
-#: plugins/Radius/templates/Accounts/edit.php:32
+#: plugins/Radius/templates/Accounts/edit.php:33
 #: plugins/Radius/templates/Accounts/monitoring.php:20
 #: plugins/Radius/templates/Accounts/view.php:12
 msgid "Edit RADIUS Account"
 msgstr "Upravit účet RADIUS"
+
+#: plugins/Radius/templates/Accounts/edit.php:67
+msgid "Remove the MAC address from the access point"
+msgstr "Odstranit adresu MAC z přístupového bodu"
 
 #: plugins/Radius/templates/Accounts/index.php:11
 msgid "Search"
@@ -1385,6 +1389,8 @@ msgid ""
 msgstr ""
 "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
 "počtu {{count}}"
+#~ msgid "Invalid RADIUS session for {0}."
+#~ msgstr "Neplatná relace RADIUS pro {0}."
 
 #~ msgid ""
 #~ "The RADIUS session for {0} started on {1} could not be disconnected "
