@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-19 08:58+0200\n"
+"POT-Creation-Date: 2026-09-19 09:59+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -247,8 +247,8 @@ msgstr ""
 
 #: ./src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: ./src/Controller/Api/CustomersController.php:178
-#: ./src/Controller/OverviewsController.php:80
-#: ./src/Controller/OverviewsController.php:577
+#: ./src/Controller/OverviewsController.php:81
+#: ./src/Controller/OverviewsController.php:678
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr ""
 
@@ -947,6 +947,7 @@ msgstr ""
 #: ./templates/element/Contracts/SoldEquipments.php:13
 #: ./templates/element/Contracts/Tasks.php:23
 #: ./templates/element/Contracts/heading.php:17
+#: ./templates/element/Overviews/billings_in_period.php:21
 #: ./templates/element/Tasks/email_detail.php:85
 msgid "Contract"
 msgstr ""
@@ -1934,15 +1935,16 @@ msgstr ""
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:279
+#: ./src/Controller/OverviewsController.php:280
+#: ./src/Controller/OverviewsController.php:384
 msgid "The period ends before it begins, so nothing falls inside it."
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:633
+#: ./src/Controller/OverviewsController.php:734
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:635
+#: ./src/Controller/OverviewsController.php:736
 #: ./templates/Addresses/index.php:80
 #: ./templates/Addresses/index.php:87
 #: ./templates/Addresses/view.php:116
@@ -1955,7 +1957,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: ./src/Controller/OverviewsController.php:920
+#: ./src/Controller/OverviewsController.php:1021
 msgid "unknown dealer"
 msgstr ""
 
@@ -2127,7 +2129,8 @@ msgstr ""
 #: ./templates/element/AddressChecks/several_contracts_at_one_address.php:20
 #: ./templates/element/Contracts/facts.php:51
 #: ./templates/element/Contracts/related.php:29
-#: ./templates/element/Overviews/contracts_in_period.php:23
+#: ./templates/element/Overviews/billings_in_period.php:27
+#: ./templates/element/Overviews/contracts_in_period.php:24
 msgid "Installation Address"
 msgstr ""
 
@@ -2557,6 +2560,7 @@ msgstr ""
 #: ./templates/Logins/index.php:50
 #: ./templates/Logins/view.php:52
 #: ./templates/Overviews/overview_of_contracts.php:120
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:46
 #: ./templates/Phones/index.php:46
 #: ./templates/Phones/index.php:47
 #: ./templates/Phones/index.php:48
@@ -2672,6 +2676,7 @@ msgstr ""
 #: ./templates/Logins/index.php:50
 #: ./templates/Logins/view.php:52
 #: ./templates/Overviews/overview_of_contracts.php:120
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:46
 #: ./templates/Phones/index.php:46
 #: ./templates/Phones/index.php:47
 #: ./templates/Phones/index.php:48
@@ -3555,6 +3560,7 @@ msgstr ""
 #: ./templates/element/Contracts/related.php:40
 #: ./templates/element/CustomerChecks/customer_proposal.php:26
 #: ./templates/element/Documents/rounds.php:46
+#: ./templates/element/Overviews/billings_in_period.php:28
 #: ./templates/element/Overviews/contracts_in_period.php:25
 msgid "Actions"
 msgstr ""
@@ -4020,7 +4026,8 @@ msgstr ""
 #: ./templates/element/Contracts/Tasks.php:59
 #: ./templates/element/Contracts/related.php:104
 #: ./templates/element/Documents/rounds.php:110
-#: ./templates/element/Overviews/contracts_in_period.php:63
+#: ./templates/element/Overviews/billings_in_period.php:70
+#: ./templates/element/Overviews/contracts_in_period.php:69
 #: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1225
 msgid "View"
 msgstr ""
@@ -4155,6 +4162,7 @@ msgstr ""
 #: ./templates/element/CustomerProposals/form.php:22
 #: ./templates/element/Customers/heading.php:14
 #: ./templates/element/Documents/rounds.php:40
+#: ./templates/element/Overviews/billings_in_period.php:20
 #: ./templates/element/Overviews/contracts_in_period.php:20
 #: ./templates/element/Tasks/email_detail.php:73
 msgid "Customer"
@@ -4533,7 +4541,7 @@ msgstr ""
 #: ./templates/Billings/edit.php:22
 #: ./templates/Billings/service_change.php:24
 #: ./templates/Billings/view.php:23
-#: ./templates/Overviews/index.php:137
+#: ./templates/Overviews/index.php:142
 msgid "List Billings"
 msgstr ""
 
@@ -4588,6 +4596,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/non_standard_service.php:28
 #: ./templates/element/ContractChecks/overlapping_billings.php:28
 #: ./templates/element/Contracts/Billings.php:23
+#: ./templates/element/Overviews/billings_in_period.php:23
 msgid "Service"
 msgstr ""
 
@@ -4726,6 +4735,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/non_standard_service.php:29
 #: ./templates/element/Contracts/Billings.php:24
 #: ./templates/element/Contracts/Tasks.php:21
+#: ./templates/element/Overviews/billings_in_period.php:24
 #: ./templates/element/Tasks/email_detail.php:156
 msgid "Text"
 msgstr ""
@@ -4734,6 +4744,7 @@ msgstr ""
 #: ./templates/Billings/view.php:75
 #: ./templates/ContractProposals/billing_line.php:104
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:89
 #: ./templates/Services/view.php:92
 #: ./templates/element/ContractChecks/impossible_billing_period.php:26
 #: ./templates/element/ContractChecks/non_standard_service.php:31
@@ -4748,6 +4759,7 @@ msgstr ""
 #: ./templates/Billings/view.php:79
 #: ./templates/ContractProposals/billing_line.php:111
 #: ./templates/Overviews/overview_of_dealer_commissions.php:62
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:99
 #: ./templates/Services/view.php:93
 #: ./templates/element/ContractChecks/billing_gap.php:30
 #: ./templates/element/ContractChecks/impossible_billing_period.php:27
@@ -4784,6 +4796,7 @@ msgstr ""
 #: ./templates/Services/view.php:87
 #: ./templates/element/ContractProposals/proposed_billings.php:37
 #: ./templates/element/Contracts/Billings.php:25
+#: ./templates/element/Overviews/billings_in_period.php:25
 msgid "Quantity"
 msgstr ""
 
@@ -4795,6 +4808,7 @@ msgstr ""
 #: ./templates/element/ContractProposals/billings.php:18
 #: ./templates/element/ContractProposals/proposed_billings.php:38
 #: ./templates/element/Contracts/Billings.php:29
+#: ./templates/element/Overviews/billings_in_period.php:26
 msgid "Total Price"
 msgstr ""
 
@@ -4828,7 +4842,7 @@ msgstr ""
 #: ./templates/BorrowedEquipments/add.php:15
 #: ./templates/BorrowedEquipments/edit.php:23
 #: ./templates/BorrowedEquipments/view.php:25
-#: ./templates/Overviews/index.php:147
+#: ./templates/Overviews/index.php:152
 msgid "List Borrowed Equipments"
 msgstr ""
 
@@ -5232,7 +5246,8 @@ msgstr ""
 #: ./templates/element/ContractChecks/inactive_with_billing.php:25
 #: ./templates/element/Contracts/facts.php:29
 #: ./templates/element/Contracts/related.php:24
-#: ./templates/element/Overviews/contracts_in_period.php:24
+#: ./templates/element/Overviews/billings_in_period.php:22
+#: ./templates/element/Overviews/contracts_in_period.php:22
 msgid "Contract State"
 msgstr ""
 
@@ -5306,7 +5321,7 @@ msgstr ""
 #: ./templates/ContractVersions/add.php:16
 #: ./templates/ContractVersions/edit.php:25
 #: ./templates/ContractVersions/view.php:25
-#: ./templates/Overviews/index.php:132
+#: ./templates/Overviews/index.php:137
 msgid "List Contract Versions"
 msgstr ""
 
@@ -5441,7 +5456,7 @@ msgstr ""
 
 #: ./templates/Contracts/view.php:63
 #: ./templates/Customers/view.php:76
-#: ./templates/Overviews/index.php:142
+#: ./templates/Overviews/index.php:147
 #: ./templates/ServiceOverrides/add.php:17
 #: ./templates/ServiceOverrides/edit.php:36
 #: ./templates/ServiceOverrides/view.php:37
@@ -5451,7 +5466,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:68
 #: ./templates/Customers/view.php:81
 #: ./templates/HistoricalConnections/view.php:13
-#: ./templates/Overviews/index.php:177
+#: ./templates/Overviews/index.php:182
 msgid "List Historical Connections"
 msgstr ""
 
@@ -6333,7 +6348,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/contract.php:28
 #: ./templates/element/Contracts/facts.php:36
 #: ./templates/element/Contracts/related.php:27
-#: ./templates/element/Overviews/contracts_in_period.php:22
+#: ./templates/element/Overviews/contracts_in_period.php:23
 msgid "Service Type"
 msgstr ""
 
@@ -6571,6 +6586,7 @@ msgstr ""
 #: ./templates/HistoricalConnections/index.php:32
 #: ./templates/HistoricalConnections/view.php:70
 #: ./templates/HistoricalConnections/view.php:143
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:18
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:32
 msgid "From"
 msgstr ""
@@ -6650,7 +6666,7 @@ msgstr ""
 #: ./templates/IpAddresses/bulk_reassignment.php:16
 #: ./templates/IpAddresses/edit.php:18
 #: ./templates/IpAddresses/view.php:21
-#: ./templates/Overviews/index.php:157
+#: ./templates/Overviews/index.php:162
 msgid "List IP Addresses"
 msgstr ""
 
@@ -6715,7 +6731,7 @@ msgstr ""
 #: ./templates/IpNetworks/add.php:14
 #: ./templates/IpNetworks/edit.php:19
 #: ./templates/IpNetworks/view.php:22
-#: ./templates/Overviews/index.php:162
+#: ./templates/Overviews/index.php:167
 msgid "List IP Networks"
 msgstr ""
 
@@ -6915,21 +6931,26 @@ msgstr ""
 msgid "Overview of New and Ending Contracts"
 msgstr ""
 
-#: ./templates/Overviews/index.php:152
+#: ./templates/Overviews/index.php:132
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:65
+msgid "Overview of New and Ending Billings"
+msgstr ""
+
+#: ./templates/Overviews/index.php:157
 #: ./templates/SoldEquipments/add.php:15
 #: ./templates/SoldEquipments/edit.php:23
 #: ./templates/SoldEquipments/view.php:25
 msgid "List Sold Equipments"
 msgstr ""
 
-#: ./templates/Overviews/index.php:167
+#: ./templates/Overviews/index.php:172
 #: ./templates/RemovedIpAddresses/add.php:14
 #: ./templates/RemovedIpAddresses/edit.php:22
 #: ./templates/RemovedIpAddresses/view.php:25
 msgid "List Removed IP Addresses"
 msgstr ""
 
-#: ./templates/Overviews/index.php:172
+#: ./templates/Overviews/index.php:177
 #: ./templates/RemovedIpNetworks/add.php:14
 #: ./templates/RemovedIpNetworks/edit.php:22
 #: ./templates/RemovedIpNetworks/view.php:25
@@ -6962,6 +6983,7 @@ msgstr ""
 #: ./templates/Overviews/overview_of_czech_customer_connection_points.php:22
 #: ./templates/Overviews/overview_of_czech_customer_connection_speeds.php:22
 #: ./templates/Overviews/overview_of_dealer_commissions.php:22
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:64
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:66
 msgid "List Overviews"
 msgstr ""
@@ -7114,30 +7136,41 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:25
-msgid "Read the Period From"
-msgstr ""
-
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:24
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:38
 msgid "To"
 msgstr ""
 
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:53
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:55
 msgid "Installation City"
 msgstr ""
 
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:72
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:84
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:74
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:83
 msgid "Starting"
 msgstr ""
 
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:74
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:94
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:75
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:92
 msgid "Ending"
 msgstr ""
 
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:76
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:76
 msgid "Net Change"
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_billings.php:78
+msgid "A billing that begins and ends within the period is in both listings."
+msgstr ""
+
+#: ./templates/Overviews/overview_of_new_and_ending_contracts.php:25
+msgid "Read the Period From"
 msgstr ""
 
 #: ./templates/Overviews/overview_of_new_and_ending_contracts.php:77
@@ -8521,6 +8554,10 @@ msgstr ""
 
 #: ./templates/element/IpAddressRanges/summary.php:25
 msgid "Range"
+msgstr ""
+
+#: ./templates/element/Overviews/billings_in_period.php:79
+msgid "Total"
 msgstr ""
 
 #: ./templates/element/Settings/FormFields.php:34

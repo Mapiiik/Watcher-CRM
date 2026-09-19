@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-19 08:58+0200\n"
+"POT-Creation-Date: 2026-09-19 09:59+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -298,8 +298,8 @@ msgstr "Adresa instalace (registr)"
 
 #: src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: src/Controller/Api/CustomersController.php:178
-#: src/Controller/OverviewsController.php:80
-#: src/Controller/OverviewsController.php:577
+#: src/Controller/OverviewsController.php:81
+#: src/Controller/OverviewsController.php:678
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr "Nepodařilo se načíst adresy z národního adresního registru: {0}"
 
@@ -1025,6 +1025,7 @@ msgstr "Aplikovat ho smí jen administrátor, a jen vědomě."
 #: templates/element/Contracts/SoldEquipments.php:13
 #: templates/element/Contracts/Tasks.php:23
 #: templates/element/Contracts/heading.php:17
+#: templates/element/Overviews/billings_in_period.php:21
 #: templates/element/Tasks/email_detail.php:85
 msgid "Contract"
 msgstr "Smlouva"
@@ -2082,15 +2083,16 @@ msgstr "Přihlášení bylo odstraněno."
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/OverviewsController.php:279
+#: src/Controller/OverviewsController.php:280
+#: src/Controller/OverviewsController.php:384
 msgid "The period ends before it begins, so nothing falls inside it."
 msgstr "Období končí dříve, než začíná, takže do něj nic nespadá."
 
-#: src/Controller/OverviewsController.php:633
+#: src/Controller/OverviewsController.php:734
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 
-#: src/Controller/OverviewsController.php:635 templates/Addresses/index.php:80
+#: src/Controller/OverviewsController.php:736 templates/Addresses/index.php:80
 #: templates/Addresses/index.php:87 templates/Addresses/view.php:116
 #: templates/Addresses/view.php:128 templates/Countries/view.php:93
 #: templates/Countries/view.php:100 templates/Customers/view.php:578
@@ -2098,7 +2100,7 @@ msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 msgid "unknown"
 msgstr "neznámé"
 
-#: src/Controller/OverviewsController.php:920
+#: src/Controller/OverviewsController.php:1021
 msgid "unknown dealer"
 msgstr "neznámý dealer"
 
@@ -2271,7 +2273,8 @@ msgstr "Úkol nelze uložit. Zkuste to prosím znovu."
 #: templates/element/AddressChecks/several_contracts_at_one_address.php:20
 #: templates/element/Contracts/facts.php:51
 #: templates/element/Contracts/related.php:29
-#: templates/element/Overviews/contracts_in_period.php:23
+#: templates/element/Overviews/billings_in_period.php:27
+#: templates/element/Overviews/contracts_in_period.php:24
 msgid "Installation Address"
 msgstr "Adresa instalace"
 
@@ -2662,6 +2665,7 @@ msgstr "Podle data instalace/zřízení a deinstalace/zrušení"
 #: templates/Labels/view.php:64 templates/Logins/index.php:50
 #: templates/Logins/view.php:52
 #: templates/Overviews/overview_of_contracts.php:120
+#: templates/Overviews/overview_of_new_and_ending_billings.php:46
 #: templates/Phones/index.php:46 templates/Phones/index.php:47
 #: templates/Phones/index.php:48 templates/Phones/view.php:48
 #: templates/Phones/view.php:52 templates/Phones/view.php:56
@@ -2729,6 +2733,7 @@ msgstr "Ne"
 #: templates/Labels/view.php:64 templates/Logins/index.php:50
 #: templates/Logins/view.php:52
 #: templates/Overviews/overview_of_contracts.php:120
+#: templates/Overviews/overview_of_new_and_ending_billings.php:46
 #: templates/Phones/index.php:46 templates/Phones/index.php:47
 #: templates/Phones/index.php:48 templates/Phones/view.php:48
 #: templates/Phones/view.php:52 templates/Phones/view.php:56
@@ -3625,6 +3630,7 @@ msgstr "Není nainstalováno přes Git"
 #: templates/element/Contracts/related.php:40
 #: templates/element/CustomerChecks/customer_proposal.php:26
 #: templates/element/Documents/rounds.php:46
+#: templates/element/Overviews/billings_in_period.php:28
 #: templates/element/Overviews/contracts_in_period.php:25
 msgid "Actions"
 msgstr "Akce"
@@ -3941,7 +3947,8 @@ msgstr "Číslo zákazníka"
 #: templates/element/Contracts/Tasks.php:59
 #: templates/element/Contracts/related.php:104
 #: templates/element/Documents/rounds.php:110
-#: templates/element/Overviews/contracts_in_period.php:63
+#: templates/element/Overviews/billings_in_period.php:70
+#: templates/element/Overviews/contracts_in_period.php:69
 #: vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1225
 msgid "View"
 msgstr "Zobrazit"
@@ -4047,6 +4054,7 @@ msgstr "Přístupové oprávnění"
 #: templates/element/CustomerProposals/form.php:22
 #: templates/element/Customers/heading.php:14
 #: templates/element/Documents/rounds.php:40
+#: templates/element/Overviews/billings_in_period.php:20
 #: templates/element/Overviews/contracts_in_period.php:20
 #: templates/element/Tasks/email_detail.php:73
 msgid "Customer"
@@ -4360,7 +4368,7 @@ msgstr "Starší"
 
 #: templates/Billings/add.php:15 templates/Billings/bulk_service_change.php:22
 #: templates/Billings/edit.php:22 templates/Billings/service_change.php:24
-#: templates/Billings/view.php:23 templates/Overviews/index.php:137
+#: templates/Billings/view.php:23 templates/Overviews/index.php:142
 msgid "List Billings"
 msgstr "Seznam fakturací"
 
@@ -4408,6 +4416,7 @@ msgstr "Původní služba"
 #: templates/element/ContractChecks/non_standard_service.php:28
 #: templates/element/ContractChecks/overlapping_billings.php:28
 #: templates/element/Contracts/Billings.php:23
+#: templates/element/Overviews/billings_in_period.php:23
 msgid "Service"
 msgstr "Služba"
 
@@ -4535,6 +4544,7 @@ msgstr "Fakturace"
 #: templates/element/ContractChecks/non_standard_service.php:29
 #: templates/element/Contracts/Billings.php:24
 #: templates/element/Contracts/Tasks.php:21
+#: templates/element/Overviews/billings_in_period.php:24
 #: templates/element/Tasks/email_detail.php:156
 msgid "Text"
 msgstr "Text"
@@ -4542,6 +4552,7 @@ msgstr "Text"
 #: templates/Billings/service_change.php:71 templates/Billings/view.php:75
 #: templates/ContractProposals/billing_line.php:104
 #: templates/Overviews/overview_of_dealer_commissions.php:61
+#: templates/Overviews/overview_of_new_and_ending_billings.php:89
 #: templates/Services/view.php:92
 #: templates/element/ContractChecks/impossible_billing_period.php:26
 #: templates/element/ContractChecks/non_standard_service.php:31
@@ -4555,6 +4566,7 @@ msgstr "Fakturovat od"
 #: templates/Billings/service_change.php:75 templates/Billings/view.php:79
 #: templates/ContractProposals/billing_line.php:111
 #: templates/Overviews/overview_of_dealer_commissions.php:62
+#: templates/Overviews/overview_of_new_and_ending_billings.php:99
 #: templates/Services/view.php:93
 #: templates/element/ContractChecks/billing_gap.php:30
 #: templates/element/ContractChecks/impossible_billing_period.php:27
@@ -4586,6 +4598,7 @@ msgstr "Samostatná faktura"
 #: templates/Services/view.php:87
 #: templates/element/ContractProposals/proposed_billings.php:37
 #: templates/element/Contracts/Billings.php:25
+#: templates/element/Overviews/billings_in_period.php:25
 msgid "Quantity"
 msgstr "Počet"
 
@@ -4596,6 +4609,7 @@ msgstr "Počet"
 #: templates/element/ContractProposals/billings.php:18
 #: templates/element/ContractProposals/proposed_billings.php:38
 #: templates/element/Contracts/Billings.php:29
+#: templates/element/Overviews/billings_in_period.php:26
 msgid "Total Price"
 msgstr "Celková cena"
 
@@ -4629,7 +4643,7 @@ msgstr "Náhled fakturace – konec"
 
 #: templates/BorrowedEquipments/add.php:15
 #: templates/BorrowedEquipments/edit.php:23
-#: templates/BorrowedEquipments/view.php:25 templates/Overviews/index.php:147
+#: templates/BorrowedEquipments/view.php:25 templates/Overviews/index.php:152
 msgid "List Borrowed Equipments"
 msgstr "Seznam zapůjčených zařízení"
 
@@ -5004,7 +5018,8 @@ msgstr "Odstranit stav smlouvy"
 #: templates/element/ContractChecks/inactive_with_billing.php:25
 #: templates/element/Contracts/facts.php:29
 #: templates/element/Contracts/related.php:24
-#: templates/element/Overviews/contracts_in_period.php:24
+#: templates/element/Overviews/billings_in_period.php:22
+#: templates/element/Overviews/contracts_in_period.php:22
 msgid "Contract State"
 msgstr "Stav smlouvy"
 
@@ -5074,7 +5089,7 @@ msgid "Requires No Active Obligations"
 msgstr "Vyžaduje žádné aktivní závazky"
 
 #: templates/ContractVersions/add.php:16 templates/ContractVersions/edit.php:25
-#: templates/ContractVersions/view.php:25 templates/Overviews/index.php:132
+#: templates/ContractVersions/view.php:25 templates/Overviews/index.php:137
 msgid "List Contract Versions"
 msgstr "Seznam verzí smluv"
 
@@ -5201,7 +5216,7 @@ msgid "List Customer Messages"
 msgstr "Seznam zpráv pro zákazníky"
 
 #: templates/Contracts/view.php:63 templates/Customers/view.php:76
-#: templates/Overviews/index.php:142 templates/ServiceOverrides/add.php:17
+#: templates/Overviews/index.php:147 templates/ServiceOverrides/add.php:17
 #: templates/ServiceOverrides/edit.php:36
 #: templates/ServiceOverrides/view.php:37
 msgid "List Service Overrides"
@@ -5209,7 +5224,7 @@ msgstr "Seznam dočasných úprav služby"
 
 #: templates/Contracts/view.php:68 templates/Customers/view.php:81
 #: templates/HistoricalConnections/view.php:13
-#: templates/Overviews/index.php:177
+#: templates/Overviews/index.php:182
 msgid "List Historical Connections"
 msgstr "Seznam historických připojení"
 
@@ -6080,7 +6095,7 @@ msgstr "Poslední odepřená IP adresa"
 #: templates/element/ContractChecks/contract.php:28
 #: templates/element/Contracts/facts.php:36
 #: templates/element/Contracts/related.php:27
-#: templates/element/Overviews/contracts_in_period.php:22
+#: templates/element/Overviews/contracts_in_period.php:23
 msgid "Service Type"
 msgstr "Typ služby"
 
@@ -6332,6 +6347,7 @@ msgstr "Historická připojení"
 #: templates/HistoricalConnections/index.php:32
 #: templates/HistoricalConnections/view.php:70
 #: templates/HistoricalConnections/view.php:143
+#: templates/Overviews/overview_of_new_and_ending_billings.php:18
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:32
 msgid "From"
 msgstr "Od"
@@ -6415,7 +6431,7 @@ msgstr ""
 #: templates/IpAddresses/add.php:13 templates/IpAddresses/add_from_range.php:14
 #: templates/IpAddresses/bulk_reassignment.php:16
 #: templates/IpAddresses/edit.php:18 templates/IpAddresses/view.php:21
-#: templates/Overviews/index.php:157
+#: templates/Overviews/index.php:162
 msgid "List IP Addresses"
 msgstr "Seznam IP adres"
 
@@ -6475,7 +6491,7 @@ msgid "Device"
 msgstr "Zařízení"
 
 #: templates/IpNetworks/add.php:14 templates/IpNetworks/edit.php:19
-#: templates/IpNetworks/view.php:22 templates/Overviews/index.php:162
+#: templates/IpNetworks/view.php:22 templates/Overviews/index.php:167
 msgid "List IP Networks"
 msgstr "Seznam IP sítí"
 
@@ -6654,18 +6670,23 @@ msgstr "Přehled smluv"
 msgid "Overview of New and Ending Contracts"
 msgstr "Přehled nových a končících smluv"
 
-#: templates/Overviews/index.php:152 templates/SoldEquipments/add.php:15
+#: templates/Overviews/index.php:132
+#: templates/Overviews/overview_of_new_and_ending_billings.php:65
+msgid "Overview of New and Ending Billings"
+msgstr "Přehled nových a končících fakturací"
+
+#: templates/Overviews/index.php:157 templates/SoldEquipments/add.php:15
 #: templates/SoldEquipments/edit.php:23 templates/SoldEquipments/view.php:25
 msgid "List Sold Equipments"
 msgstr "Seznam prodaných zařízení"
 
-#: templates/Overviews/index.php:167 templates/RemovedIpAddresses/add.php:14
+#: templates/Overviews/index.php:172 templates/RemovedIpAddresses/add.php:14
 #: templates/RemovedIpAddresses/edit.php:22
 #: templates/RemovedIpAddresses/view.php:25
 msgid "List Removed IP Addresses"
 msgstr "Seznam odebraných IP adres"
 
-#: templates/Overviews/index.php:172 templates/RemovedIpNetworks/add.php:14
+#: templates/Overviews/index.php:177 templates/RemovedIpNetworks/add.php:14
 #: templates/RemovedIpNetworks/edit.php:22
 #: templates/RemovedIpNetworks/view.php:25
 msgid "List Removed IP Networks"
@@ -6697,6 +6718,7 @@ msgstr "Zobrazit fakturace"
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:22
 #: templates/Overviews/overview_of_czech_customer_connection_speeds.php:22
 #: templates/Overviews/overview_of_dealer_commissions.php:22
+#: templates/Overviews/overview_of_new_and_ending_billings.php:64
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:66
 msgid "List Overviews"
 msgstr "Seznam přehledů"
@@ -6848,31 +6870,42 @@ msgstr "(neobchodní)"
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: templates/Overviews/overview_of_new_and_ending_contracts.php:25
-msgid "Read the Period From"
-msgstr "Období počítat"
-
+#: templates/Overviews/overview_of_new_and_ending_billings.php:24
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:38
 msgid "To"
 msgstr "Do"
 
+#: templates/Overviews/overview_of_new_and_ending_billings.php:53
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:55
 msgid "Installation City"
 msgstr "Město instalace"
 
+#: templates/Overviews/overview_of_new_and_ending_billings.php:72
+#: templates/Overviews/overview_of_new_and_ending_billings.php:84
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:74
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:83
 msgid "Starting"
 msgstr "Začíná"
 
+#: templates/Overviews/overview_of_new_and_ending_billings.php:74
+#: templates/Overviews/overview_of_new_and_ending_billings.php:94
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:75
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:92
 msgid "Ending"
 msgstr "Končí"
 
+#: templates/Overviews/overview_of_new_and_ending_billings.php:76
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:76
 msgid "Net Change"
 msgstr "Čistá změna"
+
+#: templates/Overviews/overview_of_new_and_ending_billings.php:78
+msgid "A billing that begins and ends within the period is in both listings."
+msgstr "Fakturace, která v období začne i skončí, je v obou tabulkách."
+
+#: templates/Overviews/overview_of_new_and_ending_contracts.php:25
+msgid "Read the Period From"
+msgstr "Období počítat"
 
 #: templates/Overviews/overview_of_new_and_ending_contracts.php:77
 msgid "A contract that begins and ends within the period is in both listings."
@@ -8326,6 +8359,10 @@ msgstr "Smlouvy: {0}"
 #: templates/element/IpAddressRanges/summary.php:25
 msgid "Range"
 msgstr "Rozsah"
+
+#: templates/element/Overviews/billings_in_period.php:79
+msgid "Total"
+msgstr "Celkem"
 
 #: templates/element/Settings/FormFields.php:34
 #: templates/element/Settings/FormFields.php:51
