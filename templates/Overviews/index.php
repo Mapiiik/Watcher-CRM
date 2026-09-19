@@ -129,6 +129,11 @@
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('Overview of New and Ending Billings'),
+                    ['action' => 'overviewOfNewAndEndingBillings'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('List Contract Versions'),
                     ['controller' => 'ContractVersions', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],

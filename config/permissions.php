@@ -906,6 +906,7 @@ $permissions = [
                 //what came in and what went out over a month is when invoicing starts and
                 //stops, which is the bookkeeper's business as much as the sales manager's
                 'overviewOfNewAndEndingContracts',
+                'overviewOfNewAndEndingBillings',
             ],
         ],
         //enable customer message sending for network managers and sales managers

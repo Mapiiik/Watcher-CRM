@@ -26,6 +26,7 @@ use Cake\I18n\Date;
 use Cake\ORM\Association;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
+use PhpCollective\DecimalObject\Decimal;
 use RuntimeException;
 use stdClass;
 
@@ -358,6 +359,106 @@ class OverviewsController extends AppController
             // Bound rather than spelled into the SQL the way the label filter above does:
             // that one gets away with it by checking every value is a UUID first, and a town
             // is whatever somebody typed.
+            $query->where(['InstallationAddresses.city IN' => $cities]);
+        }
+
+        return $query;
+    }
+
+    /**
+     * Overview of billings beginning and ending within a period.
+     *
+     * The contracts' counterpart one level down: a contract that stays may still change what
+     * it is charged, and that shows only on its billings. Each listing is summed, so the month's
+     * effect on what gets invoiced reads straight off the page.
+     *
+     * @return void Renders view
+     */
+    public function overviewOfNewAndEndingBillings(): void
+    {
+        $today = new Date('now');
+        $from = $this->queryDate('from') ?? $today->firstOfMonth();
+        $to = $this->queryDate('to') ?? $today->lastOfMonth();
+
+        if ($from > $to) {
+            $this->Flash->warning(__('The period ends before it begins, so nothing falls inside it.'));
+        }
+
+        $starting = $this->billingsInPeriod('Billings.billing_from', $from, $to)->all();
+        $ending = $this->billingsInPeriod('Billings.billing_until', $from, $to)->all();
+
+        $sum = static fn(iterable $billings): Decimal => (new Collection($billings))->reduce(
+            static fn(Decimal $total, Billing $billing): Decimal => $total->add($billing->total_price),
+            Decimal::create(0),
+        );
+        $startingTotal = $sum($starting);
+        $endingTotal = $sum($ending);
+
+        $services = $this->fetchTable(ServicesTable::class)
+            ->find('list')
+            ->orderBy(['Services.name' => 'ASC'])
+            ->all();
+
+        $this->set(compact('starting', 'ending', 'startingTotal', 'endingTotal', 'from', 'to', 'services'));
+
+        $this->setContractStatesViewVarList();
+        $this->setServiceTypesViewVarList();
+        $this->setInstallationCitiesViewVarList();
+    }
+
+    /**
+     * One of the two listings of billings, with the filters that apply to both.
+     *
+     * @param string $field The day the period is asked about, `billing_from` or `billing_until`.
+     * @param \Cake\I18n\Date $from First day of the period, counted in.
+     * @param \Cake\I18n\Date $to Last day of the period, counted in.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Billing>
+     */
+    private function billingsInPeriod(string $field, Date $from, Date $to): SelectQuery
+    {
+        /** @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Billing> $query */
+        $query = $this->fetchTable(BillingsTable::class)
+            ->find()
+            ->contain([
+                'Customers',
+                'Services' => ['ServiceTypes'],
+                'Contracts' => ['ContractStates', 'InstallationAddresses'],
+            ])
+            ->where([$field . ' >=' => $from, $field . ' <=' => $to])
+            ->orderBy([
+                $field => 'ASC',
+                'Customers.company' => 'ASC',
+                'Customers.last_name' => 'ASC',
+                'Customers.first_name' => 'ASC',
+            ]);
+
+        $service_type_id = $this->getRequest()->getQuery('service_type_id');
+        if (is_string($service_type_id) && Validation::uuid($service_type_id)) {
+            $query->where(['Services.service_type_id' => $service_type_id]);
+        }
+
+        $service_id = $this->getRequest()->getQuery('service_id');
+        if (is_string($service_id) && Validation::uuid($service_id)) {
+            $query->where(['Billings.service_id' => $service_id]);
+        }
+
+        $contract_state_id = $this->getRequest()->getQuery('contract_state_id');
+        if (is_string($contract_state_id) && Validation::uuid($contract_state_id)) {
+            $query->where(['Contracts.contract_state_id' => $contract_state_id]);
+        }
+
+        // Only a separate invoice is a question worth asking - the empty choice means both.
+        $separate_invoice = $this->getRequest()->getQuery('separate_invoice');
+        if ($separate_invoice === '0' || $separate_invoice === '1') {
+            $query->where(['Billings.separate_invoice' => $separate_invoice === '1']);
+        }
+
+        // The empty string beside a multiple select is not a town, as on the contracts above.
+        $cities = array_values(array_filter(
+            (array)$this->getRequest()->getQuery('cities', []),
+            static fn(mixed $city): bool => is_string($city) && $city !== '',
+        ));
+        if ($cities !== []) {
             $query->where(['InstallationAddresses.city IN' => $cities]);
         }
 

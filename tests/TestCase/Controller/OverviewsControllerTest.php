@@ -664,4 +664,154 @@ class OverviewsControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * The contract number leads to the contract, nested under its customer.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingContracts()
+     */
+    public function testTheContractNumberLeadsToTheContract(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-contracts?from=1900-01-01&to=2100-01-01');
+
+        $this->assertResponseOk();
+        $contract = $this->viewVariable('starting')->first();
+        $this->assertNotNull($contract, 'the fixtures have to reach the overview at all');
+        $this->assertResponseContains(
+            '/customers/' . $contract->customer_id . '/contracts/' . $contract->id . '">'
+            . h($contract->number) . '</a>',
+        );
+    }
+
+    /**
+     * Asked nothing, the billings answer about the month being lived through.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingBillings()
+     */
+    public function testOverviewOfNewAndEndingBillingsDefaultsToThisMonth(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-billings');
+
+        $this->assertResponseOk();
+
+        $today = new Date('now');
+        $this->assertEquals($today->firstOfMonth(), $this->viewVariable('from'));
+        $this->assertEquals($today->lastOfMonth(), $this->viewVariable('to'));
+    }
+
+    /**
+     * A billing starts on its first day and ends on its last, and one doing both inside the
+     * period is in both listings - so the two sums cancel out.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingBillings()
+     */
+    public function testABillingIsListedByItsFirstAndLastDay(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-billings?from=2021-11-01&to=2021-11-30');
+
+        $this->assertResponseOk();
+        $this->assertSame(
+            ['b1000000-0000-4000-8000-000000000001'],
+            $this->viewVariable('starting')->extract('id')->toList(),
+        );
+        $this->assertSame(
+            ['b1000000-0000-4000-8000-000000000001'],
+            $this->viewVariable('ending')->extract('id')->toList(),
+        );
+        $this->assertTrue($this->viewVariable('startingTotal')->equals($this->viewVariable('endingTotal')));
+    }
+
+    /**
+     * What starts is summed, and one still running is in no ending listing.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingBillings()
+     */
+    public function testTheStartingBillingsAreSummed(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-billings?from=2022-01-01&to=2022-01-31');
+
+        $this->assertResponseOk();
+        $this->assertCount(2, $this->viewVariable('starting'));
+        $this->assertCount(0, $this->viewVariable('ending'));
+        $this->assertSame('5', $this->viewVariable('startingTotal')->trim()->toString());
+    }
+
+    /**
+     * The filters narrow both listings down to what they name.
+     *
+     * @param string $query The filter as it arrives.
+     * @param int $count How many of the January billings it leaves.
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingBillings()
+     */
+    #[DataProvider('billingFilters')]
+    public function testTheBillingFiltersNarrowTheListing(string $query, int $count): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-new-and-ending-billings?from=2021-11-01&to=2022-01-31&' . $query);
+
+        $this->assertResponseOk();
+        $this->assertCount($count, $this->viewVariable('starting'));
+    }
+
+    /**
+     * @return array<string, array{string, int}>
+     */
+    public static function billingFilters(): array
+    {
+        return [
+            'nothing' => ['', 3],
+            'a service' => ['service_id=5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2', 2],
+            'a separate invoice' => ['separate_invoice=1', 1],
+            'no separate invoice' => ['separate_invoice=0', 2],
+            'the empty choice' => ['separate_invoice=', 3],
+            'a cleared city select' => ['cities[]=', 3],
+            'a service type nobody has' => ['service_type_id=00000000-0000-4000-8000-000000000000', 0],
+        ];
+    }
+
+    /**
+     * The billings are the same commercial report as the contracts, open to the same roles.
+     *
+     * @param string $role The office role to open it as.
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingBillings()
+     */
+    #[DataProvider('addressProblemRoles')]
+    public function testOverviewOfNewAndEndingBillingsIsOpenToTheOfficeRoles(string $role): void
+    {
+        $this->login($role);
+
+        $this->get('/overviews/overview-of-new-and-ending-billings');
+
+        $this->assertResponseOk();
+    }
+
+    /**
+     * And shut to network managers the same way.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfNewAndEndingBillings()
+     */
+    public function testOverviewOfNewAndEndingBillingsStaysShutToNetworkManagers(): void
+    {
+        $this->login('network-manager');
+
+        $this->get('/overviews/overview-of-new-and-ending-billings');
+
+        $this->assertRedirect();
+    }
 }
