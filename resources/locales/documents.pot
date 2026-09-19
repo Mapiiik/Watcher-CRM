@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-11 02:08+0200\n"
+"POT-Creation-Date: 2026-09-19 11:23+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,61 +14,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./src/Pdf/ContractPDF.php:438
+#: ./src/Pdf/ContractPDF.php:440
+#: ./src/Pdf/CustomerPDF.php:227
 msgid "Billing Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:508
+#: ./src/Pdf/ContractPDF.php:510
 msgid "Installation Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:512
+#: ./src/Pdf/ContractPDF.php:514
 msgid "Delivery Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:516
+#: ./src/Pdf/ContractPDF.php:518
 msgid "Permanent Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1264
+#: ./src/Pdf/ContractPDF.php:1146
 msgid "Username"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1264
+#: ./src/Pdf/ContractPDF.php:1146
 msgid "Password"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1305
+#: ./src/Pdf/ContractPDF.php:1187
 msgid "Assigned IP Addresses"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1309
+#: ./src/Pdf/ContractPDF.php:1191
 msgid "IP Address"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1310
-#: ./src/Pdf/ContractPDF.php:1382
+#: ./src/Pdf/ContractPDF.php:1192
+#: ./src/Pdf/ContractPDF.php:1264
 msgid "IP Network"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1311
-#: ./src/Pdf/ContractPDF.php:1383
+#: ./src/Pdf/ContractPDF.php:1193
+#: ./src/Pdf/ContractPDF.php:1265
 msgid "IP Gateway"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1356
+#: ./src/Pdf/ContractPDF.php:1238
 msgid "Assigned IP Networks"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1384
+#: ./src/Pdf/ContractPDF.php:1266
 msgid "DNS Servers"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1403
+#: ./src/Pdf/ContractPDF.php:1285
 msgid "WiFi - SSID"
 msgstr ""
 
-#: ./src/Pdf/ContractPDF.php:1403
+#: ./src/Pdf/ContractPDF.php:1285
 msgid "WiFi - Password"
 msgstr ""
 

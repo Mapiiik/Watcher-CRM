@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-19 09:59+0200\n"
+"POT-Creation-Date: 2026-09-19 11:23+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -140,19 +140,19 @@ msgstr ""
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:715
+#: ./config/settings.php:724
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:766
+#: ./config/settings.php:775
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:771
+#: ./config/settings.php:780
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:849
+#: ./config/settings.php:858
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -797,7 +797,7 @@ msgid "Signature Nobody Filed"
 msgstr ""
 
 #: ./src/Contracts/Check/UnfiledSignatureCheck.php:80
-#: ./src/Customers/Check/UnfiledCustomerSignatureCheck.php:54
+#: ./src/Customers/Check/UnfiledCustomerSignatureCheck.php:55
 msgid "Every signature recorded has its signed documents on file."
 msgstr ""
 
@@ -1276,28 +1276,28 @@ msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:662
-#: ./src/Controller/CustomerProposalsController.php:540
+#: ./src/Controller/CustomerProposalsController.php:546
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:667
-#: ./src/Controller/CustomerProposalsController.php:545
+#: ./src/Controller/CustomerProposalsController.php:551
 msgid "The proposal has been deleted."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:691
 #: ./src/Controller/CustomerProposalsController.php:173
-#: ./src/Controller/CustomerProposalsController.php:499
+#: ./src/Controller/CustomerProposalsController.php:505
 msgid "This proposal has already been settled."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:700
-#: ./src/Controller/CustomerProposalsController.php:507
+#: ./src/Controller/CustomerProposalsController.php:513
 msgid "The proposal has been revoked."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:703
-#: ./src/Controller/CustomerProposalsController.php:510
+#: ./src/Controller/CustomerProposalsController.php:516
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
@@ -1605,48 +1605,48 @@ msgstr ""
 msgid "This proposal may no longer be changed."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:186
+#: ./src/Controller/CustomerProposalsController.php:192
 msgid "The proposal has been recorded as sent."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:192
+#: ./src/Controller/CustomerProposalsController.php:198
 msgid "The sending could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:219
-#: ./src/Controller/CustomerProposalsController.php:316
+#: ./src/Controller/CustomerProposalsController.php:225
+#: ./src/Controller/CustomerProposalsController.php:322
 msgid "This customer proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:229
+#: ./src/Controller/CustomerProposalsController.php:235
 msgid "The signature has been recorded."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:235
+#: ./src/Controller/CustomerProposalsController.php:241
 msgid "The signature could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:344
+#: ./src/Controller/CustomerProposalsController.php:350
 msgid "There are no changes left to apply in this proposal."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:351
+#: ./src/Controller/CustomerProposalsController.php:357
 msgid "The changes of this proposal cannot be applied as it stands."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:390
+#: ./src/Controller/CustomerProposalsController.php:396
 msgid "The changes of the proposal could not be applied: {0}"
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:407
+#: ./src/Controller/CustomerProposalsController.php:413
 msgid "Contract {0} has been given an end date. Its state is left as it was, because that has its own requirements to satisfy."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:533
+#: ./src/Controller/CustomerProposalsController.php:539
 msgid "This proposal may no longer be removed."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:398
+#: ./src/Controller/CustomerProposalsController.php:404
 msgid "The changes of the proposal have been applied to the live records."
 msgid_plural "The changes of the proposal and everything in it have been applied to the live records."
 msgstr[0] ""
@@ -2218,7 +2218,7 @@ msgstr ""
 msgid "Every customer has a telephone number on file."
 msgstr ""
 
-#: ./src/Customers/Check/UnfiledCustomerSignatureCheck.php:45
+#: ./src/Customers/Check/UnfiledCustomerSignatureCheck.php:46
 msgid "Consent Nobody Filed"
 msgstr ""
 
@@ -2731,13 +2731,18 @@ msgstr ""
 msgid "former"
 msgstr ""
 
-#: ./src/Model/Enum/CustomerDocumentType.php:27
-#: ./src/Model/Enum/CustomerProposalPurpose.php:35
+#: ./src/Model/Enum/CustomerDocumentType.php:28
+#: ./src/Model/Enum/CustomerProposalPurpose.php:37
 msgid "Consent to the processing of personal data"
 msgstr ""
 
-#: ./src/Model/Enum/CustomerDocumentType.php:28
+#: ./src/Model/Enum/CustomerDocumentType.php:29
 msgid "Consent to the processing of personal data (change)"
+msgstr ""
+
+#: ./src/Model/Enum/CustomerDocumentType.php:30
+#: ./src/Model/Enum/CustomerProposalPurpose.php:38
+msgid "List of the user's contracts and services provided"
 msgstr ""
 
 #: ./src/Model/Enum/CustomerInvoiceDeliveryType.php:24
@@ -3073,55 +3078,59 @@ msgstr ""
 msgid "That proposal has already gone out, so nothing more goes in it."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:580
+#: ./src/Model/Table/ContractProposalsTable.php:568
+msgid "That customer proposal is only handed over, so no contract proposal goes in it."
+msgstr ""
+
+#: ./src/Model/Table/ContractProposalsTable.php:597
 msgid "That customer proposal already holds a contract proposal for this contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:598
+#: ./src/Model/Table/ContractProposalsTable.php:615
 msgid "The terminated contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:608
+#: ./src/Model/Table/ContractProposalsTable.php:625
 msgid "A contract version cannot terminate itself."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:641
+#: ./src/Model/Table/ContractProposalsTable.php:658
 msgid "A change amends a signed contract. Record the signature of this contract version first."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:659
+#: ./src/Model/Table/ContractProposalsTable.php:676
 msgid "The contract version being terminated has not been concluded."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:678
+#: ./src/Model/Table/ContractProposalsTable.php:695
 msgid "A contract version that has not been concluded cannot be terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:720
+#: ./src/Model/Table/ContractProposalsTable.php:737
 msgid "A contract is terminated on the day its version stops being valid. Say both, and say the same day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:750
+#: ./src/Model/Table/ContractProposalsTable.php:767
 msgid "What the proposal asks for does not match what it is for: only an ending ends the contract, and an ending has to say the day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:770
+#: ./src/Model/Table/ContractProposalsTable.php:787
 msgid "Please enter the number of the contract being terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:802
+#: ./src/Model/Table/ContractProposalsTable.php:819
 msgid "The contract version ends on a given date, so the documents will be printed as a fixed-term contract. Please confirm that this is intended and set the obligation to the date until which the version is valid."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:838
+#: ./src/Model/Table/ContractProposalsTable.php:855
 msgid "This proposal has already been sent, so what it says is not changed here. Revoke it and create a new one."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:853
+#: ./src/Model/Table/ContractProposalsTable.php:870
 msgid "The changes of a proposal cannot be applied before it has been signed."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:863
+#: ./src/Model/Table/ContractProposalsTable.php:880
 msgid "A proposal whose changes have been applied cannot also be revoked."
 msgstr ""
 
@@ -3159,7 +3168,11 @@ msgstr ""
 msgid "Please say how the proposal was sent."
 msgstr ""
 
-#: ./src/Model/Table/CustomerProposalsTable.php:269
+#: ./src/Model/Table/CustomerProposalsTable.php:277
+msgid "This customer proposal holds contract proposals, which have to be signed."
+msgstr ""
+
+#: ./src/Model/Table/CustomerProposalsTable.php:286
 msgid "This customer proposal has been sent, or there are contract proposals in it. Revoke it instead."
 msgstr ""
 
@@ -3319,12 +3332,12 @@ msgstr ""
 msgid "Active contractual obligations must be finished before changing to this contract state."
 msgstr ""
 
-#: ./src/Proposals/DrawnPaper.php:100
-#: ./src/Proposals/DrawnPaper.php:116
+#: ./src/Proposals/DrawnPaper.php:103
+#: ./src/Proposals/DrawnPaper.php:119
 msgid "That is not a document this proposal is for."
 msgstr ""
 
-#: ./src/Proposals/DrawnPaper.php:109
+#: ./src/Proposals/DrawnPaper.php:112
 msgid "No documents of ours are generated for a contract whose service keeps no contract versions."
 msgstr ""
 
@@ -3359,6 +3372,14 @@ msgstr ""
 
 #: ./src/Service/ContractPrint/ContractPrintValidator.php:83
 msgid "This proposal cannot be printed as that document."
+msgstr ""
+
+#: ./src/Service/CustomerPrint/CustomerPrintValidator.php:93
+msgid "The customer has no billing address."
+msgstr ""
+
+#: ./src/Service/CustomerPrint/CustomerPrintValidator.php:97
+msgid "The customer has no contracts whose services are provided."
 msgstr ""
 
 #: ./src/Service/HistoricalConnections/HistoricalConnectionsUpdater.php:69
