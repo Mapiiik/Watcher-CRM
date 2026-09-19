@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-13 19:40+0200\n"
+"POT-Creation-Date: 2026-09-14 18:17+0200\n"
 "PO-Revision-Date: 2026-08-22 17:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -330,19 +330,19 @@ msgstr ""
 msgid "Automatic RADIUS account changes"
 msgstr "Automatické změny účtu RADIUS"
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:263
+#: plugins/Radius/src/Updater/AccountsUpdater.php:271
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr "Tyto automatické změny účtu RADIUS právě proběhly."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:270
+#: plugins/Radius/src/Updater/AccountsUpdater.php:278
 msgid "Automatic RADIUS account changes have been reported."
 msgstr "Byly nahlášeny automatické změny účtu RADIUS."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:276
+#: plugins/Radius/src/Updater/AccountsUpdater.php:284
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr "Automatické změny účtu RADIUS nelze nahlásit."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:435
+#: plugins/Radius/src/Updater/AccountsUpdater.php:443
 msgid ""
 "The RADIUS replies for {0} could not be found automatically. Please, set it "
 "manually."
@@ -350,11 +350,11 @@ msgstr ""
 "Odpovědi RADIUS pro {0} nebyly automaticky nalezeny. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:441
+#: plugins/Radius/src/Updater/AccountsUpdater.php:449
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:551
+#: plugins/Radius/src/Updater/AccountsUpdater.php:559
 msgid ""
 "The RADIUS user groups for {0} could not be found automatically. Please, set "
 "it manually."
@@ -362,7 +362,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS pro {0} nebyly nalezeny automaticky. Nastavte je "
 "prosím ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:557
+#: plugins/Radius/src/Updater/AccountsUpdater.php:565
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."

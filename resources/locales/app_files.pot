@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-16 00:53+0200\n"
+"POT-Creation-Date: 2026-09-19 09:06+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,13 +14,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./templates/Contracts/view.php:44
-#: ./templates/Contracts/view.php:155
-#: ./templates/Customers/view.php:57
-#: ./templates/Customers/view.php:178
+#: ./templates/Contracts/view.php:47
+#: ./templates/Contracts/view.php:165
+#: ./templates/Customers/view.php:60
+#: ./templates/Customers/view.php:188
 #: ./templates/DocumentationTypes/view.php:73
 #: ./templates/Documentations/index.php:41
-#: ./templates/Documents/manage.php:52
+#: ./templates/Documents/manage.php:73
 msgid "Documentations"
 msgstr ""
 
