@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-19 11:27+0200\n"
+"POT-Creation-Date: 2026-09-19 20:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -336,7 +336,7 @@ msgid "Where"
 msgstr ""
 
 #: ./src/Command/BackupCommand.php:86
-#: ./templates/cell/Documents/display.php:107
+#: ./templates/cell/Documents/display.php:108
 msgid "Size"
 msgstr ""
 
@@ -510,8 +510,8 @@ msgstr ""
 
 #: ./src/Command/RebuildFulltextSearchCustomersCommand.php:65
 #: ./templates/ContractProposals/add.php:16
-#: ./templates/ContractProposals/view.php:89
-#: ./templates/ContractProposals/view.php:103
+#: ./templates/ContractProposals/view.php:90
+#: ./templates/ContractProposals/view.php:104
 #: ./templates/ContractVersions/view.php:36
 #: ./templates/ContractVersions/view.php:52
 #: ./templates/Contracts/view.php:37
@@ -525,10 +525,10 @@ msgstr ""
 #: ./templates/Customers/view.php:193
 #: ./templates/Documents/add_pages.php:36
 #: ./templates/Documents/add_pages.php:49
-#: ./templates/Documents/index.php:42
+#: ./templates/Documents/index.php:41
 #: ./templates/Documents/manage.php:86
 #: ./templates/Documents/manage.php:87
-#: ./templates/cell/Documents/display.php:163
+#: ./templates/cell/Documents/display.php:164
 #: ./templates/element/ContractChecks/proposal_table.php:66
 #: ./templates/element/CustomerChecks/customer_proposal.php:50
 #: ./templates/element/Documents/rounds.php:104
@@ -839,7 +839,7 @@ msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePlan.php:99
 #: ./src/Contracts/Proposal/ChangePlan.php:152
-#: ./templates/ContractProposals/view.php:169
+#: ./templates/ContractProposals/view.php:170
 #: ./templates/ContractVersions/view.php:120
 #: ./templates/CustomerProposals/conclude.php:44
 #: ./templates/CustomerProposals/view.php:132
@@ -860,11 +860,11 @@ msgid "A version that does not exist yet"
 msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePreview.php:78
-msgid "Nobody has signed this proposal yet, so there are no changes to apply."
+msgid "This proposal has not been signed yet, so its changes cannot be applied."
 msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePreview.php:149
-msgid "The signature is recorded, but no signed documents have been filed against this proposal."
+msgid "The signature is recorded, but no signed documents have been uploaded for this proposal."
 msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePreview.php:180
@@ -872,11 +872,11 @@ msgid "A billing this proposal changes is no longer on the contract. Take the sn
 msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePreview.php:194
-msgid "A billing this proposal changes has itself been changed since: {0}. Applying the changes will overwrite that."
+msgid "A billing changed by this proposal has been edited in the meantime: {0}. Applying the changes will overwrite that edit."
 msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePreview.php:206
-msgid "A billing has been added to the contract that this proposal knows nothing about. It will be left as it is."
+msgid "A billing this proposal does not cover has been added to the contract. It will be left unchanged."
 msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePreview.php:244
@@ -884,11 +884,11 @@ msgid "The contract version has been changed since this proposal was created."
 msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePreview.php:271
-msgid "This proposal takes effect on a day that has already been invoiced for. Only an administrator may write into an invoiced period, and only deliberately."
+msgid "This proposal takes effect in a period that has already been invoiced. Only an administrator can make changes in an invoiced period, and only after allowing it explicitly."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:298
-msgid "Only an administrator may apply it, and only deliberately."
+#: ./src/Contracts/Proposal/ChangePreview.php:299
+msgid "Only an administrator can apply it, and only after allowing it explicitly."
 msgstr ""
 
 #: ./src/Contracts/Proposal/PlannedChange.php:50
@@ -896,7 +896,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:46
 #: ./templates/Billings/view.php:50
 #: ./templates/BorrowedEquipments/view.php:56
-#: ./templates/ContractProposals/view.php:130
+#: ./templates/ContractProposals/view.php:131
 #: ./templates/ContractVersions/view.php:86
 #: ./templates/Contracts/map.php:11
 #: ./templates/Contracts/view.php:101
@@ -919,7 +919,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:87
 #: ./templates/Tasks/index.php:110
 #: ./templates/Tasks/view.php:105
-#: ./templates/cell/Documents/display.php:96
+#: ./templates/cell/Documents/display.php:97
 #: ./templates/cell/ServiceOverridesStatus/display.php:22
 #: ./templates/cell/ServiceOverridesStatus/display.php:45
 #: ./templates/element/AddressChecks/missing_installation_address.php:17
@@ -953,9 +953,9 @@ msgid "Contract"
 msgstr ""
 
 #: ./src/Contracts/Proposal/PlannedChange.php:51
-#: ./templates/ContractProposals/view.php:141
+#: ./templates/ContractProposals/view.php:142
 #: ./templates/ContractVersions/view.php:78
-#: ./templates/element/ContractProposals/form.php:104
+#: ./templates/element/ContractProposals/form.php:105
 #: ./templates/element/ContractProposals/form.php:199
 msgid "Contract Version"
 msgstr ""
@@ -1022,15 +1022,15 @@ msgid "Obligation Until"
 msgstr ""
 
 #: ./src/Contracts/Proposal/ReadinessChecks.php:77
-msgid "A borrowed equipment is not assigned, although it should normally be for this type of service. Please confirm that the customer has their own equipment or add it."
+msgid "No borrowed equipment is assigned, although this type of service usually has some. Please confirm that the customer has their own equipment, or add it."
 msgstr ""
 
 #: ./src/Contracts/Proposal/ReadinessChecks.php:81
-msgid "IP addresses are not assigned, although they usually should be for this type of service. Please confirm that the customer does not use IP addresses or add them."
+msgid "No IP addresses are assigned, although this type of service usually has some. Please confirm that the customer does not use IP addresses, or add them."
 msgstr ""
 
 #: ./src/Contracts/Proposal/ReadinessChecks.php:85
-msgid "RADIUS accounts are not assigned, although they usually should be for this type of service. Please confirm that the customer does not use RADIUS accounts or add them."
+msgid "No RADIUS accounts are assigned, although this type of service usually has some. Please confirm that the customer does not use RADIUS accounts, or add them."
 msgstr ""
 
 #: ./src/Contracts/Unsigned/UnsignedPaperwork.php:84
@@ -1249,11 +1249,12 @@ msgstr ""
 #: ./src/Controller/ContractProposalsController.php:227
 #: ./src/Controller/ContractProposalsController.php:279
 #: ./src/Controller/ContractProposalsController.php:560
+#: ./src/Controller/CustomerProposalsController.php:137
 msgid "This proposal can no longer be changed."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:298
-#: ./src/Controller/ContractProposalsController.php:837
+#: ./src/Controller/ContractProposalsController.php:838
 msgid "Choose which contract and which version of it this contract proposal is for."
 msgstr ""
 
@@ -1262,14 +1263,14 @@ msgid "There is no such line on this proposal."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:579
-#: ./src/Controller/ContractProposalsController.php:968
+#: ./src/Controller/ContractProposalsController.php:969
 #: ./src/Controller/CustomerProposalsController.php:107
 #: ./src/Controller/CustomerProposalsController.php:146
 msgid "The proposal has been saved."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:585
-#: ./src/Controller/ContractProposalsController.php:974
+#: ./src/Controller/ContractProposalsController.php:975
 #: ./src/Controller/CustomerProposalsController.php:116
 #: ./src/Controller/CustomerProposalsController.php:152
 msgid "The proposal could not be saved. Please, try again."
@@ -1302,27 +1303,27 @@ msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:795
-msgid "Say which day the service runs to."
+msgid "Enter the last day of the service."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:807
-msgid "Say which day the proposal takes effect."
+msgid "Enter the day the proposal takes effect."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:854
-msgid "Say which day the new contract starts."
+#: ./src/Controller/ContractProposalsController.php:855
+msgid "Enter the day the new contract starts."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:951
+#: ./src/Controller/ContractProposalsController.php:952
 msgid "Please answer this before the proposal is sent."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:956
+#: ./src/Controller/ContractProposalsController.php:957
 msgid "The contract is not ready for a contract proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1216
-msgid "This contract proposal could not be given a customer proposal to be part of."
+#: ./src/Controller/ContractProposalsController.php:1217
+msgid "A customer proposal for this contract proposal could not be created."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:335
@@ -1601,10 +1602,6 @@ msgstr ""
 msgid "The customer message could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:137
-msgid "This proposal may no longer be changed."
-msgstr ""
-
 #: ./src/Controller/CustomerProposalsController.php:192
 msgid "The proposal has been recorded as sent."
 msgstr ""
@@ -1631,7 +1628,7 @@ msgid "There are no changes left to apply in this proposal."
 msgstr ""
 
 #: ./src/Controller/CustomerProposalsController.php:357
-msgid "The changes of this proposal cannot be applied as it stands."
+msgid "The changes of this proposal cannot be applied in its current state."
 msgstr ""
 
 #: ./src/Controller/CustomerProposalsController.php:396
@@ -1639,11 +1636,11 @@ msgid "The changes of the proposal could not be applied: {0}"
 msgstr ""
 
 #: ./src/Controller/CustomerProposalsController.php:413
-msgid "Contract {0} has been given an end date. Its state is left as it was, because that has its own requirements to satisfy."
+msgid "Contract {0} now has an end date. Its state was not changed, because a change of state has requirements of its own."
 msgstr ""
 
 #: ./src/Controller/CustomerProposalsController.php:539
-msgid "This proposal may no longer be removed."
+msgid "This proposal can no longer be deleted."
 msgstr ""
 
 #: ./src/Controller/CustomerProposalsController.php:404
@@ -1713,11 +1710,11 @@ msgid "Invalid type of document."
 msgstr ""
 
 #: ./src/Controller/DocumentsController.php:217
-msgid "It was not said what those pages are."
+msgid "Choose which document the pages belong to."
 msgstr ""
 
 #: ./src/Controller/DocumentsController.php:245
-msgid "Nothing was chosen to file."
+msgid "No files were selected."
 msgstr ""
 
 #: ./src/Controller/DocumentsController.php:285
@@ -1729,14 +1726,14 @@ msgid "The pages could not be reordered: {0}"
 msgstr ""
 
 #: ./src/Controller/DocumentsController.php:364
-msgid "That page belongs to something else."
+msgid "That page belongs to a different proposal."
 msgstr ""
 
 #: ./src/Controller/DocumentsController.php:487
 #: ./src/Model/Entity/ContractProposal.php:272
 #: ./src/View/Cell/DocumentsCell.php:188
 #: ./src/View/Cell/DocumentsCell.php:210
-#: ./templates/ContractProposals/view.php:119
+#: ./templates/ContractProposals/view.php:120
 #: ./templates/element/ContractProposals/heading.php:27
 #: ./templates/element/CustomerProposals/heading.php:16
 #: ./templates/element/Documents/whereabouts.php:62
@@ -2390,7 +2387,7 @@ msgid "Contract proposals"
 msgstr ""
 
 #: ./src/Model/Entity/CustomerProposal.php:86
-msgid "Nothing asked for yet"
+msgid "Empty"
 msgstr ""
 
 #: ./src/Model/Entity/CustomerProposal.php:116
@@ -3035,103 +3032,103 @@ msgid "What has already been invoiced for is not changed here. End this billing 
 msgstr ""
 
 #: ./src/Model/Table/ContractProposalsTable.php:328
-msgid "This proposal has been sent or has documents on file, so the record of it stays. Revoke it instead."
+msgid "This proposal has been sent or has documents, so it cannot be deleted. Revoke it instead."
 msgstr ""
 
 #: ./src/Model/Table/ContractProposalsTable.php:367
-msgid "The proposed changes are not in a shape the application can read."
+msgid "The proposed changes are in an invalid format."
 msgstr ""
 
 #: ./src/Model/Table/ContractProposalsTable.php:384
-msgid "The snapshot does not carry everything the documents need."
+msgid "The snapshot is missing data the documents need."
 msgstr ""
 
 #: ./src/Model/Table/ContractProposalsTable.php:401
-msgid "The confirmations name a question nobody asks."
+msgid "The confirmations include an unknown question."
 msgstr ""
 
 #: ./src/Model/Table/ContractProposalsTable.php:426
-msgid "A proposed change acts on a billing the snapshot does not know."
+msgid "A proposed change refers to a billing that is not in the snapshot."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:452
-msgid "Two proposed changes act on the same billing."
+#: ./src/Model/Table/ContractProposalsTable.php:453
+msgid "Two proposed changes refer to the same billing."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:474
+#: ./src/Model/Table/ContractProposalsTable.php:475
 msgid "The contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:490
-msgid "A contract proposal for this purpose is about a version that already exists."
+#: ./src/Model/Table/ContractProposalsTable.php:491
+msgid "A contract proposal for this purpose cannot refer to an existing version."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:512
-msgid "The service of this contract keeps no contract versions."
+#: ./src/Model/Table/ContractProposalsTable.php:513
+msgid "The service type of this contract does not use contract versions."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:533
+#: ./src/Model/Table/ContractProposalsTable.php:535
 msgid "That customer proposal belongs to a different customer."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:551
-msgid "That proposal has already gone out, so nothing more goes in it."
+#: ./src/Model/Table/ContractProposalsTable.php:553
+msgid "That customer proposal has already been sent, so nothing more can be added to it."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:568
-msgid "That customer proposal is only handed over, so no contract proposal goes in it."
+#: ./src/Model/Table/ContractProposalsTable.php:571
+msgid "That customer proposal is only handed over, so it cannot hold contract proposals."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:597
+#: ./src/Model/Table/ContractProposalsTable.php:601
 msgid "That customer proposal already holds a contract proposal for this contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:615
+#: ./src/Model/Table/ContractProposalsTable.php:619
 msgid "The terminated contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:625
+#: ./src/Model/Table/ContractProposalsTable.php:629
 msgid "A contract version cannot terminate itself."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:658
+#: ./src/Model/Table/ContractProposalsTable.php:662
 msgid "A change amends a signed contract. Record the signature of this contract version first."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:676
+#: ./src/Model/Table/ContractProposalsTable.php:680
 msgid "The contract version being terminated has not been concluded."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:695
+#: ./src/Model/Table/ContractProposalsTable.php:699
 msgid "A contract version that has not been concluded cannot be terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:737
-msgid "A contract is terminated on the day its version stops being valid. Say both, and say the same day."
+#: ./src/Model/Table/ContractProposalsTable.php:741
+msgid "A contract ends on the day its version stops being valid. Enter both dates and make them the same day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:767
-msgid "What the proposal asks for does not match what it is for: only an ending ends the contract, and an ending has to say the day."
+#: ./src/Model/Table/ContractProposalsTable.php:771
+msgid "The changes do not match the purpose of the proposal. Only a termination ends the contract, and a termination has to state the day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:787
+#: ./src/Model/Table/ContractProposalsTable.php:791
 msgid "Please enter the number of the contract being terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:819
+#: ./src/Model/Table/ContractProposalsTable.php:823
 msgid "The contract version ends on a given date, so the documents will be printed as a fixed-term contract. Please confirm that this is intended and set the obligation to the date until which the version is valid."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:855
-msgid "This proposal has already been sent, so what it says is not changed here. Revoke it and create a new one."
+#: ./src/Model/Table/ContractProposalsTable.php:859
+msgid "This proposal has already been sent, so its content can no longer be changed. Revoke it and create a new one."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:870
+#: ./src/Model/Table/ContractProposalsTable.php:874
 msgid "The changes of a proposal cannot be applied before it has been signed."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:880
-msgid "A proposal whose changes have been applied cannot also be revoked."
+#: ./src/Model/Table/ContractProposalsTable.php:884
+msgid "A proposal whose changes have been applied cannot be revoked."
 msgstr ""
 
 #: ./src/Model/Table/ContractStatesTable.php:113
@@ -3173,7 +3170,7 @@ msgid "This customer proposal holds contract proposals, which have to be signed.
 msgstr ""
 
 #: ./src/Model/Table/CustomerProposalsTable.php:286
-msgid "This customer proposal has been sent, or there are contract proposals in it. Revoke it instead."
+msgid "This customer proposal has been sent or holds contract proposals, so it cannot be deleted. Revoke it instead."
 msgstr ""
 
 #: ./src/Model/Table/CustomersTable.php:352
@@ -3334,11 +3331,11 @@ msgstr ""
 
 #: ./src/Proposals/DrawnPaper.php:103
 #: ./src/Proposals/DrawnPaper.php:119
-msgid "That is not a document this proposal is for."
+msgid "This document does not belong to this proposal."
 msgstr ""
 
 #: ./src/Proposals/DrawnPaper.php:112
-msgid "No documents of ours are generated for a contract whose service keeps no contract versions."
+msgid "No documents are generated for a contract whose service type does not use contract versions."
 msgstr ""
 
 #: ./src/Proposals/ProposalRows.php:80
@@ -3346,7 +3343,7 @@ msgid "{0} ({1} - {2})"
 msgstr ""
 
 #: ./src/Proposals/Settlement.php:116
-#: ./templates/ContractProposals/view.php:200
+#: ./templates/ContractProposals/view.php:201
 #: ./templates/CustomerProposals/view.php:159
 #: ./templates/ServiceOverrides/view.php:110
 #: ./templates/element/common/audit.php:74
@@ -3371,7 +3368,7 @@ msgid "Please choose the customer proposal this contract proposal is part of, or
 msgstr ""
 
 #: ./src/Service/ContractPrint/ContractPrintValidator.php:83
-msgid "This proposal cannot be printed as that document."
+msgid "This document cannot be generated for this proposal."
 msgstr ""
 
 #: ./src/Service/CustomerPrint/CustomerPrintValidator.php:93
@@ -3566,7 +3563,7 @@ msgstr ""
 #: ./templates/Tasks/edit.php:16
 #: ./templates/Tasks/index.php:116
 #: ./templates/Tasks/view.php:10
-#: ./templates/cell/Documents/display.php:109
+#: ./templates/cell/Documents/display.php:110
 #: ./templates/element/ContractChecks/proposal_table.php:37
 #: ./templates/element/ContractProposals/proposed_billings.php:40
 #: ./templates/element/Contracts/Billings.php:36
@@ -3634,7 +3631,7 @@ msgstr ""
 #: ./templates/Commissions/add.php:23
 #: ./templates/Commissions/edit.php:31
 #: ./templates/ContractProposals/add.php:26
-#: ./templates/ContractProposals/billing_line.php:131
+#: ./templates/ContractProposals/billing_line.php:133
 #: ./templates/ContractProposals/edit.php:38
 #: ./templates/ContractStates/add.php:112
 #: ./templates/ContractStates/edit.php:121
@@ -3649,14 +3646,14 @@ msgstr ""
 #: ./templates/CustomerMessages/add.php:37
 #: ./templates/CustomerMessages/edit.php:45
 #: ./templates/CustomerProposals/add.php:28
-#: ./templates/CustomerProposals/conclude.php:69
+#: ./templates/CustomerProposals/conclude.php:70
 #: ./templates/CustomerProposals/edit.php:41
-#: ./templates/CustomerProposals/send.php:59
+#: ./templates/CustomerProposals/send.php:60
 #: ./templates/Customers/add.php:90
 #: ./templates/Customers/edit.php:95
 #: ./templates/DealerCommissions/add.php:32
 #: ./templates/DealerCommissions/edit.php:40
-#: ./templates/Documents/add_pages.php:96
+#: ./templates/Documents/add_pages.php:94
 #: ./templates/Emails/add.php:31
 #: ./templates/Emails/edit.php:36
 #: ./templates/EquipmentTypes/add.php:29
@@ -3707,7 +3704,7 @@ msgstr ""
 #: ./templates/Commissions/edit.php:12
 #: ./templates/Commissions/index.php:42
 #: ./templates/Commissions/view.php:78
-#: ./templates/ContractProposals/view.php:67
+#: ./templates/ContractProposals/view.php:68
 #: ./templates/ContractStates/edit.php:14
 #: ./templates/ContractStates/index.php:66
 #: ./templates/ContractVersions/edit.php:17
@@ -4202,7 +4199,7 @@ msgstr ""
 #: ./templates/ServiceTypes/view.php:35
 #: ./templates/ServiceTypes/view.php:114
 #: ./templates/Services/view.php:36
-#: ./templates/cell/Documents/display.php:106
+#: ./templates/cell/Documents/display.php:107
 #: ./templates/element/ContractProposals/billings.php:15
 #: ./templates/element/ContractProposals/proposed_billings.php:34
 msgid "Name"
@@ -4224,8 +4221,8 @@ msgstr ""
 #: ./templates/Addresses/view.php:155
 #: ./templates/Billings/service_change.php:118
 #: ./templates/Billings/view.php:122
-#: ./templates/ContractProposals/billing_line.php:120
-#: ./templates/ContractProposals/view.php:231
+#: ./templates/ContractProposals/billing_line.php:122
+#: ./templates/ContractProposals/view.php:232
 #: ./templates/ContractStates/view.php:193
 #: ./templates/ContractVersions/view.php:134
 #: ./templates/Contracts/view.php:193
@@ -4580,7 +4577,7 @@ msgstr ""
 #: ./templates/Billings/bulk_service_change.php:141
 #: ./templates/Billings/edit.php:97
 #: ./templates/Billings/service_change.php:183
-#: ./templates/ContractProposals/billing_line.php:126
+#: ./templates/ContractProposals/billing_line.php:128
 #: ./templates/CustomerProposalsly_changes.php:99
 msgid "Allow a connection price below the minimum set on the contract"
 msgstr ""
@@ -4608,7 +4605,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:58
 #: ./templates/Billings/service_change.php:131
 #: ./templates/Billings/view.php:62
-#: ./templates/ContractProposals/billing_line.php:62
+#: ./templates/ContractProposals/billing_line.php:63
 #: ./templates/ServiceOverrides/view.php:91
 #: ./templates/Services/view.php:31
 #: ./templates/element/ContractChecks/billing_gap.php:29
@@ -4640,7 +4637,7 @@ msgstr ""
 #: ./templates/Billings/view.php:101
 #: ./templates/Billings/view.php:144
 #: ./templates/Billings/view.php:181
-#: ./templates/ContractProposals/billing_line.php:79
+#: ./templates/ContractProposals/billing_line.php:80
 #: ./templates/EquipmentTypes/view.php:47
 #: ./templates/Overviews/overview_of_dealer_commissions.php:57
 #: ./templates/Queues/view.php:115
@@ -4657,7 +4654,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:102
 #: ./templates/Billings/service_change.php:149
 #: ./templates/Billings/view.php:106
-#: ./templates/ContractProposals/billing_line.php:89
+#: ./templates/ContractProposals/billing_line.php:90
 #: ./templates/Overviews/overview_of_dealer_commissions.php:58
 #: ./templates/Services/view.php:89
 #: ./templates/element/Contracts/Billings.php:27
@@ -4669,7 +4666,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:106
 #: ./templates/Billings/service_change.php:153
 #: ./templates/Billings/view.php:110
-#: ./templates/ContractProposals/billing_line.php:94
+#: ./templates/ContractProposals/billing_line.php:95
 #: ./templates/Overviews/overview_of_dealer_commissions.php:59
 #: ./templates/Services/view.php:90
 #: ./templates/element/Contracts/Billings.php:28
@@ -4747,7 +4744,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:65
 #: ./templates/Billings/view.php:69
-#: ./templates/ContractProposals/billing_line.php:66
+#: ./templates/ContractProposals/billing_line.php:67
 #: ./templates/Services/view.php:86
 #: ./templates/Tasks/add.php:84
 #: ./templates/Tasks/edit.php:97
@@ -4763,7 +4760,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:71
 #: ./templates/Billings/view.php:75
-#: ./templates/ContractProposals/billing_line.php:104
+#: ./templates/ContractProposals/billing_line.php:105
 #: ./templates/Overviews/overview_of_dealer_commissions.php:61
 #: ./templates/Overviews/overview_of_new_and_ending_billings.php:89
 #: ./templates/Services/view.php:92
@@ -4778,7 +4775,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:75
 #: ./templates/Billings/view.php:79
-#: ./templates/ContractProposals/billing_line.php:111
+#: ./templates/ContractProposals/billing_line.php:113
 #: ./templates/Overviews/overview_of_dealer_commissions.php:62
 #: ./templates/Overviews/overview_of_new_and_ending_billings.php:99
 #: ./templates/Services/view.php:93
@@ -4803,7 +4800,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:85
 #: ./templates/Billings/view.php:89
-#: ./templates/ContractProposals/billing_line.php:116
+#: ./templates/ContractProposals/billing_line.php:118
 #: ./templates/ServiceTypes/view.php:63
 #: ./templates/Services/view.php:95
 #: ./templates/element/Contracts/Billings.php:33
@@ -4812,7 +4809,7 @@ msgstr ""
 
 #: ./templates/Billings/service_change.php:93
 #: ./templates/Billings/view.php:97
-#: ./templates/ContractProposals/billing_line.php:75
+#: ./templates/ContractProposals/billing_line.php:76
 #: ./templates/Overviews/overview_of_dealer_commissions.php:56
 #: ./templates/Services/view.php:87
 #: ./templates/element/ContractProposals/proposed_billings.php:37
@@ -4994,11 +4991,12 @@ msgid "Related Contracts"
 msgstr ""
 
 #: ./templates/ContractProposals/billing_line.php:14
-msgid "Add to What Is Billed For"
+#: ./templates/element/ContractProposals/proposed_billings.php:20
+msgid "Add a Billing"
 msgstr ""
 
 #: ./templates/ContractProposals/billing_line.php:15
-msgid "Change What Is Billed For"
+msgid "Change a Billing"
 msgstr ""
 
 #: ./templates/ContractProposals/billing_line.php:23
@@ -5008,7 +5006,7 @@ msgstr ""
 
 #: ./templates/ContractProposals/billing_line.php:26
 #: ./templates/element/ContractProposals/proposed_billings.php:85
-msgid "Leave this as it stands on the contract?"
+msgid "Leave this as it is on the contract?"
 msgstr ""
 
 #: ./templates/ContractProposals/billing_line.php:32
@@ -5023,19 +5021,19 @@ msgid "View Proposal"
 msgstr ""
 
 #: ./templates/ContractProposals/billing_line.php:47
-msgid "Replacing {0}, billed from {1}. It stops the day before this one starts."
+msgid "Replaces {0}, billed from {1}, which ends the day before this item starts."
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:80
+#: ./templates/ContractProposals/billing_line.php:81
 msgid "Price list"
 msgstr ""
 
-#: ./templates/ContractProposals/billing_line.php:105
-msgid "Empty starts with the contract proposal."
+#: ./templates/ContractProposals/billing_line.php:106
+msgid "If left empty, billing starts on the day the contract proposal takes effect."
 msgstr ""
 
 #: ./templates/ContractProposals/edit.php:23
-#: ./templates/ContractProposals/view.php:79
+#: ./templates/ContractProposals/view.php:80
 msgid "View Customer Proposal"
 msgstr ""
 
@@ -5051,7 +5049,7 @@ msgstr ""
 
 #: ./templates/ContractProposals/view.php:49
 #: ./templates/element/ContractProposals/form.php:282
-msgid "The documents are generated from what the contract looked like when this proposal was created. Taking the snapshot again replaces that. Go ahead?"
+msgid "The documents are generated from the contract as it was when this proposal was created. A new snapshot replaces that state. Continue?"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:57
@@ -5062,19 +5060,19 @@ msgid "Revoke"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:61
-msgid "Give up on this proposal? The live records never moved."
+msgid "Revoke this proposal? Nothing has been changed on the contract yet."
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:69
+#: ./templates/ContractProposals/view.php:70
 #: ./templates/CustomerProposals/view.php:76
 msgid "Are you sure?"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:123
+#: ./templates/ContractProposals/view.php:124
 msgid "This contract proposal is part of the customer proposal: {0}"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:153
+#: ./templates/ContractProposals/view.php:154
 #: ./templates/CustomerProposals/view.php:124
 #: ./templates/element/ContractChecks/proposal_table.php:33
 #: ./templates/element/ContractProposals/form.php:128
@@ -5083,7 +5081,7 @@ msgstr ""
 msgid "Effective From"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:157
+#: ./templates/ContractProposals/view.php:158
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:28
 #: ./templates/CustomerProposals/view.php:120
 #: ./templates/element/ContractChecks/proposal_table.php:32
@@ -5093,11 +5091,11 @@ msgstr ""
 msgid "Purpose"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:161
+#: ./templates/ContractProposals/view.php:162
 msgid "Snapshot Taken"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:165
+#: ./templates/ContractProposals/view.php:166
 #: ./templates/ContractVersions/index.php:42
 #: ./templates/ContractVersions/view.php:116
 #: ./templates/CustomerProposals/send.php:46
@@ -5108,12 +5106,12 @@ msgstr ""
 msgid "Sent To The Customer"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:173
+#: ./templates/ContractProposals/view.php:174
 #: ./templates/CustomerProposals/view.php:136
-msgid "Documents on File"
+msgid "Stored Documents"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:177
+#: ./templates/ContractProposals/view.php:178
 #: ./templates/CustomerProposals/view.php:140
 msgid "None"
 msgstr ""
@@ -5143,21 +5141,21 @@ msgctxt "conclusion date"
 msgid "None"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:178
+#: ./templates/ContractProposals/view.php:179
 #: ./templates/CustomerProposals/view.php:141
-msgid "{0} generated, {1} came back"
+msgid "{0} generated, {1} received"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:196
+#: ./templates/ContractProposals/view.php:197
 msgid "Changes Applied"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:205
+#: ./templates/ContractProposals/view.php:206
 #: ./templates/element/ContractProposals/form.php:157
 msgid "Terminates Contract Version"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:217
+#: ./templates/ContractProposals/view.php:218
 #: ./templates/element/ContractProposals/form.php:166
 msgid "Number of the contract being terminated"
 msgstr ""
@@ -6015,27 +6013,27 @@ msgid "Apply the Proposal's Changes"
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:56
-msgid "Everything this proposal asks of the contracts, written into the live records in one go. Until now they have not moved."
+msgid "Everything this proposal changes on the contracts is recorded at once. Until then, nothing on them has changed."
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:75
-msgid "The changes of this proposal cannot be applied as it stands. What stands in the way is said above, beside the contract it is about."
+msgid "The changes of this proposal cannot be applied in its current state. What prevents it is shown above, next to the contract concerned."
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:83
-msgid "This proposal changes nothing. It is the record of what was sent, and applying it only marks it as dealt with, so that it stops being listed as waiting."
+msgid "This proposal changes nothing. It records what was sent, and applying it only marks it as settled so that it is no longer listed as pending."
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:87
-msgid "All of it or none of it. Half a package written into the records is worse than none, because nothing afterwards says which half."
+msgid "Either all of the changes are applied, or none of them. A partly applied proposal would leave no trace of which part went through."
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:93
-msgid "Write into a period that has already been invoiced for"
+msgid "Allow changes in an already invoiced period"
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:104
-msgid "Mark as Dealt With"
+msgid "Mark as Settled"
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:104
@@ -6046,11 +6044,11 @@ msgid "Apply Changes"
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:107
-msgid "Mark this proposal as dealt with?"
+msgid "Mark this proposal as settled?"
 msgstr ""
 
 #: ./templates/CustomerProposalsly_changes.php:108
-msgid "Do you really want to write what this proposal asks for into the live records?"
+msgid "Do you really want to apply the changes of this proposal?"
 msgstr ""
 
 #: ./templates/CustomerProposals/conclude.php:35
@@ -6062,19 +6060,19 @@ msgid "Record the Signature"
 msgstr ""
 
 #: ./templates/CustomerProposals/conclude.php:39
-msgid "This is where the customer proposal ends. It has no changes waiting to be applied, so the day the customer signed is the last thing it needs."
+msgid "Enter the day the customer signed the proposal. If it holds contract proposals, their changes are applied afterwards."
 msgstr ""
 
 #: ./templates/CustomerProposals/conclude.php:45
-msgid "The day the customer agreed to it."
+msgid "The day the customer signed."
 msgstr ""
 
 #: ./templates/CustomerProposals/conclude.php:51
-msgid "The documents that came back are filed with the rest."
+msgid "Upload the signed documents on the documents page."
 msgstr ""
 
 #: ./templates/CustomerProposals/conclude.php:66
-msgid "These get the same day, because they came back together."
+msgid "The same date is recorded for these as well, because they came back together."
 msgstr ""
 
 #: ./templates/CustomerProposals/edit.php:26
@@ -6091,11 +6089,11 @@ msgid "Record the Sending Again"
 msgstr ""
 
 #: ./templates/CustomerProposals/send.php:36
-msgid "They went out on {0}. Recording it again puts the new day in its place."
+msgid "It was sent on {0}. Recording the sending again replaces that date."
 msgstr ""
 
 #: ./templates/CustomerProposals/send.php:40
-msgid "Once this is recorded, the customer proposal may no longer be changed. A correction is a new customer proposal."
+msgid "Once the sending is recorded, the customer proposal can no longer be changed. A correction needs a new customer proposal."
 msgstr ""
 
 #: ./templates/CustomerProposals/send.php:47
@@ -6103,11 +6101,11 @@ msgid "The day the proposal was sent to the customer."
 msgstr ""
 
 #: ./templates/CustomerProposals/send.php:52
-msgid "Sent By"
+msgid "Delivery Type"
 msgstr ""
 
 #: ./templates/CustomerProposals/send.php:57
-msgid "These get the same day, because they went out together."
+msgid "The same date is recorded for these as well, because they were sent together."
 msgstr ""
 
 #: ./templates/CustomerProposals/view.php:49
@@ -6458,38 +6456,38 @@ msgid "Add Received Document"
 msgstr ""
 
 #: ./templates/Documents/add_pages.php:61
-msgid "What came back, as it came back - anything the whole proposal was printed as, its own documents and those of its contract proposals. Several pages of one document go in together and are filed in the order they are picked, which for a set of scans is usually their own numbering."
+msgid "Upload the documents that came back for this proposal. The pages of one document are uploaded together and filed in the order you select them."
 msgstr ""
 
-#: ./templates/Documents/add_pages.php:72
-#: ./templates/cell/Documents/display.php:101
+#: ./templates/Documents/add_pages.php:70
+#: ./templates/cell/Documents/display.php:102
 msgid "Document Type"
 msgstr ""
 
-#: ./templates/Documents/add_pages.php:80
-#: ./templates/cell/Documents/display.php:102
+#: ./templates/Documents/add_pages.php:78
+#: ./templates/cell/Documents/display.php:103
 msgid "Variant"
 msgstr ""
 
-#: ./templates/Documents/add_pages.php:88
+#: ./templates/Documents/add_pages.php:86
 msgid "Pages"
 msgstr ""
 
 #: ./templates/Documents/index.php:23
-msgid "The number of the customer or of a contract, or anything out of the note."
+msgid "Customer or contract number, or any text from the note."
 msgstr ""
 
-#: ./templates/Documents/index.php:27
+#: ./templates/Documents/index.php:26
 msgid "Show settled proposals"
 msgstr ""
 
-#: ./templates/Documents/index.php:38
+#: ./templates/Documents/index.php:37
 #: ./templates/Documents/manage.php:98
 msgid "New Customer Proposal"
 msgstr ""
 
-#: ./templates/Documents/index.php:43
-msgid "Every proposal, and what state it is in. The documents themselves are one link away."
+#: ./templates/Documents/index.php:42
+msgid "All proposals and their state. Each one links to its documents."
 msgstr ""
 
 #: ./templates/Documents/manage.php:56
@@ -6505,7 +6503,7 @@ msgid "Proposals"
 msgstr ""
 
 #: ./templates/Documents/manage.php:118
-msgid "Every proposal in view. A customer proposal holds the contract proposals of the customer's contracts, so the row names those contracts and what is asked of each, and the documents of all of them are below."
+msgid "The proposals shown here. A customer proposal holds the proposals of the customer's contracts. Its row lists those contracts and what changes on each, and all of their documents are below."
 msgstr ""
 
 #: ./templates/Documents/manage.php:131
@@ -6521,7 +6519,7 @@ msgid "Documents - {0}"
 msgstr ""
 
 #: ./templates/Documents/manage.php:163
-#: ./templates/cell/Documents/display.php:230
+#: ./templates/cell/Documents/display.php:231
 msgid "Add Files"
 msgstr ""
 
@@ -6530,7 +6528,7 @@ msgid "Received Documents"
 msgstr ""
 
 #: ./templates/Documents/manage.php:177
-msgid "The documents that came back. They are filed against the proposal they answer, so the row says which one that is."
+msgid "Documents received from the customer. Each one is filed with the proposal it belongs to, as its row shows."
 msgstr ""
 
 #: ./templates/Documents/manage.php:190
@@ -6538,7 +6536,7 @@ msgid "Generated Documents"
 msgstr ""
 
 #: ./templates/Documents/manage.php:191
-msgid "What we generated, and what is still to be. A document is generated once and handed back afterwards, so these are the very files the customer was given - and a row that has none yet is a document waiting to be generated."
+msgid "Documents we have generated, and those still to be generated. A document is generated only once and the same file is returned afterwards, so these are exactly the files the customer received. A row without a file is a document still to be generated."
 msgstr ""
 
 #: ./templates/Emails/add.php:12
@@ -6854,7 +6852,7 @@ msgid "Related Customer Labels"
 msgstr ""
 
 #: ./templates/Labels/view.php:102
-#: ./templates/cell/Documents/display.php:108
+#: ./templates/cell/Documents/display.php:109
 #: ./templates/element/ContractChecks/proposal_table.php:17
 #: ./templates/element/Tasks/email_detail.php:122
 #: ./templates/element/common/audit.php:14
@@ -7862,64 +7860,64 @@ msgid "Nothing has been generated yet."
 msgstr ""
 
 #: ./templates/cell/Documents/display.php:89
-msgid "Nothing has come back yet."
+msgid "Nothing has been received yet."
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:99
+#: ./templates/cell/Documents/display.php:100
 #: ./templates/element/Documents/rounds.php:42
 msgid "Proposal"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:104
+#: ./templates/cell/Documents/display.php:105
 msgid "Page"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:111
+#: ./templates/cell/Documents/display.php:112
 msgid "Proposal Actions"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:179
+#: ./templates/cell/Documents/display.php:180
 msgid "Not generated yet"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:179
+#: ./templates/cell/Documents/display.php:180
 msgid "Nothing yet"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:221
+#: ./templates/cell/Documents/display.php:222
 msgid "Generate"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:223
-#: ./templates/cell/Documents/display.php:287
+#: ./templates/cell/Documents/display.php:224
+#: ./templates/cell/Documents/display.php:288
 msgid "Generate Signed"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:267
+#: ./templates/cell/Documents/display.php:268
 msgid "Open"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:277
+#: ./templates/cell/Documents/display.php:278
 msgid "Download"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:305
+#: ./templates/cell/Documents/display.php:306
 msgid "Up"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:318
+#: ./templates/cell/Documents/display.php:319
 msgid "Down"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:331
+#: ./templates/cell/Documents/display.php:332
 msgid "Remove"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:340
-msgid "Remove this document? It stops being frozen and the next request for it generates it afresh."
+#: ./templates/cell/Documents/display.php:341
+msgid "Remove this document? The next time it is requested, it will be generated again."
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:344
+#: ./templates/cell/Documents/display.php:345
 msgid "Remove this page?"
 msgstr ""
 
@@ -8115,11 +8113,11 @@ msgid "The proposal was sent and has not come back signed. No changes are applie
 msgstr ""
 
 #: ./templates/element/ContractProposalslying_changes.php:21
-msgid "Worth knowing first"
+msgid "Before you continue"
 msgstr ""
 
 #: ./templates/element/ContractProposalslying_changes.php:30
-msgid "This contract proposal changes nothing. It is the record of what was sent, and applying it only marks it as dealt with."
+msgid "This contract proposal changes nothing. It records what was sent, and applying it only marks it as settled."
 msgstr ""
 
 #: ./templates/element/ContractProposalslying_changes.php:35
@@ -8133,11 +8131,11 @@ msgid "As it would be"
 msgstr ""
 
 #: ./templates/element/ContractProposalslying_changes.php:46
-msgid "What else will be written"
+msgid "What else will be recorded"
 msgstr ""
 
 #: ./templates/element/ContractProposalslying_changes.php:48
-msgid "Not all of it was asked for. Applying the changes records the signature on the version, counts an amendment and closes the version being replaced, whether or not the proposal says so."
+msgid "Applying the changes also records the signature on the version, counts the amendment and ends the version being replaced, even if the proposal does not say so."
 msgstr ""
 
 #: ./templates/element/ContractProposals/billings.php:10
@@ -8153,7 +8151,7 @@ msgid "Edit Contract Proposal"
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:55
-msgid "A proposal of their own"
+msgid "A new customer proposal"
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:56
@@ -8165,7 +8163,7 @@ msgid "Contract proposals that are part of one customer proposal are sent and si
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:69
-msgid "Nothing asked of the customer themselves"
+msgid "No purpose of its own"
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:70
@@ -8173,15 +8171,15 @@ msgid "Purpose of the New Customer Proposal"
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:95
-msgid "A contract proposal is created for one contract and stays with it."
+msgid "A contract proposal belongs to one contract and cannot be moved to another."
 msgstr ""
 
-#: ./templates/element/ContractProposals/form.php:108
-msgid "Left empty, the version is created when the changes of this contract proposal are applied."
+#: ./templates/element/ContractProposals/form.php:109
+msgid "If left empty, the version is created when the changes are applied."
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:114
-msgid "The service of this contract keeps no contract versions, so none of our documents are generated for this proposal."
+msgid "The service type of this contract does not use contract versions, so no documents are generated for this proposal."
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:137
@@ -8193,7 +8191,7 @@ msgid "The day this contract proposal takes effect, and the day the version star
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:140
-msgid "The day this contract proposal takes effect. Empty takes the day the version does, {0}."
+msgid "The day this contract proposal takes effect. If left empty, the start of the version is used ({0})."
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:148
@@ -8209,11 +8207,11 @@ msgid "Last day of the service"
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:183
-msgid "The version stops being valid on this day, and so does what is billed for."
+msgid "The version and its billing end on this day."
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:184
-msgid "The contract ends on this day, and so does what is billed for."
+msgid "The contract and its billing end on this day."
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:191
@@ -8221,7 +8219,7 @@ msgid "End this version only, and leave the contract running"
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:192
-msgid "For an agreement to end one version with another to follow it."
+msgid "Use this when one version ends and another follows it."
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:200
@@ -8249,7 +8247,7 @@ msgid "This is a fixed-term contract, and the obligation runs to the end of it."
 msgstr ""
 
 #: ./templates/element/ContractProposals/form.php:288
-msgid "Reads the contract as it stands now, so the documents are generated from what is there today rather than from what was there before. A line about a billing that has since left the contract is taken back, because there is nothing left for it to act on."
+msgid "Reloads the contract as it is now, so the documents are generated from today's data. Changes to billings that have since been removed from the contract are dropped."
 msgstr ""
 
 #: ./templates/element/ContractProposals/heading.php:26
@@ -8284,12 +8282,8 @@ msgstr ""
 msgid "cleared"
 msgstr ""
 
-#: ./templates/element/ContractProposals/proposed_billings.php:20
-msgid "Add a Billing"
-msgstr ""
-
 #: ./templates/element/ContractProposals/proposed_billings.php:25
-msgid "What would be billed for"
+msgid "Billing after the change"
 msgstr ""
 
 #: ./templates/element/ContractProposals/proposed_billings.php:28
@@ -8297,19 +8291,19 @@ msgid "Nothing is billed for on this contract."
 msgstr ""
 
 #: ./templates/element/ContractProposals/proposed_billings.php:39
-msgid "Where it comes from"
+msgid "Source"
 msgstr ""
 
 #: ./templates/element/ContractProposals/proposed_billings.php:49
-msgid "Stops here"
+msgid "Ends with this proposal"
 msgstr ""
 
 #: ./templates/element/ContractProposals/proposed_billings.php:52
-msgid "Had already stopped"
+msgid "Already ended"
 msgstr ""
 
 #: ./templates/element/ContractProposals/proposed_billings.php:53
-msgid "Stopped before this"
+msgid "Ended earlier"
 msgstr ""
 
 #: ./templates/element/ContractProposals/proposed_billings.php:54
@@ -8333,11 +8327,11 @@ msgid "End"
 msgstr ""
 
 #: ./templates/element/ContractProposals/proposed_billings.php:105
-msgid "Stop billing for this?"
+msgid "End this billing?"
 msgstr ""
 
 #: ./templates/element/ContractProposals/what_it_says.php:34
-msgid "What it asks of the records"
+msgid "Changes to the records"
 msgstr ""
 
 #: ./templates/element/ContractProposals/what_it_says.php:42
@@ -8411,11 +8405,11 @@ msgid "Nothing"
 msgstr ""
 
 #: ./templates/element/CustomerProposals/form.php:36
-msgid "What the proposal asks of the customer themselves. Left empty, the customer proposal only holds the proposals of their contracts."
+msgid "What the customer proposal itself is for. If left empty, it only holds the proposals of the customer's contracts."
 msgstr ""
 
 #: ./templates/element/CustomerProposals/form.php:41
-msgid "The day the proposal speaks about - today, or the day of whatever it is sent with."
+msgid "The day the proposal takes effect, usually today or the day of the changes it is sent with."
 msgstr ""
 
 #: ./templates/element/CustomerProposals/form.php:46
@@ -8423,7 +8417,7 @@ msgid "For the office. It is not printed on the documents."
 msgstr ""
 
 #: ./templates/element/CustomerProposals/form.php:50
-msgid "The contract proposals are part of this customer proposal as well. They are created one at a time, for the contract they are about."
+msgid "The customer proposal also holds contract proposals. They are created one at a time, each for its own contract."
 msgstr ""
 
 #: ./templates/element/CustomerProposals/heading.php:15
