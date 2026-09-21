@@ -788,24 +788,6 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
-     * The print page renders its document type selection.
-     *
-     * @return void
-     * @link \App\Controller\CustomersController::print()
-     */
-    public function testPrint(): void
-    {
-        $this->login();
-        $this->get('/customers/' . self::CUSTOMER_ID . '/documents/manage');
-
-        $this->assertResponseOk();
-
-        // The address printing used to have is in people's bookmarks, so it still leads somewhere.
-        $this->get('/customers/' . self::CUSTOMER_ID . '/print');
-        $this->assertRedirectContains('/customers/' . self::CUSTOMER_ID . '/documents/manage');
-    }
-
-    /**
      * An identification number that fails its own check digit is marked as the mistake it is,
      * rather than being left to be read off a bracket among the others.
      *

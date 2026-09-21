@@ -681,25 +681,6 @@ class CustomersController extends AppController
     }
 
     /**
-     * Sends printing where it went.
-     *
-     * Printing and reading the papers are one page now. The address is kept because it is in
-     * people's bookmarks, and an address that used to work is cheaper to answer than to explain.
-     *
-     * @param string|null $id Customer id.
-     * @return \Cake\Http\Response
-     */
-    public function print(?string $id = null): ?Response
-    {
-        return $this->redirect([
-            'controller' => 'Documents',
-            'action' => 'manage',
-            'customer_id' => $id ?? $this->customer_id,
-            'contract_id' => null,
-        ]);
-    }
-
-    /**
      * Delete method
      *
      * @param string|null $id Customer id.

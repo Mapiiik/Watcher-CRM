@@ -313,20 +313,6 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * Where the button that only took the snapshot again used to be.
-     *
-     * Taking it again and putting the papers right were always two halves of one gesture - each
-     * sent the operator to the other - so they are one page now, and a bookmark still arrives.
-     *
-     * @param string|null $id Contract version proposal id.
-     * @return \Cake\Http\Response|null Redirects to the page that does it.
-     */
-    public function refreshSnapshot(?string $id = null): ?Response
-    {
-        return $this->redirect(['action' => 'recreate', $id]);
-    }
-
-    /**
      * Tells the operator how many lines a fresh snapshot took back, where it took any.
      *
      * @param int $takenBack How many.

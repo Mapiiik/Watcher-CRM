@@ -526,24 +526,6 @@ class ContractsController extends AppController
     }
 
     /**
-     * Sends printing where it went.
-     *
-     * Printing and reading the papers are one page now. The address is kept because it is in
-     * people's bookmarks, and an address that used to work is cheaper to answer than to explain.
-     *
-     * @param string|null $id Contract id.
-     * @return \Cake\Http\Response
-     */
-    public function print(?string $id = null): ?Response
-    {
-        return $this->redirect([
-            'controller' => 'Documents',
-            'action' => 'manage',
-            'contract_id' => $id ?? $this->contract_id,
-        ]);
-    }
-
-    /**
      * Delete method
      *
      * @param string|null $id Contract id.

@@ -228,10 +228,6 @@ class CustomerProposalsControllerTest extends TestCase
         $this->post($at . 'apply-changes/' . $round->id);
         $this->assertRedirectContains($its);
 
-        // The step used to be called applying the changes, and a bookmark to it still arrives.
-        $this->get($at . 'transfer/' . $round->id);
-        $this->assertRedirectContains('/customer-proposals/apply-changes/' . $round->id);
-
         $this->post($at . 'revoke/' . $round->id);
         $this->assertRedirectContains($its);
     }

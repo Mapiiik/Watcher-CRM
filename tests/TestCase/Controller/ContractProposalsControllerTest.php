@@ -1059,21 +1059,6 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * Taking the snapshot again and putting the papers right were two halves of one gesture, each
-     * sending the operator to the other. They are one page now, and the old address still arrives.
-     *
-     * @return void
-     * @link \App\Controller\ContractProposalsController::refreshSnapshot()
-     */
-    public function testTheOldAddressForTheSnapshotStillArrives(): void
-    {
-        $this->login();
-        $this->get(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
-
-        $this->assertRedirectContains('/contract-proposals/recreate/' . self::PROPOSAL_ID);
-    }
-
-    /**
      * Putting the papers together again reads the contract afresh and takes back the lines the new
      * reading no longer knows.
      *

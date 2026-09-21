@@ -42,7 +42,6 @@ class CustomerProposalsController extends AppController
         'conclude',
         'send',
         'applyChanges',
-        'transfer',
     ];
 
     /**
@@ -54,7 +53,6 @@ class CustomerProposalsController extends AppController
         'conclude',
         'send',
         'applyChanges',
-        'transfer',
     ];
 
     /**
@@ -317,17 +315,6 @@ class CustomerProposalsController extends AppController
                 return true;
             },
         );
-    }
-
-    /**
-     * Where applying the changes used to live, kept so that what is bookmarked still arrives.
-     *
-     * @param string|null $id Customer proposal id.
-     * @return \Cake\Http\Response|null
-     */
-    public function transfer(?string $id = null): ?Response
-    {
-        return $this->redirect(['action' => 'applyChanges', $id]);
     }
 
     /**
