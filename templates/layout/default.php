@@ -166,7 +166,7 @@ $urlWithQuery = function ($query = []) use ($request) {
             ) ?>
             <?php if (Plugin::isLoaded('WorkReports')) : ?>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'Work Reports'),
+                    __('Work Reports'),
                     [
                         'controller' => 'WorkReports',
                         'action' => 'sheet',

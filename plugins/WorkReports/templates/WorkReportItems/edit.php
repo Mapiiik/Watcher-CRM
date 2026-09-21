@@ -8,11 +8,14 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('work_reports', 'Actions') ?></h4>
             <?= $this->AuthLink->postLink(
-                __('Delete'),
+                __d('work_reports', 'Delete'),
                 ['action' => 'delete', $item->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $item->id), 'class' => 'side-nav-item'],
+                [
+                    'confirm' => __d('work_reports', 'Are you sure you want to delete # {0}?', $item->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('work_reports', 'Work Report'),

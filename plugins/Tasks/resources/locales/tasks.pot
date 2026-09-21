@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-26 20:55+0200\n"
+"POT-Creation-Date: 2026-09-22 00:39+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -83,19 +83,19 @@ msgstr ""
 msgid "Every unfinished task has somebody holding it."
 msgstr ""
 
-#: ./plugins/Tasks/src/Model/Entity/Task.php:136
+#: ./plugins/Tasks/src/Model/Entity/Task.php:153
 msgid "Low"
 msgstr ""
 
-#: ./plugins/Tasks/src/Model/Entity/Task.php:137
+#: ./plugins/Tasks/src/Model/Entity/Task.php:154
 msgid "Normal"
 msgstr ""
 
-#: ./plugins/Tasks/src/Model/Entity/Task.php:138
+#: ./plugins/Tasks/src/Model/Entity/Task.php:155
 msgid "High"
 msgstr ""
 
-#: ./plugins/Tasks/src/Model/Entity/Task.php:139
+#: ./plugins/Tasks/src/Model/Entity/Task.php:156
 msgid "Urgent"
 msgstr ""
 

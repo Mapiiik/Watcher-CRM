@@ -144,7 +144,7 @@
             "bin/cake i18n extract --extract-core no --overwrite -p Radius",
             "bin/cake i18n extract --extract-core no --overwrite -p Settings",
             "bin/cake i18n extract --extract-core no --overwrite -p Tasks",
-            "bin/cake i18n extract --extract-core no --overwrite -p WorkReports",
+            "bin/cake i18n extract --extract-core no --overwrite -p WorkReports --paths plugins/WorkReports/src/,plugins/WorkReports/templates/,plugins/WorkReports/config/",
             "bin/cake i18n extract --extract-core yes --overwrite --paths src/,templates/,config/ --output resources/locales/"
         ]
     },

@@ -21,7 +21,7 @@ use WorkReports\Service\WorkReportSummary;
             <?php endif ?>
             <th><?= __d('work_reports', 'To Invoice') ?></th>
             <th><?= __d('work_reports', 'Work Labels') ?></th>
-            <th class="actions"><?= __('Actions') ?></th>
+            <th class="actions"><?= __d('work_reports', 'Actions') ?></th>
         </tr>
         <?php foreach ($items as $item) : ?>
         <tr>
@@ -87,7 +87,7 @@ use WorkReports\Service\WorkReportSummary;
                 ) ?>
                 <?php if (!$item->work_report->isLocked()) : ?>
                     <?= $this->AuthLink->link(
-                        __('Edit'),
+                        __d('work_reports', 'Edit'),
                         ['plugin' => 'WorkReports', 'controller' => 'WorkReportItems', 'action' => 'edit', $item->id],
                         ['class' => 'win-link'],
                     ) ?>

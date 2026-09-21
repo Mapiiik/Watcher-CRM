@@ -17,7 +17,7 @@ use WorkReports\Service\WorkReportSummary;
     <div class="column">
         <?= $this->Form->control('invoiced', [
             'label' => __d('work_reports', 'Invoiced'),
-            'options' => ['0' => __('No'), '1' => __('Yes')],
+            'options' => ['0' => __d('work_reports', 'No'), '1' => __d('work_reports', 'Yes')],
             'empty' => __d('work_reports', 'All'),
             'value' => $invoiced,
             'onchange' => $this::SUBMIT_ON_CHANGE,
@@ -34,7 +34,7 @@ use WorkReports\Service\WorkReportSummary;
     <div class="column">
         <?= $this->Form->control('from', [
             'type' => 'date',
-            'label' => __('From'),
+            'label' => __d('work_reports', 'From'),
             'value' => $from?->toDateString(),
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
@@ -42,7 +42,7 @@ use WorkReports\Service\WorkReportSummary;
     <div class="column">
         <?= $this->Form->control('to', [
             'type' => 'date',
-            'label' => __('To'),
+            'label' => __d('work_reports', 'To'),
             'value' => $to?->toDateString(),
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
@@ -52,7 +52,7 @@ use WorkReports\Service\WorkReportSummary;
 
 <div class="overviews index content">
     <?= $this->AuthLink->link(
-        __('List Overviews'),
+        __d('work_reports', 'List Overviews'),
         ['plugin' => null, 'controller' => 'Overviews', 'action' => 'index'],
         ['class' => 'button float-right'],
     ) ?>
@@ -126,7 +126,9 @@ use WorkReports\Service\WorkReportSummary;
                     <td><?= h($item->work_rate?->name_for_lists) ?></td>
                     <td><?= $this->Number->format($item->rate_multiplier->toFloat()) ?></td>
                     <td><?= $amount === null ? '' : $this->Number->currency($amount->toFloat()) ?></td>
-                    <td style="<?= $item->invoice_style ?>"><?= $item->invoiced ? __('Yes') : __('No') ?></td>
+                    <td style="<?= $item->invoice_style ?>">
+                        <?= $item->invoiced ? __d('work_reports', 'Yes') : __d('work_reports', 'No') ?>
+                    </td>
                 </tr>
                 <?php endforeach ?>
             </table>

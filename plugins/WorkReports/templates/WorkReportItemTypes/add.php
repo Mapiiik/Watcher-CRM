@@ -14,7 +14,7 @@ foreach (TimeMode::cases() as $case) {
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('work_reports', 'Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __d('work_reports', 'List Work Report Item Types'),
                 ['action' => 'index'],
@@ -48,7 +48,7 @@ foreach (TimeMode::cases() as $case) {
                 echo $this->Form->control('position', ['label' => __d('work_reports', 'Position')]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('work_reports', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

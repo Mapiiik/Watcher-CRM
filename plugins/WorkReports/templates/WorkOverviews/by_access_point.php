@@ -23,7 +23,7 @@ use WorkReports\Service\WorkReportSummary;
     <div class="column">
         <?= $this->Form->control('from', [
             'type' => 'date',
-            'label' => __('From'),
+            'label' => __d('work_reports', 'From'),
             'value' => $from?->toDateString(),
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
@@ -31,7 +31,7 @@ use WorkReports\Service\WorkReportSummary;
     <div class="column">
         <?= $this->Form->control('to', [
             'type' => 'date',
-            'label' => __('To'),
+            'label' => __d('work_reports', 'To'),
             'value' => $to?->toDateString(),
             'onchange' => $this::SUBMIT_ON_CHANGE,
         ]) ?>
@@ -41,7 +41,7 @@ use WorkReports\Service\WorkReportSummary;
 
 <div class="overviews index content">
     <?= $this->AuthLink->link(
-        __('List Overviews'),
+        __d('work_reports', 'List Overviews'),
         ['plugin' => null, 'controller' => 'Overviews', 'action' => 'index'],
         ['class' => 'button float-right'],
     ) ?>

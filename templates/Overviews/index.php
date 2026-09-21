@@ -27,10 +27,10 @@ use Cake\Core\Plugin;
 
         <?php if (Plugin::isLoaded('WorkReports')) : ?>
         <div class="related">
-            <h4><?= __d('work_reports', 'Work Report Related') ?></h4>
+            <h4><?= __('Work Report Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'Work to Invoice'),
+                    __('Work to Invoice'),
                     [
                         'plugin' => 'WorkReports',
                         'controller' => 'WorkOverviews',
@@ -41,7 +41,7 @@ use Cake\Core\Plugin;
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'Work at Access Points'),
+                    __('Work at Access Points'),
                     [
                         'plugin' => 'WorkReports',
                         'controller' => 'WorkOverviews',

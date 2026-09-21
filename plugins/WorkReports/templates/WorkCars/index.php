@@ -19,7 +19,7 @@
                     <th><?= $this->Paginator->sort('license_plate', __d('work_reports', 'License Plate')) ?></th>
                     <th><?= $this->Paginator->sort('owner_id', __d('work_reports', 'Owner')) ?></th>
                     <th><?= $this->Paginator->sort('active', __d('work_reports', 'Active')) ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions"><?= __d('work_reports', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,17 +30,17 @@
                     <td>
                         <?= $record->owner === null ? __d('work_reports', 'company car') : h($record->owner->name) ?>
                     </td>
-                    <td><?= $record->active ? __('Yes') : __('No') ?></td>
+                    <td><?= $record->active ? __d('work_reports', 'Yes') : __d('work_reports', 'No') ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
-                            __('Edit'),
+                            __d('work_reports', 'Edit'),
                             ['action' => 'edit', $record->id],
                             ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
-                            __('Delete'),
+                            __d('work_reports', 'Delete'),
                             ['action' => 'delete', $record->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $record->id)],
+                            ['confirm' => __d('work_reports', 'Are you sure you want to delete # {0}?', $record->id)],
                         ) ?>
                     </td>
                 </tr>

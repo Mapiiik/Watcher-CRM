@@ -143,7 +143,7 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['contract', $contract-
             ) ?>
             <?php if (Plugin::isLoaded('WorkReports')) : ?>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'Work Report Items'),
+                    __('Work Report Items'),
                     ['action' => 'view', $contract->id, '#' => 'work-report-items'],
                     ['class' => 'side-nav-item'],
                 ) ?>
@@ -488,11 +488,11 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['contract', $contract-
         <div class="contracts view content">
             <div>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'New Work Report Item'),
+                    __('New Work Report Item'),
                     ['plugin' => 'WorkReports', 'controller' => 'WorkReportItems', 'action' => 'add'],
                     ['class' => 'button button-small float-right win-link'],
                 ) ?>
-                <h4 id="work-report-items"><?= __d('work_reports', 'Work Report Items') ?></h4>
+                <h4 id="work-report-items"><?= __('Work Report Items') ?></h4>
                 <?= $this->cell(
                     'WorkReports.WorkReportItems',
                     [['WorkReportItems.contract_id' => $contract->id]],

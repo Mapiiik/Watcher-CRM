@@ -7,11 +7,14 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('work_reports', 'Actions') ?></h4>
             <?= $this->AuthLink->postLink(
-                __('Delete'),
+                __d('work_reports', 'Delete'),
                 ['action' => 'delete', $record->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $record->id), 'class' => 'side-nav-item'],
+                [
+                    'confirm' => __d('work_reports', 'Are you sure you want to delete # {0}?', $record->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('work_reports', 'List Work Labels'),
@@ -32,7 +35,7 @@
                 echo $this->Form->control('active', ['label' => __d('work_reports', 'Active')]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('work_reports', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

@@ -286,30 +286,30 @@ use Cake\Core\Plugin;
 
         <?php if (Plugin::isLoaded('WorkReports')) : ?>
         <div class="related">
-            <h4><?= __d('work_reports', 'Work Report Related') ?></h4>
+            <h4><?= __('Work Report Related') ?></h4>
             <div>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'List Work Report Item Types'),
+                    __('List Work Report Item Types'),
                     ['controller' => 'WorkReportItemTypes', 'action' => 'index', 'plugin' => 'WorkReports'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'List Work Rates'),
+                    __('List Work Rates'),
                     ['controller' => 'WorkRates', 'action' => 'index', 'plugin' => 'WorkReports'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'List Work Labels'),
+                    __('List Work Labels'),
                     ['controller' => 'WorkLabels', 'action' => 'index', 'plugin' => 'WorkReports'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'List Work Cars'),
+                    __('List Work Cars'),
                     ['controller' => 'WorkCars', 'action' => 'index', 'plugin' => 'WorkReports'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __d('work_reports', 'List Work Report Workers'),
+                    __('List Work Report Workers'),
                     ['controller' => 'WorkReportWorkers', 'action' => 'index', 'plugin' => 'WorkReports'],
                     ['class' => 'side-nav-item'],
                 ) ?>

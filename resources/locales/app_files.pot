@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-21 12:54+0200\n"
+"POT-Creation-Date: 2026-09-22 00:39+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,10 +14,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ./templates/Contracts/view.php:47
-#: ./templates/Contracts/view.php:165
-#: ./templates/Customers/view.php:60
-#: ./templates/Customers/view.php:188
+#: ./templates/Contracts/view.php:49
+#: ./templates/Contracts/view.php:174
+#: ./templates/Customers/view.php:62
+#: ./templates/Customers/view.php:197
 #: ./templates/DocumentationTypes/view.php:73
 #: ./templates/Documentations/index.php:41
 #: ./templates/Documents/manage.php:74
@@ -39,7 +39,7 @@ msgstr ""
 #: ./templates/DocumentationTypes/add.php:12
 #: ./templates/DocumentationTypes/edit.php:12
 #: ./templates/DocumentationTypes/view.php:30
-#: ./templates/Settings/index.php:262
+#: ./templates/Settings/index.php:264
 msgid "List Documentation Types"
 msgstr ""
 
@@ -164,7 +164,7 @@ msgstr ""
 #: ./templates/Documentations/add.php:13
 #: ./templates/Documentations/edit.php:13
 #: ./templates/Documentations/view.php:37
-#: ./templates/Overviews/index.php:13
+#: ./templates/Overviews/index.php:15
 msgid "List Documentations"
 msgstr ""
 

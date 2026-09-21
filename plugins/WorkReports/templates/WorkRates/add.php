@@ -7,7 +7,7 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('work_reports', 'Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __d('work_reports', 'List Work Rates'),
                 ['action' => 'index'],
@@ -30,7 +30,7 @@
                 echo $this->Form->control('active', ['label' => __d('work_reports', 'Active')]);
                 ?>
             </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('work_reports', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

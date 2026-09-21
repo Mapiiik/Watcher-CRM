@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-21 12:54+0200\n"
+"POT-Creation-Date: 2026-09-22 00:39+0200\n"
 "PO-Revision-Date: 2026-09-13 19:40+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -14,8 +14,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: templates/Contracts/view.php:47 templates/Contracts/view.php:165
-#: templates/Customers/view.php:60 templates/Customers/view.php:188
+#: templates/Contracts/view.php:49 templates/Contracts/view.php:174
+#: templates/Customers/view.php:62 templates/Customers/view.php:197
 #: templates/DocumentationTypes/view.php:73
 #: templates/Documentations/index.php:41 templates/Documents/manage.php:74
 msgid "Documentations"
@@ -33,7 +33,7 @@ msgstr "Akce"
 
 #: templates/DocumentationTypes/add.php:12
 #: templates/DocumentationTypes/edit.php:12
-#: templates/DocumentationTypes/view.php:30 templates/Settings/index.php:262
+#: templates/DocumentationTypes/view.php:30 templates/Settings/index.php:264
 msgid "List Documentation Types"
 msgstr "Seznam typů dokumentace"
 
@@ -159,7 +159,7 @@ msgid "Documentation Type"
 msgstr "Typ dokumentace"
 
 #: templates/Documentations/add.php:13 templates/Documentations/edit.php:13
-#: templates/Documentations/view.php:37 templates/Overviews/index.php:13
+#: templates/Documentations/view.php:37 templates/Overviews/index.php:15
 msgid "List Documentations"
 msgstr "Seznam dokumentace"
 

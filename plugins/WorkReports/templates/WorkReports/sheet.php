@@ -31,7 +31,7 @@ $addUrl = fn(Date $day): array => [
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('work_reports', 'Actions') ?></h4>
             <?php if ($mayEdit && !$workReport->isLocked()) : ?>
                 <?= $this->AuthLink->link(
                     __d('work_reports', 'New Work Report Item'),
@@ -154,7 +154,7 @@ $addUrl = fn(Date $day): array => [
                             <th><?= __d('work_reports', 'Customer') ?></th>
                             <th><?= __d('work_reports', 'Distance') ?></th>
                             <th><?= __d('work_reports', 'Work Labels') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th class="actions"><?= __d('work_reports', 'Actions') ?></th>
                         </tr>
                         <?php foreach ($days as $day) : ?>
                             <?php
@@ -278,14 +278,20 @@ $addUrl = fn(Date $day): array => [
                                     <?php if ($mayEdit && !$workReport->isLocked()) : ?>
                                         <?php if ($item !== null) : ?>
                                             <?= $this->AuthLink->link(
-                                                __('Edit'),
+                                                __d('work_reports', 'Edit'),
                                                 ['controller' => 'WorkReportItems', 'action' => 'edit', $item->id],
                                                 ['class' => 'win-link'],
                                             ) ?>
                                             <?= $this->AuthLink->postLink(
-                                                __('Delete'),
+                                                __d('work_reports', 'Delete'),
                                                 ['controller' => 'WorkReportItems', 'action' => 'delete', $item->id],
-                                                ['confirm' => __('Are you sure you want to delete # {0}?', $item->id)],
+                                                [
+                                                    'confirm' => __d(
+                                                        'work_reports',
+                                                        'Are you sure you want to delete # {0}?',
+                                                        $item->id,
+                                                    ),
+                                                ],
                                             ) ?>
                                         <?php endif ?>
                                         <?php if ($index === count($rows) - 1) : ?>

@@ -7,7 +7,7 @@
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
+            <h4 class="heading"><?= __d('work_reports', 'Actions') ?></h4>
             <?= $this->AuthLink->link(
                 __d('work_reports', 'Edit Work Report Worker'),
                 ['action' => 'edit', $record->id],
@@ -16,7 +16,10 @@
             <?= $this->AuthLink->postLink(
                 __d('work_reports', 'Delete Work Report Worker'),
                 ['action' => 'delete', $record->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $record->id), 'class' => 'side-nav-item'],
+                [
+                    'confirm' => __d('work_reports', 'Are you sure you want to delete # {0}?', $record->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
             <?= $this->AuthLink->link(
                 __d('work_reports', 'List Work Report Workers'),
@@ -43,7 +46,7 @@
                 </tr>
                 <tr>
                     <th><?= __d('work_reports', 'Active') ?></th>
-                    <td><?= $record->active ? __('Yes') : __('No') ?></td>
+                    <td><?= $record->active ? __d('work_reports', 'Yes') : __d('work_reports', 'No') ?></td>
                 </tr>
             </table>
             <div class="related">
@@ -62,26 +65,34 @@
                         <tr>
                             <th><?= __d('work_reports', 'User') ?></th>
                             <th><?= __d('work_reports', 'May Edit') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
+                            <th class="actions"><?= __d('work_reports', 'Actions') ?></th>
                         </tr>
                         <?php foreach ($record->work_report_worker_recipients as $recipient) : ?>
                         <tr>
                             <td><?= h($recipient->user->name) ?></td>
-                            <td><?= $recipient->may_edit ? __('Yes') : __('No') ?></td>
+                            <td>
+                                <?= $recipient->may_edit ? __d('work_reports', 'Yes') : __d('work_reports', 'No') ?>
+                            </td>
                             <td class="actions">
                                 <?= $this->AuthLink->link(
-                                    __('Edit'),
+                                    __d('work_reports', 'Edit'),
                                     ['controller' => 'WorkReportWorkerRecipients', 'action' => 'edit', $recipient->id],
                                     ['class' => 'win-link'],
                                 ) ?>
                                 <?= $this->AuthLink->postLink(
-                                    __('Delete'),
+                                    __d('work_reports', 'Delete'),
                                     [
                                         'controller' => 'WorkReportWorkerRecipients',
                                         'action' => 'delete',
                                         $recipient->id,
                                     ],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $recipient->id)],
+                                    [
+                                        'confirm' => __d(
+                                            'work_reports',
+                                            'Are you sure you want to delete # {0}?',
+                                            $recipient->id,
+                                        ),
+                                    ],
                                 ) ?>
                             </td>
                         </tr>

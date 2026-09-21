@@ -27,7 +27,7 @@
                         __d('work_reports', 'Default Company Car'),
                     ) ?></th>
                     <th><?= $this->Paginator->sort('active', __d('work_reports', 'Active')) ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
+                    <th class="actions"><?= __d('work_reports', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -38,18 +38,18 @@
                     <td><?= h(implode(', ', array_map(fn($user): string => $user->name, $record->recipients))) ?></td>
                     <td><?= h($record->default_private_car?->name_for_lists) ?></td>
                     <td><?= h($record->default_company_car?->name_for_lists) ?></td>
-                    <td><?= $record->active ? __('Yes') : __('No') ?></td>
+                    <td><?= $record->active ? __d('work_reports', 'Yes') : __d('work_reports', 'No') ?></td>
                     <td class="actions">
-                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $record->id]) ?>
+                        <?= $this->AuthLink->link(__d('work_reports', 'View'), ['action' => 'view', $record->id]) ?>
                         <?= $this->AuthLink->link(
-                            __('Edit'),
+                            __d('work_reports', 'Edit'),
                             ['action' => 'edit', $record->id],
                             ['class' => 'win-link'],
                         ) ?>
                         <?= $this->AuthLink->postLink(
-                            __('Delete'),
+                            __d('work_reports', 'Delete'),
                             ['action' => 'delete', $record->id],
-                            ['confirm' => __('Are you sure you want to delete # {0}?', $record->id)],
+                            ['confirm' => __d('work_reports', 'Are you sure you want to delete # {0}?', $record->id)],
                         ) ?>
                     </td>
                 </tr>

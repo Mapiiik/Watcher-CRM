@@ -188,5 +188,5 @@ $showTimes = $timeMode !== TimeMode::WholeDay && !($timeMode === TimeMode::Eithe
     <?php endif ?>
 </fieldset>
 <?= $this->Form->control('note', ['label' => __d('work_reports', 'Note'), 'style' => 'height: 5rem']) ?>
-<?= $this->Form->button(__('Submit')) ?>
+<?= $this->Form->button(__d('work_reports', 'Submit')) ?>
 <?= $this->Form->end() ?>
