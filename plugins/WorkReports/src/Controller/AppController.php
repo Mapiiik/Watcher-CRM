@@ -6,9 +6,12 @@ namespace WorkReports\Controller;
 use App\Controller\AppController as BaseController;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\ORM\Query\SelectQuery;
+use CakeDC\Auth\Traits\IsAuthorizedTrait;
 
 class AppController extends BaseController
 {
+    use IsAuthorizedTrait;
+
     /**
      * The user signed in.
      *
@@ -81,6 +84,21 @@ class AppController extends BaseController
         }
 
         return $userId !== $this->identityId() && $this->mayEdit($userId);
+    }
+
+    /**
+     * Whether the user signed in may say an item was invoiced. It is whoever may mark the work to
+     * invoice in bulk, so that the permissions say it in one place.
+     *
+     * @return bool
+     */
+    protected function mayInvoice(): bool
+    {
+        return $this->isAuthorized([
+            'plugin' => 'WorkReports',
+            'controller' => 'WorkOverviews',
+            'action' => 'markInvoiced',
+        ]);
     }
 
     /**

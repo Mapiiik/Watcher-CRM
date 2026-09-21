@@ -16,6 +16,7 @@ use WorkReports\Model\Enum\TimeMode;
  * @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Contract>|array<string, string> $contracts
  * @var \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Task>|array<string, string> $tasks
  * @var array<string, string> $accessPoints
+ * @var bool $mayInvoice
  * @var \Cake\ORM\Query\SelectQuery<\WorkReports\Model\Entity\WorkCar> $privateCars
  * @var \Cake\ORM\Query\SelectQuery<\WorkReports\Model\Entity\WorkCar> $companyCars
  * @var \Cake\ORM\Query\SelectQuery<\WorkReports\Model\Entity\WorkRate> $workRates
@@ -179,7 +180,11 @@ $showTimes = $timeMode !== TimeMode::WholeDay && !($timeMode === TimeMode::Eithe
             'title' => __d('work_reports', 'What goes on the invoice.'),
             'style' => 'height: 5rem',
         ]) ?>
-        <?= $this->Form->control('invoiced', ['label' => __d('work_reports', 'Invoiced')]) ?>
+        <?php if ($mayInvoice) : ?>
+            <?= $this->Form->control('invoiced', ['label' => __d('work_reports', 'Invoiced')]) ?>
+        <?php elseif ($item->invoiced) : ?>
+            <p><?= __d('work_reports', 'Invoiced') ?></p>
+        <?php endif ?>
     <?php endif ?>
 </fieldset>
 <?= $this->Form->control('note', ['label' => __d('work_reports', 'Note'), 'style' => 'height: 5rem']) ?>

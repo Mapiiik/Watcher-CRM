@@ -43,7 +43,7 @@ class WorkReportItemsController extends AppController
         $this->presetCars($item, $userId);
 
         if ($this->getRequest()->is('post')) {
-            $item = $this->WorkReportItems->patchEntity($item, $this->getRequest()->getData());
+            $item = $this->WorkReportItems->patchEntity($item, $this->formData());
 
             if ($this->getRequest()->getData('refresh') != 'refresh') {
                 if ($item->date instanceof Date) {
@@ -80,7 +80,7 @@ class WorkReportItemsController extends AppController
         $this->checkMayEdit($userId);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $item = $this->WorkReportItems->patchEntity($item, $this->getRequest()->getData());
+            $item = $this->WorkReportItems->patchEntity($item, $this->formData());
 
             if ($this->getRequest()->getData('refresh') != 'refresh') {
                 if ($this->WorkReportItems->save($item)) {
@@ -120,6 +120,21 @@ class WorkReportItemsController extends AppController
         }
 
         return $this->afterDeleteRedirect($this->sheetUrl($userId, $item->date));
+    }
+
+    /**
+     * What the form sent, without whether the item was invoiced unless that is the user's to say.
+     *
+     * @return array<string, mixed>
+     */
+    protected function formData(): array
+    {
+        $data = (array)$this->getRequest()->getData();
+        if (!$this->mayInvoice()) {
+            unset($data['invoiced']);
+        }
+
+        return $data;
     }
 
     /**
@@ -233,7 +248,10 @@ class WorkReportItemsController extends AppController
         $collaborators = $this->usersForSelect($users->find('holdingTasks')
             ->where(['AppUsers.id !=' => $userId]));
 
+        $mayInvoice = $this->mayInvoice();
+
         $this->set(compact(
+            'mayInvoice',
             'item',
             'userId',
             'types',

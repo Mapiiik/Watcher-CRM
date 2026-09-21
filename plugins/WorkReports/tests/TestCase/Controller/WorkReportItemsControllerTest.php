@@ -70,7 +70,7 @@ class WorkReportItemsControllerTest extends TestCase
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->loginAs(self::WORKER, 'user');
+        $this->loginAs(self::WORKER, 'user', superuser: false);
     }
 
     /**
@@ -194,6 +194,31 @@ class WorkReportItemsControllerTest extends TestCase
 
         $this->post('/work-reports/work-report-items/add?user_id=' . $other, $data);
         $this->assertRedirectContains('/work-reports/work-reports/sheet');
+    }
+
+    /**
+     * Whether an item was invoiced is not the worker's to say, only theirs who invoice.
+     *
+     * @return void
+     */
+    public function testOnlyThoseWhoInvoiceMarkInvoiced(): void
+    {
+        $data = [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+            'date' => '2026-06-15',
+            'invoiced' => '1',
+        ];
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+
+        $this->get('/work-reports/work-report-items/add?date=2026-06-15');
+        $this->assertResponseNotContains('name="invoiced"');
+
+        $this->post('/work-reports/work-report-items/add', $data);
+        $this->assertFalse($items->find()->firstOrFail()->get('invoiced'));
+
+        $this->loginAs(self::WORKER, 'bookkeeper', superuser: false);
+        $this->post('/work-reports/work-report-items/add', ['date' => '2026-06-16'] + $data);
+        $this->assertTrue($items->find()->where(['date' => '2026-06-16'])->firstOrFail()->get('invoiced'));
     }
 
     /**
@@ -363,12 +388,15 @@ class WorkReportItemsControllerTest extends TestCase
      *
      * @param string $id User id.
      * @param string $role Role to act as.
+     * @param bool $superuser Whether the permissions let them anywhere.
      * @return void
      */
-    private function loginAs(string $id, string $role): void
+    private function loginAs(string $id, string $role, bool $superuser = true): void
     {
         $user = $this->getTableLocator()->get('AppUsers')->get($id);
         $user->role = $role;
+        // the user of the fixture is a superuser, whom the permissions do not stop
+        $user->set('is_superuser', $superuser);
 
         $this->session(['Auth' => $user]);
     }
