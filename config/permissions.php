@@ -1015,12 +1015,14 @@ $permissions = [
             'controller' => [
                 'WorkReports',
                 'WorkReportItems',
+                'WorkReportOnCalls',
             ],
             'action' => [
                 'index',
                 'sheet',
                 'submit',
                 'reopen',
+                'toggle',
                 'add',
                 'edit',
                 'delete',

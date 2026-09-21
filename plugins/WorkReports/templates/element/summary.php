@@ -68,15 +68,15 @@ $days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days
                 <td><?= $this->Number->currency($summary->cashCollected) ?></td>
             </tr>
             <?php endif ?>
-            <?php if ($summary->onCallDays > 0) : ?>
+            <?php foreach ($summary->onCallByKind as $onCall) : ?>
             <tr>
-                <th><?= __d('work_reports', 'On Call') ?></th>
+                <th><?= __d('work_reports', 'On Call') ?> - <?= h($onCall['kind']->label()) ?></th>
                 <td>
-                    <?= $this->Number->format($summary->onCallHours) ?> h
-                    (<?= $days_count($summary->onCallDays) ?>)
+                    <?= $this->Number->format($onCall['hours']) ?> h
+                    (<?= $days_count($onCall['days']) ?>)
                 </td>
             </tr>
-            <?php endif ?>
+            <?php endforeach ?>
             <?php foreach ($summary->labels as $label) : ?>
             <tr>
                 <th>

@@ -222,6 +222,34 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
+     * A day on call is worth what its kind is, and marking it again takes it back.
+     *
+     * @return void
+     */
+    public function testOnCall(): void
+    {
+        $onCalls = $this->getTableLocator()->get('WorkReports.WorkReportOnCalls');
+        $toggle = fn(string $date) => $this->post('/work-reports/work-report-on-calls/toggle', ['date' => $date]);
+
+        // a Monday and a Saturday
+        $toggle('2026-06-08');
+        $toggle('2026-06-13');
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+
+        $hours = [];
+        foreach ($onCalls->find()->orderBy(['date'])->all() as $onCall) {
+            $hours[$onCall->get('date')->format('Y-m-d')] = $onCall->get('hours')->toFloat();
+        }
+        $this->assertSame(['2026-06-08' => 3.0, '2026-06-13' => 12.0], $hours);
+
+        $this->get('/work-reports/work-reports/sheet?month=2026-06');
+        $this->assertResponseContains('On Call - Weekend');
+
+        $toggle('2026-06-13');
+        $this->assertSame(1, $onCalls->find()->count());
+    }
+
+    /**
      * A month with a working day left empty is not taken.
      *
      * @return void

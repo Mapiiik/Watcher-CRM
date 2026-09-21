@@ -6,6 +6,7 @@ namespace WorkReports\Test\TestCase\Service;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use WorkReports\Model\Enum\DayKind;
 use WorkReports\Service\WorkingCalendar;
 
 /**
@@ -64,6 +65,21 @@ class WorkingCalendarTest extends TestCase
         $calendar = new WorkingCalendar('CzechRepublic');
 
         $this->assertTrue($calendar->isWorkingDay(new Date('2026-04-02')));
+    }
+
+    /**
+     * A public holiday on a Saturday is a holiday rather than a weekend.
+     *
+     * @return void
+     */
+    public function testDayKind(): void
+    {
+        $calendar = new WorkingCalendar('CzechRepublic');
+
+        $this->assertSame(DayKind::WorkingDay, $calendar->dayKind(new Date('2026-06-08')));
+        $this->assertSame(DayKind::Weekend, $calendar->dayKind(new Date('2026-06-13')));
+        $this->assertSame(DayKind::Holiday, $calendar->dayKind(new Date('2026-12-24')));
+        $this->assertSame(DayKind::Holiday, $calendar->dayKind(new Date('2027-05-08')));
     }
 
     /**

@@ -7,6 +7,7 @@ use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
 use Settings\Utility\Settings;
 use WorkReports\Model\Entity\WorkReport;
+use WorkReports\Model\Enum\DayKind;
 
 /**
  * What a month adds up to: the fund, what was worked against it, and the rest the head of the
@@ -32,6 +33,7 @@ final class WorkReportSummary
      * @param array<string, array{label: \WorkReports\Model\Entity\WorkLabel, count: int}> $labels Items by label.
      * @param int $onCallDays Days on call.
      * @param float $onCallHours What the days on call are worth.
+     * @param array<string, array{kind: \WorkReports\Model\Enum\DayKind, days: int, hours: float}> $onCallByKind The days on call by the kind of the day.
      */
     public function __construct(
         public readonly int $workingDays,
@@ -46,6 +48,7 @@ final class WorkReportSummary
         public readonly array $labels,
         public readonly int $onCallDays,
         public readonly float $onCallHours,
+        public readonly array $onCallByKind = [],
     ) {
     }
 
@@ -139,6 +142,18 @@ final class WorkReportSummary
 
         $fundDays = count(array_diff_key($workingDays, $takenOut));
         $onCalls = $report->work_report_on_calls ?? [];
+        $onCallByKind = [];
+        foreach ($onCalls as $onCall) {
+            $kind = $calendar->dayKind($onCall->date);
+            $onCallByKind[$kind->value] ??= ['kind' => $kind, 'days' => 0, 'hours' => 0.0];
+            $onCallByKind[$kind->value]['days']++;
+            $onCallByKind[$kind->value]['hours'] += self::number($onCall->hours);
+        }
+        // in the order of the spreadsheet: working days, weekends, holidays
+        $onCallByKind = array_filter(array_merge(
+            array_fill_keys(array_map(fn(DayKind $kind): string => $kind->value, DayKind::cases()), null),
+            $onCallByKind,
+        ));
 
         return new self(
             workingDays: count($workingDays),
@@ -153,6 +168,7 @@ final class WorkReportSummary
             labels: $labels,
             onCallDays: count($onCalls),
             onCallHours: array_sum(array_map(fn($onCall): float => self::number($onCall->hours), $onCalls)),
+            onCallByKind: $onCallByKind,
         );
     }
 

@@ -5,6 +5,7 @@ namespace WorkReports\Service;
 
 use Cake\I18n\Date;
 use Settings\Utility\Settings;
+use WorkReports\Model\Enum\DayKind;
 use Yasumi\ProviderInterface;
 use Yasumi\Yasumi;
 
@@ -71,6 +72,32 @@ class WorkingCalendar
     public function isWeekend(Date $day): bool
     {
         return $day->isWeekend();
+    }
+
+    /**
+     * The kind of the day. A public holiday on a weekend is a holiday.
+     *
+     * @param \Cake\I18n\Date $day Day asked about.
+     * @return \WorkReports\Model\Enum\DayKind
+     */
+    public function dayKind(Date $day): DayKind
+    {
+        return match (true) {
+            $this->isHoliday($day) => DayKind::Holiday,
+            $this->isWeekend($day) => DayKind::Weekend,
+            default => DayKind::WorkingDay,
+        };
+    }
+
+    /**
+     * What an on-call day of the kind is worth, as the settings say.
+     *
+     * @param \Cake\I18n\Date $day Day on call.
+     * @return float
+     */
+    public function onCallHours(Date $day): float
+    {
+        return (float)Settings::get('work_reports.on_call_hours.' . $this->dayKind($day)->value, 0);
     }
 
     /**

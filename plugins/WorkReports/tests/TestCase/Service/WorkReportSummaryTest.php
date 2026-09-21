@@ -122,6 +122,29 @@ class WorkReportSummaryTest extends TestCase
     }
 
     /**
+     * June 2026 of the spreadsheet: four working days and two weekend days on call, 36 hours,
+     * listed in the order the spreadsheet had them.
+     *
+     * @return void
+     */
+    public function testOnCallByKind(): void
+    {
+        $report = $this->report('2026-06-01', '0.5', []);
+        $report->work_report_on_calls = [];
+        foreach (['13' => '12', '08' => '3', '09' => '3', '11' => '3', '12' => '3', '14' => '12'] as $day => $hours) {
+            $report->work_report_on_calls[] = new WorkReportOnCall(['date' => new Date('2026-06-' . $day), 'hours' => $hours]);
+        }
+
+        $summary = $this->summary($report);
+
+        $this->assertSame(36.0, $summary->onCallHours);
+        $this->assertSame(['working_day', 'weekend'], array_keys($summary->onCallByKind));
+        $this->assertSame(4, $summary->onCallByKind['working_day']['days']);
+        $this->assertSame(12.0, $summary->onCallByKind['working_day']['hours']);
+        $this->assertSame(24.0, $summary->onCallByKind['weekend']['hours']);
+    }
+
+    /**
      * @return void
      */
     public function testFormatMinutes(): void

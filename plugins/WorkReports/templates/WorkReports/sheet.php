@@ -7,7 +7,7 @@ use WorkReports\Service\WorkReportSummary;
  * @var \WorkReports\Model\Entity\WorkReport $workReport
  * @var \WorkReports\Service\WorkReportSummary $summary
  * @var \WorkReports\Service\WorkingCalendar $calendar
- * @var array<string, array{date: \Cake\I18n\Date, items: list<\WorkReports\Model\Entity\WorkReportItem>}> $days
+ * @var array<string, array{date: \Cake\I18n\Date, items: list<\WorkReports\Model\Entity\WorkReportItem>, on_call: \WorkReports\Model\Entity\WorkReportOnCall|null}> $days
  * @var list<array{value: string, text: string, style: string|null}> $workers
  * @var string $workerName
  * @var \Cake\I18n\Date $month
@@ -144,6 +144,7 @@ $addUrl = fn(Date $day): array => [
                     <table>
                         <tr>
                             <th><?= __d('work_reports', 'Date') ?></th>
+                            <th><?= __d('work_reports', 'On Call') ?></th>
                             <th><?= __d('work_reports', 'Work From') ?></th>
                             <th><?= __d('work_reports', 'Work Until') ?></th>
                             <th><?= __d('work_reports', 'Hours') ?></th>
@@ -173,6 +174,25 @@ $addUrl = fn(Date $day): array => [
                                     <?= h($date->i18nFormat('EEE d. M.')) ?>
                                     <?php if ($calendar->isHoliday($date)) : ?>
                                         <br><small><?= __d('work_reports', 'public holiday') ?></small>
+                                    <?php endif ?>
+                                </td>
+                                <td rowspan="<?= count($rows) ?>" style="vertical-align: top;">
+                                    <?php if ($day['on_call'] !== null) : ?>
+                                        <?= $this->Number->format($day['on_call']->hours->toFloat()) ?> h
+                                    <?php endif ?>
+                                    <?php if ($mayEdit && !$workReport->isLocked()) : ?>
+                                        <?= $this->AuthLink->postLink(
+                                            $day['on_call'] !== null
+                                                ? __d('work_reports', 'Remove')
+                                                : __d('work_reports', 'Set'),
+                                            ['controller' => 'WorkReportOnCalls', 'action' => 'toggle'],
+                                            [
+                                                'data' => [
+                                                    'user_id' => $workReport->user_id,
+                                                    'date' => $date->format('Y-m-d'),
+                                                ],
+                                            ],
+                                        ) ?>
                                     <?php endif ?>
                                 </td>
                                 <?php endif ?>

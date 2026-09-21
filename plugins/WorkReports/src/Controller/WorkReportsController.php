@@ -270,10 +270,10 @@ class WorkReportsController extends AppController
     }
 
     /**
-     * Every day of the month with the items reported on it.
+     * Every day of the month with the items reported on it, and whether it was one on call.
      *
-     * @param \WorkReports\Model\Entity\WorkReport $workReport Report with its items.
-     * @return array<string, array{date: \Cake\I18n\Date, items: list<\WorkReports\Model\Entity\WorkReportItem>}>
+     * @param \WorkReports\Model\Entity\WorkReport $workReport Report with its items and on-call days.
+     * @return array<string, array{date: \Cake\I18n\Date, items: list<\WorkReports\Model\Entity\WorkReportItem>, on_call: \WorkReports\Model\Entity\WorkReportOnCall|null}>
      */
     protected function daysOf(WorkReport $workReport): array
     {
@@ -281,7 +281,7 @@ class WorkReportsController extends AppController
         $day = $workReport->month->firstOfMonth();
         $last = $workReport->month->lastOfMonth();
         while ($day <= $last) {
-            $days[$day->format('Y-m-d')] = ['date' => $day, 'items' => []];
+            $days[$day->format('Y-m-d')] = ['date' => $day, 'items' => [], 'on_call' => null];
             $day = $day->addDays(1);
         }
 
@@ -289,6 +289,13 @@ class WorkReportsController extends AppController
             $key = $item->date->format('Y-m-d');
             if (isset($days[$key])) {
                 $days[$key]['items'][] = $item;
+            }
+        }
+
+        foreach ($workReport->work_report_on_calls as $onCall) {
+            $key = $onCall->date->format('Y-m-d');
+            if (isset($days[$key])) {
+                $days[$key]['on_call'] = $onCall;
             }
         }
 
