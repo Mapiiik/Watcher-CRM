@@ -134,7 +134,13 @@ class ContractProposalsController extends AppController
 
         if ($this->request->is('post')) {
             $proposal = $this->fillFromForm($proposal, $this->request->getData());
-            $this->endWhatTheContractIsBilledFor($proposal);
+
+            // The lines are put there against the snapshot, so only a submission that got as far
+            // as taking one has anything to end. A form asking to be drawn again never takes one,
+            // and one that stopped on a question the operator has to answer never got there.
+            if (!$this->isARedraw() && !$proposal->hasErrors()) {
+                $this->endWhatTheContractIsBilledFor($proposal);
+            }
 
             // Changing the contract redraws the form so that its versions and services are the
             // ones that contract has; it is not an attempt to save anything yet.
@@ -161,6 +167,9 @@ class ContractProposalsController extends AppController
      *
      * A version ending while the contract runs on gets none of this: what is billed for hangs off
      * the contract, which carries on, and the version that follows says what becomes of it.
+     *
+     * What is still billed for is read off the snapshot, so this is asked only of a proposal that
+     * has one - which a half-filled form being drawn again has not.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal being drawn up.
      * @return void

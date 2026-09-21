@@ -1286,6 +1286,63 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * Choosing the version draws the form again, and an ending whose day was typed first arrives
+     * there asking for the contract to end - with no snapshot behind it yet, because a form being
+     * drawn again never takes one. Stopping what is billed for read the snapshot all the same and
+     * the form came back as an error page, which is why the two fields had to be filled in in one
+     * order and not the other.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testAnEndingWhoseDayWasTypedBeforeTheVersionOnlyRedrawsTheForm(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $before = $proposals->find()->count();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'refresh' => 'refresh',
+            'purpose' => ProposalPurpose::Termination->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => self::CONTRACT_VERSION_ID,
+            'ends_on' => '2026-12-31',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame([], $this->viewVariable('contractProposal')->getErrors());
+        $this->assertSame($before, $proposals->find()->count());
+    }
+
+    /**
+     * And an ending that names no version is a question put to the operator, not a failure: the
+     * snapshot was never taken, so there is nothing to stop billing against either.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testAnEndingWithoutAVersionIsAsked(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::Termination->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => '',
+            'ends_on' => '2026-12-31',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertArrayHasKey(
+            'contract_version_id',
+            $this->viewVariable('contractProposal')->getErrors(),
+        );
+    }
+
+    /**
      * Papers go out more than once - by another means, or after the first attempt came back - so
      * the day and the way they went may be recorded again. What they stand on stays settled.
      *
