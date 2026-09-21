@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WorkReports\Controller;
 
+use App\NMS\ApiClient;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Override;
@@ -92,6 +93,54 @@ class WorkOverviewsController extends AppController
                 ->where(['to_invoice' => true, 'customer_id IS NOT' => null])]);
 
         $this->set(compact('groups', 'total', 'customers', 'invoiced', 'from', 'to'));
+    }
+
+    /**
+     * The work done at the access points, by access point, with the time it took.
+     *
+     * @return void Renders view
+     */
+    public function byAccessPoint(): void
+    {
+        $query = $this->WorkReportItems->find(
+            'all',
+            contain: [
+                'WorkReports' => ['Users'],
+                'WorkReportItemTypes',
+                'Customers',
+            ],
+            conditions: ['WorkReportItems.access_point_id IS NOT' => null],
+            order: ['WorkReportItems.date' => 'DESC', 'WorkReportItems.work_from' => 'DESC'],
+        );
+
+        $accessPointId = $this->getRequest()->getQuery('access_point_id');
+        if (is_string($accessPointId) && $accessPointId !== '') {
+            $query->where(['WorkReportItems.access_point_id' => $accessPointId]);
+        }
+        $from = $this->queryDate('from');
+        if ($from !== null) {
+            $query->where(['WorkReportItems.date >=' => $from]);
+        }
+        $to = $this->queryDate('to');
+        if ($to !== null) {
+            $query->where(['WorkReportItems.date <=' => $to]);
+        }
+
+        $accessPoints = ApiClient::getAccessPointsList();
+        /** @var array<string, string> $names */
+        $names = $accessPoints->or([]);
+
+        $groups = [];
+        /** @var \WorkReports\Model\Entity\WorkReportItem $item */
+        foreach ($query->all() as $item) {
+            $key = (string)$item->access_point_id;
+            $groups[$key] ??= ['name' => $names[$key] ?? null, 'items' => [], 'minutes' => 0];
+            $groups[$key]['items'][] = $item;
+            $groups[$key]['minutes'] += $item->minutes;
+        }
+        uasort($groups, fn(array $a, array $b): int => strnatcasecmp((string)$a['name'], (string)$b['name']));
+
+        $this->set(compact('groups', 'accessPoints', 'names', 'from', 'to'));
     }
 
     /**

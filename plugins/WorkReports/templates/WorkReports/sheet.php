@@ -12,6 +12,7 @@ use WorkReports\Service\WorkReportSummary;
  * @var string $workerName
  * @var \Cake\I18n\Date $month
  * @var bool $mayEdit
+ * @var \App\Http\Answer<array<string, string>>|null $accessPoints
  * @var bool $maySubmit
  * @var bool $mayReopen
  */
@@ -243,6 +244,14 @@ $addUrl = fn(Date $day): array => [
                                                     'customer_id' => $item->customer_id,
                                                 ],
                                             ) ?>
+                                        <?php endif ?>
+                                        <?php if ($item->access_point_id !== null && $accessPoints !== null) : ?>
+                                            <br>
+                                            <?= $this->element('AccessPoints/link', [
+                                                'id' => $item->access_point_id,
+                                                'name' => $accessPoints->or([])[$item->access_point_id] ?? null,
+                                                'answer' => $accessPoints,
+                                            ]) ?>
                                         <?php endif ?>
                                     </td>
                                     <td>

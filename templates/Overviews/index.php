@@ -40,6 +40,17 @@ use Cake\Core\Plugin;
                     ],
                     ['class' => 'side-nav-item'],
                 ) ?>
+                <?= $this->AuthLink->link(
+                    __d('work_reports', 'Work at Access Points'),
+                    [
+                        'plugin' => 'WorkReports',
+                        'controller' => 'WorkOverviews',
+                        'action' => 'byAccessPoint',
+                        'customer_id' => false,
+                        'contract_id' => false,
+                    ],
+                    ['class' => 'side-nav-item'],
+                ) ?>
             </div>
         </div>
         <?php endif; ?>

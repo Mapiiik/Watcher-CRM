@@ -5,6 +5,7 @@ namespace WorkReports\Controller;
 
 use App\Controller\Traits\MessageHandlerTrait;
 use App\Messages\Messages;
+use App\NMS\ApiClient;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Response;
@@ -89,6 +90,12 @@ class WorkReportsController extends AppController
         $workers = $this->visibleWorkers();
         $workerName = $this->fetchTable('AppUsers')->get($userId)->get('name');
 
+        // asked of the NMS only when the month has any of its access points
+        $accessPoints = array_filter(array_map(
+            fn($item): ?string => $item->access_point_id,
+            $workReport->work_report_items,
+        )) === [] ? null : ApiClient::getAccessPointsList();
+
         $mayEdit = $this->mayEdit($userId);
         $maySubmit = $userId === $this->identityId() || $this->seesEverybody();
         $mayReopen = $this->mayReopen($userId);
@@ -101,6 +108,7 @@ class WorkReportsController extends AppController
             'workers',
             'workerName',
             'month',
+            'accessPoints',
             'mayEdit',
             'maySubmit',
             'mayReopen',

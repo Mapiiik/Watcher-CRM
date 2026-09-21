@@ -1028,6 +1028,21 @@ $permissions = [
                 'delete',
             ],
         ],
+        //allow the work at the access points to those who look after the network or sell it
+        [
+            'role' => [
+                'network-technician',
+                'network-manager',
+                'sales-manager',
+            ],
+            'plugin' => 'WorkReports',
+            'controller' => [
+                'WorkOverviews',
+            ],
+            'action' => [
+                'byAccessPoint',
+            ],
+        ],
         //allow the work to invoice to those who invoice it
         [
             'role' => [

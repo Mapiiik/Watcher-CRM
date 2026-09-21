@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace WorkReports\Test\TestCase\Controller;
 
+use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Cache\Cache;
+use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -22,7 +25,9 @@ use WorkReports\Test\Fixture\WorkReportItemTypesFixture;
 #[UsesClass(WorkOverviewsController::class)]
 class WorkOverviewsControllerTest extends TestCase
 {
+    use ConfigureTestTrait;
     use ControllerTestTrait;
+    use HttpClientTrait;
     use IntegrationTestTrait;
 
     private const WORKER = '11edb519-be76-4d66-aea0-34188d31eae1';
@@ -65,6 +70,20 @@ class WorkOverviewsControllerTest extends TestCase
     }
 
     /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        Cache::clear('api_client');
+        $this->restoreConfigure();
+
+        parent::tearDown();
+    }
+
+    /**
      * The work to invoice is listed with what it comes to, what is invoiced is left out.
      *
      * @return void
@@ -102,6 +121,58 @@ class WorkOverviewsControllerTest extends TestCase
 
         $this->assertRedirect();
         $this->assertTrue($this->getTableLocator()->get('WorkReports.WorkReportItems')->get($item->id)->invoiced);
+    }
+
+    /**
+     * The work at access points is listed by access point, the rest is left out.
+     *
+     * @return void
+     */
+    public function testByAccessPoint(): void
+    {
+        $atAccessPoint = $this->item('Antenna realigned', invoiced: false);
+        $atAccessPoint->set('access_point_id', '5d1e1f9a-8c1b-4d7a-9f3e-2b6c7d8e9f01');
+        $this->getTableLocator()->get('WorkReports.WorkReportItems')->saveOrFail($atAccessPoint);
+        $this->item('Office work', invoiced: false);
+
+        $user = $this->getTableLocator()->get('AppUsers')->get(self::WORKER);
+        $user->role = 'network-technician';
+        $user->set('is_superuser', false);
+        $this->session(['Auth' => $user]);
+
+        $this->get('/work-reports/work-overviews/by-access-point');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('Antenna realigned');
+        $this->assertResponseNotContains('Office work');
+        $this->assertResponseContains('1:24 h');
+    }
+
+    /**
+     * With the NMS down, the overview and the month still draw, and the access point says it
+     * could not be looked up.
+     *
+     * @return void
+     */
+    public function testAccessPointsWithTheNmsDown(): void
+    {
+        $this->withConfigure(['Nms.url' => 'https://nms.example.com', 'Nms.key' => 'secret']);
+        Cache::clear('api_client');
+        $this->mockClientGet('https://nms.example.com/*', $this->newClientResponse(500));
+
+        $item = $this->item('Antenna realigned', invoiced: false);
+        $item->set('access_point_id', '5d1e1f9a-8c1b-4d7a-9f3e-2b6c7d8e9f01');
+        $this->getTableLocator()->get('WorkReports.WorkReportItems')->saveOrFail($item);
+
+        $user = $this->getTableLocator()->get('AppUsers')->get(self::WORKER);
+        $user->role = 'admin';
+        $this->session(['Auth' => $user]);
+
+        foreach (['/work-reports/work-overviews/by-access-point', '/work-reports/work-reports/sheet?month=2026-06'] as $page) {
+            $this->get($page);
+            $this->assertResponseOk('The page ' . $page . ' did not draw.');
+            $this->assertResponseContains('warning-text');
+        }
     }
 
     /**
