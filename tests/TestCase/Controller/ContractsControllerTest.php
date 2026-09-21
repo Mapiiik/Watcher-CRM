@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\ContractsController;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
+use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
@@ -844,8 +845,9 @@ class ContractsControllerTest extends TestCase
         $contract = $this->fetchTable('Contracts')->get($this->firstId('Contracts'), contain: ['Customers']);
 
         $this->login();
+        // Asked for where something is being ended, which is where the paper carries the number.
         $this->get('/customers/' . $contract->customer_id . '/contracts/' . $contract->id
-            . '/contract-proposals/add');
+            . '/contract-proposals/add?purpose=' . ProposalPurpose::Termination->value);
 
         $this->assertResponseOk();
         $this->assertResponseContains('<option value="' . h($contract->number) . '">');

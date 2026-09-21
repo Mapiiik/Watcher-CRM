@@ -31,25 +31,16 @@ foreach ($filed as $byVariant) {
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
+            <?php
+            // One page rather than two. Taking the snapshot again and putting right what may be
+            // put right were always halves of one gesture, and what may not be put right at all
+            // is what the papers are about - for that there is Delete.
+            ?>
             <?php if ($mayBeEdited) : ?>
                 <?= $this->AuthLink->link(
-                    __('Edit Proposal'),
-                    ['action' => 'edit', $contractProposal->id],
+                    __('Recreate Contract Proposal'),
+                    ['action' => 'recreate', $contractProposal->id],
                     ['class' => 'side-nav-item'],
-                ) ?>
-                <?php
-                // Asked the same question as the box on the edit form, which does the same thing
-                // for somebody who wants the version's dates put right in one go.
-                ?>
-                <?= $this->AuthLink->postLink(
-                    __('Take the snapshot again'),
-                    ['action' => 'refreshSnapshot', $contractProposal->id],
-                    [
-                        'class' => 'side-nav-item',
-                        'confirm' => __('The documents are generated from the contract as it'
-                            . ' was when this proposal was created. A new snapshot replaces that'
-                            . ' state. Continue?'),
-                    ],
                 ) ?>
             <?php endif; ?>
             <?php if ($contractProposal->isOpen()) : ?>

@@ -20,8 +20,10 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\CustomerProposal;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
+use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\Datasource\Exception\RecordNotFoundException;
@@ -30,6 +32,8 @@ use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Exception;
+use Files\Service\FileStorage;
+use Throwable;
 
 /**
  * ContractProposals Controller
@@ -46,8 +50,7 @@ class ContractProposalsController extends AppController
      */
     protected array $nestingAutoFix = [
         'view',
-        'edit',
-        'refreshSnapshot',
+        'recreate',
         'billingLine',
     ];
 
@@ -56,9 +59,23 @@ class ContractProposalsController extends AppController
      */
     protected array $nestingAutoAdd = [
         'view',
-        'edit',
-        'refreshSnapshot',
+        'recreate',
         'billingLine',
+    ];
+
+    /**
+     * The fields a proposal may have put right without being drawn up again.
+     *
+     * Nothing is worked out from any of them: they are written where they are read. Everything
+     * else the papers say is either photographed or turned into the changes the moment it is
+     * first said, and reading it a second time is what would set the two at odds.
+     *
+     * @var list<string>
+     */
+    private const MAY_BE_PUT_RIGHT = [
+        'note',
+        'terminated_contract_number',
+        'customer_proposal_id',
     ];
 
     /**
@@ -214,74 +231,28 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * Edit method
+     * Puts the papers together again from the contract as it stands now.
      *
-     * The snapshot stands unless the form says otherwise: the operator is working against what
-     * they were shown, and says for themselves when they know the contract has moved underneath
-     * it. Asked for here rather than on a page of its own, because a fresh reading may want the
-     * dates of the version corrected in the same breath.
+     * What the papers are about - the contract, its version, what they are for, the days they turn
+     * on - is settled when they are drawn up. All of it is either photographed or written into the
+     * changes the moment it is said, so a second reading of those fields would leave the papers
+     * printing one thing and the records doing another. Wanting any of it different is wanting
+     * different papers: the way to that is to delete these and draw up new ones.
      *
-     * @param string|null $id Contract version proposal id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit(?string $id = null): ?Response
-    {
-        $proposal = $this->ContractProposals->get($id, contain: [
-            'Contracts' => ['ServiceTypes', 'InstallationAddresses'],
-            'CustomerProposals',
-        ]);
-
-        if (!$this->ContractProposals->mayBeEdited($proposal)) {
-            $this->Flash->error(__('This proposal can no longer be changed.'));
-
-            return $this->redirect(['action' => 'view', $id]);
-        }
-
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $takeSnapshot = toBool($this->getRequest()->getData('take_the_snapshot_again')) ?? false;
-
-            $proposal = $this->fillFromForm(
-                $proposal,
-                $this->request->getData(),
-                keepSnapshot: !$takeSnapshot,
-            );
-
-            // A billing the changes act on may be gone from the new reading - which is the very
-            // case somebody asks for one in - and the rule that every line acts on something the
-            // snapshot knows would refuse the saving over a table this form does not even show.
-            $takenBack = $takeSnapshot ? $this->dropLinesWhoseBillingIsGone($proposal) : 0;
-
-            if (!$this->isARedraw() && $this->saveProposal($proposal)) {
-                $this->sayWhatWasTakenBack($takenBack);
-
-                return $this->redirect(['action' => 'view', $proposal->id]);
-            }
-        }
-
-        $this->set('contractProposal', $proposal);
-        $this->setFormViewVars($proposal);
-
-        return null;
-    }
-
-    /**
-     * Takes the snapshot again, and nothing else.
+     * What is left here is what nothing is worked out from - the questions the operator answers,
+     * the note, the number on the paper of the contract being ended, and which envelope the papers
+     * go out in - and a fresh photograph of the contract, which is the reason to come here at all.
      *
-     * The common case is a button: the contract moved underneath the papers and nothing about them
-     * changes. Where the version's dates want correcting in the same breath, the box on the edit
-     * form does both - which is also where a bookmark to this address still arrives.
+     * The documents drawn from the old photograph go with it, because that is what makes them
+     * wrong. Only the ones we drew: an ending is filed with the customer's own notice and with what
+     * an office wrote, and neither is ours to throw away.
      *
      * @param string|null $id Contract version proposal id.
-     * @return \Cake\Http\Response|null Redirects to the proposal, or to the form when asked by GET.
+     * @return \Cake\Http\Response|null Redirects to the proposal, or renders the form.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function refreshSnapshot(?string $id = null): ?Response
+    public function recreate(?string $id = null): ?Response
     {
-        if (!$this->request->is('post')) {
-            return $this->redirect(['action' => 'edit', $id]);
-        }
-
         $proposal = $this->ContractProposals->get($id, contain: ['CustomerProposals']);
 
         if (!$this->ContractProposals->mayBeEdited($proposal)) {
@@ -290,43 +261,73 @@ class ContractProposalsController extends AppController
             return $this->redirect(['action' => 'view', $id]);
         }
 
+        // Read before anything is written, because the form has to say what stands to be thrown
+        // away before the operator agrees to it.
+        $drawnFromTheOldOne = $this->documentsWeDrewUp($proposal);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData();
+
+            $proposal = $this->ContractProposals->patchEntity(
+                $proposal,
+                array_intersect_key($data, array_flip(self::MAY_BE_PUT_RIGHT))
+                    + ['confirmations' => (new ProposalForm())->confirmationsFrom($data)],
+                ['validate' => false],
+            );
+
+            if (!$this->photographItAgain($proposal)) {
+                $this->Flash->error(__('A new snapshot of this contract cannot be taken. Delete'
+                    . ' the proposal and create a new one.'));
+
+                return $this->redirect(['action' => 'view', $id]);
+            }
+
+            // Saying yes to it is the whole point of the box, so a submission without it is the
+            // operator not having seen what it says.
+            if ($drawnFromTheOldOne !== [] && (toBool($data['discard_the_documents'] ?? null) ?? false) !== true) {
+                $proposal->setError('discard_the_documents', [
+                    __('Confirm that the generated documents may be deleted.'),
+                ]);
+            }
+
+            $takenBack = $this->dropLinesWhoseBillingIsGone($proposal);
+
+            if ($this->saveProposal($proposal)) {
+                $this->sayWhatWasTakenBack($takenBack);
+                $this->sayWhatWasDiscarded($this->discardTheDocuments($drawnFromTheOldOne));
+                $this->Flash->success(__('The contract proposal has been recreated.'));
+
+                return $this->redirect(['action' => 'view', $id]);
+            }
+        }
+
         $contract = $this->contractFor((string)$proposal->contract_id);
-        // A contract whose service keeps no versions is photographed without one.
-        $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
-        $terminates = $keepsVersions ? $proposal->terminates_contract_version_id : null;
-        $version = match (true) {
-            $contract === null, !$keepsVersions => null,
-            $proposal->contract_version_id !== null => $this->versionFor($proposal->contract_version_id),
-            default => $this->versionToCome($contract->id, [
-                'effective_from' => $proposal->effective_from?->toDateString(),
-                'changes' => $proposal->changes,
-            ]),
-        };
 
-        if ($contract === null || ($version === null && $keepsVersions)) {
-            $this->Flash->error(__('Choose which contract and which version of it this contract'
-                . ' proposal is for.'));
+        $this->set('contractProposal', $proposal);
+        // The questions are about what goes on paper, and a contract that keeps no versions has none.
+        $this->set('questions', $contract === null || !$proposal->keepsVersions()
+            ? []
+            : (new ReadinessChecks())->questionsFor($contract));
+        $this->set('wording', ReadinessChecks::wording());
+        $this->set('rounds', $this->openRoundsOf($contract->customer_id ?? $this->customer_id));
+        $this->set('contractNumbers', $this->numbersOfferedFor($contract));
+        $this->set('documentsToDiscard', $drawnFromTheOldOne);
 
-            return $this->redirect(['action' => 'edit', $id]);
-        }
+        return null;
+    }
 
-        $proposal->set('snapshot', (new ProposalSnapshotBuilder())->take(
-            $contract,
-            $version,
-            $terminates === null ? null : $this->versionFor($terminates),
-        ));
-        $proposal->set('snapshot_taken', DateTime::now());
-        $takenBack = $this->dropLinesWhoseBillingIsGone($proposal);
-
-        if (!$this->saveProposal($proposal)) {
-            // A fresh reading may raise a question nobody has answered yet, and the form is where
-            // it is asked - with the box that takes the snapshot again in the same submission.
-            return $this->redirect(['action' => 'edit', $id]);
-        }
-
-        $this->sayWhatWasTakenBack($takenBack);
-
-        return $this->redirect(['action' => 'view', $id]);
+    /**
+     * Where the button that only took the snapshot again used to be.
+     *
+     * Taking it again and putting the papers right were always two halves of one gesture - each
+     * sent the operator to the other - so they are one page now, and a bookmark still arrives.
+     *
+     * @param string|null $id Contract version proposal id.
+     * @return \Cake\Http\Response|null Redirects to the page that does it.
+     */
+    public function refreshSnapshot(?string $id = null): ?Response
+    {
+        return $this->redirect(['action' => 'recreate', $id]);
     }
 
     /**
@@ -349,6 +350,153 @@ class ContractProposalsController extends AppController
             $takenBack,
             $takenBack,
         ));
+    }
+
+    /**
+     * Tells the operator how many documents went with the snapshot they were drawn from.
+     *
+     * @param int $discarded How many.
+     * @return void
+     */
+    private function sayWhatWasDiscarded(int $discarded): void
+    {
+        if ($discarded === 0) {
+            return;
+        }
+
+        $this->Flash->warning(__n(
+            'One generated document has been deleted with the old snapshot.',
+            '{0} generated documents have been deleted with the old snapshot.',
+            $discarded,
+            $discarded,
+        ));
+    }
+
+    /**
+     * Photographs the contract again, as it stands now.
+     *
+     * The same reading the papers were drawn up from, asked of the same records - what the papers
+     * are about does not change here, so it is read off the proposal rather than off a form.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The papers.
+     * @return bool Whether there was anything left to photograph.
+     */
+    private function photographItAgain(ContractProposal $proposal): bool
+    {
+        $contract = $this->contractFor((string)$proposal->contract_id);
+        // A contract whose service keeps no versions is photographed without one.
+        $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
+        $terminates = $keepsVersions ? $proposal->terminates_contract_version_id : null;
+        $version = match (true) {
+            $contract === null, !$keepsVersions => null,
+            $proposal->contract_version_id !== null => $this->versionFor($proposal->contract_version_id),
+            // Papers for a new contract may be about a version that is still to come, and are
+            // photographed as it will be, the same way they were when they were drawn up.
+            default => $this->versionToCome($contract->id, [
+                'effective_from' => $proposal->effective_from?->toDateString(),
+                'changes' => $proposal->changes,
+            ]),
+        };
+
+        if ($contract === null || ($version === null && $keepsVersions)) {
+            return false;
+        }
+
+        $proposal->set('snapshot', (new ProposalSnapshotBuilder())->take(
+            $contract,
+            $version,
+            $terminates === null ? null : $this->versionFor($terminates),
+        ));
+        $proposal->set('snapshot_taken', DateTime::now());
+
+        return true;
+    }
+
+    /**
+     * The documents on file that we drew up ourselves.
+     *
+     * Two questions, and both have to be asked. What kind of paper it is says whether anybody here
+     * draws it at all - a notice of termination is written by the customer and a death certificate
+     * by an office, and those are filed with the papers of an ending without ever being ours.
+     * Which copy it is says whether this one came back rather than went out.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The papers.
+     * @return array<\Files\Model\Entity\FileLink>
+     */
+    private function documentsWeDrewUp(ContractProposal $proposal): array
+    {
+        $drawnHere = array_map(
+            fn(ContractDocumentType $type): string => $type->value,
+            array_filter(
+                ContractDocumentType::cases(),
+                fn(ContractDocumentType $type): bool => $type->canBeGenerated(),
+            ),
+        );
+
+        /** @var array<\Files\Model\Entity\FileLink> $ours */
+        $ours = $this->fetchTable('Files.FileLinks')
+            ->find()
+            ->where([
+                'FileLinks.model' => ContractDocuments::MODEL,
+                'FileLinks.foreign_key' => $proposal->id,
+                'FileLinks.document_type IN' => array_values($drawnHere),
+                'FileLinks.variant IN' => [
+                    DocumentVariant::Generated->value,
+                    DocumentVariant::GeneratedSignedByUs->value,
+                ],
+            ])
+            ->toArray();
+
+        return $ours;
+    }
+
+    /**
+     * Throws away the documents the old snapshot was printed into.
+     *
+     * Only once the papers themselves are safely put together again: a saving refused over a
+     * question nobody answered is the ordinary way out of this form, and it must not be the way
+     * the documents go.
+     *
+     * @param array<\Files\Model\Entity\FileLink> $documents Which ones.
+     * @return int How many went.
+     */
+    private function discardTheDocuments(array $documents): int
+    {
+        $storage = new FileStorage();
+        $discarded = 0;
+
+        foreach ($documents as $document) {
+            try {
+                $storage->unlink($document);
+                $discarded++;
+            } catch (Throwable) {
+                // The papers are already right; a file left behind is untidy rather than wrong,
+                // and saying so is better than undoing what was just put together.
+                $this->Flash->warning(__('A generated document could not be deleted. Please'
+                    . ' delete it manually.'));
+            }
+        }
+
+        return $discarded;
+    }
+
+    /**
+     * The numbers the paper of an ending may name, which are chosen rather than typed.
+     *
+     * Contracts concluded before the renumbering carry the customer number, one contract to a
+     * customer, so both are worth offering and nothing else ever is.
+     *
+     * @param \App\Model\Entity\Contract|null $contract The contract, where there is one.
+     * @return array<string, string>
+     */
+    private function numbersOfferedFor(?Contract $contract): array
+    {
+        $numbers = $contract === null ? [] : array_values(array_unique(array_filter([
+            $contract->number,
+            $contract->customer->number ?? null,
+        ])));
+
+        return array_combine($numbers, $numbers);
     }
 
     /**
@@ -716,44 +864,34 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * Puts what the form said onto the proposal, taking a snapshot where one is wanted.
+     * Puts what the form said onto the papers being drawn up, and photographs the contract.
      *
-     * Which contract the papers are about comes from the form like everything else, while they are
-     * being drawn up: the address only fills that field in, so what was chosen there stands even
-     * where it is not the contract the form was opened under. Afterwards it is theirs to keep.
+     * Only ever while they are being drawn: every field here settles something that is then either
+     * photographed or written into the changes, so reading any of it a second time would leave the
+     * papers printing one thing and the records doing another. Papers already written are put
+     * right on a page of their own, which asks for none of this.
      *
-     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * Which contract the papers are about comes from the form like everything else: the address
+     * only fills that field in, so what was chosen there stands even where it is not the contract
+     * the form was opened under.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal being drawn up.
      * @param array<string, mixed> $data What the form sent.
-     * @param bool $keepSnapshot Whether the snapshot it already has stands.
      * @return \App\Model\Entity\ContractProposal
      */
-    private function fillFromForm(
-        ContractProposal $proposal,
-        array $data,
-        bool $keepSnapshot = false,
-    ): ContractProposal {
+    private function fillFromForm(ContractProposal $proposal, array $data): ContractProposal
+    {
         // The form asking to be drawn again is not an attempt to save, so a half-filled one is
         // expected rather than wrong.
         $redrawing = $this->isARedraw();
-
-        // Papers stay with the contract they were drawn up for, so what arrives about it is read
-        // only while they are being drawn. Moving them afterwards would leave the snapshot, the
-        // version and the lines of billing speaking about a contract the papers no longer name.
-        if (!$proposal->isNew()) {
-            unset($data['contract_id']);
-        }
 
         $form = new ProposalForm();
         $purpose = $this->purposeFrom($data, $proposal);
         $data['purpose'] = $purpose->value;
 
         // A contract whose service keeps no versions has none to choose, change or photograph.
-        // Asked of the contract when the snapshot is taken now, and of the snapshot otherwise, so
-        // that a proposal goes on saying what it was created against.
         $contract = $this->contractFor((string)($data['contract_id'] ?? $proposal->contract_id));
-        $keepsVersions = $keepSnapshot && !$proposal->isNew()
-            ? $proposal->keepsVersions()
-            : ($contract?->service_type->have_contract_versions ?? true);
+        $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
 
         if (!$keepsVersions) {
             $data['contract_version_id'] = null;
@@ -762,9 +900,12 @@ class ContractProposalsController extends AppController
 
         // What the head of the form asks is laid over what the proposal already asks of the
         // billings - those are edited a line at a time and never travel in this submission.
-        $data['changes'] = $form->changesFrom($data, $proposal->isNew()
-            ? ProposalChanges::nothing()
-            : $proposal->proposedChanges(), $purpose, $keepsVersions);
+        $data['changes'] = $form->changesFrom(
+            $data,
+            ProposalChanges::nothing(),
+            $purpose,
+            $keepsVersions,
+        );
         $data['confirmations'] = $form->confirmationsFrom($data);
         $ends = $this->endOfTheVersion($data);
 
@@ -822,10 +963,10 @@ class ContractProposalsController extends AppController
             $data['effective_from'] = $version->valid_from->toDateString();
         }
 
-        if (!$keepSnapshot && $contract !== null && !$keepsVersions) {
+        if ($contract !== null && !$keepsVersions) {
             $data['snapshot'] = (new ProposalSnapshotBuilder())->take($contract, null);
             $data['snapshot_taken'] = DateTime::now();
-        } elseif (!$keepSnapshot) {
+        } else {
             $terminates = $data['terminates_contract_version_id']
                 ?? $proposal->terminates_contract_version_id;
             $terminated = $terminates === null ? null : $this->versionFor((string)$terminates);

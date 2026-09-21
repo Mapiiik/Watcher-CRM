@@ -603,53 +603,40 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * Once the papers exist the contract is theirs to keep: the form says which one it is and does
-     * not offer it, and a contract arriving all the same is ignored. Moving them would leave the
-     * snapshot they print from, the version and every line of billing on a contract the papers no
-     * longer name.
+     * The number on the paper of what is being ended is asked only where something is being ended
+     * - an ending, or a new contract replacing an earlier version. Those are the two cases the rule
+     * that demands it asks about, so anywhere else it was a field with nothing to choose.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::edit()
+     * @link \App\Controller\ContractProposalsController::add()
      */
-    public function testPapersStayWithTheContractTheyWereDrawnUpFor(): void
+    public function testTheNumberIsAskedForOnlyWhereSomethingIsEnded(): void
     {
-        $other = '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90';
-
-        $versions = $this->getTableLocator()->get('ContractVersions');
-        $elsewhere = $versions->newEntity([
-            'contract_id' => $other,
-            'valid_from' => '2026-01-01',
-            'conclusion_date' => '2026-01-01',
-            'number_of_amendments' => 0,
-            'obligations_settled' => false,
-        ]);
-        $versions->saveOrFail($elsewhere);
-
         $this->login();
-        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
 
+        $this->get(self::NESTED . '/contract-proposals/add?purpose='
+            . ProposalPurpose::NewContract->value);
         $this->assertResponseOk();
-        $this->assertResponseContains('name="contract_id"');
-        $this->assertResponseContains('disabled="disabled"');
+        $this->assertResponseNotContains('name="terminated_contract_number"');
 
+        $this->get(self::NESTED . '/contract-proposals/add?purpose='
+            . ProposalPurpose::Termination->value);
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="terminated_contract_number"');
+
+        // And a new contract that replaces an earlier version does end something, so naming the
+        // version draws the form again with the number on it.
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID, [
-            'contract_id' => $other,
-            'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
-            'confirmations' => [
-                'fixed_term' => '1',
-                'own_equipment' => '1',
-                'does_not_use_ip_addresses' => '1',
-                'does_not_use_radius' => '1',
-            ],
+        $this->post('/contract-proposals/add', [
+            'refresh' => 'refresh',
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'terminates_contract_version_id' => self::CONTRACT_VERSION_ID,
         ]);
 
-        $this->assertRedirect();
-
-        $papers = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
-        $this->assertSame(self::CONTRACT_ID, $papers->contract_id);
-        $this->assertSame(self::CONTRACT_ID, $papers->snapshot['contract']['id'] ?? null);
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="terminated_contract_number"');
     }
 
     /**
@@ -675,15 +662,17 @@ class ContractProposalsControllerTest extends TestCase
      * counted from the day the papers take effect, and clicking it fills the field in.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::edit()
+     * @link \App\Controller\ContractProposalsController::add()
      */
     public function testTheUsualTermIsOfferedBesideTheObligation(): void
     {
-        $papers = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
-        $offered = TheUsualTerm::from($papers->effective_from);
+        $version = $this->getTableLocator()->get('ContractVersions')->get(self::CONTRACT_VERSION_ID);
+        $offered = TheUsualTerm::from($version->valid_from);
 
         $this->login();
-        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/add?purpose='
+            . ProposalPurpose::ServiceChange->value
+            . '&contract_version_id=' . self::CONTRACT_VERSION_ID);
 
         $this->assertResponseOk();
         // The day is said out loud, so nobody has to click to find out what they would get.
@@ -983,49 +972,54 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * The form of an existing proposal renders.
+     * The form renders, and asks for nothing the papers are about.
+     *
+     * Those fields are what the snapshot and the changes were made from, so the page that offers
+     * them is the one that draws papers up. Here there is nothing to offer but what is written
+     * where it is read.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::edit()
+     * @link \App\Controller\ContractProposalsController::recreate()
      */
-    public function testEdit(): void
+    public function testRecreate(): void
     {
         $this->login();
-        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
 
         $this->assertResponseOk();
+        $this->assertResponseContains('name="note"');
+
+        foreach (['purpose', 'contract_id', 'contract_version_id', 'effective_from', 'ends_on'] as $settled) {
+            $this->assertResponseNotContains(
+                sprintf('name="%s"', $settled),
+                sprintf('The form offers %s, which the papers were drawn up from.', $settled),
+            );
+        }
     }
 
     /**
-     * Taking the snapshot again is a box on the form the papers are edited on, because a fresh
-     * reading of the contract may want the dates of the version corrected in the same breath.
-     * What is bookmarked at the old address still arrives.
+     * Taking the snapshot again and putting the papers right were two halves of one gesture, each
+     * sending the operator to the other. They are one page now, and the old address still arrives.
      *
      * @return void
      * @link \App\Controller\ContractProposalsController::refreshSnapshot()
      */
-    public function testRefreshSnapshot(): void
+    public function testTheOldAddressForTheSnapshotStillArrives(): void
     {
         $this->login();
-        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
-
-        $this->assertResponseOk();
-        $this->assertResponseContains('take_the_snapshot_again');
-        $this->assertResponseContains('confirmations[fixed_term]');
-
         $this->get(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
 
-        $this->assertRedirectContains('/contract-proposals/edit/' . self::PROPOSAL_ID);
+        $this->assertRedirectContains('/contract-proposals/recreate/' . self::PROPOSAL_ID);
     }
 
     /**
-     * The button on the proposal takes the snapshot again by itself, and takes back what the new
-     * reading no longer knows - the same as the box on the form, without the form.
+     * Putting the papers together again reads the contract afresh and takes back the lines the new
+     * reading no longer knows.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::refreshSnapshot()
+     * @link \App\Controller\ContractProposalsController::recreate()
      */
-    public function testTheButtonTakesTheSnapshotAgain(): void
+    public function testRecreatingTakesTheSnapshotAgain(): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $billings = $this->getTableLocator()->get('Billings');
@@ -1047,11 +1041,18 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->login();
         $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
-        $this->assertResponseContains('/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+        $this->assertResponseContains('/contract-proposals/recreate/' . self::PROPOSAL_ID);
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
 
         $this->assertRedirectContains('/contract-proposals/view/' . self::PROPOSAL_ID);
 
@@ -1062,13 +1063,124 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * Where the new reading raises a question nobody has answered, the button sends the operator
-     * to the form, which is where the question is asked - and the snapshot stays as it was.
+     * The documents we generated came from the old snapshot, so they go with it - and nothing else
+     * does. An ending is filed with the customer's own notice and with what an office wrote, and
+     * neither is ours to throw away.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::refreshSnapshot()
+     * @link \App\Controller\ContractProposalsController::recreate()
      */
-    public function testAnUnansweredQuestionSendsTheButtonToTheForm(): void
+    public function testRecreatingDeletesOnlyTheDocumentsWeGenerated(): void
+    {
+        Configure::write('Files.root', TMP . 'recreate-papers-' . uniqid());
+        $storage = new FileStorage();
+
+        $ours = $storage->link(
+            $storage->store('%PDF-1.7 ours', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractDocumentType::ContractTermination->value,
+            DocumentVariant::Generated->value,
+            ['name' => 'termination.pdf'],
+        );
+        $theirs = $storage->link(
+            $storage->store('%PDF-1.7 theirs', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractDocumentType::TerminationNotice->value,
+            DocumentVariant::Received->value,
+            ['name' => 'notice.pdf'],
+        );
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
+
+        // Named on the form, so nobody agrees to something they were not shown - and the one that
+        // came from the customer is not among them.
+        $this->assertResponseOk();
+        $this->assertResponseContains('termination.pdf');
+        $this->assertResponseNotContains('notice.pdf');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
+            'discard_the_documents' => '1',
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        $links = $this->getTableLocator()->get('Files.FileLinks');
+        $this->assertFalse($links->exists(['id' => $ours->id]), 'What we generated was kept.');
+        $this->assertTrue($links->exists(['id' => $theirs->id]), 'The customer\'s own notice was deleted.');
+
+        Configure::delete('Files.root');
+    }
+
+    /**
+     * And they are not deleted behind anybody's back: without the box that says they may go, the
+     * snapshot stands and so do they.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::recreate()
+     */
+    public function testTheGeneratedDocumentsAreNotDeletedUnasked(): void
+    {
+        Configure::write('Files.root', TMP . 'recreate-papers-' . uniqid());
+        $storage = new FileStorage();
+
+        $ours = $storage->link(
+            $storage->store('%PDF-1.7 ours', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractDocumentType::ContractTermination->value,
+            DocumentVariant::Generated->value,
+            ['name' => 'termination.pdf'],
+        );
+
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertArrayHasKey(
+            'discard_the_documents',
+            $this->viewVariable('contractProposal')->getErrors(),
+        );
+        $this->assertTrue(
+            $this->getTableLocator()->get('Files.FileLinks')->exists(['id' => $ours->id]),
+            'A document was deleted without anybody agreeing to it.',
+        );
+        $this->assertEquals($before, $proposals->get(self::PROPOSAL_ID)->snapshot_taken);
+
+        Configure::delete('Files.root');
+    }
+
+    /**
+     * A fresh reading may raise a question that was answered against the old one, and the question
+     * is asked on the very form that read it - which is why the two used to send the operator back
+     * and forth to each other. Nothing is written until it is answered.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::recreate()
+     */
+    public function testAnUnansweredQuestionIsAskedOnTheForm(): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
@@ -1076,9 +1188,10 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post(self::NESTED . '/contract-proposals/refresh-snapshot/' . self::PROPOSAL_ID);
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
 
-        $this->assertRedirectContains('/contract-proposals/edit/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertNotEmpty($this->viewVariable('contractProposal')->getErrors());
         $this->assertEquals($before, $proposals->get(self::PROPOSAL_ID)->snapshot_taken);
     }
 
@@ -1104,28 +1217,12 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * And a paper being drawn up is never asked: it is photographed as it is saved, so there is
-     * nothing yet to read again.
-     *
-     * @return void
-     * @link \App\Controller\ContractProposalsController::add()
-     */
-    public function testTheSnapshotIsNotOfferedWhileThePapersAreBeingDrawnUp(): void
-    {
-        $this->login();
-        $this->get(self::NESTED . '/contract-proposals/add');
-
-        $this->assertResponseOk();
-        $this->assertResponseNotContains('take_the_snapshot_again');
-    }
-
-    /**
      * Taking the snapshot again survives a billing having gone from the contract since - which is
      * the very case somebody asks for it in, and which saving the snapshot on its own would have
      * been refused for.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::edit()
+     * @link \App\Controller\ContractProposalsController::recreate()
      */
     public function testTheSnapshotIsTakenAgainEvenWhenABillingHasGone(): void
     {
@@ -1146,9 +1243,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID, [
-            'take_the_snapshot_again' => '1',
-            'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
             'confirmations' => [
                 'fixed_term' => 1,
                 'own_equipment' => 1,
@@ -1481,7 +1576,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->assertTrue($sent->hasBeenSent());
         $this->assertFalse($proposals->mayBeEdited($sent));
 
-        $this->get(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID);
+        $this->get(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
         $this->assertRedirect();
     }
 
@@ -1591,9 +1686,9 @@ class ContractProposalsControllerTest extends TestCase
      * was asked when it was written, and what it says now is for the preview to tell.
      *
      * @return void
-     * @link \App\Controller\ContractProposalsController::edit()
+     * @link \App\Controller\ContractProposalsController::recreate()
      */
-    public function testAMinimumRaisedSinceDoesNotHoldUpTheEdit(): void
+    public function testAMinimumRaisedSinceDoesNotHoldUpPuttingThePapersRight(): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $this->aConnectionLineAtFifty();
@@ -1602,8 +1697,7 @@ class ContractProposalsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post(self::NESTED . '/contract-proposals/edit/' . self::PROPOSAL_ID, [
-            'contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429',
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
             'note' => 'Written after the minimum was raised',
             'confirmations' => [
                 'fixed_term' => 1,
