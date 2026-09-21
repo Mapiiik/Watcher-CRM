@@ -4,14 +4,12 @@ declare(strict_types=1);
 namespace WorkReports\Model\Table;
 
 use App\Model\Table\AppTable;
-use Cake\Database\Type\EnumType;
 use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
 use WorkReports\Model\Entity\WorkReport;
-use WorkReports\Model\Enum\WorkReportState;
 
 /**
  * WorkReports Model
@@ -47,8 +45,6 @@ class WorkReportsTable extends AppTable
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
-
-        $this->getSchema()->setColumnType('state', EnumType::from(WorkReportState::class));
 
         $this->belongsTo('Users', [
             'className' => 'AppUsers',
@@ -163,7 +159,6 @@ class WorkReportsTable extends AppTable
             'month' => $day->firstOfMonth(),
             'workload' => $workers->workloadOf($userId),
         ]);
-        $report->state = WorkReportState::Open;
 
         return $this->saveOrFail($report);
     }

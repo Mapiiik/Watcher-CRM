@@ -10,7 +10,7 @@ use App\Model\Entity\AppEntity;
  *
  * @property string $code
  * @property string|null $name
- * @property \PhpCollective\DecimalObject\Decimal|null $price_per_hour
+ * @property \PhpCollective\DecimalObject\Decimal|null $price
  * @property string|null $accounting_product_code
  * @property bool $active
  * @property string $name_for_lists
@@ -25,7 +25,7 @@ class WorkRate extends AppEntity
     protected array $_accessible = [
         'code' => true,
         'name' => true,
-        'price_per_hour' => true,
+        'price' => true,
         'accounting_product_code' => true,
         'active' => true,
     ];

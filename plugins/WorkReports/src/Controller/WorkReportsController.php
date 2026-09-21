@@ -6,7 +6,6 @@ namespace WorkReports\Controller;
 use Cake\Http\Exception\BadRequestException;
 use Cake\I18n\Date;
 use WorkReports\Model\Entity\WorkReport;
-use WorkReports\Model\Enum\WorkReportState;
 use WorkReports\Service\WorkingCalendar;
 use WorkReports\Service\WorkReportSummary;
 
@@ -39,7 +38,7 @@ class WorkReportsController extends AppController
 
         $this->paginate = [
             'order' => ['WorkReports.month' => 'DESC'],
-            'sortableFields' => ['WorkReports.month', 'WorkReports.state', 'WorkReports.submitted', 'Users.last_name'],
+            'sortableFields' => ['WorkReports.month', 'WorkReports.submitted', 'Users.last_name'],
         ];
         $workReports = $this->paginate($query);
 
@@ -69,7 +68,6 @@ class WorkReportsController extends AppController
                 'month' => $month,
                 'workload' => $workers->workloadOf($userId),
             ], ['validate' => false]);
-            $workReport->state = WorkReportState::Open;
             $workReport->work_report_items = [];
             $workReport->work_report_on_calls = [];
         } else {

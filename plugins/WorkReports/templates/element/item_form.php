@@ -150,15 +150,15 @@ $showTimes = $timeMode !== TimeMode::WholeDay && !($timeMode === TimeMode::Eithe
     </div>
 </fieldset>
 <fieldset>
-    <legend><?= __d('work_reports', 'Billing') ?></legend>
-    <?= $this->Form->control('billable', [
-        'label' => __d('work_reports', 'Billable'),
+    <legend><?= __d('work_reports', 'Invoicing') ?></legend>
+    <?= $this->Form->control('to_invoice', [
+        'label' => __d('work_reports', 'To Invoice'),
         'onchange' => $this::REFRESH_ON_CHANGE,
     ]) ?>
-    <?php if ($item->billable) : ?>
+    <?php if ($item->to_invoice) : ?>
         <div class="row">
             <div class="column">
-                <?= $this->Form->control('billed_hours', ['label' => __d('work_reports', 'Billed Hours')]) ?>
+                <?= $this->Form->control('invoice_hours', ['label' => __d('work_reports', 'Invoice Hours')]) ?>
             </div>
             <div class="column">
                 <?= $this->Form->control('work_rate_id', [
@@ -174,12 +174,12 @@ $showTimes = $timeMode !== TimeMode::WholeDay && !($timeMode === TimeMode::Eithe
                 ]) ?>
             </div>
         </div>
-        <?= $this->Form->control('billing_text', [
-            'label' => __d('work_reports', 'Billing Text'),
+        <?= $this->Form->control('invoice_text', [
+            'label' => __d('work_reports', 'Invoice Text'),
             'title' => __d('work_reports', 'What goes on the invoice.'),
             'style' => 'height: 5rem',
         ]) ?>
-        <?= $this->Form->control('charged', ['label' => __d('work_reports', 'Charged')]) ?>
+        <?= $this->Form->control('invoiced', ['label' => __d('work_reports', 'Invoiced')]) ?>
     <?php endif ?>
 </fieldset>
 <?= $this->Form->control('note', ['label' => __d('work_reports', 'Note'), 'style' => 'height: 5rem']) ?>

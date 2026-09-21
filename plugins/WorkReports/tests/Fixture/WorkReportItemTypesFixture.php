@@ -37,7 +37,7 @@ class WorkReportItemTypesFixture extends TestFixture
                 'counts_as_worked' => true,
                 'reduces_fund' => false,
                 'active' => true,
-                'sort' => 0,
+                'position' => 0,
             ],
             [
                 'id' => self::VACATION,
@@ -47,7 +47,7 @@ class WorkReportItemTypesFixture extends TestFixture
                 'counts_as_worked' => false,
                 'reduces_fund' => true,
                 'active' => true,
-                'sort' => 0,
+                'position' => 0,
             ],
             [
                 'id' => self::DOCTOR,
@@ -57,7 +57,7 @@ class WorkReportItemTypesFixture extends TestFixture
                 'counts_as_worked' => false,
                 'reduces_fund' => true,
                 'active' => true,
-                'sort' => 0,
+                'position' => 0,
             ],
         ];
 

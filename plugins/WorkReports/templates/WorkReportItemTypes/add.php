@@ -45,7 +45,7 @@ foreach (TimeMode::cases() as $case) {
                     'title' => __d('work_reports', 'A whole day lowers the fund.'),
                 ]);
                 echo $this->Form->control('active', ['label' => __d('work_reports', 'Active')]);
-                echo $this->Form->control('sort', ['label' => __d('work_reports', 'Sort')]);
+                echo $this->Form->control('position', ['label' => __d('work_reports', 'Position')]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

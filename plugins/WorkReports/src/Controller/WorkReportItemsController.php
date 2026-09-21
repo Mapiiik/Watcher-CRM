@@ -187,7 +187,7 @@ class WorkReportItemsController extends AppController
         /** @var iterable<\WorkReports\Model\Entity\WorkReportItemType> $typeRecords */
         $typeRecords = $table->WorkReportItemTypes->find()
             ->where(['OR' => ['active' => true, 'id IS' => $item->work_report_item_type_id]])
-            ->orderBy(['sort', 'name'])
+            ->orderBy(['position', 'name'])
             ->all();
         foreach ($typeRecords as $typeRecord) {
             $types[] = ['value' => $typeRecord->id, 'text' => $typeRecord->name];

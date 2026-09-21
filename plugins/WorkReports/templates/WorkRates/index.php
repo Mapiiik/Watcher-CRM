@@ -17,7 +17,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('code', __d('work_reports', 'Code')) ?></th>
                     <th><?= $this->Paginator->sort('name', __d('work_reports', 'Name')) ?></th>
-                    <th><?= $this->Paginator->sort('price_per_hour', __d('work_reports', 'Price Per Hour')) ?></th>
+                    <th><?= $this->Paginator->sort('price', __d('work_reports', 'Price Per Hour')) ?></th>
                     <th><?= $this->Paginator->sort(
                         'accounting_product_code',
                         __d('work_reports', 'Accounting Product Code'),
@@ -32,9 +32,9 @@
                     <td><?= h($record->code) ?></td>
                     <td><?= h($record->name) ?></td>
                     <td>
-                        <?= $record->price_per_hour === null
+                        <?= $record->price === null
                             ? ''
-                            : $this->Number->currency($record->price_per_hour->toFloat()) ?>
+                            : $this->Number->currency($record->price->toFloat()) ?>
                     </td>
                     <td><?= h($record->accounting_product_code) ?></td>
                     <td><?= $record->active ? __('Yes') : __('No') ?></td>

@@ -136,7 +136,7 @@ class PagesRenderTest extends TestCase
             $locator->get('WorkReports.WorkCars')->newEntity(['name' => 'Octavia', 'license_plate' => '1AB 2345']),
         );
         $rate = $locator->get('WorkReports.WorkRates')->saveOrFail(
-            $locator->get('WorkReports.WorkRates')->newEntity(['code' => 'A', 'name' => 'Administrator', 'price_per_hour' => '650']),
+            $locator->get('WorkReports.WorkRates')->newEntity(['code' => 'A', 'name' => 'Administrator', 'price' => '650']),
         );
         $label = $locator->get('WorkReports.WorkLabels')->saveOrFail(
             $locator->get('WorkReports.WorkLabels')->newEntity(['name' => 'New TV customer', 'color' => '#88cc88']),
@@ -161,8 +161,8 @@ class PagesRenderTest extends TestCase
                 'company_car_id' => $car->id,
                 'company_car_distance' => 42,
                 'cash_collected' => '150',
-                'billable' => true,
-                'billed_hours' => '1.5',
+                'to_invoice' => true,
+                'invoice_hours' => '1.5',
                 'work_rate_id' => $rate->id,
                 'rate_multiplier' => '3',
                 'work_labels' => ['_ids' => [$label->id]],

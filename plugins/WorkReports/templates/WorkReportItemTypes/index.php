@@ -24,7 +24,7 @@
                     <th><?= $this->Paginator->sort('counts_as_worked', __d('work_reports', 'Counts As Worked')) ?></th>
                     <th><?= $this->Paginator->sort('reduces_fund', __d('work_reports', 'Reduces Fund')) ?></th>
                     <th><?= $this->Paginator->sort('active', __d('work_reports', 'Active')) ?></th>
-                    <th><?= $this->Paginator->sort('sort', __d('work_reports', 'Sort')) ?></th>
+                    <th><?= $this->Paginator->sort('position', __d('work_reports', 'Position')) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -37,7 +37,7 @@
                     <td><?= $record->counts_as_worked ? __('Yes') : __('No') ?></td>
                     <td><?= $record->reduces_fund ? __('Yes') : __('No') ?></td>
                     <td><?= $record->active ? __('Yes') : __('No') ?></td>
-                    <td><?= $this->Number->format($record->sort) ?></td>
+                    <td><?= $this->Number->format($record->position) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __('Edit'),

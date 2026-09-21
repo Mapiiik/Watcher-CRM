@@ -83,8 +83,8 @@ class WorkReportItemTypesTable extends AppTable
             ->notEmptyString('active');
 
         $validator
-            ->integer('sort')
-            ->notEmptyString('sort');
+            ->integer('position')
+            ->notEmptyString('position');
 
         return $validator;
     }

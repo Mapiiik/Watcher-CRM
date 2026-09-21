@@ -26,12 +26,12 @@ use App\Model\Entity\AppEntity;
  * @property string|null $company_car_id
  * @property int|null $company_car_distance
  * @property \PhpCollective\DecimalObject\Decimal|null $cash_collected
- * @property bool $billable
- * @property \PhpCollective\DecimalObject\Decimal|null $billed_hours
+ * @property bool $to_invoice
+ * @property \PhpCollective\DecimalObject\Decimal|null $invoice_hours
  * @property string|null $work_rate_id
  * @property \PhpCollective\DecimalObject\Decimal $rate_multiplier
- * @property string|null $billing_text
- * @property bool $charged
+ * @property string|null $invoice_text
+ * @property bool $invoiced
  * @property string|null $note
  * @property int $minutes
  * @property string|null $time_from
@@ -72,12 +72,12 @@ class WorkReportItem extends AppEntity
         'company_car_id' => true,
         'company_car_distance' => true,
         'cash_collected' => true,
-        'billable' => true,
-        'billed_hours' => true,
+        'to_invoice' => true,
+        'invoice_hours' => true,
         'work_rate_id' => true,
         'rate_multiplier' => true,
-        'billing_text' => true,
-        'charged' => true,
+        'invoice_text' => true,
+        'invoiced' => true,
         'note' => true,
         'work_labels' => true,
         'collaborators' => true,

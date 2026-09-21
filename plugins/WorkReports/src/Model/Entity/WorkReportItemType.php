@@ -14,7 +14,7 @@ use App\Model\Entity\AppEntity;
  * @property bool $counts_as_worked
  * @property bool $reduces_fund
  * @property bool $active
- * @property int $sort
+ * @property int $position
  *
  * @property \WorkReports\Model\Entity\WorkReportItem[] $work_report_items
  */
@@ -32,6 +32,6 @@ class WorkReportItemType extends AppEntity
         'counts_as_worked' => true,
         'reduces_fund' => true,
         'active' => true,
-        'sort' => true,
+        'position' => true,
     ];
 }

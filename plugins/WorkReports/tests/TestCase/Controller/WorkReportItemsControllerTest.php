@@ -5,13 +5,13 @@ namespace WorkReports\Test\TestCase\Controller;
 
 use App\Test\Traits\ControllerTestTrait;
 use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use WorkReports\Controller\WorkReportItemsController;
 use WorkReports\Controller\WorkReportsController;
-use WorkReports\Model\Enum\WorkReportState;
 use WorkReports\Test\Fixture\WorkReportItemTypesFixture;
 
 /**
@@ -167,7 +167,7 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
-     * Once the report is submitted, its items stay as they were - except whether they were charged.
+     * Once the report is submitted, its items stay as they were - except whether they were invoiced.
      *
      * @return void
      */
@@ -182,7 +182,7 @@ class WorkReportItemsControllerTest extends TestCase
             'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
             'date' => '2026-06-15',
         ]));
-        $report->set('state', WorkReportState::Submitted);
+        $report->set('submitted', DateTime::now());
         $reports->saveOrFail($report);
 
         $this->post('/work-reports/work-report-items/delete/' . $item->id);
@@ -193,7 +193,7 @@ class WorkReportItemsControllerTest extends TestCase
         $this->assertFalse($items->save($item));
 
         $item = $items->get($item->id);
-        $items->patchEntity($item, ['charged' => true]);
+        $items->patchEntity($item, ['invoiced' => true]);
         $this->assertNotFalse($items->save($item));
     }
 

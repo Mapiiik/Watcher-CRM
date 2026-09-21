@@ -32,7 +32,6 @@
                     <th><?= $this->Paginator->sort('WorkReports.month', __d('work_reports', 'Month')) ?></th>
                     <th><?= $this->Paginator->sort('Users.last_name', __d('work_reports', 'User')) ?></th>
                     <th><?= __d('work_reports', 'Workload') ?></th>
-                    <th><?= $this->Paginator->sort('WorkReports.state', __d('work_reports', 'State')) ?></th>
                     <th><?= $this->Paginator->sort('WorkReports.submitted', __d('work_reports', 'Submitted')) ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
@@ -43,7 +42,6 @@
                     <td><?= h($workReport->month->i18nFormat('LLLL yyyy')) ?></td>
                     <td><?= h($workReport->user->name) ?></td>
                     <td><?= $this->Number->format($workReport->workload->toFloat()) ?></td>
-                    <td><?= h($workReport->state->label()) ?></td>
                     <td><?= h($workReport->submitted) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), [

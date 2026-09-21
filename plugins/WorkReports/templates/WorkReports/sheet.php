@@ -109,13 +109,8 @@ $days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days
                             <td><?= $minutes(abs($summary->balanceMinutes())) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('work_reports', 'State') ?></th>
-                            <td>
-                                <?= h($workReport->state->label()) ?>
-                                <?php if ($workReport->submitted !== null) : ?>
-                                    (<?= h($workReport->submitted) ?>)
-                                <?php endif ?>
-                            </td>
+                            <th><?= __d('work_reports', 'Submitted') ?></th>
+                            <td><?= h($workReport->submitted) ?></td>
                         </tr>
                     </table>
                 </div>
@@ -243,15 +238,15 @@ $days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days
                                     <td><?= h($item->work_report_item_type->name) ?></td>
                                     <td>
                                         <?= nl2br(h($item->description)) ?>
-                                        <?php if ($item->billable) : ?>
+                                        <?php if ($item->to_invoice) : ?>
                                             <br><small>
-                                                <?= __d('work_reports', 'To bill') ?>:
-                                                <?= $this->Number->format($item->billed_hours?->toFloat() ?? 0) ?> h
+                                                <?= __d('work_reports', 'To invoice') ?>:
+                                                <?= $this->Number->format($item->invoice_hours?->toFloat() ?? 0) ?> h
                                                 <?= h($item->work_rate?->code) ?>
                                                 <?= $item->rate_multiplier->toFloat() != 1
                                                     ? '× ' . $this->Number->format($item->rate_multiplier->toFloat())
                                                     : '' ?>
-                                                <?= $item->charged ? '✓' : '' ?>
+                                                <?= $item->invoiced ? '✓' : '' ?>
                                             </small>
                                         <?php endif ?>
                                     </td>

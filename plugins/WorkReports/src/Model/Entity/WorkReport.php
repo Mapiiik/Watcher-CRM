@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WorkReports\Model\Entity;
 
 use App\Model\Entity\AppEntity;
-use WorkReports\Model\Enum\WorkReportState;
 
 /**
  * WorkReport Entity
@@ -14,7 +13,6 @@ use WorkReports\Model\Enum\WorkReportState;
  * @property string $user_id
  * @property \Cake\I18n\Date $month
  * @property \PhpCollective\DecimalObject\Decimal $workload
- * @property \WorkReports\Model\Enum\WorkReportState $state
  * @property \Cake\I18n\DateTime|null $submitted
  * @property string|null $submitted_by
  * @property string|null $note
@@ -45,6 +43,6 @@ class WorkReport extends AppEntity
      */
     public function isLocked(): bool
     {
-        return $this->state === WorkReportState::Submitted;
+        return $this->submitted !== null;
     }
 }

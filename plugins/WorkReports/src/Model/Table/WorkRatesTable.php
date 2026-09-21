@@ -63,9 +63,9 @@ class WorkRatesTable extends AppTable
             ->allowEmptyString('name');
 
         $validator
-            ->decimal('price_per_hour')
-            ->greaterThanOrEqual('price_per_hour', 0)
-            ->allowEmptyString('price_per_hour');
+            ->decimal('price')
+            ->greaterThanOrEqual('price', 0)
+            ->allowEmptyString('price');
 
         $validator
             ->scalar('accounting_product_code')

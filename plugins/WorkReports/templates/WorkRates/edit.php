@@ -28,7 +28,7 @@
                 <?php
                 echo $this->Form->control('code', ['label' => __d('work_reports', 'Code')]);
                 echo $this->Form->control('name', ['label' => __d('work_reports', 'Name')]);
-                echo $this->Form->control('price_per_hour', ['label' => __d('work_reports', 'Price Per Hour')]);
+                echo $this->Form->control('price', ['label' => __d('work_reports', 'Price Per Hour')]);
                 echo $this->Form->control('accounting_product_code', [
                     'label' => __d('work_reports', 'Accounting Product Code'),
                 ]);

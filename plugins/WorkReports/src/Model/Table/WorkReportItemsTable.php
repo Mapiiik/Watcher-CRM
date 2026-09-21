@@ -39,12 +39,12 @@ use WorkReports\Model\Enum\TimeMode;
 class WorkReportItemsTable extends AppTable
 {
     /**
-     * What may still change on an item of a submitted report: whether it was charged, and the
+     * What may still change on an item of a submitted report: whether it was invoiced, and the
      * footprint of whoever marked it so.
      *
      * @var list<string>
      */
-    public const CHANGEABLE_WHEN_LOCKED = ['charged', 'modified', 'modified_by'];
+    public const CHANGEABLE_WHEN_LOCKED = ['invoiced', 'modified', 'modified_by'];
 
     /**
      * Initialize method
@@ -247,13 +247,13 @@ class WorkReportItemsTable extends AppTable
             ->allowEmptyString('cash_collected');
 
         $validator
-            ->boolean('billable')
-            ->notEmptyString('billable');
+            ->boolean('to_invoice')
+            ->notEmptyString('to_invoice');
 
         $validator
-            ->decimal('billed_hours')
-            ->greaterThan('billed_hours', 0)
-            ->allowEmptyString('billed_hours');
+            ->decimal('invoice_hours')
+            ->greaterThan('invoice_hours', 0)
+            ->allowEmptyString('invoice_hours');
 
         $validator
             ->uuid('work_rate_id')
@@ -265,12 +265,12 @@ class WorkReportItemsTable extends AppTable
             ->notEmptyString('rate_multiplier');
 
         $validator
-            ->scalar('billing_text')
-            ->allowEmptyString('billing_text');
+            ->scalar('invoice_text')
+            ->allowEmptyString('invoice_text');
 
         $validator
-            ->boolean('charged')
-            ->notEmptyString('charged');
+            ->boolean('invoiced')
+            ->notEmptyString('invoiced');
 
         $validator
             ->scalar('note')
@@ -383,12 +383,12 @@ class WorkReportItemsTable extends AppTable
         }
 
         $rules->add(
-            fn(WorkReportItem $item): bool => !$item->billable
-                || ($item->work_rate_id !== null && $item->billed_hours !== null),
-            'billing',
+            fn(WorkReportItem $item): bool => !$item->to_invoice
+                || ($item->work_rate_id !== null && $item->invoice_hours !== null),
+            'invoicing',
             [
-                'errorField' => 'billed_hours',
-                'message' => __d('work_reports', 'Work to be billed needs the hours and the rate.'),
+                'errorField' => 'invoice_hours',
+                'message' => __d('work_reports', 'Work to invoice needs the hours and the rate.'),
             ],
         );
 
