@@ -19,6 +19,7 @@
  * @var bool $showCustomer
  */
 
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\CustomerProposal;
 
 // Diving into one round is what turns the page into somewhere pages may be reordered and let go
@@ -139,6 +140,29 @@ $carrying = function (array $fields): string {
         </div>
         <br>
         <div class="documents content">
+            <?php
+            // Diving into one round names it in the heading, and the way to it belongs beside
+            // that name: from here on the page is about those papers alone, and what they say -
+            // what is being agreed, and where it stands - is read on the proposal itself.
+            ?>
+            <?php if ($inside) : ?>
+                <?php
+                // Named by the papers rather than by the envelope: a round is the one thing a
+                // proposal of a contract hangs under, while what hangs there is open-ended.
+                $ofPapers = $round instanceof ContractProposal;
+                ?>
+                <?= $this->AuthLink->link(
+                    $ofPapers ? __('View Contract Proposal') : __('View Customer Proposal'),
+                    [
+                        'plugin' => null,
+                        'controller' => $ofPapers ? 'ContractProposals' : 'CustomerProposals',
+                        'action' => 'view',
+                        $round->id,
+                    ],
+                    ['class' => 'button button-small float-right'],
+                ) ?>
+            <?php endif; ?>
+            <h4><?= h(__('Documents - {0}', $about)) ?></h4>
             <?php if ($holdsContracts) : ?>
             <div class="float-right">
                 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
@@ -151,8 +175,8 @@ $carrying = function (array $fields): string {
                 ]) ?>
                 <?= $this->Form->end() ?>
             </div>
+            <div class="clearfix"></div>
             <?php endif; ?>
-            <h4><?= h(__('Documents - {0}', $about)) ?></h4>
             <div class="related">
                 <?php if ($inside) : ?>
                     <?php

@@ -160,6 +160,10 @@ $joined = function (array $run, int $index, string $content, string $class = '')
             // Which round a link is about, said the way every other link here says it.
             $whose = ['proposal_id' => $round['id'], 'agenda' => $round['controller']];
 
+            // The papers of the round, and the round itself. The leftmost column names it and
+            // leads there too, but that column is not always drawn and is a label rather than a
+            // way out - so the way to the proposal these papers belong to is offered where the
+            // rest of what may be done with it is.
             $papersLink = $this->AuthLink->link(
                 __('Documents'),
                 [
@@ -167,6 +171,14 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                     'controller' => 'Documents',
                     'action' => 'manage',
                     '?' => $whose,
+                ],
+            ) . ' ' . $this->AuthLink->link(
+                __('View'),
+                [
+                    'plugin' => null,
+                    'controller' => $round['controller'],
+                    'action' => 'view',
+                    $round['id'],
                 ],
             );
             ?>
