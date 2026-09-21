@@ -6,12 +6,16 @@ namespace WorkReports\Test\TestCase\Controller;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use WorkReports\Controller\WorkReportItemsController;
 use WorkReports\Controller\WorkReportsController;
+use WorkReports\Model\Entity\WorkReport;
+use WorkReports\Model\Entity\WorkReportWorkerRecipient;
+use WorkReports\Service\WorkingCalendar;
 use WorkReports\Test\Fixture\WorkReportItemTypesFixture;
 
 /**
@@ -24,6 +28,7 @@ use WorkReports\Test\Fixture\WorkReportItemTypesFixture;
 class WorkReportItemsControllerTest extends TestCase
 {
     use ControllerTestTrait;
+    use EmailTrait;
     use IntegrationTestTrait;
 
     /**
@@ -44,6 +49,7 @@ class WorkReportItemsControllerTest extends TestCase
         'plugin.WorkReports.WorkReports',
         'plugin.WorkReports.WorkReportItems',
         'plugin.WorkReports.WorkReportWorkers',
+        'plugin.WorkReports.WorkReportWorkerRecipients',
         'plugin.WorkReports.WorkCars',
         'plugin.WorkReports.WorkRates',
         'plugin.WorkReports.WorkLabels',
@@ -148,7 +154,7 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
-     * Somebody else's month is not for a worker to see, unless they supervise them.
+     * Somebody else's month is not for a worker to see, unless they get their reports.
      *
      * @return void
      */
@@ -159,11 +165,97 @@ class WorkReportItemsControllerTest extends TestCase
         $this->get('/work-reports/work-reports/sheet?user_id=' . $other);
         $this->assertResponseCode(403);
 
-        $workers = $this->getTableLocator()->get('WorkReports.WorkReportWorkers');
-        $workers->saveOrFail($workers->newEntity(['user_id' => $other, 'supervisor_id' => self::WORKER]));
+        $this->addRecipient($other, self::WORKER, mayEdit: false);
 
         $this->get('/work-reports/work-reports/sheet?user_id=' . $other);
         $this->assertResponseOk();
+    }
+
+    /**
+     * A recipient who may only see does not add to the month, one who may edit does.
+     *
+     * @return void
+     */
+    public function testRecipientEditsOnlyWhenAllowed(): void
+    {
+        $other = $this->otherUser();
+        $recipient = $this->addRecipient($other, self::WORKER, mayEdit: false);
+        $data = [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+            'date' => '2026-06-15',
+        ];
+
+        $this->post('/work-reports/work-report-items/add?user_id=' . $other, $data);
+        $this->assertResponseCode(403);
+
+        $recipients = $this->getTableLocator()->get('WorkReports.WorkReportWorkerRecipients');
+        $recipient->set('may_edit', true);
+        $recipients->saveOrFail($recipient);
+
+        $this->post('/work-reports/work-report-items/add?user_id=' . $other, $data);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+    }
+
+    /**
+     * A month with a working day left empty is not taken.
+     *
+     * @return void
+     */
+    public function testSubmitStopsOnMissingDays(): void
+    {
+        $report = $this->monthOfVacation(except: '2026-06-30');
+
+        $this->post('/work-reports/work-reports/submit/' . $report->id);
+
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertFlashElement('flash/error');
+        $this->assertNull($this->getTableLocator()->get('WorkReports.WorkReports')->get($report->id)->submitted);
+        $this->assertNoMailSent();
+    }
+
+    /**
+     * A full month is submitted and sent to the worker and whoever gets their reports.
+     *
+     * @return void
+     */
+    public function testSubmitSendsTheReport(): void
+    {
+        $other = $this->otherUser();
+        $this->addRecipient(self::WORKER, $other, mayEdit: false);
+        $report = $this->monthOfVacation();
+
+        $this->post('/work-reports/work-reports/submit/' . $report->id);
+
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertNotNull($this->getTableLocator()->get('WorkReports.WorkReports')->get($report->id)->submitted);
+        $this->assertMailCount(1);
+        $this->assertMailSentTo('operator@example.com');
+        $this->assertMailSentTo('other@example.com');
+        $this->assertMailContains('Vacation');
+    }
+
+    /**
+     * The worker does not return their own report, a recipient who may edit does.
+     *
+     * @return void
+     */
+    public function testReopen(): void
+    {
+        $other = $this->otherUser();
+        $report = $this->monthOfVacation();
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $report->set('submitted', DateTime::now());
+        $reports->saveOrFail($report);
+
+        $this->post('/work-reports/work-reports/reopen/' . $report->id);
+        $this->assertResponseCode(403);
+
+        $this->addRecipient(self::WORKER, $other, mayEdit: true);
+        $this->loginAs($other, 'user');
+        $this->post('/work-reports/work-reports/reopen/' . $report->id);
+
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertNull($reports->get($report->id)->submitted);
     }
 
     /**
@@ -195,6 +287,55 @@ class WorkReportItemsControllerTest extends TestCase
         $item = $items->get($item->id);
         $items->patchEntity($item, ['invoiced' => true]);
         $this->assertNotFalse($items->save($item));
+    }
+
+    /**
+     * June 2026 of the worker, a vacation on every working day.
+     *
+     * @param string|null $except A day to leave out.
+     * @return \WorkReports\Model\Entity\WorkReport
+     */
+    private function monthOfVacation(?string $except = null): WorkReport
+    {
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $report = $reports->findOrCreateFor(self::WORKER, new Date('2026-06-01'));
+
+        foreach ((new WorkingCalendar('CzechRepublic'))->workingDays(new Date('2026-06-01')) as $day) {
+            if ($day->format('Y-m-d') === $except) {
+                continue;
+            }
+            $items->saveOrFail($items->newEntity([
+                'work_report_id' => $report->id,
+                'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+                'date' => $day->format('Y-m-d'),
+            ]));
+        }
+
+        return $report;
+    }
+
+    /**
+     * Have one user get the reports of another.
+     *
+     * @param string $workerId Worker.
+     * @param string $recipientId Who gets the reports.
+     * @param bool $mayEdit Whether they may change them.
+     * @return \WorkReports\Model\Entity\WorkReportWorkerRecipient
+     */
+    private function addRecipient(string $workerId, string $recipientId, bool $mayEdit): WorkReportWorkerRecipient
+    {
+        $workers = $this->getTableLocator()->get('WorkReports.WorkReportWorkers');
+        $worker = $workers->find()->where(['user_id' => $workerId])->first()
+            ?? $workers->saveOrFail($workers->newEntity(['user_id' => $workerId]));
+
+        $recipients = $this->getTableLocator()->get('WorkReports.WorkReportWorkerRecipients');
+
+        return $recipients->saveOrFail($recipients->newEntity([
+            'work_report_worker_id' => $worker->get('id'),
+            'user_id' => $recipientId,
+            'may_edit' => $mayEdit,
+        ]));
     }
 
     /**

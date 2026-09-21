@@ -11,6 +11,9 @@ use WorkReports\Service\WorkReportSummary;
  * @var list<array{value: string, text: string, style: string|null}> $workers
  * @var string $workerName
  * @var \Cake\I18n\Date $month
+ * @var bool $mayEdit
+ * @var bool $maySubmit
+ * @var bool $mayReopen
  */
 
 $minutes = fn(int $minutes): string => WorkReportSummary::formatMinutes($minutes);
@@ -23,17 +26,36 @@ $addUrl = fn(Date $day): array => [
     'action' => 'add',
     '?' => ['user_id' => $workReport->user_id, 'date' => $day->format('Y-m-d')],
 ];
-$days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days', $days, $days);
 ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?php if (!$workReport->isLocked()) : ?>
+            <?php if ($mayEdit && !$workReport->isLocked()) : ?>
                 <?= $this->AuthLink->link(
                     __d('work_reports', 'New Work Report Item'),
                     $addUrl($month),
                     ['class' => 'side-nav-item win-link'],
+                ) ?>
+            <?php endif ?>
+            <?php if ($maySubmit && !$workReport->isLocked() && !$workReport->isNew()) : ?>
+                <?= $this->AuthLink->postLink(
+                    __d('work_reports', 'Submit Work Report'),
+                    ['action' => 'submit', $workReport->id],
+                    [
+                        'confirm' => __d('work_reports', 'Submit the report? It can no longer be changed after that.'),
+                        'class' => 'side-nav-item',
+                    ],
+                ) ?>
+            <?php endif ?>
+            <?php if ($mayReopen && $workReport->isLocked()) : ?>
+                <?= $this->AuthLink->postLink(
+                    __d('work_reports', 'Return for Correction'),
+                    ['action' => 'reopen', $workReport->id],
+                    [
+                        'confirm' => __d('work_reports', 'Return the report to be corrected?'),
+                        'class' => 'side-nav-item',
+                    ],
                 ) ?>
             <?php endif ?>
             <?= $this->Html->link(
@@ -81,86 +103,7 @@ $days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days
                 (string)$month->i18nFormat('LLLL yyyy'),
                 $workerName,
             ) ?>
-            <div class="row">
-                <div class="column">
-                    <table>
-                        <tr>
-                            <th><?= __d('work_reports', 'Workload') ?></th>
-                            <td><?= $this->Number->format($workReport->workload->toFloat()) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('work_reports', 'Working Days') ?></th>
-                            <td><?= $this->Number->format($summary->workingDays) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('work_reports', 'Fund') ?></th>
-                            <td><?= $minutes($summary->fundMinutes) ?> (<?= $days_count($summary->fundDays) ?>)</td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('work_reports', 'Worked') ?></th>
-                            <td><?= $minutes($summary->workedMinutes) ?></td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <?= $summary->balanceMinutes() >= 0
-                                    ? __d('work_reports', 'Overtime')
-                                    : __d('work_reports', 'Hours Missing') ?>
-                            </th>
-                            <td><?= $minutes(abs($summary->balanceMinutes())) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('work_reports', 'Submitted') ?></th>
-                            <td><?= h($workReport->submitted) ?></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="column">
-                    <table>
-                        <?php foreach ($summary->types as $type) : ?>
-                        <tr>
-                            <th><?= h($type['name']) ?></th>
-                            <td>
-                                <?= $type['minutes'] > 0 ? $minutes($type['minutes']) : '' ?>
-                                <?= $type['days'] > 0 ? $days_count($type['days']) : '' ?>
-                            </td>
-                        </tr>
-                        <?php endforeach ?>
-                        <?php foreach ($summary->cars as $car) : ?>
-                        <tr>
-                            <th><?= h($car['name']) ?></th>
-                            <td><?= $this->Number->format($car['distance']) ?> km</td>
-                        </tr>
-                        <?php endforeach ?>
-                        <?php if ($summary->cashCollected != 0) : ?>
-                        <tr>
-                            <th><?= __d('work_reports', 'Cash Collected') ?></th>
-                            <td><?= $this->Number->currency($summary->cashCollected) ?></td>
-                        </tr>
-                        <?php endif ?>
-                        <?php if ($summary->onCallDays > 0) : ?>
-                        <tr>
-                            <th><?= __d('work_reports', 'On Call') ?></th>
-                            <td>
-                                <?= $this->Number->format($summary->onCallHours) ?> h
-                                (<?= $days_count($summary->onCallDays) ?>)
-                            </td>
-                        </tr>
-                        <?php endif ?>
-                        <?php foreach ($summary->labels as $label) : ?>
-                        <tr>
-                            <th>
-                                <span
-                                    class="app-label"
-                                    style="<?= $label['label']->style ?>"
-                                    title="<?= h($label['label']->caption) ?>"
-                                ><?= h($label['label']->name) ?></span>
-                            </th>
-                            <td><?= $this->Number->format($label['count']) ?>×</td>
-                        </tr>
-                        <?php endforeach ?>
-                    </table>
-                </div>
-            </div>
+            <?= $this->element('WorkReports.summary', compact('workReport', 'summary')) ?>
             <div class="text">
                 <strong><?= __d('work_reports', 'Note') ?></strong>
                 <blockquote>
@@ -169,7 +112,7 @@ $days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days
             </div>
 
             <div class="related">
-                <?php if (!$workReport->isLocked()) : ?>
+                <?php if ($mayEdit && !$workReport->isLocked()) : ?>
                     <?= $this->AuthLink->link(
                         __d('work_reports', 'New Work Report Item'),
                         $addUrl($month),
@@ -237,7 +180,7 @@ $days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days
                                     <?php endif ?>
                                     <td><?= h($item->work_report_item_type->name) ?></td>
                                     <td>
-                                        <?= nl2br(h($item->description)) ?>
+                                        <?= nl2br(h((string)$item->description)) ?>
                                         <?php if ($item->to_invoice) : ?>
                                             <br><small>
                                                 <?= __d('work_reports', 'To invoice') ?>:
@@ -295,7 +238,7 @@ $days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days
                                     </td>
                                 <?php endif ?>
                                 <td class="actions">
-                                    <?php if (!$workReport->isLocked()) : ?>
+                                    <?php if ($mayEdit && !$workReport->isLocked()) : ?>
                                         <?php if ($item !== null) : ?>
                                             <?= $this->AuthLink->link(
                                                 __('Edit'),

@@ -3,9 +3,15 @@ declare(strict_types=1);
 
 namespace WorkReports\Controller;
 
+use App\Controller\Traits\MessageHandlerTrait;
+use App\Messages\Messages;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\ForbiddenException;
+use Cake\Http\Response;
 use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use WorkReports\Model\Entity\WorkReport;
+use WorkReports\Service\SubmittedWorkReportMail;
 use WorkReports\Service\WorkingCalendar;
 use WorkReports\Service\WorkReportSummary;
 
@@ -16,6 +22,8 @@ use WorkReports\Service\WorkReportSummary;
  */
 class WorkReportsController extends AppController
 {
+    use MessageHandlerTrait;
+
     /**
      * The reports the user signed in may see.
      *
@@ -71,20 +79,7 @@ class WorkReportsController extends AppController
             $workReport->work_report_items = [];
             $workReport->work_report_on_calls = [];
         } else {
-            $workReport = $this->WorkReports->get($workReport->id, contain: [
-                'WorkReportItems' => [
-                    'WorkReportItemTypes',
-                    'Customers',
-                    'Contracts',
-                    'PrivateCars',
-                    'CompanyCars',
-                    'WorkRates',
-                    'WorkLabels',
-                    'Collaborators',
-                ],
-                'WorkReportOnCalls',
-                'Submitters',
-            ]);
+            $workReport = $this->loadReport($workReport->id);
         }
 
         $calendar = WorkingCalendar::fromSettings();
@@ -93,7 +88,135 @@ class WorkReportsController extends AppController
         $workers = $this->visibleWorkers();
         $workerName = $this->fetchTable('AppUsers')->get($userId)->get('name');
 
-        $this->set(compact('workReport', 'summary', 'calendar', 'days', 'workers', 'workerName', 'month'));
+        $mayEdit = $this->mayEdit($userId);
+        $maySubmit = $userId === $this->identityId() || $this->seesEverybody();
+        $mayReopen = $this->mayReopen($userId);
+
+        $this->set(compact(
+            'workReport',
+            'summary',
+            'calendar',
+            'days',
+            'workers',
+            'workerName',
+            'month',
+            'mayEdit',
+            'maySubmit',
+            'mayReopen',
+        ));
+    }
+
+    /**
+     * Submit the report: the month is closed for its worker and sent to whoever gets it.
+     *
+     * Every working day has to have something reported on it. Days on top of them are only said.
+     *
+     * @param string|null $id Work report id.
+     * @return \Cake\Http\Response|null Redirects to the month.
+     */
+    public function submit(?string $id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post']);
+        $workReport = $this->loadReport((string)$id);
+        if ($workReport->user_id !== $this->identityId() && !$this->seesEverybody()) {
+            throw new ForbiddenException(__d('work_reports', 'Only the worker submits their report.'));
+        }
+
+        $summary = WorkReportSummary::fromSettings($workReport);
+        $days = fn(array $days): string => implode(', ', array_map(
+            fn(Date $day): string => (string)$day->i18nFormat('d. M.'),
+            $days,
+        ));
+
+        if ($workReport->isLocked()) {
+            $this->Flash->error(__d('work_reports', 'The report has already been submitted.'));
+        } elseif ($summary->missingDays !== []) {
+            $this->Flash->error(__d('work_reports', 'Nothing is reported on {0}.', $days($summary->missingDays)));
+        } else {
+            $workReport->submitted = DateTime::now();
+            $workReport->submitted_by = $this->identityId();
+            $this->WorkReports->saveOrFail($workReport);
+            $this->Flash->success(__d('work_reports', 'The report has been submitted.'));
+
+            if ($summary->extraDays !== []) {
+                $this->Flash->warning(__d('work_reports', 'Also reported on {0}.', $days($summary->extraDays)));
+            }
+
+            /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
+            $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
+            $messages = new Messages();
+            SubmittedWorkReportMail::send(
+                $workReport,
+                $summary,
+                $workers->recipientsOf($workReport->user_id),
+                $messages,
+            );
+            $this->handleMessages($messages);
+        }
+
+        return $this->redirect($this->sheetUrl($workReport));
+    }
+
+    /**
+     * Return a submitted report to its worker to be corrected.
+     *
+     * @param string|null $id Work report id.
+     * @return \Cake\Http\Response|null Redirects to the month.
+     */
+    public function reopen(?string $id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post']);
+        $workReport = $this->WorkReports->get((string)$id);
+
+        if (!$this->mayReopen($workReport->user_id)) {
+            throw new ForbiddenException(__d('work_reports', 'This report is not yours to return.'));
+        }
+
+        $workReport->submitted = null;
+        $workReport->submitted_by = null;
+        $this->WorkReports->saveOrFail($workReport);
+        $this->Flash->success(__d('work_reports', 'The report has been returned for correction.'));
+
+        return $this->redirect($this->sheetUrl($workReport));
+    }
+
+    /**
+     * The report with everything the month shows.
+     *
+     * @param string $id Work report id.
+     * @return \WorkReports\Model\Entity\WorkReport
+     */
+    protected function loadReport(string $id): WorkReport
+    {
+        return $this->WorkReports->get($id, contain: [
+            'Users',
+            'WorkReportItems' => [
+                'WorkReportItemTypes',
+                'Customers',
+                'Contracts',
+                'PrivateCars',
+                'CompanyCars',
+                'WorkRates',
+                'WorkLabels',
+                'Collaborators',
+            ],
+            'WorkReportOnCalls',
+            'Submitters',
+        ]);
+    }
+
+    /**
+     * The month of the report.
+     *
+     * @param \WorkReports\Model\Entity\WorkReport $workReport Report.
+     * @return array<string, mixed>
+     */
+    protected function sheetUrl(WorkReport $workReport): array
+    {
+        return [
+            'action' => 'sheet',
+            '?' => ['user_id' => $workReport->user_id, 'month' => $workReport->month->format('Y-m')],
+        ];
     }
 
     /**

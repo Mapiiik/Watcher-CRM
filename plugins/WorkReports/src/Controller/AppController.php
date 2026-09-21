@@ -30,8 +30,8 @@ class AppController extends BaseController
     }
 
     /**
-     * Whether the user signed in may see the reports of the worker: their own, those of the
-     * people they supervise, and anybody's for an admin.
+     * Whether the user signed in may see the reports of the worker: their own, those they get,
+     * and anybody's for an admin.
      *
      * @param string $userId Worker.
      * @return bool
@@ -45,7 +45,56 @@ class AppController extends BaseController
         /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
         $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
 
-        return $workers->isSupervisorOf($this->identityId(), $userId);
+        return $workers->isRecipientOf($this->identityId(), $userId);
+    }
+
+    /**
+     * Whether the user signed in may change the reports of the worker: their own, those they get
+     * with the right to change them, and anybody's for an admin.
+     *
+     * @param string $userId Worker.
+     * @return bool
+     */
+    protected function mayEdit(string $userId): bool
+    {
+        if ($userId === $this->identityId() || $this->seesEverybody()) {
+            return true;
+        }
+
+        /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
+        $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
+
+        return $workers->mayEdit($this->identityId(), $userId);
+    }
+
+    /**
+     * Whether the user signed in may return a submitted report of the worker. The worker does not
+     * return their own, unless they are an admin.
+     *
+     * @param string $userId Worker.
+     * @return bool
+     */
+    protected function mayReopen(string $userId): bool
+    {
+        if ($this->seesEverybody()) {
+            return true;
+        }
+
+        return $userId !== $this->identityId() && $this->mayEdit($userId);
+    }
+
+    /**
+     * Stops the request unless the user signed in may change the reports of the worker.
+     *
+     * @param string $userId Worker.
+     * @return void
+     * @throws \Cake\Http\Exception\ForbiddenException
+     */
+    protected function checkMayEdit(string $userId): void
+    {
+        if (!$this->mayEdit($userId)) {
+            throw new ForbiddenException(__d('work_reports', 'These reports are not yours to change.'));
+        }
     }
 
     /**
@@ -78,9 +127,7 @@ class AppController extends BaseController
         } else {
             /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
             $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
-            $others = ['AppUsers.id IN' => $workers->find()
-                ->select(['user_id'])
-                ->where(['supervisor_id' => $this->identityId()])];
+            $others = ['AppUsers.id IN' => $workers->workersOf($this->identityId())];
         }
 
         return $this->usersForSelect($users->find()

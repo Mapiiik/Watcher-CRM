@@ -62,15 +62,24 @@ class CreateWorkReports extends BaseMigration
         $this->footprinted($this->uuidTable('work_report_workers'))
             ->addColumn('user_id', 'uuid', ['null' => false])
             ->addColumn('workload', 'decimal', ['precision' => 4, 'scale' => 3, 'default' => 1, 'null' => false])
-            ->addColumn('supervisor_id', 'uuid', ['null' => true])
             ->addColumn('default_private_car_id', 'uuid', ['null' => true])
             ->addColumn('default_company_car_id', 'uuid', ['null' => true])
             ->addColumn('active', 'boolean', ['default' => true, 'null' => false])
             ->addIndex(['user_id'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id')
-            ->addForeignKey('supervisor_id', 'users', 'id')
             ->addForeignKey('default_private_car_id', 'work_cars', 'id')
             ->addForeignKey('default_company_car_id', 'work_cars', 'id')
+            ->create();
+
+        // who gets the worker's reports when they are submitted and may see them, and whether
+        // they may also change the items and return the report
+        $this->footprinted($this->uuidTable('work_report_worker_recipients'))
+            ->addColumn('work_report_worker_id', 'uuid', ['null' => false])
+            ->addColumn('user_id', 'uuid', ['null' => false])
+            ->addColumn('may_edit', 'boolean', ['default' => false, 'null' => false])
+            ->addIndex(['work_report_worker_id', 'user_id'], ['unique' => true])
+            ->addForeignKey('work_report_worker_id', 'work_report_workers', 'id', ['delete' => 'CASCADE'])
+            ->addForeignKey('user_id', 'users', 'id')
             ->create();
 
         // the workload is written down when the month starts, so that changing it later does not
@@ -170,6 +179,7 @@ class CreateWorkReports extends BaseMigration
                 'work_report_item_labels',
                 'work_report_items',
                 'work_reports',
+                'work_report_worker_recipients',
                 'work_report_workers',
                 'work_cars',
                 'work_labels',

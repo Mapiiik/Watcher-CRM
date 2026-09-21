@@ -12,13 +12,13 @@ use App\Model\Entity\AppEntity;
  *
  * @property string $user_id
  * @property \PhpCollective\DecimalObject\Decimal $workload
- * @property string|null $supervisor_id
  * @property string|null $default_private_car_id
  * @property string|null $default_company_car_id
  * @property bool $active
  *
  * @property \App\Model\Entity\AppUser $user
- * @property \App\Model\Entity\AppUser|null $supervisor
+ * @property \App\Model\Entity\AppUser[] $recipients
+ * @property \WorkReports\Model\Entity\WorkReportWorkerRecipient[] $work_report_worker_recipients
  * @property \WorkReports\Model\Entity\WorkCar|null $default_private_car
  * @property \WorkReports\Model\Entity\WorkCar|null $default_company_car
  */
@@ -32,7 +32,6 @@ class WorkReportWorker extends AppEntity
     protected array $_accessible = [
         'user_id' => true,
         'workload' => true,
-        'supervisor_id' => true,
         'default_private_car_id' => true,
         'default_company_car_id' => true,
         'active' => true,

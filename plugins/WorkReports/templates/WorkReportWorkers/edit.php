@@ -34,12 +34,6 @@
                     'label' => __d('work_reports', 'Workload'),
                     'title' => __d('work_reports', '1 is full time, 0.5 half time.'),
                 ]);
-                echo $this->Form->control('supervisor_id', [
-                    'label' => __d('work_reports', 'Supervisor'),
-                    'options' => $people,
-                    'empty' => true,
-                    'title' => __d('work_reports', 'Receives the submitted report.'),
-                ]);
                 echo $this->Form->control('default_private_car_id', [
                     'label' => __d('work_reports', 'Default Private Car'),
                     'options' => $privateCars,

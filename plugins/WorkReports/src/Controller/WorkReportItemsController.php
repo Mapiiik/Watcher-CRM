@@ -28,7 +28,7 @@ class WorkReportItemsController extends AppController
     public function add(): ?Response
     {
         $userId = (string)($this->getRequest()->getQuery('user_id') ?: $this->identityId());
-        $this->checkMaySee($userId);
+        $this->checkMayEdit($userId);
 
         $item = $this->WorkReportItems->newEmptyEntity();
         $item->date = $this->dayFromQuery();
@@ -77,7 +77,7 @@ class WorkReportItemsController extends AppController
     {
         $item = $this->WorkReportItems->get($id, contain: ['WorkReports', 'WorkLabels', 'Collaborators']);
         $userId = $item->work_report->user_id;
-        $this->checkMaySee($userId);
+        $this->checkMayEdit($userId);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $item = $this->WorkReportItems->patchEntity($item, $this->getRequest()->getData());
@@ -110,7 +110,7 @@ class WorkReportItemsController extends AppController
         $this->getRequest()->allowMethod(['post', 'delete']);
         $item = $this->WorkReportItems->get($id, contain: ['WorkReports']);
         $userId = $item->work_report->user_id;
-        $this->checkMaySee($userId);
+        $this->checkMayEdit($userId);
 
         if ($this->WorkReportItems->delete($item)) {
             $this->Flash->success(__d('work_reports', 'The work report item has been deleted.'));

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WorkReports\Controller;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
 use WorkReports\Controller\Trait\LookupControllerTrait;
 
@@ -28,7 +29,33 @@ class WorkReportWorkersController extends AppController
      */
     protected function indexContain(): array
     {
-        return ['Users', 'Supervisors', 'DefaultPrivateCars', 'DefaultCompanyCars'];
+        return ['Users', 'Recipients' => ['strategy' => 'select'], 'DefaultPrivateCars', 'DefaultCompanyCars'];
+    }
+
+    /**
+     * View method
+     *
+     * @param string|null $id Work report worker id.
+     * @return void Renders view
+     */
+    public function view(?string $id = null): void
+    {
+        $record = $this->WorkReportWorkers->get($id, contain: [
+            'Users',
+            'DefaultPrivateCars',
+            'DefaultCompanyCars',
+            'WorkReportWorkerRecipients' => ['Users', 'sort' => ['Users.last_name', 'Users.first_name']],
+        ]);
+
+        $this->set(compact('record'));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterSaveUrl(EntityInterface $record): array
+    {
+        return ['action' => 'view', $record->get('id')];
     }
 
     /**

@@ -17,7 +17,7 @@
                 <tr>
                     <th><?= $this->Paginator->sort('user_id', __d('work_reports', 'User')) ?></th>
                     <th><?= $this->Paginator->sort('workload', __d('work_reports', 'Workload')) ?></th>
-                    <th><?= $this->Paginator->sort('supervisor_id', __d('work_reports', 'Supervisor')) ?></th>
+                    <th><?= __d('work_reports', 'Recipients') ?></th>
                     <th><?= $this->Paginator->sort(
                         'default_private_car_id',
                         __d('work_reports', 'Default Private Car'),
@@ -35,11 +35,12 @@
                 <tr>
                     <td><?= h($record->user->name) ?></td>
                     <td><?= $this->Number->format($record->workload->toFloat()) ?></td>
-                    <td><?= h($record->supervisor?->name) ?></td>
+                    <td><?= h(implode(', ', array_map(fn($user): string => $user->name, $record->recipients))) ?></td>
                     <td><?= h($record->default_private_car?->name_for_lists) ?></td>
                     <td><?= h($record->default_company_car?->name_for_lists) ?></td>
                     <td><?= $record->active ? __('Yes') : __('No') ?></td>
                     <td class="actions">
+                        <?= $this->AuthLink->link(__('View'), ['action' => 'view', $record->id]) ?>
                         <?= $this->AuthLink->link(
                             __('Edit'),
                             ['action' => 'edit', $record->id],

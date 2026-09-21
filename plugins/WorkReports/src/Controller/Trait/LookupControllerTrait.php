@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WorkReports\Controller\Trait;
 
+use Cake\Datasource\EntityInterface;
 use Cake\Http\Response;
 use Cake\ORM\Table;
 
@@ -49,7 +50,7 @@ trait LookupControllerTrait
             if ($this->lookupTable()->save($record)) {
                 $this->Flash->success(__d('work_reports', 'The record has been saved.'));
 
-                return $this->afterAddRedirect(['action' => 'index']);
+                return $this->afterAddRedirect($this->afterSaveUrl($record));
             }
             $this->Flash->error(__d('work_reports', 'The record could not be saved. Please, try again.'));
         }
@@ -68,13 +69,13 @@ trait LookupControllerTrait
      */
     public function edit(?string $id = null): ?Response
     {
-        $record = $this->lookupTable()->get($id);
+        $record = $this->lookupTable()->get($id, contain: $this->editContain());
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $record = $this->lookupTable()->patchEntity($record, $this->getRequest()->getData());
             if ($this->lookupTable()->save($record)) {
                 $this->Flash->success(__d('work_reports', 'The record has been saved.'));
 
-                return $this->afterEditRedirect(['action' => 'index']);
+                return $this->afterEditRedirect($this->afterSaveUrl($record));
             }
             $this->Flash->error(__d('work_reports', 'The record could not be saved. Please, try again.'));
         }
@@ -106,11 +107,32 @@ trait LookupControllerTrait
     }
 
     /**
+     * Where to go once a row is saved.
+     *
+     * @param \Cake\Datasource\EntityInterface $record The row saved.
+     * @return array<string|int, mixed>
+     */
+    protected function afterSaveUrl(EntityInterface $record): array
+    {
+        return ['action' => 'index'];
+    }
+
+    /**
      * What the listing shows beside the rows themselves.
      *
      * @return array<string|int, mixed>
      */
     protected function indexContain(): array
+    {
+        return [];
+    }
+
+    /**
+     * What the form edits beside the row itself.
+     *
+     * @return array<string|int, mixed>
+     */
+    protected function editContain(): array
     {
         return [];
     }

@@ -32,6 +32,7 @@ class PagesRenderTest extends TestCase
         'plugin.WorkReports.WorkReports',
         'plugin.WorkReports.WorkReportItems',
         'plugin.WorkReports.WorkReportWorkers',
+        'plugin.WorkReports.WorkReportWorkerRecipients',
         'plugin.WorkReports.WorkCars',
         'plugin.WorkReports.WorkRates',
         'plugin.WorkReports.WorkLabels',
@@ -53,6 +54,8 @@ class PagesRenderTest extends TestCase
         $user = $this->getTableLocator()->get('AppUsers')->get(self::WORKER);
         $user->role = 'admin';
         $this->session(['Auth' => $user]);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
     }
 
     /**
@@ -99,6 +102,32 @@ class PagesRenderTest extends TestCase
             $this->get('/work-reports/' . $path . '/edit/' . $id);
             $this->assertResponseOk($path);
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function testWorkerAndRecipientPages(): void
+    {
+        $seeded = $this->seed();
+        $workerId = $seeded['work-report-workers'];
+
+        $this->get('/work-reports/work-report-worker-recipients/add?work_report_worker_id=' . $workerId);
+        $this->assertResponseOk();
+
+        $this->post('/work-reports/work-report-worker-recipients/add?work_report_worker_id=' . $workerId, [
+            'work_report_worker_id' => $workerId,
+            'user_id' => self::WORKER,
+            'may_edit' => true,
+        ]);
+        $this->assertRedirectContains('/work-reports/work-report-workers/view/' . $workerId);
+
+        $this->get('/work-reports/work-report-workers/view/' . $workerId);
+        $this->assertResponseOk();
+        $this->assertResponseContains('May Edit');
+
+        $this->get('/work-reports/work-report-workers');
+        $this->assertResponseOk();
     }
 
     /**

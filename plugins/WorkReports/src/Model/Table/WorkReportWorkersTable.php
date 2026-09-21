@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WorkReports\Model\Table;
 
 use App\Model\Table\AppTable;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -12,7 +13,8 @@ use Override;
  * WorkReportWorkers Model
  *
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Supervisors
+ * @property \WorkReports\Model\Table\WorkReportWorkerRecipientsTable&\Cake\ORM\Association\HasMany $WorkReportWorkerRecipients
+ * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsToMany $Recipients
  * @property \WorkReports\Model\Table\WorkCarsTable&\Cake\ORM\Association\BelongsTo $DefaultPrivateCars
  * @property \WorkReports\Model\Table\WorkCarsTable&\Cake\ORM\Association\BelongsTo $DefaultCompanyCars
  * @method \WorkReports\Model\Entity\WorkReportWorker newEmptyEntity()
@@ -46,10 +48,6 @@ class WorkReportWorkersTable extends AppTable
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Supervisors', [
-            'className' => 'AppUsers',
-            'foreignKey' => 'supervisor_id',
-        ]);
         $this->belongsTo('DefaultPrivateCars', [
             'className' => 'WorkReports.WorkCars',
             'foreignKey' => 'default_private_car_id',
@@ -57,6 +55,18 @@ class WorkReportWorkersTable extends AppTable
         $this->belongsTo('DefaultCompanyCars', [
             'className' => 'WorkReports.WorkCars',
             'foreignKey' => 'default_company_car_id',
+        ]);
+        $this->hasMany('WorkReportWorkerRecipients', [
+            'className' => 'WorkReports.WorkReportWorkerRecipients',
+            'foreignKey' => 'work_report_worker_id',
+            'dependent' => true,
+        ]);
+        $this->belongsToMany('Recipients', [
+            'className' => 'AppUsers',
+            'through' => 'WorkReports.WorkReportWorkerRecipients',
+            'foreignKey' => 'work_report_worker_id',
+            'targetForeignKey' => 'user_id',
+            'sort' => ['Recipients.last_name', 'Recipients.first_name'],
         ]);
     }
 
@@ -78,10 +88,6 @@ class WorkReportWorkersTable extends AppTable
             ->decimal('workload')
             ->greaterThan('workload', 0)
             ->notEmptyString('workload');
-
-        $validator
-            ->uuid('supervisor_id')
-            ->allowEmptyString('supervisor_id');
 
         $validator
             ->uuid('default_private_car_id')
@@ -110,7 +116,6 @@ class WorkReportWorkersTable extends AppTable
     {
         $rules->add($rules->isUnique(['user_id']), ['errorField' => 'user_id']);
         $rules->add($rules->existsIn(['user_id'], 'Users'), ['errorField' => 'user_id']);
-        $rules->add($rules->existsIn(['supervisor_id'], 'Supervisors'), ['errorField' => 'supervisor_id']);
         $rules->add(
             $rules->existsIn(['default_private_car_id'], 'DefaultPrivateCars'),
             ['errorField' => 'default_private_car_id'],
@@ -174,14 +179,62 @@ class WorkReportWorkersTable extends AppTable
     }
 
     /**
-     * Whether one user is the supervisor of the other.
+     * Whether one user gets the reports of the other.
      *
-     * @param string $supervisorId The supervisor asked about.
+     * @param string $recipientId The recipient asked about.
      * @param string $userId The worker.
      * @return bool
      */
-    public function isSupervisorOf(string $supervisorId, string $userId): bool
+    public function isRecipientOf(string $recipientId, string $userId): bool
     {
-        return $this->exists(['user_id' => $userId, 'supervisor_id' => $supervisorId]);
+        return $this->find()
+            ->innerJoinWith('Recipients', fn($query) => $query->where(['Recipients.id' => $recipientId]))
+            ->where([$this->aliasField('user_id') => $userId])
+            ->count() > 0;
+    }
+
+    /**
+     * Whether one user may change the reports of the other and return them.
+     *
+     * @param string $recipientId The recipient asked about.
+     * @param string $userId The worker.
+     * @return bool
+     */
+    public function mayEdit(string $recipientId, string $userId): bool
+    {
+        return $this->find()
+            ->innerJoinWith('WorkReportWorkerRecipients', fn($query) => $query->where([
+                'WorkReportWorkerRecipients.user_id' => $recipientId,
+                'WorkReportWorkerRecipients.may_edit' => true,
+            ]))
+            ->where([$this->aliasField('user_id') => $userId])
+            ->count() > 0;
+    }
+
+    /**
+     * The workers whose reports the user gets, as a subquery of their user ids.
+     *
+     * @param string $recipientId The recipient.
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     */
+    public function workersOf(string $recipientId): SelectQuery
+    {
+        return $this->find()
+            ->select([$this->aliasField('user_id')])
+            ->innerJoinWith('Recipients', fn($query) => $query->where(['Recipients.id' => $recipientId]));
+    }
+
+    /**
+     * Who gets the reports of the worker.
+     *
+     * @param string $userId The worker.
+     * @return list<\App\Model\Entity\AppUser>
+     */
+    public function recipientsOf(string $userId): array
+    {
+        /** @var \WorkReports\Model\Entity\WorkReportWorker|null $worker */
+        $worker = $this->find()->contain(['Recipients'])->where(['user_id' => $userId])->first();
+
+        return $worker === null ? [] : array_values($worker->recipients);
     }
 }

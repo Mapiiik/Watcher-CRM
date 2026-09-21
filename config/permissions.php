@@ -1019,6 +1019,8 @@ $permissions = [
             'action' => [
                 'index',
                 'sheet',
+                'submit',
+                'reopen',
                 'add',
                 'edit',
                 'delete',
