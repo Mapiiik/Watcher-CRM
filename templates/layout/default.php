@@ -97,18 +97,24 @@ $urlWithQuery = function ($query = []) use ($request) {
     <?= $this->fetch('script') ?>
 
     <?php
-    // automatic closing of the window after 3 seconds
+    // A window that has nothing left to show closes itself, once the reader has seen what it
+    // says. Two seconds is long enough for a line of it and short enough not to be waited on; a
+    // page with more to read says how long for itself, within what anybody would sit through.
+    // Read as a number rather than taken at its word, because it arrives in the address.
     if (
         $request->getQuery('win-link') == 'true'
         && $request->getQuery('auto-close') == 'true'
-    ) : ?>
+    ) :
+        $waiting = $request->getQuery('auto-close-after');
+        $waiting = is_numeric($waiting) ? max(0.5, min(30.0, (float)$waiting)) : 2.0;
+        ?>
     <script>
         window.onload = function(){
             setTimeout(
                 function(){
                     window.close();
                 },
-                3000
+                <?= (int)round($waiting * 1000) ?>
             );
         };
     </script>
