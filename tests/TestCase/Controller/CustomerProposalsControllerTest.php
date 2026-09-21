@@ -145,6 +145,35 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
+     * And they render for the roles that are asked the question rather than let straight through.
+     *
+     * Whether the Delete link is drawn is settled by reading the record, and the reading has to
+     * carry what the answer is worked out from: whether anything hangs on the round is looked up
+     * by the round's own id. Asked without it, the page of a round just drawn up - one neither
+     * sent nor signed, so the only one the question gets that far on - came back as an error.
+     *
+     * Everything else here logs in as an administrator, who never reaches the question at all.
+     *
+     * @link \App\Controller\CustomerProposalsController::view()
+     * @return void
+     */
+    public function testTheDetailRendersForWhoeverIsAskedWhetherItMayGo(): void
+    {
+        $proposal = $this->drawOneUp();
+
+        foreach (['sales-representative', 'sales-manager', 'network-manager', 'bookkeeper'] as $role) {
+            $this->login($role);
+            $this->get(sprintf(
+                '/customers/%s/customer-proposals/view/%s',
+                $proposal->customer_id,
+                $proposal->id,
+            ));
+
+            $this->assertResponseOk(sprintf('The detail did not render for a %s.', $role));
+        }
+    }
+
+    /**
      * Sending is what locks a round: what stood behind a paper that has left the building is not
      * rewritten afterwards.
      *

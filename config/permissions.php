@@ -811,6 +811,9 @@ $permissions = [
                 /** @var \App\Model\Entity\CustomerProposal|null $proposal */
                 $proposal = $proposals->find()
                     ->select([
+                        //asked for by name: what may still go is partly whether anything hangs on
+                        //the round, and that is looked up by the round's own id
+                        'CustomerProposals.id',
                         'CustomerProposals.sent_date',
                         'CustomerProposals.conclusion_date',
                     ])
