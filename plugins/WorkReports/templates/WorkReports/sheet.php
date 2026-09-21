@@ -222,14 +222,14 @@ $days_count = fn(int $days): string => __dn('work_reports', '{0} day', '{0} days
                             ?>
                             <?php foreach ($rows as $index => $item) : ?>
                             <tr style="<?= $style ?>">
-                                <td>
-                                    <?php if ($index === 0) : ?>
-                                        <?= h($date->i18nFormat('EEE d. M.')) ?>
-                                        <?php if ($calendar->isHoliday($date)) : ?>
-                                            <br><small><?= __d('work_reports', 'public holiday') ?></small>
-                                        <?php endif ?>
+                                <?php if ($index === 0) : ?>
+                                <td rowspan="<?= count($rows) ?>" style="vertical-align: top;">
+                                    <?= h($date->i18nFormat('EEE d. M.')) ?>
+                                    <?php if ($calendar->isHoliday($date)) : ?>
+                                        <br><small><?= __d('work_reports', 'public holiday') ?></small>
                                     <?php endif ?>
                                 </td>
+                                <?php endif ?>
                                 <?php if ($item === null) : ?>
                                     <td colspan="8"></td>
                                 <?php else : ?>
