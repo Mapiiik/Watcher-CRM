@@ -135,6 +135,12 @@ class WorkReportItemsCellTest extends TestCase
         $this->get($url);
         $this->assertResponseOk();
 
+        // the customer's tasks are offered by their number and subject, not by their ids
+        $task = $this->getTableLocator()->get('Tasks')->find()->where(['customer_id' => self::CUSTOMER_ID])->firstOrFail();
+        $this->assertResponseContains('#' . $task->get('number') . ' - ');
+        $this->assertResponseContains('Lorem ipsum dolor sit amet</option>');
+        $this->assertResponseNotContains('>' . $task->get('id') . '</option>');
+
         $this->post($url, [
             'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
             'date' => '2026-06-04',
