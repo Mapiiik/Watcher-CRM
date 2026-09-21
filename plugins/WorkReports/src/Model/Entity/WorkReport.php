@@ -13,7 +13,7 @@ use WorkReports\Model\Enum\WorkReportState;
  *
  * @property string $user_id
  * @property \Cake\I18n\Date $month
- * @property string $workload
+ * @property \PhpCollective\DecimalObject\Decimal $workload
  * @property \WorkReports\Model\Enum\WorkReportState $state
  * @property \Cake\I18n\DateTime|null $submitted
  * @property string|null $submitted_by

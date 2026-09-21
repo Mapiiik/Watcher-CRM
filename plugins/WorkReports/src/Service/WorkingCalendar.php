@@ -5,7 +5,7 @@ namespace WorkReports\Service;
 
 use Cake\I18n\Date;
 use Settings\Utility\Settings;
-use Yasumi\Provider\AbstractProvider;
+use Yasumi\ProviderInterface;
 use Yasumi\Yasumi;
 
 /**
@@ -19,7 +19,7 @@ class WorkingCalendar
     /**
      * Holiday providers already made, by year.
      *
-     * @var array<int, \Yasumi\Provider\AbstractProvider>
+     * @var array<int, \Yasumi\ProviderInterface>
      */
     private array $providers = [];
 
@@ -99,9 +99,9 @@ class WorkingCalendar
      * The holidays of the year, made once.
      *
      * @param int $year Year of the holidays.
-     * @return \Yasumi\Provider\AbstractProvider
+     * @return \Yasumi\ProviderInterface
      */
-    private function provider(int $year): AbstractProvider
+    private function provider(int $year): ProviderInterface
     {
         return $this->providers[$year] ??= Yasumi::create($this->country, $year);
     }

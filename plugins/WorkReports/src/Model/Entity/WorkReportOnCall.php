@@ -12,7 +12,7 @@ use App\Model\Entity\AppEntity;
  *
  * @property string $work_report_id
  * @property \Cake\I18n\Date $date
- * @property string $hours
+ * @property \PhpCollective\DecimalObject\Decimal $hours
  *
  * @property \WorkReports\Model\Entity\WorkReport $work_report
  */

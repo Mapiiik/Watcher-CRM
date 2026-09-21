@@ -1000,6 +1000,30 @@ $permissions = [
                 'removeMacAddress',
             ],
         ],
+        //allow everybody reporting work to keep their work reports; whose reports they see is decided by the plugin
+        [
+            'role' => [
+                'user',
+                'customer-service-technician',
+                'network-technician',
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => 'WorkReports',
+            'controller' => [
+                'WorkReports',
+                'WorkReportItems',
+            ],
+            'action' => [
+                'index',
+                'sheet',
+                'add',
+                'edit',
+                'delete',
+            ],
+        ],
     ],
 ];
 

@@ -10,7 +10,7 @@ use App\Model\Entity\AppEntity;
  *
  * @property string $code
  * @property string|null $name
- * @property string|null $price_per_hour
+ * @property \PhpCollective\DecimalObject\Decimal|null $price_per_hour
  * @property string|null $accounting_product_code
  * @property bool $active
  * @property string $name_for_lists

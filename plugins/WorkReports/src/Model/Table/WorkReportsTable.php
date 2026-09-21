@@ -163,6 +163,7 @@ class WorkReportsTable extends AppTable
             'month' => $day->firstOfMonth(),
             'workload' => $workers->workloadOf($userId),
         ]);
+        $report->state = WorkReportState::Open;
 
         return $this->saveOrFail($report);
     }

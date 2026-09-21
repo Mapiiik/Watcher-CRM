@@ -85,7 +85,10 @@ class WorkReportItemCollaboratorsTable extends AppTable
             $rules->isUnique(['work_report_item_id', 'user_id']),
             ['errorField' => 'user_id'],
         );
-        $rules->add($rules->existsIn(['work_report_item_id'], 'WorkReportItems'), ['errorField' => 'work_report_item_id']);
+        $rules->add(
+            $rules->existsIn(['work_report_item_id'], 'WorkReportItems'),
+            ['errorField' => 'work_report_item_id'],
+        );
         $rules->add($rules->existsIn(['user_id'], 'Users'), ['errorField' => 'user_id']);
 
         return $rules;

@@ -11,7 +11,7 @@ use App\Model\Entity\AppEntity;
  * What the reports need to know about a user that the users themselves do not carry.
  *
  * @property string $user_id
- * @property string $workload
+ * @property \PhpCollective\DecimalObject\Decimal $workload
  * @property string|null $supervisor_id
  * @property string|null $default_private_car_id
  * @property string|null $default_company_car_id

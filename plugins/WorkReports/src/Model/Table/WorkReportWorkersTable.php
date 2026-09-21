@@ -167,6 +167,7 @@ class WorkReportWorkersTable extends AppTable
      */
     public function workloadOf(string $userId): string
     {
+        /** @var \WorkReports\Model\Entity\WorkReportWorker|null $worker */
         $worker = $this->find()->where(['user_id' => $userId])->first();
 
         return $worker === null ? '1' : (string)$worker->workload;

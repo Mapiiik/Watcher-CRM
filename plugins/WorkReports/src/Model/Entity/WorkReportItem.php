@@ -25,11 +25,11 @@ use App\Model\Entity\AppEntity;
  * @property int|null $private_car_distance
  * @property string|null $company_car_id
  * @property int|null $company_car_distance
- * @property string|null $cash_collected
+ * @property \PhpCollective\DecimalObject\Decimal|null $cash_collected
  * @property bool $billable
- * @property string|null $billed_hours
+ * @property \PhpCollective\DecimalObject\Decimal|null $billed_hours
  * @property string|null $work_rate_id
- * @property string $rate_multiplier
+ * @property \PhpCollective\DecimalObject\Decimal $rate_multiplier
  * @property string|null $billing_text
  * @property bool $charged
  * @property string|null $note

@@ -16,6 +16,7 @@
 use App\NMS\Links;
 use App\Versioning;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 
 /**
  * @psalm-suppress UnnecessaryVarAnnotation
@@ -163,6 +164,18 @@ $urlWithQuery = function ($query = []) use ($request) {
                     'Radusergroup',
                 ])],
             ) ?>
+            <?php if (Plugin::isLoaded('WorkReports')) : ?>
+                <?= $this->AuthLink->link(
+                    __d('work_reports', 'Work Reports'),
+                    [
+                        'controller' => 'WorkReports',
+                        'action' => 'sheet',
+                        'plugin' => 'WorkReports',
+                        'customer_id' => false,
+                    ],
+                    ['class' => 'button button-small' . $buttonSelected(['WorkReports', 'WorkReportItems'])],
+                ) ?>
+            <?php endif; ?>
             <?= $this->AuthLink->link(
                 __('Overviews'),
                 ['controller' => 'Overviews', 'action' => 'index', 'plugin' => null, 'customer_id' => false],

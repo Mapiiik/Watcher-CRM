@@ -85,7 +85,10 @@ class WorkReportItemLabelsTable extends AppTable
             $rules->isUnique(['work_report_item_id', 'work_label_id']),
             ['errorField' => 'work_label_id'],
         );
-        $rules->add($rules->existsIn(['work_report_item_id'], 'WorkReportItems'), ['errorField' => 'work_report_item_id']);
+        $rules->add(
+            $rules->existsIn(['work_report_item_id'], 'WorkReportItems'),
+            ['errorField' => 'work_report_item_id'],
+        );
         $rules->add($rules->existsIn(['work_label_id'], 'WorkLabels'), ['errorField' => 'work_label_id']);
 
         return $rules;

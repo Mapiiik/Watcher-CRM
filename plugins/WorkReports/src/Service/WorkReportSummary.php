@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WorkReports\Service;
 
 use Cake\I18n\Date;
+use PhpCollective\DecimalObject\Decimal;
 use Settings\Utility\Settings;
 use WorkReports\Model\Entity\WorkReport;
 
@@ -124,7 +125,7 @@ final class WorkReportSummary
                 }
             }
 
-            $cash += (float)$item->cash_collected;
+            $cash += self::number($item->cash_collected);
 
             foreach ($item->work_labels ?? [] as $label) {
                 $labels[$label->id] ??= ['label' => $label, 'count' => 0];
@@ -142,7 +143,7 @@ final class WorkReportSummary
         return new self(
             workingDays: count($workingDays),
             fundDays: $fundDays,
-            fundMinutes: (int)round($fundDays * $dailyHours * (float)$report->workload * 60),
+            fundMinutes: (int)round($fundDays * $dailyHours * self::number($report->workload) * 60),
             workedMinutes: $workedMinutes,
             types: $types,
             missingDays: array_values(array_diff_key($workingDays, $covered)),
@@ -151,8 +152,19 @@ final class WorkReportSummary
             cashCollected: $cash,
             labels: $labels,
             onCallDays: count($onCalls),
-            onCallHours: array_sum(array_map(fn($onCall): float => (float)$onCall->hours, $onCalls)),
+            onCallHours: array_sum(array_map(fn($onCall): float => self::number($onCall->hours), $onCalls)),
         );
+    }
+
+    /**
+     * A decimal column as a number, whether it came from the database or was set by hand.
+     *
+     * @param \PhpCollective\DecimalObject\Decimal|string|float|int|null $value Value to read.
+     * @return float
+     */
+    private static function number(Decimal|string|float|int|null $value): float
+    {
+        return $value instanceof Decimal ? $value->toFloat() : (float)$value;
     }
 
     /**

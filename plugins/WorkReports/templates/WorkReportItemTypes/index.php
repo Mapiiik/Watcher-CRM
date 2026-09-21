@@ -1,0 +1,56 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var iterable<\WorkReports\Model\Entity\WorkReportItemType> $records
+ */
+?>
+<div class="work-report-item-types index content">
+    <?= $this->AuthLink->link(
+        __d('work_reports', 'New Work Report Item Type'),
+        ['action' => 'add'],
+        ['class' => 'button float-right win-link'],
+    ) ?>
+    <?= $this->heading(__d('work_reports', 'Work Report Item Types')) ?>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th><?= $this->Paginator->sort('name', __d('work_reports', 'Name')) ?></th>
+                    <th><?= $this->Paginator->sort('time_mode', __d('work_reports', 'Time Mode')) ?></th>
+                    <th><?= $this->Paginator->sort('has_text', __d('work_reports', 'Has Text')) ?></th>
+                    <th><?= $this->Paginator->sort('counts_as_worked', __d('work_reports', 'Counts As Worked')) ?></th>
+                    <th><?= $this->Paginator->sort('reduces_fund', __d('work_reports', 'Reduces Fund')) ?></th>
+                    <th><?= $this->Paginator->sort('active', __d('work_reports', 'Active')) ?></th>
+                    <th><?= $this->Paginator->sort('sort', __d('work_reports', 'Sort')) ?></th>
+                    <th class="actions"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($records as $record) : ?>
+                <tr>
+                    <td><?= h($record->name) ?></td>
+                    <td><?= h($record->time_mode->label()) ?></td>
+                    <td><?= $record->has_text ? __('Yes') : __('No') ?></td>
+                    <td><?= $record->counts_as_worked ? __('Yes') : __('No') ?></td>
+                    <td><?= $record->reduces_fund ? __('Yes') : __('No') ?></td>
+                    <td><?= $record->active ? __('Yes') : __('No') ?></td>
+                    <td><?= $this->Number->format($record->sort) ?></td>
+                    <td class="actions">
+                        <?= $this->AuthLink->link(
+                            __('Edit'),
+                            ['action' => 'edit', $record->id],
+                            ['class' => 'win-link'],
+                        ) ?>
+                        <?= $this->AuthLink->postLink(
+                            __('Delete'),
+                            ['action' => 'delete', $record->id],
+                            ['confirm' => __('Are you sure you want to delete # {0}?', $record->id)],
+                        ) ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?= $this->element('common/paginator') ?>
+</div>

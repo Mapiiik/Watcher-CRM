@@ -133,6 +133,25 @@ class WorkReportItemsTable extends AppTable
      */
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
+        // a type that allows one way of stating the time only needs no saying which
+        $typeId = $data['work_report_item_type_id'] ?? null;
+        if (is_string($typeId) && $typeId !== '') {
+            $type = $this->WorkReportItemTypes->find()->where(['id' => $typeId])->first();
+            if ($type?->time_mode === TimeMode::WholeDay) {
+                $data['whole_day'] = true;
+            } elseif ($type?->time_mode === TimeMode::Range) {
+                $data['whole_day'] = false;
+            }
+        }
+
+        if (!empty($data['whole_day'])) {
+            unset($data['time_from'], $data['time_until']);
+            $data['work_from'] = null;
+            $data['work_until'] = null;
+
+            return;
+        }
+
         if (!array_key_exists('time_from', (array)$data) && !array_key_exists('time_until', (array)$data)) {
             return;
         }
@@ -142,10 +161,7 @@ class WorkReportItemsTable extends AppTable
         $until = $data['time_until'] ?? null;
         unset($data['time_from'], $data['time_until']);
 
-        if (!empty($data['whole_day']) || !is_string($date) || $date === '') {
-            $data['work_from'] = null;
-            $data['work_until'] = null;
-
+        if (!is_string($date) || $date === '') {
             return;
         }
 
