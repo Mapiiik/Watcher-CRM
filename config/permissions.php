@@ -735,7 +735,7 @@ $permissions = [
                 'ContractProposals',
             ],
             'action' => [
-                'edit',
+                'recreate',
                 'refreshSnapshot',
                 'billingLine',
                 'endBilling',

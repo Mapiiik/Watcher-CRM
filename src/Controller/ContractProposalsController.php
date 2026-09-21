@@ -22,7 +22,6 @@ use App\Model\Entity\ContractVersion;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\CustomerProposalPurpose;
-use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
@@ -304,10 +303,7 @@ class ContractProposalsController extends AppController
         $contract = $this->contractFor((string)$proposal->contract_id);
 
         $this->set('contractProposal', $proposal);
-        // The questions are about what goes on paper, and a contract that keeps no versions has none.
-        $this->set('questions', $contract === null || !$proposal->keepsVersions()
-            ? []
-            : (new ReadinessChecks())->questionsFor($contract));
+        $this->set('questions', $this->readinessQuestions($contract, $proposal->keepsVersions()));
         $this->set('wording', ReadinessChecks::wording());
         $this->set('rounds', $this->openRoundsOf($contract->customer_id ?? $this->customer_id));
         $this->set('contractNumbers', $this->numbersOfferedFor($contract));
@@ -478,6 +474,20 @@ class ContractProposalsController extends AppController
         }
 
         return $discarded;
+    }
+
+    /**
+     * The questions asked before papers go out, where there are any to ask.
+     *
+     * They are about what goes on paper, and a contract whose service keeps no versions has none.
+     *
+     * @param \App\Model\Entity\Contract|null $contract The contract, where there is one.
+     * @param bool $keepsVersions Whether its service keeps versions.
+     * @return array<string>
+     */
+    private function readinessQuestions(?Contract $contract, bool $keepsVersions): array
+    {
+        return $contract === null || !$keepsVersions ? [] : (new ReadinessChecks())->questionsFor($contract);
     }
 
     /**
@@ -898,14 +908,8 @@ class ContractProposalsController extends AppController
             $data['terminates_contract_version_id'] = null;
         }
 
-        // What the head of the form asks is laid over what the proposal already asks of the
-        // billings - those are edited a line at a time and never travel in this submission.
-        $data['changes'] = $form->changesFrom(
-            $data,
-            ProposalChanges::nothing(),
-            $purpose,
-            $keepsVersions,
-        );
+        // The billings are added a line at a time afterwards and never travel in this submission.
+        $data['changes'] = $form->changesFrom($data, $purpose, $keepsVersions);
         $data['confirmations'] = $form->confirmationsFrom($data);
         $ends = $this->endOfTheVersion($data);
 
@@ -1276,18 +1280,8 @@ class ContractProposalsController extends AppController
                 : ['ContractVersions.contract_id' => $contract->id])
             ->orderBy(['ContractVersions.valid_from' => 'DESC']);
 
-        $questions = $contract === null || !$keepsVersions
-            ? []
-            : (new ReadinessChecks())->questionsFor($contract);
-
-        // Contracts concluded before the renumbering carry the customer number, one contract to a
-        // customer, so both are worth offering and nothing else ever is - the number on the paper
-        // is one of these two, so it is chosen rather than typed.
-        $numbers = $contract === null ? [] : array_values(array_unique(array_filter([
-            $contract->number,
-            $contract->customer->number ?? null,
-        ])));
-        $contractNumbers = array_combine($numbers, $numbers);
+        $questions = $this->readinessQuestions($contract, $keepsVersions);
+        $contractNumbers = $this->numbersOfferedFor($contract);
 
         $version = $this->versionFor((string)$proposal->contract_version_id);
 
@@ -1324,7 +1318,6 @@ class ContractProposalsController extends AppController
             'obligationOffered',
         ));
         $this->set('wording', ReadinessChecks::wording());
-        $this->set('deliveryMethods', $this->deliveryMethodOptions());
     }
 
     /**
@@ -1454,7 +1447,6 @@ class ContractProposalsController extends AppController
         ));
         $this->set('mayBeEdited', $this->ContractProposals->mayBeEdited($proposal));
         $this->set('mayBeDeleted', $this->ContractProposals->mayBeDeleted($proposal));
-        $this->set('deliveryMethods', $this->deliveryMethodOptions());
         // Only the count: the table itself is drawn by a cell, which asks for what it draws.
         $this->set('filed', (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? []);
         // Only what the proposal asks for. The rest of what applying it would write is worked
@@ -1464,16 +1456,6 @@ class ContractProposalsController extends AppController
             (new ChangePlan())->of($proposal),
             fn(PlannedChange $one): bool => $one->asked,
         )));
-    }
-
-    /**
-     * The ways papers can go out to a customer.
-     *
-     * @return array<int|string, string>
-     */
-    private function deliveryMethodOptions(): array
-    {
-        return DocumentsDeliveryType::options();
     }
 
     /**

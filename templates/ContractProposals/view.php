@@ -5,7 +5,6 @@
  * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
- * @var array<int|string, string> $deliveryMethods
  * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
  * @var array<string, array<string, array<\Files\Model\Entity\FileLink>>> $filed
  * @var array<string, string> $documentTypes

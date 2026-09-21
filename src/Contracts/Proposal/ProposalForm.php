@@ -22,21 +22,23 @@ final class ProposalForm
     private const ENDS_ON = 'valid_until';
 
     /**
-     * What the head of the form asks of the version and the contract, laid over what the proposal
-     * already asks of the billings.
+     * What the head of the form asks of the version and the contract.
+     *
+     * Asked only while the papers are drawn up, so it starts from nothing: the lines of billing are
+     * added afterwards, one at a time, from the proposal's own table.
      *
      * @param array<string, mixed> $data What the form sent.
-     * @param \App\Contracts\Proposal\ProposalChanges $existing What the proposal asks for now.
      * @param \App\Model\Enum\ProposalPurpose $purpose What the papers are being drawn up for.
      * @param bool $keepsVersions Whether the contract keeps versions at all.
      * @return array<string, mixed>
      */
     public function changesFrom(
         array $data,
-        ProposalChanges $existing,
         ProposalPurpose $purpose,
         bool $keepsVersions = true,
     ): array {
+        $existing = ProposalChanges::nothing();
+
         // A contract that keeps no versions has none to change: an ending ends the contract alone.
         if (!$keepsVersions) {
             return $existing

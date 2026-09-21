@@ -16,6 +16,7 @@ use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Files\Service\FileStorage;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -969,6 +970,66 @@ class ContractProposalsControllerTest extends TestCase
         $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
 
         $this->assertRedirect();
+    }
+
+    /**
+     * Every role that may draw papers up may put them together again, and the button to it is
+     * drawn for them. Tests log in as an administrator unless they say otherwise, who is let
+     * through before the rules for the roles are read at all.
+     *
+     * @param string $role The role to ask as.
+     * @return void
+     * @link \App\Controller\ContractProposalsController::recreate()
+     */
+    #[DataProvider('rolesThatDrawUpPapers')]
+    public function testRecreateIsOpenToTheRolesThatDrawUpPapers(string $role): void
+    {
+        $this->login($role);
+
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains('/contract-proposals/recreate/' . self::PROPOSAL_ID);
+
+        $this->get(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+    }
+
+    /**
+     * And the same gate as deleting keeps them out once the papers have gone out.
+     *
+     * @param string $role The role to ask as.
+     * @return void
+     * @link \App\Controller\ContractProposalsController::recreate()
+     */
+    #[DataProvider('rolesThatDrawUpPapers')]
+    public function testRecreateIsShutOnceThePapersHaveGoneOut(string $role): void
+    {
+        $proposal = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+        $this->getTableLocator()->get('CustomerProposals')->updateAll(
+            ['sent_date' => '2026-09-01', 'delivery_type' => DocumentsDeliveryType::cases()[0]->value],
+            ['id' => $proposal->customer_proposal_id],
+        );
+        $this->login($role);
+
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('/contract-proposals/recreate/' . self::PROPOSAL_ID);
+
+        $this->get(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
+        $this->assertRedirect();
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function rolesThatDrawUpPapers(): array
+    {
+        return [
+            'network manager' => ['network-manager'],
+            'sales representative' => ['sales-representative'],
+            'sales manager' => ['sales-manager'],
+            'bookkeeper' => ['bookkeeper'],
+        ];
     }
 
     /**
