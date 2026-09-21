@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-21 12:54+0200\n"
+"POT-Creation-Date: 2026-09-21 20:03+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -510,8 +510,8 @@ msgstr ""
 
 #: ./src/Command/RebuildFulltextSearchCustomersCommand.php:65
 #: ./templates/ContractProposals/add.php:52
-#: ./templates/ContractProposals/view.php:81
-#: ./templates/ContractProposals/view.php:95
+#: ./templates/ContractProposals/view.php:80
+#: ./templates/ContractProposals/view.php:94
 #: ./templates/ContractVersions/view.php:36
 #: ./templates/ContractVersions/view.php:52
 #: ./templates/Contracts/view.php:37
@@ -839,7 +839,7 @@ msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePlan.php:99
 #: ./src/Contracts/Proposal/ChangePlan.php:152
-#: ./templates/ContractProposals/view.php:161
+#: ./templates/ContractProposals/view.php:160
 #: ./templates/ContractVersions/view.php:120
 #: ./templates/CustomerProposals/conclude.php:44
 #: ./templates/CustomerProposals/view.php:132
@@ -896,7 +896,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:46
 #: ./templates/Billings/view.php:50
 #: ./templates/BorrowedEquipments/view.php:56
-#: ./templates/ContractProposals/view.php:122
+#: ./templates/ContractProposals/view.php:121
 #: ./templates/ContractVersions/view.php:86
 #: ./templates/Contracts/map.php:11
 #: ./templates/Contracts/view.php:101
@@ -955,7 +955,7 @@ msgstr ""
 #: ./src/Contracts/Proposal/PlannedChange.php:51
 #: ./templates/ContractProposals/add.php:115
 #: ./templates/ContractProposals/add.php:215
-#: ./templates/ContractProposals/view.php:133
+#: ./templates/ContractProposals/view.php:132
 #: ./templates/ContractVersions/view.php:78
 msgid "Contract Version"
 msgstr ""
@@ -1180,14 +1180,14 @@ msgstr ""
 #: ./src/Controller/BillingsController.php:239
 #: ./src/Controller/BillingsController.php:351
 #: ./src/Controller/BillingsController.php:492
-#: ./src/Controller/ContractsController.php:877
+#: ./src/Controller/ContractsController.php:859
 msgid "The billing has been saved."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:142
 #: ./src/Controller/BillingsController.php:243
 #: ./src/Controller/BillingsController.php:641
-#: ./src/Controller/ContractsController.php:881
+#: ./src/Controller/ContractsController.php:863
 msgid "The billing could not be saved. Please, try again."
 msgstr ""
 
@@ -1208,15 +1208,15 @@ msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:104
 #: ./src/Controller/BorrowedEquipmentsController.php:161
-#: ./src/Controller/ContractsController.php:803
-#: ./src/Controller/ContractsController.php:829
+#: ./src/Controller/ContractsController.php:785
+#: ./src/Controller/ContractsController.php:811
 msgid "The borrowed equipment has been saved."
 msgstr ""
 
 #: ./src/Controller/BorrowedEquipmentsController.php:108
 #: ./src/Controller/BorrowedEquipmentsController.php:165
-#: ./src/Controller/ContractsController.php:809
-#: ./src/Controller/ContractsController.php:835
+#: ./src/Controller/ContractsController.php:791
+#: ./src/Controller/ContractsController.php:817
 msgid "The borrowed equipment could not be saved. Please, try again."
 msgstr ""
 
@@ -1246,107 +1246,107 @@ msgstr ""
 msgid "The commission could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:259
-#: ./src/Controller/ContractProposalsController.php:717
-#: ./src/Controller/CustomerProposalsController.php:137
+#: ./src/Controller/ContractProposalsController.php:258
+#: ./src/Controller/ContractProposalsController.php:713
+#: ./src/Controller/CustomerProposalsController.php:135
 msgid "This proposal can no longer be changed."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:279
+#: ./src/Controller/ContractProposalsController.php:278
 msgid "A new snapshot of this contract cannot be taken. Delete the proposal and create a new one."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:289
+#: ./src/Controller/ContractProposalsController.php:288
 msgid "Confirm that the generated documents may be deleted."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:298
+#: ./src/Controller/ContractProposalsController.php:297
 msgid "The contract proposal has been recreated."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:475
+#: ./src/Controller/ContractProposalsController.php:457
 msgid "A generated document could not be deleted. Please delete it manually."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:557
+#: ./src/Controller/ContractProposalsController.php:553
 msgid "There is no such line on this proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:736
-#: ./src/Controller/ContractProposalsController.php:1119
-#: ./src/Controller/CustomerProposalsController.php:107
-#: ./src/Controller/CustomerProposalsController.php:146
+#: ./src/Controller/ContractProposalsController.php:732
+#: ./src/Controller/ContractProposalsController.php:1109
+#: ./src/Controller/CustomerProposalsController.php:105
+#: ./src/Controller/CustomerProposalsController.php:144
 msgid "The proposal has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:742
-#: ./src/Controller/ContractProposalsController.php:1125
-#: ./src/Controller/CustomerProposalsController.php:116
-#: ./src/Controller/CustomerProposalsController.php:152
+#: ./src/Controller/ContractProposalsController.php:738
+#: ./src/Controller/ContractProposalsController.php:1115
+#: ./src/Controller/CustomerProposalsController.php:114
+#: ./src/Controller/CustomerProposalsController.php:150
 msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:819
-#: ./src/Controller/CustomerProposalsController.php:575
+#: ./src/Controller/ContractProposalsController.php:815
+#: ./src/Controller/CustomerProposalsController.php:562
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:824
-#: ./src/Controller/CustomerProposalsController.php:580
+#: ./src/Controller/ContractProposalsController.php:820
+#: ./src/Controller/CustomerProposalsController.php:567
 msgid "The proposal has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:848
-#: ./src/Controller/CustomerProposalsController.php:173
-#: ./src/Controller/CustomerProposalsController.php:534
+#: ./src/Controller/ContractProposalsController.php:844
+#: ./src/Controller/CustomerProposalsController.php:171
+#: ./src/Controller/CustomerProposalsController.php:521
 msgid "This proposal has already been settled."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:857
-#: ./src/Controller/CustomerProposalsController.php:542
+#: ./src/Controller/ContractProposalsController.php:853
+#: ./src/Controller/CustomerProposalsController.php:529
 msgid "The proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:860
-#: ./src/Controller/CustomerProposalsController.php:545
+#: ./src/Controller/ContractProposalsController.php:856
+#: ./src/Controller/CustomerProposalsController.php:532
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:945
+#: ./src/Controller/ContractProposalsController.php:935
 msgid "Enter the last day of the service."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:957
+#: ./src/Controller/ContractProposalsController.php:947
 msgid "Enter the day the proposal takes effect."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:988
+#: ./src/Controller/ContractProposalsController.php:978
 msgid "Choose which contract and which version of it this contract proposal is for."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1005
+#: ./src/Controller/ContractProposalsController.php:995
 msgid "Enter the day the new contract starts."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1102
+#: ./src/Controller/ContractProposalsController.php:1092
 msgid "Please answer this before the proposal is sent."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1107
+#: ./src/Controller/ContractProposalsController.php:1097
 msgid "The contract is not ready for a contract proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1367
+#: ./src/Controller/ContractProposalsController.php:1346
 msgid "A customer proposal for this contract proposal could not be created."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:345
+#: ./src/Controller/ContractProposalsController.php:327
 msgid "One line asked about a billing that is no longer on the contract and has been taken back."
 msgid_plural "{0} lines asked about billings that are no longer on the contract and have been taken back."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Controller/ContractProposalsController.php:367
+#: ./src/Controller/ContractProposalsController.php:349
 msgid "One generated document has been deleted with the old snapshot."
 msgid_plural "{0} generated documents have been deleted with the old snapshot."
 msgstr[0] ""
@@ -1398,77 +1398,77 @@ msgstr ""
 msgid "The contract could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:558
+#: ./src/Controller/ContractsController.php:540
 msgid "The contract has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:561
+#: ./src/Controller/ContractsController.php:543
 msgid "The contract could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:602
+#: ./src/Controller/ContractsController.php:584
 msgid "The contract number could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:620
+#: ./src/Controller/ContractsController.php:602
 msgid "The contract number has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:628
+#: ./src/Controller/ContractsController.php:610
 msgid "The contract number could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:656
+#: ./src/Controller/ContractsController.php:638
 msgid "The contract numbers could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:664
+#: ./src/Controller/ContractsController.php:646
 msgid "The contract numbers have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:701
+#: ./src/Controller/ContractsController.php:683
 msgid "The subscriber verification code could not be generated. Please, check the format defined for the service type and try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:718
+#: ./src/Controller/ContractsController.php:700
 msgid "The subscriber verification code has been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:726
+#: ./src/Controller/ContractsController.php:708
 msgid "The subscriber verification code could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:754
+#: ./src/Controller/ContractsController.php:736
 msgid "The subscriber verification codes could not be updated. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:762
+#: ./src/Controller/ContractsController.php:744
 msgid "The subscriber verification codes have been updated."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:792
+#: ./src/Controller/ContractsController.php:774
 msgid "No related borrowed equipments to install."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:801
-#: ./src/Controller/ContractsController.php:807
+#: ./src/Controller/ContractsController.php:783
+#: ./src/Controller/ContractsController.php:789
 msgid "Installation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:818
+#: ./src/Controller/ContractsController.php:800
 msgid "No related borrowed equipments to uninstall."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:827
-#: ./src/Controller/ContractsController.php:833
+#: ./src/Controller/ContractsController.php:809
+#: ./src/Controller/ContractsController.php:815
 msgid "Uninstallation"
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:868
+#: ./src/Controller/ContractsController.php:850
 msgid "No related billings to terminate."
 msgstr ""
 
-#: ./src/Controller/ContractsController.php:887
+#: ./src/Controller/ContractsController.php:869
 msgid "Please set a date until which the contract is valid."
 msgstr ""
 
@@ -1622,48 +1622,48 @@ msgstr ""
 msgid "The customer message could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:192
+#: ./src/Controller/CustomerProposalsController.php:190
 msgid "The proposal has been recorded as sent."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:198
+#: ./src/Controller/CustomerProposalsController.php:196
 msgid "The sending could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:225
-#: ./src/Controller/CustomerProposalsController.php:351
+#: ./src/Controller/CustomerProposalsController.php:223
+#: ./src/Controller/CustomerProposalsController.php:338
 msgid "This customer proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:235
+#: ./src/Controller/CustomerProposalsController.php:233
 msgid "The signature has been recorded."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:241
+#: ./src/Controller/CustomerProposalsController.php:239
 msgid "The signature could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:379
+#: ./src/Controller/CustomerProposalsController.php:366
 msgid "There are no changes left to apply in this proposal."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:386
+#: ./src/Controller/CustomerProposalsController.php:373
 msgid "The changes of this proposal cannot be applied in its current state."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:425
+#: ./src/Controller/CustomerProposalsController.php:412
 msgid "The changes of the proposal could not be applied: {0}"
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:442
+#: ./src/Controller/CustomerProposalsController.php:429
 msgid "Contract {0} now has an end date. Its state was not changed, because a change of state has requirements of its own."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:568
+#: ./src/Controller/CustomerProposalsController.php:555
 msgid "This proposal can no longer be deleted."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:433
+#: ./src/Controller/CustomerProposalsController.php:420
 msgid "The changes of the proposal have been applied to the live records."
 msgid_plural "The changes of the proposal and everything in it have been applied to the live records."
 msgstr[0] ""
@@ -1695,15 +1695,15 @@ msgstr ""
 msgid "The company is no longer held by the register."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:714
+#: ./src/Controller/CustomersController.php:695
 msgid "The customer has been deleted."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:717
+#: ./src/Controller/CustomersController.php:698
 msgid "The customer could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomersController.php:746
+#: ./src/Controller/CustomersController.php:727
 msgid "There is no such number to ask about."
 msgstr ""
 
@@ -1753,7 +1753,7 @@ msgstr ""
 #: ./src/Model/Entity/ContractProposal.php:278
 #: ./src/View/Cell/DocumentsCell.php:188
 #: ./src/View/Cell/DocumentsCell.php:210
-#: ./templates/ContractProposals/view.php:111
+#: ./templates/ContractProposals/view.php:110
 #: ./templates/element/ContractProposals/heading.php:27
 #: ./templates/element/CustomerProposals/heading.php:16
 #: ./templates/element/Documents/whereabouts.php:62
@@ -2889,7 +2889,7 @@ msgstr ""
 
 #: ./src/Model/Enum/HistoricalConnectionSource.php:30
 #: ./src/Model/Enum/LandingPage.php:41
-#: ./templates/layout/default.php:146
+#: ./templates/layout/default.php:152
 msgid "RADIUS"
 msgstr ""
 
@@ -2922,14 +2922,14 @@ msgid "Technology network set manually"
 msgstr ""
 
 #: ./src/Model/Enum/LandingPage.php:37
-#: ./templates/layout/default.php:126
+#: ./templates/layout/default.php:132
 msgid "Dashboard"
 msgstr ""
 
 #: ./src/Model/Enum/LandingPage.php:38
 #: ./templates/Customers/identity_number_check.php:8
 #: ./templates/Customers/index.php:63
-#: ./templates/layout/default.php:131
+#: ./templates/layout/default.php:137
 msgid "Customers"
 msgstr ""
 
@@ -2940,25 +2940,25 @@ msgstr ""
 #: ./templates/Customers/view.php:894
 #: ./templates/Tasks/index.php:96
 #: ./templates/Tasks/map.php:36
-#: ./templates/layout/default.php:136
+#: ./templates/layout/default.php:142
 msgid "Tasks"
 msgstr ""
 
 #: ./src/Model/Enum/LandingPage.php:40
-#: ./templates/layout/default.php:141
+#: ./templates/layout/default.php:147
 msgid "Bookkeeping"
 msgstr ""
 
 #: ./src/Model/Enum/LandingPage.php:42
 #: ./templates/Overviews/index.php:7
-#: ./templates/layout/default.php:161
+#: ./templates/layout/default.php:167
 msgid "Overviews"
 msgstr ""
 
 #: ./src/Model/Enum/LandingPage.php:43
 #: ./templates/Billings/bulk_service_change.php:17
 #: ./templates/Settings/index.php:7
-#: ./templates/layout/default.php:174
+#: ./templates/layout/default.php:180
 msgid "Settings"
 msgstr ""
 
@@ -3363,7 +3363,7 @@ msgid "{0} ({1} - {2})"
 msgstr ""
 
 #: ./src/Proposals/Settlement.php:116
-#: ./templates/ContractProposals/view.php:192
+#: ./templates/ContractProposals/view.php:191
 #: ./templates/CustomerProposals/view.php:159
 #: ./templates/ServiceOverrides/view.php:110
 #: ./templates/element/common/audit.php:74
@@ -3455,7 +3455,7 @@ msgstr ""
 #: ./templates/ContractProposals/add.php:46
 #: ./templates/ContractProposals/billing_line.php:20
 #: ./templates/ContractProposals/recreate.php:25
-#: ./templates/ContractProposals/view.php:33
+#: ./templates/ContractProposals/view.php:32
 #: ./templates/ContractStates/add.php:11
 #: ./templates/ContractStates/edit.php:12
 #: ./templates/ContractStates/index.php:37
@@ -3723,7 +3723,7 @@ msgstr ""
 #: ./templates/Commissions/edit.php:12
 #: ./templates/Commissions/index.php:42
 #: ./templates/Commissions/view.php:78
-#: ./templates/ContractProposals/view.php:59
+#: ./templates/ContractProposals/view.php:58
 #: ./templates/ContractStates/edit.php:14
 #: ./templates/ContractStates/index.php:66
 #: ./templates/ContractVersions/edit.php:17
@@ -4242,7 +4242,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:118
 #: ./templates/Billings/view.php:122
 #: ./templates/ContractProposals/billing_line.php:122
-#: ./templates/ContractProposals/view.php:223
+#: ./templates/ContractProposals/view.php:222
 #: ./templates/ContractStates/view.php:193
 #: ./templates/ContractVersions/view.php:134
 #: ./templates/Contracts/view.php:193
@@ -4555,22 +4555,22 @@ msgid "Access Point"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:56
-#: ./templates/layout/default.php:232
+#: ./templates/layout/default.php:238
 msgid "Light"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:57
-#: ./templates/layout/default.php:233
+#: ./templates/layout/default.php:239
 msgid "Dark"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:58
-#: ./templates/layout/default.php:234
+#: ./templates/layout/default.php:240
 msgid "Contrast"
 msgstr ""
 
 #: ./templates/AppUsers/user_settings.php:59
-#: ./templates/layout/default.php:235
+#: ./templates/layout/default.php:241
 msgid "Legacy"
 msgstr ""
 
@@ -5038,7 +5038,7 @@ msgid "Purpose of the New Customer Proposal"
 msgstr ""
 
 #: ./templates/ContractProposals/add.php:96
-#: ./templates/ContractProposals/view.php:149
+#: ./templates/ContractProposals/view.php:148
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:28
 #: ./templates/CustomerProposals/view.php:120
 #: ./templates/element/ContractChecks/proposal_table.php:32
@@ -5056,7 +5056,7 @@ msgid "The service type of this contract does not use contract versions, so no d
 msgstr ""
 
 #: ./templates/ContractProposals/add.php:138
-#: ./templates/ContractProposals/view.php:145
+#: ./templates/ContractProposals/view.php:144
 #: ./templates/CustomerProposals/view.php:124
 #: ./templates/element/ContractChecks/proposal_table.php:33
 #: ./templates/element/CustomerChecks/customer_proposal.php:23
@@ -5081,13 +5081,13 @@ msgid "This contract proposal takes effect with the contract version it is for."
 msgstr ""
 
 #: ./templates/ContractProposals/add.php:168
-#: ./templates/ContractProposals/view.php:197
+#: ./templates/ContractProposals/view.php:196
 msgid "Terminates Contract Version"
 msgstr ""
 
 #: ./templates/ContractProposals/add.php:182
 #: ./templates/ContractProposals/recreate.php:75
-#: ./templates/ContractProposals/view.php:209
+#: ./templates/ContractProposals/view.php:208
 msgid "Number of the contract being terminated"
 msgstr ""
 
@@ -5183,14 +5183,14 @@ msgid "If left empty, billing starts on the day the contract proposal takes effe
 msgstr ""
 
 #: ./templates/ContractProposals/recreate.php:33
-#: ./templates/ContractProposals/view.php:71
+#: ./templates/ContractProposals/view.php:70
 #: ./templates/Documents/manage.php:155
 msgid "View Customer Proposal"
 msgstr ""
 
 #: ./templates/ContractProposals/recreate.php:47
 #: ./templates/ContractProposals/recreate.php:134
-#: ./templates/ContractProposals/view.php:41
+#: ./templates/ContractProposals/view.php:40
 msgid "Recreate Contract Proposal"
 msgstr ""
 
@@ -5219,31 +5219,31 @@ msgid_plural "These {0} documents will be permanently deleted. Continue?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./templates/ContractProposals/view.php:48
+#: ./templates/ContractProposals/view.php:47
 #: ./templates/CustomerProposals/view.php:64
 #: ./templates/ServiceOverrides/edit.php:17
 #: ./templates/ServiceOverrides/index.php:105
 msgid "Revoke"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:52
+#: ./templates/ContractProposals/view.php:51
 msgid "Revoke this proposal? Nothing has been changed on the contract yet."
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:61
+#: ./templates/ContractProposals/view.php:60
 #: ./templates/CustomerProposals/view.php:76
 msgid "Are you sure?"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:115
+#: ./templates/ContractProposals/view.php:114
 msgid "This contract proposal is part of the customer proposal: {0}"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:153
+#: ./templates/ContractProposals/view.php:152
 msgid "Snapshot Taken"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:157
+#: ./templates/ContractProposals/view.php:156
 #: ./templates/ContractVersions/index.php:42
 #: ./templates/ContractVersions/view.php:116
 #: ./templates/CustomerProposals/send.php:46
@@ -5254,12 +5254,12 @@ msgstr ""
 msgid "Sent To The Customer"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:165
+#: ./templates/ContractProposals/view.php:164
 #: ./templates/CustomerProposals/view.php:136
 msgid "Stored Documents"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:169
+#: ./templates/ContractProposals/view.php:168
 #: ./templates/CustomerProposals/view.php:140
 msgid "None"
 msgstr ""
@@ -5289,12 +5289,12 @@ msgctxt "conclusion date"
 msgid "None"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:170
+#: ./templates/ContractProposals/view.php:169
 #: ./templates/CustomerProposals/view.php:141
 msgid "{0} generated, {1} received"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:188
+#: ./templates/ContractProposals/view.php:187
 msgid "Changes Applied"
 msgstr ""
 
@@ -8608,7 +8608,7 @@ msgstr ""
 
 #: ./templates/element/Settings/FormFields.php:34
 #: ./templates/element/Settings/FormFields.php:51
-#: ./templates/layout/default.php:230
+#: ./templates/layout/default.php:236
 msgid "Default"
 msgstr ""
 
@@ -8714,33 +8714,33 @@ msgstr ""
 msgid "Closed"
 msgstr ""
 
-#: ./templates/layout/default.php:166
+#: ./templates/layout/default.php:172
 msgid "Files"
 msgstr ""
 
-#: ./templates/layout/default.php:185
 #: ./templates/layout/default.php:191
-#: ./templates/layout/default.php:196
+#: ./templates/layout/default.php:197
+#: ./templates/layout/default.php:202
 msgid "Old NMS"
 msgstr ""
 
-#: ./templates/layout/default.php:202
+#: ./templates/layout/default.php:208
 msgid "Network Management System"
 msgstr ""
 
-#: ./templates/layout/default.php:261
+#: ./templates/layout/default.php:267
 msgid "Logout"
 msgstr ""
 
-#: ./templates/layout/default.php:284
+#: ./templates/layout/default.php:290
 msgid "Changelog"
 msgstr ""
 
-#: ./templates/layout/default.php:285
+#: ./templates/layout/default.php:291
 msgid "Source Code"
 msgstr ""
 
-#: ./templates/layout/default.php:287
+#: ./templates/layout/default.php:293
 msgid "Version"
 msgstr ""
 
