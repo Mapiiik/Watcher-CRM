@@ -81,6 +81,8 @@ class WorkOverviewsControllerTest extends TestCase
         $this->assertResponseNotContains('Already on an invoice');
         // 1.5 hours by 600 by 3 for a Sunday
         $this->assertResponseContains('2,700');
+        // not invoiced yet, so it stands out the way an unpaid invoice does
+        $this->assertResponseContains('color: red;');
     }
 
     /**

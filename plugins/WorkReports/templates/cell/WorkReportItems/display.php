@@ -51,7 +51,7 @@ use WorkReports\Service\WorkReportSummary;
                 ) ?>
             </td>
             <?php endif ?>
-            <td>
+            <td style="<?= $item->invoice_style ?>">
                 <?php if ($item->to_invoice) : ?>
                     <?= $this->Number->format($item->invoice_hours?->toFloat() ?? 0) ?> h
                     <?= h($item->work_rate?->code) ?>

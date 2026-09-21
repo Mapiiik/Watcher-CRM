@@ -190,7 +190,7 @@ $addUrl = fn(Date $day): array => [
                                     <td>
                                         <?= nl2br(h((string)$item->description)) ?>
                                         <?php if ($item->to_invoice) : ?>
-                                            <br><small>
+                                            <br><small style="<?= $item->invoice_style ?>">
                                                 <?= __d('work_reports', 'To invoice') ?>:
                                                 <?= $this->Number->format($item->invoice_hours?->toFloat() ?? 0) ?> h
                                                 <?= h($item->work_rate?->code) ?>

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace WorkReports\Model\Entity;
 
+use App\Colors\ColorThemeSelector;
 use App\Model\Entity\AppEntity;
+use Cake\Core\Configure;
 
 /**
  * WorkReportItem Entity
@@ -36,6 +38,7 @@ use App\Model\Entity\AppEntity;
  * @property int $minutes
  * @property string|null $time_from
  * @property string|null $time_until
+ * @property string $invoice_style
  *
  * @property \WorkReports\Model\Entity\WorkReport $work_report
  * @property \WorkReports\Model\Entity\WorkReportItemType $work_report_item_type
@@ -101,6 +104,23 @@ class WorkReportItem extends AppEntity
     protected function _getTimeUntil(): ?string
     {
         return $this->work_until?->format('H:i');
+    }
+
+    /**
+     * Work to invoice that is not invoiced yet stands out the way an unpaid invoice does.
+     *
+     * @return string
+     */
+    protected function _getInvoiceStyle(): string
+    {
+        if (!$this->to_invoice || $this->invoiced) {
+            return '';
+        }
+
+        $theme = Configure::read('UI.theme');
+        $theme = is_string($theme) ? $theme : null;
+
+        return 'background-color: ' . ColorThemeSelector::forTheme('#ffc0c0', $theme) . '; color: red;';
     }
 
     /**

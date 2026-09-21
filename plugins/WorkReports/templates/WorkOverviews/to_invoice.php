@@ -126,7 +126,7 @@ use WorkReports\Service\WorkReportSummary;
                     <td><?= h($item->work_rate?->name_for_lists) ?></td>
                     <td><?= $this->Number->format($item->rate_multiplier->toFloat()) ?></td>
                     <td><?= $amount === null ? '' : $this->Number->currency($amount->toFloat()) ?></td>
-                    <td><?= $item->invoiced ? __('Yes') : __('No') ?></td>
+                    <td style="<?= $item->invoice_style ?>"><?= $item->invoiced ? __('Yes') : __('No') ?></td>
                 </tr>
                 <?php endforeach ?>
             </table>
