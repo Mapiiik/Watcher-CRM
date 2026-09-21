@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-19 09:06+0200\n"
+"POT-Creation-Date: 2026-09-21 12:54+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: ./templates/Customers/view.php:188
 #: ./templates/DocumentationTypes/view.php:73
 #: ./templates/Documentations/index.php:41
-#: ./templates/Documents/manage.php:73
+#: ./templates/Documents/manage.php:74
 msgid "Documentations"
 msgstr ""
 

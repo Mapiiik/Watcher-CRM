@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-21 11:02+0200\n"
+"POT-Creation-Date: 2026-09-21 12:54+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -526,13 +526,13 @@ msgstr ""
 #: ./templates/Documents/add_pages.php:36
 #: ./templates/Documents/add_pages.php:49
 #: ./templates/Documents/index.php:41
-#: ./templates/Documents/manage.php:86
 #: ./templates/Documents/manage.php:87
-#: ./templates/cell/Documents/display.php:164
+#: ./templates/Documents/manage.php:88
+#: ./templates/cell/Documents/display.php:168
 #: ./templates/element/ContractChecks/proposal_table.php:66
 #: ./templates/element/CustomerChecks/customer_proposal.php:50
 #: ./templates/element/Documents/rounds.php:104
-#: ./templates/element/Documents/rounds.php:139
+#: ./templates/element/Documents/rounds.php:156
 msgid "Documents"
 msgstr ""
 
@@ -1287,28 +1287,28 @@ msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:819
-#: ./src/Controller/CustomerProposalsController.php:546
+#: ./src/Controller/CustomerProposalsController.php:575
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:824
-#: ./src/Controller/CustomerProposalsController.php:551
+#: ./src/Controller/CustomerProposalsController.php:580
 msgid "The proposal has been deleted."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:848
 #: ./src/Controller/CustomerProposalsController.php:173
-#: ./src/Controller/CustomerProposalsController.php:505
+#: ./src/Controller/CustomerProposalsController.php:534
 msgid "This proposal has already been settled."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:857
-#: ./src/Controller/CustomerProposalsController.php:513
+#: ./src/Controller/CustomerProposalsController.php:542
 msgid "The proposal has been revoked."
 msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:860
-#: ./src/Controller/CustomerProposalsController.php:516
+#: ./src/Controller/CustomerProposalsController.php:545
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
@@ -1631,7 +1631,7 @@ msgid "The sending could not be recorded. Please, try again."
 msgstr ""
 
 #: ./src/Controller/CustomerProposalsController.php:225
-#: ./src/Controller/CustomerProposalsController.php:322
+#: ./src/Controller/CustomerProposalsController.php:351
 msgid "This customer proposal has been revoked."
 msgstr ""
 
@@ -1643,27 +1643,27 @@ msgstr ""
 msgid "The signature could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:350
+#: ./src/Controller/CustomerProposalsController.php:379
 msgid "There are no changes left to apply in this proposal."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:357
+#: ./src/Controller/CustomerProposalsController.php:386
 msgid "The changes of this proposal cannot be applied in its current state."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:396
+#: ./src/Controller/CustomerProposalsController.php:425
 msgid "The changes of the proposal could not be applied: {0}"
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:413
+#: ./src/Controller/CustomerProposalsController.php:442
 msgid "Contract {0} now has an end date. Its state was not changed, because a change of state has requirements of its own."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:539
+#: ./src/Controller/CustomerProposalsController.php:568
 msgid "This proposal can no longer be deleted."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:404
+#: ./src/Controller/CustomerProposalsController.php:433
 msgid "The changes of the proposal have been applied to the live records."
 msgid_plural "The changes of the proposal and everything in it have been applied to the live records."
 msgstr[0] ""
@@ -3506,7 +3506,7 @@ msgstr ""
 #: ./templates/DealerCommissions/index.php:34
 #: ./templates/DealerCommissions/view.php:10
 #: ./templates/Documents/add_pages.php:34
-#: ./templates/Documents/manage.php:54
+#: ./templates/Documents/manage.php:55
 #: ./templates/Emails/add.php:11
 #: ./templates/Emails/edit.php:11
 #: ./templates/Emails/index.php:32
@@ -4052,6 +4052,7 @@ msgstr ""
 #: ./templates/Services/view.php:131
 #: ./templates/SoldEquipments/index.php:69
 #: ./templates/Tasks/index.php:190
+#: ./templates/cell/Documents/display.php:176
 #: ./templates/element/Contracts/Billings.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:45
 #: ./templates/element/Contracts/ContractVersions.php:43
@@ -5183,6 +5184,7 @@ msgstr ""
 
 #: ./templates/ContractProposals/recreate.php:33
 #: ./templates/ContractProposals/view.php:71
+#: ./templates/Documents/manage.php:155
 msgid "View Customer Proposal"
 msgstr ""
 
@@ -5197,7 +5199,7 @@ msgid "A new snapshot of the contract is taken. The purpose, the contract versio
 msgstr ""
 
 #: ./templates/ContractProposals/recreate.php:102
-#: ./templates/Documents/manage.php:190
+#: ./templates/Documents/manage.php:214
 msgid "Generated Documents"
 msgstr ""
 
@@ -6175,7 +6177,7 @@ msgstr ""
 #: ./templates/CustomerProposalsly_changes.php:104
 #: ./templates/CustomerProposals/view.php:57
 #: ./templates/element/ContractChecks/proposal_table.php:104
-#: ./templates/element/Documents/rounds.php:131
+#: ./templates/element/Documents/rounds.php:148
 msgid "Apply Changes"
 msgstr ""
 
@@ -6191,7 +6193,7 @@ msgstr ""
 #: ./templates/CustomerProposals/edit.php:31
 #: ./templates/CustomerProposals/view.php:50
 #: ./templates/element/ContractChecks/proposal_table.php:92
-#: ./templates/element/Documents/rounds.php:124
+#: ./templates/element/Documents/rounds.php:138
 msgid "Record the Signature"
 msgstr ""
 
@@ -6215,7 +6217,7 @@ msgstr ""
 #: ./templates/CustomerProposals/send.php:14
 #: ./templates/CustomerProposals/view.php:41
 #: ./templates/element/ContractChecks/proposal_table.php:80
-#: ./templates/element/Documents/rounds.php:117
+#: ./templates/element/Documents/rounds.php:127
 msgid "Record the Sending"
 msgstr ""
 
@@ -6257,11 +6259,12 @@ msgid "Revoke this customer proposal?"
 msgstr ""
 
 #: ./templates/CustomerProposals/view.php:172
-#: ./templates/Documents/manage.php:107
+#: ./templates/Documents/manage.php:108
 msgid "New Contract Proposal"
 msgstr ""
 
 #: ./templates/CustomerProposals/view.php:192
+#: ./templates/Documents/manage.php:155
 msgid "View Contract Proposal"
 msgstr ""
 
@@ -6329,7 +6332,7 @@ msgstr ""
 
 #: ./templates/Customers/edit.php:30
 #: ./templates/Customers/view.php:37
-#: ./templates/Documents/manage.php:61
+#: ./templates/Documents/manage.php:62
 msgid "Edit Customer"
 msgstr ""
 
@@ -6622,7 +6625,7 @@ msgid "Show settled proposals"
 msgstr ""
 
 #: ./templates/Documents/index.php:37
-#: ./templates/Documents/manage.php:98
+#: ./templates/Documents/manage.php:99
 msgid "New Customer Proposal"
 msgstr ""
 
@@ -6630,48 +6633,48 @@ msgstr ""
 msgid "All proposals and their state. Each one links to its documents."
 msgstr ""
 
-#: ./templates/Documents/manage.php:56
+#: ./templates/Documents/manage.php:57
 msgid "View Customer"
 msgstr ""
 
-#: ./templates/Documents/manage.php:67
+#: ./templates/Documents/manage.php:68
 msgid "View Contract"
 msgstr ""
 
-#: ./templates/Documents/manage.php:117
+#: ./templates/Documents/manage.php:118
 msgid "Proposals"
 msgstr ""
 
-#: ./templates/Documents/manage.php:118
+#: ./templates/Documents/manage.php:119
 msgid "The proposals shown here. A customer proposal holds the proposals of the customer's contracts. Its row lists those contracts and what changes on each, and all of their documents are below."
 msgstr ""
 
-#: ./templates/Documents/manage.php:131
+#: ./templates/Documents/manage.php:132
 msgid "Show revoked proposals"
 msgstr ""
 
-#: ./templates/Documents/manage.php:147
-msgid "Show documents of the contract proposals"
-msgstr ""
-
-#: ./templates/Documents/manage.php:155
+#: ./templates/Documents/manage.php:165
 msgid "Documents - {0}"
 msgstr ""
 
-#: ./templates/Documents/manage.php:163
-#: ./templates/cell/Documents/display.php:231
+#: ./templates/Documents/manage.php:171
+msgid "Show documents of the contract proposals"
+msgstr ""
+
+#: ./templates/Documents/manage.php:187
+#: ./templates/cell/Documents/display.php:243
 msgid "Add Files"
 msgstr ""
 
-#: ./templates/Documents/manage.php:176
+#: ./templates/Documents/manage.php:200
 msgid "Received Documents"
 msgstr ""
 
-#: ./templates/Documents/manage.php:177
+#: ./templates/Documents/manage.php:201
 msgid "Documents received from the customer. Each one is filed with the proposal it belongs to, as its row shows."
 msgstr ""
 
-#: ./templates/Documents/manage.php:191
+#: ./templates/Documents/manage.php:215
 msgid "Documents we have generated, and those still to be generated. A document is generated only once and the same file is returned afterwards, so these are exactly the files the customer received. A row without a file is a document still to be generated."
 msgstr ""
 
@@ -8012,48 +8015,48 @@ msgstr ""
 msgid "Proposal Actions"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:180
+#: ./templates/cell/Documents/display.php:192
 msgid "Not generated yet"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:180
+#: ./templates/cell/Documents/display.php:192
 msgid "Nothing yet"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:222
+#: ./templates/cell/Documents/display.php:234
 msgid "Generate"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:224
-#: ./templates/cell/Documents/display.php:288
+#: ./templates/cell/Documents/display.php:236
+#: ./templates/cell/Documents/display.php:300
 msgid "Generate Signed"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:268
+#: ./templates/cell/Documents/display.php:280
 msgid "Open"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:278
+#: ./templates/cell/Documents/display.php:290
 msgid "Download"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:306
+#: ./templates/cell/Documents/display.php:318
 msgid "Up"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:319
+#: ./templates/cell/Documents/display.php:331
 msgid "Down"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:332
+#: ./templates/cell/Documents/display.php:344
 msgid "Remove"
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:341
+#: ./templates/cell/Documents/display.php:353
 msgid "Remove this document? The next time it is requested, it will be generated again."
 msgstr ""
 
-#: ./templates/cell/Documents/display.php:345
+#: ./templates/cell/Documents/display.php:357
 msgid "Remove this page?"
 msgstr ""
 
