@@ -6,6 +6,7 @@ namespace Tasks\Model\Entity;
 use App\Colors\ColorThemeSelector;
 use App\Model\Entity\AppEntity;
 use Cake\Core\Configure;
+use Cake\I18n\Date;
 
 /**
  * What a task is, in both applications.
@@ -29,6 +30,7 @@ use Cake\Core\Configure;
  * @property \Cake\I18n\Date|null $critical_date
  * @property string $number
  * @property string $summary_text
+ * @property string $name_for_lists
  * @property string $collaborator_names
  * @property string $style
  *
@@ -55,6 +57,21 @@ class Task extends AppEntity
     protected function _getNumber(): string
     {
         return strval($this->nid);
+    }
+
+    /**
+     * The task as a list offers it: its number, the day it was made, and what it is about. The day
+     * is written the way the application writes a date.
+     *
+     * @return string
+     */
+    protected function _getNameForLists(): string
+    {
+        return implode(' - ', array_filter([
+            '#' . $this->number,
+            $this->created === null ? null : (string)new Date($this->created),
+            $this->summary_text,
+        ], fn($part): bool => $part !== null && $part !== ''));
     }
 
     /**

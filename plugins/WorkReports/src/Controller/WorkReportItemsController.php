@@ -225,12 +225,9 @@ class WorkReportItemsController extends AppController
                 conditions: ['Contracts.customer_id' => $item->customer_id],
                 order: ['Contracts.number'],
             );
-            // the way the tasks are known elsewhere: by their number and what they are about
             $tasks = $table->Tasks->find(
                 'list',
-                valueField: fn($task): string => '#' . $task->number
-                    . ' - ' . $task->created?->i18nFormat('d. M. yyyy')
-                    . ' - ' . $task->summary_text,
+                valueField: 'name_for_lists',
                 contain: ['TaskTypes'],
                 conditions: ['Tasks.customer_id' => $item->customer_id],
                 order: ['Tasks.created' => 'DESC'],

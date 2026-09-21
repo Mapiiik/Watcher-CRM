@@ -19,7 +19,7 @@ $this->assign('title', $title);
         <?= __d(
             'work_reports',
             'Also reported on {0}.',
-            implode(', ', array_map(fn($day): string => (string)$day->i18nFormat('d. M.'), $summary->extraDays)),
+            implode(', ', array_map(fn($day): string => (string)$day, $summary->extraDays)),
         ) ?>
     </p>
 <?php endif ?>
@@ -46,7 +46,7 @@ $this->assign('title', $title);
     </tr>
     <?php foreach ($workReport->work_report_items as $item) : ?>
     <tr>
-        <td><?= h($item->date->i18nFormat('EEE d. M.')) ?></td>
+        <td><?= h($item->date->i18nFormat('EEE') . ' ' . $item->date) ?></td>
         <?php if ($item->whole_day) : ?>
             <td colspan="3"><?= __d('work_reports', 'whole day') ?></td>
         <?php else : ?>

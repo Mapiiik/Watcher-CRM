@@ -135,7 +135,7 @@ $addUrl = fn(Date $day): array => [
                             'work_reports',
                             'Nothing is reported on {0}.',
                             implode(', ', array_map(
-                                fn(Date $day): string => (string)$day->i18nFormat('d. M.'),
+                                fn(Date $day): string => (string)$day,
                                 $summary->missingDays,
                             )),
                         ) ?>
@@ -172,7 +172,7 @@ $addUrl = fn(Date $day): array => [
                             <tr style="<?= $style ?>">
                                 <?php if ($index === 0) : ?>
                                 <td rowspan="<?= count($rows) ?>" style="vertical-align: top;">
-                                    <?= h($date->i18nFormat('EEE d. M.')) ?>
+                                    <?= h($date->i18nFormat('EEE') . ' ' . $date) ?>
                                     <?php if ($calendar->isHoliday($date)) : ?>
                                         <br><small><?= __d('work_reports', 'public holiday') ?></small>
                                     <?php endif ?>

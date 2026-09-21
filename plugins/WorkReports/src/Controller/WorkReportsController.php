@@ -133,7 +133,7 @@ class WorkReportsController extends AppController
 
         $summary = WorkReportSummary::fromSettings($workReport);
         $days = fn(array $days): string => implode(', ', array_map(
-            fn(Date $day): string => (string)$day->i18nFormat('d. M.'),
+            fn(Date $day): string => (string)$day,
             $days,
         ));
 
