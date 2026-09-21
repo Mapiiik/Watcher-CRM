@@ -124,6 +124,7 @@ $migrator->runMany([
     ['plugin' => 'Settings'],
     ['plugin' => 'Bookkeeping'],
     ['plugin' => 'Files'],
+    ['plugin' => 'WorkReports'],
 ]);
 
 /*

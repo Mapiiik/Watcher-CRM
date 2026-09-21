@@ -18,6 +18,7 @@
       <directory>plugins/Radius/tests/TestCase/</directory>
       <directory>plugins/Settings/tests/TestCase/</directory>
       <directory>plugins/Tasks/tests/TestCase/</directory>
+      <directory>plugins/WorkReports/tests/TestCase/</directory>
     </testsuite>
   </testsuites>
   <!-- Load extension for fixtures -->

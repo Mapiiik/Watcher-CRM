@@ -55,4 +55,7 @@ return [
 
     // RADIUS
     'Radius' => [],
+
+    // Work reports
+    'WorkReports' => [],
 ];
