@@ -250,11 +250,17 @@ class ContractProposal extends AppEntity
     /**
      * Whether the proposal brings the contract to an end.
      *
+     * The contract itself, not the version it belongs to. Ending one version while the contract
+     * runs on is how an agreement to end one and sign another is written, and then everything that
+     * hangs off the contract - what is billed for above all - carries on. The looser question,
+     * whether these papers end anything at all, is what the papers themselves ask:
+     * {@see \App\Contracts\Proposal\ProposalChanges::endsTheContract()}.
+     *
      * @return bool
      */
     public function endsTheContract(): bool
     {
-        return $this->proposedChanges()->endsTheContract();
+        return $this->proposedChanges()->contract->endsTheContract();
     }
 
     /**

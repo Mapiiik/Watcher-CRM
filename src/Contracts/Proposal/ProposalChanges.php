@@ -80,10 +80,13 @@ final class ProposalChanges
     }
 
     /**
-     * Whether the proposal brings the contract to an end.
+     * Whether the papers end anything at all - the version they belong to, or the contract.
      *
-     * Ending is one act written in two places, and a rule holds the two dates to the same day, so
-     * asking either one answers for both.
+     * Ending is one act written in two places, and where the contract ends a rule holds the two
+     * dates to the same day. That direction only: a version ending while the contract runs on is
+     * how an agreement to end one version and sign another is written, and there the contract
+     * carries on. So this is the question a paper asks - it is a termination either way - while
+     * {@see \App\Model\Entity\ContractProposal::endsTheContract()} is the one the records ask.
      *
      * @return bool
      */

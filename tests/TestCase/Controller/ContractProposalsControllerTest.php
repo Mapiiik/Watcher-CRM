@@ -1257,6 +1257,58 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * A version ending while the contract runs on leaves the billings alone. What is billed for
+     * hangs off the contract, which carries on, and the version that follows says what becomes of
+     * it - so stopping it here would stop it for good, in the records as well as on the paper.
+     *
+     * It used to be ended all the same: the question asked was whether the papers end anything,
+     * and a version ending is an ending.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::endWhatTheContractIsBilledFor()
+     */
+    public function testEndingOneVersionLeavesWhatIsBilledForAlone(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::Termination->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => self::CONTRACT_VERSION_ID,
+            'terminated_contract_number' => '2022/0001',
+            'ends_on' => '2026-12-31',
+            'version_only' => '1',
+            'confirmations' => [
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        $changes = $drawn->proposedChanges();
+
+        $this->assertSame('2026-12-31', $changes->version->get('valid_until')?->toDateString());
+        $this->assertFalse(
+            $changes->contract->endsTheContract(),
+            'The contract was ended by papers that end one version of it.',
+        );
+        $this->assertSame(
+            [],
+            $changes->billings,
+            'What is billed for was stopped although the contract runs on.',
+        );
+    }
+
+    /**
      * An ending with no day says so on the field that asks for it. The columns that would
      * otherwise complain - the day the papers apply from, and what the proposal asks for - are not
      * on this form, and a complaint about a field nobody can see reads as no complaint at all.
