@@ -164,11 +164,6 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
                 ['action' => 'view', $customer->id, '#' => 'invoices'],
                 ['class' => 'side-nav-item'],
             ) ?>
-            <?= $this->AuthLink->link(
-                __('Tasks'),
-                ['action' => 'view', $customer->id, '#' => 'tasks'],
-                ['class' => 'side-nav-item'],
-            ) ?>
             <?php if (Plugin::isLoaded('WorkReports')) : ?>
                 <?= $this->AuthLink->link(
                     __d('work_reports', 'Work Report Items'),
@@ -176,6 +171,11 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
+            <?= $this->AuthLink->link(
+                __('Tasks'),
+                ['action' => 'view', $customer->id, '#' => 'tasks'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
         <?php endif; ?>
     </aside>
@@ -892,21 +892,6 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
                 ) ?>
             </div>
         </div>
-        <br>
-        <div class="customers view content">
-            <div>
-                <?= $this->AuthLink->link(
-                    __('New Task'),
-                    ['controller' => 'Tasks', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link'],
-                ) ?>
-                <h4 id="tasks"><?= __('Tasks') ?></h4>
-                <?= $this->element('Contracts/Tasks', [
-                    'tasks' => $customer->tasks,
-                    'contract_column' => true,
-                ]) ?>
-            </div>
-        </div>
         <?php if (Plugin::isLoaded('WorkReports')) : ?>
         <br>
         <div class="customers view content">
@@ -924,5 +909,20 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
             </div>
         </div>
         <?php endif; ?>
+        <br>
+        <div class="customers view content">
+            <div>
+                <?= $this->AuthLink->link(
+                    __('New Task'),
+                    ['controller' => 'Tasks', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link'],
+                ) ?>
+                <h4 id="tasks"><?= __('Tasks') ?></h4>
+                <?= $this->element('Contracts/Tasks', [
+                    'tasks' => $customer->tasks,
+                    'contract_column' => true,
+                ]) ?>
+            </div>
+        </div>
     </div>
 </div>

@@ -141,11 +141,6 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['contract', $contract-
                 ['action' => 'view', $contract->id, '#' => 'invoices'],
                 ['class' => 'side-nav-item'],
             ) ?>
-            <?= $this->AuthLink->link(
-                __('Tasks'),
-                ['action' => 'view', $contract->id, '#' => 'tasks'],
-                ['class' => 'side-nav-item'],
-            ) ?>
             <?php if (Plugin::isLoaded('WorkReports')) : ?>
                 <?= $this->AuthLink->link(
                     __d('work_reports', 'Work Report Items'),
@@ -153,6 +148,11 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['contract', $contract-
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
+            <?= $this->AuthLink->link(
+                __('Tasks'),
+                ['action' => 'view', $contract->id, '#' => 'tasks'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
         <?php endif; ?>
     </aside>
@@ -483,6 +483,24 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['contract', $contract-
                 ) ?>
             </div>
         </div>
+        <?php if (Plugin::isLoaded('WorkReports')) : ?>
+        <br>
+        <div class="contracts view content">
+            <div>
+                <?= $this->AuthLink->link(
+                    __d('work_reports', 'New Work Report Item'),
+                    ['plugin' => 'WorkReports', 'controller' => 'WorkReportItems', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link'],
+                ) ?>
+                <h4 id="work-report-items"><?= __d('work_reports', 'Work Report Items') ?></h4>
+                <?= $this->cell(
+                    'WorkReports.WorkReportItems',
+                    [['WorkReportItems.contract_id' => $contract->id]],
+                    ['show_contracts' => false],
+                ) ?>
+            </div>
+        </div>
+        <?php endif; ?>
         <br>
         <div class="contracts view content">
             <div>
@@ -504,23 +522,5 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['contract', $contract-
                 ]) ?>
             </div>
         </div>
-        <?php if (Plugin::isLoaded('WorkReports')) : ?>
-        <br>
-        <div class="contracts view content">
-            <div>
-                <?= $this->AuthLink->link(
-                    __d('work_reports', 'New Work Report Item'),
-                    ['plugin' => 'WorkReports', 'controller' => 'WorkReportItems', 'action' => 'add'],
-                    ['class' => 'button button-small float-right win-link'],
-                ) ?>
-                <h4 id="work-report-items"><?= __d('work_reports', 'Work Report Items') ?></h4>
-                <?= $this->cell(
-                    'WorkReports.WorkReportItems',
-                    [['WorkReportItems.contract_id' => $contract->id]],
-                    ['show_contracts' => false],
-                ) ?>
-            </div>
-        </div>
-        <?php endif; ?>
     </div>
 </div>
