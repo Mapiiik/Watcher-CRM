@@ -1026,6 +1026,21 @@ $permissions = [
                 'delete',
             ],
         ],
+        //allow the work to invoice to those who invoice it
+        [
+            'role' => [
+                'sales-manager',
+                'bookkeeper',
+            ],
+            'plugin' => 'WorkReports',
+            'controller' => [
+                'WorkOverviews',
+            ],
+            'action' => [
+                'toInvoice',
+                'markInvoiced',
+            ],
+        ],
     ],
 ];
 

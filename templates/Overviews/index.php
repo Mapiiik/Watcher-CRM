@@ -1,4 +1,6 @@
 <?php
+use Cake\Core\Plugin;
+
 /**
  * @var \App\View\AppView $this
  */
@@ -22,6 +24,25 @@
                 ) ?>
             </div>
         </div>
+
+        <?php if (Plugin::isLoaded('WorkReports')) : ?>
+        <div class="related">
+            <h4><?= __d('work_reports', 'Work Report Related') ?></h4>
+            <div>
+                <?= $this->AuthLink->link(
+                    __d('work_reports', 'Work to Invoice'),
+                    [
+                        'plugin' => 'WorkReports',
+                        'controller' => 'WorkOverviews',
+                        'action' => 'toInvoice',
+                        'customer_id' => false,
+                        'contract_id' => false,
+                    ],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            </div>
+        </div>
+        <?php endif; ?>
 
         <div class="related">
             <h4><?= __('Service Related') ?></h4>

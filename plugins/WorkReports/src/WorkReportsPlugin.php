@@ -20,6 +20,9 @@ class WorkReportsPlugin extends BasePlugin
     /**
      * Add routes for the plugin.
      *
+     * The items are also reached from a customer or a contract, so the nested routes of the
+     * application are repeated here the way the RADIUS plugin repeats them.
+     *
      * @param \Cake\Routing\RouteBuilder $routes The route builder to update.
      * @return void
      */
@@ -30,6 +33,25 @@ class WorkReportsPlugin extends BasePlugin
             'WorkReports',
             ['path' => '/work-reports'],
             function (RouteBuilder $builder): void {
+                $builder
+                    ->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}', ['action' => 'index'])
+                    ->setPatterns([
+                        'customer_id' => RouteBuilder::UUID,
+                        'contract_id' => RouteBuilder::UUID,
+                    ]);
+                $builder
+                    ->connect('/customers/{customer_id}/contracts/{contract_id}/{controller}/{action}/*', [])
+                    ->setPatterns([
+                        'customer_id' => RouteBuilder::UUID,
+                        'contract_id' => RouteBuilder::UUID,
+                    ]);
+                $builder
+                    ->connect('/customers/{customer_id}/{controller}', ['action' => 'index'])
+                    ->setPatterns(['customer_id' => RouteBuilder::UUID]);
+                $builder
+                    ->connect('/customers/{customer_id}/{controller}/{action}/*', [])
+                    ->setPatterns(['customer_id' => RouteBuilder::UUID]);
+
                 $builder->fallbacks();
             },
         );

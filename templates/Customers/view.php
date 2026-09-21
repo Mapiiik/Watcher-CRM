@@ -1,4 +1,6 @@
 <?php
+use Cake\Core\Plugin;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
@@ -167,6 +169,13 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
                 ['action' => 'view', $customer->id, '#' => 'tasks'],
                 ['class' => 'side-nav-item'],
             ) ?>
+            <?php if (Plugin::isLoaded('WorkReports')) : ?>
+                <?= $this->AuthLink->link(
+                    __d('work_reports', 'Work Report Items'),
+                    ['action' => 'view', $customer->id, '#' => 'work-report-items'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
     </aside>
@@ -898,5 +907,22 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
                 ]) ?>
             </div>
         </div>
+        <?php if (Plugin::isLoaded('WorkReports')) : ?>
+        <br>
+        <div class="customers view content">
+            <div>
+                <?= $this->AuthLink->link(
+                    __d('work_reports', 'New Work Report Item'),
+                    ['plugin' => 'WorkReports', 'controller' => 'WorkReportItems', 'action' => 'add'],
+                    ['class' => 'button button-small float-right win-link'],
+                ) ?>
+                <h4 id="work-report-items"><?= __d('work_reports', 'Work Report Items') ?></h4>
+                <?= $this->cell(
+                    'WorkReports.WorkReportItems',
+                    [['WorkReportItems.customer_id' => $customer->id]],
+                ) ?>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
