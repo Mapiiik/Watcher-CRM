@@ -252,10 +252,30 @@ class WorkReportItemsControllerTest extends TestCase
 
         $this->addRecipient(self::WORKER, $other, mayEdit: true);
         $this->loginAs($other, 'user');
-        $this->post('/work-reports/work-reports/reopen/' . $report->id);
+
+        $this->get('/work-reports/work-reports/reopen/' . $report->id);
+        $this->assertResponseOk();
+        $this->assertResponseContains('return_reason');
+
+        $this->post('/work-reports/work-reports/reopen/' . $report->id, ['return_reason' => '']);
+        $this->assertResponseOk();
+        $this->assertNotNull($reports->get($report->id)->submitted);
+        $this->assertNoMailSent();
+
+        $this->post('/work-reports/work-reports/reopen/' . $report->id, ['return_reason' => 'The 15th is a workday.']);
 
         $this->assertRedirectContains('/work-reports/work-reports/sheet');
-        $this->assertNull($reports->get($report->id)->submitted);
+        $returned = $reports->get($report->id);
+        $this->assertNull($returned->submitted);
+        $this->assertSame($other, $returned->returned_by);
+        $this->assertSame('The 15th is a workday.', $returned->return_reason);
+        $this->assertMailCount(1);
+        $this->assertMailSentTo('operator@example.com');
+        $this->assertMailContains('The 15th is a workday.');
+
+        $this->loginAs(self::WORKER, 'user');
+        $this->get('/work-reports/work-reports/sheet?month=2026-06');
+        $this->assertResponseContains('The 15th is a workday.');
     }
 
     /**

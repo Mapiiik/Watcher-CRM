@@ -49,13 +49,10 @@ $addUrl = fn(Date $day): array => [
                 ) ?>
             <?php endif ?>
             <?php if ($mayReopen && $workReport->isLocked()) : ?>
-                <?= $this->AuthLink->postLink(
+                <?= $this->AuthLink->link(
                     __d('work_reports', 'Return for Correction'),
                     ['action' => 'reopen', $workReport->id],
-                    [
-                        'confirm' => __d('work_reports', 'Return the report to be corrected?'),
-                        'class' => 'side-nav-item',
-                    ],
+                    ['class' => 'side-nav-item win-link'],
                 ) ?>
             <?php endif ?>
             <?= $this->Html->link(
@@ -103,6 +100,17 @@ $addUrl = fn(Date $day): array => [
                 (string)$month->i18nFormat('LLLL yyyy'),
                 $workerName,
             ) ?>
+            <?php if ($workReport->isReturned()) : ?>
+                <div class="message warning" role="alert">
+                    <?= __d(
+                        'work_reports',
+                        'Returned for correction on {0} by {1}: {2}',
+                        h($workReport->returned),
+                        h($workReport->returner?->name),
+                        h($workReport->return_reason),
+                    ) ?>
+                </div>
+            <?php endif ?>
             <?= $this->element('WorkReports.summary', compact('workReport', 'summary')) ?>
             <div class="text">
                 <strong><?= __d('work_reports', 'Note') ?></strong>

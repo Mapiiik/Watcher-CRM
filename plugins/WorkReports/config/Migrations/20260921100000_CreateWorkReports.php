@@ -90,10 +90,15 @@ class CreateWorkReports extends BaseMigration
             ->addColumn('workload', 'decimal', ['precision' => 4, 'scale' => 3, 'default' => 1, 'null' => false])
             ->addColumn('submitted', 'timestamp', ['timezone' => true, 'null' => true])
             ->addColumn('submitted_by', 'uuid', ['null' => true])
+            // the last time it was returned for correction, and why
+            ->addColumn('returned', 'timestamp', ['timezone' => true, 'null' => true])
+            ->addColumn('returned_by', 'uuid', ['null' => true])
+            ->addColumn('return_reason', 'text', ['null' => true])
             ->addColumn('note', 'text', ['null' => true])
             ->addIndex(['user_id', 'month'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id')
             ->addForeignKey('submitted_by', 'users', 'id')
+            ->addForeignKey('returned_by', 'users', 'id')
             ->create();
 
         $this->footprinted($this->uuidTable('work_report_items'))

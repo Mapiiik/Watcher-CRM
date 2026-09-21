@@ -11,6 +11,7 @@ use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use WorkReports\Model\Entity\WorkReport;
+use WorkReports\Service\ReturnedWorkReportMail;
 use WorkReports\Service\SubmittedWorkReportMail;
 use WorkReports\Service\WorkingCalendar;
 use WorkReports\Service\WorkReportSummary;
@@ -158,26 +159,54 @@ class WorkReportsController extends AppController
     }
 
     /**
-     * Return a submitted report to its worker to be corrected.
+     * Return a submitted report to its worker to be corrected, saying why.
      *
      * @param string|null $id Work report id.
-     * @return \Cake\Http\Response|null Redirects to the month.
+     * @return \Cake\Http\Response|null Redirects to the month once returned, renders the form otherwise.
      */
     public function reopen(?string $id = null): ?Response
     {
-        $this->getRequest()->allowMethod(['post']);
-        $workReport = $this->WorkReports->get((string)$id);
+        $workReport = $this->WorkReports->get((string)$id, contain: ['Users']);
 
         if (!$this->mayReopen($workReport->user_id)) {
             throw new ForbiddenException(__d('work_reports', 'This report is not yours to return.'));
         }
 
-        $workReport->submitted = null;
-        $workReport->submitted_by = null;
-        $this->WorkReports->saveOrFail($workReport);
-        $this->Flash->success(__d('work_reports', 'The report has been returned for correction.'));
+        if (!$workReport->isLocked()) {
+            $this->Flash->error(__d('work_reports', 'The report has not been submitted.'));
 
-        return $this->redirect($this->sheetUrl($workReport));
+            return $this->afterEditRedirect($this->sheetUrl($workReport));
+        }
+
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $workReport = $this->WorkReports->patchEntity(
+                $workReport,
+                $this->getRequest()->getData(),
+                ['validate' => 'reopen', 'fields' => ['return_reason']],
+            );
+
+            if (!$workReport->hasErrors()) {
+                $workReport->submitted = null;
+                $workReport->submitted_by = null;
+                $workReport->returned = DateTime::now();
+                $workReport->returned_by = $this->identityId();
+                $this->WorkReports->saveOrFail($workReport);
+                $this->Flash->success(__d('work_reports', 'The report has been returned for correction.'));
+
+                /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
+                $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
+                $workReport->returner = $this->fetchTable('AppUsers')->get($this->identityId());
+                $messages = new Messages();
+                ReturnedWorkReportMail::send($workReport, $workers->recipientsOf($workReport->user_id), $messages);
+                $this->handleMessages($messages);
+
+                return $this->afterEditRedirect($this->sheetUrl($workReport));
+            }
+        }
+
+        $this->set(compact('workReport'));
+
+        return null;
     }
 
     /**
@@ -202,6 +231,7 @@ class WorkReportsController extends AppController
             ],
             'WorkReportOnCalls',
             'Submitters',
+            'Returners',
         ]);
     }
 

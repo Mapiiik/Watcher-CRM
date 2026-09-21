@@ -16,6 +16,7 @@ use WorkReports\Model\Entity\WorkReport;
  *
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Submitters
+ * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Returners
  * @property \WorkReports\Model\Table\WorkReportItemsTable&\Cake\ORM\Association\HasMany $WorkReportItems
  * @property \WorkReports\Model\Table\WorkReportOnCallsTable&\Cake\ORM\Association\HasMany $WorkReportOnCalls
  * @method \WorkReports\Model\Entity\WorkReport newEmptyEntity()
@@ -54,6 +55,10 @@ class WorkReportsTable extends AppTable
         $this->belongsTo('Submitters', [
             'className' => 'AppUsers',
             'foreignKey' => 'submitted_by',
+        ]);
+        $this->belongsTo('Returners', [
+            'className' => 'AppUsers',
+            'foreignKey' => 'returned_by',
         ]);
         $this->hasMany('WorkReportItems', [
             'className' => 'WorkReports.WorkReportItems',
@@ -100,6 +105,22 @@ class WorkReportsTable extends AppTable
         $validator
             ->scalar('note')
             ->allowEmptyString('note');
+
+        return $validator;
+    }
+
+    /**
+     * What returning a report for correction asks for: the reason.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationReopen(Validator $validator): Validator
+    {
+        $validator
+            ->scalar('return_reason')
+            ->requirePresence('return_reason')
+            ->notEmptyString('return_reason', __d('work_reports', 'Say what is to be corrected.'));
 
         return $validator;
     }

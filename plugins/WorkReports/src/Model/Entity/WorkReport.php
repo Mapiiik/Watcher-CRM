@@ -15,10 +15,14 @@ use App\Model\Entity\AppEntity;
  * @property \PhpCollective\DecimalObject\Decimal $workload
  * @property \Cake\I18n\DateTime|null $submitted
  * @property string|null $submitted_by
+ * @property \Cake\I18n\DateTime|null $returned
+ * @property string|null $returned_by
+ * @property string|null $return_reason
  * @property string|null $note
  *
  * @property \App\Model\Entity\AppUser $user
  * @property \App\Model\Entity\AppUser|null $submitter
+ * @property \App\Model\Entity\AppUser|null $returner
  * @property \WorkReports\Model\Entity\WorkReportItem[] $work_report_items
  * @property \WorkReports\Model\Entity\WorkReportOnCall[] $work_report_on_calls
  */
@@ -34,6 +38,7 @@ class WorkReport extends AppEntity
         'month' => true,
         'workload' => true,
         'note' => true,
+        'return_reason' => true,
     ];
 
     /**
@@ -44,5 +49,15 @@ class WorkReport extends AppEntity
     public function isLocked(): bool
     {
         return $this->submitted !== null;
+    }
+
+    /**
+     * Whether the report waits to be corrected after it was returned.
+     *
+     * @return bool
+     */
+    public function isReturned(): bool
+    {
+        return $this->submitted === null && $this->returned !== null;
     }
 }
