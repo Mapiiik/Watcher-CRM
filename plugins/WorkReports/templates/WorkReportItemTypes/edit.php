@@ -38,9 +38,8 @@ foreach (TimeMode::cases() as $case) {
                     'label' => __d('work_reports', 'Time Mode'),
                     'options' => $timeModes,
                 ]);
-                echo $this->Form->control('has_text', [
-                    'label' => __d('work_reports', 'Has Text'),
-                    'title' => __d('work_reports', 'A description is required.'),
+                echo $this->Form->control('description_required', [
+                    'label' => __d('work_reports', 'Description Required'),
                 ]);
                 echo $this->Form->control('counts_as_worked', [
                     'label' => __d('work_reports', 'Counts As Worked'),

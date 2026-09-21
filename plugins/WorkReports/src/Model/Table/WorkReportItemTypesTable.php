@@ -63,8 +63,8 @@ class WorkReportItemTypesTable extends AppTable
             ->notEmptyString('name');
 
         $validator
-            ->boolean('has_text')
-            ->notEmptyString('has_text');
+            ->boolean('description_required')
+            ->notEmptyString('description_required');
 
         $validator
             ->enum('time_mode', TimeMode::class)

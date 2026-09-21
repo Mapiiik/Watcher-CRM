@@ -25,7 +25,7 @@ class CreateWorkReports extends BaseMigration
 
         $this->footprinted($this->uuidTable('work_report_item_types'))
             ->addColumn('name', 'string', ['null' => false])
-            ->addColumn('has_text', 'boolean', ['default' => false, 'null' => false])
+            ->addColumn('description_required', 'boolean', ['default' => false, 'null' => false])
             ->addColumn('time_mode', 'string', ['default' => 'range', 'null' => false])
             ->addColumn('counts_as_worked', 'boolean', ['default' => false, 'null' => false])
             ->addColumn('reduces_fund', 'boolean', ['default' => false, 'null' => false])

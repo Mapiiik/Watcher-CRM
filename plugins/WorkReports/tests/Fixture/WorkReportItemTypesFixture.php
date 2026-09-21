@@ -32,7 +32,7 @@ class WorkReportItemTypesFixture extends TestFixture
             [
                 'id' => self::WORK,
                 'name' => 'Work',
-                'has_text' => true,
+                'description_required' => true,
                 'time_mode' => 'range',
                 'counts_as_worked' => true,
                 'reduces_fund' => false,
@@ -42,7 +42,7 @@ class WorkReportItemTypesFixture extends TestFixture
             [
                 'id' => self::VACATION,
                 'name' => 'Vacation',
-                'has_text' => false,
+                'description_required' => false,
                 'time_mode' => 'whole_day',
                 'counts_as_worked' => false,
                 'reduces_fund' => true,
@@ -52,7 +52,7 @@ class WorkReportItemTypesFixture extends TestFixture
             [
                 'id' => self::DOCTOR,
                 'name' => 'Doctor',
-                'has_text' => false,
+                'description_required' => false,
                 'time_mode' => 'either',
                 'counts_as_worked' => false,
                 'reduces_fund' => true,

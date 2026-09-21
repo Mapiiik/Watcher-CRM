@@ -343,7 +343,7 @@ class WorkReportItemsTable extends AppTable
             function (WorkReportItem $item): bool {
                 $type = $this->typeOf($item);
 
-                return $type === null || !$type->has_text || trim((string)$item->description) !== '';
+                return $type === null || !$type->description_required || trim((string)$item->description) !== '';
             },
             'descriptionByType',
             [

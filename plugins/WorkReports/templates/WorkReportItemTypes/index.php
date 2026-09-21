@@ -17,7 +17,10 @@
                 <tr>
                     <th><?= $this->Paginator->sort('name', __d('work_reports', 'Name')) ?></th>
                     <th><?= $this->Paginator->sort('time_mode', __d('work_reports', 'Time Mode')) ?></th>
-                    <th><?= $this->Paginator->sort('has_text', __d('work_reports', 'Has Text')) ?></th>
+                    <th><?= $this->Paginator->sort(
+                        'description_required',
+                        __d('work_reports', 'Description Required'),
+                    ) ?></th>
                     <th><?= $this->Paginator->sort('counts_as_worked', __d('work_reports', 'Counts As Worked')) ?></th>
                     <th><?= $this->Paginator->sort('reduces_fund', __d('work_reports', 'Reduces Fund')) ?></th>
                     <th><?= $this->Paginator->sort('active', __d('work_reports', 'Active')) ?></th>
@@ -30,7 +33,7 @@
                 <tr>
                     <td><?= h($record->name) ?></td>
                     <td><?= h($record->time_mode->label()) ?></td>
-                    <td><?= $record->has_text ? __('Yes') : __('No') ?></td>
+                    <td><?= $record->description_required ? __('Yes') : __('No') ?></td>
                     <td><?= $record->counts_as_worked ? __('Yes') : __('No') ?></td>
                     <td><?= $record->reduces_fund ? __('Yes') : __('No') ?></td>
                     <td><?= $record->active ? __('Yes') : __('No') ?></td>
