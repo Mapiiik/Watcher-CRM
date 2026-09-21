@@ -96,6 +96,7 @@ final class WorkReportSummary
         $takenOut = [];
         $workedMinutes = 0;
         $types = [];
+        $typeDays = [];
         $cars = [];
         $cash = 0.0;
         $labels = [];
@@ -105,11 +106,11 @@ final class WorkReportSummary
             $covered[$key] = $item->date;
 
             $type = $item->work_report_item_type;
-            $types[$type->id] ??= ['name' => $type->name, 'minutes' => 0, 'days' => 0, 'dates' => []];
+            $types[$type->id] ??= ['name' => $type->name, 'minutes' => 0];
             $types[$type->id]['minutes'] += $item->minutes;
 
             if ($item->whole_day) {
-                $types[$type->id]['dates'][$key] = true;
+                $typeDays[$type->id][$key] = true;
                 if ($type->reduces_fund) {
                     $takenOut[$key] = true;
                 }
@@ -136,8 +137,13 @@ final class WorkReportSummary
             }
         }
 
+        $byType = [];
         foreach ($types as $id => $type) {
-            $types[$id] = ['name' => $type['name'], 'minutes' => $type['minutes'], 'days' => count($type['dates'])];
+            $byType[$id] = [
+                'name' => $type['name'],
+                'minutes' => $type['minutes'],
+                'days' => count($typeDays[$id] ?? []),
+            ];
         }
 
         $fundDays = count(array_diff_key($workingDays, $takenOut));
@@ -160,7 +166,7 @@ final class WorkReportSummary
             fundDays: $fundDays,
             fundMinutes: (int)round($fundDays * $dailyHours * self::number($report->workload) * 60),
             workedMinutes: $workedMinutes,
-            types: $types,
+            types: $byType,
             missingDays: array_values(array_diff_key($workingDays, $covered)),
             extraDays: array_values(self::sorted(array_diff_key($covered, $workingDays))),
             cars: $cars,
