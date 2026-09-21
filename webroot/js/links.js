@@ -9,6 +9,27 @@ function popupwindow(url, title, w, h) {
 // one reading of this page only, and only in this tab.
 var WHERE_YOU_WERE = 'where-you-were';
 
+// Where a window this one opened said the reader is going next, where it said anything. A window
+// that steps out of itself hands the address over rather than setting `location` on this one from
+// in there: the two would be a race between navigations, and the reading again below - which
+// starts within a tenth of a second of the window closing - won it every time. So it is said here,
+// and the one place that decides where this page goes reads it.
+var goingOnTo = null;
+
+// What to do once a window this one opened has closed: go where it said, or read again what was
+// standing here. Where nothing was said this is exactly what it always did.
+function whenItHasClosed() {
+    if (goingOnTo === null) {
+        readAgainWhereYouWere();
+
+        return;
+    }
+
+    var going = goingOnTo;
+    goingOnTo = null;
+    location = going;
+}
+
 function readAgainWhereYouWere() {
     var here = location.href.split("#")[0];
 
@@ -56,32 +77,36 @@ $(document).ready(function() {
         var win = popupwindow(url.href, 'win-link', 1200, 700);
         e.preventDefault();
         
-        var timer = setInterval(function() {   
-            if(win.closed) {  
-                clearInterval(timer);  
-                readAgainWhereYouWere();
-            }  
-        }, 100);            
+        var timer = setInterval(function() {
+            if(win.closed) {
+                clearInterval(timer);
+                whenItHasClosed();
+            }
+        }, 100);
     });
 
     $(".smart-link").on("click", function(e) {
         var smartwin = window.open(this.href, this.target, '', true);
         e.preventDefault();
         
-        var timer = setInterval(function() {   
-            if(smartwin.closed) {  
-                clearInterval(timer);  
-                readAgainWhereYouWere();
-            }  
-        }, 100);            
+        var timer = setInterval(function() {
+            if(smartwin.closed) {
+                clearInterval(timer);
+                whenItHasClosed();
+            }
+        }, 100);
     });
 
     $(".leave-window").on("click", function(e) {
         // The print page is opened into a window of its own, so a link out of it belongs in the
         // window that opened it - otherwise the next print would reuse a tab showing something else.
+        //
+        // Where it goes is handed over rather than set from here: the window that opened this one
+        // is watching for this one to close, and would read itself again the moment it does. Two
+        // navigations, and this one lost. Said there, it is the only one.
         if (window.opener && !window.opener.closed) {
             e.preventDefault();
-            window.opener.location = this.href;
+            window.opener.goingOnTo = this.href;
             window.opener.focus();
             window.close();
         }
