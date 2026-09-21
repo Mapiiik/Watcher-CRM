@@ -172,7 +172,7 @@ class CustomerProposalsController extends AppController
         if (!$proposal->isOpen()) {
             $this->Flash->warning(__('This proposal has already been settled.'));
 
-            return $this->redirect(['action' => 'view', $id]);
+            return $this->onFromTheStep((string)$id);
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -191,7 +191,7 @@ class CustomerProposalsController extends AppController
             if ($this->recordAcrossTheRound($proposal, ProposalStep::Delivered)) {
                 $this->Flash->success(__('The proposal has been recorded as sent.'));
 
-                return $this->redirect(['action' => 'view', $proposal->id]);
+                return $this->onFromTheStep((string)$proposal->id);
             }
 
             $this->flashValidationErrors($proposal->getErrors());
@@ -224,7 +224,7 @@ class CustomerProposalsController extends AppController
         if ($proposal->hasBeenRevoked()) {
             $this->Flash->warning(__('This customer proposal has been revoked.'));
 
-            return $this->redirect(['action' => 'view', $id]);
+            return $this->onFromTheStep((string)$id);
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -234,7 +234,7 @@ class CustomerProposalsController extends AppController
             if ($this->recordAcrossTheRound($proposal, ProposalStep::Signed)) {
                 $this->Flash->success(__('The signature has been recorded.'));
 
-                return $this->redirect(['action' => 'view', $proposal->id]);
+                return $this->onFromTheStep((string)$proposal->id);
             }
 
             $this->flashValidationErrors($proposal->getErrors());
@@ -248,6 +248,35 @@ class CustomerProposalsController extends AppController
         ));
 
         return null;
+    }
+
+    /**
+     * The way on once there is nothing more to do here, closing the window if this is one.
+     *
+     * A step is one errand run from the middle of a table, so the table stays where it was and the
+     * errand opens a window of its own. Afterwards that window has nothing left to show, and one
+     * left standing is one the reader has to close by hand. The round is shown first all the same:
+     * what they have just said, or why there was nothing to say, before the window goes.
+     *
+     * Taken by every way out of a step, not only the ones that wrote something - papers already
+     * settled and a proposal with nothing left to apply end the errand just as surely, and are the
+     * likeliest thing to be clicked from a table that has been open for a while.
+     *
+     * The window says of itself that it is one, and the URL filter carries that along, so nothing
+     * has to be threaded through the form: it is enough to ask the request.
+     *
+     * @param string $id Which round.
+     * @return \Cake\Http\Response|null
+     */
+    private function onFromTheStep(string $id): ?Response
+    {
+        $url = ['action' => 'view', $id];
+
+        if ($this->getRequest()->getQuery('win-link') === 'true') {
+            $url['?'] = ['auto-close' => 'true'];
+        }
+
+        return $this->redirect($url);
     }
 
     /**
@@ -321,7 +350,7 @@ class CustomerProposalsController extends AppController
         if ($proposal->hasBeenRevoked()) {
             $this->Flash->warning(__('This customer proposal has been revoked.'));
 
-            return $this->redirect(['action' => 'view', $id]);
+            return $this->onFromTheStep((string)$id);
         }
 
         $preview = new ChangePreview();
@@ -349,7 +378,7 @@ class CustomerProposalsController extends AppController
         if ($parts === []) {
             $this->Flash->warning(__('There are no changes left to apply in this proposal.'));
 
-            return $this->redirect(['action' => 'view', $id]);
+            return $this->onFromTheStep((string)$id);
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -357,7 +386,7 @@ class CustomerProposalsController extends AppController
                 $this->Flash->error(__('The changes of this proposal cannot be applied in its'
                     . ' current state.'));
             } elseif ($this->applyTheWholePackage($parts)) {
-                return $this->redirect(['action' => 'view', $id]);
+                return $this->onFromTheStep((string)$id);
             }
         }
 

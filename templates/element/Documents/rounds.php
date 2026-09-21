@@ -113,19 +113,36 @@ $heading = function (string $field, string $said) use ($paged): string {
                             $one->id,
                         ]) ?>
                         <?php if ($itsOwnSteps) : ?>
+                            <?php
+                            // Recording a day is one errand run from the middle of a table, so it
+                            // runs in a window of its own: the table stays where it was behind it,
+                            // the window closes itself once the day is recorded, and the table is
+                            // read again where the reader stood. Applying the changes is not an
+                            // errand - it is a page to be read before the one act that writes to
+                            // the live records, and it takes the whole window. The same line the
+                            // contract's problems draw.
+                            ?>
                             <?php if ($one->isDueFor(ProposalStep::Delivered)) : ?>
-                                <?= $this->AuthLink->link(__('Record the Sending'), [
-                                    'controller' => 'CustomerProposals',
-                                    'action' => 'send',
-                                    $one->id,
-                                ]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Record the Sending'),
+                                    [
+                                        'controller' => 'CustomerProposals',
+                                        'action' => 'send',
+                                        $one->id,
+                                    ],
+                                    ['class' => 'win-link'],
+                                ) ?>
                             <?php endif; ?>
                             <?php if ($one->isDueFor(ProposalStep::Signed)) : ?>
-                                <?= $this->AuthLink->link(__('Record the Signature'), [
-                                    'controller' => 'CustomerProposals',
-                                    'action' => 'conclude',
-                                    $one->id,
-                                ]) ?>
+                                <?= $this->AuthLink->link(
+                                    __('Record the Signature'),
+                                    [
+                                        'controller' => 'CustomerProposals',
+                                        'action' => 'conclude',
+                                        $one->id,
+                                    ],
+                                    ['class' => 'win-link'],
+                                ) ?>
                             <?php endif; ?>
                             <?php if ($one->hasChangesToApply()) : ?>
                                 <?= $this->AuthLink->link(__('Apply Changes'), [
