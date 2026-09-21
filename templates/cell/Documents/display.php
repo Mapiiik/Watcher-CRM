@@ -222,7 +222,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                     );
                 };
     ?>
-            <tr>
+            <tr<?= $spans[$leftmost][$index]['start'] === $index ? '' : ' class="continued"' ?>>
                 <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
                 <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>
                 <td><?= h($row['document']) ?></td>
