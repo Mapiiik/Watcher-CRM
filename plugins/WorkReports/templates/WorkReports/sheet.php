@@ -157,6 +157,17 @@ $addUrl = fn(Date $day): array => [
                         ['class' => 'button button-small float-right win-link'],
                     ) ?>
                 <?php endif ?>
+                <?php if ($mayEdit && $running === null) : ?>
+                    <?= $this->AuthLink->link(
+                        __d('work_reports', 'Start Now'),
+                        [
+                            'controller' => 'WorkReportItems',
+                            'action' => 'add',
+                            '?' => ['user_id' => $workReport->user_id, 'start' => 'now'],
+                        ],
+                        ['class' => 'button button-small float-right win-link'],
+                    ) ?>
+                <?php endif ?>
                 <h4 id="work-report-items"><?= __d('work_reports', 'Work Report Items') ?></h4>
                 <?php if ($summary->missingDays !== []) : ?>
                     <div class="message warning" role="alert">

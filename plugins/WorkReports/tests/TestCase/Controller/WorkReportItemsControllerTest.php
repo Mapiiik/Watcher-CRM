@@ -84,6 +84,7 @@ class WorkReportItemsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains('Nothing is reported on');
+        $this->assertSame(2, substr_count($this->_getBodyAsString(), 'Start Now'));
         $this->assertSame(0, $this->getTableLocator()->get('WorkReports.WorkReports')->find()->count());
     }
 
