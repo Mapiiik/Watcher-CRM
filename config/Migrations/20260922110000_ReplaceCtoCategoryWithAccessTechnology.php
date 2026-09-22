@@ -129,6 +129,9 @@ class ReplaceCtoCategoryWithAccessTechnology extends BaseMigration
     /**
      * Moves the key in every connection profile the proposals keep, translating its value.
      *
+     * Asks for a key with `-> IS NOT NULL` rather than with `?`, which PDO would take for a
+     * placeholder and send on as `$1`.
+     *
      * @param string $from The key it is under now.
      * @param string $to The key it is to be under.
      * @param array<string, string> $map From which value to which.
@@ -151,7 +154,8 @@ class ReplaceCtoCategoryWithAccessTechnology extends BaseMigration
                 END IF;
                 result := '{}'::jsonb;
                 FOR k, v IN SELECT * FROM jsonb_each(doc) LOOP
-                    IF k = 'connection_profile' AND jsonb_typeof(v) = 'object' AND v ? '%1$s' THEN
+                    IF k = 'connection_profile' AND jsonb_typeof(v) = 'object'
+                        AND v -> '%1$s' IS NOT NULL THEN
                         result := result || jsonb_build_object(k, (v - '%1$s')
                             || jsonb_build_object('%2$s', to_jsonb(%3$s)));
                     ELSE
