@@ -333,6 +333,17 @@ class WorkReportItemsTable extends AppTable
             ],
         );
 
+        // each part belongs to the report of its own month, so the one who writes it splits it
+        $rules->add(
+            fn(WorkReportItem $item): bool => $item->work_until === null
+                || $item->work_until <= new DateTime($item->date->firstOfMonth()->addMonths(1)->format('Y-m-d')),
+            'withinMonth',
+            [
+                'errorField' => 'work_until',
+                'message' => __d('work_reports', 'Split work over the end of the month into two items.'),
+            ],
+        );
+
         $rules->add(
             [$this, 'checkTime'],
             'timeByType',

@@ -288,11 +288,50 @@ class WorkReportItemsControllerTest extends TestCase
         $this->assertNull($reports->get($report->id)->submitted);
         $this->assertNoMailSent();
 
+        $was = DateTime::getTestNow();
+        DateTime::setTestNow(new DateTime('2026-06-30 18:00:00'));
         $this->post('/work-reports/work-report-items/finish/' . $running->id);
+        DateTime::setTestNow($was);
         $this->assertRedirectContains('/work-reports/work-reports/sheet');
         /** @var \WorkReports\Model\Entity\WorkReportItem $finished */
         $finished = $items->get($running->id);
         $this->assertFalse($finished->isRunning());
+    }
+
+    /**
+     * Work may run past midnight within the month, but not over its end, where it is split by hand
+     * - finishing running work included.
+     *
+     * @return void
+     */
+    public function testNotOverTheEndOfTheMonth(): void
+    {
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $work = fn(string $date, string $from, string $until, string $description): array => [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
+            'date' => $date,
+            'time_from' => $from,
+            'time_until' => $until,
+            'description' => $description,
+        ];
+
+        $this->post('/work-reports/work-report-items/add', $work('2026-06-15', '22:00', '01:30', 'Mid month'));
+        $this->post('/work-reports/work-report-items/add', $work('2026-06-30', '22:00', '00:00', 'Up to midnight'));
+        $this->post('/work-reports/work-report-items/add', $work('2026-06-30', '23:00', '01:30', 'Over the end'));
+        $this->assertTrue($items->exists(['description' => 'Mid month']));
+        $this->assertTrue($items->exists(['description' => 'Up to midnight']));
+        $this->assertFalse($items->exists(['description' => 'Over the end']));
+
+        $this->post('/work-reports/work-report-items/add', $work('2026-06-29', '23:00', '', 'Left running'));
+        /** @var \WorkReports\Model\Entity\WorkReportItem $running */
+        $running = $items->find()->where(['description' => 'Left running'])->firstOrFail();
+        $was = DateTime::getTestNow();
+        DateTime::setTestNow(new DateTime('2026-07-01 00:30:00'));
+        $this->post('/work-reports/work-report-items/finish/' . $running->id);
+        DateTime::setTestNow($was);
+        /** @var \WorkReports\Model\Entity\WorkReportItem $still */
+        $still = $items->get($running->id);
+        $this->assertTrue($still->isRunning());
     }
 
     /**
