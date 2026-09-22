@@ -113,23 +113,6 @@ $addUrl = fn(Date $day): array => [
                 (string)$month->i18nFormat('LLLL yyyy'),
                 $workerName,
             ) ?>
-            <?php if ($running !== null) : ?>
-                <div class="message warning" role="alert">
-                    <?= __d(
-                        'work_reports',
-                        'Work in progress since {0}: {1}',
-                        h($running->date->i18nFormat('EEE') . ' ' . $running->date . ' ' . $running->time_from),
-                        h($running->description ?: $running->work_report_item_type->name),
-                    ) ?>
-                    <?php if ($mayEdit) : ?>
-                        <?= $this->AuthLink->postLink(
-                            __d('work_reports', 'Finish Now'),
-                            ['controller' => 'WorkReportItems', 'action' => 'finish', $running->id],
-                            ['class' => 'button button-small'],
-                        ) ?>
-                    <?php endif ?>
-                </div>
-            <?php endif ?>
             <?php if ($workReport->isReturned()) : ?>
                 <div class="message warning" role="alert">
                     <?= __d(
@@ -169,6 +152,23 @@ $addUrl = fn(Date $day): array => [
                     ) ?>
                 <?php endif ?>
                 <h4 id="work-report-items"><?= __d('work_reports', 'Work Report Items') ?></h4>
+                <?php if ($running !== null) : ?>
+                    <div class="message warning actions" role="alert">
+                        <?= __d(
+                            'work_reports',
+                            'Work in progress since {0}: {1}',
+                            h($running->date->i18nFormat('EEE') . ' ' . $running->date . ' ' . $running->time_from),
+                            h($running->description ?: $running->work_report_item_type->name),
+                        ) ?>
+                        <?php if ($mayEdit) : ?>
+                            <?= $this->AuthLink->postLink(
+                                __d('work_reports', 'Finish Now'),
+                                ['controller' => 'WorkReportItems', 'action' => 'finish', $running->id],
+                                ['class' => 'float-right'],
+                            ) ?>
+                        <?php endif ?>
+                    </div>
+                <?php endif ?>
                 <?php if ($summary->missingDays !== []) : ?>
                     <div class="message warning" role="alert">
                         <?= __d(
