@@ -52,6 +52,22 @@ class WorkReport extends AppEntity
     }
 
     /**
+     * Whether any of the items read with the report is work still going on.
+     *
+     * @return bool
+     */
+    public function hasRunningItem(): bool
+    {
+        foreach ($this->work_report_items ?? [] as $item) {
+            if ($item->isRunning()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Whether the report waits to be corrected after it was returned.
      *
      * @return bool

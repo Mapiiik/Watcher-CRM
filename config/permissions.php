@@ -1023,6 +1023,7 @@ $permissions = [
                 'submit',
                 'reopen',
                 'toggle',
+                'finish',
                 'add',
                 'edit',
                 'delete',

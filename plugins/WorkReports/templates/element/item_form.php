@@ -51,14 +51,21 @@ $showTimes = $timeMode !== TimeMode::WholeDay && !($timeMode === TimeMode::Eithe
                 <div class="column">
                     <?= $this->Form->control('time_from', [
                         'type' => 'time',
+                        'step' => 60,
+                        'format' => 'H:i',
                         'label' => __d('work_reports', 'Work From'),
                     ]) ?>
                 </div>
                 <div class="column">
                     <?= $this->Form->control('time_until', [
                         'type' => 'time',
+                        'step' => 60,
+                        'format' => 'H:i',
                         'label' => __d('work_reports', 'Work Until'),
-                        'title' => __d('work_reports', 'Earlier than from means past midnight.'),
+                        'title' => __d(
+                            'work_reports',
+                            'Empty while the work goes on. Earlier than from means past midnight.',
+                        ),
                     ]) ?>
                 </div>
             </div>

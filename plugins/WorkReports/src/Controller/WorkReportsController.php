@@ -97,6 +97,7 @@ class WorkReportsController extends AppController
         )) === [] ? null : ApiClient::getAccessPointsList();
 
         $mayEdit = $this->mayEdit($userId);
+        $running = $this->WorkReports->WorkReportItems->findRunning($userId);
         $maySubmit = $userId === $this->identityId() || $this->seesEverybody();
         $mayReopen = $this->mayReopen($userId);
 
@@ -109,6 +110,7 @@ class WorkReportsController extends AppController
             'workerName',
             'month',
             'accessPoints',
+            'running',
             'mayEdit',
             'maySubmit',
             'mayReopen',
@@ -139,6 +141,8 @@ class WorkReportsController extends AppController
 
         if ($workReport->isLocked()) {
             $this->Flash->error(__d('work_reports', 'The report has already been submitted.'));
+        } elseif ($workReport->hasRunningItem()) {
+            $this->Flash->error(__d('work_reports', 'Some work is still going on. Finish it first.'));
         } elseif ($summary->missingDays !== []) {
             $this->Flash->error(__d('work_reports', 'Nothing is reported on {0}.', $days($summary->missingDays)));
         } else {

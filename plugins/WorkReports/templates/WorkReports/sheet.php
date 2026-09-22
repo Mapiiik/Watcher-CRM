@@ -12,6 +12,7 @@ use WorkReports\Service\WorkReportSummary;
  * @var string $workerName
  * @var \Cake\I18n\Date $month
  * @var bool $mayEdit
+ * @var \WorkReports\Model\Entity\WorkReportItem|null $running
  * @var \App\Http\Answer<array<string, string>>|null $accessPoints
  * @var bool $maySubmit
  * @var bool $mayReopen
@@ -36,6 +37,17 @@ $addUrl = fn(Date $day): array => [
                 <?= $this->AuthLink->link(
                     __d('work_reports', 'New Work Report Item'),
                     $addUrl($month),
+                    ['class' => 'side-nav-item win-link'],
+                ) ?>
+            <?php endif ?>
+            <?php if ($mayEdit && $running === null) : ?>
+                <?= $this->AuthLink->link(
+                    __d('work_reports', 'Start Now'),
+                    [
+                        'controller' => 'WorkReportItems',
+                        'action' => 'add',
+                        '?' => ['user_id' => $workReport->user_id, 'start' => 'now'],
+                    ],
                     ['class' => 'side-nav-item win-link'],
                 ) ?>
             <?php endif ?>
@@ -101,6 +113,23 @@ $addUrl = fn(Date $day): array => [
                 (string)$month->i18nFormat('LLLL yyyy'),
                 $workerName,
             ) ?>
+            <?php if ($running !== null) : ?>
+                <div class="message warning" role="alert">
+                    <?= __d(
+                        'work_reports',
+                        'Work in progress since {0}: {1}',
+                        h($running->date->i18nFormat('EEE') . ' ' . $running->date . ' ' . $running->time_from),
+                        h($running->description ?: $running->work_report_item_type->name),
+                    ) ?>
+                    <?php if ($mayEdit) : ?>
+                        <?= $this->AuthLink->postLink(
+                            __d('work_reports', 'Finish Now'),
+                            ['controller' => 'WorkReportItems', 'action' => 'finish', $running->id],
+                            ['class' => 'button button-small'],
+                        ) ?>
+                    <?php endif ?>
+                </div>
+            <?php endif ?>
             <?php if ($workReport->isReturned()) : ?>
                 <div class="message warning" role="alert">
                     <?= __d(
@@ -204,8 +233,12 @@ $addUrl = fn(Date $day): array => [
                                         <td colspan="3"><?= __d('work_reports', 'whole day') ?></td>
                                     <?php else : ?>
                                         <td><?= h($item->time_from) ?></td>
-                                        <td><?= h($item->time_until) ?></td>
-                                        <td><?= $minutes($item->minutes) ?></td>
+                                        <?php if ($item->isRunning()) : ?>
+                                            <td colspan="2"><?= __d('work_reports', 'in progress') ?></td>
+                                        <?php else : ?>
+                                            <td><?= h($item->time_until) ?></td>
+                                            <td><?= $minutes($item->minutes) ?></td>
+                                        <?php endif ?>
                                     <?php endif ?>
                                     <td><?= h($item->work_report_item_type->name) ?></td>
                                     <td>
@@ -276,6 +309,12 @@ $addUrl = fn(Date $day): array => [
                                 <?php endif ?>
                                 <td class="actions">
                                     <?php if ($mayEdit && !$workReport->isLocked()) : ?>
+                                        <?php if ($item !== null && $item->isRunning()) : ?>
+                                            <?= $this->AuthLink->postLink(
+                                                __d('work_reports', 'Finish Now'),
+                                                ['controller' => 'WorkReportItems', 'action' => 'finish', $item->id],
+                                            ) ?>
+                                        <?php endif ?>
                                         <?php if ($item !== null) : ?>
                                             <?= $this->AuthLink->link(
                                                 __d('work_reports', 'Edit'),

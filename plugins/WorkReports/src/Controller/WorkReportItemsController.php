@@ -6,6 +6,7 @@ namespace WorkReports\Controller;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use Cake\Http\Response;
 use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use PhpCollective\DecimalObject\Decimal;
 use WorkReports\Model\Entity\WorkReportItem;
 
@@ -32,6 +33,11 @@ class WorkReportItemsController extends AppController
 
         $item = $this->WorkReportItems->newEmptyEntity();
         $item->date = $this->dayFromQuery();
+        if ($this->getRequest()->getQuery('start') === 'now') {
+            // work begun this very minute, to be finished when it is done
+            $item->date = Date::today();
+            $item->work_from = DateTime::now()->second(0);
+        }
         $item->whole_day = false;
         $item->rate_multiplier = Decimal::create(1);
         if ($this->customer_id !== null) {
@@ -96,6 +102,35 @@ class WorkReportItemsController extends AppController
         $this->setFormLists($item, $userId);
 
         return null;
+    }
+
+    /**
+     * Finish running work at this minute.
+     *
+     * @param string|null $id Work report item id.
+     * @return \Cake\Http\Response|null Redirects to the month.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function finish(?string $id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post']);
+        $item = $this->WorkReportItems->get($id, contain: ['WorkReports']);
+        $userId = $item->work_report->user_id;
+        $this->checkMayEdit($userId);
+
+        if (!$item->isRunning()) {
+            $this->Flash->error(__d('work_reports', 'The work has already been finished.'));
+        } else {
+            $item->work_until = DateTime::now()->second(0);
+            if ($this->WorkReportItems->save($item)) {
+                $this->Flash->success(__d('work_reports', 'The work has been finished.'));
+            } else {
+                $this->flashValidationErrors($item->getErrors());
+                $this->Flash->error(__d('work_reports', 'The work report item could not be saved. Please, try again.'));
+            }
+        }
+
+        return $this->redirect($this->sheetUrl($userId, $item->date));
     }
 
     /**

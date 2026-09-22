@@ -341,6 +341,22 @@ class WorkReportItemsTable extends AppTable
 
         $rules->add(
             function (WorkReportItem $item): bool {
+                if (!$item->isRunning()) {
+                    return true;
+                }
+                $report = $this->WorkReports->find()->where(['id' => $item->work_report_id])->first();
+
+                return $report === null || $this->findRunning($report->user_id, except: $item->id) === null;
+            },
+            'oneRunning',
+            [
+                'errorField' => 'work_until',
+                'message' => __d('work_reports', 'Other work is still going on. Finish it first.'),
+            ],
+        );
+
+        $rules->add(
+            function (WorkReportItem $item): bool {
                 $type = $this->typeOf($item);
 
                 return $type === null || !$type->description_required || trim((string)$item->description) !== '';
@@ -409,8 +425,6 @@ class WorkReportItemsTable extends AppTable
             return true;
         }
 
-        $hasTimes = $item->work_from !== null && $item->work_until !== null;
-
         if ($item->whole_day) {
             if ($type->time_mode === TimeMode::Range) {
                 return __d('work_reports', 'Items of this type are stated from and until, not as a whole day.');
@@ -425,13 +439,43 @@ class WorkReportItemsTable extends AppTable
             return __d('work_reports', 'Items of this type take the whole day.');
         }
 
-        if (!$hasTimes) {
+        if ($item->work_from === null) {
             return __d('work_reports', 'State from and until.');
+        }
+
+        // an until left empty is work still going on
+        if ($item->work_until === null) {
+            return true;
         }
 
         return $item->work_until > $item->work_from
             ? true
             : __d('work_reports', 'The until has to come after the from.');
+    }
+
+    /**
+     * The work of the user that has begun and not been finished, in whichever month it is.
+     *
+     * @param string $userId Worker.
+     * @param string|null $except Item not to count, the one being saved.
+     * @return \WorkReports\Model\Entity\WorkReportItem|null
+     */
+    public function findRunning(string $userId, ?string $except = null): ?WorkReportItem
+    {
+        $query = $this->find()
+            ->contain(['WorkReports', 'WorkReportItemTypes'])
+            ->where([
+                'WorkReports.user_id' => $userId,
+                'WorkReportItems.whole_day' => false,
+                'WorkReportItems.work_from IS NOT' => null,
+                'WorkReportItems.work_until IS' => null,
+            ]);
+        if ($except !== null) {
+            $query->where(['WorkReportItems.id !=' => $except]);
+        }
+
+        /** @var \WorkReports\Model\Entity\WorkReportItem|null */
+        return $query->first();
     }
 
     /**

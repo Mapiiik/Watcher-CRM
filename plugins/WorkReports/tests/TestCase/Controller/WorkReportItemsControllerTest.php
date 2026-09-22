@@ -250,6 +250,69 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
+     * Work begun with no until runs until it is finished, one at a time, and the month is not
+     * submitted while it does.
+     *
+     * @return void
+     */
+    public function testRunningWork(): void
+    {
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $report = $this->monthOfVacation(except: '2026-06-30');
+        $start = [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
+            'date' => '2026-06-30',
+            'time_from' => '14:05',
+            'time_until' => '',
+            'description' => 'Router upgrade',
+        ];
+
+        $this->post('/work-reports/work-report-items/add', $start);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        /** @var \WorkReports\Model\Entity\WorkReportItem $running */
+        $running = $items->find()->where(['description' => 'Router upgrade'])->firstOrFail();
+        $this->assertTrue($running->isRunning());
+
+        // a second one is not begun while the first goes on
+        $this->post('/work-reports/work-report-items/add', ['description' => 'Second'] + $start);
+        $this->assertResponseOk();
+        $this->assertFalse($items->exists(['description' => 'Second']));
+
+        $this->get('/work-reports/work-reports/sheet?month=2026-06');
+        $this->assertResponseContains('Work in progress since');
+        $this->assertResponseContains('in progress');
+
+        $this->post('/work-reports/work-reports/submit/' . $report->id);
+        $this->assertNull($reports->get($report->id)->submitted);
+        $this->assertNoMailSent();
+
+        $this->post('/work-reports/work-report-items/finish/' . $running->id);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        /** @var \WorkReports\Model\Entity\WorkReportItem $finished */
+        $finished = $items->get($running->id);
+        $this->assertFalse($finished->isRunning());
+    }
+
+    /**
+     * Starting now fills in the day and the minute, and the form asks for no seconds.
+     *
+     * @return void
+     */
+    public function testStartNow(): void
+    {
+        $was = DateTime::getTestNow();
+        DateTime::setTestNow(new DateTime('2026-06-30 14:05:37'));
+
+        $this->get('/work-reports/work-report-items/add?start=now');
+
+        DateTime::setTestNow($was);
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="time_from" step="60" id="time-from" value="14:05"');
+        $this->assertResponseContains('value="2026-06-30"');
+    }
+
+    /**
      * A month with a working day left empty is not taken.
      *
      * @return void

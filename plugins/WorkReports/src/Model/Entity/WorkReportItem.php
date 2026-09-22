@@ -124,7 +124,19 @@ class WorkReportItem extends AppEntity
     }
 
     /**
+     * Whether the work has begun and not been finished yet: a from with no until.
+     *
+     * @return bool
+     */
+    public function isRunning(): bool
+    {
+        return !$this->whole_day && $this->work_from !== null && $this->work_until === null;
+    }
+
+    /**
      * Minutes between from and until, nothing for a whole day.
+     *
+     * Running work counts nothing until it is finished, so the month does not grow by itself.
      *
      * @return int
      */
