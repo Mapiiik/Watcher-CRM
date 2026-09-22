@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-22 21:19+0200\n"
+"POT-Creation-Date: 2026-09-22 21:49+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -3808,7 +3808,7 @@ msgstr ""
 #: ./templates/SoldEquipments/edit.php:46
 #: ./templates/Tasks/add.php:101
 #: ./templates/Tasks/edit.php:114
-#: ./templates/element/AvailableConnections/form.php:79
+#: ./templates/element/AvailableConnections/form.php:78
 msgid "Submit"
 msgstr ""
 
@@ -4771,7 +4771,7 @@ msgid "Maximum Download Speed (kbps)"
 msgstr ""
 
 #: ./templates/AvailableConnections/view.php:78
-#: ./templates/element/AvailableConnections/form.php:69
+#: ./templates/element/AvailableConnections/form.php:68
 msgid "Maximum Upload Speed (kbps)"
 msgstr ""
 
@@ -8430,11 +8430,7 @@ msgstr ""
 msgid "none picked yet"
 msgstr ""
 
-#: ./templates/element/AvailableConnections/form.php:66
-msgid "What the line can carry, not what the tariff sells."
-msgstr ""
-
-#: ./templates/element/AvailableConnections/form.php:75
+#: ./templates/element/AvailableConnections/form.php:74
 msgid "From this day on the connection is no longer there to be had."
 msgstr ""
 

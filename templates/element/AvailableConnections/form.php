@@ -63,7 +63,6 @@ $this->Html->script('addresses.js', ['block' => true]);
         <div class="column">
             <?= $this->Form->control('speed_down_max', [
                 'label' => __('Maximum Download Speed (kbps)'),
-                'help' => __('What the line can carry, not what the tariff sells.'),
             ]) ?>
             <?= $this->Form->control('speed_up_max', [
                 'label' => __('Maximum Upload Speed (kbps)'),

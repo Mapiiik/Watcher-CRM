@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-22 21:19+0200\n"
+"POT-Creation-Date: 2026-09-22 21:49+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -3872,7 +3872,7 @@ msgstr "IP adresa"
 #: templates/Settings/edit.php:42 templates/SoldEquipments/add.php:38
 #: templates/SoldEquipments/edit.php:46 templates/Tasks/add.php:101
 #: templates/Tasks/edit.php:114
-#: templates/element/AvailableConnections/form.php:79
+#: templates/element/AvailableConnections/form.php:78
 msgid "Submit"
 msgstr "Potvrdit"
 
@@ -4626,12 +4626,12 @@ msgstr "Technologie připojení"
 #: templates/AvailableConnections/view.php:74
 #: templates/element/AvailableConnections/form.php:65
 msgid "Maximum Download Speed (kbps)"
-msgstr "Maximální rychlost dolů (kbps)"
+msgstr "Maximální rychlost stahování (kbps)"
 
 #: templates/AvailableConnections/view.php:78
-#: templates/element/AvailableConnections/form.php:69
+#: templates/element/AvailableConnections/form.php:68
 msgid "Maximum Upload Speed (kbps)"
-msgstr "Maximální rychlost nahoru (kbps)"
+msgstr "Maximální rychlost nahrávání (kbps)"
 
 #: templates/AvailableConnections/view.php:89
 msgid "Origin"
@@ -5069,25 +5069,25 @@ msgstr "FUP Limit"
 #: templates/ConnectionProfiles/edit.php:44
 #: templates/ConnectionProfiles/view.php:82
 msgid "Speed Down Commonly Available"
-msgstr "Běžně dostupná rychlost dolů"
+msgstr "Běžně dostupná rychlost stahování"
 
 #: templates/ConnectionProfiles/add.php:40
 #: templates/ConnectionProfiles/edit.php:48
 #: templates/ConnectionProfiles/view.php:90
 msgid "Speed Up Commonly Available"
-msgstr "Běžně dostupná rychlost nahoru"
+msgstr "Běžně dostupná rychlost nahrávání"
 
 #: templates/ConnectionProfiles/add.php:44
 #: templates/ConnectionProfiles/edit.php:52
 #: templates/ConnectionProfiles/view.php:98
 msgid "Speed Down Minimum"
-msgstr "Minimální rychlost dolů"
+msgstr "Minimální rychlost stahování"
 
 #: templates/ConnectionProfiles/add.php:48
 #: templates/ConnectionProfiles/edit.php:56
 #: templates/ConnectionProfiles/view.php:106
 msgid "Speed Up Minimum"
-msgstr "Minimální rychlost nahoru"
+msgstr "Minimální rychlost nahrávání"
 
 #: templates/ConnectionProfiles/edit.php:32
 #: templates/ConnectionProfiles/view.php:13
@@ -5131,11 +5131,11 @@ msgstr "Náklady za překročení limitu"
 
 #: templates/ConnectionProfiles/view.php:72
 msgid "Speed Down"
-msgstr "Rychlost dolů"
+msgstr "Rychlost stahování"
 
 #: templates/ConnectionProfiles/view.php:77
 msgid "Speed Up"
-msgstr "Rychlost nahoru"
+msgstr "Rychlost nahrávání"
 
 #: templates/ConnectionProfiles/view.php:124
 #: templates/ServiceTypes/view.php:109
@@ -7416,7 +7416,7 @@ msgstr "Dostupná kategorie efektivní rychlosti stahování"
 
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:57
 msgid "Available Effective Upload Speed Category"
-msgstr "Dostupná kategorie efektivní rychlosti odesílání"
+msgstr "Dostupná kategorie efektivní rychlosti nahrávání"
 
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:58
 msgid "Available Maximal Download Speed Category"
@@ -7424,7 +7424,7 @@ msgstr "Dostupná kategorie maximální rychlosti stahování"
 
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:59
 msgid "Available Maximal Upload Speed Category"
-msgstr "Dostupná kategorie maximální rychlosti odesílání"
+msgstr "Dostupná kategorie maximální rychlosti nahrávání"
 
 #: templates/Overviews/overview_of_czech_customer_connection_points.php:60
 msgid "VHCN Network Category"
@@ -8185,11 +8185,7 @@ msgstr "Vyhledat adresu…"
 msgid "none picked yet"
 msgstr "zatím nevybráno"
 
-#: templates/element/AvailableConnections/form.php:66
-msgid "What the line can carry, not what the tariff sells."
-msgstr "Co linka unese, ne co prodává tarif."
-
-#: templates/element/AvailableConnections/form.php:75
+#: templates/element/AvailableConnections/form.php:74
 msgid "From this day on the connection is no longer there to be had."
 msgstr "Od tohoto dne už připojení není k dispozici."
 
@@ -8912,6 +8908,9 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:306
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "What the line can carry, not what the tariff sells."
+#~ msgstr "Co linka unese, ne co prodává tarif."
 
 #~ msgid "The queue has been saved."
 #~ msgstr "Fronta byla uložena."
