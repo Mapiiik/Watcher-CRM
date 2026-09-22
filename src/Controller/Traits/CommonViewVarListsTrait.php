@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Traits;
 
+use App\Model\Enum\AccessTechnology;
 use App\Model\Enum\AddressType;
 use App\Model\Table\AddressesTable;
-use App\Model\Table\ConnectionProfilesTable;
 use App\Model\Table\ContractStatesTable;
 use App\Model\Table\ServiceTypesTable;
 use App\NMS\ApiClient as NMSApiClient;
@@ -33,22 +33,11 @@ trait CommonViewVarListsTrait
     }
 
     /**
-     * Set the `ctoCategories` view var (distinct, non-null, alphabetical).
+     * Set the `accessTechnologies` view var, grouped by medium.
      */
-    private function setCtoCategoriesViewVarList(): void
+    private function setAccessTechnologiesViewVarList(): void
     {
-        $this->set(
-            'ctoCategories',
-            $this->fetchTable(ConnectionProfilesTable::class)
-                ->find(
-                    'list',
-                    group: 'cto_category',
-                    keyField: 'cto_category',
-                    valueField: 'cto_category',
-                )
-                ->orderBy(['cto_category' => 'ASC'])
-                ->whereNotNull('cto_category'),
-        );
+        $this->set('accessTechnologies', AccessTechnology::groupedOptions());
     }
 
     /**

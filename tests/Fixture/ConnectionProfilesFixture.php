@@ -27,7 +27,7 @@ class ConnectionProfilesFixture extends TestFixture
                 'data_limit' => 1,
                 'speed_up' => 1,
                 'speed_down' => 1,
-                'cto_category' => 'Lorem ipsum dolor sit amet',
+                'access_technology' => 'fwa_unlicensed',
                 'created' => 1698519305,
                 'modified' => 1698519305,
                 'id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4',

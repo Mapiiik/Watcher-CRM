@@ -194,7 +194,7 @@ final class SnapshotShape
         'data_limit',
         'overlimit_fragment',
         'overlimit_cost',
-        'cto_category',
+        'access_technology',
     ];
 
     /**

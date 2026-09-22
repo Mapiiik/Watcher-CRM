@@ -35,7 +35,7 @@
                     <th><?= $this->Paginator->sort('overlimit_cost') ?></th>
                     <th><?= $this->Paginator->sort('speed_down') ?></th>
                     <th><?= $this->Paginator->sort('speed_up') ?></th>
-                    <th><?= $this->Paginator->sort('cto_category') ?></th>
+                    <th><?= $this->Paginator->sort('access_technology') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -56,7 +56,7 @@
                         '' : $this->Number->format($connectionProfile->speed_down) ?></td>
                     <td><?= $connectionProfile->speed_up === null ?
                         '' : $this->Number->format($connectionProfile->speed_up) ?></td>
-                    <td><?= h($connectionProfile->cto_category) ?></td>
+                    <td><?= h($connectionProfile->access_technology?->label()) ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__('View'), ['action' => 'view', $connectionProfile->id]) ?>
                         <?= $this->AuthLink->link(

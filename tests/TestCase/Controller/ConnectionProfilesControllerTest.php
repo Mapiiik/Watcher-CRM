@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ConnectionProfilesController;
+use App\Model\Enum\AccessTechnology;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -197,5 +198,29 @@ class ConnectionProfilesControllerTest extends TestCase
             'Renamed profile',
             $this->getTableLocator()->get('ConnectionProfiles')->get($connectionProfileId)->name,
         );
+    }
+
+    /**
+     * The technology is one of the known ones, and comes back as what it is rather than as text.
+     *
+     * @return void
+     * @link \App\Controller\ConnectionProfilesController::edit()
+     */
+    public function testTheTechnologyIsOneOfTheKnownOnes(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $connectionProfileId = $this->firstId('ConnectionProfiles');
+        $profiles = $this->getTableLocator()->get('ConnectionProfiles');
+
+        $this->post('/connection-profiles/edit/' . $connectionProfileId, ['access_technology' => 'ftth_p2mp_pon']);
+        $this->assertRedirect();
+        $this->assertSame(AccessTechnology::FtthP2mpPon, $profiles->get($connectionProfileId)->access_technology);
+
+        $this->post('/connection-profiles/edit/' . $connectionProfileId, ['access_technology' => 's2_wifi']);
+        $this->assertResponseOk();
+        $this->assertSame(AccessTechnology::FtthP2mpPon, $profiles->get($connectionProfileId)->access_technology);
     }
 }

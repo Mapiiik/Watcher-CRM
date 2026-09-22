@@ -12,12 +12,14 @@ use App\Model\Entity\Billing;
 use App\Model\Entity\Commission;
 use App\Model\Entity\Contract;
 use App\Model\Entity\Service;
+use App\Model\Enum\AccessTechnology;
 use App\Model\Enum\ContractPeriodSource;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\DealerCommissionsTable;
 use App\Model\Table\LabelsTable;
 use App\Model\Table\ServicesTable;
+use App\RegulatoryReporting\Cz\CtuTechnologyCategory;
 use ArrayObject;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -130,9 +132,9 @@ class OverviewsController extends AppController
             unset($uuidLabels);
         }
 
-        // filter by CTO category
-        $ctoCategory = $this->getRequest()->getQuery('cto_category');
-        if (!empty($ctoCategory)) {
+        // filter by access technology
+        $accessTechnology = AccessTechnology::tryFrom((string)$this->getRequest()->getQuery('access_technology'));
+        if ($accessTechnology !== null) {
             $filterQuery = $contractsTable->Billings->find()
                 ->select([
                     'Billings.contract_id',
@@ -141,7 +143,7 @@ class OverviewsController extends AppController
                 ->innerJoinWith('Services.ConnectionProfiles')
                 ->distinct()
                 ->where([
-                    'ConnectionProfiles.cto_category' => $ctoCategory,
+                    'ConnectionProfiles.access_technology' => $accessTechnology,
                 ]);
 
             $contractsFilter[] = [
@@ -251,7 +253,7 @@ class OverviewsController extends AppController
 
         $this->setContractStatesViewVarList();
         $this->setServiceTypesViewVarList();
-        $this->setCtoCategoriesViewVarList();
+        $this->setAccessTechnologiesViewVarList();
         $this->setAccessPointsViewVarList();
     }
 
@@ -475,7 +477,7 @@ class OverviewsController extends AppController
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
         $service_type_id = $this->getRequest()->getQuery('service_type_id');
-        $cto_category = $this->getRequest()->getQuery('cto_category');
+        $access_technology = AccessTechnology::tryFrom((string)$this->getRequest()->getQuery('access_technology'));
         $access_point_id = $this->getRequest()->getQuery('access_point_id');
 
         $this->set('show_billings', $this->getRequest()->getQuery('show_billings') == '1');
@@ -601,9 +603,9 @@ class OverviewsController extends AppController
             $servicesQuery->where(['Services.service_type_id' => $service_type_id]);
         }
 
-        // filter by CTO category
-        if (!empty($cto_category)) {
-            $servicesQuery->where(['ConnectionProfiles.cto_category' => $cto_category]);
+        // filter by access technology
+        if ($access_technology !== null) {
+            $servicesQuery->where(['ConnectionProfiles.access_technology' => $access_technology]);
         }
 
         // Load services with paginator
@@ -621,7 +623,7 @@ class OverviewsController extends AppController
         $this->set(compact('services', 'month_to_display'));
 
         $this->setServiceTypesViewVarList();
-        $this->setCtoCategoriesViewVarList();
+        $this->setAccessTechnologiesViewVarList();
         $this->setAccessPointsViewVarList();
     }
 
@@ -652,12 +654,12 @@ class OverviewsController extends AppController
             ]), $month_to_display)
             ->where(['ConnectionProfiles.speed_down IS NOT NULL'])
             ->where(['ConnectionProfiles.speed_up IS NOT NULL'])
-            ->where(['ConnectionProfiles.cto_category IS NOT NULL'])
+            ->where(['ConnectionProfiles.access_technology IN' => self::ctuReportedTechnologies()])
             ->where(['InstallationAddresses.address_registry_reference IS NOT NULL'])
             ->where(['InstallationAddresses.address_registry_source' => 'cz'])
 
             ->orderBy([
-                'ConnectionProfiles.cto_category',
+                'ConnectionProfiles.access_technology',
                 'InstallationAddresses.address_registry_reference',
             ])
 
@@ -682,7 +684,7 @@ class OverviewsController extends AppController
                     }
 
                     return $billings
-                        ->groupBy('service.connection_profile.cto_category')
+                        ->groupBy(self::ctuCategoryOf(...))
                         ->map(function (
                             $category_billings,
                             $cto_category,
@@ -801,7 +803,9 @@ class OverviewsController extends AppController
                                         ArrayObject::ARRAY_AS_PROPS,
                                     );
 
-                                    $address->vhcn_category = in_array($cto_category, ['s2_fttb', 's2_ftth']) ? 1 : 0;
+                                    $address->vhcn_category = $billings_collection
+                                        ->some(fn(Billing $billing): bool => (bool)$billing->service
+                                            ?->connection_profile?->access_technology?->isVhcn()) ? 1 : 0;
 
                                     return $address;
                                 });
@@ -898,19 +902,19 @@ class OverviewsController extends AppController
             ]), $month_to_display)
             ->where(['ConnectionProfiles.speed_down IS NOT NULL'])
             ->where(['ConnectionProfiles.speed_up IS NOT NULL'])
-            ->where(['ConnectionProfiles.cto_category IS NOT NULL'])
+            ->where(['ConnectionProfiles.access_technology IN' => self::ctuReportedTechnologies()])
             ->where(['InstallationAddresses.address_registry_reference IS NOT NULL'])
             ->where(['InstallationAddresses.address_registry_source' => 'cz'])
 
             ->orderBy([
-                'ConnectionProfiles.cto_category',
+                'ConnectionProfiles.access_technology',
                 'InstallationAddresses.city',
             ])
 
             ->formatResults(
                 function (CollectionInterface $billings): CollectionInterface {
                     return $billings
-                        ->groupBy('service.connection_profile.cto_category')
+                        ->groupBy(self::ctuCategoryOf(...))
                         ->map(function ($category_billings, $cto_category): CollectionInterface {
                             return (new Collection($category_billings))
                                 ->groupBy('contract.installation_address.city')
@@ -1049,6 +1053,34 @@ class OverviewsController extends AppController
     }
 
     /**
+     * The technologies ČTÚ has a category for, the only ones its reports carry.
+     *
+     * @return list<string>
+     */
+    private static function ctuReportedTechnologies(): array
+    {
+        return array_values(array_map(
+            fn(AccessTechnology $technology): string => $technology->value,
+            array_filter(
+                AccessTechnology::cases(),
+                fn(AccessTechnology $technology): bool => CtuTechnologyCategory::fromTechnology($technology) !== null,
+            ),
+        ));
+    }
+
+    /**
+     * The ČTÚ category a billing's connection is reported under.
+     *
+     * The query lets through only what has one, hence the empty string is never really handed back.
+     */
+    private static function ctuCategoryOf(Billing $billing): string
+    {
+        $technology = $billing->service?->connection_profile?->access_technology;
+
+        return $technology === null ? '' : (string)CtuTechnologyCategory::fromTechnology($technology)?->value;
+    }
+
+    /**
      * Bucket a download/upload speed (kbps) into the CTO availability category code,
      * given the technology family of the access.
      *
@@ -1056,11 +1088,11 @@ class OverviewsController extends AppController
      */
     private function categorizeAvailableSpeed(int|float|null $speed, string $ctoCategory): string
     {
-        if (in_array($ctoCategory, ['s2_fttb', 's2_ftth'], true)) {
+        if (in_array($ctoCategory, [CtuTechnologyCategory::Fttb->value, CtuTechnologyCategory::Ftth->value], true)) {
             return '1000';
         }
 
-        if ($ctoCategory !== 's2_wifi') {
+        if ($ctoCategory !== CtuTechnologyCategory::Wifi->value) {
             return 'unknown';
         }
 

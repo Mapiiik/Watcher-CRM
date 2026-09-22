@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Enum\AccessTechnology;
+use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -41,6 +43,8 @@ class ConnectionProfilesTable extends AppTable
         $this->setTable('connection_profiles');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
+        $this->getSchema()->setColumnType('access_technology', EnumType::from(AccessTechnology::class));
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
@@ -104,6 +108,10 @@ class ConnectionProfilesTable extends AppTable
                 ->integer($field)
                 ->allowEmptyString($field);
         }
+
+        $validator
+            ->enum('access_technology', AccessTechnology::class)
+            ->allowEmptyString('access_technology');
 
         return $validator;
     }

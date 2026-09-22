@@ -111,8 +111,8 @@ $derived = __('(derived)');
                             ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Cto Category') ?></th>
-                            <td><?= h($connectionProfile->cto_category) ?></td>
+                            <th><?= __('Access Technology') ?></th>
+                            <td><?= h($connectionProfile->access_technology?->label()) ?></td>
                         </tr>
                     </table>
                 </div>

@@ -1,4 +1,6 @@
 <?php
+use App\Model\Enum\AccessTechnology;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ConnectionProfile $connectionProfile
@@ -54,7 +56,10 @@
                         'label' => __('Speed Up Minimum'),
                         'help' => $derivedHelp,
                     ]);
-                    echo $this->Form->control('cto_category');
+                    echo $this->Form->control('access_technology', [
+                        'options' => AccessTechnology::groupedOptions(),
+                        'empty' => true,
+                    ]);
                     ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

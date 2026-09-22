@@ -23,7 +23,7 @@ use Settings\Utility\Settings;
  * @property int|null $speed_up_common
  * @property int|null $speed_down_minimum
  * @property int|null $speed_up_minimum
- * @property string|null $cto_category
+ * @property \App\Model\Enum\AccessTechnology|null $access_technology
  *
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Service[] $services
@@ -57,7 +57,7 @@ class ConnectionProfile extends AppEntity
         'speed_up_common' => true,
         'speed_down_minimum' => true,
         'speed_up_minimum' => true,
-        'cto_category' => true,
+        'access_technology' => true,
         'service_type' => true,
         'services' => true,
     ];
