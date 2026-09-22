@@ -9,8 +9,10 @@ use App\BusinessRegister\PortalLinks;
 use App\BusinessRegister\Registry;
 use App\BusinessRegister\VatNumberCheck;
 use App\Model\Enum\AddressType;
+use App\Model\Enum\BusinessCustomerDetection;
 use Cake\Core\Configure;
 use RuntimeException;
+use Settings\Utility\Settings;
 
 /**
  * Customer Entity
@@ -175,13 +177,23 @@ class Customer extends AppEntity
     /**
      * Whether the customer does business, which the regulators count apart from households.
      *
-     * Told by the identity number, the one thing only a business has on file.
+     * What tells depends on the country, see {@see \App\Model\Enum\BusinessCustomerDetection}.
      *
+     * @param \App\Model\Enum\BusinessCustomerDetection|null $detection How, the configured way
+     *      when not given.
      * @return bool
      */
-    public function isBusiness(): bool
+    public function isBusiness(?BusinessCustomerDetection $detection = null): bool
     {
-        return $this->identity_number !== null;
+        $detection ??= BusinessCustomerDetection::fromSetting(Settings::getString(
+            BusinessCustomerDetection::SETTINGS_PATH,
+            BusinessCustomerDetection::IdentityNumber->value,
+        ));
+
+        return match ($detection) {
+            BusinessCustomerDetection::IdentityNumber => $this->identity_number !== null,
+            BusinessCustomerDetection::Company => trim((string)$this->company) !== '',
+        };
     }
 
     /**

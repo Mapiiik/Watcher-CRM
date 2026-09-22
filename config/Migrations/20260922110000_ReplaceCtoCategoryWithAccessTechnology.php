@@ -6,17 +6,29 @@ use Migrations\BaseMigration;
 class ReplaceCtoCategoryWithAccessTechnology extends BaseMigration
 {
     /**
-     * How the old ČTÚ categories read as technologies.
+     * How the old categories read as technologies.
      *
-     * FTTB here is fibre to the switch in the building and copper Ethernet from it, FTTH is PON
-     * with the customer's ONU. That is how this network is built, which is why the table lives in
-     * a migration and not in the code.
+     * The Czech installation filled in ČTÚ's annex identifiers, the Croatian one the old system's
+     * infrastructure type. FTTB here is fibre to the switch in the building and copper Ethernet
+     * from it, FTTH is PON with the customer's ONU. That is how these networks are built, which is
+     * why the table lives in a migration and not in the code.
      */
     private const MAP = [
         's2_wifi' => 'fwa_unlicensed',
         's2_fttb' => 'fttb_ethernet',
         's2_ftth' => 'ftth_p2mp_pon',
         's2_catv' => 'catv_docsis30',
+        'FWA-WiFi' => 'fwa_unlicensed',
+    ];
+
+    /**
+     * The way back, which cannot tell the two wireless spellings apart and takes ČTÚ's.
+     */
+    private const BACK = [
+        'fwa_unlicensed' => 's2_wifi',
+        'fttb_ethernet' => 's2_fttb',
+        'ftth_p2mp_pon' => 's2_ftth',
+        'catv_docsis30' => 's2_catv',
     ];
 
     /**
@@ -73,7 +85,7 @@ class ReplaceCtoCategoryWithAccessTechnology extends BaseMigration
      */
     public function down(): void
     {
-        $back = array_flip(self::MAP);
+        $back = self::BACK;
 
         $this->table('connection_profiles')
             ->addColumn('cto_category', 'string', [
