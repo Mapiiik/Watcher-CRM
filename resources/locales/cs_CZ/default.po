@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-22 21:49+0200\n"
+"POT-Creation-Date: 2026-09-23 00:12+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -4287,7 +4287,7 @@ msgstr "Poznámka"
 
 #: templates/AccountingProfiles/add.php:12
 #: templates/AccountingProfiles/edit.php:20
-#: templates/AccountingProfiles/view.php:25 templates/Settings/index.php:216
+#: templates/AccountingProfiles/view.php:25 templates/Settings/index.php:231
 msgid "List Accounting Profiles"
 msgstr "Seznam účetních profilů"
 
@@ -4560,7 +4560,7 @@ msgstr "Starší"
 #: templates/AvailableConnections/add.php:12
 #: templates/AvailableConnections/edit.php:12
 #: templates/AvailableConnections/view.php:43 templates/Overviews/index.php:87
-#: templates/Settings/index.php:253
+#: templates/Settings/index.php:268
 msgid "List Available Connections"
 msgstr "Seznam dostupných připojení"
 
@@ -4671,7 +4671,7 @@ msgid "Billings"
 msgstr "Fakturace"
 
 #: templates/Billings/bulk_service_change.php:30
-#: templates/Settings/index.php:83
+#: templates/Settings/index.php:98
 msgid "Bulk Service Change"
 msgstr "Hromadná změna služeb"
 
@@ -4982,7 +4982,7 @@ msgid "Borrowed Until"
 msgstr "Zapůjčené do"
 
 #: templates/Commissions/add.php:11 templates/Commissions/edit.php:19
-#: templates/Commissions/view.php:24 templates/Settings/index.php:329
+#: templates/Commissions/view.php:24 templates/Settings/index.php:354
 msgid "List Commissions"
 msgstr "Seznam provizí"
 
@@ -5038,7 +5038,7 @@ msgstr "Související smlouvy"
 
 #: templates/ConnectionProfiles/add.php:14
 #: templates/ConnectionProfiles/edit.php:22
-#: templates/ConnectionProfiles/view.php:26 templates/Settings/index.php:248
+#: templates/ConnectionProfiles/view.php:26 templates/Settings/index.php:263
 msgid "List Connection Profiles"
 msgstr "Seznam profilů připojení"
 
@@ -5477,7 +5477,7 @@ msgid "Changes Applied"
 msgstr "Změny aplikovány dne"
 
 #: templates/ContractStates/add.php:13 templates/ContractStates/edit.php:22
-#: templates/ContractStates/view.php:25 templates/Settings/index.php:227
+#: templates/ContractStates/view.php:25 templates/Settings/index.php:242
 msgid "List Contract States"
 msgstr "Seznam stavů smlouvy"
 
@@ -5928,7 +5928,7 @@ msgid "Other Customer Tasks"
 msgstr "Další úkoly zákazníka"
 
 #: templates/Countries/add.php:11 templates/Countries/edit.php:16
-#: templates/Countries/view.php:21 templates/Settings/index.php:211
+#: templates/Countries/view.php:21 templates/Settings/index.php:226
 msgid "List Countries"
 msgstr "Seznam zemí"
 
@@ -6688,7 +6688,7 @@ msgstr[2] "{0} dnů"
 
 #: templates/DealerCommissions/add.php:14
 #: templates/DealerCommissions/edit.php:22
-#: templates/DealerCommissions/view.php:25 templates/Settings/index.php:334
+#: templates/DealerCommissions/view.php:25 templates/Settings/index.php:359
 msgid "List Dealer Commissions"
 msgstr "Seznam provizí dealerů"
 
@@ -6841,7 +6841,7 @@ msgid "Delete Email"
 msgstr "Odstranit e-mail"
 
 #: templates/EquipmentTypes/add.php:12 templates/EquipmentTypes/edit.php:20
-#: templates/EquipmentTypes/view.php:25 templates/Settings/index.php:258
+#: templates/EquipmentTypes/view.php:25 templates/Settings/index.php:273
 msgid "List Equipment Types"
 msgstr "Seznam typů zařízení"
 
@@ -6988,7 +6988,7 @@ msgid "IP Address Range"
 msgstr "Rozsah IP adres"
 
 #: templates/IpAddresses/bulk_reassignment.php:23
-#: templates/Settings/index.php:195
+#: templates/Settings/index.php:210
 msgid "Bulk IP Address Reassignment"
 msgstr "Hromadné znovu přiřazení IP adres"
 
@@ -7053,7 +7053,7 @@ msgid "Delete IP Network"
 msgstr "Odstranit IP síť"
 
 #: templates/Labels/add.php:15 templates/Labels/edit.php:20
-#: templates/Labels/view.php:24 templates/Settings/index.php:206
+#: templates/Labels/view.php:24 templates/Settings/index.php:221
 msgid "List Labels"
 msgstr "Seznam štítků"
 
@@ -7143,11 +7143,11 @@ msgstr "Nové heslo"
 msgid "Delete Login"
 msgstr "Smazat přihlášení"
 
-#: templates/Overviews/index.php:12 templates/Settings/index.php:266
+#: templates/Overviews/index.php:12 templates/Settings/index.php:281
 msgid "Documentation Related"
 msgstr "Související s dokumentací"
 
-#: templates/Overviews/index.php:30 templates/Settings/index.php:294
+#: templates/Overviews/index.php:30 templates/Settings/index.php:309
 msgid "Work Report Related"
 msgstr "Související s výkazy práce"
 
@@ -7159,7 +7159,7 @@ msgstr "Práce k fakturaci"
 msgid "Work at Access Points"
 msgstr "Práce na přístupových bodech"
 
-#: templates/Overviews/index.php:59 templates/Settings/index.php:235
+#: templates/Overviews/index.php:59 templates/Settings/index.php:250
 msgid "Service Related"
 msgstr "Související se službou"
 
@@ -7218,7 +7218,7 @@ msgstr "Seznam telefonů"
 msgid "List Documents"
 msgstr "Seznam dokumentů"
 
-#: templates/Overviews/index.php:161 templates/Settings/index.php:224
+#: templates/Overviews/index.php:161 templates/Settings/index.php:239
 msgid "Contract Related"
 msgstr "Související se smlouvou"
 
@@ -7629,7 +7629,7 @@ msgid "Reason"
 msgstr "Důvod"
 
 #: templates/ServiceTypes/add.php:11 templates/ServiceTypes/edit.php:19
-#: templates/ServiceTypes/view.php:24 templates/Settings/index.php:243
+#: templates/ServiceTypes/view.php:24 templates/Settings/index.php:258
 msgid "List Service Types"
 msgstr "Seznam typů služeb"
 
@@ -7725,7 +7725,7 @@ msgid "Accounting Product Code"
 msgstr "Kód produktu pro účetnictví"
 
 #: templates/Services/add.php:13 templates/Services/edit.php:18
-#: templates/Services/view.php:25 templates/Settings/index.php:238
+#: templates/Services/view.php:25 templates/Settings/index.php:253
 msgid "List Services"
 msgstr "Seznam služeb"
 
@@ -7786,141 +7786,161 @@ msgid "Company Configuration"
 msgstr "Konfigurace společnosti"
 
 #: templates/Settings/index.php:36
+msgid "Customers Configuration"
+msgstr "Konfigurace zákazníků"
+
+#: templates/Settings/index.php:41
+msgid "Business Register Configuration"
+msgstr "Konfigurace obchodního rejstříku"
+
+#: templates/Settings/index.php:46
 msgid "Documents Configuration"
 msgstr "Konfigurace dokumentů"
 
-#: templates/Settings/index.php:41
+#: templates/Settings/index.php:51
 msgid "Contracts Configuration"
 msgstr "Konfigurace smluv"
 
-#: templates/Settings/index.php:46
+#: templates/Settings/index.php:56
 msgid "Emails Configuration"
 msgstr "Konfigurace e-mailů"
 
-#: templates/Settings/index.php:51
+#: templates/Settings/index.php:61
+msgid "Customer Messages Configuration"
+msgstr "Konfigurace zpráv zákazníkům"
+
+#: templates/Settings/index.php:66
 msgid "Dashboard Configuration"
 msgstr "Nastavení nástěnky"
 
-#: templates/Settings/index.php:59
+#: templates/Settings/index.php:74
 msgid "Bookkeeping Settings"
 msgstr "Nastavení účetnictví"
 
-#: templates/Settings/index.php:62
+#: templates/Settings/index.php:77
 msgid "Invoices Configuration"
 msgstr "Konfigurace faktur"
 
-#: templates/Settings/index.php:67
+#: templates/Settings/index.php:82
 msgid "Debtors Configuration"
 msgstr "Konfigurace dlužníků"
 
-#: templates/Settings/index.php:72
+#: templates/Settings/index.php:87
 msgid "Accounting Configuration"
 msgstr "Konfigurace účetnictví"
 
-#: templates/Settings/index.php:80
+#: templates/Settings/index.php:95
 msgid "Billing Functions"
 msgstr "Funkce fakturace"
 
-#: templates/Settings/index.php:91
+#: templates/Settings/index.php:106
 msgid "Customer Functions"
 msgstr "Funkce zákazníka"
 
-#: templates/Settings/index.php:94
+#: templates/Settings/index.php:109
 msgid "Identity Number Check"
 msgstr "Kontrola identifikačního čísla"
 
-#: templates/Settings/index.php:99
+#: templates/Settings/index.php:114
 msgid "Update Phone Number Format"
 msgstr "Aktualizace formátu telefonního čísla"
 
-#: templates/Settings/index.php:107
+#: templates/Settings/index.php:122
 msgid "Do you really want to update all phones for all customers?"
 msgstr "Opravdu chcete aktualizovat všechny telefony pro všechny zákazníky?"
 
-#: templates/Settings/index.php:114
+#: templates/Settings/index.php:129
 msgid "Update All Addresses from National Address Registries"
 msgstr "Aktualizovat všechny adresy z národních adresních registrů"
 
-#: templates/Settings/index.php:122
+#: templates/Settings/index.php:137
 msgid ""
 "Do you really want to update all addresses from the national address "
 "registries?"
 msgstr ""
 "Opravdu chcete aktualizovat všechny adresy z národních adresních registrů?"
 
-#: templates/Settings/index.php:132
+#: templates/Settings/index.php:147
 msgid "Contract Functions"
 msgstr "Funkce smlouvy"
 
-#: templates/Settings/index.php:135 templates/Settings/index.php:150
+#: templates/Settings/index.php:150 templates/Settings/index.php:165
 msgid "Addition of Contract Numbers"
 msgstr "Přidání čísel smluv"
 
-#: templates/Settings/index.php:143
+#: templates/Settings/index.php:158
 msgid "Do you really want to add a contract number for all contracts?"
 msgstr "Opravdu chcete přidat číslo smlouvy pro všechny smlouvy?"
 
-#: templates/Settings/index.php:150 templates/Settings/index.php:180
+#: templates/Settings/index.php:165 templates/Settings/index.php:195
 msgid "Force Overwrite"
 msgstr "Vynutit přepsání"
 
-#: templates/Settings/index.php:158
+#: templates/Settings/index.php:173
 msgid "Do you really want to re-set a contract number for all contracts?"
 msgstr "Opravdu chcete znovu nastavit číslo smlouvy pro všechny smlouvy?"
 
-#: templates/Settings/index.php:165 templates/Settings/index.php:180
+#: templates/Settings/index.php:180 templates/Settings/index.php:195
 msgid "Addition of Subscriber Verification Codes"
 msgstr "Přidání kódů pro ověřování účastníků"
 
-#: templates/Settings/index.php:173
+#: templates/Settings/index.php:188
 msgid ""
 "Do you really want to add a subscriber verification code for all contracts?"
 msgstr "Opravdu chcete přidat ověřovací kód účastníka pro všechny smlouvy?"
 
-#: templates/Settings/index.php:188
+#: templates/Settings/index.php:203
 msgid ""
 "Do you really want to re-set a subscriber verification code for all "
 "contracts?"
 msgstr ""
 "Opravdu chcete znovu nastavit ověřovací kód účastníka pro všechny smlouvy?"
 
-#: templates/Settings/index.php:203
+#: templates/Settings/index.php:218
 msgid "System Related"
 msgstr "Související se systémem"
 
-#: templates/Settings/index.php:277
+#: templates/Settings/index.php:292
 msgid "Task Related"
 msgstr "Související s úkolem"
 
-#: templates/Settings/index.php:280
+#: templates/Settings/index.php:295
 msgid "List Task States"
 msgstr "Seznam stavů úkolů"
 
-#: templates/Settings/index.php:285
+#: templates/Settings/index.php:300
 msgid "List Task Types"
 msgstr "Seznam typů úkolů"
 
-#: templates/Settings/index.php:297
+#: templates/Settings/index.php:312
 msgid "List Work Report Item Types"
 msgstr "Seznam typů záznamů"
 
-#: templates/Settings/index.php:302
+#: templates/Settings/index.php:317
 msgid "List Work Rates"
 msgstr "Seznam sazeb"
 
-#: templates/Settings/index.php:307
+#: templates/Settings/index.php:322
 msgid "List Work Labels"
 msgstr "Seznam štítků práce"
 
-#: templates/Settings/index.php:312
+#: templates/Settings/index.php:327
 msgid "List Work Cars"
 msgstr "Seznam aut"
 
-#: templates/Settings/index.php:317
+#: templates/Settings/index.php:332
 msgid "List Work Report Workers"
 msgstr "Seznam pracovníků"
 
-#: templates/Settings/index.php:326
+#: templates/Settings/index.php:337
+msgid "Work Calendar Configuration"
+msgstr "Konfigurace pracovního kalendáře"
+
+#: templates/Settings/index.php:342
+msgid "On Call Hours Configuration"
+msgstr "Konfigurace hodin za pohotovost"
+
+#: templates/Settings/index.php:351
 msgid "Commission Related"
 msgstr "Související s provizí"
 

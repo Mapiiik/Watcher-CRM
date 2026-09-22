@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-08-31 17:38+0200\n"
+"POT-Creation-Date: 2026-09-23 00:12+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -22,15 +22,19 @@ msgstr ""
 msgid "Unknown settings block: {path}"
 msgstr ""
 
-#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:55
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:47
+msgid "Not a settings block, but a setting of its own: {path}"
+msgstr ""
+
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:64
 msgid "The setting has been saved."
 msgstr ""
 
-#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:63
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:72
 msgid "The setting could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:72
+#: ./plugins/Settings/src/Controller/Trait/SettingsControllerTrait.php:81
 msgid "The setting {path} could not be saved: {reason}"
 msgstr ""
 

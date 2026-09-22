@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-22 12:57+0200\n"
+"POT-Creation-Date: 2026-09-23 00:12+0200\n"
 "PO-Revision-Date: 2026-09-22 01:00+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -18,15 +18,15 @@ msgstr ""
 msgid "Hours in a working day at a full workload."
 msgstr "Počet hodin pracovního dne při plném úvazku."
 
-#: plugins/WorkReports/config/settings.php:28
+#: plugins/WorkReports/config/settings.php:29
 msgid "Hours an on-call working day is worth."
 msgstr "Kolik hodin má den pohotovosti v pracovní den."
 
-#: plugins/WorkReports/config/settings.php:32
+#: plugins/WorkReports/config/settings.php:33
 msgid "Hours an on-call weekend day is worth."
 msgstr "Kolik hodin má den pohotovosti o víkendu."
 
-#: plugins/WorkReports/config/settings.php:36
+#: plugins/WorkReports/config/settings.php:37
 msgid "Hours an on-call public holiday is worth."
 msgstr "Kolik hodin má den pohotovosti ve státní svátek."
 
