@@ -6,6 +6,7 @@ namespace App\RegulatoryReporting;
 use App\Addresses\Resolver as AddressesResolver;
 use App\Model\Entity\Billing;
 use App\Model\Enum\AccessTechnology;
+use App\Model\Table\AvailableConnectionsTable;
 use App\Model\Table\BillingsTable;
 use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -16,8 +17,9 @@ use RuntimeException;
  * Gathers the address points a regulator's report is made of.
  *
  * What is common to them all: the connections active in a month, at an address the national
- * registry knows, sorted into the regulator's categories and put together by address point. Which
- * categories there are, and what is reported about each point, is up to the report.
+ * registry knows, and those recorded as there to be had, sorted into the regulator's categories and
+ * put together by address point. Which categories there are, and what is reported about each point,
+ * is up to the report.
  */
 class ConnectionPointCollector
 {
@@ -83,9 +85,40 @@ class ConnectionPointCollector
             );
             $points[$category][$key]->billings[] = $billing;
         }
-        ksort($points);
 
-        $this->resolve($points, $billings);
+        /** @var list<\App\Model\Entity\AvailableConnection> $available */
+        $available = $this->fetchTable(AvailableConnectionsTable::class)
+            ->find('inService', on: $month->lastOfMonth())
+            ->where(['AvailableConnections.address_registry_source' => $registrySource])
+            ->where(['AvailableConnections.access_technology IN' => $this->reportedTechnologies()])
+            ->all()
+            ->toList();
+
+        foreach ($available as $connection) {
+            $category = (string)($this->categoryOf)($connection->access_technology);
+            $key = $connection->registryKey();
+
+            $points[$category][$key] ??= new ConnectionPoint(
+                $category,
+                $connection->address_registry_source,
+                $connection->address_registry_reference,
+            );
+            $points[$category][$key]->available[] = $connection;
+        }
+
+        ksort($points);
+        foreach ($points as &$byAddress) {
+            uasort($byAddress, fn(ConnectionPoint $a, ConnectionPoint $b): int => strcmp(
+                $a->registryReference,
+                $b->registryReference,
+            ));
+        }
+        unset($byAddress);
+
+        $this->resolve($points, [
+            ...array_map(fn(Billing $billing) => $billing->contract->installation_address, $billings),
+            ...$available,
+        ]);
 
         return $points;
     }
@@ -139,16 +172,14 @@ class ConnectionPointCollector
      * reference on file is all there is to report.
      *
      * @param array<string, array<string, \App\RegulatoryReporting\ConnectionPoint>> $points The points.
-     * @param list<\App\Model\Entity\Billing> $billings The connections behind them.
+     * @param list<\App\Model\Entity\Address|\App\Model\Entity\AvailableConnection|null> $addresses
+     *      Where they are.
      * @return void
      */
-    private function resolve(array $points, array $billings): void
+    private function resolve(array $points, array $addresses): void
     {
         try {
-            $matches = AddressesResolver::matchMap(array_values(array_filter(array_map(
-                fn(Billing $billing) => $billing->contract->installation_address,
-                $billings,
-            ))));
+            $matches = AddressesResolver::matchMap(array_values(array_filter($addresses)));
         } catch (RuntimeException $e) {
             $matches = [];
             $this->problems[] = __(
@@ -172,6 +203,7 @@ class ConnectionPointCollector
                     );
                 } else {
                     $point->reportedReference = $point->registryReference;
+                    $point->formattedAddress = $point->available[0]->address_label ?? null;
                 }
             }
         }

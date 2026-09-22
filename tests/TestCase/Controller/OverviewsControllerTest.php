@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\OverviewsController;
 use App\Model\Enum\ContractPeriodSource;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -42,6 +43,7 @@ class OverviewsControllerTest extends TestCase
         'app.Labels',
         'app.CustomerLabels',
         'app.ConnectionProfiles',
+        'app.AvailableConnections',
         'app.Services',
         'app.Billings',
     ];
@@ -139,10 +141,30 @@ class OverviewsControllerTest extends TestCase
         $this->get('/overviews/overview-of-czech-customer-connection-points/s2_catv.csv');
         $this->assertResponseOk();
         $this->assertHeaderContains('Content-Disposition', 's2_catv.csv');
-        $this->assertStringContainsString('DOCSIS', (string)iconv('CP1250', 'UTF-8', (string)$this->_response?->getBody()));
+        $this->assertResponseContains('DOCSIS');
 
         $this->get('/overviews/overview-of-czech-customer-connection-points/s2_nothing.csv');
         $this->assertResponseCode(404);
+    }
+
+    /**
+     * A building wired with nobody in it yet goes to ČTÚ as a covered address point with no
+     * connections. The registry is not asked, so the address is the one recorded.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfCzechCustomerConnectionPoints()
+     */
+    public function testAWiredBuildingWithNobodyInItIsReported(): void
+    {
+        Configure::write('Addresses.url', '');
+        $this->login();
+
+        $this->get('/overviews/overview-of-czech-customer-connection-points/s2_ftth.csv?month_to_display=2026-09');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(
+            "16936132;s2_ftth;0;0;ANO;1000;1000;1000;1000;1;Luční 464, Podmoklice, 51301 Semily\r\n",
+        );
     }
 
     /**

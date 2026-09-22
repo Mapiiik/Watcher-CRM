@@ -436,6 +436,21 @@ $permissions = [
                 'preview',
             ],
         ],
+        //the connections there to be had are the network's to keep
+        [
+            'role' => [
+                'network-manager',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'AvailableConnections',
+            ],
+            'action' => [
+                'add',
+                'edit',
+                'retire',
+            ],
+        ],
         //allow add/edit for sales and bookkeepers and network-managers
         [
             'role' => [

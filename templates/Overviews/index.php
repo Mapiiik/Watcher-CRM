@@ -74,6 +74,11 @@ use Cake\Core\Plugin;
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('List Available Connections'),
+                    ['controller' => 'AvailableConnections', 'action' => 'index'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('Overview of Dealer Commissions'),
                     ['action' => 'overviewOfDealerCommissions'],
                     ['class' => 'side-nav-item'],

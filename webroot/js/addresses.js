@@ -52,8 +52,8 @@ $(function () {
         $form.submit();
     });
 
-    // Autorefresh after country_id changes and clear address fields
-    $('#country-id').on('change', function () {
+    // Autorefresh after the country changes and clear address fields
+    $('#country-id, #address-registry-source').on('change', function () {
 
         // Clear Select2
         $('#address-registry-search').val(null).trigger('change');

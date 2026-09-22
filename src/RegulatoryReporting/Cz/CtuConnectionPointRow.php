@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\RegulatoryReporting\Cz;
 
 use App\Model\Entity\Billing;
+use App\Model\Enum\AccessTechnology;
 use App\RegulatoryReporting\ConnectionPoint;
 
 /**
@@ -18,11 +19,13 @@ final class CtuConnectionPointRow
      * @param int $activeNonBusinessConnections Those of them that are households'.
      * @param array<string, int> $activeSpeedBands The active ones by band of the common speed.
      * @param int $availableConnections The connections that could be there.
+     * @param bool $covered Whether a customer can be connected there.
      * @param \App\RegulatoryReporting\Cz\CtuSpeedInterval $effectiveDownload Commonly available down.
      * @param \App\RegulatoryReporting\Cz\CtuSpeedInterval $effectiveUpload Commonly available up.
      * @param \App\RegulatoryReporting\Cz\CtuSpeedInterval $maximalDownload Reachable down.
      * @param \App\RegulatoryReporting\Cz\CtuSpeedInterval $maximalUpload Reachable up.
      * @param bool $vhcn Whether it is a very high capacity network.
+     * @param bool $docsis31 Whether a cable network there runs DOCSIS 3.1 or newer.
      * @param string|null $address The address as the registry writes it.
      */
     public function __construct(
@@ -32,11 +35,13 @@ final class CtuConnectionPointRow
         public readonly int $activeNonBusinessConnections,
         public readonly array $activeSpeedBands,
         public readonly int $availableConnections,
+        public readonly bool $covered,
         public readonly CtuSpeedInterval $effectiveDownload,
         public readonly CtuSpeedInterval $effectiveUpload,
         public readonly CtuSpeedInterval $maximalDownload,
         public readonly CtuSpeedInterval $maximalUpload,
         public readonly bool $vhcn,
+        public readonly bool $docsis31,
         public readonly ?string $address,
     ) {
     }
@@ -48,8 +53,6 @@ final class CtuConnectionPointRow
     public static function fromPoint(ConnectionPoint $point): self
     {
         $category = CtuTechnologyCategory::from($point->group);
-        $download = $point->fastestDownloadProfile();
-        $upload = $point->fastestUploadProfile();
 
         $bands = [];
         foreach ($point->billings as $billing) {
@@ -63,12 +66,14 @@ final class CtuConnectionPointRow
             activeConnections: $point->activeConnections(),
             activeNonBusinessConnections: $point->activeNonBusinessConnections(),
             activeSpeedBands: $bands,
-            availableConnections: $point->activeConnections(),
-            effectiveDownload: CtuSpeedInterval::of($download?->getSpeedDownCommon(), $category),
-            effectiveUpload: CtuSpeedInterval::of($upload?->getSpeedUpCommon(), $category),
-            maximalDownload: CtuSpeedInterval::of($download?->getSpeedDown(), $category),
-            maximalUpload: CtuSpeedInterval::of($upload?->getSpeedUp(), $category),
+            availableConnections: $point->availableConnections(),
+            covered: $point->isCovered(),
+            effectiveDownload: CtuSpeedInterval::of($point->effectiveSpeedDown(), $category),
+            effectiveUpload: CtuSpeedInterval::of($point->effectiveSpeedUp(), $category),
+            maximalDownload: CtuSpeedInterval::of($point->maximalSpeedDown(), $category),
+            maximalUpload: CtuSpeedInterval::of($point->maximalSpeedUp(), $category),
             vhcn: $point->isVhcn(),
+            docsis31: in_array(AccessTechnology::CatvDocsis31, $point->technologies(), true),
             address: $point->formattedAddress,
         );
     }

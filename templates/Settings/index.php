@@ -250,6 +250,11 @@ use Cake\Core\Plugin;
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('List Available Connections'),
+                    ['controller' => 'AvailableConnections', 'action' => 'index', 'plugin' => null],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('List Equipment Types'),
                     ['controller' => 'EquipmentTypes', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],

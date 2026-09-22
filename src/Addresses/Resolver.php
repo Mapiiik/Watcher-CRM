@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Addresses;
 
 use App\Addresses\Dto\Address;
+use RuntimeException;
 
 /**
  * Higher-level helpers that bridge CRM-side address entities and the
@@ -28,7 +29,7 @@ class Resolver
      * de‑duplicated before the API call. Items unknown to the registry are
      * silently absent from the result.
      *
-     * @param iterable<\App\Model\Entity\Address> $addresses
+     * @param iterable<\App\Model\Entity\Address|\App\Model\Entity\AvailableConnection> $addresses
      * @return array<string, \App\Addresses\Dto\Address>  Map: "source|registry_ref" => address
      * @throws \RuntimeException  On transport/API errors (bubbled from ApiClient)
      */
@@ -88,6 +89,54 @@ class Resolver
     }
 
     /**
+     * The countries the registry covers, upper case, or null when its metadata does not say.
+     *
+     * @return list<string>|null
+     * @throws \RuntimeException When the registry cannot be asked.
+     */
+    public static function supportedCountries(): ?array
+    {
+        /** @var array<string, mixed> $meta */
+        $meta = ApiClient::metaFromCache()->orFail(__('The national address registry is not configured.'));
+
+        if (!isset($meta['supported_countries']) || !is_array($meta['supported_countries'])) {
+            return null;
+        }
+
+        return array_values(array_map(
+            fn(mixed $code): string => strtoupper((string)$code),
+            $meta['supported_countries'],
+        ));
+    }
+
+    /**
+     * The registry's address behind a key as the application stores it, "source|reference".
+     *
+     * @param string $key The key, for instance "cz|12345678".
+     * @return \App\Addresses\Dto\Address
+     * @throws \RuntimeException When the key is malformed, the registry cannot be asked, or it does
+     *      not know the address.
+     */
+    public static function byKey(string $key): Address
+    {
+        [$source, $reference] = explode('|', $key, limit: 2) + [null, null];
+
+        if (in_array($source, [null, '', '0'], true) || in_array($reference, [null, '', '0'], true)) {
+            throw new RuntimeException('Invalid address registry key format: ' . $key);
+        }
+
+        /** @var \App\Addresses\Dto\Address|null $address */
+        $address = ApiClient::byIdFromCache(source: $source, registryId: $reference)
+            ->orFail(__('The national address registry is not configured.'));
+
+        if ($address === null) {
+            throw new RuntimeException('Empty response from address registry API for ID: ' . $key);
+        }
+
+        return $address;
+    }
+
+    /**
      * Extract (source, registry_id) pairs from a set of CRM address entities
      * and de‑duplicate them. Only entities that have both
      * `address_registry_source` and `address_registry_reference` defined are
@@ -98,7 +147,7 @@ class Resolver
      * pointing to the same registry entry) are collapsed into a single item
      * to avoid redundant API calls.
      *
-     * @param iterable<\App\Model\Entity\Address> $addresses
+     * @param iterable<\App\Model\Entity\Address|\App\Model\Entity\AvailableConnection> $addresses
      * @return list<array{source: string, registry_id: string}>
      */
     private static function extractItems(iterable $addresses): array

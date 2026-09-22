@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Addresses\ApiClient as AddressesApiClient;
+use App\Addresses\Resolver as AddressesResolver;
 use App\Model\Entity\Address;
 use App\Model\Enum\AddressNumberType;
 use Cake\Http\Response;
@@ -345,10 +346,7 @@ class AddressesController extends AppController
     private function loadSupportedCountriesForAddressRegistry(): array
     {
         try {
-            /** @var array<string, mixed> $addressesMeta */
-            $addressesMeta = AddressesApiClient::metaFromCache()->orFail(
-                __('The national address registry is not configured.'),
-            );
+            $supportedCountries = AddressesResolver::supportedCountries();
         } catch (RuntimeException $e) {
             $this->Flash->error(__(
                 'Could not retrieve national address registry metadata: {0}',
@@ -358,7 +356,7 @@ class AddressesController extends AppController
             return [];
         }
 
-        if (!isset($addressesMeta['supported_countries']) || !is_array($addressesMeta['supported_countries'])) {
+        if ($supportedCountries === null) {
             $this->Flash->error(__(
                 'National address registry lookup is not available.'
                 . ' Could not retrieve supported countries list.',
@@ -367,7 +365,7 @@ class AddressesController extends AppController
             return [];
         }
 
-        return array_map(strtoupper(...), $addressesMeta['supported_countries']);
+        return $supportedCountries;
     }
 
     /**
@@ -379,28 +377,7 @@ class AddressesController extends AppController
      */
     private function loadPatchDataFromAddressesRegistry(string $addressRegistryKey): array
     {
-        // expect format "source|reference", e.g. "cz|12345678"
-        [
-            $addressRegistrySource,
-            $addressRegistryReference,
-        ] = explode('|', $addressRegistryKey, limit: 2) + [null, null];
-
-        if (
-            in_array($addressRegistrySource, [null, '', '0'], true)
-            || in_array($addressRegistryReference, [null, '', '0'], true)
-        ) {
-            throw new RuntimeException('Invalid address registry key format: ' . $addressRegistryKey);
-        }
-
-        /** @var \App\Addresses\Dto\Address|null $addressRegistryData */
-        $addressRegistryData = AddressesApiClient::byIdFromCache(
-            source: $addressRegistrySource,
-            registryId: $addressRegistryReference,
-        )->orFail(__('The national address registry is not configured.'));
-
-        if ($addressRegistryData === null) {
-            throw new RuntimeException('Empty response from address registry API for ID: ' . $addressRegistryKey);
-        }
+        $addressRegistryData = AddressesResolver::byKey($addressRegistryKey);
 
         return [
             'street' => $addressRegistryData->street,
