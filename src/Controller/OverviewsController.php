@@ -19,10 +19,15 @@ use App\Model\Table\ContractsTable;
 use App\Model\Table\DealerCommissionsTable;
 use App\Model\Table\LabelsTable;
 use App\Model\Table\ServicesTable;
+use App\RegulatoryReporting\ConnectionPointCollector;
+use App\RegulatoryReporting\Cz\CtuAdvertisedSpeedBand;
+use App\RegulatoryReporting\Cz\CtuConnectionPointRow;
+use App\RegulatoryReporting\Cz\CtuConnectionPointsCsv;
 use App\RegulatoryReporting\Cz\CtuTechnologyCategory;
 use ArrayObject;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\ORM\Association;
@@ -630,246 +635,37 @@ class OverviewsController extends AppController
     /**
      * Overview of Czech customer connection points method
      *
-     * @param string|null $category Optional parameter, CTO category.
+     * What ČTÚ takes by address point, one file for each of its technology categories.
+     *
+     * @param string|null $category The category whose file is asked for.
      * @return \Cake\Http\Response|null Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When the category is not one of ČTÚ's.
      */
     public function overviewOfCzechCustomerConnectionPoints(?string $category = null): ?Response
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
-        /** @var \Cake\Collection\CollectionInterface<string, \Cake\Collection\CollectionInterface<string, \stdClass>> $cto_categories */
-        $cto_categories = $this->applyActiveInMonthScope($this->fetchTable(BillingsTable::class)->find()
-            ->contain('Customers')
-            ->contain([
-                'Contracts' => [
-                    'InstallationAddresses',
-                ],
-            ])
-            ->contain([
-                'Services' => [
-                    'ServiceTypes',
-                    'ConnectionProfiles',
-                ],
-            ]), $month_to_display)
-            ->where(['ConnectionProfiles.speed_down IS NOT NULL'])
-            ->where(['ConnectionProfiles.speed_up IS NOT NULL'])
-            ->where(['ConnectionProfiles.access_technology IN' => self::ctuReportedTechnologies()])
-            ->where(['InstallationAddresses.address_registry_reference IS NOT NULL'])
-            ->where(['InstallationAddresses.address_registry_source' => 'cz'])
+        $collector = new ConnectionPointCollector(
+            fn(AccessTechnology $technology): ?string => CtuTechnologyCategory::fromTechnology($technology)?->value,
+        );
+        $points = $collector->collect($month_to_display, 'cz');
+        foreach ($collector->problems() as $problem) {
+            $this->Flash->warning($problem);
+        }
 
-            ->orderBy([
-                'ConnectionProfiles.access_technology',
-                'InstallationAddresses.address_registry_reference',
-            ])
+        /** @var array<string, list<\App\RegulatoryReporting\Cz\CtuConnectionPointRow>> $cto_categories */
+        $cto_categories = array_map(
+            fn(array $byAddress): array => array_map(CtuConnectionPointRow::fromPoint(...), array_values($byAddress)),
+            $points,
+        );
 
-            ->formatResults(
-                function (CollectionInterface $billings): CollectionInterface {
-                    // Resolve all installation addresses with registry refs in one batch.
-                    // Failure → empty map; groups will fall back to GPS / unknown branches.
-                    try {
-                        $addressRegistryMatches = AddressesResolver::matchMap(
-                            (new Collection($billings))
-                                ->extract('contract.installation_address')
-                                ->filter()
-                                ->toList(),
-                        );
-                    } catch (RuntimeException $e) {
-                        $addressRegistryMatches = [];
-
-                        $this->Flash->error(__(
-                            'Could not retrieve addresses from national address registry: {0}',
-                            $e->getMessage(),
-                        ));
-                    }
-
-                    return $billings
-                        ->groupBy(self::ctuCategoryOf(...))
-                        ->map(function (
-                            $category_billings,
-                            $cto_category,
-                        ) use ($addressRegistryMatches): CollectionInterface {
-                            return (new Collection($category_billings))
-                                ->groupBy(function (Billing $billing): ?string {
-                                    $address = $billing->contract->installation_address;
-
-                                    if (
-                                        !empty($address->address_registry_reference)
-                                            && !empty($address->address_registry_source)
-                                    ) {
-                                        return $address->address_registry_source
-                                            . '|' . $address->address_registry_reference;
-                                    }
-
-                                    // This should not happen due to the query conditions, but just in case.
-                                    return null;
-                                })
-                                ->map(function (
-                                    $billings,
-                                    $key,
-                                ) use (
-                                    $cto_category,
-                                    $addressRegistryMatches,
-                                ): stdClass {
-                                    $billings_collection = new Collection($billings);
-
-                                    $address = new stdClass();
-
-                                    $address->billings = $billings_collection;
-
-                                    // Attempt to find a match in the address registry results for this address.
-                                    $addressRegistryMatch = $addressRegistryMatches[$key] ?? null;
-
-                                    if ($addressRegistryMatch !== null) {
-                                        // Authoritative data from the national address registry.
-                                        $address->ruian_gid = $addressRegistryMatch->registryReference;
-                                        $address->ruian_address = $addressRegistryMatch->formattedAddress;
-                                    } elseif ($addressRegistryMatches !== []) {
-                                        $address->ruian_gid = null;
-                                        $address->ruian_address = null;
-
-                                        /** @var array<int, string> $contractsWithInvalidRuianGid */
-                                        $contractsWithInvalidRuianGid = $billings_collection
-                                            ->extract('contract.number')
-                                            ->toList();
-
-                                        $this->Flash->warning(__(
-                                            'Invalid RUIAN GID: {0} for addresses associated with contracts: {1}',
-                                            explode('|', $key, limit: 2)[1] ?? __('unknown'),
-                                            implode(', ', $contractsWithInvalidRuianGid),
-                                        ));
-                                    } else {
-                                        // The registry said nothing at all - the reference the
-                                        // address carries is all there is to show, and there is no
-                                        // address text to go with it.
-                                        $address->ruian_gid = explode('|', $key, limit: 2)[1] ?? null;
-                                        $address->ruian_address = null;
-                                    }
-
-                                    $address->cto_category = $cto_category;
-
-                                    $address->active_connections = $billings_collection->count();
-                                    $address->active_connections_nonbusiness = $billings_collection
-                                        ->match(['customer.identity_number' => null])
-                                        ->count();
-
-                                    $address->active_speeds = new ArrayObject(
-                                        $billings_collection
-                                            ->countBy(function (Billing $billing): string {
-                                                $commonly_available_download_speed =
-                                                    $billing->service?->connection_profile?->getSpeedDownCommon();
-                                                if ($commonly_available_download_speed < 30720) {
-                                                    return 'speed_0_30';
-                                                }
-
-                                                if ($commonly_available_download_speed < 102400) {
-                                                    return 'speed_30_100';
-                                                }
-
-                                                return 'speed_100_plus';
-                                            })
-                                            ->toArray(),
-                                        ArrayObject::ARRAY_AS_PROPS,
-                                    );
-
-                                    $address->available_connections = $billings_collection->count();
-
-                                    // The path is resolved against the billing itself, so it carries no
-                                    // "billing." prefix - with one, nothing resolves and max() hands back
-                                    // whichever connection came first instead of the fastest.
-                                    $fastest_download = $billings_collection
-                                        ->max('service.connection_profile.speed_down')
-                                        ->service->connection_profile;
-                                    $maximal_download = $fastest_download->getSpeedDown();
-                                    $effective_download = $fastest_download->getSpeedDownCommon();
-
-                                    $fastest_upload = $billings_collection
-                                        ->max('service.connection_profile.speed_up')
-                                        ->service->connection_profile;
-                                    $maximal_upload = $fastest_upload->getSpeedUp();
-                                    $effective_upload = $fastest_upload->getSpeedUpCommon();
-
-                                    $address->available_speeds = new ArrayObject(
-                                        [
-                                            'maximal_download_category' =>
-                                                $this->categorizeAvailableSpeed($maximal_download, $cto_category),
-                                            'effective_download_category' =>
-                                                $this->categorizeAvailableSpeed($effective_download, $cto_category),
-                                            'maximal_upload_category' =>
-                                                $this->categorizeAvailableSpeed($maximal_upload, $cto_category),
-                                            'effective_upload_category' =>
-                                                $this->categorizeAvailableSpeed($effective_upload, $cto_category),
-                                        ],
-                                        ArrayObject::ARRAY_AS_PROPS,
-                                    );
-
-                                    $address->vhcn_category = $billings_collection
-                                        ->some(fn(Billing $billing): bool => (bool)$billing->service
-                                            ?->connection_profile?->access_technology?->isVhcn()) ? 1 : 0;
-
-                                    return $address;
-                                });
-                        });
-                },
-            );
-
-        // DOWNLOAD CSV FOR CATEGORY
         if ($this->getRequest()->getParam('_ext') === 'csv' && isset($category)) {
-            $headers = [
-                'Adresní místo (kód RÚIAN)',
-                'Technologická kategorie (identifikátor přílohy)',
-                'Přístupy (aktivní přípojky) (počet)',
-                'Přístupy (aktivní přípojky) nepodnikajících osob (počet)',
-                'Pokryté adresní místo (disponibilní přípojkou) (ANO/NE)',
-                'Efektivní rychlost download (interval)',
-                'Efektivní rychlost upload (interval)',
-                'Maximální dosažitelná rychlost download (interval)',
-                'Maximální dosažitelná rychlost upload (interval)',
-                'VHCN síť (třída)',
-            ];
-
-            if ($category === 's2_catv') {
-                $headers[] = 'Standard DOCSIS 3.1 a vyšší (ANO/NE)';
-            }
-
-            $headers[] = 'Adresa';
-            $csv_data = implode(';', $headers) . PHP_EOL;
-            unset($headers);
-
-            foreach ($cto_categories->toArray()[$category] as $connection_point) {
-                $row = [
-                    h($connection_point->ruian_gid),
-                    h($connection_point->cto_category),
-                    (int)$connection_point->active_connections,
-                    (int)$connection_point->active_connections_nonbusiness,
-                    (int)$connection_point->available_connections > 0 ? 'ANO' : 'NE',
-                    h($connection_point->available_speeds->effective_download_category),
-                    h($connection_point->available_speeds->effective_upload_category),
-                    h($connection_point->available_speeds->maximal_download_category),
-                    h($connection_point->available_speeds->maximal_upload_category),
-                    (int)$connection_point->vhcn_category,
-                ];
-
-                if ($category === 's2_catv') {
-                    $row[] = 'NE';
-                }
-
-                $row[] = h($connection_point->ruian_address);
-
-                $csv_data .= implode(';', $row) . PHP_EOL;
-            }
-
-            $csv_data_cp1250 = iconv('UTF-8', 'CP1250', $csv_data);
-            if ($csv_data_cp1250 === false) {
-                throw new RuntimeException('Unable to convert CSV data from UTF-8 encoding to CP1250 encoding.');
-            }
+            $csvCategory = CtuTechnologyCategory::tryFrom($category) ?? throw new NotFoundException();
 
             return $this->response
-                ->withStringBody($csv_data_cp1250)
+                ->withStringBody(CtuConnectionPointsCsv::render($csvCategory, $cto_categories[$category] ?? []))
                 ->withType('csv')
-                ->withDownload(
-                    $category . '.csv',
-                );
+                ->withDownload($category . '.csv');
         }
 
         $this->set(compact('cto_categories', 'month_to_display'));
@@ -931,15 +727,15 @@ class OverviewsController extends AppController
 
                                     $address->active_connections = $billings_collection->count();
                                     $address->active_connections_nonbusiness = $billings_collection
-                                        ->match(['customer.identity_number' => null])
+                                        ->reject(fn(Billing $billing): bool => $billing->customer->isBusiness())
                                         ->count();
 
                                     $address->advertised_speeds = new ArrayObject(
                                         $billings_collection
                                             ->countBy(
-                                                fn(Billing $billing): string => $this->bucketAdvertisedSpeed(
+                                                fn(Billing $billing): string => CtuAdvertisedSpeedBand::fromKbps(
                                                     $billing->service?->connection_profile?->speed_down,
-                                                ),
+                                                )->value,
                                             )
                                             ->toArray(),
                                         ArrayObject::ARRAY_AS_PROPS,
@@ -949,13 +745,13 @@ class OverviewsController extends AppController
                                         $billings_collection
                                             ->countBy(function (Billing $billing): string {
                                                 // skip business customers
-                                                if ($billing->customer->identity_number !== null) {
+                                                if ($billing->customer->isBusiness()) {
                                                     return 'business';
                                                 }
 
-                                                return $this->bucketAdvertisedSpeed(
+                                                return CtuAdvertisedSpeedBand::fromKbps(
                                                     $billing->service?->connection_profile?->speed_down,
-                                                );
+                                                )->value;
                                             })
                                             ->toArray(),
                                         ArrayObject::ARRAY_AS_PROPS,
@@ -1081,30 +877,6 @@ class OverviewsController extends AppController
     }
 
     /**
-     * Bucket a download/upload speed (kbps) into the CTO availability category code,
-     * given the technology family of the access.
-     *
-     * Used by the connection-points report's available_speeds output.
-     */
-    private function categorizeAvailableSpeed(int|float|null $speed, string $ctoCategory): string
-    {
-        if (in_array($ctoCategory, [CtuTechnologyCategory::Fttb->value, CtuTechnologyCategory::Ftth->value], true)) {
-            return '1000';
-        }
-
-        if ($ctoCategory !== CtuTechnologyCategory::Wifi->value) {
-            return 'unknown';
-        }
-
-        return match (true) {
-            $speed >= 1024000 => '1000',
-            $speed >= 307200 => '300_1000',
-            $speed >= 102400 => '100_300',
-            default => '30_100',
-        };
-    }
-
-    /**
      * Overview of what is wrong with the addresses on record
      *
      * Each check has a tick of its own, so that whoever is working through one of them is
@@ -1223,26 +995,5 @@ class OverviewsController extends AppController
         $checks = $registry->all();
 
         $this->set(compact('checks', 'shown', 'results', 'ignore_inactive'));
-    }
-
-    /**
-     * Bucket an advertised download speed (kbps) into the report band code.
-     *
-     * Used by the connection-speeds report's advertised_speeds output.
-     * Null is treated as the lowest band — preserves the original PHP 8
-     * `null < 2048` comparison semantics. The query upstream already filters
-     * out null speeds via `ConnectionProfiles.speed_down IS NOT NULL`, so this branch
-     * is defensive only.
-     */
-    private function bucketAdvertisedSpeed(?int $speedKbps): string
-    {
-        return match (true) {
-            $speedKbps === null, $speedKbps < 2048 => 'speed_0_2',
-            $speedKbps < 10240 => 'speed_2_10',
-            $speedKbps < 30720 => 'speed_10_30',
-            $speedKbps < 102400 => 'speed_30_100',
-            $speedKbps < 1024000 => 'speed_100_1000',
-            default => 'speed_1000_plus',
-        };
     }
 }

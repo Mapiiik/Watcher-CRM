@@ -173,6 +173,18 @@ class Customer extends AppEntity
     }
 
     /**
+     * Whether the customer does business, which the regulators count apart from households.
+     *
+     * Told by the identity number, the one thing only a business has on file.
+     *
+     * @return bool
+     */
+    public function isBusiness(): bool
+    {
+        return $this->identity_number !== null;
+    }
+
+    /**
      * getter for full name with company and with customer number for lists
      *
      * @return string

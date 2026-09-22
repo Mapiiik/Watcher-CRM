@@ -1,9 +1,13 @@
 <?php
+use App\RegulatoryReporting\Cz\CtuActiveSpeedBand;
+
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Collection\CollectionInterface<string, mixed> $cto_categories
+ * @var array<string, list<\App\RegulatoryReporting\Cz\CtuConnectionPointRow>> $cto_categories
  * @var \Cake\I18n\Date $month_to_display
  */
+
+$count = fn(?int $number): string => $number === null ? '' : $this->Number->format($number);
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
@@ -58,27 +62,21 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($connection_points as $connection_point) : ?>
+                <?php foreach ($connection_points as $row) : ?>
                 <tr>
-                    <td><?= h($connection_point->ruian_gid) ?></td>
-                    <td><?= isset($connection_point->active_connections) ?
-                        $this->Number->format($connection_point->active_connections) : '' ?></td>
-                    <td><?= isset($connection_point->active_connections_nonbusiness) ?
-                        $this->Number->format($connection_point->active_connections_nonbusiness) : '' ?></td>
-                    <td><?= isset($connection_point->active_speeds->speed_0_30) ?
-                        $this->Number->format($connection_point->active_speeds->speed_0_30) : '' ?></td>
-                    <td><?= isset($connection_point->active_speeds->speed_30_100) ?
-                        $this->Number->format($connection_point->active_speeds->speed_30_100) : '' ?></td>
-                    <td><?= isset($connection_point->active_speeds->speed_100_plus) ?
-                        $this->Number->format($connection_point->active_speeds->speed_100_plus) : '' ?></td>
-                    <td><?= isset($connection_point->available_connections) ?
-                        $this->Number->format($connection_point->available_connections) : '' ?></td>
-                    <td><?= h($connection_point->available_speeds->effective_download_category) ?></td>
-                    <td><?= h($connection_point->available_speeds->effective_upload_category) ?></td>
-                    <td><?= h($connection_point->available_speeds->maximal_download_category) ?></td>
-                    <td><?= h($connection_point->available_speeds->maximal_upload_category) ?></td>
-                    <td><?= $this->Number->format($connection_point->vhcn_category) ?></td>
-                    <td><?= h($connection_point->ruian_address) ?></td>
+                    <td><?= h($row->reference) ?></td>
+                    <td><?= $count($row->activeConnections) ?></td>
+                    <td><?= $count($row->activeNonBusinessConnections) ?></td>
+                    <td><?= $count($row->activeIn(CtuActiveSpeedBand::Below30)) ?></td>
+                    <td><?= $count($row->activeIn(CtuActiveSpeedBand::From30To100)) ?></td>
+                    <td><?= $count($row->activeIn(CtuActiveSpeedBand::From100)) ?></td>
+                    <td><?= $count($row->availableConnections) ?></td>
+                    <td><?= h($row->effectiveDownload->value) ?></td>
+                    <td><?= h($row->effectiveUpload->value) ?></td>
+                    <td><?= h($row->maximalDownload->value) ?></td>
+                    <td><?= h($row->maximalUpload->value) ?></td>
+                    <td><?= $count((int)$row->vhcn) ?></td>
+                    <td><?= h($row->address) ?></td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -126,6 +126,26 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
+     * A category's file downloads under its own name even when there is nothing in it, and a
+     * category ČTÚ does not have is not a file at all.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfCzechCustomerConnectionPoints()
+     */
+    public function testACategoryDownloadsAsItsOwnFile(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-czech-customer-connection-points/s2_catv.csv');
+        $this->assertResponseOk();
+        $this->assertHeaderContains('Content-Disposition', 's2_catv.csv');
+        $this->assertStringContainsString('DOCSIS', (string)iconv('CP1250', 'UTF-8', (string)$this->_response?->getBody()));
+
+        $this->get('/overviews/overview-of-czech-customer-connection-points/s2_nothing.csv');
+        $this->assertResponseCode(404);
+    }
+
+    /**
      * Test overview of Czech customer connection speeds method
      *
      * @return void
