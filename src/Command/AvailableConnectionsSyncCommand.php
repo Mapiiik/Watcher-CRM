@@ -5,6 +5,7 @@ namespace App\Command;
 
 use App\Addresses\Resolver as AddressesResolver;
 use App\Model\Entity\AvailableConnection;
+use App\Model\Enum\AccessMedium;
 use App\Model\Enum\AvailableConnectionOrigin;
 use App\Model\Table\AvailableConnectionsTable;
 use App\Model\Table\ContractsTable;
@@ -12,16 +13,21 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\I18n\Date;
 use Override;
 use RuntimeException;
 
 /**
  * Records every address point a contract ever put a connection at as an available connection.
  *
- * Meant to run daily. The connection stays when the contract ends, and the record stays when the
- * contract is one day erased, which is the whole point of keeping it apart.
+ * Meant to run daily. A line stays in the building when the contract ends, and the record stays
+ * when the contract is one day erased, which is the whole point of keeping it apart.
  *
- * Only raises what it wrote itself. A record the operator took over, or retired, is left as it is.
+ * Wireless is the exception: the connection is the kit on the roof, so only the active ones are
+ * recorded unless asked otherwise. What is already recorded stays either way.
+ *
+ * Never removes anything. Only raises what it wrote itself, and a record the operator took over,
+ * or retired, is left as it is.
  */
 class AvailableConnectionsSyncCommand extends Command
 {
@@ -48,6 +54,12 @@ class AvailableConnectionsSyncCommand extends Command
             . ' Meant to run daily from cron.',
         );
 
+        $parser->addOption('include-ended-wireless', [
+            'short' => 'w',
+            'help' => 'Record wireless connections of ended contracts too, not only the active ones.',
+            'boolean' => true,
+        ]);
+
         $parser->addOption('dry-run', [
             'short' => 'd',
             'help' => 'Do not write anything, only show what would be changed.',
@@ -66,9 +78,10 @@ class AvailableConnectionsSyncCommand extends Command
     public function execute(Arguments $args, ConsoleIo $io): int
     {
         $dryRun = (bool)$args->getOption('dry-run');
+        $endedWireless = (bool)$args->getOption('include-ended-wireless');
         $available = $this->fetchTable(AvailableConnectionsTable::class);
 
-        $wanted = $this->wanted();
+        $wanted = $this->wanted($endedWireless);
 
         /** @var array<string, \App\Model\Entity\AvailableConnection> $existing */
         $existing = [];
@@ -135,11 +148,15 @@ class AvailableConnectionsSyncCommand extends Command
      *
      * Every contract that ever had a billing on a profile with a technology, at an installation
      * address the registry knows. The fastest profile a point ever had is what it can carry.
+     * A wireless billing counts only while it runs, unless the ended ones are asked for.
      *
+     * @param bool $endedWireless Whether wireless billings that have ended count too.
      * @return array<string, array{source: string, reference: string, technology: \App\Model\Enum\AccessTechnology, speed_down: int, speed_up: int, contract_id: string, label: string|null, gps_x: float|null, gps_y: float|null}>
      */
-    private function wanted(): array
+    private function wanted(bool $endedWireless): array
     {
+        $today = Date::now();
+
         $contracts = $this->fetchTable(ContractsTable::class)->find()
             ->contain(['InstallationAddresses', 'Billings' => ['Services' => ['ConnectionProfiles']]])
             ->innerJoinWith('InstallationAddresses')
@@ -160,6 +177,14 @@ class AvailableConnectionsSyncCommand extends Command
                     $profile?->access_technology === null
                     || $profile->speed_down === null
                     || $profile->speed_up === null
+                ) {
+                    continue;
+                }
+
+                if (
+                    !$endedWireless
+                    && $profile->access_technology->medium() === AccessMedium::Wireless
+                    && !$billing->isActiveOn($today)
                 ) {
                     continue;
                 }

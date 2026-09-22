@@ -151,6 +151,17 @@ class Billing extends AppEntity
     }
 
     /**
+     * Whether the billing runs on a day.
+     *
+     * @param \Cake\I18n\Date $day The day.
+     * @return bool
+     */
+    public function isActiveOn(Date $day): bool
+    {
+        return $this->billing_from <= $day && ($this->billing_until === null || $this->billing_until >= $day);
+    }
+
+    /**
      * getter for total price (sum - discount)
      *
      * @return \PhpCollective\DecimalObject\Decimal

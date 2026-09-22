@@ -169,6 +169,31 @@ class AvailableConnectionsSyncCommandTest extends TestCase
     }
 
     /**
+     * A wireless connection is the kit on the roof: once the contract has ended it is only recorded
+     * when asked for. What was recorded while it ran stays.
+     *
+     * @return void
+     * @link \App\Command\AvailableConnectionsSyncCommand::execute()
+     */
+    public function testAnEndedWirelessConnectionIsOnlyRecordedWhenAskedFor(): void
+    {
+        $this->getTableLocator()->get('Billings')->updateAll(
+            ['billing_until' => new Date('2025-12-31')],
+            ['contract_id' => self::CONTRACT_ID],
+        );
+
+        $this->exec('available_connections sync');
+        $this->assertOutputContains('0 new, 0 updated.');
+
+        $this->exec('available_connections sync -w');
+        $this->assertOutputContains('1 new, 0 updated.');
+
+        $this->exec('available_connections sync');
+        $this->assertOutputContains('0 new, 0 updated.');
+        $this->assertSame(2, $this->getTableLocator()->get('AvailableConnections')->find()->count());
+    }
+
+    /**
      * @return \App\Model\Entity\AvailableConnection
      */
     private function recordOfTheContract(): AvailableConnection

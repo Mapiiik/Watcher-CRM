@@ -157,6 +157,30 @@ class AvailableConnectionsController extends AppController
     }
 
     /**
+     * Delete method
+     *
+     * For a record that should never have been. One the synchronisation made comes back while its
+     * contract is there, which retiring it prevents.
+     *
+     * @param string|null $id Available Connection id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete(?string $id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post', 'delete']);
+        $availableConnection = $this->AvailableConnections->get($id);
+
+        if ($this->AvailableConnections->delete($availableConnection)) {
+            $this->Flash->success(__('The available connection has been deleted.'));
+        } else {
+            $this->Flash->error(__('The available connection could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    /**
      * The form both add and edit are.
      *
      * Picking an address in the search sends the form back to be filled in from the registry

@@ -1,4 +1,6 @@
 <?php
+use App\Model\Enum\AvailableConnectionOrigin;
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\AvailableConnection $availableConnection
@@ -24,6 +26,19 @@
                     ],
                 ) ?>
             <?php endif; ?>
+            <?= $this->AuthLink->postLink(
+                __('Delete Available Connection'),
+                ['action' => 'delete', $availableConnection->id],
+                [
+                    'confirm' => $availableConnection->origin === AvailableConnectionOrigin::Contract
+                        ? __(
+                            'The synchronisation will record it again while its contract is there.'
+                            . ' Retiring it keeps it away. Delete anyway?',
+                        )
+                        : __('Are you sure you want to delete # {0}?', $availableConnection->id),
+                    'class' => 'side-nav-item',
+                ],
+            ) ?>
             <?= $this->AuthLink->link(
                 __('List Available Connections'),
                 ['action' => 'index'],

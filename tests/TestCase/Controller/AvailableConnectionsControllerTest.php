@@ -206,6 +206,24 @@ class AvailableConnectionsControllerTest extends TestCase
     }
 
     /**
+     * A record that should never have been can be deleted.
+     *
+     * @return void
+     * @link \App\Controller\AvailableConnectionsController::delete()
+     */
+    public function testDelete(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/available-connections/delete/' . self::RECORD_ID);
+
+        $this->assertRedirect();
+        $this->assertFalse($this->getTableLocator()->get('AvailableConnections')->exists(['id' => self::RECORD_ID]));
+    }
+
+    /**
      * Retiring keeps the record and stops it being reported.
      *
      * @return void

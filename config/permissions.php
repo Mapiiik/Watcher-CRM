@@ -449,6 +449,7 @@ $permissions = [
                 'add',
                 'edit',
                 'retire',
+                'delete',
             ],
         ],
         //allow add/edit for sales and bookkeepers and network-managers
