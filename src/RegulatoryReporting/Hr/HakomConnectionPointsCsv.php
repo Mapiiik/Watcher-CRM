@@ -9,8 +9,9 @@ use App\RegulatoryReporting\CsvFile;
  * HAKOM's listing of the address points, one line per point and type of infrastructure, with the
  * households and the businesses on it counted by band of their contracted speed.
  *
- * The columns follow what the old system sent. The county and the municipality it had are not
- * among what the address registry gives, so they are left out rather than guessed.
+ * The columns follow what the old system sent. The county and the municipality come from the
+ * address registry, which knows them once its administrative units have been imported, and are
+ * left empty where it does not.
  */
 final class HakomConnectionPointsCsv
 {
@@ -22,7 +23,16 @@ final class HakomConnectionPointsCsv
      */
     public static function render(iterable $points, string $owner): string
     {
-        $headers = ['kb_id', 'na_ime', 'ul_ime', 'kb', 'infrastructure_owner', 'infrastructure_type'];
+        $headers = [
+            'kb_id',
+            'zu_ime',
+            'jls_ime',
+            'na_ime',
+            'ul_ime',
+            'kb',
+            'infrastructure_owner',
+            'infrastructure_type',
+        ];
         foreach (['private', 'business'] as $who) {
             foreach (HakomAddressSpeedBand::cases() as $band) {
                 $headers[] = $who . '_' . $band->value;
@@ -40,6 +50,8 @@ final class HakomConnectionPointsCsv
 
             $line = [
                 $point->reportedReference ?? $point->registryReference,
+                $point->registryAddress?->county,
+                $point->registryAddress?->municipality,
                 $point->registryAddress?->city,
                 $point->registryAddress?->street,
                 $point->registryAddress?->houseNumber,

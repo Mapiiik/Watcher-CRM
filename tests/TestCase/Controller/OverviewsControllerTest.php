@@ -205,7 +205,7 @@ class OverviewsControllerTest extends TestCase
 
         $this->get('/overviews/overview-of-croatian-connection-points.csv?month_to_display=2026-09');
         $this->assertResponseOk();
-        $this->assertResponseContains('kb_id;na_ime;ul_ime;kb;infrastructure_owner;infrastructure_type');
+        $this->assertResponseContains('kb_id;zu_ime;jls_ime;na_ime;ul_ime;kb;infrastructure_owner');
     }
 
     /**

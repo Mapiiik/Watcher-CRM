@@ -70,6 +70,8 @@ final class AddressPayloadNormalizer
             houseNumber: self::stringOrNull($entry['house_number'] ?? null),
             city: self::stringOrNull($entry['city'] ?? null),
             postalCode: self::stringOrNull($entry['postal_code'] ?? null),
+            county: self::stringOrNull($entry['county'] ?? null),
+            municipality: self::stringOrNull($entry['municipality'] ?? null),
             numberType: self::stringOrNull($entry['number_type'] ?? null),
             latitude: self::floatOrNull($coordinates[1] ?? null),
             longitude: self::floatOrNull($coordinates[0] ?? null),

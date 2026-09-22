@@ -92,8 +92,8 @@ class HakomTest extends TestCase
     }
 
     /**
-     * A household and a business at one address are counted apart, and an address nobody is on
-     * yet is listed with nothing on it.
+     * A household and a business at one address are counted apart, under the county and the
+     * municipality the registry names, and an address nobody is on yet is listed with nothing.
      *
      * @return void
      * @link \App\RegulatoryReporting\Hr\HakomConnectionPointsCsv::render()
@@ -108,6 +108,8 @@ class HakomTest extends TestCase
             street: 'Potok',
             houseNumber: '23',
             city: 'Makarska',
+            county: 'Splitsko-dalmatinska županija',
+            municipality: 'Makarska',
         );
         $point = new ConnectionPoint('FWA-WiFi', 'hr', 'HR.DGU.RPJ:KB.0000606874', [
             $this->connection(null, 7168),
@@ -117,9 +119,13 @@ class HakomTest extends TestCase
 
         $lines = explode("\r\n", HakomConnectionPointsCsv::render([$point, $empty], 'MULTI KOMUNIKACIJE d.o.o.'));
 
-        $this->assertStringStartsWith("\u{FEFF}kb_id;na_ime;ul_ime;kb;infrastructure_owner;infrastructure_type;private_0M;", $lines[0]);
+        $this->assertStringStartsWith(
+            "\u{FEFF}kb_id;zu_ime;jls_ime;na_ime;ul_ime;kb;infrastructure_owner;infrastructure_type;private_0M;",
+            $lines[0],
+        );
         $this->assertSame(
-            'HR.DGU.RPJ:KB.0000606874;Makarska;Potok;23;MULTI KOMUNIKACIJE d.o.o.;FWA-WiFi;'
+            'HR.DGU.RPJ:KB.0000606874;Splitsko-dalmatinska županija;Makarska;Makarska;Potok;23;'
+            . 'MULTI KOMUNIKACIJE d.o.o.;FWA-WiFi;'
             . '0;0;1;0;0;0;0;0;0;0;0;0;0;'
             . '0;0;0;0;1;0;0;0;0;0;0;0;0',
             $lines[1],

@@ -25,6 +25,9 @@ final readonly class Address
      * @param string|null $houseNumber The number on the house.
      * @param string|null $city The town or village.
      * @param string|null $postalCode The postal code.
+     * @param string|null $county The county the address is in, where the registry says so.
+     * @param string|null $municipality The town or municipality it is in, where the registry
+     *      says so.
      * @param string|null $numberType Whether the number is a house or a registration number.
      * @param float|null $latitude Where the address is.
      * @param float|null $longitude Where the address is.
@@ -40,6 +43,8 @@ final readonly class Address
         public ?string $houseNumber = null,
         public ?string $city = null,
         public ?string $postalCode = null,
+        public ?string $county = null,
+        public ?string $municipality = null,
         public ?string $numberType = null,
         public ?float $latitude = null,
         public ?float $longitude = null,
