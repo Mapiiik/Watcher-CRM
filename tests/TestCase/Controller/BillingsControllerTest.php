@@ -52,7 +52,7 @@ class BillingsControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
         'app.Emails',
@@ -833,7 +833,7 @@ class BillingsControllerTest extends TestCase
         return [
             'customer_id' => self::CUSTOMER_ID,
             'contract_id' => self::CONTRACT_ID,
-            // the fixture's service with a queue
+            // the fixture's service with a connection profile
             'service_id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2',
             'price' => $price,
             'quantity' => '1',

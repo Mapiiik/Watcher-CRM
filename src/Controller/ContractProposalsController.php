@@ -14,6 +14,7 @@ use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Contracts\Proposal\ReadinessChecks;
+use App\Contracts\Proposal\SnapshotShape;
 use App\Contracts\TheUsualTerm;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
@@ -84,7 +85,7 @@ class ContractProposalsController extends AppController
      * @var array<mixed>
      */
     private const FOR_A_SNAPSHOT = [
-        'Billings' => ['Services' => ['Queues']],
+        'Billings' => ['Services' => ['ConnectionProfiles']],
         'ContractStates',
         'ContractVersions',
         'Customers' => ['Addresses', 'Emails', 'Phones', 'AccountingProfiles'],
@@ -1134,7 +1135,7 @@ class ContractProposalsController extends AppController
 
         $services = $this->ContractProposals->Contracts->Billings->Services
             ->find()
-            ->contain(['Queues'])
+            ->contain(['ConnectionProfiles'])
             ->where(['Services.id' => $id])
             ->first();
 
@@ -1143,11 +1144,7 @@ class ContractProposalsController extends AppController
         }
 
         return $services->extract(['id', 'name', 'price'])
-            + ['queue' => $services->queue?->extract([
-                'id', 'name', 'caption', 'speed_down', 'speed_up',
-                'speed_down_common', 'speed_up_common', 'speed_down_minimum', 'speed_up_minimum',
-                'fup_limit', 'data_limit', 'overlimit_fragment', 'overlimit_cost', 'cto_category',
-            ])];
+            + ['connection_profile' => $services->connection_profile?->extract(SnapshotShape::CONNECTION_PROFILE)];
     }
 
     /**

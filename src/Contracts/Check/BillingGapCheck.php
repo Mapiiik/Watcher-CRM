@@ -22,10 +22,10 @@ use Override;
  * only breaks that have not finished yet are counted by default: those are the ones still
  * worth doing something about.
  *
- * What counts as one run is the line rather than the service. A queue carries the speeds and
+ * What counts as one run is the line rather than the service. A connection profile carries the speeds and
  * the kind of service the regulator is told about - it is what says which line this is - so a
  * contract has one such service at a time and a tariff giving way to another is a change of
- * tariff, not a month nobody paid for. A service without a queue is a fee or an add-on
+ * tariff, not a month nobody paid for. A service without a connection profile is a fee or an add-on
  * standing beside the line: a static address or a television package running alongside does
  * not pay for the connection, so it cannot fill a break in it either.
  */
@@ -45,7 +45,7 @@ class BillingGapCheck extends AbstractContractCheck
             WHERE later.id <> Billings.id
               AND later.contract_id = Billings.contract_id
               AND (
-                (later_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                (later_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
                 OR later.service_id IS NOT DISTINCT FROM Billings.service_id
               )
               AND later.billing_from > Billings.billing_until + 1
@@ -62,7 +62,7 @@ class BillingGapCheck extends AbstractContractCheck
             LEFT JOIN services covering_service ON covering_service.id = covering.service_id
             WHERE covering.contract_id = Billings.contract_id
               AND (
-                (covering_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                (covering_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
                 OR covering.service_id IS NOT DISTINCT FROM Billings.service_id
               )
               AND covering.billing_from > Billings.billing_from
@@ -81,7 +81,7 @@ class BillingGapCheck extends AbstractContractCheck
             WHERE resumed.id <> Billings.id
               AND resumed.contract_id = Billings.contract_id
               AND (
-                (resumed_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                (resumed_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
                 OR resumed.service_id IS NOT DISTINCT FROM Billings.service_id
               )
               AND resumed.billing_from > Billings.billing_until + 1
@@ -100,7 +100,7 @@ class BillingGapCheck extends AbstractContractCheck
             WHERE resumes.id <> Billings.id
               AND resumes.contract_id = Billings.contract_id
               AND (
-                (resumes_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                (resumes_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
                 OR resumes.service_id IS NOT DISTINCT FROM Billings.service_id
               )
               AND resumes.billing_from > Billings.billing_until + 1

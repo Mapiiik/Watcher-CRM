@@ -5,8 +5,8 @@ namespace App\Test\TestCase\Contracts;
 
 use App\Contracts\MinimumConnectionPrice;
 use App\Model\Entity\Billing;
+use App\Model\Entity\ConnectionProfile;
 use App\Model\Entity\ContractProposal;
-use App\Model\Entity\Queue;
 use App\Model\Entity\Service;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
@@ -25,17 +25,17 @@ class MinimumConnectionPriceTest extends TestCase
     private const KNOWN_BILLING_ID = 'b2000000-0000-4000-8000-000000000002';
 
     /**
-     * A service read from the table says so by its queue id, one kept by a proposal by the queue.
+     * A service read from the table says so by its connection profile id, one kept by a proposal by the connection profile.
      *
      * @return void
      */
-    public function testTheConnectionIsTheServiceWithAQueue(): void
+    public function testTheConnectionIsTheServiceWithAConnectionProfile(): void
     {
-        $this->assertTrue(MinimumConnectionPrice::isConnection($this->billing(new Service(['queue_id' => 1]))));
+        $this->assertTrue(MinimumConnectionPrice::isConnection($this->billing(new Service(['connection_profile_id' => 1]))));
         $this->assertTrue(
-            MinimumConnectionPrice::isConnection($this->billing(new Service(['queue' => new Queue(['id' => 1])]))),
+            MinimumConnectionPrice::isConnection($this->billing(new Service(['connection_profile' => new ConnectionProfile(['id' => 1])]))),
         );
-        $this->assertFalse(MinimumConnectionPrice::isConnection($this->billing(new Service(['queue_id' => null]))));
+        $this->assertFalse(MinimumConnectionPrice::isConnection($this->billing(new Service(['connection_profile_id' => null]))));
         $this->assertFalse(MinimumConnectionPrice::isConnection($this->billing(null)));
     }
 
@@ -47,7 +47,7 @@ class MinimumConnectionPriceTest extends TestCase
     public function testThePriceAfterDiscountsIsMeasured(): void
     {
         $minimum = Decimal::create('100');
-        $connection = new Service(['queue_id' => 1, 'price' => Decimal::create('100')]);
+        $connection = new Service(['connection_profile_id' => 1, 'price' => Decimal::create('100')]);
 
         $this->assertFalse(MinimumConnectionPrice::fallsBelow($this->billing($connection), $minimum));
         $this->assertTrue(MinimumConnectionPrice::fallsBelow(
@@ -70,11 +70,11 @@ class MinimumConnectionPriceTest extends TestCase
         $cheap = ['price' => Decimal::create('1')];
 
         $this->assertFalse(MinimumConnectionPrice::fallsBelow(
-            $this->billing(new Service(['queue_id' => 1]), $cheap),
+            $this->billing(new Service(['connection_profile_id' => 1]), $cheap),
             null,
         ));
         $this->assertFalse(MinimumConnectionPrice::fallsBelow(
-            $this->billing(new Service(['queue_id' => null]), $cheap),
+            $this->billing(new Service(['connection_profile_id' => null]), $cheap),
             Decimal::create('100'),
         ));
     }
@@ -184,7 +184,7 @@ class MinimumConnectionPriceTest extends TestCase
                 'id' => 'connection',
                 'name' => 'Internet',
                 'price' => '2',
-                'queue' => ['id' => 'queue', 'name' => 'Internet'],
+                'connection_profile' => ['id' => 'connection_profile', 'name' => 'Internet'],
             ],
         ];
     }

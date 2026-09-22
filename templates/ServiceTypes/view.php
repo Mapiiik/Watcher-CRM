@@ -113,7 +113,7 @@
                         <tr>
                             <th><?= __('Name') ?></th>
                             <th><?= __('Price') ?></th>
-                            <th><?= __('Queue') ?></th>
+                            <th><?= __('Connection Profile') ?></th>
                             <th><?= __('Criticality Level') ?></th>
                             <th><?= __('Accounting Product Code') ?></th>
                             <th><?= __('Currently Offered') ?></th>
@@ -125,9 +125,14 @@
                             <td><?= $service->price === null ?
                                 '' : $this->Number->currency($service->price->toString()) ?></td>
                             <td>
-                                <?= $service->queue !== null ? $this->Html->link(
-                                    $service->queue->name ?? '(' . $service->queue->id . ')',
-                                    ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
+                                <?= $service->connection_profile !== null ? $this->Html->link(
+                                    $service->connection_profile->radius_group
+                                        ?? '(' . $service->connection_profile->id . ')',
+                                    [
+                                        'controller' => 'ConnectionProfiles',
+                                        'action' => 'view',
+                                        $service->connection_profile->id,
+                                    ],
                                 ) : '' ?>
                             </td>
                             <td><?= $service->criticality_level === null ?

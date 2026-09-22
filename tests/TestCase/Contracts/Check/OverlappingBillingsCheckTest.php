@@ -45,7 +45,7 @@ class OverlappingBillingsCheckTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
     ];
@@ -186,9 +186,9 @@ class OverlappingBillingsCheckTest extends TestCase
     }
 
     /**
-     * Make a service a fee rather than a tariff, by taking its queue away.
+     * Make a service a fee rather than a tariff, by taking its connection profile away.
      *
-     * The queue is what says which line a service is; without one it stands beside the line.
+     * The connection profile is what says which line a service is; without one it stands beside the line.
      * Both fixture services carry one, so a case about a fee has to say so.
      *
      * @param string $service_id The service to turn into a fee.
@@ -196,7 +196,7 @@ class OverlappingBillingsCheckTest extends TestCase
      */
     private function aFee(string $service_id): void
     {
-        $this->getTableLocator()->get('Services')->updateAll(['queue_id' => null], ['id' => $service_id]);
+        $this->getTableLocator()->get('Services')->updateAll(['connection_profile_id' => null], ['id' => $service_id]);
     }
 
     /**

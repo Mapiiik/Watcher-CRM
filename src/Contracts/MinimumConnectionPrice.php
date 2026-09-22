@@ -12,7 +12,7 @@ use PhpCollective\DecimalObject\Decimal;
 /**
  * The monthly price a contract's connection is not lowered below.
  *
- * The connection is the billing whose service has a queue, the same way the checks tell the line
+ * The connection is the billing whose service has a connection profile, the same way the checks tell the line
  * from a fee standing beside it. A contract has one line at a time, so the price of that one
  * billing is the price of the connection.
  *
@@ -35,8 +35,8 @@ final class MinimumConnectionPrice
             return false;
         }
 
-        // a service read from the table carries the id, one kept by a proposal carries the queue
-        return $service->get('queue_id') !== null || $service->get('queue') !== null;
+        // a service read from the table carries the id, one kept by a proposal carries the connection profile
+        return $service->get('connection_profile_id') !== null || $service->get('connection_profile') !== null;
     }
 
     /**

@@ -41,7 +41,7 @@ class OverviewsControllerTest extends TestCase
         'app.ContractVersions',
         'app.Labels',
         'app.CustomerLabels',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
     ];
@@ -90,7 +90,7 @@ class OverviewsControllerTest extends TestCase
         // the eager loaded branches the listing renders
         $this->assertNotEmpty($contracts[0]->billings);
         $this->assertNotNull($contracts[0]->billings[0]->service);
-        $this->assertNotNull($contracts[0]->billings[0]->service->queue);
+        $this->assertNotNull($contracts[0]->billings[0]->service->connection_profile);
         $this->assertNotNull($contracts[0]->customer->emails);
         $this->assertNotNull($contracts[0]->customer->phones);
     }

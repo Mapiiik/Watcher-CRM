@@ -44,10 +44,15 @@ use Cake\Collection\Collection;
                             ) : '' ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Queue') ?></th>
-                            <td><?= $service->queue !== null ? $this->Html->link(
-                                $service->queue->name ?? '(' . $service->queue->id . ')',
-                                ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
+                            <th><?= __('Connection Profile') ?></th>
+                            <td><?= $service->connection_profile !== null ? $this->Html->link(
+                                $service->connection_profile->radius_group
+                                    ?? '(' . $service->connection_profile->id . ')',
+                                [
+                                    'controller' => 'ConnectionProfiles',
+                                    'action' => 'view',
+                                    $service->connection_profile->id,
+                                ],
                             ) : '' ?></td>
                         </tr>
                         <tr>

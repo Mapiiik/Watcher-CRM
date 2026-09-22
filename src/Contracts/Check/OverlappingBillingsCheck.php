@@ -15,7 +15,7 @@ use Override;
  * more expensive way round: a break nobody notices costs us, an overlap nobody notices costs
  * the customer, and they do notice.
  *
- * What counts as one line is what counts as one for a break, and for the same reason: a queue
+ * What counts as one line is what counts as one for a break, and for the same reason: a connection profile
  * says which line a service is, and a contract has one of those at a time. So two tariffs
  * running at once are an overlap however differently they are named - the customer is paying
  * for the connection twice - while a fee standing beside the line overlaps only itself.
@@ -37,7 +37,7 @@ class OverlappingBillingsCheck extends AbstractContractCheck
             LEFT JOIN services other_service ON other_service.id = other.service_id
             WHERE other.contract_id = Billings.contract_id
               AND (
-                (other_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                (other_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
                 OR other.service_id IS NOT DISTINCT FROM Billings.service_id
               )
               AND (other.billing_from, other.id) > (Billings.billing_from, Billings.id)
@@ -54,7 +54,7 @@ class OverlappingBillingsCheck extends AbstractContractCheck
             LEFT JOIN services overlapping_service ON overlapping_service.id = overlapping.service_id
             WHERE overlapping.contract_id = Billings.contract_id
               AND (
-                (overlapping_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                (overlapping_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
                 OR overlapping.service_id IS NOT DISTINCT FROM Billings.service_id
               )
               AND (overlapping.billing_from, overlapping.id) > (Billings.billing_from, Billings.id)
@@ -73,7 +73,7 @@ class OverlappingBillingsCheck extends AbstractContractCheck
             LEFT JOIN services with_service ON with_service.id = with_billing.service_id
             WHERE with_billing.contract_id = Billings.contract_id
               AND (
-                (with_service.queue_id IS NOT NULL AND Services.queue_id IS NOT NULL)
+                (with_service.connection_profile_id IS NOT NULL AND Services.connection_profile_id IS NOT NULL)
                 OR with_billing.service_id IS NOT DISTINCT FROM Billings.service_id
               )
               AND (with_billing.billing_from, with_billing.id) > (Billings.billing_from, Billings.id)

@@ -30,7 +30,7 @@ class ServicesFixture extends TestFixture
                 // deliberately the *higher* level of the two: it is only billed
                 // historically, so it must never leak into a recipient's flags
                 'criticality_level' => 30,
-                'queue_id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4',
+                'connection_profile_id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4',
                 'service_type_id' => '907cbc5c-af88-43b6-b535-959b4fa2ce3d',
                 'id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
                 'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',
@@ -46,7 +46,7 @@ class ServicesFixture extends TestFixture
                 'accounting_product_code' => 'Sed do eiusmod tempor',
                 'currently_offered' => 1,
                 'criticality_level' => 20,
-                'queue_id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4',
+                'connection_profile_id' => '9a2952ed-9947-4c0e-bda8-97f00614eab4',
                 'service_type_id' => '907cbc5c-af88-43b6-b535-959b4fa2ce3d',
                 'id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2',
                 'created_by' => '11edb519-be76-4d66-aea0-34188d31eae1',

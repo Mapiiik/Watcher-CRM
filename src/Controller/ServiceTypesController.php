@@ -65,7 +65,7 @@ class ServiceTypesController extends AppController
                 'UninstallationTechnicians',
                 'Commissions',
             ],
-            'Services' => ['Queues'],
+            'Services' => ['ConnectionProfiles'],
             'Creators',
             'Modifiers',
         ]);

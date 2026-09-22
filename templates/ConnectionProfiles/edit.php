@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Queue $queue
+ * @var \App\Model\Entity\ConnectionProfile $connectionProfile
  */
 ?>
 <div class="row">
@@ -10,21 +10,28 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->postLink(
                 __('Delete'),
-                ['action' => 'delete', $queue->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id), 'class' => 'side-nav-item'],
+                ['action' => 'delete', $connectionProfile->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $connectionProfile->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
-            <?= $this->AuthLink->link(__('List Queues'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('List Connection Profiles'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="queues form content">
-            <?= $this->Form->create($queue) ?>
+        <div class="connectionProfiles form content">
+            <?= $this->Form->create($connectionProfile) ?>
             <fieldset>
-                <?= $this->legend(__('Edit Queue')) ?>
+                <?= $this->legend(__('Edit Connection Profile')) ?>
                 <?php
                     $derivedHelp = __('Leave empty to derive it from the advertised speed.');
                     echo $this->Form->control('name');
-                    echo $this->Form->control('caption');
+                    echo $this->Form->control('radius_group', ['label' => __('RADIUS Group')]);
                     echo $this->Form->control('fup_limit', ['label' => __('FUP Limit')]);
                     echo $this->Form->control('data_limit');
                     echo $this->Form->control('overlimit_fragment');

@@ -26,7 +26,7 @@
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('service_type_id') ?></th>
-                    <th><?= $this->Paginator->sort('queue_id') ?></th>
+                    <th><?= $this->Paginator->sort('connection_profile_id') ?></th>
                     <th><?= $this->Paginator->sort('criticality_level') ?></th>
                     <th><?= $this->Paginator->sort('accounting_product_code') ?></th>
                     <th><?= $this->Paginator->sort('currently_offered') ?></th>
@@ -45,9 +45,14 @@
                         ) : '' ?>
                     </td>
                     <td>
-                        <?= $service->queue !== null ? $this->Html->link(
-                            $service->queue->name ?? '(' . $service->queue->id . ')',
-                            ['controller' => 'Queues', 'action' => 'view', $service->queue->id],
+                        <?= $service->connection_profile !== null ? $this->Html->link(
+                            $service->connection_profile->radius_group
+                                ?? '(' . $service->connection_profile->id . ')',
+                            [
+                                'controller' => 'ConnectionProfiles',
+                                'action' => 'view',
+                                $service->connection_profile->id,
+                            ],
                         ) : '' ?>
                     </td>
                     <td><?= $service->criticality_level === null ?

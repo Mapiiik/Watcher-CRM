@@ -33,7 +33,7 @@ class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
         'app.Commissions',
         'app.ContractStates',
         'app.ServiceTypes',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Contracts',
         'app.Billings',

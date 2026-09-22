@@ -44,7 +44,7 @@ class PagesAboutOneRecordTest extends TestCase
         'app.ContractVersions',
         'app.CustomerProposals',
         'app.ContractProposals',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
         'app.EquipmentTypes',

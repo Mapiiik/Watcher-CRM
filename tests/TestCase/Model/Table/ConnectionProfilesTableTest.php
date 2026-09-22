@@ -3,24 +3,24 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\QueuesTable;
+use App\Model\Table\ConnectionProfilesTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 
 /**
- * App\Model\Table\QueuesTable Test Case
+ * App\Model\Table\ConnectionProfilesTable Test Case
  */
-class QueuesTableTest extends TestCase
+class ConnectionProfilesTableTest extends TestCase
 {
     use TableTestTrait;
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\QueuesTable
+     * @var \App\Model\Table\ConnectionProfilesTable
      */
-    protected $Queues;
+    protected $ConnectionProfiles;
 
     /**
      * Fixtures
@@ -29,7 +29,7 @@ class QueuesTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.ServiceTypes',
         'app.Services',
     ];
@@ -43,8 +43,8 @@ class QueuesTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('Queues') ? [] : ['className' => QueuesTable::class];
-        $this->Queues = $this->getTableLocator()->get('Queues', $config);
+        $config = $this->getTableLocator()->exists('ConnectionProfiles') ? [] : ['className' => ConnectionProfilesTable::class];
+        $this->ConnectionProfiles = $this->getTableLocator()->get('ConnectionProfiles', $config);
     }
 
     /**
@@ -56,7 +56,7 @@ class QueuesTableTest extends TestCase
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */
-        unset($this->Queues);
+        unset($this->ConnectionProfiles);
 
         parent::tearDown();
     }
@@ -66,11 +66,11 @@ class QueuesTableTest extends TestCase
      * worth asking here.
      *
      * @return void
-     * @link \App\Model\Table\QueuesTable::validationDefault()
+     * @link \App\Model\Table\ConnectionProfilesTable::validationDefault()
      */
     public function testValidationDefault(): void
     {
-        $this->assertEmptyRecordIsRefused($this->Queues);
+        $this->assertEmptyRecordIsRefused($this->ConnectionProfiles);
     }
 
     /**
@@ -78,10 +78,10 @@ class QueuesTableTest extends TestCase
      * the question worth asking here.
      *
      * @return void
-     * @link \App\Model\Table\QueuesTable::buildRules()
+     * @link \App\Model\Table\ConnectionProfilesTable::buildRules()
      */
     public function testBuildRules(): void
     {
-        $this->assertDanglingReferencesAreRefused($this->Queues);
+        $this->assertDanglingReferencesAreRefused($this->ConnectionProfiles);
     }
 }

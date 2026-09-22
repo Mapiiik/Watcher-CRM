@@ -3,21 +3,21 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\QueuesController;
+use App\Controller\ConnectionProfilesController;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
- * App\Controller\QueuesController Test Case
+ * App\Controller\ConnectionProfilesController Test Case
  *
  * Smoke tests: every action is requested once and has to answer. They are deliberately shallow -
  * their job is to notice an action that stopped answering at all, which is how the query building
  * bugs in this application have shown up.
  */
-#[UsesClass(QueuesController::class)]
-class QueuesControllerTest extends TestCase
+#[UsesClass(ConnectionProfilesController::class)]
+class ConnectionProfilesControllerTest extends TestCase
 {
     use ControllerTestTrait;
     use IntegrationTestTrait;
@@ -29,7 +29,7 @@ class QueuesControllerTest extends TestCase
      */
     protected array $fixtures = [
         'app.AppUsers',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.ServiceTypes',
         'app.Services',
     ];
@@ -38,12 +38,12 @@ class QueuesControllerTest extends TestCase
      * The listing renders.
      *
      * @return void
-     * @link \App\Controller\QueuesController::index()
+     * @link \App\Controller\ConnectionProfilesController::index()
      */
     public function testIndex(): void
     {
         $this->login();
-        $this->get('/queues');
+        $this->get('/connection-profiles');
 
         $this->assertResponseOk();
     }
@@ -53,12 +53,12 @@ class QueuesControllerTest extends TestCase
      * listing does and is therefore worth requesting on its own.
      *
      * @return void
-     * @link \App\Controller\QueuesController::index()
+     * @link \App\Controller\ConnectionProfilesController::index()
      */
     public function testIndexWithSearch(): void
     {
         $this->login();
-        $this->get('/queues?search=Lorem');
+        $this->get('/connection-profiles?search=Lorem');
 
         $this->assertResponseOk();
     }
@@ -67,12 +67,12 @@ class QueuesControllerTest extends TestCase
      * The detail of a record renders.
      *
      * @return void
-     * @link \App\Controller\QueuesController::view()
+     * @link \App\Controller\ConnectionProfilesController::view()
      */
     public function testView(): void
     {
         $this->login();
-        $this->get('/queues/view/' . $this->firstId('Queues'));
+        $this->get('/connection-profiles/view/' . $this->firstId('ConnectionProfiles'));
 
         $this->assertResponseOk();
     }
@@ -81,12 +81,12 @@ class QueuesControllerTest extends TestCase
      * The form for a new record renders.
      *
      * @return void
-     * @link \App\Controller\QueuesController::add()
+     * @link \App\Controller\ConnectionProfilesController::add()
      */
     public function testAdd(): void
     {
         $this->login();
-        $this->get('/queues/add');
+        $this->get('/connection-profiles/add');
 
         $this->assertResponseOk();
     }
@@ -95,12 +95,12 @@ class QueuesControllerTest extends TestCase
      * The form of an existing record renders.
      *
      * @return void
-     * @link \App\Controller\QueuesController::edit()
+     * @link \App\Controller\ConnectionProfilesController::edit()
      */
     public function testEdit(): void
     {
         $this->login();
-        $this->get('/queues/edit/' . $this->firstId('Queues'));
+        $this->get('/connection-profiles/edit/' . $this->firstId('ConnectionProfiles'));
 
         $this->assertResponseOk();
     }
@@ -110,78 +110,78 @@ class QueuesControllerTest extends TestCase
      * still references it, which is the application rules' business rather than this test's.
      *
      * @return void
-     * @link \App\Controller\QueuesController::delete()
+     * @link \App\Controller\ConnectionProfilesController::delete()
      */
     public function testDelete(): void
     {
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/queues/delete/' . $this->firstId('Queues'));
+        $this->post('/connection-profiles/delete/' . $this->firstId('ConnectionProfiles'));
 
         $this->assertRedirect();
     }
 
     /**
-     * A queue filled in on the form is really stored. Rendering the form proves the page is there;
-     * marshalling, validation, the application rules and the save only ever run on a request that
-     * carries data.
+     * A connection profile filled in on the form is really stored. Rendering the form proves the
+     * page is there; marshalling, validation, the application rules and the save only ever run on a
+     * request that carries data.
      *
      * @return void
-     * @link \App\Controller\QueuesController::add()
+     * @link \App\Controller\ConnectionProfilesController::add()
      */
-    public function testAddStoresAQueue(): void
+    public function testAddStoresAConnectionProfile(): void
     {
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $this->post('/queues/add', [
-            'name' => 'Basic 50',
-            'caption' => '50/50 Mbit',
+        $this->post('/connection-profiles/add', [
+            'name' => '50/50 Mbit',
+            'radius_group' => 'Basic 50',
             'fup_limit' => '100000',
             'service_type_id' => $this->firstId('ServiceTypes'),
         ]);
 
         $this->assertRedirect();
-        /** @var \App\Model\Entity\Queue $stored */
-        $stored = $this->getTableLocator()->get('Queues')
+        /** @var \App\Model\Entity\ConnectionProfile $stored */
+        $stored = $this->getTableLocator()->get('ConnectionProfiles')
             ->find()
-            ->where(['name' => 'Basic 50'])
+            ->where(['radius_group' => 'Basic 50'])
             ->firstOrFail();
         $this->assertSame(100000, $stored->fup_limit);
     }
 
     /**
-     * A queue without a name is not stored, and the operator is given the form back rather than a
-     * redirect that would suggest it went through.
+     * A connection profile without a name is not stored, and the operator is given the form back
+     * rather than a redirect that would suggest it went through.
      *
      * @return void
-     * @link \App\Controller\QueuesController::add()
+     * @link \App\Controller\ConnectionProfilesController::add()
      */
-    public function testAddRefusesAQueueWithoutAName(): void
+    public function testAddRefusesAConnectionProfileWithoutAName(): void
     {
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $queues = $this->getTableLocator()->get('Queues');
-        $before = $queues->find()->count();
+        $connectionProfiles = $this->getTableLocator()->get('ConnectionProfiles');
+        $before = $connectionProfiles->find()->count();
 
-        $this->post('/queues/add', [
+        $this->post('/connection-profiles/add', [
             'name' => '',
-            'caption' => '50/50 Mbit',
+            'radius_group' => 'Basic 50',
         ]);
 
         $this->assertResponseOk();
-        $this->assertSame($before, $queues->find()->count());
+        $this->assertSame($before, $connectionProfiles->find()->count());
     }
 
     /**
      * A change made on the form reaches the record.
      *
      * @return void
-     * @link \App\Controller\QueuesController::edit()
+     * @link \App\Controller\ConnectionProfilesController::edit()
      */
     public function testEditStoresTheChange(): void
     {
@@ -189,13 +189,13 @@ class QueuesControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        $queueId = $this->firstId('Queues');
-        $this->post('/queues/edit/' . $queueId, ['name' => 'Renamed queue']);
+        $connectionProfileId = $this->firstId('ConnectionProfiles');
+        $this->post('/connection-profiles/edit/' . $connectionProfileId, ['name' => 'Renamed profile']);
 
         $this->assertRedirect();
         $this->assertSame(
-            'Renamed queue',
-            $this->getTableLocator()->get('Queues')->get($queueId)->name,
+            'Renamed profile',
+            $this->getTableLocator()->get('ConnectionProfiles')->get($connectionProfileId)->name,
         );
     }
 }

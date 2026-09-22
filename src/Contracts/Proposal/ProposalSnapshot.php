@@ -293,7 +293,10 @@ final class ProposalSnapshot
             if ($service !== []) {
                 /** @var \App\Model\Entity\Service $for */
                 $for = $this->record('Services', $service);
-                $for->set('queue', $this->record('Queues', (array)($service['queue'] ?? [])));
+                $for->set('connection_profile', $this->record(
+                    'ConnectionProfiles',
+                    (array)($service['connection_profile'] ?? []),
+                ));
                 $billing->set('service', $for);
             }
 
@@ -388,7 +391,10 @@ final class ProposalSnapshot
                 continue;
             }
 
-            $service->set('queue', $this->record('Queues', (array)($line->service['queue'] ?? [])));
+            $service->set('connection_profile', $this->record(
+                'ConnectionProfiles',
+                (array)($line->service['connection_profile'] ?? []),
+            ));
             $services[$line->service_id] = $service;
         }
 

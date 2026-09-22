@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Queue $queue
+ * @var \App\Model\Entity\ConnectionProfile $connectionProfile
  */
 $derived = __('(derived)');
 ?>
@@ -10,104 +10,119 @@ $derived = __('(derived)');
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->AuthLink->link(
-                __('Edit Queue'),
-                ['action' => 'edit', $queue->id],
+                __('Edit Connection Profile'),
+                ['action' => 'edit', $connectionProfile->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->postLink(
-                __('Delete Queue'),
-                ['action' => 'delete', $queue->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $queue->id), 'class' => 'side-nav-item'],
+                __('Delete Connection Profile'),
+                ['action' => 'delete', $connectionProfile->id],
+                [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $connectionProfile->id),
+                    'class' => 'side-nav-item',
+                ],
             ) ?>
-            <?= $this->AuthLink->link(__('List Queues'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->AuthLink->link(__('New Queue'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->AuthLink->link(
+                __('List Connection Profiles'),
+                ['action' => 'index'],
+                ['class' => 'side-nav-item'],
+            ) ?>
+            <?= $this->AuthLink->link(
+                __('New Connection Profile'),
+                ['action' => 'add'],
+                ['class' => 'side-nav-item'],
+            ) ?>
         </div>
     </aside>
     <div class="column column-90">
-        <div class="queues view content">
-            <?= $this->record(__('Queue'), (string)$queue->name) ?>
+        <div class="connectionProfiles view content">
+            <?= $this->record(__('Connection Profile'), (string)$connectionProfile->name) ?>
             <div class="row">
                 <div class="column">
                     <table>
                         <tr>
                             <th><?= __('Name') ?></th>
-                            <td><?= h($queue->name) ?></td>
+                            <td><?= h($connectionProfile->name) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __('Caption') ?></th>
-                            <td><?= h($queue->caption) ?></td>
+                            <th><?= __('RADIUS Group') ?></th>
+                            <td><?= h($connectionProfile->radius_group) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('FUP Limit') ?></th>
-                            <td><?= $queue->fup_limit === null ? '' : $this->Number->format($queue->fup_limit) ?></td>
+                            <td><?= $connectionProfile->fup_limit === null ?
+                                '' : $this->Number->format($connectionProfile->fup_limit) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Data Limit') ?></th>
-                            <td><?= $queue->data_limit === null ? '' : $this->Number->format($queue->data_limit) ?></td>
+                            <td><?= $connectionProfile->data_limit === null ?
+                                '' : $this->Number->format($connectionProfile->data_limit) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Overlimit Fragment') ?></th>
-                            <td><?= $queue->overlimit_fragment === null ?
-                                '' : $this->Number->format($queue->overlimit_fragment) ?></td>
+                            <td><?= $connectionProfile->overlimit_fragment === null ?
+                                '' : $this->Number->format($connectionProfile->overlimit_fragment) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Overlimit Cost') ?></th>
-                            <td><?= $queue->overlimit_cost === null ?
-                                '' : $this->Number->currency($queue->overlimit_cost) ?></td>
+                            <td><?= $connectionProfile->overlimit_cost === null ?
+                                '' : $this->Number->currency($connectionProfile->overlimit_cost) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Speed Down') ?></th>
-                            <td><?= $queue->speed_down === null ? '' : $this->Number->format($queue->speed_down) ?></td>
+                            <td><?= $connectionProfile->speed_down === null ?
+                                '' : $this->Number->format($connectionProfile->speed_down) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Speed Up') ?></th>
-                            <td><?= $queue->speed_up === null ? '' : $this->Number->format($queue->speed_up) ?></td>
+                            <td><?= $connectionProfile->speed_up === null ?
+                                '' : $this->Number->format($connectionProfile->speed_up) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Speed Down Commonly Available') ?></th>
                             <td><?=
-                                $queue->getSpeedDownCommon() === null ? '' :
-                                    $this->Number->format($queue->getSpeedDownCommon())
-                                    . ($queue->speed_down_common === null ? ' ' . $derived : '')
+                                $connectionProfile->getSpeedDownCommon() === null ? '' :
+                                    $this->Number->format($connectionProfile->getSpeedDownCommon())
+                                    . ($connectionProfile->speed_down_common === null ? ' ' . $derived : '')
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Speed Up Commonly Available') ?></th>
                             <td><?=
-                                $queue->getSpeedUpCommon() === null ? '' :
-                                    $this->Number->format($queue->getSpeedUpCommon())
-                                    . ($queue->speed_up_common === null ? ' ' . $derived : '')
+                                $connectionProfile->getSpeedUpCommon() === null ? '' :
+                                    $this->Number->format($connectionProfile->getSpeedUpCommon())
+                                    . ($connectionProfile->speed_up_common === null ? ' ' . $derived : '')
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Speed Down Minimum') ?></th>
                             <td><?=
-                                $queue->getSpeedDownMinimum() === null ? '' :
-                                    $this->Number->format($queue->getSpeedDownMinimum())
-                                    . ($queue->speed_down_minimum === null ? ' ' . $derived : '')
+                                $connectionProfile->getSpeedDownMinimum() === null ? '' :
+                                    $this->Number->format($connectionProfile->getSpeedDownMinimum())
+                                    . ($connectionProfile->speed_down_minimum === null ? ' ' . $derived : '')
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Speed Up Minimum') ?></th>
                             <td><?=
-                                $queue->getSpeedUpMinimum() === null ? '' :
-                                    $this->Number->format($queue->getSpeedUpMinimum())
-                                    . ($queue->speed_up_minimum === null ? ' ' . $derived : '')
+                                $connectionProfile->getSpeedUpMinimum() === null ? '' :
+                                    $this->Number->format($connectionProfile->getSpeedUpMinimum())
+                                    . ($connectionProfile->speed_up_minimum === null ? ' ' . $derived : '')
                             ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Cto Category') ?></th>
-                            <td><?= h($queue->cto_category) ?></td>
+                            <td><?= h($connectionProfile->cto_category) ?></td>
                         </tr>
                     </table>
                 </div>
                 <div class="column">
-                    <?= $this->element('common/audit', ['entity' => $queue]) ?>
+                    <?= $this->element('common/audit', ['entity' => $connectionProfile]) ?>
                 </div>
             </div>
             <div class="related">
                 <h4><?= __('Related Services') ?></h4>
-                <?php if (!empty($queue->services)) : ?>
+                <?php if (!empty($connectionProfile->services)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
@@ -117,7 +132,7 @@ $derived = __('(derived)');
                             <th><?= __('Currently Offered') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
-                        <?php foreach ($queue->services as $service) : ?>
+                        <?php foreach ($connectionProfile->services as $service) : ?>
                         <tr>
                             <td><?= h($service->name) ?></td>
                             <td><?= $service->price === null ?

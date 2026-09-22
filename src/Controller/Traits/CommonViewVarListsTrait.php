@@ -5,8 +5,8 @@ namespace App\Controller\Traits;
 
 use App\Model\Enum\AddressType;
 use App\Model\Table\AddressesTable;
+use App\Model\Table\ConnectionProfilesTable;
 use App\Model\Table\ContractStatesTable;
-use App\Model\Table\QueuesTable;
 use App\Model\Table\ServiceTypesTable;
 use App\NMS\ApiClient as NMSApiClient;
 use App\NMS\Dto\AccessPoint;
@@ -39,7 +39,7 @@ trait CommonViewVarListsTrait
     {
         $this->set(
             'ctoCategories',
-            $this->fetchTable(QueuesTable::class)
+            $this->fetchTable(ConnectionProfilesTable::class)
                 ->find(
                     'list',
                     group: 'cto_category',

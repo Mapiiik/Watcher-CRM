@@ -106,8 +106,8 @@ final class ProposalSnapshotBuilder
                 'service' => $service === null
                     ? null
                     : $this->fields($service, SnapshotShape::SERVICE) + [
-                        'queue' => isset($service->queue)
-                            ? $this->fields($service->queue, SnapshotShape::QUEUE)
+                        'connection_profile' => isset($service->connection_profile)
+                            ? $this->fields($service->connection_profile, SnapshotShape::CONNECTION_PROFILE)
                             : null,
                     ],
             ];

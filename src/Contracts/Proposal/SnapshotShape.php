@@ -180,10 +180,10 @@ final class SnapshotShape
      *
      * @var array<string>
      */
-    public const QUEUE = [
+    public const CONNECTION_PROFILE = [
         'id',
+        'radius_group',
         'name',
-        'caption',
         'speed_down',
         'speed_up',
         'speed_down_common',

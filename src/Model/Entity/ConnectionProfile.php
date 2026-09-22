@@ -6,12 +6,12 @@ namespace App\Model\Entity;
 use Settings\Utility\Settings;
 
 /**
- * Queue Entity
+ * ConnectionProfile Entity
  *
  * @property string $id
  * @property int $nid
+ * @property string $radius_group
  * @property string $name
- * @property string|null $caption
  * @property int|null $fup_limit
  * @property int|null $data_limit
  * @property int|null $overlimit_fragment
@@ -28,7 +28,7 @@ use Settings\Utility\Settings;
  * @property \App\Model\Entity\ServiceType $service_type
  * @property \App\Model\Entity\Service[] $services
  */
-class Queue extends AppEntity
+class ConnectionProfile extends AppEntity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -44,8 +44,8 @@ class Queue extends AppEntity
         'created_by' => true,
         'modified' => true,
         'modified_by' => true,
+        'radius_group' => true,
         'name' => true,
-        'caption' => true,
         'fup_limit' => true,
         'data_limit' => true,
         'overlimit_fragment' => true,

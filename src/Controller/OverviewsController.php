@@ -138,10 +138,10 @@ class OverviewsController extends AppController
                     'Billings.contract_id',
                 ])
                 ->innerJoinWith('Services')
-                ->innerJoinWith('Services.Queues')
+                ->innerJoinWith('Services.ConnectionProfiles')
                 ->distinct()
                 ->where([
-                    'Queues.cto_category' => $ctoCategory,
+                    'ConnectionProfiles.cto_category' => $ctoCategory,
                 ]);
 
             $contractsFilter[] = [
@@ -166,7 +166,7 @@ class OverviewsController extends AppController
                 'Billings' => [
                     'strategy' => Association::STRATEGY_SELECT,
                     'Services' => [
-                        'Queues',
+                        'ConnectionProfiles',
                     ],
                 ],
                 'Customers' => [
@@ -496,7 +496,7 @@ class OverviewsController extends AppController
 
                 return $this->applyActiveInMonthScope($q, $month_to_display);
             })
-            ->contain('Queues')
+            ->contain('ConnectionProfiles')
             ->contain('ServiceTypes')
             ->formatResults(
                 function (CollectionInterface $services): CollectionInterface {
@@ -603,7 +603,7 @@ class OverviewsController extends AppController
 
         // filter by CTO category
         if (!empty($cto_category)) {
-            $servicesQuery->where(['Queues.cto_category' => $cto_category]);
+            $servicesQuery->where(['ConnectionProfiles.cto_category' => $cto_category]);
         }
 
         // Load services with paginator
@@ -612,7 +612,7 @@ class OverviewsController extends AppController
                 'name',
                 'price',
                 'ServiceTypes.name',
-                'Queues.name',
+                'ConnectionProfiles.radius_group',
             ],
             'limit' => PHP_INT_MAX,
             'maxLimit' => PHP_INT_MAX,
@@ -647,17 +647,17 @@ class OverviewsController extends AppController
             ->contain([
                 'Services' => [
                     'ServiceTypes',
-                    'Queues',
+                    'ConnectionProfiles',
                 ],
             ]), $month_to_display)
-            ->where(['Queues.speed_down IS NOT NULL'])
-            ->where(['Queues.speed_up IS NOT NULL'])
-            ->where(['Queues.cto_category IS NOT NULL'])
+            ->where(['ConnectionProfiles.speed_down IS NOT NULL'])
+            ->where(['ConnectionProfiles.speed_up IS NOT NULL'])
+            ->where(['ConnectionProfiles.cto_category IS NOT NULL'])
             ->where(['InstallationAddresses.address_registry_reference IS NOT NULL'])
             ->where(['InstallationAddresses.address_registry_source' => 'cz'])
 
             ->orderBy([
-                'Queues.cto_category',
+                'ConnectionProfiles.cto_category',
                 'InstallationAddresses.address_registry_reference',
             ])
 
@@ -682,7 +682,7 @@ class OverviewsController extends AppController
                     }
 
                     return $billings
-                        ->groupBy('service.queue.cto_category')
+                        ->groupBy('service.connection_profile.cto_category')
                         ->map(function (
                             $category_billings,
                             $cto_category,
@@ -755,7 +755,7 @@ class OverviewsController extends AppController
                                         $billings_collection
                                             ->countBy(function (Billing $billing): string {
                                                 $commonly_available_download_speed =
-                                                    $billing->service?->queue?->getSpeedDownCommon();
+                                                    $billing->service?->connection_profile?->getSpeedDownCommon();
                                                 if ($commonly_available_download_speed < 30720) {
                                                     return 'speed_0_30';
                                                 }
@@ -776,14 +776,14 @@ class OverviewsController extends AppController
                                     // "billing." prefix - with one, nothing resolves and max() hands back
                                     // whichever connection came first instead of the fastest.
                                     $fastest_download = $billings_collection
-                                        ->max('service.queue.speed_down')
-                                        ->service->queue;
+                                        ->max('service.connection_profile.speed_down')
+                                        ->service->connection_profile;
                                     $maximal_download = $fastest_download->getSpeedDown();
                                     $effective_download = $fastest_download->getSpeedDownCommon();
 
                                     $fastest_upload = $billings_collection
-                                        ->max('service.queue.speed_up')
-                                        ->service->queue;
+                                        ->max('service.connection_profile.speed_up')
+                                        ->service->connection_profile;
                                     $maximal_upload = $fastest_upload->getSpeedUp();
                                     $effective_upload = $fastest_upload->getSpeedUpCommon();
 
@@ -893,24 +893,24 @@ class OverviewsController extends AppController
             ->contain([
                 'Services' => [
                     'ServiceTypes',
-                    'Queues',
+                    'ConnectionProfiles',
                 ],
             ]), $month_to_display)
-            ->where(['Queues.speed_down IS NOT NULL'])
-            ->where(['Queues.speed_up IS NOT NULL'])
-            ->where(['Queues.cto_category IS NOT NULL'])
+            ->where(['ConnectionProfiles.speed_down IS NOT NULL'])
+            ->where(['ConnectionProfiles.speed_up IS NOT NULL'])
+            ->where(['ConnectionProfiles.cto_category IS NOT NULL'])
             ->where(['InstallationAddresses.address_registry_reference IS NOT NULL'])
             ->where(['InstallationAddresses.address_registry_source' => 'cz'])
 
             ->orderBy([
-                'Queues.cto_category',
+                'ConnectionProfiles.cto_category',
                 'InstallationAddresses.city',
             ])
 
             ->formatResults(
                 function (CollectionInterface $billings): CollectionInterface {
                     return $billings
-                        ->groupBy('service.queue.cto_category')
+                        ->groupBy('service.connection_profile.cto_category')
                         ->map(function ($category_billings, $cto_category): CollectionInterface {
                             return (new Collection($category_billings))
                                 ->groupBy('contract.installation_address.city')
@@ -934,7 +934,7 @@ class OverviewsController extends AppController
                                         $billings_collection
                                             ->countBy(
                                                 fn(Billing $billing): string => $this->bucketAdvertisedSpeed(
-                                                    $billing->service?->queue?->speed_down,
+                                                    $billing->service?->connection_profile?->speed_down,
                                                 ),
                                             )
                                             ->toArray(),
@@ -950,7 +950,7 @@ class OverviewsController extends AppController
                                                 }
 
                                                 return $this->bucketAdvertisedSpeed(
-                                                    $billing->service?->queue?->speed_down,
+                                                    $billing->service?->connection_profile?->speed_down,
                                                 );
                                             })
                                             ->toArray(),
@@ -1199,7 +1199,7 @@ class OverviewsController extends AppController
      * Used by the connection-speeds report's advertised_speeds output.
      * Null is treated as the lowest band — preserves the original PHP 8
      * `null < 2048` comparison semantics. The query upstream already filters
-     * out null speeds via `Queues.speed_down IS NOT NULL`, so this branch
+     * out null speeds via `ConnectionProfiles.speed_down IS NOT NULL`, so this branch
      * is defensive only.
      */
     private function bucketAdvertisedSpeed(?int $speedKbps): string

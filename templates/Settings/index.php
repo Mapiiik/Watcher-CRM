@@ -245,8 +245,8 @@ use Cake\Core\Plugin;
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __('List Queues'),
-                    ['controller' => 'Queues', 'action' => 'index', 'plugin' => null],
+                    __('List Connection Profiles'),
+                    ['controller' => 'ConnectionProfiles', 'action' => 'index', 'plugin' => null],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Pdf;
 
+use App\Model\Entity\ConnectionProfile;
 use App\Model\Entity\ContractVersion;
-use App\Model\Entity\Queue;
 use App\Pdf\Trait\ContractDurationTrait;
 use App\Service\ContractPrint\ContractPrintData;
 use Cake\I18n\Date;
@@ -337,7 +337,7 @@ class ContractSummaryPDF extends AppPDF
 
         // Not every contract carries a tariff - a standing charge can be all there is - and the
         // description of an internet access service does not belong on one that does not.
-        if ($this->queue($data) instanceof Queue) {
+        if ($this->connectionProfile($data) instanceof ConnectionProfile) {
             $this->printParagraph($this->summaryText('texts.service_note'));
         }
 
@@ -349,7 +349,7 @@ class ContractSummaryPDF extends AppPDF
             default => 'equipment_own',
         }));
 
-        if ($this->queue($data) instanceof Queue) {
+        if ($this->connectionProfile($data) instanceof ConnectionProfile) {
             $this->printParagraph($this->dataLimitText($data));
         }
 
@@ -366,11 +366,11 @@ class ContractSummaryPDF extends AppPDF
     {
         $this->printSummaryHeading('speeds');
 
-        $queue = $this->queue($data);
+        $connectionProfile = $this->connectionProfile($data);
 
         // Six dashes under this heading would read as a service that has no speed. Saying there
         // is no such service is the same fact, told the way a reader would take it.
-        if (!$queue instanceof Queue) {
+        if (!$connectionProfile instanceof ConnectionProfile) {
             $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
             $this->printParagraph($this->summaryText('texts.no_internet_service'));
             $this->Ln(2);
@@ -417,15 +417,15 @@ class ContractSummaryPDF extends AppPDF
         $rows = [
             [
                 $label('download'),
-                $queue->getSpeedDown(),
-                $queue->getSpeedDownCommon(),
-                $queue->getSpeedDownMinimum(),
+                $connectionProfile->getSpeedDown(),
+                $connectionProfile->getSpeedDownCommon(),
+                $connectionProfile->getSpeedDownMinimum(),
             ],
             [
                 $label('upload'),
-                $queue->getSpeedUp(),
-                $queue->getSpeedUpCommon(),
-                $queue->getSpeedUpMinimum(),
+                $connectionProfile->getSpeedUp(),
+                $connectionProfile->getSpeedUpCommon(),
+                $connectionProfile->getSpeedUpMinimum(),
             ],
         ];
 
@@ -681,14 +681,14 @@ class ContractSummaryPDF extends AppPDF
      */
     private function dataLimitText(ContractPrintData $data): string
     {
-        $queue = $this->queue($data);
-        $dataLimit = $queue?->data_limit;
+        $connectionProfile = $this->connectionProfile($data);
+        $dataLimit = $connectionProfile?->data_limit;
 
         if ($dataLimit === null) {
             return $this->summaryText('texts.no_data_limit');
         }
 
-        if ($queue?->overlimit_fragment === null || $queue->overlimit_cost === null) {
+        if ($connectionProfile?->overlimit_fragment === null || $connectionProfile->overlimit_cost === null) {
             return strtr($this->summaryText('texts.data_limit_plain'), [
                 '{data_limit}' => Number::toReadableSize($dataLimit),
             ]);
@@ -696,8 +696,8 @@ class ContractSummaryPDF extends AppPDF
 
         return strtr($this->summaryText('texts.data_limit'), [
             '{data_limit}' => Number::toReadableSize($dataLimit),
-            '{overlimit_fragment}' => Number::toReadableSize($queue->overlimit_fragment),
-            '{overlimit_cost}' => Number::currency((float)$queue->overlimit_cost),
+            '{overlimit_fragment}' => Number::toReadableSize($connectionProfile->overlimit_fragment),
+            '{overlimit_cost}' => Number::currency((float)$connectionProfile->overlimit_cost),
         ]);
     }
 
@@ -772,7 +772,7 @@ class ContractSummaryPDF extends AppPDF
         $names = [];
 
         foreach ($this->billings($data) as $billing) {
-            if (!$billing->service?->queue instanceof Queue) {
+            if (!$billing->service?->connection_profile instanceof ConnectionProfile) {
                 continue;
             }
 
@@ -802,20 +802,20 @@ class ContractSummaryPDF extends AppPDF
      * access service, so the fastest one is what the customer is being offered.
      *
      * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
-     * @return \App\Model\Entity\Queue|null
+     * @return \App\Model\Entity\ConnectionProfile|null
      */
-    private function queue(ContractPrintData $data): ?Queue
+    private function connectionProfile(ContractPrintData $data): ?ConnectionProfile
     {
         $fastest = null;
 
         foreach ($this->billings($data) as $billing) {
-            $queue = $billing->service?->queue;
-            if (!$queue instanceof Queue) {
+            $connectionProfile = $billing->service?->connection_profile;
+            if (!$connectionProfile instanceof ConnectionProfile) {
                 continue;
             }
 
-            if ($fastest === null || (int)$queue->getSpeedDown() > (int)$fastest->getSpeedDown()) {
-                $fastest = $queue;
+            if ($fastest === null || (int)$connectionProfile->getSpeedDown() > (int)$fastest->getSpeedDown()) {
+                $fastest = $connectionProfile;
             }
         }
 

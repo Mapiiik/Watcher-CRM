@@ -55,7 +55,7 @@
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('ServiceTypes.name', __('Service Type')) ?></th>
-                    <th><?= $this->Paginator->sort('Queues.name', __('Queue')) ?></th>
+                    <th><?= $this->Paginator->sort('ConnectionProfiles.radius_group', __('Connection Profile')) ?></th>
                     <?php if ($show_billings) : ?>
                     <th><?= __('Billings') ?></th>
                     <?php endif; ?>
@@ -85,11 +85,15 @@
                                 $service->service_type->id,
                             ],
                         ) : '' ?></td>
-                    <td><?= $service->queue !== null ? $this->Html->link($service->queue->name, [
-                        'controller' => 'Queues',
-                        'action' => 'view',
-                        $service->queue->id,
-                    ]) : '' ?></td>
+                    <td><?= $service->connection_profile !== null ?
+                        $this->Html->link(
+                            $service->connection_profile->radius_group,
+                            [
+                                'controller' => 'ConnectionProfiles',
+                                'action' => 'view',
+                                $service->connection_profile->id,
+                            ],
+                        ) : '' ?></td>
                     <?php if ($show_billings) : ?>
                     <td><?= $this->element('Contracts/Billings', [
                         'billings' => $service['billings'],

@@ -7,9 +7,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 use Override;
 
 /**
- * QueuesFixture
+ * ConnectionProfilesFixture
  */
-class QueuesFixture extends TestFixture
+class ConnectionProfilesFixture extends TestFixture
 {
     /**
      * Init method
@@ -21,8 +21,8 @@ class QueuesFixture extends TestFixture
     {
         $this->records = [
             [
+                'radius_group' => 'Lorem ipsum dolor sit amet',
                 'name' => 'Lorem ipsum dolor sit amet',
-                'caption' => 'Lorem ipsum dolor sit amet',
                 'fup_limit' => 1,
                 'data_limit' => 1,
                 'speed_up' => 1,

@@ -37,7 +37,7 @@ class ServicesControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
     ];
@@ -148,7 +148,7 @@ class ServicesControllerTest extends TestCase
             'name' => 'Fibre 250',
             'price' => '450',
             'service_type_id' => $this->firstId('ServiceTypes'),
-            'queue_id' => $this->firstId('Queues'),
+            'connection_profile_id' => $this->firstId('ConnectionProfiles'),
             'currently_offered' => '1',
             'criticality_level' => '10',
         ]);

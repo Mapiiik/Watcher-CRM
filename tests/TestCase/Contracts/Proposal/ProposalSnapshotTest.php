@@ -77,7 +77,7 @@ class ProposalSnapshotTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
         'app.EquipmentTypes',
@@ -197,7 +197,7 @@ class ProposalSnapshotTest extends TestCase
     {
         /** @var \App\Model\Entity\Contract $contract */
         $contract = $this->getTableLocator()->get('Contracts')->get(self::CONTRACT_ID, contain: [
-            'Billings' => ['Services' => ['Queues']],
+            'Billings' => ['Services' => ['ConnectionProfiles']],
             'BorrowedEquipments.EquipmentTypes' => fn(SelectQuery $q): SelectQuery => $q->where([
                 'BorrowedEquipments.borrowed_until IS NULL',
             ]),

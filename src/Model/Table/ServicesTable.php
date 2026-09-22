@@ -13,7 +13,7 @@ use Override;
  * Services Model
  *
  * @property \App\Model\Table\ServiceTypesTable&\Cake\ORM\Association\BelongsTo $ServiceTypes
- * @property \App\Model\Table\QueuesTable&\Cake\ORM\Association\BelongsTo $Queues
+ * @property \App\Model\Table\ConnectionProfilesTable&\Cake\ORM\Association\BelongsTo $ConnectionProfiles
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
  * @method \App\Model\Entity\Service newEmptyEntity()
  * @method \App\Model\Entity\Service newEntity(array $data, array $options = [])
@@ -59,8 +59,8 @@ class ServicesTable extends AppTable
         $this->belongsTo('ServiceTypes', [
             'foreignKey' => 'service_type_id',
         ]);
-        $this->belongsTo('Queues', [
-            'foreignKey' => 'queue_id',
+        $this->belongsTo('ConnectionProfiles', [
+            'foreignKey' => 'connection_profile_id',
         ]);
         $this->hasMany('Billings', [
             'foreignKey' => 'service_id',
@@ -114,7 +114,10 @@ class ServicesTable extends AppTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['service_type_id'], 'ServiceTypes'), ['errorField' => 'service_type_id']);
-        $rules->add($rules->existsIn(['queue_id'], 'Queues'), ['errorField' => 'queue_id']);
+        $rules->add(
+            $rules->existsIn(['connection_profile_id'], 'ConnectionProfiles'),
+            ['errorField' => 'connection_profile_id'],
+        );
 
         $rules->addDelete($rules->isNotLinkedTo('Billings'));
 

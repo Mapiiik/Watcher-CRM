@@ -31,7 +31,7 @@ class BillingsTableTest extends TestCase
     protected $Billings;
 
     /**
-     * The fixture's service with a queue, which makes a billing of it the connection.
+     * The fixture's service with a connection profile, which makes a billing of it the connection.
      *
      * @var string
      */
@@ -52,7 +52,7 @@ class BillingsTableTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
         'plugin.Settings.Settings',
@@ -499,7 +499,7 @@ class BillingsTableTest extends TestCase
     }
 
     /**
-     * Only the connection is measured. A fee beside it, or a service without a queue, is not.
+     * Only the connection is measured. A fee beside it, or a service without a connection profile, is not.
      *
      * @return void
      * @link \App\Model\Table\BillingsTable::buildRules()
@@ -509,7 +509,7 @@ class BillingsTableTest extends TestCase
         $this->agreeMinimum('100');
 
         $this->assertNotFalse($this->Billings->save($this->newConnection('10', null)));
-        $this->assertNotFalse($this->Billings->save($this->newConnection('10', $this->serviceWithoutQueue())));
+        $this->assertNotFalse($this->Billings->save($this->newConnection('10', $this->serviceWithoutConnectionProfile())));
     }
 
     /**
@@ -553,7 +553,7 @@ class BillingsTableTest extends TestCase
         $this->agreeMinimum('100');
         $connection = $this->Billings->saveOrFail($this->newConnection('150'));
 
-        $refused = $this->Billings->patchEntity($connection, ['service_id' => $this->serviceWithoutQueue()]);
+        $refused = $this->Billings->patchEntity($connection, ['service_id' => $this->serviceWithoutConnectionProfile()]);
 
         $this->assertFalse($this->Billings->save($refused));
         $this->assertArrayHasKey('connectionKeepsTheMinimum', $refused->getError('price'));
@@ -613,7 +613,7 @@ class BillingsTableTest extends TestCase
      * A billing for the connection on the fixture's contract, starting where nothing is invoiced yet.
      *
      * @param string|null $price The price; null takes the list.
-     * @param string|null $service_id The service; the fixture's one with a queue when not given.
+     * @param string|null $service_id The service; the fixture's one with a connection profile when not given.
      * @return \App\Model\Entity\Billing
      */
     private function newConnection(?string $price, ?string $service_id = self::CONNECTION): Billing
@@ -637,7 +637,7 @@ class BillingsTableTest extends TestCase
      *
      * @return string
      */
-    private function serviceWithoutQueue(): string
+    private function serviceWithoutConnectionProfile(): string
     {
         $service = $this->Billings->Services->newEntity([
             'name' => 'Static address',

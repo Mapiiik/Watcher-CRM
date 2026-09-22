@@ -462,7 +462,7 @@ class AccountsUpdater
     }
 
     /**
-     * Loads the active service (with queue) for the account's contract, considering possible overrides.
+     * Loads the active service (with connection profile) for the account's contract, considering possible overrides.
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
      * @return \App\Model\Entity\Service|null The active service or null if not found.
@@ -472,20 +472,20 @@ class AccountsUpdater
         // load current date
         $now = Date::now();
 
-        // load active override (with queue) for contract if exists
+        // load active override (with connection profile) for contract if exists
         /** @var \App\Model\Entity\ServiceOverride|null $override */
         $override = $this->fetchTable(ServiceOverridesTable::class)
             ->find()
-            ->innerJoinWith('Services.Queues')
+            ->innerJoinWith('Services.ConnectionProfiles')
             ->where([
                 'ServiceOverrides.contract_id' => $account->contract_id,
-                'Queues.name IS NOT NULL',
+                'ConnectionProfiles.radius_group IS NOT NULL',
                 'ServiceOverrides.valid_from <=' => $now,
                 'ServiceOverrides.valid_until >=' => $now,
                 'ServiceOverrides.revoked IS' => null,
             ])
             ->contain([
-                'Services' => 'Queues',
+                'Services' => 'ConnectionProfiles',
             ])
             ->orderBy([
                 'ServiceOverrides.created' => 'DESC',
@@ -496,14 +496,14 @@ class AccountsUpdater
             return $override->service;
         }
 
-        // load active billing (with queue) for contract if exists
+        // load active billing (with connection profile) for contract if exists
         /** @var \App\Model\Entity\Billing|null $billing */
         $billing = $this->fetchTable(BillingsTable::class)
             ->find()
-            ->innerJoinWith('Services.Queues')
+            ->innerJoinWith('Services.ConnectionProfiles')
             ->where([
                 'Billings.contract_id' => $account->contract_id,
-                'Queues.name IS NOT NULL',
+                'ConnectionProfiles.radius_group IS NOT NULL',
                 'Billings.billing_from <=' => $now->addMonths(1),
                 'OR' => [
                     'Billings.billing_until IS NULL',
@@ -511,7 +511,7 @@ class AccountsUpdater
                 ],
             ])
             ->contain([
-                'Services' => 'Queues',
+                'Services' => 'ConnectionProfiles',
             ])
             ->orderBy([
                 'Billings.billing_from' => 'ASC',
@@ -541,15 +541,15 @@ class AccountsUpdater
 
         if (
             isset($service)
-            && isset($service->queue)
-            && isset($service->queue->name)
-            && !empty($service->queue->name)
+            && isset($service->connection_profile)
+            && isset($service->connection_profile->radius_group)
+            && !empty($service->connection_profile->radius_group)
         ) {
-            // return radusergroup record with current (or the near future) queue name as groupname
+            // return radusergroup record with current (or the near future) connection profile name as groupname
             $radusergroup[] = $this->Radusergroup
                 ->findOrNewEntity([
                     'username' => $account->username,
-                    'groupname' => $service->queue->name,
+                    'groupname' => $service->connection_profile->radius_group,
                     'priority' => 0,
                 ]);
         }

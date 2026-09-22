@@ -47,7 +47,7 @@ class InvoicesCellTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
-        'app.Queues',
+        'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
         'app.EquipmentTypes',

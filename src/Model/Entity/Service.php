@@ -11,13 +11,13 @@ namespace App\Model\Entity;
  * @property string|null $name
  * @property \PhpCollective\DecimalObject\Decimal|null $price
  * @property int|null $service_type_id
- * @property int|null $queue_id
+ * @property int|null $connection_profile_id
  * @property string|null $accounting_product_code
  * @property bool $currently_offered
  * @property \App\Model\Enum\ServiceCriticalityLevel $criticality_level
  *
  * @property \App\Model\Entity\ServiceType $service_type
- * @property \App\Model\Entity\Queue $queue
+ * @property \App\Model\Entity\ConnectionProfile $connection_profile
  * @property \App\Model\Entity\Billing[] $billings
  */
 class Service extends AppEntity
@@ -39,12 +39,12 @@ class Service extends AppEntity
         'name' => true,
         'price' => true,
         'service_type_id' => true,
-        'queue_id' => true,
+        'connection_profile_id' => true,
         'accounting_product_code' => true,
         'currently_offered' => true,
         'criticality_level' => true,
         'service_type' => true,
-        'queue' => true,
+        'connection_profile' => true,
         'billings' => true,
     ];
 }

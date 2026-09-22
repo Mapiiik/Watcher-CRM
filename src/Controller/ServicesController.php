@@ -41,7 +41,7 @@ class ServicesController extends AppController
         $services = $this->paginate($this->Services->find(
             'all',
             contain: [
-                'Queues',
+                'ConnectionProfiles',
                 'ServiceTypes',
             ],
             conditions: $conditions,
@@ -61,7 +61,7 @@ class ServicesController extends AppController
     {
         $service = $this->Services->get($id, contain: [
             'ServiceTypes',
-            'Queues',
+            'ConnectionProfiles',
             'Billings' => [
                 'Contracts' => ['ContractStates'],
                 'Customers',
@@ -94,18 +94,18 @@ class ServicesController extends AppController
         $serviceTypes = $this->Services->ServiceTypes->find('list', order: [
             'name',
         ]);
-        $queues = $this->Services->Queues->find(
+        $connectionProfiles = $this->Services->ConnectionProfiles->find(
             'list',
             valueField: [
+                'radius_group',
                 'name',
-                'caption',
             ],
             valueSeparator: ' | ',
             order: [
-                'name',
+                'radius_group',
             ],
         );
-        $this->set(compact('service', 'serviceTypes', 'queues'));
+        $this->set(compact('service', 'serviceTypes', 'connectionProfiles'));
 
         return null;
     }
@@ -132,18 +132,18 @@ class ServicesController extends AppController
         $serviceTypes = $this->Services->ServiceTypes->find('list', order: [
             'name',
         ]);
-        $queues = $this->Services->Queues->find(
+        $connectionProfiles = $this->Services->ConnectionProfiles->find(
             'list',
             valueField: [
+                'radius_group',
                 'name',
-                'caption',
             ],
             valueSeparator: ' | ',
             order: [
-                'name',
+                'radius_group',
             ],
         );
-        $this->set(compact('service', 'serviceTypes', 'queues'));
+        $this->set(compact('service', 'serviceTypes', 'connectionProfiles'));
 
         return null;
     }
