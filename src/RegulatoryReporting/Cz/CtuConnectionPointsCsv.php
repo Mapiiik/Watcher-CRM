@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\RegulatoryReporting\Cz;
 
+use App\RegulatoryReporting\CsvFile;
+
 /**
  * The file ČTÚ takes the address points of one category in.
  */
@@ -30,9 +32,6 @@ final class CtuConnectionPointsCsv
     private const DOCSIS_HEADER = 'Standard DOCSIS 3.1 a vyšší (ANO/NE)';
 
     /**
-     * The file itself: UTF-8 with a byte order mark, so that Excel reads the accents, and Windows
-     * line ends, the way the files that were accepted came.
-     *
      * @param \App\RegulatoryReporting\Cz\CtuTechnologyCategory $category Which category the file is of.
      * @param iterable<\App\RegulatoryReporting\Cz\CtuConnectionPointRow> $rows Its points.
      * @return string
@@ -47,14 +46,13 @@ final class CtuConnectionPointsCsv
         }
         $headers[] = 'Adresa';
 
-        $csv = "\u{FEFF}" . self::line($headers);
-
+        $lines = [];
         foreach ($rows as $row) {
             $line = [
-                (string)$row->reference,
+                $row->reference,
                 $row->category->value,
-                (string)$row->activeConnections,
-                (string)$row->activeNonBusinessConnections,
+                $row->activeConnections,
+                $row->activeNonBusinessConnections,
                 $row->covered ? 'ANO' : 'NE',
                 $row->effectiveDownload->value,
                 $row->effectiveUpload->value,
@@ -67,27 +65,10 @@ final class CtuConnectionPointsCsv
                 $line[] = $row->docsis31 ? 'ANO' : 'NE';
             }
 
-            $line[] = (string)$row->address;
-
-            $csv .= self::line($line);
+            $line[] = $row->address;
+            $lines[] = $line;
         }
 
-        return $csv;
-    }
-
-    /**
-     * One line, a field put in quotes only when it would break the line otherwise.
-     *
-     * @param list<string> $fields What.
-     * @return string
-     */
-    private static function line(array $fields): string
-    {
-        return implode(';', array_map(
-            fn(string $field): string => strpbrk($field, ";\"\r\n") === false
-                ? $field
-                : '"' . str_replace('"', '""', $field) . '"',
-            $fields,
-        )) . "\r\n";
+        return CsvFile::render($headers, $lines);
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\RegulatoryReporting;
 
+use App\Addresses\Dto\Address;
 use App\Model\Entity\AvailableConnection;
 use App\Model\Entity\Billing;
 use App\Model\Entity\ConnectionProfile;
@@ -24,6 +25,8 @@ final class ConnectionPoint
      * @param string|null $reportedReference The reference to report, null when the registry does
      *      not know the one on file.
      * @param string|null $formattedAddress The address as the registry writes it.
+     * @param \App\Addresses\Dto\Address|null $registryAddress The registry's record of it, when it
+     *      could be asked.
      */
     public function __construct(
         public readonly string $group,
@@ -33,6 +36,7 @@ final class ConnectionPoint
         public array $available = [],
         public ?string $reportedReference = null,
         public ?string $formattedAddress = null,
+        public ?Address $registryAddress = null,
     ) {
     }
 

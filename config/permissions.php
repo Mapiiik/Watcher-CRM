@@ -866,6 +866,8 @@ $permissions = [
                 'overviewOfActiveServices',
                 'overviewOfCzechCustomerConnectionPoints',
                 'overviewOfCzechCustomerConnectionSpeeds',
+                'overviewOfCroatianQuarterlyReport',
+                'overviewOfCroatianConnectionPoints',
                 'overviewOfAddressProblems',
                 'overviewOfContractProblems',
                 'overviewOfCustomerProblems',

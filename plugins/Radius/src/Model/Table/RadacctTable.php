@@ -6,6 +6,7 @@ namespace Radius\Model\Table;
 use App\Model\Table\AppTable;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
+use DateTimeInterface;
 use Override;
 
 /**
@@ -195,6 +196,55 @@ class RadacctTable extends AppTable
         $rules->add($rules->isUnique(['acctuniqueid']), ['errorField' => 'acctuniqueid']);
 
         return $rules;
+    }
+
+    /**
+     * The octets moved in a period, both ways, by the contract of the account.
+     *
+     * A session is counted in the share of it that falls in the period. Where it has no stop, the
+     * last interim update is where it is known to have got to - the NAS does not send every stop,
+     * so an open session is not necessarily one still running. The result is an estimate for that
+     * reason, and good enough for the totals the regulator asks for.
+     *
+     * @param \DateTimeInterface $from Start of the period.
+     * @param \DateTimeInterface $to End of the period, exclusive.
+     * @return array<string, float> Octets by contract id.
+     */
+    public function octetsByContract(DateTimeInterface $from, DateTimeInterface $to): array
+    {
+        $sql = <<<'SQL'
+            WITH sessions AS (
+                SELECT a.contract_id,
+                    COALESCE(r.acctinputoctets, 0) + COALESCE(r.acctoutputoctets, 0) AS octets,
+                    r.acctstarttime AS started,
+                    GREATEST(COALESCE(r.acctstoptime, r.acctupdatetime, r.acctstarttime), r.acctstarttime) AS ended
+                FROM radacct r
+                JOIN accounts a ON a.username = r.username
+                WHERE a.contract_id IS NOT NULL
+                    AND r.acctstarttime < :to
+                    AND COALESCE(r.acctstoptime, r.acctupdatetime, r.acctstarttime) >= :from
+            )
+            SELECT contract_id, SUM(
+                CASE WHEN ended = started THEN octets
+                ELSE octets * EXTRACT(EPOCH FROM (LEAST(ended, :to) - GREATEST(started, :from)))
+                    / EXTRACT(EPOCH FROM (ended - started))
+                END
+            ) AS octets
+            FROM sessions
+            GROUP BY contract_id
+            SQL;
+
+        $rows = $this->getConnection()->execute($sql, [
+            'from' => $from->format('Y-m-d H:i:sP'),
+            'to' => $to->format('Y-m-d H:i:sP'),
+        ])->fetchAll('assoc');
+
+        $octets = [];
+        foreach ($rows as $row) {
+            $octets[(string)$row['contract_id']] = max(0.0, (float)$row['octets']);
+        }
+
+        return $octets;
     }
 
     /**

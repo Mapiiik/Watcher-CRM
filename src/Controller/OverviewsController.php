@@ -20,10 +20,14 @@ use App\Model\Table\DealerCommissionsTable;
 use App\Model\Table\LabelsTable;
 use App\Model\Table\ServicesTable;
 use App\RegulatoryReporting\ConnectionPointCollector;
+use App\RegulatoryReporting\CsvFile;
 use App\RegulatoryReporting\Cz\CtuAdvertisedSpeedBand;
 use App\RegulatoryReporting\Cz\CtuConnectionPointRow;
 use App\RegulatoryReporting\Cz\CtuConnectionPointsCsv;
 use App\RegulatoryReporting\Cz\CtuTechnologyCategory;
+use App\RegulatoryReporting\Hr\HakomConnectionPointsCsv;
+use App\RegulatoryReporting\Hr\HakomQuarterlyReport;
+use App\RegulatoryReporting\Hr\HakomTechnology;
 use ArrayObject;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -35,6 +39,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\Validation\Validation;
 use PhpCollective\DecimalObject\Decimal;
 use RuntimeException;
+use Settings\Utility\Settings;
 use stdClass;
 
 /**
@@ -669,6 +674,85 @@ class OverviewsController extends AppController
         }
 
         $this->set(compact('cto_categories', 'month_to_display'));
+
+        return null;
+    }
+
+    /**
+     * Overview of the Croatian quarterly report
+     *
+     * The rows of HAKOM's quarterly forms CRM can fill in, by their codes, for copying into
+     * e-Operator. The file carries the same rows.
+     *
+     * @return \Cake\Http\Response|null Renders view
+     */
+    public function overviewOfCroatianQuarterlyReport(): ?Response
+    {
+        $today = Date::now();
+        $year = (int)$this->getRequest()->getQuery('year', $today->year);
+        $quarter = max(1, min(4, (int)$this->getRequest()->getQuery('quarter', $today->quarter)));
+
+        $report = HakomQuarterlyReport::forQuarter($year, $quarter)->build();
+        $forms = [
+            'Usluga pristupa Internetu - maloprodaja' => $report->internetAccess(),
+            'Usluge i paketi usluga' => $report->servicesAndPackages(),
+        ];
+
+        if ($this->getRequest()->getParam('_ext') === 'csv') {
+            $lines = [];
+            foreach ($forms as $form => $rows) {
+                foreach ($rows as $row) {
+                    $lines[] = [$form, $row->code, $row->label, $row->value, $row->unit];
+                }
+            }
+
+            return $this->response
+                ->withStringBody(CsvFile::render(
+                    ['Obrazac', 'Pokazatelj', 'Naziv', 'Vrijednost', 'Mjerna jedinica'],
+                    $lines,
+                ))
+                ->withType('csv')
+                ->withDownload(sprintf('hakom-%dQ%d.csv', $year, $quarter));
+        }
+
+        $this->set(compact('forms', 'report', 'year', 'quarter'));
+
+        return null;
+    }
+
+    /**
+     * Overview of Croatian customer connection points
+     *
+     * HAKOM's listing of the address points, active and available alike, as it stands on a day.
+     *
+     * @return \Cake\Http\Response|null Renders view
+     */
+    public function overviewOfCroatianConnectionPoints(): ?Response
+    {
+        $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
+
+        $collector = new ConnectionPointCollector(
+            fn(AccessTechnology $technology): string => HakomTechnology::infrastructureType($technology),
+        );
+        $points = array_merge(...array_values(array_map(
+            fn(array $byAddress): array => array_values($byAddress),
+            $collector->collect($month_to_display, 'hr'),
+        )));
+        foreach ($collector->problems() as $problem) {
+            $this->Flash->warning($problem);
+        }
+
+        if ($this->getRequest()->getParam('_ext') === 'csv') {
+            return $this->response
+                ->withStringBody(HakomConnectionPointsCsv::render(
+                    $points,
+                    Settings::getString('core.company.name', ''),
+                ))
+                ->withType('csv')
+                ->withDownload('hakom-addresses-' . $month_to_display->i18nFormat('yyyy-MM') . '.csv');
+        }
+
+        $this->set(compact('points', 'month_to_display'));
 
         return null;
     }

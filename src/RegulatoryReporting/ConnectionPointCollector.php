@@ -195,6 +195,7 @@ class ConnectionPointCollector
                 if ($match !== null) {
                     $point->reportedReference = $match->registryReference;
                     $point->formattedAddress = $match->formattedAddress;
+                    $point->registryAddress = $match;
                 } elseif ($matches !== []) {
                     $this->problems[] = __(
                         'Invalid RUIAN GID: {0} for addresses associated with contracts: {1}',

@@ -46,6 +46,8 @@ class OverviewsControllerTest extends TestCase
         'app.AvailableConnections',
         'app.Services',
         'app.Billings',
+        'plugin.Radius.Accounts',
+        'plugin.Radius.Radacct',
     ];
 
     /**
@@ -165,6 +167,45 @@ class OverviewsControllerTest extends TestCase
         $this->assertResponseContains(
             "16936132;s2_ftth;0;0;ANO;1000;1000;1000;1000;1;Luční 464, Podmoklice, 51301 Semily\r\n",
         );
+    }
+
+    /**
+     * HAKOM's quarterly rows come as a page and as a file with the form's own headers.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfCroatianQuarterlyReport()
+     */
+    public function testOverviewOfCroatianQuarterlyReport(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-croatian-quarterly-report?year=2026&quarter=3');
+        $this->assertResponseOk();
+        $this->assertResponseContains('Usluge i paketi usluga');
+
+        $this->get('/overviews/overview-of-croatian-quarterly-report.csv?year=2026&quarter=3');
+        $this->assertResponseOk();
+        $this->assertHeaderContains('Content-Disposition', 'hakom-2026Q3.csv');
+        $this->assertResponseContains('Obrazac;Pokazatelj;Naziv;Vrijednost;Mjerna jedinica');
+    }
+
+    /**
+     * HAKOM's address listing comes as a page and as a file.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfCroatianConnectionPoints()
+     */
+    public function testOverviewOfCroatianConnectionPoints(): void
+    {
+        Configure::write('Addresses.url', '');
+        $this->login();
+
+        $this->get('/overviews/overview-of-croatian-connection-points');
+        $this->assertResponseOk();
+
+        $this->get('/overviews/overview-of-croatian-connection-points.csv?month_to_display=2026-09');
+        $this->assertResponseOk();
+        $this->assertResponseContains('kb_id;na_ime;ul_ime;kb;infrastructure_owner;infrastructure_type');
     }
 
     /**

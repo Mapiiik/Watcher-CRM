@@ -74,6 +74,16 @@ use Cake\Core\Plugin;
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('Overview of Croatian Quarterly Report') . ' (' . __('Reports for HAKOM') . ')',
+                    ['action' => 'overviewOfCroatianQuarterlyReport'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Overview of Croatian Customer Connection Points') . ' (' . __('Reports for HAKOM') . ')',
+                    ['action' => 'overviewOfCroatianConnectionPoints'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('List Available Connections'),
                     ['controller' => 'AvailableConnections', 'action' => 'index'],
                     ['class' => 'side-nav-item'],
