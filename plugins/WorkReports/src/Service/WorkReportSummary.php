@@ -73,7 +73,7 @@ final class WorkReportSummary
         return self::of(
             $report,
             WorkingCalendar::fromSettings(),
-            (float)Settings::get('work_reports.daily_hours', 8.0),
+            (float)Settings::get('work_reports.calendar.daily_hours', 8.0),
         );
     }
 

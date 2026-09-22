@@ -68,13 +68,13 @@ class SettingsControllerTest extends TestCase
     }
 
     /**
-     * A block this installation ships defaults for.
+     * The defaults this installation ships, whatever they are.
      *
-     * @return string
+     * @return array<string, array<string, mixed>>
      */
-    private function aShippedBlock(): string
+    private function shippedDefaults(): array
     {
-        $defaults = (new class extends SettingsService {
+        return (new class extends SettingsService {
             /**
              * @return array<string, array<string, mixed>>
              */
@@ -83,11 +83,45 @@ class SettingsControllerTest extends TestCase
                 return $this->defaults;
             }
         })->shipped();
+    }
+
+    /**
+     * A block this installation ships defaults for.
+     *
+     * @return string
+     */
+    private function aShippedBlock(): string
+    {
+        $defaults = $this->shippedDefaults();
 
         $plugin = (string)array_key_first($defaults);
         $key = (string)array_key_first($defaults[$plugin]);
 
         return $plugin . '.' . $key;
+    }
+
+    /**
+     * One setting this installation ships, named by its whole path.
+     *
+     * Walked down to the first thing that is not a block, so that the path names a setting of its
+     * own rather than a block, in whichever application this runs.
+     *
+     * @return string
+     */
+    private function aShippedSetting(): string
+    {
+        $defaults = $this->shippedDefaults();
+
+        $path = [(string)array_key_first($defaults)];
+        $node = $defaults[$path[0]];
+
+        while (is_array($node) && $node !== []) {
+            $key = (string)array_key_first($node);
+            $path[] = $key;
+            $node = $node[$key];
+        }
+
+        return implode('.', $path);
     }
 
     /**
@@ -307,6 +341,23 @@ class SettingsControllerTest extends TestCase
     {
         $this->login();
         $this->get('/settings/edit/core.no-such-block');
+
+        $this->assertResponseCode(404);
+    }
+
+    /**
+     * A path naming one setting rather than a block is refused as well.
+     *
+     * The form is drawn by walking into a block, so a single setting has nothing to walk into and
+     * used to come out as a warning and a page with no fields on it.
+     *
+     * @return void
+     * @link \Settings\Controller\Trait\SettingsControllerTrait::edit()
+     */
+    public function testEditRejectsASettingThatIsNotABlock(): void
+    {
+        $this->login();
+        $this->get('/settings/edit/' . $this->aShippedSetting());
 
         $this->assertResponseCode(404);
     }

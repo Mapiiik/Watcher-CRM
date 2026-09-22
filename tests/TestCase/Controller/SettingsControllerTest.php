@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\SettingsController;
 use App\Test\Traits\ControllerTestTrait;
 use Bookkeeping\Model\Enum\InvoicingSchedule;
+use Cake\Core\Plugin;
 use Cake\Datasource\FactoryLocator;
 use Cake\ORM\Locator\TableLocator;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -99,6 +100,56 @@ class SettingsControllerTest extends TestCase
         $this->get('/settings/edit/core.dashboard.tasks');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * Every block of settings is reachable from the settings page.
+     *
+     * A block nothing links to can only be opened by typing its path into the address bar, which
+     * is how several of them were found. The blocks are read the way the service reads them, so a
+     * block added to the application or to a plugin has to be linked before this passes again.
+     *
+     * @return void
+     */
+    public function testEverySettingsBlockIsLinkedFromTheSettingsPage(): void
+    {
+        $this->login();
+        $this->get('/settings');
+
+        $this->assertResponseOk();
+
+        preg_match_all('#/settings/edit/([a-z_]+\.[a-z_]+)#', $this->_getBodyAsString(), $found);
+        $linked = array_unique($found[1]);
+
+        foreach ($this->declaredBlocks() as $block) {
+            $this->assertContains($block, $linked, 'Nothing on the settings page links to ' . $block . '.');
+        }
+    }
+
+    /**
+     * The blocks the application and its plugins declare, as the settings service reads them.
+     *
+     * @return array<string>
+     */
+    private function declaredBlocks(): array
+    {
+        $files = [CONFIG . 'settings.php'];
+        foreach (Plugin::loaded() as $plugin) {
+            $files[] = Plugin::configPath($plugin) . 'settings.php';
+        }
+
+        $blocks = [];
+        foreach (array_filter($files, 'is_file') as $file) {
+            /** @var array<string, array<string, mixed>> $declared */
+            $declared = include $file;
+            foreach ($declared as $plugin => $keys) {
+                foreach (array_keys($keys) as $key) {
+                    $blocks[] = $plugin . '.' . $key;
+                }
+            }
+        }
+
+        return $blocks;
     }
 
     /**

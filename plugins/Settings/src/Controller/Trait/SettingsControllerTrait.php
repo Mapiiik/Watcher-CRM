@@ -39,6 +39,15 @@ trait SettingsControllerTrait
             throw new RecordNotFoundException(__d('settings', 'Unknown settings block: {path}', ['path' => $path]));
         }
 
+        // What is edited here is a block of settings, and the form is drawn by walking into it. A
+        // path naming one setting rather than a block has nothing to walk into, so it is refused
+        // instead of being drawn as an empty page - the setting is edited from the block above it.
+        if (!is_array($default)) {
+            throw new RecordNotFoundException(
+                __d('settings', 'Not a settings block, but a setting of its own: {path}', ['path' => $path]),
+            );
+        }
+
         // Overlay from DB
         $overlay = $settingsService->getOverlay($path);
 

@@ -33,6 +33,16 @@ use Cake\Core\Plugin;
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('Customers Configuration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core.customers'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Business Register Configuration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core.business_register'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('Documents Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.documents'],
                     ['class' => 'side-nav-item'],
@@ -45,6 +55,11 @@ use Cake\Core\Plugin;
                 <?= $this->AuthLink->link(
                     __('Emails Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.emails'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Customer Messages Configuration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core.customer_messages'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
@@ -316,6 +331,16 @@ use Cake\Core\Plugin;
                 <?= $this->AuthLink->link(
                     __('List Work Report Workers'),
                     ['controller' => 'WorkReportWorkers', 'action' => 'index', 'plugin' => 'WorkReports'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('Work Calendar Configuration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'work_reports.calendar'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
+                    __('On Call Hours Configuration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'work_reports.on_call_hours'],
                     ['class' => 'side-nav-item'],
                 ) ?>
             </div>
