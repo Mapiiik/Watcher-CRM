@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-22 00:44+0200\n"
+"POT-Creation-Date: 2026-09-22 12:57+0200\n"
 "PO-Revision-Date: 2026-09-22 01:00+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -73,21 +73,30 @@ msgstr[0] "{0} záznam byl označen."
 msgstr[1] "{0} záznamy byly označeny."
 msgstr[2] "{0} záznamů bylo označeno."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:55
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:87
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:61
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:93
 msgid "The work report item has been saved."
 msgstr "Záznam výkazu byl uložen."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:60
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:92
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:66
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:98
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:129
 msgid "The work report item could not be saved. Please, try again."
 msgstr "Záznam výkazu nelze uložit. Zkuste to prosím znovu."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:116
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:122
+msgid "The work has already been finished."
+msgstr "Práce už byla ukončena."
+
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:126
+msgid "The work has been finished."
+msgstr "Práce byla ukončena."
+
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:151
 msgid "The work report item has been deleted."
 msgstr "Záznam výkazu byl odstraněn."
 
-#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:119
+#: plugins/WorkReports/src/Controller/WorkReportItemsController.php:154
 msgid "The work report item could not be deleted. Please, try again."
 msgstr "Záznam výkazu nelze odstranit. Zkuste to prosím znovu."
 
@@ -101,41 +110,45 @@ msgstr "Den se zadává ve tvaru RRRR-MM-DD."
 msgid "The report has been submitted, its items can no longer be changed."
 msgstr "Výkaz byl odevzdán, jeho záznamy už nelze měnit."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:131
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:133
 msgid "Only the worker submits their report."
 msgstr "Výkaz odevzdává jen pracovník sám."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:141
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:143
 msgid "The report has already been submitted."
 msgstr "Výkaz už byl odevzdán."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:143
-#: plugins/WorkReports/templates/WorkReports/sheet.php:134
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:145
+msgid "Some work is still going on. Finish it first."
+msgstr "Některá práce ještě běží. Nejdřív ji ukončete."
+
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:147
+#: plugins/WorkReports/templates/WorkReports/sheet.php:174
 msgid "Nothing is reported on {0}."
 msgstr "Nic není vykázáno: {0}."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:148
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:152
 msgid "The report has been submitted."
 msgstr "Výkaz byl odevzdán."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:151
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:155
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:19
 msgid "Also reported on {0}."
 msgstr "Vykázáno také: {0}."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:180
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:184
 msgid "This report is not yours to return."
 msgstr "Tento výkaz nemůžete vrátit."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:184
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:188
 msgid "The report has not been submitted."
 msgstr "Výkaz nebyl odevzdán."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:202
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:206
 msgid "The report has been returned for correction."
 msgstr "Výkaz byl vrácen k opravě."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:274
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:278
 msgid "A month is asked for as YYYY-MM."
 msgstr "Měsíc se zadává ve tvaru RRRR-MM."
 
@@ -168,39 +181,47 @@ msgstr "Od a do, nebo celý den"
 msgid "The day is not in the month of the report."
 msgstr "Den nepatří do měsíce výkazu."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:351
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:343
+msgid "Split work over the end of the month into two items."
+msgstr "Práci přes konec měsíce rozdělte na dva záznamy."
+
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:365
+msgid "Other work is still going on. Finish it first."
+msgstr "Jiná práce ještě běží. Nejdřív ji ukončete."
+
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:378
 msgid "Items of this type need a description."
 msgstr "Záznamy tohoto typu vyžadují popis."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:369
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:396
 msgid "The contract is not one of the customer's."
 msgstr "Smlouva nepatří zákazníkovi."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:380
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:407
 msgid "Say which car the distance was driven in."
 msgstr "Uveďte, kterým autem se jelo."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:391
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:418
 msgid "Work to invoice needs the hours and the rate."
 msgstr "Práce k fakturaci potřebuje hodiny a sazbu."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:416
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:441
 msgid "Items of this type are stated from and until, not as a whole day."
 msgstr "Záznamy tohoto typu se zadávají od a do, ne na celý den."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:421
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:446
 msgid "A whole day has no from and until."
 msgstr "Celý den nemá od a do."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:425
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:450
 msgid "Items of this type take the whole day."
 msgstr "Záznamy tohoto typu jsou na celý den."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:429
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:454
 msgid "State from and until."
 msgstr "Zadejte od a do."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:434
+#: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:464
 msgid "The until has to come after the from."
 msgstr "Do musí být později než od."
 
@@ -263,8 +284,8 @@ msgstr "E-mail nelze odeslat."
 #: plugins/WorkReports/templates/WorkReportWorkers/view.php:68
 #: plugins/WorkReports/templates/WorkReports/index.php:36
 #: plugins/WorkReports/templates/WorkReports/reopen.php:10
-#: plugins/WorkReports/templates/WorkReports/sheet.php:34
-#: plugins/WorkReports/templates/WorkReports/sheet.php:157
+#: plugins/WorkReports/templates/WorkReports/sheet.php:35
+#: plugins/WorkReports/templates/WorkReports/sheet.php:197
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:24
 msgid "Actions"
 msgstr "Akce"
@@ -337,8 +358,8 @@ msgstr "Aktivní"
 
 #: plugins/WorkReports/templates/WorkCars/add.php:34
 #: plugins/WorkReports/templates/WorkCars/edit.php:42
-#: plugins/WorkReports/templates/WorkReports/sheet.php:117
-#: plugins/WorkReports/templates/element/item_form.php:190
+#: plugins/WorkReports/templates/WorkReports/sheet.php:129
+#: plugins/WorkReports/templates/element/item_form.php:197
 msgid "Note"
 msgstr "Poznámka"
 
@@ -355,7 +376,7 @@ msgstr "Poznámka"
 #: plugins/WorkReports/templates/WorkReportWorkers/add.php:45
 #: plugins/WorkReports/templates/WorkReportWorkers/edit.php:53
 #: plugins/WorkReports/templates/WorkReports/reopen.php:37
-#: plugins/WorkReports/templates/element/item_form.php:191
+#: plugins/WorkReports/templates/element/item_form.php:198
 msgid "Submit"
 msgstr "Potvrdit"
 
@@ -371,7 +392,7 @@ msgstr "Potvrdit"
 #: plugins/WorkReports/templates/WorkReportWorkers/edit.php:15
 #: plugins/WorkReports/templates/WorkReportWorkers/index.php:50
 #: plugins/WorkReports/templates/WorkReportWorkers/view.php:83
-#: plugins/WorkReports/templates/WorkReports/sheet.php:286
+#: plugins/WorkReports/templates/WorkReports/sheet.php:336
 msgid "Delete"
 msgstr "Odstranit"
 
@@ -388,7 +409,7 @@ msgstr "Odstranit"
 #: plugins/WorkReports/templates/WorkReportWorkers/index.php:52
 #: plugins/WorkReports/templates/WorkReportWorkers/view.php:20
 #: plugins/WorkReports/templates/WorkReportWorkers/view.php:90
-#: plugins/WorkReports/templates/WorkReports/sheet.php:289
+#: plugins/WorkReports/templates/WorkReports/sheet.php:339
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
 
@@ -440,7 +461,7 @@ msgstr "Ne"
 #: plugins/WorkReports/templates/WorkReportItemTypes/index.php:45
 #: plugins/WorkReports/templates/WorkReportWorkers/index.php:45
 #: plugins/WorkReports/templates/WorkReportWorkers/view.php:78
-#: plugins/WorkReports/templates/WorkReports/sheet.php:281
+#: plugins/WorkReports/templates/WorkReports/sheet.php:331
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:90
 msgid "Edit"
 msgstr "Upravit"
@@ -475,14 +496,14 @@ msgid "New Work Label"
 msgstr "Nový štítek práce"
 
 #: plugins/WorkReports/templates/WorkLabels/index.php:13
-#: plugins/WorkReports/templates/WorkReports/sheet.php:156
+#: plugins/WorkReports/templates/WorkReports/sheet.php:196
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:23
-#: plugins/WorkReports/templates/element/item_form.php:140
+#: plugins/WorkReports/templates/element/item_form.php:147
 msgid "Work Labels"
 msgstr "Štítky práce"
 
 #: plugins/WorkReports/templates/WorkOverviews/by_access_point.php:17
-#: plugins/WorkReports/templates/element/item_form.php:90
+#: plugins/WorkReports/templates/element/item_form.php:97
 msgid "Access Point"
 msgstr "Přístupový bod"
 
@@ -507,7 +528,7 @@ msgstr "Práce na přístupových bodech"
 
 #: plugins/WorkReports/templates/WorkOverviews/by_access_point.php:62
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:90
-#: plugins/WorkReports/templates/WorkReports/sheet.php:147
+#: plugins/WorkReports/templates/WorkReports/sheet.php:187
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:14
 #: plugins/WorkReports/templates/element/item_form.php:41
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:38
@@ -524,21 +545,21 @@ msgstr "Datum"
 #: plugins/WorkReports/templates/WorkReportWorkers/view.php:66
 #: plugins/WorkReports/templates/WorkReports/index.php:12
 #: plugins/WorkReports/templates/WorkReports/index.php:33
-#: plugins/WorkReports/templates/WorkReports/sheet.php:81
+#: plugins/WorkReports/templates/WorkReports/sheet.php:93
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:15
 msgid "User"
 msgstr "Uživatel"
 
 #: plugins/WorkReports/templates/WorkOverviews/by_access_point.php:64
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:95
-#: plugins/WorkReports/templates/WorkReports/sheet.php:151
+#: plugins/WorkReports/templates/WorkReports/sheet.php:191
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:16
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:41
 msgid "Hours"
 msgstr "Hodiny"
 
 #: plugins/WorkReports/templates/WorkOverviews/by_access_point.php:65
-#: plugins/WorkReports/templates/WorkReports/sheet.php:152
+#: plugins/WorkReports/templates/WorkReports/sheet.php:192
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:17
 #: plugins/WorkReports/templates/element/item_form.php:38
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:42
@@ -547,23 +568,23 @@ msgstr "Typ záznamu"
 
 #: plugins/WorkReports/templates/WorkOverviews/by_access_point.php:66
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:93
-#: plugins/WorkReports/templates/WorkReports/sheet.php:153
+#: plugins/WorkReports/templates/WorkReports/sheet.php:193
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:18
-#: plugins/WorkReports/templates/element/item_form.php:97
+#: plugins/WorkReports/templates/element/item_form.php:104
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:43
 msgid "Description"
 msgstr "Popis"
 
 #: plugins/WorkReports/templates/WorkOverviews/by_access_point.php:67
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:28
-#: plugins/WorkReports/templates/WorkReports/sheet.php:154
-#: plugins/WorkReports/templates/element/item_form.php:72
+#: plugins/WorkReports/templates/WorkReports/sheet.php:194
+#: plugins/WorkReports/templates/element/item_form.php:79
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:44
 msgid "Customer"
 msgstr "Zákazník"
 
 #: plugins/WorkReports/templates/WorkOverviews/by_access_point.php:75
-#: plugins/WorkReports/templates/WorkReports/sheet.php:204
+#: plugins/WorkReports/templates/WorkReports/sheet.php:244
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:32
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:51
 msgid "whole day"
@@ -571,8 +592,8 @@ msgstr "celý den"
 
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:19
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:100
-#: plugins/WorkReports/templates/element/item_form.php:184
-#: plugins/WorkReports/templates/element/item_form.php:186
+#: plugins/WorkReports/templates/element/item_form.php:191
+#: plugins/WorkReports/templates/element/item_form.php:193
 msgid "Invoiced"
 msgstr "Vyfakturováno"
 
@@ -598,27 +619,27 @@ msgstr "Bez zákazníka"
 
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:92
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:20
-#: plugins/WorkReports/templates/element/item_form.php:79
+#: plugins/WorkReports/templates/element/item_form.php:86
 msgid "Contract"
 msgstr "Smlouva"
 
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:94
-#: plugins/WorkReports/templates/element/item_form.php:179
+#: plugins/WorkReports/templates/element/item_form.php:186
 msgid "Invoice Text"
 msgstr "Text na fakturu"
 
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:96
-#: plugins/WorkReports/templates/element/item_form.php:162
+#: plugins/WorkReports/templates/element/item_form.php:169
 msgid "Invoice Hours"
 msgstr "Fakturované hodiny"
 
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:97
-#: plugins/WorkReports/templates/element/item_form.php:168
+#: plugins/WorkReports/templates/element/item_form.php:175
 msgid "Work Rate"
 msgstr "Sazba"
 
 #: plugins/WorkReports/templates/WorkOverviews/to_invoice.php:98
-#: plugins/WorkReports/templates/element/item_form.php:173
+#: plugins/WorkReports/templates/element/item_form.php:180
 msgid "Rate Multiplier"
 msgstr "Násobitel sazby"
 
@@ -737,7 +758,7 @@ msgstr "Typy záznamů"
 #: plugins/WorkReports/templates/WorkReportItems/add.php:13
 #: plugins/WorkReports/templates/WorkReportItems/edit.php:21
 #: plugins/WorkReports/templates/WorkReports/reopen.php:12
-#: plugins/WorkReports/templates/WorkReports/sheet.php:100
+#: plugins/WorkReports/templates/WorkReports/sheet.php:112
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:75
 msgid "Work Report"
 msgstr "Výkaz práce"
@@ -853,7 +874,7 @@ msgid "Work Reports"
 msgstr "Výkazy práce"
 
 #: plugins/WorkReports/templates/WorkReports/index.php:32
-#: plugins/WorkReports/templates/WorkReports/sheet.php:89
+#: plugins/WorkReports/templates/WorkReports/sheet.php:101
 msgid "Month"
 msgstr "Měsíc"
 
@@ -863,7 +884,7 @@ msgid "Submitted"
 msgstr "Odevzdáno"
 
 #: plugins/WorkReports/templates/WorkReports/reopen.php:25
-#: plugins/WorkReports/templates/WorkReports/sheet.php:54
+#: plugins/WorkReports/templates/WorkReports/sheet.php:66
 msgid "Return for Correction"
 msgstr "Vrátit k opravě"
 
@@ -872,137 +893,155 @@ msgstr "Vrátit k opravě"
 msgid "Return Reason"
 msgstr "Důvod vrácení"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:37
-#: plugins/WorkReports/templates/WorkReports/sheet.php:126
+#: plugins/WorkReports/templates/WorkReports/sheet.php:38
+#: plugins/WorkReports/templates/WorkReports/sheet.php:138
 msgid "New Work Report Item"
 msgstr "Nový záznam výkazu"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:44
+#: plugins/WorkReports/templates/WorkReports/sheet.php:45
+#: plugins/WorkReports/templates/WorkReports/sheet.php:145
+msgid "Start Now"
+msgstr "Začít teď"
+
+#: plugins/WorkReports/templates/WorkReports/sheet.php:56
 msgid "Submit Work Report"
 msgstr "Odevzdat výkaz"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:47
+#: plugins/WorkReports/templates/WorkReports/sheet.php:59
 msgid "Submit the report? It can no longer be changed after that."
 msgstr "Odevzdat výkaz? Potom už ho nelze měnit."
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:60
+#: plugins/WorkReports/templates/WorkReports/sheet.php:72
 msgid "Previous Month"
 msgstr "Předchozí měsíc"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:65
+#: plugins/WorkReports/templates/WorkReports/sheet.php:77
 msgid "Next Month"
 msgstr "Další měsíc"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:70
+#: plugins/WorkReports/templates/WorkReports/sheet.php:82
 msgid "List Work Reports"
 msgstr "Seznam výkazů práce"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:106
+#: plugins/WorkReports/templates/WorkReports/sheet.php:118
 msgid "Returned for correction on {0} by {1}: {2}"
 msgstr "Vráceno k opravě {0}, vrátil(a) {1}: {2}"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:131
+#: plugins/WorkReports/templates/WorkReports/sheet.php:154
 msgid "Work Report Items"
 msgstr "Záznamy výkazu"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:148
+#: plugins/WorkReports/templates/WorkReports/sheet.php:157
+msgid "Work in progress since {0}: {1}"
+msgstr "Rozpracovaná práce od {0}: {1}"
+
+#: plugins/WorkReports/templates/WorkReports/sheet.php:165
+#: plugins/WorkReports/templates/WorkReports/sheet.php:325
+msgid "Finish Now"
+msgstr "Ukončit teď"
+
+#: plugins/WorkReports/templates/WorkReports/sheet.php:188
 #: plugins/WorkReports/templates/element/summary.php:73
 msgid "On Call"
 msgstr "Pohotovost"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:149
-#: plugins/WorkReports/templates/element/item_form.php:54
+#: plugins/WorkReports/templates/WorkReports/sheet.php:189
+#: plugins/WorkReports/templates/element/item_form.php:56
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:39
 msgid "Work From"
 msgstr "Od"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:150
-#: plugins/WorkReports/templates/element/item_form.php:60
+#: plugins/WorkReports/templates/WorkReports/sheet.php:190
+#: plugins/WorkReports/templates/element/item_form.php:64
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:40
 msgid "Work Until"
 msgstr "Do"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:155
+#: plugins/WorkReports/templates/WorkReports/sheet.php:195
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:45
 msgid "Distance"
 msgstr "Vzdálenost"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:177
+#: plugins/WorkReports/templates/WorkReports/sheet.php:217
 msgid "public holiday"
 msgstr "státní svátek"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:187
+#: plugins/WorkReports/templates/WorkReports/sheet.php:227
 msgid "Remove"
 msgstr "Zrušit"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:188
+#: plugins/WorkReports/templates/WorkReports/sheet.php:228
 msgid "Set"
 msgstr "Nastavit"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:215
+#: plugins/WorkReports/templates/WorkReports/sheet.php:248
+msgid "in progress"
+msgstr "probíhá"
+
+#: plugins/WorkReports/templates/WorkReports/sheet.php:259
 msgid "To invoice"
 msgstr "K fakturaci"
 
-#: plugins/WorkReports/templates/WorkReports/sheet.php:299
+#: plugins/WorkReports/templates/WorkReports/sheet.php:349
 msgid "Add"
 msgstr "Přidat"
 
 #: plugins/WorkReports/templates/cell/WorkReportItems/display.php:22
-#: plugins/WorkReports/templates/element/item_form.php:156
+#: plugins/WorkReports/templates/element/item_form.php:163
 msgid "To Invoice"
 msgstr "K fakturaci"
 
-#: plugins/WorkReports/templates/element/item_form.php:61
-msgid "Earlier than from means past midnight."
-msgstr "Dřívější čas než od znamená přes půlnoc."
+#: plugins/WorkReports/templates/element/item_form.php:65
+msgid "Empty while the work goes on. Earlier than from means past midnight."
+msgstr "Prázdné, dokud práce běží. Dřívější čas než od znamená přes půlnoc."
 
-#: plugins/WorkReports/templates/element/item_form.php:84
+#: plugins/WorkReports/templates/element/item_form.php:91
 msgid "Task"
 msgstr "Úkol"
 
-#: plugins/WorkReports/templates/element/item_form.php:107
+#: plugins/WorkReports/templates/element/item_form.php:114
 msgid "Private Car"
 msgstr "Vlastní auto"
 
-#: plugins/WorkReports/templates/element/item_form.php:112
+#: plugins/WorkReports/templates/element/item_form.php:119
 msgid "Private Car Distance"
 msgstr "Vzdálenost vlastním autem"
 
-#: plugins/WorkReports/templates/element/item_form.php:113
-#: plugins/WorkReports/templates/element/item_form.php:128
+#: plugins/WorkReports/templates/element/item_form.php:120
+#: plugins/WorkReports/templates/element/item_form.php:135
 msgid "Kilometres"
 msgstr "Kilometry"
 
-#: plugins/WorkReports/templates/element/item_form.php:122
+#: plugins/WorkReports/templates/element/item_form.php:129
 msgid "Company Car"
 msgstr "Služební auto"
 
-#: plugins/WorkReports/templates/element/item_form.php:127
+#: plugins/WorkReports/templates/element/item_form.php:134
 msgid "Company Car Distance"
 msgstr "Vzdálenost služebním autem"
 
-#: plugins/WorkReports/templates/element/item_form.php:132
+#: plugins/WorkReports/templates/element/item_form.php:139
 #: plugins/WorkReports/templates/element/summary.php:67
 msgid "Cash Collected"
 msgstr "Vybráno v hotovosti"
 
-#: plugins/WorkReports/templates/element/item_form.php:146
+#: plugins/WorkReports/templates/element/item_form.php:153
 msgid "Collaborators"
 msgstr "Spolupracovníci"
 
-#: plugins/WorkReports/templates/element/item_form.php:147
+#: plugins/WorkReports/templates/element/item_form.php:154
 msgid "Who else was there."
 msgstr "Kdo dalšího tam byl."
 
-#: plugins/WorkReports/templates/element/item_form.php:154
+#: plugins/WorkReports/templates/element/item_form.php:161
 msgid "Invoicing"
 msgstr "Fakturace"
 
-#: plugins/WorkReports/templates/element/item_form.php:174
+#: plugins/WorkReports/templates/element/item_form.php:181
 msgid "For example 3 for a Sunday."
 msgstr "Například 3 za neděli."
 
-#: plugins/WorkReports/templates/element/item_form.php:180
+#: plugins/WorkReports/templates/element/item_form.php:187
 msgid "What goes on the invoice."
 msgstr "Co se uvede na faktuře."
 
@@ -1045,3 +1084,6 @@ msgstr "Vráceno"
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:27
 msgid "View Work Report"
 msgstr "Zobrazit výkaz práce"
+
+#~ msgid "Earlier than from means past midnight."
+#~ msgstr "Dřívější čas než od znamená přes půlnoc."

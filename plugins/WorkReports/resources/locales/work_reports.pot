@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-22 00:44+0200\n"
+"POT-Creation-Date: 2026-09-22 12:57+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -72,21 +72,30 @@ msgid_plural "{0} items have been marked."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:55
-#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:87
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:61
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:93
 msgid "The work report item has been saved."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:60
-#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:92
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:66
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:98
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:129
 msgid "The work report item could not be saved. Please, try again."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:116
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:122
+msgid "The work has already been finished."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:126
+msgid "The work has been finished."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:151
 msgid "The work report item has been deleted."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:119
+#: ./plugins/WorkReports/src/Controller/WorkReportItemsController.php:154
 msgid "The work report item could not be deleted. Please, try again."
 msgstr ""
 
@@ -100,41 +109,45 @@ msgstr ""
 msgid "The report has been submitted, its items can no longer be changed."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:131
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:133
 msgid "Only the worker submits their report."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:141
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:143
 msgid "The report has already been submitted."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:143
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:134
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:145
+msgid "Some work is still going on. Finish it first."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:147
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:174
 msgid "Nothing is reported on {0}."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:148
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:152
 msgid "The report has been submitted."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:151
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:155
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:19
 msgid "Also reported on {0}."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:180
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:184
 msgid "This report is not yours to return."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:184
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:188
 msgid "The report has not been submitted."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:202
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:206
 msgid "The report has been returned for correction."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:274
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:278
 msgid "A month is asked for as YYYY-MM."
 msgstr ""
 
@@ -167,39 +180,47 @@ msgstr ""
 msgid "The day is not in the month of the report."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:351
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:343
+msgid "Split work over the end of the month into two items."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:365
+msgid "Other work is still going on. Finish it first."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:378
 msgid "Items of this type need a description."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:369
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:396
 msgid "The contract is not one of the customer's."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:380
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:407
 msgid "Say which car the distance was driven in."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:391
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:418
 msgid "Work to invoice needs the hours and the rate."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:416
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:441
 msgid "Items of this type are stated from and until, not as a whole day."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:421
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:446
 msgid "A whole day has no from and until."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:425
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:450
 msgid "Items of this type take the whole day."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:429
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:454
 msgid "State from and until."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:434
+#: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:464
 msgid "The until has to come after the from."
 msgstr ""
 
@@ -262,8 +283,8 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:68
 #: ./plugins/WorkReports/templates/WorkReports/index.php:36
 #: ./plugins/WorkReports/templates/WorkReports/reopen.php:10
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:34
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:157
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:35
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:197
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:24
 msgid "Actions"
 msgstr ""
@@ -336,8 +357,8 @@ msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkCars/add.php:34
 #: ./plugins/WorkReports/templates/WorkCars/edit.php:42
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:117
-#: ./plugins/WorkReports/templates/element/item_form.php:190
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:129
+#: ./plugins/WorkReports/templates/element/item_form.php:197
 msgid "Note"
 msgstr ""
 
@@ -354,7 +375,7 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportWorkers/add.php:45
 #: ./plugins/WorkReports/templates/WorkReportWorkers/edit.php:53
 #: ./plugins/WorkReports/templates/WorkReports/reopen.php:37
-#: ./plugins/WorkReports/templates/element/item_form.php:191
+#: ./plugins/WorkReports/templates/element/item_form.php:198
 msgid "Submit"
 msgstr ""
 
@@ -370,7 +391,7 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportWorkers/edit.php:15
 #: ./plugins/WorkReports/templates/WorkReportWorkers/index.php:50
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:83
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:286
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:336
 msgid "Delete"
 msgstr ""
 
@@ -387,7 +408,7 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportWorkers/index.php:52
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:20
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:90
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:289
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:339
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
@@ -439,7 +460,7 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportItemTypes/index.php:45
 #: ./plugins/WorkReports/templates/WorkReportWorkers/index.php:45
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:78
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:281
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:331
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:90
 msgid "Edit"
 msgstr ""
@@ -474,14 +495,14 @@ msgid "New Work Label"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkLabels/index.php:13
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:156
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:196
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:23
-#: ./plugins/WorkReports/templates/element/item_form.php:140
+#: ./plugins/WorkReports/templates/element/item_form.php:147
 msgid "Work Labels"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/by_access_point.php:17
-#: ./plugins/WorkReports/templates/element/item_form.php:90
+#: ./plugins/WorkReports/templates/element/item_form.php:97
 msgid "Access Point"
 msgstr ""
 
@@ -506,7 +527,7 @@ msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/by_access_point.php:62
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:90
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:147
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:187
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:14
 #: ./plugins/WorkReports/templates/element/item_form.php:41
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:38
@@ -523,21 +544,21 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:66
 #: ./plugins/WorkReports/templates/WorkReports/index.php:12
 #: ./plugins/WorkReports/templates/WorkReports/index.php:33
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:81
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:93
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:15
 msgid "User"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/by_access_point.php:64
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:95
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:151
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:191
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:16
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:41
 msgid "Hours"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/by_access_point.php:65
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:152
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:192
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:17
 #: ./plugins/WorkReports/templates/element/item_form.php:38
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:42
@@ -546,23 +567,23 @@ msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/by_access_point.php:66
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:93
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:153
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:193
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:18
-#: ./plugins/WorkReports/templates/element/item_form.php:97
+#: ./plugins/WorkReports/templates/element/item_form.php:104
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:43
 msgid "Description"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/by_access_point.php:67
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:28
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:154
-#: ./plugins/WorkReports/templates/element/item_form.php:72
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:194
+#: ./plugins/WorkReports/templates/element/item_form.php:79
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:44
 msgid "Customer"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/by_access_point.php:75
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:204
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:244
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:32
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:51
 msgid "whole day"
@@ -570,8 +591,8 @@ msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:19
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:100
-#: ./plugins/WorkReports/templates/element/item_form.php:184
-#: ./plugins/WorkReports/templates/element/item_form.php:186
+#: ./plugins/WorkReports/templates/element/item_form.php:191
+#: ./plugins/WorkReports/templates/element/item_form.php:193
 msgid "Invoiced"
 msgstr ""
 
@@ -597,27 +618,27 @@ msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:92
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:20
-#: ./plugins/WorkReports/templates/element/item_form.php:79
+#: ./plugins/WorkReports/templates/element/item_form.php:86
 msgid "Contract"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:94
-#: ./plugins/WorkReports/templates/element/item_form.php:179
+#: ./plugins/WorkReports/templates/element/item_form.php:186
 msgid "Invoice Text"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:96
-#: ./plugins/WorkReports/templates/element/item_form.php:162
+#: ./plugins/WorkReports/templates/element/item_form.php:169
 msgid "Invoice Hours"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:97
-#: ./plugins/WorkReports/templates/element/item_form.php:168
+#: ./plugins/WorkReports/templates/element/item_form.php:175
 msgid "Work Rate"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkOverviews/to_invoice.php:98
-#: ./plugins/WorkReports/templates/element/item_form.php:173
+#: ./plugins/WorkReports/templates/element/item_form.php:180
 msgid "Rate Multiplier"
 msgstr ""
 
@@ -736,7 +757,7 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportItems/add.php:13
 #: ./plugins/WorkReports/templates/WorkReportItems/edit.php:21
 #: ./plugins/WorkReports/templates/WorkReports/reopen.php:12
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:100
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:112
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:75
 msgid "Work Report"
 msgstr ""
@@ -852,7 +873,7 @@ msgid "Work Reports"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkReports/index.php:32
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:89
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:101
 msgid "Month"
 msgstr ""
 
@@ -862,7 +883,7 @@ msgid "Submitted"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkReports/reopen.php:25
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:54
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:66
 msgid "Return for Correction"
 msgstr ""
 
@@ -871,137 +892,155 @@ msgstr ""
 msgid "Return Reason"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:37
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:126
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:38
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:138
 msgid "New Work Report Item"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:44
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:45
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:145
+msgid "Start Now"
+msgstr ""
+
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:56
 msgid "Submit Work Report"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:47
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:59
 msgid "Submit the report? It can no longer be changed after that."
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:60
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:72
 msgid "Previous Month"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:65
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:77
 msgid "Next Month"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:70
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:82
 msgid "List Work Reports"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:106
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:118
 msgid "Returned for correction on {0} by {1}: {2}"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:131
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:154
 msgid "Work Report Items"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:148
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:157
+msgid "Work in progress since {0}: {1}"
+msgstr ""
+
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:165
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:325
+msgid "Finish Now"
+msgstr ""
+
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:188
 #: ./plugins/WorkReports/templates/element/summary.php:73
 msgid "On Call"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:149
-#: ./plugins/WorkReports/templates/element/item_form.php:54
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:189
+#: ./plugins/WorkReports/templates/element/item_form.php:56
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:39
 msgid "Work From"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:150
-#: ./plugins/WorkReports/templates/element/item_form.php:60
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:190
+#: ./plugins/WorkReports/templates/element/item_form.php:64
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:40
 msgid "Work Until"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:155
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:195
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:45
 msgid "Distance"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:177
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:217
 msgid "public holiday"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:187
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:227
 msgid "Remove"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:188
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:228
 msgid "Set"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:215
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:248
+msgid "in progress"
+msgstr ""
+
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:259
 msgid "To invoice"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:299
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:349
 msgid "Add"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:22
-#: ./plugins/WorkReports/templates/element/item_form.php:156
+#: ./plugins/WorkReports/templates/element/item_form.php:163
 msgid "To Invoice"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:61
-msgid "Earlier than from means past midnight."
+#: ./plugins/WorkReports/templates/element/item_form.php:65
+msgid "Empty while the work goes on. Earlier than from means past midnight."
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:84
+#: ./plugins/WorkReports/templates/element/item_form.php:91
 msgid "Task"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:107
+#: ./plugins/WorkReports/templates/element/item_form.php:114
 msgid "Private Car"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:112
+#: ./plugins/WorkReports/templates/element/item_form.php:119
 msgid "Private Car Distance"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:113
-#: ./plugins/WorkReports/templates/element/item_form.php:128
+#: ./plugins/WorkReports/templates/element/item_form.php:120
+#: ./plugins/WorkReports/templates/element/item_form.php:135
 msgid "Kilometres"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:122
+#: ./plugins/WorkReports/templates/element/item_form.php:129
 msgid "Company Car"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:127
+#: ./plugins/WorkReports/templates/element/item_form.php:134
 msgid "Company Car Distance"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:132
+#: ./plugins/WorkReports/templates/element/item_form.php:139
 #: ./plugins/WorkReports/templates/element/summary.php:67
 msgid "Cash Collected"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:146
+#: ./plugins/WorkReports/templates/element/item_form.php:153
 msgid "Collaborators"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:147
+#: ./plugins/WorkReports/templates/element/item_form.php:154
 msgid "Who else was there."
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:154
+#: ./plugins/WorkReports/templates/element/item_form.php:161
 msgid "Invoicing"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:174
+#: ./plugins/WorkReports/templates/element/item_form.php:181
 msgid "For example 3 for a Sunday."
 msgstr ""
 
-#: ./plugins/WorkReports/templates/element/item_form.php:180
+#: ./plugins/WorkReports/templates/element/item_form.php:187
 msgid "What goes on the invoice."
 msgstr ""
 
