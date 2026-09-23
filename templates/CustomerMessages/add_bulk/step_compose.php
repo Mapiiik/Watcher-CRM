@@ -96,16 +96,6 @@
                 <br>
             <?php endif; ?>
             <fieldset>
-                <legend><?= __('Customer Message') ?></legend>
-                <?php
-                    echo $this->Form->control('type');
-                    echo $this->Form->control('subject');
-                    echo $this->Form->control('body');
-                    echo $this->Form->control('body_format');
-                ?>
-            </fieldset>
-            <br>
-            <fieldset>
                 <legend><?= __('Recipients by access points — {0} customer(s)', count($customers)) ?></legend>
                 <div class="text">
                     <p><?= __(
@@ -210,6 +200,16 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
+            </fieldset>
+            <br>
+            <fieldset>
+                <legend><?= __('Customer Message') ?></legend>
+                <?php
+                    echo $this->Form->control('type');
+                    echo $this->Form->control('subject');
+                    echo $this->Form->control('body');
+                    echo $this->Form->control('body_format');
+                ?>
             </fieldset>
             <?php // no count here: it would promise the full list even after rows were unchecked ?>
             <?= $this->Form->button(__('Send to the customers checked above')) ?>
