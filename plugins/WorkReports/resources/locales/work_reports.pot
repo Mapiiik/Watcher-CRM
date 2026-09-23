@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-23 20:05+0200\n"
+"POT-Creation-Date: 2026-09-23 20:09+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -402,7 +402,6 @@ msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkCars/add.php:34
 #: ./plugins/WorkReports/templates/WorkCars/edit.php:42
-#: ./plugins/WorkReports/templates/WorkReports/note.php:25
 #: ./plugins/WorkReports/templates/WorkReports/note.php:31
 #: ./plugins/WorkReports/templates/WorkReports/sheet.php:158
 #: ./plugins/WorkReports/templates/element/item_form.php:197
@@ -946,6 +945,11 @@ msgstr ""
 msgid "Submitted"
 msgstr ""
 
+#: ./plugins/WorkReports/templates/WorkReports/note.php:25
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:73
+msgid "Edit Note"
+msgstr ""
+
 #: ./plugins/WorkReports/templates/WorkReports/reopen.php:25
 #: ./plugins/WorkReports/templates/WorkReports/sheet.php:95
 msgid "Return for Correction"
@@ -964,10 +968,6 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReports/sheet.php:62
 #: ./plugins/WorkReports/templates/WorkReports/sheet.php:174
 msgid "Start Now"
-msgstr ""
-
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:73
-msgid "Edit Note"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkReports/sheet.php:85

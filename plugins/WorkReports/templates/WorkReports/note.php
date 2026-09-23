@@ -22,7 +22,7 @@
         <div class="work-reports form content">
             <?= $this->Form->create($workReport) ?>
             <fieldset>
-                <?= $this->legend(__d('work_reports', 'Note')) ?>
+                <?= $this->legend(__d('work_reports', 'Edit Note')) ?>
                 <p>
                     <?= h($workReport->user->name) ?>, <?= h($workReport->month->i18nFormat('LLLL yyyy')) ?>
                 </p>
