@@ -27,21 +27,18 @@
                 <p>
                     <?= h($workReport->user->name) ?>, <?= h($workReport->month->i18nFormat('LLLL yyyy')) ?>
                 </p>
-                <div class="message" role="status">
-                    <?= __d(
-                        'work_reports',
-                        'The day and everything before it stays as it is written. The days after it'
-                        . ' go on being filled in.',
-                    ) ?>
-                    <?php if (!$mayOpen) : ?>
-                        <br><?= __d('work_reports', 'Only a supervisor opens days that are closed.') ?>
-                    <?php endif ?>
-                </div>
                 <?= $this->Form->control('closed_until', [
                     'label' => __d('work_reports', 'Closed Until'),
                     'type' => 'date',
                     'min' => $workReport->month->firstOfMonth()->format('Y-m-d'),
                     'max' => $workReport->month->lastOfMonth()->format('Y-m-d'),
+                    'help' => __d(
+                        'work_reports',
+                        'The day and everything before it stays as it is written. The days after it'
+                        . ' go on being filled in.',
+                    ) . ($mayOpen
+                        ? ''
+                        : ' ' . __d('work_reports', 'Only a supervisor opens days that are closed.')),
                 ]) ?>
             </fieldset>
             <?= $this->Form->button(__d('work_reports', 'Submit')) ?>
