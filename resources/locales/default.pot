@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-23 10:56+0200\n"
+"POT-Creation-Date: 2026-09-23 11:25+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2546,40 +2546,45 @@ msgstr ""
 msgid "A customer with a company name is a business (Croatian OIB belongs to everyone)"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:39
+#: ./src/Model/Enum/ContractDocumentType.php:45
 msgid "Contract for the provision of services"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:42
+#: ./src/Model/Enum/ContractDocumentType.php:48
 msgid "Contract for the provision of services (with termination of the original contract)"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:45
+#: ./src/Model/Enum/ContractDocumentType.php:51
 msgid "Amendment to the contract for the provision of services"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:48
+#: ./src/Model/Enum/ContractDocumentType.php:54
 msgid "Agreement to terminate contract for the provision of services"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:51
+#: ./src/Model/Enum/ContractDocumentType.php:57
 msgid "Contract summary"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:54
+#: ./src/Model/Enum/ContractDocumentType.php:60
 msgid "Handover protocol - Installation of internet connection"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:57
+#: ./src/Model/Enum/ContractDocumentType.php:63
 msgid "Handover protocol - Internet connection uninstallation"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:60
+#: ./src/Model/Enum/ContractDocumentType.php:66
 msgid "Notice of termination from the customer"
 msgstr ""
 
-#: ./src/Model/Enum/ContractDocumentType.php:63
+#: ./src/Model/Enum/ContractDocumentType.php:69
 msgid "Death certificate"
+msgstr ""
+
+#: ./src/Model/Enum/ContractDocumentType.php:72
+#: ./src/Model/Enum/CustomerDocumentType.php:36
+msgid "Other document"
 msgstr ""
 
 #: ./src/Model/Enum/ContractPeriodSource.php:67
@@ -2833,16 +2838,16 @@ msgstr ""
 msgid "former"
 msgstr ""
 
-#: ./src/Model/Enum/CustomerDocumentType.php:28
+#: ./src/Model/Enum/CustomerDocumentType.php:33
 #: ./src/Model/Enum/CustomerProposalPurpose.php:37
 msgid "Consent to the processing of personal data"
 msgstr ""
 
-#: ./src/Model/Enum/CustomerDocumentType.php:29
+#: ./src/Model/Enum/CustomerDocumentType.php:34
 msgid "Consent to the processing of personal data (change)"
 msgstr ""
 
-#: ./src/Model/Enum/CustomerDocumentType.php:30
+#: ./src/Model/Enum/CustomerDocumentType.php:35
 #: ./src/Model/Enum/CustomerProposalPurpose.php:38
 msgid "List of the customer's contracts and services provided"
 msgstr ""
@@ -3489,11 +3494,15 @@ msgstr ""
 msgid "This document cannot be generated for this proposal."
 msgstr ""
 
-#: ./src/Service/CustomerPrint/CustomerPrintValidator.php:93
+#: ./src/Service/CustomerPrint/CustomerPrintValidator.php:58
+msgid "This document is only ever filed, never generated."
+msgstr ""
+
+#: ./src/Service/CustomerPrint/CustomerPrintValidator.php:99
 msgid "The customer has no billing address."
 msgstr ""
 
-#: ./src/Service/CustomerPrint/CustomerPrintValidator.php:97
+#: ./src/Service/CustomerPrint/CustomerPrintValidator.php:103
 msgid "The customer has no contracts whose services are provided."
 msgstr ""
 
