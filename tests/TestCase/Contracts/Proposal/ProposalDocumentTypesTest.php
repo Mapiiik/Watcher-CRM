@@ -180,6 +180,47 @@ class ProposalDocumentTypesTest extends TestCase
     }
 
     /**
+     * Whatever else was handed over - a power of attorney, the owner of the building agreeing to
+     * the cabling - belongs to no purpose in particular, so it is offered under every one of them.
+     * Filed and nothing more, the same as what the other side writes: never printed, never owed.
+     *
+     * One type rather than a list of them, because the list has no end. Which paper each one is,
+     * its own file name says.
+     *
+     * @return void
+     */
+    public function testWhateverElseWasHandedOverIsOfferedUnderEveryPurpose(): void
+    {
+        $papers = new ProposalDocumentTypes();
+        $other = ContractDocumentType::Other;
+
+        // What is owed is read off the snapshot, so each of these carries the least it may.
+        $photographed = [
+            'snapshot' => [
+                'contract' => ['service_type' => ['have_equipments' => true]],
+                'customer' => [],
+                'version' => ['conclusion_date' => '2026-01-01'],
+                'billings' => [],
+            ],
+        ];
+
+        $anyPurpose = [
+            $this->proposal($photographed),
+            $this->proposal(self::ending() + $photographed),
+            $this->proposal(['purpose' => ProposalPurpose::ServiceChange] + $photographed),
+        ];
+
+        foreach ($anyPurpose as $any) {
+            $this->assertContains($other->value, $this->offered($any));
+            $this->assertFalse(
+                $papers->allows($other, $any, true, true),
+                'Something nobody here draws was offered to be printed.',
+            );
+            $this->assertArrayNotHasKey($other->value, $papers->expectedOf($any));
+        }
+    }
+
+    /**
      * An amendment wants papers meant as a change, and a contract somebody concluded. Papers meant
      * as a new contract are not an amendment however far along the version is, and there is
      * nothing to amend before anybody signs.

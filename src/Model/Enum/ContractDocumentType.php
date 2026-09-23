@@ -28,6 +28,12 @@ enum ContractDocumentType: string implements EnumLabelInterface
     case TerminationNotice = 'termination-notice';
     case DeathCertificate = 'death-certificate';
 
+    // And whatever else came with the papers: a power of attorney, the owner of the building
+    // agreeing to the cabling, anything the operator was handed and has nowhere else to keep.
+    // One case rather than a list of them, because the list has no end - what each paper is, its
+    // own file name says.
+    case Other = 'other';
+
     /**
      * @return string
      */
@@ -61,22 +67,26 @@ enum ContractDocumentType: string implements EnumLabelInterface
 
             self::DeathCertificate =>
                 __('Death certificate'),
+
+            self::Other =>
+                __('Other document'),
         };
     }
 
     /**
      * Whether this is a paper the application generates.
      *
-     * Most are: somebody asks for one and it is written here. Two are not - a notice of
-     * termination is the customer's own letter and a death certificate comes from an office - so
-     * they are only ever filed, never owed and never generated.
+     * Most are: somebody asks for one and it is written here. Three are not - a notice of
+     * termination is the customer's own letter, a death certificate comes from an office, and
+     * whatever else was handed over came from wherever it came from - so they are only ever
+     * filed, never owed and never generated.
      *
      * @return bool
      */
     public function canBeGenerated(): bool
     {
         return match ($this) {
-            self::TerminationNotice, self::DeathCertificate => false,
+            self::TerminationNotice, self::DeathCertificate, self::Other => false,
             default => true,
         };
     }
@@ -217,7 +227,10 @@ enum ContractDocumentType: string implements EnumLabelInterface
      */
     public function mayCarryOurSignature(): bool
     {
-        return $this !== self::ContractSummary;
+        // A copy carrying our signature is the paper we drew, stamped. Of a paper we never drew
+        // there is no such copy to be had - the question is not asked of one today, but it is a
+        // question with an answer, and a wrong one lying about is what gets picked up later.
+        return $this->canBeGenerated() && $this !== self::ContractSummary;
     }
 
     /**

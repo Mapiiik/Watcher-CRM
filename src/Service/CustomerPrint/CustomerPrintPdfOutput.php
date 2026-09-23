@@ -8,6 +8,7 @@ use App\Model\Enum\CustomerDocumentType;
 use App\Pdf\CustomerPDF;
 use Cake\I18n\Date;
 use Cake\I18n\I18n;
+use LogicException;
 use Settings\Utility\Settings;
 
 /**
@@ -47,6 +48,12 @@ final class CustomerPrintPdfOutput
 
             CustomerDocumentType::ServicesOverview
                 => $pdf->generateServicesOverview($data),
+
+            // Nothing to draw: this one is only ever filed. Nobody reaches here - the validator
+            // turns it away first - so there is no paper to fall back on, only a way of saying
+            // that the turning away did not happen.
+            CustomerDocumentType::Other
+                => throw new LogicException('A document that is only ever filed cannot be drawn.'),
         };
 
         $filename = $this->filename($data);

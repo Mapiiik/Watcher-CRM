@@ -109,6 +109,10 @@ final class ProposalDocumentTypes
                 // which one is not ours to say beforehand.
                 ContractDocumentType::TerminationNotice,
                 ContractDocumentType::DeathCertificate => $ends,
+                // Whatever else was handed over with the papers - a power of attorney, the owner
+                // of the building agreeing to the cabling. It belongs to no purpose in
+                // particular, so it is offered under all of them.
+                ContractDocumentType::Other => true,
             },
         ));
     }

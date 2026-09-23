@@ -181,7 +181,7 @@ class ProposalsWithoutVersionsTest extends TestCase
         $proposal = $this->draw(ProposalPurpose::Termination, $this->round(), ['ends_on' => '2026-10-31']);
 
         $this->assertSame(
-            ['termination-notice', 'death-certificate'],
+            ['termination-notice', 'death-certificate', 'other'],
             array_keys((new ProposalDocumentTypes())->options($proposal)),
         );
         $this->assertSame([], (new WhatIsOwed())->of($proposal));

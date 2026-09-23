@@ -100,10 +100,12 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
      */
     public function documents(): array
     {
-        return match ($this) {
+        // Whatever else was handed over belongs to no purpose in particular, so it goes with all
+        // of them. Only ever filed, never drawn - which the type itself says.
+        return array_merge(match ($this) {
             self::GdprConsent => [CustomerDocumentType::GdprNew, CustomerDocumentType::GdprChange],
             self::ServicesOverview => [CustomerDocumentType::ServicesOverview],
-        };
+        }, [CustomerDocumentType::Other]);
     }
 
     /**

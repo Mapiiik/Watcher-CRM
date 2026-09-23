@@ -51,6 +51,12 @@ final class CustomerPrintValidator
 
             CustomerDocumentType::ServicesOverview =>
                 $this->validateServicesOverview($data),
+
+            // Only ever filed, never drawn. Said here rather than left to fall through, because
+            // what comes after this asks a template to print a paper nobody wrote.
+            CustomerDocumentType::Other =>
+                $this->errors['document_type'][] = __('This document is only ever filed, never'
+                    . ' generated.'),
         };
 
         return $this->errors;

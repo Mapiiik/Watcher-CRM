@@ -18,9 +18,10 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class ContractDocumentTypeTest extends TestCase
 {
     /**
-     * Two of them are papers the other side writes: the customer's own notice of termination and
-     * the certificate where there is nobody left to write one. Everything else is drawn here, and
-     * the difference is what keeps them out of the printing.
+     * Three of them are papers we never write: the customer's own notice of termination, the
+     * certificate where there is nobody left to write one, and whatever else was handed over with
+     * the papers. Everything else is drawn here, and the difference is what keeps them out of the
+     * printing.
      *
      * @return void
      * @link \App\Model\Enum\ContractDocumentType::canBeGenerated()
@@ -33,9 +34,35 @@ class ContractDocumentTypeTest extends TestCase
         ));
 
         $this->assertSame(
-            [ContractDocumentType::TerminationNotice, ContractDocumentType::DeathCertificate],
+            [
+                ContractDocumentType::TerminationNotice,
+                ContractDocumentType::DeathCertificate,
+                ContractDocumentType::Other,
+            ],
             $theirs,
         );
+    }
+
+    /**
+     * And none of them may be had with our signature on it, because there is no paper of ours to
+     * stamp. The summary is ours and is not signed either, so what is left is the agreement and
+     * what goes with it.
+     *
+     * @return void
+     * @link \App\Model\Enum\ContractDocumentType::mayCarryOurSignature()
+     */
+    public function testNothingWeNeverDrewCarriesOurSignature(): void
+    {
+        foreach (ContractDocumentType::cases() as $type) {
+            if ($type->canBeGenerated()) {
+                continue;
+            }
+
+            $this->assertFalse(
+                $type->mayCarryOurSignature(),
+                sprintf('%s is offered with our signature on it.', $type->value),
+            );
+        }
     }
 
     /**
