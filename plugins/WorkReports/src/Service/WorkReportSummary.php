@@ -224,9 +224,18 @@ final class WorkReportSummary
      */
     public function missingDaysSoFar(): array
     {
-        $today = Date::today();
+        return $this->missingDaysUpTo(Date::today());
+    }
 
-        return array_values(array_filter($this->missingDays, fn(Date $day): bool => $day <= $today));
+    /**
+     * The missing days up to a day, the last one counted in.
+     *
+     * @param \Cake\I18n\Date $until Day to count up to.
+     * @return list<\Cake\I18n\Date>
+     */
+    public function missingDaysUpTo(Date $until): array
+    {
+        return array_values(array_filter($this->missingDays, fn(Date $day): bool => $day <= $until));
     }
 
     /**

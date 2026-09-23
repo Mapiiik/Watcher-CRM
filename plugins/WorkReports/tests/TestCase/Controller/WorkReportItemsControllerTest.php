@@ -602,32 +602,38 @@ class WorkReportItemsControllerTest extends TestCase
         $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
         $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
         $onCalls = $this->getTableLocator()->get('WorkReports.WorkReportOnCalls');
-        $report = $reports->findOrCreateFor(self::WORKER, new Date('2026-06-01'));
+        $report = $this->monthOfVacation(except: '2026-06-12');
         $vacation = fn(string $date): array => [
             'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
             'date' => $date,
         ];
-        $item = $items->saveOrFail($items->newEntity(
-            ['work_report_id' => $report->id] + $vacation('2026-06-10'),
-        ));
+        $on = fn(string $date): int => $items->find()->where(['date' => $date])->count();
 
         // a day outside the month is none of this report's business
         $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-07-01']);
         $this->assertResponseOk();
         $this->assertNull($reports->get($report->id)->closed_until);
 
+        // nor is a day closed over one that has nothing on it yet
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-06-15']);
+        $this->assertResponseOk();
+        $this->assertResponseContains('Nothing is reported on');
+        $this->assertNull($reports->get($report->id)->closed_until);
+
+        $this->post('/work-reports/work-report-items/add', $vacation('2026-06-12'));
         $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-06-15']);
         $this->assertRedirectContains('/work-reports/work-reports/sheet');
         $this->assertEquals(new Date('2026-06-15'), $reports->get($report->id)->closed_until);
 
         // what is under the day stays as it is, what is above it is still written
         $this->post('/work-reports/work-report-items/add', $vacation('2026-06-11'));
-        $this->assertFalse($items->exists(['date' => '2026-06-11']));
+        $this->assertSame(1, $on('2026-06-11'));
         $this->post('/work-reports/work-report-items/add', $vacation('2026-06-16'));
-        $this->assertTrue($items->exists(['date' => '2026-06-16']));
+        $this->assertSame(2, $on('2026-06-16'));
 
-        $this->post('/work-reports/work-report-items/delete/' . $item->id);
-        $this->assertTrue($items->exists(['id' => $item->id]));
+        $item = $items->find()->where(['date' => '2026-06-10'])->firstOrFail();
+        $this->post('/work-reports/work-report-items/delete/' . $item->get('id'));
+        $this->assertTrue($items->exists(['id' => $item->get('id')]));
 
         $this->post('/work-reports/work-report-on-calls/toggle', ['date' => '2026-06-08']);
         $this->assertFlashElement('flash/error');

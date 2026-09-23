@@ -270,7 +270,7 @@ class WorkReportsController extends AppController
      */
     public function close(?string $id = null): ?Response
     {
-        $workReport = $this->WorkReports->get((string)$id, contain: ['Users']);
+        $workReport = $this->loadReport((string)$id);
         $this->checkMayEdit($workReport->user_id);
 
         if ($workReport->isLocked()) {
@@ -305,6 +305,17 @@ class WorkReportsController extends AppController
                     'closed_until',
                     ['forward' => __d('work_reports', 'Only a supervisor opens days that are closed.')],
                 );
+            } elseif ($asked !== null) {
+                // a day left empty under the one being closed would stay empty, so it is asked
+                // about now rather than at the end of the month
+                $missing = WorkReportSummary::fromSettings($workReport)->missingDaysUpTo($asked);
+                if ($missing !== []) {
+                    $workReport->setError('closed_until', ['reported' => __d(
+                        'work_reports',
+                        'Nothing is reported on {0}.',
+                        implode(', ', array_map(fn(Date $day): string => (string)$day, $missing)),
+                    )]);
+                }
             }
 
             if (!$workReport->hasErrors()) {
