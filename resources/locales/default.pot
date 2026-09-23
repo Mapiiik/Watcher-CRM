@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-23 00:12+0200\n"
+"POT-Creation-Date: 2026-09-23 10:56+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1230,7 +1230,7 @@ msgid "The billing could not be deleted. Please, try again."
 msgstr ""
 
 #: ./src/Controller/BillingsController.php:642
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:160
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:150
 #: ./templates/CustomerMessages/add_bulk/step_done.php:108
 #: ./templates/element/Overviews/contracts_in_period.php:21
 msgid "Contract Number"
@@ -1637,7 +1637,7 @@ msgid "Recipients:"
 msgstr ""
 
 #: ./src/Controller/CustomerMessagesController.php:711
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:193
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:183
 #: ./templates/CustomerMessages/add_bulk/step_done.php:121
 msgid "VIP"
 msgstr ""
@@ -4073,7 +4073,7 @@ msgstr ""
 #: ./templates/CustomerLabels/index.php:31
 #: ./templates/CustomerLabels/view.php:50
 #: ./templates/CustomerMessages/add_bulk/step_compose.php:80
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:159
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:149
 #: ./templates/CustomerMessages/add_bulk/step_done.php:106
 #: ./templates/CustomerMessages/add_bulk/step_done.php:154
 #: ./templates/Emails/index.php:27
@@ -4251,7 +4251,7 @@ msgstr ""
 #: ./templates/Countries/view.php:51
 #: ./templates/CustomerLabels/view.php:43
 #: ./templates/CustomerMessages/add_bulk/step_compose.php:81
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:158
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:148
 #: ./templates/CustomerMessages/add_bulk/step_done.php:107
 #: ./templates/CustomerMessages/add_bulk/step_done.php:155
 #: ./templates/CustomerMessages/view.php:48
@@ -6278,50 +6278,45 @@ msgid "No further details are available."
 msgstr ""
 
 #: ./templates/CustomerMessages/add_bulk/step_compose.php:99
-#: ./templates/CustomerMessages/view.php:43
-msgid "Customer Message"
-msgstr ""
-
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:109
 msgid "Recipients by access points — {0} customer(s)"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:111
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:101
 msgid "Uncheck a row to skip that contract. A customer with contracts on several access points is listed under each; the message is sent once if at least one row stays checked."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:120
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:110
 msgid "No customers match the selected filters (or none consented). Go back and adjust the filters."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:130
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:120
 msgid "Check the wording before sending."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:132
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:122
 msgid "{0} of the recipients have a guaranteed / VIP contract."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:138
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:128
 msgid "{0} of the recipients are billed a service above the normal criticality level."
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:157
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:147
 msgid "Send"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:161
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:151
 #: ./templates/CustomerMessages/add_bulk/step_done.php:109
 #: ./templates/Services/index.php:21
 msgid "Services"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:162
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:152
 #: ./templates/CustomerMessages/add_bulk/step_done.php:110
 msgid "Flags"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:163
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:153
 #: ./templates/CustomerMessages/add_bulk/step_done.php:111
 #: ./templates/Customers/view.php:396
 #: ./templates/Emails/index.php:21
@@ -6329,7 +6324,7 @@ msgstr ""
 msgid "Emails"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:164
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:154
 #: ./templates/CustomerMessages/add_bulk/step_done.php:111
 #: ./templates/Customers/view.php:445
 #: ./templates/Overviews/overview_of_contracts.php:83
@@ -6337,20 +6332,29 @@ msgstr ""
 msgid "Phones"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:185
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:175
 msgid "(no number)"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:202
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:192
 msgid "Email Missing"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:205
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:195
 msgid "Phone Missing"
 msgstr ""
 
-#: ./templates/CustomerMessages/add_bulk/step_compose.php:215
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:206
+#: ./templates/CustomerMessages/view.php:43
+msgid "Customer Message"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:216
 msgid "Send to the customers checked above"
+msgstr ""
+
+#: ./templates/CustomerMessages/add_bulk/step_compose.php:218
+msgid "Check the message text once more, and that the customers checked above are the right ones. Do you really want to send the messages?"
 msgstr ""
 
 #: ./templates/CustomerMessages/add_bulk/step_done.php:31
