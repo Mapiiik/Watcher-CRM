@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-23 11:25+0200\n"
+"POT-Creation-Date: 2026-09-23 13:22+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -6140,16 +6140,16 @@ msgstr "Chybí e-mail"
 msgid "Phone Missing"
 msgstr "Chybí telefon"
 
-#: templates/CustomerMessages/add_bulk/step_compose.php:206
-#: templates/CustomerMessages/view.php:43
-msgid "Customer Message"
-msgstr "Zpráva pro zákazníky"
+#: templates/CustomerMessages/add_bulk/step_compose.php:211
+#: templates/CustomerMessages/add_bulk/step_done.php:175
+msgid "Message"
+msgstr "Zpráva"
 
-#: templates/CustomerMessages/add_bulk/step_compose.php:216
+#: templates/CustomerMessages/add_bulk/step_compose.php:221
 msgid "Send to the customers checked above"
 msgstr "Odeslat výše zaškrtnutým zákazníkům"
 
-#: templates/CustomerMessages/add_bulk/step_compose.php:218
+#: templates/CustomerMessages/add_bulk/step_compose.php:223
 msgid ""
 "Check the message text once more, and that the customers checked above are "
 "the right ones. Do you really want to send the messages?"
@@ -6161,7 +6161,7 @@ msgstr ""
 #: templates/CustomerMessages/index.php:26
 #: templates/CustomerMessages/view.php:35
 msgid "New Bulk Customer Message"
-msgstr "Nová hromadná zpráva pro zákazníka"
+msgstr "Nová hromadná zpráva pro zákazníky"
 
 #: templates/CustomerMessages/add_bulk/step_done.php:47
 msgid "{0} message(s) queued for sending ({1})."
@@ -6205,10 +6205,6 @@ msgstr "Nebylo odesláno — žádný e-mail ({0})"
 #: templates/CustomerMessages/add_bulk/step_done.php:144
 msgid "Not sent — no longer eligible when sending ({0})"
 msgstr "Nebylo odesláno — při odesílání již nesplňuje podmínky ({0})"
-
-#: templates/CustomerMessages/add_bulk/step_done.php:175
-msgid "Message"
-msgstr "Zpráva"
 
 #: templates/CustomerMessages/add_bulk/step_filters.php:41
 #: templates/CustomerMessages/add_bulk/step_filters.php:50
@@ -6278,6 +6274,10 @@ msgstr "Zprávy pro zákazníky"
 #: templates/CustomerMessages/view.php:17
 msgid "Delete Customer Message"
 msgstr "Odstranit zprávu pro zákazníka"
+
+#: templates/CustomerMessages/view.php:43
+msgid "Customer Message"
+msgstr "Zpráva pro zákazníka"
 
 #: templates/CustomerMessages/view.php:60 templates/Tasks/add.php:83
 #: templates/Tasks/edit.php:96 templates/Tasks/index.php:106
