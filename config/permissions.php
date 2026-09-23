@@ -1041,6 +1041,7 @@ $permissions = [
                 'submit',
                 'reopen',
                 'close',
+                'note',
                 'toggle',
                 'finish',
                 'add',

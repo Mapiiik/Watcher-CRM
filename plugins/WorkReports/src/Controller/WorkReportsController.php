@@ -223,6 +223,43 @@ class WorkReportsController extends AppController
     }
 
     /**
+     * Write the note of the month: what the numbers alone do not say.
+     *
+     * @param string|null $id Work report id.
+     * @return \Cake\Http\Response|null Redirects to the month once written, renders the form otherwise.
+     */
+    public function note(?string $id = null): ?Response
+    {
+        $workReport = $this->WorkReports->get((string)$id, contain: ['Users']);
+        $this->checkMayEdit($workReport->user_id);
+
+        if ($workReport->isLocked()) {
+            $this->Flash->error(__d('work_reports', 'The report has already been submitted.'));
+
+            return $this->afterEditRedirect($this->sheetUrl($workReport));
+        }
+
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $workReport = $this->WorkReports->patchEntity(
+                $workReport,
+                $this->getRequest()->getData(),
+                ['fields' => ['note']],
+            );
+
+            if (!$workReport->hasErrors()) {
+                $this->WorkReports->saveOrFail($workReport);
+                $this->Flash->success(__d('work_reports', 'The note has been saved.'));
+
+                return $this->afterEditRedirect($this->sheetUrl($workReport));
+            }
+        }
+
+        $this->set(compact('workReport'));
+
+        return null;
+    }
+
+    /**
      * Close the report up to a day: what is on it and before it stays as it was written, while the
      * days after it go on being filled in.
      *

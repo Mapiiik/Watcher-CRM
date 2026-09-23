@@ -673,6 +673,35 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
+     * The note of the month is written on the report, and stays put once it is submitted.
+     *
+     * @return void
+     */
+    public function testTheNoteOfTheMonth(): void
+    {
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $report = $reports->findOrCreateFor(self::WORKER, new Date('2026-06-01'));
+
+        $this->get('/work-reports/work-reports/note/' . $report->id);
+        $this->assertResponseOk();
+
+        $this->post('/work-reports/work-reports/note/' . $report->id, ['note' => 'Two days at the warehouse.']);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertSame('Two days at the warehouse.', $reports->get($report->id)->note);
+
+        $this->get('/work-reports/work-reports/sheet?month=2026-06');
+        $this->assertResponseContains('Two days at the warehouse.');
+
+        $report = $reports->get($report->id);
+        $report->set('submitted', DateTime::now());
+        $reports->saveOrFail($report);
+
+        $this->post('/work-reports/work-reports/note/' . $report->id, ['note' => 'Written too late.']);
+        $this->assertFlashElement('flash/error');
+        $this->assertSame('Two days at the warehouse.', $reports->get($report->id)->note);
+    }
+
+    /**
      * June 2026 of the worker, a vacation on every working day.
      *
      * @param string|null $except A day to leave out.

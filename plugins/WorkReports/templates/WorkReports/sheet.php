@@ -70,6 +70,11 @@ $mayAdd = $firstOpen <= $today && $firstOpen <= $month->lastOfMonth() && $openOn
             <?php endif ?>
             <?php if ($mayEdit && !$workReport->isLocked() && !$workReport->isNew()) : ?>
                 <?= $this->AuthLink->link(
+                    __d('work_reports', 'Edit Note'),
+                    ['action' => 'note', $workReport->id],
+                    ['class' => 'side-nav-item win-link'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __d('work_reports', 'Close Days'),
                     ['action' => 'close', $workReport->id],
                     ['class' => 'side-nav-item win-link'],
