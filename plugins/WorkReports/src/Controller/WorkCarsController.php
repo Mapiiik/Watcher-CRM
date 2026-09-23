@@ -39,6 +39,11 @@ class WorkCarsController extends AppController
         /** @var \App\Model\Table\AppUsersTable $users */
         $users = $this->fetchTable('AppUsers');
 
-        $this->set('owners', $this->usersForSelect($users->find('holdingTasks')));
+        // a private car belongs to whoever reports work with it
+        /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
+        $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
+        $this->set('owners', $this->usersForSelect(
+            $users->find()->where(['AppUsers.id IN' => $workers->activeIds()]),
+        ));
     }
 }

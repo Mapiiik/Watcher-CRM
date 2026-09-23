@@ -28,15 +28,32 @@ $addUrl = fn(Date $day): array => [
     'action' => 'add',
     '?' => ['user_id' => $workReport->user_id, 'date' => $day->format('Y-m-d')],
 ];
+
+// work that is going on stands out in the row it is on
+$runningStyle = 'background-color: var(--color-message-error-bg); color: var(--color-message-error-text);';
+
+// a day that has not come has nothing to report on it yet, and a closed one is written for good
+$today = Date::today();
+$openOn = fn(Date $day): bool => $mayEdit
+    && !$workReport->isLocked()
+    && $day <= $today
+    && !$workReport->isClosedOn($day);
+
+// where the first item of the month would go, so that the button over the table offers a day that
+// takes it: after what is closed, and never past today
+$firstOpen = $workReport->closed_until !== null && $workReport->closed_until >= $month
+    ? $workReport->closed_until->addDays(1)
+    : $month;
+$mayAdd = $firstOpen <= $today && $firstOpen <= $month->lastOfMonth() && $openOn($firstOpen);
 ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __d('work_reports', 'Actions') ?></h4>
-            <?php if ($mayEdit && !$workReport->isLocked()) : ?>
+            <?php if ($mayAdd) : ?>
                 <?= $this->AuthLink->link(
                     __d('work_reports', 'New Work Report Item'),
-                    $addUrl($month),
+                    $addUrl($firstOpen),
                     ['class' => 'side-nav-item win-link'],
                 ) ?>
             <?php endif ?>
@@ -48,6 +65,13 @@ $addUrl = fn(Date $day): array => [
                         'action' => 'add',
                         '?' => ['user_id' => $workReport->user_id, 'start' => 'now'],
                     ],
+                    ['class' => 'side-nav-item win-link'],
+                ) ?>
+            <?php endif ?>
+            <?php if ($mayEdit && !$workReport->isLocked() && !$workReport->isNew()) : ?>
+                <?= $this->AuthLink->link(
+                    __d('work_reports', 'Close Days'),
+                    ['action' => 'close', $workReport->id],
                     ['class' => 'side-nav-item win-link'],
                 ) ?>
             <?php endif ?>
@@ -133,10 +157,10 @@ $addUrl = fn(Date $day): array => [
             </div>
 
             <div class="related">
-                <?php if ($mayEdit && !$workReport->isLocked()) : ?>
+                <?php if ($mayAdd) : ?>
                     <?= $this->AuthLink->link(
                         __d('work_reports', 'New Work Report Item'),
-                        $addUrl($month),
+                        $addUrl($firstOpen),
                         ['class' => 'button button-small float-right win-link'],
                     ) ?>
                 <?php endif ?>
@@ -169,14 +193,23 @@ $addUrl = fn(Date $day): array => [
                         <?php endif ?>
                     </div>
                 <?php endif ?>
-                <?php if ($summary->missingDays !== []) : ?>
-                    <div class="message warning" role="alert">
+                <?php if ($workReport->closed_until !== null && !$workReport->isLocked()) : ?>
+                    <div class="message" role="status">
+                        <?= __d(
+                            'work_reports',
+                            'Closed up to {0}. Those days are written for good.',
+                            h($workReport->closed_until),
+                        ) ?>
+                    </div>
+                <?php endif ?>
+                <?php if ($summary->missingDaysSoFar() !== []) : ?>
+                    <div class="message" role="status">
                         <?= __d(
                             'work_reports',
                             'Nothing is reported on {0}.',
                             implode(', ', array_map(
                                 fn(Date $day): string => (string)$day,
-                                $summary->missingDays,
+                                $summary->missingDaysSoFar(),
                             )),
                         ) ?>
                     </div>
@@ -199,7 +232,7 @@ $addUrl = fn(Date $day): array => [
                         <?php foreach ($days as $day) : ?>
                             <?php
                             $date = $day['date'];
-                            if ($summary->isMissing($date)) {
+                            if ($summary->isMissing($date) && $date <= $today) {
                                 $style = 'background-color: var(--color-message-warning-bg);';
                             } elseif (!$calendar->isWorkingDay($date)) {
                                 $style = 'background-color: var(--color-card-bg);';
@@ -221,7 +254,7 @@ $addUrl = fn(Date $day): array => [
                                     <?php if ($day['on_call'] !== null) : ?>
                                         <?= $this->Number->format($day['on_call']->hours->toFloat()) ?> h
                                     <?php endif ?>
-                                    <?php if ($mayEdit && !$workReport->isLocked()) : ?>
+                                    <?php if ($openOn($date)) : ?>
                                         <?= $this->AuthLink->postLink(
                                             $day['on_call'] !== null
                                                 ? __d('work_reports', 'Remove')
@@ -245,7 +278,9 @@ $addUrl = fn(Date $day): array => [
                                     <?php else : ?>
                                         <td><?= h($item->time_from) ?></td>
                                         <?php if ($item->isRunning()) : ?>
-                                            <td colspan="2"><?= __d('work_reports', 'in progress') ?></td>
+                                            <td colspan="2" style="<?= $runningStyle ?>">
+                                                <?= __d('work_reports', 'in progress') ?>
+                                            </td>
                                         <?php else : ?>
                                             <td><?= h($item->time_until) ?></td>
                                             <td><?= $minutes($item->minutes) ?></td>
@@ -319,7 +354,7 @@ $addUrl = fn(Date $day): array => [
                                     </td>
                                 <?php endif ?>
                                 <td class="actions">
-                                    <?php if ($mayEdit && !$workReport->isLocked()) : ?>
+                                    <?php if ($openOn($date)) : ?>
                                         <?php if ($item !== null && $item->isRunning()) : ?>
                                             <?= $this->AuthLink->postLink(
                                                 __d('work_reports', 'Finish Now'),

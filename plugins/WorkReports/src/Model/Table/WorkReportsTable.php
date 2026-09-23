@@ -126,6 +126,21 @@ class WorkReportsTable extends AppTable
     }
 
     /**
+     * Validation rules for closing the report up to a day.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationClose(Validator $validator): Validator
+    {
+        $validator
+            ->date('closed_until')
+            ->allowEmptyDate('closed_until');
+
+        return $validator;
+    }
+
+    /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *

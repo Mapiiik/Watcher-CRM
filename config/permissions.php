@@ -1040,6 +1040,7 @@ $permissions = [
                 'sheet',
                 'submit',
                 'reopen',
+                'close',
                 'toggle',
                 'finish',
                 'add',

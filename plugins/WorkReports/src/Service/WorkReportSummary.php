@@ -217,6 +217,19 @@ final class WorkReportSummary
     }
 
     /**
+     * The missing days that have already come. What the month still has ahead of it is nothing to
+     * point out, while submitting asks about the month whole.
+     *
+     * @return list<\Cake\I18n\Date>
+     */
+    public function missingDaysSoFar(): array
+    {
+        $today = Date::today();
+
+        return array_values(array_filter($this->missingDays, fn(Date $day): bool => $day <= $today));
+    }
+
+    /**
      * Whether the day is one of the missing ones.
      *
      * @param \Cake\I18n\Date $day Day asked about.

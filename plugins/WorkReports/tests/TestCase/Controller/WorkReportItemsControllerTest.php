@@ -282,7 +282,7 @@ class WorkReportItemsControllerTest extends TestCase
 
         $this->get('/work-reports/work-reports/sheet?month=2026-06');
         $this->assertResponseContains('Work in progress since');
-        $this->assertResponseContains('in progress');
+        $this->assertResponseContains('<td colspan="2" style="background-color: var(--color-message-error-bg);');
 
         $this->post('/work-reports/work-reports/submit/' . $report->id);
         $this->assertNull($reports->get($report->id)->submitted);
@@ -321,17 +321,33 @@ class WorkReportItemsControllerTest extends TestCase
         $this->assertTrue($items->exists(['description' => 'Mid month']));
         $this->assertTrue($items->exists(['description' => 'Up to midnight']));
         $this->assertFalse($items->exists(['description' => 'Over the end']));
+    }
 
-        $this->post('/work-reports/work-report-items/add', $work('2026-06-29', '23:00', '', 'Left running'));
+    /**
+     * Work left running is not finished over the end of the month either.
+     *
+     * @return void
+     */
+    public function testFinishingDoesNotCrossTheMonthEnd(): void
+    {
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+
+        $this->post('/work-reports/work-report-items/add', [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
+            'date' => '2026-06-30',
+            'time_from' => '23:00',
+            'time_until' => '',
+            'description' => 'Left running',
+        ]);
         /** @var \WorkReports\Model\Entity\WorkReportItem $running */
         $running = $items->find()->where(['description' => 'Left running'])->firstOrFail();
+
         $was = DateTime::getTestNow();
         DateTime::setTestNow(new DateTime('2026-07-01 00:30:00'));
         $this->post('/work-reports/work-report-items/finish/' . $running->id);
         DateTime::setTestNow($was);
-        /** @var \WorkReports\Model\Entity\WorkReportItem $still */
-        $still = $items->get($running->id);
-        $this->assertTrue($still->isRunning());
+
+        $this->assertTrue($items->get($running->id)->isRunning());
     }
 
     /**
@@ -383,7 +399,10 @@ class WorkReportItemsControllerTest extends TestCase
         $this->post('/work-reports/work-reports/submit/' . $report->id);
 
         $this->assertRedirectContains('/work-reports/work-reports/sheet');
-        $this->assertNotNull($this->getTableLocator()->get('WorkReports.WorkReports')->get($report->id)->submitted);
+        $submitted = $this->getTableLocator()->get('WorkReports.WorkReports')->get($report->id);
+        $this->assertNotNull($submitted->submitted);
+        // the month is over, so submitting closes it whole
+        $this->assertEquals(new Date('2026-06-30'), $submitted->closed_until);
         $this->assertMailCount(1);
         $this->assertMailSentTo('operator@example.com');
         $this->assertMailSentTo('other@example.com');
@@ -463,6 +482,194 @@ class WorkReportItemsControllerTest extends TestCase
         $item = $items->get($item->id);
         $items->patchEntity($item, ['invoiced' => true]);
         $this->assertNotFalse($items->save($item));
+    }
+
+    /**
+     * One person is in one place at a time, so work stated by the clock may not run over other
+     * work of theirs. A whole day states no clock and stands beside it.
+     *
+     * @return void
+     */
+    public function testTimesDoNotOverlap(): void
+    {
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $work = fn(string $from, string $until, string $description): array => [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
+            'date' => '2026-06-15',
+            'time_from' => $from,
+            'time_until' => $until,
+            'description' => $description,
+        ];
+
+        $this->post('/work-reports/work-report-items/add', $work('08:00', '09:00', 'First'));
+        $this->post('/work-reports/work-report-items/add', $work('09:00', '10:00', 'Next to it'));
+        $this->post('/work-reports/work-report-items/add', $work('08:30', '09:30', 'Over both'));
+
+        $this->assertTrue($items->exists(['description' => 'First']));
+        $this->assertTrue($items->exists(['description' => 'Next to it']));
+        $this->assertFalse($items->exists(['description' => 'Over both']));
+
+        $this->post('/work-reports/work-report-items/add', [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+            'date' => '2026-06-15',
+        ]);
+        $this->assertSame(3, $items->find()->count());
+    }
+
+    /**
+     * Work that is going on holds the time after it until it is finished, while what was forgotten
+     * before it still goes in.
+     *
+     * @return void
+     */
+    public function testRunningWorkHoldsTheTimeAfterIt(): void
+    {
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $work = fn(string $from, string $until, string $description): array => [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
+            'date' => '2026-06-15',
+            'time_from' => $from,
+            'time_until' => $until,
+            'description' => $description,
+        ];
+
+        $this->post('/work-reports/work-report-items/add', $work('08:00', '', 'Still going on'));
+        $this->post('/work-reports/work-report-items/add', $work('10:00', '11:00', 'After it'));
+        $this->post('/work-reports/work-report-items/add', $work('06:00', '07:00', 'Before it'));
+
+        $this->assertTrue($items->exists(['description' => 'Still going on']));
+        $this->assertFalse($items->exists(['description' => 'After it']));
+        $this->assertTrue($items->exists(['description' => 'Before it']));
+    }
+
+    /**
+     * What has not happened yet is not reported, and a month still ahead offers nothing to report
+     * it with either.
+     *
+     * @return void
+     */
+    public function testNothingIsReportedAhead(): void
+    {
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $onCalls = $this->getTableLocator()->get('WorkReports.WorkReportOnCalls');
+        $today = Date::today();
+        $tomorrow = $today->addDays(1);
+
+        $this->post('/work-reports/work-report-items/add', [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+            'date' => $tomorrow->format('Y-m-d'),
+        ]);
+        $this->assertFalse($items->exists(['date' => $tomorrow->format('Y-m-d')]));
+
+        // the clock does not run past this moment either
+        $was = DateTime::getTestNow();
+        DateTime::setTestNow(new DateTime($today->format('Y-m-d') . ' 10:00:00'));
+        $this->post('/work-reports/work-report-items/add', [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
+            'date' => $today->format('Y-m-d'),
+            'time_from' => '12:00',
+            'time_until' => '13:00',
+            'description' => 'Not yet worked',
+        ]);
+        DateTime::setTestNow($was);
+        $this->assertFalse($items->exists(['description' => 'Not yet worked']));
+
+        // a day on call that has not come is not marked, and no month comes to be for it
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $months = $reports->find()->count();
+        $this->post('/work-reports/work-report-on-calls/toggle', ['date' => $tomorrow->format('Y-m-d')]);
+        $this->assertFlashElement('flash/error');
+        $this->assertSame(0, $onCalls->find()->count());
+        $this->assertSame($months, $reports->find()->count());
+
+        // and a month still ahead is read with nothing to write in it
+        $this->get('/work-reports/work-reports/sheet?month=' . $today->addMonths(1)->format('Y-m'));
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('New Work Report Item');
+        $this->assertResponseNotContains('>Add<');
+        $this->assertResponseNotContains('>Set<');
+        $this->assertResponseNotContains('Nothing is reported on');
+    }
+
+    /**
+     * A report closed up to a day keeps those days as they are written and goes on being filled in
+     * above them. The worker moves the day forward, a supervisor also back.
+     *
+     * @return void
+     */
+    public function testClosingTheReportUpToADay(): void
+    {
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $onCalls = $this->getTableLocator()->get('WorkReports.WorkReportOnCalls');
+        $report = $reports->findOrCreateFor(self::WORKER, new Date('2026-06-01'));
+        $vacation = fn(string $date): array => [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+            'date' => $date,
+        ];
+        $item = $items->saveOrFail($items->newEntity(
+            ['work_report_id' => $report->id] + $vacation('2026-06-10'),
+        ));
+
+        // a day outside the month is none of this report's business
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-07-01']);
+        $this->assertResponseOk();
+        $this->assertNull($reports->get($report->id)->closed_until);
+
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-06-15']);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertEquals(new Date('2026-06-15'), $reports->get($report->id)->closed_until);
+
+        // what is under the day stays as it is, what is above it is still written
+        $this->post('/work-reports/work-report-items/add', $vacation('2026-06-11'));
+        $this->assertFalse($items->exists(['date' => '2026-06-11']));
+        $this->post('/work-reports/work-report-items/add', $vacation('2026-06-16'));
+        $this->assertTrue($items->exists(['date' => '2026-06-16']));
+
+        $this->post('/work-reports/work-report-items/delete/' . $item->id);
+        $this->assertTrue($items->exists(['id' => $item->id]));
+
+        $this->post('/work-reports/work-report-on-calls/toggle', ['date' => '2026-06-08']);
+        $this->assertFlashElement('flash/error');
+        $this->assertSame(0, $onCalls->find()->count());
+
+        $this->get('/work-reports/work-reports/sheet?month=2026-06');
+        $this->assertResponseContains('Closed up to');
+
+        // the worker does not open again what they closed
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-06-10']);
+        $this->assertResponseOk();
+        $this->assertEquals(new Date('2026-06-15'), $reports->get($report->id)->closed_until);
+
+        $this->loginAs(self::WORKER, 'admin', superuser: false);
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '']);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertNull($reports->get($report->id)->closed_until);
+    }
+
+    /**
+     * The months to look at are those of the people who report work, and one's own.
+     *
+     * @return void
+     */
+    public function testOnlyWorkersAreOfferedToLookAt(): void
+    {
+        $other = $this->otherUser();
+        $this->loginAs($other, 'admin', superuser: false);
+
+        $this->get('/work-reports/work-reports/sheet?month=2026-06');
+        $this->assertResponseOk();
+        $this->assertResponseNotContains(self::WORKER);
+
+        $workers = $this->getTableLocator()->get('WorkReports.WorkReportWorkers');
+        $workers->saveOrFail($workers->newEntity([
+            'user_id' => self::WORKER,
+            'workload' => '1',
+            'active' => true,
+        ]));
+
+        $this->get('/work-reports/work-reports/sheet?month=2026-06');
+        $this->assertResponseContains(self::WORKER);
     }
 
     /**

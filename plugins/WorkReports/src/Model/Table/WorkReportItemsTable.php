@@ -6,6 +6,7 @@ namespace WorkReports\Model\Table;
 use App\Model\Table\AppTable;
 use ArrayObject;
 use Cake\Event\EventInterface;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -344,6 +345,48 @@ class WorkReportItemsTable extends AppTable
             ],
         );
 
+        // one person is in one place at a time, so work that is stated by the clock may not run
+        // over other work of theirs - a whole day states no clock and never gets in the way
+        $rules->add(
+            fn(WorkReportItem $item): bool => !$this->overlaps($item),
+            'noOverlap',
+            [
+                'errorField' => 'work_from',
+                'message' => __d('work_reports', 'The time runs over other work.'),
+            ],
+        );
+
+        // what has not happened yet is not reported
+        $rules->add(
+            fn(WorkReportItem $item): bool => $item->date <= Date::today()
+                && ($item->work_from === null || $item->work_from <= DateTime::now())
+                && ($item->work_until === null || $item->work_until <= DateTime::now()),
+            'notAhead',
+            [
+                'errorField' => 'date',
+                'message' => __d('work_reports', 'Work is not reported ahead of time.'),
+            ],
+        );
+
+        // billing happens after the month is closed, so it stays allowed, as on a submitted report
+        $rules->add(
+            fn(WorkReportItem $item): bool => !$this->isClosed($item)
+                || array_diff($item->getDirty(), self::CHANGEABLE_WHEN_LOCKED) === [],
+            'notClosed',
+            [
+                'errorField' => 'date',
+                'message' => __d('work_reports', 'The report is closed up to this day.'),
+            ],
+        );
+        $rules->addDelete(
+            fn(WorkReportItem $item): bool => !$this->isClosed($item),
+            'notClosed',
+            [
+                'errorField' => 'date',
+                'message' => __d('work_reports', 'The report is closed up to this day.'),
+            ],
+        );
+
         $rules->add(
             [$this, 'checkTime'],
             'timeByType',
@@ -487,6 +530,63 @@ class WorkReportItemsTable extends AppTable
 
         /** @var \WorkReports\Model\Entity\WorkReportItem|null */
         return $query->first();
+    }
+
+    /**
+     * Whether the item states a time that runs over other work of the same worker.
+     *
+     * A running item has no end yet, so it holds its worker from its beginning onwards.
+     *
+     * @param \WorkReports\Model\Entity\WorkReportItem $item Item to check.
+     * @return bool
+     */
+    protected function overlaps(WorkReportItem $item): bool
+    {
+        if ($item->whole_day || $item->work_from === null) {
+            return false;
+        }
+
+        $report = $this->WorkReports->find()->where(['id' => $item->work_report_id])->first();
+        if ($report === null) {
+            return false;
+        }
+
+        $query = $this->find()
+            ->innerJoinWith('WorkReports', fn($reports) => $reports->where([
+                'WorkReports.user_id' => $report->user_id,
+            ]))
+            ->where([
+                $this->aliasField('whole_day') => false,
+                $this->aliasField('work_from') . ' IS NOT' => null,
+                'OR' => [
+                    [$this->aliasField('work_until') . ' IS' => null],
+                    [$this->aliasField('work_until') . ' >' => $item->work_from],
+                ],
+            ]);
+
+        // the end of running work is still to come, so nothing begun after it fits before it
+        if ($item->work_until !== null) {
+            $query->where([$this->aliasField('work_from') . ' <' => $item->work_until]);
+        }
+
+        if (!$item->isNew()) {
+            $query->where([$this->aliasField('id') . ' !=' => $item->id]);
+        }
+
+        return $query->count() > 0;
+    }
+
+    /**
+     * Whether the day of the item is one the report has closed.
+     *
+     * @param \WorkReports\Model\Entity\WorkReportItem $item Item to check.
+     * @return bool
+     */
+    protected function isClosed(WorkReportItem $item): bool
+    {
+        $report = $this->WorkReports->find()->where(['id' => $item->work_report_id])->first();
+
+        return $report !== null && $report->isClosedOn($item->date);
     }
 
     /**

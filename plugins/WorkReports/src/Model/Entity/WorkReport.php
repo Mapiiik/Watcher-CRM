@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WorkReports\Model\Entity;
 
 use App\Model\Entity\AppEntity;
+use Cake\I18n\Date;
 
 /**
  * WorkReport Entity
@@ -18,6 +19,7 @@ use App\Model\Entity\AppEntity;
  * @property \Cake\I18n\DateTime|null $returned
  * @property string|null $returned_by
  * @property string|null $return_reason
+ * @property \Cake\I18n\Date|null $closed_until
  * @property string|null $note
  *
  * @property \App\Model\Entity\AppUser $user
@@ -39,7 +41,19 @@ class WorkReport extends AppEntity
         'workload' => true,
         'note' => true,
         'return_reason' => true,
+        'closed_until' => true,
     ];
+
+    /**
+     * Whether the day is one the worker has already closed.
+     *
+     * @param \Cake\I18n\Date $day Day asked about.
+     * @return bool
+     */
+    public function isClosedOn(Date $day): bool
+    {
+        return $this->closed_until !== null && $day <= $this->closed_until;
+    }
 
     /**
      * Once submitted, the items are no longer the worker's to change.

@@ -130,7 +130,8 @@ class AppController extends BaseController
     }
 
     /**
-     * The workers whose reports the user signed in may see, for a select.
+     * The workers whose reports the user signed in may see, for a select. Whoever is signed in
+     * is on the list even when they report no work, so that they get to their own month.
      *
      * @return list<array{value: string, text: string, style: string|null}>
      */
@@ -139,14 +140,13 @@ class AppController extends BaseController
         /** @var \App\Model\Table\AppUsersTable $users */
         $users = $this->fetchTable('AppUsers');
 
-        if ($this->seesEverybody()) {
-            // anybody who can be given work, which is who reports it
-            $others = ['AppUsers.holds_tasks' => true];
-        } else {
-            /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
-            $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
-            $others = ['AppUsers.id IN' => $workers->workersOf($this->identityId())];
-        }
+        /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
+        $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
+
+        // whoever reports their work, or of them those whose reports the user gets
+        $others = $this->seesEverybody()
+            ? ['AppUsers.id IN' => $workers->activeIds()]
+            : ['AppUsers.id IN' => $workers->workersOf($this->identityId())];
 
         return $this->usersForSelect($users->find()
             ->where(['OR' => [['AppUsers.id' => $this->identityId()], $others]]));

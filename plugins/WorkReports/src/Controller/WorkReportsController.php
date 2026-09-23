@@ -148,6 +148,7 @@ class WorkReportsController extends AppController
         } else {
             $workReport->submitted = DateTime::now();
             $workReport->submitted_by = $this->identityId();
+            $workReport->closed_until = $workReport->month->lastOfMonth();
             $this->WorkReports->saveOrFail($workReport);
             $this->Flash->success(__d('work_reports', 'The report has been submitted.'));
 
@@ -217,6 +218,69 @@ class WorkReportsController extends AppController
         }
 
         $this->set(compact('workReport'));
+
+        return null;
+    }
+
+    /**
+     * Close the report up to a day: what is on it and before it stays as it was written, while the
+     * days after it go on being filled in.
+     *
+     * The worker moves the day forward only. Whoever oversees the reports also moves it back.
+     *
+     * @param string|null $id Work report id.
+     * @return \Cake\Http\Response|null Redirects to the month once closed, renders the form otherwise.
+     */
+    public function close(?string $id = null): ?Response
+    {
+        $workReport = $this->WorkReports->get((string)$id, contain: ['Users']);
+        $this->checkMayEdit($workReport->user_id);
+
+        if ($workReport->isLocked()) {
+            $this->Flash->error(__d('work_reports', 'The report has already been submitted.'));
+
+            return $this->afterEditRedirect($this->sheetUrl($workReport));
+        }
+
+        $closedUntil = $workReport->closed_until;
+        $mayOpen = $this->seesEverybody();
+
+        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
+            $workReport = $this->WorkReports->patchEntity(
+                $workReport,
+                $this->getRequest()->getData(),
+                ['validate' => 'close', 'fields' => ['closed_until']],
+            );
+            $asked = $workReport->closed_until;
+
+            if ($asked !== null && $asked->format('Y-m') !== $workReport->month->format('Y-m')) {
+                $workReport->setError(
+                    'closed_until',
+                    ['inMonth' => __d('work_reports', 'The day is not in the month of the report.')],
+                );
+            } elseif ($asked !== null && $asked > Date::today()) {
+                $workReport->setError(
+                    'closed_until',
+                    ['notAhead' => __d('work_reports', 'A day that has not come is not closed.')],
+                );
+            } elseif ($closedUntil !== null && !$mayOpen && ($asked === null || $asked < $closedUntil)) {
+                $workReport->setError(
+                    'closed_until',
+                    ['forward' => __d('work_reports', 'Only a supervisor opens days that are closed.')],
+                );
+            }
+
+            if (!$workReport->hasErrors()) {
+                $this->WorkReports->saveOrFail($workReport);
+                $this->Flash->success($asked === null
+                    ? __d('work_reports', 'The whole month is open again.')
+                    : __d('work_reports', 'The report is closed up to {0}.', (string)$asked));
+
+                return $this->afterEditRedirect($this->sheetUrl($workReport));
+            }
+        }
+
+        $this->set(compact('workReport', 'mayOpen'));
 
         return null;
     }

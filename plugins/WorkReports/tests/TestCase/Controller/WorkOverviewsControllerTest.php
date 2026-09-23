@@ -91,7 +91,7 @@ class WorkOverviewsControllerTest extends TestCase
     public function testToInvoice(): void
     {
         $this->item('Router replaced', invoiced: false);
-        $this->item('Already on an invoice', invoiced: true);
+        $this->item('Already on an invoice', invoiced: true, from: '13:00');
 
         $this->get('/work-reports/work-overviews/to-invoice');
 
@@ -133,7 +133,7 @@ class WorkOverviewsControllerTest extends TestCase
         $atAccessPoint = $this->item('Antenna realigned', invoiced: false);
         $atAccessPoint->set('access_point_id', '5d1e1f9a-8c1b-4d7a-9f3e-2b6c7d8e9f01');
         $this->getTableLocator()->get('WorkReports.WorkReportItems')->saveOrFail($atAccessPoint);
-        $this->item('Office work', invoiced: false);
+        $this->item('Office work', invoiced: false, from: '13:00');
 
         $user = $this->getTableLocator()->get('AppUsers')->get(self::WORKER);
         $user->role = 'network-technician';
@@ -198,9 +198,10 @@ class WorkOverviewsControllerTest extends TestCase
      *
      * @param string $description What was done.
      * @param bool $invoiced Whether it is invoiced already.
+     * @param string $from When it was begun, since one worker does not do two things at once.
      * @return \WorkReports\Model\Entity\WorkReportItem
      */
-    private function item(string $description, bool $invoiced): WorkReportItem
+    private function item(string $description, bool $invoiced, string $from = '09:50'): WorkReportItem
     {
         $locator = $this->getTableLocator();
         $rates = $locator->get('WorkReports.WorkRates');
@@ -214,8 +215,8 @@ class WorkOverviewsControllerTest extends TestCase
             'work_report_id' => $report->id,
             'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
             'date' => '2026-06-21',
-            'time_from' => '09:50',
-            'time_until' => '11:14',
+            'time_from' => $from,
+            'time_until' => (new DateTime('2026-06-21 ' . $from))->addMinutes(84)->format('H:i'),
             'description' => $description,
             'to_invoice' => true,
             'invoice_hours' => '1.5',

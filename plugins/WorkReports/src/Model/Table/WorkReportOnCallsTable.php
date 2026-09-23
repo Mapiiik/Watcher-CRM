@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace WorkReports\Model\Table;
 
 use App\Model\Table\AppTable;
+use Cake\I18n\Date;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
+use WorkReports\Model\Entity\WorkReportOnCall;
 
 /**
  * WorkReportOnCalls Model
@@ -43,6 +45,19 @@ class WorkReportOnCallsTable extends AppTable
             'foreignKey' => 'work_report_id',
             'joinType' => 'INNER',
         ]);
+    }
+
+    /**
+     * Whether the day is one the report has closed.
+     *
+     * @param \WorkReports\Model\Entity\WorkReportOnCall $onCall Day to check.
+     * @return bool
+     */
+    protected function isClosed(WorkReportOnCall $onCall): bool
+    {
+        $report = $this->WorkReports->find()->where(['id' => $onCall->work_report_id])->first();
+
+        return $report !== null && $report->isClosedOn($onCall->date);
     }
 
     /**
@@ -83,6 +98,26 @@ class WorkReportOnCallsTable extends AppTable
     {
         $rules->add($rules->isUnique(['work_report_id', 'date']), ['errorField' => 'date']);
         $rules->add($rules->existsIn(['work_report_id'], 'WorkReports'), ['errorField' => 'work_report_id']);
+
+        // the same as the items: a day that has not come is not reported, and a closed one stays
+        $rules->add(
+            fn(WorkReportOnCall $onCall): bool => $onCall->date <= Date::today(),
+            'notAhead',
+            [
+                'errorField' => 'date',
+                'message' => __d('work_reports', 'Work is not reported ahead of time.'),
+            ],
+        );
+        $rules->add(
+            fn(WorkReportOnCall $onCall): bool => !$this->isClosed($onCall),
+            'notClosed',
+            ['errorField' => 'date', 'message' => __d('work_reports', 'The report is closed up to this day.')],
+        );
+        $rules->addDelete(
+            fn(WorkReportOnCall $onCall): bool => !$this->isClosed($onCall),
+            'notClosed',
+            ['errorField' => 'date', 'message' => __d('work_reports', 'The report is closed up to this day.')],
+        );
 
         return $rules;
     }

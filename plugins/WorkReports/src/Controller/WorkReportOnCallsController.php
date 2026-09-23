@@ -36,6 +36,13 @@ class WorkReportOnCallsController extends AppController
         }
         $day = new Date($date);
 
+        // asked before the report is looked up, so that a month still ahead does not come to be
+        if ($day > Date::today()) {
+            $this->Flash->error(__d('work_reports', 'Work is not reported ahead of time.'));
+
+            return $this->redirect($this->sheetUrl($userId, $day));
+        }
+
         /** @var \WorkReports\Model\Table\WorkReportsTable $reports */
         $reports = $this->fetchTable('WorkReports.WorkReports');
         $report = $reports->findOrCreateFor($userId, $day);
@@ -44,6 +51,8 @@ class WorkReportOnCallsController extends AppController
             $this->Flash->error(
                 __d('work_reports', 'The report has been submitted, its items can no longer be changed.'),
             );
+        } elseif ($report->isClosedOn($day)) {
+            $this->Flash->error(__d('work_reports', 'The report is closed up to this day.'));
         } else {
             $onCall = $this->WorkReportOnCalls->find()
                 ->where(['work_report_id' => $report->id, 'date' => $day])
@@ -60,11 +69,23 @@ class WorkReportOnCallsController extends AppController
             }
         }
 
-        return $this->redirect([
+        return $this->redirect($this->sheetUrl($userId, $day));
+    }
+
+    /**
+     * The month the day falls in, at the items.
+     *
+     * @param string $userId Worker.
+     * @param \Cake\I18n\Date $day Day of the month.
+     * @return array<string, mixed>
+     */
+    protected function sheetUrl(string $userId, Date $day): array
+    {
+        return [
             'controller' => 'WorkReports',
             'action' => 'sheet',
             '?' => ['user_id' => $userId, 'month' => $day->format('Y-m')],
             '#' => 'work-report-items',
-        ]);
+        ];
     }
 }

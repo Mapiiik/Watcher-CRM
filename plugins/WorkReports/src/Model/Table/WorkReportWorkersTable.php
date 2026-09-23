@@ -212,6 +212,18 @@ class WorkReportWorkersTable extends AppTable
     }
 
     /**
+     * The users who report their work, as a subquery of their user ids.
+     *
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     */
+    public function activeIds(): SelectQuery
+    {
+        return $this->find()
+            ->select([$this->aliasField('user_id')])
+            ->where([$this->aliasField('active') => true]);
+    }
+
+    /**
      * The workers whose reports the user gets, as a subquery of their user ids.
      *
      * @param string $recipientId The recipient.
@@ -219,8 +231,7 @@ class WorkReportWorkersTable extends AppTable
      */
     public function workersOf(string $recipientId): SelectQuery
     {
-        return $this->find()
-            ->select([$this->aliasField('user_id')])
+        return $this->activeIds()
             ->innerJoinWith('Recipients', fn($query) => $query->where(['Recipients.id' => $recipientId]));
     }
 
