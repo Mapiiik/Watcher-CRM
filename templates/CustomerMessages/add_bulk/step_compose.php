@@ -203,7 +203,12 @@
             </fieldset>
             <br>
             <fieldset>
-                <legend><?= __('Customer Message') ?></legend>
+                <?php
+                // What the fieldset holds rather than what the wizard is for: the page above it
+                // already says that, and said here it would have to say it in the plural, which
+                // is not what the heading of one message on file says.
+                ?>
+                <legend><?= __('Message') ?></legend>
                 <?php
                     echo $this->Form->control('type');
                     echo $this->Form->control('subject');
