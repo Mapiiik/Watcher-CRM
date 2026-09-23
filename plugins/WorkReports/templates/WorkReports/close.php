@@ -27,6 +27,7 @@
                 <p>
                     <?= h($workReport->user->name) ?>, <?= h($workReport->month->i18nFormat('LLLL yyyy')) ?>
                 </p>
+                <br>
                 <?= $this->Form->control('closed_until', [
                     'label' => __d('work_reports', 'Closed Until'),
                     'type' => 'date',
