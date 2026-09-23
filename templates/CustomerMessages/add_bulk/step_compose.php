@@ -212,7 +212,15 @@
                 ?>
             </fieldset>
             <?php // no count here: it would promise the full list even after rows were unchecked ?>
-            <?= $this->Form->button(__('Send to the customers checked above')) ?>
+            <?= $this->Form->button(
+                __('Send to the customers checked above'),
+                [
+                    'confirm' => __(
+                        'Check the message text once more, and that the customers checked above are the '
+                        . 'right ones. Do you really want to send the messages?',
+                    ),
+                ],
+            ) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
