@@ -511,6 +511,25 @@ nav.top-nav {
     margin-top: 0;
 }
 
+/*
+ * What is wrong with a field is said between the field and its hint, so it is pulled up against
+ * the field the way the hint would be, and the hint then follows the message instead.
+ */
+.input.error > .error-message {
+    margin-top: -0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.input.radio.error > .error-message,
+.input.checkbox.error > .error-message,
+.input.multicheckbox.error > .error-message {
+    margin-top: 0;
+}
+
+.input.error > .hint {
+    margin-top: 0;
+}
+
 .input.radio,
 .input.checkbox,
 .input.multicheckbox {
