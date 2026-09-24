@@ -72,6 +72,7 @@ class WorkReportItemsCellTest extends TestCase
         'plugin.WorkReports.WorkReportItemTypes',
         'plugin.WorkReports.WorkReports',
         'plugin.WorkReports.WorkReportItems',
+        'plugin.WorkReports.WorkReportWorkers',
         'plugin.WorkReports.WorkRates',
         'plugin.WorkReports.WorkLabels',
         'plugin.WorkReports.WorkReportItemLabels',
@@ -92,6 +93,10 @@ class WorkReportItemsCellTest extends TestCase
         $this->session(['Auth' => $user]);
 
         $locator = $this->getTableLocator();
+        // whoever reports work is on the list of workers, which is what says the months are theirs
+        $workers = $locator->get('WorkReports.WorkReportWorkers');
+        $workers->saveOrFail($workers->newEntity(['user_id' => self::WORKER, 'workload' => '1', 'active' => true]));
+
         $report = $locator->get('WorkReports.WorkReports')->findOrCreateFor(self::WORKER, new Date('2026-06-01'));
         $items = $locator->get('WorkReports.WorkReportItems');
         $items->saveOrFail($items->newEntity([

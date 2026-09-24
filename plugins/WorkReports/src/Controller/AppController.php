@@ -33,41 +33,47 @@ class AppController extends BaseController
     }
 
     /**
-     * Whether the user signed in may see the reports of the worker: their own, those they get,
-     * and anybody's for an admin.
+     * Whether the user signed in may see the reports of the worker: their own if they are one,
+     * those they get, and anybody's for an admin.
+     *
+     * A month belongs to whoever is on the list of workers. Somebody who is not on it has no
+     * report to look at, admin or not, and the way there is not offered to them.
      *
      * @param string $userId Worker.
      * @return bool
      */
     protected function maySee(string $userId): bool
     {
-        if ($userId === $this->identityId() || $this->seesEverybody()) {
-            return true;
-        }
-
         /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
         $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
 
-        return $workers->isRecipientOf($this->identityId(), $userId);
+        if ($userId === $this->identityId()) {
+            return $workers->isWorker($userId);
+        }
+
+        return $this->seesEverybody() || $workers->isRecipientOf($this->identityId(), $userId);
     }
 
     /**
-     * Whether the user signed in may change the reports of the worker: their own, those they get
-     * with the right to change them, and anybody's for an admin.
+     * Whether the user signed in may change the reports of the worker: their own while they
+     * report work, those they get with the right to change them, and anybody's for an admin.
+     *
+     * A worker whose row has been switched off keeps the months they wrote, to look at. Writing
+     * into them is then somebody else's to do.
      *
      * @param string $userId Worker.
      * @return bool
      */
     protected function mayEdit(string $userId): bool
     {
-        if ($userId === $this->identityId() || $this->seesEverybody()) {
-            return true;
-        }
-
         /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
         $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
 
-        return $workers->mayEdit($this->identityId(), $userId);
+        if ($userId === $this->identityId()) {
+            return $workers->isActiveWorker($userId);
+        }
+
+        return $this->seesEverybody() || $workers->mayEdit($this->identityId(), $userId);
     }
 
     /**
@@ -130,8 +136,7 @@ class AppController extends BaseController
     }
 
     /**
-     * The workers whose reports the user signed in may see, for a select. Whoever is signed in
-     * is on the list even when they report no work, so that they get to their own month.
+     * The workers whose reports the user signed in may see, for a select.
      *
      * @return list<array{value: string, text: string, style: string|null}>
      */
@@ -148,8 +153,13 @@ class AppController extends BaseController
             ? ['AppUsers.id IN' => $workers->activeIds()]
             : ['AppUsers.id IN' => $workers->workersOf($this->identityId())];
 
+        // and the user themselves, so that they get to their own months - but only if they keep any
+        $own = $workers->isWorker($this->identityId())
+            ? [['AppUsers.id' => $this->identityId()]]
+            : [];
+
         return $this->usersForSelect($users->find()
-            ->where(['OR' => [['AppUsers.id' => $this->identityId()], $others]]));
+            ->where(['OR' => array_merge([$others], $own)]));
     }
 
     /**

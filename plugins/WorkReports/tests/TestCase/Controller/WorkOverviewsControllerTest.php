@@ -65,6 +65,11 @@ class WorkOverviewsControllerTest extends TestCase
         $user = $this->getTableLocator()->get('AppUsers')->get(self::WORKER);
         $user->role = 'bookkeeper';
         $this->session(['Auth' => $user]);
+
+        // whoever reports work is on the list of workers, which is what says the months are theirs
+        $workers = $this->getTableLocator()->get('WorkReports.WorkReportWorkers');
+        $workers->saveOrFail($workers->newEntity(['user_id' => self::WORKER, 'workload' => '1', 'active' => true]));
+
         $this->enableCsrfToken();
         $this->enableSecurityToken();
     }

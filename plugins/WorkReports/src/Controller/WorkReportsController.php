@@ -59,11 +59,23 @@ class WorkReportsController extends AppController
      * A month of a worker the way the spreadsheet showed it: what it adds up to, and every day of
      * it with what was reported on it. A month with nothing reported yet is shown all the same.
      *
-     * @return void Renders view
+     * @return \Cake\Http\Response|null Renders view, or sends whoever keeps no report to the list.
      */
-    public function sheet(): void
+    public function sheet(): ?Response
     {
-        $userId = (string)($this->getRequest()->getQuery('user_id') ?: $this->identityId());
+        $asked = $this->getRequest()->getQuery('user_id');
+        $userId = (string)($asked ?: $this->identityId());
+
+        // the way in from the menu asks for nobody in particular, so somebody who is not on the
+        // list of workers is told as much rather than stopped by a refusal
+        if (!is_string($asked) || $asked === '') {
+            if (!$this->maySee($userId)) {
+                $this->Flash->error(__d('work_reports', 'You do not keep a work report.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+        }
+
         $this->checkMaySee($userId);
 
         $month = $this->monthFromQuery();
@@ -115,6 +127,8 @@ class WorkReportsController extends AppController
             'maySubmit',
             'mayReopen',
         ));
+
+        return null;
     }
 
     /**

@@ -212,6 +212,29 @@ class WorkReportWorkersTable extends AppTable
     }
 
     /**
+     * Whether the user is on the list of people who report work, whatever state their row is in.
+     * Somebody who has stopped reporting still has the months they wrote.
+     *
+     * @param string $userId User to look up.
+     * @return bool
+     */
+    public function isWorker(string $userId): bool
+    {
+        return $this->exists(['user_id' => $userId]);
+    }
+
+    /**
+     * Whether the user reports work at the moment.
+     *
+     * @param string $userId User to look up.
+     * @return bool
+     */
+    public function isActiveWorker(string $userId): bool
+    {
+        return $this->exists(['user_id' => $userId, 'active' => true]);
+    }
+
+    /**
      * The users who report their work, as a subquery of their user ids.
      *
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>

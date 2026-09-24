@@ -71,6 +71,7 @@ class WorkReportItemsControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->loginAs(self::WORKER, 'user', superuser: false);
+        $this->addWorker(self::WORKER);
     }
 
     /**
@@ -654,28 +655,61 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
-     * The months to look at are those of the people who report work, and one's own.
+     * A month belongs to whoever is on the list of workers. Somebody who is not on it has no
+     * report of their own, and is told so rather than shown an empty month to fill in.
      *
      * @return void
      */
-    public function testOnlyWorkersAreOfferedToLookAt(): void
+    public function testOnlyWorkersKeepReports(): void
     {
         $other = $this->otherUser();
         $this->loginAs($other, 'admin', superuser: false);
 
+        // they oversee everybody, so they read the months of those who report work
+        $this->get('/work-reports/work-reports/sheet?user_id=' . self::WORKER);
+        $this->assertResponseOk();
+        $this->assertResponseContains(self::WORKER);
+        $this->assertResponseNotContains($other);
+
+        // but the way in from the menu, which asks for nobody, has nothing to show them
+        $this->get('/work-reports/work-reports/sheet');
+        $this->assertRedirectContains('/work-reports/work-reports');
+        $this->assertFlashElement('flash/error');
+
+        $this->post('/work-reports/work-report-items/add', [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+            'date' => '2026-06-15',
+        ]);
+        $this->assertResponseCode(403);
+
+        // once they are on the list, the month is theirs like anybody else's
+        $this->addWorker($other);
         $this->get('/work-reports/work-reports/sheet?month=2026-06');
         $this->assertResponseOk();
-        $this->assertResponseNotContains(self::WORKER);
+        $this->assertResponseContains($other);
+    }
 
+    /**
+     * A worker who has stopped reporting keeps the months they wrote, to look at.
+     *
+     * @return void
+     */
+    public function testAWorkerSwitchedOffOnlyLooks(): void
+    {
         $workers = $this->getTableLocator()->get('WorkReports.WorkReportWorkers');
-        $workers->saveOrFail($workers->newEntity([
-            'user_id' => self::WORKER,
-            'workload' => '1',
-            'active' => true,
-        ]));
+        $worker = $workers->find()->where(['user_id' => self::WORKER])->firstOrFail();
+        $worker->set('active', false);
+        $workers->saveOrFail($worker);
 
         $this->get('/work-reports/work-reports/sheet?month=2026-06');
-        $this->assertResponseContains(self::WORKER);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('New Work Report Item');
+
+        $this->post('/work-reports/work-report-items/add', [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+            'date' => '2026-06-15',
+        ]);
+        $this->assertResponseCode(403);
     }
 
     /**
@@ -731,6 +765,24 @@ class WorkReportItemsControllerTest extends TestCase
         }
 
         return $report;
+    }
+
+    /**
+     * Put a user on the list of people who report work.
+     *
+     * @param string $userId User to add.
+     * @return void
+     */
+    private function addWorker(string $userId): void
+    {
+        $workers = $this->getTableLocator()->get('WorkReports.WorkReportWorkers');
+        if (!$workers->exists(['user_id' => $userId])) {
+            $workers->saveOrFail($workers->newEntity([
+                'user_id' => $userId,
+                'workload' => '1',
+                'active' => true,
+            ]));
+        }
     }
 
     /**
