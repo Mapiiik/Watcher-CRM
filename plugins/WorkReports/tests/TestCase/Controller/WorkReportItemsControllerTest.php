@@ -642,6 +642,8 @@ class WorkReportItemsControllerTest extends TestCase
 
         $this->get('/work-reports/work-reports/sheet?month=2026-06');
         $this->assertResponseContains('Closed up to');
+        // and the days under it say as much where their actions would be
+        $this->assertResponseContains('-- Closed --');
 
         // the worker does not open again what they closed
         $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-06-10']);

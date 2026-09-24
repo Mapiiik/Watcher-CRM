@@ -359,6 +359,11 @@ $mayAdd = $firstOpen <= $today && $firstOpen <= $month->lastOfMonth() && $openOn
                                     </td>
                                 <?php endif ?>
                                 <td class="actions">
+                                    <?php if (!$openOn($date) && $workReport->isClosedOn($date)) : ?>
+                                        <span class="info-text">
+                                            <?= __d('work_reports', '-- Closed --') ?>
+                                        </span>
+                                    <?php endif ?>
                                     <?php if ($openOn($date)) : ?>
                                         <?php if ($item !== null && $item->isRunning()) : ?>
                                             <?= $this->AuthLink->postLink(
