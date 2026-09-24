@@ -491,6 +491,11 @@ nav.top-nav {
     cursor: help;
 }
 
+/* The same again, for a word that only says how things stand */
+.info-text {
+    color: var(--color-message-info-text);
+}
+
 /* Forms */
 /*
  * The line under a field saying what it is for. It belongs to the field above it, so it is
