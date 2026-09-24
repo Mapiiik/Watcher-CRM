@@ -873,36 +873,35 @@ return [
                 'subtitle' => 'se zpracováním osobních údajů',
 
                 'declaration_text' => <<<TEXT
-                    Prohlášení Správce:
-
-                    Správce prohlašuje, že bude zpracovávat osobní údaje v rozsahu nezbytném pro naplnění níže stanovených účelů, plnění smlouvy, plnění zákonných povinností a ochrany oprávněných zájmů. Zaměstnanci Správce nebo jiné fyzické osoby, které zpracovávají osobní údaje na základě smlouvy se Správcem a další osoby jsou povinni zachovávat mlčenlivost o osobních údajích, a to i po skončení pracovního poměru nebo prací.
-
                     Já, níže podepsaný:
 
-                    1. Uděluji tímto souhlas se zpracováním osobních údajů Správcem, pro účely stanovené níže. Tento souhlas uděluji pro následující údaje:
-                    Jméno, příjmení, emailová adresa, telefonní číslo, adresa trvalého pobytu, adresa místa připojení, fakturační adresa, korespondenční adresa, datum narození, IP adresa, typ a objem poskytnutých služeb, daňové a účetní doklady
+                    1. Zaškrtnutím níže volím, které zprávy si přeji dostávat na své kontaktní údaje uvedené výše (e-mailová adresa, telefonní číslo a adresy).
+                    U obchodních sdělení tím uděluji Správci souhlas s jejich zasíláním a se zpracováním svých kontaktních údajů pro tento účel.
+                    Vyúčtování je vždy k dispozici také v Uživatelském portálu Správce.
 
-                    2. Tento souhlas uděluji na dobu neurčitou a můžu ho kdykoli vzít zpět, a to stejným způsobem, jakým jsem jej udělil nebo pomocí Uživatelského portálu Správce.
+                    2. Volba i souhlas platí do odvolání. Mohu je kdykoli změnit nebo odvolat, a to stejným způsobem, jakým jsem je provedl nebo udělil, nebo v Uživatelském portálu Správce. Odvolání nemá vliv na zákonnost zpracování před ním. Zasílání obchodních sdělení mohu navíc odmítnout v každém z nich.
 
-                    3. Zpracování osobních údajů je prováděno Správcem.
+                    3. Beru na vědomí, že ostatní osobní údaje zpracovává Správce bez souhlasu, protože je to nezbytné:
+                        a) pro plnění smlouvy
+                        b) pro splnění právních povinností Správce
+                        c) pro oprávněné zájmy Správce
 
-                    4. Beru na vědomí, že podle nařízení (EU) 2016/679 (GDPR) a zákona č. 110/2019 Sb., o zpracování osobních údajů, mám právo:
-                        a) vzít souhlas kdykoliv zpět
-                        b) požadovat po Správci informaci, jaké moje osobní údaje zpracovává
-                        c) požadovat po Správci vysvětlení ohledně zpracování osobních údajů
-                        d) vyžádat si u Správce přístup k těmto údajům a tyto nechat aktualizovat nebo opravit
-                        e) požadovat po Správci výmaz těchto osobních údajů, pokud Správce neprokáže oprávněné důvody pro zpracování těchto osobních údajů
-                        f) požadovat omezení zpracování osobních údajů
-                        g) získat své osobní údaje ve strojově čitelném formátu a předat je jinému správci
-                        h) vznést námitku proti zpracování prováděnému z důvodu oprávněného zájmu Správce a kdykoli proti zpracování pro účely přímého marketingu
-                        i) v případě pochybností o dodržování povinností souvisejících se zpracováním osobních údajů obrátit se na Správce nebo podat stížnost u Úřadu pro ochranu osobních údajů
+                    4. Beru na vědomí, že Zásady zpracování osobních údajů popisují:
+                        a) jaké osobní údaje Správce zpracovává, k jakým účelům a jak dlouho
+                        b) komu je předává
+                        c) jaká mám práva, včetně práva vznést námitku a podat stížnost u Úřadu pro ochranu osobních údajů
+                        d) jak kontaktovat pověřence pro ochranu osobních údajů
+
+                    Aktuální znění Zásad zpracování osobních údajů je vždy dostupné na:
+                        – webových stránkách Správce: https://netair.cz
+                        – ke dni podpisu konkrétně v této sekci: https://netair.cz/internet/vseobecne-informace
                     TEXT,
 
                 'checkboxes' => [
-                    'billing' => '▢ souhlasím se zasíláním veškeré korespondence spojené s měsíčním vyúčtováním *',
-                    'outages' => '▢ souhlasím se zasíláním informací o odstávkách a poruchách *',
+                    'billing' => '▢ přeji si dostávat korespondenci spojenou s měsíčním vyúčtováním *',
+                    'outages' => '▢ přeji si dostávat informace o odstávkách a poruchách *',
                     'marketing' => '▢ souhlasím se zasíláním obchodních sdělení *',
-                    'note' => '* zaškrtněte prosím jaké typy zpráv chcete dostávat',
+                    'note' => '* zaškrtněte prosím, které zprávy chcete dostávat',
                 ],
             ],
 
