@@ -17,6 +17,7 @@ use WorkReports\Model\Entity\WorkReport;
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Submitters
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Returners
+ * @property \WorkReports\Model\Table\WorkReportWorkersTable&\Cake\ORM\Association\BelongsTo $Worker
  * @property \WorkReports\Model\Table\WorkReportItemsTable&\Cake\ORM\Association\HasMany $WorkReportItems
  * @property \WorkReports\Model\Table\WorkReportOnCallsTable&\Cake\ORM\Association\HasMany $WorkReportOnCalls
  * @method \WorkReports\Model\Entity\WorkReport newEmptyEntity()
@@ -59,6 +60,12 @@ class WorkReportsTable extends AppTable
         $this->belongsTo('Returners', [
             'className' => 'AppUsers',
             'foreignKey' => 'returned_by',
+        ]);
+        // the row that says the user reports work, and at what workload a month of theirs starts
+        $this->belongsTo('Worker', [
+            'className' => 'WorkReports.WorkReportWorkers',
+            'foreignKey' => 'user_id',
+            'bindingKey' => 'user_id',
         ]);
         $this->hasMany('WorkReportItems', [
             'className' => 'WorkReports.WorkReportItems',
@@ -187,13 +194,10 @@ class WorkReportsTable extends AppTable
             return $report;
         }
 
-        /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
-        $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
-
         $report = $this->newEntity([
             'user_id' => $userId,
             'month' => $day->firstOfMonth(),
-            'workload' => $workers->workloadOf($userId),
+            'workload' => $this->Worker->workloadOf($userId),
         ]);
 
         return $this->saveOrFail($report);
