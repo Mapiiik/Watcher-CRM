@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-23 20:09+0200\n"
+"POT-Creation-Date: 2026-09-24 10:10+0200\n"
 "PO-Revision-Date: 2026-09-22 01:00+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -30,11 +30,11 @@ msgstr "Kolik hodin má den pohotovosti o víkendu."
 msgid "Hours an on-call public holiday is worth."
 msgstr "Kolik hodin má den pohotovosti ve státní svátek."
 
-#: plugins/WorkReports/src/Controller/AppController.php:114
+#: plugins/WorkReports/src/Controller/AppController.php:120
 msgid "These reports are not yours to change."
 msgstr "Tyto výkazy nemůžete měnit."
 
-#: plugins/WorkReports/src/Controller/AppController.php:128
+#: plugins/WorkReports/src/Controller/AppController.php:134
 msgid "These reports are not yours to see."
 msgstr "Tyto výkazy nemůžete zobrazit."
 
@@ -124,74 +124,78 @@ msgstr "Výkaz byl odevzdán, jeho záznamy už nelze měnit."
 msgid "The report is closed up to this day."
 msgstr "Výkaz je k tomuto dni uzavřený."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:133
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:73
+msgid "You do not keep a work report."
+msgstr "Výkaz práce nevedete."
+
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:147
 msgid "Only the worker submits their report."
 msgstr "Výkaz odevzdává jen pracovník sám."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:143
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:237
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:277
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:157
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:251
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:291
 msgid "The report has already been submitted."
 msgstr "Výkaz už byl odevzdán."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:145
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:159
 msgid "Some work is still going on. Finish it first."
 msgstr "Některá práce ještě běží. Nejdřív ji ukončete."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:147
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:313
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:161
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:327
 #: plugins/WorkReports/templates/WorkReports/sheet.php:212
 msgid "Nothing is reported on {0}."
 msgstr "Nic není vykázáno: {0}."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:153
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:167
 msgid "The report has been submitted."
 msgstr "Výkaz byl odevzdán."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:156
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:170
 #: plugins/WorkReports/templates/email/html/work_report_submitted.php:19
 msgid "Also reported on {0}."
 msgstr "Vykázáno také: {0}."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:185
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:199
 msgid "This report is not yours to return."
 msgstr "Tento výkaz nemůžete vrátit."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:189
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:203
 msgid "The report has not been submitted."
 msgstr "Výkaz nebyl odevzdán."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:207
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:221
 msgid "The report has been returned for correction."
 msgstr "Výkaz byl vrácen k opravě."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:251
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:265
 msgid "The note has been saved."
 msgstr "Poznámka byla uložena."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:296
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:310
 #: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:333
 msgid "The day is not in the month of the report."
 msgstr "Den nepatří do měsíce výkazu."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:301
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:315
 msgid "A day that has not come is not closed."
 msgstr "Den, který ještě nenastal, nelze uzavřít."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:306
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:320
 #: plugins/WorkReports/templates/WorkReports/close.php:42
 msgid "Only a supervisor opens days that are closed."
 msgstr "Uzavřené dny může otevřít jen administrátor."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:324
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:338
 msgid "The whole month is open again."
 msgstr "Celý měsíc je zase otevřený."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:325
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:339
 msgid "The report is closed up to {0}."
 msgstr "Výkaz je uzavřený do {0}."
 
-#: plugins/WorkReports/src/Controller/WorkReportsController.php:390
+#: plugins/WorkReports/src/Controller/WorkReportsController.php:404
 msgid "A month is asked for as YYYY-MM."
 msgstr "Měsíc se zadává ve tvaru RRRR-MM."
 

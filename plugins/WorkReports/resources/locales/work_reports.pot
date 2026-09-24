@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-23 20:09+0200\n"
+"POT-Creation-Date: 2026-09-24 10:10+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -30,11 +30,11 @@ msgstr ""
 msgid "Hours an on-call public holiday is worth."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/AppController.php:114
+#: ./plugins/WorkReports/src/Controller/AppController.php:120
 msgid "These reports are not yours to change."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/AppController.php:128
+#: ./plugins/WorkReports/src/Controller/AppController.php:134
 msgid "These reports are not yours to see."
 msgstr ""
 
@@ -123,74 +123,78 @@ msgstr ""
 msgid "The report is closed up to this day."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:133
-msgid "Only the worker submits their report."
-msgstr ""
-
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:143
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:237
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:277
-msgid "The report has already been submitted."
-msgstr ""
-
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:145
-msgid "Some work is still going on. Finish it first."
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:73
+msgid "You do not keep a work report."
 msgstr ""
 
 #: ./plugins/WorkReports/src/Controller/WorkReportsController.php:147
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:313
+msgid "Only the worker submits their report."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:157
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:251
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:291
+msgid "The report has already been submitted."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:159
+msgid "Some work is still going on. Finish it first."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:161
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:327
 #: ./plugins/WorkReports/templates/WorkReports/sheet.php:212
 msgid "Nothing is reported on {0}."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:153
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:167
 msgid "The report has been submitted."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:156
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:170
 #: ./plugins/WorkReports/templates/email/html/work_report_submitted.php:19
 msgid "Also reported on {0}."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:185
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:199
 msgid "This report is not yours to return."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:189
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:203
 msgid "The report has not been submitted."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:207
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:221
 msgid "The report has been returned for correction."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:251
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:265
 msgid "The note has been saved."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:296
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:310
 #: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:333
 msgid "The day is not in the month of the report."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:301
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:315
 msgid "A day that has not come is not closed."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:306
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:320
 #: ./plugins/WorkReports/templates/WorkReports/close.php:42
 msgid "Only a supervisor opens days that are closed."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:324
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:338
 msgid "The whole month is open again."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:325
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:339
 msgid "The report is closed up to {0}."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:390
+#: ./plugins/WorkReports/src/Controller/WorkReportsController.php:404
 msgid "A month is asked for as YYYY-MM."
 msgstr ""
 
