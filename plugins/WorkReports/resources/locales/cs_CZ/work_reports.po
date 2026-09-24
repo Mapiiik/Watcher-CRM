@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-24 10:10+0200\n"
+"POT-Creation-Date: 2026-09-24 10:42+0200\n"
 "PO-Revision-Date: 2026-09-22 01:00+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -224,6 +224,14 @@ msgstr "Celý den"
 msgid "From and Until, or Whole Day"
 msgstr "Od a do, nebo celý den"
 
+#: plugins/WorkReports/src/Model/Table/WorkCarsTable.php:121
+msgid "The car is on reported work. Switch it off instead."
+msgstr "Auto je na vykázané práci. Místo mazání ho vypněte."
+
+#: plugins/WorkReports/src/Model/Table/WorkCarsTable.php:125
+msgid "The car is the one a worker drives by default."
+msgstr "Auto má pracovník jako výchozí."
+
 #: plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:344
 msgid "Split work over the end of the month into two items."
 msgstr "Práci přes konec měsíce rozdělte na dva záznamy."
@@ -272,19 +280,23 @@ msgstr "Zadejte od a do."
 msgid "The until has to come after the from."
 msgstr "Do musí být později než od."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:143
+#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:150
 msgid "The car is not one of the worker's own."
 msgstr "Auto nepatří pracovníkovi."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:160
+#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:167
 msgid "The car is not a company car."
 msgstr "Auto není služební."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportsTable.php:97
+#: plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:178
+msgid "The worker has reports. Switch the worker off instead."
+msgstr "Pracovník má výkazy. Místo mazání ho vypněte."
+
+#: plugins/WorkReports/src/Model/Table/WorkReportsTable.php:104
 msgid "A report starts on the first day of a month."
 msgstr "Výkaz začíná prvním dnem měsíce."
 
-#: plugins/WorkReports/src/Model/Table/WorkReportsTable.php:123
+#: plugins/WorkReports/src/Model/Table/WorkReportsTable.php:130
 msgid "Say what is to be corrected."
 msgstr "Uveďte, co je třeba opravit."
 

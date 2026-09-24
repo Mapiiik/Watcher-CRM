@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-24 10:10+0200\n"
+"POT-Creation-Date: 2026-09-24 10:42+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -223,6 +223,14 @@ msgstr ""
 msgid "From and Until, or Whole Day"
 msgstr ""
 
+#: ./plugins/WorkReports/src/Model/Table/WorkCarsTable.php:121
+msgid "The car is on reported work. Switch it off instead."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Model/Table/WorkCarsTable.php:125
+msgid "The car is the one a worker drives by default."
+msgstr ""
+
 #: ./plugins/WorkReports/src/Model/Table/WorkReportItemsTable.php:344
 msgid "Split work over the end of the month into two items."
 msgstr ""
@@ -271,19 +279,23 @@ msgstr ""
 msgid "The until has to come after the from."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:143
+#: ./plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:150
 msgid "The car is not one of the worker's own."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:160
+#: ./plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:167
 msgid "The car is not a company car."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportsTable.php:97
+#: ./plugins/WorkReports/src/Model/Table/WorkReportWorkersTable.php:178
+msgid "The worker has reports. Switch the worker off instead."
+msgstr ""
+
+#: ./plugins/WorkReports/src/Model/Table/WorkReportsTable.php:104
 msgid "A report starts on the first day of a month."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Model/Table/WorkReportsTable.php:123
+#: ./plugins/WorkReports/src/Model/Table/WorkReportsTable.php:130
 msgid "Say what is to be corrected."
 msgstr ""
 
