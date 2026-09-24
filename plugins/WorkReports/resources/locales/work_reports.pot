@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-24 10:42+0200\n"
+"POT-Creation-Date: 2026-09-24 11:49+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -455,7 +455,7 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportWorkers/edit.php:15
 #: ./plugins/WorkReports/templates/WorkReportWorkers/index.php:50
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:83
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:376
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:381
 msgid "Delete"
 msgstr ""
 
@@ -472,7 +472,7 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportWorkers/index.php:52
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:20
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:90
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:379
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:384
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
 
@@ -524,7 +524,7 @@ msgstr ""
 #: ./plugins/WorkReports/templates/WorkReportItemTypes/index.php:45
 #: ./plugins/WorkReports/templates/WorkReportWorkers/index.php:45
 #: ./plugins/WorkReports/templates/WorkReportWorkers/view.php:78
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:371
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:376
 #: ./plugins/WorkReports/templates/cell/WorkReportItems/display.php:90
 msgid "Edit"
 msgstr ""
@@ -1019,7 +1019,7 @@ msgid "Work in progress since {0}: {1}"
 msgstr ""
 
 #: ./plugins/WorkReports/templates/WorkReports/sheet.php:194
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:365
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:370
 msgid "Finish Now"
 msgstr ""
 
@@ -1069,7 +1069,11 @@ msgstr ""
 msgid "To invoice"
 msgstr ""
 
-#: ./plugins/WorkReports/templates/WorkReports/sheet.php:389
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:364
+msgid "-- Closed --"
+msgstr ""
+
+#: ./plugins/WorkReports/templates/WorkReports/sheet.php:394
 msgid "Add"
 msgstr ""
 
