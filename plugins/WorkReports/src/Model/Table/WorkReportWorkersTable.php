@@ -14,6 +14,7 @@ use Override;
  *
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \WorkReports\Model\Table\WorkReportWorkerRecipientsTable&\Cake\ORM\Association\HasMany $WorkReportWorkerRecipients
+ * @property \WorkReports\Model\Table\WorkReportsTable&\Cake\ORM\Association\HasMany $WorkReports
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsToMany $Recipients
  * @property \WorkReports\Model\Table\WorkCarsTable&\Cake\ORM\Association\BelongsTo $DefaultPrivateCars
  * @property \WorkReports\Model\Table\WorkCarsTable&\Cake\ORM\Association\BelongsTo $DefaultCompanyCars
@@ -55,6 +56,12 @@ class WorkReportWorkersTable extends AppTable
         $this->belongsTo('DefaultCompanyCars', [
             'className' => 'WorkReports.WorkCars',
             'foreignKey' => 'default_company_car_id',
+        ]);
+        // the months are the user's rather than this row's, so they are found by the user
+        $this->hasMany('WorkReports', [
+            'className' => 'WorkReports.WorkReports',
+            'foreignKey' => 'user_id',
+            'bindingKey' => 'user_id',
         ]);
         $this->hasMany('WorkReportWorkerRecipients', [
             'className' => 'WorkReports.WorkReportWorkerRecipients',
@@ -158,6 +165,17 @@ class WorkReportWorkersTable extends AppTable
             [
                 'errorField' => 'default_company_car_id',
                 'message' => __d('work_reports', 'The car is not a company car.'),
+            ],
+        );
+
+        // taking the row away would leave the months behind with nobody to read them, so a worker
+        // who has stopped reporting is switched off rather than deleted
+        $rules->addDelete(
+            $rules->isNotLinkedTo('WorkReports'),
+            'noReports',
+            [
+                'errorField' => 'user_id',
+                'message' => __d('work_reports', 'The worker has reports. Switch the worker off instead.'),
             ],
         );
 

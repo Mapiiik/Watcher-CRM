@@ -15,6 +15,10 @@ use Override;
  * A car without an owner belongs to the company, one with an owner is that person's own.
  *
  * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Owners
+ * @property \WorkReports\Model\Table\WorkReportItemsTable&\Cake\ORM\Association\HasMany $DrivenAsPrivate
+ * @property \WorkReports\Model\Table\WorkReportItemsTable&\Cake\ORM\Association\HasMany $DrivenAsCompany
+ * @property \WorkReports\Model\Table\WorkReportWorkersTable&\Cake\ORM\Association\HasMany $UsualPrivateCarOf
+ * @property \WorkReports\Model\Table\WorkReportWorkersTable&\Cake\ORM\Association\HasMany $UsualCompanyCarOf
  * @method \WorkReports\Model\Entity\WorkCar newEmptyEntity()
  * @method \WorkReports\Model\Entity\WorkCar get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \WorkReports\Model\Entity\WorkCar patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
@@ -44,6 +48,24 @@ class WorkCarsTable extends AppTable
         $this->belongsTo('Owners', [
             'className' => 'AppUsers',
             'foreignKey' => 'owner_id',
+        ]);
+
+        // the work this car was driven to, and the people who drive it unless they say otherwise
+        $this->hasMany('DrivenAsPrivate', [
+            'className' => 'WorkReports.WorkReportItems',
+            'foreignKey' => 'private_car_id',
+        ]);
+        $this->hasMany('DrivenAsCompany', [
+            'className' => 'WorkReports.WorkReportItems',
+            'foreignKey' => 'company_car_id',
+        ]);
+        $this->hasMany('UsualPrivateCarOf', [
+            'className' => 'WorkReports.WorkReportWorkers',
+            'foreignKey' => 'default_private_car_id',
+        ]);
+        $this->hasMany('UsualCompanyCarOf', [
+            'className' => 'WorkReports.WorkReportWorkers',
+            'foreignKey' => 'default_company_car_id',
         ]);
     }
 
@@ -91,6 +113,21 @@ class WorkCarsTable extends AppTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['owner_id'], 'Owners'), ['errorField' => 'owner_id']);
+
+        // a car that has been driven stays on the work it was driven to, and one somebody drives by
+        // default stays on their row - a car nobody drives any more is switched off
+        $driven = [
+            'errorField' => 'name',
+            'message' => __d('work_reports', 'The car is on reported work. Switch it off instead.'),
+        ];
+        $usual = [
+            'errorField' => 'name',
+            'message' => __d('work_reports', 'The car is the one a worker drives by default.'),
+        ];
+        $rules->addDelete($rules->isNotLinkedTo('DrivenAsPrivate'), 'notDrivenAsPrivate', $driven);
+        $rules->addDelete($rules->isNotLinkedTo('DrivenAsCompany'), 'notDrivenAsCompany', $driven);
+        $rules->addDelete($rules->isNotLinkedTo('UsualPrivateCarOf'), 'notUsualPrivateCar', $usual);
+        $rules->addDelete($rules->isNotLinkedTo('UsualCompanyCarOf'), 'notUsualCompanyCar', $usual);
 
         return $rules;
     }
