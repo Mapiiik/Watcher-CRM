@@ -17,6 +17,8 @@ use Override;
  * number of connections below the mast leads rather than follows - it is the one thing that tells
  * an outage worth warning people about from one nobody will notice.
  *
+ * Offered to every role, since anyone in the office may be the one who picks up.
+ *
  * The reading is the other application's whole and entire. Which masts are fed from which is not
  * written down here, so the count has to arrive already made.
  */
@@ -38,17 +40,6 @@ class PowerOutagesCard extends AbstractDashboardCard
     public function title(): string
     {
         return __('Planned Power Outages');
-    }
-
-    /**
-     * Whoever fields the calls when a line goes quiet.
-     *
-     * @return list<string>
-     */
-    #[Override]
-    public function roles(): array
-    {
-        return ['network-manager', 'sales-manager', 'sales-representative'];
     }
 
     /**

@@ -272,6 +272,8 @@ class DashboardControllerTest extends TestCase
         $this->assertNotContains('unassigned_tasks', $ids);
         // chasing paperwork is the office's work, not the technician's
         $this->assertNotContains('unsigned_contracts', $ids);
+        // whoever picks up the telephone may be asked about an outage
+        $this->assertContains('power_outages', $ids);
     }
 
     /**
