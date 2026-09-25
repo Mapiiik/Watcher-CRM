@@ -1,0 +1,117 @@
+==============================================================================
+Keeping the RADIUS database to its retention period.
+
+The RADIUS database is FreeRADIUS's, not the application's: the application
+manages the accounts in it and reads the sessions, but it never deletes a
+session or an authentication record. Those have to be taken out by the
+operator, on the RADIUS server, by cron.
+
+Two tables grow without end if nobody does that:
+
+  * radacct       - one row per session: who, which address, when, how much
+  * radpostauth   - one row per authentication attempt
+
+Both are traffic and location data. In the Czech Republic § 97(3) of the
+Electronic Communications Act (127/2005 Sb.) says how long they are kept - 6
+months - and that they are destroyed once the period is over. Other
+deployments set the period by their own law. Whatever it is, the privacy
+policy promises it to the customers, so it has to be what the database
+actually does.
+
+==============================================================================
+SESSIONS THAT NEVER END
+
+A NAS does not always send the accounting stop. A MikroTik restarting may skip
+it for some of its sessions, or send it before OSPF/BGP is up so that it never
+arrives. The session then stays in radacct with `acctstoptime` NULL for good.
+
+Deleting by `acctstoptime` alone therefore leaves those rows behind forever -
+on the reference deployment some were four years old - which is past any
+retention period. They also stretch every interval the application derives
+from radacct over the sessions that came after them.
+
+A session that is really still running sends an interim update every hour
+(Acct-Interim-Interval 3600; a few devices use 5 hours). One without an update
+for 24 hours is not running. It is closed at its last update, marked so that
+it can be told apart from a stop the NAS sent, and the ordinary deletion then
+takes it when its time comes.
+
+Check what FreeRADIUS does with an interim update for a session that is
+already closed before relying on this - `queries.conf`, the interim-update
+section. It either inserts the session again or logs an error; with a 24-hour
+margin it only happens to a NAS that could not reach RADIUS for a whole day.
+
+==============================================================================
+THE SCRIPT
+
+On the reference deployment it lives in /scripts/optimize-radius-tables.sh on
+the RADIUS server and runs as the `postgres` user:
+
+    #!/bin/bash
+    # RADIUS database cleanup: closes dead sessions and deletes data older
+    # than 6 months daily; on Mondays also reorders and reindexes the tables.
+    set -euo pipefail
+
+    PSQL=(psql -X -q -v ON_ERROR_STOP=1 -d radius)
+
+    # A session without an interim update for over 24 hours is no longer
+    # running (the NAS never sent a stop). Close it at its last update so the
+    # deletion below picks it up.
+    "${PSQL[@]}" -c "UPDATE radacct
+        SET acctstoptime = COALESCE(acctupdatetime, acctstarttime),
+            acctterminatecause = 'Stale-Session'
+        WHERE acctstoptime IS NULL
+          AND COALESCE(acctupdatetime, acctstarttime) < now() - interval '24 hours';"
+
+    "${PSQL[@]}" -c "DELETE FROM radacct WHERE acctstoptime < now() - interval '6 months';"
+    "${PSQL[@]}" -c "DELETE FROM radpostauth WHERE authdate < now() - interval '6 months';"
+
+    # Table maintenance only once a week (Monday), it locks the tables.
+    if [ "$(date +%u)" = "1" ]; then
+        "${PSQL[@]}" -c "CLUSTER radacct USING radacct_start_user_idx;"
+        "${PSQL[@]}" -c "CLUSTER radpostauth USING radpostauth_pkey;"
+        "${PSQL[@]}" -c "REINDEX TABLE radacct;"
+        "${PSQL[@]}" -c "REINDEX TABLE radpostauth;"
+    fi
+
+and in the crontab of `postgres`:
+
+    00 00  *   *   *     /scripts/optimize-radius-tables.sh
+
+The first run after years without it closes and deletes a great deal at once.
+Run it by hand the first time, and count beforehand if you want to know:
+
+    SELECT count(*) FROM radacct
+    WHERE acctstoptime IS NULL
+      AND COALESCE(acctupdatetime, acctstarttime) < now() - interval '24 hours';
+
+==============================================================================
+TWO SERVERS, ONE DATABASE
+
+Where the two RADIUS servers replicate each other with Bucardo (the master and
+slave schemas in config/ManualMigrations number their sequences odd and even
+for that reason), the cleanup runs on ONE of them. Its updates and deletes
+reach the other through the sync; running it on both only makes the two race
+for the same rows. The exception handler in
+config/bucardo.radacct.acctuniqueid.exception.pl resolves the conflicts that
+do happen on `acctuniqueid` by keeping the more recently updated row.
+
+==============================================================================
+BACKUPS KEEP IT LONGER
+
+A dump of the RADIUS database holds everything the database held that day. A
+dump kept for 90 days therefore keeps data that is up to 9 months old, long
+after the database itself has let it go. Either keep RADIUS dumps no longer
+than the retention period allows - a few weeks is plenty for a database that
+is replicated anyway - or say in the records of processing why they are kept
+longer and that nothing is ever read from them but a restore.
+
+==============================================================================
+NOT IN USE
+
+config/process-radacct.sql adds `data_usage_by_period` and
+`fr_new_data_usage_period()` from the FreeRADIUS contrib. The application does
+not use them and the table is empty on the reference deployment. If someone
+starts calling the procedure, the table is traffic data too and needs the same
+deletion as radacct.
+==============================================================================
