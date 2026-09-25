@@ -105,12 +105,17 @@ do happen on `acctuniqueid` by keeping the more recently updated row.
 ==============================================================================
 BACKUPS KEEP IT LONGER
 
-A dump of the RADIUS database holds everything the database held that day. A
-dump kept for 90 days therefore keeps data that is up to 9 months old, long
-after the database itself has let it go. Either keep RADIUS dumps no longer
-than the retention period allows - a few weeks is plenty for a database that
-is replicated anyway - or say in the records of processing why they are kept
-longer and that nothing is ever read from them but a restore.
+A dump of the RADIUS database holds everything the database held that day, so
+data the database has already let go of lives on in the backups until their
+rotation takes them. Nobody expects backups or VM snapshots to be cleaned
+record by record. What is expected is that:
+
+  * the backups expire on a fixed rotation,
+  * nothing is ever read from them but a restore, and
+  * after a restore the cleanup script runs before the database is used, so
+    that what was deleted does not come back.
+
+Say so in the records of processing, together with how long the rotation is.
 
 ==============================================================================
 NOT IN USE
