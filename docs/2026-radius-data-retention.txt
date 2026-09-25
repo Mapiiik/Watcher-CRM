@@ -36,6 +36,12 @@ for 24 hours is not running. It is closed at its last update, marked so that
 it can be told apart from a stop the NAS sent, and the ordinary deletion then
 takes it when its time comes.
 
+The 24 hours only hold where every NAS sends interim updates, and more often
+than that. A NAS that sends none leaves its live sessions looking exactly like
+dead ones, and the script closes them. Give such a NAS an interim interval
+shorter than 24 hours, or change the condition in the script to suit the
+deployment.
+
 Check what FreeRADIUS does with an interim update for a session that is
 already closed before relying on this - `queries.conf`, the interim-update
 section. It either inserts the session again or logs an error; with a 24-hour
