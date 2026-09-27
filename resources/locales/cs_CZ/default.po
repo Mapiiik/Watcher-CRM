@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-23 13:22+0200\n"
+"POT-Creation-Date: 2026-09-27 09:01+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1520,21 +1520,21 @@ msgstr[0] "Se starým snímkem byl odstraněn jeden vygenerovaný dokument."
 msgstr[1] "Se starým snímkem byly odstraněny {0} vygenerované dokumenty."
 msgstr[2] "Se starým snímkem bylo odstraněno {0} vygenerovaných dokumentů."
 
-#: src/Controller/ContractStatesController.php:87
-#: src/Controller/ContractStatesController.php:117
+#: src/Controller/ContractStatesController.php:88
+#: src/Controller/ContractStatesController.php:121
 msgid "The contract state has been saved."
 msgstr "Stav smlouvy byl uložen."
 
-#: src/Controller/ContractStatesController.php:91
-#: src/Controller/ContractStatesController.php:121
+#: src/Controller/ContractStatesController.php:92
+#: src/Controller/ContractStatesController.php:125
 msgid "The contract state could not be saved. Please, try again."
 msgstr "Stav smlouvy nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractStatesController.php:146
+#: src/Controller/ContractStatesController.php:153
 msgid "The contract state has been deleted."
 msgstr "Stav smlouvy byl odstraněn."
 
-#: src/Controller/ContractStatesController.php:149
+#: src/Controller/ContractStatesController.php:156
 msgid "The contract state could not be deleted. Please, try again."
 msgstr "Stav smlouvy nelze odstranit. Zkuste to prosím znovu."
 
@@ -2462,7 +2462,7 @@ msgstr "Štítky"
 msgid "Debts Beyond Automatic Blocking"
 msgstr "Dluhy mimo automatické blokování"
 
-#: src/Dashboard/Card/PowerOutagesCard.php:40
+#: src/Dashboard/Card/PowerOutagesCard.php:42
 msgid "Planned Power Outages"
 msgstr "Plánované odstávky elektřiny"
 
@@ -2764,15 +2764,15 @@ msgstr "Podle data instalace/zřízení a deinstalace/zrušení"
 #: templates/ContractStates/index.php:50 templates/ContractStates/view.php:55
 #: templates/ContractStates/view.php:59 templates/ContractStates/view.php:63
 #: templates/ContractStates/view.php:67 templates/ContractStates/view.php:71
-#: templates/ContractStates/view.php:98 templates/ContractStates/view.php:102
-#: templates/ContractStates/view.php:106 templates/ContractStates/view.php:110
-#: templates/ContractStates/view.php:121 templates/ContractStates/view.php:125
-#: templates/ContractStates/view.php:129 templates/ContractStates/view.php:134
-#: templates/ContractStates/view.php:139 templates/ContractStates/view.php:144
-#: templates/ContractStates/view.php:149 templates/ContractStates/view.php:153
-#: templates/ContractStates/view.php:162 templates/ContractStates/view.php:166
-#: templates/ContractStates/view.php:171 templates/ContractStates/view.php:176
-#: templates/ContractStates/view.php:180
+#: templates/ContractStates/view.php:110 templates/ContractStates/view.php:114
+#: templates/ContractStates/view.php:118 templates/ContractStates/view.php:122
+#: templates/ContractStates/view.php:133 templates/ContractStates/view.php:137
+#: templates/ContractStates/view.php:141 templates/ContractStates/view.php:146
+#: templates/ContractStates/view.php:151 templates/ContractStates/view.php:156
+#: templates/ContractStates/view.php:161 templates/ContractStates/view.php:165
+#: templates/ContractStates/view.php:174 templates/ContractStates/view.php:178
+#: templates/ContractStates/view.php:183 templates/ContractStates/view.php:188
+#: templates/ContractStates/view.php:192
 #: templates/ContractVersions/index.php:65
 #: templates/ContractVersions/view.php:112 templates/Contracts/index.php:84
 #: templates/Customers/view.php:329 templates/Customers/view.php:352
@@ -2833,15 +2833,15 @@ msgstr "Ne"
 #: templates/ContractStates/index.php:50 templates/ContractStates/view.php:55
 #: templates/ContractStates/view.php:59 templates/ContractStates/view.php:63
 #: templates/ContractStates/view.php:67 templates/ContractStates/view.php:71
-#: templates/ContractStates/view.php:98 templates/ContractStates/view.php:102
-#: templates/ContractStates/view.php:106 templates/ContractStates/view.php:110
-#: templates/ContractStates/view.php:121 templates/ContractStates/view.php:125
-#: templates/ContractStates/view.php:129 templates/ContractStates/view.php:134
-#: templates/ContractStates/view.php:139 templates/ContractStates/view.php:144
-#: templates/ContractStates/view.php:149 templates/ContractStates/view.php:153
-#: templates/ContractStates/view.php:162 templates/ContractStates/view.php:166
-#: templates/ContractStates/view.php:171 templates/ContractStates/view.php:176
-#: templates/ContractStates/view.php:180
+#: templates/ContractStates/view.php:110 templates/ContractStates/view.php:114
+#: templates/ContractStates/view.php:118 templates/ContractStates/view.php:122
+#: templates/ContractStates/view.php:133 templates/ContractStates/view.php:137
+#: templates/ContractStates/view.php:141 templates/ContractStates/view.php:146
+#: templates/ContractStates/view.php:151 templates/ContractStates/view.php:156
+#: templates/ContractStates/view.php:161 templates/ContractStates/view.php:165
+#: templates/ContractStates/view.php:174 templates/ContractStates/view.php:178
+#: templates/ContractStates/view.php:183 templates/ContractStates/view.php:188
+#: templates/ContractStates/view.php:192
 #: templates/ContractVersions/index.php:65
 #: templates/ContractVersions/view.php:112 templates/Contracts/index.php:84
 #: templates/Customers/view.php:329 templates/Customers/view.php:352
@@ -3340,7 +3340,7 @@ msgstr "Změny návrhu nelze aplikovat dříve, než je podepsaný."
 msgid "A proposal whose changes have been applied cannot be revoked."
 msgstr "Návrh s aplikovanými změnami nelze zrušit."
 
-#: src/Model/Table/ContractStatesTable.php:113
+#: src/Model/Table/ContractStatesTable.php:119
 #: src/Model/Table/LabelsTable.php:108
 msgid "One of the roles named is not a role."
 msgstr "Některá z uvedených rolí neexistuje."
@@ -3467,54 +3467,54 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení přístupového bodu."
 msgid "The selected contract state cannot be used for new contracts."
 msgstr "Vybraný stav smlouvy nelze použít pro nové smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:296
+#: src/Model/Validation/ContractStateValidator.php:303
 msgid "Installation date must be set for this contract state."
 msgstr "Pro tento stav smlouvy musí být nastaveno datum instalace."
 
-#: src/Model/Validation/ContractStateValidator.php:314
+#: src/Model/Validation/ContractStateValidator.php:321
 msgid "Uninstallation date must be set for this contract state."
 msgstr "Pro tento stav smlouvy musí být nastaveno datum deinstalace."
 
-#: src/Model/Validation/ContractStateValidator.php:332
+#: src/Model/Validation/ContractStateValidator.php:339
 msgid "Termination date must be set for this contract state."
 msgstr "Pro tento stav smlouvy musí být stanoveno datum ukončení."
 
-#: src/Model/Validation/ContractStateValidator.php:357
+#: src/Model/Validation/ContractStateValidator.php:364
 msgid ""
 "A billing has no end date, so it reaches past the termination of services."
 msgstr "Fakturace nemá vyplněné datum konce, takže sahá za ukončení služeb."
 
-#: src/Model/Validation/ContractStateValidator.php:369
+#: src/Model/Validation/ContractStateValidator.php:376
 msgid ""
 "The last billing runs until {0}, but the services are terminated on {1}."
 msgstr "Poslední fakturace běží do {0}, ale služby končí {1}."
 
-#: src/Model/Validation/ContractStateValidator.php:398
+#: src/Model/Validation/ContractStateValidator.php:405
 msgid ""
 "A contract version has no end date, so it reaches past the termination of "
 "services."
 msgstr ""
 "Verze smlouvy nemá vyplněné datum konce, takže sahá za ukončení služeb."
 
-#: src/Model/Validation/ContractStateValidator.php:410
+#: src/Model/Validation/ContractStateValidator.php:417
 msgid ""
 "The last contract version is valid until {0}, but the services are "
 "terminated on {1}."
 msgstr "Poslední verze smlouvy platí do {0}, ale služby končí {1}."
 
-#: src/Model/Validation/ContractStateValidator.php:439
+#: src/Model/Validation/ContractStateValidator.php:446
 msgid ""
 "A borrowed equipment has no return date, so it reaches past the "
 "uninstallation."
 msgstr "Zápůjčka nemá vyplněné datum vrácení, takže sahá za deinstalaci."
 
-#: src/Model/Validation/ContractStateValidator.php:451
+#: src/Model/Validation/ContractStateValidator.php:458
 msgid ""
 "The last borrowed equipment is lent until {0}, but the uninstallation is on "
 "{1}."
 msgstr "Poslední zápůjčka je do {0}, ale deinstalace je {1}."
 
-#: src/Model/Validation/ContractStateValidator.php:491
+#: src/Model/Validation/ContractStateValidator.php:498
 msgid ""
 "An open task of the required type ({0}) must exist before changing to this "
 "contract state."
@@ -3522,22 +3522,30 @@ msgstr ""
 "Otevřený úkol požadovaného typu ({0}) musí existovat před změnou na tento "
 "stav smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:525
+#: src/Model/Validation/ContractStateValidator.php:540
+msgid ""
+"An open task of the required type ({0}) must exist on the customer before "
+"changing to this contract state."
+msgstr ""
+"Otevřený úkol požadovaného typu ({0}) musí existovat na zákazníkovi před "
+"změnou na tento stav smlouvy."
+
+#: src/Model/Validation/ContractStateValidator.php:575
 msgid "All tasks must be completed before changing to this contract state."
 msgstr "Všechny úkoly musí být dokončeny před změnou na tento stav smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:558
+#: src/Model/Validation/ContractStateValidator.php:608
 msgid ""
 "Active billings must be finished before changing to this contract state."
 msgstr ""
 "Aktivní fakturace musí být dokončeny před přechodem na tento stav smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:587
+#: src/Model/Validation/ContractStateValidator.php:637
 msgid "Future billings must be removed before changing to this contract state."
 msgstr ""
 "Budoucí fakturace musí být odstraněny před změnou na tento stav smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:622
+#: src/Model/Validation/ContractStateValidator.php:672
 msgid ""
 "All assigned IP addresses and networks must be removed before changing to "
 "this contract state."
@@ -3545,14 +3553,14 @@ msgstr ""
 "Všechny přidělené IP adresy a sítě musí být odstraněny před změnou na tento "
 "stav smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:650
+#: src/Model/Validation/ContractStateValidator.php:700
 msgid ""
 "Active RADIUS accounts must be disabled before changing to this contract "
 "state."
 msgstr ""
 "Aktivní účty RADIUS musí být před změnou na tento stav smlouvy deaktivovány."
 
-#: src/Model/Validation/ContractStateValidator.php:678
+#: src/Model/Validation/ContractStateValidator.php:728
 msgid ""
 "All borrowed equipment must be returned before changing to this contract "
 "state."
@@ -3560,21 +3568,21 @@ msgstr ""
 "Veškeré zapůjčené zařízení musí být vráceno před změnou na tento stav "
 "smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:704
+#: src/Model/Validation/ContractStateValidator.php:754
 msgid "At least one contract version must exist for this contract state."
 msgstr "Musí existovat alespoň jedna verze smlouvy pro tento stav smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:736
+#: src/Model/Validation/ContractStateValidator.php:786
 msgid "An active contract version is required for this contract state."
 msgstr "Aktivní verze smlouvy je vyžadována pro tento stav smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:775
+#: src/Model/Validation/ContractStateValidator.php:825
 msgid ""
 "An active or future contract version is required for this contract state."
 msgstr ""
 "Aktivní nebo budoucí verze smlouvy je vyžadována pro tento stav smlouvy."
 
-#: src/Model/Validation/ContractStateValidator.php:814
+#: src/Model/Validation/ContractStateValidator.php:864
 msgid ""
 "Active or future contract versions must be terminated or removed before "
 "changing to this contract state."
@@ -3582,7 +3590,7 @@ msgstr ""
 "Aktivní nebo budoucí verze smlouvy musí být před změnou na tento stav "
 "smlouvy ukončeny nebo odstraněny."
 
-#: src/Model/Validation/ContractStateValidator.php:845
+#: src/Model/Validation/ContractStateValidator.php:895
 msgid ""
 "Active contractual obligations must be finished before changing to this "
 "contract state."
@@ -3851,7 +3859,7 @@ msgstr "IP adresa"
 #: templates/ConnectionProfiles/edit.php:65
 #: templates/ContractProposals/add.php:295
 #: templates/ContractProposals/billing_line.php:133
-#: templates/ContractStates/add.php:112 templates/ContractStates/edit.php:121
+#: templates/ContractStates/add.php:115 templates/ContractStates/edit.php:124
 #: templates/ContractVersions/add.php:80 templates/ContractVersions/edit.php:90
 #: templates/Contracts/add.php:68 templates/Contracts/edit.php:148
 #: templates/Countries/add.php:24 templates/Countries/edit.php:29
@@ -4274,7 +4282,7 @@ msgstr "Port"
 #: templates/Billings/service_change.php:118 templates/Billings/view.php:122
 #: templates/ContractProposals/billing_line.php:122
 #: templates/ContractProposals/view.php:222
-#: templates/ContractStates/view.php:193
+#: templates/ContractStates/view.php:205
 #: templates/ContractVersions/view.php:134 templates/Contracts/view.php:202
 #: templates/CustomerLabels/view.php:80
 #: templates/CustomerProposals/view.php:213 templates/Customers/view.php:373
@@ -5040,7 +5048,7 @@ msgstr "Pevná"
 msgid "Percentage"
 msgstr "Procentuální"
 
-#: templates/Commissions/view.php:90 templates/ContractStates/view.php:199
+#: templates/Commissions/view.php:90 templates/ContractStates/view.php:211
 #: templates/ServiceTypes/view.php:165
 msgid "Related Contracts"
 msgstr "Související smlouvy"
@@ -5451,7 +5459,7 @@ msgstr "Uložené dokumenty"
 msgid "None"
 msgstr "Žádné"
 
-#: templates/ContractStates/view.php:94
+#: templates/ContractStates/view.php:94 templates/ContractStates/view.php:106
 msgctxt "task type"
 msgid "None"
 msgstr "Žádný"
@@ -5515,38 +5523,38 @@ msgstr "Role pro nástěnku"
 msgid "Leave empty to show the state to everybody."
 msgstr "Ponechte prázdné, aby se stav zobrazoval všem."
 
-#: templates/ContractStates/add.php:77 templates/ContractStates/edit.php:86
-#: templates/ContractStates/view.php:132
+#: templates/ContractStates/add.php:80 templates/ContractStates/edit.php:89
+#: templates/ContractStates/view.php:144
 msgid "Requires Contract Versions Matching the Termination Date"
 msgstr "Vyžaduje shodu data ukončení s verzemi smlouvy"
 
-#: templates/ContractStates/add.php:80 templates/ContractStates/edit.php:89
-#: templates/ContractStates/view.php:137
+#: templates/ContractStates/add.php:83 templates/ContractStates/edit.php:92
+#: templates/ContractStates/view.php:149
 msgid "Requires Billings Matching the Termination Date"
 msgstr "Vyžaduje shodu data ukončení s fakturacemi"
 
-#: templates/ContractStates/add.php:83 templates/ContractStates/edit.php:92
-#: templates/ContractStates/view.php:142
+#: templates/ContractStates/add.php:86 templates/ContractStates/edit.php:95
+#: templates/ContractStates/view.php:154
 msgid "Requires Borrowed Equipments Matching the Uninstallation Date"
 msgstr "Vyžaduje shodu data deinstalace se zápůjčkami"
 
-#: templates/ContractStates/add.php:89 templates/ContractStates/edit.php:98
-#: templates/ContractStates/view.php:147
+#: templates/ContractStates/add.php:92 templates/ContractStates/edit.php:101
+#: templates/ContractStates/view.php:159
 msgid "Requires No Assigned IP Addresses or Networks"
 msgstr "Vyžaduje žádné přiřazené IP adresy ani sítě"
 
-#: templates/ContractStates/add.php:92 templates/ContractStates/edit.php:101
-#: templates/ContractStates/view.php:152
+#: templates/ContractStates/add.php:95 templates/ContractStates/edit.php:104
+#: templates/ContractStates/view.php:164
 msgid "Requires No Active RADIUS Accounts"
 msgstr "Vyžaduje žádné aktivní účty RADIUS"
 
-#: templates/ContractStates/add.php:102 templates/ContractStates/edit.php:111
-#: templates/ContractStates/view.php:169
+#: templates/ContractStates/add.php:105 templates/ContractStates/edit.php:114
+#: templates/ContractStates/view.php:181
 msgid "Requires Active or Future Contract Version"
 msgstr "Vyžaduje aktivní nebo budoucí verzi smlouvy"
 
-#: templates/ContractStates/add.php:105 templates/ContractStates/edit.php:114
-#: templates/ContractStates/view.php:174
+#: templates/ContractStates/add.php:108 templates/ContractStates/edit.php:117
+#: templates/ContractStates/view.php:186
 msgid "Requires No Active or Future Contract Versions"
 msgstr "Vyžaduje žádné aktivní ani budoucí verze smlouvy"
 
@@ -5600,42 +5608,46 @@ msgid "Requires Open Task Type"
 msgstr "Vyžaduje otevřený úkol typu"
 
 #: templates/ContractStates/view.php:97
+msgid "Requires Open Customer Task Type"
+msgstr "Vyžaduje otevřený úkol typu na zákazníkovi"
+
+#: templates/ContractStates/view.php:109
 msgid "Requires No Open Tasks"
 msgstr "Vyžaduje žádné otevřené úkoly"
 
-#: templates/ContractStates/view.php:101
+#: templates/ContractStates/view.php:113
 msgid "Requires No Active Billings"
 msgstr "Vyžaduje žádné aktivní fakturace"
 
-#: templates/ContractStates/view.php:105
+#: templates/ContractStates/view.php:117
 msgid "Requires No Future Billings"
 msgstr "Vyžaduje žádné budoucí fakturace"
 
-#: templates/ContractStates/view.php:109
+#: templates/ContractStates/view.php:121
 msgid "Requires No Borrowed Equipments"
 msgstr "Vyžaduje žádné zapůjčené zařízení"
 
-#: templates/ContractStates/view.php:120
+#: templates/ContractStates/view.php:132
 msgid "Requires Installation Date"
 msgstr "Vyžaduje datum instalace"
 
-#: templates/ContractStates/view.php:124
+#: templates/ContractStates/view.php:136
 msgid "Requires Uninstallation Date"
 msgstr "Vyžaduje datum deinstalace"
 
-#: templates/ContractStates/view.php:128
+#: templates/ContractStates/view.php:140
 msgid "Requires Termination Date"
 msgstr "Vyžaduje datum ukončení"
 
-#: templates/ContractStates/view.php:161
+#: templates/ContractStates/view.php:173
 msgid "Requires Contract Version"
 msgstr "Vyžaduje verzi smlouvy"
 
-#: templates/ContractStates/view.php:165
+#: templates/ContractStates/view.php:177
 msgid "Requires Active Contract Version"
 msgstr "Vyžaduje aktivní verzi smlouvy"
 
-#: templates/ContractStates/view.php:179
+#: templates/ContractStates/view.php:191
 msgid "Requires No Active Obligations"
 msgstr "Vyžaduje žádné aktivní závazky"
 
