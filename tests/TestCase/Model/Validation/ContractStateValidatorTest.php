@@ -15,7 +15,8 @@ use Override;
 /**
  * App\Model\Validation\ContractStateValidator Test Case
  *
- * These cover the flags that ask a contract's end dates to agree with how far its records reach.
+ * These cover the flags that ask a contract's end dates to agree with how far its records reach,
+ * and the open task a state waits for.
  * The validator is asked directly rather than through a save, because a save answers with one
  * `false` for every reason at once, and the question here is which reason.
  */
@@ -45,6 +46,20 @@ class ContractStateValidatorTest extends TestCase
     private const PAST_THE_END = '2022-12-12';
 
     /**
+     * The type of the one task the fixtures carry, filed under the contract's customer.
+     *
+     * @var string
+     */
+    private const TASK_TYPE_ID = 'dbf92ff5-8d55-449e-8295-952bf52d6ef5';
+
+    /**
+     * A task state that is not completed.
+     *
+     * @var string
+     */
+    private const OPEN_TASK_STATE_ID = 'f1e5d0c2-0000-4000-8000-000000000001';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -65,6 +80,9 @@ class ContractStateValidatorTest extends TestCase
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
         'app.ContractVersions',
+        'app.TaskTypes',
+        'app.TaskStates',
+        'app.Tasks',
     ];
 
     /**
@@ -109,7 +127,7 @@ class ContractStateValidatorTest extends TestCase
      *
      * The flags hang on a state change, so the entity says one is under way.
      *
-     * @param array<string, bool> $flags Flags to raise on the target state.
+     * @param array<string, bool|string> $flags Flags to raise on the target state.
      * @return \App\Model\Entity\Contract
      */
     private function contractChangingIntoAStateWith(array $flags): Contract
@@ -431,6 +449,88 @@ class ContractStateValidatorTest extends TestCase
 
         $this->assertArrayHasKey('uninstallation_date', $errors);
         $this->assertArrayNotHasKey('termination_date', $errors);
+    }
+
+    /**
+     * Leaves the customer's task open, or files it under the contract instead.
+     *
+     * @param array<string, mixed> $fields Fields to set on the task.
+     * @return void
+     */
+    private function changeTheTask(array $fields): void
+    {
+        $this->getTableLocator()->get('Tasks')->updateAll($fields, ['task_type_id' => self::TASK_TYPE_ID]);
+    }
+
+    /**
+     * An open task on the customer is enough for the flag asking for one there, without any on
+     * the contract.
+     *
+     * @return void
+     * @link \App\Model\Validation\ContractStateValidator::validateRequiresOpenCustomerTaskType()
+     */
+    public function testAnOpenTaskOnTheCustomerIsTaken(): void
+    {
+        $this->changeTheTask(['task_state_id' => self::OPEN_TASK_STATE_ID]);
+
+        $errors = (new ContractStateValidator())->validate(
+            $this->contractChangingIntoAStateWith(['requires_open_customer_task_type_id' => self::TASK_TYPE_ID]),
+        );
+
+        $this->assertSame([], $errors);
+    }
+
+    /**
+     * The same task does not do for the flag asking for one on the contract.
+     *
+     * @return void
+     * @link \App\Model\Validation\ContractStateValidator::validateRequiresOpenTaskType()
+     */
+    public function testAnOpenTaskOnTheCustomerDoesNotDoForTheContract(): void
+    {
+        $this->changeTheTask(['task_state_id' => self::OPEN_TASK_STATE_ID]);
+
+        $errors = (new ContractStateValidator())->validate(
+            $this->contractChangingIntoAStateWith(['requires_open_task_type_id' => self::TASK_TYPE_ID]),
+        );
+
+        $this->assertArrayHasKey('contract_state_id', $errors);
+    }
+
+    /**
+     * A task on the contract without the customer filled in counts for the customer as well.
+     *
+     * @return void
+     * @link \App\Model\Validation\ContractStateValidator::validateRequiresOpenCustomerTaskType()
+     */
+    public function testAnOpenTaskOnTheContractIsTakenForTheCustomer(): void
+    {
+        $this->changeTheTask([
+            'task_state_id' => self::OPEN_TASK_STATE_ID,
+            'customer_id' => null,
+            'contract_id' => self::CONTRACT_ID,
+        ]);
+
+        $errors = (new ContractStateValidator())->validate(
+            $this->contractChangingIntoAStateWith(['requires_open_customer_task_type_id' => self::TASK_TYPE_ID]),
+        );
+
+        $this->assertSame([], $errors);
+    }
+
+    /**
+     * A completed task on the customer is not the open one the state waits for.
+     *
+     * @return void
+     * @link \App\Model\Validation\ContractStateValidator::validateRequiresOpenCustomerTaskType()
+     */
+    public function testACompletedTaskOnTheCustomerIsRefused(): void
+    {
+        $errors = (new ContractStateValidator())->validate(
+            $this->contractChangingIntoAStateWith(['requires_open_customer_task_type_id' => self::TASK_TYPE_ID]),
+        );
+
+        $this->assertArrayHasKey('contract_state_id', $errors);
     }
 
     /**

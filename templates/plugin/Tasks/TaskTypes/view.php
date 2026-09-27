@@ -83,7 +83,15 @@
             <div class="related">
                 <h4><?= __d('app_tasks', 'Related Contract States') ?></h4>
 
-                <?php if (!empty($taskType->contract_states)) : ?>
+                <?php
+                // on the contract or on the customer, a state waits for the type either way
+                $contractStates = [];
+                $bothSides = [...$taskType->contract_states ?? [], ...$taskType->customer_states ?? []];
+                foreach ($bothSides as $contractState) {
+                    $contractStates[$contractState->id] = $contractState;
+                }
+                ?>
+                <?php if (!empty($contractStates)) : ?>
                     <div class="table-responsive">
                         <table>
                             <tr>
@@ -95,7 +103,7 @@
                                 <th class="actions"><?= __d('app_tasks', 'Actions') ?></th>
                             </tr>
 
-                            <?php foreach ($taskType->contract_states as $contractState) : ?>
+                            <?php foreach ($contractStates as $contractState) : ?>
                             <tr>
                                 <td><?= h($contractState->name) ?></td>
                                 <td><?= $contractState->usable_for_new_contract

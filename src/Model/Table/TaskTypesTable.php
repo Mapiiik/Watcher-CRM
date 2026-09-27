@@ -16,6 +16,7 @@ use Tasks\Model\Table\TaskTypesTable as TasksTaskTypesTable;
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
  * @property \App\Model\Table\ContractStatesTable&\Cake\ORM\Association\HasMany $ContractStates
+ * @property \App\Model\Table\ContractStatesTable&\Cake\ORM\Association\HasMany $CustomerStates
  * @method \App\Model\Entity\TaskType newEmptyEntity()
  * @method \App\Model\Entity\TaskType newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\TaskType[] newEntities(array $data, array $options = [])
@@ -46,6 +47,11 @@ class TaskTypesTable extends TasksTaskTypesTable
 
         $this->hasMany('ContractStates', [
             'foreignKey' => 'requires_open_task_type_id',
+        ]);
+        // the alias is short so that it fits the longest column of the states into the alias limit
+        $this->hasMany('CustomerStates', [
+            'className' => 'ContractStates',
+            'foreignKey' => 'requires_open_customer_task_type_id',
         ]);
     }
 
@@ -88,6 +94,7 @@ class TaskTypesTable extends TasksTaskTypesTable
         $rules = parent::buildRules($rules);
 
         $rules->addDelete($rules->isNotLinkedTo('ContractStates'));
+        $rules->addDelete($rules->isNotLinkedTo('CustomerStates'));
 
         return $rules;
     }

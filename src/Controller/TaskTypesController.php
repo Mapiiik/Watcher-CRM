@@ -25,6 +25,7 @@ class TaskTypesController extends AppController
         return [
             'Tasks' => ['Customers', 'TaskStates', 'Users', 'Collaborators'],
             'ContractStates',
+            'CustomerStates',
             'Creators',
             'Modifiers',
         ];

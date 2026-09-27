@@ -24,8 +24,10 @@ use App\Model\Entity\Trait\DashboardVisibilityTrait;
  *
  * // Tasks
  * @property string|null $requires_open_task_type_id
+ * @property string|null $requires_open_customer_task_type_id
  * @property bool $requires_no_open_tasks
  * @property \App\Model\Entity\TaskType|null $requires_open_task_type
+ * @property \App\Model\Entity\TaskType|null $requires_open_customer_task_type
  *
  * // Billings
  * @property bool $requires_no_active_billings
@@ -89,6 +91,7 @@ class ContractState extends AppEntity
 
         // Tasks
         'requires_open_task_type_id' => true,
+        'requires_open_customer_task_type_id' => true,
         'requires_no_open_tasks' => true,
 
         // Billings
@@ -130,6 +133,7 @@ class ContractState extends AppEntity
         'modifier' => true,
         'contracts' => true,
         'requires_open_task_type' => true,
+        'requires_open_customer_task_type' => true,
     ];
 
     /**

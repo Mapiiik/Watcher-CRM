@@ -68,6 +68,7 @@ class ContractStatesController extends AppController
             'Creators',
             'Modifiers',
             'RequiresOpenTaskTypes',
+            'RequiresOpenCustomerTaskTypes',
         ]);
 
         $this->set(compact('contractState'));
@@ -94,9 +95,12 @@ class ContractStatesController extends AppController
         $requiresOpenTaskTypes = $this->ContractStates->RequiresOpenTaskTypes->find('list', order: [
             'name',
         ]);
+        $requiresOpenCustomerTaskTypes = $this->ContractStates->RequiresOpenCustomerTaskTypes->find('list', order: [
+            'name',
+        ]);
 
         $roles = (new AppUser())->getRoleOptions();
-        $this->set(compact('contractState', 'requiresOpenTaskTypes', 'roles'));
+        $this->set(compact('contractState', 'requiresOpenTaskTypes', 'requiresOpenCustomerTaskTypes', 'roles'));
 
         return null;
     }
@@ -124,9 +128,12 @@ class ContractStatesController extends AppController
         $requiresOpenTaskTypes = $this->ContractStates->RequiresOpenTaskTypes->find('list', order: [
             'name',
         ]);
+        $requiresOpenCustomerTaskTypes = $this->ContractStates->RequiresOpenCustomerTaskTypes->find('list', order: [
+            'name',
+        ]);
 
         $roles = (new AppUser())->getRoleOptions();
-        $this->set(compact('contractState', 'requiresOpenTaskTypes', 'roles'));
+        $this->set(compact('contractState', 'requiresOpenTaskTypes', 'requiresOpenCustomerTaskTypes', 'roles'));
 
         return null;
     }

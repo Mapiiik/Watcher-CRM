@@ -94,6 +94,18 @@
                             ) : __x('task type', 'None') ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Requires Open Customer Task Type') ?></th>
+                            <td><?= $contractState->requires_open_customer_task_type !== null ? $this->Html->link(
+                                $contractState->requires_open_customer_task_type->name
+                                ?? '(' . $contractState->requires_open_customer_task_type->id . ')',
+                                [
+                                    'controller' => 'TaskTypes',
+                                    'action' => 'view',
+                                    $contractState->requires_open_customer_task_type->id,
+                                ],
+                            ) : __x('task type', 'None') ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Requires No Open Tasks') ?></th>
                             <td><?= $contractState->requires_no_open_tasks ? __('Yes') : __('No') ?></td>
                         </tr>

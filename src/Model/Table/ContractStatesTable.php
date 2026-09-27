@@ -13,6 +13,7 @@ use Override;
  *
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $Contracts
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $RequiresOpenTaskTypes
+ * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $RequiresOpenCustomerTaskTypes
  * @method \App\Model\Entity\ContractState newEmptyEntity()
  * @method \App\Model\Entity\ContractState newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\ContractState[] newEntities(array $data, array $options = [])
@@ -57,6 +58,11 @@ class ContractStatesTable extends AppTable
             'className' => 'TaskTypes',
             'foreignKey' => 'requires_open_task_type_id',
 //            'propertyName' => 'requires_open_task_type',
+        ]);
+
+        $this->belongsTo('RequiresOpenCustomerTaskTypes', [
+            'className' => 'TaskTypes',
+            'foreignKey' => 'requires_open_customer_task_type_id',
         ]);
     }
 
@@ -124,6 +130,10 @@ class ContractStatesTable extends AppTable
         $validator
             ->uuid('requires_open_task_type_id')
             ->allowEmptyString('requires_open_task_type_id');
+
+        $validator
+            ->uuid('requires_open_customer_task_type_id')
+            ->allowEmptyString('requires_open_customer_task_type_id');
 
         $validator
             ->boolean('requires_no_open_tasks')
@@ -209,6 +219,10 @@ class ContractStatesTable extends AppTable
         $rules->add(
             $rules->existsIn(['requires_open_task_type_id'], 'RequiresOpenTaskTypes'),
             ['errorField' => 'requires_open_task_type_id'],
+        );
+        $rules->add(
+            $rules->existsIn(['requires_open_customer_task_type_id'], 'RequiresOpenCustomerTaskTypes'),
+            ['errorField' => 'requires_open_customer_task_type_id'],
         );
 
         $rules->addDelete($rules->isNotLinkedTo('Contracts'));

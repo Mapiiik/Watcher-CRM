@@ -60,6 +60,9 @@
                         echo $this->Form->control('requires_open_task_type_id', [
                             'empty' => true,
                         ]);
+                        echo $this->Form->control('requires_open_customer_task_type_id', [
+                            'empty' => true,
+                        ]);
                         echo $this->Form->control('requires_no_open_tasks');
                         echo $this->Form->control('requires_no_active_billings');
                         echo $this->Form->control('requires_no_future_billings');

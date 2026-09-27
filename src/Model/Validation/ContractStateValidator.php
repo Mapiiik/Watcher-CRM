@@ -223,6 +223,13 @@ class ContractStateValidator
             );
         }
 
+        if ($contractState->requires_open_customer_task_type_id) {
+            $this->validateRequiresOpenCustomerTaskType(
+                $contract,
+                $contractState->requires_open_customer_task_type_id,
+            );
+        }
+
         if ($contractState->requires_no_open_tasks) {
             $this->validateRequiresNoOpenTasks($contract);
         }
@@ -490,6 +497,49 @@ class ContractStateValidator
                 'contract_state_id',
                 __(
                     'An open task of the required type ({0}) must exist before changing to this contract state.',
+                    $taskType->name ?? $taskType->id,
+                ),
+            );
+        }
+    }
+
+    /**
+     * Validates presence of required open task type on the customer.
+     *
+     * A softer variant of the task on the contract, for steps taken once per customer rather
+     * than per contract. A task on the contract itself counts too.
+     *
+     * @return void
+     */
+    private function validateRequiresOpenCustomerTaskType(
+        Contract $contract,
+        string $taskTypeId,
+    ): void {
+        $tasksTable = $this->fetchTable(TasksTable::class);
+        $taskTypesTable = $this->fetchTable(TaskTypesTable::class);
+
+        $taskType = $taskTypesTable->get($taskTypeId); // Ensure task type exists
+
+        $exists = $tasksTable->find()
+            ->innerJoinWith('TaskStates', function (SelectQuery $q) {
+                return $q->where(['TaskStates.completed' => false]);
+            })
+            ->where([
+                'OR' => [
+                    'Tasks.customer_id' => $contract->customer_id,
+                    'Tasks.contract_id' => $contract->id,
+                ],
+                'Tasks.task_type_id' => $taskType->id,
+            ])
+            ->limit(1)
+            ->count() > 0;
+
+        if (!$exists) {
+            $this->setError(
+                'contract_state_id',
+                __(
+                    'An open task of the required type ({0}) must exist on the customer before changing to this'
+                        . ' contract state.',
                     $taskType->name ?? $taskType->id,
                 ),
             );
