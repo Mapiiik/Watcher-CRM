@@ -15,9 +15,13 @@ use Cake\Core\Configure;
 use Maps\Marker;
 use Maps\Polyline;
 
-$this->Html->css(['Maps.vendor/leaflet', 'Maps.maps'], ['block' => true]);
+// Vendored libraries live whole in `webroot/vendor`, outside the usual `css` and `js`.
+$vendor = ['block' => true, 'pathPrefix' => false];
+$this->Html->css('Maps.vendor/leaflet/leaflet', $vendor);
+$this->Html->script('Maps.vendor/leaflet/leaflet', $vendor);
+$this->Html->css('Maps.maps', ['block' => true]);
 $this->Html->script(
-    ['Maps.vendor/leaflet', 'Maps.map-fullscreen', 'Maps.map'],
+    ['Maps.map-fullscreen', 'Maps.map'],
     ['block' => true],
 );
 

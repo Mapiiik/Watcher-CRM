@@ -23,3 +23,7 @@ disk later is a change of adapter rather than a change of code.
 What a file *means* is the application's business, not this plugin's. The
 values in `document_type` and `variant` are the application's to choose; here
 they are only strings.
+
+GLightbox 3.3.1, which shows the pages, is vendored in `webroot/vendor/glightbox`,
+unchanged, so that opening a document needs nothing from a CDN. Upgrading is
+replacing those files, in every application carrying a copy of this plugin.

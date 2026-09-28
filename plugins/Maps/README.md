@@ -93,6 +93,6 @@ Nothing else dispatches on the provider.
 
 ## Leaflet
 
-Leaflet 1.9.4 is vendored in `webroot/css/vendor` and `webroot/js/vendor`, unchanged, so that a
-map needs nothing from a CDN. Upgrading is replacing those files - and doing it in every application carrying a copy
+Leaflet 1.9.4 is vendored in `webroot/vendor/leaflet`, unchanged, so that a map needs nothing
+from a CDN. Upgrading is replacing those files - and doing it in every application carrying a copy
 of this plugin.

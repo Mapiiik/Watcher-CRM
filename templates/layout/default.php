@@ -56,34 +56,37 @@ $urlWithQuery = function ($query = []) use ($request) {
     <?= $this->Html->meta('icon') ?>
 
     <?= $this->Html->script([
-        'https://code.jquery.com/jquery.min.js',
+        '/vendor/jquery/jquery.min.js',
         'links.js',
     ]) ?>
 
     <?php if (Configure::read('UI.select2')) : ?>
-        <?= $this->Html->css(['https://cdn.jsdelivr.net/npm/select2@4.0/dist/css/select2.min.css']) ?>
+        <?= $this->Html->css(['/vendor/select2/select2.min.css']) ?>
         <?= $this->Html->script([
-            'https://cdn.jsdelivr.net/npm/select2@4.0/dist/js/select2.min.js',
+            '/vendor/select2/select2.min.js',
             'select2-settings.js',
         ]) ?>
     <?php endif ?>
 
     <?php
+    $normalize = '/vendor/normalize/normalize.min.css';
+    $milligram = '/vendor/milligram/milligram.min.css';
+
     switch (Configure::read('UI.theme')) {
         case 'legacy':
-            echo $this->Html->css(['normalize.min', 'legacy']);
+            echo $this->Html->css([$normalize, 'legacy']);
             break;
         case 'light':
-            echo $this->Html->css(['normalize.min', 'milligram.min', 'cake']);
+            echo $this->Html->css([$normalize, $milligram, 'cake']);
             break;
         case 'dark':
-            echo $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'dark']);
+            echo $this->Html->css([$normalize, $milligram, 'cake', 'dark']);
             break;
         case 'contrast':
-            echo $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'high_contrast']);
+            echo $this->Html->css([$normalize, $milligram, 'cake', 'high_contrast']);
             break;
         default:
-            echo $this->Html->css(['normalize.min', 'milligram.min', 'cake']);
+            echo $this->Html->css([$normalize, $milligram, 'cake']);
             if ($request->getAttribute('identity') === null) {
                 echo $this->Html->css(
                     ['dark'],

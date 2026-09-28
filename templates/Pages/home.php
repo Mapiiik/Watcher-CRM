@@ -74,7 +74,12 @@ endif;
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'cake', 'home']) ?>
+    <?= $this->Html->css([
+        '/vendor/normalize/normalize.min.css',
+        '/vendor/milligram/milligram.min.css',
+        'cake',
+        'home',
+    ]) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>

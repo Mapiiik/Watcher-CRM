@@ -64,14 +64,10 @@ class PreviewHelper extends Helper
 
         $this->loaded = true;
 
-        $this->Html->css(
-            'https://cdn.jsdelivr.net/npm/glightbox@3.3/dist/css/glightbox.min.css',
-            ['block' => true],
-        );
-        $this->Html->script(
-            'https://cdn.jsdelivr.net/npm/glightbox@3.3/dist/js/glightbox.min.js',
-            ['block' => true],
-        );
+        // Vendored libraries live whole in `webroot/vendor`, outside the usual `css` and `js`.
+        $vendor = ['block' => true, 'pathPrefix' => false];
+        $this->Html->css('Files.vendor/glightbox/glightbox.min', $vendor);
+        $this->Html->script('Files.vendor/glightbox/glightbox.min', $vendor);
         $this->Html->script('Files.viewer', ['block' => true]);
 
         // After the viewer's own, so that what it puts right stays put right.
