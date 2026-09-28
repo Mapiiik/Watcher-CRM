@@ -875,16 +875,12 @@ return [
                 'declaration_text' => <<<TEXT
                     Já, níže podepsaný:
 
-                    1. Zaškrtnutím níže volím, které zprávy si přeji dostávat na své kontaktní údaje uvedené výše (e-mailová adresa, telefonní číslo a adresy).
-                    U obchodních sdělení tím uděluji Správci souhlas s jejich zasíláním a se zpracováním svých kontaktních údajů pro tento účel.
-                    Vyúčtování je vždy k dispozici také v Uživatelském portálu Správce.
+                    1. Zaškrtnutím níže volím, které zprávy chci dostávat na své kontaktní údaje uvedené výše (e-mail, telefon a adresy). U obchodních sdělení tím Správci zároveň dávám souhlas s jejich zasíláním a se zpracováním svých kontaktních údajů pro tento účel.
+                    Informace o změnách služby, jejích podmínek a ceny mi Správce pošle, i když nic nezaškrtnu. Vyúčtování najdu vždy také v Uživatelském portálu Správce.
 
-                    2. Volba i souhlas platí do odvolání. Mohu je kdykoli změnit nebo odvolat, a to stejným způsobem, jakým jsem je provedl nebo udělil, nebo v Uživatelském portálu Správce. Odvolání nemá vliv na zákonnost zpracování před ním. Zasílání obchodních sdělení mohu navíc odmítnout v každém z nich.
+                    2. Volbu i souhlas mohu kdykoli změnit nebo odvolat, a to stejně, jako jsem je udělil, nebo v Uživatelském portálu Správce. Odvolání nemá vliv na zákonnost zpracování před ním. Obchodní sdělení mohu odmítnout také přímo v každém z nich.
 
-                    3. Beru na vědomí, že ostatní osobní údaje zpracovává Správce bez souhlasu, protože je to nezbytné:
-                        a) pro plnění smlouvy
-                        b) pro splnění právních povinností Správce
-                        c) pro oprávněné zájmy Správce
+                    3. Beru na vědomí, že ostatní osobní údaje zpracovává Správce bez mého souhlasu, protože je potřebuje k plnění smlouvy, ke splnění svých právních povinností nebo pro své oprávněné zájmy.
 
                     4. Beru na vědomí, že Zásady zpracování osobních údajů popisují:
                         a) jaké osobní údaje Správce zpracovává, k jakým účelům a jak dlouho
@@ -892,9 +888,7 @@ return [
                         c) jaká mám práva, včetně práva vznést námitku a podat stížnost u Úřadu pro ochranu osobních údajů
                         d) jak kontaktovat pověřence pro ochranu osobních údajů
 
-                    Aktuální znění Zásad zpracování osobních údajů je vždy dostupné na:
-                        – webových stránkách Správce: https://netair.cz
-                        – ke dni podpisu konkrétně v této sekci: https://netair.cz/internet/vseobecne-informace
+                    Aktuální znění Zásad zpracování osobních údajů je vždy k dispozici na https://netair.cz, ke dni podpisu konkrétně na https://netair.cz/internet/vseobecne-informace.
                     TEXT,
 
                 'checkboxes' => [
