@@ -805,7 +805,7 @@ class Canvas
     /**
      * Places an image at a fixed spot on the page, where there is one to place.
      *
-     * @param string $file The file
+     * @param string $file The file, a picture or an SVG drawing
      * @param float $x Left edge
      * @param float $y Top edge
      * @param float $w Width, the height following from it
@@ -819,6 +819,15 @@ class Canvas
         // Anything else the file turns out to be wrong about is still an error.
         if (!is_readable($file)) {
             Log::warning(sprintf('The document is printed without an image: %s cannot be read.', $file));
+
+            return;
+        }
+
+        // A drawing is set as vectors rather than rasterised, and its height follows from its
+        // own proportions the same way a picture's does.
+        if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'svg') {
+            $id = $this->pdf()->addSVG($file, $x, $y, $w, 0.0, $this->pageHeight);
+            $this->pdf()->page->addContent($this->pdf()->getSetSVG($id));
 
             return;
         }

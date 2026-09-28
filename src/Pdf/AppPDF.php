@@ -239,7 +239,7 @@ class AppPDF extends Canvas
         $this->AddPage();
         $this->frameBody();
 
-        $this->Image(K_PATH_IMAGES . 'logo-contract.png', static::FRAME_LEFT, 5, 28);
+        $this->Image($this->logoImage(), static::FRAME_LEFT, 5, 28);
 
         if ($overline !== null && $overline !== '') {
             $this->SetFont(static::FONT_FAMILY, 'B', static::BODY_FONT_SIZE);
@@ -256,6 +256,19 @@ class AppPDF extends Canvas
         $this->Ln(3);
 
         $this->drawSeparator(lnBefore: 4, lnAfter: 0.5);
+    }
+
+    /**
+     * The logo at the head of every document: the drawing where the deployment has one, the
+     * picture otherwise.
+     *
+     * @return string
+     */
+    protected function logoImage(): string
+    {
+        $drawing = K_PATH_IMAGES . 'logo-contract.svg';
+
+        return is_readable($drawing) ? $drawing : K_PATH_IMAGES . 'logo-contract.png';
     }
 
     /**
