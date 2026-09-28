@@ -65,9 +65,8 @@ foreach (Cache::configured() as $cache) {
     Cache::setConfig($cache, ['prefix' => 'test_' . ($config['prefix'] ?? $cache . '_')] + $config);
 }
 
-// DebugKit skips settings these connection config if PHP SAPI is CLI / PHPDBG.
-// But since PagesControllerTest is run with debug enabled and DebugKit is loaded
-// in application, without setting up these config DebugKit errors out.
+// DebugKit skips setting up its connection under CLI, so a test run with debug enabled would
+// error out without this one.
 ConnectionManager::setConfig('test_debug_kit', [
     'className' => Connection::class,
     'driver' => Sqlite::class,
