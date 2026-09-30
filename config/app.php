@@ -402,8 +402,47 @@ return [
             'defaultCountries' => env('ADDRESSES_API_COUNTRIES', 'cz,hr'),
         ],
         'nominatim' => [
+            'url' => env('NOMINATIM_URL', 'https://nominatim.openstreetmap.org'),
             'userAgent' => env('NOMINATIM_USER_AGENT', 'Watcher CRM'),
+            'referer' => env('NOMINATIM_REFERER', ''),
         ],
+        'photon' => [
+            'url' => env('PHOTON_URL', 'https://photon.komoot.io'),
+        ],
+        // The installation's own map server in place of the public tiles, when it has one. Esri
+        // stays as it is, the layer to fall back on while that server is down.
+        'baseLayers' => env('MAPS_SERVER_URL') ? [
+            'osm' => [
+                'name' => 'OpenStreetMap',
+                'type' => 'xyz',
+                'url' => rtrim((string)env('MAPS_SERVER_URL'), '/') . '/tiles/osm/webmercator/{z}/{x}/{y}.png',
+                'options' => [
+                    'attribution' => '&copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> '
+                        . '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    'maxZoom' => 19,
+                ],
+            ],
+            'cuzk' => [
+                'name' => 'Ortofoto ČR (ČÚZK)',
+                'type' => 'xyz',
+                'url' => rtrim((string)env('MAPS_SERVER_URL'), '/')
+                    . '/tiles/cz-orthophoto/webmercator/{z}/{x}/{y}.jpeg',
+                'options' => [
+                    'attribution' => '&copy; <a href="https://cuzk.gov.cz">ČÚZK</a>',
+                    'maxZoom' => 20,
+                ],
+            ],
+            'dgu' => [
+                'name' => 'Ortofoto HR (DGU)',
+                'type' => 'xyz',
+                'url' => rtrim((string)env('MAPS_SERVER_URL'), '/')
+                    . '/tiles/hr-orthophoto/webmercator/{z}/{x}/{y}.jpeg',
+                'options' => [
+                    'attribution' => '&copy; <a href="https://dgu.gov.hr">DGU</a>',
+                    'maxZoom' => 20,
+                ],
+            ],
+        ] : [],
     ],
 
     'Sms' => [
