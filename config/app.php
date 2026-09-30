@@ -429,6 +429,7 @@ return [
                     . '/tiles/cz-orthophoto/webmercator/{z}/{x}/{y}.jpeg',
                 'options' => [
                     'attribution' => '&copy; <a href="https://cuzk.gov.cz">ČÚZK</a>',
+                    'maxNativeZoom' => 19,
                     'maxZoom' => 20,
                 ],
             ],
@@ -439,6 +440,7 @@ return [
                     . '/tiles/hr-orthophoto/webmercator/{z}/{x}/{y}.jpeg',
                 'options' => [
                     'attribution' => '&copy; <a href="https://dgu.gov.hr">DGU</a>',
+                    'maxNativeZoom' => 19,
                     'maxZoom' => 20,
                 ],
             ],
