@@ -30,7 +30,31 @@ class MapsPlugin extends BasePlugin
     {
         /** @var array<string, array<string, mixed>> $defaults */
         $defaults = include Plugin::configPath('Maps') . 'maps.php';
+        $own = (array)Configure::read('Maps');
 
-        Configure::write('Maps', Hash::merge($defaults['Maps'], (array)Configure::read('Maps')));
+        $maps = Hash::merge($defaults['Maps'], $own);
+        $maps['baseLayers'] = $this->baseLayers(
+            (array)$defaults['Maps']['baseLayers'],
+            (array)($own['baseLayers'] ?? []),
+        );
+
+        Configure::write('Maps', $maps);
+    }
+
+    /**
+     * The layers to offer: the application's own ones first and whole, then the plugin's others.
+     *
+     * A layer is replaced rather than merged, as a layer half from one server and half from
+     * another would be no layer at all. One set to anything but an array is left out.
+     *
+     * @param array<array-key, mixed> $defaults The plugin's layers
+     * @param array<array-key, mixed> $own The application's layers
+     * @return array<array-key, array<string, mixed>>
+     */
+    protected function baseLayers(array $defaults, array $own): array
+    {
+        $layers = array_merge(array_fill_keys(array_keys($own), null), $defaults, $own);
+
+        return array_filter($layers, is_array(...));
     }
 }

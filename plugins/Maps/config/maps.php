@@ -70,24 +70,27 @@ return [
         ],
 
         /*
-         * The layer switcher. The first entry is shown on load; `type` is `xyz` or `wms`.
+         * The layer switcher. The first layer is shown on load; `type` is `xyz` or `wms`.
+         *
+         * A layer the application names replaces the one here whole, `false` removes it, and the
+         * ones the application names come first, in its order.
          *
          * OpenStreetMap has no aerial imagery of its own, hence the two extra layers: the Czech
          * cadastral office publishes the national orthophoto as a free WMS, and Esri World Imagery
          * covers the rest. Their attribution is a licence requirement, do not remove it.
          */
         'baseLayers' => [
-            [
+            'osm' => [
                 'name' => 'OpenStreetMap',
                 'type' => 'xyz',
-                'url' => 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                'url' => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 'options' => [
                     'attribution' =>
                         '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                     'maxZoom' => 19,
                 ],
             ],
-            [
+            'cuzk' => [
                 'name' => 'Ortofoto ČR (ČÚZK)',
                 'type' => 'wms',
                 'url' => 'https://ags.cuzk.cz/arcgis1/services/ORTOFOTO/MapServer/WMSServer',
@@ -99,7 +102,7 @@ return [
                     'maxZoom' => 20,
                 ],
             ],
-            [
+            'esri' => [
                 'name' => 'Satellite (Esri)',
                 'type' => 'xyz',
                 'url' => 'https://server.arcgisonline.com/ArcGIS/rest/services/'
