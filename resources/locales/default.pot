@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-01 23:00+0200\n"
+"POT-Creation-Date: 2026-10-02 00:09+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -521,14 +521,14 @@ msgstr ""
 
 #: ./src/Command/RebuildFulltextSearchCustomersCommand.php:65
 #: ./templates/ContractProposals/add.php:52
-#: ./templates/ContractProposals/view.php:80
-#: ./templates/ContractProposals/view.php:94
+#: ./templates/ContractProposals/view.php:91
+#: ./templates/ContractProposals/view.php:105
 #: ./templates/ContractVersions/view.php:36
 #: ./templates/ContractVersions/view.php:52
 #: ./templates/Contracts/view.php:39
 #: ./templates/Contracts/view.php:179
 #: ./templates/CustomerProposals/add.php:18
-#: ./templates/CustomerProposalsly_changes.php:37
+#: ./templates/CustomerProposalsly_changes.php:39
 #: ./templates/CustomerProposals/conclude.php:22
 #: ./templates/CustomerProposals/view.php:81
 #: ./templates/CustomerProposals/view.php:95
@@ -795,6 +795,14 @@ msgstr ""
 msgid "No contract has two versions in force at the same time."
 msgstr ""
 
+#: ./src/Contracts/Check/PartlyAppliedProposalCheck.php:63
+msgid "Contract Proposal Applied With Something Left Out"
+msgstr ""
+
+#: ./src/Contracts/Check/PartlyAppliedProposalCheck.php:72
+msgid "Everything the customers have agreed to was applied in full."
+msgstr ""
+
 #: ./src/Contracts/Check/UnappliedProposalCheck.php:74
 msgid "Contract Proposal Whose Changes Were Never Applied"
 msgstr ""
@@ -850,7 +858,7 @@ msgstr ""
 
 #: ./src/Contracts/Proposal/ChangePlan.php:99
 #: ./src/Contracts/Proposal/ChangePlan.php:152
-#: ./templates/ContractProposals/view.php:160
+#: ./templates/ContractProposals/view.php:171
 #: ./templates/ContractVersions/view.php:120
 #: ./templates/CustomerProposals/conclude.php:44
 #: ./templates/CustomerProposals/view.php:132
@@ -874,35 +882,35 @@ msgstr ""
 msgid "This proposal has not been signed yet, so its changes cannot be applied."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:154
+#: ./src/Contracts/Proposal/ChangePreview.php:183
 msgid "The signature is recorded, but no signed documents have been uploaded for this proposal."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:185
+#: ./src/Contracts/Proposal/ChangePreview.php:214
 msgid "A billing this proposal changes is no longer on the contract. Take the snapshot again and look the proposal over."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:197
+#: ./src/Contracts/Proposal/ChangePreview.php:226
 msgid "A billing this proposal ends begins on {0}, after the day it would be ended on, so it never runs at all. It will be removed from the contract rather than ended."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:211
+#: ./src/Contracts/Proposal/ChangePreview.php:240
 msgid "A billing changed by this proposal has been edited in the meantime: {0}. Applying the changes will overwrite that edit."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:223
+#: ./src/Contracts/Proposal/ChangePreview.php:252
 msgid "A billing this proposal does not cover has been added to the contract. It will be left unchanged."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:265
+#: ./src/Contracts/Proposal/ChangePreview.php:294
 msgid "The contract version has been changed since this proposal was created."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:288
+#: ./src/Contracts/Proposal/ChangePreview.php:317
 msgid "This proposal takes effect in a period that has already been invoiced. Only an administrator can make changes in an invoiced period, and only after allowing it explicitly."
 msgstr ""
 
-#: ./src/Contracts/Proposal/ChangePreview.php:316
+#: ./src/Contracts/Proposal/ChangePreview.php:345
 msgid "Only an administrator can apply it, and only after allowing it explicitly."
 msgstr ""
 
@@ -912,7 +920,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:46
 #: ./templates/Billings/view.php:50
 #: ./templates/BorrowedEquipments/view.php:56
-#: ./templates/ContractProposals/view.php:121
+#: ./templates/ContractProposals/view.php:132
 #: ./templates/ContractVersions/view.php:86
 #: ./templates/Contracts/map.php:11
 #: ./templates/Contracts/view.php:103
@@ -951,6 +959,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/non_standard_service.php:26
 #: ./templates/element/ContractChecks/overlapping_billings.php:26
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:23
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:27
 #: ./templates/element/ContractChecks/proposal_table.php:30
 #: ./templates/element/ContractChecks/unsettled_obligation.php:26
 #: ./templates/element/ContractChecks/unsigned_contract.php:27
@@ -971,7 +980,7 @@ msgstr ""
 #: ./src/Contracts/Proposal/PlannedChange.php:51
 #: ./templates/ContractProposals/add.php:115
 #: ./templates/ContractProposals/add.php:215
-#: ./templates/ContractProposals/view.php:132
+#: ./templates/ContractProposals/view.php:143
 #: ./templates/ContractVersions/view.php:78
 msgid "Contract Version"
 msgstr ""
@@ -1298,111 +1307,123 @@ msgstr ""
 msgid "The connection profile could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:260
-#: ./src/Controller/ContractProposalsController.php:727
-#: ./src/Controller/CustomerProposalsController.php:136
+#: ./src/Controller/ContractProposalsController.php:261
+#: ./src/Controller/ContractProposalsController.php:765
+#: ./src/Controller/CustomerProposalsController.php:141
 msgid "This proposal can no longer be changed."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:280
+#: ./src/Controller/ContractProposalsController.php:281
 msgid "A new snapshot of this contract cannot be taken. Delete the proposal and create a new one."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:290
+#: ./src/Controller/ContractProposalsController.php:291
 msgid "Confirm that the generated documents may be deleted."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:299
+#: ./src/Controller/ContractProposalsController.php:300
 msgid "The contract proposal has been recreated."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:459
+#: ./src/Controller/ContractProposalsController.php:460
 msgid "A generated document could not be deleted. Please delete it manually."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:555
+#: ./src/Controller/ContractProposalsController.php:556
 msgid "There is no such line on this proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:675
+#: ./src/Controller/ContractProposalsController.php:676
 msgid "This billing begins on {0}, after the day the proposal takes effect, so it never runs. Applying the changes will remove it from the contract rather than end it."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:746
-#: ./src/Controller/ContractProposalsController.php:1129
-#: ./src/Controller/CustomerProposalsController.php:106
-#: ./src/Controller/CustomerProposalsController.php:145
+#: ./src/Controller/ContractProposalsController.php:705
+msgid "Nothing was left out of this proposal."
+msgstr ""
+
+#: ./src/Controller/ContractProposalsController.php:716
+msgid "What was left out has been marked as settled."
+msgstr ""
+
+#: ./src/Controller/ContractProposalsController.php:718
+msgid "It could not be marked as settled. Please, try again."
+msgstr ""
+
+#: ./src/Controller/ContractProposalsController.php:784
+#: ./src/Controller/ContractProposalsController.php:1167
+#: ./src/Controller/CustomerProposalsController.php:111
+#: ./src/Controller/CustomerProposalsController.php:150
 msgid "The proposal has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:752
-#: ./src/Controller/ContractProposalsController.php:1135
-#: ./src/Controller/CustomerProposalsController.php:115
-#: ./src/Controller/CustomerProposalsController.php:151
+#: ./src/Controller/ContractProposalsController.php:790
+#: ./src/Controller/ContractProposalsController.php:1173
+#: ./src/Controller/CustomerProposalsController.php:120
+#: ./src/Controller/CustomerProposalsController.php:156
 msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:829
-#: ./src/Controller/CustomerProposalsController.php:578
+#: ./src/Controller/ContractProposalsController.php:867
+#: ./src/Controller/CustomerProposalsController.php:636
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:834
-#: ./src/Controller/CustomerProposalsController.php:583
+#: ./src/Controller/ContractProposalsController.php:872
+#: ./src/Controller/CustomerProposalsController.php:641
 msgid "The proposal has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:858
-#: ./src/Controller/CustomerProposalsController.php:172
-#: ./src/Controller/CustomerProposalsController.php:537
+#: ./src/Controller/ContractProposalsController.php:896
+#: ./src/Controller/CustomerProposalsController.php:177
+#: ./src/Controller/CustomerProposalsController.php:595
 msgid "This proposal has already been settled."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:867
-#: ./src/Controller/CustomerProposalsController.php:545
+#: ./src/Controller/ContractProposalsController.php:905
+#: ./src/Controller/CustomerProposalsController.php:603
 msgid "The proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:870
-#: ./src/Controller/CustomerProposalsController.php:548
+#: ./src/Controller/ContractProposalsController.php:908
+#: ./src/Controller/CustomerProposalsController.php:606
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:949
+#: ./src/Controller/ContractProposalsController.php:987
 msgid "Enter the last day of the service."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:961
+#: ./src/Controller/ContractProposalsController.php:999
 msgid "Enter the day the proposal takes effect."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:992
+#: ./src/Controller/ContractProposalsController.php:1030
 msgid "Choose which contract and which version of it this contract proposal is for."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1009
+#: ./src/Controller/ContractProposalsController.php:1047
 msgid "Enter the day the new contract starts."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1106
+#: ./src/Controller/ContractProposalsController.php:1144
 msgid "Please answer this before the proposal is sent."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1111
+#: ./src/Controller/ContractProposalsController.php:1149
 msgid "The contract is not ready for a contract proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1363
+#: ./src/Controller/ContractProposalsController.php:1401
 msgid "A customer proposal for this contract proposal could not be created."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:329
+#: ./src/Controller/ContractProposalsController.php:330
 msgid "One line asked about a billing that is no longer on the contract and has been taken back."
 msgid_plural "{0} lines asked about billings that are no longer on the contract and have been taken back."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ./src/Controller/ContractProposalsController.php:351
+#: ./src/Controller/ContractProposalsController.php:352
 msgid "One generated document has been deleted with the old snapshot."
 msgid_plural "{0} generated documents have been deleted with the old snapshot."
 msgstr[0] ""
@@ -1678,48 +1699,48 @@ msgstr ""
 msgid "The customer message could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:191
+#: ./src/Controller/CustomerProposalsController.php:196
 msgid "The proposal has been recorded as sent."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:197
+#: ./src/Controller/CustomerProposalsController.php:202
 msgid "The sending could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:224
-#: ./src/Controller/CustomerProposalsController.php:348
+#: ./src/Controller/CustomerProposalsController.php:229
+#: ./src/Controller/CustomerProposalsController.php:353
 msgid "This customer proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:234
+#: ./src/Controller/CustomerProposalsController.php:239
 msgid "The signature has been recorded."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:240
+#: ./src/Controller/CustomerProposalsController.php:245
 msgid "The signature could not be recorded. Please, try again."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:376
+#: ./src/Controller/CustomerProposalsController.php:381
 msgid "There are no changes left to apply in this proposal."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:383
+#: ./src/Controller/CustomerProposalsController.php:395
 msgid "The changes of this proposal cannot be applied in its current state."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:426
+#: ./src/Controller/CustomerProposalsController.php:471
 msgid "The changes of the proposal could not be applied: {0}"
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:445
+#: ./src/Controller/CustomerProposalsController.php:490
 msgid "Contract {0} now has an end date. Its state was not changed, because a change of state has requirements of its own."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:571
+#: ./src/Controller/CustomerProposalsController.php:629
 msgid "This proposal can no longer be deleted."
 msgstr ""
 
-#: ./src/Controller/CustomerProposalsController.php:436
+#: ./src/Controller/CustomerProposalsController.php:481
 msgid "The changes of the proposal have been applied to the live records."
 msgid_plural "The changes of the proposal and everything in it have been applied to the live records."
 msgstr[0] ""
@@ -1806,10 +1827,10 @@ msgid "That page belongs to a different proposal."
 msgstr ""
 
 #: ./src/Controller/DocumentsController.php:487
-#: ./src/Model/Entity/ContractProposal.php:278
+#: ./src/Model/Entity/ContractProposal.php:335
 #: ./src/View/Cell/DocumentsCell.php:188
 #: ./src/View/Cell/DocumentsCell.php:210
-#: ./templates/ContractProposals/view.php:110
+#: ./templates/ContractProposals/view.php:121
 #: ./templates/element/ContractProposals/heading.php:27
 #: ./templates/element/CustomerProposals/heading.php:16
 #: ./templates/element/Documents/whereabouts.php:62
@@ -2398,11 +2419,11 @@ msgstr ""
 msgid "Contract versions data not available."
 msgstr ""
 
-#: ./src/Model/Entity/ContractProposal.php:212
+#: ./src/Model/Entity/ContractProposal.php:269
 msgid "Customer proposal data not available."
 msgstr ""
 
-#: ./src/Model/Entity/ContractProposal.php:281
+#: ./src/Model/Entity/ContractProposal.php:338
 msgid "{0} - {1} from {2}"
 msgstr ""
 
@@ -3162,103 +3183,103 @@ msgstr ""
 msgid "The billing has been invoiced for and may not be deleted. Give it an end date instead, or ask an administrator."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:328
+#: ./src/Model/Table/ContractProposalsTable.php:335
 msgid "This proposal has been sent or has documents, so it cannot be deleted. Revoke it instead."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:367
+#: ./src/Model/Table/ContractProposalsTable.php:374
 msgid "The proposed changes are in an invalid format."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:384
+#: ./src/Model/Table/ContractProposalsTable.php:391
 msgid "The snapshot is missing data the documents need."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:401
+#: ./src/Model/Table/ContractProposalsTable.php:408
 msgid "The confirmations include an unknown question."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:426
+#: ./src/Model/Table/ContractProposalsTable.php:433
 msgid "A proposed change refers to a billing that is not in the snapshot."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:453
+#: ./src/Model/Table/ContractProposalsTable.php:460
 msgid "Two proposed changes refer to the same billing."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:475
+#: ./src/Model/Table/ContractProposalsTable.php:482
 msgid "The contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:491
+#: ./src/Model/Table/ContractProposalsTable.php:498
 msgid "A contract proposal for this purpose cannot refer to an existing version."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:513
+#: ./src/Model/Table/ContractProposalsTable.php:520
 msgid "The service type of this contract does not use contract versions."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:535
+#: ./src/Model/Table/ContractProposalsTable.php:542
 msgid "That customer proposal belongs to a different customer."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:553
+#: ./src/Model/Table/ContractProposalsTable.php:560
 msgid "That customer proposal has already been sent, so nothing more can be added to it."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:571
+#: ./src/Model/Table/ContractProposalsTable.php:578
 msgid "That customer proposal is only handed over, so it cannot hold contract proposals."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:601
+#: ./src/Model/Table/ContractProposalsTable.php:608
 msgid "That customer proposal already holds a contract proposal for this contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:619
+#: ./src/Model/Table/ContractProposalsTable.php:626
 msgid "The terminated contract version belongs to a different contract."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:629
+#: ./src/Model/Table/ContractProposalsTable.php:636
 msgid "A contract version cannot terminate itself."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:662
+#: ./src/Model/Table/ContractProposalsTable.php:669
 msgid "A change amends a signed contract. Record the signature of this contract version first."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:680
+#: ./src/Model/Table/ContractProposalsTable.php:687
 msgid "The contract version being terminated has not been concluded."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:699
+#: ./src/Model/Table/ContractProposalsTable.php:706
 msgid "A contract version that has not been concluded cannot be terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:741
+#: ./src/Model/Table/ContractProposalsTable.php:748
 msgid "A contract ends on the day its version stops being valid. Enter both dates and make them the same day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:771
+#: ./src/Model/Table/ContractProposalsTable.php:778
 msgid "The changes do not match the purpose of the proposal. Only a termination ends the contract, and a termination has to state the day."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:791
+#: ./src/Model/Table/ContractProposalsTable.php:798
 msgid "Please enter the number of the contract being terminated."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:823
+#: ./src/Model/Table/ContractProposalsTable.php:830
 msgid "The contract version ends on a given date, so the documents will be printed as a fixed-term contract. Please confirm that this is intended and set the obligation to the date until which the version is valid."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:859
+#: ./src/Model/Table/ContractProposalsTable.php:866
 msgid "This proposal has already been sent, so its content can no longer be changed. Revoke it and create a new one."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:874
+#: ./src/Model/Table/ContractProposalsTable.php:881
 msgid "The changes of a proposal cannot be applied before it has been signed."
 msgstr ""
 
-#: ./src/Model/Table/ContractProposalsTable.php:884
+#: ./src/Model/Table/ContractProposalsTable.php:891
 msgid "A proposal whose changes have been applied cannot be revoked."
 msgstr ""
 
@@ -3478,7 +3499,7 @@ msgid "{0} ({1} - {2})"
 msgstr ""
 
 #: ./src/Proposals/Settlement.php:116
-#: ./templates/ContractProposals/view.php:191
+#: ./templates/ContractProposals/view.php:242
 #: ./templates/CustomerProposals/view.php:159
 #: ./templates/ServiceOverrides/view.php:110
 #: ./templates/element/common/audit.php:74
@@ -3618,7 +3639,7 @@ msgstr ""
 #: ./templates/CustomerMessages/index.php:46
 #: ./templates/CustomerMessages/view.php:10
 #: ./templates/CustomerProposals/add.php:12
-#: ./templates/CustomerProposalsly_changes.php:29
+#: ./templates/CustomerProposalsly_changes.php:31
 #: ./templates/CustomerProposals/conclude.php:14
 #: ./templates/CustomerProposals/edit.php:12
 #: ./templates/CustomerProposals/send.php:19
@@ -3711,6 +3732,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:116
 #: ./templates/Tasks/view.php:10
 #: ./templates/cell/Documents/display.php:110
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:31
 #: ./templates/element/ContractChecks/proposal_table.php:37
 #: ./templates/element/ContractProposals/proposed_billings.php:40
 #: ./templates/element/Contracts/Billings.php:36
@@ -3854,7 +3876,7 @@ msgstr ""
 #: ./templates/ConnectionProfiles/edit.php:14
 #: ./templates/ConnectionProfiles/index.php:68
 #: ./templates/ConnectionProfiles/view.php:158
-#: ./templates/ContractProposals/view.php:58
+#: ./templates/ContractProposals/view.php:69
 #: ./templates/ContractStates/edit.php:14
 #: ./templates/ContractStates/index.php:66
 #: ./templates/ContractVersions/edit.php:17
@@ -4184,6 +4206,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:69
 #: ./templates/Tasks/index.php:190
 #: ./templates/cell/Documents/display.php:176
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:68
 #: ./templates/element/Contracts/Billings.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:45
 #: ./templates/element/Contracts/ContractVersions.php:43
@@ -4321,6 +4344,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/non_standard_service.php:23
 #: ./templates/element/ContractChecks/overlapping_billings.php:23
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:20
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:24
 #: ./templates/element/ContractChecks/proposal_table.php:27
 #: ./templates/element/ContractChecks/unsettled_obligation.php:23
 #: ./templates/element/ContractChecks/unsigned_contract.php:24
@@ -4375,7 +4399,7 @@ msgstr ""
 #: ./templates/Billings/service_change.php:118
 #: ./templates/Billings/view.php:122
 #: ./templates/ContractProposals/billing_line.php:122
-#: ./templates/ContractProposals/view.php:222
+#: ./templates/ContractProposals/view.php:273
 #: ./templates/ContractStates/view.php:205
 #: ./templates/ContractVersions/view.php:134
 #: ./templates/Contracts/view.php:202
@@ -4832,7 +4856,7 @@ msgstr ""
 #: ./templates/Billings/edit.php:97
 #: ./templates/Billings/service_change.php:183
 #: ./templates/ContractProposals/billing_line.php:128
-#: ./templates/CustomerProposalsly_changes.php:99
+#: ./templates/CustomerProposalsly_changes.php:101
 msgid "Allow a connection price below the minimum set on the contract"
 msgstr ""
 
@@ -5399,7 +5423,7 @@ msgid "Purpose of the New Customer Proposal"
 msgstr ""
 
 #: ./templates/ContractProposals/add.php:96
-#: ./templates/ContractProposals/view.php:148
+#: ./templates/ContractProposals/view.php:159
 #: ./templates/CustomerMessages/add_bulk/step_purpose.php:28
 #: ./templates/CustomerProposals/view.php:120
 #: ./templates/element/ContractChecks/proposal_table.php:32
@@ -5417,7 +5441,7 @@ msgid "The service type of this contract does not use contract versions, so no d
 msgstr ""
 
 #: ./templates/ContractProposals/add.php:138
-#: ./templates/ContractProposals/view.php:144
+#: ./templates/ContractProposals/view.php:155
 #: ./templates/CustomerProposals/view.php:124
 #: ./templates/element/ContractChecks/proposal_table.php:33
 #: ./templates/element/CustomerChecks/customer_proposal.php:23
@@ -5442,13 +5466,13 @@ msgid "This contract proposal takes effect with the contract version it is for."
 msgstr ""
 
 #: ./templates/ContractProposals/add.php:168
-#: ./templates/ContractProposals/view.php:196
+#: ./templates/ContractProposals/view.php:247
 msgid "Terminates Contract Version"
 msgstr ""
 
 #: ./templates/ContractProposals/add.php:182
 #: ./templates/ContractProposals/recreate.php:75
-#: ./templates/ContractProposals/view.php:208
+#: ./templates/ContractProposals/view.php:259
 msgid "Number of the contract being terminated"
 msgstr ""
 
@@ -5522,7 +5546,7 @@ msgstr ""
 
 #: ./templates/ContractProposals/billing_line.php:32
 #: ./templates/ContractProposals/recreate.php:27
-#: ./templates/CustomerProposalsly_changes.php:31
+#: ./templates/CustomerProposalsly_changes.php:33
 #: ./templates/CustomerProposals/conclude.php:16
 #: ./templates/CustomerProposals/edit.php:15
 #: ./templates/CustomerProposals/send.php:21
@@ -5544,7 +5568,7 @@ msgid "If left empty, billing starts on the day the contract proposal takes effe
 msgstr ""
 
 #: ./templates/ContractProposals/recreate.php:33
-#: ./templates/ContractProposals/view.php:70
+#: ./templates/ContractProposals/view.php:81
 #: ./templates/Documents/manage.php:155
 msgid "View Customer Proposal"
 msgstr ""
@@ -5591,20 +5615,29 @@ msgstr ""
 msgid "Revoke this proposal? Nothing has been changed on the contract yet."
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:60
+#: ./templates/ContractProposals/view.php:58
+msgid "Mark What Was Left Out as Settled"
+msgstr ""
+
+#: ./templates/ContractProposals/view.php:62
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:78
+msgid "Has what this proposal could not write been dealt with on the contract by hand?"
+msgstr ""
+
+#: ./templates/ContractProposals/view.php:71
 #: ./templates/CustomerProposals/view.php:76
 msgid "Are you sure?"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:114
+#: ./templates/ContractProposals/view.php:125
 msgid "This contract proposal is part of the customer proposal: {0}"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:152
+#: ./templates/ContractProposals/view.php:163
 msgid "Snapshot Taken"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:156
+#: ./templates/ContractProposals/view.php:167
 #: ./templates/ContractVersions/index.php:42
 #: ./templates/ContractVersions/view.php:116
 #: ./templates/CustomerProposals/send.php:46
@@ -5615,12 +5648,12 @@ msgstr ""
 msgid "Sent To The Customer"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:164
+#: ./templates/ContractProposals/view.php:175
 #: ./templates/CustomerProposals/view.php:136
 msgid "Stored Documents"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:168
+#: ./templates/ContractProposals/view.php:179
 #: ./templates/CustomerProposals/view.php:140
 msgid "None"
 msgstr ""
@@ -5651,13 +5684,31 @@ msgctxt "conclusion date"
 msgid "None"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:169
+#: ./templates/ContractProposals/view.php:180
 #: ./templates/CustomerProposals/view.php:141
 msgid "{0} generated, {1} received"
 msgstr ""
 
-#: ./templates/ContractProposals/view.php:187
+#: ./templates/ContractProposals/view.php:198
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:29
 msgid "Changes Applied"
+msgstr ""
+
+#: ./templates/ContractProposals/view.php:203
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:30
+msgid "Left Out"
+msgstr ""
+
+#: ./templates/ContractProposals/view.php:214
+msgid "Left Out Settled"
+msgstr ""
+
+#: ./templates/ContractProposals/view.php:217
+msgid "Not yet"
+msgstr ""
+
+#: ./templates/ContractProposals/view.php:221
+msgid "Left Out Settled By"
 msgstr ""
 
 #: ./templates/ContractStates/add.php:13
@@ -6528,47 +6579,55 @@ msgstr ""
 msgid "Attachments"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:54
-#: ./templates/CustomerProposalsly_changes.php:81
+#: ./templates/CustomerProposalsly_changes.php:56
+#: ./templates/CustomerProposalsly_changes.php:83
 msgid "Apply the Proposal's Changes"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:56
+#: ./templates/CustomerProposalsly_changes.php:58
 msgid "Everything this proposal changes on the contracts is recorded at once. Until then, nothing on them has changed."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:75
+#: ./templates/CustomerProposalsly_changes.php:77
 msgid "The changes of this proposal cannot be applied in its current state. What prevents it is shown above, next to the contract concerned."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:83
+#: ./templates/CustomerProposalsly_changes.php:85
 msgid "This proposal changes nothing. It records what was sent, and applying it only marks it as settled so that it is no longer listed as pending."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:87
+#: ./templates/CustomerProposalsly_changes.php:89
 msgid "Either all of the changes are applied, or none of them. A partly applied proposal would leave no trace of which part went through."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:93
+#: ./templates/CustomerProposalsly_changes.php:95
 msgid "Allow changes in an already invoiced period"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:104
+#: ./templates/CustomerProposalsly_changes.php:107
+msgid "Leave out the lines whose billing is no longer on the contract"
+msgstr ""
+
+#: ./templates/CustomerProposalsly_changes.php:108
+msgid "The rest of the proposal is applied and what was left out is written down on it, to be settled by hand. Without this the proposal cannot be applied at all, because a line that has nothing to act on cannot be written and signed papers cannot be edited."
+msgstr ""
+
+#: ./templates/CustomerProposalsly_changes.php:116
 msgid "Mark as Settled"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:104
+#: ./templates/CustomerProposalsly_changes.php:116
 #: ./templates/CustomerProposals/view.php:57
 #: ./templates/element/ContractChecks/proposal_table.php:104
 #: ./templates/element/Documents/rounds.php:148
 msgid "Apply Changes"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:107
+#: ./templates/CustomerProposalsly_changes.php:119
 msgid "Mark this proposal as settled?"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:108
+#: ./templates/CustomerProposalsly_changes.php:120
 msgid "Do you really want to apply the changes of this proposal?"
 msgstr ""
 
@@ -8576,6 +8635,14 @@ msgstr ""
 
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:27
 msgid "Second One In Force From"
+msgstr ""
+
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:13
+msgid "The customer agreed to all of this and part of it could not be written, because what the line acted on was no longer on the contract. The rest was applied so that the proposal could be settled at all. What was left out is below and wants settling by hand - and saying so, once it is done, is what takes it off this list."
+msgstr ""
+
+#: ./templates/element/ContractChecks/partly_applied_proposal.php:72
+msgid "Settled"
 msgstr ""
 
 #: ./templates/element/ContractChecks/unapplied_proposal.php:13

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-01 23:00+0200\n"
+"POT-Creation-Date: 2026-10-02 00:09+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -580,12 +580,12 @@ msgstr ""
 
 #: src/Command/RebuildFulltextSearchCustomersCommand.php:65
 #: templates/ContractProposals/add.php:52
-#: templates/ContractProposals/view.php:80
-#: templates/ContractProposals/view.php:94
+#: templates/ContractProposals/view.php:91
+#: templates/ContractProposals/view.php:105
 #: templates/ContractVersions/view.php:36
 #: templates/ContractVersions/view.php:52 templates/Contracts/view.php:39
 #: templates/Contracts/view.php:179 templates/CustomerProposals/add.php:18
-#: templates/CustomerProposalsly_changes.php:37
+#: templates/CustomerProposalsly_changes.php:39
 #: templates/CustomerProposals/conclude.php:22
 #: templates/CustomerProposals/view.php:81
 #: templates/CustomerProposals/view.php:95 templates/Customers/view.php:52
@@ -860,6 +860,14 @@ msgstr "Překrývající se verze smlouvy"
 msgid "No contract has two versions in force at the same time."
 msgstr "Žádná smlouva nemá dvě verze platné zároveň."
 
+#: src/Contracts/Check/PartlyAppliedProposalCheck.php:63
+msgid "Contract Proposal Applied With Something Left Out"
+msgstr "Návrh smlouvy aplikovaný s něčím vynechaným"
+
+#: src/Contracts/Check/PartlyAppliedProposalCheck.php:72
+msgid "Everything the customers have agreed to was applied in full."
+msgstr "Všechno, co zákazníci odsouhlasili, bylo aplikováno celé."
+
 #: src/Contracts/Check/UnappliedProposalCheck.php:74
 msgid "Contract Proposal Whose Changes Were Never Applied"
 msgstr "Návrh smlouvy s neaplikovanými změnami"
@@ -920,7 +928,7 @@ msgstr ""
 
 #: src/Contracts/Proposal/ChangePlan.php:99
 #: src/Contracts/Proposal/ChangePlan.php:152
-#: templates/ContractProposals/view.php:160
+#: templates/ContractProposals/view.php:171
 #: templates/ContractVersions/view.php:120
 #: templates/CustomerProposals/conclude.php:44
 #: templates/CustomerProposals/view.php:132
@@ -945,14 +953,14 @@ msgid ""
 "This proposal has not been signed yet, so its changes cannot be applied."
 msgstr "Návrh zatím nebyl podepsán, jeho změny proto nelze aplikovat."
 
-#: src/Contracts/Proposal/ChangePreview.php:154
+#: src/Contracts/Proposal/ChangePreview.php:183
 msgid ""
 "The signature is recorded, but no signed documents have been uploaded for "
 "this proposal."
 msgstr ""
 "Podpis je zapsaný, ale k návrhu nejsou nahrané žádné podepsané dokumenty."
 
-#: src/Contracts/Proposal/ChangePreview.php:185
+#: src/Contracts/Proposal/ChangePreview.php:214
 msgid ""
 "A billing this proposal changes is no longer on the contract. Take the "
 "snapshot again and look the proposal over."
@@ -960,7 +968,7 @@ msgstr ""
 "Fakturace, kterou návrh mění, už na smlouvě není. Pořiďte snímek znovu a "
 "návrh překontrolujte."
 
-#: src/Contracts/Proposal/ChangePreview.php:197
+#: src/Contracts/Proposal/ChangePreview.php:226
 msgid ""
 "A billing this proposal ends begins on {0}, after the day it would be ended "
 "on, so it never runs at all. It will be removed from the contract rather "
@@ -970,7 +978,7 @@ msgstr ""
 "by byla ukončena, takže vůbec neproběhne. Aplikováním změn bude ze smlouvy "
 "odstraněna, nikoli ukončena."
 
-#: src/Contracts/Proposal/ChangePreview.php:211
+#: src/Contracts/Proposal/ChangePreview.php:240
 msgid ""
 "A billing changed by this proposal has been edited in the meantime: {0}. "
 "Applying the changes will overwrite that edit."
@@ -978,18 +986,18 @@ msgstr ""
 "Fakturace, kterou návrh mění, byla mezitím upravena: {0}. Aplikováním změn "
 "se tato úprava přepíše."
 
-#: src/Contracts/Proposal/ChangePreview.php:223
+#: src/Contracts/Proposal/ChangePreview.php:252
 msgid ""
 "A billing this proposal does not cover has been added to the contract. It "
 "will be left unchanged."
 msgstr ""
 "Na smlouvu přibyla fakturace, kterou návrh nezahrnuje. Zůstane beze změny."
 
-#: src/Contracts/Proposal/ChangePreview.php:265
+#: src/Contracts/Proposal/ChangePreview.php:294
 msgid "The contract version has been changed since this proposal was created."
 msgstr "Verze smlouvy se od vytvoření návrhu změnila."
 
-#: src/Contracts/Proposal/ChangePreview.php:288
+#: src/Contracts/Proposal/ChangePreview.php:317
 msgid ""
 "This proposal takes effect in a period that has already been invoiced. Only "
 "an administrator can make changes in an invoiced period, and only after "
@@ -998,7 +1006,7 @@ msgstr ""
 "Návrh je účinný v období, které už je vyfakturované. Změny ve vyfakturovaném "
 "období smí provést jen administrátor, a to po výslovném povolení."
 
-#: src/Contracts/Proposal/ChangePreview.php:316
+#: src/Contracts/Proposal/ChangePreview.php:345
 msgid ""
 "Only an administrator can apply it, and only after allowing it explicitly."
 msgstr "Aplikovat ho smí jen administrátor, a to po výslovném povolení."
@@ -1008,7 +1016,7 @@ msgstr "Aplikovat ho smí jen administrátor, a to po výslovném povolení."
 #: templates/AvailableConnections/view.php:93
 #: templates/Billings/service_change.php:46 templates/Billings/view.php:50
 #: templates/BorrowedEquipments/view.php:56
-#: templates/ContractProposals/view.php:121
+#: templates/ContractProposals/view.php:132
 #: templates/ContractVersions/view.php:86 templates/Contracts/map.php:11
 #: templates/Contracts/view.php:103 templates/CustomerLabels/view.php:55
 #: templates/EquipmentTypes/view.php:70 templates/EquipmentTypes/view.php:133
@@ -1039,6 +1047,7 @@ msgstr "Aplikovat ho smí jen administrátor, a to po výslovném povolení."
 #: templates/element/ContractChecks/non_standard_service.php:26
 #: templates/element/ContractChecks/overlapping_billings.php:26
 #: templates/element/ContractChecks/overlapping_contract_versions.php:23
+#: templates/element/ContractChecks/partly_applied_proposal.php:27
 #: templates/element/ContractChecks/proposal_table.php:30
 #: templates/element/ContractChecks/unsettled_obligation.php:26
 #: templates/element/ContractChecks/unsigned_contract.php:27
@@ -1059,7 +1068,7 @@ msgstr "Smlouva"
 #: src/Contracts/Proposal/PlannedChange.php:51
 #: templates/ContractProposals/add.php:115
 #: templates/ContractProposals/add.php:215
-#: templates/ContractProposals/view.php:132
+#: templates/ContractProposals/view.php:143
 #: templates/ContractVersions/view.php:78
 msgid "Contract Version"
 msgstr "Verze smlouvy"
@@ -1408,37 +1417,37 @@ msgstr "Profil připojení byl odstraněn."
 msgid "The connection profile could not be deleted. Please, try again."
 msgstr "Profil připojení nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractProposalsController.php:260
-#: src/Controller/ContractProposalsController.php:727
-#: src/Controller/CustomerProposalsController.php:136
+#: src/Controller/ContractProposalsController.php:261
+#: src/Controller/ContractProposalsController.php:765
+#: src/Controller/CustomerProposalsController.php:141
 msgid "This proposal can no longer be changed."
 msgstr "Tento návrh už nelze měnit."
 
-#: src/Controller/ContractProposalsController.php:280
+#: src/Controller/ContractProposalsController.php:281
 msgid ""
 "A new snapshot of this contract cannot be taken. Delete the proposal and "
 "create a new one."
 msgstr ""
 "Nový snímek této smlouvy nelze pořídit. Odstraňte návrh a vytvořte nový."
 
-#: src/Controller/ContractProposalsController.php:290
+#: src/Controller/ContractProposalsController.php:291
 msgid "Confirm that the generated documents may be deleted."
 msgstr "Potvrďte, že vygenerované dokumenty mohou být odstraněny."
 
-#: src/Controller/ContractProposalsController.php:299
+#: src/Controller/ContractProposalsController.php:300
 msgid "The contract proposal has been recreated."
 msgstr "Návrh smlouvy byl sestaven znovu."
 
-#: src/Controller/ContractProposalsController.php:459
+#: src/Controller/ContractProposalsController.php:460
 msgid "A generated document could not be deleted. Please delete it manually."
 msgstr ""
 "Vygenerovaný dokument se nepodařilo odstranit. Odstraňte ho prosím ručně."
 
-#: src/Controller/ContractProposalsController.php:555
+#: src/Controller/ContractProposalsController.php:556
 msgid "There is no such line on this proposal."
 msgstr "Taková položka na návrhu není."
 
-#: src/Controller/ContractProposalsController.php:675
+#: src/Controller/ContractProposalsController.php:676
 msgid ""
 "This billing begins on {0}, after the day the proposal takes effect, so it "
 "never runs. Applying the changes will remove it from the contract rather "
@@ -1447,76 +1456,88 @@ msgstr ""
 "Tato fakturace začíná {0}, tedy po dni účinnosti návrhu, takže vůbec "
 "neproběhne. Aplikováním změn bude ze smlouvy odstraněna, nikoli ukončena."
 
-#: src/Controller/ContractProposalsController.php:746
-#: src/Controller/ContractProposalsController.php:1129
-#: src/Controller/CustomerProposalsController.php:106
-#: src/Controller/CustomerProposalsController.php:145
+#: src/Controller/ContractProposalsController.php:705
+msgid "Nothing was left out of this proposal."
+msgstr "Z tohoto návrhu nebylo nic vynecháno."
+
+#: src/Controller/ContractProposalsController.php:716
+msgid "What was left out has been marked as settled."
+msgstr "Vynechané bylo označeno jako vyřízené."
+
+#: src/Controller/ContractProposalsController.php:718
+msgid "It could not be marked as settled. Please, try again."
+msgstr "Nepodařilo se to označit jako vyřízené. Zkuste to prosím znovu."
+
+#: src/Controller/ContractProposalsController.php:784
+#: src/Controller/ContractProposalsController.php:1167
+#: src/Controller/CustomerProposalsController.php:111
+#: src/Controller/CustomerProposalsController.php:150
 msgid "The proposal has been saved."
 msgstr "Návrh byl uložen."
 
-#: src/Controller/ContractProposalsController.php:752
-#: src/Controller/ContractProposalsController.php:1135
-#: src/Controller/CustomerProposalsController.php:115
-#: src/Controller/CustomerProposalsController.php:151
+#: src/Controller/ContractProposalsController.php:790
+#: src/Controller/ContractProposalsController.php:1173
+#: src/Controller/CustomerProposalsController.php:120
+#: src/Controller/CustomerProposalsController.php:156
 msgid "The proposal could not be saved. Please, try again."
 msgstr "Návrh nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractProposalsController.php:829
-#: src/Controller/CustomerProposalsController.php:578
+#: src/Controller/ContractProposalsController.php:867
+#: src/Controller/CustomerProposalsController.php:636
 msgid "The proposal could not be deleted. Please, try again."
 msgstr "Návrh nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractProposalsController.php:834
-#: src/Controller/CustomerProposalsController.php:583
+#: src/Controller/ContractProposalsController.php:872
+#: src/Controller/CustomerProposalsController.php:641
 msgid "The proposal has been deleted."
 msgstr "Návrh byl odstraněn."
 
-#: src/Controller/ContractProposalsController.php:858
-#: src/Controller/CustomerProposalsController.php:172
-#: src/Controller/CustomerProposalsController.php:537
+#: src/Controller/ContractProposalsController.php:896
+#: src/Controller/CustomerProposalsController.php:177
+#: src/Controller/CustomerProposalsController.php:595
 msgid "This proposal has already been settled."
 msgstr "Tento návrh je již vyřízený."
 
-#: src/Controller/ContractProposalsController.php:867
-#: src/Controller/CustomerProposalsController.php:545
+#: src/Controller/ContractProposalsController.php:905
+#: src/Controller/CustomerProposalsController.php:603
 msgid "The proposal has been revoked."
 msgstr "Návrh byl zrušen."
 
-#: src/Controller/ContractProposalsController.php:870
-#: src/Controller/CustomerProposalsController.php:548
+#: src/Controller/ContractProposalsController.php:908
+#: src/Controller/CustomerProposalsController.php:606
 msgid "The proposal could not be revoked. Please, try again."
 msgstr "Návrh nelze zrušit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractProposalsController.php:949
+#: src/Controller/ContractProposalsController.php:987
 msgid "Enter the last day of the service."
 msgstr "Zadejte poslední den služby."
 
-#: src/Controller/ContractProposalsController.php:961
+#: src/Controller/ContractProposalsController.php:999
 msgid "Enter the day the proposal takes effect."
 msgstr "Zadejte den, od kterého návrh platí."
 
-#: src/Controller/ContractProposalsController.php:992
+#: src/Controller/ContractProposalsController.php:1030
 msgid ""
 "Choose which contract and which version of it this contract proposal is for."
 msgstr "Vyberte, ke které smlouvě a ke které její verzi návrh smlouvy patří."
 
-#: src/Controller/ContractProposalsController.php:1009
+#: src/Controller/ContractProposalsController.php:1047
 msgid "Enter the day the new contract starts."
 msgstr "Zadejte den, kdy nová smlouva začíná."
 
-#: src/Controller/ContractProposalsController.php:1106
+#: src/Controller/ContractProposalsController.php:1144
 msgid "Please answer this before the proposal is sent."
 msgstr "Odpovězte prosím dříve, než bude návrh odeslán."
 
-#: src/Controller/ContractProposalsController.php:1111
+#: src/Controller/ContractProposalsController.php:1149
 msgid "The contract is not ready for a contract proposal."
 msgstr "Smlouva není připravená na návrh smlouvy."
 
-#: src/Controller/ContractProposalsController.php:1363
+#: src/Controller/ContractProposalsController.php:1401
 msgid "A customer proposal for this contract proposal could not be created."
 msgstr "Pro tento návrh smlouvy se nepodařilo vytvořit návrh zákazníka."
 
-#: src/Controller/ContractProposalsController.php:329
+#: src/Controller/ContractProposalsController.php:330
 msgid ""
 "One line asked about a billing that is no longer on the contract and has "
 "been taken back."
@@ -1532,7 +1553,7 @@ msgstr[2] ""
 "{0} řádků se ptalo na billingy, které na smlouvě už nejsou, a byly vzaty "
 "zpátky."
 
-#: src/Controller/ContractProposalsController.php:351
+#: src/Controller/ContractProposalsController.php:352
 msgid "One generated document has been deleted with the old snapshot."
 msgid_plural "{0} generated documents have been deleted with the old snapshot."
 msgstr[0] "Se starým snímkem byl odstraněn jeden vygenerovaný dokument."
@@ -1823,40 +1844,40 @@ msgstr "Zpráva pro zákazníka byla smazána."
 msgid "The customer message could not be deleted. Please, try again."
 msgstr "Zprávu pro zákazníka nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerProposalsController.php:191
+#: src/Controller/CustomerProposalsController.php:196
 msgid "The proposal has been recorded as sent."
 msgstr "Odeslání návrhu bylo zapsáno."
 
-#: src/Controller/CustomerProposalsController.php:197
+#: src/Controller/CustomerProposalsController.php:202
 msgid "The sending could not be recorded. Please, try again."
 msgstr "Odeslání nelze zapsat. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerProposalsController.php:224
-#: src/Controller/CustomerProposalsController.php:348
+#: src/Controller/CustomerProposalsController.php:229
+#: src/Controller/CustomerProposalsController.php:353
 msgid "This customer proposal has been revoked."
 msgstr "Tento návrh zákazníka byl zrušen."
 
-#: src/Controller/CustomerProposalsController.php:234
+#: src/Controller/CustomerProposalsController.php:239
 msgid "The signature has been recorded."
 msgstr "Podpis byl zapsán."
 
-#: src/Controller/CustomerProposalsController.php:240
+#: src/Controller/CustomerProposalsController.php:245
 msgid "The signature could not be recorded. Please, try again."
 msgstr "Podpis nelze zapsat. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerProposalsController.php:376
+#: src/Controller/CustomerProposalsController.php:381
 msgid "There are no changes left to apply in this proposal."
 msgstr "V tomto návrhu už nejsou žádné změny k aplikování."
 
-#: src/Controller/CustomerProposalsController.php:383
+#: src/Controller/CustomerProposalsController.php:395
 msgid "The changes of this proposal cannot be applied in its current state."
 msgstr "Změny tohoto návrhu nelze v současném stavu aplikovat."
 
-#: src/Controller/CustomerProposalsController.php:426
+#: src/Controller/CustomerProposalsController.php:471
 msgid "The changes of the proposal could not be applied: {0}"
 msgstr "Změny návrhu se nepodařilo aplikovat: {0}"
 
-#: src/Controller/CustomerProposalsController.php:445
+#: src/Controller/CustomerProposalsController.php:490
 msgid ""
 "Contract {0} now has an end date. Its state was not changed, because a "
 "change of state has requirements of its own."
@@ -1864,11 +1885,11 @@ msgstr ""
 "Smlouva {0} má nyní datum ukončení. Její stav se nezměnil, protože změna "
 "stavu má vlastní podmínky."
 
-#: src/Controller/CustomerProposalsController.php:571
+#: src/Controller/CustomerProposalsController.php:629
 msgid "This proposal can no longer be deleted."
 msgstr "Tento návrh už nelze odstranit."
 
-#: src/Controller/CustomerProposalsController.php:436
+#: src/Controller/CustomerProposalsController.php:481
 msgid "The changes of the proposal have been applied to the live records."
 msgid_plural ""
 "The changes of the proposal and everything in it have been applied to the "
@@ -1962,9 +1983,9 @@ msgid "That page belongs to a different proposal."
 msgstr "Ta stránka patří k jinému návrhu."
 
 #: src/Controller/DocumentsController.php:487
-#: src/Model/Entity/ContractProposal.php:278
+#: src/Model/Entity/ContractProposal.php:335
 #: src/View/Cell/DocumentsCell.php:188 src/View/Cell/DocumentsCell.php:210
-#: templates/ContractProposals/view.php:110
+#: templates/ContractProposals/view.php:121
 #: templates/element/ContractProposals/heading.php:27
 #: templates/element/CustomerProposals/heading.php:16
 #: templates/element/Documents/whereabouts.php:62
@@ -2555,11 +2576,11 @@ msgstr "Údaje o typu služby nejsou k dispozici."
 msgid "Contract versions data not available."
 msgstr "Údaje o verzích smluv nejsou k dispozici."
 
-#: src/Model/Entity/ContractProposal.php:212
+#: src/Model/Entity/ContractProposal.php:269
 msgid "Customer proposal data not available."
 msgstr "Návrh zákazníka není načtený."
 
-#: src/Model/Entity/ContractProposal.php:281
+#: src/Model/Entity/ContractProposal.php:338
 msgid "{0} - {1} from {2}"
 msgstr "{0} - {1} od {2}"
 
@@ -3234,7 +3255,7 @@ msgstr ""
 "Fakturace už byla vyfakturována a nelze ji odstranit. Nastavte jí místo toho "
 "datum konce, nebo požádejte administrátora."
 
-#: src/Model/Table/ContractProposalsTable.php:328
+#: src/Model/Table/ContractProposalsTable.php:335
 msgid ""
 "This proposal has been sent or has documents, so it cannot be deleted. "
 "Revoke it instead."
@@ -3242,70 +3263,70 @@ msgstr ""
 "Tento návrh byl odeslán nebo má dokumenty, proto ho nelze odstranit. Místo "
 "toho ho zrušte."
 
-#: src/Model/Table/ContractProposalsTable.php:367
+#: src/Model/Table/ContractProposalsTable.php:374
 msgid "The proposed changes are in an invalid format."
 msgstr "Navržené změny mají neplatný formát."
 
-#: src/Model/Table/ContractProposalsTable.php:384
+#: src/Model/Table/ContractProposalsTable.php:391
 msgid "The snapshot is missing data the documents need."
 msgstr "Snímku chybí údaje, které dokumenty potřebují."
 
-#: src/Model/Table/ContractProposalsTable.php:401
+#: src/Model/Table/ContractProposalsTable.php:408
 msgid "The confirmations include an unknown question."
 msgstr "Potvrzení obsahují neznámou otázku."
 
-#: src/Model/Table/ContractProposalsTable.php:426
+#: src/Model/Table/ContractProposalsTable.php:433
 msgid "A proposed change refers to a billing that is not in the snapshot."
 msgstr "Navržená změna se týká fakturace, která ve snímku není."
 
-#: src/Model/Table/ContractProposalsTable.php:453
+#: src/Model/Table/ContractProposalsTable.php:460
 msgid "Two proposed changes refer to the same billing."
 msgstr "Dvě navržené změny se týkají stejné fakturace."
 
-#: src/Model/Table/ContractProposalsTable.php:475
+#: src/Model/Table/ContractProposalsTable.php:482
 msgid "The contract version belongs to a different contract."
 msgstr "Verze smlouvy patří jiné smlouvě."
 
-#: src/Model/Table/ContractProposalsTable.php:491
+#: src/Model/Table/ContractProposalsTable.php:498
 msgid ""
 "A contract proposal for this purpose cannot refer to an existing version."
 msgstr "Návrh smlouvy s tímto účelem nemůže odkazovat na existující verzi."
 
-#: src/Model/Table/ContractProposalsTable.php:513
+#: src/Model/Table/ContractProposalsTable.php:520
 msgid "The service type of this contract does not use contract versions."
 msgstr "Typ služby této smlouvy nepoužívá verze smluv."
 
-#: src/Model/Table/ContractProposalsTable.php:535
+#: src/Model/Table/ContractProposalsTable.php:542
 msgid "That customer proposal belongs to a different customer."
 msgstr "Ten návrh zákazníka patří jinému zákazníkovi."
 
-#: src/Model/Table/ContractProposalsTable.php:553
+#: src/Model/Table/ContractProposalsTable.php:560
 msgid ""
 "That customer proposal has already been sent, so nothing more can be added "
 "to it."
 msgstr "Tento návrh zákazníka už byl odeslán, nic dalšího do něj nelze přidat."
 
-#: src/Model/Table/ContractProposalsTable.php:571
+#: src/Model/Table/ContractProposalsTable.php:578
 msgid ""
 "That customer proposal is only handed over, so it cannot hold contract "
 "proposals."
 msgstr ""
 "Tento návrh zákazníka se jen předává, nemůže proto obsahovat návrhy smluv."
 
-#: src/Model/Table/ContractProposalsTable.php:601
+#: src/Model/Table/ContractProposalsTable.php:608
 msgid ""
 "That customer proposal already holds a contract proposal for this contract."
 msgstr "Ten návrh zákazníka už obsahuje návrh smlouvy k této smlouvě."
 
-#: src/Model/Table/ContractProposalsTable.php:619
+#: src/Model/Table/ContractProposalsTable.php:626
 msgid "The terminated contract version belongs to a different contract."
 msgstr "Ukončovaná verze smlouvy patří jiné smlouvě."
 
-#: src/Model/Table/ContractProposalsTable.php:629
+#: src/Model/Table/ContractProposalsTable.php:636
 msgid "A contract version cannot terminate itself."
 msgstr "Verze smlouvy nemůže ukončit sama sebe."
 
-#: src/Model/Table/ContractProposalsTable.php:662
+#: src/Model/Table/ContractProposalsTable.php:669
 msgid ""
 "A change amends a signed contract. Record the signature of this contract "
 "version first."
@@ -3313,15 +3334,15 @@ msgstr ""
 "Změna služby je dodatkem k podepsané smlouvě. Nejdřív zapište podpis této "
 "verze smlouvy."
 
-#: src/Model/Table/ContractProposalsTable.php:680
+#: src/Model/Table/ContractProposalsTable.php:687
 msgid "The contract version being terminated has not been concluded."
 msgstr "Ukončovaná verze smlouvy není uzavřená."
 
-#: src/Model/Table/ContractProposalsTable.php:699
+#: src/Model/Table/ContractProposalsTable.php:706
 msgid "A contract version that has not been concluded cannot be terminated."
 msgstr "Verzi smlouvy, která není uzavřená, nelze ukončit."
 
-#: src/Model/Table/ContractProposalsTable.php:741
+#: src/Model/Table/ContractProposalsTable.php:748
 msgid ""
 "A contract ends on the day its version stops being valid. Enter both dates "
 "and make them the same day."
@@ -3329,7 +3350,7 @@ msgstr ""
 "Smlouva končí dnem, kdy končí platnost její verze. Zadejte obě data a "
 "nastavte je na stejný den."
 
-#: src/Model/Table/ContractProposalsTable.php:771
+#: src/Model/Table/ContractProposalsTable.php:778
 msgid ""
 "The changes do not match the purpose of the proposal. Only a termination "
 "ends the contract, and a termination has to state the day."
@@ -3337,11 +3358,11 @@ msgstr ""
 "Změny neodpovídají účelu návrhu. Smlouvu ukončuje jen ukončení a ukončení "
 "musí uvést den."
 
-#: src/Model/Table/ContractProposalsTable.php:791
+#: src/Model/Table/ContractProposalsTable.php:798
 msgid "Please enter the number of the contract being terminated."
 msgstr "Zadejte prosím číslo ukončované smlouvy."
 
-#: src/Model/Table/ContractProposalsTable.php:823
+#: src/Model/Table/ContractProposalsTable.php:830
 msgid ""
 "The contract version ends on a given date, so the documents will be printed "
 "as a fixed-term contract. Please confirm that this is intended and set the "
@@ -3351,7 +3372,7 @@ msgstr ""
 "smlouva na dobu určitou. Potvrďte prosím, že je to záměr, a nastavte závazek "
 "ke dni, do kterého verze platí."
 
-#: src/Model/Table/ContractProposalsTable.php:859
+#: src/Model/Table/ContractProposalsTable.php:866
 msgid ""
 "This proposal has already been sent, so its content can no longer be "
 "changed. Revoke it and create a new one."
@@ -3359,11 +3380,11 @@ msgstr ""
 "Tento návrh už byl odeslán, jeho obsah proto nelze měnit. Zrušte ho a "
 "vytvořte nový."
 
-#: src/Model/Table/ContractProposalsTable.php:874
+#: src/Model/Table/ContractProposalsTable.php:881
 msgid "The changes of a proposal cannot be applied before it has been signed."
 msgstr "Změny návrhu nelze aplikovat dříve, než je podepsaný."
 
-#: src/Model/Table/ContractProposalsTable.php:884
+#: src/Model/Table/ContractProposalsTable.php:891
 msgid "A proposal whose changes have been applied cannot be revoked."
 msgstr "Návrh s aplikovanými změnami nelze zrušit."
 
@@ -3639,7 +3660,7 @@ msgstr ""
 msgid "{0} ({1} - {2})"
 msgstr "{0} ({1} - {2})"
 
-#: src/Proposals/Settlement.php:116 templates/ContractProposals/view.php:191
+#: src/Proposals/Settlement.php:116 templates/ContractProposals/view.php:242
 #: templates/CustomerProposals/view.php:159
 #: templates/ServiceOverrides/view.php:110
 #: templates/element/common/audit.php:74
@@ -3766,7 +3787,7 @@ msgstr "Není nainstalováno přes Git"
 #: templates/CustomerMessages/index.php:46
 #: templates/CustomerMessages/view.php:10
 #: templates/CustomerProposals/add.php:12
-#: templates/CustomerProposalsly_changes.php:29
+#: templates/CustomerProposalsly_changes.php:31
 #: templates/CustomerProposals/conclude.php:14
 #: templates/CustomerProposals/edit.php:12
 #: templates/CustomerProposals/send.php:19
@@ -3826,6 +3847,7 @@ msgstr "Není nainstalováno přes Git"
 #: templates/Tasks/add.php:16 templates/Tasks/edit.php:16
 #: templates/Tasks/index.php:116 templates/Tasks/view.php:10
 #: templates/cell/Documents/display.php:110
+#: templates/element/ContractChecks/partly_applied_proposal.php:31
 #: templates/element/ContractChecks/proposal_table.php:37
 #: templates/element/ContractProposals/proposed_billings.php:40
 #: templates/element/Contracts/Billings.php:36
@@ -3932,7 +3954,7 @@ msgstr "Potvrdit"
 #: templates/ConnectionProfiles/edit.php:14
 #: templates/ConnectionProfiles/index.php:68
 #: templates/ConnectionProfiles/view.php:158
-#: templates/ContractProposals/view.php:58 templates/ContractStates/edit.php:14
+#: templates/ContractProposals/view.php:69 templates/ContractStates/edit.php:14
 #: templates/ContractStates/index.php:66 templates/ContractVersions/edit.php:17
 #: templates/ContractVersions/index.php:80 templates/Contracts/edit.php:24
 #: templates/Contracts/index.php:123 templates/Countries/edit.php:12
@@ -4153,6 +4175,7 @@ msgstr "Číslo zákazníka"
 #: templates/ServiceTypes/view.php:144 templates/Services/index.php:63
 #: templates/Services/view.php:136 templates/SoldEquipments/index.php:69
 #: templates/Tasks/index.php:190 templates/cell/Documents/display.php:176
+#: templates/element/ContractChecks/partly_applied_proposal.php:68
 #: templates/element/Contracts/Billings.php:78
 #: templates/element/Contracts/BorrowedEquipments.php:45
 #: templates/element/Contracts/ContractVersions.php:43
@@ -4261,6 +4284,7 @@ msgstr "Přístupové oprávnění"
 #: templates/element/ContractChecks/non_standard_service.php:23
 #: templates/element/ContractChecks/overlapping_billings.php:23
 #: templates/element/ContractChecks/overlapping_contract_versions.php:20
+#: templates/element/ContractChecks/partly_applied_proposal.php:24
 #: templates/element/ContractChecks/proposal_table.php:27
 #: templates/element/ContractChecks/unsettled_obligation.php:23
 #: templates/element/ContractChecks/unsigned_contract.php:24
@@ -4308,7 +4332,7 @@ msgstr "Port"
 #: templates/AvailableConnections/view.php:115
 #: templates/Billings/service_change.php:118 templates/Billings/view.php:122
 #: templates/ContractProposals/billing_line.php:122
-#: templates/ContractProposals/view.php:222
+#: templates/ContractProposals/view.php:273
 #: templates/ContractStates/view.php:205
 #: templates/ContractVersions/view.php:134 templates/Contracts/view.php:202
 #: templates/CustomerLabels/view.php:80
@@ -4703,7 +4727,7 @@ msgstr "Povolit zásah do již vyfakturovaného období"
 #: templates/Billings/add.php:66 templates/Billings/bulk_service_change.php:141
 #: templates/Billings/edit.php:97 templates/Billings/service_change.php:183
 #: templates/ContractProposals/billing_line.php:128
-#: templates/CustomerProposalsly_changes.php:99
+#: templates/CustomerProposalsly_changes.php:101
 msgid "Allow a connection price below the minimum set on the contract"
 msgstr "Povolit cenu za připojení pod minimum nastavené na smlouvě"
 
@@ -5233,7 +5257,7 @@ msgid "Purpose of the New Customer Proposal"
 msgstr "Účel nového návrhu zákazníka"
 
 #: templates/ContractProposals/add.php:96
-#: templates/ContractProposals/view.php:148
+#: templates/ContractProposals/view.php:159
 #: templates/CustomerMessages/add_bulk/step_purpose.php:28
 #: templates/CustomerProposals/view.php:120
 #: templates/element/ContractChecks/proposal_table.php:32
@@ -5255,7 +5279,7 @@ msgstr ""
 "negenerují žádné dokumenty."
 
 #: templates/ContractProposals/add.php:138
-#: templates/ContractProposals/view.php:144
+#: templates/ContractProposals/view.php:155
 #: templates/CustomerProposals/view.php:124
 #: templates/element/ContractChecks/proposal_table.php:33
 #: templates/element/CustomerChecks/customer_proposal.php:23
@@ -5290,13 +5314,13 @@ msgstr ""
 "Tento návrh smlouvy nabývá účinnosti spolu s verzí smlouvy, ke které patří."
 
 #: templates/ContractProposals/add.php:168
-#: templates/ContractProposals/view.php:196
+#: templates/ContractProposals/view.php:247
 msgid "Terminates Contract Version"
 msgstr "Ukončuje verzi smlouvy"
 
 #: templates/ContractProposals/add.php:182
 #: templates/ContractProposals/recreate.php:75
-#: templates/ContractProposals/view.php:208
+#: templates/ContractProposals/view.php:259
 msgid "Number of the contract being terminated"
 msgstr "Číslo ukončované smlouvy"
 
@@ -5371,7 +5395,7 @@ msgstr "Ponechat to tak, jak je na smlouvě?"
 
 #: templates/ContractProposals/billing_line.php:32
 #: templates/ContractProposals/recreate.php:27
-#: templates/CustomerProposalsly_changes.php:31
+#: templates/CustomerProposalsly_changes.php:33
 #: templates/CustomerProposals/conclude.php:16
 #: templates/CustomerProposals/edit.php:15
 #: templates/CustomerProposals/send.php:21 templates/Documents/add_pages.php:41
@@ -5395,7 +5419,7 @@ msgid ""
 msgstr "Když zůstane prázdné, fakturace začne dnem účinnosti návrhu smlouvy."
 
 #: templates/ContractProposals/recreate.php:33
-#: templates/ContractProposals/view.php:70 templates/Documents/manage.php:155
+#: templates/ContractProposals/view.php:81 templates/Documents/manage.php:155
 msgid "View Customer Proposal"
 msgstr "Zobrazit návrh zákazníka"
 
@@ -5452,20 +5476,31 @@ msgstr "Zrušit"
 msgid "Revoke this proposal? Nothing has been changed on the contract yet."
 msgstr "Zrušit tento návrh? Na smlouvě se zatím nic nezměnilo."
 
-#: templates/ContractProposals/view.php:60
+#: templates/ContractProposals/view.php:58
+msgid "Mark What Was Left Out as Settled"
+msgstr "Označit vynechané jako vyřízené"
+
+#: templates/ContractProposals/view.php:62
+#: templates/element/ContractChecks/partly_applied_proposal.php:78
+msgid ""
+"Has what this proposal could not write been dealt with on the contract by "
+"hand?"
+msgstr "Bylo to, co tento návrh nemohl zapsat, vyřízeno na smlouvě ručně?"
+
+#: templates/ContractProposals/view.php:71
 #: templates/CustomerProposals/view.php:76
 msgid "Are you sure?"
 msgstr "Opravdu?"
 
-#: templates/ContractProposals/view.php:114
+#: templates/ContractProposals/view.php:125
 msgid "This contract proposal is part of the customer proposal: {0}"
 msgstr "Tento návrh smlouvy je součástí návrhu zákazníka: {0}"
 
-#: templates/ContractProposals/view.php:152
+#: templates/ContractProposals/view.php:163
 msgid "Snapshot Taken"
 msgstr "Snímek pořízen"
 
-#: templates/ContractProposals/view.php:156
+#: templates/ContractProposals/view.php:167
 #: templates/ContractVersions/index.php:42
 #: templates/ContractVersions/view.php:116
 #: templates/CustomerProposals/send.php:46
@@ -5476,12 +5511,12 @@ msgstr "Snímek pořízen"
 msgid "Sent To The Customer"
 msgstr "Odesláno zákazníkovi"
 
-#: templates/ContractProposals/view.php:164
+#: templates/ContractProposals/view.php:175
 #: templates/CustomerProposals/view.php:136
 msgid "Stored Documents"
 msgstr "Uložené dokumenty"
 
-#: templates/ContractProposals/view.php:168
+#: templates/ContractProposals/view.php:179
 #: templates/CustomerProposals/view.php:140
 msgid "None"
 msgstr "Žádné"
@@ -5511,14 +5546,32 @@ msgctxt "conclusion date"
 msgid "None"
 msgstr "Žádné"
 
-#: templates/ContractProposals/view.php:169
+#: templates/ContractProposals/view.php:180
 #: templates/CustomerProposals/view.php:141
 msgid "{0} generated, {1} received"
 msgstr "{0} vygenerováno, {1} přijato"
 
-#: templates/ContractProposals/view.php:187
+#: templates/ContractProposals/view.php:198
+#: templates/element/ContractChecks/partly_applied_proposal.php:29
 msgid "Changes Applied"
 msgstr "Změny aplikovány dne"
+
+#: templates/ContractProposals/view.php:203
+#: templates/element/ContractChecks/partly_applied_proposal.php:30
+msgid "Left Out"
+msgstr "Vynecháno"
+
+#: templates/ContractProposals/view.php:214
+msgid "Left Out Settled"
+msgstr "Vynechané vyřízeno"
+
+#: templates/ContractProposals/view.php:217
+msgid "Not yet"
+msgstr "Zatím ne"
+
+#: templates/ContractProposals/view.php:221
+msgid "Left Out Settled By"
+msgstr "Vynechané vyřídil"
 
 #: templates/ContractStates/add.php:13 templates/ContractStates/edit.php:22
 #: templates/ContractStates/view.php:25 templates/Settings/index.php:242
@@ -6349,12 +6402,12 @@ msgstr "Tělo"
 msgid "Attachments"
 msgstr "Přílohy"
 
-#: templates/CustomerProposalsly_changes.php:54
-#: templates/CustomerProposalsly_changes.php:81
+#: templates/CustomerProposalsly_changes.php:56
+#: templates/CustomerProposalsly_changes.php:83
 msgid "Apply the Proposal's Changes"
 msgstr "Aplikovat změny návrhu"
 
-#: templates/CustomerProposalsly_changes.php:56
+#: templates/CustomerProposalsly_changes.php:58
 msgid ""
 "Everything this proposal changes on the contracts is recorded at once. Until "
 "then, nothing on them has changed."
@@ -6362,7 +6415,7 @@ msgstr ""
 "Vše, co tento návrh na smlouvách mění, se zapíše najednou. Do té doby se na "
 "nich nic nezměnilo."
 
-#: templates/CustomerProposalsly_changes.php:75
+#: templates/CustomerProposalsly_changes.php:77
 msgid ""
 "The changes of this proposal cannot be applied in its current state. What "
 "prevents it is shown above, next to the contract concerned."
@@ -6370,7 +6423,7 @@ msgstr ""
 "Změny tohoto návrhu nelze v současném stavu aplikovat. Co tomu brání, je "
 "uvedeno výše u příslušné smlouvy."
 
-#: templates/CustomerProposalsly_changes.php:83
+#: templates/CustomerProposalsly_changes.php:85
 msgid ""
 "This proposal changes nothing. It records what was sent, and applying it "
 "only marks it as settled so that it is no longer listed as pending."
@@ -6378,7 +6431,7 @@ msgstr ""
 "Tento návrh nic nemění. Zaznamenává, co bylo odesláno, a aplikováním se jen "
 "označí jako vyřízený, aby už nebyl veden jako čekající."
 
-#: templates/CustomerProposalsly_changes.php:87
+#: templates/CustomerProposalsly_changes.php:89
 msgid ""
 "Either all of the changes are applied, or none of them. A partly applied "
 "proposal would leave no trace of which part went through."
@@ -6386,26 +6439,41 @@ msgstr ""
 "Aplikují se buď všechny změny, nebo žádná. U napůl aplikovaného návrhu by "
 "nebylo poznat, která část prošla."
 
-#: templates/CustomerProposalsly_changes.php:93
+#: templates/CustomerProposalsly_changes.php:95
 msgid "Allow changes in an already invoiced period"
 msgstr "Povolit změny v již vyfakturovaném období"
 
-#: templates/CustomerProposalsly_changes.php:104
+#: templates/CustomerProposalsly_changes.php:107
+msgid "Leave out the lines whose billing is no longer on the contract"
+msgstr "Vynechat řádky, jejichž fakturace už na smlouvě není"
+
+#: templates/CustomerProposalsly_changes.php:108
+msgid ""
+"The rest of the proposal is applied and what was left out is written down on "
+"it, to be settled by hand. Without this the proposal cannot be applied at "
+"all, because a line that has nothing to act on cannot be written and signed "
+"papers cannot be edited."
+msgstr ""
+"Zbytek návrhu se aplikuje a to, co bylo vynecháno, se na návrh zapíše k "
+"ručnímu vyřízení. Bez tohoto nelze návrh aplikovat vůbec, protože řádek, "
+"který se nemá čeho týkat, nejde zapsat a odeslané papíry se nedají měnit."
+
+#: templates/CustomerProposalsly_changes.php:116
 msgid "Mark as Settled"
 msgstr "Označit jako vyřízené"
 
-#: templates/CustomerProposalsly_changes.php:104
+#: templates/CustomerProposalsly_changes.php:116
 #: templates/CustomerProposals/view.php:57
 #: templates/element/ContractChecks/proposal_table.php:104
 #: templates/element/Documents/rounds.php:148
 msgid "Apply Changes"
 msgstr "Aplikovat změny"
 
-#: templates/CustomerProposalsly_changes.php:107
+#: templates/CustomerProposalsly_changes.php:119
 msgid "Mark this proposal as settled?"
 msgstr "Označit tento návrh jako vyřízený?"
 
-#: templates/CustomerProposalsly_changes.php:108
+#: templates/CustomerProposalsly_changes.php:120
 msgid "Do you really want to apply the changes of this proposal?"
 msgstr "Opravdu chcete aplikovat změny tohoto návrhu?"
 
@@ -8393,6 +8461,23 @@ msgstr ""
 msgid "Second One In Force From"
 msgstr "Druhá platná od"
 
+#: templates/element/ContractChecks/partly_applied_proposal.php:13
+msgid ""
+"The customer agreed to all of this and part of it could not be written, "
+"because what the line acted on was no longer on the contract. The rest was "
+"applied so that the proposal could be settled at all. What was left out is "
+"below and wants settling by hand - and saying so, once it is done, is what "
+"takes it off this list."
+msgstr ""
+"Zákazník odsouhlasil všechno a část se nepodařilo zapsat, protože to, čeho "
+"se řádek týkal, už na smlouvě nebylo. Zbytek se aplikoval, aby šel návrh "
+"vůbec vyřídit. Co bylo vynecháno, je níže a chce ruční vyřízení, a jakmile "
+"je hotové, odebere to ze seznamu právě to, že se to řekne."
+
+#: templates/element/ContractChecks/partly_applied_proposal.php:72
+msgid "Settled"
+msgstr "Vyřízeno"
+
 #: templates/element/ContractChecks/unapplied_proposal.php:13
 msgid ""
 "The customer has agreed to something and the records still say the old "
@@ -8988,6 +9073,9 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:309
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Seen To"
+#~ msgstr "Vyřízeno"
 
 #~ msgid "What the line can carry, not what the tariff sells."
 #~ msgstr "Co linka unese, ne co prodává tarif."
