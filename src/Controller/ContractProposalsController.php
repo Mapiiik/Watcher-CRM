@@ -16,6 +16,7 @@ use App\Contracts\Proposal\ProposedVersion;
 use App\Contracts\Proposal\ReadinessChecks;
 use App\Contracts\Proposal\SnapshotShape;
 use App\Contracts\TheUsualTerm;
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
@@ -1101,12 +1102,18 @@ class ContractProposalsController extends AppController
             }
         }
 
+        // Nothing written inside a transaction reaches the audit log on its own, and the round
+        // a proposal is put into is written with it.
+        $trail = new AuditTrail();
+
         $saved = $this->ContractProposals->getConnection()->transactional(
-            fn(): bool => $this->giveItAProposalToBePartOf($proposal)
-                && (bool)$this->ContractProposals->save($proposal),
+            fn(): bool => $this->giveItAProposalToBePartOf($proposal, $trail)
+                && (bool)$this->ContractProposals->save($proposal, $trail->options()),
         );
 
         if ($saved) {
+            $trail->flush($this->ContractProposals, $proposal);
+
             $this->Flash->success(__('The proposal has been saved.'));
 
             return true;
@@ -1312,9 +1319,10 @@ class ContractProposalsController extends AppController
      * customer themselves, which is most often nothing at all.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The papers.
+     * @param \App\Model\Audit\AuditTrail $trail What the writes of this transaction are logged under.
      * @return bool
      */
-    private function giveItAProposalToBePartOf(ContractProposal $proposal): bool
+    private function giveItAProposalToBePartOf(ContractProposal $proposal, AuditTrail $trail): bool
     {
         if ($proposal->customer_proposal_id !== null) {
             return true;
@@ -1338,7 +1346,7 @@ class ContractProposalsController extends AppController
             (string)$this->getRequest()->getData('new_round_purpose'),
         ));
 
-        if (!$rounds->save($round)) {
+        if (!$rounds->save($round, $trail->options())) {
             $proposal->setError('customer_proposal_id', [
                 __('A customer proposal for this contract proposal could not be created.'),
             ]);

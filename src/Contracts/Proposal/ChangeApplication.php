@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Proposal;
 
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\Billing;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
@@ -10,9 +11,7 @@ use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractProposalsTable;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
-use Cake\Utility\Text;
 use RuntimeException;
-use SplObjectStorage;
 
 /**
  * Applies what a proposal asks for to the live records.
@@ -50,6 +49,7 @@ final class ChangeApplication
         ?string $by = null,
         bool $reach_into_closed_periods = false,
         bool $go_below_minimum = false,
+        ?AuditTrail $trail = null,
     ): void {
         if (!$proposal->hasBeenConcluded()) {
             throw new RuntimeException('A proposal is not carried over before it has been concluded.');
@@ -61,15 +61,16 @@ final class ChangeApplication
 
         $proposals = $this->proposals();
 
+        // A round applies its parts under one trail and writes it out itself; a proposal applied
+        // on its own is its own act.
+        $alone = !$trail instanceof AuditTrail;
+        $trail ??= new AuditTrail();
+
         $proposals->getConnection()->transactional(
-            function () use ($proposal, $by, $reach_into_closed_periods, $go_below_minimum, $proposals): void {
+            function () use ($proposal, $by, $reach_into_closed_periods, $go_below_minimum, $proposals, $trail): void {
                 $options = [
                     BillingsTable::ALLOW_CLOSED_PERIODS => $reach_into_closed_periods,
-                    // Without these, audit-stash either logs nothing for a batch or gives every
-                    // record a transaction of its own; applying the changes is one act.
-                    '_auditQueue' => new SplObjectStorage(),
-                    '_auditTransaction' => Text::uuid(),
-                ];
+                ] + $trail->options();
 
                 // Worked out once and then applied, so that what the preview showed and what is
                 // written here are the same list rather than the same rules run twice.
@@ -79,16 +80,20 @@ final class ChangeApplication
 
                 // A contract that keeps no versions never gets one, not even from a new contract.
                 if ($proposal->keepsVersions()) {
-                    $this->applyTheVersions($proposal, $planned);
+                    $this->applyTheVersions($proposal, $planned, $options);
                 }
 
-                $this->applyToTheContract($proposal, $planned);
+                $this->applyToTheContract($proposal, $planned, $options);
 
                 $proposal->applied = DateTime::now();
                 $proposal->applied_by = $by;
-                $proposals->saveOrFail($proposal, ['checkRules' => true]);
+                $proposals->saveOrFail($proposal, ['checkRules' => true] + $options);
             },
         );
+
+        if ($alone) {
+            $trail->flush($proposals, $proposal);
+        }
     }
 
     /**
@@ -183,9 +188,10 @@ final class ChangeApplication
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
+     * @param array<string, mixed> $options What to save with.
      * @return void
      */
-    private function applyTheVersions(ContractProposal $proposal, array $planned): void
+    private function applyTheVersions(ContractProposal $proposal, array $planned, array $options): void
     {
         $versions = $this->fetchTable('ContractVersions');
 
@@ -195,7 +201,7 @@ final class ChangeApplication
         // themselves were printed from.
         if ($proposal->contract_version_id === null) {
             $version = $this->versionFromThePapers($proposal);
-            $versions->saveOrFail($version);
+            $versions->saveOrFail($version, $options);
 
             $proposal->set('contract_version_id', $version->id);
 
@@ -223,7 +229,7 @@ final class ChangeApplication
             }
 
             if ($version->isDirty()) {
-                $versions->saveOrFail($version);
+                $versions->saveOrFail($version, $options);
             }
         }
     }
@@ -266,9 +272,10 @@ final class ChangeApplication
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
+     * @param array<string, mixed> $options What to save with.
      * @return void
      */
-    private function applyToTheContract(ContractProposal $proposal, array $planned): void
+    private function applyToTheContract(ContractProposal $proposal, array $planned, array $options): void
     {
         $writes = array_filter(
             $planned,
@@ -286,7 +293,7 @@ final class ChangeApplication
             $contract->set($write->field, $write->to);
         }
 
-        $contracts->saveOrFail($contract);
+        $contracts->saveOrFail($contract, $options);
     }
 
     /**

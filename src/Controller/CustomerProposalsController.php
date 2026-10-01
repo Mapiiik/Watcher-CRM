@@ -8,6 +8,7 @@ use App\Contracts\Proposal\ChangePlan;
 use App\Contracts\Proposal\ChangePreview;
 use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalProjection;
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
@@ -295,9 +296,11 @@ class CustomerProposalsController extends AppController
         CustomerProposal $proposal,
         ProposalStep $step,
     ): bool {
-        return (bool)$this->CustomerProposals->getConnection()->transactional(
-            function () use ($proposal, $step): bool {
-                if (!$this->CustomerProposals->save($proposal)) {
+        $trail = new AuditTrail();
+
+        $recorded = (bool)$this->CustomerProposals->getConnection()->transactional(
+            function () use ($proposal, $step, $trail): bool {
+                if (!$this->CustomerProposals->save($proposal, $trail->options())) {
                     return false;
                 }
 
@@ -306,15 +309,22 @@ class CustomerProposalsController extends AppController
                     $customer = $customers->get($proposal->customer_id);
 
                     if ($customer->agree_gdpr !== true) {
-                        $customers->saveOrFail($customers->patchEntity($customer, [
-                            'agree_gdpr' => true,
-                        ]));
+                        $customers->saveOrFail(
+                            $customers->patchEntity($customer, ['agree_gdpr' => true]),
+                            $trail->options(),
+                        );
                     }
                 }
 
                 return true;
             },
         );
+
+        if ($recorded) {
+            $trail->flush($this->CustomerProposals, $proposal);
+        }
+
+        return $recorded;
     }
 
     /**
@@ -400,11 +410,15 @@ class CustomerProposalsController extends AppController
         $belowMinimum = $this->mayGoBelowMinimum()
             && $this->request->getData(BillingsTable::ALLOW_BELOW_MINIMUM) == '1';
 
+        // Every part under one trail, written out after the transaction: audit-stash queues
+        // what it logs and nothing inside a transaction ever reaches the log on its own.
+        $trail = new AuditTrail();
+
         try {
             $this->CustomerProposals->getConnection()->transactional(
-                function () use ($parts, $by, $reaching, $belowMinimum): void {
+                function () use ($parts, $by, $reaching, $belowMinimum, $trail): void {
                     foreach ($parts as $part) {
-                        (new ChangeApplication())->apply($part['papers'], $by, $reaching, $belowMinimum);
+                        (new ChangeApplication())->apply($part['papers'], $by, $reaching, $belowMinimum, $trail);
                     }
                 },
             );
@@ -416,6 +430,8 @@ class CustomerProposalsController extends AppController
 
             return false;
         }
+
+        $trail->flush($this->CustomerProposals, $parts[0]['papers']);
 
         $this->Flash->success(__n(
             'The changes of the proposal have been applied to the live records.',

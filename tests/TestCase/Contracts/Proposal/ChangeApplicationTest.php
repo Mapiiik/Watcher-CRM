@@ -277,6 +277,65 @@ class ChangeApplicationTest extends TestCase
     }
 
     /**
+     * Applying the changes reaches the audit log, and reaches it as one entry.
+     *
+     * Audit-stash writes its queue out on a commit event CakePHP only dispatches for a save that
+     * owns its transaction, so everything inside `Connection::transactional()` was queued and
+     * then dropped - the whole act was missing from the log rather than merely split up.
+     *
+     * @return void
+     * @link \App\Model\Audit\AuditTrail
+     */
+    public function testApplyingTheChangesIsOneEntryInTheAuditLog(): void
+    {
+        $proposal = $this->proposal([
+            'purpose' => ProposalPurpose::Termination->value,
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => '2026-10-01',
+            'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
+            'changes' => [
+                'version' => ['valid_until' => '2026-09-30'],
+                'contract' => ['termination_date' => '2026-09-30'],
+            ],
+        ]);
+
+        // Emptied here rather than at the top: the log is not a fixture, so it carries both the
+        // tests before this one and the drawing up of the papers above.
+        $this->getTableLocator()->get('Contracts')->getConnection()->execute('DELETE FROM audit_logs');
+
+        (new ChangeApplication())->apply($proposal);
+
+        // The version, the contract and the proposal itself. The billings are asked about by the
+        // tests above and this proposal moves none of them.
+        $logged = $this->audited('source');
+        $this->assertContains('ContractVersions', $logged);
+        $this->assertContains('Contracts', $logged);
+        $this->assertContains('ContractProposals', $logged);
+
+        $this->assertCount(
+            1,
+            array_unique($this->audited('transaction_key')),
+            'applying the changes is one act and belongs under one transaction',
+        );
+    }
+
+    /**
+     * One column of everything the audit log holds.
+     *
+     * @param string $column Which column.
+     * @return array<string> One entry per row.
+     */
+    private function audited(string $column): array
+    {
+        $rows = $this->getTableLocator()->get('Contracts')->getConnection()
+            ->selectQuery([$column], 'audit_logs')
+            ->execute()
+            ->fetchAll('assoc');
+
+        return array_column($rows, $column);
+    }
+
+    /**
      * When one part of applying the changes will not go through, none of it does. A proposal half
      * applied is worse than none: the paper would describe one thing and the records another.
      *

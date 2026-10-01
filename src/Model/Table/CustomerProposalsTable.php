@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
@@ -114,8 +115,10 @@ class CustomerProposalsTable extends AppTable
         $proposal->revoked = DateTime::now();
         $proposal->revoked_by = $by;
 
-        return (bool)$this->getConnection()->transactional(function () use ($proposal): bool {
-            if (!$this->save($proposal, ['checkRules' => false])) {
+        $trail = new AuditTrail();
+
+        $given = (bool)$this->getConnection()->transactional(function () use ($proposal, $trail): bool {
+            if (!$this->save($proposal, ['checkRules' => false] + $trail->options())) {
                 return false;
             }
 
@@ -129,13 +132,19 @@ class CustomerProposalsTable extends AppTable
                 $papers->revoked = $proposal->revoked;
                 $papers->revoked_by = $proposal->revoked_by;
 
-                if (!$this->ContractProposals->save($papers, ['checkRules' => false])) {
+                if (!$this->ContractProposals->save($papers, ['checkRules' => false] + $trail->options())) {
                     return false;
                 }
             }
 
             return true;
         });
+
+        if ($given) {
+            $trail->flush($this, $proposal);
+        }
+
+        return $given;
     }
 
     /**

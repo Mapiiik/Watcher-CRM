@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Files\Service;
 
+use App\Model\Audit\AuditTrail;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Files\Model\Entity\FileLink;
 use Files\Model\Table\FileLinksTable;
@@ -278,16 +279,26 @@ class FiledPages
     {
         $links = $this->fileLinks();
 
-        $links->getConnection()->transactional(function () use ($links, $group): void {
+        // Renumbering a group is one act, and nothing written inside a transaction reaches the
+        // audit log until the queue is emptied by hand.
+        $trail = new AuditTrail();
+        $written = null;
+
+        $links->getConnection()->transactional(function () use ($links, $group, $trail, &$written): void {
             foreach ($group as $position => $link) {
                 if ($link->position === $position) {
                     continue;
                 }
 
                 $link->set('position', $position);
-                $links->saveOrFail($link);
+                $links->saveOrFail($link, $trail->options());
+                $written = $link;
             }
         });
+
+        if ($written !== null) {
+            $trail->flush($links, $written);
+        }
     }
 
     /**
