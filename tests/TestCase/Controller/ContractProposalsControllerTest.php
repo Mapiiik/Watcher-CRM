@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\TheUsualTerm;
 use App\Controller\ContractProposalsController;
+use App\Controller\CustomerProposalsController;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
@@ -15,6 +16,7 @@ use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
 use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Files\Service\FileStorage;
@@ -1755,6 +1757,168 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Removed by this proposal'));
+    }
+
+    /**
+     * A signed proposal whose billing somebody has taken off the contract cannot be applied and
+     * cannot be edited either. Only an administrator is offered the way out of it.
+     *
+     * @return void
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
+     */
+    public function testOnlyAnAdministratorIsOfferedTheWayOutOfAGoneBilling(): void
+    {
+        $this->aSignedProposalAgainstAGoneBilling();
+
+        $this->login('sales-manager');
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('The changes of this proposal cannot be applied in its'
+            . ' current state.'));
+        $this->assertResponseNotContains(__('Leave out the lines whose billing is no longer on the contract'));
+
+        $this->login('admin');
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Leave out the lines whose billing is no longer on the contract'));
+    }
+
+    /**
+     * And ticking the box settles the proposal with the line written down on it.
+     *
+     * @return void
+     * @link \App\Model\Entity\ContractProposal::whatWasLeftOut()
+     */
+    public function testLeavingTheLineOutSettlesTheProposalAndWritesItDown(): void
+    {
+        $this->aSignedProposalAgainstAGoneBilling();
+
+        $this->login('admin');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(
+            '/customer-proposals/apply-changes/' . self::ROUND_ID,
+            [CustomerProposalsController::LEAVE_OUT_WHAT_IS_GONE => '1'],
+        );
+
+        $this->assertRedirect();
+
+        $settled = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+        $this->assertTrue($settled->hasBeenApplied());
+        $this->assertFalse($settled->wasAppliedInFull());
+    }
+
+    /**
+     * What was left out is a job, so it has to be possible to say it is done - and saying so is
+     * what takes the contract off the listing. The record of what was left out stays.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::settleWhatWasLeftOut()
+     */
+    public function testWhatWasLeftOutCanBeMarkedAsSeenTo(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                'applied' => DateTime::now()->subDays(1),
+                'left_out' => ['7db8e6a3-e8e9-47c3-8683-473b77c56664' => 'The billing has gone.'],
+            ]),
+            ['checkRules' => false],
+        );
+
+        $this->login('admin');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/settle-what-was-left-out/' . self::PROPOSAL_ID);
+
+        $this->assertRedirect();
+
+        $settled = $proposals->get(self::PROPOSAL_ID);
+        $this->assertTrue($settled->whatWasLeftOutHasBeenSettled());
+        $this->assertFalse($settled->isWaitingOnWhatWasLeftOut());
+        // What it was stays on the record. Only the job is closed.
+        $this->assertFalse($settled->wasAppliedInFull());
+    }
+
+    /**
+     * And the card says who saw to it by name, because they are the one to ask what they did.
+     *
+     * Written onto the record rather than taken from the request: the test user has no id of its
+     * own, and whether the controller reads the identity is the test above's business.
+     *
+     * @return void
+     */
+    public function testTheCardNamesWhoSawToWhatWasLeftOut(): void
+    {
+        $users = $this->getTableLocator()->get('AppUsers');
+        $user = $users->find()->where(['AppUsers.username IS NOT' => null])->firstOrFail();
+
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                'applied' => DateTime::now()->subDays(1),
+                'left_out' => ['7db8e6a3-e8e9-47c3-8683-473b77c56664' => 'The billing has gone.'],
+                'left_out_settled' => DateTime::now(),
+                'left_out_settled_by' => $user->get('id'),
+            ]),
+            ['checkRules' => false],
+        );
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Left Out Settled By'));
+        // Their name, not their id. The id is in the body either way, because the name links to
+        // them - so what is asserted is that the name is what the reader sees.
+        $this->assertResponseContains((string)$user->get('username'));
+    }
+
+    /**
+     * And there is nothing to mark on a proposal that was applied in full.
+     *
+     * @return void
+     */
+    public function testThereIsNothingToSeeToOnAProposalAppliedInFull(): void
+    {
+        $this->login('admin');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/settle-what-was-left-out/' . self::PROPOSAL_ID);
+
+        $this->assertRedirect();
+        $this->assertFalse(
+            $this->getTableLocator()->get('ContractProposals')
+                ->get(self::PROPOSAL_ID)
+                ->whatWasLeftOutHasBeenSettled(),
+        );
+    }
+
+    /**
+     * A signed proposal with a line acting on a billing that is no longer on the contract.
+     *
+     * @return void
+     */
+    private function aSignedProposalAgainstAGoneBilling(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $billings = $this->getTableLocator()->get('Billings');
+
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal->set('changes', $proposal->proposedChanges()->withLine(
+            ProposedBilling::fromArray(['billing_id' => self::KNOWN_BILLING_ID, 'terminates_only' => true]),
+        )->toArray());
+        $proposals->saveOrFail($proposal);
+
+        // Invoiced for, so taking it away is what an administrator would have had to do.
+        $billings->deleteOrFail(
+            $billings->get(self::KNOWN_BILLING_ID),
+            [BillingsTable::ALLOW_CLOSED_PERIODS => true],
+        );
+
+        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
     }
 
     public function testAMissingScanIsSaidOutLoudAndStopsNothing(): void

@@ -53,6 +53,17 @@ foreach ($filed as $byVariant) {
                     ],
                 ) ?>
             <?php endif; ?>
+            <?php if ($contractProposal->isWaitingOnWhatWasLeftOut()) : ?>
+                <?= $this->AuthLink->postLink(
+                    __('Mark What Was Left Out as Settled'),
+                    ['action' => 'settleWhatWasLeftOut', $contractProposal->id],
+                    [
+                        'class' => 'side-nav-item',
+                        'confirm' => __('Has what this proposal could not write been dealt with on'
+                            . ' the contract by hand?'),
+                    ],
+                ) ?>
+            <?php endif; ?>
             <?php if ($mayBeDeleted) : ?>
                 <?= $this->AuthLink->postLink(
                     __('Delete'),
@@ -187,6 +198,46 @@ foreach ($filed as $byVariant) {
                             <th><?= __('Changes Applied') ?></th>
                             <td><?= h($contractProposal->applied) ?></td>
                         </tr>
+                        <?php if (!$contractProposal->wasAppliedInFull()) : ?>
+                        <tr>
+                            <th><?= __('Left Out') ?></th>
+                            <td><?php
+                            // What applying it could not write. Said here rather than only in the
+                            // log, because somebody has to see to it.
+                            echo implode('<br>', array_map(
+                                fn(string $why): string => h($why),
+                                $contractProposal->whatWasLeftOut(),
+                            ));
+                                ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Left Out Settled') ?></th>
+                            <td><?= $contractProposal->whatWasLeftOutHasBeenSettled()
+                                ? h($contractProposal->left_out_settled)
+                                : h(__('Not yet')) ?></td>
+                        </tr>
+                            <?php if ($contractProposal->whatWasLeftOutHasBeenSettled()) : ?>
+                        <tr>
+                            <th><?= __('Left Out Settled By') ?></th>
+                            <td><?php
+                            // Named where we know the name, as the audit block does - whoever
+                            // closed this is the one to ask what they did about it.
+                            $settler = $contractProposal->left_out_settler ?? null;
+                            echo $settler !== null
+                                ? $this->Html->link(
+                                    $settler->username ?? '(' . $settler->id . ')',
+                                    [
+                                        'plugin' => null,
+                                        'controller' => 'AppUsers',
+                                        'action' => 'view',
+                                        $settler->id,
+                                    ],
+                                )
+                                : h($contractProposal->left_out_settled_by);
+                                ?></td>
+                        </tr>
+                            <?php endif; ?>
+                        <?php endif; ?>
                         <tr>
                             <th><?= __('Revoked') ?></th>
                             <td><?= h($contractProposal->revoked) ?></td>

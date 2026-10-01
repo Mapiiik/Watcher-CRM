@@ -113,6 +113,7 @@ class ContractProposalsController extends AppController
             'CustomerProposals' => ['ContractProposals'],
             'Creators',
             'Modifiers',
+            'LeftOutSettlers',
         ]);
 
         $this->set(compact('contractProposal'));
@@ -678,6 +679,43 @@ class ContractProposalsController extends AppController
                 . ' it.',
                 $billing->billing_from,
             ));
+        }
+
+        return $this->redirect(['action' => 'view', $proposal->id]);
+    }
+
+    /**
+     * Writes down that somebody has settled what applying the proposal left out.
+     *
+     * What was left out stays on the proposal for the record. This only says it has been dealt
+     * with, so that the contract stops carrying a finding about it - a job nobody can close is a
+     * listing nobody goes on reading.
+     *
+     * @param string|null $id Contract proposal id.
+     * @return \Cake\Http\Response|null Redirects to the proposal.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function settleWhatWasLeftOut(?string $id = null): ?Response
+    {
+        $this->request->allowMethod(['post']);
+
+        $proposal = $this->ContractProposals->get($id);
+
+        if ($proposal->wasAppliedInFull()) {
+            $this->Flash->warning(__('Nothing was left out of this proposal.'));
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        $by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+
+        $proposal->set('left_out_settled', DateTime::now());
+        $proposal->set('left_out_settled_by', is_string($by) ? $by : null);
+
+        if ($this->ContractProposals->save($proposal, ['checkRules' => false])) {
+            $this->Flash->success(__('What was left out has been marked as settled.'));
+        } else {
+            $this->Flash->error(__('It could not be marked as settled. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'view', $proposal->id]);
