@@ -46,10 +46,15 @@ final class ProposalProjection
                 continue;
             }
 
-            // What is replaced or ended stops the day before what replaces it starts - the same
-            // two halves applying the changes will write. A line that starts later than the proposal
-            // leaves the old billing running until then.
-            $projected[] = $this->ending($billing, $line, $effective_from);
+            // A billing the papers end before it ever began is removed rather than ended, so
+            // afterwards there is no such billing to show - and showing it with a last day before
+            // its first would be a date nothing could write.
+            if (!$line->neverRunsAfterAll($effective_from, $billing->billing_from)) {
+                // What is replaced or ended stops the day before what replaces it starts - the
+                // same two halves applying the changes will write. A line that starts later than
+                // the proposal leaves the old billing running until then.
+                $projected[] = $this->ending($billing, $line, $effective_from);
+            }
 
             if ($line->startsABilling()) {
                 $projected[] = $this->starting($line, $billing, $effective_from, $services);
@@ -75,7 +80,7 @@ final class ProposalProjection
      * @param \App\Contracts\Proposal\ProposalChanges $changes What the proposal asks for.
      * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.
      * @param array<string, \App\Model\Entity\Service> $services The services the lines name, by id.
-     * @return array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}>
+     * @return array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool, dropped: bool}>
      */
     public function explain(
         array $billings,
@@ -96,18 +101,30 @@ final class ProposalProjection
                 && $billing->billing_until->lessThan($effective_from);
 
             if ($line === null) {
-                $rows[] = ['billing' => $billing, 'line' => null, 'ending' => false, 'stopped' => $stopped];
+                $rows[] = [
+                    'billing' => $billing,
+                    'line' => null,
+                    'ending' => false,
+                    'stopped' => $stopped,
+                    'dropped' => false,
+                ];
 
                 continue;
             }
 
+            // A billing that has not begun yet is not ended but taken away, so the row says that
+            // rather than showing a last day before the first.
+            $dropped = $line->neverRunsAfterAll($effective_from, $billing->billing_from);
+
             $rows[] = [
-                'billing' => $this->ending($billing, $line, $effective_from),
+                'billing' => $dropped ? $billing : $this->ending($billing, $line, $effective_from),
                 'line' => $line->terminatesOnly() ? $line : null,
                 // Said only where it is true: applying the changes leaves a billing that stopped of its
                 // own accord alone, and a row claiming otherwise would be a promise it breaks.
-                'ending' => $line->endsTheBillingOn($effective_from, $billing->billing_until) !== null,
+                'ending' => !$dropped
+                    && $line->endsTheBillingOn($effective_from, $billing->billing_until) !== null,
                 'stopped' => $stopped,
+                'dropped' => $dropped,
             ];
 
             if ($line->startsABilling()) {
@@ -116,6 +133,7 @@ final class ProposalProjection
                     'line' => $line,
                     'ending' => false,
                     'stopped' => false,
+                    'dropped' => false,
                 ];
             }
         }
@@ -127,6 +145,7 @@ final class ProposalProjection
                     'line' => $line,
                     'ending' => false,
                     'stopped' => false,
+                    'dropped' => false,
                 ];
             }
         }

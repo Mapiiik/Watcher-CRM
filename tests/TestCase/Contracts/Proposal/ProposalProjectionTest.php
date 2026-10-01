@@ -134,6 +134,51 @@ class ProposalProjectionTest extends TestCase
     }
 
     /**
+     * A billing written to begin after the papers take effect never runs, so afterwards there is
+     * none - it is removed rather than given a last day before its first.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBilling::neverRunsAfterAll()
+     */
+    public function testABillingThatNeverRunsIsNotThereAfterwards(): void
+    {
+        $later = $this->billing('b1');
+        $later->set('billing_from', new Date('2027-01-01'));
+
+        $projected = $this->project(
+            [$later],
+            ['billings' => [['billing_id' => 'b1', 'terminates_only' => true]]],
+        );
+
+        $this->assertSame([], $projected);
+    }
+
+    /**
+     * And where something takes its place, only the replacement is there.
+     *
+     * @return void
+     */
+    public function testWhatReplacesABillingThatNeverRunsStandsAlone(): void
+    {
+        $later = $this->billing('b1');
+        $later->set('billing_from', new Date('2027-01-01'));
+
+        $projected = $this->project(
+            [$later],
+            ['billings' => [[
+                'billing_id' => 'b1',
+                'terminates_only' => false,
+                'text' => 'Internet, cheaper',
+                'quantity' => 1,
+            ]]],
+        );
+
+        $this->assertCount(1, $projected);
+        $this->assertSame(self::EFFECTIVE_FROM, $projected[0]->billing_from?->toDateString());
+        $this->assertSame('Internet, cheaper', $projected[0]->get('text'));
+    }
+
+    /**
      * A billing that ran out before the papers take effect is left where it is, and the table says
      * so rather than promising an ending that will not happen.
      *

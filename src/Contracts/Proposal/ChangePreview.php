@@ -48,6 +48,11 @@ final class ChangePreview
     public const VERSION_MOVED = 'version_moved';
 
     /**
+     * A billing the proposal ends begins after the day it would be ended on.
+     */
+    public const BILLING_NEVER_RAN = 'billing_never_ran';
+
+    /**
      * The day it takes effect has been invoiced for already.
      */
     public const CLOSED_PERIOD = 'closed_period';
@@ -170,7 +175,7 @@ final class ChangePreview
 
         $found = [];
 
-        foreach ($proposal->proposedChanges()->billingsByBillingId() as $id => $_line) {
+        foreach ($proposal->proposedChanges()->billingsByBillingId() as $id => $line) {
             /** @var \App\Model\Entity\Billing|null $one */
             $one = $live[$id] ?? null;
 
@@ -184,6 +189,18 @@ final class ChangePreview
                 ];
 
                 continue;
+            }
+
+            if ($line->neverRunsAfterAll($proposal->effective_from, $one->billing_from)) {
+                $found[] = [
+                    'what' => self::BILLING_NEVER_RAN,
+                    'said' => __(
+                        'A billing this proposal ends begins on {0}, after the day it would be'
+                        . ' ended on, so it never runs at all. It will be removed from the'
+                        . ' contract rather than ended.',
+                        $one->billing_from,
+                    ),
+                ];
             }
 
             $moved = $snapshot->billingTermsThatMoved((string)$id, $one);
@@ -227,7 +244,7 @@ final class ChangePreview
             return [];
         }
 
-        $taken = $proposal->stateOfThings()->part('version');
+        /** @var \App\Model\Entity\ContractVersion|null $version */
         $version = $this->fetchTable('ContractVersions')
             ->find()
             ->where(['ContractVersions.id' => $proposal->contract_version_id])
@@ -237,18 +254,18 @@ final class ChangePreview
             return [];
         }
 
-        foreach (['valid_until', 'obligation_until', 'conclusion_date'] as $field) {
-            if ((string)($taken[$field] ?? '') !== (string)($version->get($field) ?? '')) {
-                return [[
-                    'what' => self::VERSION_MOVED,
-                    'said' => __(
-                        'The contract version has been changed since this proposal was created.',
-                    ),
-                ]];
-            }
+        // Asked of the snapshot: how its copy of a day is held up against the record's is its
+        // business, and getting it wrong reported every proposal there is as having moved.
+        if ($proposal->stateOfThings()->versionTermsThatMoved($version) === []) {
+            return [];
         }
 
-        return [];
+        return [[
+            'what' => self::VERSION_MOVED,
+            'said' => __(
+                'The contract version has been changed since this proposal was created.',
+            ),
+        ]];
     }
 
     /**

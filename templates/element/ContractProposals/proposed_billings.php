@@ -8,7 +8,7 @@
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractProposal $contractProposal
- * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
+ * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool, dropped: bool}> $rows
  * @var bool $mayBeEdited
  */
 
@@ -46,6 +46,9 @@ $proposalId = $contractProposal->id;
                 $billing = $row['billing'];
                 $line = $row['line'];
                 $comesFrom = match (true) {
+                    // Not ended but taken away: it would never have run, and a last day before
+                    // the first is a nonsense the records refuse.
+                    $row['dropped'] => __('Removed by this proposal'),
                     $row['ending'] => __('Ends with this proposal'),
                     // A line that asks to stop something that had already stopped. It is written
                     // out rather than hidden, so that whoever drew it can take it back off.

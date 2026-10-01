@@ -1687,6 +1687,76 @@ class ContractProposalsControllerTest extends TestCase
      * @return void
      * @link \App\Contracts\Proposal\ChangePreview::of()
      */
+
+    /**
+     * A billing written to begin after the papers take effect is said about before the button:
+     * applying the changes takes it off the contract rather than ending it.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangePreview::of()
+     */
+    public function testTheBillingThatNeverRunsIsSaidAboutBeforeTheButton(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->saveOrFail(
+            $billings->patchEntity($billings->get(self::KNOWN_BILLING_ID), ['billing_from' => '2026-12-01']),
+            ['checkRules' => false],
+        );
+
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                'changes' => ['billings' => [[
+                    'billing_id' => self::KNOWN_BILLING_ID,
+                    'terminates_only' => true,
+                ]]],
+            ]),
+            ['checkRules' => false],
+        );
+        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('it never runs at all');
+        // Said, not stopped.
+        $this->assertResponseContains(__('Apply Changes'));
+    }
+
+    /**
+     * And the table of what the papers say gives it a column of its own, where the operator looks
+     * the proposal over rather than stands at the button.
+     *
+     * That table is drawn from the snapshot rather than from the records as they stand, because it
+     * is what the papers say - so what makes a billing never run here is the day the papers take
+     * effect, not somebody having moved a billing since.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposalProjection::explain()
+     */
+    public function testTheTableSaysWhichBillingIsTakenOffRatherThanEnded(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                // Before the snapshot's billing begins, so the papers end one that never ran.
+                'effective_from' => '2021-12-01',
+                'changes' => ['billings' => [[
+                    'billing_id' => self::KNOWN_BILLING_ID,
+                    'terminates_only' => true,
+                ]]],
+            ]),
+            ['checkRules' => false],
+        );
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Removed by this proposal'));
+    }
+
     public function testAMissingScanIsSaidOutLoudAndStopsNothing(): void
     {
         $this->theRoundSays(['conclusion_date' => '2026-09-15']);

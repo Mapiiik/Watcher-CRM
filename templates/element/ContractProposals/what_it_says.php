@@ -10,7 +10,7 @@
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractProposal $contractProposal
- * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
+ * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool, dropped: bool}> $rows
  * @var list<\App\Contracts\Proposal\PlannedChange> $planned
  * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
