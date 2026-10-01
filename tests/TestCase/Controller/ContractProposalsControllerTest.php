@@ -13,6 +13,7 @@ use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
+use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Files\Service\FileStorage;
@@ -1787,6 +1788,34 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * Moves the papers to a day nobody has invoiced for yet, and says which day that is.
+     *
+     * The invoicing boundary walks with the calendar while the fixtures stand still, so a line
+     * written against a fixed day lands in a closed period as soon as the month turns. Asked of
+     * the table rather than counted out here, because what is closed depends on the settings.
+     *
+     * @return \Cake\I18n\Date The day the papers now take effect.
+     */
+    private function thePapersTakeEffectInAnOpenPeriod(): Date
+    {
+        /** @var \App\Model\Table\BillingsTable $billings */
+        $billings = $this->getTableLocator()->get('Billings');
+        $takes_effect = $billings->firstOpenPeriodStart()->addDays(1);
+
+        $this->theRoundSays(['effective_from' => $takes_effect]);
+
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                'effective_from' => $takes_effect,
+            ]),
+            ['checkRules' => false],
+        );
+
+        return $takes_effect;
+    }
+
+    /**
      * A minimum raised after a line was written is said before the button, and the administrator
      * may apply the line anyway by ticking the box.
      *
@@ -1797,7 +1826,8 @@ class ContractProposalsControllerTest extends TestCase
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $this->aConnectionLineAtFifty();
-        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+        $takes_effect = $this->thePapersTakeEffectInAnOpenPeriod();
+        $this->theRoundSays(['conclusion_date' => $takes_effect->subDays(1)]);
         $this->agreeMinimum('100');
 
         $this->login();
