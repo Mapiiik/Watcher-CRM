@@ -308,7 +308,12 @@ class BillingsController extends AppController
         $this->getRequest()->allowMethod(['post', 'delete']);
         $billing = $this->Billings->get($id);
         // the confirmation behind the link is the deliberate act, there is no box to tick on it
-        if ($this->Billings->delete($billing, [BillingsTable::ALLOW_BELOW_MINIMUM => $this->mayGoBelowMinimum()])) {
+        $allowed = [
+            BillingsTable::ALLOW_BELOW_MINIMUM => $this->mayGoBelowMinimum(),
+            BillingsTable::ALLOW_CLOSED_PERIODS => $this->mayReachIntoClosedPeriods(),
+        ];
+
+        if ($this->Billings->delete($billing, $allowed)) {
             $this->Flash->success(__('The billing has been deleted.'));
         } else {
             $this->flashValidationErrors($billing->getErrors());

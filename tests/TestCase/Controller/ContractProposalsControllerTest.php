@@ -10,6 +10,7 @@ use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
+use App\Model\Table\BillingsTable;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
@@ -1082,7 +1083,12 @@ class ContractProposalsControllerTest extends TestCase
             'does_not_use_radius' => true,
         ]);
         $proposals->saveOrFail($proposal);
-        $billings->deleteOrFail($billings->get(self::KNOWN_BILLING_ID));
+        // Invoiced for, so only an administrator's override takes it away - which is what
+        // the operator who made this situation on the live records would have had to do.
+        $billings->deleteOrFail(
+            $billings->get(self::KNOWN_BILLING_ID),
+            [BillingsTable::ALLOW_CLOSED_PERIODS => true],
+        );
 
         $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
 
@@ -1283,7 +1289,12 @@ class ContractProposalsControllerTest extends TestCase
         $proposals->saveOrFail($proposal);
 
         // The proposal's snapshot knows this billing; the contract will not.
-        $billings->deleteOrFail($billings->get(self::KNOWN_BILLING_ID));
+        // Invoiced for, so only an administrator's override takes it away - which is what
+        // the operator who made this situation on the live records would have had to do.
+        $billings->deleteOrFail(
+            $billings->get(self::KNOWN_BILLING_ID),
+            [BillingsTable::ALLOW_CLOSED_PERIODS => true],
+        );
 
         $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
 

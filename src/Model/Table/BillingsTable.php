@@ -559,6 +559,24 @@ class BillingsTable extends AppTable
             ['errorField' => 'price'],
         );
 
+        // The counterpart of the rule above that will not let a start be moved into an invoiced
+        // period: removing the billing altogether takes the ground out from under an invoice that
+        // has gone out, which is the same fault done more thoroughly. A billing that is over is
+        // ended rather than deleted, and that is what the message says.
+        $rules->addDelete(
+            function (Billing $entity, array $options): bool {
+                return !empty($options[self::ALLOW_CLOSED_PERIODS]) || $this->mayBeDeleted($entity);
+            },
+            'billingHasNotBeenInvoicedFor',
+            [
+                'errorField' => 'billing_from',
+                'message' => __(
+                    'The billing has been invoiced for and may not be deleted. Give it an end date'
+                    . ' instead, or ask an administrator.',
+                ),
+            ],
+        );
+
         return $rules;
     }
 }

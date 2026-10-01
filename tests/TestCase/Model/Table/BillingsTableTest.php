@@ -446,6 +446,41 @@ class BillingsTableTest extends TestCase
     }
 
     /**
+     * Removing a billing somebody has been invoiced for takes the ground out from under an
+     * invoice that has gone out, so the model refuses it and only the override gets past.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testABillingInvoicedForIsNotDeletedWithoutTheOverride(): void
+    {
+        $invoiced = $this->Billings->get($this->closedBillingId());
+
+        $this->assertFalse($this->Billings->delete($invoiced));
+        $this->assertArrayHasKey('billingHasNotBeenInvoicedFor', $invoiced->getError('billing_from'));
+
+        // The same billing, with the override an administrator's request carries.
+        $this->assertTrue(
+            $this->Billings->delete($invoiced, [BillingsTable::ALLOW_CLOSED_PERIODS => true]),
+            'An administrator could not remove a billing that has been invoiced for.',
+        );
+    }
+
+    /**
+     * A billing nobody has been invoiced for is nobody's history and goes without asking.
+     *
+     * @return void
+     * @link \App\Model\Table\BillingsTable::buildRules()
+     */
+    public function testABillingNobodyHasBeenInvoicedForIsDeleted(): void
+    {
+        $open = $this->newBillingFrom($this->Billings->firstOpenPeriodStart());
+        $this->Billings->saveOrFail($open);
+
+        $this->assertTrue($this->Billings->delete($open));
+    }
+
+    /**
      * A connection priced below what the contract agreed is refused, and the admin's box lets it through.
      *
      * @return void

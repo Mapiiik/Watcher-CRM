@@ -148,6 +148,33 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
+     * Only an administrator removes a billing somebody has been invoiced for. Nobody else is
+     * offered the override, so for them the request is refused and the record stays.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::delete()
+     */
+    public function testOnlyAnAdministratorRemovesABillingInvoicedFor(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $invoiced = $this->closedBillingId();
+
+        $this->login('user');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/delete/' . $invoiced);
+
+        $this->assertRedirect();
+        $this->assertTrue($billings->exists(['id' => $invoiced]), 'The billing was removed anyway.');
+
+        $this->login('admin');
+        $this->post('/billings/delete/' . $invoiced);
+
+        $this->assertRedirect();
+        $this->assertFalse($billings->exists(['id' => $invoiced]));
+    }
+
+    /**
      * Added under its customer and the contract, the record is filed under them without the form saying so.
      *
      * The form under a customer and the contract leaves those fields out - the route already says which record it is,
