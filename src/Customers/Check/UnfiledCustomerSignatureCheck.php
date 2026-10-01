@@ -65,12 +65,12 @@ class UnfiledCustomerSignatureCheck extends AbstractCustomerProposalCheck
     {
         $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
-        // A round that is only handed over is concluded by delivering it, and nothing signed is
-        // ever coming back for it.
-        $query = $this->candidates()->where(['OR' => [
-            'CustomerProposals.purpose IS' => null,
+        // Only a round that asks something of the customer. One that is handed over is concluded
+        // by delivering it, and one with no purpose of its own carries the contracts' papers and
+        // nothing else - their signed copies are filed against the contracts and asked for there.
+        $query = $this->candidates()->where([
             'CustomerProposals.purpose IN' => CustomerProposalPurpose::signed(),
-        ]]);
+        ]);
 
         LateProposals::unfiled($query, 'CustomerProposals', CustomerDocuments::MODEL, $after);
 

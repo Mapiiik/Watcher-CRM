@@ -183,6 +183,23 @@ class CustomerProposalChecksTest extends TestCase
     }
 
     /**
+     * A round with no purpose of its own only carries the contracts' papers, and their signed
+     * copies are filed against the contracts.
+     *
+     * @return void
+     */
+    public function testARoundThatCarriesOnlyContractPapersIsNotAskedForAScan(): void
+    {
+        $round = $this->round([
+            'purpose' => null,
+            'sent_date' => Date::now()->subDays(40),
+            'conclusion_date' => Date::now()->subDays(30),
+        ]);
+
+        $this->assertNotContains($round, $this->unfiled());
+    }
+
+    /**
      * A round somebody gave up on is nobody's work any more.
      *
      * @return void
