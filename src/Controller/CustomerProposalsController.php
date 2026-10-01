@@ -32,6 +32,11 @@ use Exception;
 class CustomerProposalsController extends AppController
 {
     /**
+     * The box an administrator ticks to have a line whose billing has gone passed over.
+     */
+    public const LEAVE_OUT_WHAT_IS_GONE = 'leave_out_what_is_gone';
+
+    /**
      * Every page here is about one proposal, and the bar over it is what says whose papers
      * these are - so a page asked for without the nesting is sent to where it belongs.
      *
@@ -353,7 +358,7 @@ class CustomerProposalsController extends AppController
         $preview = new ChangePreview();
         $plan = new ChangePlan();
         $parts = [];
-        $stopped = false;
+        $anythingGone = false;
 
         foreach ((new RoundOfPapers())->partsOf((string)$proposal->id) as $papers) {
             if (!$papers->isDueFor(ProposalStep::Applied)) {
@@ -361,7 +366,7 @@ class CustomerProposalsController extends AppController
             }
 
             $found = $preview->of($papers);
-            $stopped = $stopped || $preview->anythingStopsIt($found);
+            $anythingGone = $anythingGone || $preview->anythingIsGone($found);
 
             $parts[] = [
                 'papers' => $papers,
@@ -378,11 +383,18 @@ class CustomerProposalsController extends AppController
             return $this->onFromTheStep((string)$id);
         }
 
+        // Two questions, not one. Whether the page still has a form to show asks what this reader
+        // could allow; whether the button may write asks what they actually did allow. Rolled into
+        // one, the form would be hidden from the only person who can unhide it.
+        $leaveOut = $anythingGone && $this->mayLeaveLinesOut();
+        $leavingOut = $leaveOut && $this->request->getData(self::LEAVE_OUT_WHAT_IS_GONE) == '1';
+        $stopped = $this->anythingStops($parts, $preview, $leaveOut);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            if ($stopped) {
+            if ($this->anythingStops($parts, $preview, $leavingOut)) {
                 $this->Flash->error(__('The changes of this proposal cannot be applied in its'
                     . ' current state.'));
-            } elseif ($this->applyTheWholePackage($parts)) {
+            } elseif ($this->applyTheWholePackage($parts, $leavingOut)) {
                 return $this->onFromTheStep((string)$id);
             }
         }
@@ -392,17 +404,43 @@ class CustomerProposalsController extends AppController
         $this->set('stopped', $stopped);
         $this->set('closed_period_override', $this->mayReachIntoClosedPeriods());
         $this->set('below_minimum_override', $this->mayGoBelowMinimum());
+        // Offered only where it is needed, and only to somebody who may answer for it.
+        $this->set('leave_out_override', $leaveOut);
 
         return null;
+    }
+
+    /**
+     * Whether anything across the package stands in the way of applying it.
+     *
+     * @param array<array<string, mixed>> $parts What is to be applied.
+     * @param \App\Contracts\Proposal\ChangePreview $preview What asks the question.
+     * @param bool $leavingOut Whether a line whose billing has gone is passed over.
+     * @return bool
+     */
+    private function anythingStops(array $parts, ChangePreview $preview, bool $leavingOut): bool
+    {
+        foreach ($parts as $part) {
+            /** @var array<int, array{what: string, said: string}> $found */
+            $found = $part['found'];
+
+            if ($preview->anythingStopsIt($found, $leavingOut)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Writes every part of the package, or none of it.
      *
      * @param array<array<string, mixed>> $parts What is to be applied.
+     * @param bool $leavingOut Whether a line whose billing has gone is passed over and written
+     *   down rather than stopping the whole package.
      * @return bool
      */
-    private function applyTheWholePackage(array $parts): bool
+    private function applyTheWholePackage(array $parts, bool $leavingOut = false): bool
     {
         $by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
         $reaching = $this->mayReachIntoClosedPeriods()
@@ -416,9 +454,16 @@ class CustomerProposalsController extends AppController
 
         try {
             $this->CustomerProposals->getConnection()->transactional(
-                function () use ($parts, $by, $reaching, $belowMinimum, $trail): void {
+                function () use ($parts, $by, $reaching, $belowMinimum, $leavingOut, $trail): void {
                     foreach ($parts as $part) {
-                        (new ChangeApplication())->apply($part['papers'], $by, $reaching, $belowMinimum, $trail);
+                        (new ChangeApplication())->apply(
+                            $part['papers'],
+                            $by,
+                            $reaching,
+                            $belowMinimum,
+                            $leavingOut,
+                            $trail,
+                        );
                     }
                 },
             );
@@ -516,6 +561,19 @@ class CustomerProposalsController extends AppController
      * @return bool
      */
     private function mayGoBelowMinimum(): bool
+    {
+        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+    }
+
+    /**
+     * Whether this request may pass over a line whose billing is no longer on the contract.
+     *
+     * An administrator and nobody else. What is passed over is somebody's to see to afterwards,
+     * and a signed proposal is not something to be settled by halves without deciding to.
+     *
+     * @return bool
+     */
+    private function mayLeaveLinesOut(): bool
     {
         return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
     }

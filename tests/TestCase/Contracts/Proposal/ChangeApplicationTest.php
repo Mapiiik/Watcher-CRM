@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Contracts\Proposal;
 use App\Contracts\Proposal\ChangeApplication;
 use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ProposalPurpose;
+use App\Model\Table\BillingsTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
@@ -39,6 +40,11 @@ class ChangeApplicationTest extends TestCase
      * A billing that runs on, which the fixture snapshot knows.
      */
     private const OPEN_BILLING_ID = 'b2000000-0000-4000-8000-000000000002';
+
+    /**
+     * The line that acts on a billing nobody can find any more.
+     */
+    private const GONE_LINE_ID = 'l1000000-0000-4000-8000-000000000001';
 
     /**
      * Fixtures
@@ -292,6 +298,74 @@ class ChangeApplicationTest extends TestCase
                 'contract' => ['termination_date' => $ends],
             ],
         ]);
+    }
+
+    /**
+     * A line acting on a billing somebody has taken off the contract stops the whole thing, and
+     * says which billing it was looking for.
+     *
+     * @return void
+     */
+    public function testALineWhoseBillingHasGoneStopsApplyingTheChanges(): void
+    {
+        $proposal = $this->proposalAgainstAMissingBilling();
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessageMatches('/no longer on the contract/');
+
+        (new ChangeApplication())->apply($proposal);
+    }
+
+    /**
+     * And an administrator may have it passed over instead, so that a proposal the customer has
+     * signed can be settled at all. What was passed over is written down on it.
+     *
+     * @return void
+     * @link \App\Model\Entity\ContractProposal::whatWasLeftOut()
+     */
+    public function testALineWhoseBillingHasGoneMayBeLeftOutAndIsWrittenDown(): void
+    {
+        $proposal = $this->proposalAgainstAMissingBilling();
+
+        (new ChangeApplication())->apply($proposal, null, false, false, true);
+
+        $settled = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+
+        $this->assertTrue($settled->hasBeenApplied(), 'The proposal was not settled.');
+        $this->assertFalse($settled->wasAppliedInFull());
+        $this->assertArrayHasKey(self::GONE_LINE_ID, $settled->whatWasLeftOut());
+        $this->assertStringContainsString(
+            'no longer on the contract',
+            $settled->whatWasLeftOut()[self::GONE_LINE_ID],
+        );
+    }
+
+    /**
+     * A proposal with one line, acting on a billing that is no longer there.
+     *
+     * @return \App\Model\Entity\ContractProposal
+     */
+    private function proposalAgainstAMissingBilling(): ContractProposal
+    {
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => '2026-10-01',
+            'changes' => ['billings' => [[
+                // Named, because what is written down about a line is written down against its
+                // id - and a line read back without one is given a new one every time.
+                'id' => self::GONE_LINE_ID,
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => true,
+            ]]],
+        ]);
+
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->deleteOrFail(
+            $billings->get(self::OPEN_BILLING_ID),
+            [BillingsTable::ALLOW_CLOSED_PERIODS => true],
+        );
+
+        return $proposal;
     }
 
     /**

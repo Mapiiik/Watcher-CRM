@@ -97,13 +97,42 @@ final class ChangePreview
     /**
      * Whether anything here would stop applying the changes rather than merely be worth knowing.
      *
+     * A billing that has gone stops it, because the line that acts on it cannot be written and a
+     * signed proposal cannot be edited - which used to leave no way out at all. It stops being a
+     * full stop once an administrator has said the line may be passed over and written down.
+     *
+     * @param array<int, array{what: string, said: string}> $found What the preview found.
+     * @param bool $lines_may_be_left_out Whether a line whose billing has gone may be passed over.
+     * @return bool
+     */
+    public function anythingStopsIt(array $found, bool $lines_may_be_left_out = false): bool
+    {
+        $stopping = $lines_may_be_left_out
+            ? [self::NOT_CONCLUDED]
+            : [self::NOT_CONCLUDED, self::BILLING_GONE];
+
+        foreach ($found as $one) {
+            if (in_array($one['what'], $stopping, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether a line of this proposal acts on a billing that is no longer there.
+     *
+     * Asked so that the way out is offered only where it is needed. Nobody is shown a box about
+     * leaving lines out of a proposal that has all its billings.
+     *
      * @param array<int, array{what: string, said: string}> $found What the preview found.
      * @return bool
      */
-    public function anythingStopsIt(array $found): bool
+    public function anythingIsGone(array $found): bool
     {
         foreach ($found as $one) {
-            if (in_array($one['what'], [self::NOT_CONCLUDED, self::BILLING_GONE], true)) {
+            if ($one['what'] === self::BILLING_GONE) {
                 return true;
             }
         }

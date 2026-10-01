@@ -41,6 +41,8 @@ final class ChangeApplication
      * @param string|null $by Who is applying it.
      * @param bool $reach_into_closed_periods Whether invoiced periods may be written into.
      * @param bool $go_below_minimum Whether any line may price the connection below the minimum.
+     * @param bool $leave_out_what_is_gone Whether a line whose billing is no longer on the
+     *   contract may be passed over and written down rather than stopping the whole thing.
      * @return void
      * @throws \RuntimeException When the proposal is in no state to be applied.
      */
@@ -49,6 +51,7 @@ final class ChangeApplication
         ?string $by = null,
         bool $reach_into_closed_periods = false,
         bool $go_below_minimum = false,
+        bool $leave_out_what_is_gone = false,
         ?AuditTrail $trail = null,
     ): void {
         if (!$proposal->hasBeenConcluded()) {
@@ -67,7 +70,15 @@ final class ChangeApplication
         $trail ??= new AuditTrail();
 
         $proposals->getConnection()->transactional(
-            function () use ($proposal, $by, $reach_into_closed_periods, $go_below_minimum, $proposals, $trail): void {
+            function () use (
+                $proposal,
+                $by,
+                $reach_into_closed_periods,
+                $go_below_minimum,
+                $leave_out_what_is_gone,
+                $proposals,
+                $trail,
+            ): void {
                 $options = [
                     BillingsTable::ALLOW_CLOSED_PERIODS => $reach_into_closed_periods,
                 ] + $trail->options();
@@ -76,7 +87,7 @@ final class ChangeApplication
                 // written here are the same list rather than the same rules run twice.
                 $planned = (new ChangePlan())->of($proposal);
 
-                $this->applyTheBillings($proposal, $options, $go_below_minimum);
+                $this->applyTheBillings($proposal, $options, $go_below_minimum, $leave_out_what_is_gone);
 
                 // A contract that keeps no versions never gets one, not even from a new contract.
                 if ($proposal->keepsVersions()) {
@@ -105,10 +116,15 @@ final class ChangeApplication
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param array<string, mixed> $options What to save with.
      * @param bool $go_below_minimum Whether any line may price the connection below the minimum.
+     * @param bool $leave_out_what_is_gone Whether a line whose billing has gone is passed over.
      * @return void
      */
-    private function applyTheBillings(ContractProposal $proposal, array $options, bool $go_below_minimum): void
-    {
+    private function applyTheBillings(
+        ContractProposal $proposal,
+        array $options,
+        bool $go_below_minimum,
+        bool $leave_out_what_is_gone,
+    ): void {
         $changes = $proposal->proposedChanges();
 
         if ($changes->billings === []) {
@@ -124,8 +140,25 @@ final class ChangeApplication
             $allowed = [BillingsTable::ALLOW_BELOW_MINIMUM => $go_below_minimum || $line->below_minimum_allowed];
 
             if (!$line->isAddition()) {
-                /** @var \App\Model\Entity\Billing $ending */
-                $ending = $billings->get($line->billing_id);
+                $ending = $billings->find()
+                    ->where(['Billings.id' => $line->billing_id])
+                    ->first();
+
+                // Somebody took the billing off the contract while the papers were out. Passed
+                // over and written down where that was allowed, because the alternative is to
+                // give up on a proposal the customer has signed over a line nobody can write.
+                if (!$ending instanceof Billing) {
+                    if (!$leave_out_what_is_gone) {
+                        throw new RuntimeException(sprintf(
+                            'The billing %s this proposal changes is no longer on the contract.',
+                            (string)$line->billing_id,
+                        ));
+                    }
+
+                    $this->leaveTheLineOut($proposal, $line);
+
+                    continue;
+                }
 
                 if ($line->neverRunsAfterAll($proposal->effective_from, $ending->billing_from)) {
                     $this->dropTheBilling($ending, $allowed + $options);
@@ -148,6 +181,27 @@ final class ChangeApplication
                 throw new RuntimeException($this->whatWentWrong($to_save));
             }
         }
+    }
+
+    /**
+     * Writes down a line applying the changes could not carry out.
+     *
+     * Onto the proposal rather than into its changes: the changes are what the papers say and what
+     * was signed, and this is what became of them. A line written down here is somebody's to see
+     * to by hand, which is what the check over the contract is for.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param \App\Contracts\Proposal\ProposedBilling $line The line that could not be written.
+     * @return void
+     */
+    private function leaveTheLineOut(ContractProposal $proposal, ProposedBilling $line): void
+    {
+        $proposal->set('left_out', $proposal->whatWasLeftOut() + [
+            $line->id => sprintf(
+                'The billing %s is no longer on the contract.',
+                (string)$line->billing_id,
+            ),
+        ]);
     }
 
     /**

@@ -11,8 +11,10 @@
  * @var bool $stopped
  * @var bool $closed_period_override
  * @var bool $below_minimum_override
+ * @var bool $leave_out_override
  */
 
+use App\Controller\CustomerProposalsController;
 use App\Model\Table\BillingsTable;
 
 // A package that asks for nothing still has to be applied, or it reads as waiting for ever -
@@ -97,6 +99,16 @@ foreach ($parts as $part) {
                     <?= $this->Form->control(BillingsTable::ALLOW_BELOW_MINIMUM, [
                         'type' => 'checkbox',
                         'label' => __('Allow a connection price below the minimum set on the contract'),
+                    ]) ?>
+                <?php endif; ?>
+                <?php if ($leave_out_override) : ?>
+                    <?= $this->Form->control(CustomerProposalsController::LEAVE_OUT_WHAT_IS_GONE, [
+                        'type' => 'checkbox',
+                        'label' => __('Leave out the lines whose billing is no longer on the contract'),
+                        'help' => __('The rest of the proposal is applied and what was left out is'
+                            . ' written down on it, to be settled by hand. Without this the'
+                            . ' proposal cannot be applied at all, because a line that has nothing'
+                            . ' to act on cannot be written and signed papers cannot be edited.'),
                     ]) ?>
                 <?php endif; ?>
             </fieldset>
