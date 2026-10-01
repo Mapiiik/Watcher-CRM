@@ -30,6 +30,9 @@ use RuntimeException;
  * @property \Cake\I18n\DateTime $snapshot_taken
  * @property array<string, mixed> $changes
  * @property array<string, bool> $confirmations
+ * @property array<string, string> $left_out
+ * @property \Cake\I18n\DateTime|null $left_out_settled
+ * @property string|null $left_out_settled_by
  * @property \Cake\I18n\DateTime|null $applied
  * @property string|null $applied_by
  * @property \Cake\I18n\DateTime|null $revoked
@@ -72,6 +75,9 @@ class ContractProposal extends AppEntity
         'snapshot_taken' => true,
         'changes' => true,
         'confirmations' => true,
+        'left_out' => true,
+        'left_out_settled' => true,
+        'left_out_settled_by' => true,
         'applied' => true,
         'applied_by' => true,
         'revoked' => true,
@@ -115,6 +121,57 @@ class ContractProposal extends AppEntity
     public function confirmations(): ProposalConfirmations
     {
         return ProposalConfirmations::fromArray((array)($this->confirmations ?? []));
+    }
+
+    /**
+     * What the proposal asked for and applying it could not write, said line by line.
+     *
+     * Empty for all but a handful: it is the way out of a proposal the customer has signed whose
+     * records have moved under it since, where the alternative was to give up on a signed
+     * agreement. What it holds has to be settled by hand.
+     *
+     * @return array<string, string> Why each line was left out, by the id of the line.
+     */
+    public function whatWasLeftOut(): array
+    {
+        /** @var array<string, string> $left_out */
+        $left_out = (array)($this->left_out ?? []);
+
+        return $left_out;
+    }
+
+    /**
+     * Whether applying it wrote everything it asked for.
+     *
+     * @return bool
+     */
+    public function wasAppliedInFull(): bool
+    {
+        return $this->whatWasLeftOut() === [];
+    }
+
+    /**
+     * Whether somebody has since settled what was left out.
+     *
+     * What was left out is a job rather than a state of affairs, and the one thing it must be
+     * possible to say about a job is that it is done. Without that the contract would carry the
+     * finding for the rest of its life and the listing would stop being read.
+     *
+     * @return bool
+     */
+    public function whatWasLeftOutHasBeenSettled(): bool
+    {
+        return $this->left_out_settled !== null;
+    }
+
+    /**
+     * Whether there is anything left out still waiting for somebody.
+     *
+     * @return bool
+     */
+    public function isWaitingOnWhatWasLeftOut(): bool
+    {
+        return !$this->wasAppliedInFull() && !$this->whatWasLeftOutHasBeenSettled();
     }
 
     /**
