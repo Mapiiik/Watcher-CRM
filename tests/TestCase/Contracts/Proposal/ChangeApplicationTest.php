@@ -205,6 +205,96 @@ class ChangeApplicationTest extends TestCase
     }
 
     /**
+     * A billing written to begin after the papers end the contract never runs, so it is taken
+     * away rather than given a last day before its first - which the records would refuse.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBilling::neverRunsAfterAll()
+     */
+    public function testABillingThatWouldNeverRunIsTakenAwayRatherThanEnded(): void
+    {
+        $this->theBillingBegins('2026-12-01');
+
+        (new ChangeApplication())->apply($this->terminationEndingTheBilling('2026-09-15', '2026-10-01'));
+
+        $this->assertFalse(
+            $this->getTableLocator()->get('Billings')->exists(['id' => self::OPEN_BILLING_ID]),
+            'The billing was left on the contract.',
+        );
+    }
+
+    /**
+     * The same where somebody has been invoiced for it, which only a termination dated back
+     * behind an invoice can manage: nothing is written at all. It wants a credit note and
+     * somebody deciding, neither of which is the application's to do.
+     *
+     * @return void
+     */
+    public function testABillingInvoicedForIsNotTakenAwayByApplyingTheChanges(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $this->theBillingBegins('2022-06-01');
+
+        $proposal = $this->terminationEndingTheBilling('2022-05-01', '2022-05-15');
+
+        try {
+            (new ChangeApplication())->apply($proposal);
+            $this->fail('The billing was taken away from under an invoice that has gone out.');
+        } catch (RuntimeException $refused) {
+            // The refusal has to be the one about taking it away. Ending it is refused as well,
+            // and by a message that also talks about what has been invoiced.
+            $this->assertStringContainsString('may not be deleted', $refused->getMessage());
+        }
+
+        $this->assertTrue($billings->exists(['id' => self::OPEN_BILLING_ID]), 'The billing went anyway.');
+        $this->assertFalse($this->proposal()->hasBeenApplied(), 'The proposal was settled anyway.');
+    }
+
+    /**
+     * Moves the day the contract's running billing begins, which is what puts it after the day
+     * the papers would end it on.
+     *
+     * @param string $from The day it begins.
+     * @return void
+     */
+    private function theBillingBegins(string $from): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+
+        $billings->saveOrFail(
+            $billings->patchEntity($billings->get(self::OPEN_BILLING_ID), ['billing_from' => $from]),
+            ['checkRules' => false],
+        );
+    }
+
+    /**
+     * A termination of the contract that also ends its running billing.
+     *
+     * @param string $concluded The day it was agreed to.
+     * @param string $effective The day it takes effect.
+     * @return \App\Model\Entity\ContractProposal
+     */
+    private function terminationEndingTheBilling(string $concluded, string $effective): ContractProposal
+    {
+        $ends = Date::parse($effective)->subDays(1)->toDateString();
+
+        return $this->proposal([
+            'purpose' => ProposalPurpose::Termination->value,
+            'conclusion_date' => $concluded,
+            'effective_from' => $effective,
+            'terminated_contract_number' => 'Lorem ipsum dolor sit amet',
+            'changes' => [
+                'billings' => [[
+                    'billing_id' => self::OPEN_BILLING_ID,
+                    'terminates_only' => true,
+                ]],
+                'version' => ['valid_until' => $ends],
+                'contract' => ['termination_date' => $ends],
+            ],
+        ]);
+    }
+
+    /**
      * A billing that stopped of its own accord is left where it is.
      *
      * An ending only ever shortens. Writing the day before the papers take effect onto something

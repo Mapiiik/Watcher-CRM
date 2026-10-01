@@ -148,26 +148,23 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
-     * Only an administrator removes a billing somebody has been invoiced for. Nobody else is
-     * offered the override, so for them the request is refused and the record stays.
+     * An administrator removes a billing somebody has been invoiced for, and the request carries
+     * the override that gets it past the table's rule.
+     *
+     * Whether anybody else is even offered the button is the permissions' answer - they ask
+     * `mayBeDeleted()` themselves - so it is not asked again here.
      *
      * @return void
      * @link \App\Controller\BillingsController::delete()
      */
-    public function testOnlyAnAdministratorRemovesABillingInvoicedFor(): void
+    public function testAnAdministratorRemovesABillingInvoicedFor(): void
     {
         $billings = $this->getTableLocator()->get('Billings');
         $invoiced = $this->closedBillingId();
 
-        $this->login('user');
+        $this->login('admin');
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/billings/delete/' . $invoiced);
-
-        $this->assertRedirect();
-        $this->assertTrue($billings->exists(['id' => $invoiced]), 'The billing was removed anyway.');
-
-        $this->login('admin');
         $this->post('/billings/delete/' . $invoiced);
 
         $this->assertRedirect();

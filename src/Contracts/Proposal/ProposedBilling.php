@@ -131,6 +131,25 @@ final class ProposedBilling
     }
 
     /**
+     * Whether the billing this line names never runs at all.
+     *
+     * A billing that has not started yet and is being ended before it does is not ended, it never
+     * happens - and a last day before the first is a nonsense the records rightly refuse. What
+     * answers it is removing the billing, which is the honest record of a thing that never was.
+     *
+     * The commonest case is a termination: the papers end the contract this month and a tariff
+     * was already written to begin the next one.
+     *
+     * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.
+     * @param \Cake\I18n\Date $starts_now The day the billing begins.
+     * @return bool
+     */
+    public function neverRunsAfterAll(Date $effective_from, Date $starts_now): bool
+    {
+        return $starts_now->greaterThan($this->startsOn($effective_from)->subDays(1));
+    }
+
+    /**
      * The same line with something else said about it.
      *
      * @param array<string, mixed> $said What is said differently.

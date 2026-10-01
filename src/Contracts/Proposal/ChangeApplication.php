@@ -120,16 +120,23 @@ final class ChangeApplication
 
         foreach ($changes->billings as $line) {
             $to_save = [];
+            // an administrator who allowed it on the line has already made the decision
+            $allowed = [BillingsTable::ALLOW_BELOW_MINIMUM => $go_below_minimum || $line->below_minimum_allowed];
 
             if (!$line->isAddition()) {
                 /** @var \App\Model\Entity\Billing $ending */
                 $ending = $billings->get($line->billing_id);
-                $ends = $line->endsTheBillingOn($proposal->effective_from, $ending->billing_until);
 
-                if ($ends !== null) {
-                    $to_save[] = $billings->patchEntity($ending, [
-                        'billing_until' => $ends->toDateString(),
-                    ]);
+                if ($line->neverRunsAfterAll($proposal->effective_from, $ending->billing_from)) {
+                    $this->dropTheBilling($ending, $allowed + $options);
+                } else {
+                    $ends = $line->endsTheBillingOn($proposal->effective_from, $ending->billing_until);
+
+                    if ($ends !== null) {
+                        $to_save[] = $billings->patchEntity($ending, [
+                            'billing_until' => $ends->toDateString(),
+                        ]);
+                    }
                 }
             }
 
@@ -137,13 +144,31 @@ final class ChangeApplication
                 $to_save[] = $this->startingBilling($line, $proposal, (string)$contract->customer_id);
             }
 
-            // an administrator who allowed it on the line has already made the decision
-            $allowed = [BillingsTable::ALLOW_BELOW_MINIMUM => $go_below_minimum || $line->below_minimum_allowed];
-
-            if ($billings->saveMany($to_save, $allowed + $options) === false) {
+            if ($to_save !== [] && $billings->saveMany($to_save, $allowed + $options) === false) {
                 throw new RuntimeException($this->whatWentWrong($to_save));
             }
         }
+    }
+
+    /**
+     * Takes away a billing the papers end before it ever began.
+     *
+     * Refused where somebody has been invoiced for it, which only happens where the papers are
+     * dated back behind an invoice that has gone out. Nothing here can put that right - it wants
+     * a credit note and somebody deciding - so the whole application stops and says so.
+     *
+     * @param \App\Model\Entity\Billing $billing The billing that never runs.
+     * @param array<string, mixed> $options What to delete with.
+     * @return void
+     * @throws \RuntimeException When the records will not let it go.
+     */
+    private function dropTheBilling(Billing $billing, array $options): void
+    {
+        if ($this->fetchTable('Billings')->delete($billing, $options)) {
+            return;
+        }
+
+        throw new RuntimeException($this->whatWentWrong([$billing]));
     }
 
     /**
