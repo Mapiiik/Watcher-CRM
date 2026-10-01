@@ -74,7 +74,7 @@ class UnsignedProposalCheck extends AbstractContractCheck
     #[Override]
     public function title(): string
     {
-        return __('Proposal Waiting for a Signature');
+        return __('Contract Proposal Waiting for a Signature');
     }
 
     /**

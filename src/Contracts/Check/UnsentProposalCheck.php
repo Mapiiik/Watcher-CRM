@@ -72,7 +72,7 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     public function title(): string
     {
-        return __('Proposal That Never Went Out');
+        return __('Contract Proposal That Was Never Sent');
     }
 
     /**

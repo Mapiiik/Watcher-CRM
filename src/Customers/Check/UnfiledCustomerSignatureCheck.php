@@ -43,7 +43,7 @@ class UnfiledCustomerSignatureCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function title(): string
     {
-        return __('Consent Nobody Filed');
+        return __('Customer Proposal Without Its Documents on File');
     }
 
     /**

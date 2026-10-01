@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-27 09:01+0200\n"
+"POT-Creation-Date: 2026-10-01 18:45+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -861,8 +861,8 @@ msgid "No contract has two versions in force at the same time."
 msgstr "Žádná smlouva nemá dvě verze platné zároveň."
 
 #: src/Contracts/Check/UnappliedProposalCheck.php:74
-msgid "Signed Proposal Whose Changes Were Never Applied"
-msgstr "Podepsaný návrh s neaplikovanými změnami"
+msgid "Contract Proposal Whose Changes Were Never Applied"
+msgstr "Návrh smlouvy s neaplikovanými změnami"
 
 #: src/Contracts/Check/UnappliedProposalCheck.php:83
 msgid ""
@@ -870,8 +870,8 @@ msgid ""
 msgstr "Změny všeho, s čím zákazníci souhlasili, jsou aplikovány."
 
 #: src/Contracts/Check/UnfiledSignatureCheck.php:71
-msgid "Signature Nobody Filed"
-msgstr "Podpis bez nahraných dokumentů"
+msgid "Contract Proposal Without Its Documents on File"
+msgstr "Návrh smlouvy bez nahraných dokumentů"
 
 #: src/Contracts/Check/UnfiledSignatureCheck.php:80
 #: src/Customers/Check/UnfiledCustomerSignatureCheck.php:55
@@ -879,8 +879,8 @@ msgid "Every signature recorded has its signed documents on file."
 msgstr "Ke každému zapsanému podpisu jsou nahrané podepsané dokumenty."
 
 #: src/Contracts/Check/UnsentProposalCheck.php:75
-msgid "Proposal That Never Went Out"
-msgstr "Návrh, který nikdy neodešel"
+msgid "Contract Proposal That Was Never Sent"
+msgstr "Návrh smlouvy, který nebyl odeslán"
 
 #: src/Contracts/Check/UnsentProposalCheck.php:84
 msgid "Every contract proposal created has been sent."
@@ -904,8 +904,8 @@ msgid "Every contract version says when it was concluded."
 msgstr "Každá verze smlouvy uvádí, kdy byla uzavřená."
 
 #: src/Contracts/Check/UnsignedProposalCheck.php:77
-msgid "Proposal Waiting for a Signature"
-msgstr "Návrh čekající na podpis"
+msgid "Contract Proposal Waiting for a Signature"
+msgstr "Návrh smlouvy čekající na podpis"
 
 #: src/Contracts/Check/UnsignedProposalCheck.php:86
 msgid "Every proposal that went out has come back signed."
@@ -2403,8 +2403,8 @@ msgid "Every customer has a telephone number on file."
 msgstr "Každý zákazník má vedené telefonní číslo."
 
 #: src/Customers/Check/UnfiledCustomerSignatureCheck.php:46
-msgid "Consent Nobody Filed"
-msgstr "Souhlas bez nahraných dokumentů"
+msgid "Customer Proposal Without Its Documents on File"
+msgstr "Návrh zákazníka bez nahraných dokumentů"
 
 #: src/Customers/Check/UnsentCustomerProposalCheck.php:44
 msgid "Customer Proposal That Was Never Sent"
@@ -3035,7 +3035,7 @@ msgid "Account change"
 msgstr "Změna účtu"
 
 #: src/Model/Enum/HistoricalConnectionSource.php:30
-#: src/Model/Enum/LandingPage.php:41 templates/layout/default.php:153
+#: src/Model/Enum/LandingPage.php:41 templates/layout/default.php:156
 msgid "RADIUS"
 msgstr "RADIUS"
 
@@ -3067,35 +3067,35 @@ msgstr "Síť zákazníka nastavená ručně"
 msgid "Technology network set manually"
 msgstr "Síť technologie nastavená ručně"
 
-#: src/Model/Enum/LandingPage.php:37 templates/layout/default.php:133
+#: src/Model/Enum/LandingPage.php:37 templates/layout/default.php:136
 msgid "Dashboard"
 msgstr "Nástěnka"
 
 #: src/Model/Enum/LandingPage.php:38
 #: templates/Customers/identity_number_check.php:8
-#: templates/Customers/index.php:63 templates/layout/default.php:138
+#: templates/Customers/index.php:63 templates/layout/default.php:141
 msgid "Customers"
 msgstr "Zákazníci"
 
 #: src/Model/Enum/LandingPage.php:39 templates/Contracts/view.php:152
 #: templates/Contracts/view.php:512 templates/Customers/view.php:175
 #: templates/Customers/view.php:920 templates/Tasks/index.php:96
-#: templates/Tasks/map.php:36 templates/layout/default.php:143
+#: templates/Tasks/map.php:36 templates/layout/default.php:146
 msgid "Tasks"
 msgstr "Úkoly"
 
-#: src/Model/Enum/LandingPage.php:40 templates/layout/default.php:148
+#: src/Model/Enum/LandingPage.php:40 templates/layout/default.php:151
 msgid "Bookkeeping"
 msgstr "Účetnictví"
 
 #: src/Model/Enum/LandingPage.php:42 templates/Overviews/index.php:9
-#: templates/layout/default.php:180
+#: templates/layout/default.php:183
 msgid "Overviews"
 msgstr "Přehledy"
 
 #: src/Model/Enum/LandingPage.php:43
 #: templates/Billings/bulk_service_change.php:17 templates/Settings/index.php:9
-#: templates/layout/default.php:193
+#: templates/layout/default.php:196
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -4558,19 +4558,19 @@ msgstr "GPS X"
 msgid "Access Point"
 msgstr "Přístupový bod"
 
-#: templates/AppUsers/user_settings.php:56 templates/layout/default.php:251
+#: templates/AppUsers/user_settings.php:56 templates/layout/default.php:254
 msgid "Light"
 msgstr "Světlý"
 
-#: templates/AppUsers/user_settings.php:57 templates/layout/default.php:252
+#: templates/AppUsers/user_settings.php:57 templates/layout/default.php:255
 msgid "Dark"
 msgstr "Tmavý"
 
-#: templates/AppUsers/user_settings.php:58 templates/layout/default.php:253
+#: templates/AppUsers/user_settings.php:58 templates/layout/default.php:256
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: templates/AppUsers/user_settings.php:59 templates/layout/default.php:254
+#: templates/AppUsers/user_settings.php:59 templates/layout/default.php:257
 msgid "Legacy"
 msgstr "Starší"
 
@@ -6017,7 +6017,7 @@ msgstr "Přidat zprávu pro zákazníka"
 
 #: templates/CustomerMessages/add_bulk/step_compose.php:21
 #: templates/CustomerMessages/add_bulk/step_filters.php:17
-#: templates/layout/error.php:36
+#: templates/layout/error.php:40
 msgid "Back"
 msgstr "Zpět"
 
@@ -8815,7 +8815,7 @@ msgstr "Celkem"
 
 #: templates/element/Settings/FormFields.php:34
 #: templates/element/Settings/FormFields.php:51
-#: templates/layout/default.php:249
+#: templates/layout/default.php:252
 msgid "Default"
 msgstr "Výchozí"
 
@@ -8925,36 +8925,36 @@ msgstr "Uzavřel"
 msgid "Closed"
 msgstr "Uzavřeno"
 
-#: templates/layout/default.php:169
+#: templates/layout/default.php:172
 msgid "Work Reports"
 msgstr "Výkazy práce"
 
-#: templates/layout/default.php:185
+#: templates/layout/default.php:188
 msgid "Files"
 msgstr "Soubory"
 
-#: templates/layout/default.php:204 templates/layout/default.php:210
-#: templates/layout/default.php:215
+#: templates/layout/default.php:207 templates/layout/default.php:213
+#: templates/layout/default.php:218
 msgid "Old NMS"
 msgstr "Starý NMS"
 
-#: templates/layout/default.php:221
+#: templates/layout/default.php:224
 msgid "Network Management System"
 msgstr "Systém správy sítě"
 
-#: templates/layout/default.php:280
+#: templates/layout/default.php:283
 msgid "Logout"
 msgstr "Odhlášení"
 
-#: templates/layout/default.php:303
+#: templates/layout/default.php:306
 msgid "Changelog"
 msgstr "Seznam změn"
 
-#: templates/layout/default.php:304
+#: templates/layout/default.php:307
 msgid "Source Code"
 msgstr "Zdrojový kód"
 
-#: templates/layout/default.php:306
+#: templates/layout/default.php:309
 msgid "Version"
 msgstr "Verze"
 

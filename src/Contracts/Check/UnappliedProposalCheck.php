@@ -71,7 +71,7 @@ class UnappliedProposalCheck extends AbstractContractCheck
     #[Override]
     public function title(): string
     {
-        return __('Signed Proposal Whose Changes Were Never Applied');
+        return __('Contract Proposal Whose Changes Were Never Applied');
     }
 
     /**
