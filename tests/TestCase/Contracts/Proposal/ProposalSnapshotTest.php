@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Contracts\Proposal;
 use App\Contracts\Proposal\ProposalSnapshot;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
 use App\Contracts\Proposal\SnapshotShape;
+use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\AddressType;
@@ -16,6 +17,7 @@ use App\Pdf\ContractSummaryPDF;
 use App\Service\ContractPrint\ContractPrintData;
 use App\Service\ContractPrint\ContractPrintDataEnricher;
 use App\Test\Traits\TableTestTrait;
+use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -403,5 +405,125 @@ class ProposalSnapshotTest extends TestCase
             'customer' => [],
             'version' => [],
         ]);
+    }
+
+    /**
+     * A day nobody has touched has not moved, whatever the office reads dates as.
+     *
+     * The snapshot keeps the day it is and the record hands back an object that writes itself out
+     * in the local order, so comparing the two as plain strings held 2026-12-01 up against
+     * 01.12.2026 and reported every date of every proposal as having been edited since.
+     *
+     * @return void
+     */
+    public function testADayNobodyMovedIsNotReportedAsMoved(): void
+    {
+        $snapshot = ProposalSnapshot::fromArray([
+            'contract' => [],
+            'customer' => [],
+            'version' => ['valid_until' => '2026-09-30', 'conclusion_date' => null],
+            'billings' => [[
+                'id' => 'b1',
+                'quantity' => 1,
+                'billing_from' => '2026-12-01',
+                'billing_until' => null,
+            ]],
+        ]);
+
+        $live = new Billing([
+            'id' => 'b1',
+            'quantity' => 1,
+            'billing_from' => new Date('2026-12-01'),
+            'billing_until' => null,
+        ]);
+
+        $this->assertSame([], $snapshot->billingTermsThatMoved('b1', $live));
+        $this->assertSame([], $snapshot->versionTermsThatMoved(new ContractVersion([
+            'valid_until' => new Date('2026-09-30'),
+            'conclusion_date' => null,
+        ])));
+    }
+
+    /**
+     * A day that really did move is still reported.
+     *
+     * @return void
+     */
+    public function testADayThatMovedIsReported(): void
+    {
+        $snapshot = ProposalSnapshot::fromArray([
+            'contract' => [],
+            'customer' => [],
+            'version' => ['valid_until' => '2026-09-30'],
+            'billings' => [['id' => 'b1', 'billing_from' => '2026-12-01']],
+        ]);
+
+        $this->assertSame(
+            ['billing_from'],
+            $snapshot->billingTermsThatMoved('b1', new Billing([
+                'id' => 'b1',
+                'billing_from' => new Date('2027-01-01'),
+            ])),
+        );
+        $this->assertSame(
+            ['valid_until'],
+            $snapshot->versionTermsThatMoved(new ContractVersion(['valid_until' => new Date('2026-10-31')])),
+        );
+    }
+
+    /**
+     * The service of a billing is held up against the live one too, and it is kept whole rather
+     * than as an id - the papers print its name - so that is where its id is looked for.
+     *
+     * @return void
+     */
+    public function testAServiceSomebodyChangedIsReportedAsMoved(): void
+    {
+        $snapshot = ProposalSnapshot::fromArray([
+            'contract' => [],
+            'customer' => [],
+            'version' => [],
+            'billings' => [[
+                'id' => 'b1',
+                'service' => ['id' => 'aaaaaaaa-0000-4000-8000-000000000001', 'name' => 'Internet'],
+            ]],
+        ]);
+
+        $this->assertSame([], $snapshot->billingTermsThatMoved('b1', new Billing([
+            'id' => 'b1',
+            'service_id' => 'aaaaaaaa-0000-4000-8000-000000000001',
+        ])));
+
+        $this->assertSame(
+            ['service_id'],
+            $snapshot->billingTermsThatMoved('b1', new Billing([
+                'id' => 'b1',
+                'service_id' => 'bbbbbbbb-0000-4000-8000-000000000002',
+            ])),
+        );
+    }
+
+    /**
+     * A term the snapshot never kept is passed over rather than read as having moved, or every
+     * proposal drawn before the shape grew would carry the same false alarm for ever.
+     *
+     * @return void
+     */
+    public function testATermTheSnapshotNeverKeptHasNotMoved(): void
+    {
+        $snapshot = ProposalSnapshot::fromArray([
+            'contract' => [],
+            'customer' => [],
+            'version' => [],
+            // Nothing is said about the service at all, which is a snapshot from before the
+            // shape kept one.
+            'billings' => [['id' => 'b1', 'quantity' => 1]],
+        ]);
+
+        $this->assertSame([], $snapshot->billingTermsThatMoved('b1', new Billing([
+            'id' => 'b1',
+            'quantity' => 1,
+            'service_id' => '9923d0dc-afe6-4ecb-a578-48b046cd73d3',
+        ])));
     }
 }

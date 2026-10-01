@@ -10,6 +10,8 @@ use App\Model\Entity\ContractVersion;
 use App\NMS\Dto\IpAddressRange;
 use Cake\Collection\Collection;
 use Cake\Datasource\EntityInterface;
+use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use InvalidArgumentException;
 
@@ -39,6 +41,17 @@ final class ProposalSnapshot
         'customer',
         'version',
         'billings',
+    ];
+
+    /**
+     * The terms of the version that are held up against the live one before a proposal is applied.
+     *
+     * @var array<string>
+     */
+    public const VERSION_TERMS = [
+        'valid_until',
+        'obligation_until',
+        'conclusion_date',
     ];
 
     /**
@@ -154,6 +167,10 @@ final class ProposalSnapshot
     /**
      * Which terms of the given billing have moved since the snapshot was taken.
      *
+     * A snapshot can only testify about what it kept. A term it never held - because the shape has
+     * grown since it was taken, or never carried that field - is passed over rather than read as
+     * having moved, or every proposal drawn before the change would report the same false alarm.
+     *
      * @param string $billing_id Which billing.
      * @param \App\Model\Entity\Billing $live The billing as it stands now.
      * @return array<string> The terms that no longer agree.
@@ -169,15 +186,67 @@ final class ProposalSnapshot
         $moved = [];
 
         foreach (self::BILLING_TERMS as $term) {
-            $before = $taken[$term] ?? null;
-            $now = $live->get($term);
+            // The service is kept whole rather than as an id, because the papers print its name
+            // and its price, so that is where its id is to be found.
+            $key = $term === 'service_id' ? 'service' : $term;
 
-            if ((string)$before !== (string)($now ?? '')) {
+            if (!array_key_exists($key, $taken)) {
+                continue;
+            }
+
+            $before = $key === 'service' ? ($taken['service']['id'] ?? null) : $taken[$term];
+
+            if ($this->comparably($before) !== $this->comparably($live->get($term))) {
                 $moved[] = $term;
             }
         }
 
         return $moved;
+    }
+
+    /**
+     * Which terms of the version the proposal belongs to have moved since the snapshot was taken.
+     *
+     * @param \App\Model\Entity\ContractVersion $live The version as it stands now.
+     * @return array<string> The terms that no longer agree.
+     */
+    public function versionTermsThatMoved(ContractVersion $live): array
+    {
+        $taken = $this->part('version');
+        $moved = [];
+
+        foreach (self::VERSION_TERMS as $term) {
+            if (!array_key_exists($term, $taken)) {
+                continue;
+            }
+
+            if ($this->comparably($taken[$term]) !== $this->comparably($live->get($term))) {
+                $moved[] = $term;
+            }
+        }
+
+        return $moved;
+    }
+
+    /**
+     * One term in a shape the snapshot's copy and the live one can be compared in.
+     *
+     * Written the way {@see \App\Contracts\Proposal\ProposalSnapshotBuilder} writes it, because
+     * the two are held up against each other and the only way they cannot drift apart is to say it
+     * once. Casting a date to a string instead compares 2026-12-01 against 01.12.2026 - the record
+     * hands back an object that writes itself out the way the office reads it - and finds every
+     * date moved on every proposal there is.
+     *
+     * @param mixed $value What the snapshot kept, or what the record says now.
+     * @return string
+     */
+    private function comparably(mixed $value): string
+    {
+        return (string)(match (true) {
+            $value instanceof Date => $value->toDateString(),
+            $value instanceof DateTime => $value->toIso8601String(),
+            default => $value ?? '',
+        });
     }
 
     /**
