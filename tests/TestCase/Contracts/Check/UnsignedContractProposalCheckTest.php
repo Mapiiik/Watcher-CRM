@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
-use App\Contracts\Check\UnsignedProposalCheck;
+use App\Contracts\Check\UnsignedContractProposalCheck;
 use App\Model\Table\ContractProposalsTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\Date;
@@ -12,10 +12,10 @@ use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * App\Contracts\Check\UnsignedProposalCheck Test Case
+ * App\Contracts\Check\UnsignedContractProposalCheck Test Case
  */
-#[CoversClass(UnsignedProposalCheck::class)]
-class UnsignedProposalCheckTest extends TestCase
+#[CoversClass(UnsignedContractProposalCheck::class)]
+class UnsignedContractProposalCheckTest extends TestCase
 {
     use TableTestTrait;
 
@@ -115,7 +115,7 @@ class UnsignedProposalCheckTest extends TestCase
         /** @var \App\Model\Table\ContractProposalsTable $proposals */
         $proposals = $this->getTableLocator()->get(ContractProposalsTable::class);
 
-        return (new UnsignedProposalCheck($proposals, $ignore_inactive))
+        return (new UnsignedContractProposalCheck($proposals, $ignore_inactive))
             ->find()
             ->all()
             ->extract('id')

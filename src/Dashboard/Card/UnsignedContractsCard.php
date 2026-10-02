@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Dashboard\Card;
 
 use App\Contracts\Check\ContractCheckRegistry;
-use App\Contracts\Check\UnfiledSignatureCheck;
-use App\Contracts\Check\UnsentProposalCheck;
-use App\Contracts\Check\UnsignedProposalCheck;
+use App\Contracts\Check\UnfiledContractProposalCheck;
+use App\Contracts\Check\UnsentContractProposalCheck;
+use App\Contracts\Check\UnsignedContractProposalCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use Cake\I18n\Date;
 use Dashboard\Card\AbstractDashboardCard;
@@ -62,15 +62,15 @@ class UnsignedContractsCard extends AbstractDashboardCard
 
     /**
      * @param \App\Contracts\Unsigned\UnsignedPaperwork $paperwork What counts as unsigned.
-     * @param \App\Contracts\Check\UnsignedProposalCheck $unsigned Papers out and not signed.
-     * @param \App\Contracts\Check\UnsentProposalCheck $unsent Papers drawn up and never sent.
-     * @param \App\Contracts\Check\UnfiledSignatureCheck $unfiled Signed, and the scan never arrived.
+     * @param \App\Contracts\Check\UnsignedContractProposalCheck $unsigned Papers out and not signed.
+     * @param \App\Contracts\Check\UnsentContractProposalCheck $unsent Papers drawn up and never sent.
+     * @param \App\Contracts\Check\UnfiledContractProposalCheck $unfiled Signed, and the scan never arrived.
      */
     public function __construct(
         private UnsignedPaperwork $paperwork,
-        private UnsignedProposalCheck $unsigned,
-        private UnsentProposalCheck $unsent,
-        private UnfiledSignatureCheck $unfiled,
+        private UnsignedContractProposalCheck $unsigned,
+        private UnsentContractProposalCheck $unsent,
+        private UnfiledContractProposalCheck $unfiled,
     ) {
     }
 
@@ -143,18 +143,18 @@ class UnsignedContractsCard extends AbstractDashboardCard
             'waiting' => max(0, $total - $notified),
             'notifying' => max(0, $notified - $blocking),
             'blocking' => $blocking,
-            'url' => $this->overviewUrl('unsigned_contract'),
+            'url' => $this->overviewUrl('unsigned_contract_version'),
             // The same wait seen from the papers rather than from the version, which is where
             // an amendment or an agreement to end a contract shows up at all - the version
             // behind those is signed, so the three counts above cannot see them. Asked of the
             // checks themselves, so that the figure and the listing it links to agree.
             'unanswered' => $this->unsigned->count(),
-            'unanswered_url' => $this->overviewUrl('unsigned_proposal'),
+            'unanswered_url' => $this->overviewUrl('unsigned_contract_proposal'),
             'unsent' => $this->unsent->count(),
-            'unsent_url' => $this->overviewUrl('unsent_proposal'),
+            'unsent_url' => $this->overviewUrl('unsent_contract_proposal'),
             // The end of the same job: signed, and the papers never arrived.
             'unfiled' => $this->unfiled->count(),
-            'unfiled_url' => $this->overviewUrl('unfiled_signature'),
+            'unfiled_url' => $this->overviewUrl('unfiled_contract_proposal'),
         ];
     }
 

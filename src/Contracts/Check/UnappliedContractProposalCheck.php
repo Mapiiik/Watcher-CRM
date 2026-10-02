@@ -20,7 +20,7 @@ use Settings\Utility\Settings;
  * A proposal whose day has not come yet is not shown by default. There is nothing to do about it
  * until it does, and it would only be a list of things to leave alone.
  */
-class UnappliedProposalCheck extends AbstractContractCheck
+class UnappliedContractProposalCheck extends AbstractContractCheck
 {
     /**
      * How far ahead a proposal is worth raising, if nothing says otherwise.
@@ -62,7 +62,7 @@ class UnappliedProposalCheck extends AbstractContractCheck
     #[Override]
     public function id(): string
     {
-        return 'unapplied_proposal';
+        return 'unapplied_contract_proposal';
     }
 
     /**

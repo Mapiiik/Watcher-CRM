@@ -46,14 +46,14 @@ class ProposalChecksRenderTest extends TestCase
     {
         return [
             'unsent' => [
-                'unsent_proposal',
+                'unsent_contract_proposal',
                 [new DateTime(self::CREATED)],
                 ['documents/manage', 'customer-proposals/send/'],
             ],
-            'unsigned' => ['unsigned_proposal', [new Date(self::SENT)], ['customer-proposals/conclude/']],
-            'unfiled' => ['unfiled_signature', [new Date(self::CONCLUDED)], ['documents/manage']],
+            'unsigned' => ['unsigned_contract_proposal', [new Date(self::SENT)], ['customer-proposals/conclude/']],
+            'unfiled' => ['unfiled_contract_proposal', [new Date(self::CONCLUDED)], ['documents/manage']],
             'untransferred' => [
-                'unapplied_proposal',
+                'unapplied_contract_proposal',
                 [new Date(self::CONCLUDED), new Date(self::SENT)],
                 ['customer-proposals/apply-changes/'],
             ],

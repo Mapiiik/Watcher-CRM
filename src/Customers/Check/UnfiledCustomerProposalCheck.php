@@ -16,7 +16,7 @@ use Settings\Utility\Settings;
  * The one of the three that matters most: a consent is the paper somebody may one day have to be
  * shown.
  */
-class UnfiledCustomerSignatureCheck extends AbstractCustomerProposalCheck
+class UnfiledCustomerProposalCheck extends AbstractCustomerProposalCheck
 {
     /**
      * How long after the signature the scan may be missing, if nothing says otherwise.
@@ -34,7 +34,7 @@ class UnfiledCustomerSignatureCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function id(): string
     {
-        return 'unfiled_customer_signature';
+        return 'unfiled_customer_proposal';
     }
 
     /**

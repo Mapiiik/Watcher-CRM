@@ -130,43 +130,43 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
                     $this->contract_id,
                     $this->customer_id,
                 ),
-            'partly_applied_proposal' =>
-                fn(): ContractCheckInterface => new PartlyAppliedProposalCheck(
+            'partly_applied_contract_proposal' =>
+                fn(): ContractCheckInterface => new PartlyAppliedContractProposalCheck(
                     $proposals,
                     $this->ignore_inactive,
                     $this->contract_id,
                     $this->customer_id,
                 ),
-            'unapplied_proposal' =>
-                fn(): ContractCheckInterface => new UnappliedProposalCheck(
+            'unapplied_contract_proposal' =>
+                fn(): ContractCheckInterface => new UnappliedContractProposalCheck(
                     $proposals,
                     $this->ignore_inactive,
                     $this->contract_id,
                     $this->customer_id,
                 ),
-            'unsigned_proposal' =>
-                fn(): ContractCheckInterface => new UnsignedProposalCheck(
+            'unsigned_contract_proposal' =>
+                fn(): ContractCheckInterface => new UnsignedContractProposalCheck(
                     $proposals,
                     $this->ignore_inactive,
                     $this->contract_id,
                     $this->customer_id,
                 ),
-            'unsent_proposal' =>
-                fn(): ContractCheckInterface => new UnsentProposalCheck(
+            'unsent_contract_proposal' =>
+                fn(): ContractCheckInterface => new UnsentContractProposalCheck(
                     $proposals,
                     $this->ignore_inactive,
                     $this->contract_id,
                     $this->customer_id,
                 ),
-            'unfiled_signature' =>
-                fn(): ContractCheckInterface => new UnfiledSignatureCheck(
+            'unfiled_contract_proposal' =>
+                fn(): ContractCheckInterface => new UnfiledContractProposalCheck(
                     $proposals,
                     $this->ignore_inactive,
                     $this->contract_id,
                     $this->customer_id,
                 ),
-            'unsigned_contract' =>
-                fn(): ContractCheckInterface => new UnsignedContractCheck(
+            'unsigned_contract_version' =>
+                fn(): ContractCheckInterface => new UnsignedContractVersionCheck(
                     $versions,
                     new UnsignedPaperwork($versions),
                     $this->ignore_inactive,

@@ -10,28 +10,30 @@ use Override;
 use Settings\Utility\Settings;
 
 /**
- * A proposal drawn up and never sent.
+ * Papers that went out to the customer and have not come back signed.
  *
- * Nobody is waiting on the customer here - the papers never left the building. It belongs beside
- * the proposals waiting for a signature all the same, because from the office's side the two are
- * the same job half done, and this is the half nothing else reports: the day the version takes
- * effect arrives whether or not anybody printed anything.
+ * The other side of the same coin as {@see \App\Contracts\Check\UnsignedContractVersionCheck}, which reads
+ * the version and so only ever sees a new contract that nobody signed. A proposal is where the
+ * papers come from whatever they are for, so this catches what the version cannot say anything
+ * about: an amendment or an agreement to end a contract, both of them out at a customer who has
+ * agreed to nothing yet, on a version that is itself perfectly well signed.
  *
- * A proposal whose day is still far off is not shown at all, whichever question is asked: until
- * then there is nothing to do about it, and it would only be a list of things to leave alone.
- * Lifting the filter widens this one to the contracts that serve nobody, and to nothing else.
+ * Nobody is cut off over this. An unsigned amendment leaves the service running on the version
+ * behind it, which is why the finding is the office's business rather than the automation's.
  */
-class UnsentProposalCheck extends AbstractContractCheck
+class UnsignedContractProposalCheck extends AbstractContractCheck
 {
     /**
-     * How far ahead a proposal nobody has sent is worth raising, if nothing says otherwise.
+     * How long the papers may be out before it is worth raising, if nothing says otherwise.
      */
-    private const WITHIN_DAYS = 14;
+    private const AFTER_DAYS = 14;
 
     /**
-     * Where the settings say how far ahead to look.
+     * Where the settings say how long that is. Beside the other waits for a signature rather
+     * than among the checks: it is the same question the reminders ask, measured from the day
+     * the papers went out.
      */
-    private const WITHIN_DAYS_PATH = 'core.contracts.proposals.unsent_within_days';
+    private const AFTER_DAYS_PATH = 'core.contracts.proposals.unanswered_after_days';
 
     /**
      * @param \App\Model\Table\ContractProposalsTable $proposals Contract version proposals table.
@@ -63,7 +65,7 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     public function id(): string
     {
-        return 'unsent_proposal';
+        return 'unsigned_contract_proposal';
     }
 
     /**
@@ -72,7 +74,7 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     public function title(): string
     {
-        return __('Contract Proposal That Was Never Sent');
+        return __('Contract Proposal Waiting for a Signature');
     }
 
     /**
@@ -81,18 +83,18 @@ class UnsentProposalCheck extends AbstractContractCheck
     #[Override]
     public function emptyMessage(): string
     {
-        return __('Every contract proposal created has been sent.');
+        return __('Every proposal that went out has come back signed.');
     }
 
     /**
-     * Proposals nobody has sent to the customer.
+     * Proposals the customer has been sent and has not signed.
      *
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
     #[Override]
     public function find(): SelectQuery
     {
-        $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
+        $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
         $query = $this->proposals->find('open')
             // Whether the papers went out and came back is the envelope's to say, and the rows
@@ -101,9 +103,10 @@ class UnsentProposalCheck extends AbstractContractCheck
             ->innerJoinWith('Contracts')
             ->innerJoinWith('CustomerProposals');
 
-        // The wait holds whichever question is being asked. What the wider reading adds is the
-        // contracts that serve nobody, not the proposals whose day has not come yet.
-        LateProposals::neverSent($query, 'ContractProposals', $within, 'CustomerProposals');
+        // The wait holds whichever question is being asked. Papers posted this week are not a
+        // fault anywhere, a contract's own card included - what the wider reading adds is the
+        // contracts that serve nobody, not the post that is still in transit.
+        LateProposals::unanswered($query, 'ContractProposals', $after, 'CustomerProposals');
 
         if ($this->ignore_inactive) {
             $this->onlyRunningContracts($query);

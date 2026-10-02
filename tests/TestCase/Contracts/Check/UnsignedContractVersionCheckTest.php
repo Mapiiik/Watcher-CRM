@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
-use App\Contracts\Check\UnsignedContractCheck;
+use App\Contracts\Check\UnsignedContractVersionCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Model\Enum\UnsignedDeadlineAnchor;
 use App\Model\Table\ContractVersionsTable;
@@ -16,13 +16,13 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use Settings\Utility\Settings;
 
 /**
- * App\Contracts\Check\UnsignedContractCheck Test Case
+ * App\Contracts\Check\UnsignedContractVersionCheck Test Case
  *
  * What is on file has to be able to show what the customer agreed to, which needs paper from
  * about the time the version took effect.
  */
-#[UsesClass(UnsignedContractCheck::class)]
-class UnsignedContractCheckTest extends TestCase
+#[UsesClass(UnsignedContractVersionCheck::class)]
+class UnsignedContractVersionCheckTest extends TestCase
 {
     use LocatorAwareTrait;
 
@@ -87,7 +87,7 @@ class UnsignedContractCheckTest extends TestCase
 
     /**
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testAVersionWithNoConclusionDateIsReported(): void
     {
@@ -101,7 +101,7 @@ class UnsignedContractCheckTest extends TestCase
      * previous version's date onto a new one looks like.
      *
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testAVersionConcludedLongBeforeItTookEffectIsReported(): void
     {
@@ -114,7 +114,7 @@ class UnsignedContractCheckTest extends TestCase
      * Signed shortly before it starts is how a contract is signed.
      *
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testAVersionConcludedShortlyBeforeItTookEffectIsNotReported(): void
     {
@@ -129,7 +129,7 @@ class UnsignedContractCheckTest extends TestCase
      * for that and left alone for the rest.
      *
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testAVersionWhoseStartNobodyKnowsIsStillCountedForHavingNoPaper(): void
     {
@@ -157,7 +157,7 @@ class UnsignedContractCheckTest extends TestCase
      * settings rather than settled here.
      *
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testHowOldThePaperMayBeComesFromTheSettings(): void
     {
@@ -175,7 +175,7 @@ class UnsignedContractCheckTest extends TestCase
      * The day's work is the running services whose wait has actually run out.
      *
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testAVersionPastItsDeadlineIsTheDaysWork(): void
     {
@@ -194,7 +194,7 @@ class UnsignedContractCheckTest extends TestCase
      * somebody's problem. Its standing is what the listing reads off the deadlines.
      *
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testAVersionInsideItsDeadlineIsStillTheDaysWork(): void
     {
@@ -238,7 +238,7 @@ class UnsignedContractCheckTest extends TestCase
      * question and a finding there still has to say whether anything is about to happen.
      *
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testTheHistoryCarriesTheDeadlinesToo(): void
     {
@@ -318,7 +318,7 @@ class UnsignedContractCheckTest extends TestCase
      * at all about when it was concluded.
      *
      * @return void
-     * @link \App\Contracts\Check\UnsignedContractCheck::find()
+     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
     public function testPaperAppliedFromAnEarlierVersionIsHistoryRatherThanTheDaysWork(): void
     {
@@ -379,7 +379,7 @@ class UnsignedContractCheckTest extends TestCase
      */
     private function check(bool $ignore_inactive): array
     {
-        $check = new UnsignedContractCheck(
+        $check = new UnsignedContractVersionCheck(
             $this->ContractVersions,
             new UnsignedPaperwork($this->ContractVersions),
             $ignore_inactive,

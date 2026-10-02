@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Customers\Check;
 
 use App\Customers\Check\AbstractCustomerProposalCheck;
-use App\Customers\Check\UnfiledCustomerSignatureCheck;
+use App\Customers\Check\UnfiledCustomerProposalCheck;
 use App\Customers\Check\UnsentCustomerProposalCheck;
 use App\Customers\Check\UnsignedCustomerProposalCheck;
 use App\Model\Enum\CustomerDocumentType;
@@ -29,7 +29,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
  */
 #[CoversClass(UnsentCustomerProposalCheck::class)]
 #[CoversClass(UnsignedCustomerProposalCheck::class)]
-#[CoversClass(UnfiledCustomerSignatureCheck::class)]
+#[CoversClass(UnfiledCustomerProposalCheck::class)]
 class CustomerProposalChecksTest extends TestCase
 {
     use TableTestTrait;
@@ -277,7 +277,7 @@ class CustomerProposalChecksTest extends TestCase
      */
     private function unfiled(): array
     {
-        return $this->found(new UnfiledCustomerSignatureCheck($this->proposals()));
+        return $this->found(new UnfiledCustomerProposalCheck($this->proposals()));
     }
 
     /**

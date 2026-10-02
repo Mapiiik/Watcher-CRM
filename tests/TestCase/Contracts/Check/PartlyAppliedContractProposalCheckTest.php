@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
-use App\Contracts\Check\PartlyAppliedProposalCheck;
+use App\Contracts\Check\PartlyAppliedContractProposalCheck;
 use App\Model\Table\ContractProposalsTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\DateTime;
@@ -11,10 +11,10 @@ use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * App\Contracts\Check\PartlyAppliedProposalCheck Test Case
+ * App\Contracts\Check\PartlyAppliedContractProposalCheck Test Case
  */
-#[CoversClass(PartlyAppliedProposalCheck::class)]
-class PartlyAppliedProposalCheckTest extends TestCase
+#[CoversClass(PartlyAppliedContractProposalCheck::class)]
+class PartlyAppliedContractProposalCheckTest extends TestCase
 {
     use TableTestTrait;
 
@@ -137,7 +137,7 @@ class PartlyAppliedProposalCheckTest extends TestCase
         /** @var \App\Model\Table\ContractProposalsTable $proposals */
         $proposals = $this->getTableLocator()->get(ContractProposalsTable::class);
 
-        return (new PartlyAppliedProposalCheck($proposals, $ignore_inactive))
+        return (new PartlyAppliedContractProposalCheck($proposals, $ignore_inactive))
             ->find()
             ->all()
             ->extract('id')

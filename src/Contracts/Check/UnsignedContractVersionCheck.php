@@ -29,7 +29,7 @@ use Settings\Utility\Settings;
  *   import left behind. That is putting the history straight, which is its own afternoon
  *   rather than something done while looking at one contract.
  */
-class UnsignedContractCheck extends AbstractContractCheck
+class UnsignedContractVersionCheck extends AbstractContractCheck
 {
     /**
      * Where the settings say how old the paper may be.
@@ -96,7 +96,7 @@ class UnsignedContractCheck extends AbstractContractCheck
     #[Override]
     public function id(): string
     {
-        return 'unsigned_contract';
+        return 'unsigned_contract_version';
     }
 
     /**

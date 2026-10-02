@@ -73,8 +73,8 @@ final class CustomerCheckRegistry extends AbstractCheckRegistry
                     $this->ignore_inactive,
                     $this->customer_id,
                 ),
-            'unfiled_customer_signature' =>
-                fn(): CustomerCheckInterface => new UnfiledCustomerSignatureCheck(
+            'unfiled_customer_proposal' =>
+                fn(): CustomerCheckInterface => new UnfiledCustomerProposalCheck(
                     $proposals,
                     $this->ignore_inactive,
                     $this->customer_id,

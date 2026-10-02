@@ -19,7 +19,7 @@ use Override;
  * way - every one of these is somebody's to see to, whether it is the day's work or the whole
  * file.
  */
-class PartlyAppliedProposalCheck extends AbstractContractCheck
+class PartlyAppliedContractProposalCheck extends AbstractContractCheck
 {
     /**
      * @param \App\Model\Table\ContractProposalsTable $proposals Contract proposals table.
@@ -51,7 +51,7 @@ class PartlyAppliedProposalCheck extends AbstractContractCheck
     #[Override]
     public function id(): string
     {
-        return 'partly_applied_proposal';
+        return 'partly_applied_contract_proposal';
     }
 
     /**

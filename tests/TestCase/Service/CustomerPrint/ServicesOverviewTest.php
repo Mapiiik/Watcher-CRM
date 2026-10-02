@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Service\CustomerPrint;
 
-use App\Customers\Check\UnfiledCustomerSignatureCheck;
+use App\Customers\Check\UnfiledCustomerProposalCheck;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerDocumentType;
 use App\Model\Enum\CustomerProposalPurpose;
@@ -211,7 +211,7 @@ class ServicesOverviewTest extends TestCase
         // Nobody signs it, so no signed copy of it is missing.
         $this->assertNotContains(
             $id,
-            (new UnfiledCustomerSignatureCheck($rounds, false))->find()->all()->extract('id')->toList(),
+            (new UnfiledCustomerProposalCheck($rounds, false))->find()->all()->extract('id')->toList(),
         );
     }
 

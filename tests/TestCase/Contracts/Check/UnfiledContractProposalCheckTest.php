@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
-use App\Contracts\Check\UnfiledSignatureCheck;
+use App\Contracts\Check\UnfiledContractProposalCheck;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Table\ContractProposalsTable;
 use App\Service\ContractPrint\ContractDocuments;
@@ -17,14 +17,14 @@ use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * App\Contracts\Check\UnfiledSignatureCheck Test Case
+ * App\Contracts\Check\UnfiledContractProposalCheck Test Case
  *
  * The gap this reports is between two things that are both fine: a day somebody typed in, and a
  * scan that has not arrived. What is worth testing is therefore where it stops - a signature
  * recorded this morning is not a finding, and the scan itself makes it one no longer.
  */
-#[CoversClass(UnfiledSignatureCheck::class)]
-class UnfiledSignatureCheckTest extends TestCase
+#[CoversClass(UnfiledContractProposalCheck::class)]
+class UnfiledContractProposalCheckTest extends TestCase
 {
     use TableTestTrait;
 
@@ -281,7 +281,7 @@ class UnfiledSignatureCheckTest extends TestCase
         /** @var \App\Model\Table\ContractProposalsTable $proposals */
         $proposals = $this->getTableLocator()->get(ContractProposalsTable::class);
 
-        return (new UnfiledSignatureCheck($proposals))
+        return (new UnfiledContractProposalCheck($proposals))
             ->find()
             ->all()
             ->extract('id')
