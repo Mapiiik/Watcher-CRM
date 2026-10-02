@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-02 00:09+0200\n"
+"POT-Creation-Date: 2026-10-03 00:23+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -46,149 +46,157 @@ msgstr ""
 msgid "Days that stand for \"not known\" rather than for a day. The checks pass over them."
 msgstr ""
 
-#: ./config/settings.php:159
-msgid "How long before a contract version takes effect it may have been concluded."
+#: ./config/settings.php:166
+msgid "Records taking effect before this day are left alone. What an import left behind is not work anybody is going to do, and mailing about it would be worse than leaving it."
 msgstr ""
 
-#: ./config/settings.php:163
-msgid "How far ahead a signed proposal whose changes nobody has applied is worth raising. Until its day comes there is nothing to do about it."
-msgstr ""
-
-#: ./config/settings.php:174
-msgid "Contract versions taking effect before this day are left alone. What an import left behind is not work anybody is going to do, and mailing about it would be worse than leaving it."
-msgstr ""
-
-#: ./config/settings.php:178
+#: ./config/settings.php:170
 msgid "What the wait for a signature is counted from."
 msgstr ""
 
-#: ./config/settings.php:183
+#: ./config/settings.php:178
+msgid "Whether a service that is charged for with no contract version behind it counts as unsigned as well. It is the ordinary case while the papers wait on a proposal."
+msgstr ""
+
+#: ./config/settings.php:184
+msgid "How long before a contract version takes effect it may have been concluded."
+msgstr ""
+
+#: ./config/settings.php:190
 msgid "Whether the customer is written to at all about documents nobody has signed."
 msgstr ""
 
-#: ./config/settings.php:188
-msgid "Days after the day above before the customer is reminded."
+#: ./config/settings.php:195
+msgid "Days after the day the wait is counted from before the customer is reminded."
 msgstr ""
 
-#: ./config/settings.php:192
-msgid "Days after the version takes effect before the customer is reminded. Both waits have to be up."
+#: ./config/settings.php:199
+msgid "Days after what is running took effect before the customer is reminded. Both waits have to be up."
 msgstr ""
 
-#: ./config/settings.php:196
+#: ./config/settings.php:203
 msgid "Which days after the wait runs out to write on. 0 is the day it runs out."
 msgstr ""
 
-#: ./config/settings.php:200
+#: ./config/settings.php:207
 msgid "Once the days above are used up, keep writing every day until the signed contract comes in."
 msgstr ""
 
-#: ./config/settings.php:296
+#: ./config/settings.php:233
 msgid "Whether unsigned documents cut the service off, the same way an unpaid invoice does."
 msgstr ""
 
-#: ./config/settings.php:301
+#: ./config/settings.php:238
 msgid "Days after the day the wait is counted from before the service is cut off."
 msgstr ""
 
-#: ./config/settings.php:305
-msgid "Days after the version takes effect before the service is cut off. Both waits have to be up."
+#: ./config/settings.php:242
+msgid "Days after what is running took effect before the service is cut off. Both waits have to be up."
 msgstr ""
 
-#: ./config/settings.php:314
-#: ./config/settings.php:344
+#: ./config/settings.php:320
+msgid "How far ahead a proposal nobody has sent is worth raising. It has to be sent before the day it speaks about."
+msgstr ""
+
+#: ./config/settings.php:327
+#: ./config/settings.php:370
 msgid "Days after the proposal was sent before a missing signature is raised."
 msgstr ""
 
-#: ./config/settings.php:319
-msgid "How far ahead a contract proposal nobody has sent is worth raising. It has to be sent before the version takes effect."
-msgstr ""
-
-#: ./config/settings.php:329
-#: ./config/settings.php:356
+#: ./config/settings.php:334
+#: ./config/settings.php:377
 msgid "Days after the signature was written down before the missing scan is raised."
 msgstr ""
 
-#: ./config/settings.php:337
+#: ./config/settings.php:340
+msgid "How far ahead a signed proposal whose changes nobody has applied is worth raising. Until its day comes there is nothing to do about it."
+msgstr ""
+
+#: ./config/settings.php:351
 msgid "How a business is told from a household in the reports for the regulator."
 msgstr ""
 
-#: ./config/settings.php:349
-msgid "How far ahead a customer proposal nobody has sent is worth raising."
+#: ./config/settings.php:359
+msgid "Proposals taking effect before this day are left alone."
 msgstr ""
 
-#: ./config/settings.php:363
-msgid "Labels that say the missing details are known about and accepted."
-msgstr ""
-
-#: ./config/settings.php:367
-msgid "Labels that say the missing e-mail address is known about and accepted."
-msgstr ""
-
-#: ./config/settings.php:371
-msgid "Labels that say the missing consent is known about and accepted."
-msgstr ""
-
-#: ./config/settings.php:379
-msgid "How many rows a card lists before it only says how many more there are."
+#: ./config/settings.php:364
+msgid "How far ahead a proposal nobody has sent is worth raising."
 msgstr ""
 
 #: ./config/settings.php:385
-msgid "How far ahead a task deadline is already counted as pressing."
+msgid "Labels that say the missing details are known about and accepted."
 msgstr ""
 
 #: ./config/settings.php:389
+msgid "Labels that say the missing e-mail address is known about and accepted."
+msgstr ""
+
+#: ./config/settings.php:393
+msgid "Labels that say the missing consent is known about and accepted."
+msgstr ""
+
+#: ./config/settings.php:401
+msgid "How many rows a card lists before it only says how many more there are."
+msgstr ""
+
+#: ./config/settings.php:407
+msgid "How far ahead a task deadline is already counted as pressing."
+msgstr ""
+
+#: ./config/settings.php:411
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 
-#: ./config/settings.php:396
+#: ./config/settings.php:418
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:730
+#: ./config/settings.php:752
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:781
+#: ./config/settings.php:803
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:786
+#: ./config/settings.php:808
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:864
+#: ./config/settings.php:886
 msgid "Documents the summary points the customer to."
 msgstr ""
 
-#: ./src/Addresses/Check/DuplicateAddressCheck.php:77
+#: ./src/Addresses/Check/DuplicateAddressCheck.php:74
 msgid "The Same Address More Than Once"
 msgstr ""
 
-#: ./src/Addresses/Check/DuplicateAddressCheck.php:86
+#: ./src/Addresses/Check/DuplicateAddressCheck.php:83
 msgid "No customer has the same address on record more than once."
 msgstr ""
 
-#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:78
+#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:75
 msgid "Contract Without an Installation Address"
 msgstr ""
 
-#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:87
+#: ./src/Addresses/Check/MissingInstallationAddressCheck.php:84
 msgid "Every contract that needs an installation address has one."
 msgstr ""
 
-#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:69
+#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:66
 msgid "Several Contracts at One Address"
 msgstr ""
 
-#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:78
+#: ./src/Addresses/Check/SeveralContractsAtOneAddressCheck.php:75
 msgid "No customer runs more than one contract at the same address."
 msgstr ""
 
-#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:72
+#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:69
 msgid "Unclear Billing Address"
 msgstr ""
 
-#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:81
+#: ./src/Addresses/Check/UnclearBillingAddressCheck.php:78
 msgid "Every customer has one address an invoice can be sent to."
 msgstr ""
 
@@ -433,7 +441,7 @@ msgstr ""
 
 #: ./src/Command/ProcessEmailsCommand.php:216
 #: ./src/Command/ProcessSmsCommand.php:257
-#: ./src/Command/ProcessUnsignedContractsCommand.php:159
+#: ./src/Command/ProcessUnsignedContractsCommand.php:148
 #: ./templates/CustomerMessages/add_bulk/step_done.php:44
 msgid "Done"
 msgstr ""
@@ -471,48 +479,52 @@ msgstr ""
 msgid "Error getting message status with ID {0}: {1}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:118
+#: ./src/Command/ProcessUnsignedContractsCommand.php:107
 msgid "Do not write any e-mails, the operation will be skipped."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:123
+#: ./src/Command/ProcessUnsignedContractsCommand.php:112
 msgid "Do not write any SMS, the operation will be skipped."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:140
+#: ./src/Command/ProcessUnsignedContractsCommand.php:129
 msgid "Notifications about unsigned contracts are switched off in the settings."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:148
+#: ./src/Command/ProcessUnsignedContractsCommand.php:137
 msgid "Nobody is due to hear about unsigned documents today."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:165
+#: ./src/Command/ProcessUnsignedContractsCommand.php:154
 msgid "Error while processing unsigned contracts: {0}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:168
+#: ./src/Command/ProcessUnsignedContractsCommand.php:157
 msgid "Processing of unsigned contracts failed"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:172
+#: ./src/Command/ProcessUnsignedContractsCommand.php:161
 msgid "Processing of unsigned contracts failed.\n\nError: {0}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:342
+#: ./src/Command/ProcessUnsignedContractsCommand.php:283
 msgid "{0} email has been generated for customer {1}, recipients: {2}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:354
+#: ./src/Command/ProcessUnsignedContractsCommand.php:295
 msgid "{0} SMS has been generated for customer {1}, recipients: {2}"
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:364
+#: ./src/Command/ProcessUnsignedContractsCommand.php:305
 msgid "Customer {0} has unsigned documents but nobody to tell about it."
 msgstr ""
 
-#: ./src/Command/ProcessUnsignedContractsCommand.php:507
+#: ./src/Command/ProcessUnsignedContractsCommand.php:451
 msgid "in effect since"
+msgstr ""
+
+#: ./src/Command/ProcessUnsignedContractsCommand.php:451
+msgid "provided since"
 msgstr ""
 
 #: ./src/Command/RebuildFulltextSearchCustomersCommand.php:40
@@ -542,8 +554,8 @@ msgstr ""
 #: ./templates/cell/Documents/display.php:168
 #: ./templates/element/ContractChecks/proposal_table.php:66
 #: ./templates/element/CustomerChecks/customer_proposal.php:50
-#: ./templates/element/Documents/rounds.php:104
-#: ./templates/element/Documents/rounds.php:156
+#: ./templates/element/Documents/proposals.php:104
+#: ./templates/element/Documents/proposals.php:156
 msgid "Documents"
 msgstr ""
 
@@ -683,173 +695,181 @@ msgstr ""
 msgid "Historical connections update failed."
 msgstr ""
 
-#: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:77
+#: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:73
 msgid "Providing Services Without Billing"
 msgstr ""
 
-#: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:86
+#: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:82
 msgid "Every contract providing services is billed for."
 msgstr ""
 
-#: ./src/Contracts/Check/BillingGapCheck.php:149
+#: ./src/Contracts/Check/BillingGapCheck.php:146
 msgid "Gap Between Consecutive Billings"
 msgstr ""
 
-#: ./src/Contracts/Check/BillingGapCheck.php:158
+#: ./src/Contracts/Check/BillingGapCheck.php:155
 msgid "No service stops being billed and starts again later."
 msgstr ""
 
-#: ./src/Contracts/Check/BillingServiceTypeMismatchCheck.php:58
+#: ./src/Contracts/Check/BillingServiceTypeMismatchCheck.php:55
 msgid "Billed for Another Kind of Service"
 msgstr ""
 
-#: ./src/Contracts/Check/BillingServiceTypeMismatchCheck.php:67
+#: ./src/Contracts/Check/BillingServiceTypeMismatchCheck.php:64
 msgid "Every billing is for a service of the kind its contract is."
 msgstr ""
 
-#: ./src/Contracts/Check/ContractVersionGapCheck.php:109
+#: ./src/Contracts/Check/ContractVersionGapCheck.php:106
 msgid "Gap Between Consecutive Contract Versions"
 msgstr ""
 
-#: ./src/Contracts/Check/ContractVersionGapCheck.php:118
+#: ./src/Contracts/Check/ContractVersionGapCheck.php:115
 msgid "No contract is left without a version in force between two of them."
 msgstr ""
 
-#: ./src/Contracts/Check/ImpossibleBillingPeriodCheck.php:62
+#: ./src/Contracts/Check/ImpossibleBillingPeriodCheck.php:59
 msgid "Impossible Billing Period"
 msgstr ""
 
-#: ./src/Contracts/Check/ImpossibleBillingPeriodCheck.php:71
+#: ./src/Contracts/Check/ImpossibleBillingPeriodCheck.php:68
 msgid "Every billing runs over a stretch of time that can exist."
 msgstr ""
 
-#: ./src/Contracts/Check/ImpossibleBorrowedPeriodCheck.php:58
+#: ./src/Contracts/Check/ImpossibleBorrowedPeriodCheck.php:55
 msgid "Impossible Borrowing Period"
 msgstr ""
 
-#: ./src/Contracts/Check/ImpossibleBorrowedPeriodCheck.php:67
+#: ./src/Contracts/Check/ImpossibleBorrowedPeriodCheck.php:64
 msgid "Every piece of equipment is lent over a stretch of time that can exist."
 msgstr ""
 
-#: ./src/Contracts/Check/ImpossibleContractDatesCheck.php:62
+#: ./src/Contracts/Check/ImpossibleContractDatesCheck.php:59
 msgid "Impossible Contract Dates"
 msgstr ""
 
-#: ./src/Contracts/Check/ImpossibleContractDatesCheck.php:71
+#: ./src/Contracts/Check/ImpossibleContractDatesCheck.php:68
 msgid "Every contract carries days that can be right."
 msgstr ""
 
-#: ./src/Contracts/Check/ImpossibleContractVersionPeriodCheck.php:62
+#: ./src/Contracts/Check/ImpossibleContractVersionPeriodCheck.php:59
 msgid "Impossible Contract Version Period"
 msgstr ""
 
-#: ./src/Contracts/Check/ImpossibleContractVersionPeriodCheck.php:71
+#: ./src/Contracts/Check/ImpossibleContractVersionPeriodCheck.php:68
 msgid "Every contract version runs over a stretch of time that can exist."
 msgstr ""
 
-#: ./src/Contracts/Check/InactiveWithBillingCheck.php:106
+#: ./src/Contracts/Check/InactiveWithBillingCheck.php:102
 msgid "Billed Without Providing Services"
 msgstr ""
 
-#: ./src/Contracts/Check/InactiveWithBillingCheck.php:115
+#: ./src/Contracts/Check/InactiveWithBillingCheck.php:111
 msgid "No contract is billed for a service it is not providing."
 msgstr ""
 
-#: ./src/Contracts/Check/MissingAccessPointCheck.php:72
+#: ./src/Contracts/Check/MissingAccessPointCheck.php:69
 msgid "Served From No Access Point"
 msgstr ""
 
-#: ./src/Contracts/Check/MissingAccessPointCheck.php:81
+#: ./src/Contracts/Check/MissingAccessPointCheck.php:78
 msgid "Every contract that is served from an access point names one."
 msgstr ""
 
-#: ./src/Contracts/Check/MissingInstallationDateCheck.php:74
+#: ./src/Contracts/Check/MissingInstallationDateCheck.php:71
 msgid "Installed With No Installation Date"
 msgstr ""
 
-#: ./src/Contracts/Check/MissingInstallationDateCheck.php:83
+#: ./src/Contracts/Check/MissingInstallationDateCheck.php:80
 msgid "Every contract that is installed somewhere says when it was."
 msgstr ""
 
-#: ./src/Contracts/Check/NonStandardServiceCheck.php:62
+#: ./src/Contracts/Check/NonStandardServiceCheck.php:59
 msgid "Billed by Hand Rather Than for a Service"
 msgstr ""
 
-#: ./src/Contracts/Check/NonStandardServiceCheck.php:71
+#: ./src/Contracts/Check/NonStandardServiceCheck.php:68
 msgid "Every billing simply names the service it is for."
 msgstr ""
 
-#: ./src/Contracts/Check/OverlappingBillingsCheck.php:125
+#: ./src/Contracts/Check/OverlappingBillingsCheck.php:122
 msgid "Overlapping Billings"
 msgstr ""
 
-#: ./src/Contracts/Check/OverlappingBillingsCheck.php:134
+#: ./src/Contracts/Check/OverlappingBillingsCheck.php:131
 msgid "No service is billed twice over the same stretch of time."
 msgstr ""
 
-#: ./src/Contracts/Check/OverlappingContractVersionsCheck.php:89
+#: ./src/Contracts/Check/OverlappingContractVersionsCheck.php:86
 msgid "Overlapping Contract Versions"
 msgstr ""
 
-#: ./src/Contracts/Check/OverlappingContractVersionsCheck.php:98
+#: ./src/Contracts/Check/OverlappingContractVersionsCheck.php:95
 msgid "No contract has two versions in force at the same time."
 msgstr ""
 
-#: ./src/Contracts/Check/PartlyAppliedProposalCheck.php:63
+#: ./src/Contracts/Check/PartlyAppliedContractProposalCheck.php:39
 msgid "Contract Proposal Applied With Something Left Out"
 msgstr ""
 
-#: ./src/Contracts/Check/PartlyAppliedProposalCheck.php:72
+#: ./src/Contracts/Check/PartlyAppliedContractProposalCheck.php:48
 msgid "Everything the customers have agreed to was applied in full."
 msgstr ""
 
-#: ./src/Contracts/Check/UnappliedProposalCheck.php:74
+#: ./src/Contracts/Check/ServiceWithoutContractVersionCheck.php:72
+msgid "Running Service Without a Contract Version"
+msgstr ""
+
+#: ./src/Contracts/Check/ServiceWithoutContractVersionCheck.php:81
+msgid "Every service being charged for has a contract version behind it."
+msgstr ""
+
+#: ./src/Contracts/Check/UnappliedContractProposalCheck.php:49
 msgid "Contract Proposal Whose Changes Were Never Applied"
 msgstr ""
 
-#: ./src/Contracts/Check/UnappliedProposalCheck.php:83
+#: ./src/Contracts/Check/UnappliedContractProposalCheck.php:58
 msgid "The changes of everything the customers have agreed to have been applied."
 msgstr ""
 
-#: ./src/Contracts/Check/UnfiledSignatureCheck.php:71
+#: ./src/Contracts/Check/UnfiledContractProposalCheck.php:45
 msgid "Contract Proposal Without Its Documents on File"
 msgstr ""
 
-#: ./src/Contracts/Check/UnfiledSignatureCheck.php:80
-#: ./src/Customers/Check/UnfiledCustomerSignatureCheck.php:55
+#: ./src/Contracts/Check/UnfiledContractProposalCheck.php:54
+#: ./src/Customers/Check/UnfiledCustomerProposalCheck.php:54
 msgid "Every signature recorded has its signed documents on file."
 msgstr ""
 
-#: ./src/Contracts/Check/UnsentProposalCheck.php:75
+#: ./src/Contracts/Check/UnsentContractProposalCheck.php:49
 msgid "Contract Proposal That Was Never Sent"
 msgstr ""
 
-#: ./src/Contracts/Check/UnsentProposalCheck.php:84
+#: ./src/Contracts/Check/UnsentContractProposalCheck.php:58
 msgid "Every contract proposal created has been sent."
 msgstr ""
 
-#: ./src/Contracts/Check/UnsettledObligationCheck.php:64
+#: ./src/Contracts/Check/UnsettledObligationCheck.php:61
 msgid "Unsettled Obligation Outliving the Contract"
 msgstr ""
 
-#: ./src/Contracts/Check/UnsettledObligationCheck.php:73
+#: ./src/Contracts/Check/UnsettledObligationCheck.php:70
 msgid "No minimum term is left running after the contract it belongs to has stopped."
 msgstr ""
 
-#: ./src/Contracts/Check/UnsignedContractCheck.php:108
-msgid "Contract Version Without Signed Documents"
-msgstr ""
-
-#: ./src/Contracts/Check/UnsignedContractCheck.php:117
-msgid "Every contract version says when it was concluded."
-msgstr ""
-
-#: ./src/Contracts/Check/UnsignedProposalCheck.php:77
+#: ./src/Contracts/Check/UnsignedContractProposalCheck.php:51
 msgid "Contract Proposal Waiting for a Signature"
 msgstr ""
 
-#: ./src/Contracts/Check/UnsignedProposalCheck.php:86
+#: ./src/Contracts/Check/UnsignedContractProposalCheck.php:60
 msgid "Every proposal that went out has come back signed."
+msgstr ""
+
+#: ./src/Contracts/Check/UnsignedContractVersionCheck.php:85
+msgid "Contract Version Without Signed Documents"
+msgstr ""
+
+#: ./src/Contracts/Check/UnsignedContractVersionCheck.php:94
+msgid "Every contract version says when it was concluded."
 msgstr ""
 
 #: ./src/Contracts/MinimumConnectionPrice.php:107
@@ -864,7 +884,7 @@ msgstr ""
 #: ./templates/CustomerProposals/view.php:132
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:28
 #: ./templates/element/ContractChecks/proposal_table.php:19
-#: ./templates/element/ContractChecks/unsigned_contract.php:33
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:33
 #: ./templates/element/Contracts/ContractVersions.php:19
 #: ./templates/element/CustomerChecks/customer_proposal.php:25
 msgid "Conclusion Date"
@@ -959,10 +979,11 @@ msgstr ""
 #: ./templates/element/ContractChecks/non_standard_service.php:26
 #: ./templates/element/ContractChecks/overlapping_billings.php:26
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:23
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:27
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:27
 #: ./templates/element/ContractChecks/proposal_table.php:30
+#: ./templates/element/ContractChecks/service_without_contract_version.php:27
 #: ./templates/element/ContractChecks/unsettled_obligation.php:26
-#: ./templates/element/ContractChecks/unsigned_contract.php:27
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:27
 #: ./templates/element/Contracts/Billings.php:21
 #: ./templates/element/Contracts/BorrowedEquipments.php:15
 #: ./templates/element/Contracts/IpAddresses.php:17
@@ -1021,7 +1042,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:25
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:25
 #: ./templates/element/ContractChecks/unsettled_obligation.php:28
-#: ./templates/element/ContractChecks/unsigned_contract.php:29
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:29
 #: ./templates/element/Contracts/ContractVersions.php:14
 msgid "Valid From"
 msgstr ""
@@ -1058,7 +1079,7 @@ msgstr ""
 msgid "No RADIUS accounts are assigned, although this type of service usually has some. Please confirm that the customer does not use RADIUS accounts, or add them."
 msgstr ""
 
-#: ./src/Contracts/Unsigned/UnsignedPaperwork.php:84
+#: ./src/Contracts/Unsigned/UnsignedPaperwork.php:150
 msgid "unsigned contract"
 msgstr ""
 
@@ -2277,23 +2298,23 @@ msgstr ""
 msgid "Every customer has a telephone number on file."
 msgstr ""
 
-#: ./src/Customers/Check/UnfiledCustomerSignatureCheck.php:46
+#: ./src/Customers/Check/UnfiledCustomerProposalCheck.php:45
 msgid "Customer Proposal Without Its Documents on File"
 msgstr ""
 
-#: ./src/Customers/Check/UnsentCustomerProposalCheck.php:44
+#: ./src/Customers/Check/UnsentCustomerProposalCheck.php:43
 msgid "Customer Proposal That Was Never Sent"
 msgstr ""
 
-#: ./src/Customers/Check/UnsentCustomerProposalCheck.php:53
+#: ./src/Customers/Check/UnsentCustomerProposalCheck.php:52
 msgid "Every customer proposal created has been sent."
 msgstr ""
 
-#: ./src/Customers/Check/UnsignedCustomerProposalCheck.php:44
+#: ./src/Customers/Check/UnsignedCustomerProposalCheck.php:43
 msgid "Customer Proposal Waiting for a Signature"
 msgstr ""
 
-#: ./src/Customers/Check/UnsignedCustomerProposalCheck.php:53
+#: ./src/Customers/Check/UnsignedCustomerProposalCheck.php:52
 msgid "Every customer proposal sent has come back signed."
 msgstr ""
 
@@ -2343,7 +2364,7 @@ msgstr ""
 msgid "Planned Power Outages"
 msgstr ""
 
-#: ./src/Dashboard/Card/UnsignedContractsCard.php:92
+#: ./src/Dashboard/Card/UnsignedContractsCard.php:71
 msgid "Unsigned Documents"
 msgstr ""
 
@@ -2398,24 +2419,24 @@ msgstr ""
 msgid "Contract data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:217
+#: ./src/Model/Entity/Contract.php:227
 #: ./src/Model/Entity/Customer.php:174
 msgid "{0} ({1})"
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:272
-#: ./src/Model/Entity/Contract.php:287
-#: ./src/Model/Entity/Contract.php:302
+#: ./src/Model/Entity/Contract.php:282
+#: ./src/Model/Entity/Contract.php:297
+#: ./src/Model/Entity/Contract.php:312
 msgid "Contract state data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:317
-#: ./src/Model/Entity/Contract.php:332
-#: ./src/Model/Entity/Contract.php:347
+#: ./src/Model/Entity/Contract.php:327
+#: ./src/Model/Entity/Contract.php:342
+#: ./src/Model/Entity/Contract.php:357
 msgid "Service type data not available."
 msgstr ""
 
-#: ./src/Model/Entity/Contract.php:359
+#: ./src/Model/Entity/Contract.php:369
 msgid "Contract versions data not available."
 msgstr ""
 
@@ -2908,7 +2929,7 @@ msgstr ""
 
 #: ./src/Model/Enum/CustomerMessageDeliveryStatus.php:29
 #: ./src/Proposals/Settlement.php:118
-#: ./templates/element/Documents/rounds.php:44
+#: ./templates/element/Documents/proposals.php:44
 msgid "Sent"
 msgstr ""
 
@@ -3515,7 +3536,7 @@ msgid "Issued"
 msgstr ""
 
 #: ./src/Proposals/Settlement.php:133
-#: ./templates/element/Documents/rounds.php:45
+#: ./templates/element/Documents/proposals.php:45
 msgid "Signed"
 msgstr ""
 
@@ -3732,7 +3753,7 @@ msgstr ""
 #: ./templates/Tasks/index.php:116
 #: ./templates/Tasks/view.php:10
 #: ./templates/cell/Documents/display.php:110
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:31
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:31
 #: ./templates/element/ContractChecks/proposal_table.php:37
 #: ./templates/element/ContractProposals/proposed_billings.php:40
 #: ./templates/element/Contracts/Billings.php:36
@@ -3746,7 +3767,7 @@ msgstr ""
 #: ./templates/element/Contracts/Tasks.php:26
 #: ./templates/element/Contracts/related.php:40
 #: ./templates/element/CustomerChecks/customer_proposal.php:26
-#: ./templates/element/Documents/rounds.php:46
+#: ./templates/element/Documents/proposals.php:46
 #: ./templates/element/Overviews/billings_in_period.php:28
 #: ./templates/element/Overviews/contracts_in_period.php:25
 msgid "Actions"
@@ -4206,7 +4227,7 @@ msgstr ""
 #: ./templates/SoldEquipments/index.php:69
 #: ./templates/Tasks/index.php:190
 #: ./templates/cell/Documents/display.php:176
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:68
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:68
 #: ./templates/element/Contracts/Billings.php:78
 #: ./templates/element/Contracts/BorrowedEquipments.php:45
 #: ./templates/element/Contracts/ContractVersions.php:43
@@ -4217,7 +4238,7 @@ msgstr ""
 #: ./templates/element/Contracts/SoldEquipments.php:47
 #: ./templates/element/Contracts/Tasks.php:59
 #: ./templates/element/Contracts/related.php:104
-#: ./templates/element/Documents/rounds.php:110
+#: ./templates/element/Documents/proposals.php:110
 #: ./templates/element/Overviews/billings_in_period.php:70
 #: ./templates/element/Overviews/contracts_in_period.php:69
 #: ./vendor/cakephp/cakephp/src/View/Helper/PaginatorHelper.php:1225
@@ -4344,10 +4365,11 @@ msgstr ""
 #: ./templates/element/ContractChecks/non_standard_service.php:23
 #: ./templates/element/ContractChecks/overlapping_billings.php:23
 #: ./templates/element/ContractChecks/overlapping_contract_versions.php:20
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:24
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:24
 #: ./templates/element/ContractChecks/proposal_table.php:27
+#: ./templates/element/ContractChecks/service_without_contract_version.php:24
 #: ./templates/element/ContractChecks/unsettled_obligation.php:23
-#: ./templates/element/ContractChecks/unsigned_contract.php:24
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:24
 #: ./templates/element/Contracts/Billings.php:17
 #: ./templates/element/Contracts/facts.php:18
 #: ./templates/element/Contracts/related.php:20
@@ -4355,7 +4377,7 @@ msgstr ""
 #: ./templates/element/CustomerChecks/customer_proposal.php:20
 #: ./templates/element/CustomerProposals/form.php:22
 #: ./templates/element/Customers/heading.php:14
-#: ./templates/element/Documents/rounds.php:40
+#: ./templates/element/Documents/proposals.php:40
 #: ./templates/element/Overviews/billings_in_period.php:20
 #: ./templates/element/Overviews/contracts_in_period.php:20
 #: ./templates/element/Tasks/email_detail.php:73
@@ -5620,7 +5642,7 @@ msgid "Mark What Was Left Out as Settled"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:62
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:78
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:78
 msgid "Has what this proposal could not write been dealt with on the contract by hand?"
 msgstr ""
 
@@ -5643,7 +5665,7 @@ msgstr ""
 #: ./templates/CustomerProposals/send.php:46
 #: ./templates/CustomerProposals/view.php:128
 #: ./templates/element/ContractChecks/proposal_table.php:18
-#: ./templates/element/ContractChecks/unsigned_contract.php:32
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:32
 #: ./templates/element/Contracts/ContractVersions.php:18
 msgid "Sent To The Customer"
 msgstr ""
@@ -5679,7 +5701,12 @@ msgctxt "service"
 msgid "None"
 msgstr ""
 
-#: ./templates/element/ContractChecks/unsigned_contract.php:60
+#: ./templates/element/ContractChecks/service_without_contract_version.php:52
+msgctxt "installation date"
+msgid "None"
+msgstr ""
+
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:60
 msgctxt "conclusion date"
 msgid "None"
 msgstr ""
@@ -5690,12 +5717,12 @@ msgid "{0} generated, {1} received"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:198
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:29
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:29
 msgid "Changes Applied"
 msgstr ""
 
 #: ./templates/ContractProposals/view.php:203
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:30
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:30
 msgid "Left Out"
 msgstr ""
 
@@ -6619,7 +6646,7 @@ msgstr ""
 #: ./templates/CustomerProposalsly_changes.php:116
 #: ./templates/CustomerProposals/view.php:57
 #: ./templates/element/ContractChecks/proposal_table.php:104
-#: ./templates/element/Documents/rounds.php:148
+#: ./templates/element/Documents/proposals.php:148
 msgid "Apply Changes"
 msgstr ""
 
@@ -6635,7 +6662,7 @@ msgstr ""
 #: ./templates/CustomerProposals/edit.php:31
 #: ./templates/CustomerProposals/view.php:50
 #: ./templates/element/ContractChecks/proposal_table.php:92
-#: ./templates/element/Documents/rounds.php:138
+#: ./templates/element/Documents/proposals.php:138
 msgid "Record the Signature"
 msgstr ""
 
@@ -6659,7 +6686,7 @@ msgstr ""
 #: ./templates/CustomerProposals/send.php:14
 #: ./templates/CustomerProposals/view.php:41
 #: ./templates/element/ContractChecks/proposal_table.php:80
-#: ./templates/element/Documents/rounds.php:127
+#: ./templates/element/Documents/proposals.php:127
 msgid "Record the Sending"
 msgstr ""
 
@@ -8426,7 +8453,7 @@ msgid "Nothing has been received yet."
 msgstr ""
 
 #: ./templates/cell/Documents/display.php:100
-#: ./templates/element/Documents/rounds.php:42
+#: ./templates/element/Documents/proposals.php:42
 msgid "Proposal"
 msgstr ""
 
@@ -8637,23 +8664,63 @@ msgstr ""
 msgid "Second One In Force From"
 msgstr ""
 
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:13
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:13
 msgid "The customer agreed to all of this and part of it could not be written, because what the line acted on was no longer on the contract. The rest was applied so that the proposal could be settled at all. What was left out is below and wants settling by hand - and saying so, once it is done, is what takes it off this list."
 msgstr ""
 
-#: ./templates/element/ContractChecks/partly_applied_proposal.php:72
+#: ./templates/element/ContractChecks/partly_applied_contract_proposal.php:72
 msgid "Settled"
 msgstr ""
 
-#: ./templates/element/ContractChecks/unapplied_proposal.php:13
+#: ./templates/element/ContractChecks/service_without_contract_version.php:17
+msgid "The service is being provided and charged for, and no contract version covers today."
+msgstr ""
+
+#: ./templates/element/ContractChecks/service_without_contract_version.php:31
+msgid "Charged Since"
+msgstr ""
+
+#: ./templates/element/ContractChecks/service_without_contract_version.php:32
+msgid "Installation Date"
+msgstr ""
+
+#: ./templates/element/ContractChecks/service_without_contract_version.php:34
+msgid "Covered Until"
+msgstr ""
+
+#: ./templates/element/ContractChecks/service_without_contract_version.php:35
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:36
+msgid "Deadline"
+msgstr ""
+
+#: ./templates/element/ContractChecks/service_without_contract_version.php:60
+msgid "No version ever drawn"
+msgstr ""
+
+#: ./templates/element/ContractChecks/service_without_contract_version.php:74
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:74
+msgid "Due to be cut off"
+msgstr ""
+
+#: ./templates/element/ContractChecks/service_without_contract_version.php:76
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:76
+msgid "Due a reminder"
+msgstr ""
+
+#: ./templates/element/ContractChecks/service_without_contract_version.php:78
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:78
+msgid "In time until {0}"
+msgstr ""
+
+#: ./templates/element/ContractChecks/unapplied_contract_proposal.php:13
 msgid "The customer has agreed to something and the records still say the old thing, so the service runs and is invoiced on the old terms until somebody applies the changes."
 msgstr ""
 
-#: ./templates/element/ContractChecks/unfiled_signature.php:13
+#: ./templates/element/ContractChecks/unfiled_contract_proposal.php:13
 msgid "The signature is recorded and the signed documents were never filed. Nothing is held up by it, but there is nothing to show for what was agreed either."
 msgstr ""
 
-#: ./templates/element/ContractChecks/unsent_proposal.php:13
+#: ./templates/element/ContractChecks/unsent_contract_proposal.php:13
 msgid "The proposal was created and never sent. The day it takes effect comes whether or not the customer has seen it."
 msgstr ""
 
@@ -8661,33 +8728,17 @@ msgstr ""
 msgid "Either something is owed and nobody has asked for it, or it was waived and nobody has ticked \"obligations settled\"."
 msgstr ""
 
-#: ./templates/element/ContractChecks/unsigned_contract.php:17
+#: ./templates/element/ContractChecks/unsigned_contract_proposal.php:13
+msgid "The proposal was sent and has not come back signed. No changes are applied to the records until it does."
+msgstr ""
+
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:17
 msgid "Either nothing says when it was concluded, or what says so is from long before it took effect."
 msgstr ""
 
-#: ./templates/element/ContractChecks/unsigned_contract.php:36
-msgid "Deadline"
-msgstr ""
-
-#: ./templates/element/ContractChecks/unsigned_contract.php:74
-msgid "Due to be cut off"
-msgstr ""
-
-#: ./templates/element/ContractChecks/unsigned_contract.php:76
-msgid "Due a reminder"
-msgstr ""
-
-#: ./templates/element/ContractChecks/unsigned_contract.php:78
-msgid "In time until {0}"
-msgstr ""
-
-#: ./templates/element/ContractChecks/unsigned_contract.php:53
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:53
 msgctxt "sending date"
 msgid "Not recorded"
-msgstr ""
-
-#: ./templates/element/ContractChecks/unsigned_proposal.php:13
-msgid "The proposal was sent and has not come back signed. No changes are applied to the records until it does."
 msgstr ""
 
 #: ./templates/element/ContractProposalslying_changes.php:21
@@ -9029,15 +9080,15 @@ msgstr ""
 msgid "Open the contract problems"
 msgstr ""
 
-#: ./templates/element/Documents/rounds.php:33
+#: ./templates/element/Documents/proposals.php:33
 msgid "No proposals have been created here yet."
 msgstr ""
 
-#: ./templates/element/Documents/rounds.php:43
+#: ./templates/element/Documents/proposals.php:43
 msgid "State"
 msgstr ""
 
-#: ./templates/element/Documents/rounds.php:71
+#: ./templates/element/Documents/proposals.php:71
 msgid "Contracts: {0}"
 msgstr ""
 
@@ -9084,7 +9135,7 @@ msgstr ""
 msgid "View Task"
 msgstr ""
 
-#: ./templates/element/common/also_in_the_round.php:20
+#: ./templates/element/common/also_in_the_proposal.php:20
 msgid "Also in this customer proposal"
 msgstr ""
 
