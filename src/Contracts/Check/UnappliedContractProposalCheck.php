@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
-use App\Model\Table\ContractProposalsTable;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Override;
@@ -20,7 +19,7 @@ use Settings\Utility\Settings;
  * A proposal whose day has not come yet is not shown by default. There is nothing to do about it
  * until it does, and it would only be a list of things to leave alone.
  */
-class UnappliedContractProposalCheck extends AbstractContractCheck
+class UnappliedContractProposalCheck extends AbstractContractProposalCheck
 {
     /**
      * How far ahead a proposal is worth raising, if nothing says otherwise.
@@ -31,30 +30,6 @@ class UnappliedContractProposalCheck extends AbstractContractCheck
      * Where the settings say how far ahead to look.
      */
     private const WITHIN_DAYS_PATH = 'core.contracts.checks.unapplied_proposal_within_days';
-
-    /**
-     * @param \App\Model\Table\ContractProposalsTable $proposals Contract version proposals table.
-     * @param bool $ignore_inactive Whether to count only proposals whose day has come or is near.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
-     */
-    public function __construct(
-        private ContractProposalsTable $proposals,
-        bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
-    ) {
-        parent::__construct($ignore_inactive, $contract_id, $customer_id);
-    }
-
-    /**
-     * @return string|null
-     */
-    #[Override]
-    protected function contractField(): ?string
-    {
-        return 'ContractProposals.contract_id';
-    }
 
     /**
      * @return string
@@ -91,15 +66,10 @@ class UnappliedContractProposalCheck extends AbstractContractCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $query = $this->proposals->find('waitingToBeApplied');
-
-        $query
-            // The signature the rows print is the envelope's, so it comes with them.
-            ->contain(['Contracts' => ['Customers'], 'ContractVersions', 'CustomerProposals'])
-            ->innerJoinWith('Contracts')
+        $query = $this->candidates('waitingToBeApplied')
             ->orderBy(['ContractProposals.effective_from' => 'ASC']);
 
-        if ($this->ignore_inactive) {
+        if ($this->scope->ignore_inactive) {
             $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
 
             $query->where([

@@ -33,6 +33,13 @@ abstract class AbstractCheckRegistry
     private array $built = [];
 
     /**
+     * What the whole family is being asked, made once by the family's constructor and handed to
+     * each check it registers. One thing rather than three, so that a check is given one answer
+     * about what it is to look at.
+     */
+    protected CheckScope $scope;
+
+    /**
      * The check registered under the given id, or null where there is none.
      *
      * @param string $id Registry key.

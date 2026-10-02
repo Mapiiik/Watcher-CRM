@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Check\BillingGapCheck;
 use App\Model\Table\BillingsTable;
 use Cake\I18n\Date;
@@ -270,7 +271,7 @@ class BillingGapCheckTest extends TestCase
      */
     private function found(bool $ignore_inactive = true, ?string $contract_id = null): array
     {
-        $check = new BillingGapCheck($this->Billings, $ignore_inactive, $contract_id);
+        $check = new BillingGapCheck($this->Billings, new CheckScope($ignore_inactive, $contract_id));
 
         /** @var list<\App\Model\Entity\Billing> $records */
         $records = $check->find()->all()->toList();

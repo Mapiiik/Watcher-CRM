@@ -8,10 +8,10 @@ use App\Contracts\Check\UnfiledContractProposalCheck;
 use App\Contracts\Check\UnsentContractProposalCheck;
 use App\Contracts\Check\UnsignedContractProposalCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
+use App\Contracts\Unsigned\UnsignedWaits;
 use Cake\I18n\Date;
 use Dashboard\Card\AbstractDashboardCard;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * What paperwork is outstanding, and on whom it is waiting.
@@ -39,27 +39,6 @@ use Settings\Utility\Settings;
  */
 class UnsignedContractsCard extends AbstractDashboardCard
 {
-    /**
-     * Where the settings say how long a running service may go unsigned.
-     *
-     * Named apart from the inherited SETTINGS_PATH rather than overriding it: the waits are
-     * the contracts' business and belong beside the automation that acts on them, while what
-     * the card inherits reads dashboard settings. One constant for both would have the
-     * inherited helpers looking in the wrong place.
-     */
-    private const UNSIGNED_PATH = 'core.contracts.unsigned';
-
-    /**
-     * The waits, where the settings name none.
-     */
-    private const BLOCK_AFTER_INSTALLATION_DAYS = 10;
-
-    private const BLOCK_AFTER_VALID_FROM_DAYS = 20;
-
-    private const NOTIFY_AFTER_INSTALLATION_DAYS = 5;
-
-    private const NOTIFY_AFTER_VALID_FROM_DAYS = 10;
-
     /**
      * @param \App\Contracts\Unsigned\UnsignedPaperwork $paperwork What counts as unsigned.
      * @param \App\Contracts\Check\UnsignedContractProposalCheck $unsigned Papers out and not signed.
@@ -122,19 +101,9 @@ class UnsignedContractsCard extends AbstractDashboardCard
 
         // Three nested sets, widest first. No wait at all is every version that has taken
         // effect and come back unsigned - a day past its start is already one of these.
-        $total = $this->paperwork->findDue(0, 0, $today)->count();
-
-        $notified = $this->paperwork->findDue(
-            $this->wait('notifications.after_installation_days', self::NOTIFY_AFTER_INSTALLATION_DAYS),
-            $this->wait('notifications.after_valid_from_days', self::NOTIFY_AFTER_VALID_FROM_DAYS),
-            $today,
-        )->count();
-
-        $blocking = $this->paperwork->findDue(
-            $this->wait('blocking.after_installation_days', self::BLOCK_AFTER_INSTALLATION_DAYS),
-            $this->wait('blocking.after_valid_from_days', self::BLOCK_AFTER_VALID_FROM_DAYS),
-            $today,
-        )->count();
+        $total = $this->paperwork->findDue(UnsignedWaits::none(), $today)->count();
+        $notified = $this->paperwork->findDue(UnsignedWaits::beforeNotifying(), $today)->count();
+        $blocking = $this->paperwork->findDue(UnsignedWaits::beforeBlocking(), $today)->count();
 
         // Cut into slices that do not overlap. The clamps are for the settings being set the
         // wrong way round - reminders due later than disconnection - which nests the sets the
@@ -183,19 +152,5 @@ class UnsignedContractsCard extends AbstractDashboardCard
             // The card counts the day's work, so the link has to ask for the day's work.
             '?' => ['checks' => $checks, 'ignore_inactive' => 1],
         ];
-    }
-
-    /**
-     * A wait, in days, as the settings have it.
-     *
-     * @param string $key The key under this card's own settings path.
-     * @param int $default What to use where the settings say nothing.
-     * @return int
-     */
-    private function wait(string $key, int $default): int
-    {
-        $value = Settings::get(self::UNSIGNED_PATH . '.' . $key, $default);
-
-        return is_numeric($value) ? (int)$value : $default;
     }
 }

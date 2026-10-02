@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Model\Table\BillingsTable;
 use Cake\ORM\Query\SelectQuery;
 use Override;
@@ -109,17 +110,13 @@ class BillingGapCheck extends AbstractContractCheck
 
     /**
      * @param \App\Model\Table\BillingsTable $billings Billings table.
-     * @param bool $ignore_inactive Whether to count only breaks that are still ahead.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
+     * @param \App\Check\CheckScope $scope What is being asked about, and how widely.
      */
     public function __construct(
         private BillingsTable $billings,
-        bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
+        CheckScope $scope = new CheckScope(),
     ) {
-        parent::__construct($ignore_inactive, $contract_id, $customer_id);
+        parent::__construct($scope);
     }
 
     /**
@@ -185,8 +182,10 @@ class BillingGapCheck extends AbstractContractCheck
             ])
             ->orderBy(['Billings.billing_until' => 'ASC']);
 
-        if ($this->ignore_inactive) {
-            $this->onlyRunningContracts($query)->where([$query->expr(self::BREAK_NOT_OVER)]);
+        $this->onlyWhatIsRunning($query);
+
+        if ($this->scope->ignore_inactive) {
+            $query->where([$query->expr(self::BREAK_NOT_OVER)]);
         }
 
         return $this->scoped($query);

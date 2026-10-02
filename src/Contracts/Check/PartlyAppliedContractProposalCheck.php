@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
-use App\Model\Table\ContractProposalsTable;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 
@@ -19,32 +18,8 @@ use Override;
  * way - every one of these is somebody's to see to, whether it is the day's work or the whole
  * file.
  */
-class PartlyAppliedContractProposalCheck extends AbstractContractCheck
+class PartlyAppliedContractProposalCheck extends AbstractContractProposalCheck
 {
-    /**
-     * @param \App\Model\Table\ContractProposalsTable $proposals Contract proposals table.
-     * @param bool $ignore_inactive Kept for the shape of a check; this one reads the same either way.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
-     */
-    public function __construct(
-        private ContractProposalsTable $proposals,
-        bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
-    ) {
-        parent::__construct($ignore_inactive, $contract_id, $customer_id);
-    }
-
-    /**
-     * @return string|null
-     */
-    #[Override]
-    protected function contractField(): ?string
-    {
-        return 'ContractProposals.contract_id';
-    }
-
     /**
      * @return string
      */
@@ -91,11 +66,7 @@ class PartlyAppliedContractProposalCheck extends AbstractContractCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $query = $this->proposals->find();
-
-        $query
-            ->contain(['Contracts' => ['Customers'], 'ContractVersions', 'CustomerProposals'])
-            ->innerJoinWith('Contracts')
+        $query = $this->candidates()
             ->where(['ContractProposals.applied IS NOT' => null])
             // Written out rather than bound: a placeholder beside a jsonb column is read as the
             // operator of the same name ({@see \App\Model\Table\BillingsTable}).

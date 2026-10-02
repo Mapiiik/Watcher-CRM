@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Customers\Check;
 
+use App\Check\CheckScope;
 use App\Customers\Check\MissingEmailCheck;
 use App\Model\Table\CustomersTable;
 use Cake\Cache\Cache;
@@ -157,7 +158,7 @@ class MissingEmailCheckTest extends TestCase
     private function found(): array
     {
         /** @var list<\App\Model\Entity\Customer> $records */
-        $records = (new MissingEmailCheck($this->Customers, true, self::CUSTOMER_ID))->find()->all()->toList();
+        $records = (new MissingEmailCheck($this->Customers, new CheckScope(customer_id: self::CUSTOMER_ID)))->find()->all()->toList();
 
         return $records;
     }

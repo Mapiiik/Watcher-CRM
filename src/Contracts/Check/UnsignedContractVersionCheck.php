@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Unsigned\UnsignedPaperwork;
+use App\Contracts\Unsigned\UnsignedWaits;
 use App\Model\Table\ContractVersionsTable;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
@@ -37,48 +39,23 @@ class UnsignedContractVersionCheck extends AbstractContractCheck
     private const SETTINGS_PATH = 'core.contracts.checks.signature_expected_within_months';
 
     /**
-     * Where the settings say how long a running service may go unsigned before the customer
-     * is written to, and before the service is cut off.
-     */
-    private const NOTIFY_PATH = 'core.contracts.unsigned.notifications';
-
-    private const BLOCK_PATH = 'core.contracts.unsigned.blocking';
-
-    /**
      * How long before a version takes effect it may have been concluded, if nothing says
      * otherwise.
      */
     private const MONTHS = 3;
 
     /**
-     * The two waits, where the settings name none. They are only ever shown here, never acted
-     * on, so being out of step with the settings costs a wrong caption rather than a wrong
-     * disconnection.
-     */
-    private const NOTIFY_AFTER_INSTALLATION_DAYS = 5;
-
-    private const NOTIFY_AFTER_VALID_FROM_DAYS = 10;
-
-    private const BLOCK_AFTER_INSTALLATION_DAYS = 10;
-
-    private const BLOCK_AFTER_VALID_FROM_DAYS = 20;
-
-    /**
      * @param \App\Model\Table\ContractVersionsTable $versions Contract versions table.
      * @param \App\Contracts\Unsigned\UnsignedPaperwork $paperwork What counts as unsigned,
      *   shared with the command that chases it and the run that blocks on it.
-     * @param bool $ignore_inactive Whether to count only the contracts that are running.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
+     * @param \App\Check\CheckScope $scope What is being asked about, and how widely.
      */
     public function __construct(
         private ContractVersionsTable $versions,
         private UnsignedPaperwork $paperwork,
-        bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
+        CheckScope $scope = new CheckScope(),
     ) {
-        parent::__construct($ignore_inactive, $contract_id, $customer_id);
+        parent::__construct($scope);
     }
 
     /**
@@ -123,7 +100,7 @@ class UnsignedContractVersionCheck extends AbstractContractCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $query = $this->ignore_inactive ? $this->overdue() : $this->everything();
+        $query = $this->scope->ignore_inactive ? $this->overdue() : $this->everything();
 
         return $this->scoped($this->withDeadlines($query));
     }
@@ -145,10 +122,8 @@ class UnsignedContractVersionCheck extends AbstractContractCheck
         return $this->paperwork->withDeadlines(
             $query,
             Date::today(),
-            (int)Settings::get(self::NOTIFY_PATH . '.after_installation_days', self::NOTIFY_AFTER_INSTALLATION_DAYS),
-            (int)Settings::get(self::NOTIFY_PATH . '.after_valid_from_days', self::NOTIFY_AFTER_VALID_FROM_DAYS),
-            (int)Settings::get(self::BLOCK_PATH . '.after_installation_days', self::BLOCK_AFTER_INSTALLATION_DAYS),
-            (int)Settings::get(self::BLOCK_PATH . '.after_valid_from_days', self::BLOCK_AFTER_VALID_FROM_DAYS),
+            UnsignedWaits::beforeNotifying(),
+            UnsignedWaits::beforeBlocking(),
         );
     }
 
@@ -167,7 +142,7 @@ class UnsignedContractVersionCheck extends AbstractContractCheck
      */
     private function overdue(): SelectQuery
     {
-        return $this->paperwork->findDue(0, 0, Date::today());
+        return $this->paperwork->findDue(UnsignedWaits::none(), Date::today());
     }
 
     /**

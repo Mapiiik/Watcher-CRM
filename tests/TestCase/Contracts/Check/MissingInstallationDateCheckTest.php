@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Check\MissingInstallationDateCheck;
 use App\Model\Table\ContractsTable;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -100,7 +101,7 @@ class MissingInstallationDateCheckTest extends TestCase
     private function found(): array
     {
         /** @var list<\App\Model\Entity\Contract> $records */
-        $records = (new MissingInstallationDateCheck($this->Contracts, true, self::CONTRACT_ID))
+        $records = (new MissingInstallationDateCheck($this->Contracts, new CheckScope(true, self::CONTRACT_ID)))
             ->find()
             ->all()
             ->toList();

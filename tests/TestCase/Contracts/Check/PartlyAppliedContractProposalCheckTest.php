@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Check\PartlyAppliedContractProposalCheck;
 use App\Model\Table\ContractProposalsTable;
 use App\Test\Traits\TableTestTrait;
@@ -137,7 +138,7 @@ class PartlyAppliedContractProposalCheckTest extends TestCase
         /** @var \App\Model\Table\ContractProposalsTable $proposals */
         $proposals = $this->getTableLocator()->get(ContractProposalsTable::class);
 
-        return (new PartlyAppliedContractProposalCheck($proposals, $ignore_inactive))
+        return (new PartlyAppliedContractProposalCheck($proposals, new CheckScope($ignore_inactive)))
             ->find()
             ->all()
             ->extract('id')

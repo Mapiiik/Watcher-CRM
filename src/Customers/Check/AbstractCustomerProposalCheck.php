@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Customers\Check;
 
 use App\Check\AbstractCheck;
+use App\Check\CheckScope;
 use App\Model\Table\CustomerProposalsTable;
 use Cake\ORM\Query\SelectQuery;
 use Override;
@@ -19,15 +20,13 @@ abstract class AbstractCustomerProposalCheck extends AbstractCheck implements Cu
 {
     /**
      * @param \App\Model\Table\CustomerProposalsTable $proposals Customer proposals table.
-     * @param bool $ignore_inactive Whether to keep to the customers we still serve.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
+     * @param \App\Check\CheckScope $scope What is being asked about, and how widely.
      */
     public function __construct(
         protected CustomerProposalsTable $proposals,
-        protected bool $ignore_inactive = true,
-        ?string $customer_id = null,
+        CheckScope $scope = new CheckScope(),
     ) {
-        parent::__construct(customer_id: $customer_id);
+        parent::__construct($scope);
     }
 
     /**
@@ -69,7 +68,7 @@ abstract class AbstractCustomerProposalCheck extends AbstractCheck implements Cu
     {
         $query = $this->proposals->find()->contain(['Customers', 'ContractProposals']);
 
-        if ($this->ignore_inactive) {
+        if ($this->scope->ignore_inactive) {
             $query->where(['CustomerProposals.customer_id IN' => $this->activeCustomerIds()]);
         }
 

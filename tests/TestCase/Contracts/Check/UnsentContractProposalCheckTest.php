@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Check\UnsentContractProposalCheck;
 use App\Model\Table\ContractProposalsTable;
 use App\Test\Traits\TableTestTrait;
@@ -115,7 +116,7 @@ class UnsentContractProposalCheckTest extends TestCase
         /** @var \App\Model\Table\ContractProposalsTable $proposals */
         $proposals = $this->getTableLocator()->get(ContractProposalsTable::class);
 
-        return (new UnsentContractProposalCheck($proposals, $ignore_inactive))
+        return (new UnsentContractProposalCheck($proposals, new CheckScope($ignore_inactive)))
             ->find()
             ->all()
             ->extract('id')

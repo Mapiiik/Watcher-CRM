@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Contracts\Check;
 
 use App\Check\AbstractCheckRegistry;
+use App\Check\CheckScope;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\BorrowedEquipmentsTable;
@@ -37,10 +38,12 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
      *   This is what lets a customer show the findings on every contract they hold.
      */
     public function __construct(
-        private bool $ignore_inactive = true,
-        private ?string $contract_id = null,
-        private ?string $customer_id = null,
+        bool $ignore_inactive = true,
+        ?string $contract_id = null,
+        ?string $customer_id = null,
     ) {
+        $this->scope = new CheckScope($ignore_inactive, $contract_id, $customer_id);
+
         /** @var \App\Model\Table\BillingsTable $billings */
         $billings = $this->fetchTable(BillingsTable::class);
         /** @var \App\Model\Table\ContractVersionsTable $versions */
@@ -53,154 +56,30 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
         $equipments = $this->fetchTable(BorrowedEquipmentsTable::class);
 
         $this->factories = [
-            'billing_gap' =>
-                fn(): ContractCheckInterface => new BillingGapCheck(
-                    $billings,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'overlapping_billings' =>
-                fn(): ContractCheckInterface => new OverlappingBillingsCheck(
-                    $billings,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'impossible_billing_period' =>
-                fn(): ContractCheckInterface => new ImpossibleBillingPeriodCheck(
-                    $billings,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'overlapping_contract_versions' =>
-                fn(): ContractCheckInterface => new OverlappingContractVersionsCheck(
-                    $versions,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
+            'billing_gap' => fn() => new BillingGapCheck($billings, $this->scope),
+            'overlapping_billings' => fn() => new OverlappingBillingsCheck($billings, $this->scope),
+            'impossible_billing_period' => fn() => new ImpossibleBillingPeriodCheck($billings, $this->scope),
+            'overlapping_contract_versions' => fn() => new OverlappingContractVersionsCheck($versions, $this->scope),
             'impossible_contract_version_period' =>
-                fn(): ContractCheckInterface => new ImpossibleContractVersionPeriodCheck(
-                    $versions,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'unsettled_obligation' =>
-                fn(): ContractCheckInterface => new UnsettledObligationCheck(
-                    $versions,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'contract_version_gap' =>
-                fn(): ContractCheckInterface => new ContractVersionGapCheck(
-                    $versions,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'active_without_billing' =>
-                fn(): ContractCheckInterface => new ActiveWithoutBillingCheck(
-                    $contracts,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'inactive_with_billing' =>
-                fn(): ContractCheckInterface => new InactiveWithBillingCheck(
-                    $contracts,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'billing_service_type_mismatch' =>
-                fn(): ContractCheckInterface => new BillingServiceTypeMismatchCheck(
-                    $billings,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'non_standard_service' =>
-                fn(): ContractCheckInterface => new NonStandardServiceCheck(
-                    $billings,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
+                fn() => new ImpossibleContractVersionPeriodCheck($versions, $this->scope),
+            'unsettled_obligation' => fn() => new UnsettledObligationCheck($versions, $this->scope),
+            'contract_version_gap' => fn() => new ContractVersionGapCheck($versions, $this->scope),
+            'active_without_billing' => fn() => new ActiveWithoutBillingCheck($contracts, $this->scope),
+            'inactive_with_billing' => fn() => new InactiveWithBillingCheck($contracts, $this->scope),
+            'billing_service_type_mismatch' => fn() => new BillingServiceTypeMismatchCheck($billings, $this->scope),
+            'non_standard_service' => fn() => new NonStandardServiceCheck($billings, $this->scope),
             'partly_applied_contract_proposal' =>
-                fn(): ContractCheckInterface => new PartlyAppliedContractProposalCheck(
-                    $proposals,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'unapplied_contract_proposal' =>
-                fn(): ContractCheckInterface => new UnappliedContractProposalCheck(
-                    $proposals,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'unsigned_contract_proposal' =>
-                fn(): ContractCheckInterface => new UnsignedContractProposalCheck(
-                    $proposals,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'unsent_contract_proposal' =>
-                fn(): ContractCheckInterface => new UnsentContractProposalCheck(
-                    $proposals,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'unfiled_contract_proposal' =>
-                fn(): ContractCheckInterface => new UnfiledContractProposalCheck(
-                    $proposals,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
+                fn() => new PartlyAppliedContractProposalCheck($proposals, $this->scope),
+            'unapplied_contract_proposal' => fn() => new UnappliedContractProposalCheck($proposals, $this->scope),
+            'unsigned_contract_proposal' => fn() => new UnsignedContractProposalCheck($proposals, $this->scope),
+            'unsent_contract_proposal' => fn() => new UnsentContractProposalCheck($proposals, $this->scope),
+            'unfiled_contract_proposal' => fn() => new UnfiledContractProposalCheck($proposals, $this->scope),
             'unsigned_contract_version' =>
-                fn(): ContractCheckInterface => new UnsignedContractVersionCheck(
-                    $versions,
-                    new UnsignedPaperwork($versions),
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'missing_installation_date' =>
-                fn(): ContractCheckInterface => new MissingInstallationDateCheck(
-                    $contracts,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'missing_access_point' =>
-                fn(): ContractCheckInterface => new MissingAccessPointCheck(
-                    $contracts,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'impossible_contract_dates' =>
-                fn(): ContractCheckInterface => new ImpossibleContractDatesCheck(
-                    $contracts,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'impossible_borrowed_period' =>
-                fn(): ContractCheckInterface => new ImpossibleBorrowedPeriodCheck(
-                    $equipments,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
+                fn() => new UnsignedContractVersionCheck($versions, new UnsignedPaperwork($versions), $this->scope),
+            'missing_installation_date' => fn() => new MissingInstallationDateCheck($contracts, $this->scope),
+            'missing_access_point' => fn() => new MissingAccessPointCheck($contracts, $this->scope),
+            'impossible_contract_dates' => fn() => new ImpossibleContractDatesCheck($contracts, $this->scope),
+            'impossible_borrowed_period' => fn() => new ImpossibleBorrowedPeriodCheck($equipments, $this->scope),
         ];
     }
 }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
-use App\Model\Table\ContractProposalsTable;
 use App\Proposals\LateProposals;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Query\SelectQuery;
@@ -17,7 +16,7 @@ use Settings\Utility\Settings;
  * the service runs, and the paper stays in somebody's inbox for good. Carried-over proposals are
  * reported too - that is where the papers are needed most.
  */
-class UnfiledContractProposalCheck extends AbstractContractCheck
+class UnfiledContractProposalCheck extends AbstractContractProposalCheck
 {
     /**
      * How long after the signature the scan may be missing, if nothing says otherwise.
@@ -28,30 +27,6 @@ class UnfiledContractProposalCheck extends AbstractContractCheck
      * Where the settings say how long that is.
      */
     private const AFTER_DAYS_PATH = 'core.contracts.documents.unfiled_after_days';
-
-    /**
-     * @param \App\Model\Table\ContractProposalsTable $proposals Contract proposals table.
-     * @param bool $ignore_inactive Whether to keep to the contracts that serve somebody.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
-     */
-    public function __construct(
-        private ContractProposalsTable $proposals,
-        bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
-    ) {
-        parent::__construct($ignore_inactive, $contract_id, $customer_id);
-    }
-
-    /**
-     * @return string|null
-     */
-    #[Override]
-    protected function contractField(): ?string
-    {
-        return 'ContractProposals.contract_id';
-    }
 
     /**
      * @return string
@@ -90,12 +65,7 @@ class UnfiledContractProposalCheck extends AbstractContractCheck
     {
         $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
-        $query = $this->proposals->find()
-            // Whether the papers went out and came back is the envelope's to say, and the rows
-            // print it, so it is read as well as joined.
-            ->contain(['Contracts' => ['Customers'], 'ContractVersions', 'CustomerProposals'])
-            ->innerJoinWith('Contracts')
-            ->innerJoinWith('CustomerProposals')
+        $query = $this->candidates()
             // Nothing of ours is signed for a contract whose service keeps no versions.
             ->innerJoinWith('Contracts.ServiceTypes')
             ->where(['ServiceTypes.have_contract_versions' => true]);
@@ -108,9 +78,7 @@ class UnfiledContractProposalCheck extends AbstractContractCheck
             'CustomerProposals',
         );
 
-        if ($this->ignore_inactive) {
-            $this->onlyRunningContracts($query);
-        }
+        $this->onlyWhatIsRunning($query);
 
         return $this->scoped($query);
     }

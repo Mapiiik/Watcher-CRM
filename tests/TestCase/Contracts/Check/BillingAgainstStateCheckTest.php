@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Check\ActiveWithoutBillingCheck;
 use App\Contracts\Check\InactiveWithBillingCheck;
 use App\Model\Table\BillingsTable;
@@ -231,7 +232,7 @@ class BillingAgainstStateCheckTest extends TestCase
     private function givenAwayService(bool $ignore_inactive = true): array
     {
         /** @var list<\App\Model\Entity\Contract> $records */
-        $records = (new ActiveWithoutBillingCheck($this->Contracts, $ignore_inactive, self::CONTRACT_ID))
+        $records = (new ActiveWithoutBillingCheck($this->Contracts, new CheckScope($ignore_inactive, self::CONTRACT_ID)))
             ->find()
             ->all()
             ->toList();
@@ -248,7 +249,7 @@ class BillingAgainstStateCheckTest extends TestCase
     private function chargedForNothing(bool $ignore_inactive = true): array
     {
         /** @var list<\App\Model\Entity\Contract> $records */
-        $records = (new InactiveWithBillingCheck($this->Contracts, $ignore_inactive, self::CONTRACT_ID))
+        $records = (new InactiveWithBillingCheck($this->Contracts, new CheckScope($ignore_inactive, self::CONTRACT_ID)))
             ->find()
             ->all()
             ->toList();

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Check\UnsettledObligationCheck;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractVersionsTable;
@@ -141,7 +142,7 @@ class UnsettledObligationCheckTest extends TestCase
     private function found(bool $ignore_inactive = true): array
     {
         /** @var list<\App\Model\Entity\ContractVersion> $records */
-        $records = (new UnsettledObligationCheck($this->ContractVersions, $ignore_inactive))
+        $records = (new UnsettledObligationCheck($this->ContractVersions, new CheckScope($ignore_inactive)))
             ->find()
             ->all()
             ->toList();

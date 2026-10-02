@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Check\OverlappingBillingsCheck;
 use App\Model\Table\BillingsTable;
 use Cake\I18n\Date;
@@ -180,7 +181,7 @@ class OverlappingBillingsCheckTest extends TestCase
     private function found(bool $ignore_inactive = true): array
     {
         /** @var list<\App\Model\Entity\Billing> $records */
-        $records = (new OverlappingBillingsCheck($this->Billings, $ignore_inactive))->find()->all()->toList();
+        $records = (new OverlappingBillingsCheck($this->Billings, new CheckScope($ignore_inactive)))->find()->all()->toList();
 
         return $records;
     }

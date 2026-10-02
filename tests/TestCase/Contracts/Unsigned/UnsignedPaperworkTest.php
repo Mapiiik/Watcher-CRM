@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Contracts\Unsigned;
 
 use App\Contracts\Unsigned\UnsignedPaperwork;
+use App\Contracts\Unsigned\UnsignedWaits;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Enum\UnsignedDeadlineAnchor;
@@ -437,7 +438,7 @@ class UnsignedPaperworkTest extends TestCase
     {
         /** @var list<\App\Model\Entity\ContractVersion> $records */
         $records = $this->paperwork
-            ->findDue($after_anchor, $after_valid_from, new Date(self::TODAY))
+            ->findDue(new UnsignedWaits($after_anchor, $after_valid_from), new Date(self::TODAY))
             ->all()
             ->toList();
 
@@ -452,7 +453,7 @@ class UnsignedPaperworkTest extends TestCase
     {
         /** @var list<\App\Model\Entity\ContractVersion> $records */
         $records = $this->paperwork
-            ->findBecomingDueOn(self::AFTER_ANCHOR, self::AFTER_VALID_FROM, new Date($day))
+            ->findBecomingDueOn(new UnsignedWaits(self::AFTER_ANCHOR, self::AFTER_VALID_FROM), new Date($day))
             ->all()
             ->toList();
 
@@ -467,7 +468,7 @@ class UnsignedPaperworkTest extends TestCase
     {
         /** @var list<\App\Model\Entity\ContractVersion> $records */
         $records = $this->paperwork
-            ->findDueBefore(self::AFTER_ANCHOR, self::AFTER_VALID_FROM, new Date($day))
+            ->findDueBefore(new UnsignedWaits(self::AFTER_ANCHOR, self::AFTER_VALID_FROM), new Date($day))
             ->all()
             ->toList();
 

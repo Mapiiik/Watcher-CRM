@@ -21,13 +21,10 @@ abstract class AbstractCheck implements CheckInterface
     use LocatorAwareTrait;
 
     /**
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
+     * @param \App\Check\CheckScope $scope What is being asked about, and how widely.
      */
-    public function __construct(
-        protected ?string $contract_id = null,
-        protected ?string $customer_id = null,
-    ) {
+    public function __construct(protected CheckScope $scope = new CheckScope())
+    {
     }
 
     /**
@@ -61,13 +58,13 @@ abstract class AbstractCheck implements CheckInterface
     protected function scoped(SelectQuery $query): SelectQuery
     {
         $contract = $this->contractField();
-        if ($this->contract_id !== null && $contract !== null) {
-            $query->where([$contract => $this->contract_id]);
+        if ($this->scope->contract_id !== null && $contract !== null) {
+            $query->where([$contract => $this->scope->contract_id]);
         }
 
         $customer = $this->customerField();
-        if ($this->customer_id !== null && $customer !== null) {
-            $query->where([$customer => $this->customer_id]);
+        if ($this->scope->customer_id !== null && $customer !== null) {
+            $query->where([$customer => $this->scope->customer_id]);
         }
 
         return $query;
@@ -84,8 +81,8 @@ abstract class AbstractCheck implements CheckInterface
      */
     public function answersWhatWasAsked(): bool
     {
-        return ($this->contract_id === null || $this->contractField() !== null)
-            && ($this->customer_id === null || $this->customerField() !== null);
+        return ($this->scope->contract_id === null || $this->contractField() !== null)
+            && ($this->scope->customer_id === null || $this->customerField() !== null);
     }
 
     /**

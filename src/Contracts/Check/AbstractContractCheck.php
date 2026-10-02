@@ -13,16 +13,15 @@ use Settings\Utility\Settings;
 /**
  * Shared ground for contract checks.
  *
- * Two things every one of them is given. Whether it keeps to what is running, which each
- * applies to its own subject - the answer has to be about the record being reported rather
- * than about something else its contract happens to have. And, when the checks are asked
- * about one record rather than about the whole file, which record that is: a contract, so
- * that it can show its own findings, or a customer, so that theirs can show the findings on
- * every contract they hold.
+ * What every one of them is asked - one record or the whole file, and whether to keep to
+ * what is running - arrives as the scope they all share, {@see \App\Check\CheckScope}. Each
+ * applies it to its own subject, so that the answer is about the record being reported
+ * rather than about something else its contract happens to have.
  *
- * Beside that, what counts as a date at all. Where a day may reasonably fall is a matter of
- * how the company works rather than of how the code does, so it is asked of the settings -
- * and asked once, because a check runs its query more often than the answer changes.
+ * What is laid here is what counts as a date at all. Where a day may reasonably fall is a
+ * matter of how the company works rather than of how the code does, so it is asked of the
+ * settings - and asked once, because a check runs its query more often than the answer
+ * changes.
  */
 abstract class AbstractContractCheck extends AbstractCheck implements ContractCheckInterface
 {
@@ -51,19 +50,6 @@ abstract class AbstractContractCheck extends AbstractCheck implements ContractCh
     private ?array $dates_meaning_unknown = null;
 
     /**
-     * @param bool $ignore_inactive Whether the check keeps to what is running.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
-     */
-    public function __construct(
-        protected bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
-    ) {
-        parent::__construct($contract_id, $customer_id);
-    }
-
-    /**
      * Every one of these queries has the contract beside it, either as its subject or as what
      * the record hangs on, so they all hold the customer in the same place. Which field holds
      * the contract differs, and each check says.
@@ -86,13 +72,22 @@ abstract class AbstractContractCheck extends AbstractCheck implements ContractCh
     }
 
     /**
-     * Narrow a query on a record hanging off a contract to the contracts that are running.
+     * Narrow a query on a record hanging off a contract to the contracts that are running, where
+     * that is what was asked.
+     *
+     * The scope is read here rather than in each check, because every one of them was reading it
+     * the same way round - and a check that forgot to read it looked no different from one that
+     * has nothing to narrow.
      *
      * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query to narrow.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    protected function onlyRunningContracts(SelectQuery $query): SelectQuery
+    protected function onlyWhatIsRunning(SelectQuery $query): SelectQuery
     {
+        if (!$this->scope->ignore_inactive) {
+            return $query;
+        }
+
         return $query->innerJoinWith(
             'Contracts.ContractStates',
             fn(SelectQuery $states): SelectQuery => $states->where(['ContractStates.active_services' => true]),

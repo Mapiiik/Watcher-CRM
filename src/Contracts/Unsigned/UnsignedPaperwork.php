@@ -48,17 +48,16 @@ final class UnsignedPaperwork
      * This is a state rather than an event, which is what blocking asks: whoever is past the
      * deadline today is blocked today, and the run recomputes the whole set each time.
      *
-     * @param int $after_anchor Days after the anchor date before it is chased.
-     * @param int $after_valid_from Days after the version took effect before it is chased.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $waits How long it may go unsigned first.
      * @param \Cake\I18n\Date $today The day being asked about.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    public function findDue(int $after_anchor, int $after_valid_from, Date $today): SelectQuery
+    public function findDue(UnsignedWaits $waits, Date $today): SelectQuery
     {
         $query = $this->base($today);
 
         return $query->where(
-            $query->expr()->lte($this->deadline($query, $after_anchor, $after_valid_from), $today, 'date'),
+            $query->expr()->lte($this->deadline($query, $waits), $today, 'date'),
         );
     }
 
@@ -70,17 +69,16 @@ final class UnsignedPaperwork
      * paid for over the one that is not. Not versions, because two unsigned versions of the
      * same contract are still one service to cut off.
      *
-     * @param int $after_anchor Days after the anchor date before the service is cut off.
-     * @param int $after_valid_from Days after the version took effect before it is cut off.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $waits How long it may go unsigned first.
      * @param \Cake\I18n\Date $today The day being asked about.
      * @return array<string, string> Contract id to the reason it is being cut off.
      */
-    public function contractIdsToBlock(int $after_anchor, int $after_valid_from, Date $today): array
+    public function contractIdsToBlock(UnsignedWaits $waits, Date $today): array
     {
         $blocked = [];
 
         /** @var \App\Model\Entity\ContractVersion $version */
-        foreach ($this->findDue($after_anchor, $after_valid_from, $today)->all() as $version) {
+        foreach ($this->findDue($waits, $today)->all() as $version) {
             $blocked[$version->contract_id] = __('unsigned contract');
         }
 
@@ -94,17 +92,16 @@ final class UnsignedPaperwork
      * range is what keeps a nightly run from sending the same reminder over and over without
      * anything having to be remembered between runs.
      *
-     * @param int $after_anchor Days after the anchor date before it is chased.
-     * @param int $after_valid_from Days after the version took effect before it is chased.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $waits How long it may go unsigned first.
      * @param \Cake\I18n\Date $day The day the wait is asked to have run out on.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    public function findBecomingDueOn(int $after_anchor, int $after_valid_from, Date $day): SelectQuery
+    public function findBecomingDueOn(UnsignedWaits $waits, Date $day): SelectQuery
     {
         $query = $this->base(Date::today());
 
         return $query->where(
-            $query->expr()->eq($this->deadline($query, $after_anchor, $after_valid_from), $day, 'date'),
+            $query->expr()->eq($this->deadline($query, $waits), $day, 'date'),
         );
     }
 
@@ -115,17 +112,16 @@ final class UnsignedPaperwork
      * would rather keep asking every day than let it go quiet. The boundary is kept strict
      * so that this and the named days cannot both pick the same version up in one run.
      *
-     * @param int $after_anchor Days after the anchor date before it is chased.
-     * @param int $after_valid_from Days after the version took effect before it is chased.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $waits How long it may go unsigned first.
      * @param \Cake\I18n\Date $day The day the wait is asked to have run out before.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    public function findDueBefore(int $after_anchor, int $after_valid_from, Date $day): SelectQuery
+    public function findDueBefore(UnsignedWaits $waits, Date $day): SelectQuery
     {
         $query = $this->base(Date::today());
 
         return $query->where(
-            $query->expr()->lt($this->deadline($query, $after_anchor, $after_valid_from), $day, 'date'),
+            $query->expr()->lt($this->deadline($query, $waits), $day, 'date'),
         );
     }
 
@@ -147,33 +143,19 @@ final class UnsignedPaperwork
      *
      * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query to add them to.
      * @param \Cake\I18n\Date $today The day the standing is asked as of.
-     * @param int $notify_after_anchor Days after the anchor date before the customer is written to.
-     * @param int $notify_after_valid_from Days after the version took effect before the customer is written to.
-     * @param int $block_after_anchor Days after the anchor date before the service is cut off.
-     * @param int $block_after_valid_from Days after the version took effect before the service is cut off.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $notify How long before the customer is written to.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $block How long before the service is cut off.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
     public function withDeadlines(
         SelectQuery $query,
         Date $today,
-        int $notify_after_anchor,
-        int $notify_after_valid_from,
-        int $block_after_anchor,
-        int $block_after_valid_from,
+        UnsignedWaits $notify,
+        UnsignedWaits $block,
     ): SelectQuery {
         $query->selectAlso([
-            'notify_due' => $this->deadlineWhereItApplies(
-                $query,
-                $today,
-                $notify_after_anchor,
-                $notify_after_valid_from,
-            ),
-            'block_due' => $this->deadlineWhereItApplies(
-                $query,
-                $today,
-                $block_after_anchor,
-                $block_after_valid_from,
-            ),
+            'notify_due' => $this->deadlineWhereItApplies($query, $today, $notify),
+            'block_due' => $this->deadlineWhereItApplies($query, $today, $block),
         ]);
 
         // Said outright, because an expression carries no type of its own and both of these
@@ -250,17 +232,16 @@ final class UnsignedPaperwork
      * The day the wait runs out: the later of the two dates the version is held to.
      *
      * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query being built.
-     * @param int $after_anchor Days after the anchor date.
-     * @param int $after_valid_from Days after the version took effect.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $waits The two waits it is held to.
      * @return \Cake\Database\Expression\QueryExpression
      */
-    private function deadline(SelectQuery $query, int $after_anchor, int $after_valid_from): QueryExpression
+    private function deadline(SelectQuery $query, UnsignedWaits $waits): QueryExpression
     {
         return $query->expr(sprintf(
             "GREATEST(%s + INTERVAL '%d days', ContractVersions.valid_from + INTERVAL '%d days')",
             $this->anchorSql(),
-            $after_anchor,
-            $after_valid_from,
+            $waits->after_anchor,
+            $waits->after_start,
         ));
     }
 
@@ -270,20 +251,18 @@ final class UnsignedPaperwork
      *
      * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query being built.
      * @param \Cake\I18n\Date $today The day it is being asked as of.
-     * @param int $after_anchor Days after the anchor date.
-     * @param int $after_valid_from Days after the version took effect.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $waits The two waits it is held to.
      * @return \Cake\Database\Expression\CaseStatementExpression
      */
     private function deadlineWhereItApplies(
         SelectQuery $query,
         Date $today,
-        int $after_anchor,
-        int $after_valid_from,
+        UnsignedWaits $waits,
     ): CaseStatementExpression {
         return $query->expr()
             ->case()
             ->when($this->consideredConditions($query, $today))
-            ->then($this->deadline($query, $after_anchor, $after_valid_from), 'date');
+            ->then($this->deadline($query, $waits), 'date');
     }
 
     /**

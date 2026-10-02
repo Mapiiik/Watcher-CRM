@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Contracts\Check\UnsignedContractVersionCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Model\Enum\UnsignedDeadlineAnchor;
@@ -382,7 +383,7 @@ class UnsignedContractVersionCheckTest extends TestCase
         $check = new UnsignedContractVersionCheck(
             $this->ContractVersions,
             new UnsignedPaperwork($this->ContractVersions),
-            $ignore_inactive,
+            new CheckScope($ignore_inactive),
         );
 
         /** @var list<\App\Model\Entity\ContractVersion> $records */

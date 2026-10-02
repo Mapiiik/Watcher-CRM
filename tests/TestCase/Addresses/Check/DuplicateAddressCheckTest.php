@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Addresses\Check;
 
 use App\Addresses\Check\DuplicateAddressCheck;
+use App\Check\CheckScope;
 use App\Model\Entity\Customer;
 use App\Model\Enum\AddressNumberType;
 use App\Model\Enum\AddressType;
@@ -72,7 +73,7 @@ class DuplicateAddressCheckTest extends TestCase
         $this->Addresses = $addresses;
 
         // What these customers have running is asked separately, below.
-        $this->check = new DuplicateAddressCheck($this->Addresses, false);
+        $this->check = new DuplicateAddressCheck($this->Addresses, new CheckScope(false));
     }
 
     /**

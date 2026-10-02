@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Addresses\Check;
 
+use App\Check\CheckScope;
 use App\Model\Entity\Customer;
 use App\Model\Enum\AddressType;
 use App\Model\Enum\BillingAddressProblem;
@@ -32,17 +33,13 @@ class UnclearBillingAddressCheck extends AbstractAddressCheck
 {
     /**
      * @param \App\Model\Table\CustomersTable $customers Customers table.
-     * @param bool $ignore_inactive Whether to pass over customers with nothing running.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
+     * @param \App\Check\CheckScope $scope What is being asked about, and how widely.
      */
     public function __construct(
         private CustomersTable $customers,
-        private bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
+        CheckScope $scope = new CheckScope(),
     ) {
-        parent::__construct($contract_id, $customer_id);
+        parent::__construct($scope);
     }
 
     /**
@@ -126,7 +123,7 @@ class UnclearBillingAddressCheck extends AbstractAddressCheck
         $missing = $query->expr()->and($exhausted);
         $reasons[] = $missing;
 
-        if ($this->ignore_inactive) {
+        if ($this->scope->ignore_inactive) {
             $query->where(['Customers.id IN' => $this->activeCustomerIds()]);
         }
 

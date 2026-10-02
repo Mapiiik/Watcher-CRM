@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
+use App\Check\CheckScope;
 use App\Model\Table\ContractsTable;
 use Cake\ORM\Query\SelectQuery;
 use Override;
@@ -65,18 +66,13 @@ class InactiveWithBillingCheck extends AbstractContractCheck
 
     /**
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
-     * @param bool $ignore_inactive Kept for the shape of the family; this check has only the
-     *   one reading. {@see self::hasAWiderReading()}
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
+     * @param \App\Check\CheckScope $scope What is being asked about, and how widely.
      */
     public function __construct(
         private ContractsTable $contracts,
-        bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
+        CheckScope $scope = new CheckScope(),
     ) {
-        parent::__construct($ignore_inactive, $contract_id, $customer_id);
+        parent::__construct($scope);
     }
 
     /**

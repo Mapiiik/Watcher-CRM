@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Addresses\Check;
 
 use App\Addresses\Check\UnclearBillingAddressCheck;
+use App\Check\CheckScope;
 use App\Model\Entity\Customer;
 use App\Model\Enum\AddressType;
 use App\Model\Enum\BillingAddressProblem;
@@ -73,7 +74,7 @@ class UnclearBillingAddressCheckTest extends TestCase
         // The fallback is what these cases are about, so they are not also made to have a
         // running service. Whether the check passes over the ones that have none is asked
         // separately, below.
-        $this->check = new UnclearBillingAddressCheck($this->Customers, false);
+        $this->check = new UnclearBillingAddressCheck($this->Customers, new CheckScope(false));
     }
 
     /**
@@ -187,7 +188,7 @@ class UnclearBillingAddressCheckTest extends TestCase
         $this->assertContains($running->id, $ignoring);
 
         // and with the filter lifted, both of them are there
-        $all = (new UnclearBillingAddressCheck($this->Customers, false))
+        $all = (new UnclearBillingAddressCheck($this->Customers, new CheckScope(false)))
             ->find()->all()->extract('id')->toList();
 
         $this->assertContains($dormant->id, $all);

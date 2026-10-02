@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
-use App\Model\Table\ContractProposalsTable;
 use App\Proposals\LateProposals;
 use Cake\ORM\Query\SelectQuery;
 use Override;
@@ -21,7 +20,7 @@ use Settings\Utility\Settings;
  * then there is nothing to do about it, and it would only be a list of things to leave alone.
  * Lifting the filter widens this one to the contracts that serve nobody, and to nothing else.
  */
-class UnsentContractProposalCheck extends AbstractContractCheck
+class UnsentContractProposalCheck extends AbstractContractProposalCheck
 {
     /**
      * How far ahead a proposal nobody has sent is worth raising, if nothing says otherwise.
@@ -32,30 +31,6 @@ class UnsentContractProposalCheck extends AbstractContractCheck
      * Where the settings say how far ahead to look.
      */
     private const WITHIN_DAYS_PATH = 'core.contracts.proposals.unsent_within_days';
-
-    /**
-     * @param \App\Model\Table\ContractProposalsTable $proposals Contract version proposals table.
-     * @param bool $ignore_inactive Whether to keep to the contracts that serve somebody.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
-     */
-    public function __construct(
-        private ContractProposalsTable $proposals,
-        bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
-    ) {
-        parent::__construct($ignore_inactive, $contract_id, $customer_id);
-    }
-
-    /**
-     * @return string|null
-     */
-    #[Override]
-    protected function contractField(): ?string
-    {
-        return 'ContractProposals.contract_id';
-    }
 
     /**
      * @return string
@@ -94,20 +69,13 @@ class UnsentContractProposalCheck extends AbstractContractCheck
     {
         $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
 
-        $query = $this->proposals->find('open')
-            // Whether the papers went out and came back is the envelope's to say, and the rows
-            // print it, so it is read as well as joined.
-            ->contain(['Contracts' => ['Customers'], 'ContractVersions', 'CustomerProposals'])
-            ->innerJoinWith('Contracts')
-            ->innerJoinWith('CustomerProposals');
+        $query = $this->candidates('open');
 
         // The wait holds whichever question is being asked. What the wider reading adds is the
         // contracts that serve nobody, not the proposals whose day has not come yet.
         LateProposals::neverSent($query, 'ContractProposals', $within, 'CustomerProposals');
 
-        if ($this->ignore_inactive) {
-            $this->onlyRunningContracts($query);
-        }
+        $this->onlyWhatIsRunning($query);
 
         return $this->scoped($query);
     }

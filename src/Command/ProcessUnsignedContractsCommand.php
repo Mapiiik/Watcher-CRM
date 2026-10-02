@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Contracts\Unsigned\UnsignedPaperwork;
+use App\Contracts\Unsigned\UnsignedWaits;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\Customer;
 use App\Model\Entity\CustomerMessage;
@@ -70,17 +71,6 @@ class ProcessUnsignedContractsCommand extends Command
      * Where the settings say who is written to, when, and in what words.
      */
     private const SETTINGS_PATH = 'core.contracts.unsigned';
-
-    /**
-     * The waits, where the settings name none.
-     */
-    private const AFTER_ANCHOR_DAYS = 5;
-
-    private const AFTER_VALID_FROM_DAYS = 10;
-
-    private const BLOCK_AFTER_ANCHOR_DAYS = 10;
-
-    private const BLOCK_AFTER_VALID_FROM_DAYS = 20;
 
     /**
      * The name of this command.
@@ -193,8 +183,8 @@ class ProcessUnsignedContractsCommand extends Command
     {
         $today = Date::today();
 
-        $blocking = $this->gather($this->waits('blocking'), $today);
-        $notifying = $this->gather($this->waits('notifications'), $today);
+        $blocking = $this->gather(UnsignedWaits::beforeBlocking(), $today);
+        $notifying = $this->gather(UnsignedWaits::beforeNotifying(), $today);
 
         $due = [];
 
@@ -222,37 +212,16 @@ class ProcessUnsignedContractsCommand extends Command
     }
 
     /**
-     * The two waits a letter of the given kind is measured by.
-     *
-     * @param string $kind Settings block under this command's path ("notifications", "blocking").
-     * @return array{int, int}
-     */
-    private function waits(string $kind): array
-    {
-        return [
-            (int)Settings::get(
-                sprintf('%s.%s.after_installation_days', self::SETTINGS_PATH, $kind),
-                $kind === 'blocking' ? self::BLOCK_AFTER_ANCHOR_DAYS : self::AFTER_ANCHOR_DAYS,
-            ),
-            (int)Settings::get(
-                sprintf('%s.%s.after_valid_from_days', self::SETTINGS_PATH, $kind),
-                $kind === 'blocking' ? self::BLOCK_AFTER_VALID_FROM_DAYS : self::AFTER_VALID_FROM_DAYS,
-            ),
-        ];
-    }
-
-    /**
      * Every version whose wait of that length ran out on one of the days written about today.
      *
-     * @param array{int, int} $waits Days after the anchor, and after the version took effect.
+     * @param \App\Contracts\Unsigned\UnsignedWaits $waits How long the service may go unsigned first.
      * @param \Cake\I18n\Date $today The day the run is happening on.
      * @return array<string, \App\Model\Entity\ContractVersion> Keyed by version, so that the
      *   named days and the daily sweep cannot hand back the same one twice.
      */
-    private function gather(array $waits, Date $today): array
+    private function gather(UnsignedWaits $waits, Date $today): array
     {
         $paperwork = new UnsignedPaperwork($this->fetchTable(ContractVersionsTable::class));
-        [$after_anchor, $after_valid_from] = $waits;
 
         /** @var list<int> $reminder_days */
         $reminder_days = array_map(intval(...), (array)Settings::get(
@@ -266,11 +235,7 @@ class ProcessUnsignedContractsCommand extends Command
         // for the day rather than for everything since it is what stops one letter from
         // going out again on every day that follows, without anything having to be kept.
         foreach ($reminder_days as $days) {
-            $queries[] = $paperwork->findBecomingDueOn(
-                $after_anchor,
-                $after_valid_from,
-                $today->subDays(max(0, $days)),
-            );
+            $queries[] = $paperwork->findBecomingDueOn($waits, $today->subDays(max(0, $days)));
         }
 
         // And, where the office would rather keep asking than let it go quiet, everything
@@ -278,8 +243,7 @@ class ProcessUnsignedContractsCommand extends Command
         // pick up a version one of the named days has already taken.
         if ((bool)Settings::get(self::SETTINGS_PATH . '.notifications.remind_daily_after', false)) {
             $queries[] = $paperwork->findDueBefore(
-                $after_anchor,
-                $after_valid_from,
+                $waits,
                 $today->subDays(max($reminder_days === [] ? [0] : $reminder_days)),
             );
         }

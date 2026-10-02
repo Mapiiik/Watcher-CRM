@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Customers\Check;
 
 use App\Check\AbstractCheckRegistry;
+use App\Check\CheckScope;
 use App\Model\Table\CustomerProposalsTable;
 use App\Model\Table\CustomersTable;
 
@@ -28,8 +29,10 @@ final class CustomerCheckRegistry extends AbstractCheckRegistry
      * @param string|null $customer_id One customer to ask about, rather than the whole file.
      *   This is what lets a customer's own card show what is missing about them.
      */
-    public function __construct(private bool $ignore_inactive = true, private ?string $customer_id = null)
+    public function __construct(bool $ignore_inactive = true, ?string $customer_id = null)
     {
+        $this->scope = new CheckScope($ignore_inactive, null, $customer_id);
+
         /** @var \App\Model\Table\CustomersTable $customers */
         $customers = $this->fetchTable(CustomersTable::class);
 
@@ -37,48 +40,13 @@ final class CustomerCheckRegistry extends AbstractCheckRegistry
         $proposals = $this->fetchTable(CustomerProposalsTable::class);
 
         $this->factories = [
-            'incomplete_identity' =>
-                fn(): CustomerCheckInterface => new IncompleteIdentityCheck(
-                    $customers,
-                    $this->ignore_inactive,
-                    $this->customer_id,
-                ),
-            'missing_email' =>
-                fn(): CustomerCheckInterface => new MissingEmailCheck(
-                    $customers,
-                    $this->ignore_inactive,
-                    $this->customer_id,
-                ),
-            'missing_phone' =>
-                fn(): CustomerCheckInterface => new MissingPhoneCheck(
-                    $customers,
-                    $this->ignore_inactive,
-                    $this->customer_id,
-                ),
-            'missing_gdpr_consent' =>
-                fn(): CustomerCheckInterface => new MissingGdprConsentCheck(
-                    $customers,
-                    $this->ignore_inactive,
-                    $this->customer_id,
-                ),
-            'unsent_customer_proposal' =>
-                fn(): CustomerCheckInterface => new UnsentCustomerProposalCheck(
-                    $proposals,
-                    $this->ignore_inactive,
-                    $this->customer_id,
-                ),
-            'unsigned_customer_proposal' =>
-                fn(): CustomerCheckInterface => new UnsignedCustomerProposalCheck(
-                    $proposals,
-                    $this->ignore_inactive,
-                    $this->customer_id,
-                ),
-            'unfiled_customer_proposal' =>
-                fn(): CustomerCheckInterface => new UnfiledCustomerProposalCheck(
-                    $proposals,
-                    $this->ignore_inactive,
-                    $this->customer_id,
-                ),
+            'incomplete_identity' => fn() => new IncompleteIdentityCheck($customers, $this->scope),
+            'missing_email' => fn() => new MissingEmailCheck($customers, $this->scope),
+            'missing_phone' => fn() => new MissingPhoneCheck($customers, $this->scope),
+            'missing_gdpr_consent' => fn() => new MissingGdprConsentCheck($customers, $this->scope),
+            'unsent_customer_proposal' => fn() => new UnsentCustomerProposalCheck($proposals, $this->scope),
+            'unsigned_customer_proposal' => fn() => new UnsignedCustomerProposalCheck($proposals, $this->scope),
+            'unfiled_customer_proposal' => fn() => new UnfiledCustomerProposalCheck($proposals, $this->scope),
         ];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Debtors;
 
 use App\Contracts\Unsigned\UnsignedPaperwork;
+use App\Contracts\Unsigned\UnsignedWaits;
 use App\Messages\Messages;
 use App\Model\Entity\Customer;
 use App\Model\Entity\CustomerLabel;
@@ -40,14 +41,6 @@ class DebtorsProcessor
      * Where the settings say how long a running service may go without a signed contract.
      */
     private const UNSIGNED_PATH = 'core.contracts.unsigned';
-
-    /**
-     * The waits before an unsigned contract costs the customer their service, where the
-     * settings name none.
-     */
-    private const UNSIGNED_AFTER_INSTALLATION_DAYS = 10;
-
-    private const UNSIGNED_AFTER_VALID_FROM_DAYS = 20;
 
     /**
      * @var \Cake\Collection\CollectionInterface<string, \Bookkeeping\Debtors\Debtor>|null
@@ -754,17 +747,7 @@ class DebtorsProcessor
         /** @var \App\Model\Table\ContractVersionsTable $versions */
         $versions = $this->fetchTable(ContractVersionsTable::class);
 
-        return (new UnsignedPaperwork($versions))->contractIdsToBlock(
-            (int)Settings::get(
-                self::UNSIGNED_PATH . '.blocking.after_installation_days',
-                self::UNSIGNED_AFTER_INSTALLATION_DAYS,
-            ),
-            (int)Settings::get(
-                self::UNSIGNED_PATH . '.blocking.after_valid_from_days',
-                self::UNSIGNED_AFTER_VALID_FROM_DAYS,
-            ),
-            Date::now(),
-        );
+        return (new UnsignedPaperwork($versions))->contractIdsToBlock(UnsignedWaits::beforeBlocking(), Date::now());
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Addresses\Check;
 
 use App\Check\AbstractCheckRegistry;
+use App\Check\CheckScope;
 use App\Model\Table\AddressesTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\CustomersTable;
@@ -34,10 +35,12 @@ final class AddressCheckRegistry extends AbstractCheckRegistry
      *   This is what lets a customer show the findings on their own addresses.
      */
     public function __construct(
-        private bool $ignore_inactive = true,
-        private ?string $contract_id = null,
-        private ?string $customer_id = null,
+        bool $ignore_inactive = true,
+        ?string $contract_id = null,
+        ?string $customer_id = null,
     ) {
+        $this->scope = new CheckScope($ignore_inactive, $contract_id, $customer_id);
+
         /** @var \App\Model\Table\CustomersTable $customers */
         $customers = $this->fetchTable(CustomersTable::class);
         /** @var \App\Model\Table\ContractsTable $contracts */
@@ -46,48 +49,14 @@ final class AddressCheckRegistry extends AbstractCheckRegistry
         $addresses = $this->fetchTable(AddressesTable::class);
 
         $this->factories = [
-            'unclear_billing_address' =>
-                fn(): AddressCheckInterface => new UnclearBillingAddressCheck(
-                    $customers,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'missing_installation_address' =>
-                fn(): AddressCheckInterface => new MissingInstallationAddressCheck(
-                    $contracts,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'unlocated_installation_address' =>
-                fn(): AddressCheckInterface => new UnlocatedInstallationAddressCheck(
-                    $addresses,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
-            'duplicate_address' =>
-                fn(): AddressCheckInterface => new DuplicateAddressCheck(
-                    $addresses,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
+            'unclear_billing_address' => fn() => new UnclearBillingAddressCheck($customers, $this->scope),
+            'missing_installation_address' => fn() => new MissingInstallationAddressCheck($contracts, $this->scope),
+            'unlocated_installation_address' => fn() => new UnlocatedInstallationAddressCheck($addresses, $this->scope),
+            'duplicate_address' => fn() => new DuplicateAddressCheck($addresses, $this->scope),
             'unregistered_installation_address' =>
-                fn(): AddressCheckInterface => new UnregisteredInstallationAddressCheck(
-                    $addresses,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
+                fn() => new UnregisteredInstallationAddressCheck($addresses, $this->scope),
             'several_contracts_at_one_address' =>
-                fn(): AddressCheckInterface => new SeveralContractsAtOneAddressCheck(
-                    $contracts,
-                    $this->ignore_inactive,
-                    $this->contract_id,
-                    $this->customer_id,
-                ),
+                fn() => new SeveralContractsAtOneAddressCheck($contracts, $this->scope),
         ];
     }
 }

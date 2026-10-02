@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Addresses\Check;
 
+use App\Check\CheckScope;
 use App\Model\Enum\AddressType;
 use App\Model\Table\ContractsTable;
 use Cake\Database\Expression\IdentifierExpression;
@@ -29,17 +30,13 @@ class MissingInstallationAddressCheck extends AbstractAddressCheck
 {
     /**
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
-     * @param bool $ignore_inactive Whether to pass over contracts with nothing running.
-     * @param string|null $contract_id The one contract being asked about, where there is one.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
+     * @param \App\Check\CheckScope $scope What is being asked about, and how widely.
      */
     public function __construct(
         private ContractsTable $contracts,
-        private bool $ignore_inactive = true,
-        ?string $contract_id = null,
-        ?string $customer_id = null,
+        CheckScope $scope = new CheckScope(),
     ) {
-        parent::__construct($contract_id, $customer_id);
+        parent::__construct($scope);
     }
 
     /**
@@ -105,7 +102,7 @@ class MissingInstallationAddressCheck extends AbstractAddressCheck
             )
             ->where(['ServiceTypes.installation_address_required' => true]);
 
-        if ($this->ignore_inactive) {
+        if ($this->scope->ignore_inactive) {
             $query->where(['Contracts.id IN' => $this->activeContractIds()]);
         }
 

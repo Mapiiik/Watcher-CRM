@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Customers\Check;
 
 use App\Check\AbstractCheck;
+use App\Check\CheckScope;
 use App\Model\Table\CustomerLabelsTable;
 use App\Model\Table\CustomersTable;
 use Cake\ORM\Query\SelectQuery;
@@ -34,15 +35,13 @@ abstract class AbstractCustomerCheck extends AbstractCheck implements CustomerCh
 
     /**
      * @param \App\Model\Table\CustomersTable $customers Customers table.
-     * @param bool $ignore_inactive Whether to pass over customers with nothing running.
-     * @param string|null $customer_id The one customer being asked about, where there is one.
+     * @param \App\Check\CheckScope $scope What is being asked about, and how widely.
      */
     public function __construct(
         protected CustomersTable $customers,
-        protected bool $ignore_inactive = true,
-        ?string $customer_id = null,
+        CheckScope $scope = new CheckScope(),
     ) {
-        parent::__construct(customer_id: $customer_id);
+        parent::__construct($scope);
     }
 
     /**
@@ -75,7 +74,7 @@ abstract class AbstractCustomerCheck extends AbstractCheck implements CustomerCh
     {
         $query = $this->customers->find()->orderBy(['Customers.nid' => 'DESC']);
 
-        if ($this->ignore_inactive) {
+        if ($this->scope->ignore_inactive) {
             $query->where(['Customers.id IN' => $this->activeCustomerIds()]);
         }
 
