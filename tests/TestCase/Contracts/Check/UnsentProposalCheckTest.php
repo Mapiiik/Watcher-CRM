@@ -148,6 +148,25 @@ class UnsentProposalCheckTest extends TestCase
     }
 
     /**
+     * Nor one that came back signed with nobody having written the sending down. The technician
+     * takes the papers to the installation and brings them back signed, so that is the usual
+     * course of a job that is finished rather than a job nobody started.
+     *
+     * @return void
+     */
+    public function testOneThatCameBackSignedIsNotFound(): void
+    {
+        $this->proposalSays([
+            'sent_date' => null,
+            'conclusion_date' => Date::now()->subDays(2),
+            'effective_from' => Date::now(),
+        ]);
+
+        $this->assertNotContains(self::PROPOSAL_ID, $this->found());
+        $this->assertNotContains(self::PROPOSAL_ID, $this->found(ignore_inactive: false));
+    }
+
+    /**
      * Nor one that has already been applied or given up on.
      *
      * @return void

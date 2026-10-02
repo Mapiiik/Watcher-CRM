@@ -31,6 +31,10 @@ final class LateProposals
     /**
      * Drawn up and never sent, with the day it speaks about close enough to matter.
      *
+     * Papers that have come back signed are not this, whatever the sending says. Where the
+     * technician takes them to the installation and brings them back signed, nobody ever writes
+     * the sending down, and reporting those would bury the ones nothing has happened to.
+     *
      * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query What is being asked.
      * @param string $alias Which agenda's table.
      * @param int $within How many days ahead to look.
@@ -48,6 +52,8 @@ final class LateProposals
         return $query
             ->where([
                 $dates . '.sent_date IS' => null,
+                // Nothing came back either, because what did is finished rather than unsent.
+                $dates . '.conclusion_date IS' => null,
                 // A proposal for the spring is work in hand, not a fault.
                 $alias . '.effective_from <=' => Date::today()->addDays(max(0, $within)),
             ])
