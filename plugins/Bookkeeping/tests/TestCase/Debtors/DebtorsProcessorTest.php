@@ -241,7 +241,7 @@ class DebtorsProcessorTest extends TestCase
     {
         $this->onlyLabelling();
         $this->unsignedPaperwork();
-        Settings::set('core.contracts.unsigned.blocking.enabled', false);
+        Settings::set('core.contracts.paperwork.unsigned.blocking.enabled', false);
         $this->fetchTable('Bookkeeping.Invoices')->deleteAll([]);
 
         (new DebtorsProcessor())->blockingUpdate();
@@ -315,10 +315,10 @@ class DebtorsProcessorTest extends TestCase
      */
     private function unsignedPaperwork(): void
     {
-        Settings::set('core.contracts.unsigned.blocking.enabled', true);
-        Settings::set('core.contracts.unsigned.blocking.after_installation_days', 10);
-        Settings::set('core.contracts.unsigned.blocking.after_valid_from_days', 20);
-        Settings::set('core.contracts.unsigned.consider_from', '2020-01-01');
+        Settings::set('core.contracts.paperwork.unsigned.blocking.enabled', true);
+        Settings::set('core.contracts.paperwork.unsigned.blocking.after_anchor_days', 10);
+        Settings::set('core.contracts.paperwork.unsigned.blocking.after_start_days', 20);
+        Settings::set('core.contracts.paperwork.consider_from', '2020-01-01');
 
         $versions = $this->fetchTable('ContractVersions');
         $versions->saveOrFail($versions->newEntity([

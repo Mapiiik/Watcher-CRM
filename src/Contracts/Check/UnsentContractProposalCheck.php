@@ -6,7 +6,6 @@ namespace App\Contracts\Check;
 use App\Proposals\LateProposals;
 use Cake\ORM\Query\SelectQuery;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * A proposal drawn up and never sent.
@@ -30,7 +29,7 @@ class UnsentContractProposalCheck extends AbstractContractProposalCheck
     /**
      * Where the settings say how far ahead to look.
      */
-    private const WITHIN_DAYS_PATH = 'core.contracts.proposals.unsent_within_days';
+    private const WITHIN_DAYS_PATH = 'core.contracts.paperwork.unsent.before_effective_days';
 
     /**
      * @return string
@@ -67,7 +66,7 @@ class UnsentContractProposalCheck extends AbstractContractProposalCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
+        $within = $this->days(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
 
         $query = $this->candidates('open');
 

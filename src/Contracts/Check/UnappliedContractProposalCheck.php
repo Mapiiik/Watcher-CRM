@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
+use App\Proposals\LateProposals;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * A signed proposal nobody has applied.
@@ -29,7 +29,7 @@ class UnappliedContractProposalCheck extends AbstractContractProposalCheck
     /**
      * Where the settings say how far ahead to look.
      */
-    private const WITHIN_DAYS_PATH = 'core.contracts.checks.unapplied_proposal_within_days';
+    private const WITHIN_DAYS_PATH = 'core.contracts.paperwork.unapplied.before_effective_days';
 
     /**
      * @return string
@@ -69,8 +69,10 @@ class UnappliedContractProposalCheck extends AbstractContractProposalCheck
         $query = $this->candidates('waitingToBeApplied')
             ->orderBy(['ContractProposals.effective_from' => 'ASC']);
 
+        LateProposals::watched($query, 'ContractProposals');
+
         if ($this->scope->ignore_inactive) {
-            $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
+            $within = $this->days(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
 
             $query->where([
                 'ContractProposals.effective_from <=' => Date::now()->addDays($within),

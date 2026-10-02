@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Check;
 
+use App\Proposals\LateProposals;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 
@@ -75,6 +76,8 @@ class PartlyAppliedContractProposalCheck extends AbstractContractProposalCheck
             // the listing stops being read for.
             ->where(['ContractProposals.left_out_settled IS' => null])
             ->orderBy(['ContractProposals.applied' => 'DESC']);
+
+        LateProposals::watched($query, 'ContractProposals');
 
         return $this->scoped($query);
     }

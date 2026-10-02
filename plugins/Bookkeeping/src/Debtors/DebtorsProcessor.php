@@ -40,7 +40,7 @@ class DebtorsProcessor
     /**
      * Where the settings say how long a running service may go without a signed contract.
      */
-    private const UNSIGNED_PATH = 'core.contracts.unsigned';
+    private const UNSIGNED_PATH = 'core.contracts.paperwork.unsigned';
 
     /**
      * @var \Cake\Collection\CollectionInterface<string, \Bookkeeping\Debtors\Debtor>|null

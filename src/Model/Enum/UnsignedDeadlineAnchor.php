@@ -32,7 +32,7 @@ enum UnsignedDeadlineAnchor: string implements EnumLabelInterface, SettingChoice
      *
      * @var string
      */
-    public const SETTINGS_PATH = 'core.contracts.unsigned.anchor';
+    public const SETTINGS_PATH = 'core.contracts.paperwork.anchor';
 
     /**
      * The day the service went in. Every contract carries one, so nothing escapes.

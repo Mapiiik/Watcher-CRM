@@ -13,7 +13,7 @@ use InvalidArgumentException;
 /**
  * What makes a proposal's paperwork late, whichever agenda it belongs to.
  *
- * A paper is drawn up, sent, signed and filed the same way round whether it is about a contract or
+ * A paper is drawn up, sent, signed and filed the same way whether it is about a contract or
  * about the customer, so the three things that can be late are written once. Only the conditions
  * are here: what may be reported at all, how it narrows to one record and how long the wait is
  * belong to the asking check.
@@ -27,6 +27,26 @@ final class LateProposals
      * @var list<string>
      */
     private const AGENDAS = ['ContractProposals', 'CustomerProposals'];
+
+    /**
+     * The papers of this agenda that are anybody's work at all.
+     *
+     * Everything the family reports is held to the day the office watches from, and all of it
+     * measured against the day the paper speaks about. Written here rather than in each check,
+     * because the same proposal cannot be inside one check's reach and outside another's.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query What is being asked.
+     * @param string $alias Which agenda's table.
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     */
+    public static function watched(SelectQuery $query, string $alias): SelectQuery
+    {
+        self::mustBeAnAgenda($alias);
+
+        $since = $alias === 'CustomerProposals' ? WatchedSince::customers() : WatchedSince::contracts();
+
+        return $query->where([$alias . '.effective_from >=' => $since]);
+    }
 
     /**
      * Drawn up and never sent, with the day it speaks about close enough to matter.
@@ -48,6 +68,8 @@ final class LateProposals
     ): SelectQuery {
         self::mustBeAnAgenda($alias);
         $dates = self::whereTheDaysAre($alias, $dates);
+
+        self::watched($query, $alias);
 
         return $query
             ->where([
@@ -76,6 +98,8 @@ final class LateProposals
     ): SelectQuery {
         self::mustBeAnAgenda($alias);
         $dates = self::whereTheDaysAre($alias, $dates);
+
+        self::watched($query, $alias);
 
         return $query
             ->where([
@@ -109,6 +133,8 @@ final class LateProposals
         self::mustBeAnAgenda($alias);
         $dates = self::whereTheDaysAre($alias, $dates);
 
+        self::watched($query, $alias);
+
         return $query
             ->where([
                 $dates . '.conclusion_date IS NOT' => null,
@@ -117,7 +143,7 @@ final class LateProposals
             ])
             ->where(function ($exp, SelectQuery $q) use ($alias, $model) {
                 // A signed copy of the agreement, or a paper that is the customer's answer by
-                // itself. A round put to the customer has one paper, so any signed copy is it.
+                // itself. A proposal put to the customer has one paper, so any signed copy is it.
                 $answered = ['FiledCheck.variant IN' => self::signedByTheCustomer()];
 
                 if ($model === ContractDocuments::MODEL) {
@@ -185,8 +211,8 @@ final class LateProposals
      * Which table the days of the sending are read from.
      *
      * Papers go out in an envelope and come back in one, so on the contract's side the days belong
-     * to the round they went in rather than to the papers themselves - the caller joins it and
-     * says so. A round put to the customer is its own envelope.
+     * to the proposal they went in rather than to the papers themselves - the caller joins it
+     * and says so. A proposal put to the customer is its own envelope.
      *
      * @param string $alias The agenda being asked about.
      * @param string|null $dates Where its days are kept, when that is somewhere else.

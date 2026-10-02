@@ -6,7 +6,6 @@ namespace App\Customers\Check;
 use App\Proposals\LateProposals;
 use Cake\ORM\Query\SelectQuery;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * Papers that went out to the customer themselves and have not come back signed.
@@ -24,7 +23,7 @@ class UnsignedCustomerProposalCheck extends AbstractCustomerProposalCheck
     /**
      * Where the settings say how long that is.
      */
-    private const AFTER_DAYS_PATH = 'core.customers.proposals.unanswered_after_days';
+    private const AFTER_DAYS_PATH = 'core.customers.paperwork.unanswered.after_sending_days';
 
     /**
      * @return string
@@ -61,7 +60,7 @@ class UnsignedCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
+        $after = $this->days(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
         $query = $this->candidates()->find('open');
 

@@ -109,7 +109,7 @@ class UnsignedPaperworkTest extends TestCase
         // stored answer outlives the test that stored it, so every case starts from the same
         // two regardless of what ran before it or what the settings file says today.
         Settings::set(UnsignedDeadlineAnchor::SETTINGS_PATH, UnsignedDeadlineAnchor::Installation->value);
-        Settings::set('core.contracts.unsigned.consider_from', '2020-01-01');
+        Settings::set('core.contracts.paperwork.consider_from', '2020-01-01');
     }
 
     /**
@@ -209,12 +209,12 @@ class UnsignedPaperworkTest extends TestCase
      */
     public function testAVersionFromBeforeTheLineIsLeftAlone(): void
     {
-        Settings::set('core.contracts.unsigned.consider_from', '2026-01-01');
+        Settings::set('core.contracts.paperwork.consider_from', '2026-01-01');
         $this->agreed(valid_from: '2025-12-31');
 
         $this->assertSame([], $this->due());
 
-        Settings::set('core.contracts.unsigned.consider_from', '2025-01-01');
+        Settings::set('core.contracts.paperwork.consider_from', '2025-01-01');
 
         $this->assertCount(1, $this->due(), 'The line did not move.');
     }

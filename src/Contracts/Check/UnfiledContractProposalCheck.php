@@ -7,7 +7,6 @@ use App\Proposals\LateProposals;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Query\SelectQuery;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * The customer signed and the signed copy has not been filed.
@@ -26,7 +25,7 @@ class UnfiledContractProposalCheck extends AbstractContractProposalCheck
     /**
      * Where the settings say how long that is.
      */
-    private const AFTER_DAYS_PATH = 'core.contracts.documents.unfiled_after_days';
+    private const AFTER_DAYS_PATH = 'core.contracts.paperwork.unfiled.after_signature_days';
 
     /**
      * @return string
@@ -63,7 +62,7 @@ class UnfiledContractProposalCheck extends AbstractContractProposalCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
+        $after = $this->days(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
         $query = $this->candidates()
             // Nothing of ours is signed for a contract whose service keeps no versions.

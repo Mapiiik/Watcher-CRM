@@ -6,7 +6,6 @@ namespace App\Contracts\Check;
 use App\Proposals\LateProposals;
 use Cake\ORM\Query\SelectQuery;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * Papers that went out to the customer and have not come back signed.
@@ -32,7 +31,7 @@ class UnsignedContractProposalCheck extends AbstractContractProposalCheck
      * than among the checks: it is the same question the reminders ask, measured from the day
      * the papers went out.
      */
-    private const AFTER_DAYS_PATH = 'core.contracts.proposals.unanswered_after_days';
+    private const AFTER_DAYS_PATH = 'core.contracts.paperwork.unanswered.after_sending_days';
 
     /**
      * @return string
@@ -69,7 +68,7 @@ class UnsignedContractProposalCheck extends AbstractContractProposalCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
+        $after = $this->days(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
         $query = $this->candidates('open');
 

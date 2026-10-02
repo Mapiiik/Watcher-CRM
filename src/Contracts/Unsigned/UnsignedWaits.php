@@ -23,7 +23,7 @@ final readonly class UnsignedWaits
     /**
      * Where the settings say how long each wait is.
      */
-    private const SETTINGS_PATH = 'core.contracts.unsigned';
+    private const SETTINGS_PATH = 'core.contracts.paperwork.unsigned';
 
     /**
      * The waits, where the settings name none.
@@ -87,8 +87,8 @@ final readonly class UnsignedWaits
     private static function fromSettings(string $kind, int $anchor, int $start): self
     {
         return new self(
-            self::days(sprintf('%s.%s.after_installation_days', self::SETTINGS_PATH, $kind), $anchor),
-            self::days(sprintf('%s.%s.after_valid_from_days', self::SETTINGS_PATH, $kind), $start),
+            self::days(sprintf('%s.%s.after_anchor_days', self::SETTINGS_PATH, $kind), $anchor),
+            self::days(sprintf('%s.%s.after_start_days', self::SETTINGS_PATH, $kind), $start),
         );
     }
 

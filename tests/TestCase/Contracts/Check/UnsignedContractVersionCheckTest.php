@@ -71,7 +71,7 @@ class UnsignedContractVersionCheckTest extends TestCase
 
         // Said rather than inherited. A stored setting outlives the test that stored it, so
         // where the line falls has to be this test's own answer and not whatever ran before.
-        Settings::set('core.contracts.unsigned.consider_from', '2026-01-01');
+        Settings::set('core.contracts.paperwork.consider_from', '2026-01-01');
         Settings::set(UnsignedDeadlineAnchor::SETTINGS_PATH, UnsignedDeadlineAnchor::Installation->value);
     }
 
@@ -167,7 +167,7 @@ class UnsignedContractVersionCheckTest extends TestCase
         // four months before it took effect is beyond the three the settings ship with
         $this->assertCount(1, $this->found());
 
-        Settings::set('core.contracts.checks.signature_expected_within_months', 12);
+        Settings::set('core.contracts.paperwork.unsigned.thresholds.signature_expected_within_months', 12);
 
         $this->assertSame([], $this->found(), 'The check did not ask the settings again.');
     }

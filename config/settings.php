@@ -154,180 +154,188 @@ return [
                     default: ['1800-01-01'],
                     hint: __('Days that stand for "not known" rather than for a day. The checks pass over them.'),
                 ),
-                'signature_expected_within_months' => NumberType::ofInt(
-                    default: 3,
-                    hint: __('How long before a contract version takes effect it may have been concluded.'),
-                ),
-                'unapplied_proposal_within_days' => NumberType::ofInt(
-                    default: 14,
-                    hint: __('How far ahead a signed proposal whose changes nobody has applied'
-                        . ' is worth raising. Until its day comes there is nothing to do about'
-                        . ' it.'),
-                ),
             ],
 
-            // Running a service on paperwork nobody has signed. What is chased, from when,
-            // and how long before it stops being a reminder and becomes a disconnection.
-            'unsigned' => [
+            // Running a service on paperwork nobody has signed, and the papers drawn up for one
+            // that are not finished. One block, because the office asks the same thing of all of
+            // them - from when do we watch, when do we say something, and when does it cost the
+            // customer their service - and in the same words the invoice reminders use.
+            'paperwork' => [
                 'consider_from' => DateType::of(
                     default: '2026-01-01',
-                    hint: __('Contract versions taking effect before this day are left alone. What an import left behind is not work anybody is going to do, and mailing about it would be worse than leaving it.'),
+                    hint: __('Records taking effect before this day are left alone. What an import left behind is not work anybody is going to do, and mailing about it would be worse than leaving it.'),
                 ),
                 'anchor' => new ChoiceType(
                     default: UnsignedDeadlineAnchor::Installation,
                     hint: __('What the wait for a signature is counted from.'),
                 ),
-                'notifications' => [
-                    'enabled' => new BoolType(
-                        default: false,
-                        hint: __('Whether the customer is written to at all about documents'
-                            . ' nobody has signed.'),
-                    ),
-                    'after_installation_days' => NumberType::ofInt(
-                        default: 5,
-                        hint: __('Days after the day above before the customer is reminded.'),
-                    ),
-                    'after_valid_from_days' => NumberType::ofInt(
-                        default: 10,
-                        hint: __('Days after the version takes effect before the customer is reminded. Both waits have to be up.'),
-                    ),
-                    'reminder_days' => ListType::ofInts(
-                        default: [0],
-                        hint: __('Which days after the wait runs out to write on. 0 is the day it runs out.'),
-                    ),
-                    'remind_daily_after' => new BoolType(
-                        default: false,
-                        hint: __('Once the days above are used up, keep writing every day until'
-                            . ' the signed contract comes in.'),
-                    ),
-                    'channels' => [
-                        'email' => ['enabled' => new BoolType(default: true)],
-                        'sms' => ['enabled' => new BoolType(default: true)],
+
+                // The only one of these that reaches the customer or the routers.
+                'unsigned' => [
+                    'thresholds' => [
+                        'signature_expected_within_months' => NumberType::ofInt(
+                            default: 3,
+                            hint: __('How long before a contract version takes effect it may have been concluded.'),
+                        ),
                     ],
-                    // Two letters, because two different things are being said. The first
-                    // asks for the paper. The second says what happens now that it has not
-                    // come.
-                    //
-                    // Both on, because cutting somebody off without telling them is the
-                    // worse of the two mistakes available here. The other one is worth
-                    // knowing about all the same: with the blocking switched off, the second
-                    // letter warns of a disconnection no run is going to carry out, and a
-                    // warning that comes to nothing is not believed the next time. An
-                    // installation that chases paperwork but never cuts anybody off wants
-                    // this one switched off.
-                    'types' => [
-                        'notify' => ['enabled' => new BoolType(default: true)],
-                        'block' => ['enabled' => new BoolType(default: true)],
+                    'notifications' => [
+                        'enabled' => new BoolType(
+                            default: false,
+                            hint: __('Whether the customer is written to at all about documents'
+                                . ' nobody has signed.'),
+                        ),
+                        'after_anchor_days' => NumberType::ofInt(
+                            default: 5,
+                            hint: __('Days after the day the wait is counted from before the customer is reminded.'),
+                        ),
+                        'after_start_days' => NumberType::ofInt(
+                            default: 10,
+                            hint: __('Days after what is running took effect before the customer is reminded. Both waits have to be up.'),
+                        ),
+                        'days' => ListType::ofInts(
+                            default: [0],
+                            hint: __('Which days after the wait runs out to write on. 0 is the day it runs out.'),
+                        ),
+                        'daily_after' => new BoolType(
+                            default: false,
+                            hint: __('Once the days above are used up, keep writing every day until'
+                                . ' the signed contract comes in.'),
+                        ),
+                        'channels' => [
+                            'email' => ['enabled' => new BoolType(default: true)],
+                            'sms' => ['enabled' => new BoolType(default: true)],
+                        ],
+                        // Two letters, because two different things are being said. The first
+                        // asks for the paper. The second says what happens now that it has not
+                        // come.
+                        //
+                        // Both on, because cutting somebody off without telling them is the
+                        // worse of the two mistakes available here. The other one is worth
+                        // knowing about all the same: with the blocking switched off, the second
+                        // letter warns of a disconnection no run is going to carry out, and a
+                        // warning that comes to nothing is not believed the next time. An
+                        // installation that chases paperwork but never cuts anybody off wants
+                        // this one switched off.
+                        'types' => [
+                            'notify' => ['enabled' => new BoolType(default: true)],
+                            'block' => ['enabled' => new BoolType(default: true)],
+                        ],
+                    ],
+                    'blocking' => [
+                        'enabled' => new BoolType(
+                            default: false,
+                            hint: __('Whether unsigned documents cut the service off, the same way'
+                                . ' an unpaid invoice does.'),
+                        ),
+                        'after_anchor_days' => NumberType::ofInt(
+                            default: 10,
+                            hint: __('Days after the day the wait is counted from before the service is cut off.'),
+                        ),
+                        'after_start_days' => NumberType::ofInt(
+                            default: 20,
+                            hint: __('Days after what is running took effect before the service is cut off. Both waits have to be up.'),
+                        ),
+                    ],
+                    'emails' => [
+                        'notify' => [
+                            'subject' => 'NETAIR - nepodepsaná smlouva ke dni {date} - VS: {customer_number}',
+                            'body_text' => <<<TEXT
+                                Vážený zákazníku,
+
+                                k dnešnímu dni evidujeme nepodepsanou smlouvu na níže uvedenou službu, kterou Vám poskytujeme.
+
+                                {contracts_table}
+
+                                Prosíme Vás o její podepsání a vrácení. Pokud jste smlouvu již odeslali, nebo jste ji nikdy neobdrželi, dejte nám prosím vědět.
+
+                                Kontakty na naše smluvní oddělení
+                                Mail: {company_contracts_email}
+                                Telefon: {company_contracts_phone}
+
+                                Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
+
+                                Tento email byl vygenerován automaticky.
+
+                                {company_name}
+                                {company_address_line_1}
+                                {company_address_line_2}
+                                IČ: {identity_number}, DIČ: {vat_number}
+                                TEXT,
+                        ],
+                        'block' => [
+                            'subject' => 'NETAIR - omezení služby pro nepodepsanou smlouvu - VS: {customer_number}',
+                            'body_text' => <<<TEXT
+                                Vážený zákazníku,
+
+                                přes naše předchozí upozornění nemáme stále podepsanou smlouvu na níže uvedenou službu, kterou Vám poskytujeme.
+
+                                {contracts_table}
+
+                                Bez podepsané smlouvy nemůžeme službu dále poskytovat, a proto bude omezena.
+
+                                Pokud smlouvu podepíšete a vrátíte, službu obratem obnovíme. Pokud jste ji již odeslali, nebo jste ji nikdy neobdrželi, ozvěte se nám prosím co nejdříve.
+
+                                Kontakty na naše smluvní oddělení
+                                Mail: {company_contracts_email}
+                                Telefon: {company_contracts_phone}
+
+                                Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
+
+                                Tento email byl vygenerován automaticky.
+
+                                {company_name}
+                                {company_address_line_1}
+                                {company_address_line_2}
+                                IČ: {identity_number}, DIČ: {vat_number}
+                                TEXT,
+                        ],
+                    ],
+                    'sms' => [
+                        'notify' => [
+                            'subject' => 'NETAIR - nepodepsaná smlouva',
+                            'body' => <<<TEXT
+                                {company_name}: u Vaší služby nemáme podepsanou smlouvu. Prosíme o její podepsání a vrácení. Informace na {company_contracts_phone} nebo {company_contracts_email}.
+                                TEXT,
+                        ],
+                        'block' => [
+                            'subject' => 'NETAIR - omezení služby',
+                            'body' => <<<TEXT
+                                {company_name}: bez podepsané smlouvy bude Vaše služba omezena. Podepsanou smlouvu prosím vraťte, nebo se ozvěte na {company_contracts_phone}.
+                                TEXT,
+                        ],
                     ],
                 ],
-                // What goes out to the customer. Written here rather than as a view template
-                // because it is the office's text to change, the way the debtor letters are.
-                'emails' => [
-                    'notify' => [
-                        'subject' => 'NETAIR - nepodepsaná smlouva ke dni {date} - VS: {customer_number}',
-                        'body_text' => <<<TEXT
-                            Vážený zákazníku,
 
-                            k dnešnímu dni evidujeme nepodepsanou smlouvu na níže uvedenou službu, kterou Vám poskytujeme.
-
-                            {contracts_table}
-
-                            Prosíme Vás o její podepsání a vrácení. Pokud jste smlouvu již odeslali, nebo jste ji nikdy neobdrželi, dejte nám prosím vědět.
-
-                            Kontakty na naše smluvní oddělení
-                            Mail: {company_contracts_email}
-                            Telefon: {company_contracts_phone}
-
-                            Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
-
-                            Tento email byl vygenerován automaticky.
-
-                            {company_name}
-                            {company_address_line_1}
-                            {company_address_line_2}
-                            IČ: {identity_number}, DIČ: {vat_number}
-                            TEXT,
-                    ],
-                    'block' => [
-                        'subject' => 'NETAIR - omezení služby pro nepodepsanou smlouvu - VS: {customer_number}',
-                        'body_text' => <<<TEXT
-                            Vážený zákazníku,
-
-                            přes naše předchozí upozornění nemáme stále podepsanou smlouvu na níže uvedenou službu, kterou Vám poskytujeme.
-
-                            {contracts_table}
-
-                            Bez podepsané smlouvy nemůžeme službu dále poskytovat, a proto bude omezena.
-
-                            Pokud smlouvu podepíšete a vrátíte, službu obratem obnovíme. Pokud jste ji již odeslali, nebo jste ji nikdy neobdrželi, ozvěte se nám prosím co nejdříve.
-
-                            Kontakty na naše smluvní oddělení
-                            Mail: {company_contracts_email}
-                            Telefon: {company_contracts_phone}
-
-                            Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
-
-                            Tento email byl vygenerován automaticky.
-
-                            {company_name}
-                            {company_address_line_1}
-                            {company_address_line_2}
-                            IČ: {identity_number}, DIČ: {vat_number}
-                            TEXT,
-                    ],
-                ],
-                'sms' => [
-                    'notify' => [
-                        'subject' => 'NETAIR - nepodepsaná smlouva',
-                        'body' => <<<TEXT
-                            {company_name}: u Vaší služby nemáme podepsanou smlouvu. Prosíme o její podepsání a vrácení. Informace na {company_contracts_phone} nebo {company_contracts_email}.
-                            TEXT,
-                    ],
-                    'block' => [
-                        'subject' => 'NETAIR - omezení služby',
-                        'body' => <<<TEXT
-                            {company_name}: bez podepsané smlouvy bude Vaše služba omezena. Podepsanou smlouvu prosím vraťte, nebo se ozvěte na {company_contracts_phone}.
-                            TEXT,
-                    ],
-                ],
-                'blocking' => [
-                    'enabled' => new BoolType(
-                        default: false,
-                        hint: __('Whether unsigned documents cut the service off, the same way'
-                            . ' an unpaid invoice does.'),
-                    ),
-                    'after_installation_days' => NumberType::ofInt(
-                        default: 10,
-                        hint: __('Days after the day the wait is counted from before the service is cut off.'),
-                    ),
-                    'after_valid_from_days' => NumberType::ofInt(
-                        default: 20,
-                        hint: __('Days after the version takes effect before the service is cut off. Both waits have to be up.'),
+                // Nothing below here disconnects anybody. These only decide when the office is
+                // told, and each says what its wait is counted from.
+                'unsent' => [
+                    'before_effective_days' => NumberType::ofInt(
+                        default: 14,
+                        hint: __('How far ahead a proposal nobody has sent is worth raising. It has'
+                            . ' to be sent before the day it speaks about.'),
                     ),
                 ],
-            ],
-
-            // Nothing here disconnects anybody. These only decide when the office is told.
-            'proposals' => [
-                'unanswered_after_days' => NumberType::ofInt(
-                    default: 14,
-                    hint: __('Days after the proposal was sent before a missing signature is'
-                        . ' raised.'),
-                ),
-                'unsent_within_days' => NumberType::ofInt(
-                    default: 14,
-                    hint: __('How far ahead a contract proposal nobody has sent is worth'
-                        . ' raising. It has to be sent before the version takes effect.'),
-                ),
-            ],
-
-            // Signed already, only not on the shelf, so the wait runs from the day of the
-            // signature.
-            'documents' => [
-                'unfiled_after_days' => NumberType::ofInt(
-                    default: 7,
-                    hint: __('Days after the signature was written down before the missing scan is raised.'),
-                ),
+                'unanswered' => [
+                    'after_sending_days' => NumberType::ofInt(
+                        default: 14,
+                        hint: __('Days after the proposal was sent before a missing signature is'
+                            . ' raised.'),
+                    ),
+                ],
+                'unfiled' => [
+                    'after_signature_days' => NumberType::ofInt(
+                        default: 7,
+                        hint: __('Days after the signature was written down before the missing scan is raised.'),
+                    ),
+                ],
+                'unapplied' => [
+                    'before_effective_days' => NumberType::ofInt(
+                        default: 14,
+                        hint: __('How far ahead a signed proposal whose changes nobody has applied'
+                            . ' is worth raising. Until its day comes there is nothing to do about'
+                            . ' it.'),
+                    ),
+                ],
             ],
         ],
 
@@ -337,24 +345,32 @@ return [
                 hint: __('How a business is told from a household in the reports for the regulator.'),
             ),
 
-            // The contracts' waits, kept apart: a consent is chased by different people.
-            'proposals' => [
-                'unanswered_after_days' => NumberType::ofInt(
-                    default: 14,
-                    hint: __('Days after the proposal was sent before a missing signature is'
-                        . ' raised.'),
+            // The same family as the contracts', kept apart: a consent is chased by different
+            // people, and nothing here reaches the routers.
+            'paperwork' => [
+                'consider_from' => DateType::of(
+                    default: '2026-01-01',
+                    hint: __('Proposals taking effect before this day are left alone.'),
                 ),
-                'unsent_within_days' => NumberType::ofInt(
-                    default: 14,
-                    hint: __('How far ahead a customer proposal nobody has sent is worth raising.'),
-                ),
-            ],
-
-            'documents' => [
-                'unfiled_after_days' => NumberType::ofInt(
-                    default: 7,
-                    hint: __('Days after the signature was written down before the missing scan is raised.'),
-                ),
+                'unsent' => [
+                    'before_effective_days' => NumberType::ofInt(
+                        default: 14,
+                        hint: __('How far ahead a proposal nobody has sent is worth raising.'),
+                    ),
+                ],
+                'unanswered' => [
+                    'after_sending_days' => NumberType::ofInt(
+                        default: 14,
+                        hint: __('Days after the proposal was sent before a missing signature'
+                            . ' is raised.'),
+                    ),
+                ],
+                'unfiled' => [
+                    'after_signature_days' => NumberType::ofInt(
+                        default: 7,
+                        hint: __('Days after the signature was written down before the missing scan is raised.'),
+                    ),
+                ],
             ],
 
             'checks' => [

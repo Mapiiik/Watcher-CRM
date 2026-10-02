@@ -8,7 +8,6 @@ use App\Proposals\LateProposals;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\ORM\Query\SelectQuery;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * The customer signed and the signed copy has not been filed.
@@ -26,7 +25,7 @@ class UnfiledCustomerProposalCheck extends AbstractCustomerProposalCheck
     /**
      * Where the settings say how long that is.
      */
-    private const AFTER_DAYS_PATH = 'core.customers.documents.unfiled_after_days';
+    private const AFTER_DAYS_PATH = 'core.customers.paperwork.unfiled.after_signature_days';
 
     /**
      * @return string
@@ -63,7 +62,7 @@ class UnfiledCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $after = (int)Settings::get(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
+        $after = $this->days(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
         // Only a round that asks something of the customer. One that is handed over is concluded
         // by delivering it, and one with no purpose of its own carries the contracts' papers and

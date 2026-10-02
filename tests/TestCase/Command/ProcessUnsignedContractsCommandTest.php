@@ -115,19 +115,19 @@ class ProcessUnsignedContractsCommandTest extends TestCase
 
         // Said rather than inherited, so a case answers for itself whatever the settings file
         // says today and whatever ran before it.
-        Settings::set('core.contracts.unsigned.consider_from', '2020-01-01');
+        Settings::set('core.contracts.paperwork.consider_from', '2020-01-01');
         Settings::set(UnsignedDeadlineAnchor::SETTINGS_PATH, UnsignedDeadlineAnchor::Installation->value);
-        Settings::set('core.contracts.unsigned.notifications.after_installation_days', 5);
-        Settings::set('core.contracts.unsigned.notifications.after_valid_from_days', 10);
-        Settings::set('core.contracts.unsigned.notifications.reminder_days', [0]);
-        Settings::set('core.contracts.unsigned.notifications.remind_daily_after', false);
-        Settings::set('core.contracts.unsigned.notifications.channels.email.enabled', true);
-        Settings::set('core.contracts.unsigned.notifications.channels.sms.enabled', true);
-        Settings::set('core.contracts.unsigned.notifications.types.notify.enabled', true);
-        Settings::set('core.contracts.unsigned.notifications.types.block.enabled', true);
-        Settings::set('core.contracts.unsigned.blocking.after_installation_days', 10);
-        Settings::set('core.contracts.unsigned.blocking.after_valid_from_days', 20);
-        Settings::set('core.contracts.unsigned.notifications.enabled', true);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.after_anchor_days', 5);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.after_start_days', 10);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.days', [0]);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.daily_after', false);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.channels.email.enabled', true);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.channels.sms.enabled', true);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.types.notify.enabled', true);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.types.block.enabled', true);
+        Settings::set('core.contracts.paperwork.unsigned.blocking.after_anchor_days', 10);
+        Settings::set('core.contracts.paperwork.unsigned.blocking.after_start_days', 20);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.enabled', true);
     }
 
     /**
@@ -167,7 +167,7 @@ class ProcessUnsignedContractsCommandTest extends TestCase
      */
     public function testSwitchedOffItWritesToNobody(): void
     {
-        Settings::set('core.contracts.unsigned.notifications.enabled', false);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.enabled', false);
         $this->emailFor(self::CUSTOMER_ID);
         $this->agreed(self::DUE_TODAY);
 
@@ -260,7 +260,7 @@ class ProcessUnsignedContractsCommandTest extends TestCase
 
         $this->assertSame(0, $this->CustomerMessages->find()->count());
 
-        Settings::set('core.contracts.unsigned.notifications.remind_daily_after', true);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.daily_after', true);
 
         $this->exec('process_unsigned_contracts');
 
@@ -412,7 +412,7 @@ class ProcessUnsignedContractsCommandTest extends TestCase
      */
     public function testTheWarningCanBeSwitchedOffOnItsOwn(): void
     {
-        Settings::set('core.contracts.unsigned.notifications.types.block.enabled', false);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.types.block.enabled', false);
         $this->emailFor(self::CUSTOMER_ID);
         $this->agreed(self::BLOCK_DUE_TODAY);
 
@@ -429,7 +429,7 @@ class ProcessUnsignedContractsCommandTest extends TestCase
      */
     public function testTheAskingCanBeSwitchedOffOnItsOwn(): void
     {
-        Settings::set('core.contracts.unsigned.notifications.types.notify.enabled', false);
+        Settings::set('core.contracts.paperwork.unsigned.notifications.types.notify.enabled', false);
         $this->emailFor(self::CUSTOMER_ID);
         $this->agreed(self::DUE_TODAY);
 
@@ -449,7 +449,7 @@ class ProcessUnsignedContractsCommandTest extends TestCase
     public function testWhereBothDaysFallTogetherOnlyTheWarningGoes(): void
     {
         // both waits set to the same length, so one version reaches both today
-        Settings::set('core.contracts.unsigned.blocking.after_valid_from_days', 10);
+        Settings::set('core.contracts.paperwork.unsigned.blocking.after_start_days', 10);
         $this->emailFor(self::CUSTOMER_ID);
         $this->agreed(self::DUE_TODAY);
 

@@ -11,6 +11,7 @@ use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Settings\Utility\Settings;
 
 /**
  * App\Contracts\Check\UnsentContractProposalCheck Test Case
@@ -198,6 +199,25 @@ class UnsentContractProposalCheckTest extends TestCase
 
         $this->assertNotContains(self::PROPOSAL_ID, $this->found());
         $this->assertNotContains(self::PROPOSAL_ID, $this->found(ignore_inactive: false));
+    }
+
+    /**
+     * A proposal from before the day the office watches from is nobody's work, whichever question
+     * is asked. The whole family is held to that one day, so this is where it is proved.
+     *
+     * @return void
+     */
+    public function testOneFromBeforeTheWatchedDayIsNotAFinding(): void
+    {
+        $this->proposalSays(['sent_date' => null, 'effective_from' => new Date('2025-11-30')]);
+        Settings::set('core.contracts.paperwork.consider_from', '2026-01-01');
+
+        $this->assertNotContains(self::PROPOSAL_ID, $this->found());
+        $this->assertNotContains(self::PROPOSAL_ID, $this->found(ignore_inactive: false));
+
+        Settings::set('core.contracts.paperwork.consider_from', '2025-01-01');
+
+        $this->assertContains(self::PROPOSAL_ID, $this->found());
     }
 
     /**

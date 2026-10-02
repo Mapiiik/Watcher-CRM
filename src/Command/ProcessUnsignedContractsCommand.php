@@ -55,7 +55,7 @@ use Throwable;
  * with the debtor run this is modelled on:
  *
  *   A night the cron does not run is a reminder nobody ever sends. Where that matters,
- *   `remind_daily_after` turns the named days into a floor and the chasing carries on by
+ *   `notifications.daily_after` turns the named days into a floor and the chasing carries on
  *   itself until the paper arrives.
  *
  *   Running it twice on the same day writes the same letter twice. It is meant for a cron
@@ -70,7 +70,7 @@ class ProcessUnsignedContractsCommand extends Command
     /**
      * Where the settings say who is written to, when, and in what words.
      */
-    private const SETTINGS_PATH = 'core.contracts.unsigned';
+    private const SETTINGS_PATH = 'core.contracts.paperwork.unsigned';
 
     /**
      * The name of this command.
@@ -225,7 +225,7 @@ class ProcessUnsignedContractsCommand extends Command
 
         /** @var list<int> $reminder_days */
         $reminder_days = array_map(intval(...), (array)Settings::get(
-            self::SETTINGS_PATH . '.notifications.reminder_days',
+            self::SETTINGS_PATH . '.notifications.days',
             [0],
         ));
 
@@ -241,7 +241,7 @@ class ProcessUnsignedContractsCommand extends Command
         // And, where the office would rather keep asking than let it go quiet, everything
         // that ran out before the last of those days. The boundary is strict, so this cannot
         // pick up a version one of the named days has already taken.
-        if ((bool)Settings::get(self::SETTINGS_PATH . '.notifications.remind_daily_after', false)) {
+        if ((bool)Settings::get(self::SETTINGS_PATH . '.notifications.daily_after', false)) {
             $queries[] = $paperwork->findDueBefore(
                 $waits,
                 $today->subDays(max($reminder_days === [] ? [0] : $reminder_days)),

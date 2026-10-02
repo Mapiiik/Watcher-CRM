@@ -5,6 +5,7 @@ namespace App\Contracts\Unsigned;
 
 use App\Model\Enum\UnsignedDeadlineAnchor;
 use App\Model\Table\ContractVersionsTable;
+use App\Proposals\WatchedSince;
 use Cake\Database\Expression\CaseStatementExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\I18n\Date;
@@ -25,16 +26,6 @@ use Settings\Utility\Settings;
  */
 final class UnsignedPaperwork
 {
-    /**
-     * Where the settings say how far back to look at all.
-     */
-    private const CONSIDER_FROM_PATH = 'core.contracts.unsigned.consider_from';
-
-    /**
-     * The oldest a version may be and still be chased, if nothing says otherwise.
-     */
-    private const CONSIDER_FROM = '2026-01-01';
-
     /**
      * @param \App\Model\Table\ContractVersionsTable $versions Contract versions table.
      */
@@ -284,11 +275,12 @@ final class UnsignedPaperwork
     /**
      * The earliest a version may take effect and still be the automation's business.
      *
+     * The same day the rest of the family is held to, {@see \App\Proposals\WatchedSince}.
+     *
      * @return \Cake\I18n\Date
      */
     private function considerFrom(): Date
     {
-        return Settings::getDate(self::CONSIDER_FROM_PATH, self::CONSIDER_FROM)
-            ?? new Date(self::CONSIDER_FROM);
+        return WatchedSince::contracts();
     }
 }

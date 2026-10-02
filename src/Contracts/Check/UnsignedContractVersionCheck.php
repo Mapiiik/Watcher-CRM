@@ -10,7 +10,6 @@ use App\Model\Table\ContractVersionsTable;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * A version of a contract with no paper behind it, or with paper too old to be its own.
@@ -36,7 +35,8 @@ class UnsignedContractVersionCheck extends AbstractContractCheck
     /**
      * Where the settings say how old the paper may be.
      */
-    private const SETTINGS_PATH = 'core.contracts.checks.signature_expected_within_months';
+    private const SETTINGS_PATH =
+        'core.contracts.paperwork.unsigned.thresholds.signature_expected_within_months';
 
     /**
      * How long before a version takes effect it may have been concluded, if nothing says
@@ -155,7 +155,7 @@ class UnsignedContractVersionCheck extends AbstractContractCheck
      */
     private function everything(): SelectQuery
     {
-        $months = (int)Settings::get(self::SETTINGS_PATH, self::MONTHS);
+        $months = $this->days(self::SETTINGS_PATH, self::MONTHS);
 
         $query = $this->versions->find();
 

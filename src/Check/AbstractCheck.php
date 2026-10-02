@@ -6,6 +6,7 @@ namespace App\Check;
 use App\Model\Table\ContractsTable;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query\SelectQuery;
+use Settings\Utility\Settings;
 
 /**
  * Shared ground for checks - the defaults a check only overrides where it differs.
@@ -123,6 +124,23 @@ abstract class AbstractCheck implements CheckInterface
         return $contracts
             ->find('withActiveServices')
             ->select(['Contracts.id'], true);
+    }
+
+    /**
+     * A wait in days, as the settings have it.
+     *
+     * Here rather than in each check, because a wait somebody has typed into the settings badly is
+     * not a reason for the check to start counting from nought.
+     *
+     * @param string $path Where the settings keep it.
+     * @param int $default What to use where they say nothing.
+     * @return int
+     */
+    protected function days(string $path, int $default): int
+    {
+        $value = Settings::get($path, $default);
+
+        return is_numeric($value) ? (int)$value : $default;
     }
 
     /**

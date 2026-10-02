@@ -6,7 +6,6 @@ namespace App\Customers\Check;
 use App\Proposals\LateProposals;
 use Cake\ORM\Query\SelectQuery;
 use Override;
-use Settings\Utility\Settings;
 
 /**
  * A round of papers drawn up for the customer and never sent.
@@ -24,7 +23,7 @@ class UnsentCustomerProposalCheck extends AbstractCustomerProposalCheck
     /**
      * Where the settings say how far ahead to look.
      */
-    private const WITHIN_DAYS_PATH = 'core.customers.proposals.unsent_within_days';
+    private const WITHIN_DAYS_PATH = 'core.customers.paperwork.unsent.before_effective_days';
 
     /**
      * @return string
@@ -61,7 +60,7 @@ class UnsentCustomerProposalCheck extends AbstractCustomerProposalCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $within = (int)Settings::get(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
+        $within = $this->days(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
 
         $query = $this->candidates()->find('open');
 
