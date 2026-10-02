@@ -141,7 +141,7 @@ class ContractVersionsControllerTest extends TestCase
 
         // The version is a storey of the address, so the way back out says so.
         $this->assertResponseContains(h((string)$version->name));
-        $this->assertNotSame([], (array)$this->viewVariable('rounds'));
+        $this->assertNotSame([], (array)$this->viewVariable('proposals'));
 
         // And the table of papers is drawn at the version, not at the contract it belongs to.
         $this->assertSame(
@@ -166,7 +166,7 @@ class ContractVersionsControllerTest extends TestCase
         ));
 
         $this->assertResponseOk();
-        $this->assertSame([], (array)$this->viewVariable('rounds'));
+        $this->assertSame([], (array)$this->viewVariable('proposals'));
     }
 
     /**

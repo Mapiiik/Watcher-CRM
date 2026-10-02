@@ -17,8 +17,8 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $contracts
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $versions
  * @var bool|null $keepsVersions Whether the contract's service keeps versions at all.
- * @var array<string, string> $rounds
- * @var array<string, string> $roundPurposes
+ * @var array<string, string> $proposals
+ * @var array<string, string> $proposalPurposes
  * @var array<string> $questions
  * @var array<string, string> $wording
  * @var array<string, string> $contractNumbers
@@ -69,9 +69,9 @@ $endsOn = $changes->version->names('valid_until')
                 // There is one proposal and these papers are a part of it, so it is the first thing asked.
                 // Left empty they get one of their own, which is how papers drawn up from the contract rather
                 // than from a proposal still end up inside one.
-                if ($rounds !== []) {
+                if ($proposals !== []) {
                     echo $this->Form->control('customer_proposal_id', [
-                        'options' => $rounds,
+                        'options' => $proposals,
                         'empty' => __('A new customer proposal'),
                         'label' => __('Part of the Customer Proposal'),
                         'onchange' => $this::REFRESH_ON_CHANGE,
@@ -84,8 +84,8 @@ $endsOn = $changes->version->names('valid_until')
                 // themselves is asked here - most often nothing, since the papers of the contract are why it
                 // is being drawn up at all.
                 if ($contractProposal->customer_proposal_id === null) {
-                    echo $this->Form->control('new_round_purpose', [
-                        'options' => $roundPurposes,
+                    echo $this->Form->control('new_proposal_purpose', [
+                        'options' => $proposalPurposes,
                         'empty' => __('No purpose of its own'),
                         'label' => __('Purpose of the New Customer Proposal'),
                     ]);

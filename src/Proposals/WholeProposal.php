@@ -21,7 +21,7 @@ use Cake\ORM\Locator\LocatorAwareTrait;
  * open until it is applied, long after it was signed, so "what is still open" and "what is
  * still waiting for this" are not the same question.
  */
-final class RoundOfPapers
+final class WholeProposal
 {
     use LocatorAwareTrait;
 

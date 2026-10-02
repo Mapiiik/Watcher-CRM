@@ -199,7 +199,7 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
-     * A round given up on is out of the workbench until somebody asks for it, and the one whose
+     * A proposal given up on is out of the workbench until somebody asks for it, and the one whose
      * papers are on the page stays whatever became of it.
      *
      * @link \App\Controller\DocumentsController::manage()
@@ -208,9 +208,9 @@ class ContractProposalsDocumentsTest extends TestCase
     public function testWhatWasGivenUpOnStepsOutOfTheWorkbench(): void
     {
         $at = '/customers/' . self::CUSTOMER_ID . '/documents/manage';
-        $rounds = $this->fetchTable('CustomerProposals');
-        $rounds->saveOrFail(
-            $rounds->patchEntity($rounds->get(self::ROUND_ID), ['revoked' => DateTime::now()]),
+        $proposals = $this->fetchTable('CustomerProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::ROUND_ID), ['revoked' => DateTime::now()]),
             ['checkRules' => false],
         );
 
@@ -218,7 +218,7 @@ class ContractProposalsDocumentsTest extends TestCase
             $this->get($address);
             $this->assertResponseOk();
 
-            return array_column((array)$this->viewVariable('rounds'), 'id');
+            return array_column((array)$this->viewVariable('proposals'), 'id');
         };
 
         $this->assertNotContains(self::ROUND_ID, $listed($at));
@@ -251,8 +251,8 @@ class ContractProposalsDocumentsTest extends TestCase
             ['name' => 'given-up-on.pdf'],
         );
 
-        $rounds = $this->fetchTable('CustomerProposals');
-        $rounds->giveUpOnTheRound($rounds->get(self::ROUND_ID), null);
+        $proposals = $this->fetchTable('CustomerProposals');
+        $proposals->giveUpOnTheProposal($proposals->get(self::ROUND_ID), null);
 
         $at = '/customers/' . self::CUSTOMER_ID . '/documents/manage';
 
@@ -281,7 +281,7 @@ class ContractProposalsDocumentsTest extends TestCase
             $this->get('/documents?search=' . urlencode($search));
             $this->assertResponseOk();
 
-            return array_column((array)$this->viewVariable('rounds'), 'id');
+            return array_column((array)$this->viewVariable('proposals'), 'id');
         };
 
         $this->assertContains(self::ROUND_ID, $found((string)$customer->number));
@@ -496,7 +496,7 @@ class ContractProposalsDocumentsTest extends TestCase
 
         // Drawn again, and this time the envelope goes out.
         $this->print();
-        $this->theRoundHasGoneOut();
+        $this->theProposalHasGoneOut();
 
         $this->dropTheDrawnPaper();
         $this->assertSame(
@@ -567,11 +567,11 @@ class ContractProposalsDocumentsTest extends TestCase
      *
      * @return void
      */
-    private function theRoundHasGoneOut(): void
+    private function theProposalHasGoneOut(): void
     {
-        $rounds = $this->fetchTable('CustomerProposals');
-        $rounds->saveOrFail(
-            $rounds->patchEntity($rounds->get(self::ROUND_ID), [
+        $proposals = $this->fetchTable('CustomerProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::ROUND_ID), [
                 'sent_date' => '2026-10-01',
                 'delivery_type' => DocumentsDeliveryType::Post,
             ]),
@@ -854,7 +854,7 @@ class ContractProposalsDocumentsTest extends TestCase
     }
 
     /**
-     * Where the table spans several rounds, the viewer says which round a page came from.
+     * Where the table spans several proposals, the viewer says which proposal a page came from.
      *
      * And says it as a sentence. The column wants the day first so that a table reads down its
      * left edge, but the viewer reads across one line, and a line of four things separated by
@@ -863,7 +863,7 @@ class ContractProposalsDocumentsTest extends TestCase
      * @link \App\View\Cell\DocumentsCell::rows()
      * @return void
      */
-    public function testOnAContractThePageSaysWhichRoundItCameFrom(): void
+    public function testOnAContractThePageSaysWhichProposalItCameFrom(): void
     {
         $this->addPages(['first.png', 'second.png']);
 
@@ -1024,7 +1024,7 @@ class ContractProposalsDocumentsTest extends TestCase
 
     /**
      * The row saying nothing has come back is where the filing is offered, and it is offered from
-     * the wider views too - a scan is filed from wherever the round is being read.
+     * the wider views too - a scan is filed from wherever the proposal is being read.
      *
      * @link \App\View\Cell\DocumentsCell::display()
      * @return void
@@ -1038,13 +1038,13 @@ class ContractProposalsDocumentsTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains('/documents/add-pages');
 
-        // The same workbench without diving into a round, where the rounds are rows.
+        // The same workbench without diving into a proposal, where the proposals are rows.
         $this->get('/customers/' . self::CUSTOMER_ID . '/documents/manage');
         $this->assertResponseOk();
         $this->assertResponseContains('/documents/add-pages?proposal_id=' . self::PROPOSAL_ID);
 
         // Once something has come back the row saying it had not is gone, and the way to file the
-        // rest is the round's own page - which offers it under the table whatever is on file.
+        // rest is the proposal's own page - which offers it under the table whatever is on file.
         $this->addPages(['scan.pdf']);
         $this->get(self::NESTED . '/documents/manage?agenda=CustomerProposals&proposal_id='
             . self::ROUND_ID);

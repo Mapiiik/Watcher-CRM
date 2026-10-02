@@ -11,13 +11,13 @@ use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
- * The papers page lists every round, including the ones nothing has come back for.
+ * The papers page lists every proposal, including the ones nothing has come back for.
  *
- * A table of papers alone cannot be used to add the first one: the round it would hang on is
- * exactly the round with no row to start from. Listing the empty ones also says at a glance what
+ * A table of papers alone cannot be used to add the first one: the proposal it would hang on is
+ * exactly the proposal with no row to start from. Listing the empty ones also says at a glance what
  * is still outstanding, which is the same question asked the other way round.
  *
- * A revoked round is left out when it has nothing, because nothing is ever coming for it.
+ * A revoked proposal is left out when it has nothing, because nothing is ever coming for it.
  */
 #[UsesClass(DocumentsCell::class)]
 class WhatIsMissingIsListedTest extends TestCase
@@ -91,7 +91,7 @@ class WhatIsMissingIsListedTest extends TestCase
     /**
      * @return void
      */
-    public function testARoundWithNothingOnFileIsStillListed(): void
+    public function testAProposalWithNothingOnFileIsStillListed(): void
     {
         $this->login();
 
@@ -101,7 +101,7 @@ class WhatIsMissingIsListedTest extends TestCase
 
             $this->assertResponseContains(
                 '<span class="error-text">Nothing yet</span>',
-                'The papers of ' . $whose . ' say nothing about the round waiting for them.',
+                'The papers of ' . $whose . ' say nothing about the proposal waiting for them.',
             );
             $this->assertResponseContains(
                 'proposal_id=' . self::PROPOSAL_ID,
@@ -113,7 +113,7 @@ class WhatIsMissingIsListedTest extends TestCase
     /**
      * @return void
      */
-    public function testARevokedRoundWithNothingOnFileIsNotListed(): void
+    public function testARevokedProposalWithNothingOnFileIsNotListed(): void
     {
         // The proposal it is a part of goes with it: it holds nothing else, so nothing is coming
         // for either of them.
@@ -132,24 +132,24 @@ class WhatIsMissingIsListedTest extends TestCase
 
             $this->assertResponseNotContains(
                 '<span class="error-text">Nothing yet</span>',
-                'The papers of ' . $whose . ' wait for a round that was called off.',
+                'The papers of ' . $whose . ' wait for a proposal that was called off.',
             );
         }
     }
 
     /**
-     * A round that asks nothing of the customer holds only the papers of their contracts, so it
+     * A proposal that asks nothing of the customer holds only the papers of their contracts, so it
      * has no paper of its own - nothing went out for it and nothing is coming. It says nothing on
      * the side that comes back, rather than waiting for a scan that cannot exist. This is what a
-     * round made by the backfill looks like, so it is the common one.
+     * proposal made by the backfill looks like, so it is the common one.
      *
      * @return void
      */
-    public function testARoundWithNoPaperOfItsOwnWaitsForNothing(): void
+    public function testAProposalWithNoPaperOfItsOwnWaitsForNothing(): void
     {
-        $rounds = $this->getTableLocator()->get('CustomerProposals');
-        $rounds->saveOrFail(
-            $rounds->patchEntity($rounds->get(self::ROUND_ID), ['purpose' => null]),
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::ROUND_ID), ['purpose' => null]),
             ['checkRules' => false],
         );
 
@@ -159,11 +159,11 @@ class WhatIsMissingIsListedTest extends TestCase
             $this->get($url);
             $this->assertResponseOk();
 
-            // The round is still listed among the proposals, which is where it belongs - what it
+            // The proposal is still listed among the proposals, which is where it belongs - what it
             // must not do is stand among the papers asking for a scan.
             $this->assertResponseNotContains(
                 '/documents/add-pages?proposal_id=' . self::ROUND_ID,
-                'The papers of ' . $whose . ' ask for a scan of a paper the round never had.',
+                'The papers of ' . $whose . ' ask for a scan of a paper the proposal never had.',
             );
             // Its contract's papers are still waiting for theirs.
             $this->assertResponseContains(
@@ -174,7 +174,7 @@ class WhatIsMissingIsListedTest extends TestCase
     }
 
     /**
-     * The card on the customer reads the papers too, and there an empty round is noise.
+     * The card on the customer reads the papers too, and there an empty proposal is noise.
      *
      * @return void
      */
@@ -188,17 +188,17 @@ class WhatIsMissingIsListedTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseNotContains(
             '<span class="error-text">Nothing yet</span>',
-            $url . ' lists rounds that have nothing to read.',
+            $url . ' lists proposals that have nothing to read.',
         );
     }
 
     /**
-     * On the side we draw ourselves, what is missing is each paper the round owes rather than one
-     * line saying the round is empty - so the gap is named and may be clicked on.
+     * On the side we draw ourselves, what is missing is each paper the proposal owes rather than one
+     * line saying the proposal is empty - so the gap is named and may be clicked on.
      *
      * @return void
      */
-    public function testEachPaperTheRoundOwesIsNamedAndOffered(): void
+    public function testEachPaperTheProposalOwesIsNamedAndOffered(): void
     {
         $this->login();
 
@@ -213,7 +213,7 @@ class WhatIsMissingIsListedTest extends TestCase
         // Drawing the paper writes it down in this very table, so the page reads itself again
         // once the reader comes back from the document.
         $this->assertResponseContains('refresh-on-return');
-        // A paper the round owes and has not got is a gap, and reads as one.
+        // A paper the proposal owes and has not got is a gap, and reads as one.
         $this->assertResponseContains('class="error-text');
     }
 

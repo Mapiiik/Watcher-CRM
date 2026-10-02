@@ -241,20 +241,20 @@ class ChangePlanTest extends TestCase
         $papers = $proposals->get(self::PROPOSAL_ID);
 
         // The signature is the envelope's, so a test that gives the papers one gives it there.
-        $ofTheRound = array_intersect_key(
+        $ofTheProposal = array_intersect_key(
             $says,
             array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
         );
 
-        if ($ofTheRound !== []) {
+        if ($ofTheProposal !== []) {
             $envelopes = $this->getTableLocator()->get('CustomerProposals');
             $envelopes->saveOrFail(
-                $envelopes->patchEntity($envelopes->get($papers->customer_proposal_id), $ofTheRound),
+                $envelopes->patchEntity($envelopes->get($papers->customer_proposal_id), $ofTheProposal),
                 ['checkRules' => false],
             );
         }
 
-        $says = array_diff_key($says, $ofTheRound);
+        $says = array_diff_key($says, $ofTheProposal);
 
         if ($says !== []) {
             $proposals->saveOrFail(

@@ -35,24 +35,24 @@ final class ProposalRows
     /**
      * One proposal, as a listing wants it.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The proposal.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
      * @return array<string, mixed>
      */
-    private function row(ContractProposal|CustomerProposal $round): array
+    private function row(ContractProposal|CustomerProposal $proposal): array
     {
-        $ofAContract = $round instanceof ContractProposal;
+        $ofAContract = $proposal instanceof ContractProposal;
 
         return [
-            'id' => (string)$round->id,
+            'id' => (string)$proposal->id,
             'agenda' => $ofAContract ? 'ContractProposals' : 'CustomerProposals',
-            'round' => $round,
+            'proposal' => $proposal,
             'customer' => $ofAContract
-                ? ($round->contract->customer ?? null)
-                : ($round->customer ?? null),
-            'contract' => $ofAContract ? ($round->contract ?? null) : null,
-            'covers' => $ofAContract ? [] : $this->contractsCovered($round),
-            'version' => $ofAContract ? ($round->contract_version ?? null) : null,
-            'purpose' => $ofAContract ? $round->purpose->label() : $round->whatItIsFor(),
+                ? ($proposal->contract->customer ?? null)
+                : ($proposal->customer ?? null),
+            'contract' => $ofAContract ? ($proposal->contract ?? null) : null,
+            'covers' => $ofAContract ? [] : $this->contractsCovered($proposal),
+            'version' => $ofAContract ? ($proposal->contract_version ?? null) : null,
+            'purpose' => $ofAContract ? $proposal->purpose->label() : $proposal->whatItIsFor(),
         ];
     }
 

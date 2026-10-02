@@ -6,7 +6,7 @@
  * page: what is being done is said once, over the form.
  *
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round
+ * @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal
  * @var string $about What the papers are of.
  * @var array<string, array<string, mixed>> $printed
  * @var array<string, string> $variants
@@ -15,8 +15,8 @@
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\DocumentVariant;
 
-$agenda = $round instanceof CustomerProposal ? 'CustomerProposals' : 'ContractProposals';
-$there = ['proposal_id' => $round->id, 'agenda' => $agenda];
+$agenda = $proposal instanceof CustomerProposal ? 'CustomerProposals' : 'ContractProposals';
+$there = ['proposal_id' => $proposal->id, 'agenda' => $agenda];
 
 // Which paper of which record, in one field: the scan is of one document, and a proposal put to
 // the customer holds their own papers beside those of each of their contracts.
@@ -39,7 +39,7 @@ foreach ($printed as $holder => $whose) {
             ) ?>
             <?= $this->AuthLink->link(
                 __('View Proposal'),
-                ['controller' => $agenda, 'action' => 'view', $round->id],
+                ['controller' => $agenda, 'action' => 'view', $proposal->id],
                 ['class' => 'side-nav-item'],
             ) ?>
         </div>

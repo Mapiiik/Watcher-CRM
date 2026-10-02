@@ -18,9 +18,9 @@
                 ) ?>
             <?php endif; ?>
             <?php
-            // What is written down about the round is offered here as well as on the detail:
+            // What is written down about the proposal is offered here as well as on the detail:
             // somebody filling in the day it went out or the day it was signed reaches for Edit
-            // first. No guard is needed - a round that may be edited has not been given up on.
+            // first. No guard is needed - a proposal that may be edited has not been given up on.
             ?>
             <?= $this->AuthLink->link(
                 __('Record the Sending'),

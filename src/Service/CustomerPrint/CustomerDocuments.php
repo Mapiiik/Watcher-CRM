@@ -12,7 +12,7 @@ use Files\Service\FileStorage;
 use Throwable;
 
 /**
- * The papers a round has, handed over rather than drawn again.
+ * The papers a proposal has, handed over rather than drawn again.
  *
  * The counterpart of {@see \App\Service\ContractPrint\ContractDocuments} and it keeps the same
  * promise: a document is drawn once, what comes out is kept, and every request for it afterwards
@@ -28,8 +28,8 @@ final class CustomerDocuments
     use FiledPapersTrait;
 
     /**
-     * What the papers hang on. The round rather than the customer: a customer is asked more than
-     * once over the years, and it is the round that tells this asking from the last one.
+     * What the papers hang on. The proposal rather than the customer: a customer is asked more than
+     * once over the years, and it is the proposal that tells this asking from the last one.
      */
     public const MODEL = 'CustomerProposals';
 
@@ -57,7 +57,7 @@ final class CustomerDocuments
      */
     public function for(CustomerPrintData $data): PrintedDocument
     {
-        // Nothing to file it against. Papers are drawn from a round and this is not one, so it is
+        // Nothing to file it against. Papers are drawn from a proposal and this is not one, so it is
         // handed over and forgotten rather than kept somewhere nothing can find it again.
         if ($data->proposal === null) {
             return $this->output->document($data);
@@ -68,7 +68,7 @@ final class CustomerDocuments
     }
 
     /**
-     * The documents a round may be drawn up as.
+     * The documents a proposal may be drawn up as.
      *
      * @return array<string, string> By the value they are filed under.
      */
@@ -84,7 +84,7 @@ final class CustomerDocuments
     }
 
     /**
-     * The paper the round already has, where it has one.
+     * The paper the proposal already has, where it has one.
      *
      * @param \App\Service\CustomerPrint\CustomerPrintData $data What is wanted.
      * @return \App\Documents\PrintedDocument|null

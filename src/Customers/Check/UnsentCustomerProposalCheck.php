@@ -8,7 +8,7 @@ use Cake\ORM\Query\SelectQuery;
 use Override;
 
 /**
- * A round of papers drawn up for the customer and never sent.
+ * A proposal drawn up for the customer and never sent.
  *
  * The day the papers speak about arrives whether or not anybody printed them, and nothing else
  * would ever mention that nobody did.
@@ -16,7 +16,7 @@ use Override;
 class UnsentCustomerProposalCheck extends AbstractCustomerProposalCheck
 {
     /**
-     * How far ahead a round nobody has sent is worth raising, if nothing says otherwise.
+     * How far ahead a proposal nobody has sent is worth raising, if nothing says otherwise.
      */
     private const WITHIN_DAYS = 14;
 
@@ -53,7 +53,7 @@ class UnsentCustomerProposalCheck extends AbstractCustomerProposalCheck
     }
 
     /**
-     * Rounds nobody has sent to the customer.
+     * Proposals nobody has sent to the customer.
      *
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */

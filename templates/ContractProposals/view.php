@@ -116,10 +116,10 @@ foreach ($filed as $byVariant) {
                 <?php
                 // Papers of a contract are a part of a proposal put to the customer, and the way
                 // back up to it is said where the papers are read rather than only in the menu.
-                $round = $contractProposal->customer_proposal;
+                $proposal = $contractProposal->customer_proposal;
                 $itGoesOutIn = $this->Html->link(
-                    __('{0} from {1}', [$round->whatItIsFor(), $round->effective_from]),
-                    ['controller' => 'CustomerProposals', 'action' => 'view', $round->id],
+                    __('{0} from {1}', [$proposal->whatItIsFor(), $proposal->effective_from]),
+                    ['controller' => 'CustomerProposals', 'action' => 'view', $proposal->id],
                 );
                 ?>
                 <p><?= __('This contract proposal is part of the customer proposal: {0}', $itGoesOutIn) ?></p>

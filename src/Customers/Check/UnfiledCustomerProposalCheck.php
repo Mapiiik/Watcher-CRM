@@ -55,7 +55,7 @@ class UnfiledCustomerProposalCheck extends AbstractCustomerProposalCheck
     }
 
     /**
-     * Rounds whose signed copy never arrived.
+     * Proposals whose signed copy never arrived.
      *
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
@@ -64,7 +64,7 @@ class UnfiledCustomerProposalCheck extends AbstractCustomerProposalCheck
     {
         $after = $this->days(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
-        // Only a round that asks something of the customer. One that is handed over is concluded
+        // Only a proposal that asks something of the customer. One that is handed over is concluded
         // by delivering it, and one with no purpose of its own carries the contracts' papers and
         // nothing else - their signed copies are filed against the contracts and asked for there.
         $query = $this->candidates()->where([

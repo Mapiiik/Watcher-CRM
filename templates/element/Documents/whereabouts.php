@@ -13,7 +13,7 @@
  * @var \App\Model\Entity\Customer $customer
  * @var \App\Model\Entity\Contract|null $contract
  * @var \App\Model\Entity\ContractVersion|null $version
- * @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round
+ * @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal
  */
 
 use App\Model\Entity\ContractProposal;
@@ -55,21 +55,21 @@ if ($version !== null) {
 
 // Papers of a contract are a part of a proposal, so the way out of them runs through it - the
 // proposal is a step of its own even when what is open is one of its parts.
-$proposal = $round instanceof CustomerProposal ? $round : $round?->customer_proposal;
+$customer_proposal = $proposal instanceof CustomerProposal ? $proposal : $proposal?->customer_proposal;
 
-if ($proposal !== null) {
+if ($customer_proposal !== null) {
     $steps[] = [
-        'said' => __('{0} from {1}', [$proposal->whatItIsFor(), $proposal->effective_from]),
+        'said' => __('{0} from {1}', [$customer_proposal->whatItIsFor(), $customer_proposal->effective_from]),
         'url' => [
             'action' => 'manage',
-            '?' => ['proposal_id' => $proposal->id, 'agenda' => 'CustomerProposals'],
+            '?' => ['proposal_id' => $customer_proposal->id, 'agenda' => 'CustomerProposals'],
         ],
     ];
 }
 
-if ($round instanceof ContractProposal) {
+if ($proposal instanceof ContractProposal) {
     $steps[] = [
-        'said' => $round->getName(),
+        'said' => $proposal->getName(),
         'url' => null,
     ];
 }

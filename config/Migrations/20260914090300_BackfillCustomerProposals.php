@@ -39,7 +39,7 @@ class BackfillCustomerProposals extends BaseMigration
         );
 
         foreach ($unlinked as $papers) {
-            $round = Text::uuid();
+            $proposal = Text::uuid();
 
             $this->getInsertBuilder()
                 ->insert([
@@ -58,7 +58,7 @@ class BackfillCustomerProposals extends BaseMigration
                 ])
                 ->into('customer_proposals')
                 ->values([
-                    'id' => $round,
+                    'id' => $proposal,
                     'customer_id' => $papers['customer_id'],
                     'effective_from' => $papers['effective_from'],
                     'sent_date' => $papers['sent_date'],
@@ -75,7 +75,7 @@ class BackfillCustomerProposals extends BaseMigration
 
             $this->getUpdateBuilder()
                 ->update('contract_proposals')
-                ->set('customer_proposal_id', $round)
+                ->set('customer_proposal_id', $proposal)
                 ->where(['id' => $papers['id']])
                 ->execute();
         }

@@ -623,12 +623,12 @@ $permissions = [
                     return false;
                 }
 
-                /** @var \App\Model\Table\ContractProposalsTable|\App\Model\Table\CustomerProposalsTable $rounds */
-                $rounds = TableRegistry::getTableLocator()->get($agenda);
-                /** @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round */
-                $round = $rounds->find()->where([$agenda . '.id' => $link->foreign_key])->first();
+                /** @var \App\Model\Table\ContractProposalsTable|\App\Model\Table\CustomerProposalsTable $proposals */
+                $proposals = TableRegistry::getTableLocator()->get($agenda);
+                /** @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal */
+                $proposal = $proposals->find()->where([$agenda . '.id' => $link->foreign_key])->first();
 
-                return $round !== null && $rounds->mayBeEdited($round);
+                return $proposal !== null && $proposals->mayBeEdited($proposal);
             },
         ],
         //allow delete of some items for sales and bookkeepers and network-managers
@@ -787,7 +787,7 @@ $permissions = [
                     : $proposals->mayBeEdited($proposal);
             },
         ],
-        //a round of papers is settled by sending it, the same as a contract's proposal: what has
+        //a proposal put to the customer is settled by sending it, the same as a contract's proposal: what has
         //left the building is not removed afterwards
         [
             'role' => [
@@ -818,7 +818,7 @@ $permissions = [
                 $proposal = $proposals->find()
                     ->select([
                         //asked for by name: what may still go is partly whether anything hangs on
-                        //the round, and that is looked up by the round's own id
+                        //the proposal, and that is looked up by the proposal's own id
                         'CustomerProposals.id',
                         'CustomerProposals.sent_date',
                         'CustomerProposals.conclusion_date',

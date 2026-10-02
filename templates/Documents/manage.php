@@ -10,8 +10,8 @@
  * @var \App\Model\Entity\Customer $customer
  * @var \App\Model\Entity\Contract|null $contract
  * @var \App\Model\Entity\ContractVersion|null $version
- * @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round
- * @var array<array<string, mixed>> $rounds
+ * @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal
+ * @var array<array<string, mixed>> $proposals
  * @var array{0: string, 1: string} $scope
  * @var string $about The innermost thing the address names, which is what the papers are of.
  * @var bool $with_contracts
@@ -22,9 +22,9 @@
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\CustomerProposal;
 
-// Diving into one round is what turns the page into somewhere pages may be reordered and let go
+// Diving into one proposal is what turns the page into somewhere pages may be reordered and let go
 // of: everything else here is about reading what is there.
-$inside = $round !== null;
+$inside = $proposal !== null;
 
 // Only where something is held underneath is there anything to leave out.
 $holdsContracts = in_array($scope[0], ['customer', 'customerProposal'], true);
@@ -92,8 +92,8 @@ $carrying = function (array $fields): string {
         <div class="documents content">
             <?php
             // Papers of a contract are drawn up in one place and one place only: the form that
-            // draws them up. Opened from inside a round, it starts out in that round.
-            $inARound = $round instanceof CustomerProposal;
+            // draws them up. Opened from inside a proposal, it starts out in that proposal.
+            $inAProposal = $proposal instanceof CustomerProposal;
             ?>
             <?= $this->AuthLink->link(
                 __('New Customer Proposal'),
@@ -111,7 +111,7 @@ $carrying = function (array $fields): string {
                     'action' => 'add',
                     // Opened from inside a proposal the papers start out in it. Opened from
                     // anywhere else the form asks which proposal they belong to, or draws one up.
-                    '?' => $inARound ? ['proposal_id' => $round->id] : [],
+                    '?' => $inAProposal ? ['proposal_id' => $proposal->id] : [],
                 ],
                 ['class' => 'button button-small float-right'],
             ) ?>
@@ -119,7 +119,7 @@ $carrying = function (array $fields): string {
             <p><?= __('The proposals shown here. A customer proposal holds the proposals of the'
                 . ' customer\'s contracts. Its row lists those contracts and what changes on'
                 . ' each, and all of their documents are below.') ?></p>
-            <?= $this->element('Documents/rounds', ['working' => true]) ?>
+            <?= $this->element('Documents/proposals', ['working' => true]) ?>
             <?php
             // Under the table rather than over it: the buttons above have the corner, and what
             // this switch does is only worth asking once somebody has read what is there.
@@ -141,15 +141,15 @@ $carrying = function (array $fields): string {
         <br>
         <div class="documents content">
             <?php
-            // Diving into one round names it in the heading, and the way to it belongs beside
+            // Diving into one proposal names it in the heading, and the way to it belongs beside
             // that name: from here on the page is about those papers alone, and what they say -
             // what is being agreed, and where it stands - is read on the proposal itself.
             ?>
             <?php if ($inside) : ?>
                 <?php
-                // Named by the papers rather than by the envelope: a round is the one thing a
+                // Named by the papers rather than by the envelope: a proposal is the one thing a
                 // proposal of a contract hangs under, while what hangs there is open-ended.
-                $ofPapers = $round instanceof ContractProposal;
+                $ofPapers = $proposal instanceof ContractProposal;
                 ?>
                 <?= $this->AuthLink->link(
                     $ofPapers ? __('View Contract Proposal') : __('View Customer Proposal'),
@@ -157,7 +157,7 @@ $carrying = function (array $fields): string {
                         'plugin' => null,
                         'controller' => $ofPapers ? 'ContractProposals' : 'CustomerProposals',
                         'action' => 'view',
-                        $round->id,
+                        $proposal->id,
                     ],
                     ['class' => 'button button-small float-right'],
                 ) ?>
@@ -188,8 +188,8 @@ $carrying = function (array $fields): string {
                         [
                             'action' => 'addPages',
                             '?' => [
-                                'proposal_id' => $round->id,
-                                'agenda' => $round instanceof CustomerProposal
+                                'proposal_id' => $proposal->id,
+                                'agenda' => $proposal instanceof CustomerProposal
                                     ? 'CustomerProposals'
                                     : 'ContractProposals',
                             ],

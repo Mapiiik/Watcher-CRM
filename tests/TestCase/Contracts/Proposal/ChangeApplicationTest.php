@@ -83,20 +83,20 @@ class ChangeApplicationTest extends TestCase
 
         // The sending and the signature are the envelope's, so that half of what a test says is
         // said there.
-        $ofTheRound = array_intersect_key(
+        $ofTheProposal = array_intersect_key(
             $says,
             array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
         );
 
-        if ($ofTheRound !== []) {
+        if ($ofTheProposal !== []) {
             $envelopes = $this->getTableLocator()->get('CustomerProposals');
             $envelopes->saveOrFail(
-                $envelopes->patchEntity($envelopes->get($proposal->customer_proposal_id), $ofTheRound),
+                $envelopes->patchEntity($envelopes->get($proposal->customer_proposal_id), $ofTheProposal),
                 ['checkRules' => false],
             );
         }
 
-        $says = array_diff_key($says, $ofTheRound);
+        $says = array_diff_key($says, $ofTheProposal);
 
         if ($says !== []) {
             $proposals->saveOrFail(
@@ -105,7 +105,7 @@ class ChangeApplicationTest extends TestCase
             );
         }
 
-        // What it is read with is what asks about its state: the round it goes out in.
+        // What it is read with is what asks about its state: the proposal it goes out in.
         return $proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
     }
 

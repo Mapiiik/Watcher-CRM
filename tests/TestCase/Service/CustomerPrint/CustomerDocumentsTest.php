@@ -32,7 +32,7 @@ class CustomerDocumentsTest extends TestCase
     use IntegrationTestTrait;
 
     /**
-     * The customer the rounds hang on.
+     * The customer the proposals hang on.
      *
      * @var string
      */
@@ -47,7 +47,7 @@ class CustomerDocumentsTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
-     * A round of one of that customer's contracts, from the fixture.
+     * A proposal of one of that customer's contracts, from the fixture.
      *
      * @var string
      */
@@ -124,7 +124,7 @@ class CustomerDocumentsTest extends TestCase
      */
     public function testAPaperIsDrawnOnceAndKept(): void
     {
-        $paper = $this->print($this->round());
+        $paper = $this->print($this->proposal());
 
         $this->assertStringStartsWith('%PDF', $paper);
         $this->assertSame(1, $this->stored());
@@ -140,9 +140,9 @@ class CustomerDocumentsTest extends TestCase
      */
     public function testAskingAgainGivesBackTheSamePaperRatherThanANewOne(): void
     {
-        $round = $this->round();
+        $proposal = $this->proposal();
 
-        $first = $this->print($round);
+        $first = $this->print($proposal);
 
         // The customer moves house. The consent that went out still lists where they lived when
         // they agreed to it, and that is the point of keeping it.
@@ -152,22 +152,22 @@ class CustomerDocumentsTest extends TestCase
             ['checkRules' => false],
         );
 
-        $second = $this->print($round);
+        $second = $this->print($proposal);
 
         $this->assertSame($first, $second);
         $this->assertSame(1, $this->stored(), 'The paper was drawn a second time.');
     }
 
     /**
-     * Two rounds are two papers, which is what makes a signed scan tellable from the last one.
+     * Two proposals are two papers, which is what makes a signed scan tellable from the last one.
      *
      * @link \App\Service\CustomerPrint\CustomerDocuments::for()
      * @return void
      */
-    public function testEachRoundHasItsOwnPaper(): void
+    public function testEachProposalHasItsOwnPaper(): void
     {
-        $this->print($this->round('2026-01-01'));
-        $this->print($this->round('2026-09-30'));
+        $this->print($this->proposal('2026-01-01'));
+        $this->print($this->proposal('2026-09-30'));
 
         $this->assertSame(2, $this->stored());
         $this->assertSame(2, $this->filed(DocumentVariant::Generated));
@@ -182,13 +182,13 @@ class CustomerDocumentsTest extends TestCase
      */
     public function testTheCustomersPapersShowBothAgendasTogether(): void
     {
-        $this->print($this->round());
+        $this->print($this->proposal());
 
         $this->get(sprintf('/customers/%s/documents/manage', self::CUSTOMER_ID));
 
         $this->assertResponseOk();
         $this->assertResponseContains('Consent to the processing of personal data');
-        // The heading is drawn, so the column is there - the round simply has nothing to put in it.
+        // The heading is drawn, so the column is there - the proposal simply has nothing to put in it.
         $this->assertResponseContains('<th>' . __('Contract') . '</th>');
     }
 
@@ -199,11 +199,11 @@ class CustomerDocumentsTest extends TestCase
      * @link \App\View\Cell\DocumentsCell::display()
      * @return void
      */
-    public function testTheCustomersOwnRoundsReadBeforeTheContractsPapers(): void
+    public function testTheCustomersOwnProposalsReadBeforeTheContractsPapers(): void
     {
         $this->fileAgainst(
             CustomerDocuments::MODEL,
-            $this->round(),
+            $this->proposal(),
             CustomerDocumentType::GdprNew->value,
         );
         $this->fileAgainst(
@@ -233,7 +233,7 @@ class CustomerDocumentsTest extends TestCase
      */
     public function testThePrintPageListsWhatHasAlreadyBeenDrawn(): void
     {
-        $this->print($this->round());
+        $this->print($this->proposal());
         $theContracts = $this->fileAgainst(
             'ContractProposals',
             self::CONTRACT_PROPOSAL_ID,
@@ -245,8 +245,8 @@ class CustomerDocumentsTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Generated Documents'));
-        // The label alone would be the round's own name as well, so the row is what is looked for.
-        $this->assertResponseContains(sprintf('/files/file-links/download/%s', $this->ourRound()->id));
+        // The label alone would be the proposal's own name as well, so the row is what is looked for.
+        $this->assertResponseContains(sprintf('/files/file-links/download/%s', $this->ourProposal()->id));
         // Both sides at once is the point of standing on the customer: the papers of their
         // contracts used to be somewhere else entirely.
         $this->assertResponseContains(
@@ -264,14 +264,14 @@ class CustomerDocumentsTest extends TestCase
      */
     public function testAScanIsStillFiledAfterTheSignatureHasBeenRecorded(): void
     {
-        $round = $this->round();
+        $proposal = $this->proposal();
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         // The scans are handed over on their own here, so the token knows nothing about them.
         $this->setUnlockedFields(['papers']);
 
-        $this->post('/customer-proposals/conclude/' . $round, ['conclusion_date' => '2026-10-05']);
+        $this->post('/customer-proposals/conclude/' . $proposal, ['conclusion_date' => '2026-10-05']);
         $this->assertRedirect();
 
         $scan = $this->scan();
@@ -280,9 +280,9 @@ class CustomerDocumentsTest extends TestCase
             new UploadedFile($scan, (int)filesize($scan), UPLOAD_ERR_OK, 'scan.pdf', null),
         ]]]);
         $this->post(
-            '/documents/add-pages?proposal_id=' . $round . '&agenda=CustomerProposals',
+            '/documents/add-pages?proposal_id=' . $proposal . '&agenda=CustomerProposals',
             [
-                'document_type' => $round . '/' . CustomerDocumentType::GdprNew->value,
+                'document_type' => $proposal . '/' . CustomerDocumentType::GdprNew->value,
                 'variant' => DocumentVariant::ReceivedSignedByCustomer->value,
             ],
         );
@@ -294,43 +294,43 @@ class CustomerDocumentsTest extends TestCase
     }
 
     /**
-     * The round's own card shows what is filed against it, so that somebody reading what was
+     * The proposal's own card shows what is filed against it, so that somebody reading what was
      * agreed to does not have to go looking for the papers.
      *
      * @link \App\Controller\CustomerProposalsController::view()
      * @return void
      */
-    public function testTheRoundsCardShowsThePapersFiledAgainstIt(): void
+    public function testTheProposalsCardShowsThePapersFiledAgainstIt(): void
     {
-        $round = $this->round();
-        $this->print($round);
+        $proposal = $this->proposal();
+        $this->print($proposal);
 
         // The proposal's own page says how many there are and leads to them; the papers
         // themselves are read where they are worked on.
-        $this->get(self::NESTED . '/customer-proposals/view/' . $round);
+        $this->get(self::NESTED . '/customer-proposals/view/' . $proposal);
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Stored Documents'));
-        $this->assertResponseContains('proposal_id=' . $round);
+        $this->assertResponseContains('proposal_id=' . $proposal);
 
-        $this->get(sprintf('/customers/%s/documents/manage?proposal_id=%s', self::CUSTOMER_ID, $round));
+        $this->get(sprintf('/customers/%s/documents/manage?proposal_id=%s', self::CUSTOMER_ID, $proposal));
 
         $this->assertResponseOk();
-        $this->assertResponseContains(sprintf('/files/file-links/download/%s', $this->ourRound()->id));
+        $this->assertResponseContains(sprintf('/files/file-links/download/%s', $this->ourProposal()->id));
     }
 
     /**
      * Asks for the paper the way the print page does.
      *
-     * @param string $round Which round.
+     * @param string $proposal Which proposal.
      * @return string The paper.
      */
-    private function print(string $round): string
+    private function print(string $proposal): string
     {
         $this->get(sprintf(
             '/customers/%s/documents/generate.pdf?agenda=CustomerProposals&proposal_id=%s&document_type=%s',
             self::CUSTOMER_ID,
-            $round,
+            $proposal,
             CustomerDocumentType::GdprNew->value,
         ));
 
@@ -341,12 +341,12 @@ class CustomerDocumentsTest extends TestCase
     }
 
     /**
-     * A round to draw from.
+     * A proposal to draw from.
      *
      * @param string $from The day it speaks about.
      * @return string Its id.
      */
-    private function round(string $from = '2026-09-30'): string
+    private function proposal(string $from = '2026-09-30'): string
     {
         $proposals = $this->getTableLocator()->get('CustomerProposals');
 
@@ -358,10 +358,10 @@ class CustomerDocumentsTest extends TestCase
     }
 
     /**
-     * Files a page against a round, without going the long way round through an upload.
+     * Files a page against a proposal, without going the long way round through an upload.
      *
-     * @param string $model Whose round it is.
-     * @param string $foreign_key Which round.
+     * @param string $model Whose proposal it is.
+     * @param string $foreign_key Which proposal.
      * @param string $document_type Which document.
      * @param \App\Model\Enum\DocumentVariant $variant Which side of the paper it is.
      * @return \Files\Model\Entity\FileLink
@@ -385,11 +385,11 @@ class CustomerDocumentsTest extends TestCase
     }
 
     /**
-     * The page filed against a round put to the customer themselves.
+     * The page filed against a proposal put to the customer themselves.
      *
      * @return \Files\Model\Entity\FileLink
      */
-    private function ourRound(): FileLink
+    private function ourProposal(): FileLink
     {
         /** @var \Files\Model\Entity\FileLink $link */
         $link = $this->fetchTable('Files.FileLinks')->find()
@@ -422,7 +422,7 @@ class CustomerDocumentsTest extends TestCase
 
     /**
      * @param \App\Model\Enum\DocumentVariant $variant Which variant of the document.
-     * @return int How many papers the rounds have in that hand.
+     * @return int How many papers the proposals have in that hand.
      */
     private function filed(DocumentVariant $variant): int
     {

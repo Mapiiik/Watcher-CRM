@@ -20,13 +20,13 @@ use RuntimeException;
 class CustomerProposalTest extends TestCase
 {
     /**
-     * A round holding what is given, with nothing else on it.
+     * A proposal holding what is given, with nothing else on it.
      *
      * @param \App\Model\Enum\CustomerProposalPurpose|null $purpose What is asked of the customer.
      * @param int $papers How many contracts' papers it carries.
      * @return \App\Model\Entity\CustomerProposal
      */
-    private function roundOf(?CustomerProposalPurpose $purpose, int $papers): CustomerProposal
+    private function proposalOf(?CustomerProposalPurpose $purpose, int $papers): CustomerProposal
     {
         return new CustomerProposal([
             'purpose' => $purpose,
@@ -51,12 +51,12 @@ class CustomerProposalTest extends TestCase
     }
 
     /**
-     * A round signed, with what it holds in the given states.
+     * A proposal signed, with what it holds in the given states.
      *
      * @param array<\App\Model\Entity\ContractProposal> $papers What it holds.
      * @return \App\Model\Entity\CustomerProposal
      */
-    private function signedRoundHolding(array $papers): CustomerProposal
+    private function signedProposalHolding(array $papers): CustomerProposal
     {
         return new CustomerProposal([
             'purpose' => null,
@@ -66,39 +66,39 @@ class CustomerProposalTest extends TestCase
     }
 
     /**
-     * The round's own road ends at the signature, but what it holds goes further - so after the
+     * The proposal's own road ends at the signature, but what it holds goes further - so after the
      * signature it says what is left to do rather than calling itself done.
      *
      * @link \App\Model\Entity\CustomerProposal::getState()
      * @return void
      */
-    public function testASignedRoundSaysWhatIsLeftToDoInIt(): void
+    public function testASignedProposalSaysWhatIsLeftToDoInIt(): void
     {
-        $waiting = $this->signedRoundHolding([$this->papers(), $this->papers(DateTime::now())]);
+        $waiting = $this->signedProposalHolding([$this->papers(), $this->papers(DateTime::now())]);
         $this->assertSame(__('Waiting for the changes to be applied'), $waiting->getState());
         $this->assertFalse($waiting->hasBeenDealtWith());
 
-        $done = $this->signedRoundHolding([$this->papers(DateTime::now())]);
+        $done = $this->signedProposalHolding([$this->papers(DateTime::now())]);
         $this->assertSame(__('Changes applied'), $done->getState());
         $this->assertTrue($done->hasBeenDealtWith());
 
         // Papers given up on were never applied, and nothing waits for them either.
-        $abandoned = $this->signedRoundHolding([$this->papers(revoked: DateTime::now())]);
+        $abandoned = $this->signedProposalHolding([$this->papers(revoked: DateTime::now())]);
         $this->assertSame(__('Signed'), $abandoned->getState());
         $this->assertTrue($abandoned->hasBeenDealtWith());
     }
 
     /**
-     * A round holding nothing of any contract's is done with when it is signed, and one nobody has
+     * A proposal holding nothing of any contract's is done with when it is signed, and one nobody has
      * signed says where it stands rather than looking into what it holds.
      *
      * @link \App\Model\Entity\CustomerProposal::getState()
      * @return void
      */
-    public function testARoundOfItsOwnIsDoneWithWhenItIsSigned(): void
+    public function testAProposalOfItsOwnIsDoneWithWhenItIsSigned(): void
     {
-        $this->assertSame(__('Signed'), $this->signedRoundHolding([])->getState());
-        $this->assertTrue($this->signedRoundHolding([])->hasBeenDealtWith());
+        $this->assertSame(__('Signed'), $this->signedProposalHolding([])->getState());
+        $this->assertTrue($this->signedProposalHolding([])->hasBeenDealtWith());
 
         $open = new CustomerProposal([
             'purpose' => null,
@@ -115,37 +115,37 @@ class CustomerProposalTest extends TestCase
      * @link \App\Model\Entity\CustomerProposal::whatItIsFor()
      * @return void
      */
-    public function testWhatARoundIsForSaysBothHalves(): void
+    public function testWhatAProposalIsForSaysBothHalves(): void
     {
         $asked = CustomerProposalPurpose::GdprConsent;
 
-        $this->assertSame($asked->label(), $this->roundOf($asked, 0)->whatItIsFor());
+        $this->assertSame($asked->label(), $this->proposalOf($asked, 0)->whatItIsFor());
         $this->assertSame(
             $asked->label() . ' + ' . __('Contract proposals'),
-            $this->roundOf($asked, 1)->whatItIsFor(),
+            $this->proposalOf($asked, 1)->whatItIsFor(),
         );
-        $this->assertSame(__('Contract proposals'), $this->roundOf(null, 2)->whatItIsFor());
+        $this->assertSame(__('Contract proposals'), $this->proposalOf(null, 2)->whatItIsFor());
     }
 
     /**
-     * A round just opened asks for nothing and holds nothing, and says so.
+     * A proposal just opened asks for nothing and holds nothing, and says so.
      *
      * @link \App\Model\Entity\CustomerProposal::whatItIsFor()
      * @return void
      */
-    public function testARoundThatCarriesNothingSaysSo(): void
+    public function testAProposalThatCarriesNothingSaysSo(): void
     {
-        $this->assertSame(__('Empty'), $this->roundOf(null, 0)->whatItIsFor());
+        $this->assertSame(__('Empty'), $this->proposalOf(null, 0)->whatItIsFor());
     }
 
     /**
-     * Not knowing what the round holds is a different thing from it holding nothing, so it is not
+     * Not knowing what the proposal holds is a different thing from it holding nothing, so it is not
      * quietly answered as though it were.
      *
      * @link \App\Model\Entity\CustomerProposal::whatItIsFor()
      * @return void
      */
-    public function testARoundAskedWithoutItsPapersRefusesToName(): void
+    public function testAProposalAskedWithoutItsPapersRefusesToName(): void
     {
         $this->expectException(RuntimeException::class);
 

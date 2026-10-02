@@ -57,7 +57,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
-     * Whether a round for this purpose waits for the customer's signature.
+     * Whether a proposal for this purpose waits for the customer's signature.
      *
      * One that is only handed over does not, so no signed copy of it is ever missing, and no
      * contract proposal can go out with it - those come back signed and could not be concluded.
@@ -70,7 +70,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
-     * The purposes a round holding contract proposals may have.
+     * The purposes a proposal holding contract proposals may have.
      *
      * @return array<string, string>
      */
@@ -84,7 +84,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
-     * The purposes whose rounds come back signed, as they are stored.
+     * The purposes whose proposals come back signed, as they are stored.
      *
      * @return list<string>
      */
@@ -94,7 +94,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
-     * The documents a round for this purpose may be printed as.
+     * The documents a proposal for this purpose may be printed as.
      *
      * @return array<\App\Model\Enum\CustomerDocumentType>
      */
@@ -112,7 +112,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
      * Which of them to put in front of the operator first.
      *
      * Asking somebody who has agreed before is not the same paper as asking somebody who never
-     * has, and only the earlier rounds know which it is. Only a suggestion - what is printed is
+     * has, and only the earlier proposals know which it is. Only a suggestion - what is printed is
      * whatever the operator picks.
      *
      * @param bool $asked_before Whether the customer has agreed to this before.

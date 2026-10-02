@@ -69,19 +69,19 @@ class UnsentContractProposalCheckTest extends TestCase
         // The sending and the signature are the envelope's, so anything said about them is said
         // there - the papers keep the day they take effect and whether they were given up on.
         $envelopes = $this->getTableLocator()->get('CustomerProposals');
-        $ofTheRound = array_intersect_key(
+        $ofTheProposal = array_intersect_key(
             $says,
             array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
         );
 
-        if ($ofTheRound !== []) {
+        if ($ofTheProposal !== []) {
             $envelopes->saveOrFail(
-                $envelopes->patchEntity($envelopes->get($proposal->customer_proposal_id), $ofTheRound),
+                $envelopes->patchEntity($envelopes->get($proposal->customer_proposal_id), $ofTheProposal),
                 ['checkRules' => false],
             );
         }
 
-        $ofThePapers = array_diff_key($says, $ofTheRound);
+        $ofThePapers = array_diff_key($says, $ofTheProposal);
 
         if ($ofThePapers !== []) {
             $proposals->saveOrFail(

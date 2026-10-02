@@ -153,7 +153,7 @@ class ContractsController extends AppController
             'ContractStates',
             'ContractVersions' => [
                 // What a version shows as "sent" is the latest of the proposals drawn up on it,
-                // and each of those reads it off the round it went out in.
+                // and each of those reads it off the proposal it went out in.
                 'ContractProposals' => ['CustomerProposals'],
                 'conditions' => $show_historical_records ?
                     [] : [

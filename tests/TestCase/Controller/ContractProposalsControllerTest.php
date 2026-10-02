@@ -338,9 +338,9 @@ class ContractProposalsControllerTest extends TestCase
         );
 
         // It asks nothing of the customer themselves: it is there to hold these papers.
-        $round = $this->getTableLocator()->get('CustomerProposals')->get($drawn->customer_proposal_id);
-        $this->assertNull($round->purpose);
-        $this->assertSame('2026-11-01', $round->effective_from->toDateString());
+        $proposal = $this->getTableLocator()->get('CustomerProposals')->get($drawn->customer_proposal_id);
+        $this->assertNull($proposal->purpose);
+        $this->assertSame('2026-11-01', $proposal->effective_from->toDateString());
     }
 
     /**
@@ -645,15 +645,15 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
-     * Says something of the round these papers go out in.
+     * Says something of the proposal these papers go out in.
      *
      * The sending and the signature belong to the envelope, so a test that puts papers in either
      * state puts the envelope in it.
      *
-     * @param array<string, mixed> $says What the round says.
+     * @param array<string, mixed> $says What the proposal says.
      * @return void
      */
-    private function theRoundSays(array $says): void
+    private function theProposalSays(array $says): void
     {
         $envelopes = $this->getTableLocator()->get('CustomerProposals');
         $envelopes->saveOrFail(
@@ -968,7 +968,7 @@ class ContractProposalsControllerTest extends TestCase
      */
     public function testTheLinesOfASentProposalAreLeftAlone(): void
     {
-        $this->theRoundSays(['sent_date' => '2026-10-01', 'delivery_type' => DocumentsDeliveryType::Email]);
+        $this->theProposalSays(['sent_date' => '2026-10-01', 'delivery_type' => DocumentsDeliveryType::Email]);
 
         $this->login();
         $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
@@ -1715,7 +1715,7 @@ class ContractProposalsControllerTest extends TestCase
             ]),
             ['checkRules' => false],
         );
-        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+        $this->theProposalSays(['conclusion_date' => '2026-09-15']);
 
         $this->login();
         $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
@@ -1918,12 +1918,12 @@ class ContractProposalsControllerTest extends TestCase
             [BillingsTable::ALLOW_CLOSED_PERIODS => true],
         );
 
-        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+        $this->theProposalSays(['conclusion_date' => '2026-09-15']);
     }
 
     public function testAMissingScanIsSaidOutLoudAndStopsNothing(): void
     {
-        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+        $this->theProposalSays(['conclusion_date' => '2026-09-15']);
 
         $this->login();
         $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/apply-changes/' . self::ROUND_ID);
@@ -1947,7 +1947,7 @@ class ContractProposalsControllerTest extends TestCase
      */
     public function testANoticeOnFileIsTheAnswer(): void
     {
-        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+        $this->theProposalSays(['conclusion_date' => '2026-09-15']);
 
         $root = TMP . 'notice-papers-' . uniqid();
         Configure::write('Files.root', $root);
@@ -2047,7 +2047,7 @@ class ContractProposalsControllerTest extends TestCase
         $billings = $this->getTableLocator()->get('Billings');
         $takes_effect = $billings->firstOpenPeriodStart()->addDays(1);
 
-        $this->theRoundSays(['effective_from' => $takes_effect]);
+        $this->theProposalSays(['effective_from' => $takes_effect]);
 
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposals->saveOrFail(
@@ -2072,7 +2072,7 @@ class ContractProposalsControllerTest extends TestCase
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $this->aConnectionLineAtFifty();
         $takes_effect = $this->thePapersTakeEffectInAnOpenPeriod();
-        $this->theRoundSays(['conclusion_date' => $takes_effect->subDays(1)]);
+        $this->theProposalSays(['conclusion_date' => $takes_effect->subDays(1)]);
         $this->agreeMinimum('100');
 
         $this->login();
@@ -2100,7 +2100,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testAnEmptyProposalIsMarkedAsDealtWith(): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
-        $this->theRoundSays(['conclusion_date' => '2026-09-15']);
+        $this->theProposalSays(['conclusion_date' => '2026-09-15']);
 
         $billings = $this->getTableLocator()->get('Billings');
         $before = $billings->find()->count();
@@ -2165,7 +2165,7 @@ class ContractProposalsControllerTest extends TestCase
     public function testASentProposalIsNotRemoved(): void
     {
         $proposals = $this->getTableLocator()->get('ContractProposals');
-        $this->theRoundSays(['sent_date' => '2026-10-01', 'delivery_type' => DocumentsDeliveryType::Email]);
+        $this->theProposalSays(['sent_date' => '2026-10-01', 'delivery_type' => DocumentsDeliveryType::Email]);
 
         $this->login();
         $this->enableCsrfToken();

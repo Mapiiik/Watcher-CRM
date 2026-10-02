@@ -11,7 +11,7 @@
  * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var array<string> $questions
  * @var array<string, string> $wording
- * @var array<string, string> $rounds
+ * @var array<string, string> $proposals
  * @var array<string, string> $contractNumbers
  * @var array<\Files\Model\Entity\FileLink> $documentsToDiscard
  */
@@ -53,9 +53,9 @@ use App\Model\Enum\ProposalPurpose;
                     . ' proposal and create a new one instead.') ?></p>
                 <br>
                 <?php
-                if ($rounds !== []) {
+                if ($proposals !== []) {
                     echo $this->Form->control('customer_proposal_id', [
-                        'options' => $rounds,
+                        'options' => $proposals,
                         'empty' => __('A new customer proposal'),
                         'label' => __('Part of the Customer Proposal'),
                         'help' => __('Contract proposals that are part of one customer proposal'

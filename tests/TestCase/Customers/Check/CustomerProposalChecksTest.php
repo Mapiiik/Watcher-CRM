@@ -35,7 +35,7 @@ class CustomerProposalChecksTest extends TestCase
     use TableTestTrait;
 
     /**
-     * The customer the rounds hang on. The fixture contract of theirs is running, so they are
+     * The customer the proposals hang on. The fixture contract of theirs is running, so they are
      * somebody the checks look at at all.
      */
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
@@ -100,25 +100,25 @@ class CustomerProposalChecksTest extends TestCase
      *
      * @return void
      */
-    public function testARoundNobodyHasSentIsFound(): void
+    public function testAProposalNobodyHasSentIsFound(): void
     {
-        $round = $this->round(['effective_from' => Date::now()->addDays(3)]);
+        $proposal = $this->proposal(['effective_from' => Date::now()->addDays(3)]);
 
-        $this->assertContains($round, $this->unsent());
-        $this->assertNotContains($round, $this->unanswered());
-        $this->assertNotContains($round, $this->unfiled());
+        $this->assertContains($proposal, $this->unsent());
+        $this->assertNotContains($proposal, $this->unanswered());
+        $this->assertNotContains($proposal, $this->unfiled());
     }
 
     /**
-     * A round for the spring is somebody's work in hand rather than a fault.
+     * A proposal for the spring is somebody's work in hand rather than a fault.
      *
      * @return void
      */
-    public function testARoundWhoseDayIsStillFarOffIsNotAFinding(): void
+    public function testAProposalWhoseDayIsStillFarOffIsNotAFinding(): void
     {
-        $round = $this->round(['effective_from' => Date::now()->addDays(90)]);
+        $proposal = $this->proposal(['effective_from' => Date::now()->addDays(90)]);
 
-        $this->assertNotContains($round, $this->unsent());
+        $this->assertNotContains($proposal, $this->unsent());
     }
 
     /**
@@ -126,12 +126,12 @@ class CustomerProposalChecksTest extends TestCase
      *
      * @return void
      */
-    public function testARoundNobodyHasAnsweredIsFound(): void
+    public function testAProposalNobodyHasAnsweredIsFound(): void
     {
-        $round = $this->round(['sent_date' => Date::now()->subDays(30)]);
+        $proposal = $this->proposal(['sent_date' => Date::now()->subDays(30)]);
 
-        $this->assertContains($round, $this->unanswered());
-        $this->assertNotContains($round, $this->unsent());
+        $this->assertContains($proposal, $this->unanswered());
+        $this->assertNotContains($proposal, $this->unsent());
     }
 
     /**
@@ -139,11 +139,11 @@ class CustomerProposalChecksTest extends TestCase
      *
      * @return void
      */
-    public function testARoundOnlyJustSentIsNotAFinding(): void
+    public function testAProposalOnlyJustSentIsNotAFinding(): void
     {
-        $round = $this->round(['sent_date' => Date::now()->subDays(1)]);
+        $proposal = $this->proposal(['sent_date' => Date::now()->subDays(1)]);
 
-        $this->assertNotContains($round, $this->unanswered());
+        $this->assertNotContains($proposal, $this->unanswered());
     }
 
     /**
@@ -153,14 +153,14 @@ class CustomerProposalChecksTest extends TestCase
      */
     public function testASignatureWithNoPapersBehindItIsFound(): void
     {
-        $round = $this->round([
+        $proposal = $this->proposal([
             'sent_date' => Date::now()->subDays(40),
             'conclusion_date' => Date::now()->subDays(30),
         ]);
 
-        $this->assertContains($round, $this->unfiled());
+        $this->assertContains($proposal, $this->unfiled());
         // Signed is not unanswered, whatever else is missing.
-        $this->assertNotContains($round, $this->unanswered());
+        $this->assertNotContains($proposal, $this->unanswered());
     }
 
     /**
@@ -170,86 +170,86 @@ class CustomerProposalChecksTest extends TestCase
      */
     public function testOnlyTheCustomersOwnSignatureTakesItOffTheList(): void
     {
-        $round = $this->round([
+        $proposal = $this->proposal([
             'sent_date' => Date::now()->subDays(40),
             'conclusion_date' => Date::now()->subDays(30),
         ]);
 
-        $this->fileAScan($round, DocumentVariant::Generated);
-        $this->assertContains($round, $this->unfiled());
+        $this->fileAScan($proposal, DocumentVariant::Generated);
+        $this->assertContains($proposal, $this->unfiled());
 
-        $this->fileAScan($round, DocumentVariant::ReceivedSignedByCustomer);
-        $this->assertNotContains($round, $this->unfiled());
+        $this->fileAScan($proposal, DocumentVariant::ReceivedSignedByCustomer);
+        $this->assertNotContains($proposal, $this->unfiled());
     }
 
     /**
-     * A round with no purpose of its own only carries the contracts' papers, and their signed
+     * A proposal with no purpose of its own only carries the contracts' papers, and their signed
      * copies are filed against the contracts.
      *
      * @return void
      */
-    public function testARoundThatCarriesOnlyContractPapersIsNotAskedForAScan(): void
+    public function testAProposalThatCarriesOnlyContractPapersIsNotAskedForAScan(): void
     {
-        $round = $this->round([
+        $proposal = $this->proposal([
             'purpose' => null,
             'sent_date' => Date::now()->subDays(40),
             'conclusion_date' => Date::now()->subDays(30),
         ]);
 
-        $this->assertNotContains($round, $this->unfiled());
+        $this->assertNotContains($proposal, $this->unfiled());
     }
 
     /**
-     * A round somebody gave up on is nobody's work any more.
+     * A proposal somebody gave up on is nobody's work any more.
      *
      * @return void
      */
-    public function testARevokedRoundIsNoneOfTheirBusiness(): void
+    public function testARevokedProposalIsNoneOfTheirBusiness(): void
     {
-        $round = $this->round([
+        $proposal = $this->proposal([
             'effective_from' => Date::now()->addDays(3),
             'revoked' => DateTime::now()->subDays(1),
         ]);
 
-        $this->assertNotContains($round, $this->unsent());
-        $this->assertNotContains($round, $this->unanswered());
-        $this->assertNotContains($round, $this->unfiled());
+        $this->assertNotContains($proposal, $this->unsent());
+        $this->assertNotContains($proposal, $this->unanswered());
+        $this->assertNotContains($proposal, $this->unfiled());
     }
 
     /**
-     * A round of papers, with what the test wants it to say.
+     * A proposal, with what the test wants it to say.
      *
      * @param array<string, mixed> $says What it says.
      * @return string Its id.
      */
-    private function round(array $says = []): string
+    private function proposal(array $says = []): string
     {
         $proposals = $this->getTableLocator()->get('CustomerProposals');
 
-        $round = $proposals->newEntity($says + [
+        $proposal = $proposals->newEntity($says + [
             'customer_id' => self::CUSTOMER_ID,
             'purpose' => CustomerProposalPurpose::GdprConsent->value,
             'effective_from' => Date::now()->subDays(1),
         ]);
 
-        return (string)$proposals->saveOrFail($round, ['checkRules' => false])->get('id');
+        return (string)$proposals->saveOrFail($proposal, ['checkRules' => false])->get('id');
     }
 
     /**
-     * Files one page against a round.
+     * Files one page against a proposal.
      *
-     * @param string $round Which round.
+     * @param string $proposal Which proposal.
      * @param \App\Model\Enum\DocumentVariant $variant Whose signatures it carries.
      * @return void
      */
-    private function fileAScan(string $round, DocumentVariant $variant): void
+    private function fileAScan(string $proposal, DocumentVariant $variant): void
     {
         $storage = new FileStorage();
 
         $storage->link(
-            $storage->store('%PDF-1.7 ' . $round . $variant->value, 'application/pdf'),
+            $storage->store('%PDF-1.7 ' . $proposal . $variant->value, 'application/pdf'),
             CustomerDocuments::MODEL,
-            $round,
+            $proposal,
             CustomerDocumentType::GdprNew->value,
             $variant->value,
             ['name' => 'scan.pdf'],
@@ -257,7 +257,7 @@ class CustomerProposalChecksTest extends TestCase
     }
 
     /**
-     * @return array<string> The rounds nobody has sent.
+     * @return array<string> The proposals nobody has sent.
      */
     private function unsent(): array
     {
@@ -265,7 +265,7 @@ class CustomerProposalChecksTest extends TestCase
     }
 
     /**
-     * @return array<string> The rounds that went out and came back to nothing.
+     * @return array<string> The proposals that went out and came back to nothing.
      */
     private function unanswered(): array
     {
@@ -273,7 +273,7 @@ class CustomerProposalChecksTest extends TestCase
     }
 
     /**
-     * @return array<string> The rounds signed with nothing on the shelf.
+     * @return array<string> The proposals signed with nothing on the shelf.
      */
     private function unfiled(): array
     {

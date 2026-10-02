@@ -59,7 +59,7 @@ abstract class AbstractCustomerProposalCheck extends AbstractCheck implements Cu
     }
 
     /**
-     * The rounds this check may report, before it says what it is looking for. Papers put to
+     * The proposals this check may report, before it says what it is looking for. Papers put to
      * somebody we no longer serve are nobody's work.
      *
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>

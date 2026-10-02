@@ -6,13 +6,13 @@
  * on all of them together. There is nothing here to tick.
  *
  * @var \App\View\AppView $this
- * @var array<\App\Model\Entity\ContractProposal> $alsoInTheRound
+ * @var array<\App\Model\Entity\ContractProposal> $alsoInTheProposal
  * @var string $saying What the step is called here.
  */
 
-$alsoInTheRound = $alsoInTheRound ?? [];
+$alsoInTheProposal = $alsoInTheProposal ?? [];
 
-if ($alsoInTheRound === []) {
+if ($alsoInTheProposal === []) {
     return;
 }
 ?>
@@ -20,7 +20,7 @@ if ($alsoInTheRound === []) {
     <h4><?= __('Also in this customer proposal') ?></h4>
     <p><?= h($saying) ?></p>
     <ul>
-        <?php foreach ($alsoInTheRound as $papers) : ?>
+        <?php foreach ($alsoInTheProposal as $papers) : ?>
         <li><?=
             $this->Html->link(
                 $papers->getName(),

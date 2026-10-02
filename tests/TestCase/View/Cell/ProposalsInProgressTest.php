@@ -104,8 +104,8 @@ class ProposalsInProgressTest extends TestCase
      */
     public function testARevokedProposalIsNotShown(): void
     {
-        $rounds = $this->getTableLocator()->get('CustomerProposals');
-        $rounds->giveUpOnTheRound($rounds->get(self::ROUND_ID), null);
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+        $proposals->giveUpOnTheProposal($proposals->get(self::ROUND_ID), null);
 
         $this->assertNothingInProgress();
     }
@@ -117,8 +117,8 @@ class ProposalsInProgressTest extends TestCase
      */
     public function testAProposalDealtWithIsNotShown(): void
     {
-        $rounds = $this->getTableLocator()->get('CustomerProposals');
-        $rounds->updateAll(['conclusion_date' => '2026-09-15'], ['id' => self::ROUND_ID]);
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+        $proposals->updateAll(['conclusion_date' => '2026-09-15'], ['id' => self::ROUND_ID]);
         $this->getTableLocator()->get('ContractProposals')
             ->updateAll(['applied' => DateTime::now()], ['id' => self::PROPOSAL_ID]);
 

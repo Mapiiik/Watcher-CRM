@@ -255,7 +255,7 @@ class ContractProposal extends AppEntity
     }
 
     /**
-     * The round these papers go out in.
+     * The proposal these papers go out in.
      *
      * Asked rather than assumed: a proposal read without it would answer that nothing has gone
      * out, which is a different thing from not knowing.

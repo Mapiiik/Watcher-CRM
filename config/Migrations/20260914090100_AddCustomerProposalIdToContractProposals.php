@@ -9,10 +9,10 @@ class AddCustomerProposalIdToContractProposals extends BaseMigration
      * Up Method.
      *
      * The papers a customer gets go out in one envelope and come back signed in one go, but each
-     * side of them was its own round: a consent asked for here, a contract's papers drawn up there,
+     * side of them was its own proposal: a consent asked for here, a contract's papers drawn up there,
      * and everything from printing to filing the scans done twice.
      *
-     * A round put to the customer already holds exactly what an envelope needs - whose it is, the
+     * A proposal put to the customer already holds exactly what an envelope needs - whose it is, the
      * day it speaks about, when it went out and how, when it came back - so it becomes the envelope
      * and a contract's papers may say they are in it.
      *
@@ -28,7 +28,7 @@ class AddCustomerProposalIdToContractProposals extends BaseMigration
                 'default' => null,
                 'null' => true,
                 'after' => 'contract_id',
-                'comment' => 'The round these papers went out in, empty when they went on their own',
+                'comment' => 'The proposal these papers went out in, empty when they went on their own',
             ])
             ->addIndex(['customer_proposal_id'])
             ->addForeignKey('customer_proposal_id', 'customer_proposals', 'id', [

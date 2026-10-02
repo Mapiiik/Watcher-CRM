@@ -213,7 +213,7 @@ class ContractDocumentsTest extends TestCase
     {
         // Our signature is stamped onto a paper that is already there, so the offer stands beside
         // one - and only where there is somewhere on that paper to sign.
-        // Asked of the paper's own offer rather than of the page: other papers the round owes are
+        // Asked of the paper's own offer rather than of the page: other papers the proposal owes are
         // listed here too, and some of them may be signed.
         $this->fileGenerated(self::DOCUMENT);
         $this->form(self::DOCUMENT);

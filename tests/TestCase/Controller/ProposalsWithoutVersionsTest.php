@@ -107,7 +107,7 @@ class ProposalsWithoutVersionsTest extends TestCase
     {
         $before = $this->idsIn('ContractProposals');
 
-        $this->draw(ProposalPurpose::ServiceChange, $this->round(), ['effective_from' => '']);
+        $this->draw(ProposalPurpose::ServiceChange, $this->proposal(), ['effective_from' => '']);
 
         $this->assertNoRedirect();
         $this->assertSame($before, $this->idsIn('ContractProposals'));
@@ -122,15 +122,15 @@ class ProposalsWithoutVersionsTest extends TestCase
      */
     public function testAChangeIsAppliedWithoutAVersion(): void
     {
-        $round = $this->round();
-        $proposal = $this->draw(ProposalPurpose::ServiceChange, $round, ['effective_from' => '2026-10-01']);
+        $customer_proposal = $this->proposal();
+        $proposal = $this->draw(ProposalPurpose::ServiceChange, $customer_proposal, ['effective_from' => '2026-10-01']);
 
         $this->assertFalse($proposal->keepsVersions());
         $this->assertNull($proposal->contract_version_id);
         $this->assertSame([], $proposal->stateOfThings()->part('version'));
 
         $versions = $this->idsIn('ContractVersions');
-        $this->applyTheRound($round);
+        $this->applyTheProposal($customer_proposal);
 
         $this->assertTrue($this->reread($proposal)->hasBeenApplied());
         $this->assertSame($versions, $this->idsIn('ContractVersions'));
@@ -144,11 +144,11 @@ class ProposalsWithoutVersionsTest extends TestCase
      */
     public function testANewContractStartsNoVersion(): void
     {
-        $round = $this->round();
-        $proposal = $this->draw(ProposalPurpose::NewContract, $round, ['effective_from' => '2026-10-01']);
+        $customer_proposal = $this->proposal();
+        $proposal = $this->draw(ProposalPurpose::NewContract, $customer_proposal, ['effective_from' => '2026-10-01']);
 
         $versions = $this->idsIn('ContractVersions');
-        $this->applyTheRound($round);
+        $this->applyTheProposal($customer_proposal);
 
         $this->assertTrue($this->reread($proposal)->hasBeenApplied());
         $this->assertSame($versions, $this->idsIn('ContractVersions'), 'A version was started all the same.');
@@ -162,7 +162,7 @@ class ProposalsWithoutVersionsTest extends TestCase
      */
     public function testAnEndingEndsTheContractAlone(): void
     {
-        $proposal = $this->draw(ProposalPurpose::Termination, $this->round(), ['ends_on' => '2026-10-31']);
+        $proposal = $this->draw(ProposalPurpose::Termination, $this->proposal(), ['ends_on' => '2026-10-31']);
         $changes = $proposal->proposedChanges();
 
         $this->assertTrue($changes->version->isEmpty());
@@ -178,7 +178,7 @@ class ProposalsWithoutVersionsTest extends TestCase
      */
     public function testNothingOfOursIsGeneratedButWhatComesBackMayBeFiled(): void
     {
-        $proposal = $this->draw(ProposalPurpose::Termination, $this->round(), ['ends_on' => '2026-10-31']);
+        $proposal = $this->draw(ProposalPurpose::Termination, $this->proposal(), ['ends_on' => '2026-10-31']);
 
         $this->assertSame(
             ['termination-notice', 'death-certificate', 'other'],
@@ -201,7 +201,7 @@ class ProposalsWithoutVersionsTest extends TestCase
         $scan = $root . '-notice.pdf';
         file_put_contents($scan, "%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<< /Root 1 0 R >>\n%%EOF\n");
 
-        $proposal = $this->draw(ProposalPurpose::Termination, $this->round(), ['ends_on' => '2026-10-31']);
+        $proposal = $this->draw(ProposalPurpose::Termination, $this->proposal(), ['ends_on' => '2026-10-31']);
         $at = self::NESTED . '/documents/add-pages?agenda=ContractProposals&proposal_id=' . $proposal->id;
 
         $this->get($at);
@@ -230,7 +230,7 @@ class ProposalsWithoutVersionsTest extends TestCase
      *
      * @return \App\Model\Entity\CustomerProposal
      */
-    private function round(): CustomerProposal
+    private function proposal(): CustomerProposal
     {
         $before = $this->idsIn('CustomerProposals');
 
@@ -241,28 +241,28 @@ class ProposalsWithoutVersionsTest extends TestCase
         ]);
         $this->assertRedirectContains('/customer-proposals/view/');
 
-        /** @var \App\Model\Entity\CustomerProposal $round */
-        $round = $this->addedRecord('CustomerProposals', $before);
+        /** @var \App\Model\Entity\CustomerProposal $proposal */
+        $proposal = $this->addedRecord('CustomerProposals', $before);
 
-        return $round;
+        return $proposal;
     }
 
     /**
      * Creates a contract proposal the one way there is.
      *
      * @param \App\Model\Enum\ProposalPurpose $purpose What it is for.
-     * @param \App\Model\Entity\CustomerProposal $round The customer proposal it is part of.
+     * @param \App\Model\Entity\CustomerProposal $customer_proposal The customer proposal it is part of.
      * @param array<string, mixed> $said The rest of what the form sends.
      * @return \App\Model\Entity\ContractProposal
      */
-    private function draw(ProposalPurpose $purpose, CustomerProposal $round, array $said): ContractProposal
+    private function draw(ProposalPurpose $purpose, CustomerProposal $customer_proposal, array $said): ContractProposal
     {
         $before = $this->idsIn('ContractProposals');
 
         $this->post(self::NESTED . '/contract-proposals/add', $said + [
             'purpose' => $purpose->value,
             'contract_id' => self::CONTRACT_ID,
-            'customer_proposal_id' => $round->id,
+            'customer_proposal_id' => $customer_proposal->id,
         ]);
 
         if ($this->idsIn('ContractProposals') === $before) {
@@ -280,20 +280,20 @@ class ProposalsWithoutVersionsTest extends TestCase
     /**
      * Sends the customer proposal, records the signature and applies the changes.
      *
-     * @param \App\Model\Entity\CustomerProposal $round The customer proposal.
+     * @param \App\Model\Entity\CustomerProposal $customer_proposal The customer proposal.
      * @return void
      */
-    private function applyTheRound(CustomerProposal $round): void
+    private function applyTheProposal(CustomerProposal $customer_proposal): void
     {
         $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
 
-        $this->post($at . 'send/' . $round->id, [
+        $this->post($at . 'send/' . $customer_proposal->id, [
             'sent_date' => '2026-09-30',
             'delivery_type' => DocumentsDeliveryType::Post->value,
         ]);
-        $this->post($at . 'conclude/' . $round->id, ['conclusion_date' => '2026-09-30']);
-        $this->post($at . 'apply-changes/' . $round->id);
-        $this->assertRedirectContains('/customer-proposals/view/' . $round->id);
+        $this->post($at . 'conclude/' . $customer_proposal->id, ['conclusion_date' => '2026-09-30']);
+        $this->post($at . 'apply-changes/' . $customer_proposal->id);
+        $this->assertRedirectContains('/customer-proposals/view/' . $customer_proposal->id);
     }
 
     /**

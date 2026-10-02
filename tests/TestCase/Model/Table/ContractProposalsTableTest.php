@@ -197,28 +197,28 @@ class ContractProposalsTableTest extends TestCase
      */
     private function save(array $proposal = []): ContractProposal
     {
-        // The sending and the signature belong to the round the papers go out in, so a test that
+        // The sending and the signature belong to the proposal the papers go out in, so a test that
         // says a proposal has gone out is saying it of the envelope. Written in the order the
         // office works in: papers into an open envelope, the envelope out, and only then may what
         // it holds be applied.
-        $ofTheRound = array_intersect_key(
+        $ofTheProposal = array_intersect_key(
             $proposal,
             array_flip(['sent_date', 'delivery_type', 'conclusion_date']),
         );
         $afterwards = array_intersect_key($proposal, array_flip(['applied', 'applied_by']));
 
-        $round = $proposal['customer_proposal_id'] ?? $this->anEnvelope();
+        $customer_proposal = $proposal['customer_proposal_id'] ?? $this->anEnvelope();
 
         $entity = $this->Proposals->newEntity($this->proposalData(
-            array_diff_key($proposal, $ofTheRound + $afterwards)
-            + ['customer_proposal_id' => $round],
+            array_diff_key($proposal, $ofTheProposal + $afterwards)
+            + ['customer_proposal_id' => $customer_proposal],
         ));
         $this->Proposals->save($entity);
 
-        if ($ofTheRound !== []) {
+        if ($ofTheProposal !== []) {
             $envelopes = $this->getTableLocator()->get('CustomerProposals');
             $envelopes->saveOrFail(
-                $envelopes->patchEntity($envelopes->get($round), $ofTheRound),
+                $envelopes->patchEntity($envelopes->get($customer_proposal), $ofTheProposal),
                 ['checkRules' => false],
             );
         }
@@ -233,7 +233,7 @@ class ContractProposalsTableTest extends TestCase
     /**
      * An envelope of its own, put there by the test rather than by a fixture.
      *
-     * One apiece, because a round holds one set of papers for a contract and every proposal these
+     * One apiece, because a proposal holds one set of papers for a contract and every proposal these
      * tests draw up is for the same one.
      *
      * @return string Its id.
@@ -253,12 +253,12 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
-     * Read without the round it goes out in, a set of papers says so rather than answering that
+     * Read without the proposal it goes out in, a set of papers says so rather than answering that
      * nothing has gone out - which would be a different thing from not knowing.
      *
      * @return void
      */
-    public function testPapersReadWithoutTheirRoundSaySo(): void
+    public function testPapersReadWithoutTheirProposalSaySo(): void
     {
         $papers = $this->Proposals->get(self::PROPOSAL_ID);
 
@@ -271,7 +271,7 @@ class ContractProposalsTableTest extends TestCase
      *
      * @return void
      */
-    public function testPapersAnswerWithWhatTheirRoundSays(): void
+    public function testPapersAnswerWithWhatTheirProposalSays(): void
     {
         $envelopes = $this->getTableLocator()->get('CustomerProposals');
         $envelopes->saveOrFail(
@@ -293,24 +293,24 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
-     * Papers are put into a round that is still open. One that has gone out is not added to - the
+     * Papers are put into a proposal that is still open. One that has gone out is not added to - the
      * papers would otherwise read as having gone out with it when they were never in it.
      *
      * @return void
      */
-    public function testPapersDoNotJoinARoundThatHasGoneOut(): void
+    public function testPapersDoNotJoinAProposalThatHasGoneOut(): void
     {
         $envelopes = $this->getTableLocator()->get('CustomerProposals');
-        $round = $this->anEnvelope();
+        $proposal = $this->anEnvelope();
         $envelopes->saveOrFail(
-            $envelopes->patchEntity($envelopes->get($round), [
+            $envelopes->patchEntity($envelopes->get($proposal), [
                 'sent_date' => '2026-10-01',
                 'delivery_type' => DocumentsDeliveryType::Email,
             ]),
             ['checkRules' => false],
         );
 
-        $papers = $this->save(['customer_proposal_id' => $round]);
+        $papers = $this->save(['customer_proposal_id' => $proposal]);
 
         $this->assertArrayHasKey('customer_proposal_id', $papers->getErrors());
     }
@@ -378,7 +378,7 @@ class ContractProposalsTableTest extends TestCase
      *
      * @return void
      */
-    public function testAContractGetsOneSetOfPapersInARound(): void
+    public function testAContractGetsOneSetOfPapersInAProposal(): void
     {
         $second = $this->save(['customer_proposal_id' => self::ROUND_ID]);
 
@@ -390,7 +390,7 @@ class ContractProposalsTableTest extends TestCase
      *
      * @return void
      */
-    public function testAnotherContractShareTheSameRound(): void
+    public function testAnotherContractShareTheSameProposal(): void
     {
         $papers = $this->save([
             'customer_proposal_id' => self::ROUND_ID,
@@ -407,7 +407,7 @@ class ContractProposalsTableTest extends TestCase
      *
      * @return void
      */
-    public function testPapersGivenUpOnLeaveTheirPlaceInTheRound(): void
+    public function testPapersGivenUpOnLeaveTheirPlaceInTheProposal(): void
     {
         $this->Proposals->updateAll(['revoked' => DateTime::now()], ['id' => self::PROPOSAL_ID]);
 

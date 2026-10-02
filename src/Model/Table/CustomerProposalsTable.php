@@ -81,7 +81,7 @@ class CustomerProposalsTable extends AppTable
     }
 
     /**
-     * Rounds nobody has settled yet, one way or the other.
+     * Proposals nobody has settled yet, one way or the other.
      *
      * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\CustomerProposal> $query Base query.
      * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\CustomerProposal>
@@ -95,10 +95,10 @@ class CustomerProposalsTable extends AppTable
     }
 
     /**
-     * Gives up on the round, and on everything still standing in it.
+     * Gives up on the proposal, and on everything still standing in it.
      *
      * Written into the papers rather than read back from here afterwards. Giving up is final and
-     * nothing joins a round that has been given up on, so the one word written across them cannot
+     * nothing joins a proposal that has been given up on, so the one word written across them cannot
      * come apart the way a copied date would - and the papers go on answering for themselves
      * wherever they are read without their envelope.
      *
@@ -106,11 +106,11 @@ class CustomerProposalsTable extends AppTable
      * the live records. So does anything given up on earlier, which has its own day and its own
      * name against it.
      *
-     * @param \App\Model\Entity\CustomerProposal $proposal The round.
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
      * @param string|null $by Who is giving up on it.
      * @return bool Whether it was written.
      */
-    public function giveUpOnTheRound(CustomerProposal $proposal, ?string $by): bool
+    public function giveUpOnTheProposal(CustomerProposal $proposal, ?string $by): bool
     {
         $proposal->revoked = DateTime::now();
         $proposal->revoked_by = $by;
@@ -148,13 +148,13 @@ class CustomerProposalsTable extends AppTable
     }
 
     /**
-     * Whether the round may still be changed.
+     * Whether the proposal may still be changed.
      *
      * Sending is what locks it, the same as it does for a contract's proposal: what stood behind a
-     * paper that has left the building is not rewritten afterwards. A correction is a new round,
+     * paper that has left the building is not rewritten afterwards. A correction is a new proposal,
      * and the old one is revoked.
      *
-     * @param \App\Model\Entity\CustomerProposal $proposal The round being asked about.
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal being asked about.
      * @return bool
      */
     public function mayBeEdited(CustomerProposal $proposal): bool
@@ -163,13 +163,13 @@ class CustomerProposalsTable extends AppTable
     }
 
     /**
-     * Whether the round may be removed.
+     * Whether the proposal may be removed.
      *
      * What went out to a customer is what happened, and what came back signed is theirs; neither
-     * is ours to remove. A round that never went anywhere is somebody's mistake rather than
+     * is ours to remove. A proposal that never went anywhere is somebody's mistake rather than
      * history, so that one may go.
      *
-     * @param \App\Model\Entity\CustomerProposal $proposal The round being asked about.
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal being asked about.
      * @return bool
      */
     public function mayBeDeleted(CustomerProposal $proposal): bool
@@ -180,13 +180,13 @@ class CustomerProposalsTable extends AppTable
     }
 
     /**
-     * Whether anything would be left behind by letting the round go.
+     * Whether anything would be left behind by letting the proposal go.
      *
      * Two things may: the papers of a contract, which keep their sending and their signature here
      * and would have nowhere to keep them; and a document, which is the record of something that
      * happened and would be left pointing at nothing, holding on to its file for ever.
      *
-     * @param \App\Model\Entity\CustomerProposal $proposal The round being asked about.
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal being asked about.
      * @return bool
      */
     private function anythingHangsOn(CustomerProposal $proposal): bool
@@ -215,7 +215,7 @@ class CustomerProposalsTable extends AppTable
             ->requirePresence('customer_id', 'create')
             ->notEmptyString('customer_id');
 
-        // Empty says the round carries no paper of the customer's own and is only the envelope
+        // Empty says the proposal carries no paper of the customer's own and is only the envelope
         // its contracts' papers went out in.
         $validator
             ->allowEmptyString('purpose');

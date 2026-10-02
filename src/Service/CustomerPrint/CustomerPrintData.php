@@ -34,9 +34,9 @@ final class CustomerPrintData
     public Customer $customer;
 
     /**
-     * The round the paper belongs to, where it belongs to one.
+     * The proposal the paper belongs to, where it belongs to one.
      *
-     * What is drawn from a round is kept and handed back ever after, so this is what says where
+     * What is drawn from a proposal is kept and handed back ever after, so this is what says where
      * to keep it. A paper drawn from nothing is handed over and forgotten.
      */
     public ?CustomerProposal $proposal;

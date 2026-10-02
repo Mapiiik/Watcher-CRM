@@ -18,7 +18,7 @@ use Override;
  * The documents filed against a record, wherever somebody is looking at that record.
  *
  * A cell rather than an element, so that a page says which record it is about and nothing else. It
- * was an element first, and every page that wanted the table had to remember to load the rounds
+ * was an element first, and every page that wanted the table had to remember to load the proposals
  * and their papers and to say which columns to draw - three chances to get it wrong for one table.
  *
  * Which columns those are follows from what is being looked at rather than being asked for: a
@@ -72,13 +72,13 @@ class DocumentsCell extends Cell
     protected bool $withContracts = true;
 
     /**
-     * Whether the papers of rounds given up on belong here.
+     * Whether the papers of proposals given up on belong here.
      *
      * On unless asked otherwise, because most pages are a record of what happened. Where a page
      * offers the switch, the table underneath follows it - papers that are in one table and not
      * in the other, on one screen, is how somebody comes to believe a document is missing.
      *
-     * A round the page is actually about is never left out by this: whoever opened it wants to
+     * A proposal the page is actually about is never left out by this: whoever opened it wants to
      * see what is in it, whatever became of it.
      */
     protected bool $withRevoked = true;
@@ -95,13 +95,13 @@ class DocumentsCell extends Cell
     protected bool $thumbnails = false;
 
     /**
-     * Whether a round with nothing on file is listed all the same.
+     * Whether a proposal with nothing on file is listed all the same.
      *
-     * A page that only lists papers cannot be used to add the first one, because the round it
-     * would hang on is the one round with no row to start from. Off unless asked for: on a page
+     * A page that only lists papers cannot be used to add the first one, because the proposal it
+     * would hang on is the one proposal with no row to start from. Off unless asked for: on a page
      * that is about reading what is there, a run of empty rows only gets in the way.
      *
-     * A round that was revoked is left out when it has nothing, since nothing is ever coming. What
+     * A proposal that was revoked is left out when it has nothing, since nothing is ever coming. What
      * it does have stays listed, because those papers happened.
      */
     protected bool $withWhatIsMissing = false;
@@ -148,7 +148,7 @@ class DocumentsCell extends Cell
             'showContract',
             in_array($of, ['customerProposal', 'customer'], true) && $this->withContracts,
         );
-        // The same holds for the round a paper belongs to: worth a column wherever more than
+        // The same holds for the proposal a paper belongs to: worth a column wherever more than
         // one of them is in the table, which a proposal is as soon as its parts are in view.
         $this->set('showProposal', in_array($of, ['contractVersion', 'contract', 'customer'], true)
             || ($of === 'customerProposal' && $this->withContracts));
@@ -219,25 +219,25 @@ class DocumentsCell extends Cell
     }
 
     /**
-     * The pages of one round, on the side being looked at.
+     * The pages of one proposal, on the side being looked at.
      *
-     * @param array<string, mixed> $round What they hang on.
+     * @param array<string, mixed> $proposal What they hang on.
      * @param array<string, array<string, array<string, list<\Files\Model\Entity\FileLink>>>> $filed What is on file.
      * @return list<array<string, mixed>>
      */
-    private function pagesOf(array $round, array $filed): array
+    private function pagesOf(array $proposal, array $filed): array
     {
         $rows = [];
         $drawn = [];
 
         $papers = new DrawnPaper();
 
-        foreach ($filed[$round['id']] ?? [] as $document_type => $byVariant) {
+        foreach ($filed[$proposal['id']] ?? [] as $document_type => $byVariant) {
             // Our signature is stamped onto the paper that is already there rather than drawn
             // afresh, so it is offered on that paper's own row and only while it is not there.
             $mayBeSigned = $this->generatedByUs
                 && !isset($byVariant[DocumentVariant::GeneratedSignedByUs->value])
-                && $papers->mayCarryOurSignature($round['of'], (string)$document_type);
+                && $papers->mayCarryOurSignature($proposal['of'], (string)$document_type);
 
             foreach ($byVariant as $variant => $links) {
                 $case = DocumentVariant::tryFrom((string)$variant);
@@ -249,61 +249,61 @@ class DocumentsCell extends Cell
 
                 foreach ($links as $link) {
                     $rows[] = [
-                        'round' => $round,
-                        'document' => $round['documents'][$document_type] ?? (string)$document_type,
+                        'proposal' => $proposal,
+                        'document' => $proposal['documents'][$document_type] ?? (string)$document_type,
                         'document_type' => (string)$document_type,
                         'variant' => $case->label(),
                         'link' => $link,
                         'mayBeSigned' => $mayBeSigned && $case === DocumentVariant::Generated,
                         'keys' => [
-                            'contract' => (string)($round['contract_id'] ?? ''),
-                            'round' => $round['id'],
-                            'document' => $round['id'] . '/' . $document_type,
-                            'variant' => $round['id'] . '/' . $document_type . '/' . $variant,
+                            'contract' => (string)($proposal['contract_id'] ?? ''),
+                            'proposal' => $proposal['id'],
+                            'document' => $proposal['id'] . '/' . $document_type,
+                            'variant' => $proposal['id'] . '/' . $document_type . '/' . $variant,
                         ],
                     ];
                 }
             }
         }
 
-        if (!$this->withWhatIsMissing || $round['revoked'] === true) {
+        if (!$this->withWhatIsMissing || $proposal['revoked'] === true) {
             return $rows;
         }
 
         // On the side we draw ourselves, what is missing is each paper that has not been drawn:
-        // the round knows which ones it owes, so the gap can be named rather than guessed at. On
-        // the side that comes back there is no such list - a round either has scans or it has not.
+        // the proposal knows which ones it owes, so the gap can be named rather than guessed at. On
+        // the side that comes back there is no such list - a proposal either has scans or it has not.
         if ($this->generatedByUs) {
-            return array_merge($rows, $this->whatHasNotBeenDrawn($round, $drawn));
+            return array_merge($rows, $this->whatHasNotBeenDrawn($proposal, $drawn));
         }
 
-        // Only where something could come back. A round that asks nothing of the customer holds no
+        // Only where something could come back. A proposal that asks nothing of the customer holds no
         // paper of its own, so it never sent one and none is coming - saying "nothing yet" there
         // would be asking for a scan of a paper that does not exist.
-        if ($rows === [] && ($round['holds'] ?? true)) {
-            $rows[] = $this->nothingYet($round, '', '');
+        if ($rows === [] && ($proposal['holds'] ?? true)) {
+            $rows[] = $this->nothingYet($proposal, '', '');
         }
 
         return $rows;
     }
 
     /**
-     * A row for each paper the round owes and does not have.
+     * A row for each paper the proposal owes and does not have.
      *
-     * Ordered as the round itself orders them, so that the same papers read the same way wherever
+     * Ordered as the proposal itself orders them, so that the same papers read the same way wherever
      * they are listed.
      *
-     * @param array<string, mixed> $round What the papers hang on.
+     * @param array<string, mixed> $proposal What the papers hang on.
      * @param array<string, bool> $drawn Which of them are already on file.
      * @return list<array<string, mixed>>
      */
-    private function whatHasNotBeenDrawn(array $round, array $drawn): array
+    private function whatHasNotBeenDrawn(array $proposal, array $drawn): array
     {
         $rows = [];
         $papers = new DrawnPaper();
 
         /** @var array<string, bool> $owed */
-        $owed = $round['owed'] ?? [];
+        $owed = $proposal['owed'] ?? [];
 
         foreach ($owed as $document_type => $required) {
             if (isset($drawn[(string)$document_type])) {
@@ -311,11 +311,11 @@ class DocumentsCell extends Cell
             }
 
             $rows[] = $this->nothingYet(
-                $round,
+                $proposal,
                 (string)$document_type,
-                $round['documents'][$document_type] ?? (string)$document_type,
+                $proposal['documents'][$document_type] ?? (string)$document_type,
                 $required,
-                $papers->mayCarryOurSignature($round['of'], (string)$document_type),
+                $papers->mayCarryOurSignature($proposal['of'], (string)$document_type),
             );
         }
 
@@ -325,7 +325,7 @@ class DocumentsCell extends Cell
     /**
      * One row saying something is not there.
      *
-     * @param array<string, mixed> $round What it would have hung on.
+     * @param array<string, mixed> $proposal What it would have hung on.
      * @param string $document_type Which paper, where that is known.
      * @param string $document What to call it.
      * @param bool $required Whether its absence is a gap rather than a choice.
@@ -333,7 +333,7 @@ class DocumentsCell extends Cell
      * @return array<string, mixed>
      */
     private function nothingYet(
-        array $round,
+        array $proposal,
         string $document_type,
         string $document,
         bool $required = true,
@@ -342,7 +342,7 @@ class DocumentsCell extends Cell
         $of = $document_type === '' ? '-' : $document_type;
 
         return [
-            'round' => $round,
+            'proposal' => $proposal,
             'document' => $document,
             'document_type' => $document_type,
             'variant' => '',
@@ -350,10 +350,10 @@ class DocumentsCell extends Cell
             'required' => $required,
             'mayBeSigned' => $mayBeSigned,
             'keys' => [
-                'contract' => (string)($round['contract_id'] ?? ''),
-                'round' => $round['id'],
-                'document' => $round['id'] . '/' . $of,
-                'variant' => $round['id'] . '/' . $of,
+                'contract' => (string)($proposal['contract_id'] ?? ''),
+                'proposal' => $proposal['id'],
+                'document' => $proposal['id'] . '/' . $of,
+                'variant' => $proposal['id'] . '/' . $of,
             ],
         ];
     }
@@ -396,7 +396,7 @@ class DocumentsCell extends Cell
     }
 
     /**
-     * The rounds put to a customer in view.
+     * The proposals put to a customer in view.
      *
      * @param string $of What is being looked at.
      * @param string $id Which one.

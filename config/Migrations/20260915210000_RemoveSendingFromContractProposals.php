@@ -8,7 +8,7 @@ class RemoveSendingFromContractProposals extends BaseMigration
     /**
      * Up Method.
      *
-     * Papers go out in one envelope and come back in one, and the round put to the customer is
+     * Papers go out in one envelope and come back in one, and the proposal put to the customer is
      * that envelope. The day they went, the way they went and the day they came back signed are
      * facts about the envelope, so they are recorded on it - and until now they were also copied
      * onto every set of papers inside it, which is a second copy of one truth.
@@ -22,7 +22,7 @@ class RemoveSendingFromContractProposals extends BaseMigration
      * giving up, both of which are done one contract at a time.
      *
      * The envelope takes anything its papers know and it does not, so nothing is lost on the way
-     * out. Where several sets disagree it takes the latest, which is what a round of papers that
+     * out. Where several sets disagree it takes the latest, which is what a proposal that
      * went out more than once amounts to.
      *
      * @return void
@@ -71,7 +71,7 @@ class RemoveSendingFromContractProposals extends BaseMigration
             ->changeColumn('customer_proposal_id', 'uuid', [
                 'default' => null,
                 'null' => false,
-                'comment' => 'The round these papers go out in',
+                'comment' => 'The proposal these papers go out in',
             ])
             ->save();
 
@@ -142,7 +142,7 @@ class RemoveSendingFromContractProposals extends BaseMigration
             ->changeColumn('customer_proposal_id', 'uuid', [
                 'default' => null,
                 'null' => true,
-                'comment' => 'The round these papers went out in, empty when they went on their own',
+                'comment' => 'The proposal these papers went out in, empty when they went on their own',
             ])
             ->save();
 

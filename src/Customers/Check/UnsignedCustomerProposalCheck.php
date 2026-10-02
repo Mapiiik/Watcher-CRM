@@ -53,7 +53,7 @@ class UnsignedCustomerProposalCheck extends AbstractCustomerProposalCheck
     }
 
     /**
-     * Rounds that went out and have not come back.
+     * Proposals that went out and have not come back.
      *
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */

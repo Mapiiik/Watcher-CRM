@@ -64,7 +64,7 @@ final class ChangeApplication
 
         $proposals = $this->proposals();
 
-        // A round applies its parts under one trail and writes it out itself; a proposal applied
+        // A proposal applies its parts under one trail and writes it out itself; a proposal applied
         // on its own is its own act.
         $alone = !$trail instanceof AuditTrail;
         $trail ??= new AuditTrail();

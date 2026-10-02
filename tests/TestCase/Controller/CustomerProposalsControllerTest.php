@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 /**
  * App\Controller\CustomerProposalsController Test Case
  *
- * A round of papers put to the customer travels the same road a contract's proposal does, so what
+ * A proposal put to the customer travels the same road a contract's proposal does, so what
  * is asked of it is the road: that it can be drawn up, that sending locks it, that signing ends it,
  * and that what has gone out cannot be taken back as though it never had.
  */
@@ -28,14 +28,14 @@ class CustomerProposalsControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
-     * The customer the rounds hang on.
+     * The customer the proposals hang on.
      *
      * @var string
      */
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
-     * A contract of theirs, which a round may be about as well.
+     * A contract of theirs, which a proposal may be about as well.
      *
      * @var string
      */
@@ -74,20 +74,20 @@ class CustomerProposalsControllerTest extends TestCase
     ];
 
     /**
-     * A round with one contract's papers in it, drawn up the one way there is.
+     * A proposal with one contract's papers in it, drawn up the one way there is.
      *
      * @return \App\Model\Entity\CustomerProposal
      */
     private function drawOneUpWithPapers(): CustomerProposal
     {
-        $round = $this->drawOneUp();
+        $proposal = $this->drawOneUp();
 
         $this->post('/customers/' . self::CUSTOMER_ID . '/contract-proposals/add', [
             'purpose' => ProposalPurpose::NewContract->value,
             'contract_id' => self::CONTRACT_ID,
-            'customer_proposal_id' => $round->id,
+            'customer_proposal_id' => $proposal->id,
             'contract_version_id' => '',
-            'effective_from' => $round->effective_from->toDateString(),
+            'effective_from' => $proposal->effective_from->toDateString(),
             'confirmations' => [
                 'fixed_term' => 1,
                 'own_equipment' => 1,
@@ -96,23 +96,23 @@ class CustomerProposalsControllerTest extends TestCase
             ],
         ]);
         $this->assertRedirectContains('/contract-proposals/view/');
-        $this->assertCount(1, $this->papersOf((string)$round->id));
+        $this->assertCount(1, $this->papersOf((string)$proposal->id));
 
-        // Asked again, because a round that now holds papers says so about itself.
+        // Asked again, because a proposal that now holds papers says so about itself.
         /** @var \App\Model\Entity\CustomerProposal $held */
         $held = $this->getTableLocator()->get('CustomerProposals')
-            ->get($round->id, contain: ['ContractProposals']);
+            ->get($proposal->id, contain: ['ContractProposals']);
 
         return $held;
     }
 
     /**
-     * A round is drawn up against the customer the page was opened under.
+     * A proposal is drawn up against the customer the page was opened under.
      *
      * @link \App\Controller\CustomerProposalsController::add()
      * @return void
      */
-    public function testARoundIsDrawnUp(): void
+    public function testAProposalIsDrawnUp(): void
     {
         $proposal = $this->drawOneUp();
 
@@ -148,8 +148,8 @@ class CustomerProposalsControllerTest extends TestCase
      * And they render for the roles that are asked the question rather than let straight through.
      *
      * Whether the Delete link is drawn is settled by reading the record, and the reading has to
-     * carry what the answer is worked out from: whether anything hangs on the round is looked up
-     * by the round's own id. Asked without it, the page of a round just drawn up - one neither
+     * carry what the answer is worked out from: whether anything hangs on the proposal is looked up
+     * by the proposal's own id. Asked without it, the page of a proposal just drawn up - one neither
      * sent nor signed, so the only one the question gets that far on - came back as an error.
      *
      * Everything else here logs in as an administrator, who never reaches the question at all.
@@ -174,13 +174,13 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Sending is what locks a round: what stood behind a paper that has left the building is not
+     * Sending is what locks a proposal: what stood behind a paper that has left the building is not
      * rewritten afterwards.
      *
      * @link \App\Controller\CustomerProposalsController::send()
      * @return void
      */
-    public function testSendingLocksTheRound(): void
+    public function testSendingLocksTheProposal(): void
     {
         $proposal = $this->drawOneUp();
         $proposals = $this->getTableLocator()->get('CustomerProposals');
@@ -212,23 +212,23 @@ class CustomerProposalsControllerTest extends TestCase
      */
     public function testEveryStepLeavesTheReaderOnTheProposal(): void
     {
-        $round = $this->drawOneUpWithPapers();
+        $proposal = $this->drawOneUpWithPapers();
         $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
-        $its = '/customer-proposals/view/' . $round->id;
+        $its = '/customer-proposals/view/' . $proposal->id;
 
-        $this->post($at . 'send/' . $round->id, [
+        $this->post($at . 'send/' . $proposal->id, [
             'sent_date' => '2026-10-01',
             'delivery_type' => DocumentsDeliveryType::Post->value,
         ]);
         $this->assertRedirectContains($its);
 
-        $this->post($at . 'conclude/' . $round->id, ['conclusion_date' => '2026-10-05']);
+        $this->post($at . 'conclude/' . $proposal->id, ['conclusion_date' => '2026-10-05']);
         $this->assertRedirectContains($its);
 
-        $this->post($at . 'apply-changes/' . $round->id);
+        $this->post($at . 'apply-changes/' . $proposal->id);
         $this->assertRedirectContains($its);
 
-        $this->post($at . 'revoke/' . $round->id);
+        $this->post($at . 'revoke/' . $proposal->id);
         $this->assertRedirectContains($its);
     }
 
@@ -251,13 +251,13 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Signing ends the round. Nothing stands behind it waiting to be applied, so there is
+     * Signing ends the proposal. Nothing stands behind it waiting to be applied, so there is
      * nothing left to do with it afterwards.
      *
      * @link \App\Controller\CustomerProposalsController::conclude()
      * @return void
      */
-    public function testSigningEndsTheRound(): void
+    public function testSigningEndsTheProposal(): void
     {
         $proposal = $this->drawOneUp();
 
@@ -266,7 +266,7 @@ class CustomerProposalsControllerTest extends TestCase
         ]);
         $this->assertRedirect();
 
-        // Read with what it holds, because after the signature the round says what is left to do
+        // Read with what it holds, because after the signature the proposal says what is left to do
         // in it - and an empty one has nothing left.
         $signed = $this->getTableLocator()->get('CustomerProposals')
             ->get($proposal->id, contain: ['ContractProposals']);
@@ -285,8 +285,8 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * A round is settled by the signature, but the day it was signed is a typed-in date like any
-     * other, so it stays correctable until the round is given up on.
+     * A proposal is settled by the signature, but the day it was signed is a typed-in date like any
+     * other, so it stays correctable until the proposal is given up on.
      *
      * @link \App\Controller\CustomerProposalsController::conclude()
      * @return void
@@ -303,7 +303,7 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertRedirect();
         $this->assertSame('2026-10-06', $proposals->get($proposal->id)->conclusion_date?->toDateString());
 
-        // Giving up on a round is the one thing that closes the door, and it can only be done
+        // Giving up on a proposal is the one thing that closes the door, and it can only be done
         // before there is a signature to speak of.
         $abandoned = $this->drawOneUp();
         $this->post('/customer-proposals/revoke/' . $abandoned->id);
@@ -313,7 +313,7 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Giving up on a round settles it without pretending it never happened.
+     * Giving up on a proposal settles it without pretending it never happened.
      *
      * @link \App\Controller\CustomerProposalsController::revoke()
      * @return void
@@ -331,13 +331,13 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * A round that went out is history and stays. One that never went anywhere is somebody's
+     * A proposal that went out is history and stays. One that never went anywhere is somebody's
      * mistake and may go.
      *
      * @link \App\Controller\CustomerProposalsController::delete()
      * @return void
      */
-    public function testOnlyARoundThatWentNowhereIsRemoved(): void
+    public function testOnlyAProposalThatWentNowhereIsRemoved(): void
     {
         $proposals = $this->getTableLocator()->get('CustomerProposals');
 
@@ -360,19 +360,19 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Draws a round up the way the page does, and hands back what was saved.
+     * Draws a proposal up the way the page does, and hands back what was saved.
      *
      * @return \App\Model\Entity\CustomerProposal
      */
 
     /**
-     * A round may be for nothing of the customer's own and hold only the papers of their
+     * A proposal may be for nothing of the customer's own and hold only the papers of their
      * contracts - a new contract needs an envelope whether or not anything is asked beside it.
      *
      * @link \App\Controller\CustomerProposalsController::add()
      * @return void
      */
-    public function testARoundNeedNotBeForAnythingOfTheCustomersOwn(): void
+    public function testAProposalNeedNotBeForAnythingOfTheCustomersOwn(): void
     {
         $this->login();
         $this->enableCsrfToken();
@@ -387,32 +387,32 @@ class CustomerProposalsControllerTest extends TestCase
         ]);
         $this->assertRedirect();
 
-        /** @var \App\Model\Entity\CustomerProposal $round */
-        $round = $this->addedRecord('CustomerProposals', $before);
+        /** @var \App\Model\Entity\CustomerProposal $proposal */
+        $proposal = $this->addedRecord('CustomerProposals', $before);
 
-        $this->assertNull($round->purpose);
+        $this->assertNull($proposal->purpose);
     }
 
     /**
      * Papers of a contract are drawn up on the form that draws papers up, and opened from inside a
-     * round they start out in it and speak about the day it does - which is what makes the two
+     * proposal they start out in it and speak about the day it does - which is what makes the two
      * sets of papers one envelope.
      *
      * @link \App\Controller\ContractProposalsController::add()
      * @return void
      */
-    public function testPapersDrawnUpFromInsideARoundGoOutInIt(): void
+    public function testPapersDrawnUpFromInsideAProposalGoOutInIt(): void
     {
-        $round = $this->drawOneUp();
+        $proposal = $this->drawOneUp();
 
         $this->get('/customers/' . self::CUSTOMER_ID . '/contract-proposals/add'
-            . '?proposal_id=' . $round->id);
+            . '?proposal_id=' . $proposal->id);
         $this->assertResponseOk();
 
         $drawn = $this->viewVariable('contractProposal');
-        $this->assertSame($round->id, $drawn->customer_proposal_id);
+        $this->assertSame($proposal->id, $drawn->customer_proposal_id);
         $this->assertSame(
-            $round->effective_from->toDateString(),
+            $proposal->effective_from->toDateString(),
             $drawn->effective_from->toDateString(),
         );
     }
@@ -426,8 +426,8 @@ class CustomerProposalsControllerTest extends TestCase
      */
     public function testOnlyTheProposalIsListedAndItsContractsAreNamedOnItsRow(): void
     {
-        $round = $this->drawOneUpWithPapers();
-        $papers = $this->papersOf((string)$round->id)[0];
+        $proposal = $this->drawOneUpWithPapers();
+        $papers = $this->papersOf((string)$proposal->id)[0];
         $papers = $this->getTableLocator()->get('ContractProposals')
             ->get($papers->id, contain: ['Contracts']);
 
@@ -436,8 +436,8 @@ class CustomerProposalsControllerTest extends TestCase
 
         // Asked of the listing itself: the papers of a contract are all over the page, because
         // that is what the documents hang on - they are just not one of the things listed.
-        $listed = array_column((array)$this->viewVariable('rounds'), 'id');
-        $this->assertContains((string)$round->id, $listed);
+        $listed = array_column((array)$this->viewVariable('proposals'), 'id');
+        $this->assertContains((string)$proposal->id, $listed);
         $this->assertNotContains(
             (string)$papers->id,
             $listed,
@@ -462,10 +462,10 @@ class CustomerProposalsControllerTest extends TestCase
      */
     public function testTheProposalSaysWhatItDoesForEachContract(): void
     {
-        $round = $this->drawOneUpWithPapers();
-        $papers = $this->papersOf((string)$round->id)[0];
+        $proposal = $this->drawOneUpWithPapers();
+        $papers = $this->papersOf((string)$proposal->id)[0];
 
-        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/view/' . $round->id);
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-proposals/view/' . $proposal->id);
         $this->assertResponseOk();
 
         $this->assertResponseContains(__('Billing after the change'));
@@ -473,20 +473,20 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * A round holding the papers of a contract is not removed either. They keep their sending and
+     * A proposal holding the papers of a contract is not removed either. They keep their sending and
      * their signature in it, so letting it go would leave them saying nothing about either.
      *
      * @link \App\Controller\CustomerProposalsController::delete()
      * @return void
      */
-    public function testARoundWithPapersInItIsNotRemoved(): void
+    public function testAProposalWithPapersInItIsNotRemoved(): void
     {
         $proposals = $this->getTableLocator()->get('CustomerProposals');
-        $round = $this->drawOneUpWithPapers();
+        $proposal = $this->drawOneUpWithPapers();
 
-        $this->post('/customer-proposals/delete/' . $round->id);
+        $this->post('/customer-proposals/delete/' . $proposal->id);
 
-        $this->assertNotNull($proposals->find()->where(['id' => $round->id])->first());
+        $this->assertNotNull($proposals->find()->where(['id' => $proposal->id])->first());
     }
 
     /**
@@ -498,24 +498,24 @@ class CustomerProposalsControllerTest extends TestCase
      */
     public function testAProposalAboutTwoContractsIsListedOnce(): void
     {
-        $round = $this->drawOneUpWithPapers();
+        $proposal = $this->drawOneUpWithPapers();
 
         // Papers for a second contract of the same customer, in the same proposal.
         $papers = $this->getTableLocator()->get('ContractProposals');
-        $first = $this->papersOf((string)$round->id)[0]->toArray();
+        $first = $this->papersOf((string)$proposal->id)[0]->toArray();
         // The envelope came along to be read; copied on, it would be marshalled as a record of
         // its own. What the copy needs is which envelope, which it already has.
         unset($first['id'], $first['customer_proposal']);
         $first['contract_id'] = self::OTHER_CONTRACT_ID;
         $papers->saveOrFail($papers->newEntity($first), ['checkRules' => false]);
 
-        $this->assertCount(2, $this->papersOf((string)$round->id));
+        $this->assertCount(2, $this->papersOf((string)$proposal->id));
 
         foreach (['', '/contracts/' . self::CONTRACT_ID] as $nesting) {
             $this->get('/customers/' . self::CUSTOMER_ID . $nesting . '/documents/manage');
             $this->assertResponseOk();
 
-            $listed = array_column((array)$this->viewVariable('rounds'), 'id');
+            $listed = array_column((array)$this->viewVariable('proposals'), 'id');
             $this->assertSame(
                 array_unique($listed),
                 $listed,
@@ -554,16 +554,16 @@ class CustomerProposalsControllerTest extends TestCase
             ]);
             $this->assertRedirectContains('/contract-proposals/view/');
 
-            /** @var \App\Model\Entity\CustomerProposal $round */
-            $round = $this->addedRecord('CustomerProposals', $before);
+            /** @var \App\Model\Entity\CustomerProposal $proposal */
+            $proposal = $this->addedRecord('CustomerProposals', $before);
 
-            return $round;
+            return $proposal;
         };
 
         $this->assertNull($drawnUp([])->purpose);
         $this->assertSame(
             CustomerProposalPurpose::GdprConsent,
-            $drawnUp(['new_round_purpose' => CustomerProposalPurpose::GdprConsent->value])->purpose,
+            $drawnUp(['new_proposal_purpose' => CustomerProposalPurpose::GdprConsent->value])->purpose,
         );
     }
 
@@ -578,16 +578,16 @@ class CustomerProposalsControllerTest extends TestCase
      */
     public function testAProposalWithNothingInItIsStillListedOnAContract(): void
     {
-        $round = $this->drawOneUp();
-        $this->assertSame([], $this->papersOf((string)$round->id));
+        $proposal = $this->drawOneUp();
+        $this->assertSame([], $this->papersOf((string)$proposal->id));
 
         $this->get('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID
             . '/documents/manage');
         $this->assertResponseOk();
 
         $this->assertContains(
-            (string)$round->id,
-            array_column((array)$this->viewVariable('rounds'), 'id'),
+            (string)$proposal->id,
+            array_column((array)$this->viewVariable('proposals'), 'id'),
             'A proposal with nothing in it cannot be reached from the contract it was opened on.',
         );
 
@@ -598,14 +598,14 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertResponseOk();
 
         $this->assertNotContains(
-            (string)$round->id,
-            array_column((array)$this->viewVariable('rounds'), 'id'),
+            (string)$proposal->id,
+            array_column((array)$this->viewVariable('proposals'), 'id'),
         );
 
         // And once it is settled it is waiting for nothing, so the contract stops offering it.
-        $rounds = $this->getTableLocator()->get('CustomerProposals');
-        $rounds->saveOrFail(
-            $rounds->patchEntity($rounds->get($round->id), ['conclusion_date' => '2026-10-05']),
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get($proposal->id), ['conclusion_date' => '2026-10-05']),
             ['checkRules' => false, 'validate' => false],
         );
 
@@ -614,8 +614,8 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertResponseOk();
 
         $this->assertNotContains(
-            (string)$round->id,
-            array_column((array)$this->viewVariable('rounds'), 'id'),
+            (string)$proposal->id,
+            array_column((array)$this->viewVariable('proposals'), 'id'),
         );
     }
 
@@ -628,8 +628,8 @@ class CustomerProposalsControllerTest extends TestCase
      */
     public function testThePathThroughAContractsPapersRunsThroughTheProposal(): void
     {
-        $round = $this->drawOneUpWithPapers();
-        $papers = $this->papersOf((string)$round->id)[0];
+        $proposal = $this->drawOneUpWithPapers();
+        $papers = $this->papersOf((string)$proposal->id)[0];
 
         $asked = '?agenda=ContractProposals&proposal_id=' . $papers->id;
 
@@ -646,8 +646,8 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertResponseOk();
 
         // The proposal stands in the path, and stands there as the way back up to it.
-        $this->assertResponseContains('proposal_id=' . $round->id);
-        $this->assertResponseContains(h($round->whatItIsFor()));
+        $this->assertResponseContains('proposal_id=' . $proposal->id);
+        $this->assertResponseContains(h($proposal->whatItIsFor()));
     }
 
     /**
@@ -659,11 +659,11 @@ class CustomerProposalsControllerTest extends TestCase
      */
     public function testThePapersOfTheContractsAreInViewWithTheProposalsOwn(): void
     {
-        $round = $this->drawOneUpWithPapers();
-        $papers = $this->papersOf((string)$round->id)[0];
+        $proposal = $this->drawOneUpWithPapers();
+        $papers = $this->papersOf((string)$proposal->id)[0];
 
         $at = '/customers/' . self::CUSTOMER_ID . '/documents/manage'
-            . '?agenda=CustomerProposals&proposal_id=' . $round->id;
+            . '?agenda=CustomerProposals&proposal_id=' . $proposal->id;
         // Asked of the table of papers itself: a way to draw one is a row of it and nowhere else.
         $drawn = 'generate.pdf?proposal_id=' . $papers->id;
 
@@ -682,17 +682,17 @@ class CustomerProposalsControllerTest extends TestCase
      * @link \App\Controller\CustomerProposalsController::send()
      * @return void
      */
-    public function testSendingTheRoundSendsEverythingInIt(): void
+    public function testSendingTheProposalSendsEverythingInIt(): void
     {
-        $round = $this->drawOneUpWithPapers();
+        $proposal = $this->drawOneUpWithPapers();
 
-        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/send/' . $round->id, [
+        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/send/' . $proposal->id, [
             'sent_date' => '2026-10-01',
             'delivery_type' => DocumentsDeliveryType::Email->value,
         ]);
         $this->assertRedirect();
 
-        foreach ($this->papersOf((string)$round->id) as $papers) {
+        foreach ($this->papersOf((string)$proposal->id) as $papers) {
             $this->assertSame('2026-10-01', $papers->sent_date?->toDateString());
             $this->assertSame(DocumentsDeliveryType::Email, $papers->delivery_type);
         }
@@ -705,21 +705,21 @@ class CustomerProposalsControllerTest extends TestCase
      * @link \App\Controller\CustomerProposalsController::conclude()
      * @return void
      */
-    public function testSigningTheRoundSignsEverythingInItAndRecordsTheConsent(): void
+    public function testSigningTheProposalSignsEverythingInItAndRecordsTheConsent(): void
     {
-        $round = $this->drawOneUpWithPapers();
+        $proposal = $this->drawOneUpWithPapers();
 
         $customers = $this->getTableLocator()->get('Customers');
         $customers->saveOrFail(
             $customers->patchEntity($customers->get(self::CUSTOMER_ID), ['agree_gdpr' => false]),
         );
 
-        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/conclude/' . $round->id, [
+        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/conclude/' . $proposal->id, [
             'conclusion_date' => '2026-10-05',
         ]);
         $this->assertRedirect();
 
-        foreach ($this->papersOf((string)$round->id) as $papers) {
+        foreach ($this->papersOf((string)$proposal->id) as $papers) {
             $this->assertSame('2026-10-05', $papers->conclusion_date?->toDateString());
         }
 
@@ -730,20 +730,20 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Giving up on the round gives up on the papers it holds: they went out in it and there is
+     * Giving up on the proposal gives up on the papers it holds: they went out in it and there is
      * nothing left for them to travel in, so they stop waiting for anybody.
      *
-     * @link \App\Model\Table\CustomerProposalsTable::giveUpOnTheRound()
+     * @link \App\Model\Table\CustomerProposalsTable::giveUpOnTheProposal()
      * @return void
      */
-    public function testGivingUpOnTheRoundGivesUpOnThePapersInIt(): void
+    public function testGivingUpOnTheProposalGivesUpOnThePapersInIt(): void
     {
-        $round = $this->drawOneUpWithPapers();
+        $proposal = $this->drawOneUpWithPapers();
 
-        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/revoke/' . $round->id);
+        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/revoke/' . $proposal->id);
         $this->assertRedirect();
 
-        $papers = $this->papersOf((string)$round->id);
+        $papers = $this->papersOf((string)$proposal->id);
         $this->assertNotSame([], $papers);
 
         foreach ($papers as $of) {
@@ -753,30 +753,30 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
-     * Applying the changes is offered while something is left to apply, and a round given up on has
+     * Applying the changes is offered while something is left to apply, and a proposal given up on has
      * nothing - so neither the page nor the action lead anywhere from it.
      *
      * @link \App\Model\Entity\CustomerProposal::hasChangesToApply()
      * @link \App\Controller\CustomerProposalsController::applyChanges()
      * @return void
      */
-    public function testARevokedRoundOffersNothingToApply(): void
+    public function testARevokedProposalOffersNothingToApply(): void
     {
-        $round = $this->drawOneUpWithPapers();
+        $proposal = $this->drawOneUpWithPapers();
         $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
-        $applyChanges = 'customer-proposals/apply-changes/' . $round->id;
+        $applyChanges = 'customer-proposals/apply-changes/' . $proposal->id;
 
-        $this->get($at . 'view/' . $round->id);
+        $this->get($at . 'view/' . $proposal->id);
         $this->assertResponseContains($applyChanges);
 
-        $this->post($at . 'revoke/' . $round->id);
+        $this->post($at . 'revoke/' . $proposal->id);
 
-        $this->get($at . 'view/' . $round->id);
+        $this->get($at . 'view/' . $proposal->id);
         $this->assertResponseOk();
         $this->assertResponseNotContains($applyChanges);
 
-        $this->get($at . 'apply-changes/' . $round->id);
-        $this->assertRedirectContains('/customer-proposals/view/' . $round->id);
+        $this->get($at . 'apply-changes/' . $proposal->id);
+        $this->assertRedirectContains('/customer-proposals/view/' . $proposal->id);
     }
 
     /**
@@ -788,15 +788,15 @@ class CustomerProposalsControllerTest extends TestCase
      */
     public function testApplyingTheChangesPassesByThePapersGivenUpOn(): void
     {
-        $round = $this->drawOneUpWithPapers();
-        $given_up = $this->papersOf((string)$round->id)[0];
+        $proposal = $this->drawOneUpWithPapers();
+        $given_up = $this->papersOf((string)$proposal->id)[0];
 
         $this->post('/customers/' . self::CUSTOMER_ID . '/contract-proposals/add', [
             'purpose' => ProposalPurpose::NewContract->value,
             'contract_id' => self::OTHER_CONTRACT_ID,
-            'customer_proposal_id' => $round->id,
+            'customer_proposal_id' => $proposal->id,
             'contract_version_id' => '',
-            'effective_from' => $round->effective_from->toDateString(),
+            'effective_from' => $proposal->effective_from->toDateString(),
             'confirmations' => [
                 'fixed_term' => 1,
                 'own_equipment' => 1,
@@ -809,13 +809,13 @@ class CustomerProposalsControllerTest extends TestCase
         $this->post('/contract-proposals/revoke/' . $given_up->id);
 
         $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
-        $this->post($at . 'send/' . $round->id, [
+        $this->post($at . 'send/' . $proposal->id, [
             'sent_date' => '2026-10-01',
             'delivery_type' => DocumentsDeliveryType::Post->value,
         ]);
-        $this->post($at . 'conclude/' . $round->id, ['conclusion_date' => '2026-10-05']);
+        $this->post($at . 'conclude/' . $proposal->id, ['conclusion_date' => '2026-10-05']);
 
-        $this->get($at . 'apply-changes/' . $round->id);
+        $this->get($at . 'apply-changes/' . $proposal->id);
         $this->assertResponseOk();
         $offered = array_map(
             fn(array $part): string => (string)$part['papers']->id,
@@ -824,10 +824,10 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertNotContains((string)$given_up->id, $offered, 'The preview offered papers given up on.');
         $this->assertCount(1, $offered);
 
-        $this->post($at . 'apply-changes/' . $round->id);
-        $this->assertRedirectContains('/customer-proposals/view/' . $round->id);
+        $this->post($at . 'apply-changes/' . $proposal->id);
+        $this->assertRedirectContains('/customer-proposals/view/' . $proposal->id);
 
-        foreach ($this->papersOf((string)$round->id) as $papers) {
+        foreach ($this->papersOf((string)$proposal->id) as $papers) {
             if ($papers->id === $given_up->id) {
                 $this->assertTrue($papers->hasBeenRevoked());
                 $this->assertFalse($papers->hasBeenApplied(), 'Papers given up on were carried over.');
@@ -841,19 +841,19 @@ class CustomerProposalsControllerTest extends TestCase
      * Papers given up on by themselves keep the day and the name that are against them, because
      * that is when somebody gave up on those papers.
      *
-     * @link \App\Model\Table\CustomerProposalsTable::giveUpOnTheRound()
+     * @link \App\Model\Table\CustomerProposalsTable::giveUpOnTheProposal()
      * @return void
      */
     public function testPapersGivenUpOnEarlierKeepTheirOwnDay(): void
     {
-        $round = $this->drawOneUpWithPapers();
+        $proposal = $this->drawOneUpWithPapers();
         $papers = $this->getTableLocator()->get('ContractProposals');
-        $of = $papers->get($this->papersOf((string)$round->id)[0]->id);
+        $of = $papers->get($this->papersOf((string)$proposal->id)[0]->id);
 
         $of->revoked = new DateTime('2026-09-01 08:00:00');
         $papers->saveOrFail($of, ['checkRules' => false]);
 
-        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/revoke/' . $round->id);
+        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/revoke/' . $proposal->id);
         $this->assertRedirect();
 
         $this->assertSame(

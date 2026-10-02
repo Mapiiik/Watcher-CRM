@@ -8,12 +8,12 @@ class AlterCustomerProposals extends BaseMigration
     /**
      * Up Method.
      *
-     * Once a round put to the customer is also the envelope their contracts' papers go out in, it
+     * Once a proposal put to the customer is also the envelope their contracts' papers go out in, it
      * may be for nothing of the customer's own - a new contract needs an envelope whether or not
      * anything is being asked of the customer beside it.
      *
-     * An empty purpose says exactly that: the round carries no paper of the customer's own. Every
-     * round on file has one and goes on behaving as it did.
+     * An empty purpose says exactly that: the proposal carries no paper of the customer's own. Every
+     * proposal on file has one and goes on behaving as it did.
      *
      * @return void
      */
@@ -24,7 +24,7 @@ class AlterCustomerProposals extends BaseMigration
                 'limit' => 20,
                 'default' => null,
                 'null' => true,
-                'comment' => 'What the round is for, as App\Model\Enum\CustomerProposalPurpose,'
+                'comment' => 'What the proposal is for, as App\Model\Enum\CustomerProposalPurpose,'
                     . ' empty when it only holds its contracts papers',
             ])
             ->save();
@@ -43,7 +43,7 @@ class AlterCustomerProposals extends BaseMigration
             ->changeColumn('purpose', 'string', [
                 'limit' => 20,
                 'null' => false,
-                'comment' => 'What the round is for, as App\Model\Enum\CustomerProposalPurpose',
+                'comment' => 'What the proposal is for, as App\Model\Enum\CustomerProposalPurpose',
             ])
             ->save();
     }

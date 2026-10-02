@@ -13,7 +13,7 @@ use App\Model\Enum\DocumentVariant;
 use App\Proposals\DrawnPaper;
 use App\Proposals\ProposalPapers;
 use App\Proposals\ProposalRows;
-use App\Proposals\RoundOfPapers;
+use App\Proposals\WholeProposal;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\Core\Configure;
@@ -37,21 +37,21 @@ use Throwable;
  * customer; the listing answers what state things are in and is what an overview would point at;
  * and generating is not a page at all, only the paper itself.
  *
- * No table of its own: what it shows belongs to the two kinds of round, and it reads them.
+ * No table of its own: what it shows belongs to the two kinds of proposal, and it reads them.
  */
 class DocumentsController extends AppController
 {
     /**
-     * Which agendas a round may belong to, by what the address calls them.
+     * Which agendas a proposal may belong to, by what the address calls them.
      *
      * @var array<string>
      */
     private const AGENDAS = ['CustomerProposals', 'ContractProposals'];
 
     /**
-     * Every round in view, listed rather than worked on.
+     * Every proposal in view, listed rather than worked on.
      *
-     * The counterpart of the workbench and deliberately thinner: one row to a round, saying what
+     * The counterpart of the workbench and deliberately thinner: one row to a proposal, saying what
      * state it is in and nothing about the papers themselves. The nesting narrows it exactly as it
      * narrows every other listing.
      *
@@ -62,7 +62,7 @@ class DocumentsController extends AppController
         $show_settled = toBool($this->getRequest()->getQuery('show_settled')) ?? false;
         $search = trim((string)$this->getRequest()->getQuery('search'));
 
-        $proposals = $this->roundsInView(finder: $show_settled ? 'all' : 'open');
+        $proposals = $this->proposalsInView(finder: $show_settled ? 'all' : 'open');
 
         if ($search !== '') {
             $proposals->where($this->whatIsBeingLookedFor($search));
@@ -78,7 +78,7 @@ class DocumentsController extends AppController
 
         // The rows the table reads, and beside them the page they were taken from - the pager
         // draws itself from whichever view variable holds one.
-        $this->set('rounds', (new ProposalRows())->of($page));
+        $this->set('proposals', (new ProposalRows())->of($page));
         $this->set('paginated', $page);
         $this->set('show_settled', $show_settled);
         $this->set('showCustomer', $this->customer_id === null);
@@ -91,12 +91,12 @@ class DocumentsController extends AppController
      */
     public function manage(): ?Response
     {
-        $round = $this->roundAsked();
+        $proposal = $this->proposalAsked();
         $version = $this->versionAsked();
 
         // Asked first, because the papers say whose they are: a link from a page that stands
         // under nobody - an overview, the dashboard - only has to say which papers it means.
-        $sentOn = $this->whereTheRoundIsWorkedOn($round, $version);
+        $sentOn = $this->whereTheProposalIsWorkedOn($proposal, $version);
 
         if ($sentOn !== null) {
             return $sentOn;
@@ -136,12 +136,12 @@ class DocumentsController extends AppController
         $this->set('customer', $customer);
         $this->set('contract', $contract);
         $this->set('version', $version);
-        $this->set('round', $round);
-        $this->set('rounds', (new ProposalRows())->of(
-            $this->whatIsStillWorkedOn($this->roundsInView($version), $round),
+        $this->set('proposal', $proposal);
+        $this->set('proposals', (new ProposalRows())->of(
+            $this->whatIsStillWorkedOn($this->proposalsInView($version), $proposal),
         ));
-        $this->set('scope', $this->scopeOfTheTable($round, $version));
-        $this->set('about', $this->whatTheTableIsOf($round, $version, $contract, $customer));
+        $this->set('scope', $this->scopeOfTheTable($proposal, $version));
+        $this->set('about', $this->whatTheTableIsOf($proposal, $version, $contract, $customer));
         // The papers of the contracts go out in the same envelope, so they are in view unless the
         // page was asked to leave them out.
         $this->set('with_contracts', toBool($this->getRequest()->getQuery('with_contracts')) ?? true);
@@ -162,22 +162,22 @@ class DocumentsController extends AppController
      */
     public function generate(): ?Response
     {
-        $round = $this->roundAsked();
+        $proposal = $this->proposalAsked();
         $document_type = (string)$this->getRequest()->getQuery('document_type');
         $signed = toBool($this->getRequest()->getQuery('signed')) ?? false;
 
-        if ($round === null || $document_type === '') {
+        if ($proposal === null || $document_type === '') {
             $this->Flash->error(__('Invalid type of document.'));
 
             return $this->redirect(['action' => 'manage']);
         }
 
         try {
-            return $this->handOver((new DrawnPaper())->of($round, $document_type, $signed));
+            return $this->handOver((new DrawnPaper())->of($proposal, $document_type, $signed));
         } catch (RuntimeException $stopped) {
             $this->Flash->error($stopped->getMessage());
 
-            return $this->redirect(['action' => 'manage', '?' => ['proposal_id' => $round->id]]);
+            return $this->redirect(['action' => 'manage', '?' => ['proposal_id' => $proposal->id]]);
         }
     }
 
@@ -193,13 +193,13 @@ class DocumentsController extends AppController
      */
     public function addPages(): ?Response
     {
-        $round = $this->roundAsked();
+        $proposal = $this->proposalAsked();
 
-        if ($round === null) {
+        if ($proposal === null) {
             return $this->redirect(['action' => 'manage']);
         }
 
-        $printed = $this->whatMayComeBackFor($round);
+        $printed = $this->whatMayComeBackFor($proposal);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             // Which paper of which record, said in one field: the scan is of one document and the
@@ -239,7 +239,7 @@ class DocumentsController extends AppController
                         __n('{0} page has been filed.', '{0} pages have been filed.', $filed, $filed),
                     );
 
-                    return $this->backToTheWorkbench($round);
+                    return $this->backToTheWorkbench($proposal);
                 }
 
                 $this->Flash->error(__('No files were selected.'));
@@ -248,8 +248,8 @@ class DocumentsController extends AppController
             }
         }
 
-        $this->set('round', $round);
-        $this->set('about', $this->whatTheRoundIsCalled($round));
+        $this->set('proposal', $proposal);
+        $this->set('about', $this->whatTheProposalIsCalled($proposal));
         $this->set('printed', $printed);
         $this->set('variants', DocumentVariant::received());
 
@@ -264,14 +264,14 @@ class DocumentsController extends AppController
      *
      * @param string|null $link_id Which page.
      * @return \Cake\Http\Response|null Redirects back to the papers.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this round's.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this proposal's.
      */
     public function dropPage(?string $link_id = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
 
-        $round = $this->roundAsked();
-        $page = $this->thePage($round, $link_id);
+        $proposal = $this->proposalAsked();
+        $page = $this->thePage($proposal, $link_id);
 
         try {
             $dropped = (new ProposalPapers())->drop($page);
@@ -285,7 +285,7 @@ class DocumentsController extends AppController
             $this->Flash->error(__('The page could not be removed: {0}', $e->getMessage()));
         }
 
-        return $this->backToTheWorkbench($round);
+        return $this->backToTheWorkbench($proposal);
     }
 
     /**
@@ -294,14 +294,14 @@ class DocumentsController extends AppController
      * @param string|null $link_id Which page.
      * @param string|null $direction Which way - `up` or anything else for down.
      * @return \Cake\Http\Response|null Redirects back to the papers.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this round's.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this proposal's.
      */
     public function movePage(?string $link_id = null, ?string $direction = null): ?Response
     {
         $this->getRequest()->allowMethod(['post', 'put']);
 
-        $round = $this->roundAsked();
-        $page = $this->thePage($round, $link_id);
+        $proposal = $this->proposalAsked();
+        $page = $this->thePage($proposal, $link_id);
 
         try {
             (new ProposalPapers())->move($page, $direction === 'up');
@@ -309,45 +309,45 @@ class DocumentsController extends AppController
             $this->Flash->error(__('The pages could not be reordered: {0}', $e->getMessage()));
         }
 
-        return $this->backToTheWorkbench($round);
+        return $this->backToTheWorkbench($proposal);
     }
 
     /**
-     * Every paper the round may get back, by the record each hangs on.
+     * Every paper the proposal may get back, by the record each hangs on.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The one opened.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The one opened.
      * @return array<string, array<string, mixed>>
      */
-    private function whatMayComeBackFor(ContractProposal|CustomerProposal $round): array
+    private function whatMayComeBackFor(ContractProposal|CustomerProposal $proposal): array
     {
-        $envelope = $round instanceof CustomerProposal ? $round : $round->customer_proposal;
+        $envelope = $proposal instanceof CustomerProposal ? $proposal : $proposal->customer_proposal;
 
         if ($envelope === null) {
             return [];
         }
 
-        $printed = (new RoundOfPapers())->documentsAcross($envelope);
+        $printed = (new WholeProposal())->documentsAcross($envelope);
 
         // Opened on the papers of one contract, the page is about those papers - the rest of the
         // envelope is filed from the envelope.
-        return $round instanceof CustomerProposal
+        return $proposal instanceof CustomerProposal
             ? $printed
-            : array_intersect_key($printed, [(string)$round->id => true]);
+            : array_intersect_key($printed, [(string)$proposal->id => true]);
     }
 
     /**
-     * One of this round's pages.
+     * One of this proposal's pages.
      *
-     * The round is checked as well as the page, so that an identifier from somewhere else cannot
+     * The proposal is checked as well as the page, so that an identifier from somewhere else cannot
      * reach a paper through this door.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round The one opened.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal The one opened.
      * @param string|null $link_id Which page.
      * @return \Files\Model\Entity\FileLink
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this round's.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When it is not this proposal's.
      */
     private function thePage(
-        ContractProposal|CustomerProposal|null $round,
+        ContractProposal|CustomerProposal|null $proposal,
         ?string $link_id,
     ): FileLink {
         /** @var \Files\Model\Table\FileLinksTable $links */
@@ -356,11 +356,11 @@ class DocumentsController extends AppController
         /** @var \Files\Model\Entity\FileLink $link */
         $link = $links->get($link_id);
 
-        $model = $round instanceof CustomerProposal
+        $model = $proposal instanceof CustomerProposal
             ? CustomerDocuments::MODEL
             : ContractDocuments::MODEL;
 
-        if ($round === null || $link->model !== $model || $link->foreign_key !== $round->id) {
+        if ($proposal === null || $link->model !== $model || $link->foreign_key !== $proposal->id) {
             throw new RecordNotFoundException(__('That page belongs to a different proposal.'));
         }
 
@@ -368,19 +368,19 @@ class DocumentsController extends AppController
     }
 
     /**
-     * Back to where the papers are worked on, at the round they were worked on from.
+     * Back to where the papers are worked on, at the proposal they were worked on from.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round The one opened.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal The one opened.
      * @return \Cake\Http\Response|null
      */
     private function backToTheWorkbench(
-        ContractProposal|CustomerProposal|null $round,
+        ContractProposal|CustomerProposal|null $proposal,
     ): ?Response {
         return $this->redirect([
             'action' => 'manage',
             '?' => array_filter([
-                'proposal_id' => $round?->id,
-                'agenda' => $round instanceof ContractProposal ? 'ContractProposals' : 'CustomerProposals',
+                'proposal_id' => $proposal?->id,
+                'agenda' => $proposal instanceof ContractProposal ? 'ContractProposals' : 'CustomerProposals',
             ]),
         ]);
     }
@@ -388,19 +388,19 @@ class DocumentsController extends AppController
     /**
      * Which scope the documents table is drawn at, following the address inwards.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round The round asked for.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal The proposal asked for.
      * @return array{0: string, 1: string} What is being looked at, and which one.
      */
     private function scopeOfTheTable(
-        ContractProposal|CustomerProposal|null $round,
+        ContractProposal|CustomerProposal|null $proposal,
         ?ContractVersion $version,
     ): array {
-        if ($round instanceof CustomerProposal) {
-            return ['customerProposal', (string)$round->id];
+        if ($proposal instanceof CustomerProposal) {
+            return ['customerProposal', (string)$proposal->id];
         }
 
-        if ($round instanceof ContractProposal) {
-            return ['contractProposal', (string)$round->id];
+        if ($proposal instanceof ContractProposal) {
+            return ['contractProposal', (string)$proposal->id];
         }
 
         if ($version !== null) {
@@ -420,12 +420,12 @@ class DocumentsController extends AppController
      * and what is listed all read the address, so an address that says less shows less than it
      * could - and a bookmark is put right the same way a link is.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round The one opened.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal The one opened.
      * @param \App\Model\Entity\ContractVersion|null $version The version in view.
      * @return \Cake\Http\Response|null
      */
-    private function whereTheRoundIsWorkedOn(
-        ContractProposal|CustomerProposal|null $round,
+    private function whereTheProposalIsWorkedOn(
+        ContractProposal|CustomerProposal|null $proposal,
         ?ContractVersion $version,
     ): ?Response {
         if (!$this->getRequest()->is('get')) {
@@ -440,12 +440,12 @@ class DocumentsController extends AppController
 
         $its = ['customer_id' => null, 'contract_id' => null, 'contract_version_id' => null];
 
-        if ($round instanceof ContractProposal) {
-            $its['customer_id'] = $round->contract?->customer_id;
-            $its['contract_id'] = $round->contract_id;
-            $its['contract_version_id'] = $round->contract_version_id;
-        } elseif ($round instanceof CustomerProposal) {
-            $its['customer_id'] = $round->customer_id;
+        if ($proposal instanceof ContractProposal) {
+            $its['customer_id'] = $proposal->contract?->customer_id;
+            $its['contract_id'] = $proposal->contract_id;
+            $its['contract_version_id'] = $proposal->contract_version_id;
+        } elseif ($proposal instanceof CustomerProposal) {
+            $its['customer_id'] = $proposal->customer_id;
         } elseif ($version !== null) {
             $its['contract_id'] = $version->contract_id;
             $its['contract_version_id'] = (string)$version->id;
@@ -473,19 +473,19 @@ class DocumentsController extends AppController
     }
 
     /**
-     * What a round is called wherever a page is headed with it.
+     * What a proposal is called wherever a page is headed with it.
      *
      * A proposal put to the customer says what it asks for and from when; the papers of a contract
      * name that contract as well, because beside it they would otherwise be one of several.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The one opened.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The one opened.
      * @return string
      */
-    private function whatTheRoundIsCalled(ContractProposal|CustomerProposal $round): string
+    private function whatTheProposalIsCalled(ContractProposal|CustomerProposal $proposal): string
     {
-        return $round instanceof CustomerProposal
-            ? __('{0} from {1}', $round->whatItIsFor(), $round->effective_from)
-            : $round->getName();
+        return $proposal instanceof CustomerProposal
+            ? __('{0} from {1}', $proposal->whatItIsFor(), $proposal->effective_from)
+            : $proposal->getName();
     }
 
     /**
@@ -495,20 +495,20 @@ class DocumentsController extends AppController
      * customer when it narrows no further. The words are the ones the whereabouts uses for the
      * same step, so the heading and the path through to it read alike.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round The one opened.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal The one opened.
      * @param \App\Model\Entity\ContractVersion|null $version The version in view.
      * @param \App\Model\Entity\Contract|null $contract The contract in view.
      * @param \App\Model\Entity\Customer $customer Whose papers these are.
      * @return string
      */
     private function whatTheTableIsOf(
-        ContractProposal|CustomerProposal|null $round,
+        ContractProposal|CustomerProposal|null $proposal,
         ?ContractVersion $version,
         ?Contract $contract,
         Customer $customer,
     ): string {
-        if ($round !== null) {
-            return $this->whatTheRoundIsCalled($round);
+        if ($proposal !== null) {
+            return $this->whatTheProposalIsCalled($proposal);
         }
 
         if ($version !== null) {
@@ -548,11 +548,11 @@ class DocumentsController extends AppController
     }
 
     /**
-     * The round the address dives into, where it dives into one.
+     * The proposal the address dives into, where it dives into one.
      *
      * @return \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null
      */
-    private function roundAsked(): ContractProposal|CustomerProposal|null
+    private function proposalAsked(): ContractProposal|CustomerProposal|null
     {
         $id = $this->getRequest()->getQuery('proposal_id');
         $agenda = (string)$this->getRequest()->getQuery('agenda');
@@ -562,7 +562,7 @@ class DocumentsController extends AppController
         }
 
         if (!in_array($agenda, self::AGENDAS, true)) {
-            // An address that names a round without saying which side it is on is answered by
+            // An address that names a proposal without saying which side it is on is answered by
             // looking, rather than by an error about a field nobody typed.
             $agenda = $this->fetchTable('CustomerProposals')->exists(['id' => $id])
                 ? 'CustomerProposals'
@@ -577,10 +577,10 @@ class DocumentsController extends AppController
             ? ['CustomerProposals' => ['ContractProposals'], 'Contracts']
             : ['ContractProposals']);
 
-        /** @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $round */
-        $round = $query->first();
+        /** @var \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $proposal */
+        $proposal = $query->first();
 
-        return $round;
+        return $proposal;
     }
 
     /**
@@ -594,7 +594,7 @@ class DocumentsController extends AppController
      * @param string $finder Which of them - all of them, or only those still open.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
-    private function roundsInView(?ContractVersion $version = null, string $finder = 'all'): SelectQuery
+    private function proposalsInView(?ContractVersion $version = null, string $finder = 'all'): SelectQuery
     {
         $proposals = $this->fetchTable('CustomerProposals')
             ->find($finder)
@@ -644,30 +644,30 @@ class DocumentsController extends AppController
     }
 
     /**
-     * The rounds the table is really about, which are the ones somebody may still do something
+     * The proposals the table is really about, which are the ones somebody may still do something
      * with.
      *
-     * A round given up on is not work any more and would only stand between the reader and what
+     * A proposal given up on is not work any more and would only stand between the reader and what
      * is, so it steps out until they ask for it. Whatever the page is standing on stays listed
-     * either way: leaving out the very round whose papers are underneath would say the workbench
+     * either way: leaving out the very proposal whose papers are underneath would say the workbench
      * is about nothing.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $rounds The rounds in view.
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $proposals The proposals in view.
      * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal|null $inView What the page is on.
      * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
      */
     private function whatIsStillWorkedOn(
-        SelectQuery $rounds,
+        SelectQuery $proposals,
         ContractProposal|CustomerProposal|null $inView,
     ): SelectQuery {
         if ($this->alsoWhatWasGivenUpOn()) {
-            return $rounds;
+            return $proposals;
         }
 
         $standing = ['CustomerProposals.revoked IS' => null];
         $stoodOn = $inView instanceof ContractProposal ? $inView->customer_proposal_id : $inView?->id;
 
-        return $rounds->where(
+        return $proposals->where(
             $stoodOn === null ? $standing : ['OR' => [$standing, ['CustomerProposals.id' => $stoodOn]]],
         );
     }

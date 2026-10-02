@@ -1,15 +1,15 @@
 <?php
 /**
- * Every round in view, one row each.
+ * Every proposal in view, one row each.
  *
  * Both pages draw this: the listing wants to know what state things are in, and the workbench
  * wants the same table with somewhere to go from each row. A proposal is put to the customer, so
  * the contracts it is about are named on its own row rather than in a column of their own.
  *
  * @var \App\View\AppView $this
- * @var array<array<string, mixed>> $rounds
+ * @var array<array<string, mixed>> $proposals
  * @var bool $showCustomer Whether the rows say whose they are.
- * @var bool $working Whether the row offers what may be done with the round.
+ * @var bool $working Whether the row offers what may be done with the proposal.
  * @var bool $paged Whether the page pages through these, which is what makes a column sortable.
  */
 
@@ -29,7 +29,7 @@ $heading = function (string $field, string $said) use ($paged): string {
     return $paged ? $this->Paginator->sort($field, $said) : h($said);
 };
 ?>
-<?php if ($rounds === []) : ?>
+<?php if ($proposals === []) : ?>
     <p><?= __('No proposals have been created here yet.') ?></p>
 <?php else : ?>
 <div class="table-responsive">
@@ -47,9 +47,9 @@ $heading = function (string $field, string $said) use ($paged): string {
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($rounds as $row) : ?>
+            <?php foreach ($proposals as $row) : ?>
                 <?php
-                $one = $row['round'];
+                $one = $row['proposal'];
 
                 // A step is taken on the proposal and reaches everything in it, so a part of one
                 // offers none of its own.
@@ -73,7 +73,7 @@ $heading = function (string $field, string $said) use ($paged): string {
                     implode(', ', $row['covers']),
                 )) . '</small>';
 
-                // A round nobody has anything left to do about is read rather than worked on, so
+                // A proposal nobody has anything left to do about is read rather than worked on, so
                 // it steps back - which is not the same as settled, because what it holds may
                 // still be waiting to be applied.
                 ?>

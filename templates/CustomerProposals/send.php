@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerProposal $customerProposal
- * @var array<\App\Model\Entity\ContractProposal> $alsoInTheRound
+ * @var array<\App\Model\Entity\ContractProposal> $alsoInTheProposal
  * @var array<int|string, string> $deliveryTypes
  */
 
@@ -53,7 +53,7 @@ $recording = $again ? __('Record the Sending Again') : __('Record the Sending');
                 ]);
                 ?>
             </fieldset>
-            <?= $this->element('common/also_in_the_round', [
+            <?= $this->element('common/also_in_the_proposal', [
                 'saying' => __('The same date is recorded for these as well, because they were'
                     . ' sent together.'),
             ]) ?>

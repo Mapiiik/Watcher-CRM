@@ -142,13 +142,13 @@ class ContractProposalsController extends AppController
         $named = $this->named('purpose');
         $proposal->set('purpose', ProposalPurpose::tryFrom((string)$named) ?? ProposalPurpose::NewContract);
 
-        // Drawn up from inside a round, the papers go out in it and speak about the day it does.
+        // Drawn up from inside a proposal, the papers go out in it and speak about the day it does.
         // Both are only what the form opens with - the operator may say otherwise.
-        $round = $this->roundAskedFor();
+        $customer_proposal = $this->proposalAskedFor();
 
-        if ($round !== null) {
-            $proposal->set('customer_proposal_id', $round->id);
-            $proposal->set('effective_from', $round->effective_from);
+        if ($customer_proposal !== null) {
+            $proposal->set('customer_proposal_id', $customer_proposal->id);
+            $proposal->set('effective_from', $customer_proposal->effective_from);
         }
 
         if ($this->request->is('post')) {
@@ -308,7 +308,7 @@ class ContractProposalsController extends AppController
         $this->set('contractProposal', $proposal);
         $this->set('questions', $this->readinessQuestions($contract, $proposal->keepsVersions()));
         $this->set('wording', ReadinessChecks::wording());
-        $this->set('rounds', $this->openRoundsOf($contract->customer_id ?? $this->customer_id));
+        $this->set('proposals', $this->openProposalsOf($contract->customer_id ?? $this->customer_id));
         $this->set('contractNumbers', $this->numbersOfferedFor($contract));
         $this->set('documentsToDiscard', $drawnFromTheOldOne);
 
@@ -1152,7 +1152,7 @@ class ContractProposalsController extends AppController
             }
         }
 
-        // Nothing written inside a transaction reaches the audit log on its own, and the round
+        // Nothing written inside a transaction reaches the audit log on its own, and the proposal
         // a proposal is put into is written with it.
         $trail = new AuditTrail();
 
@@ -1338,11 +1338,11 @@ class ContractProposalsController extends AppController
 
         // The envelopes of this customer that are still open, so papers drawn up now can go out
         // with whatever else is already waiting to.
-        $rounds = $this->openRoundsOf($contract->customer_id ?? $this->customer_id);
+        $proposals = $this->openProposalsOf($contract->customer_id ?? $this->customer_id);
 
         // And what a proposal drawn up here and now would ask of the customer themselves, which
         // is most often nothing: the papers of the contract are the point of it.
-        $roundPurposes = CustomerProposalPurpose::forContractProposals();
+        $proposalPurposes = CustomerProposalPurpose::forContractProposals();
 
         $this->set(compact(
             'contracts',
@@ -1352,8 +1352,8 @@ class ContractProposalsController extends AppController
             'contractNumbers',
             'purpose',
             'purposes',
-            'rounds',
-            'roundPurposes',
+            'proposals',
+            'proposalPurposes',
             'effectiveFromDefault',
             'obligationOffered',
         ));
@@ -1387,16 +1387,16 @@ class ContractProposalsController extends AppController
             return true;
         }
 
-        $rounds = $this->ContractProposals->CustomerProposals;
-        $round = $rounds->newEmptyEntity();
+        $proposals = $this->ContractProposals->CustomerProposals;
+        $customer_proposal = $proposals->newEmptyEntity();
 
-        $round->set('customer_id', $contract->customer_id);
-        $round->set('effective_from', $proposal->effective_from);
-        $round->set('purpose', CustomerProposalPurpose::tryFrom(
-            (string)$this->getRequest()->getData('new_round_purpose'),
+        $customer_proposal->set('customer_id', $contract->customer_id);
+        $customer_proposal->set('effective_from', $proposal->effective_from);
+        $customer_proposal->set('purpose', CustomerProposalPurpose::tryFrom(
+            (string)$this->getRequest()->getData('new_proposal_purpose'),
         ));
 
-        if (!$rounds->save($round, $trail->options())) {
+        if (!$proposals->save($customer_proposal, $trail->options())) {
             $proposal->setError('customer_proposal_id', [
                 __('A customer proposal for this contract proposal could not be created.'),
             ]);
@@ -1404,17 +1404,17 @@ class ContractProposalsController extends AppController
             return false;
         }
 
-        $proposal->set('customer_proposal_id', $round->id);
+        $proposal->set('customer_proposal_id', $customer_proposal->id);
 
         return true;
     }
 
     /**
-     * The round the form was opened from, where it was opened from one.
+     * The proposal the form was opened from, where it was opened from one.
      *
      * @return \App\Model\Entity\CustomerProposal|null
      */
-    private function roundAskedFor(): ?CustomerProposal
+    private function proposalAskedFor(): ?CustomerProposal
     {
         $id = $this->named('customer_proposal_id') ?? $this->getRequest()->getQuery('proposal_id');
 
@@ -1422,28 +1422,28 @@ class ContractProposalsController extends AppController
             return null;
         }
 
-        /** @var \App\Model\Entity\CustomerProposal|null $round */
-        $round = $this->ContractProposals->CustomerProposals
+        /** @var \App\Model\Entity\CustomerProposal|null $proposal */
+        $proposal = $this->ContractProposals->CustomerProposals
             ->find()
             ->where(['CustomerProposals.id' => $id])
             ->first();
 
-        return $round;
+        return $proposal;
     }
 
     /**
-     * The customer's rounds that have not been settled, as a list to pick from.
+     * The customer's proposals that have not been settled, as a list to pick from.
      *
-     * @param string|null $customer_id Whose rounds.
+     * @param string|null $customer_id Whose proposals.
      * @return array<string, string>
      */
-    private function openRoundsOf(?string $customer_id): array
+    private function openProposalsOf(?string $customer_id): array
     {
         if ($customer_id === null) {
             return [];
         }
 
-        $rounds = $this->ContractProposals->CustomerProposals
+        $proposals = $this->ContractProposals->CustomerProposals
             ->find('open')
             ->contain(['ContractProposals'])
             ->where(['CustomerProposals.customer_id' => $customer_id])
@@ -1451,15 +1451,15 @@ class ContractProposalsController extends AppController
 
         $found = [];
 
-        foreach ($rounds as $round) {
-            if ($round->purpose !== null && !$round->purpose->comesBackSigned()) {
+        foreach ($proposals as $customer_proposal) {
+            if ($customer_proposal->purpose !== null && !$customer_proposal->purpose->comesBackSigned()) {
                 continue;
             }
 
-            $found[(string)$round->id] = sprintf(
+            $found[(string)$customer_proposal->id] = sprintf(
                 '%s - %s',
-                $round->effective_from,
-                $round->whatItIsFor(),
+                $customer_proposal->effective_from,
+                $customer_proposal->whatItIsFor(),
             );
         }
 

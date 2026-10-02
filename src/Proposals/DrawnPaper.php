@@ -23,9 +23,9 @@ use Closure;
 use RuntimeException;
 
 /**
- * One paper, drawn from the round it belongs to.
+ * One paper, drawn from the proposal it belongs to.
  *
- * What used to be a form - pick a round, pick a document, press print - is now a link beside the
+ * What used to be a form - pick a proposal, pick a document, press print - is now a link beside the
  * paper that is missing, so the two agendas are asked the same question in the same place. The
  * printing services themselves are untouched; this only works out what to hand them.
  *
@@ -56,28 +56,28 @@ final class DrawnPaper
     /**
      * The paper itself.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The round.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
      * @param string $document_type Which paper.
      * @param bool $signed Whether it is the copy carrying our signature.
      * @return \App\Documents\PrintedDocument
-     * @throws \RuntimeException When the round cannot produce that paper.
+     * @throws \RuntimeException When the proposal cannot produce that paper.
      */
     public function of(
-        ContractProposal|CustomerProposal $round,
+        ContractProposal|CustomerProposal $proposal,
         string $document_type,
         bool $signed = false,
     ): PrintedDocument {
-        $problems = $this->problemsWith($round, $document_type, $signed);
+        $problems = $this->problemsWith($proposal, $document_type, $signed);
 
         if ($problems !== []) {
             throw new RuntimeException(implode(' ', $problems));
         }
 
-        if ($round instanceof CustomerProposal) {
-            return (new CustomerDocuments())->for($this->whatTheCustomersSays($round, $document_type));
+        if ($proposal instanceof CustomerProposal) {
+            return (new CustomerDocuments())->for($this->whatTheCustomersSays($proposal, $document_type));
         }
 
-        return (new ContractDocuments())->for($this->whatTheContractsSays($round, $document_type, $signed));
+        return (new ContractDocuments())->for($this->whatTheContractsSays($proposal, $document_type, $signed));
     }
 
     /**
@@ -86,17 +86,17 @@ final class DrawnPaper
      * Asked before the link is offered rather than after it is followed, so that a gap in the
      * records reads as what is missing instead of as a page that did nothing.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The round.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
      * @param string $document_type Which paper.
      * @param bool $signed Whether it is the copy carrying our signature.
      * @return array<string> What stands in the way, in words.
      */
     public function problemsWith(
-        ContractProposal|CustomerProposal $round,
+        ContractProposal|CustomerProposal $proposal,
         string $document_type,
         bool $signed = false,
     ): array {
-        if ($round instanceof CustomerProposal) {
+        if ($proposal instanceof CustomerProposal) {
             $type = CustomerDocumentType::tryFrom($document_type);
 
             if ($type === null) {
@@ -104,11 +104,11 @@ final class DrawnPaper
             }
 
             $errors = (new CustomerPrintValidator())->validate(
-                $this->whatTheCustomersSays($round, $document_type),
+                $this->whatTheCustomersSays($proposal, $document_type),
             );
         } else {
             // Asked first: there is no version to print from, and nothing of ours to print.
-            if (!$round->keepsVersions()) {
+            if (!$proposal->keepsVersions()) {
                 return [__('No documents are generated for a contract whose service type does'
                     . ' not use contract versions.')];
             }
@@ -120,7 +120,7 @@ final class DrawnPaper
             }
 
             $errors = (new ContractPrintValidator())->validate(
-                $this->whatTheContractsSays($round, $document_type, $signed),
+                $this->whatTheContractsSays($proposal, $document_type, $signed),
                 $signed ? ['signed' => '1'] : [],
             );
         }
@@ -148,12 +148,12 @@ final class DrawnPaper
     /**
      * What a paper about the customer themselves is drawn from.
      *
-     * @param \App\Model\Entity\CustomerProposal $round The round.
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
      * @param string $document_type Which paper.
      * @return \App\Service\CustomerPrint\CustomerPrintData
      */
     private function whatTheCustomersSays(
-        CustomerProposal $round,
+        CustomerProposal $proposal,
         string $document_type,
     ): CustomerPrintData {
         $type = CustomerDocumentType::from($document_type);
@@ -169,12 +169,12 @@ final class DrawnPaper
             $contain['Contracts'] = $this->whatIsProvided(Date::now());
         }
 
-        $customer = $this->fetchTable('Customers')->get($round->customer_id, contain: $contain);
+        $customer = $this->fetchTable('Customers')->get($proposal->customer_id, contain: $contain);
 
         return new CustomerPrintData(
             type: $type,
             customer: $customer,
-            proposal: $round,
+            proposal: $proposal,
         );
     }
 
@@ -216,17 +216,17 @@ final class DrawnPaper
      * The projection rather than the live records: what the paper says was settled when the
      * proposal was drawn up, and a version that is still to come has no record to read anyway.
      *
-     * @param \App\Model\Entity\ContractProposal $round The proposal.
+     * @param \App\Model\Entity\ContractProposal $asked The proposal.
      * @param string $document_type Which paper.
      * @param bool $signed Whether it is the copy carrying our signature.
      * @return \App\Service\ContractPrint\ContractPrintData
      */
     private function whatTheContractsSays(
-        ContractProposal $round,
+        ContractProposal $asked,
         string $document_type,
         bool $signed,
     ): ContractPrintData {
-        $proposal = $this->fetchTable('ContractProposals')->get($round->id, contain: self::FOR_PRINTING);
+        $proposal = $this->fetchTable('ContractProposals')->get($asked->id, contain: self::FOR_PRINTING);
 
         $snapshot = $proposal->stateOfThings();
         $projection = new ProposalProjection();
@@ -270,15 +270,15 @@ final class DrawnPaper
     /**
      * Whether the paper may also be had with our signature on it.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $round The round.
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
      * @param string $document_type Which paper.
      * @return bool
      */
     public function mayCarryOurSignature(
-        ContractProposal|CustomerProposal $round,
+        ContractProposal|CustomerProposal $proposal,
         string $document_type,
     ): bool {
-        if ($round instanceof CustomerProposal) {
+        if ($proposal instanceof CustomerProposal) {
             return false;
         }
 

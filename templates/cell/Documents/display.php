@@ -1,13 +1,13 @@
 <?php
 /**
- * Every paper a set of rounds has on one side of them, one row to a page.
+ * Every paper a set of proposals has on one side of them, one row to a page.
  *
- * The one table for every place the papers are shown, so that a page filed against a round reads
+ * The one table for every place the papers are shown, so that a page filed against a proposal reads
  * the same wherever it is looked at. What several rows have in common is said once, down the side:
- * a contract, a round, a document and a hand each get one cell however many pages sit under them,
+ * a contract, a proposal, a document and a hand each get one cell however many pages sit under them,
  * so what belongs together reads as one block.
  *
- * Which rounds these are and what they are called is the cell's business. Here is only how it
+ * Which proposals these are and what they are called is the cell's business. Here is only how it
  * looks - a consent has no contract, and its rows simply leave that cell empty.
  *
  * @var \App\View\AppView $this
@@ -15,7 +15,7 @@
  * @var list<array<string, mixed>> $rows
  * @var bool $generatedByUs Whether this is the side we generated.
  * @var bool $showContract Whether the rows say which contract they belong to.
- * @var bool $showProposal Whether the rows say which round they belong to.
+ * @var bool $showProposal Whether the rows say which proposal they belong to.
  * @var bool $manage Whether the pages may be reordered and let go of from here.
  * @var bool $thumbnails Whether each page shows what it looks like.
  */
@@ -56,13 +56,13 @@ $runs = function (array $rows, string $of): array {
 };
 
 $spans = [];
-foreach (['contract', 'round', 'document', 'variant'] as $of) {
+foreach (['contract', 'proposal', 'document', 'variant'] as $of) {
     $spans[$of] = $runs($rows, $of);
 }
 
 // Which column stands at the table's left edge, so that the rows carrying it can be told from the
 // ones whose left-hand cells are joined into the row above.
-$leftmost = $showContract ? 'contract' : ($showProposal ? 'round' : 'document');
+$leftmost = $showContract ? 'contract' : ($showProposal ? 'proposal' : 'document');
 
 /**
  * A cell standing for however many rows say the same thing, drawn only where its run starts.
@@ -116,20 +116,20 @@ $joined = function (array $run, int $index, string $content, string $class = '')
         <tbody>
         <?php foreach ($rows as $index => $row) : ?>
             <?php
-            $round = $row['round'];
+            $proposal = $row['proposal'];
             $page = $spans['variant'][$index];
             $first = $page['start'] === $index;
             $last = $page['start'] + $page['span'] - 1 === $index;
 
-            $contractCell = $round['contract_id'] === null
+            $contractCell = $proposal['contract_id'] === null
                 ? ''
                 : $this->Html->link(
-                    (string)$round['contract'],
-                    ['controller' => 'Contracts', 'action' => 'view', $round['contract_id']],
+                    (string)$proposal['contract'],
+                    ['controller' => 'Contracts', 'action' => 'view', $proposal['contract_id']],
                 );
-            $roundCell = $this->Html->link(
-                $round['label'],
-                ['controller' => $round['controller'], 'action' => 'view', $round['id']],
+            $proposalCell = $this->Html->link(
+                $proposal['label'],
+                ['controller' => $proposal['controller'], 'action' => 'view', $proposal['id']],
             );
             // The variant cell already spans exactly the pages of one document, so the way to look
             // through them belongs in it. Built once where the run starts, since that is the only
@@ -143,8 +143,8 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 // on its own once the overlay covers the page is the same point from the other
                 // side.
                 $caption = implode(' - ', array_filter([
-                    $round['contract'],
-                    $round['says'],
+                    $proposal['contract'],
+                    $proposal['says'],
                     $row['document'],
                     $row['variant'],
                 ]));
@@ -157,10 +157,10 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 $variantCell .= $mark === '' ? '' : '<br>' . $mark;
             }
 
-            // Which round a link is about, said the way every other link here says it.
-            $whose = ['proposal_id' => $round['id'], 'agenda' => $round['controller']];
+            // Which proposal a link is about, said the way every other link here says it.
+            $whose = ['proposal_id' => $proposal['id'], 'agenda' => $proposal['controller']];
 
-            // The papers of the round, and the round itself. The leftmost column names it and
+            // The papers of the proposal, and the proposal itself. The leftmost column names it and
             // leads there too, but that column is not always drawn and is a label rather than a
             // way out - so the way to the proposal these papers belong to is offered where the
             // rest of what may be done with it is.
@@ -176,16 +176,16 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                 __('View'),
                 [
                     'plugin' => null,
-                    'controller' => $round['controller'],
+                    'controller' => $proposal['controller'],
                     'action' => 'view',
-                    $round['id'],
+                    $proposal['id'],
                 ],
             );
             ?>
             <?php if ($row['link'] === null) : ?>
                 <?php
                 // A paper that is owed and has not been drawn is said plainly; one that is only
-                // wanted sometimes is said more quietly. A round with nothing at all names nothing,
+                // wanted sometimes is said more quietly. A proposal with nothing at all names nothing,
                 // because there is nothing yet to name.
                 $missing = $row['required'] ?? true ? 'error-text' : 'warning-text';
                 $named = ($row['document_type'] ?? '') !== '';
@@ -203,7 +203,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                  * @param bool $signed Whether to ask for the copy carrying our signature.
                  * @return string
                  */
-                $drawIt = function (string $saying, bool $signed) use ($round, $row): string {
+                $drawIt = function (string $saying, bool $signed) use ($proposal, $row): string {
                     return $this->AuthLink->link(
                         $saying,
                         [
@@ -212,8 +212,8 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                             'action' => 'generate',
                             '_ext' => 'pdf',
                             '?' => array_filter([
-                                'proposal_id' => $round['id'],
-                                'agenda' => $round['controller'],
+                                'proposal_id' => $proposal['id'],
+                                'agenda' => $proposal['controller'],
                                 'document_type' => $row['document_type'],
                                 'signed' => $signed ? '1' : null,
                             ]),
@@ -224,7 +224,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
     ?>
             <tr<?= $spans[$leftmost][$index]['start'] === $index ? '' : ' class="continued"' ?>>
                 <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
-                <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>
+                <?= $showProposal ? $joined($spans['proposal'][$index], $index, $proposalCell) : '' ?>
                 <td><?= h($row['document']) ?></td>
                 <td colspan="<?= $thumbnails ? 5 : 4 ?>">
                     <span class="<?= $missing ?>"><?= h($saying) ?></span>
@@ -237,7 +237,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                         <?php endif; ?>
                     <?php elseif (!$generatedByUs) : ?>
                         <?php
-                        // Nothing has come back for this round yet, and what says so is the very
+                        // Nothing has come back for this proposal yet, and what says so is the very
                         // place to offer the filing of it - wherever the table is being read.
                         ?>
                         <?= $this->AuthLink->link(__('Add Files'), [
@@ -248,13 +248,13 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                         ]) ?>
                     <?php endif; ?>
                 </td>
-                <?= $showProposal ? $joined($spans['round'][$index], $index, $papersLink, 'actions') : '' ?>
+                <?= $showProposal ? $joined($spans['proposal'][$index], $index, $papersLink, 'actions') : '' ?>
             </tr>
                 <?php continue; ?>
             <?php endif; ?>
             <tr<?= $spans[$leftmost][$index]['start'] === $index ? '' : ' class="continued"' ?>>
                 <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
-                <?= $showProposal ? $joined($spans['round'][$index], $index, $roundCell) : '' ?>
+                <?= $showProposal ? $joined($spans['proposal'][$index], $index, $proposalCell) : '' ?>
                 <?= $joined($spans['document'][$index], $index, h($row['document'])) ?>
                 <?= $joined($page, $index, $variantCell) ?>
                 <?php if ($thumbnails) : ?>
@@ -304,8 +304,8 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                                 'action' => 'generate',
                                 '_ext' => 'pdf',
                                 '?' => [
-                                    'proposal_id' => $round['id'],
-                                    'agenda' => $round['controller'],
+                                    'proposal_id' => $proposal['id'],
+                                    'agenda' => $proposal['controller'],
                                     'document_type' => $row['document_type'],
                                     'signed' => '1',
                                 ],
@@ -358,7 +358,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
                         ) ?>
                     <?php endif; ?>
                 </td>
-                <?= $showProposal ? $joined($spans['round'][$index], $index, $papersLink, 'actions') : '' ?>
+                <?= $showProposal ? $joined($spans['proposal'][$index], $index, $papersLink, 'actions') : '' ?>
             </tr>
         <?php endforeach; ?>
         </tbody>

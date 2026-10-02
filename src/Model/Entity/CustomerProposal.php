@@ -12,9 +12,9 @@ use RuntimeException;
 /**
  * CustomerProposal Entity
  *
- * One round of a paper that concerns the customer rather than any one contract.
+ * A paper put to the customer themselves rather than to any one of their contracts.
  *
- * It holds the round and nothing else: what it was for, the day it speaks about, and the days it
+ * It holds the proposal and nothing else: what it was for, the day it speaks about, and the days it
  * went out and came back. What the paper said is the paper, frozen in the store the moment it was
  * drawn - there is no snapshot beside it, because a second copy of the same truth is only somewhere
  * else for it to be wrong.
@@ -87,19 +87,19 @@ class CustomerProposal extends AppEntity
     }
 
     /**
-     * Where the round stands, in one word for a listing to print.
+     * Where the proposal stands, in one word for a listing to print.
      *
      * Its own road ends at the signature - nothing of the customer's own is written anywhere
      * afterwards. What it holds goes further, though: the papers of a contract are written into
-     * the live records one contract at a time, and until that is done the round is not finished
-     * even though it is settled. So after the signature the round says what is left to do.
+     * the live records one contract at a time, and until that is done the proposal is not finished
+     * even though it is settled. So after the signature the proposal says what is left to do.
      *
      * Settled and finished part company here on purpose. What is settled decides whether more
-     * papers may join the round and whether it may still be changed, and the signature is the
+     * papers may join the proposal and whether it may still be changed, and the signature is the
      * right line for both.
      *
      * @return string
-     * @throws \RuntimeException When what the round holds was not loaded.
+     * @throws \RuntimeException When what the proposal holds was not loaded.
      */
     public function getState(): string
     {
@@ -123,13 +123,13 @@ class CustomerProposal extends AppEntity
     }
 
     /**
-     * Whether anything in the round may still be applied to the live records.
+     * Whether anything in the proposal may still be applied to the live records.
      *
      * Asked before the signature too, since what applying the changes would do may be looked at early.
-     * A round given up on has nothing to apply, whatever its papers still say.
+     * A proposal given up on has nothing to apply, whatever its papers still say.
      *
      * @return bool
-     * @throws \RuntimeException When what the round holds was not loaded.
+     * @throws \RuntimeException When what the proposal holds was not loaded.
      */
     public function hasChangesToApply(): bool
     {
@@ -147,14 +147,14 @@ class CustomerProposal extends AppEntity
     }
 
     /**
-     * Whether there is nothing left to do about the round at all.
+     * Whether there is nothing left to do about the proposal at all.
      *
      * Not the same as settled, which is the signature: the papers of a contract are written into
-     * the live records afterwards, one contract at a time, and a round is not done with while any
+     * the live records afterwards, one contract at a time, and a proposal is not done with while any
      * of that is still owed. This is what a listing greys a row out on.
      *
      * @return bool
-     * @throws \RuntimeException When what the round holds was not loaded.
+     * @throws \RuntimeException When what the proposal holds was not loaded.
      */
     public function hasBeenDealtWith(): bool
     {
@@ -172,7 +172,7 @@ class CustomerProposal extends AppEntity
     }
 
     /**
-     * What the round holds, asked rather than assumed.
+     * What the proposal holds, asked rather than assumed.
      *
      * @return array<\App\Model\Entity\ContractProposal>
      * @throws \RuntimeException When they were not loaded.
@@ -187,10 +187,10 @@ class CustomerProposal extends AppEntity
     }
 
     /**
-     * The fields the round keeps.
+     * The fields the proposal keeps.
      *
      * Nothing stands behind a paper put to a customer waiting to be written, so it never carries
-     * anything over. A round that asks for nothing of the customer's own - one that is there to
+     * anything over. A proposal that asks for nothing of the customer's own - one that is there to
      * hold the papers of their contracts together - travels the same road all the same.
      *
      * @return \App\Proposals\Settlement

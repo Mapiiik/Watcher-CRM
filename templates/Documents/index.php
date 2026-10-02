@@ -7,7 +7,7 @@
  * and the way on to the papers is one link away on every row.
  *
  * @var \App\View\AppView $this
- * @var array<array<string, mixed>> $rounds
+ * @var array<array<string, mixed>> $proposals
  * @var \Cake\Datasource\Paging\PaginatedInterface<array-key, mixed> $paginated
  * @var bool $show_settled
  * @var bool $showCustomer
@@ -40,6 +40,6 @@
     ) ?>
     <?= $this->heading(__('Documents')) ?>
     <p><?= __('All proposals and their state. Each one links to its documents.') ?></p>
-    <?= $this->element('Documents/rounds', ['working' => false, 'paged' => true]) ?>
+    <?= $this->element('Documents/proposals', ['working' => false, 'paged' => true]) ?>
     <?= $this->element('common/paginator') ?>
 </div>

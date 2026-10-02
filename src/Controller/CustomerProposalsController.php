@@ -14,7 +14,7 @@ use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalStep;
 use App\Model\Table\BillingsTable;
-use App\Proposals\RoundOfPapers;
+use App\Proposals\WholeProposal;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\Http\Response;
 use Cake\I18n\Date;
@@ -23,7 +23,7 @@ use Exception;
 /**
  * CustomerProposals Controller
  *
- * A round of papers put to the customer themselves rather than to any one contract. It travels the
+ * A proposal put to the customer themselves rather than to any one contract. It travels the
  * road a contract's proposal does - drawn up, sent, signed - and stops there, because nothing
  * stands behind it waiting to be written into the live records.
  *
@@ -192,7 +192,7 @@ class CustomerProposalsController extends AppController
 
             $proposal = $this->CustomerProposals->patchEntity($proposal, $said);
 
-            if ($this->recordAcrossTheRound($proposal, ProposalStep::Delivered)) {
+            if ($this->recordAcrossTheProposal($proposal, ProposalStep::Delivered)) {
                 $this->Flash->success(__('The proposal has been recorded as sent.'));
 
                 return $this->onFromTheStep((string)$proposal->id);
@@ -204,7 +204,7 @@ class CustomerProposalsController extends AppController
 
         $this->set('customerProposal', $proposal);
         $this->set('deliveryTypes', DocumentsDeliveryType::options());
-        $this->set('alsoInTheRound', (new RoundOfPapers())->whateverTheStepReaches(
+        $this->set('alsoInTheProposal', (new WholeProposal())->whateverTheStepReaches(
             $proposal->id,
             ProposalStep::Delivered,
         ));
@@ -215,7 +215,7 @@ class CustomerProposalsController extends AppController
     /**
      * Records the day the customer signed.
      *
-     * This is where a round ends: nothing stands behind it waiting to be applied.
+     * This is where a proposal ends: nothing stands behind it waiting to be applied.
      *
      * @param string|null $id Customer proposal id.
      * @return \Cake\Http\Response|null Redirects when recorded, renders the form otherwise.
@@ -235,7 +235,7 @@ class CustomerProposalsController extends AppController
             $said = ['conclusion_date' => $this->request->getData('conclusion_date')];
             $proposal = $this->CustomerProposals->patchEntity($proposal, $said);
 
-            if ($this->recordAcrossTheRound($proposal, ProposalStep::Signed)) {
+            if ($this->recordAcrossTheProposal($proposal, ProposalStep::Signed)) {
                 $this->Flash->success(__('The signature has been recorded.'));
 
                 return $this->onFromTheStep((string)$proposal->id);
@@ -246,7 +246,7 @@ class CustomerProposalsController extends AppController
         }
 
         $this->set('customerProposal', $proposal);
-        $this->set('alsoInTheRound', (new RoundOfPapers())->whateverTheStepReaches(
+        $this->set('alsoInTheProposal', (new WholeProposal())->whateverTheStepReaches(
             $proposal->id,
             ProposalStep::Signed,
         ));
@@ -259,7 +259,7 @@ class CustomerProposalsController extends AppController
      *
      * A step is one errand run from the middle of a table, so the table stays where it was and the
      * errand opens a window of its own. Afterwards that window has nothing left to show, and one
-     * left standing is one the reader has to close by hand. The round is shown first all the same:
+     * left standing is one the reader has to close by hand. The proposal is shown first all the same:
      * what they have just said, or why there was nothing to say, before the window goes.
      *
      * Taken by every way out of a step, not only the ones that wrote something - papers already
@@ -269,7 +269,7 @@ class CustomerProposalsController extends AppController
      * The window says of itself that it is one, and the URL filter carries that along, so nothing
      * has to be threaded through the form: it is enough to ask the request.
      *
-     * @param string $id Which round.
+     * @param string $id Which proposal.
      * @return \Cake\Http\Response|null
      */
     private function onFromTheStep(string $id): ?Response
@@ -284,7 +284,7 @@ class CustomerProposalsController extends AppController
     }
 
     /**
-     * Writes the step onto the round, which is what everything in it reads.
+     * Writes the step onto the proposal, which is what everything in it reads.
      *
      * One place rather than one place per set of papers: the envelope went out in one piece and
      * came back in one, so the day is the envelope's and the papers inside it answer with it.
@@ -293,11 +293,11 @@ class CustomerProposalsController extends AppController
      * to be ticked by hand, so a customer could read as having refused while their signed consent
      * sat on file - this is the same thing the contract's side does when papers are applied.
      *
-     * @param \App\Model\Entity\CustomerProposal $proposal The round.
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
      * @param \App\Model\Enum\ProposalStep $step Which step is being taken.
      * @return bool
      */
-    private function recordAcrossTheRound(
+    private function recordAcrossTheProposal(
         CustomerProposal $proposal,
         ProposalStep $step,
     ): bool {
@@ -360,7 +360,7 @@ class CustomerProposalsController extends AppController
         $parts = [];
         $anythingGone = false;
 
-        foreach ((new RoundOfPapers())->partsOf((string)$proposal->id) as $papers) {
+        foreach ((new WholeProposal())->partsOf((string)$proposal->id) as $papers) {
             if (!$papers->isDueFor(ProposalStep::Applied)) {
                 continue;
             }
@@ -512,7 +512,7 @@ class CustomerProposalsController extends AppController
         $papers = $this->CustomerProposals->ContractProposals;
         $said = [];
 
-        foreach ((new RoundOfPapers())->partsOf((string)$proposal->id) as $part) {
+        foreach ((new WholeProposal())->partsOf((string)$proposal->id) as $part) {
             $changes = $part->proposedChanges();
             $snapshot = $part->stateOfThings();
 
@@ -599,7 +599,7 @@ class CustomerProposalsController extends AppController
 
         $by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
-        if ($this->CustomerProposals->giveUpOnTheRound($proposal, is_string($by) ? $by : null)) {
+        if ($this->CustomerProposals->giveUpOnTheProposal($proposal, is_string($by) ? $by : null)) {
             $this->Flash->success(__('The proposal has been revoked.'));
         } else {
             $this->flashValidationErrors($proposal->getErrors());

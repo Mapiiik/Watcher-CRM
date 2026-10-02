@@ -52,6 +52,6 @@ class ProposalsInProgressCell extends Cell
             fn(CustomerProposal $proposal): bool => !$proposal->hasBeenDealtWith(),
         );
 
-        $this->set('rounds', (new ProposalRows())->of($inProgress));
+        $this->set('proposals', (new ProposalRows())->of($inProgress));
     }
 }

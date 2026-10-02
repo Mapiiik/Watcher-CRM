@@ -1,8 +1,8 @@
 <?php
 /**
- * A round of papers put to the customer, and how far it has got.
+ * A proposal put to the customer, and how far it has got.
  *
- * Shared by the checks whose finding is a round rather than the customer: showing all three days
+ * Shared by the checks whose finding is a proposal rather than the customer: showing all three days
  * at once is what makes the missing step readable without saying so.
  *
  * @var \App\View\AppView $this

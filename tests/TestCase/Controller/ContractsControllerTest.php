@@ -137,7 +137,7 @@ class ContractsControllerTest extends TestCase
 
     /**
      * The card lists the contract's versions, and each says when its papers last went out - which
-     * the version reads off the proposals drawn on it, and each of those off the round it went
+     * the version reads off the proposals drawn on it, and each of those off the proposal it went
      * out in. Two associations deep, so a card loaded without the second one renders nothing.
      *
      * @return void
@@ -146,11 +146,11 @@ class ContractsControllerTest extends TestCase
     public function testTheCardSaysWhenTheVersionsPapersWentOut(): void
     {
         $envelopes = $this->getTableLocator()->get('CustomerProposals');
-        $round = $this->getTableLocator()->get('ContractProposals')
+        $proposal = $this->getTableLocator()->get('ContractProposals')
             ->get(self::PROPOSAL_ID)->customer_proposal_id;
 
         $envelopes->saveOrFail(
-            $envelopes->patchEntity($envelopes->get($round), [
+            $envelopes->patchEntity($envelopes->get($proposal), [
                 'sent_date' => '2026-10-01',
                 'delivery_type' => DocumentsDeliveryType::Post,
             ]),
@@ -793,7 +793,7 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
-     * The workbench renders, and it shows the rounds drawn up on the contract - which is what a
+     * The workbench renders, and it shows the proposals drawn up on the contract - which is what a
      * paper is printed from and what a signed scan is filed against.
      *
      * @return void
@@ -811,7 +811,7 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
-     * A round lists the papers it owes and no others, so what is missing is named rather than
+     * A proposal lists the papers it owes and no others, so what is missing is named rather than
      * chosen from a list of everything that exists.
      *
      * @return void

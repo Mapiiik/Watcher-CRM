@@ -115,16 +115,16 @@ class ServicesOverviewTest extends TestCase
      */
     public function testTheListIsDrawnOnceAndKept(): void
     {
-        $round = $this->round();
+        $proposal = $this->proposal();
 
-        $first = $this->print($round);
-        $second = $this->print($round);
+        $first = $this->print($proposal);
+        $second = $this->print($proposal);
 
         $this->assertStringStartsWith('%PDF', $first);
         $this->assertSame($first, $second);
         $this->assertSame(1, $this->fetchTable('Files.FileLinks')->find()->where([
             'model' => 'CustomerProposals',
-            'foreign_key' => $round,
+            'foreign_key' => $proposal,
             'document_type' => CustomerDocumentType::ServicesOverview->value,
         ])->count());
     }
@@ -136,9 +136,9 @@ class ServicesOverviewTest extends TestCase
      */
     public function testTheWorkbenchOffersTheList(): void
     {
-        $round = $this->round();
+        $proposal = $this->proposal();
 
-        $this->get(sprintf('/customers/%s/documents/manage?proposal_id=%s', self::CUSTOMER_ID, $round));
+        $this->get(sprintf('/customers/%s/documents/manage?proposal_id=%s', self::CUSTOMER_ID, $proposal));
 
         $this->assertResponseOk();
         $this->assertResponseContains(h(CustomerDocumentType::ServicesOverview->label()));
@@ -155,7 +155,7 @@ class ServicesOverviewTest extends TestCase
     public function testACustomerWithoutContractsHasNothingToList(): void
     {
         $problems = (new DrawnPaper())->problemsWith(
-            $this->roundEntity(self::CUSTOMER_WITHOUT_CONTRACTS),
+            $this->proposalEntity(self::CUSTOMER_WITHOUT_CONTRACTS),
             CustomerDocumentType::ServicesOverview->value,
         );
 
@@ -176,7 +176,7 @@ class ServicesOverviewTest extends TestCase
         );
 
         $problems = (new DrawnPaper())->problemsWith(
-            $this->roundEntity(self::CUSTOMER_ID),
+            $this->proposalEntity(self::CUSTOMER_ID),
             CustomerDocumentType::ServicesOverview->value,
         );
 
@@ -191,10 +191,10 @@ class ServicesOverviewTest extends TestCase
      */
     public function testTheListIsDoneWithOnceSent(): void
     {
-        $rounds = $this->fetchTable('CustomerProposals');
-        $id = $this->round();
+        $proposals = $this->fetchTable('CustomerProposals');
+        $id = $this->proposal();
 
-        $this->assertFalse($rounds->get($id, contain: ['ContractProposals'])->hasBeenDealtWith());
+        $this->assertFalse($proposals->get($id, contain: ['ContractProposals'])->hasBeenDealtWith());
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
@@ -204,15 +204,15 @@ class ServicesOverviewTest extends TestCase
         ]);
         $this->assertRedirect();
 
-        $round = $rounds->get($id, contain: ['ContractProposals']);
-        $this->assertTrue($round->hasBeenDealtWith());
-        $this->assertEquals($round->sent_date, $round->conclusion_date);
-        $this->assertSame(__('Delivered'), $round->getState());
+        $proposal = $proposals->get($id, contain: ['ContractProposals']);
+        $this->assertTrue($proposal->hasBeenDealtWith());
+        $this->assertEquals($proposal->sent_date, $proposal->conclusion_date);
+        $this->assertSame(__('Delivered'), $proposal->getState());
 
         // Nobody signs it, so no signed copy of it is missing.
         $this->assertNotContains(
             $id,
-            (new UnfiledCustomerProposalCheck($rounds, new CheckScope(false)))->find()->all()->extract('id')->toList(),
+            (new UnfiledCustomerProposalCheck($proposals, new CheckScope(false)))->find()->all()->extract('id')->toList(),
         );
     }
 
@@ -227,7 +227,7 @@ class ServicesOverviewTest extends TestCase
         $proposals = $this->fetchTable('ContractProposals');
         $proposal = $proposals->patchEntity(
             $proposals->get(self::CONTRACT_PROPOSAL_ID),
-            ['customer_proposal_id' => $this->round()],
+            ['customer_proposal_id' => $this->proposal()],
         );
 
         $this->assertFalse($proposals->save($proposal));
@@ -241,14 +241,14 @@ class ServicesOverviewTest extends TestCase
      */
     public function testAProposalHoldingContractProposalsDoesNotBecomeAList(): void
     {
-        $rounds = $this->fetchTable('CustomerProposals');
-        $round = $rounds->patchEntity(
-            $rounds->get(self::ROUND_ID),
+        $proposals = $this->fetchTable('CustomerProposals');
+        $proposal = $proposals->patchEntity(
+            $proposals->get(self::ROUND_ID),
             ['purpose' => CustomerProposalPurpose::ServicesOverview->value],
         );
 
-        $this->assertFalse($rounds->save($round));
-        $this->assertArrayHasKey('purposeFitsItsContractProposals', $round->getError('purpose'));
+        $this->assertFalse($proposals->save($proposal));
+        $this->assertArrayHasKey('purposeFitsItsContractProposals', $proposal->getError('purpose'));
     }
 
     /**
@@ -267,15 +267,15 @@ class ServicesOverviewTest extends TestCase
     /**
      * Asks for the list the way the workbench does.
      *
-     * @param string $round Which customer proposal.
+     * @param string $proposal Which customer proposal.
      * @return string The paper.
      */
-    private function print(string $round): string
+    private function print(string $proposal): string
     {
         $this->get(sprintf(
             '/customers/%s/documents/generate.pdf?agenda=CustomerProposals&proposal_id=%s&document_type=%s',
             self::CUSTOMER_ID,
-            $round,
+            $proposal,
             CustomerDocumentType::ServicesOverview->value,
         ));
 
@@ -289,11 +289,11 @@ class ServicesOverviewTest extends TestCase
      *
      * @return string Its id.
      */
-    private function round(): string
+    private function proposal(): string
     {
-        $rounds = $this->fetchTable('CustomerProposals');
+        $proposals = $this->fetchTable('CustomerProposals');
 
-        return (string)$rounds->saveOrFail($this->roundEntity(self::CUSTOMER_ID))->get('id');
+        return (string)$proposals->saveOrFail($this->proposalEntity(self::CUSTOMER_ID))->get('id');
     }
 
     /**
@@ -302,16 +302,16 @@ class ServicesOverviewTest extends TestCase
      * @param string $customer_id Whose.
      * @return \App\Model\Entity\CustomerProposal
      */
-    private function roundEntity(string $customer_id): CustomerProposal
+    private function proposalEntity(string $customer_id): CustomerProposal
     {
-        /** @var \App\Model\Entity\CustomerProposal $round */
-        $round = $this->fetchTable('CustomerProposals')->newEntity([
+        /** @var \App\Model\Entity\CustomerProposal $proposal */
+        $proposal = $this->fetchTable('CustomerProposals')->newEntity([
             'customer_id' => $customer_id,
             'purpose' => CustomerProposalPurpose::ServicesOverview->value,
             'effective_from' => '2026-09-19',
         ]);
 
-        return $round;
+        return $proposal;
     }
 
     /**

@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerProposal $customerProposal
- * @var array<\App\Model\Entity\ContractProposal> $alsoInTheRound
+ * @var array<\App\Model\Entity\ContractProposal> $alsoInTheProposal
  */
 
 use Cake\I18n\Date;
@@ -62,7 +62,7 @@ use Cake\I18n\Date;
                     ?></p>
             </fieldset>
             <?=
-                $this->element('common/also_in_the_round', [
+                $this->element('common/also_in_the_proposal', [
                     'saying' => __('The same date is recorded for these as well, because they'
                         . ' came back together.'),
                 ])

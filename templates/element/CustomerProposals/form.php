@@ -1,6 +1,6 @@
 <?php
 /**
- * The fields of a round, shared by adding one and changing one.
+ * The fields of a proposal, shared by adding one and changing one.
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\CustomerProposal $customerProposal
@@ -13,7 +13,7 @@
         ? __('Add Customer Proposal')
         : __('Edit Customer Proposal')) ?>
     <?php
-    // Which customer is settled by the page it was opened from, and a round never moves to
+    // Which customer is settled by the page it was opened from, and a proposal never moves to
     // somebody else - the papers went to one person.
     if ($customerProposal->isNew() && $customerProposal->customer_id === null) {
         echo $this->Form->control('customer_id', [
@@ -26,7 +26,7 @@
         echo $this->Form->hidden('customer_id');
     }
 
-    // A round may be for nothing of the customer's own and only hold its contracts' papers, so
+    // A proposal may be for nothing of the customer's own and only hold its contracts' papers, so
     // this may be left alone.
     echo $this->Form->control('purpose', [
         'options' => $purposes,

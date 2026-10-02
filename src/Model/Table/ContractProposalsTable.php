@@ -525,8 +525,8 @@ class ContractProposalsTable extends AppTable
         // An envelope is the customer's, so it cannot hold papers of somebody else's contract.
         $rules->add(
             function (ContractProposal $entity): bool {
-                $round = $this->roundOf($entity->customer_proposal_id);
-                if ($round === null) {
+                $proposal = $this->proposalOf($entity->customer_proposal_id);
+                if ($proposal === null) {
                     return true;
                 }
 
@@ -534,9 +534,9 @@ class ContractProposalsTable extends AppTable
                     ->where(['Contracts.id' => $entity->contract_id])
                     ->first();
 
-                return $contract === null || $contract->customer_id === $round->customer_id;
+                return $contract === null || $contract->customer_id === $proposal->customer_id;
             },
-            'proposalBelongsToItsRound',
+            'proposalBelongsToItsCustomerProposal',
             [
                 'errorField' => 'customer_proposal_id',
                 'message' => __('That customer proposal belongs to a different customer.'),
@@ -554,7 +554,7 @@ class ContractProposalsTable extends AppTable
 
                 return $this->CustomerProposals->mayBeEdited($this->theEnvelopeOf($entity));
             },
-            'papersJoinAnOpenRound',
+            'papersJoinAnOpenProposal',
             [
                 'errorField' => 'customer_proposal_id',
                 'message' => __('That customer proposal has already been sent, so nothing more'
@@ -570,7 +570,7 @@ class ContractProposalsTable extends AppTable
                     return true;
                 }
 
-                return $this->roundOf($entity->customer_proposal_id)?->purpose?->comesBackSigned() ?? true;
+                return $this->proposalOf($entity->customer_proposal_id)?->purpose?->comesBackSigned() ?? true;
             },
             'papersJoinARoundThatIsSigned',
             [
@@ -937,23 +937,23 @@ class ContractProposalsTable extends AppTable
     }
 
     /**
-     * The round a proposal says it went out in, or null when it names none that exists.
+     * The proposal a proposal says it went out in, or null when it names none that exists.
      *
-     * @param string|null $id Which round.
+     * @param string|null $id Which proposal.
      * @return \App\Model\Entity\CustomerProposal|null
      */
-    private function roundOf(?string $id): ?CustomerProposal
+    private function proposalOf(?string $id): ?CustomerProposal
     {
         if ($id === null) {
             return null;
         }
 
-        /** @var \App\Model\Entity\CustomerProposal|null $round */
-        $round = $this->CustomerProposals->find()
+        /** @var \App\Model\Entity\CustomerProposal|null $proposal */
+        $proposal = $this->CustomerProposals->find()
             ->where(['CustomerProposals.id' => $id])
             ->first();
 
-        return $round;
+        return $proposal;
     }
 
     /**
