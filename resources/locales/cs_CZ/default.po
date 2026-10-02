@@ -64,7 +64,10 @@ msgid ""
 "Records taking effect before this day are left alone. What an import left "
 "behind is not work anybody is going to do, and mailing about it would be "
 "worse than leaving it."
-msgstr "Záznamy, které nabyly účinnosti před tímto dnem, se neřeší. Co po sobě zanechal import, stejně nikdo dohánět nebude, a obesílat kvůli tomu zákazníky by bylo horší než to nechat být."
+msgstr ""
+"Záznamy, které nabyly účinnosti před tímto dnem, se neřeší. Co po sobě "
+"zanechal import, stejně nikdo dohánět nebude, a obesílat kvůli tomu "
+"zákazníky by bylo horší než to nechat být."
 
 #: config/settings.php:170
 msgid "What the wait for a signature is counted from."
@@ -75,7 +78,9 @@ msgid ""
 "Whether a service that is charged for with no contract version behind it "
 "counts as unsigned as well. It is the ordinary case while the papers wait on "
 "a proposal."
-msgstr "Jestli se za nepodepsanou počítá i služba, která se fakturuje a nestojí za ní žádná verze smlouvy. Dokud papíry čekají na návrh, je to běžný případ."
+msgstr ""
+"Jestli se za nepodepsanou počítá i služba, která se fakturuje a nestojí za "
+"ní žádná verze smlouvy. Dokud papíry čekají na návrh, je to běžný případ."
 
 #: config/settings.php:184
 msgid ""
@@ -96,7 +101,9 @@ msgstr "Za kolik dní od počátku lhůty se zákazníkovi připomene."
 msgid ""
 "Days after what is running took effect before the customer is reminded. Both "
 "waits have to be up."
-msgstr "Za kolik dní od nabytí účinnosti toho, co běží, se zákazníkovi připomene. Musí uplynout obě lhůty."
+msgstr ""
+"Za kolik dní od nabytí účinnosti toho, co běží, se zákazníkovi připomene. "
+"Musí uplynout obě lhůty."
 
 #: config/settings.php:203
 msgid ""
@@ -126,13 +133,17 @@ msgstr "Za kolik dní od počátku lhůty se služba omezí."
 msgid ""
 "Days after what is running took effect before the service is cut off. Both "
 "waits have to be up."
-msgstr "Za kolik dní od nabytí účinnosti toho, co běží, se služba omezí. Musí uplynout obě lhůty."
+msgstr ""
+"Za kolik dní od nabytí účinnosti toho, co běží, se služba omezí. Musí "
+"uplynout obě lhůty."
 
 #: config/settings.php:320
 msgid ""
 "How far ahead a proposal nobody has sent is worth raising. It has to be sent "
 "before the day it speaks about."
-msgstr "Jak dlouho dopředu hlásit návrh, který nikdo neodeslal. Musí být odeslán dřív, než nastane den, o kterém mluví."
+msgstr ""
+"Jak dlouho dopředu hlásit návrh, který nikdo neodeslal. Musí být odeslán "
+"dřív, než nastane den, o kterém mluví."
 
 #: config/settings.php:327 config/settings.php:370
 msgid "Days after the proposal was sent before a missing signature is raised."
@@ -8506,7 +8517,8 @@ msgstr "Vyřízeno"
 msgid ""
 "The service is being provided and charged for, and no contract version "
 "covers today."
-msgstr "Služba se poskytuje a fakturuje a dnešní den nekryje žádná verze smlouvy."
+msgstr ""
+"Služba se poskytuje a fakturuje a dnešní den nekryje žádná verze smlouvy."
 
 #: templates/element/ContractChecks/service_without_contract_version.php:31
 msgid "Charged Since"

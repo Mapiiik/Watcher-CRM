@@ -1389,6 +1389,7 @@ msgid ""
 msgstr ""
 "Stránka {{page}} z {{pages}}, zobrazující {{current}} záznamů z celkového "
 "počtu {{count}}"
+
 #~ msgid "Invalid RADIUS session for {0}."
 #~ msgstr "Neplatná relace RADIUS pro {0}."
 
