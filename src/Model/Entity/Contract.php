@@ -72,6 +72,16 @@ use RuntimeException;
  * @property \App\Model\Entity\SoldEquipment[] $sold_equipments
  * @property \App\Model\Entity\Task[] $tasks
  * @property \App\Http\Answer<\App\NMS\Dto\AccessPoint|null> $access_point
+ *
+ * Of the query rather than of the record, and only where
+ * {@see \App\Contracts\Unsigned\UnsignedPaperwork::withServiceDeadlines()} has put them there: the
+ * days a service running on no contract version is written to about and cut off for, the day we
+ * began to charge for it, and the day the last version it had ran out. Fetched any other way, a
+ * contract does not carry them.
+ * @property \Cake\I18n\Date|null $notify_due
+ * @property \Cake\I18n\Date|null $block_due
+ * @property \Cake\I18n\Date|null $charged_since
+ * @property \Cake\I18n\Date|null $covered_until
  */
 class Contract extends AppEntity
 {

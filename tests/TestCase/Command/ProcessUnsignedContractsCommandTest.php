@@ -14,6 +14,7 @@ use App\Model\Table\PhonesTable;
 use Cake\Cache\Cache;
 use Cake\Chronos\Chronos;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -57,6 +58,11 @@ class ProcessUnsignedContractsCommandTest extends TestCase
     private const BLOCK_DUE_TODAY = '2026-05-12';
 
     /**
+     * A service to charge for, so that a contract can be running on something.
+     */
+    private const SERVICE_ID = 'eaacfeb3-1430-43ce-842e-497c5c95d953';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -72,6 +78,9 @@ class ProcessUnsignedContractsCommandTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.ConnectionProfiles',
+        'app.Services',
+        'app.Billings',
         'app.Emails',
         'app.Phones',
         'app.CustomerMessages',
@@ -128,6 +137,12 @@ class ProcessUnsignedContractsCommandTest extends TestCase
         Settings::set('core.contracts.paperwork.unsigned.blocking.after_anchor_days', 10);
         Settings::set('core.contracts.paperwork.unsigned.blocking.after_start_days', 20);
         Settings::set('core.contracts.paperwork.unsigned.notifications.enabled', true);
+
+        // Every case below is about a version that came back unsigned. The other kind - a service
+        // running on no version at all - is switched off here and switched on by the two cases that
+        // are about it, so that the fixture's billings do not quietly add a second contract to
+        // every letter.
+        Settings::set('core.contracts.paperwork.unsigned.thresholds.without_version', false);
     }
 
     /**
@@ -140,6 +155,50 @@ class ProcessUnsignedContractsCommandTest extends TestCase
         Cache::clear('default');
 
         parent::tearDown();
+    }
+
+    /**
+     * The case the proposals made ordinary: the billings are in so that the line runs the day it is
+     * installed, the papers wait on a proposal, and there is no version at all. The letter says
+     * since when the service has been provided, because there is no version to date instead.
+     *
+     * @return void
+     * @link \App\Command\ProcessUnsignedContractsCommand::execute()
+     */
+    public function testItWritesAboutAServiceThatHasNoVersionAtAll(): void
+    {
+        Settings::set('core.contracts.paperwork.unsigned.thresholds.without_version', true);
+        $this->emailFor(self::CUSTOMER_ID);
+        $this->chargedSince(self::DUE_TODAY);
+
+        $this->exec('process_unsigned_contracts');
+
+        $this->assertExitSuccess();
+        /** @var \App\Model\Entity\CustomerMessage $message */
+        $message = $this->CustomerMessages->find()->firstOrFail();
+        // Written the way the letter writes a day, not the way the fixture spells it.
+        $this->assertStringContainsString(
+            sprintf('%s %s', __('provided since'), new Date(self::DUE_TODAY)),
+            (string)$message->body,
+        );
+    }
+
+    /**
+     * Switched off, that kind goes unwatched and nobody hears about it - which is the way out for an
+     * installation that keeps its papers some other way, or for the first night after this arrived.
+     *
+     * @return void
+     * @link \App\Command\ProcessUnsignedContractsCommand::execute()
+     */
+    public function testAServiceWithNoVersionCanBeLeftOutAltogether(): void
+    {
+        $this->emailFor(self::CUSTOMER_ID);
+        $this->chargedSince(self::DUE_TODAY);
+
+        $this->exec('process_unsigned_contracts');
+
+        $this->assertExitSuccess();
+        $this->assertSame(0, $this->CustomerMessages->find()->count());
     }
 
     /**
@@ -478,6 +537,31 @@ class ProcessUnsignedContractsCommandTest extends TestCase
             'number_of_amendments' => 0,
             'obligations_settled' => false,
         ]));
+    }
+
+    /**
+     * Charge the contract for something from the given day on, and nothing before it.
+     *
+     * @param string $from The day the charging begins.
+     * @return void
+     */
+    private function chargedSince(string $from): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->deleteAll(['contract_id' => self::CONTRACT_ID]);
+
+        $billings->saveOrFail(
+            $billings->newEntity([
+                'customer_id' => self::CUSTOMER_ID,
+                'contract_id' => self::CONTRACT_ID,
+                'service_id' => self::SERVICE_ID,
+                'billing_from' => $from,
+                'billing_until' => null,
+                'quantity' => 1,
+                'separate_invoice' => false,
+            ]),
+            ['checkRules' => false],
+        );
     }
 
     /**

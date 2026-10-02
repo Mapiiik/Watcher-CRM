@@ -173,6 +173,12 @@ return [
                 // The only one of these that reaches the customer or the routers.
                 'unsigned' => [
                     'thresholds' => [
+                        'without_version' => new BoolType(
+                            default: true,
+                            hint: __('Whether a service that is charged for with no contract version'
+                                . ' behind it counts as unsigned as well. It is the ordinary case'
+                                . ' while the papers wait on a proposal.'),
+                        ),
                         'signature_expected_within_months' => NumberType::ofInt(
                             default: 3,
                             hint: __('How long before a contract version takes effect it may have been concluded.'),

@@ -111,6 +111,26 @@ enum UnsignedDeadlineAnchor: string implements EnumLabelInterface, SettingChoice
     }
 
     /**
+     * The same date, asked of the contract alone.
+     *
+     * For a service running on no version at all there is no version to hang the sending on: the
+     * proposal that would have made one carries no version id until somebody applies it, so the
+     * sending has to be looked for by contract instead. Everything else about the anchor is the
+     * same, and deliberately so - one office setting, one reading of what the wait is counted from.
+     *
+     * @return string
+     */
+    public function contractSql(): string
+    {
+        return match ($this) {
+            self::Installation => 'Contracts.installation_date',
+            self::Sending => self::LAST_SENDING_FOR_THE_CONTRACT,
+            self::SendingOrInstallation =>
+                'COALESCE(' . self::LAST_SENDING_FOR_THE_CONTRACT . ', Contracts.installation_date)',
+        };
+    }
+
+    /**
      * When the papers for this version last went out.
      *
      * The sending is recorded on the proposal the papers went out in, because that is what goes out:
@@ -124,6 +144,17 @@ enum UnsignedDeadlineAnchor: string implements EnumLabelInterface, SettingChoice
         FROM contract_proposals SentProposals
         JOIN customer_proposals SentCustomerProposals ON SentCustomerProposals.id = SentProposals.customer_proposal_id
         WHERE SentProposals.contract_version_id = ContractVersions.id
+        AND SentProposals.revoked IS NULL
+    )';
+
+    /**
+     * When the papers for this contract last went out, whichever version they were about.
+     */
+    private const LAST_SENDING_FOR_THE_CONTRACT = '(
+        SELECT MAX(SentCustomerProposals.sent_date)
+        FROM contract_proposals SentProposals
+        JOIN customer_proposals SentCustomerProposals ON SentCustomerProposals.id = SentProposals.customer_proposal_id
+        WHERE SentProposals.contract_id = Contracts.id
         AND SentProposals.revoked IS NULL
     )';
 }

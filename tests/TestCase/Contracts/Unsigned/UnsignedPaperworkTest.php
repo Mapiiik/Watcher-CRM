@@ -56,6 +56,11 @@ class UnsignedPaperworkTest extends TestCase
     private const AFTER_VALID_FROM = 20;
 
     /**
+     * A service to charge for, so that a contract can be running on something.
+     */
+    private const SERVICE_ID = 'eaacfeb3-1430-43ce-842e-497c5c95d953';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -71,6 +76,9 @@ class UnsignedPaperworkTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.ConnectionProfiles',
+        'app.Services',
+        'app.Billings',
         'plugin.Settings.Settings',
     ];
 
@@ -419,6 +427,210 @@ class UnsignedPaperworkTest extends TestCase
         $this->agreed(valid_from: '2026-07-01');
 
         $this->assertSame([], $this->dueAfter(0, 0));
+    }
+
+    /**
+     * The common case now that the papers wait on a proposal: the billings go in so that the line
+     * runs the day it is installed, and no version exists yet. Nothing used to watch this.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testAServiceWithNoVersionAtAllIsWatched(): void
+    {
+        $this->chargedSince('2026-05-01');
+
+        $this->assertContains(self::CONTRACT_ID, $this->servicesDue());
+        $this->assertArrayHasKey(
+            self::CONTRACT_ID,
+            $this->paperwork->contractIdsToBlock(new UnsignedWaits(), new Date(self::TODAY)),
+        );
+    }
+
+    /**
+     * One we have been charging for since before the day the office watches from is the backlog an
+     * import left, and writing to those customers would be worse than leaving them.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testAServiceChargedForSinceBeforeTheWatchedDayIsLeftAlone(): void
+    {
+        $this->chargedSince('2019-05-01');
+        Settings::set('core.contracts.paperwork.consider_from', '2026-01-01');
+
+        $this->assertNotContains(self::CONTRACT_ID, $this->servicesDue());
+    }
+
+    /**
+     * A version in force is the other source's business, so the two cannot report one contract
+     * twice however the question is asked.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testAContractWithAVersionInForceIsNotReportedTwice(): void
+    {
+        $this->chargedSince('2026-05-01');
+        $this->agreed('2026-05-01');
+
+        $this->assertNotContains(self::CONTRACT_ID, $this->servicesDue());
+        $this->assertNotSame([], $this->due());
+    }
+
+    /**
+     * A contract whose last version ran out while the service kept running is watched, which
+     * nothing else reports: the gap between versions is only looked for where a later one exists.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testAServiceWhoseLastVersionRanOutIsWatched(): void
+    {
+        $this->chargedSince('2026-05-01');
+        $this->agreed('2026-05-01', '2026-05-20', '2026-04-28');
+
+        $this->assertContains(self::CONTRACT_ID, $this->servicesDue());
+    }
+
+    /**
+     * A service type that keeps no versions never has one to sign, and chasing a paper that is
+     * never going to exist is worse than not chasing.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testAServiceTypeWithoutVersionsIsLeftAlone(): void
+    {
+        $this->chargedSince('2026-05-01');
+        $this->ContractVersions->Contracts->ServiceTypes->updateAll(
+            ['have_contract_versions' => false],
+            ['1 = 1'],
+        );
+
+        $this->assertSame([], $this->servicesDue());
+        $this->assertNotContains(self::CONTRACT_ID, $this->servicesDue());
+    }
+
+    /**
+     * Nor is one whose state says the service is not being charged for yet - a contract waiting for
+     * its installation has no service to chase a signature for.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testAContractThatIsNotBilledYetIsLeftAlone(): void
+    {
+        $this->chargedSince('2026-05-01');
+        $this->ContractVersions->Contracts->ContractStates->updateAll(['billed' => false], ['1 = 1']);
+
+        $this->assertSame([], $this->servicesDue());
+        $this->assertNotContains(self::CONTRACT_ID, $this->servicesDue());
+    }
+
+    /**
+     * With no installation date and no sending either, the wait is counted from the day we began to
+     * charge for the service. A version would drop out of the watch here; a service we are billing
+     * for has nowhere to drop out to.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findServicesDue()
+     */
+    public function testWithNoInstallationDateTheChargingDayCarriesTheWait(): void
+    {
+        $this->chargedSince('2026-05-01');
+        $this->contractInstalledOn(null);
+
+        // Ten days after the anchor, twenty after the charging began: 2026-05-21, which is past.
+        $this->assertContains(
+            self::CONTRACT_ID,
+            $this->servicesDue(self::AFTER_ANCHOR, self::AFTER_VALID_FROM),
+        );
+
+        // And a hundred days after it is not yet.
+        $this->assertNotContains(self::CONTRACT_ID, $this->servicesDue(100, 100));
+    }
+
+    /**
+     * Switched off, the second source goes quiet and the versions are watched as before.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::watchingServicesWithoutAVersion()
+     */
+    public function testServicesWithoutAVersionCanBeLeftOutAltogether(): void
+    {
+        $this->chargedSince('2026-05-01');
+        Settings::set('core.contracts.paperwork.unsigned.thresholds.without_version', false);
+
+        $this->assertArrayNotHasKey(
+            self::CONTRACT_ID,
+            $this->paperwork->contractIdsToBlock(new UnsignedWaits(), new Date(self::TODAY)),
+        );
+        $this->assertFalse($this->paperwork->watchingServicesWithoutAVersion());
+    }
+
+    /**
+     * The whole file is every running service with no version, whatever its dates - which is what
+     * putting the history straight needs.
+     *
+     * @return void
+     * @link \App\Contracts\Unsigned\UnsignedPaperwork::findEveryServiceWithoutAVersion()
+     */
+    public function testTheWholeFileIgnoresTheWatchedDay(): void
+    {
+        $this->chargedSince('2019-05-01');
+        Settings::set('core.contracts.paperwork.consider_from', '2026-01-01');
+
+        $found = $this->paperwork->findEveryServiceWithoutAVersion()->all()->extract('id')->toList();
+
+        $this->assertContains(self::CONTRACT_ID, $found);
+    }
+
+    /**
+     * The contracts a service with no version comes back as.
+     *
+     * @param int $after_anchor Days after the anchor date.
+     * @param int $after_charging Days after the charging began.
+     * @return list<string>
+     */
+    private function servicesDue(int $after_anchor = 0, int $after_charging = 0): array
+    {
+        /** @var list<string> $ids */
+        $ids = $this->paperwork
+            ->findServicesDue(new UnsignedWaits($after_anchor, $after_charging), new Date(self::TODAY))
+            ->all()
+            ->extract('id')
+            ->toList();
+
+        return $ids;
+    }
+
+    /**
+     * Charge the fixture contract for something from the given day on.
+     *
+     * @param string $from The day the charging begins.
+     * @return void
+     */
+    private function chargedSince(string $from): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+
+        // The day the charging began is what the wait is counted from, so the case says which day
+        // that is rather than inheriting whatever the fixture charges for.
+        $billings->deleteAll(['contract_id' => self::CONTRACT_ID]);
+
+        $billings->saveOrFail(
+            $billings->newEntity([
+                'customer_id' => self::CUSTOMER_ID,
+                'contract_id' => self::CONTRACT_ID,
+                'service_id' => self::SERVICE_ID,
+                'billing_from' => $from,
+                'billing_until' => null,
+                'quantity' => 1,
+                'separate_invoice' => false,
+            ]),
+            ['checkRules' => false],
+        );
     }
 
     /**

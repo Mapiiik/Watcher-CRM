@@ -76,6 +76,8 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
             'unfiled_contract_proposal' => fn() => new UnfiledContractProposalCheck($proposals, $this->scope),
             'unsigned_contract_version' =>
                 fn() => new UnsignedContractVersionCheck($versions, new UnsignedPaperwork($versions), $this->scope),
+            'service_without_contract_version' =>
+                fn() => new ServiceWithoutContractVersionCheck(new UnsignedPaperwork($versions), $this->scope),
             'missing_installation_date' => fn() => new MissingInstallationDateCheck($contracts, $this->scope),
             'missing_access_point' => fn() => new MissingAccessPointCheck($contracts, $this->scope),
             'impossible_contract_dates' => fn() => new ImpossibleContractDatesCheck($contracts, $this->scope),

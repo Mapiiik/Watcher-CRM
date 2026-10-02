@@ -101,9 +101,9 @@ class UnsignedContractsCard extends AbstractDashboardCard
 
         // Three nested sets, widest first. No wait at all is every version that has taken
         // effect and come back unsigned - a day past its start is already one of these.
-        $total = $this->paperwork->findDue(UnsignedWaits::none(), $today)->count();
-        $notified = $this->paperwork->findDue(UnsignedWaits::beforeNotifying(), $today)->count();
-        $blocking = $this->paperwork->findDue(UnsignedWaits::beforeBlocking(), $today)->count();
+        $total = $this->counted(UnsignedWaits::none(), $today);
+        $notified = $this->counted(UnsignedWaits::beforeNotifying(), $today);
+        $blocking = $this->counted(UnsignedWaits::beforeBlocking(), $today);
 
         // Cut into slices that do not overlap. The clamps are for the settings being set the
         // wrong way round - reminders due later than disconnection - which nests the sets the
@@ -112,7 +112,7 @@ class UnsignedContractsCard extends AbstractDashboardCard
             'waiting' => max(0, $total - $notified),
             'notifying' => max(0, $notified - $blocking),
             'blocking' => $blocking,
-            'url' => $this->overviewUrl('unsigned_contract_version'),
+            'url' => $this->overviewUrl('unsigned_contract_version', 'service_without_contract_version'),
             // The same wait seen from the papers rather than from the version, which is where
             // an amendment or an agreement to end a contract shows up at all - the version
             // behind those is signed, so the three counts above cannot see them. Asked of the
@@ -128,21 +128,43 @@ class UnsignedContractsCard extends AbstractDashboardCard
     }
 
     /**
-     * The contract problems overview, showing this finding and nothing else.
+     * How many services are unsigned at that wait, of both kinds.
+     *
+     * A version that came back unsigned and a service nobody has drawn a version for are the same
+     * thing to whoever reads this card - one line about to go quiet - so they are added up rather
+     * than shown apart.
+     *
+     * @param \App\Contracts\Unsigned\UnsignedWaits $waits How long they may go unsigned first.
+     * @param \Cake\I18n\Date $today The day being asked about.
+     * @return int
+     */
+    private function counted(UnsignedWaits $waits, Date $today): int
+    {
+        $unsigned = $this->paperwork->findDue($waits, $today)->count();
+
+        if (!$this->paperwork->watchingServicesWithoutAVersion()) {
+            return $unsigned;
+        }
+
+        return $unsigned + $this->paperwork->findServicesDue($waits, $today)->count();
+    }
+
+    /**
+     * The contract problems overview, showing these findings and nothing else.
      *
      * Every other check has to be named as off rather than left out: the overview reads a
      * check that is not in the query string as being at its default, so a link that only
      * switched one on would arrive with the rest switched on beside it and hold a different
      * number than the card that led there.
      *
-     * @param string $wanted The id of the check the overview is to show.
+     * @param string ...$wanted The ids of the checks the overview is to show.
      * @return array<string, mixed>
      */
-    private function overviewUrl(string $wanted): array
+    private function overviewUrl(string ...$wanted): array
     {
         $checks = [];
         foreach ((new ContractCheckRegistry())->all() as $check) {
-            $checks[$check->id()] = (int)($check->id() === $wanted);
+            $checks[$check->id()] = (int)in_array($check->id(), $wanted, true);
         }
 
         return [

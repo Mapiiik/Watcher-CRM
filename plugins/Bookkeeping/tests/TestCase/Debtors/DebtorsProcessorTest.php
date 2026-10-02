@@ -65,6 +65,9 @@ class DebtorsProcessorTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.ContractVersions',
+        'app.ConnectionProfiles',
+        'app.Services',
+        'app.Billings',
         'app.Emails',
         'app.Phones',
         'app.IpAddresses',
@@ -232,6 +235,30 @@ class DebtorsProcessorTest extends TestCase
     }
 
     /**
+     * A service running on no version at all is cut off beside them, which is the case the proposals
+     * made ordinary: the billings are in so that the line runs, and the papers wait on a proposal.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::blockingUpdate()
+     */
+    public function testAServiceWithNoVersionIsBlockedBesideTheDebtors(): void
+    {
+        $this->onlyLabelling();
+        $this->unsignedPaperwork();
+        Settings::set('core.contracts.paperwork.unsigned.thresholds.without_version', true);
+        $this->fetchTable('ContractVersions')->deleteAll(['1 = 1']);
+        $this->fetchTable('Bookkeeping.Invoices')->deleteAll([]);
+
+        (new DebtorsProcessor())->blockingUpdate();
+
+        /** @var list<\App\Model\Entity\CustomerLabel> $labels */
+        $labels = $this->fetchTable('CustomerLabels')->find()->all()->toList();
+
+        $this->assertCount(1, $labels);
+        $this->assertSame('unsigned contract', $labels[0]->note);
+    }
+
+    /**
      * Switched off, the pass is the debtor pass it always was.
      *
      * @return void
@@ -319,6 +346,8 @@ class DebtorsProcessorTest extends TestCase
         Settings::set('core.contracts.paperwork.unsigned.blocking.after_anchor_days', 10);
         Settings::set('core.contracts.paperwork.unsigned.blocking.after_start_days', 20);
         Settings::set('core.contracts.paperwork.consider_from', '2020-01-01');
+        // The other kind is its own case below, so it is left out of the ones about a version.
+        Settings::set('core.contracts.paperwork.unsigned.thresholds.without_version', false);
 
         $versions = $this->fetchTable('ContractVersions');
         $versions->saveOrFail($versions->newEntity([

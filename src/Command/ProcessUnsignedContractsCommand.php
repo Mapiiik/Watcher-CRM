@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Contracts\Unsigned\UnsignedPaperwork;
+use App\Contracts\Unsigned\UnsignedService;
 use App\Contracts\Unsigned\UnsignedWaits;
-use App\Model\Entity\ContractVersion;
 use App\Model\Entity\Customer;
 use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageBodyFormat;
@@ -21,7 +21,6 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
 use Cake\Log\Log;
-use Cake\ORM\Query\SelectQuery;
 use Override;
 use Settings\Utility\Settings;
 use Throwable;
@@ -141,8 +140,8 @@ class ProcessUnsignedContractsCommand extends Command
             }
 
             foreach ($due as $by_kind) {
-                foreach ($by_kind as $kind => $versions) {
-                    $this->writeToCustomer($kind, $versions, $args, $io);
+                foreach ($by_kind as $kind => $services) {
+                    $this->writeToCustomer($kind, $services, $args, $io);
                 }
             }
 
@@ -167,17 +166,17 @@ class ProcessUnsignedContractsCommand extends Command
     }
 
     /**
-     * The versions to write about today, under the customer who holds them and the letter
+     * The services to write about today, under the customer who holds them and the letter
      * they are due.
      *
-     * One customer with three unsigned versions is one letter listing three, not three
-     * letters. Which is also why the versions are collected before anything is written.
+     * One customer with three unsigned services is one letter listing three, not three
+     * letters. Which is also why they are collected before anything is written.
      *
      * A version that has reached the day of its disconnection today is left out of the
      * asking letter, whatever the reminder days would otherwise say: the two would be
      * contradicting each other in the same post.
      *
-     * @return array<string, array<string, list<\App\Model\Entity\ContractVersion>>>
+     * @return array<string, array<string, list<\App\Contracts\Unsigned\UnsignedService>>>
      */
     private function dueToday(): array
     {
@@ -188,23 +187,23 @@ class ProcessUnsignedContractsCommand extends Command
 
         $due = [];
 
-        foreach (['block' => $blocking, 'notify' => $notifying] as $kind => $versions) {
+        foreach (['block' => $blocking, 'notify' => $notifying] as $kind => $services) {
             if (!$this->isTypeEnabled($kind)) {
                 continue;
             }
 
-            foreach ($versions as $id => $version) {
-                if ($kind === 'notify' && isset($blocking[$id])) {
+            foreach ($services as $key => $service) {
+                if ($kind === 'notify' && isset($blocking[$key])) {
                     continue;
                 }
 
-                $customer_id = $version->contract?->customer?->id;
+                $customer_id = $service->customer()?->id;
 
                 if ($customer_id === null) {
                     continue;
                 }
 
-                $due[$customer_id][$kind][] = $version;
+                $due[$customer_id][$kind][] = $service;
             }
         }
 
@@ -212,12 +211,13 @@ class ProcessUnsignedContractsCommand extends Command
     }
 
     /**
-     * Every version whose wait of that length ran out on one of the days written about today.
+     * Every unsigned service whose wait of that length ran out on one of the days written about
+     * today, of both kinds - a version that came back unsigned, and a service no version covers.
      *
      * @param \App\Contracts\Unsigned\UnsignedWaits $waits How long the service may go unsigned first.
      * @param \Cake\I18n\Date $today The day the run is happening on.
-     * @return array<string, \App\Model\Entity\ContractVersion> Keyed by version, so that the
-     *   named days and the daily sweep cannot hand back the same one twice.
+     * @return array<string, \App\Contracts\Unsigned\UnsignedService> Keyed, so that the named days
+     *   and the daily sweep cannot hand back the same one twice.
      */
     private function gather(UnsignedWaits $waits, Date $today): array
     {
@@ -229,52 +229,29 @@ class ProcessUnsignedContractsCommand extends Command
             [0],
         ));
 
-        $queries = [];
+        $found = [];
 
-        // The named days, each asked for as the one day a version's wait ran out on. Asking
-        // for the day rather than for everything since it is what stops one letter from
-        // going out again on every day that follows, without anything having to be kept.
+        // The named days, each asked for as the one day a wait ran out on. Asking for the day
+        // rather than for everything since it is what stops one letter from going out again on
+        // every day that follows, without anything having to be kept.
         foreach ($reminder_days as $days) {
-            $queries[] = $paperwork->findBecomingDueOn($waits, $today->subDays(max(0, $days)));
+            foreach ($paperwork->becomingDueOn($waits, $today->subDays(max(0, $days))) as $service) {
+                $found[$service->key()] = $service;
+            }
         }
 
         // And, where the office would rather keep asking than let it go quiet, everything
         // that ran out before the last of those days. The boundary is strict, so this cannot
-        // pick up a version one of the named days has already taken.
+        // pick up a service one of the named days has already taken.
         if ((bool)Settings::get(self::SETTINGS_PATH . '.notifications.daily_after', false)) {
-            $queries[] = $paperwork->findDueBefore(
-                $waits,
-                $today->subDays(max($reminder_days === [] ? [0] : $reminder_days)),
-            );
-        }
+            $since = $today->subDays(max($reminder_days === [] ? [0] : $reminder_days));
 
-        $found = [];
-
-        foreach ($queries as $query) {
-            /** @var \App\Model\Entity\ContractVersion $version */
-            foreach ($this->withContacts($query)->all() as $version) {
-                $found[$version->id] = $version;
+            foreach ($paperwork->dueBefore($waits, $since) as $service) {
+                $found[$service->key()] = $service;
             }
         }
 
         return $found;
-    }
-
-    /**
-     * The people to write to, and what to call the contract in the letter.
-     *
-     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query to widen.
-     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
-     */
-    private function withContacts(SelectQuery $query): SelectQuery
-    {
-        return $query->contain([
-            'Contracts' => [
-                'Customers' => ['Emails', 'Phones'],
-                'ServiceTypes',
-                'InstallationAddresses',
-            ],
-        ]);
     }
 
     /**
@@ -285,14 +262,14 @@ class ProcessUnsignedContractsCommand extends Command
      * same thing twice.
      *
      * @param string $kind Which letter is due ("notify", "block").
-     * @param list<\App\Model\Entity\ContractVersion> $versions What to write about.
+     * @param list<\App\Contracts\Unsigned\UnsignedService> $services What to write about.
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io.
      * @return void
      */
-    private function writeToCustomer(string $kind, array $versions, Arguments $args, ConsoleIo $io): void
+    private function writeToCustomer(string $kind, array $services, Arguments $args, ConsoleIo $io): void
     {
-        $customer = $versions[0]->contract?->customer;
+        $customer = $services[0]->customer();
 
         if ($customer === null) {
             return;
@@ -302,7 +279,7 @@ class ProcessUnsignedContractsCommand extends Command
         $phones_available = count($customer->phones) > 0;
 
         if ($emails_available && !$args->getOption('skip_emails') && $this->isEnabled('email')) {
-            $message = $this->generateEmail($kind, $customer, $versions);
+            $message = $this->generateEmail($kind, $customer, $services);
             $io->info(__(
                 '{0} email has been generated for customer {1}, recipients: {2}',
                 $kind,
@@ -314,7 +291,7 @@ class ProcessUnsignedContractsCommand extends Command
         }
 
         if (!$emails_available && $phones_available && !$args->getOption('skip_sms') && $this->isEnabled('sms')) {
-            $message = $this->generateSms($kind, $customer, $versions);
+            $message = $this->generateSms($kind, $customer, $services);
             $io->info(__(
                 '{0} SMS has been generated for customer {1}, recipients: {2}',
                 $kind,
@@ -367,14 +344,14 @@ class ProcessUnsignedContractsCommand extends Command
     /**
      * @param string $kind Which letter is due ("notify", "block").
      * @param \App\Model\Entity\Customer $customer Who to write to.
-     * @param list<\App\Model\Entity\ContractVersion> $versions What to write about.
+     * @param list<\App\Contracts\Unsigned\UnsignedService> $services What to write about.
      * @return \App\Model\Entity\CustomerMessage
      */
-    private function generateEmail(string $kind, Customer $customer, array $versions): CustomerMessage
+    private function generateEmail(string $kind, Customer $customer, array $services): CustomerMessage
     {
         return $this->generate(
             $customer,
-            $versions,
+            $services,
             CustomerMessageType::EmailContracts,
             $customer->emails,
             Settings::getString(sprintf('%s.emails.%s.subject', self::SETTINGS_PATH, $kind)),
@@ -385,14 +362,14 @@ class ProcessUnsignedContractsCommand extends Command
     /**
      * @param string $kind Which letter is due ("notify", "block").
      * @param \App\Model\Entity\Customer $customer Who to write to.
-     * @param list<\App\Model\Entity\ContractVersion> $versions What to write about.
+     * @param list<\App\Contracts\Unsigned\UnsignedService> $services What to write about.
      * @return \App\Model\Entity\CustomerMessage
      */
-    private function generateSms(string $kind, Customer $customer, array $versions): CustomerMessage
+    private function generateSms(string $kind, Customer $customer, array $services): CustomerMessage
     {
         return $this->generate(
             $customer,
-            $versions,
+            $services,
             CustomerMessageType::Sms,
             $customer->phones,
             Settings::getString(sprintf('%s.sms.%s.subject', self::SETTINGS_PATH, $kind)),
@@ -404,7 +381,7 @@ class ProcessUnsignedContractsCommand extends Command
      * Put one message in the outbox.
      *
      * @param \App\Model\Entity\Customer $customer Who to write to.
-     * @param list<\App\Model\Entity\ContractVersion> $versions What to write about.
+     * @param list<\App\Contracts\Unsigned\UnsignedService> $services What to write about.
      * @param \App\Model\Enum\CustomerMessageType $type Which channel, and so which mailer.
      * @param array<\App\Model\Entity\Email>|array<\App\Model\Entity\Phone> $recipients Who to write to.
      * @param string $subject_template The subject, before the placeholders are filled in.
@@ -413,7 +390,7 @@ class ProcessUnsignedContractsCommand extends Command
      */
     private function generate(
         Customer $customer,
-        array $versions,
+        array $services,
         CustomerMessageType $type,
         array $recipients,
         string $subject_template,
@@ -422,7 +399,7 @@ class ProcessUnsignedContractsCommand extends Command
         $replacements = [
             '{date}' => Date::now(),
             '{customer_number}' => $customer->number,
-            '{contracts_table}' => $this->getContractsTable($versions),
+            '{contracts_table}' => $this->getContractsTable($services),
 
             '{company_name}' => Settings::getString('core.company.name'),
             '{company_address_line_1}' => Settings::getString('core.company.address_line_1'),
@@ -459,19 +436,22 @@ class ProcessUnsignedContractsCommand extends Command
      * follows from that is the office's to word, because whether anything follows at all is
      * a matter of whether the blocking is switched on.
      *
-     * @param list<\App\Model\Entity\ContractVersion> $versions What to write about.
+     * @param list<\App\Contracts\Unsigned\UnsignedService> $services What to write about.
      * @return string
      */
-    private function getContractsTable(array $versions): string
+    private function getContractsTable(array $services): string
     {
         $lines = array_map(
-            fn(ContractVersion $version): string => sprintf(
+            // A version says since when it has been in effect. A service nobody has drawn one for
+            // has no such day to name, so it says since when it has been provided instead - which
+            // is what the customer would recognise anyway.
+            fn(UnsignedService $service): string => sprintf(
                 '%s (%s %s)',
-                $version->contract->name,
-                __('in effect since'),
-                $version->valid_from,
+                $service->contract->name,
+                $service->version !== null ? __('in effect since') : __('provided since'),
+                $service->running_since,
             ),
-            $versions,
+            $services,
         );
 
         return implode(PHP_EOL, $lines) . PHP_EOL;

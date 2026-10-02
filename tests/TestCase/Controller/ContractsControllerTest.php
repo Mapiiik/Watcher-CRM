@@ -595,6 +595,19 @@ class ContractsControllerTest extends TestCase
     {
         $this->getTableLocator()->get('ContractProposals')
             ->deleteAll(['contract_id' => $contract_id]);
+
+        // And a signed version covering today, because a service being charged for with no version
+        // behind it is itself a finding - which is the whole point of watching them.
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $versions->deleteAll(['contract_id' => $contract_id]);
+        $versions->saveOrFail($versions->newEntity([
+            'contract_id' => $contract_id,
+            'valid_from' => Date::now()->modify('-2 years')->format('Y-m-d'),
+            'valid_until' => null,
+            'conclusion_date' => Date::now()->modify('-2 years')->format('Y-m-d'),
+            'number_of_amendments' => 0,
+            'obligations_settled' => true,
+        ]));
     }
 
     /**
