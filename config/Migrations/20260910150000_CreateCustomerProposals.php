@@ -9,7 +9,7 @@ class CreateCustomerProposals extends BaseMigration
     /**
      * Up Method.
      *
-     * One proposal of a paper that concerns the customer rather than any one contract: a consent
+     * A paper put to the customer themselves rather than to any one of their contracts: a consent
      * today, a summary of what they are provided with or a final settlement later. Until now the
      * consent was printed and nothing was left behind except four booleans, so nobody could say
      * when it went out, whether it came back, or which printing a signed scan answered.
@@ -19,9 +19,9 @@ class CreateCustomerProposals extends BaseMigration
      * - it is frozen in the store like every other paper. A second copy of the same JSON beside
      * it would only be somewhere else for the truth to be.
      *
-     * What it does carry is the proposal: the day it speaks about, when the paper was drawn, when it
-     * went out, when it came back signed. That is what makes a second proposal tellable from the first, which is the whole
-     * reason the scans hang here rather than on the customer.
+     * What it does carry are the proposal's own days: the day it speaks about, when the paper was
+     * drawn, when it went out, when it came back signed. That is what tells a second proposal from
+     * the first, which is the whole reason the scans hang here rather than on the customer.
      *
      * Written out both ways rather than as change(): the partial index is raw SQL, which the
      * automatic reversal replays forwards instead of undoing.

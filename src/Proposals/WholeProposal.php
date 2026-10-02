@@ -11,7 +11,7 @@ use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
- * What one envelope of papers does as a whole.
+ * What one proposal does as a whole, rather than a paper at a time.
  *
  * The papers a customer gets go out together and come back signed together, so the day they went
  * out and the day they came back is one day written on all of them. What is inside is drawn up one
