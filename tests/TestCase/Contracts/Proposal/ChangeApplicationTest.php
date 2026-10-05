@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Contracts\Proposal;
 
 use App\Contracts\Proposal\ChangeApplication;
 use App\Model\Entity\ContractProposal;
+use App\Model\Entity\ContractVersion;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
 use App\Test\Traits\TableTestTrait;
@@ -776,6 +777,57 @@ class ChangeApplicationTest extends TestCase
         $this->assertSame('2026-11-01', $started->valid_from->toDateString());
         $this->assertSame('2026-10-20', $started->conclusion_date?->toDateString());
         $this->assertSame(0, $started->get('number_of_amendments'));
+    }
+
+    /**
+     * A new contract taking over from an old one: the papers start a version of their own and end
+     * the version of the contract being left behind. Both are the same act, so applying it has to
+     * write both - a new version standing beside one that never got its last day is two services
+     * running where the customer agreed to one.
+     *
+     * @return void
+     */
+    public function testANewContractAlsoEndsTheVersionItTakesOverFrom(): void
+    {
+        $replaced = $this->theVersionTheNewPapersTakeOverFrom();
+
+        $proposal = $this->proposalWithoutAVersion([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'effective_from' => '2026-11-01',
+            'conclusion_date' => '2026-10-20',
+            'terminates_contract_version_id' => $replaced->id,
+            'terminated_contract_number' => '2022/0001',
+        ]);
+
+        (new ChangeApplication())->apply($proposal);
+
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $carried = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+
+        $this->assertNotNull($carried->contract_version_id, 'The papers did not keep their version.');
+        $this->assertSame(
+            '2026-10-31',
+            $versions->get($replaced->id)->valid_until?->toDateString(),
+            'The version being taken over from was left without a last day.',
+        );
+    }
+
+    /**
+     * The version the new papers take over from: signed, running, and with no last day yet. New
+     * papers for the same contract are drawn up against it and are meant to end it.
+     *
+     * @return \App\Model\Entity\ContractVersion
+     */
+    private function theVersionTheNewPapersTakeOverFrom(): ContractVersion
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+
+        /** @var \App\Model\Entity\ContractVersion $version */
+        $version = $versions->get(self::VERSION_ID);
+        $version->set('valid_until', null);
+        $versions->saveOrFail($version, ['checkRules' => false]);
+
+        return $version;
     }
 
     /**

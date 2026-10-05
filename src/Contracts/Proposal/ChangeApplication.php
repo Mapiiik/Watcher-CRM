@@ -272,44 +272,59 @@ final class ChangeApplication
      */
     private function applyTheVersions(ContractProposal $proposal, array $planned, array $options): void
     {
-        $versions = $this->fetchTable('ContractVersions');
-
         // Papers for a new contract may be drawn up before the version they are about exists. The
         // version is the record of a paper's life, so it starts when the paper does rather than
         // before anybody has signed it - and what it becomes is the same projection the papers
-        // themselves were printed from.
+        // themselves were printed from. What is planned for it is already in there, so there is
+        // nothing further to write onto it.
         if ($proposal->contract_version_id === null) {
             $version = $this->versionFromThePapers($proposal);
-            $versions->saveOrFail($version, $options);
+            $this->fetchTable('ContractVersions')->saveOrFail($version, $options);
 
             $proposal->set('contract_version_id', $version->id);
+        } else {
+            $this->writeOntoVersion($proposal->contract_version_id, ChangePlan::VERSION, $planned, $options);
+        }
 
+        // Ending the version the papers take over from belongs to the same act, whether or not they
+        // started a version of their own. New papers beside a version that never got its last day
+        // are two services where the customer agreed to one.
+        $this->writeOntoVersion(
+            $proposal->terminates_contract_version_id,
+            ChangePlan::REPLACED_VERSION,
+            $planned,
+            $options,
+        );
+    }
+
+    /**
+     * Writes what the plan has for one version onto it.
+     *
+     * @param string|null $id The version, where the proposal names one.
+     * @param string $target Which of the plan's subjects it is.
+     * @param list<\App\Contracts\Proposal\PlannedChange> $planned What is to be written.
+     * @param array<string, mixed> $options What to save with.
+     * @return void
+     */
+    private function writeOntoVersion(?string $id, string $target, array $planned, array $options): void
+    {
+        $writes = array_filter($planned, fn(PlannedChange $one): bool => $one->target === $target);
+
+        // Nothing to write is the ordinary case - a proposal usually asks about the billings alone -
+        // and a save with nothing in it would only put the version's rules in the way.
+        if ($writes === [] || $id === null) {
             return;
         }
 
-        $onto = [
-            ChangePlan::VERSION => $proposal->contract_version_id,
-            ChangePlan::REPLACED_VERSION => $proposal->terminates_contract_version_id,
-        ];
+        $versions = $this->fetchTable('ContractVersions');
+        $version = $versions->get($id);
 
-        foreach ($onto as $target => $id) {
-            $writes = array_filter($planned, fn(PlannedChange $one): bool => $one->target === $target);
+        foreach ($writes as $write) {
+            $version->set($write->field, $write->to);
+        }
 
-            // Nothing to write is the ordinary case - a proposal usually asks about the billings
-            // alone - and a save with nothing in it would only put the version's rules in the way.
-            if ($writes === [] || $id === null) {
-                continue;
-            }
-
-            $version = $versions->get($id);
-
-            foreach ($writes as $write) {
-                $version->set($write->field, $write->to);
-            }
-
-            if ($version->isDirty()) {
-                $versions->saveOrFail($version, $options);
-            }
+        if ($version->isDirty()) {
+            $versions->saveOrFail($version, $options);
         }
     }
 
