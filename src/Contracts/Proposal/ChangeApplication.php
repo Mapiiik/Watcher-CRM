@@ -283,7 +283,12 @@ final class ChangeApplication
 
             $proposal->set('contract_version_id', $version->id);
         } else {
-            $this->writeOntoVersion($proposal->contract_version_id, ChangePlan::VERSION, $planned, $options);
+            $this->writeOntoVersion(
+                $proposal->contract_version_id,
+                ChangePlan::VERSION,
+                $planned,
+                $options,
+            );
         }
 
         // Ending the version the papers take over from belongs to the same act, whether or not they
