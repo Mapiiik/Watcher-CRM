@@ -243,6 +243,22 @@ class XmlRequestBuilderTest extends TestCase
     }
 
     /**
+     * The customer number is on the card as its contract, without the code prefix - the external
+     * ID is not shown on the card, and this is what somebody looking at it finds the customer by.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlRequestBuilder::buildPartnersRequest()
+     */
+    public function testTheCardCarriesTheCustomerNumberAsItsContract(): void
+    {
+        Settings::set(PohodaProvider::SETTINGS_ROOT . '.customers.code_prefix', 'CRM-');
+
+        $xml = $this->request([$this->customer()]);
+
+        $this->assertSame('117512', $this->value($xml, '//adb:addressbookHeader/adb:agreement'));
+    }
+
+    /**
      * The contacts on the card are the ones meant for billing, where the customer has named any.
      *
      * @return void
