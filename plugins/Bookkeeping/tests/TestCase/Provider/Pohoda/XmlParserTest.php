@@ -240,6 +240,128 @@ class XmlParserTest extends TestCase
     }
 
     /**
+     * A response to an import, carrying the given items.
+     *
+     * @param string $items Response pack items.
+     * @return \SimpleXMLElement
+     */
+    private function importResponse(string $items): SimpleXMLElement
+    {
+        return new SimpleXMLElement(
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            . '<rsp:responsePack version="2.0" id="adb" state="ok"'
+            . ' xmlns:rsp="http://www.stormware.cz/schema/version_2/response.xsd"'
+            . ' xmlns:rdc="http://www.stormware.cz/schema/version_2/documentresponse.xsd"'
+            . ' xmlns:adb="http://www.stormware.cz/schema/version_2/addressbook.xsd">'
+            . $items
+            . '</rsp:responsePack>',
+        );
+    }
+
+    /**
+     * An item of an import response, with an address book response in the given state.
+     *
+     * @param string $id Item ID.
+     * @param string $state State of the item and of the response in it.
+     * @param string $details Import details inside the response.
+     * @param string $note The item's note.
+     * @return string
+     */
+    private function importItem(string $id, string $state, string $details = '', string $note = ''): string
+    {
+        return '<rsp:responsePackItem version="2.0" id="' . $id . '" state="' . $state . '"'
+            . ($note !== '' ? ' note="' . $note . '"' : '') . '>'
+            . '<adb:addressbookResponse version="2.0" state="' . $state . '">'
+            . ($details !== '' ? '<rdc:importDetails>' . $details . '</rdc:importDetails>' : '')
+            . '</adb:addressbookResponse>'
+            . '</rsp:responsePackItem>';
+    }
+
+    /**
+     * A detail of an import response.
+     *
+     * @param string $state State of the detail.
+     * @param string $note What it says.
+     * @return string
+     */
+    private function importDetail(string $state, string $note): string
+    {
+        return '<rdc:detail><rdc:state>' . $state . '</rdc:state><rdc:note>' . $note . '</rdc:note></rdc:detail>';
+    }
+
+    /**
+     * Only the items refused are reported, by the ID the request gave them, with what Pohoda said
+     * about each - a pack in state ok still carries them.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlParser::parseImportFailures()
+     */
+    public function testOnlyTheRefusedItemsAreReported(): void
+    {
+        $failures = $this->parser->parseImportFailures($this->importResponse(
+            $this->importItem('117512', 'ok')
+            . $this->importItem('117513', 'error', $this->importDetail('error', 'Invalid ZIP code.')),
+        ));
+
+        $this->assertSame(['117513' => 'Invalid ZIP code.'], $failures);
+    }
+
+    /**
+     * A warning on an item that went in is not a refusal: the card is there, and a run that failed
+     * on every warning would never get through.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlParser::parseImportFailures()
+     */
+    public function testAWarningIsNotARefusal(): void
+    {
+        $failures = $this->parser->parseImportFailures($this->importResponse(
+            $this->importItem('117512', 'ok', $this->importDetail('warning', 'The name was shortened.')),
+        ));
+
+        $this->assertSame([], $failures);
+    }
+
+    /**
+     * The item's own note and the errors in its details are reported together, and only the
+     * errors among the details - a warning next to them is not why the item was refused.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlParser::parseImportFailures()
+     */
+    public function testTheNoteAndTheErrorsAreReportedTogether(): void
+    {
+        $failures = $this->parser->parseImportFailures($this->importResponse(
+            $this->importItem(
+                '117513',
+                'error',
+                $this->importDetail('warning', 'The name was shortened.')
+                . $this->importDetail('error', 'Invalid ZIP code.'),
+                'Import failed.',
+            ),
+        ));
+
+        $this->assertSame(['117513' => 'Import failed., Invalid ZIP code.'], $failures);
+    }
+
+    /**
+     * An item marked ok whose response inside says otherwise is refused all the same.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlParser::parseImportFailures()
+     */
+    public function testAnItemWhoseResponseFailedIsRefused(): void
+    {
+        $failures = $this->parser->parseImportFailures($this->importResponse(
+            '<rsp:responsePackItem version="2.0" id="117512" state="ok">'
+            . '<adb:addressbookResponse version="2.0" state="error"/>'
+            . '</rsp:responsePackItem>',
+        ));
+
+        $this->assertSame(['117512'], array_map('strval', array_keys($failures)));
+    }
+
+    /**
      * A file that is not XML at all is refused rather than read as an empty answer, which would
      * quietly report that a customer owes nothing.
      *

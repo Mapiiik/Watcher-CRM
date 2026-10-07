@@ -66,6 +66,75 @@ class XmlRequestBuilder
         $pohoda->addItem('list_001', $request);
 
         // Close and return the generated XML
+        return $this->close($pohoda);
+    }
+
+    /**
+     * Build XML request importing customers into the address book.
+     *
+     * Each customer is written as add-or-update by their external ID: the first run adds the
+     * partner card, every later one finds it again and overwrites it. Each item is identified by
+     * the customer number, so the response can be read back customer by customer.
+     *
+     * @param list<\App\Model\Entity\Customer> $customers Customers to import.
+     * @return string XML request body.
+     */
+    public function buildPartnersRequest(array $customers): string
+    {
+        Pohoda::$encoding = 'UTF-8'; // Set encoding for Pohoda library
+
+        $pohoda = new Pohoda(
+            Settings::getString(
+                PohodaProvider::SETTINGS_ROOT . '.api.accounting_unit',
+                '00000000',
+            ),
+        );
+        $pohoda->setApplicationName('Watcher CRM');
+
+        $pohoda->open(null, 'adb', 'Import customers into the address book');
+
+        foreach ($customers as $customer) {
+            $extId = PohodaProvider::partnerExtId($customer);
+            $address = $customer->billing_address;
+
+            $identity = [
+                'extId' => $extId,
+            ];
+
+            if ($address !== null) {
+                $identity['address'] = [
+                    'company' => $address->company ?? '',
+                    'name' => $address->full_name,
+                    'city' => $address->city ?? '',
+                    'street' => $address->street_and_number,
+                    'zip' => $address->zip ?? '',
+                    'ico' => $customer->identity_number ?? '',
+                    'dic' => $customer->vat_number ?? '',
+                    'country' => $address->country->code ?? '',
+                ];
+            }
+
+            $addressbook = $pohoda->createAddressbook([
+                'identity' => $identity,
+                'email' => $customer->billing_emails[0]->email ?? $customer->emails[0]->email ?? '',
+                'phone' => $customer->billing_phones[0]->phone ?? $customer->phones[0]->phone ?? '',
+            ]);
+            $addressbook->addActionType('add/update', ['extId' => $extId]);
+
+            $pohoda->addItem($customer->number, $addressbook);
+        }
+
+        return $this->close($pohoda);
+    }
+
+    /**
+     * Close a request built in memory and hand back its XML.
+     *
+     * @param \Riesenia\Pohoda $pohoda Request opened in memory.
+     * @return string XML request body.
+     */
+    private function close(Pohoda $pohoda): string
+    {
         $result = $pohoda->close();
         if (is_int($result)) {
             throw new RuntimeException('Unexpected integer return from Pohoda::close() in memory mode.');

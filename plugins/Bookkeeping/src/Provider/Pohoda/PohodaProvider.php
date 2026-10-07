@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Provider\Pohoda;
 
 use App\Model\Entity\AccountingProfile;
+use App\Model\Entity\Customer;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
@@ -12,7 +13,9 @@ use Bookkeeping\Provider\AccountingProviderInterface;
 use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
+use Cake\Log\Log;
 use RuntimeException;
+use Settings\Utility\Settings;
 use SimpleXMLElement;
 
 /**
@@ -32,6 +35,18 @@ use SimpleXMLElement;
 class PohodaProvider implements AccountingProviderInterface
 {
     public const SETTINGS_ROOT = 'bookkeeping.accounting.providers.pohoda';
+
+    /**
+     * The name the external IDs are written under, so the address book tells ours from any other
+     * system's. Changing it orphans every partner card already sent.
+     */
+    public const EXTERNAL_SYSTEM = 'Watcher CRM';
+
+    /**
+     * How many customers go into one data pack: a run over thousands is then a series of answers
+     * of a readable size, and a timeout costs one pack rather than the whole run.
+     */
+    private const PARTNERS_PER_PACK = 100;
 
     private readonly XmlRequestBuilder $xmlRequestBuilder;
 
@@ -59,6 +74,30 @@ class PohodaProvider implements AccountingProviderInterface
     }
 
     /**
+     * Whether invoices are linked to the customer's partner card in the address book.
+     *
+     * @return bool
+     */
+    public static function useBuyerCode(): bool
+    {
+        return (bool)Settings::get(self::SETTINGS_ROOT . '.customers.use_buyer_code', false);
+    }
+
+    /**
+     * The external ID the customer's partner card is found by in the address book.
+     *
+     * @param \App\Model\Entity\Customer $customer Customer.
+     * @return array{ids: string, exSystemName: string}
+     */
+    public static function partnerExtId(Customer $customer): array
+    {
+        return [
+            'ids' => Settings::getString(self::SETTINGS_ROOT . '.customers.code_prefix', '') . $customer->number,
+            'exSystemName' => self::EXTERNAL_SYSTEM,
+        ];
+    }
+
+    /**
      * Synchronize invoices from Pohoda (mServer).
      *
      * @param \Bookkeeping\Model\Enum\InvoiceSyncMode $mode Synchronization mode
@@ -78,30 +117,10 @@ class PohodaProvider implements AccountingProviderInterface
             __d('bookkeeping', 'Pohoda mServer is not configured.'),
         );
 
-        // 4) Parse XML
-        if (!$xml instanceof SimpleXMLElement) {
-            throw new RuntimeException(
-                __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),
-            );
-        }
+        // 4) Validate Pohoda XML response state
+        $this->validResponse($xml);
 
-        // 5) Validate Pohoda XML response state
-        $attributes = $xml->attributes();
-
-        $state = property_exists($attributes, 'state') && $attributes->state !== null ?
-            (string)$attributes->state : 'N/A';
-        $note = property_exists($attributes, 'note') && $attributes->note !== null ?
-            (string)$attributes->note : 'N/A';
-
-        if ($state !== 'ok') {
-            throw new RuntimeException(__d(
-                'bookkeeping',
-                'Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})',
-                [$state, $note],
-            ));
-        }
-
-        // 6) Parse invoices
+        // 5) Parse invoices
         $drafts = $this->xmlParser->parseSimpleXML($xml);
 
         return $drafts;
@@ -133,6 +152,22 @@ class PohodaProvider implements AccountingProviderInterface
         Date $invoicedMonth,
         AccountingProfile $accountingProfile,
     ): void {
+        // 0) Write the customers into the address book first, when invoices are linked to it -
+        //    in one import for the whole run, as the invoices go in one too. A failure ends the
+        //    run here: the invoices would point at partner cards that may not be there.
+        if (self::useBuyerCode()) {
+            $customers = [];
+            foreach ($invoices as $invoice) {
+                if ($invoice->customer !== null) {
+                    $customers[$invoice->customer->id] = $invoice->customer;
+                }
+            }
+
+            if ($customers !== []) {
+                $this->sendPartners(array_values($customers));
+            }
+        }
+
         // Generate temporary XML file path
         $filePath = TMP . uniqid('pohoda-import-', true) . '.xml';
 
@@ -160,26 +195,18 @@ class PohodaProvider implements AccountingProviderInterface
                 __d('bookkeeping', 'Pohoda mServer is not configured.'),
             );
 
-            // 5) Validate XML response body
-            if (!$responseXml instanceof SimpleXMLElement) {
-                throw new RuntimeException(
-                    __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),
-                );
-            }
+            // 5) Validate Pohoda response state
+            $this->validResponse($responseXml);
 
-            // 6) Validate Pohoda response state
-            $attributes = $responseXml->attributes();
+            // 6) The pack being accepted says nothing of each invoice in it: one refused on its
+            //    own is reported here rather than left missing from the accounting system
+            $failures = $this->xmlParser->parseImportFailures($responseXml);
 
-            $state = property_exists($attributes, 'state') && $attributes->state !== null ?
-                (string)$attributes->state : 'N/A';
-            $note = property_exists($attributes, 'note') && $attributes->note !== null ?
-                (string)$attributes->note : '';
-
-            if ($state !== 'ok') {
+            if ($failures !== []) {
                 throw new RuntimeException(__d(
                     'bookkeeping',
-                    'Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})',
-                    [$state, $note],
+                    'Pohoda refused these invoices: {0}',
+                    $this->describeFailures($failures),
                 ));
             }
         } finally {
@@ -191,22 +218,62 @@ class PohodaProvider implements AccountingProviderInterface
     }
 
     /**
-     * Send partners (customers) to Pohoda.
+     * Send partners (customers) into the Pohoda address book via mServer.
      *
-     * NOTE:
-     * Pohoda provider currently does not support partner synchronization.
+     * Each customer is added, or updated where their partner card is already there, found by
+     * its external ID. The customers go in packs; a customer the address book refuses does not
+     * stop the others, and every refusal is reported together once the run is through.
      *
      * @param list<\App\Model\Entity\Customer> $customers Customers to send.
      * @return void
+     * @throws \RuntimeException When mServer cannot be reached or refuses any customer.
      */
     public function sendPartners(array $customers): void
     {
-        throw new RuntimeException(
-            __d(
+        // the customer says whether their partner card is ours to write; an invoice for them
+        // still goes out, only this push in front of it is left undone
+        $customers = array_values(array_filter(
+            $customers,
+            function (Customer $customer): bool {
+                if ($customer->sync_to_accounting) {
+                    return true;
+                }
+
+                Log::info(
+                    'Partner sync skipped for customer ' . $customer->number
+                    . ': synchronization to the accounting system is turned off.',
+                );
+
+                return false;
+            },
+        ));
+
+        $failures = [];
+
+        foreach (array_chunk($customers, self::PARTNERS_PER_PACK) as $pack) {
+            // 1) Build XML request
+            $xmlRequest = $this->xmlRequestBuilder->buildPartnersRequest($pack);
+
+            // 2) Send it, and let an unreachable mServer end the run
+            /** @var \SimpleXMLElement $responseXml */
+            $responseXml = $this->httpClient->send($xmlRequest)->orFail(
+                __d('bookkeeping', 'Pohoda mServer is not configured.'),
+            );
+
+            // 3) Validate Pohoda response state
+            $this->validResponse($responseXml);
+
+            // 4) Collect the customers refused one by one
+            $failures += $this->xmlParser->parseImportFailures($responseXml);
+        }
+
+        if ($failures !== []) {
+            throw new RuntimeException(__d(
                 'bookkeeping',
-                'Partner synchronization is not implemented in Pohoda Provider.',
-            ),
-        );
+                'Pohoda refused these customers: {0}',
+                $this->describeFailures($failures),
+            ));
+        }
     }
 
     /**
@@ -289,5 +356,49 @@ class PohodaProvider implements AccountingProviderInterface
         return Configure::read('Data.root')
             . DS . 'invoices'
             . DS . 'Faktura_' . $invoice->number . '.pdf';
+    }
+
+    /**
+     * Refuse a response whose pack mServer itself marked as failed.
+     *
+     * @param mixed $xml Response body.
+     * @return void
+     * @throws \RuntimeException When the response is not XML or its state is not ok.
+     */
+    private function validResponse(mixed $xml): void
+    {
+        if (!$xml instanceof SimpleXMLElement) {
+            throw new RuntimeException(
+                __d('bookkeeping', 'Invalid XML response from Pohoda mServer.'),
+            );
+        }
+
+        $attributes = $xml->attributes();
+        $state = isset($attributes['state']) ? (string)$attributes['state'] : 'N/A';
+        $note = isset($attributes['note']) ? (string)$attributes['note'] : 'N/A';
+
+        if ($state !== 'ok') {
+            throw new RuntimeException(__d(
+                'bookkeeping',
+                'Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})',
+                [$state, $note],
+            ));
+        }
+    }
+
+    /**
+     * Put the refused items into one line for the log and the error report.
+     *
+     * @param array<array-key, string> $failures What Pohoda said, by item ID.
+     * @return string
+     */
+    private function describeFailures(array $failures): string
+    {
+        $lines = [];
+        foreach ($failures as $id => $note) {
+            $lines[] = $id . ' (' . $note . ')';
+        }
+
+        return implode('; ', $lines);
     }
 }

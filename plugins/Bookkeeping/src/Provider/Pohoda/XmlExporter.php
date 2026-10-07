@@ -52,6 +52,8 @@ class XmlExporter
             'Import invoices',
         );
 
+        $useBuyerCode = PohodaProvider::useBuyerCode();
+
         foreach ($invoices as $invoice) {
             if (!$invoice->isValid()) {
                 throw new RuntimeException(__d(
@@ -70,6 +72,26 @@ class XmlExporter
                 ));
             }
 
+            // The partner is either the customer's card in the address book, found by its external
+            // ID - the address then comes from the card, as in Stormware's own sample of the link -
+            // or the address written out on the invoice. A customer whose card is not ours to
+            // write may not carry our external ID, so their invoice keeps the address.
+            $partnerIdentity = $useBuyerCode && $invoice->customer->sync_to_accounting
+                ? [
+                    'extId' => PohodaProvider::partnerExtId($invoice->customer),
+                ]
+                : [
+                    'address' => [
+                        'company' => $invoice->customer->billing_address->company ?? '',
+                        'name' => $invoice->customer->billing_address->full_name ?? '',
+                        'city' => $invoice->customer->billing_address->city ?? '',
+                        'street' => $invoice->customer->billing_address->street_and_number ?? '',
+                        'zip' => $invoice->customer->billing_address->zip ?? '',
+                        'ico' => $invoice->customer->identity_number ?? '',
+                        'dic' => $invoice->customer->vat_number ?? '',
+                    ],
+                ];
+
             $invoiceRecord = $pohoda->createInvoice([
                 'invoiceType' => 'issuedInvoice',
                 'number' => [
@@ -87,17 +109,7 @@ class XmlExporter
                     'ids' => $accountingProfile->reverse_charge ? 'UDpdp' : 'UD',
                 ],
                 'text' => $invoice->text ?? '',
-                'partnerIdentity' => [
-                    'address' => [
-                        'company' => $invoice->customer->billing_address->company ?? '',
-                        'name' => $invoice->customer->billing_address->full_name ?? '',
-                        'city' => $invoice->customer->billing_address->city ?? '',
-                        'street' => $invoice->customer->billing_address->street_and_number ?? '',
-                        'zip' => $invoice->customer->billing_address->zip ?? '',
-                        'ico' => $invoice->customer->identity_number ?? '',
-                        'dic' => $invoice->customer->vat_number ?? '',
-                    ],
-                ],
+                'partnerIdentity' => $partnerIdentity,
                 'paymentType' => [
                     'paymentType' => 'draft',
                 ],

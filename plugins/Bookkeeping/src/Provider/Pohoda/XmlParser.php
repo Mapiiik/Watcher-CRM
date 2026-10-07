@@ -156,6 +156,44 @@ class XmlParser
     }
 
     /**
+     * Read which items of an import mServer refused.
+     *
+     * A pack in state ok only says mServer took it; each item in it is imported, or refused, on
+     * its own. An item counts as refused where it or the agenda response inside it is not ok,
+     * and what Pohoda said is the item's note followed by the errors it lists in the details.
+     *
+     * @param \SimpleXMLElement $xml XML response from Pohoda.
+     * @return array<string, string> What Pohoda said, by the item ID the request gave.
+     */
+    public function parseImportFailures(SimpleXMLElement $xml): array
+    {
+        $xml->registerXPathNamespace('rsp', 'http://www.stormware.cz/schema/version_2/response.xsd');
+        $xml->registerXPathNamespace('rdc', 'http://www.stormware.cz/schema/version_2/documentresponse.xsd');
+
+        $failures = [];
+
+        foreach ($xml->xpath('//rsp:responsePackItem') ?: [] as $item) {
+            $item->registerXPathNamespace('rdc', 'http://www.stormware.cz/schema/version_2/documentresponse.xsd');
+
+            $refused = (string)$item['state'] !== 'ok' || $item->xpath('./*[@state != "ok"]');
+            if (!$refused) {
+                continue;
+            }
+
+            $notes = array_filter([(string)$item['note']]);
+            foreach ($item->xpath('.//rdc:detail[rdc:state = "error"]/rdc:note') ?: [] as $note) {
+                $notes[] = (string)$note;
+            }
+
+            $failures[(string)$item['id']] = $notes !== []
+                ? implode(', ', array_unique($notes))
+                : __d('bookkeeping', 'no reason given');
+        }
+
+        return $failures;
+    }
+
+    /**
      * Parse date string into Cake Date object.
      *
      * @return \Cake\I18n\Date|null

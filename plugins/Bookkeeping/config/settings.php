@@ -70,6 +70,22 @@ return [
                             hint: __d('bookkeeping', 'How long to wait for the accounting API, in seconds.'),
                         ),
                     ],
+
+                    // Customers (sync) - the partner card in the address book is found by its
+                    // external ID, which is the prefix followed by the customer number. Changing the
+                    // prefix once the address book is filled makes the next run add every customer
+                    // again.
+                    'customers' => [
+                        'use_buyer_code' => new BoolType(
+                            default: false,
+                            hint: __d(
+                                'bookkeeping',
+                                'Send the customer to the address book before their invoice and link the invoice to it. '
+                                . 'Turn on only once the address book has been filled.',
+                            ),
+                        ),
+                        'code_prefix' => '',
+                    ],
                 ],
 
                 // -----------------------------------------
