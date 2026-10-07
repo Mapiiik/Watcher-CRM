@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-03 00:34+0200\n"
+"POT-Creation-Date: 2026-10-07 12:30+0200\n"
 "PO-Revision-Date: 2026-08-26 13:21+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -16,11 +16,19 @@ msgstr ""
 "X-Generator: Poedit 3.9\n"
 
 #: plugins/Bookkeeping/config/settings.php:70
-#: plugins/Bookkeeping/config/settings.php:138
+#: plugins/Bookkeeping/config/settings.php:154
 msgid "How long to wait for the accounting API, in seconds."
 msgstr "Jak dlouho je třeba čekat na účetní API (v sekundách)."
 
-#: plugins/Bookkeeping/config/settings.php:152
+#: plugins/Bookkeeping/config/settings.php:81
+msgid ""
+"Send the customer to the address book before their invoice and link the "
+"invoice to it. Turn on only once the address book has been filled."
+msgstr ""
+"Před fakturou poslat zákazníka do adresáře a fakturu na něj navázat. "
+"Zapněte až po naplnění adresáře."
+
+#: plugins/Bookkeeping/config/settings.php:168
 msgid ""
 "Also the default the invoicing command takes when it is called without --"
 "schedule."
@@ -28,20 +36,20 @@ msgstr ""
 "Zároveň výchozí hodnota, kterou použije fakturační příkaz volaný bez --"
 "schedule."
 
-#: plugins/Bookkeeping/config/settings.php:162
+#: plugins/Bookkeeping/config/settings.php:178
 msgid ""
 "Leave the period being invoiced today open, so it can still be corrected."
 msgstr "Ponechat období, které se dnes fakturuje, otevřené pro opravy."
 
-#: plugins/Bookkeeping/config/settings.php:208
+#: plugins/Bookkeeping/config/settings.php:224
 msgid "How many days a payment may be late before it counts."
 msgstr "O kolik dní se může platba opozdit, než se to začne počítat."
 
-#: plugins/Bookkeeping/config/settings.php:213
+#: plugins/Bookkeeping/config/settings.php:229
 msgid "How small an overdue debt is passed over."
 msgstr "Jak malá částka splatného dluhu se přehlíží."
 
-#: plugins/Bookkeeping/config/settings.php:225
+#: plugins/Bookkeeping/config/settings.php:241
 msgid ""
 "How many days before the due date a debtor is warned on. An empty list [] "
 "warns on none."
@@ -597,13 +605,13 @@ msgstr "Neplatný seznam faktur přijatý z API Eurofaktura."
 
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:34
 #: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:132
-#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:57
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:59
 msgid "Invalid invoice data for invoice number {0}."
 msgstr "Neplatné údaje pro fakturu číslo {0}."
 
 #: plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:43
 #: plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:141
-#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:66
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:68
 msgid "Missing customer information or billing address for invoice number {0}."
 msgstr "Chybí údaje o zákazníkovi nebo fakturační adresa pro fakturu č. {0}."
 
@@ -627,30 +635,33 @@ msgstr "Nelze otevřít soubor DBF."
 msgid "Unable to read record {0} of the DBF file."
 msgstr "Záznam {0} souboru DBF se nepodařilo přečíst."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:78
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:160
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:117
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:195
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:260
 msgid "Pohoda mServer is not configured."
 msgstr "Pohoda mServer není nakonfigurován."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:84
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:166
-msgid "Invalid XML response from Pohoda mServer."
-msgstr "Neplatná odpověď XML od Pohoda mServer."
-
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:97
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:179
-msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
-msgstr "Pohoda mServer vrátil chybovou odpověď (STATE: {0}, NOTE: {1})"
-
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:152
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:187
 msgid "Failed to read generated XML file."
 msgstr "Nepodařilo se načíst vygenerovaný soubor XML."
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:205
-msgid "Partner synchronization is not implemented in Pohoda Provider."
-msgstr "Synchronizace partnerů není v Pohoda Provider implementována."
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:206
+msgid "Pohoda refused these invoices: {0}"
+msgstr "Pohoda odmítla tyto faktury: {0}"
 
-#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:172
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:271
+msgid "Pohoda refused these customers: {0}"
+msgstr "Pohoda odmítla tyto zákazníky: {0}"
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:372
+msgid "Invalid XML response from Pohoda mServer."
+msgstr "Neplatná odpověď XML od Pohoda mServer."
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:381
+msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
+msgstr "Pohoda mServer vrátil chybovou odpověď (STATE: {0}, NOTE: {1})"
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:184
 msgid "Failed to generate Pohoda XML export."
 msgstr "Nepodařilo se vygenerovat export Pohoda XML."
 
@@ -665,6 +676,10 @@ msgstr "Neznámá chyba XML"
 #: plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:65
 msgid "Failed to parse XML: No invoices found."
 msgstr "Nepodařilo se analyzovat XML: Nebyly nalezeny žádné faktury."
+
+#: plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:190
+msgid "no reason given"
+msgstr "bez udání důvodu"
 
 #: plugins/Bookkeeping/src/Service/BookkeepingService.php:59
 msgid "Provider class not defined for provider \"{0}\"."
@@ -1037,6 +1052,9 @@ msgstr "Faktura"
 #: plugins/Bookkeeping/templates/cell/Invoices/display.php:71
 msgid "Show also paid invoices"
 msgstr "Zobrazit také zaplacené faktury"
+
+#~ msgid "Partner synchronization is not implemented in Pohoda Provider."
+#~ msgstr "Synchronizace partnerů není v Pohoda Provider implementována."
 
 #~ msgid "Eurofaktura API error ({0}, {1})"
 #~ msgstr "Chyba API Eurofaktura ({0}, {1})"

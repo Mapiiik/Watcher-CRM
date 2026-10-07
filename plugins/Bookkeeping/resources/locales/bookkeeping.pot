@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-03 00:34+0200\n"
+"POT-Creation-Date: 2026-10-07 12:30+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -15,27 +15,31 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: ./plugins/Bookkeeping/config/settings.php:70
-#: ./plugins/Bookkeeping/config/settings.php:138
+#: ./plugins/Bookkeeping/config/settings.php:154
 msgid "How long to wait for the accounting API, in seconds."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:152
+#: ./plugins/Bookkeeping/config/settings.php:81
+msgid "Send the customer to the address book before their invoice and link the invoice to it. Turn on only once the address book has been filled."
+msgstr ""
+
+#: ./plugins/Bookkeeping/config/settings.php:168
 msgid "Also the default the invoicing command takes when it is called without --schedule."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:162
+#: ./plugins/Bookkeeping/config/settings.php:178
 msgid "Leave the period being invoiced today open, so it can still be corrected."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:208
+#: ./plugins/Bookkeeping/config/settings.php:224
 msgid "How many days a payment may be late before it counts."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:213
+#: ./plugins/Bookkeeping/config/settings.php:229
 msgid "How small an overdue debt is passed over."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:225
+#: ./plugins/Bookkeeping/config/settings.php:241
 msgid "How many days before the due date a debtor is warned on. An empty list [] warns on none."
 msgstr ""
 
@@ -515,13 +519,13 @@ msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:34
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:132
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:57
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:59
 msgid "Invalid invoice data for invoice number {0}."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:43
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:141
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:66
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:68
 msgid "Missing customer information or billing address for invoice number {0}."
 msgstr ""
 
@@ -545,30 +549,33 @@ msgstr ""
 msgid "Unable to read record {0} of the DBF file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:78
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:160
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:117
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:195
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:260
 msgid "Pohoda mServer is not configured."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:84
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:166
-msgid "Invalid XML response from Pohoda mServer."
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:97
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:179
-msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
-msgstr ""
-
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:152
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:187
 msgid "Failed to read generated XML file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:205
-msgid "Partner synchronization is not implemented in Pohoda Provider."
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:206
+msgid "Pohoda refused these invoices: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:172
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:271
+msgid "Pohoda refused these customers: {0}"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:372
+msgid "Invalid XML response from Pohoda mServer."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:381
+msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:184
 msgid "Failed to generate Pohoda XML export."
 msgstr ""
 
@@ -582,6 +589,10 @@ msgstr ""
 
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:65
 msgid "Failed to parse XML: No invoices found."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlParser.php:190
+msgid "no reason given"
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Service/BookkeepingService.php:59
