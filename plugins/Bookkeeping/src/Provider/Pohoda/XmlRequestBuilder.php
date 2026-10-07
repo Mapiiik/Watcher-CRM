@@ -119,6 +119,9 @@ class XmlRequestBuilder
                 // the external ID is not shown on the card, so the customer number is written
                 // where somebody looking at it will see it
                 'agreement' => $customer->number,
+                // a customer is a buyer (ODB); the supplier key (DOD) is left out rather than
+                // cleared, so a customer somebody marked as a supplier as well stays one
+                'p2' => true,
                 'email' => $customer->billing_emails[0]->email ?? $customer->emails[0]->email ?? '',
                 'phone' => $customer->billing_phones[0]->phone ?? $customer->phones[0]->phone ?? '',
             ]);

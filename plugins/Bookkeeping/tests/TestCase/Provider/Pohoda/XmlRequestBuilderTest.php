@@ -259,6 +259,21 @@ class XmlRequestBuilderTest extends TestCase
     }
 
     /**
+     * The card is marked as a buyer, and the supplier key is not sent at all - sending it as no
+     * would untick it on every run for a customer who supplies us as well.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlRequestBuilder::buildPartnersRequest()
+     */
+    public function testTheCardIsABuyerAndTheSupplierKeyIsLeftAlone(): void
+    {
+        $xml = $this->request([$this->customer()]);
+
+        $this->assertSame('true', $this->value($xml, '//adb:addressbookHeader/adb:p2'));
+        $this->assertNull($this->value($xml, '//adb:addressbookHeader/adb:p1'));
+    }
+
+    /**
      * The contacts on the card are the ones meant for billing, where the customer has named any.
      *
      * @return void
