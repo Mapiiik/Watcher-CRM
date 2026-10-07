@@ -89,7 +89,7 @@ class JsonRequestBuilder
         $referencePrefix = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.payment.reference_prefix', '00 ');
 
         $useBuyerCode = (bool)Settings::get(EurofakturaProvider::SETTINGS_ROOT . '.customers.use_buyer_code', false);
-        $buyerCodePrefix = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.customers.code_prefix', 'CRM-');
+        $buyerCodePrefix = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.customers.code_prefix', '');
 
         // Build payload
         $payload = [
@@ -231,7 +231,7 @@ class JsonRequestBuilder
      */
     public function buildPartner(Customer $customer): array
     {
-        $buyerCodePrefix = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.customers.code_prefix', 'CRM-');
+        $buyerCodePrefix = Settings::getString(EurofakturaProvider::SETTINGS_ROOT . '.customers.code_prefix', '');
 
         // Stable partner / buyer code
         $buyerCode = $buyerCodePrefix . $customer->number;

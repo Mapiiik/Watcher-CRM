@@ -196,7 +196,7 @@ class EurofakturaProvider implements AccountingProviderInterface
 
         $buyerCodePrefix = Settings::getString(
             self::SETTINGS_ROOT . '.customers.code_prefix',
-            'CRM-',
+            '',
         );
 
         $drafts = [];
