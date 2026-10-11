@@ -395,6 +395,31 @@ return [
             ],
         ],
 
+        'customer_portal' => [
+            // the label a customer gets on confirming the consents in the customer portal
+            'consent_label' => 'GDPR',
+            'token_hours' => NumberType::ofInt(
+                default: 8,
+                hint: __('How long a customer stays signed in to the customer portal.'),
+            ),
+            'login_attempts' => NumberType::ofInt(
+                default: 5,
+                hint: __('Failed sign-ins of one login from one address before more are refused for a while.'),
+            ),
+            'login_attempts_per_address' => NumberType::ofInt(
+                default: 20,
+                hint: __('Failed sign-ins from one address, whatever the login, before more are refused.'),
+            ),
+            'login_attempts_per_login' => NumberType::ofInt(
+                default: 30,
+                hint: __('Failed sign-ins of one login, from anywhere, before more are refused.'),
+            ),
+            'login_block_minutes' => NumberType::ofInt(
+                default: 15,
+                hint: __('How long failed sign-ins are remembered and refusals last.'),
+            ),
+        ],
+
         'dashboard' => [
             'max_rows_per_card' => NumberType::ofInt(
                 default: 10,

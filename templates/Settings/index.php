@@ -38,6 +38,11 @@ use Cake\Core\Plugin;
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
+                    __('Customer Portal Configuration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'core.customer_portal'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+                <?= $this->AuthLink->link(
                     __('Business Register Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.business_register'],
                     ['class' => 'side-nav-item'],

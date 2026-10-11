@@ -227,6 +227,27 @@ return function (RouteBuilder $routes): void {
             ],
         ]);
 
+        // What the customer portal asks about the customers signed in to it, see the controller.
+        foreach (
+            [
+                ['POST', '/customer-portal/login', 'login'],
+                ['GET', '/customer-portal/customer', 'customer'],
+                ['POST', '/customer-portal/consents', 'consents'],
+                ['POST', '/customer-portal/password', 'password'],
+                ['GET', '/customer-portal/invoices', 'invoices'],
+                ['GET', '/customer-portal/ip-addresses', 'ipAddresses'],
+                ['GET', '/customer-portal/identify', 'identify'],
+            ] as [$method, $path, $action]
+        ) {
+            $builder->connect($path, ['controller' => 'CustomerPortal', 'action' => $action, '_method' => $method]);
+        }
+        $builder->get(
+            '/customer-portal/invoices/{id}/download',
+            ['controller' => 'CustomerPortal', 'action' => 'invoiceDownload'],
+        )
+            ->setPatterns(['id' => '[0-9a-fA-F-]{36}'])
+            ->setPass(['id']);
+
         // Watcher NMS asks before it lets a place of the network go: this application names one
         // without a key to hold it by, so nothing here would stop the place from going.
         $builder->get(

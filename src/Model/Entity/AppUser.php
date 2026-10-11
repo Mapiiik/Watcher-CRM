@@ -117,6 +117,7 @@ class AppUser extends User
             'bookkeeper' => __('Bookkeeper'),
             'admin' => __('Admin'),
             'api' => __('API'),
+            'customer-portal' => __('Customer Portal'),
         ];
     }
 

@@ -212,6 +212,27 @@ $permissions = [
                 'search',
             ],
         ],
+        //the customer portal, which may ask only about the customers signed in to it
+        [
+            'role' => [
+                'customer-portal',
+            ],
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
+                'CustomerPortal',
+            ],
+            'action' => [
+                'login',
+                'customer',
+                'consents',
+                'password',
+                'invoices',
+                'invoiceDownload',
+                'ipAddresses',
+                'identify',
+            ],
+        ],
         //allow invoice download for API
         [
             'role' => [
