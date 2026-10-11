@@ -68,8 +68,11 @@ class CustomerPortalController extends AppController
             ->where(['Logins.login' => $login])
             ->first();
         $stored = $record?->get('password');
+        $verified = $record instanceof Login && is_string($stored)
+            ? Passwords::verify($password, $stored)
+            : Passwords::verifyUnknown($password);
 
-        if (!$record instanceof Login || !is_string($stored) || !Passwords::verify($password, $stored)) {
+        if (!$verified) {
             $throttle->failed($login, $ip);
             if ($record instanceof Login) {
                 $logins->updateAll(['last_denied' => DateTime::now(), 'last_denied_ip' => $ip], ['id' => $record->id]);

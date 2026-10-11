@@ -6,6 +6,7 @@ namespace App\Test\TestCase\CustomerPortal;
 use App\CustomerPortal\Passwords;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use ReflectionClassConstant;
 
 /**
  * App\CustomerPortal\Passwords Test Case
@@ -92,5 +93,19 @@ class PasswordsTest extends TestCase
         $this->assertTrue(Passwords::needsRehash($weaker));
         $this->assertTrue(Passwords::verify('correct horse', $bcrypt));
         $this->assertTrue(Passwords::needsRehash($bcrypt));
+    }
+
+    /**
+     * A login that does not exist costs one Argon2id verification at today's cost.
+     *
+     * @return void
+     */
+    public function testAnUnknownLoginCostsAsMuchAsAKnownOne(): void
+    {
+        $decoy = (new ReflectionClassConstant(Passwords::class, 'DECOY'))->getValue();
+
+        $this->assertIsString($decoy);
+        $this->assertStringStartsWith('$argon2id$', $decoy);
+        $this->assertFalse(Passwords::needsRehash($decoy), 'The decoy has to be hashed again with Passwords::OPTIONS.');
     }
 }

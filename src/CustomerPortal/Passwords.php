@@ -24,6 +24,12 @@ final class Passwords
     public const WRAPPED_PREFIX = '$sha1';
 
     /**
+     * An Argon2id hash of a random password nobody knows, verified for a login that does not exist.
+     */
+    private const DECOY = '$argon2id$v=19$m=65536,t=3,p=4$V1p0MVAxOWNiWVZvY1VSQg$'
+        . '9PYmypZ+gWqWF07UnBuEaNDpFrcDOqbV5ZhtvYbNgs4';
+
+    /**
      * Hashes a password the way it is stored.
      *
      * @param string $password The password as the customer types it.
@@ -62,6 +68,20 @@ final class Passwords
         }
 
         return password_verify($password, $stored);
+    }
+
+    /**
+     * Verifies a password of a login that does not exist, as long as a real one takes, so that the
+     * time of the answer does not tell which logins exist. Never matches.
+     *
+     * @param string $password The password as the customer typed it.
+     * @return false
+     */
+    public static function verifyUnknown(string $password): false
+    {
+        password_verify($password, self::DECOY);
+
+        return false;
     }
 
     /**
