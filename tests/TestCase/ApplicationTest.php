@@ -20,6 +20,7 @@ use App\Application;
 use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\MiddlewareQueue;
+use Cake\Http\ServerRequest;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -90,5 +91,26 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->current());
         $middleware->seek(2);
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->current());
+    }
+
+    /**
+     * Only an API request with a Bearer token counts as one from an API client, the only kind let
+     * past the CSRF check.
+     *
+     * @return void
+     * @link \App\Application::isBearerApiRequest()
+     */
+    public function testOnlyAnApiRequestWithABearerTokenIsFromAnApiClient(): void
+    {
+        $request = fn(string $url, string $authorization): ServerRequest => new ServerRequest([
+            'url' => $url,
+            'environment' => $authorization === '' ? [] : ['HTTP_AUTHORIZATION' => $authorization],
+        ]);
+
+        $this->assertTrue(Application::isBearerApiRequest($request('/api/customer-portal/login', 'Bearer key')));
+        $this->assertTrue(Application::isBearerApiRequest($request('/api/customer-portal/login', 'bearer key')));
+        $this->assertFalse(Application::isBearerApiRequest($request('/api/customer-portal/login', '')));
+        $this->assertFalse(Application::isBearerApiRequest($request('/api/customer-portal/login', 'Basic a2V5')));
+        $this->assertFalse(Application::isBearerApiRequest($request('/customers', 'Bearer key')));
     }
 }

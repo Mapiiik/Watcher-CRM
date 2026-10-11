@@ -32,6 +32,7 @@ use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Override;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Application setup class.
@@ -122,11 +123,30 @@ class Application extends BaseApplication
 
             // Cross Site Request Forgery (CSRF) Protection Middleware
             // https://book.cakephp.org/5/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
-            ->add(new CsrfProtectionMiddleware([
-                'httponly' => true,
-            ]));
+            ->add(
+                (new CsrfProtectionMiddleware([
+                    'httponly' => true,
+                ]))->skipCheckCallback(
+                    // an API client that names itself with a Bearer token has no cookie to forge
+                    fn(ServerRequestInterface $request): bool => self::isBearerApiRequest($request),
+                ),
+            );
 
         return $middlewareQueue;
+    }
+
+    /**
+     * Whether a request comes from an API client that names itself with a Bearer token.
+     *
+     * The scheme is matched in any letter case, as the token authenticator matches it.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
+     * @return bool
+     */
+    public static function isBearerApiRequest(ServerRequestInterface $request): bool
+    {
+        return str_starts_with($request->getUri()->getPath(), '/api/')
+            && stripos($request->getHeaderLine('Authorization'), 'Bearer ') === 0;
     }
 
     /**
