@@ -54,6 +54,9 @@ class LoginsTable extends AppTable
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
 
+        // the audit log says that a password changed, never what it is now
+        $this->getBehavior('AuditLog')->setConfig('sensitive', ['password']);
+
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER',

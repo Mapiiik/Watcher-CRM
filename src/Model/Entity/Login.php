@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Cake\Utility\Security;
+use App\CustomerPortal\Passwords;
 
 /**
  * Login Entity
@@ -60,7 +60,7 @@ class Login extends AppEntity
     ];
 
     /**
-     * SHA1 for password if value is set
+     * Stores the password hashed for the customer portal, see Passwords
      *
      * @param string $password Plaintext password
      * @return string|null
@@ -68,7 +68,7 @@ class Login extends AppEntity
     protected function _setPassword(string $password): ?string
     {
         if ($password !== '') {
-            return Security::hash($password, 'sha1');
+            return Passwords::hash($password);
         }
 
         return null;
