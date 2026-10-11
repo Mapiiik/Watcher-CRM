@@ -418,6 +418,14 @@ return [
                 default: 15,
                 hint: __('How long failed sign-ins are remembered and refusals last.'),
             ),
+            'password_min_length' => NumberType::ofInt(
+                default: 8,
+                hint: __('The shortest password a customer may set in the customer portal.'),
+            ),
+            'identify_per_minute' => NumberType::ofInt(
+                default: 30,
+                hint: __('Addresses a service may look up in a minute before more are refused.'),
+            ),
         ],
 
         'dashboard' => [

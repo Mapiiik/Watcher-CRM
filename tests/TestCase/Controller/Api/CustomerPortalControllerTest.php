@@ -9,12 +9,14 @@ use App\CustomerPortal\Tokens;
 use App\Model\Enum\LoginRights;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
+use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Settings\Utility\Settings;
 
 /**
  * App\Controller\Api\CustomerPortalController Test Case
@@ -65,6 +67,7 @@ class CustomerPortalControllerTest extends TestCase
         'app.Contracts',
         'app.IpAddresses',
         'plugin.Bookkeeping.Invoices',
+        'plugin.Settings.Settings',
     ];
 
     /**
@@ -103,6 +106,7 @@ class CustomerPortalControllerTest extends TestCase
         $this->assertSame(self::CUSTOMER_ID, $answer['customer']['id']);
         $this->assertSame(self::LOGIN_ID, $answer['login']['id']);
         $this->assertSame(LoginRights::User->value, $answer['login']['rights']);
+        $this->assertSame(8, $answer['password_min_length']);
         $this->assertSame(
             ['login_id' => self::LOGIN_ID, 'customer_id' => self::CUSTOMER_ID, 'expires' => $answer['expires']],
             Tokens::read($answer['token']),
@@ -316,6 +320,25 @@ class CustomerPortalControllerTest extends TestCase
     }
 
     /**
+     * A password shorter than the settings allow is refused, saying how long it has to be.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::password()
+     */
+    public function testAShortPasswordIsRefused(): void
+    {
+        $stored = $this->storedLogin()->get('password');
+        Settings::set('core.customer_portal.password_min_length', 10);
+
+        $this->asPortal($this->signIn(self::PASSWORD)['token']);
+        $this->post('/api/customer-portal/password', ['password' => 'too short']);
+
+        $this->assertResponseCode(422);
+        $this->assertSame(['status' => 'too_short', 'min_length' => 10], $this->answer());
+        $this->assertSame($stored, $this->storedLogin()->get('password'));
+    }
+
+    /**
      * Only the signed-in customer's invoices are listed.
      *
      * @return void
@@ -410,24 +433,68 @@ class CustomerPortalControllerTest extends TestCase
      */
     public function testAnAddressIsAnsweredWithWhoUsesIt(): void
     {
-        $this->asPortal();
+        $this->asService();
         $this->get('/api/customer-portal/identify?ip=192.168.11.11');
         $this->assertResponseOk();
         $customer = $this->answer()['customer'];
-        $this->assertSame(self::CUSTOMER_ID, $customer['id']);
+        $this->assertSame(
+            ['number', 'title', 'first_name', 'last_name', 'suffix', 'company', 'email', 'address'],
+            array_keys($customer),
+        );
         $this->assertSame('NETAIR, s.r.o.', $customer['company']);
         $this->assertArrayHasKey('last_name', $customer);
         $this->assertSame('customer@example.com', $customer['email']);
         $this->assertSame('Jablonec nad Jizerou', $customer['address']['city']);
 
-        $this->asPortal();
+        $this->asService();
         $this->get('/api/customer-portal/identify?ip=192.0.2.200');
         $this->assertResponseOk();
         $this->assertSame(['customer' => null], $this->answer());
 
-        $this->asPortal();
+        $this->asService();
         $this->get('/api/customer-portal/identify?ip=nowhere');
         $this->assertResponseCode(400);
+    }
+
+    /**
+     * A service asking about more addresses in a minute than the settings allow is refused.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::identify()
+     */
+    public function testAServiceGoingThroughAddressesIsRefused(): void
+    {
+        Settings::set('core.customer_portal.identify_per_minute', 2);
+        Chronos::setTestNow('2026-10-12 10:00:15');
+
+        try {
+            foreach (['192.0.2.1', '192.0.2.2'] as $ip) {
+                $this->asService();
+                $this->get('/api/customer-portal/identify?ip=' . $ip);
+                $this->assertResponseOk();
+            }
+            $this->asService();
+            $this->get('/api/customer-portal/identify?ip=192.168.11.11');
+            $this->assertResponseCode(429);
+            $this->assertResponseNotContains('NETAIR');
+        } finally {
+            Chronos::setTestNow(null);
+        }
+    }
+
+    /**
+     * The customer portal signs customers in but does not look up who uses an address.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::identify()
+     */
+    public function testThePortalDoesNotLookUpAddresses(): void
+    {
+        $this->asPortal();
+        $this->get('/api/customer-portal/identify?ip=192.168.11.11');
+
+        $this->assertRedirect();
+        $this->assertResponseNotContains('NETAIR');
     }
 
     /**
@@ -482,6 +549,18 @@ class CustomerPortalControllerTest extends TestCase
             $headers[CustomerPortalController::TOKEN_HEADER] = $customerToken;
         }
         $this->configRequest(['headers' => $headers]);
+    }
+
+    /**
+     * The next request goes out as a service that recognises customers by their address.
+     *
+     * @return void
+     */
+    private function asService(): void
+    {
+        $this->getTableLocator()->get('AppUsers')
+            ->updateAll(['role' => 'customer-identification'], ['id' => $this->firstId('AppUsers')]);
+        $this->asPortal();
     }
 
     /**

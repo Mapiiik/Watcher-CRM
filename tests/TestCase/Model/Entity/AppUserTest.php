@@ -83,6 +83,7 @@ class AppUserTest extends TestCase
             'admin',
             'api',
             'bookkeeper',
+            'customer-identification',
             'customer-portal',
             'customer-service-technician',
             'network-manager',

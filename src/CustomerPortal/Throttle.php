@@ -50,14 +50,14 @@ final class Throttle
     }
 
     /**
-     * A limit from the settings. Nought or less falls back to the default, as it would refuse
-     * every sign-in.
+     * A limit of the customer portal from the settings. Nought or less falls back to the default,
+     * as it would refuse everything.
      *
      * @param string $key The setting.
      * @param int $default Its default.
      * @return int
      */
-    private static function setting(string $key, int $default): int
+    public static function setting(string $key, int $default): int
     {
         $value = (int)Settings::get(self::SETTINGS_PATH . '.' . $key, $default);
 

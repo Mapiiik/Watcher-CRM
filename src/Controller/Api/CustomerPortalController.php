@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\CustomerPortal\Lookups;
 use App\CustomerPortal\Passwords;
 use App\CustomerPortal\Throttle;
 use App\CustomerPortal\Tokens;
@@ -15,6 +16,7 @@ use Bookkeeping\Service\BookkeepingService;
 use Cake\Chronos\ChronosDate;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\HttpException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\Http\Response;
@@ -111,6 +113,7 @@ class CustomerPortalController extends AppController
                 'rights' => $this->scalar($record->rights),
             ],
             'customer' => $this->customerSummary($record->customer),
+            'password_min_length' => self::passwordMinLength(),
         ]);
     }
 
@@ -189,6 +192,8 @@ class CustomerPortalController extends AppController
     /**
      * Sets a new password for the signed-in login.
      *
+     * A password shorter than the settings allow is answered `too_short` with 422 and the length.
+     *
      * @return void
      */
     public function password(): void
@@ -197,6 +202,13 @@ class CustomerPortalController extends AppController
         $password = (string)$this->getRequest()->getData('password');
         if ($password === '') {
             throw new BadRequestException('A password is required.');
+        }
+        $minLength = self::passwordMinLength();
+        if (mb_strlen($password) < $minLength) {
+            $this->setResponse($this->getResponse()->withStatus(422));
+            $this->answer(['status' => 'too_short', 'min_length' => $minLength]);
+
+            return;
         }
 
         $logins = $this->fetchTable('Logins');
@@ -268,11 +280,14 @@ class CustomerPortalController extends AppController
     }
 
     /**
-     * Who uses an ip address, for services that recognise a customer by where they come from.
+     * Who uses an ip address, for services that recognise a customer by where they come from,
+     * with only what such a service passes on. Answers `customer` null when nobody does.
      *
-     * Answers `customer` null when nobody does.
+     * Every lookup is logged, and a caller asking for more than the settings allow in a minute is
+     * refused, so that going through whole ranges shows and stays slow.
      *
      * @return void
+     * @throws \Cake\Http\Exception\HttpException With 429 over the limit.
      */
     public function identify(): void
     {
@@ -280,6 +295,19 @@ class CustomerPortalController extends AppController
         $ip = (string)$this->getRequest()->getQuery('ip');
         if (filter_var($ip, FILTER_VALIDATE_IP) === false) {
             throw new BadRequestException('An ip address is required.');
+        }
+
+        $caller = (string)($this->getRequest()->getAttribute('identity')['username'] ?? 'unknown');
+        $lookups = Lookups::fromSettings();
+        if (!$lookups->allow($caller)) {
+            Log::warning(sprintf(
+                'Customer portal: %s asked who uses %s, refused over %d lookups a minute',
+                $caller,
+                $ip,
+                $lookups->perMinute(),
+            ));
+
+            throw new HttpException('Too many lookups, try again in a minute.', 429);
         }
 
         $ipAddress = $this->fetchTable('IpAddresses')->find()
@@ -291,6 +319,12 @@ class CustomerPortalController extends AppController
             ->orderBy(['Customers.company' => 'ASC', 'Customers.last_name' => 'ASC', 'Customers.first_name' => 'ASC'])
             ->first();
         $customer = $ipAddress?->get('customer');
+        Log::info(sprintf(
+            'Customer portal: %s asked who uses %s: %s',
+            $caller,
+            $ip,
+            $customer instanceof Customer ? 'customer ' . $customer->number : 'nobody',
+        ));
         if (!$customer instanceof Customer) {
             $this->answer(['customer' => null]);
 
@@ -298,7 +332,7 @@ class CustomerPortalController extends AppController
         }
 
         $address = $customer->addresses[0] ?? null;
-        $this->answer(['customer' => $this->customerSummary($customer) + $this->fields($customer, [
+        $this->answer(['customer' => ['number' => $customer->number] + $this->fields($customer, [
             'title', 'first_name', 'last_name', 'suffix', 'company',
         ]) + [
             'email' => $customer->emails[0]->email ?? null,
@@ -323,6 +357,16 @@ class CustomerPortalController extends AppController
         }
 
         return $login;
+    }
+
+    /**
+     * The shortest password a customer may set.
+     *
+     * @return int
+     */
+    private static function passwordMinLength(): int
+    {
+        return Throttle::setting('password_min_length', 8);
     }
 
     /**

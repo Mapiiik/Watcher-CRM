@@ -118,6 +118,7 @@ class AppUser extends User
             'admin' => __('Admin'),
             'api' => __('API'),
             'customer-portal' => __('Customer Portal'),
+            'customer-identification' => __('Customer Identification'),
         ];
     }
 

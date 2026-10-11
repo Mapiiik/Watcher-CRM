@@ -230,6 +230,19 @@ $permissions = [
                 'invoices',
                 'invoiceDownload',
                 'ipAddresses',
+            ],
+        ],
+        //services that recognise a customer by the address they come from, such as a TV gateway
+        [
+            'role' => [
+                'customer-identification',
+            ],
+            'prefix' => 'Api',
+            'plugin' => null,
+            'controller' => [
+                'CustomerPortal',
+            ],
+            'action' => [
                 'identify',
             ],
         ],
