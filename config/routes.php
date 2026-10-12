@@ -235,7 +235,6 @@ return function (RouteBuilder $routes): void {
                 ['POST', '/customer-portal/consents', 'consents'],
                 ['POST', '/customer-portal/password', 'password'],
                 ['GET', '/customer-portal/invoices', 'invoices'],
-                ['GET', '/customer-portal/ip-addresses', 'ipAddresses'],
                 ['GET', '/customer-portal/identify', 'identify'],
             ] as [$method, $path, $action]
         ) {

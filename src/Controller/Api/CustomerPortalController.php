@@ -7,9 +7,15 @@ use App\CustomerPortal\Lookups;
 use App\CustomerPortal\Passwords;
 use App\CustomerPortal\Throttle;
 use App\CustomerPortal\Tokens;
+use App\Model\Entity\Billing;
+use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
+use App\Model\Entity\IpAddress;
+use App\Model\Entity\IpNetwork;
 use App\Model\Entity\Login;
 use App\Model\Enum\AddressType;
+use App\Model\Enum\IpAddressTypeOfUse;
+use App\Model\Enum\IpNetworkTypeOfUse;
 use BackedEnum;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Service\BookkeepingService;
@@ -20,8 +26,10 @@ use Cake\Http\Exception\HttpException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\Http\Response;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
+use Cake\ORM\Query\SelectQuery;
 use DateTimeInterface;
 use Settings\Utility\Settings;
 use Stringable;
@@ -118,8 +126,8 @@ class CustomerPortalController extends AppController
     }
 
     /**
-     * The signed-in customer's details, contacts, addresses and ip addresses, with the countries
-     * an address may be in.
+     * The signed-in customer's details, contacts, addresses and contracts with active services,
+     * with the countries an address may be in.
      *
      * @return void
      */
@@ -130,7 +138,6 @@ class CustomerPortalController extends AppController
             'Emails' => ['sort' => ['Emails.email' => 'ASC']],
             'Phones' => ['sort' => ['Phones.phone' => 'ASC']],
             'Addresses' => ['sort' => ['Addresses.type' => 'ASC']],
-            'IpAddresses' => ['Contracts', 'sort' => ['IpAddresses.ip_address' => 'ASC']],
         ]);
         assert($customer instanceof Customer);
 
@@ -151,7 +158,7 @@ class CustomerPortalController extends AppController
             'id', 'type', 'title', 'first_name', 'last_name', 'suffix', 'company', 'street', 'number', 'city',
             'zip', 'country_id',
         ]), $customer->addresses);
-        $details['ip_addresses'] = $this->ipAddressList($customer->ip_addresses);
+        $details['contracts'] = $this->contractList($customer->id);
 
         $countries = $this->fetchTable('Countries')->find('list')->orderBy(['Countries.name' => 'ASC'])->toArray();
 
@@ -262,24 +269,6 @@ class CustomerPortalController extends AppController
     }
 
     /**
-     * The signed-in customer's ip addresses with the contract each serves.
-     *
-     * @return void
-     */
-    public function ipAddresses(): void
-    {
-        $this->getRequest()->allowMethod(['get']);
-        $ipAddresses = $this->fetchTable('IpAddresses')->find()
-            ->contain(['Contracts'])
-            ->where(['IpAddresses.customer_id' => $this->signedIn()->customer_id])
-            ->orderBy(['IpAddresses.ip_address' => 'ASC'])
-            ->all()
-            ->toList();
-
-        $this->answer(['ip_addresses' => $this->ipAddressList($ipAddresses)]);
-    }
-
-    /**
      * Who uses an ip address, for services that recognise a customer by where they come from,
      * with only what such a service passes on. Answers `customer` null when nobody does.
      *
@@ -381,19 +370,59 @@ class CustomerPortalController extends AppController
     }
 
     /**
-     * The ip addresses with the number and the subscriber verification code of the contract each serves.
+     * The customer's contracts with active services: where each is installed, its subscriber
+     * verification code, the services billed on it today, and its ip addresses and networks
+     * without those of the operator's technology.
      *
-     * @param iterable<\Cake\Datasource\EntityInterface> $ipAddresses Ip addresses with their contracts.
+     * @param string $customerId The customer.
      * @return list<array<string, mixed>>
      */
-    private function ipAddressList(iterable $ipAddresses): array
+    private function contractList(string $customerId): array
     {
+        $today = Date::now();
+        $contracts = $this->fetchTable('Contracts')->find('withActiveServices')
+            ->contain([
+                'ServiceTypes',
+                'InstallationAddresses',
+                'Billings' => fn(SelectQuery $query): SelectQuery => $query
+                    ->contain(['Services'])
+                    ->where([
+                        'Billings.billing_from <=' => $today,
+                        'OR' => ['Billings.billing_until IS' => null, 'Billings.billing_until >=' => $today],
+                    ])
+                    ->orderBy(['Billings.billing_from' => 'ASC']),
+                'IpAddresses' => fn(SelectQuery $query): SelectQuery => $query
+                    ->where(['IpAddresses.type_of_use IN' => IpAddressTypeOfUse::customerCases()])
+                    ->orderBy(['IpAddresses.ip_address' => 'ASC']),
+                'IpNetworks' => fn(SelectQuery $query): SelectQuery => $query
+                    ->where(['IpNetworks.type_of_use IN' => IpNetworkTypeOfUse::customerCases()])
+                    ->orderBy(['IpNetworks.ip_network' => 'ASC']),
+            ])
+            ->where(['Contracts.customer_id' => $customerId])
+            ->orderBy(['Contracts.number' => 'ASC'])
+            ->all();
+
         $list = [];
-        foreach ($ipAddresses as $ipAddress) {
+        foreach ($contracts as $contract) {
+            assert($contract instanceof Contract);
+            $address = $contract->installation_address;
             $list[] = [
-                'ip_address' => (string)$ipAddress->get('ip_address'),
-                'contract_number' => $ipAddress->get('contract')?->get('number'),
-                'subscriber_verification_code' => $ipAddress->get('contract')?->get('subscriber_verification_code'),
+                'number' => $contract->number,
+                'service_type' => $contract->service_type?->name,
+                'subscriber_verification_code' => $contract->subscriber_verification_code,
+                'installation_address' => $address === null ? null : $this->fields($address, [
+                    'id', 'type', 'title', 'first_name', 'last_name', 'suffix', 'company', 'street', 'number',
+                    'city', 'zip', 'country_id',
+                ]),
+                'services' => array_map(fn(Billing $billing): string => $billing->name, $contract->billings),
+                'ip_addresses' => array_map(
+                    fn(IpAddress $ipAddress): string => (string)$ipAddress->ip_address,
+                    $contract->ip_addresses,
+                ),
+                'ip_networks' => array_map(
+                    fn(IpNetwork $ipNetwork): string => (string)$ipNetwork->ip_network,
+                    $contract->ip_networks,
+                ),
             ];
         }
 

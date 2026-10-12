@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller\Api;
 use App\Controller\Api\CustomerPortalController;
 use App\CustomerPortal\Passwords;
 use App\CustomerPortal\Tokens;
+use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\LoginRights;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
@@ -43,6 +44,8 @@ class CustomerPortalControllerTest extends TestCase
 
     private const OTHER_CUSTOMER_ID = 'ae128a49-82fd-4b80-921f-f11af75fd113';
 
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
     private const INVOICE_ID = 'dbcc7efa-8ae3-4bf9-afc5-273bd3a843f7';
 
     /**
@@ -64,8 +67,12 @@ class CustomerPortalControllerTest extends TestCase
         'app.Commissions',
         'app.ContractStates',
         'app.ServiceTypes',
+        'app.ConnectionProfiles',
+        'app.Services',
         'app.Contracts',
+        'app.Billings',
         'app.IpAddresses',
+        'app.IpNetworks',
         'plugin.Bookkeeping.Invoices',
         'plugin.Settings.Settings',
     ];
@@ -265,9 +272,51 @@ class CustomerPortalControllerTest extends TestCase
         $this->assertSame(['customer@example.com'], array_column($answer['customer']['emails'], 'email'));
         $this->assertSame(['+420 601 234 567'], array_column($answer['customer']['phones'], 'phone'));
         $this->assertSame(['Jablonec nad Jizerou'], array_column($answer['customer']['addresses'], 'city'));
-        $this->assertSame(['192.168.11.11'], array_column($answer['customer']['ip_addresses'], 'ip_address'));
+        $this->assertArrayNotHasKey('ip_addresses', $answer['customer']);
         $this->assertArrayHasKey('b490f1c9-ff7e-430a-bfb0-f400878e1617', $answer['countries']);
         $this->assertArrayNotHasKey('password', $answer['customer']);
+    }
+
+    /**
+     * The contracts with active services come with where they are installed, the services billed
+     * today and the customer's own ip addresses and networks, not those of the technology.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::customer()
+     */
+    public function testTheCustomersContractsAreAnsweredWithTheirServicesAndAddresses(): void
+    {
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $states = $this->getTableLocator()->get('ContractStates');
+        $ended = $states->saveOrFail($states->newEntity([
+            'name' => 'Ended',
+            'color' => '#000000',
+            'active_services' => false,
+            'billed' => false,
+            'blocked' => false,
+        ], ['accessibleFields' => ['*' => true]]));
+        $contracts->updateAll(['contract_state_id' => $ended->id], ['number' => 'The other contract']);
+        $ipAddresses = $this->getTableLocator()->get('IpAddresses');
+        $ipAddresses->saveOrFail($ipAddresses->newEntity([
+            'ip_address' => '192.168.11.1',
+            'type_of_use' => IpAddressTypeOfUse::TechnologyManually,
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+        ], ['accessibleFields' => ['*' => true]]));
+
+        $this->asPortal($this->signIn(self::PASSWORD)['token']);
+        $this->get('/api/customer-portal/customer');
+
+        $this->assertResponseOk();
+        $contractsAnswered = $this->answer()['customer']['contracts'];
+        $this->assertSame(['Lorem ipsum dolor sit amet'], array_column($contractsAnswered, 'number'));
+        $contract = $contractsAnswered[0];
+        $this->assertSame('Lorem ipsum dolor sit amet', $contract['service_type']);
+        $this->assertSame('Lorem ipsum dolor sit amet', $contract['subscriber_verification_code']);
+        $this->assertSame('Jablonec nad Jizerou', $contract['installation_address']['city']);
+        $this->assertSame(['Sed do eiusmod tempor'], $contract['services']);
+        $this->assertSame(['192.168.11.11'], $contract['ip_addresses']);
+        $this->assertSame(['10.0.0.0/8'], $contract['ip_networks']);
     }
 
     /**
@@ -400,29 +449,6 @@ class CustomerPortalControllerTest extends TestCase
             rmdir(dirname($file));
             rmdir($dataRoot);
         }
-    }
-
-    /**
-     * The customer's ip addresses are listed with the contract each serves.
-     *
-     * @return void
-     * @link \App\Controller\Api\CustomerPortalController::ipAddresses()
-     */
-    public function testTheCustomersIpAddressesAreListed(): void
-    {
-        $this->asPortal($this->signIn(self::PASSWORD)['token']);
-        $this->get('/api/customer-portal/ip-addresses');
-
-        $this->assertResponseOk();
-        $this->assertSame(
-            [[
-                'ip_address' => '192.168.11.11',
-                'contract_number' => 'Lorem ipsum dolor sit amet',
-                'subscriber_verification_code' => $this->getTableLocator()->get('Contracts')
-                    ->get('7f76dc3f-a11b-4109-958b-4b0382545a66')->get('subscriber_verification_code'),
-            ]],
-            $this->answer()['ip_addresses'],
-        );
     }
 
     /**
