@@ -61,7 +61,7 @@ class Application extends BaseApplication
         }
 
         // CakeDC/users
-        Configure::write('Users.config', ['users']);
+        Configure::write('Users.config', ['Access.users']);
 
         // Set time and date format where the configuration names one
         $timeFormat = Configure::read('App.timeFormat');

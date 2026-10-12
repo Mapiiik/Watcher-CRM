@@ -64,6 +64,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
+            "Access\\": "plugins/Access/src/",
             "App\\": "src/",
             "Bookkeeping\\": "plugins/Bookkeeping/src/",
             "Dashboard\\": "plugins/Dashboard/src/",
@@ -77,6 +78,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Access\\Test\\": "plugins/Access/tests/",
             "App\\Test\\": "tests/",
             "Bookkeeping\\Test\\": "plugins/Bookkeeping/tests/",
             "Dashboard\\Test\\": "plugins/Dashboard/tests/",

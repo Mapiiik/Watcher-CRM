@@ -32,6 +32,9 @@ return [
     // CakeDC/users
     'CakeDC/Users' => [],
 
+    // Signing in, shared by the applications (after CakeDC/Users, whose configuration it adjusts)
+    'Access' => [],
+
     // Persisting audit log
     'AuditStash' => [],
 

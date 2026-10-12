@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\AppUser $user
  * @var bool $validatePassword
+ * @var int $passwordMinLength
  */
 
 ?>
@@ -37,9 +38,16 @@
                 <?php endif; ?>
                 <?= $this->Form->control('password', [
                     'type' => 'password',
+                    'id' => 'new-password',
                     'required' => true,
                     'label' => __d('app_users', 'New password'),
+                    'help' => __d(
+                        'access',
+                        'At least {0} characters, not the username or the e-mail and not a common password.',
+                        $passwordMinLength,
+                    ),
                 ]); ?>
+                <?= $this->User->addPasswordMeter() ?>
                 <?= $this->Form->control('password_confirm', [
                     'type' => 'password',
                     'required' => true,
@@ -47,7 +55,7 @@
                 ]); ?>
 
             </fieldset>
-            <?= $this->Form->button(__d('app_users', 'Submit')); ?>
+            <?= $this->Form->button(__d('app_users', 'Submit'), ['id' => 'btn-submit']); ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
