@@ -319,7 +319,7 @@ return [
                         Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
 
                         Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím, zda jste odsouhlasili, že je chcete dostávat.
-                        Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
+                        Potřebné souhlasy je možné udělit v sekci Moje údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
                         Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/
 
                         {company_name}
@@ -347,7 +347,7 @@ return [
                         Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
 
                         Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím, zda jste odsouhlasili, že je chcete dostávat.
-                        Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
+                        Potřebné souhlasy je možné udělit v sekci Moje údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
                         Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/
 
                         {company_name}
@@ -375,7 +375,7 @@ return [
                         Volat můžete od pondělí do pátku mezi 08:00-12:00 a 13:00-16:00.
 
                         Pokud Vám nepřichází faktury do emailu, zkontrolujte si prosím, zda jste odsouhlasili, že je chcete dostávat.
-                        Potřebné souhlasy je možné udělit v sekci Uživatelské údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
+                        Potřebné souhlasy je možné udělit v sekci Moje údaje, po přihlášení do Uživatelského portálu: {user_portal_url}
                         Pokud nemáte přihlašovací údaje, můžete si je vyžádat zde: https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/
 
                         {company_name}
