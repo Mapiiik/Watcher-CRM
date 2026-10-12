@@ -19,3 +19,14 @@ they show fields that only the application has.
 
 Load the plugin after `CakeDC/Users`. What differs between installations comes from the
 environment, not from this plugin.
+
+## Settings, log and cache
+
+The rules for passwords and for failed sign-ins are the settings block `access.security`.
+
+Signing in, failures and refusals are written to the log scope `auth`. Unless the application
+configures a log of that name, they go to syslog with the facility `auth`, under the name
+`watcher-` followed by `APP_NAME`. Passwords, codes and tokens are never written.
+
+Failed sign-ins are counted in the cache `login_throttle`. Where an installation runs on more
+than one server, the cache has to be shared by all of them, such as one Redis database.

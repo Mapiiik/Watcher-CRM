@@ -3,11 +3,16 @@ declare(strict_types=1);
 
 namespace Access\Test\TestCase\Controller;
 
+use Access\Authentication\LoginThrottle;
 use Access\Controller\UsersController;
 use Access\Test\TestCase\AccountsTrait;
+use Cake\Cache\Cache;
 use Cake\Core\Configure;
+use Cake\Log\Engine\ArrayLog;
+use Cake\Log\Log;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -27,6 +32,31 @@ class UsersControllerTest extends TestCase
     protected array $fixtures = [
         'app.AppUsers',
     ];
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Cache::clear(LoginThrottle::CACHE);
+        Log::drop('auth');
+        Log::setConfig('auth', ['className' => ArrayLog::class, 'scopes' => ['auth']]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        Log::drop('auth');
+        Cache::clear(LoginThrottle::CACHE);
+
+        parent::tearDown();
+    }
 
     /**
      * The sign-in page is there for anybody.
@@ -115,6 +145,73 @@ class UsersControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains('The password has to have at least 17 characters.');
+    }
+
+    /**
+     * After too many failures an account is refused from that address for a while, even with the
+     * right password, and the log tells each failure and the refusal apart.
+     *
+     * @return void
+     */
+    public function testTooManyFailuresRefuseEvenTheRightPassword(): void
+    {
+        $this->addAccount();
+
+        for ($i = 0; $i < 5; $i++) {
+            $this->enableCsrfToken();
+            $this->post('/login', ['username' => 'jnovak', 'password' => 'Wrong password ' . $i]);
+            $this->assertNoRedirect();
+        }
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'jnovak', 'password' => 'Kopr na zahrade 7x']);
+
+        $this->assertNoRedirect();
+        $this->assertResponseContains('Too many failed sign-ins.');
+        /** @var \Cake\Log\Engine\ArrayLog $log */
+        $log = Log::engine('auth');
+        $lines = $log->read();
+        $this->assertCount(6, $lines);
+        $this->assertStringContainsString(
+            'sign-in failed user="jnovak" reason="wrong username or password"',
+            $lines[0],
+        );
+        $this->assertStringContainsString('sign-in blocked user="jnovak"', $lines[5]);
+        $this->assertStringNotContainsString('Wrong password', implode("\n", $lines));
+    }
+
+    /**
+     * A successful sign-in is logged with how it was made.
+     *
+     * @return void
+     */
+    public function testSigningInIsLogged(): void
+    {
+        $this->addAccount();
+
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'jnovak', 'password' => 'Kopr na zahrade 7x']);
+
+        $this->assertRedirect('/');
+        /** @var \Cake\Log\Engine\ArrayLog $log */
+        $log = Log::engine('auth');
+        $this->assertSame(['info: signed in user="jnovak" with="FormAuthenticator"'], $log->read());
+    }
+
+    /**
+     * Nothing signs in without a password and without the second factor: no cookie remembering
+     * somebody, no link sent by e-mail. A session ends after eight hours idle.
+     *
+     * @return void
+     */
+    public function testNoWayInSkipsThePasswordAndTheSessionEndsAfterEightHours(): void
+    {
+        $this->get('/login');
+
+        $this->assertResponseNotContains('remember_me');
+        $authenticators = array_keys((array)Configure::read('Auth.Authenticators'));
+        $this->assertNotContains('Cookie', $authenticators);
+        $this->assertNotContains('OneTimeToken', $authenticators);
+        $this->assertSame(480, Configure::read('Session.timeout'));
     }
 
     /**

@@ -22,6 +22,10 @@ return [
     // the identifier is registered under its name without the plugin
     'Auth.PasswordRehash.authenticators' => ['Form' => 'Password'],
     'Users.Registration.active' => false,
+    // signing in again after eight hours idle is enough; a cookie that signs in without the
+    // password, or a link sent by e-mail, would also skip the second factor
+    'Users.RememberMe.active' => false,
+    'OneTimeLogin.enabled' => false,
     'Users.Superuser.allowedToChangePasswords' => true,
     'Users.Superuser.allowedToChangeSettings' => true,
     // a profile shows what the account is, so only its owner opens it

@@ -30,6 +30,21 @@ return [
                     . 'and the most common passwords.',
                 ),
             ),
+            'login_attempts' => NumberType::ofInt(
+                default: 5,
+                hint: __d(
+                    'access',
+                    'Failed sign-ins of one account from one address before more are refused for a while.',
+                ),
+            ),
+            'login_attempts_per_address' => NumberType::ofInt(
+                default: 20,
+                hint: __d('access', 'Failed sign-ins from one address, whatever the account, before more are refused.'),
+            ),
+            'login_block_minutes' => NumberType::ofInt(
+                default: 15,
+                hint: __d('access', 'How long failed sign-ins are remembered and refusals last.'),
+            ),
         ],
     ],
 ];
