@@ -930,7 +930,7 @@ return [
                 'declaration_text' => <<<TEXT
                     Já, níže podepsaný:
 
-                    1. Zaškrtnutím níže volím, které zprávy chci dostávat na své kontaktní údaje uvedené výše (e-mail, telefon a adresy). U obchodních sdělení tím Správci zároveň dávám souhlas s jejich zasíláním a se zpracováním svých kontaktních údajů pro tento účel.
+                    1. Zaškrtnutím níže volím, které zprávy si přeji dostávat na své kontaktní údaje uvedené výše (e-mail, telefon a adresy). U obchodních sdělení tím Správci zároveň dávám souhlas s jejich zasíláním a se zpracováním svých kontaktních údajů pro tento účel.
                     Informace o změnách služby, jejích podmínek a ceny mi Správce pošle, i když nic nezaškrtnu. Vyúčtování najdu vždy také v Uživatelském portálu Správce.
 
                     2. Volbu i souhlas mohu kdykoli změnit nebo odvolat, a to stejně, jako jsem je udělil, nebo v Uživatelském portálu Správce. Odvolání nemá vliv na zákonnost zpracování před ním. Obchodní sdělení mohu odmítnout také přímo v každém z nich.
