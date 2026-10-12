@@ -271,6 +271,7 @@ class CustomerPortalControllerTest extends TestCase
         $this->assertSame('NETAIR, s.r.o.', $answer['customer']['company']);
         $this->assertSame(['customer@example.com'], array_column($answer['customer']['emails'], 'email'));
         $this->assertSame(['+420 601 234 567'], array_column($answer['customer']['phones'], 'phone'));
+        $this->assertIsBool($answer['customer']['phones'][0]['use_for_outages']);
         $this->assertSame(['Jablonec nad Jizerou'], array_column($answer['customer']['addresses'], 'city'));
         $this->assertArrayNotHasKey('ip_addresses', $answer['customer']);
         $this->assertArrayHasKey('b490f1c9-ff7e-430a-bfb0-f400878e1617', $answer['countries']);

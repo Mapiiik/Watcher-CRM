@@ -150,10 +150,9 @@ class CustomerPortalController extends AppController
         $details['emails'] = array_map(fn(EntityInterface $email): array => $this->fields($email, [
             'id', 'email', 'use_for_billing', 'use_for_outages', 'use_for_commercial',
         ]), $customer->emails);
-        $details['phones'] = array_map(
-            fn(EntityInterface $phone): array => $this->fields($phone, ['id', 'phone']),
-            $customer->phones,
-        );
+        $details['phones'] = array_map(fn(EntityInterface $phone): array => $this->fields($phone, [
+            'id', 'phone', 'use_for_billing', 'use_for_outages', 'use_for_commercial',
+        ]), $customer->phones);
         $details['addresses'] = array_map(fn(EntityInterface $address): array => $this->fields($address, [
             'id', 'type', 'title', 'first_name', 'last_name', 'suffix', 'company', 'street', 'number', 'city',
             'zip', 'country_id',
