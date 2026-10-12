@@ -67,7 +67,7 @@ return [
             'registry_clause' => 'zápis v obchodním rejstříku: Krajský soud v Hradci Králové, oddíl C, vložka 22450',
 
             'price_list_url' => 'https://netair.cz/cenik-pripojeni/',
-            'user_portal_url' => 'https://nms.netair.cz/netair/',
+            'user_portal_url' => 'https://portal.netair.cz/',
 
             'bank_name' => 'Komerční banka, a.s.',
             'bank_account_number' => '207385091/0100',
@@ -625,7 +625,7 @@ return [
                             Uživatel je srozuměn se skutečností, že aktuální znění těchto Dokumentů, kterými se tato Smlouva řídí, je vždy dostupné na:
                             <ul>
                                 <li>poskytovatelových webových stránkách: <u>https://netair.cz</u></li>
-                                <li>ke dni uzavření této smlouvy konkrétně v této sekci: <u>https://netair.cz/internet/vseobecne-informace</u></li>
+                                <li>ke dni uzavření této smlouvy konkrétně v této sekci: <u>https://netair.cz/aktualni-dokumenty/</u></li>
                             </ul>
                             HTML,
                         // Said out loud on the paper, because it is what these sections are for:
@@ -676,7 +676,7 @@ return [
 
                         'portal_access_html' => <<<HTML
                             <strong>Přístup do Uživatelského portálu je možné zřídit na Webu Poskytovatele:</strong><br>
-                            <u>https://netair.cz/internet/uzivatelsky-portal</u>
+                            <u>https://netair.cz/podpora/zrizeni-pristupu-do-uzivatelskeho-portalu/</u>
                             HTML,
 
                         'connection_point_state_text' => <<<TEXT
@@ -919,7 +919,7 @@ return [
                         hint: __('Documents the summary points the customer to.'),
                     ),
 
-                    'other_information_note' => 'Aktuální znění těchto dokumentů je vždy dostupné na https://netair.cz, ke dni uzavření Smlouvy konkrétně na https://netair.cz/internet/vseobecne-informace.',
+                    'other_information_note' => 'Aktuální znění těchto dokumentů je vždy dostupné na https://netair.cz, ke dni uzavření Smlouvy konkrétně na https://netair.cz/aktualni-dokumenty/.',
                 ],
             ],
 
@@ -943,7 +943,7 @@ return [
                         c) jaká mám práva, včetně práva vznést námitku a podat stížnost u Úřadu pro ochranu osobních údajů
                         d) jak kontaktovat pověřence pro ochranu osobních údajů
 
-                    Aktuální znění Zásad zpracování osobních údajů je vždy k dispozici na https://netair.cz, ke dni podpisu konkrétně na https://netair.cz/internet/vseobecne-informace.
+                    Aktuální znění Zásad zpracování osobních údajů je vždy k dispozici na https://netair.cz, ke dni podpisu konkrétně na https://netair.cz/aktualni-dokumenty/.
                     TEXT,
 
                 'checkboxes' => [
