@@ -24,6 +24,19 @@ $user = ${$tableAlias};
                     'class' => 'side-nav-item',
                 ],
             ) ?>
+            <?php if ($user->secret) : ?>
+                <?= $this->Form->postLink(
+                    __d('access', 'Reset One-Time Codes'),
+                    ['action' => 'resetOneTimePasswordAuthenticator', $user->id],
+                    [
+                        'confirm' => __d(
+                            'access',
+                            'The account will have to set its authenticator app up again. Reset?',
+                        ),
+                        'class' => 'side-nav-item',
+                    ],
+                ) ?>
+            <?php endif; ?>
             <?= $this->Html->link(
                 __d('app_users', 'List Users'),
                 ['action' => 'index'],

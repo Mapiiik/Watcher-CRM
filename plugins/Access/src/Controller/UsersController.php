@@ -6,6 +6,7 @@ namespace Access\Controller;
 use Access\Authentication\AuthLog;
 use Access\Authentication\FormAuthenticator;
 use Access\Authentication\SecurityPolicy;
+use Access\Controller\Trait\OneTimePasswordTrait;
 use App\Controller\AppController;
 use ArrayAccess;
 use Cake\Core\Configure;
@@ -15,7 +16,6 @@ use Cake\Http\Exception\NotFoundException;
 use CakeDC\Users\Controller\Traits\CustomUsersTableTrait;
 use CakeDC\Users\Controller\Traits\LinkSocialTrait;
 use CakeDC\Users\Controller\Traits\LoginTrait;
-use CakeDC\Users\Controller\Traits\OneTimePasswordVerifyTrait;
 use CakeDC\Users\Controller\Traits\PasswordManagementTrait;
 use CakeDC\Users\Controller\Traits\ProfileTrait;
 use CakeDC\Users\Controller\Traits\ReCaptchaTrait;
@@ -28,7 +28,7 @@ use Override;
  *
  * Each application extends this as its `AppUsersController`, which is what the CakeDC/Users
  * configuration and the permissions name. Registration, signing in by a link sent by e-mail and
- * the second factors other than TOTP are left out, so their actions do not exist.
+ * the second factors other than one-time codes are left out, so their actions do not exist.
  *
  * @property \Access\Model\Table\UsersTable $Users
  * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
@@ -41,12 +41,15 @@ class UsersController extends AppController
     use LoginTrait {
         login as protected loginWithForm;
     }
-    use OneTimePasswordVerifyTrait;
+    use OneTimePasswordTrait;
     use PasswordManagementTrait {
+        OneTimePasswordTrait::resetOneTimePasswordAuthenticator insteadof PasswordManagementTrait;
         changePassword as protected changePasswordOfAccount;
         validate as protected validateToken;
     }
-    use ProfileTrait;
+    use ProfileTrait {
+        profile as protected profileOfAccount;
+    }
     use ReCaptchaTrait;
     use SimpleCrudTrait;
 
@@ -60,7 +63,12 @@ class UsersController extends AppController
     {
         parent::initialize();
 
-        $this->loadComponent('CakeDC/Users.Setup');
+        // what CakeDC's Setup component loads, without its component for one-time codes, which wants
+        // a library this plugin does without
+        $authentication = (array)Configure::read('Auth.AuthenticationComponent');
+        unset($authentication['config']);
+        $this->loadComponent('Authentication.Authentication', $authentication);
+        $this->loadComponent('Authorization.Authorization', (array)Configure::read('Auth.AuthorizationComponent'));
 
         if ($this->components()->has('FormProtection')) {
             $this->FormProtection->setConfig('unlockedActions', ['login']);
@@ -85,7 +93,26 @@ class UsersController extends AppController
     }
 
     /**
-     * Logs who signed in, from where and how.
+     * The profile of the account signed in, with how many of its recovery codes are left.
+     *
+     * @param string|null $id Ignored, as a profile is shown only to its owner.
+     * @return \Cake\Http\Response|null
+     */
+    public function profile(?string $id = null)
+    {
+        $response = $this->profileOfAccount($id);
+
+        $user = $this->viewBuilder()->getVar('user');
+        if ($user instanceof EntityInterface) {
+            $this->set('recoveryCodesLeft', $this->recoveryCodesTable()->left((string)$user->get('id')));
+        }
+
+        return $response;
+    }
+
+    /**
+     * Logs who signed in, from where and how, and sends somebody who has just set their app up to
+     * the recovery codes made for them.
      *
      * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event The event.
      * @param \ArrayAccess<string, mixed>|array<string, mixed> $user The account.
@@ -100,6 +127,10 @@ class UsersController extends AppController
             'ip' => AuthLog::address($this->getRequest()),
             'with' => $provider !== null ? namespaceSplit($provider::class)[1] : null,
         ]);
+
+        if ($this->getRequest()->getSession()->check(self::recoveryCodesKey())) {
+            $event->setResult(['action' => 'recoveryCodes']);
+        }
     }
 
     /**

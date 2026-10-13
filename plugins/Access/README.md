@@ -28,5 +28,10 @@ Signing in, failures and refusals are written to the log scope `auth`. Unless th
 configures a log of that name, they go to syslog with the facility `auth`, under the name
 `watcher-` followed by `APP_NAME`. Passwords, codes and tokens are never written.
 
+Signing in asks for a one-time code from an authenticator app where `access.security` requires
+it of the account, or where its owner set the app up of their own accord. The codes are TOTP of
+RFC 6238, made here; the QR code is drawn by `tecnickcom/tc-lib-barcode`, so the secret goes to no
+other service. A code is accepted once. Ten recovery codes stand in for the phone, each once.
+
 Failed sign-ins are counted in the cache `login_throttle`. Where an installation runs on more
 than one server, the cache has to be shared by all of them, such as one Redis database.

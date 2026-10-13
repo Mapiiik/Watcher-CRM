@@ -39,6 +39,7 @@
         "mapik/pohoda-xml": "^1.25",
         "mlocati/ip-lib": "^1.22",
         "mobiledetect/mobiledetectlib": "^4.10",
+        "tecnickcom/tc-lib-barcode": "^2.16",
         "tecnickcom/tc-lib-pdf": "^8"
     },
     "require-dev": {

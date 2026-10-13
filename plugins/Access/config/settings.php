@@ -30,6 +30,14 @@ return [
                     . 'and the most common passwords.',
                 ),
             ),
+            'totp_required' => new BoolType(
+                default: false,
+                hint: __d('access', 'Everybody signs in with a one-time code from an authenticator app.'),
+            ),
+            'totp_required_high_security' => new BoolType(
+                default: false,
+                hint: __d('access', 'Accounts held to the stricter rules sign in with a one-time code.'),
+            ),
             'login_attempts' => NumberType::ofInt(
                 default: 5,
                 hint: __d(

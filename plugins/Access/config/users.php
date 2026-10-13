@@ -8,6 +8,8 @@
 
 use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\FormAuthenticator;
+use Access\Authentication\TwoFactorChecker;
+use Cake\Core\Configure;
 
 return [
     'Users.controller' => 'AppUsers',
@@ -22,6 +24,14 @@ return [
     // the identifier is registered under its name without the plugin
     'Auth.PasswordRehash.authenticators' => ['Form' => 'Password'],
     'Users.Registration.active' => false,
+    // one-time codes from an authenticator app, asked for where the settings or the account say so
+    'OneTimePasswordAuthenticator.login' => true,
+    'OneTimePasswordAuthenticator.checker' => TwoFactorChecker::class,
+    // what the authenticator app calls the application
+    'OneTimePasswordAuthenticator.issuer' => parse_url((string)Configure::read('App.fullBaseUrl'), PHP_URL_HOST)
+        ?: env('APP_NAME', 'Watcher'),
+    // security keys and passkeys are left to the identity provider
+    'Webauthn2fa.enabled' => false,
     // signing in again after eight hours idle is enough; a cookie that signs in without the
     // password, or a link sent by e-mail, would also skip the second factor
     'Users.RememberMe.active' => false,

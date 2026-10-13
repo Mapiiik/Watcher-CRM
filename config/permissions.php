@@ -12,7 +12,6 @@
 use App\Model\Enum\DocumentVariant;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Hash;
 use Cake\Validation\Validation;
 
 /*
@@ -107,21 +106,13 @@ $permissions = [
                 'linkSocial',
                 'callbackLinkSocial',
                 'userSettings',
+                // everybody looks after their own one-time codes; taking them away from an account
+                // (resetOneTimePasswordAuthenticator) is left to the admins
+                'oneTimePassword',
+                'disableOneTimePassword',
+                'newRecoveryCodes',
+                'recoveryCodes',
             ],
-        ],
-        [
-            'role' => '*',
-            'plugin' => null,
-            'controller' => 'AppUsers',
-            'action' => 'resetOneTimePasswordAuthenticator',
-            'allowed' => function (array $user, $role, ServerRequest $request) {
-                $userId = Hash::get($request->getAttribute('params'), 'pass.0');
-                if (!empty($userId) && !empty($user)) {
-                    return $userId === $user['id'];
-                }
-
-                return false;
-            },
         ],
         //the root is where everybody arrives and is only ever a redirect, so no role may be
         //stopped at it - the page it then sends them to is what gets checked, there
