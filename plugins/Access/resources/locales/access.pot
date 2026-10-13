@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 21:46+0200\n"
+"POT-Creation-Date: 2026-10-13 22:01+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -204,7 +204,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/api_token.php:10
 #: ./plugins/Access/templates/Users/change_password.php:13
 #: ./plugins/Access/templates/Users/edit.php:10
-#: ./plugins/Access/templates/Users/index.php:30
+#: ./plugins/Access/templates/Users/index.php:29
 #: ./plugins/Access/templates/Users/one_time_password.php:11
 #: ./plugins/Access/templates/Users/profile.php:11
 #: ./plugins/Access/templates/Users/view.php:10
@@ -223,9 +223,9 @@ msgstr ""
 msgid "Add User"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/add.php:35
+#: ./plugins/Access/templates/Users/add.php:34
 #: ./plugins/Access/templates/Users/change_password.php:57
-#: ./plugins/Access/templates/Users/edit.php:46
+#: ./plugins/Access/templates/Users/edit.php:45
 #: ./plugins/Access/templates/Users/request_reset_password.php:15
 msgid "Submit"
 msgstr ""
@@ -235,7 +235,7 @@ msgid "View User"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/api_token.php:20
-#: ./plugins/Access/templates/Users/view.php:111
+#: ./plugins/Access/templates/Users/view.php:110
 msgid "API Key"
 msgstr ""
 
@@ -273,12 +273,12 @@ msgid "Confirm password"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/edit.php:12
-#: ./plugins/Access/templates/Users/index.php:59
+#: ./plugins/Access/templates/Users/index.php:57
 msgid "Delete"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/edit.php:15
-#: ./plugins/Access/templates/Users/index.php:61
+#: ./plugins/Access/templates/Users/index.php:59
 #: ./plugins/Access/templates/Users/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
@@ -297,40 +297,40 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
+#: ./plugins/Access/templates/Users/index.php:39
 #: ./plugins/Access/templates/Users/index.php:40
 #: ./plugins/Access/templates/Users/index.php:41
-#: ./plugins/Access/templates/Users/index.php:42
 #: ./plugins/Access/templates/Users/view.php:95
-#: ./plugins/Access/templates/Users/view.php:100
-#: ./plugins/Access/templates/Users/view.php:104
-#: ./plugins/Access/templates/Users/view.php:150
+#: ./plugins/Access/templates/Users/view.php:99
+#: ./plugins/Access/templates/Users/view.php:103
+#: ./plugins/Access/templates/Users/view.php:149
 msgid "Yes"
 msgstr ""
 
+#: ./plugins/Access/templates/Users/index.php:39
 #: ./plugins/Access/templates/Users/index.php:40
 #: ./plugins/Access/templates/Users/index.php:41
-#: ./plugins/Access/templates/Users/index.php:42
 #: ./plugins/Access/templates/Users/view.php:95
-#: ./plugins/Access/templates/Users/view.php:100
-#: ./plugins/Access/templates/Users/view.php:104
-#: ./plugins/Access/templates/Users/view.php:150
+#: ./plugins/Access/templates/Users/view.php:99
+#: ./plugins/Access/templates/Users/view.php:103
+#: ./plugins/Access/templates/Users/view.php:149
 msgid "No"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:50
+#: ./plugins/Access/templates/Users/index.php:48
 msgid "View"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:54
+#: ./plugins/Access/templates/Users/index.php:52
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:64
+#: ./plugins/Access/templates/Users/index.php:62
 #: ./plugins/Access/templates/Users/profile.php:13
 msgid "Change Password"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:69
+#: ./plugins/Access/templates/Users/index.php:67
 #: ./plugins/Access/templates/Users/profile.php:18
 msgid "User Settings"
 msgstr ""
@@ -342,7 +342,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/login.php:11
 #: ./plugins/Access/templates/Users/profile.php:29
 #: ./plugins/Access/templates/Users/view.php:74
-#: ./plugins/Access/templates/Users/view.php:140
+#: ./plugins/Access/templates/Users/view.php:139
 #: ./plugins/Access/templates/element/social_accounts.php:23
 msgid "Username"
 msgstr ""
@@ -394,7 +394,7 @@ msgid "Role"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/profile.php:49
-#: ./plugins/Access/templates/Users/view.php:119
+#: ./plugins/Access/templates/Users/view.php:118
 msgid "Last Login"
 msgstr ""
 
@@ -474,55 +474,55 @@ msgstr ""
 msgid "Is Superuser"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:99
-#: ./plugins/Access/templates/Users/view.php:142
+#: ./plugins/Access/templates/Users/view.php:98
+#: ./plugins/Access/templates/Users/view.php:141
 msgid "Active"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:103
+#: ./plugins/Access/templates/Users/view.php:102
 msgid "Holds Tasks"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:112
+#: ./plugins/Access/templates/Users/view.php:111
 msgid "Set"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:112
+#: ./plugins/Access/templates/Users/view.php:111
 msgid "None"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:115
+#: ./plugins/Access/templates/Users/view.php:114
 #: ./plugins/Access/templates/element/one_time_password.php:14
 msgid "One-Time Codes"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:116
+#: ./plugins/Access/templates/Users/view.php:115
 msgid "On"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:116
+#: ./plugins/Access/templates/Users/view.php:115
 msgid "Off"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:123
-#: ./plugins/Access/templates/Users/view.php:143
+#: ./plugins/Access/templates/Users/view.php:122
+#: ./plugins/Access/templates/Users/view.php:142
 msgid "Created"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:127
+#: ./plugins/Access/templates/Users/view.php:126
 msgid "Modified"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:134
+#: ./plugins/Access/templates/Users/view.php:133
 msgid "Related Social Accounts"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:139
+#: ./plugins/Access/templates/Users/view.php:138
 #: ./plugins/Access/templates/element/social_accounts.php:22
 msgid "Provider"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:141
+#: ./plugins/Access/templates/Users/view.php:140
 msgid "Reference"
 msgstr ""
 

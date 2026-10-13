@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2026-10-13 21:47+0200\n"
+"POT-Creation-Date: 2026-10-13 22:01+0200\n"
 "PO-Revision-Date: 2026-08-21 11:32+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
@@ -99,9 +99,8 @@ msgstr "Ve výchozím stavu zobrazovat jen tyto stavy úkolů"
 msgid "Submit"
 msgstr "Odeslat"
 
-#: templates/plugin/Access/element/account_fields.php:16
-msgid "Customer Id"
-msgstr "ID zákazníka"
+#~ msgid "Customer Id"
+#~ msgstr "ID zákazníka"
 
 #~ msgid "Add User"
 #~ msgstr "Přidat uživatele"

@@ -23,7 +23,6 @@
                     <th><?= $this->Paginator->sort('holds_tasks') ?></th>
                     <th><?= $this->Paginator->sort('is_superuser') ?></th>
                     <th><?= $this->Paginator->sort('role') ?></th>
-                    <?= $this->element('Access.account_fields', ['part' => 'heading']) ?>
                     <th><?= $this->Paginator->sort('last_login') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
@@ -41,7 +40,6 @@
                     <td><?= $user->holds_tasks ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                     <td><?= $user->is_superuser ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                     <td><?= h($user->getRoleName()) ?></td>
-                    <?= $this->element('Access.account_fields', ['part' => 'cell', 'user' => $user]) ?>
                     <td><?= h($user->last_login) ?></td>
                     <td><?= h($user->created) ?></td>
                     <td><?= h($user->modified) ?></td>

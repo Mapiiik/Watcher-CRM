@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 21:46+0200\n"
+"POT-Creation-Date: 2026-10-13 22:01+0200\n"
 "PO-Revision-Date: 2026-10-13 23:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -228,7 +228,7 @@ msgstr "Toto uživatelské jméno už existuje."
 #: plugins/Access/templates/Users/api_token.php:10
 #: plugins/Access/templates/Users/change_password.php:13
 #: plugins/Access/templates/Users/edit.php:10
-#: plugins/Access/templates/Users/index.php:30
+#: plugins/Access/templates/Users/index.php:29
 #: plugins/Access/templates/Users/one_time_password.php:11
 #: plugins/Access/templates/Users/profile.php:11
 #: plugins/Access/templates/Users/view.php:10
@@ -247,9 +247,9 @@ msgstr "Seznam uživatelů"
 msgid "Add User"
 msgstr "Přidat uživatele"
 
-#: plugins/Access/templates/Users/add.php:35
+#: plugins/Access/templates/Users/add.php:34
 #: plugins/Access/templates/Users/change_password.php:57
-#: plugins/Access/templates/Users/edit.php:46
+#: plugins/Access/templates/Users/edit.php:45
 #: plugins/Access/templates/Users/request_reset_password.php:15
 msgid "Submit"
 msgstr "Odeslat"
@@ -259,7 +259,7 @@ msgid "View User"
 msgstr "Zobrazit uživatele"
 
 #: plugins/Access/templates/Users/api_token.php:20
-#: plugins/Access/templates/Users/view.php:111
+#: plugins/Access/templates/Users/view.php:110
 msgid "API Key"
 msgstr "API klíč"
 
@@ -303,12 +303,12 @@ msgid "Confirm password"
 msgstr "Potvrďte heslo"
 
 #: plugins/Access/templates/Users/edit.php:12
-#: plugins/Access/templates/Users/index.php:59
+#: plugins/Access/templates/Users/index.php:57
 msgid "Delete"
 msgstr "Odstranit"
 
 #: plugins/Access/templates/Users/edit.php:15
-#: plugins/Access/templates/Users/index.php:61
+#: plugins/Access/templates/Users/index.php:59
 #: plugins/Access/templates/Users/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
@@ -327,40 +327,40 @@ msgstr "Nový uživatel"
 msgid "Users"
 msgstr "Uživatelé"
 
+#: plugins/Access/templates/Users/index.php:39
 #: plugins/Access/templates/Users/index.php:40
 #: plugins/Access/templates/Users/index.php:41
-#: plugins/Access/templates/Users/index.php:42
 #: plugins/Access/templates/Users/view.php:95
-#: plugins/Access/templates/Users/view.php:100
-#: plugins/Access/templates/Users/view.php:104
-#: plugins/Access/templates/Users/view.php:150
+#: plugins/Access/templates/Users/view.php:99
+#: plugins/Access/templates/Users/view.php:103
+#: plugins/Access/templates/Users/view.php:149
 msgid "Yes"
 msgstr "Ano"
 
+#: plugins/Access/templates/Users/index.php:39
 #: plugins/Access/templates/Users/index.php:40
 #: plugins/Access/templates/Users/index.php:41
-#: plugins/Access/templates/Users/index.php:42
 #: plugins/Access/templates/Users/view.php:95
-#: plugins/Access/templates/Users/view.php:100
-#: plugins/Access/templates/Users/view.php:104
-#: plugins/Access/templates/Users/view.php:150
+#: plugins/Access/templates/Users/view.php:99
+#: plugins/Access/templates/Users/view.php:103
+#: plugins/Access/templates/Users/view.php:149
 msgid "No"
 msgstr "Ne"
 
-#: plugins/Access/templates/Users/index.php:50
+#: plugins/Access/templates/Users/index.php:48
 msgid "View"
 msgstr "Zobrazit"
 
-#: plugins/Access/templates/Users/index.php:54
+#: plugins/Access/templates/Users/index.php:52
 msgid "Edit"
 msgstr "Upravit"
 
-#: plugins/Access/templates/Users/index.php:64
+#: plugins/Access/templates/Users/index.php:62
 #: plugins/Access/templates/Users/profile.php:13
 msgid "Change Password"
 msgstr "Změnit heslo"
 
-#: plugins/Access/templates/Users/index.php:69
+#: plugins/Access/templates/Users/index.php:67
 #: plugins/Access/templates/Users/profile.php:18
 msgid "User Settings"
 msgstr "Uživatelské nastavení"
@@ -372,7 +372,7 @@ msgstr "Zadejte prosím své uživatelské jméno a heslo"
 #: plugins/Access/templates/Users/login.php:11
 #: plugins/Access/templates/Users/profile.php:29
 #: plugins/Access/templates/Users/view.php:74
-#: plugins/Access/templates/Users/view.php:140
+#: plugins/Access/templates/Users/view.php:139
 #: plugins/Access/templates/element/social_accounts.php:23
 msgid "Username"
 msgstr "Uživatelské jméno"
@@ -424,7 +424,7 @@ msgid "Role"
 msgstr "Role"
 
 #: plugins/Access/templates/Users/profile.php:49
-#: plugins/Access/templates/Users/view.php:119
+#: plugins/Access/templates/Users/view.php:118
 msgid "Last Login"
 msgstr "Poslední přihlášení"
 
@@ -512,55 +512,55 @@ msgstr "Uživatel"
 msgid "Is Superuser"
 msgstr "Je superuživatel"
 
-#: plugins/Access/templates/Users/view.php:99
-#: plugins/Access/templates/Users/view.php:142
+#: plugins/Access/templates/Users/view.php:98
+#: plugins/Access/templates/Users/view.php:141
 msgid "Active"
 msgstr "Aktivní"
 
-#: plugins/Access/templates/Users/view.php:103
+#: plugins/Access/templates/Users/view.php:102
 msgid "Holds Tasks"
 msgstr "Přijímá úkoly"
 
-#: plugins/Access/templates/Users/view.php:112
+#: plugins/Access/templates/Users/view.php:111
 msgid "Set"
 msgstr "Nastavený"
 
-#: plugins/Access/templates/Users/view.php:112
+#: plugins/Access/templates/Users/view.php:111
 msgid "None"
 msgstr "Žádný"
 
-#: plugins/Access/templates/Users/view.php:115
+#: plugins/Access/templates/Users/view.php:114
 #: plugins/Access/templates/element/one_time_password.php:14
 msgid "One-Time Codes"
 msgstr "Jednorázové kódy"
 
-#: plugins/Access/templates/Users/view.php:116
+#: plugins/Access/templates/Users/view.php:115
 msgid "On"
 msgstr "Zapnuté"
 
-#: plugins/Access/templates/Users/view.php:116
+#: plugins/Access/templates/Users/view.php:115
 msgid "Off"
 msgstr "Vypnuté"
 
-#: plugins/Access/templates/Users/view.php:123
-#: plugins/Access/templates/Users/view.php:143
+#: plugins/Access/templates/Users/view.php:122
+#: plugins/Access/templates/Users/view.php:142
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: plugins/Access/templates/Users/view.php:127
+#: plugins/Access/templates/Users/view.php:126
 msgid "Modified"
 msgstr "Upraveno"
 
-#: plugins/Access/templates/Users/view.php:134
+#: plugins/Access/templates/Users/view.php:133
 msgid "Related Social Accounts"
 msgstr "Související sociální účty"
 
-#: plugins/Access/templates/Users/view.php:139
+#: plugins/Access/templates/Users/view.php:138
 #: plugins/Access/templates/element/social_accounts.php:22
 msgid "Provider"
 msgstr "Poskytovatel"
 
-#: plugins/Access/templates/Users/view.php:141
+#: plugins/Access/templates/Users/view.php:140
 msgid "Reference"
 msgstr "Reference"
 

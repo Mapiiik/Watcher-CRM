@@ -8,8 +8,6 @@ use Override;
 
 /**
  * An account, with the roles this application knows.
- *
- * @property string|null $customer_id
  */
 class AppUser extends User
 {

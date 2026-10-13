@@ -47,7 +47,6 @@ class AppUsersFixture extends TestFixture
                 'last_login' => 1698515383,
                 'nid' => 1,
                 'user_settings' => null,
-                'customer_id' => null,
                 'id' => '11edb519-be76-4d66-aea0-34188d31eae1',
             ],
         ];

@@ -94,7 +94,6 @@
                             <th><?= __d('access', 'Is Superuser') ?></th>
                             <td><?= $user->is_superuser ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                         </tr>
-                        <?= $this->element('Access.account_fields', ['part' => 'details', 'user' => $user]) ?>
                         <tr>
                             <th><?= __d('access', 'Active') ?></th>
                             <td><?= $user->active ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
