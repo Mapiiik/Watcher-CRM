@@ -122,7 +122,7 @@ final class FulltextSearchCustomersDocument
                 )
             )
         ),
-        CURRENT_TIMESTAMP
+        now()
     FROM
         Customers
     {filter}
