@@ -50,6 +50,8 @@ trait AccountsTrait
      */
     protected function removeFixtureAccounts(): void
     {
+        // the identities linked to them hold on to them
+        $this->getTableLocator()->get('Access.SocialAccounts')->deleteAll(['1 = 1']);
         $this->getTableLocator()->get('AppUsers')->deleteAll(['username !=' => 'jnovak']);
     }
 }

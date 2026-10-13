@@ -1,8 +1,12 @@
 # Access
 
-How people sign in to the Watcher applications: the CakeDC/Users configuration, the accounts and
-the pages around them. Every application carrying this plugin holds a byte-identical copy, so that
-signing in works and is secured the same way everywhere.
+How people sign in to the Watcher applications: the accounts, the pages around them and what
+decides who may open which page. Every application carrying this plugin holds a byte-identical
+copy, so that signing in works and is secured the same way everywhere.
+
+CakeDC/Auth lends it the second factor, the permissions of `config/permissions.php` and the services
+of other identity providers. The rest is this plugin's own: the middleware, the addresses, the pages,
+the accounts and the mail.
 
 ## What the application supplies
 
@@ -11,14 +15,29 @@ signing in works and is secured the same way everywhere.
 | `Access\Controller\UsersController` | `App\Controller\AppUsersController extends` it |
 | `Access\Model\Table\UsersTable` | `App\Model\Table\AppUsersTable extends` it |
 | `Access\Model\Entity\User` | `App\Model\Entity\AppUser extends` it and lists the roles |
-| `config/users.php` | `Users.config` names `Access.users` in `Application::bootstrap()` |
+| `AuthLinkHelper` | `App\View\AppView` loads it as `AuthLink`: links shown only where they may be opened |
 
 The classes keep their application names because the configuration, the permissions and many
 templates name them. The templates under `templates/AppUsers/` stay in the application too, as
 they show fields that only the application has.
 
-Load the plugin after `CakeDC/Users`. What differs between installations comes from the
-environment, not from this plugin.
+The plugin reads `config/users.php` on its own, and adds the authentication and the authorization
+middleware after the application's. What differs between installations comes from the environment,
+not from this plugin.
+
+## A forgotten password
+
+The sign-in page offers a link for a new password, sent to the e-mail of the account a username or
+an e-mail names. The answer is the same whether such an account exists or not. The link works for
+an hour and once, and only its hash is kept.
+
+## Other identity providers
+
+Signing in with Google is offered where `GOOGLE_OAUTH_CLIENT_ID` and `GOOGLE_OAUTH_CLIENT_SECRET`
+are set. An identity there signs in only the account its owner linked it to in the profile: it
+never makes an account, nor changes one, not even one with the same e-mail. An identity nobody
+linked is logged as `social account not linked`, with its reference. The second factor is asked for
+after it as after a password.
 
 ## The first account
 

@@ -45,7 +45,7 @@ class ApplicationTest extends TestCase
 
         $plugins = $app->getPlugins();
 
-        $this->assertCount(13, $plugins);
+        $this->assertCount(12, $plugins);
         $this->assertTrue($plugins->has('Access'), 'plugins has Access?');
         $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
         $this->assertTrue($plugins->has('Dashboard'), 'plugins has Dashboard?');
@@ -70,7 +70,7 @@ class ApplicationTest extends TestCase
 
         $plugins = $app->getPlugins();
 
-        $this->assertCount(14, $plugins);
+        $this->assertCount(13, $plugins);
         $this->assertTrue($plugins->has('DebugKit'), 'plugins has DebugKit?');
     }
 

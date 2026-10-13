@@ -79,7 +79,6 @@ trait ApiTokenTrait
         }
 
         $this->set('made', $made);
-        $this->viewBuilder()->setPlugin('Access')->setTemplatePath('Users');
 
         return null;
     }

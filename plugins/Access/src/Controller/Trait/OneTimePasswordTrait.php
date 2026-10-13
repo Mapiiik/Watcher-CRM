@@ -7,6 +7,7 @@ use Access\Authentication\AuthLog;
 use Access\Authentication\LoginThrottle;
 use Access\Authentication\OneTimePassword;
 use Access\Authentication\SecurityPolicy;
+use Access\Model\Entity\User;
 use Access\Model\Table\RecoveryCodesTable;
 use ArrayAccess;
 use Cake\Core\Configure;
@@ -116,7 +117,6 @@ trait OneTimePasswordTrait
         }
 
         $this->showSetUp($user);
-        $this->viewBuilder()->setPlugin('Access')->setTemplatePath('Users');
 
         return null;
     }
@@ -193,7 +193,6 @@ trait OneTimePasswordTrait
         }
 
         $this->set('codes', $codes);
-        $this->viewBuilder()->setPlugin('Access')->setTemplatePath('Users');
 
         return null;
     }
@@ -337,9 +336,9 @@ trait OneTimePasswordTrait
     /**
      * The account signed in, as stored.
      *
-     * @return \Cake\Datasource\EntityInterface
+     * @return \Access\Model\Entity\User
      */
-    protected function signedInAccount(): EntityInterface
+    protected function signedInAccount(): User
     {
         /** @var \Authentication\IdentityInterface $identity */
         $identity = $this->getRequest()->getAttribute('identity');

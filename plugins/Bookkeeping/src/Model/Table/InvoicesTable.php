@@ -13,8 +13,8 @@ use Override;
  *
  * @extends \Cake\ORM\Table<array<string, \Cake\ORM\Behavior>>
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\BelongsTo $Customers
- * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
- * @property \CakeDC\Users\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
+ * @property \Access\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
+ * @property \Access\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
  * @method \Bookkeeping\Model\Entity\Invoice newEmptyEntity()
  * @method \Bookkeeping\Model\Entity\Invoice newEntity(array $data, array $options = [])
  * @method \Bookkeeping\Model\Entity\Invoice[] newEntities(array $data, array $options = [])

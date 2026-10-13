@@ -25,7 +25,7 @@ use Override;
  * Your application's default view class
  *
  * @link https://book.cakephp.org/5/en/views.html#the-app-view
- * @property \CakeDC\Users\View\Helper\AuthLinkHelper $AuthLink
+ * @property \Access\View\Helper\AuthLinkHelper $AuthLink
  * @property \Files\View\Helper\PreviewHelper $Preview
  * @property \Files\View\Helper\RecordHelper $Record
  * @property \Files\View\Helper\UploadHelper $Upload
@@ -111,8 +111,7 @@ class AppView extends View
     public function initialize(): void
     {
         parent::initialize();
-        $this->addHelper('CakeDC/Users.User');
-        $this->addHelper('CakeDC/Users.AuthLink');
+        $this->addHelper('Access.AuthLink');
         // A page asks for the viewer before it draws documents. The table that draws them is a
         // cell, and what a cell puts in a block the layout never reads.
         $this->addHelper('Files.Preview');
@@ -236,7 +235,7 @@ class AppView extends View
         $agenda = str_replace(DIRECTORY_SEPARATOR, '/', $this->getTemplatePath());
 
         // The plugin keeps the name it is addressed by, vendor prefix and all - said as words,
-        // `CakeDC/Users` comes out as something nobody would recognise. A plugin whose main
+        // `Vendor/SomePlugin` comes out as something nobody would recognise. A plugin whose main
         // agenda is called the same thing as itself says it once.
         $address = [
             is_string($plugin) && $plugin !== $agenda ? $plugin : '',

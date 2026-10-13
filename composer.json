@@ -22,7 +22,9 @@
         "ext-pdo_pgsql": "*",
         "ext-simplexml": "*",
         "azuyalabs/yasumi": "^2.11",
-        "cakedc/users": "^16.0",
+        "cakedc/auth": "^10.1",
+        "cakephp/authentication": "^3.3",
+        "cakephp/authorization": "^3.5",
         "cakephp/cakephp": "^5.3",
         "cakephp/migrations": "^5.1",
         "cakephp/plugin-installer": "^2.0",
@@ -139,6 +141,7 @@
             "phpunit --colors=always"
         ],
         "translations-update": [
+            "bin/cake i18n extract --extract-core no --overwrite -p Access --paths plugins/Access/src/,plugins/Access/templates/,plugins/Access/config/",
             "bin/cake i18n extract --extract-core no --overwrite -p Bookkeeping --paths plugins/Bookkeeping/src/,plugins/Bookkeeping/templates/,plugins/Bookkeeping/config/",
             "bin/cake i18n extract --extract-core no --overwrite -p Dashboard",
             "bin/cake i18n extract --extract-core no --overwrite -p Files",

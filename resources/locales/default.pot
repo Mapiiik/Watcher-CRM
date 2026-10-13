@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-03 00:23+0200\n"
+"POT-Creation-Date: 2026-10-13 21:47+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -136,35 +136,63 @@ msgstr ""
 msgid "Labels that say the missing consent is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:401
-msgid "How many rows a card lists before it only says how many more there are."
+#: ./config/settings.php:403
+msgid "How long a customer stays signed in to the customer portal."
 msgstr ""
 
 #: ./config/settings.php:407
-msgid "How far ahead a task deadline is already counted as pressing."
+msgid "Failed sign-ins of one login from one address before more are refused for a while."
 msgstr ""
 
 #: ./config/settings.php:411
+msgid "Failed sign-ins from one address, whatever the login, before more are refused."
+msgstr ""
+
+#: ./config/settings.php:415
+msgid "Failed sign-ins of one login, from anywhere, before more are refused."
+msgstr ""
+
+#: ./config/settings.php:419
+msgid "How long failed sign-ins are remembered and refusals last."
+msgstr ""
+
+#: ./config/settings.php:423
+msgid "The shortest password a customer may set in the customer portal."
+msgstr ""
+
+#: ./config/settings.php:427
+msgid "Addresses a service may look up in a minute before more are refused."
+msgstr ""
+
+#: ./config/settings.php:434
+msgid "How many rows a card lists before it only says how many more there are."
+msgstr ""
+
+#: ./config/settings.php:440
+msgid "How far ahead a task deadline is already counted as pressing."
+msgstr ""
+
+#: ./config/settings.php:444
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 
-#: ./config/settings.php:418
+#: ./config/settings.php:451
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:752
+#: ./config/settings.php:785
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:803
+#: ./config/settings.php:836
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:808
+#: ./config/settings.php:841
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:886
+#: ./config/settings.php:919
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -693,6 +721,14 @@ msgstr ""
 
 #: ./src/Command/UpdateHistoricalConnectionsCommand.php:111
 msgid "Historical connections update failed."
+msgstr ""
+
+#: ./src/Command/WrapLegacyLoginHashesCommand.php:36
+msgid "Wraps the customer portal passwords still stored as bare SHA-1 in Argon2id."
+msgstr ""
+
+#: ./src/Command/WrapLegacyLoginHashesCommand.php:85
+msgid "Wrapped: {0}"
 msgstr ""
 
 #: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:73
@@ -2372,7 +2408,7 @@ msgstr ""
 msgid "The service is not configured."
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:111
+#: ./src/Model/Entity/AppUser.php:25
 #: ./src/Model/Enum/LoginRights.php:28
 #: ./templates/Tasks/add.php:44
 #: ./templates/Tasks/edit.php:57
@@ -2383,36 +2419,44 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:112
+#: ./src/Model/Entity/AppUser.php:26
 msgid "Customer Service Technician"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:113
+#: ./src/Model/Entity/AppUser.php:27
 msgid "Network Technician"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:114
+#: ./src/Model/Entity/AppUser.php:28
 msgid "Network Manager"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:115
+#: ./src/Model/Entity/AppUser.php:29
 msgid "Sales Representative"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:116
+#: ./src/Model/Entity/AppUser.php:30
 msgid "Sales Manager"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:117
+#: ./src/Model/Entity/AppUser.php:31
 msgid "Bookkeeper"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:118
+#: ./src/Model/Entity/AppUser.php:32
 msgid "Admin"
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:119
+#: ./src/Model/Entity/AppUser.php:33
 msgid "API"
+msgstr ""
+
+#: ./src/Model/Entity/AppUser.php:34
+msgid "Customer Portal"
+msgstr ""
+
+#: ./src/Model/Entity/AppUser.php:35
+msgid "Customer Identification"
 msgstr ""
 
 #: ./src/Model/Entity/Billing.php:418
@@ -3171,7 +3215,7 @@ msgstr ""
 msgid "Company is required when first and last name are not filled in."
 msgstr ""
 
-#: ./src/Model/Table/AppUsersTable.php:114
+#: ./src/Model/Table/AppUsersTable.php:102
 msgid "This account is still named on tasks. Move them to somebody else first."
 msgstr ""
 
@@ -4453,7 +4497,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/add.php:12
 #: ./templates/AccountingProfiles/edit.php:20
 #: ./templates/AccountingProfiles/view.php:25
-#: ./templates/Settings/index.php:231
+#: ./templates/Settings/index.php:241
 msgid "List Accounting Profiles"
 msgstr ""
 
@@ -4753,31 +4797,11 @@ msgstr ""
 msgid "Access Point"
 msgstr ""
 
-#: ./templates/AppUsers/user_settings.php:56
-#: ./templates/layout/default.php:254
-msgid "Light"
-msgstr ""
-
-#: ./templates/AppUsers/user_settings.php:57
-#: ./templates/layout/default.php:255
-msgid "Dark"
-msgstr ""
-
-#: ./templates/AppUsers/user_settings.php:58
-#: ./templates/layout/default.php:256
-msgid "Contrast"
-msgstr ""
-
-#: ./templates/AppUsers/user_settings.php:59
-#: ./templates/layout/default.php:257
-msgid "Legacy"
-msgstr ""
-
 #: ./templates/AvailableConnections/add.php:12
 #: ./templates/AvailableConnections/edit.php:12
 #: ./templates/AvailableConnections/view.php:43
 #: ./templates/Overviews/index.php:87
-#: ./templates/Settings/index.php:268
+#: ./templates/Settings/index.php:278
 msgid "List Available Connections"
 msgstr ""
 
@@ -4892,7 +4916,7 @@ msgid "Billings"
 msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:30
-#: ./templates/Settings/index.php:98
+#: ./templates/Settings/index.php:108
 msgid "Bulk Service Change"
 msgstr ""
 
@@ -5229,7 +5253,7 @@ msgstr ""
 #: ./templates/Commissions/add.php:11
 #: ./templates/Commissions/edit.php:19
 #: ./templates/Commissions/view.php:24
-#: ./templates/Settings/index.php:354
+#: ./templates/Settings/index.php:364
 msgid "List Commissions"
 msgstr ""
 
@@ -5293,7 +5317,7 @@ msgstr ""
 #: ./templates/ConnectionProfiles/add.php:14
 #: ./templates/ConnectionProfiles/edit.php:22
 #: ./templates/ConnectionProfiles/view.php:26
-#: ./templates/Settings/index.php:263
+#: ./templates/Settings/index.php:273
 msgid "List Connection Profiles"
 msgstr ""
 
@@ -5741,7 +5765,7 @@ msgstr ""
 #: ./templates/ContractStates/add.php:13
 #: ./templates/ContractStates/edit.php:22
 #: ./templates/ContractStates/view.php:25
-#: ./templates/Settings/index.php:242
+#: ./templates/Settings/index.php:252
 msgid "List Contract States"
 msgstr ""
 
@@ -6260,7 +6284,7 @@ msgstr ""
 #: ./templates/Countries/add.php:11
 #: ./templates/Countries/edit.php:16
 #: ./templates/Countries/view.php:21
-#: ./templates/Settings/index.php:226
+#: ./templates/Settings/index.php:236
 msgid "List Countries"
 msgstr ""
 
@@ -7020,7 +7044,7 @@ msgstr[1] ""
 #: ./templates/DealerCommissions/add.php:14
 #: ./templates/DealerCommissions/edit.php:22
 #: ./templates/DealerCommissions/view.php:25
-#: ./templates/Settings/index.php:359
+#: ./templates/Settings/index.php:369
 msgid "List Dealer Commissions"
 msgstr ""
 
@@ -7157,7 +7181,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/add.php:12
 #: ./templates/EquipmentTypes/edit.php:20
 #: ./templates/EquipmentTypes/view.php:25
-#: ./templates/Settings/index.php:273
+#: ./templates/Settings/index.php:283
 msgid "List Equipment Types"
 msgstr ""
 
@@ -7304,7 +7328,7 @@ msgid "IP Address Range"
 msgstr ""
 
 #: ./templates/IpAddresses/bulk_reassignment.php:23
-#: ./templates/Settings/index.php:210
+#: ./templates/Settings/index.php:220
 msgid "Bulk IP Address Reassignment"
 msgstr ""
 
@@ -7379,7 +7403,7 @@ msgstr ""
 #: ./templates/Labels/add.php:15
 #: ./templates/Labels/edit.php:20
 #: ./templates/Labels/view.php:24
-#: ./templates/Settings/index.php:221
+#: ./templates/Settings/index.php:231
 msgid "List Labels"
 msgstr ""
 
@@ -7478,12 +7502,12 @@ msgid "Delete Login"
 msgstr ""
 
 #: ./templates/Overviews/index.php:12
-#: ./templates/Settings/index.php:281
+#: ./templates/Settings/index.php:291
 msgid "Documentation Related"
 msgstr ""
 
 #: ./templates/Overviews/index.php:30
-#: ./templates/Settings/index.php:309
+#: ./templates/Settings/index.php:319
 msgid "Work Report Related"
 msgstr ""
 
@@ -7496,7 +7520,7 @@ msgid "Work at Access Points"
 msgstr ""
 
 #: ./templates/Overviews/index.php:59
-#: ./templates/Settings/index.php:250
+#: ./templates/Settings/index.php:260
 msgid "Service Related"
 msgstr ""
 
@@ -7560,7 +7584,7 @@ msgid "List Documents"
 msgstr ""
 
 #: ./templates/Overviews/index.php:161
-#: ./templates/Settings/index.php:239
+#: ./templates/Settings/index.php:249
 msgid "Contract Related"
 msgstr ""
 
@@ -7966,7 +7990,7 @@ msgstr ""
 #: ./templates/ServiceTypes/add.php:11
 #: ./templates/ServiceTypes/edit.php:19
 #: ./templates/ServiceTypes/view.php:24
-#: ./templates/Settings/index.php:258
+#: ./templates/Settings/index.php:268
 msgid "List Service Types"
 msgstr ""
 
@@ -8077,7 +8101,7 @@ msgstr ""
 #: ./templates/Services/add.php:13
 #: ./templates/Services/edit.php:18
 #: ./templates/Services/view.php:25
-#: ./templates/Settings/index.php:253
+#: ./templates/Settings/index.php:263
 msgid "List Services"
 msgstr ""
 
@@ -8127,166 +8151,174 @@ msgstr ""
 msgid "List Users"
 msgstr ""
 
-#: ./templates/Settings/index.php:28
+#: ./templates/Settings/index.php:25
+msgid "Sign-in Security Configuration"
+msgstr ""
+
+#: ./templates/Settings/index.php:33
 msgid "Application Settings"
 msgstr ""
 
-#: ./templates/Settings/index.php:31
+#: ./templates/Settings/index.php:36
 msgid "Company Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:36
+#: ./templates/Settings/index.php:41
 msgid "Customers Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:41
-msgid "Business Register Configuration"
-msgstr ""
-
 #: ./templates/Settings/index.php:46
-msgid "Documents Configuration"
+msgid "Customer Portal Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:51
-msgid "Contracts Configuration"
+msgid "Business Register Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:56
-msgid "Emails Configuration"
+msgid "Documents Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:61
-msgid "Customer Messages Configuration"
+msgid "Contracts Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:66
+msgid "Emails Configuration"
+msgstr ""
+
+#: ./templates/Settings/index.php:71
+msgid "Customer Messages Configuration"
+msgstr ""
+
+#: ./templates/Settings/index.php:76
 msgid "Dashboard Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:74
+#: ./templates/Settings/index.php:84
 msgid "Bookkeeping Settings"
 msgstr ""
 
-#: ./templates/Settings/index.php:77
+#: ./templates/Settings/index.php:87
 msgid "Invoices Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:82
+#: ./templates/Settings/index.php:92
 msgid "Debtors Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:87
+#: ./templates/Settings/index.php:97
 msgid "Accounting Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:95
+#: ./templates/Settings/index.php:105
 msgid "Billing Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:106
+#: ./templates/Settings/index.php:116
 msgid "Customer Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:109
+#: ./templates/Settings/index.php:119
 msgid "Identity Number Check"
 msgstr ""
 
-#: ./templates/Settings/index.php:114
+#: ./templates/Settings/index.php:124
 msgid "Update Phone Number Format"
 msgstr ""
 
-#: ./templates/Settings/index.php:122
+#: ./templates/Settings/index.php:132
 msgid "Do you really want to update all phones for all customers?"
 msgstr ""
 
-#: ./templates/Settings/index.php:129
+#: ./templates/Settings/index.php:139
 msgid "Update All Addresses from National Address Registries"
 msgstr ""
 
-#: ./templates/Settings/index.php:137
+#: ./templates/Settings/index.php:147
 msgid "Do you really want to update all addresses from the national address registries?"
 msgstr ""
 
-#: ./templates/Settings/index.php:147
+#: ./templates/Settings/index.php:157
 msgid "Contract Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:150
-#: ./templates/Settings/index.php:165
+#: ./templates/Settings/index.php:160
+#: ./templates/Settings/index.php:175
 msgid "Addition of Contract Numbers"
 msgstr ""
 
-#: ./templates/Settings/index.php:158
+#: ./templates/Settings/index.php:168
 msgid "Do you really want to add a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:165
-#: ./templates/Settings/index.php:195
+#: ./templates/Settings/index.php:175
+#: ./templates/Settings/index.php:205
 msgid "Force Overwrite"
 msgstr ""
 
-#: ./templates/Settings/index.php:173
+#: ./templates/Settings/index.php:183
 msgid "Do you really want to re-set a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:180
-#: ./templates/Settings/index.php:195
+#: ./templates/Settings/index.php:190
+#: ./templates/Settings/index.php:205
 msgid "Addition of Subscriber Verification Codes"
 msgstr ""
 
-#: ./templates/Settings/index.php:188
+#: ./templates/Settings/index.php:198
 msgid "Do you really want to add a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:203
+#: ./templates/Settings/index.php:213
 msgid "Do you really want to re-set a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:218
+#: ./templates/Settings/index.php:228
 msgid "System Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:292
+#: ./templates/Settings/index.php:302
 msgid "Task Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:295
+#: ./templates/Settings/index.php:305
 msgid "List Task States"
 msgstr ""
 
-#: ./templates/Settings/index.php:300
+#: ./templates/Settings/index.php:310
 msgid "List Task Types"
 msgstr ""
 
-#: ./templates/Settings/index.php:312
+#: ./templates/Settings/index.php:322
 msgid "List Work Report Item Types"
 msgstr ""
 
-#: ./templates/Settings/index.php:317
+#: ./templates/Settings/index.php:327
 msgid "List Work Rates"
 msgstr ""
 
-#: ./templates/Settings/index.php:322
+#: ./templates/Settings/index.php:332
 msgid "List Work Labels"
 msgstr ""
 
-#: ./templates/Settings/index.php:327
+#: ./templates/Settings/index.php:337
 msgid "List Work Cars"
 msgstr ""
 
-#: ./templates/Settings/index.php:332
+#: ./templates/Settings/index.php:342
 msgid "List Work Report Workers"
 msgstr ""
 
-#: ./templates/Settings/index.php:337
+#: ./templates/Settings/index.php:347
 msgid "Work Calendar Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:342
+#: ./templates/Settings/index.php:352
 msgid "On Call Hours Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:351
+#: ./templates/Settings/index.php:361
 msgid "Commission Related"
 msgstr ""
 
@@ -9224,6 +9256,26 @@ msgstr ""
 
 #: ./templates/layout/default.php:224
 msgid "Network Management System"
+msgstr ""
+
+#: ./templates/layout/default.php:254
+#: ./templates/plugin/Access/Users/user_settings.php:56
+msgid "Light"
+msgstr ""
+
+#: ./templates/layout/default.php:255
+#: ./templates/plugin/Access/Users/user_settings.php:57
+msgid "Dark"
+msgstr ""
+
+#: ./templates/layout/default.php:256
+#: ./templates/plugin/Access/Users/user_settings.php:58
+msgid "Contrast"
+msgstr ""
+
+#: ./templates/layout/default.php:257
+#: ./templates/plugin/Access/Users/user_settings.php:59
+msgid "Legacy"
 msgstr ""
 
 #: ./templates/layout/default.php:283

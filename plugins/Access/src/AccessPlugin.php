@@ -3,16 +3,23 @@ declare(strict_types=1);
 
 namespace Access;
 
-use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\AuthLog;
 use Access\Authentication\LoginThrottle;
+use Access\Authentication\ServiceProvider;
+use Access\Social\Providers;
+use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Middleware\RequestAuthorizationMiddleware;
 use Cake\Cache\Cache;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Core\PluginApplicationInterface;
+use Cake\Http\MiddlewareQueue;
 use Cake\Log\Engine\SyslogLog;
 use Cake\Log\Log;
+use CakeDC\Auth\Middleware\SocialAuthMiddleware;
+use CakeDC\Auth\Middleware\TwoFactorMiddleware;
 use Override;
 
 /**
@@ -21,18 +28,8 @@ use Override;
 class AccessPlugin extends BasePlugin
 {
     /**
-     * Ways of signing in that skip the second factor, or that nobody here uses. A cookie that
-     * remembers somebody and a link sent by e-mail each sign in without a password and without a
-     * one-time code; an e-mail asked for after signing in with another service only matters to
-     * registering.
-     *
-     * @var list<string>
-     */
-    private const UNUSED_AUTHENTICATORS = ['Cookie', 'OneTimeToken', 'SocialPendingEmail'];
-
-    /**
-     * Takes out of the CakeDC/Users configuration what this plugin's own file cannot, and sets up
-     * the log and the cache it writes to where the application has not.
+     * Reads how people sign in, and sets up the log and the cache it writes to where the
+     * application has not.
      *
      * @param \Cake\Core\PluginApplicationInterface $app The host application
      * @return void
@@ -42,24 +39,10 @@ class AccessPlugin extends BasePlugin
     {
         parent::bootstrap($app);
 
-        // the configuration is merged into CakeDC's, so leaving something out has to be done here
-        foreach (self::UNUSED_AUTHENTICATORS as $authenticator) {
-            Configure::delete('Auth.Authenticators.' . $authenticator);
-        }
+        Configure::load('Access.users');
         if (!Configure::read('Users.Social.login')) {
             Configure::delete('Auth.Authenticators.Social');
         }
-
-        // An identifier is named with a dot, and a config file writing below it would replace what
-        // CakeDC set there - the fields, and the finder that keeps inactive accounts out - so it is
-        // adjusted here instead. Passwords are checked with the hasher they are stored with, and
-        // API keys are looked up by the hash that is all there is of them.
-        $form = (array)Configure::read('Auth.Authenticators.Form.identifier');
-        $form['Authentication.Password']['passwordHasher'] = Argon2idPasswordHasher::class;
-        Configure::write('Auth.Authenticators.Form.identifier', $form);
-        $token = (array)Configure::read('Auth.Authenticators.Token.identifier');
-        $token['Authentication.Token']['hashAlgorithm'] = 'sha256';
-        Configure::write('Auth.Authenticators.Token.identifier', $token);
 
         if (!in_array('auth', Log::configured(), true)) {
             Log::setConfig('auth', [
@@ -77,5 +60,35 @@ class AccessPlugin extends BasePlugin
                 'duration' => '+1 day',
             ]);
         }
+    }
+
+    /**
+     * Who is asking, whether they still owe a one-time code, and whether they may have what they
+     * ask for - in this order, after the application's own middleware.
+     *
+     * @param \Cake\Http\MiddlewareQueue $middlewareQueue The middleware queue to update.
+     * @return \Cake\Http\MiddlewareQueue
+     */
+    #[Override]
+    public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
+    {
+        if (Configure::read('Users.Social.login')) {
+            // sends somebody off to the provider, and takes the answer it sends them back with
+            $middlewareQueue->add(new SocialAuthMiddleware([
+                'urlChecker' => 'Authentication.CakeRouter',
+                'loginUrl' => array_map(
+                    fn(string $provider): array => (array)Configure::read('OAuth.path') + ['provider' => $provider],
+                    Providers::names(),
+                ),
+            ]));
+        }
+
+        $services = new ServiceProvider();
+
+        return $middlewareQueue
+            ->add(new AuthenticationMiddleware($services))
+            ->add(new TwoFactorMiddleware())
+            ->add(new AuthorizationMiddleware($services, (array)Configure::read('Auth.AuthorizationMiddleware')))
+            ->add(new RequestAuthorizationMiddleware());
     }
 }

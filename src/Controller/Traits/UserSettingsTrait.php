@@ -36,13 +36,13 @@ trait UserSettingsTrait
         } elseif ((!$id && $userId) || $id === $userId) {
             // normal user can edit own settings
             $id = $userId;
-            $redirect = Configure::read('Users.Profile.route');
+            $redirect = ['action' => 'profile'];
         } else {
             $this->Flash->error(
                 __d('app_users', "You are not allowed to edit another user's settings."),
             );
 
-            return $this->redirect(Configure::read('Users.Profile.route'));
+            return $this->redirect(['action' => 'profile']);
         }
 
         /** @var \App\Model\Table\AppUsersTable $usersTable */

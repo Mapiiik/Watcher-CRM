@@ -60,9 +60,6 @@ class Application extends BaseApplication
             FactoryLocator::add('Table', $locator);
         }
 
-        // CakeDC/users
-        Configure::write('Users.config', ['Access.users']);
-
         // Set time and date format where the configuration names one
         $timeFormat = Configure::read('App.timeFormat');
         if (is_string($timeFormat)) {

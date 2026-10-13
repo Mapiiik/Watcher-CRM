@@ -61,26 +61,14 @@ $permissions = [
             'plugin' => null,
             'controller' => 'AppUsers',
             'action' => [
-                // LoginTrait
-                'socialLogin',
+                // signing in and out
                 'login',
-                'logout',
+                'socialLogin',
                 'verify',
-                // PasswordManagementTrait
-                'changePassword',
-                'resetPassword',
+                'logout',
+                // a new password for somebody who has forgotten theirs
                 'requestResetPassword',
-                'linkSocial',
-            ],
-            'bypassAuth' => true,
-        ],
-        [
-            'prefix' => false,
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'SocialAccounts',
-            'action' => [
-                'validateAccount',
-                'resendValidation',
+                'resetPassword',
             ],
             'bypassAuth' => true,
         ],
@@ -102,9 +90,11 @@ $permissions = [
             'controller' => 'AppUsers',
             'action' => [
                 'profile',
+                'changePassword',
                 'logout',
                 'linkSocial',
                 'callbackLinkSocial',
+                'unlinkSocial',
                 'userSettings',
                 // everybody looks after their own one-time codes; taking them away from an account
                 // (resetOneTimePasswordAuthenticator) is left to the admins

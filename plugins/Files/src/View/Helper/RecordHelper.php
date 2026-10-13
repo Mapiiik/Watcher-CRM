@@ -14,7 +14,7 @@ use Files\Model\Entity\FileLink;
  * is the application's to say - `Files.records` maps each one to a page. A name nobody declared
  * gets no link, which is better than a guess landing somewhere that is not there.
  *
- * @property \CakeDC\Users\View\Helper\AuthLinkHelper $AuthLink
+ * @property \Access\View\Helper\AuthLinkHelper $AuthLink
  * @extends \Cake\View\Helper<\App\View\AppView>
  */
 class RecordHelper extends Helper
@@ -24,7 +24,7 @@ class RecordHelper extends Helper
      *
      * @var array<string>
      */
-    protected array $helpers = ['CakeDC/Users.AuthLink'];
+    protected array $helpers = ['Access.AuthLink'];
 
     /**
      * Names the record, as a link to it where there is one to offer.

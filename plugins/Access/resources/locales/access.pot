@@ -1,0 +1,608 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-10-13 21:46+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Access/config/settings.php:15
+msgid "Roles held to the stricter rules, together with superusers."
+msgstr ""
+
+#: ./plugins/Access/config/settings.php:19
+msgid "The shortest password an account may be given."
+msgstr ""
+
+#: ./plugins/Access/config/settings.php:23
+msgid "The shortest password of an account held to the stricter rules."
+msgstr ""
+
+#: ./plugins/Access/config/settings.php:27
+msgid "Refuse passwords containing the username or e-mail, repeated or running characters, and the most common passwords."
+msgstr ""
+
+#: ./plugins/Access/config/settings.php:35
+msgid "Everybody signs in with a one-time code from an authenticator app."
+msgstr ""
+
+#: ./plugins/Access/config/settings.php:39
+msgid "Accounts held to the stricter rules sign in with a one-time code."
+msgstr ""
+
+#: ./plugins/Access/config/settings.php:43
+msgid "Failed sign-ins of one account from one address before more are refused for a while."
+msgstr ""
+
+#: ./plugins/Access/config/settings.php:50
+msgid "Failed sign-ins from one address, whatever the account, before more are refused."
+msgstr ""
+
+#: ./plugins/Access/config/settings.php:54
+msgid "How long failed sign-ins are remembered and refusals last."
+msgstr ""
+
+#: ./plugins/Access/src/Authentication/PasswordRules.php:61
+msgid "The password has to have at least {0} characters."
+msgstr ""
+
+#: ./plugins/Access/src/Authentication/PasswordRules.php:70
+msgid "The password must not contain the username or the e-mail."
+msgstr ""
+
+#: ./plugins/Access/src/Authentication/PasswordRules.php:75
+msgid "The password must not be a repeated piece or a run of characters."
+msgstr ""
+
+#: ./plugins/Access/src/Authentication/PasswordRules.php:78
+msgid "The password is one of the most common ones."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/ApiTokenTrait.php:64
+msgid "The API key of {0} is removed."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:71
+#: ./plugins/Access/src/Controller/UsersController.php:107
+msgid "Too many failed sign-ins. Try again in a few minutes."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:72
+msgid "The code is not right. Please sign in again."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:116
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:138
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:166
+msgid "The code is not right. Please try again."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:136
+msgid "Your account has to sign in with one-time codes."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:145
+msgid "One-time codes are turned off."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:218
+msgid "The one-time codes of {0} are reset."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:54
+msgid "If the username or the e-mail belongs to an active account, a link for setting a new password is on its way to its e-mail."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:75
+msgid "The link for setting a new password does not work any more. Ask for a new one."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:98
+msgid "The new password is set. Sign in with it."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:102
+msgid "The password could not be set."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/SocialAccountsTrait.php:49
+msgid "The identity could not be linked. Please try again."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/SocialAccountsTrait.php:85
+msgid "The identity at {0} is linked."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/SocialAccountsTrait.php:111
+msgid "The identity is unlinked."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/Trait/SocialAccountsTrait.php:113
+msgid "The identity could not be unlinked."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:108
+msgid "The username or the password is not right."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:129
+msgid "No account here is linked to that identity. Sign in with your password and link it in your profile."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:156
+msgid "You have signed out."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:193
+msgid "Only a superuser changes the password of somebody else."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:214
+msgid "This is not the current password."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:217
+msgid "The new password has to differ from the current one."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:226
+msgid "The password has been changed."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:230
+msgid "The password could not be changed."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:279
+#: ./plugins/Access/src/Controller/UsersController.php:303
+msgid "The account has been saved."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:283
+#: ./plugins/Access/src/Controller/UsersController.php:307
+msgid "The account could not be saved."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:325
+msgid "The account has been deleted."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:327
+msgid "The account could not be deleted."
+msgstr ""
+
+#: ./plugins/Access/src/Mailer/UsersMailer.php:25
+#: ./plugins/Access/templates/Users/reset_password.php:11
+msgid "A new password for {0}"
+msgstr ""
+
+#: ./plugins/Access/src/Middleware/UnauthorizedHandler/RedirectHandler.php:56
+msgid "You are not allowed to open that page."
+msgstr ""
+
+#: ./plugins/Access/src/Model/Table/SocialAccountsTable.php:58
+msgid "This identity is already linked to another account."
+msgstr ""
+
+#: ./plugins/Access/src/Model/Table/UsersTable.php:128
+msgid "The two passwords are not the same."
+msgstr ""
+
+#: ./plugins/Access/src/Model/Table/UsersTable.php:158
+msgid "This username is already taken."
+msgstr ""
+
+#: ./plugins/Access/templates/Users/add.php:10
+#: ./plugins/Access/templates/Users/api_token.php:10
+#: ./plugins/Access/templates/Users/change_password.php:13
+#: ./plugins/Access/templates/Users/edit.php:10
+#: ./plugins/Access/templates/Users/index.php:30
+#: ./plugins/Access/templates/Users/one_time_password.php:11
+#: ./plugins/Access/templates/Users/profile.php:11
+#: ./plugins/Access/templates/Users/view.php:10
+#: ./plugins/Access/templates/element/social_accounts.php:24
+msgid "Actions"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/add.php:12
+#: ./plugins/Access/templates/Users/change_password.php:15
+#: ./plugins/Access/templates/Users/edit.php:20
+#: ./plugins/Access/templates/Users/view.php:56
+msgid "List Users"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/add.php:22
+msgid "Add User"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/add.php:35
+#: ./plugins/Access/templates/Users/change_password.php:57
+#: ./plugins/Access/templates/Users/edit.php:46
+#: ./plugins/Access/templates/Users/request_reset_password.php:15
+msgid "Submit"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/api_token.php:12
+msgid "View User"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/api_token.php:20
+#: ./plugins/Access/templates/Users/view.php:111
+msgid "API Key"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/api_token.php:22
+msgid "The client signs in with this key in the Authorization header, as a Bearer token. It is shown only now. The key the account had before no longer works."
+msgstr ""
+
+#: ./plugins/Access/templates/Users/change_password.php:20
+#: ./plugins/Access/templates/Users/one_time_password.php:13
+#: ./plugins/Access/templates/Users/profile.php:26
+msgid "User Profile"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/change_password.php:31
+msgid "Please enter the new password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/change_password.php:36
+msgid "Current password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/change_password.php:43
+#: ./plugins/Access/templates/Users/reset_password.php:17
+msgid "New password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/change_password.php:44
+#: ./plugins/Access/templates/Users/reset_password.php:18
+msgid "At least {0} characters, not the username or the e-mail and not a common password."
+msgstr ""
+
+#: ./plugins/Access/templates/Users/change_password.php:53
+#: ./plugins/Access/templates/Users/reset_password.php:29
+msgid "Confirm password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/edit.php:12
+#: ./plugins/Access/templates/Users/index.php:59
+msgid "Delete"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/edit.php:15
+#: ./plugins/Access/templates/Users/index.php:61
+#: ./plugins/Access/templates/Users/view.php:20
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/edit.php:30
+#: ./plugins/Access/templates/Users/view.php:12
+msgid "Edit User"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:9
+#: ./plugins/Access/templates/Users/view.php:61
+msgid "New User"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:13
+msgid "Users"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:40
+#: ./plugins/Access/templates/Users/index.php:41
+#: ./plugins/Access/templates/Users/index.php:42
+#: ./plugins/Access/templates/Users/view.php:95
+#: ./plugins/Access/templates/Users/view.php:100
+#: ./plugins/Access/templates/Users/view.php:104
+#: ./plugins/Access/templates/Users/view.php:150
+msgid "Yes"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:40
+#: ./plugins/Access/templates/Users/index.php:41
+#: ./plugins/Access/templates/Users/index.php:42
+#: ./plugins/Access/templates/Users/view.php:95
+#: ./plugins/Access/templates/Users/view.php:100
+#: ./plugins/Access/templates/Users/view.php:104
+#: ./plugins/Access/templates/Users/view.php:150
+msgid "No"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:50
+msgid "View"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:54
+msgid "Edit"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:64
+#: ./plugins/Access/templates/Users/profile.php:13
+msgid "Change Password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:69
+#: ./plugins/Access/templates/Users/profile.php:18
+msgid "User Settings"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/login.php:10
+msgid "Please enter your username and password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/login.php:11
+#: ./plugins/Access/templates/Users/profile.php:29
+#: ./plugins/Access/templates/Users/view.php:74
+#: ./plugins/Access/templates/Users/view.php:140
+#: ./plugins/Access/templates/element/social_accounts.php:23
+msgid "Username"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/login.php:12
+msgid "Password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/login.php:13
+msgid "Reset Password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/login.php:16
+msgid "Login"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/one_time_password.php:23
+#: ./plugins/Access/templates/Users/verify.php:16
+msgid "Set Up One-Time Codes"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/one_time_password.php:26
+#: ./plugins/Access/templates/Users/verify.php:28
+msgid "Code"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/one_time_password.php:33
+msgid "Turn On"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/profile.php:33
+#: ./plugins/Access/templates/Users/view.php:82
+msgid "First Name"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/profile.php:37
+#: ./plugins/Access/templates/Users/view.php:86
+msgid "Last Name"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/profile.php:41
+#: ./plugins/Access/templates/Users/view.php:78
+msgid "Email"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/profile.php:45
+#: ./plugins/Access/templates/Users/view.php:90
+msgid "Role"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/profile.php:49
+#: ./plugins/Access/templates/Users/view.php:119
+msgid "Last Login"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/recovery_codes.php:10
+msgid "Recovery Codes"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/recovery_codes.php:11
+msgid "Each of these codes signs you in once in place of a one-time code, should you lose your phone. Keep them somewhere safe, away from the phone. They are shown only now."
+msgstr ""
+
+#: ./plugins/Access/templates/Users/recovery_codes.php:21
+msgid "New codes can be made in your profile, which makes these ones useless."
+msgstr ""
+
+#: ./plugins/Access/templates/Users/recovery_codes.php:22
+msgid "Continue"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/request_reset_password.php:12
+msgid "Please enter your email or username to reset your password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/reset_password.php:32
+msgid "Set the password"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/verify.php:18
+msgid "Your account signs in with a code from an app on your phone as well as the password."
+msgstr ""
+
+#: ./plugins/Access/templates/Users/verify.php:25
+msgid "Enter the code from your authenticator app"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/verify.php:32
+msgid "Lost your phone? Enter one of your recovery codes instead."
+msgstr ""
+
+#: ./plugins/Access/templates/Users/verify.php:35
+msgid "Verify"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:17
+msgid "Delete User"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:25
+msgid "New API Key"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:28
+msgid "The key the account has now will stop working. Make a new one?"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:34
+msgid "Remove API Key"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:37
+msgid "No client will sign in with the key any more. Remove it?"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:44
+msgid "Reset One-Time Codes"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:47
+msgid "The account will have to set its authenticator app up again. Reset?"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:69
+msgid "User"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:94
+msgid "Is Superuser"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:99
+#: ./plugins/Access/templates/Users/view.php:142
+msgid "Active"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:103
+msgid "Holds Tasks"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:112
+msgid "Set"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:112
+msgid "None"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:115
+#: ./plugins/Access/templates/element/one_time_password.php:14
+msgid "One-Time Codes"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:116
+msgid "On"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:116
+msgid "Off"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:123
+#: ./plugins/Access/templates/Users/view.php:143
+msgid "Created"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:127
+msgid "Modified"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:134
+msgid "Related Social Accounts"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:139
+#: ./plugins/Access/templates/element/social_accounts.php:22
+msgid "Provider"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:141
+msgid "Reference"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:16
+msgid "On. Recovery codes left: {0}."
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:21
+msgid "A code from the app, to make new recovery codes"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:26
+msgid "New Recovery Codes"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:33
+msgid "A code from the app, to turn one-time codes off"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:38
+msgid "Turn Off"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:46
+msgid "Off. Your account has to use them, so you set them up the next time you sign in."
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:47
+msgid "Off. Once they are on, signing in also asks for a code from an app on your phone."
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:49
+msgid "Set Up"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password_setup.php:10
+msgid "Scan the code with an authenticator app on your phone, such as Google Authenticator, Microsoft Authenticator or FreeOTP, and enter the six digits it shows."
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password_setup.php:16
+msgid "QR code for the authenticator app"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password_setup.php:21
+msgid "Where the code cannot be scanned, enter this key instead:"
+msgstr ""
+
+#: ./plugins/Access/templates/element/social_accounts.php:18
+msgid "Social Accounts"
+msgstr ""
+
+#: ./plugins/Access/templates/element/social_accounts.php:32
+msgid "Unlink"
+msgstr ""
+
+#: ./plugins/Access/templates/element/social_accounts.php:34
+msgid "Are you sure you want to unlink {0}?"
+msgstr ""
+
+#: ./plugins/Access/templates/element/social_accounts.php:43
+msgid "Link an account at {0}"
+msgstr ""
+
+#: ./plugins/Access/templates/element/social_sign_in.php:12
+msgid "Sign in with {0}"
+msgstr ""
+
+#: ./plugins/Access/templates/email/text/reset_password.php:9
+msgid "Hello {0},"
+msgstr ""
+
+#: ./plugins/Access/templates/email/text/reset_password.php:9
+msgid "Hello,"
+msgstr ""
+
+#: ./plugins/Access/templates/email/text/reset_password.php:12
+msgid "somebody asked for a new password for the account {0}. If it was you, set it here:"
+msgstr ""
+
+#: ./plugins/Access/templates/email/text/reset_password.php:18
+msgid "The link works for an hour, and once. If it was not you, there is nothing to do: the password stays as it is."
+msgstr ""
+

@@ -1,26 +1,23 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\AppUser $user
- * @var string $tableAlias
+ * @var \Access\Model\Entity\User $user
  */
-
-$user = ${$tableAlias};
 ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
-            <h4 class="heading"><?= __d('app_users', 'Actions') ?></h4>
+            <h4 class="heading"><?= __d('access', 'Actions') ?></h4>
             <?= $this->Html->link(
-                __d('app_users', 'Edit User'),
+                __d('access', 'Edit User'),
                 ['action' => 'edit', $user->id],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->Form->postLink(
-                __d('app_users', 'Delete User'),
+                __d('access', 'Delete User'),
                 ['action' => 'delete', $user->id],
                 [
-                    'confirm' => __d('app_users', 'Are you sure you want to delete # {0}?', $user->id),
+                    'confirm' => __d('access', 'Are you sure you want to delete # {0}?', $user->id),
                     'class' => 'side-nav-item',
                 ],
             ) ?>
@@ -56,12 +53,12 @@ $user = ${$tableAlias};
                 ) ?>
             <?php endif; ?>
             <?= $this->Html->link(
-                __d('app_users', 'List Users'),
+                __d('access', 'List Users'),
                 ['action' => 'index'],
                 ['class' => 'side-nav-item'],
             ) ?>
             <?= $this->Html->link(
-                __d('app_users', 'New User'),
+                __d('access', 'New User'),
                 ['action' => 'add'],
                 ['class' => 'side-nav-item'],
             ) ?>
@@ -69,45 +66,42 @@ $user = ${$tableAlias};
     </aside>
     <div class="column column-90">
         <div class="users view content">
-            <?= $this->record(__d('app_users', 'User'), (string)$user->username) ?>
+            <?= $this->record(__d('access', 'User'), (string)$user->username) ?>
             <div class="row">
                 <div class="column">
                     <table>
                         <tr>
-                            <th><?= __d('app_users', 'Username') ?></th>
+                            <th><?= __d('access', 'Username') ?></th>
                             <td><?= h($user->username) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Email') ?></th>
+                            <th><?= __d('access', 'Email') ?></th>
                             <td><?= h($user->email) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'First Name') ?></th>
+                            <th><?= __d('access', 'First Name') ?></th>
                             <td><?= h($user->first_name) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Last Name') ?></th>
+                            <th><?= __d('access', 'Last Name') ?></th>
                             <td><?= h($user->last_name) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Role') ?></th>
+                            <th><?= __d('access', 'Role') ?></th>
                             <td><?= h($user->getRoleName()) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Is Superuser') ?></th>
-                            <td><?= $user->is_superuser ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
+                            <th><?= __d('access', 'Is Superuser') ?></th>
+                            <td><?= $user->is_superuser ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
+                        </tr>
+                        <?= $this->element('Access.account_fields', ['part' => 'details', 'user' => $user]) ?>
+                        <tr>
+                            <th><?= __d('access', 'Active') ?></th>
+                            <td><?= $user->active ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Customer Id') ?></th>
-                            <td><?= h($user->customer_id) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('app_users', 'Active') ?></th>
-                            <td><?= $user->active ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('app_users', 'Holds Tasks') ?></th>
-                            <td><?= $user->holds_tasks ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
+                            <th><?= __d('access', 'Holds Tasks') ?></th>
+                            <td><?= $user->holds_tasks ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                         </tr>
                     </table>
                 </div>
@@ -118,50 +112,42 @@ $user = ${$tableAlias};
                             <td><?= $user->api_token ? __d('access', 'Set') : __d('access', 'None') ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Activation Date') ?></th>
-                            <td><?= h($user->activation_date) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('app_users', 'Tos Date') ?></th>
-                            <td><?= h($user->tos_date) ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __d('access', 'One-Time Codes') ?></th>
                             <td><?= $user->secret_verified ? __d('access', 'On') : __d('access', 'Off') ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Last Login') ?></th>
+                            <th><?= __d('access', 'Last Login') ?></th>
                             <td><?= h($user->last_login) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Created') ?></th>
+                            <th><?= __d('access', 'Created') ?></th>
                             <td><?= h($user->created) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Modified') ?></th>
+                            <th><?= __d('access', 'Modified') ?></th>
                             <td><?= h($user->modified) ?></td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="related">
-                <h4><?= __d('app_users', 'Related Social Accounts') ?></h4>
+                <h4><?= __d('access', 'Related Social Accounts') ?></h4>
                 <?php if (!empty($user->social_accounts)) : ?>
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('app_users', 'Provider') ?></th>
-                            <th><?= __d('app_users', 'Username') ?></th>
-                            <th><?= __d('app_users', 'Reference') ?></th>
-                            <th><?= __d('app_users', 'Active') ?></th>
-                            <th><?= __d('app_users', 'Created') ?></th>
+                            <th><?= __d('access', 'Provider') ?></th>
+                            <th><?= __d('access', 'Username') ?></th>
+                            <th><?= __d('access', 'Reference') ?></th>
+                            <th><?= __d('access', 'Active') ?></th>
+                            <th><?= __d('access', 'Created') ?></th>
                         </tr>
                         <?php foreach ($user->social_accounts as $socialAccounts) : ?>
                         <tr>
                             <td><?= h($socialAccounts->provider) ?></td>
                             <td><?= h($socialAccounts->username) ?></td>
                             <td><?= h($socialAccounts->reference) ?></td>
-                            <td><?= $socialAccounts->active ? __d('app_users', 'Yes') : __d('app_users', 'No') ?></td>
+                            <td><?= $socialAccounts->active ? __d('access', 'Yes') : __d('access', 'No') ?></td>
                             <td><?= h($socialAccounts->created) ?></td>
                         </tr>
                         <?php endforeach; ?>

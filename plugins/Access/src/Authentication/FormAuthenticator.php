@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace Access\Authentication;
 
+use Authentication\Authenticator\FormAuthenticator as BaseFormAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
-use Authentication\Identifier\IdentifierInterface;
 use Cake\Http\ServerRequest;
-use CakeDC\Auth\Authenticator\FormAuthenticator as BaseFormAuthenticator;
-use CakeDC\Users\Utility\UsersUrl;
 use Override;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -52,26 +50,11 @@ class FormAuthenticator extends BaseFormAuthenticator
             AuthLog::warning('sign-in failed', [
                 'user' => $account,
                 'ip' => $address,
-                'reason' => $result->getStatus() === self::FAILURE_INVALID_RECAPTCHA
-                    ? 'invalid reCAPTCHA'
-                    : 'wrong username or password',
+                'reason' => 'wrong username or password',
             ]);
         }
 
         return $result;
-    }
-
-    /**
-     * The identifiers that check the password.
-     *
-     * Signing in asks for them to store a password hashed the old way again, and finds nothing to
-     * ask without this.
-     *
-     * @return \Authentication\Identifier\IdentifierInterface
-     */
-    public function getIdentifier(): IdentifierInterface
-    {
-        return $this->identifier;
     }
 
     /**
@@ -82,11 +65,7 @@ class FormAuthenticator extends BaseFormAuthenticator
      */
     private function attemptedAccount(ServerRequestInterface $request): ?string
     {
-        if (
-            !$request instanceof ServerRequest
-            || !$request->is('post')
-            || !UsersUrl::checkActionOnRequest('login', $request)
-        ) {
+        if (!$request instanceof ServerRequest || !$request->is('post') || !$this->_checkUrl($request)) {
             return null;
         }
 

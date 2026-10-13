@@ -1,6 +1,7 @@
 <?php
 /**
- * How people sign in, read by CakeDC/Users over its own defaults.
+ * How people sign in: read by this plugin, and by CakeDC/Auth, which lends it the second factor,
+ * the permissions and the services of other identity providers.
  *
  * Every application carrying this plugin reads the same file. What differs between installations
  * comes from the environment.
@@ -10,44 +11,128 @@ use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\FormAuthenticator;
 use Access\Authentication\TokenAuthenticator;
 use Access\Authentication\TwoFactorChecker;
+use Access\Middleware\UnauthorizedHandler\RedirectHandler;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
+use CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor;
+use CakeDC\Auth\Authenticator\SocialAuthenticator;
+use CakeDC\Auth\Social\Mapper\Google as GoogleMapper;
+use CakeDC\Auth\Social\Service\OAuth2Service;
+use League\OAuth2\Client\Provider\Google;
+
+$users = ['plugin' => false, 'prefix' => false, 'controller' => 'AppUsers'];
+$login = $users + ['action' => 'login'];
+// accounts that are not active do not sign in, whichever way they try
+$resolver = ['className' => 'Authentication.Orm', 'userModel' => 'AppUsers', 'finder' => 'active'];
+$base = Router::fullBaseUrl();
 
 return [
-    'Users.controller' => 'AppUsers',
-    'Users.table' => 'AppUsers',
-    // Argon2id for new passwords, and for old ones the next time their owner signs in. Both have
-    // to name the same hasher, or every sign-in would hash the password again.
-    'Users.passwordHasher' => Argon2idPasswordHasher::class,
-    'Auth.Authenticators.Form.className' => FormAuthenticator::class,
-    // the identifier is registered under its name without the plugin
-    'Auth.PasswordRehash.authenticators' => ['Form' => 'Password'],
-    'Users.Registration.active' => false,
+    'Users' => [
+        // the application's own classes, which the permissions and the templates name
+        'controller' => 'AppUsers',
+        'table' => 'AppUsers',
+        'Social' => [
+            // signing in with Google is offered where the installation has a client for it
+            'login' => (bool)env('GOOGLE_OAUTH_CLIENT_ID', false),
+        ],
+        'Superuser' => [
+            'allowedToChangeSettings' => true,
+        ],
+    ],
+    'Auth' => [
+        'AuthenticationComponent' => [
+            'loginAction' => $login,
+            'logoutRedirect' => $login,
+            // The root, which is where the page a user starts on is decided - the dashboard
+            // unless they have settled on another one for themselves. Naming a page here instead
+            // would put that choice out of reach of everybody who arrives by signing in.
+            'loginRedirect' => '/',
+            'requireIdentity' => false,
+        ],
+        // A cookie that remembers somebody and a link sent by e-mail are left out: each signs in
+        // without the password and without the second factor.
+        'Authenticators' => [
+            'Session' => [
+                'className' => 'Authentication.Session',
+                'skipTwoFactorVerify' => true,
+                'sessionKey' => 'Auth',
+            ],
+            'Form' => [
+                'className' => FormAuthenticator::class,
+                'urlChecker' => 'Authentication.CakeRouter',
+                'loginUrl' => $login,
+                'identifier' => [
+                    'Authentication.Password' => [
+                        'fields' => ['username' => ['username', 'email'], 'password' => 'password'],
+                        'resolver' => $resolver,
+                        // Argon2id for new passwords, and for old ones the next time their owner
+                        // signs in
+                        'passwordHasher' => Argon2idPasswordHasher::class,
+                    ],
+                ],
+            ],
+            // API clients send their key as a Bearer token; in the address it still works, and
+            // is logged
+            'Token' => [
+                'className' => TokenAuthenticator::class,
+                'skipTwoFactorVerify' => true,
+                'header' => 'Authorization',
+                'tokenPrefix' => 'Bearer',
+                'queryParam' => 'api_key',
+                'identifier' => [
+                    'Authentication.Token' => [
+                        'tokenField' => 'api_token',
+                        // only the hash of a key is kept
+                        'hashAlgorithm' => 'sha256',
+                        'resolver' => $resolver,
+                    ],
+                ],
+            ],
+            'Social' => [
+                'className' => SocialAuthenticator::class,
+                'identifier' => [
+                    'Access.LinkedSocial' => ['resolver' => $resolver],
+                ],
+            ],
+        ],
+        'AuthorizationMiddleware' => [
+            'unauthorizedHandler' => [
+                'className' => RedirectHandler::class,
+                'url' => $login,
+            ],
+        ],
+        'AuthorizationComponent' => [
+            'enabled' => true,
+        ],
+        'RbacPolicy' => [],
+    ],
     // one-time codes from an authenticator app, asked for where the settings or the account say so
-    'OneTimePasswordAuthenticator.login' => true,
-    'OneTimePasswordAuthenticator.checker' => TwoFactorChecker::class,
-    // what the authenticator app calls the application
-    'OneTimePasswordAuthenticator.issuer' => parse_url((string)Configure::read('App.fullBaseUrl'), PHP_URL_HOST)
-        ?: env('APP_NAME', 'Watcher'),
+    'OneTimePasswordAuthenticator' => [
+        'login' => true,
+        'checker' => TwoFactorChecker::class,
+        'verifyAction' => $users + ['action' => 'verify'],
+        // what the authenticator app calls the application
+        'issuer' => parse_url((string)Configure::read('App.fullBaseUrl'), PHP_URL_HOST) ?: env('APP_NAME', 'Watcher'),
+    ],
     // security keys and passkeys are left to the identity provider
-    'Webauthn2fa.enabled' => false,
-    // signing in again after eight hours idle is enough; a cookie that signs in without the
-    // password, or a link sent by e-mail, would also skip the second factor
-    'Users.RememberMe.active' => false,
-    'OneTimeLogin.enabled' => false,
-    'Users.Superuser.allowedToChangePasswords' => true,
-    'Users.Superuser.allowedToChangeSettings' => true,
-    // a profile shows what the account is, so only its owner opens it
-    'Users.Profile.viewOthers' => false,
-    // signing in with Google is offered where the installation has a client for it
-    'Users.Social.login' => (bool)env('GOOGLE_OAUTH_CLIENT_ID', false),
-    // API clients send their key as a Bearer token; in the address it still works, and is logged
-    'Auth.Authenticators.Token.className' => TokenAuthenticator::class,
-    'Auth.Authenticators.Token.header' => 'Authorization',
-    'Auth.Authenticators.Token.tokenPrefix' => 'Bearer',
-    // The root, which is where the page a user starts on is decided - the dashboard unless
-    // they have settled on another one for themselves. Naming a page here instead would put
-    // that choice out of reach of everybody who arrives by signing in.
-    'Auth.AuthenticationComponent.loginRedirect' => '/',
-    'OAuth.providers.google.options.clientId' => env('GOOGLE_OAUTH_CLIENT_ID', null),
-    'OAuth.providers.google.options.clientSecret' => env('GOOGLE_OAUTH_CLIENT_SECRET', null),
+    'TwoFactorProcessors' => [
+        OneTimePasswordProcessor::class,
+    ],
+    'OAuth' => [
+        'path' => $users + ['action' => 'socialLogin'],
+        'providers' => [
+            'google' => [
+                'service' => OAuth2Service::class,
+                'className' => Google::class,
+                'mapper' => GoogleMapper::class,
+                'options' => [
+                    'clientId' => env('GOOGLE_OAUTH_CLIENT_ID', null),
+                    'clientSecret' => env('GOOGLE_OAUTH_CLIENT_SECRET', null),
+                    'redirectUri' => $base . '/auth/google',
+                    'linkSocialUri' => $base . '/link-social/google',
+                    'callbackLinkSocialUri' => $base . '/callback-link-social/google',
+                ],
+            ],
+        ],
+    ],
 ];

@@ -1,19 +1,16 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\AppUser> $users
- * @var string $tableAlias
+ * @var iterable<\Access\Model\Entity\User> $users
  */
-
-$users = ${$tableAlias};
 ?>
 <div class="users index content">
     <?= $this->Html->link(
-        __d('app_users', 'New User'),
+        __d('access', 'New User'),
         ['action' => 'add'],
         ['class' => 'button float-right win-link'],
     ) ?>
-    <?= $this->heading(__d('app_users', 'Users')) ?>
+    <?= $this->heading(__d('access', 'Users')) ?>
     <div class="table-responsive">
         <table>
             <thead>
@@ -26,11 +23,11 @@ $users = ${$tableAlias};
                     <th><?= $this->Paginator->sort('holds_tasks') ?></th>
                     <th><?= $this->Paginator->sort('is_superuser') ?></th>
                     <th><?= $this->Paginator->sort('role') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id') ?></th>
+                    <?= $this->element('Access.account_fields', ['part' => 'heading']) ?>
                     <th><?= $this->Paginator->sort('last_login') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th class="actions"><?= __d('app_users', 'Actions') ?></th>
+                    <th class="actions"><?= __d('access', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -40,36 +37,36 @@ $users = ${$tableAlias};
                     <td><?= h($user->email) ?></td>
                     <td><?= h($user->first_name) ?></td>
                     <td><?= h($user->last_name) ?></td>
-                    <td><?= $user->active ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
-                    <td><?= $user->holds_tasks ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
-                    <td><?= $user->is_superuser ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
+                    <td><?= $user->active ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
+                    <td><?= $user->holds_tasks ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
+                    <td><?= $user->is_superuser ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                     <td><?= h($user->getRoleName()) ?></td>
-                    <td><?= h($user->customer_id) ?></td>
+                    <?= $this->element('Access.account_fields', ['part' => 'cell', 'user' => $user]) ?>
                     <td><?= h($user->last_login) ?></td>
                     <td><?= h($user->created) ?></td>
                     <td><?= h($user->modified) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(
-                            __d('app_users', 'View'),
+                            __d('access', 'View'),
                             ['action' => 'view', $user->id],
                         ) ?>
                         <?= $this->Html->link(
-                            __d('app_users', 'Edit'),
+                            __d('access', 'Edit'),
                             ['action' => 'edit', $user->id],
                             ['class' => 'win-link'],
                         ) ?>
                         <?= $this->Form->postLink(
-                            __d('app_users', 'Delete'),
+                            __d('access', 'Delete'),
                             ['action' => 'delete', $user->id],
-                            ['confirm' => __d('app_users', 'Are you sure you want to delete # {0}?', $user->id)],
+                            ['confirm' => __d('access', 'Are you sure you want to delete # {0}?', $user->id)],
                         ) ?>
                         <?= $this->Html->link(
-                            __d('app_users', 'Change Password'),
+                            __d('access', 'Change Password'),
                             ['action' => 'changePassword', $user->id],
                             ['class' => 'win-link'],
                         ) ?>
                         <?= $this->Html->link(
-                            __d('app_users', 'User Settings'),
+                            __d('access', 'User Settings'),
                             ['action' => 'userSettings', $user->id],
                             ['class' => 'win-link'],
                         ) ?>

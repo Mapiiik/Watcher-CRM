@@ -73,7 +73,8 @@ class UsersControllerTest extends TestCase
     }
 
     /**
-     * Accounts are made by an administrator, so there is nowhere to register - not even for one.
+     * Accounts are made by an administrator, so there is nowhere to register, and no registration
+     * to confirm - not even for one.
      *
      * @return void
      */
@@ -85,19 +86,7 @@ class UsersControllerTest extends TestCase
         $this->session(['Auth' => $this->addAccount(role: 'admin')]);
         $this->get('/register');
         $this->assertResponseCode(404);
-    }
-
-    /**
-     * Only a token for a new password is ever sent. One that would confirm a registration is
-     * turned away before it is looked at.
-     *
-     * @return void
-     */
-    public function testOnlyATokenForANewPasswordIsValidated(): void
-    {
-        $this->session(['Auth' => $this->addAccount(role: 'admin')]);
         $this->get('/users/validate/email/any-token');
-
         $this->assertResponseCode(404);
     }
 
@@ -248,6 +237,86 @@ class UsersControllerTest extends TestCase
         $this->get('/login');
 
         $this->assertSame('AppUsers', Configure::read('Users.controller'));
-        $this->assertFalse(Configure::read('Users.Profile.viewOthers'));
+        $this->assertSame('AppUsers', Configure::read('Users.table'));
+    }
+
+    /**
+     * Somebody not signed in is sent to sign in, and from there on to the page they wanted - but
+     * never to another site.
+     *
+     * @return void
+     */
+    public function testSigningInLeadsOnToThePageAskedFor(): void
+    {
+        $this->addAccount(role: 'admin');
+
+        $this->get('/users');
+        $this->assertRedirectContains('/login?redirect=%2Fusers');
+
+        $this->enableCsrfToken();
+        $this->post('/login?redirect=%2Fusers', ['username' => 'jnovak', 'password' => 'Kopr na zahrade 7x']);
+        $this->assertRedirect('/users');
+
+        $this->_session = [];
+        $this->enableCsrfToken();
+        $this->post('/login?redirect=%2F%2Fexample.com', ['username' => 'jnovak', 'password' => 'Kopr na zahrade 7x']);
+        $this->assertRedirect('/');
+    }
+
+    /**
+     * Somebody changes their own password with the current one as proof, and the change is logged.
+     *
+     * @return void
+     */
+    public function testOwnPasswordIsChangedWithTheCurrentOne(): void
+    {
+        $id = (string)$this->addAccount()->get('id');
+        $this->session(['Auth' => $this->getTableLocator()->get('AppUsers')->get($id)]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/change-password', [
+            'current_password' => 'Not the password 1',
+            'password' => 'Celer v zahradce 8y',
+            'password_confirm' => 'Celer v zahradce 8y',
+        ]);
+        $this->assertResponseOk();
+        $this->assertResponseContains('This is not the current password.');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/change-password', [
+            'current_password' => 'Kopr na zahrade 7x',
+            'password' => 'Celer v zahradce 8y',
+            'password_confirm' => 'Celer v zahradce 8y',
+        ]);
+        $this->assertRedirect('/profile');
+        $stored = (string)$this->getTableLocator()->get('AppUsers')->get($id)->get('password');
+        $this->assertTrue(password_verify('Celer v zahradce 8y', $stored));
+        /** @var \Cake\Log\Engine\ArrayLog $log */
+        $log = Log::engine('auth');
+        $this->assertStringContainsString('password changed user="jnovak"', implode("\n", $log->read()));
+    }
+
+    /**
+     * Only a superuser changes the password of somebody else.
+     *
+     * @return void
+     */
+    public function testOnlyASuperuserChangesThePasswordOfSomebodyElse(): void
+    {
+        $id = (string)$this->addAccount()->get('id');
+        $users = $this->getTableLocator()->get('AppUsers');
+        $other = $users->saveOrFail($users->newEntity([
+            'username' => 'pdvorak',
+            'password' => 'Mrkev na zahrade 9z',
+            'role' => 'user',
+            'active' => true,
+        ]));
+        $this->session(['Auth' => $users->get($id)]);
+
+        $this->get('/users/change-password/' . $other->get('id'));
+
+        $this->assertRedirect('/profile');
     }
 }

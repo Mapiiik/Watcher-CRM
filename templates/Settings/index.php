@@ -22,7 +22,7 @@ use Cake\Core\Plugin;
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
-                    __d('access', 'Sign-in Security Configuration'),
+                    __('Sign-in Security Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'access.security'],
                     ['class' => 'side-nav-item'],
                 ) ?>

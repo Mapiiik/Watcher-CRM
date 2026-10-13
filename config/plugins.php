@@ -29,10 +29,7 @@ return [
     // Required plugins only in CLI commands
     'Migrations' => ['onlyCli' => true],
 
-    // CakeDC/users
-    'CakeDC/Users' => [],
-
-    // Signing in, shared by the applications (after CakeDC/Users, whose configuration it adjusts)
+    // Signing in and the accounts, shared by the applications
     'Access' => [],
 
     // Persisting audit log

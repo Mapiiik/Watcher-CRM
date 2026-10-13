@@ -4,10 +4,7 @@ declare(strict_types=1);
 namespace Access\Model\Entity;
 
 use Access\Authentication\Argon2idPasswordHasher;
-use Authentication\PasswordHasher\PasswordHasherInterface;
-use Cake\Core\Configure;
-use CakeDC\Users\Model\Entity\User as BaseUser;
-use Override;
+use Cake\ORM\Entity;
 
 /**
  * An account people sign in with, shared by the applications.
@@ -15,30 +12,41 @@ use Override;
  * Each application extends this as its `AppUser` and says which roles it knows.
  *
  * @property string $id
+ * @property int $nid
+ * @property string $username
+ * @property string|null $email
+ * @property string $password
  * @property string|null $first_name
  * @property string|null $last_name
+ * @property string|null $role
  * @property bool $active
- * @property \Cake\I18n\Date|null $activation_date
- * @property \Cake\I18n\Date|null $tos_date
+ * @property bool $is_superuser
+ * @property string|null $api_token
+ * @property string|null $token
+ * @property \Cake\I18n\DateTime|null $token_expires
  * @property string|null $secret
  * @property bool $secret_verified
- * @property \Cake\I18n\Date|null $last_login
- * @property \Cake\I18n\Date $created
- * @property \Cake\I18n\Date $modified
+ * @property int|null $otp_last_timestep
+ * @property \Cake\I18n\DateTime|null $last_login
+ * @property bool $holds_tasks
+ * @property array|null $user_settings
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
+ * @property array<\Access\Model\Entity\SocialAccount> $social_accounts
+ * @property string $name
+ * @property string $name_for_lists
  */
-class User extends BaseUser
+class User extends Entity
 {
     /**
      * Fields left out wherever the account is written out whole.
      *
-     * The first six are the plugin's own list, repeated because a property replaces the one it
-     * inherits rather than adding to it. The last is the row of a many-to-many association, which
-     * travels with a person named on a record and says something about the record, not about them.
+     * The last is the row of a many-to-many association, which travels with a person named on a
+     * record and says something about the record, not about them.
      *
      * @var list<string>
      */
     protected array $_hidden = [
-        'additional_data',
         'api_token',
         'password',
         'secret',
@@ -63,8 +71,33 @@ class User extends BaseUser
         'otp_last_timestep' => false,
         'token' => false,
         'token_expires' => false,
-        'login_token' => false,
+        'last_login' => false,
+        // only where a password is being changed
+        'current_password' => false,
+        'password_confirm' => false,
     ];
+
+    /**
+     * Keeps a password as its Argon2id hash.
+     *
+     * @param string $password The password.
+     * @return string
+     */
+    protected function _setPassword(string $password): string
+    {
+        return (new Argon2idPasswordHasher())->hash($password);
+    }
+
+    /**
+     * Whether a password is the one the account has.
+     *
+     * @param string $password The password.
+     * @return bool
+     */
+    public function checkPassword(string $password): bool
+    {
+        return (new Argon2idPasswordHasher())->check($password, (string)$this->get('password'));
+    }
 
     /**
      * Keeps an API key as its SHA-256 only. A key is looked up by its hash, so nothing readable is
@@ -79,20 +112,41 @@ class User extends BaseUser
     }
 
     /**
-     * The hasher passwords are stored with: the one the configuration names, or Argon2id where it
-     * names none, as before the application is started.
+     * What the person is called.
      *
-     * @return \Authentication\PasswordHasher\PasswordHasherInterface
+     * The account name belongs to {@see _getNameForLists()} rather than here. A list has to tell
+     * two people of the same name apart, and says which account each one is; a cell standing in a
+     * row that is already about one task has nothing to tell apart, and the brackets only get in
+     * the way of reading it.
+     *
+     * @return string
      */
-    #[Override]
-    public function getPasswordHasher(): PasswordHasherInterface
+    protected function _getName(): string
     {
-        $class = Configure::read('Users.passwordHasher');
-        if (is_string($class) && is_a($class, PasswordHasherInterface::class, true)) {
-            return new $class();
-        }
+        $name = implode(' ', array_filter([
+            $this->first_name,
+            $this->last_name,
+        ]));
 
-        return new Argon2idPasswordHasher();
+        // An account with no name filled in still has to read as somebody rather than as an empty
+        // cell, and the only thing left to call it by is the account itself.
+        return $name !== '' ? $name : (string)$this->username;
+    }
+
+    /**
+     * What the person is called, surname first and with the account named, for picking one out
+     * of a list.
+     *
+     * @return string
+     */
+    protected function _getNameForLists(): string
+    {
+        $name = implode(' ', array_filter([
+            $this->last_name,
+            $this->first_name,
+        ]));
+
+        return $name . ' (' . $this->username . ')';
     }
 
     /**
@@ -112,6 +166,6 @@ class User extends BaseUser
      */
     public function getRoleName(): string
     {
-        return $this->getRoleOptions()[$this->role] ?? $this->role;
+        return $this->getRoleOptions()[$this->role] ?? (string)$this->role;
     }
 }
