@@ -85,7 +85,7 @@ trait PasswordResetTrait
             );
             $user = $users->patchEntity($user, $data, [
                 'validate' => 'passwordConfirm',
-                'accessibleFields' => ['password_confirm' => true],
+                'accessibleFields' => ['password' => true, 'password_confirm' => true],
             ]);
             // the link works once
             $user->patch(['token' => null, 'token_expires' => null], ['guard' => false]);

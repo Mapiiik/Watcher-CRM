@@ -7,10 +7,26 @@ use Access\Model\Entity\User;
 use Override;
 
 /**
- * An account, with the roles this application knows.
+ * An account, with the roles this application knows and whether tasks can be given to it.
+ *
+ * @property bool $holds_tasks
  */
 class AppUser extends User
 {
+    /**
+     * An account, which a form may also say holds tasks.
+     *
+     * @param array<string, mixed> $properties The fields of the account.
+     * @param array<string, mixed> $options How to set them.
+     */
+    public function __construct(array $properties = [], array $options = [])
+    {
+        parent::__construct($properties, $options);
+
+        // a form of the account says whether tasks can be given to it
+        $this->setAccess('holds_tasks', true);
+    }
+
     /**
      * Get role options method
      *

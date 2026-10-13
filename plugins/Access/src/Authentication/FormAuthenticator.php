@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace Access\Authentication;
 
+use Access\Model\Table\UsersTable;
 use Authentication\Authenticator\FormAuthenticator as BaseFormAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
+use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
 use Override;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,6 +30,25 @@ class FormAuthenticator extends BaseFormAuthenticator
      */
     #[Override]
     public function authenticate(ServerRequestInterface $request): ResultInterface
+    {
+        $result = $this->authenticateCounted($request);
+
+        // checked now, the password and the one-time secret are not for the session to keep
+        $identity = $result->getData();
+        if ($identity instanceof EntityInterface) {
+            $identity->unset(UsersTable::SECRETS);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Checks the password, unless the account or the address failed too often.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
+     * @return \Authentication\Authenticator\ResultInterface
+     */
+    private function authenticateCounted(ServerRequestInterface $request): ResultInterface
     {
         $account = $this->attemptedAccount($request);
         if ($account === null) {

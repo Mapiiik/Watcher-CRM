@@ -107,13 +107,7 @@ class LinkedSocialIdentifierTest extends TestCase
     public function testAnIdentityIsLinkedToOneAccountOnly(): void
     {
         $user = $this->addAccount();
-        $users = $this->getTableLocator()->get('AppUsers');
-        $other = $users->saveOrFail($users->newEntity([
-            'username' => 'pdvorak',
-            'password' => 'Mrkev na zahrade 9z',
-            'role' => 'user',
-            'active' => true,
-        ]));
+        $other = $this->addOtherAccount();
         $links = $this->getTableLocator()->get('Access.SocialAccounts');
         $links->link((string)$user->get('id'), 'google', '108234567890', null);
 

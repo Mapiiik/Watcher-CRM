@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 22:01+0200\n"
+"POT-Creation-Date: 2026-10-13 22:49+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2593,7 +2593,7 @@ msgstr "Nepodepsané dokumenty"
 msgid "The service is not configured."
 msgstr "Služba není nakonfigurována."
 
-#: src/Model/Entity/AppUser.php:23 src/Model/Enum/LoginRights.php:28
+#: src/Model/Entity/AppUser.php:39 src/Model/Enum/LoginRights.php:28
 #: templates/Tasks/add.php:44 templates/Tasks/edit.php:57
 #: templates/Tasks/index.php:105 templates/Tasks/view.php:54
 #: templates/element/Contracts/Tasks.php:25
@@ -2601,43 +2601,43 @@ msgstr "Služba není nakonfigurována."
 msgid "User"
 msgstr "Uživatel"
 
-#: src/Model/Entity/AppUser.php:24
+#: src/Model/Entity/AppUser.php:40
 msgid "Customer Service Technician"
 msgstr "Technik zákaznického servisu"
 
-#: src/Model/Entity/AppUser.php:25
+#: src/Model/Entity/AppUser.php:41
 msgid "Network Technician"
 msgstr "Síťový technik"
 
-#: src/Model/Entity/AppUser.php:26
+#: src/Model/Entity/AppUser.php:42
 msgid "Network Manager"
 msgstr "Správce sítě"
 
-#: src/Model/Entity/AppUser.php:27
+#: src/Model/Entity/AppUser.php:43
 msgid "Sales Representative"
 msgstr "Obchodní zástupce"
 
-#: src/Model/Entity/AppUser.php:28
+#: src/Model/Entity/AppUser.php:44
 msgid "Sales Manager"
 msgstr "Manažer prodeje"
 
-#: src/Model/Entity/AppUser.php:29
+#: src/Model/Entity/AppUser.php:45
 msgid "Bookkeeper"
 msgstr "Účetní"
 
-#: src/Model/Entity/AppUser.php:30
+#: src/Model/Entity/AppUser.php:46
 msgid "Admin"
 msgstr "Admin"
 
-#: src/Model/Entity/AppUser.php:31
+#: src/Model/Entity/AppUser.php:47
 msgid "API"
 msgstr "API"
 
-#: src/Model/Entity/AppUser.php:32
+#: src/Model/Entity/AppUser.php:48
 msgid "Customer Portal"
 msgstr "Zákaznický portál"
 
-#: src/Model/Entity/AppUser.php:33
+#: src/Model/Entity/AppUser.php:49
 msgid "Customer Identification"
 msgstr "Identifikace zákazníka"
 

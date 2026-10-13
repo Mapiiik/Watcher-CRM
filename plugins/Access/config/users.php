@@ -64,7 +64,8 @@ return [
                 'identifier' => [
                     'Authentication.Password' => [
                         'fields' => ['username' => ['username', 'email'], 'password' => 'password'],
-                        'resolver' => $resolver,
+                        // the only look-up that reads the password, to check it
+                        'resolver' => ['finder' => 'signIn'] + $resolver,
                         // Argon2id for new passwords, and for old ones the next time their owner
                         // signs in
                         'passwordHasher' => Argon2idPasswordHasher::class,

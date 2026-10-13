@@ -42,7 +42,10 @@ class AddAdminCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputRegExp('/password \S+$/m');
         preg_match('/password (\S+)$/m', (string)$this->_out?->output(), $shown);
-        $admin = $this->getTableLocator()->get('AppUsers')->find()->where(['username' => 'anovak'])->firstOrFail();
+        $admin = $this->getTableLocator()->get('AppUsers')
+            ->find('withSecrets')
+            ->where(['username' => 'anovak'])
+            ->firstOrFail();
         $this->assertSame('admin', $admin->get('role'));
         $this->assertTrue($admin->get('active'));
         $this->assertFalse($admin->get('is_superuser'));

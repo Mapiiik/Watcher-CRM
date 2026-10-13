@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 22:01+0200\n"
+"POT-Creation-Date: 2026-10-13 22:49+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -161,21 +161,21 @@ msgstr ""
 msgid "The password could not be changed."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:279
-#: ./plugins/Access/src/Controller/UsersController.php:303
+#: ./plugins/Access/src/Controller/UsersController.php:281
+#: ./plugins/Access/src/Controller/UsersController.php:305
 msgid "The account has been saved."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:283
-#: ./plugins/Access/src/Controller/UsersController.php:307
+#: ./plugins/Access/src/Controller/UsersController.php:285
+#: ./plugins/Access/src/Controller/UsersController.php:309
 msgid "The account could not be saved."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:325
+#: ./plugins/Access/src/Controller/UsersController.php:327
 msgid "The account has been deleted."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:327
+#: ./plugins/Access/src/Controller/UsersController.php:329
 msgid "The account could not be deleted."
 msgstr ""
 
@@ -192,11 +192,11 @@ msgstr ""
 msgid "This identity is already linked to another account."
 msgstr ""
 
-#: ./plugins/Access/src/Model/Table/UsersTable.php:128
+#: ./plugins/Access/src/Model/Table/UsersTable.php:175
 msgid "The two passwords are not the same."
 msgstr ""
 
-#: ./plugins/Access/src/Model/Table/UsersTable.php:158
+#: ./plugins/Access/src/Model/Table/UsersTable.php:205
 msgid "This username is already taken."
 msgstr ""
 
@@ -224,7 +224,7 @@ msgid "Add User"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/add.php:34
-#: ./plugins/Access/templates/Users/change_password.php:57
+#: ./plugins/Access/templates/Users/change_password.php:64
 #: ./plugins/Access/templates/Users/edit.php:45
 #: ./plugins/Access/templates/Users/request_reset_password.php:15
 msgid "Submit"
@@ -235,7 +235,7 @@ msgid "View User"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/api_token.php:20
-#: ./plugins/Access/templates/Users/view.php:110
+#: ./plugins/Access/templates/Users/view.php:107
 msgid "API Key"
 msgstr ""
 
@@ -253,21 +253,21 @@ msgstr ""
 msgid "Please enter the new password"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/change_password.php:36
+#: ./plugins/Access/templates/Users/change_password.php:38
 msgid "Current password"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/change_password.php:43
+#: ./plugins/Access/templates/Users/change_password.php:48
 #: ./plugins/Access/templates/Users/reset_password.php:17
 msgid "New password"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/change_password.php:44
+#: ./plugins/Access/templates/Users/change_password.php:49
 #: ./plugins/Access/templates/Users/reset_password.php:18
 msgid "At least {0} characters, not the username or the e-mail and not a common password."
 msgstr ""
 
-#: ./plugins/Access/templates/Users/change_password.php:53
+#: ./plugins/Access/templates/Users/change_password.php:60
 #: ./plugins/Access/templates/Users/reset_password.php:29
 msgid "Confirm password"
 msgstr ""
@@ -298,22 +298,18 @@ msgid "Users"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/index.php:39
-#: ./plugins/Access/templates/Users/index.php:40
 #: ./plugins/Access/templates/Users/index.php:41
 #: ./plugins/Access/templates/Users/view.php:95
 #: ./plugins/Access/templates/Users/view.php:99
-#: ./plugins/Access/templates/Users/view.php:103
-#: ./plugins/Access/templates/Users/view.php:149
+#: ./plugins/Access/templates/Users/view.php:146
 msgid "Yes"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/index.php:39
-#: ./plugins/Access/templates/Users/index.php:40
 #: ./plugins/Access/templates/Users/index.php:41
 #: ./plugins/Access/templates/Users/view.php:95
 #: ./plugins/Access/templates/Users/view.php:99
-#: ./plugins/Access/templates/Users/view.php:103
-#: ./plugins/Access/templates/Users/view.php:149
+#: ./plugins/Access/templates/Users/view.php:146
 msgid "No"
 msgstr ""
 
@@ -342,7 +338,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/login.php:11
 #: ./plugins/Access/templates/Users/profile.php:29
 #: ./plugins/Access/templates/Users/view.php:74
-#: ./plugins/Access/templates/Users/view.php:139
+#: ./plugins/Access/templates/Users/view.php:136
 #: ./plugins/Access/templates/element/social_accounts.php:23
 msgid "Username"
 msgstr ""
@@ -394,7 +390,7 @@ msgid "Role"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/profile.php:49
-#: ./plugins/Access/templates/Users/view.php:118
+#: ./plugins/Access/templates/Users/view.php:115
 msgid "Last Login"
 msgstr ""
 
@@ -475,54 +471,50 @@ msgid "Is Superuser"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:98
-#: ./plugins/Access/templates/Users/view.php:141
+#: ./plugins/Access/templates/Users/view.php:138
 msgid "Active"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:102
-msgid "Holds Tasks"
-msgstr ""
-
-#: ./plugins/Access/templates/Users/view.php:111
+#: ./plugins/Access/templates/Users/view.php:108
 msgid "Set"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:111
+#: ./plugins/Access/templates/Users/view.php:108
 msgid "None"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:114
+#: ./plugins/Access/templates/Users/view.php:111
 #: ./plugins/Access/templates/element/one_time_password.php:14
 msgid "One-Time Codes"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:115
+#: ./plugins/Access/templates/Users/view.php:112
 msgid "On"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:115
+#: ./plugins/Access/templates/Users/view.php:112
 msgid "Off"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:122
-#: ./plugins/Access/templates/Users/view.php:142
+#: ./plugins/Access/templates/Users/view.php:119
+#: ./plugins/Access/templates/Users/view.php:139
 msgid "Created"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:126
+#: ./plugins/Access/templates/Users/view.php:123
 msgid "Modified"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:133
+#: ./plugins/Access/templates/Users/view.php:130
 msgid "Related Social Accounts"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:138
+#: ./plugins/Access/templates/Users/view.php:135
 #: ./plugins/Access/templates/element/social_accounts.php:22
 msgid "Provider"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:140
+#: ./plugins/Access/templates/Users/view.php:137
 msgid "Reference"
 msgstr ""
 

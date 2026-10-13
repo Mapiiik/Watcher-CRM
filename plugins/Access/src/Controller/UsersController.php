@@ -204,10 +204,10 @@ class UsersController extends AppController
             );
             // checked before the new password takes the place of the old one
             $current = (string)($data['current_password'] ?? '');
-            $proven = !$own || $signedIn->checkPassword($current);
+            $proven = !$own || $this->signedInAccount(secrets: true)->checkPassword($current);
             $user = $users->patchEntity($user, $data, [
                 'validate' => $own ? 'passwordChange' : 'passwordConfirm',
-                'accessibleFields' => ['password_confirm' => true, 'current_password' => true],
+                'accessibleFields' => ['password' => true, 'password_confirm' => true, 'current_password' => true],
             ]);
 
             if (!$proven && $current !== '') {
@@ -274,7 +274,9 @@ class UsersController extends AppController
         $users = $this->getUsersTable();
         $user = $users->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
-            $user = $users->patchEntity($user, (array)$this->getRequest()->getData());
+            $user = $users->patchEntity($user, (array)$this->getRequest()->getData(), [
+                'accessibleFields' => ['password' => true],
+            ]);
             if ($users->save($user)) {
                 $this->Flash->success(__d('access', 'The account has been saved.'));
 

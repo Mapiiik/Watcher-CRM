@@ -7,6 +7,7 @@ use Access\Authentication\PasswordRules;
 use Access\Model\Entity\User;
 use ArrayObject;
 use AuditStash\Persister\TablePersister;
+use Cake\Collection\CollectionInterface;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\I18n\DateTime;
@@ -44,6 +45,14 @@ class UsersTable extends Table
     public const PASSWORD_TOKEN_LIFETIME = '+1 hour';
 
     /**
+     * What an account keeps that no page, form or session needs. A query reads it only when it
+     * asks for it with the finder `withSecrets`.
+     *
+     * @var list<string>
+     */
+    public const SECRETS = ['password', 'secret'];
+
+    /**
      * Initialize method
      *
      * @param array<array-key, mixed> $config The configuration for the Table.
@@ -77,6 +86,66 @@ class UsersTable extends Table
             'foreignKey' => 'user_id',
             'dependent' => true,
         ]);
+    }
+
+    /**
+     * Leaves the secrets out of every query that does not ask for them, as an account and as an
+     * account joined to another record alike.
+     *
+     * A joined account loses them only once read. Its columns would otherwise go into the query
+     * even where the join only filters, a subquery of ids among them.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event The event.
+     * @param \Cake\ORM\Query\SelectQuery<\Access\Model\Entity\User> $query The query.
+     * @param \ArrayObject<string, mixed> $options The options of the query.
+     * @param bool $primary Whether this is the root query or an association.
+     * @return void
+     */
+    public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options, bool $primary): void
+    {
+        if (!empty($options['secrets'])) {
+            return;
+        }
+
+        if ($primary) {
+            if ($query->clause('select') === []) {
+                $query->selectAllExcept($this, self::SECRETS);
+            }
+
+            return;
+        }
+
+        $query->formatResults(fn(CollectionInterface $accounts): CollectionInterface => $accounts->map(
+            function (mixed $account): mixed {
+                if ($account instanceof EntityInterface) {
+                    return $account->unset(self::SECRETS);
+                }
+
+                return is_array($account) ? array_diff_key($account, array_flip(self::SECRETS)) : $account;
+            },
+        ));
+    }
+
+    /**
+     * Accounts with their secrets, for checking a password or a one-time code.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Access\Model\Entity\User> $query The query.
+     * @return \Cake\ORM\Query\SelectQuery<\Access\Model\Entity\User>
+     */
+    public function findWithSecrets(SelectQuery $query): SelectQuery
+    {
+        return $query->applyOptions(['secrets' => true]);
+    }
+
+    /**
+     * Accounts that may sign in, with what signing in checks.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Access\Model\Entity\User> $query The query.
+     * @return \Cake\ORM\Query\SelectQuery<\Access\Model\Entity\User>
+     */
+    public function findSignIn(SelectQuery $query): SelectQuery
+    {
+        return $this->findWithSecrets($this->findActive($query));
     }
 
     /**

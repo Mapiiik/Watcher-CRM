@@ -44,7 +44,7 @@ trait OneTimePasswordTrait
             return $this->redirect($loginAction);
         }
 
-        $user = $this->getUsersTable()->get($pending['id']);
+        $user = $this->getUsersTable()->get($pending['id'], finder: 'withSecrets');
         if (!$user->get('secret_verified')) {
             $this->showSetUp($user);
         }
@@ -102,7 +102,7 @@ trait OneTimePasswordTrait
      */
     public function oneTimePassword(): ?Response
     {
-        $user = $this->signedInAccount();
+        $user = $this->signedInAccount(secrets: true);
         if ($user->get('secret_verified')) {
             return $this->redirect(['action' => 'profile']);
         }
@@ -130,7 +130,7 @@ trait OneTimePasswordTrait
     public function disableOneTimePassword(): ?Response
     {
         $this->getRequest()->allowMethod('post');
-        $user = $this->signedInAccount();
+        $user = $this->signedInAccount(secrets: true);
 
         if (SecurityPolicy::requiresOneTimePassword($user->toArray())) {
             $this->Flash->error(__d('access', 'Your account has to sign in with one-time codes.'));
@@ -157,7 +157,7 @@ trait OneTimePasswordTrait
     public function newRecoveryCodes(): ?Response
     {
         $this->getRequest()->allowMethod('post');
-        $user = $this->signedInAccount();
+        $user = $this->signedInAccount(secrets: true);
 
         if (
             !$user->get('secret_verified')
@@ -336,14 +336,15 @@ trait OneTimePasswordTrait
     /**
      * The account signed in, as stored.
      *
+     * @param bool $secrets Whether to read its password and one-time secret too, to check them.
      * @return \Access\Model\Entity\User
      */
-    protected function signedInAccount(): User
+    protected function signedInAccount(bool $secrets = false): User
     {
         /** @var \Authentication\IdentityInterface $identity */
         $identity = $this->getRequest()->getAttribute('identity');
 
-        return $this->getUsersTable()->get($identity->getIdentifier());
+        return $this->getUsersTable()->get($identity->getIdentifier(), finder: $secrets ? 'withSecrets' : 'all');
     }
 
     /**

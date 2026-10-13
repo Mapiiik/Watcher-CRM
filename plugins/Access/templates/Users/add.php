@@ -28,7 +28,7 @@
                     echo $this->Form->control('last_name');
                     echo $this->Form->control('role', ['options' => $user->getRoleOptions()]);
                     echo $this->Form->control('active');
-                    echo $this->Form->control('holds_tasks');
+                    echo $this->element('Access.account_fields', ['part' => 'form', 'user' => $user]);
                 ?>
             </fieldset>
             <?= $this->Form->button(__d('access', 'Submit')) ?>

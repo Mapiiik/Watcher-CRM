@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2026-10-13 22:01+0200\n"
+"POT-Creation-Date: 2026-10-13 22:49+0200\n"
 "PO-Revision-Date: 2026-08-21 11:32+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
@@ -99,6 +99,20 @@ msgstr "Ve výchozím stavu zobrazovat jen tyto stavy úkolů"
 msgid "Submit"
 msgstr "Odeslat"
 
+#: templates/plugin/Access/element/account_fields.php:13
+#: templates/plugin/Access/element/account_fields.php:17
+msgid "Yes"
+msgstr "Ano"
+
+#: templates/plugin/Access/element/account_fields.php:13
+#: templates/plugin/Access/element/account_fields.php:17
+msgid "No"
+msgstr "Ne"
+
+#: templates/plugin/Access/element/account_fields.php:16
+msgid "Holds Tasks"
+msgstr "Přijímá úkoly"
+
 #~ msgid "Customer Id"
 #~ msgstr "ID zákazníka"
 
@@ -131,12 +145,6 @@ msgstr "Odeslat"
 
 #~ msgid "Users"
 #~ msgstr "Uživatelé"
-
-#~ msgid "Yes"
-#~ msgstr "Ano"
-
-#~ msgid "No"
-#~ msgstr "Ne"
 
 #~ msgid "View"
 #~ msgstr "Zobrazit"
@@ -194,9 +202,6 @@ msgstr "Odeslat"
 
 #~ msgid "Active"
 #~ msgstr "Aktivní"
-
-#~ msgid "Holds Tasks"
-#~ msgstr "Přijímá úkoly"
 
 #~ msgid "Created"
 #~ msgstr "Vytvořeno"

@@ -28,7 +28,6 @@ use Cake\ORM\Entity;
  * @property bool $secret_verified
  * @property int|null $otp_last_timestep
  * @property \Cake\I18n\DateTime|null $last_login
- * @property bool $holds_tasks
  * @property array|null $user_settings
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
@@ -56,25 +55,18 @@ class User extends Entity
     ];
 
     /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
+     * What the forms of an account set. Anything else - the password, the keys, the settings,
+     * what signing in keeps - is set by the action that looks after it, naming it.
      *
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        '*' => true,
-        'id' => false,
-        'is_superuser' => false,
+        'username' => true,
+        'email' => true,
+        'first_name' => true,
+        'last_name' => true,
         'role' => true,
-        // set by signing in and by the actions that look after them, never by a form
-        'secret' => false,
-        'secret_verified' => false,
-        'otp_last_timestep' => false,
-        'token' => false,
-        'token_expires' => false,
-        'last_login' => false,
-        // only where a password is being changed
-        'current_password' => false,
-        'password_confirm' => false,
+        'active' => true,
     ];
 
     /**
@@ -89,7 +81,7 @@ class User extends Entity
     }
 
     /**
-     * Whether a password is the one the account has.
+     * Whether a password is the one the account has, as read with the finder `withSecrets`.
      *
      * @param string $password The password.
      * @return bool

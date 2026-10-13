@@ -62,7 +62,7 @@ trait UserSettingsTrait
             /** @var \App\Model\Entity\AppUser $user */
             $user = $usersTable->patchEntity($user, [
                 'user_settings' => $this->getRequest()->getData('user_settings'),
-            ]);
+            ], ['accessibleFields' => ['user_settings' => true]]);
             if ($usersTable->save($user)) {
                 // update current identity data if it is a logged-in user
                 if ($user->id === $userId) {

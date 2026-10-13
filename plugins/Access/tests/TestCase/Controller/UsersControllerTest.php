@@ -8,6 +8,7 @@ use Access\Controller\UsersController;
 use Access\Test\TestCase\AccountsTrait;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 use Cake\Log\Engine\ArrayLog;
 use Cake\Log\Log;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -109,7 +110,7 @@ class UsersControllerTest extends TestCase
         $this->post('/login', ['username' => 'jnovak', 'password' => 'Kopr na zahrade 7x']);
 
         $this->assertRedirect('/');
-        $stored = (string)$users->get($id)->get('password');
+        $stored = (string)$users->get($id, finder: 'withSecrets')->get('password');
         $this->assertStringStartsWith('$argon2id$', $stored);
         $this->assertTrue(password_verify('Kopr na zahrade 7x', $stored));
     }
@@ -166,6 +167,53 @@ class UsersControllerTest extends TestCase
         );
         $this->assertStringContainsString('sign-in blocked user="jnovak"', $lines[5]);
         $this->assertStringNotContainsString('Wrong password', implode("\n", $lines));
+    }
+
+    /**
+     * The session keeps the account signed in without its password or one-time secret.
+     *
+     * @return void
+     */
+    public function testTheSessionKeepsNoSecret(): void
+    {
+        $this->addAccount();
+
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'jnovak', 'password' => 'Kopr na zahrade 7x']);
+
+        $this->assertRedirect('/');
+        // read from `$_SESSION`, as asking the request's session starts it again and empties it
+        $identity = $_SESSION['Auth'] ?? null;
+        $this->assertInstanceOf(EntityInterface::class, $identity);
+        $this->assertSame('jnovak', $identity->get('username'));
+        $this->assertNull($identity->get('password'));
+        $this->assertNull($identity->get('secret'));
+    }
+
+    /**
+     * Editing an account does not change its password, whatever the form sends.
+     *
+     * @return void
+     */
+    public function testEditingAnAccountLeavesItsPasswordAlone(): void
+    {
+        $users = $this->getTableLocator()->get('AppUsers');
+        $this->session(['Auth' => $this->addAccount(role: 'admin')]);
+        $other = $this->addOtherAccount();
+        $before = (string)$users->get($other->get('id'), finder: 'withSecrets')->get('password');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/edit/' . $other->get('id'), [
+            'username' => 'pdvorak',
+            'first_name' => 'Petr',
+            'password' => 'Celer v zahradce 8y',
+        ]);
+
+        $this->assertRedirectContains('/users/index');
+        $after = $users->get($other->get('id'), finder: 'withSecrets');
+        $this->assertSame('Petr', $after->get('first_name'));
+        $this->assertSame($before, $after->get('password'));
     }
 
     /**
@@ -291,7 +339,7 @@ class UsersControllerTest extends TestCase
             'password_confirm' => 'Celer v zahradce 8y',
         ]);
         $this->assertRedirect('/profile');
-        $stored = (string)$this->getTableLocator()->get('AppUsers')->get($id)->get('password');
+        $stored = (string)$this->getTableLocator()->get('AppUsers')->get($id, finder: 'withSecrets')->get('password');
         $this->assertTrue(password_verify('Celer v zahradce 8y', $stored));
         /** @var \Cake\Log\Engine\ArrayLog $log */
         $log = Log::engine('auth');
@@ -308,12 +356,7 @@ class UsersControllerTest extends TestCase
     {
         $users = $this->getTableLocator()->get('AppUsers');
         $id = (string)$this->addAccount(superuser: true)->get('id');
-        $other = $users->saveOrFail($users->newEntity([
-            'username' => 'pdvorak',
-            'password' => 'Mrkev na zahrade 9z',
-            'role' => 'user',
-            'active' => true,
-        ]));
+        $other = $this->addOtherAccount();
         $this->session(['Auth' => $users->get($id)]);
 
         $this->get('/users/change-password');
@@ -334,12 +377,7 @@ class UsersControllerTest extends TestCase
     {
         $id = (string)$this->addAccount()->get('id');
         $users = $this->getTableLocator()->get('AppUsers');
-        $other = $users->saveOrFail($users->newEntity([
-            'username' => 'pdvorak',
-            'password' => 'Mrkev na zahrade 9z',
-            'role' => 'user',
-            'active' => true,
-        ]));
+        $other = $this->addOtherAccount();
         $this->session(['Auth' => $users->get($id)]);
 
         $this->get('/users/change-password/' . $other->get('id'));

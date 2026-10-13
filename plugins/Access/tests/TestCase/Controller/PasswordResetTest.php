@@ -84,7 +84,7 @@ class PasswordResetTest extends TestCase
         $this->enableSecurityToken();
         $this->post($url, ['password' => 'Celer v zahradce 8y', 'password_confirm' => 'Celer v zahradce 8y']);
         $this->assertRedirect('/login');
-        $stored = $this->getTableLocator()->get('AppUsers')->get($id);
+        $stored = $this->getTableLocator()->get('AppUsers')->get($id, finder: 'withSecrets');
         $this->assertTrue(password_verify('Celer v zahradce 8y', (string)$stored->get('password')));
         $this->assertNull($stored->get('token'));
 
@@ -133,13 +133,7 @@ class PasswordResetTest extends TestCase
         $this->assertSame($answer, $this->_requestSession?->read('Flash.flash.0.message'));
 
         $users->updateQuery()->set(['active' => true])->where(['id' => $user->get('id')])->execute();
-        $users->saveOrFail($users->newEntity([
-            'username' => 'pdvorak',
-            'email' => 'jan.novak@example.com',
-            'password' => 'Mrkev na zahrade 9z',
-            'role' => 'user',
-            'active' => true,
-        ]));
+        $this->addOtherAccount('jan.novak@example.com');
         $this->askForLink('jan.novak@example.com');
 
         $this->assertNoMailSent();

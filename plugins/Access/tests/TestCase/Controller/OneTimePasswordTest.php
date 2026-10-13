@@ -263,14 +263,14 @@ class OneTimePasswordTest extends TestCase
     }
 
     /**
-     * The account as stored.
+     * The account as stored, secrets and all.
      *
      * @param string $id The account.
      * @return \Cake\Datasource\EntityInterface
      */
     private function account(string $id): EntityInterface
     {
-        return $this->getTableLocator()->get('AppUsers')->get($id);
+        return $this->getTableLocator()->get('AppUsers')->get($id, finder: 'withSecrets');
     }
 
     /**

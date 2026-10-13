@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 22:01+0200\n"
+"POT-Creation-Date: 2026-10-13 22:49+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -96,5 +96,19 @@ msgstr ""
 
 #: ./templates/plugin/Access/Users/user_settings.php:116
 msgid "Submit"
+msgstr ""
+
+#: ./templates/plugin/Access/element/account_fields.php:13
+#: ./templates/plugin/Access/element/account_fields.php:17
+msgid "Yes"
+msgstr ""
+
+#: ./templates/plugin/Access/element/account_fields.php:13
+#: ./templates/plugin/Access/element/account_fields.php:17
+msgid "No"
+msgstr ""
+
+#: ./templates/plugin/Access/element/account_fields.php:16
+msgid "Holds Tasks"
 msgstr ""
 

@@ -39,7 +39,7 @@
                     ],
                 ) ?>
             <?php endif; ?>
-            <?php if ($user->secret) : ?>
+            <?php if ($user->secret_verified) : ?>
                 <?= $this->Form->postLink(
                     __d('access', 'Reset One-Time Codes'),
                     ['action' => 'resetOneTimePasswordAuthenticator', $user->id],
@@ -98,10 +98,7 @@
                             <th><?= __d('access', 'Active') ?></th>
                             <td><?= $user->active ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                         </tr>
-                        <tr>
-                            <th><?= __d('access', 'Holds Tasks') ?></th>
-                            <td><?= $user->holds_tasks ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
-                        </tr>
+                        <?= $this->element('Access.account_fields', ['part' => 'details', 'user' => $user]) ?>
                     </table>
                 </div>
                 <div class="column">

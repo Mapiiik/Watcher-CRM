@@ -44,6 +44,27 @@ trait AccountsTrait
     }
 
     /**
+     * Adds a second account, beside the one of `addAccount()`.
+     *
+     * @param string|null $email Its e-mail.
+     * @return \Cake\Datasource\EntityInterface
+     */
+    protected function addOtherAccount(?string $email = null): EntityInterface
+    {
+        $users = $this->getTableLocator()->get('AppUsers');
+        $user = $users->newEmptyEntity();
+        $user->patch([
+            'username' => 'pdvorak',
+            'email' => $email,
+            'password' => 'Mrkev na zahrade 9z',
+            'role' => 'user',
+            'active' => true,
+        ], ['guard' => false]);
+
+        return $users->saveOrFail($user);
+    }
+
+    /**
      * Takes out the fixtures' accounts, before an account is added some other way.
      *
      * @return void
