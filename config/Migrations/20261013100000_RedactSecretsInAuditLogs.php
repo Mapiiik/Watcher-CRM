@@ -31,11 +31,6 @@ class RedactSecretsInAuditLogs extends BaseMigration
      */
     public function up(): void
     {
-        // the audit log belongs to a plugin, which a database built from nothing has not set up yet
-        if (!$this->hasTable('audit_logs')) {
-            return;
-        }
-
         foreach (self::SECRETS as $source => $fields) {
             foreach ($fields as $field) {
                 foreach (['original', 'changed'] as $column) {

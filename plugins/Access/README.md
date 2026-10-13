@@ -20,6 +20,11 @@ they show fields that only the application has.
 Load the plugin after `CakeDC/Users`. What differs between installations comes from the
 environment, not from this plugin.
 
+## The first account
+
+`bin/cake access add_admin <username> <email>` adds an admin, with a password made up for it and
+shown once. No account comes with the schema, so a new installation has no other way in.
+
 ## Settings, log and cache
 
 The rules for passwords and for failed sign-ins are the settings block `access.security`.

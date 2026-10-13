@@ -26,8 +26,8 @@ trait AccountsTrait
         string $role = 'user',
         bool $superuser = false,
     ): EntityInterface {
+        $this->removeFixtureAccounts();
         $users = $this->getTableLocator()->get('AppUsers');
-        $users->deleteAll(['username !=' => 'jnovak']);
         $user = $users->newEmptyEntity();
         $user->patch([
             'username' => 'jnovak',
@@ -41,5 +41,15 @@ trait AccountsTrait
         $user->set('is_superuser', $superuser);
 
         return $users->saveOrFail($user);
+    }
+
+    /**
+     * Takes out the fixtures' accounts, before an account is added some other way.
+     *
+     * @return void
+     */
+    protected function removeFixtureAccounts(): void
+    {
+        $this->getTableLocator()->get('AppUsers')->deleteAll(['username !=' => 'jnovak']);
     }
 }

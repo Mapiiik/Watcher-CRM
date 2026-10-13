@@ -13,9 +13,8 @@ cp plugins/Files/config/ExampleMigrations/CreateDocumentations.php.example \
 
 ## Why they are not the plugin's own
 
-The plugin's migrations run after the application's, and they have to: an application reshapes
-`users` after the users plugin has created it, and a table of ours with a foreign key to `users`
-would stand in the way of that. So the plugin cannot go first — and an application cannot add a
+The plugin's migrations run after the application's, and they have to: our tables have foreign
+keys to `users`, which the application creates. So the plugin cannot go first — and an application cannot add a
 column to a table that is not there yet. The way out is the one the tasks took: the schema in the
 application, the code that reads it here.
 

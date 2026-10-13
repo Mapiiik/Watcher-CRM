@@ -5,7 +5,6 @@
         <exclude-pattern>src/ContractPDF.php</exclude-pattern>
         <exclude-pattern>src/CustomerPDF.php</exclude-pattern>
         <exclude-pattern>config/settings.php</exclude-pattern>
-        <exclude-pattern>config/Migrations/20221211110347_AddHaveContractVersionsAndHaveEquipmentsAndHaveIpAddressesAndHaveRadiusAccountsToServiceTypes.php</exclude-pattern>
     </rule>
     <rule ref="CakePHP"/>
     <!-- The canvas keeps the old engine's method names so the documents' layout does not

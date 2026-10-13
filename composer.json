@@ -121,7 +121,6 @@
         "cs-check": "phpcs --colors -p",
         "cs-fix": "phpcbf --colors -p",
         "migrations": [
-            "bin/cake migrations migrate --plugin CakeDC/Users",
             "bin/cake migrations migrate",
             "bin/cake migrations migrate --plugin Settings",
             "bin/cake migrations migrate --plugin Bookkeeping",

@@ -85,6 +85,32 @@ relinks the plugin assets and clears the caches. Where opcache is configured not
 check file timestamps, set `PHP_FPM_SERVICE` to the service name and the script
 reloads the pool at the end.
 
+### The first admin
+
+A new installation has no account to sign in with. Add an admin; the password is
+made up for it and shown once:
+
+```bash
+bin/cake access add_admin <username> <email>
+```
+
+With Docker Compose, run it in the container:
+`docker compose -f compose.production.yaml exec webserver bin/cake access add_admin <username> <email>`.
+
+### Upgrading from 4.x
+
+5.x begins with one migration that takes the schema over from the last 4.x
+release, so an installation has to go through that release first and migrate
+there. 5.x also keeps the record of the migrations in one table instead of the
+`phinxlog` tables of 4.x. Move it over once, then migrate:
+
+```bash
+bin/cake migrations upgrade --drop-tables
+./update.sh
+```
+
+Until both are done, migrating stops and says which of them is missing.
+
 ## Configuration
 
 Runtime settings live in `config/.env` (or are passed in as environment
