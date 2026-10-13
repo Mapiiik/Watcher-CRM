@@ -57,7 +57,26 @@ class User extends BaseUser
         'id' => false,
         'is_superuser' => false,
         'role' => true,
+        // set by signing in and by the actions that look after them, never by a form
+        'secret' => false,
+        'secret_verified' => false,
+        'otp_last_timestep' => false,
+        'token' => false,
+        'token_expires' => false,
+        'login_token' => false,
     ];
+
+    /**
+     * Keeps an API key as its SHA-256 only. A key is looked up by its hash, so nothing readable is
+     * kept, and a key can be shown only when it is made.
+     *
+     * @param string|null $token The key.
+     * @return string|null
+     */
+    protected function _setApiToken(?string $token): ?string
+    {
+        return $token === null || $token === '' ? $token : hash('sha256', $token);
+    }
 
     /**
      * The hasher passwords are stored with: the one the configuration names, or Argon2id where it

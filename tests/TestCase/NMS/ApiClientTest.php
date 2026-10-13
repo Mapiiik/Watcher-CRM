@@ -487,11 +487,13 @@ class ApiClientTest extends TestCase
     private function mock(string $path, Response $response, array $query = []): void
     {
         $url = 'https://nms.example.com' . $path . '?'
-            . http_build_query(['api_key' => 'secret'] + $query, '', '&', PHP_QUERY_RFC3986);
+            . ($query === [] ? '' : '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986));
 
         $this->mockClientGet($url, $response, [
             'match' => function (RequestInterface $request): bool {
                 $this->asked++;
+                // the key goes in the header, out of the address and the logs that keep it
+                $this->assertSame('Bearer secret', $request->getHeaderLine('Authorization'));
 
                 return true;
             },

@@ -91,7 +91,7 @@ class CustomerPortalControllerTest extends TestCase
         Cache::clear('default');
 
         $this->getTableLocator()->get('AppUsers')->updateAll(
-            ['role' => 'customer-portal', 'is_superuser' => false, 'active' => true, 'api_token' => self::PORTAL_KEY],
+            ['role' => 'customer-portal', 'is_superuser' => false, 'active' => true, 'api_token' => hash('sha256', self::PORTAL_KEY)],
             ['id' => $this->firstId('AppUsers')],
         );
         $this->storePassword(Passwords::hash(self::PASSWORD));
@@ -547,7 +547,7 @@ class CustomerPortalControllerTest extends TestCase
      * is let past that check.
      *
      * @return void
-     * @link \App\Application::isBearerApiRequest()
+     * @link \Access\Authentication\BearerRequest::isApi()
      */
     public function testWithoutBearerTheCsrfTokenIsStillRequired(): void
     {

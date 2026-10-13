@@ -978,7 +978,6 @@ class DashboardControllerTest extends TestCase
      */
     private function powerOutagesUrl(): string
     {
-        return 'https://nms.example.com/api/power-outages.json?'
-            . http_build_query(['api_key' => 'secret'], '', '&', PHP_QUERY_RFC3986);
+        return 'https://nms.example.com/api/power-outages.json';
     }
 }

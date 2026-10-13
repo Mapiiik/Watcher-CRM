@@ -46,14 +46,8 @@ $user = ${$tableAlias};
                     </div>
                     <div class="column">
                     <?php
-                        echo $this->Form->control('api_token');
-                        echo $this->Form->control('token');
-                        echo $this->Form->control('token_expires');
                         echo $this->Form->control('activation_date');
                         echo $this->Form->control('tos_date');
-                        echo $this->Form->control('secret');
-                        echo $this->Form->control('secret_verified');
-                        echo $this->Form->control('additional_data');
                     ?>
                     </div>
                 </div>

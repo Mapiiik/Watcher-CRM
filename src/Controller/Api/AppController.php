@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Application;
+use Access\Authentication\BearerRequest;
 use App\Controller\AppController as BaseController;
 use Cake\View\JsonView;
 use Override;
@@ -30,7 +30,7 @@ class AppController extends BaseController
     {
         parent::initialize();
 
-        if (Application::isBearerApiRequest($this->getRequest()) && $this->components()->has('FormProtection')) {
+        if (BearerRequest::isApi($this->getRequest()) && $this->components()->has('FormProtection')) {
             $this->getEventManager()->off($this->components()->get('FormProtection'));
         }
     }

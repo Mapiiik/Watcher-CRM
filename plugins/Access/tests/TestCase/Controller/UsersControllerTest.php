@@ -215,6 +215,30 @@ class UsersControllerTest extends TestCase
     }
 
     /**
+     * An account signs in by its username or its e-mail, and only while it is active.
+     *
+     * @return void
+     */
+    public function testOnlyAnActiveAccountSignsInByUsernameOrEmail(): void
+    {
+        $user = $this->addAccount();
+
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'jan.novak@example.com', 'password' => 'Kopr na zahrade 7x']);
+        $this->assertRedirect('/');
+
+        $this->getTableLocator()->get('AppUsers')->updateQuery()
+            ->set(['active' => false])
+            ->where(['id' => $user->get('id')])
+            ->execute();
+        $this->_session = [];
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'jnovak', 'password' => 'Kopr na zahrade 7x']);
+        $this->assertNoRedirect();
+        $this->assertSession(null, 'Auth');
+    }
+
+    /**
      * Every application reads the same configuration, from this plugin.
      *
      * @return void

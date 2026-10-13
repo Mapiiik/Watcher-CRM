@@ -54,6 +54,8 @@ class UsersTable extends BaseUsersTable
             'serializeFields' => false,
             'primaryKeyExtractionStrategy' => TablePersister::STRATEGY_RAW,
         ]);
+        // that these changed is worth keeping, what they changed to is not
+        $auditLog->setConfig('sensitive', ['password', 'secret', 'api_token', 'token', 'login_token']);
     }
 
     /**

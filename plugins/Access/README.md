@@ -33,5 +33,10 @@ it of the account, or where its owner set the app up of their own accord. The co
 RFC 6238, made here; the QR code is drawn by `tecnickcom/tc-lib-barcode`, so the secret goes to no
 other service. A code is accepted once. Ten recovery codes stand in for the phone, each once.
 
+API clients sign in with a key sent as a Bearer token. A key in the address still works and is
+logged as `api key in the address`. Only the SHA-256 of a key is kept, so an admin makes a new
+one on the user's page and sees it once. Passwords, one-time secrets and keys are written to the
+audit log as `****`.
+
 Failed sign-ins are counted in the cache `login_throttle`. Where an installation runs on more
 than one server, the cache has to be shared by all of them, such as one Redis database.

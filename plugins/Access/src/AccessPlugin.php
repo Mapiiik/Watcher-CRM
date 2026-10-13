@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Access;
 
+use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\AuthLog;
 use Access\Authentication\LoginThrottle;
 use Cake\Cache\Cache;
@@ -48,6 +49,17 @@ class AccessPlugin extends BasePlugin
         if (!Configure::read('Users.Social.login')) {
             Configure::delete('Auth.Authenticators.Social');
         }
+
+        // An identifier is named with a dot, and a config file writing below it would replace what
+        // CakeDC set there - the fields, and the finder that keeps inactive accounts out - so it is
+        // adjusted here instead. Passwords are checked with the hasher they are stored with, and
+        // API keys are looked up by the hash that is all there is of them.
+        $form = (array)Configure::read('Auth.Authenticators.Form.identifier');
+        $form['Authentication.Password']['passwordHasher'] = Argon2idPasswordHasher::class;
+        Configure::write('Auth.Authenticators.Form.identifier', $form);
+        $token = (array)Configure::read('Auth.Authenticators.Token.identifier');
+        $token['Authentication.Token']['hashAlgorithm'] = 'sha256';
+        Configure::write('Auth.Authenticators.Token.identifier', $token);
 
         if (!in_array('auth', Log::configured(), true)) {
             Log::setConfig('auth', [

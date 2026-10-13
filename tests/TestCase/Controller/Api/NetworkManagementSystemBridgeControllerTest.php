@@ -153,8 +153,8 @@ class NetworkManagementSystemBridgeControllerTest extends TestCase
      */
     private function mock(string $path, int $status, array $query = [], array $body = []): void
     {
-        $url = 'https://nms.example.com' . $path . '?'
-            . http_build_query(['api_key' => 'secret'] + $query, '', '&', PHP_QUERY_RFC3986);
+        $url = 'https://nms.example.com' . $path
+            . ($query === [] ? '' : '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986));
 
         $this->mockClientGet($url, $this->newClientResponse(
             $status,

@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App;
 
+use Access\Authentication\BearerRequest;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
@@ -32,7 +33,6 @@ use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Override;
-use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Application setup class.
@@ -128,25 +128,11 @@ class Application extends BaseApplication
                     'httponly' => true,
                 ]))->skipCheckCallback(
                     // an API client that names itself with a Bearer token has no cookie to forge
-                    fn(ServerRequestInterface $request): bool => self::isBearerApiRequest($request),
+                    BearerRequest::isApi(...),
                 ),
             );
 
         return $middlewareQueue;
-    }
-
-    /**
-     * Whether a request comes from an API client that names itself with a Bearer token.
-     *
-     * The scheme is matched in any letter case, as the token authenticator matches it.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
-     * @return bool
-     */
-    public static function isBearerApiRequest(ServerRequestInterface $request): bool
-    {
-        return str_starts_with($request->getUri()->getPath(), '/api/')
-            && stripos($request->getHeaderLine('Authorization'), 'Bearer ') === 0;
     }
 
     /**

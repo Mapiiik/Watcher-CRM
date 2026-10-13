@@ -307,15 +307,17 @@ class ApiClient
             return Answer::notAsked();
         }
 
-        // The address it was asked at and never the question: the key is asked for as a query
-        // parameter, and a log is read by more people than a configuration file is.
+        // The address it was asked at and never the question, as a log is read by more people than
+        // a configuration file is.
         $where = rtrim((string)Configure::read('Nms.url'), '/') . $path;
 
         try {
             $client = Client::createFromUrl((string)Configure::read('Nms.url'));
             $client->setConfig('timeout', self::TIMEOUT);
 
-            $response = $client->get($path, ['api_key' => Configure::read('Nms.key')] + $query);
+            $response = $client->get($path, $query, [
+                'headers' => ['Authorization' => 'Bearer ' . Configure::read('Nms.key')],
+            ]);
         } catch (Throwable $e) {
             return self::unreachable(self::SERVICE, $where, $e->getMessage());
         }

@@ -82,7 +82,6 @@ trait WatcherNmsAnswersTrait
      */
     private function accessPointsUrl(): string
     {
-        return 'https://nms.example.com/api/access-points.json?'
-            . http_build_query(['api_key' => 'secret'], '', '&', PHP_QUERY_RFC3986);
+        return 'https://nms.example.com/api/access-points.json';
     }
 }

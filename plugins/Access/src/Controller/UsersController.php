@@ -6,6 +6,7 @@ namespace Access\Controller;
 use Access\Authentication\AuthLog;
 use Access\Authentication\FormAuthenticator;
 use Access\Authentication\SecurityPolicy;
+use Access\Controller\Trait\ApiTokenTrait;
 use Access\Controller\Trait\OneTimePasswordTrait;
 use App\Controller\AppController;
 use ArrayAccess;
@@ -36,6 +37,7 @@ use Override;
  */
 class UsersController extends AppController
 {
+    use ApiTokenTrait;
     use CustomUsersTableTrait;
     use LinkSocialTrait;
     use LoginTrait {

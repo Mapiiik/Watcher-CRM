@@ -24,6 +24,24 @@ $user = ${$tableAlias};
                     'class' => 'side-nav-item',
                 ],
             ) ?>
+            <?= $this->Form->postLink(
+                __d('access', 'New API Key'),
+                ['action' => 'generateApiToken', $user->id],
+                [
+                    'confirm' => __d('access', 'The key the account has now will stop working. Make a new one?'),
+                    'class' => 'side-nav-item',
+                ],
+            ) ?>
+            <?php if ($user->api_token) : ?>
+                <?= $this->Form->postLink(
+                    __d('access', 'Remove API Key'),
+                    ['action' => 'removeApiToken', $user->id],
+                    [
+                        'confirm' => __d('access', 'No client will sign in with the key any more. Remove it?'),
+                        'class' => 'side-nav-item',
+                    ],
+                ) ?>
+            <?php endif; ?>
             <?php if ($user->secret) : ?>
                 <?= $this->Form->postLink(
                     __d('access', 'Reset One-Time Codes'),
@@ -96,16 +114,8 @@ $user = ${$tableAlias};
                 <div class="column">
                     <table>
                         <tr>
-                            <th><?= __d('app_users', 'Api Token') ?></th>
-                            <td><?= h($user->api_token) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('app_users', 'Token') ?></th>
-                            <td><?= h($user->token) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('app_users', 'Token Expires') ?></th>
-                            <td><?= h($user->token_expires) ?></td>
+                            <th><?= __d('access', 'API Key') ?></th>
+                            <td><?= $user->api_token ? __d('access', 'Set') : __d('access', 'None') ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('app_users', 'Activation Date') ?></th>
@@ -116,16 +126,8 @@ $user = ${$tableAlias};
                             <td><?= h($user->tos_date) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('app_users', 'Secret') ?></th>
-                            <td><?= h($user->secret) ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('app_users', 'Secret Verified') ?></th>
-                            <td><?= $user->secret_verified ? __d('app_users', 'Yes') : __d('app_users', 'No'); ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('app_users', 'Additional Data') ?></th>
-                            <td><?= h($user->additional_data) ?></td>
+                            <th><?= __d('access', 'One-Time Codes') ?></th>
+                            <td><?= $user->secret_verified ? __d('access', 'On') : __d('access', 'Off') ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('app_users', 'Last Login') ?></th>
@@ -148,59 +150,19 @@ $user = ${$tableAlias};
                 <div class="table-responsive">
                     <table>
                         <tr>
-                            <th><?= __d('app_users', 'Id') ?></th>
                             <th><?= __d('app_users', 'Provider') ?></th>
                             <th><?= __d('app_users', 'Username') ?></th>
-                            <th><?= __d('app_users', 'Active') ?></th>
                             <th><?= __d('app_users', 'Reference') ?></th>
-                            <th><?= __d('app_users', 'Avatar') ?></th>
-                            <th><?= __d('app_users', 'Description') ?></th>
-                            <th><?= __d('app_users', 'Link') ?></th>
-                            <th><?= __d('app_users', 'Token') ?></th>
-                            <th><?= __d('app_users', 'Token Secret') ?></th>
-                            <th><?= __d('app_users', 'Token Expires') ?></th>
-                            <th><?= __d('app_users', 'Data') ?></th>
+                            <th><?= __d('app_users', 'Active') ?></th>
                             <th><?= __d('app_users', 'Created') ?></th>
-                            <th><?= __d('app_users', 'Modified') ?></th>
-                            <th class="actions"><?= __d('app_users', 'Actions') ?></th>
                         </tr>
                         <?php foreach ($user->social_accounts as $socialAccounts) : ?>
                         <tr>
-                            <td><?= h($socialAccounts->id) ?></td>
                             <td><?= h($socialAccounts->provider) ?></td>
                             <td><?= h($socialAccounts->username) ?></td>
-                            <td><?= h($socialAccounts->active) ?></td>
                             <td><?= h($socialAccounts->reference) ?></td>
-                            <td><?= h($socialAccounts->avatar) ?></td>
-                            <td><?= h($socialAccounts->description) ?></td>
-                            <td><?= h($socialAccounts->link) ?></td>
-                            <td><?= h($socialAccounts->token) ?></td>
-                            <td><?= h($socialAccounts->token_secret) ?></td>
-                            <td><?= h($socialAccounts->token_expires) ?></td>
-                            <td><?= h($socialAccounts->data) ?></td>
+                            <td><?= $socialAccounts->active ? __d('app_users', 'Yes') : __d('app_users', 'No') ?></td>
                             <td><?= h($socialAccounts->created) ?></td>
-                            <td><?= h($socialAccounts->modified) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(
-                                    __d('app_users', 'View'),
-                                    ['controller' => 'SocialAccounts', 'action' => 'view', $socialAccounts->id],
-                                ) ?>
-                                <?= $this->Html->link(
-                                    __d('app_users', 'Edit'),
-                                    ['controller' => 'SocialAccounts', 'action' => 'edit', $socialAccounts->id],
-                                ) ?>
-                                <?= $this->Form->postLink(
-                                    __d('app_users', 'Delete'),
-                                    ['controller' => 'SocialAccounts', 'action' => 'delete', $socialAccounts->id],
-                                    [
-                                        'confirm' => __d(
-                                            'app_users',
-                                            'Are you sure you want to delete # {0}?',
-                                            $socialAccounts->id,
-                                        ),
-                                    ],
-                                ) ?>
-                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </table>
