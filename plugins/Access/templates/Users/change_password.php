@@ -32,14 +32,19 @@
                 <?php if ($validatePassword) : ?>
                     <?= $this->Form->control('current_password', [
                         'type' => 'password',
+                        'value' => '',
                         'required' => true,
-                        'label' => __d('access', 'Current password')]);
-                    ?>
+                        'autocomplete' => 'current-password',
+                        'label' => __d('access', 'Current password'),
+                    ]) ?>
                 <?php endif; ?>
+                <?php // the account comes with its hash, which is no value for a field to show ?>
                 <?= $this->Form->control('password', [
                     'type' => 'password',
+                    'value' => '',
                     'id' => 'new-password',
                     'required' => true,
+                    'autocomplete' => 'new-password',
                     'label' => __d('access', 'New password'),
                     'help' => __d(
                         'access',
@@ -49,7 +54,9 @@
                 ]); ?>
                 <?= $this->Form->control('password_confirm', [
                     'type' => 'password',
+                    'value' => '',
                     'required' => true,
+                    'autocomplete' => 'new-password',
                     'label' => __d('access', 'Confirm password'),
                 ]); ?>
 

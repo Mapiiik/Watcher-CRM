@@ -299,6 +299,33 @@ class UsersControllerTest extends TestCase
     }
 
     /**
+     * The form for a new password starts empty, never with the hash the account has, whether
+     * somebody changes their own or a superuser that of somebody else.
+     *
+     * @return void
+     */
+    public function testThePasswordFormDoesNotCarryTheHash(): void
+    {
+        $users = $this->getTableLocator()->get('AppUsers');
+        $id = (string)$this->addAccount(superuser: true)->get('id');
+        $other = $users->saveOrFail($users->newEntity([
+            'username' => 'pdvorak',
+            'password' => 'Mrkev na zahrade 9z',
+            'role' => 'user',
+            'active' => true,
+        ]));
+        $this->session(['Auth' => $users->get($id)]);
+
+        $this->get('/users/change-password');
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('$argon2id$');
+
+        $this->get('/users/change-password/' . $other->get('id'));
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('$argon2id$');
+    }
+
+    /**
      * Only a superuser changes the password of somebody else.
      *
      * @return void
