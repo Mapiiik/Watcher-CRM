@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-03 00:23+0200\n"
+"POT-Creation-Date: 2026-10-14 23:47+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -136,35 +136,63 @@ msgstr ""
 msgid "Labels that say the missing consent is known about and accepted."
 msgstr ""
 
-#: ./config/settings.php:401
-msgid "How many rows a card lists before it only says how many more there are."
+#: ./config/settings.php:403
+msgid "How long a customer stays signed in to the customer portal."
 msgstr ""
 
 #: ./config/settings.php:407
-msgid "How far ahead a task deadline is already counted as pressing."
+msgid "Failed sign-ins of one login from one address before more are refused for a while."
 msgstr ""
 
 #: ./config/settings.php:411
+msgid "Failed sign-ins from one address, whatever the login, before more are refused."
+msgstr ""
+
+#: ./config/settings.php:415
+msgid "Failed sign-ins of one login, from anywhere, before more are refused."
+msgstr ""
+
+#: ./config/settings.php:419
+msgid "How long failed sign-ins are remembered and refusals last."
+msgstr ""
+
+#: ./config/settings.php:423
+msgid "The shortest password a customer may set in the customer portal."
+msgstr ""
+
+#: ./config/settings.php:427
+msgid "Addresses a service may look up in a minute before more are refused."
+msgstr ""
+
+#: ./config/settings.php:434
+msgid "How many rows a card lists before it only says how many more there are."
+msgstr ""
+
+#: ./config/settings.php:440
+msgid "How far ahead a task deadline is already counted as pressing."
+msgstr ""
+
+#: ./config/settings.php:444
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 
-#: ./config/settings.php:418
+#: ./config/settings.php:451
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:752
+#: ./config/settings.php:785
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:803
+#: ./config/settings.php:836
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:808
+#: ./config/settings.php:841
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:886
+#: ./config/settings.php:919
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -540,7 +568,7 @@ msgstr ""
 #: ./templates/Contracts/view.php:39
 #: ./templates/Contracts/view.php:179
 #: ./templates/CustomerProposals/add.php:18
-#: ./templates/CustomerProposalsly_changes.php:39
+#: ./templates/CustomerProposals/apply_changes.php:39
 #: ./templates/CustomerProposals/conclude.php:22
 #: ./templates/CustomerProposals/view.php:81
 #: ./templates/CustomerProposals/view.php:95
@@ -693,6 +721,14 @@ msgstr ""
 
 #: ./src/Command/UpdateHistoricalConnectionsCommand.php:111
 msgid "Historical connections update failed."
+msgstr ""
+
+#: ./src/Command/WrapLegacyLoginHashesCommand.php:36
+msgid "Wraps the customer portal passwords still stored as bare SHA-1 in Argon2id."
+msgstr ""
+
+#: ./src/Command/WrapLegacyLoginHashesCommand.php:85
+msgid "Wrapped: {0}"
 msgstr ""
 
 #: ./src/Contracts/Check/ActiveWithoutBillingCheck.php:73
@@ -2033,20 +2069,20 @@ msgid "The related customer labels could not be updated. Please, try again."
 msgstr ""
 
 #: ./src/Controller/LoginsController.php:92
-#: ./src/Controller/LoginsController.php:153
+#: ./src/Controller/LoginsController.php:159
 msgid "The login has been saved."
 msgstr ""
 
 #: ./src/Controller/LoginsController.php:96
-#: ./src/Controller/LoginsController.php:157
+#: ./src/Controller/LoginsController.php:163
 msgid "The login could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:186
+#: ./src/Controller/LoginsController.php:192
 msgid "The login has been deleted."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:189
+#: ./src/Controller/LoginsController.php:195
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
@@ -2413,6 +2449,14 @@ msgstr ""
 
 #: ./src/Model/Entity/AppUser.php:119
 msgid "API"
+msgstr ""
+
+#: ./src/Model/Entity/AppUser.php:120
+msgid "Customer Portal"
+msgstr ""
+
+#: ./src/Model/Entity/AppUser.php:121
+msgid "Customer Identification"
 msgstr ""
 
 #: ./src/Model/Entity/Billing.php:418
@@ -3660,7 +3704,7 @@ msgstr ""
 #: ./templates/CustomerMessages/index.php:46
 #: ./templates/CustomerMessages/view.php:10
 #: ./templates/CustomerProposals/add.php:12
-#: ./templates/CustomerProposalsly_changes.php:31
+#: ./templates/CustomerProposals/apply_changes.php:31
 #: ./templates/CustomerProposals/conclude.php:14
 #: ./templates/CustomerProposals/edit.php:12
 #: ./templates/CustomerProposals/send.php:19
@@ -4453,7 +4497,7 @@ msgstr ""
 #: ./templates/AccountingProfiles/add.php:12
 #: ./templates/AccountingProfiles/edit.php:20
 #: ./templates/AccountingProfiles/view.php:25
-#: ./templates/Settings/index.php:231
+#: ./templates/Settings/index.php:236
 msgid "List Accounting Profiles"
 msgstr ""
 
@@ -4777,7 +4821,7 @@ msgstr ""
 #: ./templates/AvailableConnections/edit.php:12
 #: ./templates/AvailableConnections/view.php:43
 #: ./templates/Overviews/index.php:87
-#: ./templates/Settings/index.php:268
+#: ./templates/Settings/index.php:273
 msgid "List Available Connections"
 msgstr ""
 
@@ -4878,7 +4922,7 @@ msgstr ""
 #: ./templates/Billings/edit.php:97
 #: ./templates/Billings/service_change.php:183
 #: ./templates/ContractProposals/billing_line.php:128
-#: ./templates/CustomerProposalsly_changes.php:101
+#: ./templates/CustomerProposals/apply_changes.php:101
 msgid "Allow a connection price below the minimum set on the contract"
 msgstr ""
 
@@ -4892,7 +4936,7 @@ msgid "Billings"
 msgstr ""
 
 #: ./templates/Billings/bulk_service_change.php:30
-#: ./templates/Settings/index.php:98
+#: ./templates/Settings/index.php:103
 msgid "Bulk Service Change"
 msgstr ""
 
@@ -5229,7 +5273,7 @@ msgstr ""
 #: ./templates/Commissions/add.php:11
 #: ./templates/Commissions/edit.php:19
 #: ./templates/Commissions/view.php:24
-#: ./templates/Settings/index.php:354
+#: ./templates/Settings/index.php:359
 msgid "List Commissions"
 msgstr ""
 
@@ -5293,7 +5337,7 @@ msgstr ""
 #: ./templates/ConnectionProfiles/add.php:14
 #: ./templates/ConnectionProfiles/edit.php:22
 #: ./templates/ConnectionProfiles/view.php:26
-#: ./templates/Settings/index.php:263
+#: ./templates/Settings/index.php:268
 msgid "List Connection Profiles"
 msgstr ""
 
@@ -5568,7 +5612,7 @@ msgstr ""
 
 #: ./templates/ContractProposals/billing_line.php:32
 #: ./templates/ContractProposals/recreate.php:27
-#: ./templates/CustomerProposalsly_changes.php:33
+#: ./templates/CustomerProposals/apply_changes.php:33
 #: ./templates/CustomerProposals/conclude.php:16
 #: ./templates/CustomerProposals/edit.php:15
 #: ./templates/CustomerProposals/send.php:21
@@ -5741,7 +5785,7 @@ msgstr ""
 #: ./templates/ContractStates/add.php:13
 #: ./templates/ContractStates/edit.php:22
 #: ./templates/ContractStates/view.php:25
-#: ./templates/Settings/index.php:242
+#: ./templates/Settings/index.php:247
 msgid "List Contract States"
 msgstr ""
 
@@ -6260,7 +6304,7 @@ msgstr ""
 #: ./templates/Countries/add.php:11
 #: ./templates/Countries/edit.php:16
 #: ./templates/Countries/view.php:21
-#: ./templates/Settings/index.php:226
+#: ./templates/Settings/index.php:231
 msgid "List Countries"
 msgstr ""
 
@@ -6606,55 +6650,55 @@ msgstr ""
 msgid "Attachments"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:56
-#: ./templates/CustomerProposalsly_changes.php:83
+#: ./templates/CustomerProposals/apply_changes.php:56
+#: ./templates/CustomerProposals/apply_changes.php:83
 msgid "Apply the Proposal's Changes"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:58
+#: ./templates/CustomerProposals/apply_changes.php:58
 msgid "Everything this proposal changes on the contracts is recorded at once. Until then, nothing on them has changed."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:77
+#: ./templates/CustomerProposals/apply_changes.php:77
 msgid "The changes of this proposal cannot be applied in its current state. What prevents it is shown above, next to the contract concerned."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:85
+#: ./templates/CustomerProposals/apply_changes.php:85
 msgid "This proposal changes nothing. It records what was sent, and applying it only marks it as settled so that it is no longer listed as pending."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:89
+#: ./templates/CustomerProposals/apply_changes.php:89
 msgid "Either all of the changes are applied, or none of them. A partly applied proposal would leave no trace of which part went through."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:95
+#: ./templates/CustomerProposals/apply_changes.php:95
 msgid "Allow changes in an already invoiced period"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:107
+#: ./templates/CustomerProposals/apply_changes.php:107
 msgid "Leave out the lines whose billing is no longer on the contract"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:108
+#: ./templates/CustomerProposals/apply_changes.php:108
 msgid "The rest of the proposal is applied and what was left out is written down on it, to be settled by hand. Without this the proposal cannot be applied at all, because a line that has nothing to act on cannot be written and signed papers cannot be edited."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:116
+#: ./templates/CustomerProposals/apply_changes.php:116
 msgid "Mark as Settled"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:116
+#: ./templates/CustomerProposals/apply_changes.php:116
 #: ./templates/CustomerProposals/view.php:57
 #: ./templates/element/ContractChecks/proposal_table.php:104
 #: ./templates/element/Documents/proposals.php:148
 msgid "Apply Changes"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:119
+#: ./templates/CustomerProposals/apply_changes.php:119
 msgid "Mark this proposal as settled?"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:120
+#: ./templates/CustomerProposals/apply_changes.php:120
 msgid "Do you really want to apply the changes of this proposal?"
 msgstr ""
 
@@ -7020,7 +7064,7 @@ msgstr[1] ""
 #: ./templates/DealerCommissions/add.php:14
 #: ./templates/DealerCommissions/edit.php:22
 #: ./templates/DealerCommissions/view.php:25
-#: ./templates/Settings/index.php:359
+#: ./templates/Settings/index.php:364
 msgid "List Dealer Commissions"
 msgstr ""
 
@@ -7157,7 +7201,7 @@ msgstr ""
 #: ./templates/EquipmentTypes/add.php:12
 #: ./templates/EquipmentTypes/edit.php:20
 #: ./templates/EquipmentTypes/view.php:25
-#: ./templates/Settings/index.php:273
+#: ./templates/Settings/index.php:278
 msgid "List Equipment Types"
 msgstr ""
 
@@ -7304,7 +7348,7 @@ msgid "IP Address Range"
 msgstr ""
 
 #: ./templates/IpAddresses/bulk_reassignment.php:23
-#: ./templates/Settings/index.php:210
+#: ./templates/Settings/index.php:215
 msgid "Bulk IP Address Reassignment"
 msgstr ""
 
@@ -7379,7 +7423,7 @@ msgstr ""
 #: ./templates/Labels/add.php:15
 #: ./templates/Labels/edit.php:20
 #: ./templates/Labels/view.php:24
-#: ./templates/Settings/index.php:221
+#: ./templates/Settings/index.php:226
 msgid "List Labels"
 msgstr ""
 
@@ -7478,12 +7522,12 @@ msgid "Delete Login"
 msgstr ""
 
 #: ./templates/Overviews/index.php:12
-#: ./templates/Settings/index.php:281
+#: ./templates/Settings/index.php:286
 msgid "Documentation Related"
 msgstr ""
 
 #: ./templates/Overviews/index.php:30
-#: ./templates/Settings/index.php:309
+#: ./templates/Settings/index.php:314
 msgid "Work Report Related"
 msgstr ""
 
@@ -7496,7 +7540,7 @@ msgid "Work at Access Points"
 msgstr ""
 
 #: ./templates/Overviews/index.php:59
-#: ./templates/Settings/index.php:250
+#: ./templates/Settings/index.php:255
 msgid "Service Related"
 msgstr ""
 
@@ -7560,7 +7604,7 @@ msgid "List Documents"
 msgstr ""
 
 #: ./templates/Overviews/index.php:161
-#: ./templates/Settings/index.php:239
+#: ./templates/Settings/index.php:244
 msgid "Contract Related"
 msgstr ""
 
@@ -7966,7 +8010,7 @@ msgstr ""
 #: ./templates/ServiceTypes/add.php:11
 #: ./templates/ServiceTypes/edit.php:19
 #: ./templates/ServiceTypes/view.php:24
-#: ./templates/Settings/index.php:258
+#: ./templates/Settings/index.php:263
 msgid "List Service Types"
 msgstr ""
 
@@ -8077,7 +8121,7 @@ msgstr ""
 #: ./templates/Services/add.php:13
 #: ./templates/Services/edit.php:18
 #: ./templates/Services/view.php:25
-#: ./templates/Settings/index.php:253
+#: ./templates/Settings/index.php:258
 msgid "List Services"
 msgstr ""
 
@@ -8140,153 +8184,157 @@ msgid "Customers Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:41
-msgid "Business Register Configuration"
+msgid "Customer Portal Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:46
-msgid "Documents Configuration"
+msgid "Business Register Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:51
-msgid "Contracts Configuration"
+msgid "Documents Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:56
-msgid "Emails Configuration"
+msgid "Contracts Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:61
-msgid "Customer Messages Configuration"
+msgid "Emails Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:66
+msgid "Customer Messages Configuration"
+msgstr ""
+
+#: ./templates/Settings/index.php:71
 msgid "Dashboard Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:74
+#: ./templates/Settings/index.php:79
 msgid "Bookkeeping Settings"
 msgstr ""
 
-#: ./templates/Settings/index.php:77
+#: ./templates/Settings/index.php:82
 msgid "Invoices Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:82
+#: ./templates/Settings/index.php:87
 msgid "Debtors Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:87
+#: ./templates/Settings/index.php:92
 msgid "Accounting Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:95
+#: ./templates/Settings/index.php:100
 msgid "Billing Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:106
+#: ./templates/Settings/index.php:111
 msgid "Customer Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:109
+#: ./templates/Settings/index.php:114
 msgid "Identity Number Check"
 msgstr ""
 
-#: ./templates/Settings/index.php:114
+#: ./templates/Settings/index.php:119
 msgid "Update Phone Number Format"
 msgstr ""
 
-#: ./templates/Settings/index.php:122
+#: ./templates/Settings/index.php:127
 msgid "Do you really want to update all phones for all customers?"
 msgstr ""
 
-#: ./templates/Settings/index.php:129
+#: ./templates/Settings/index.php:134
 msgid "Update All Addresses from National Address Registries"
 msgstr ""
 
-#: ./templates/Settings/index.php:137
+#: ./templates/Settings/index.php:142
 msgid "Do you really want to update all addresses from the national address registries?"
 msgstr ""
 
-#: ./templates/Settings/index.php:147
+#: ./templates/Settings/index.php:152
 msgid "Contract Functions"
 msgstr ""
 
-#: ./templates/Settings/index.php:150
-#: ./templates/Settings/index.php:165
+#: ./templates/Settings/index.php:155
+#: ./templates/Settings/index.php:170
 msgid "Addition of Contract Numbers"
 msgstr ""
 
-#: ./templates/Settings/index.php:158
+#: ./templates/Settings/index.php:163
 msgid "Do you really want to add a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:165
-#: ./templates/Settings/index.php:195
+#: ./templates/Settings/index.php:170
+#: ./templates/Settings/index.php:200
 msgid "Force Overwrite"
 msgstr ""
 
-#: ./templates/Settings/index.php:173
+#: ./templates/Settings/index.php:178
 msgid "Do you really want to re-set a contract number for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:180
-#: ./templates/Settings/index.php:195
+#: ./templates/Settings/index.php:185
+#: ./templates/Settings/index.php:200
 msgid "Addition of Subscriber Verification Codes"
 msgstr ""
 
-#: ./templates/Settings/index.php:188
+#: ./templates/Settings/index.php:193
 msgid "Do you really want to add a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:203
+#: ./templates/Settings/index.php:208
 msgid "Do you really want to re-set a subscriber verification code for all contracts?"
 msgstr ""
 
-#: ./templates/Settings/index.php:218
+#: ./templates/Settings/index.php:223
 msgid "System Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:292
+#: ./templates/Settings/index.php:297
 msgid "Task Related"
 msgstr ""
 
-#: ./templates/Settings/index.php:295
+#: ./templates/Settings/index.php:300
 msgid "List Task States"
 msgstr ""
 
-#: ./templates/Settings/index.php:300
+#: ./templates/Settings/index.php:305
 msgid "List Task Types"
 msgstr ""
 
-#: ./templates/Settings/index.php:312
+#: ./templates/Settings/index.php:317
 msgid "List Work Report Item Types"
 msgstr ""
 
-#: ./templates/Settings/index.php:317
+#: ./templates/Settings/index.php:322
 msgid "List Work Rates"
 msgstr ""
 
-#: ./templates/Settings/index.php:322
+#: ./templates/Settings/index.php:327
 msgid "List Work Labels"
 msgstr ""
 
-#: ./templates/Settings/index.php:327
+#: ./templates/Settings/index.php:332
 msgid "List Work Cars"
 msgstr ""
 
-#: ./templates/Settings/index.php:332
+#: ./templates/Settings/index.php:337
 msgid "List Work Report Workers"
 msgstr ""
 
-#: ./templates/Settings/index.php:337
+#: ./templates/Settings/index.php:342
 msgid "Work Calendar Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:342
+#: ./templates/Settings/index.php:347
 msgid "On Call Hours Configuration"
 msgstr ""
 
-#: ./templates/Settings/index.php:351
+#: ./templates/Settings/index.php:356
 msgid "Commission Related"
 msgstr ""
 
@@ -8741,29 +8789,29 @@ msgctxt "sending date"
 msgid "Not recorded"
 msgstr ""
 
-#: ./templates/element/ContractProposalslying_changes.php:21
+#: ./templates/element/ContractProposals/applying_changes.php:21
 msgid "Before you continue"
 msgstr ""
 
-#: ./templates/element/ContractProposalslying_changes.php:30
+#: ./templates/element/ContractProposals/applying_changes.php:30
 msgid "This contract proposal changes nothing. It records what was sent, and applying it only marks it as settled."
 msgstr ""
 
-#: ./templates/element/ContractProposalslying_changes.php:35
+#: ./templates/element/ContractProposals/applying_changes.php:35
 #: ./templates/element/ContractProposals/planned_changes.php:28
 msgid "As it is now"
 msgstr ""
 
-#: ./templates/element/ContractProposalslying_changes.php:39
+#: ./templates/element/ContractProposals/applying_changes.php:39
 #: ./templates/element/ContractProposals/planned_changes.php:30
 msgid "As it would be"
 msgstr ""
 
-#: ./templates/element/ContractProposalslying_changes.php:46
+#: ./templates/element/ContractProposals/applying_changes.php:46
 msgid "What else will be recorded"
 msgstr ""
 
-#: ./templates/element/ContractProposalslying_changes.php:48
+#: ./templates/element/ContractProposals/applying_changes.php:48
 msgid "Applying the changes also records the signature on the version, counts the amendment and ends the version being replaced, even if the proposal does not say so."
 msgstr ""
 
