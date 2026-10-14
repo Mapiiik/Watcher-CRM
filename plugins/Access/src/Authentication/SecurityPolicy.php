@@ -77,11 +77,11 @@ final class SecurityPolicy
      */
     public static function requiresOneTimePassword(ArrayAccess|array $user): bool
     {
-        if (self::setting('totp_required', false)) {
+        if (self::setting('two_step_verification_required', false)) {
             return true;
         }
 
-        return self::setting('totp_required_high_security', false) && self::isHighSecurity($user);
+        return self::setting('two_step_verification_required_high_security', false) && self::isHighSecurity($user);
     }
 
     /**

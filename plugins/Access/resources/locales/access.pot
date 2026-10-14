@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 22:49+0200\n"
+"POT-Creation-Date: 2026-10-14 22:05+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -31,11 +31,11 @@ msgid "Refuse passwords containing the username or e-mail, repeated or running c
 msgstr ""
 
 #: ./plugins/Access/config/settings.php:35
-msgid "Everybody signs in with a one-time code from an authenticator app."
+msgid "Everybody signs in with two-step verification."
 msgstr ""
 
 #: ./plugins/Access/config/settings.php:39
-msgid "Accounts held to the stricter rules sign in with a one-time code."
+msgid "Accounts held to the stricter rules sign in with two-step verification."
 msgstr ""
 
 #: ./plugins/Access/config/settings.php:43
@@ -86,15 +86,15 @@ msgid "The code is not right. Please try again."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:136
-msgid "Your account has to sign in with one-time codes."
+msgid "Your account has to use two-step verification."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:145
-msgid "One-time codes are turned off."
+msgid "Two-step verification is turned off."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:218
-msgid "The one-time codes of {0} are reset."
+msgid "The two-step verification of {0} is reset."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/Trait/PasswordResetTrait.php:54
@@ -192,11 +192,11 @@ msgstr ""
 msgid "This identity is already linked to another account."
 msgstr ""
 
-#: ./plugins/Access/src/Model/Table/UsersTable.php:175
+#: ./plugins/Access/src/Model/Table/UsersTable.php:197
 msgid "The two passwords are not the same."
 msgstr ""
 
-#: ./plugins/Access/src/Model/Table/UsersTable.php:205
+#: ./plugins/Access/src/Model/Table/UsersTable.php:227
 msgid "This username is already taken."
 msgstr ""
 
@@ -204,7 +204,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/api_token.php:10
 #: ./plugins/Access/templates/Users/change_password.php:13
 #: ./plugins/Access/templates/Users/edit.php:10
-#: ./plugins/Access/templates/Users/index.php:29
+#: ./plugins/Access/templates/Users/index.php:30
 #: ./plugins/Access/templates/Users/one_time_password.php:11
 #: ./plugins/Access/templates/Users/profile.php:11
 #: ./plugins/Access/templates/Users/view.php:10
@@ -273,12 +273,12 @@ msgid "Confirm password"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/edit.php:12
-#: ./plugins/Access/templates/Users/index.php:57
+#: ./plugins/Access/templates/Users/index.php:59
 msgid "Delete"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/edit.php:15
-#: ./plugins/Access/templates/Users/index.php:59
+#: ./plugins/Access/templates/Users/index.php:61
 #: ./plugins/Access/templates/Users/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
@@ -297,36 +297,52 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:39
-#: ./plugins/Access/templates/Users/index.php:41
+#: ./plugins/Access/templates/Users/index.php:26
+#: ./plugins/Access/templates/Users/view.php:111
+#: ./plugins/Access/templates/element/one_time_password.php:16
+msgid "Two-Step Verification"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:40
+#: ./plugins/Access/templates/Users/index.php:42
 #: ./plugins/Access/templates/Users/view.php:95
 #: ./plugins/Access/templates/Users/view.php:99
 #: ./plugins/Access/templates/Users/view.php:146
 msgid "Yes"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:39
-#: ./plugins/Access/templates/Users/index.php:41
+#: ./plugins/Access/templates/Users/index.php:40
+#: ./plugins/Access/templates/Users/index.php:42
 #: ./plugins/Access/templates/Users/view.php:95
 #: ./plugins/Access/templates/Users/view.php:99
 #: ./plugins/Access/templates/Users/view.php:146
 msgid "No"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:48
+#: ./plugins/Access/templates/Users/index.php:44
+#: ./plugins/Access/templates/Users/view.php:112
+msgid "On"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:44
+#: ./plugins/Access/templates/Users/view.php:112
+msgid "Off"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:50
 msgid "View"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:52
+#: ./plugins/Access/templates/Users/index.php:54
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:62
+#: ./plugins/Access/templates/Users/index.php:64
 #: ./plugins/Access/templates/Users/profile.php:13
 msgid "Change Password"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:67
+#: ./plugins/Access/templates/Users/index.php:69
 #: ./plugins/Access/templates/Users/profile.php:18
 msgid "User Settings"
 msgstr ""
@@ -357,12 +373,12 @@ msgstr ""
 
 #: ./plugins/Access/templates/Users/one_time_password.php:23
 #: ./plugins/Access/templates/Users/verify.php:16
-msgid "Set Up One-Time Codes"
+msgid "Set Up Two-Step Verification"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/one_time_password.php:26
-#: ./plugins/Access/templates/Users/verify.php:28
-msgid "Code"
+#: ./plugins/Access/templates/Users/verify.php:29
+msgid "Verification Code"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/one_time_password.php:33
@@ -399,7 +415,7 @@ msgid "Recovery Codes"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/recovery_codes.php:11
-msgid "Each of these codes signs you in once in place of a one-time code, should you lose your phone. Keep them somewhere safe, away from the phone. They are shown only now."
+msgid "Each of these codes signs you in once in place of a verification code, should you lose your phone. Keep them somewhere safe, away from the phone. They are shown only now."
 msgstr ""
 
 #: ./plugins/Access/templates/Users/recovery_codes.php:21
@@ -419,18 +435,18 @@ msgid "Set the password"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/verify.php:18
-msgid "Your account signs in with a code from an app on your phone as well as the password."
+msgid "Your account signs in with the password and a verification code from an authenticator application on your phone."
 msgstr ""
 
-#: ./plugins/Access/templates/Users/verify.php:25
-msgid "Enter the code from your authenticator app"
+#: ./plugins/Access/templates/Users/verify.php:26
+msgid "Enter the verification code from your authenticator application"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/verify.php:32
+#: ./plugins/Access/templates/Users/verify.php:33
 msgid "Lost your phone? Enter one of your recovery codes instead."
 msgstr ""
 
-#: ./plugins/Access/templates/Users/verify.php:35
+#: ./plugins/Access/templates/Users/verify.php:36
 msgid "Verify"
 msgstr ""
 
@@ -455,11 +471,11 @@ msgid "No client will sign in with the key any more. Remove it?"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:44
-msgid "Reset One-Time Codes"
+msgid "Reset Two-Step Verification"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:47
-msgid "The account will have to set its authenticator app up again. Reset?"
+msgid "The account will have to set its authenticator application up again. Reset?"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:69
@@ -481,19 +497,6 @@ msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:108
 msgid "None"
-msgstr ""
-
-#: ./plugins/Access/templates/Users/view.php:111
-#: ./plugins/Access/templates/element/one_time_password.php:14
-msgid "One-Time Codes"
-msgstr ""
-
-#: ./plugins/Access/templates/Users/view.php:112
-msgid "On"
-msgstr ""
-
-#: ./plugins/Access/templates/Users/view.php:112
-msgid "Off"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:119
@@ -518,48 +521,52 @@ msgstr ""
 msgid "Reference"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password.php:16
+#: ./plugins/Access/templates/element/one_time_password.php:17
+msgid "Authenticator Application (TOTP)"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:19
 msgid "On. Recovery codes left: {0}."
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password.php:21
-msgid "A code from the app, to make new recovery codes"
+#: ./plugins/Access/templates/element/one_time_password.php:24
+msgid "A verification code, to make new recovery codes"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password.php:26
+#: ./plugins/Access/templates/element/one_time_password.php:29
 msgid "New Recovery Codes"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password.php:33
-msgid "A code from the app, to turn one-time codes off"
+#: ./plugins/Access/templates/element/one_time_password.php:36
+msgid "A verification code, to turn two-step verification off"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password.php:38
+#: ./plugins/Access/templates/element/one_time_password.php:41
 msgid "Turn Off"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password.php:46
-msgid "Off. Your account has to use them, so you set them up the next time you sign in."
-msgstr ""
-
-#: ./plugins/Access/templates/element/one_time_password.php:47
-msgid "Off. Once they are on, signing in also asks for a code from an app on your phone."
-msgstr ""
-
 #: ./plugins/Access/templates/element/one_time_password.php:49
+msgid "Off. Your account has to use it, so you set it up the next time you sign in."
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:50
+msgid "Off. Once it is on, signing in also asks for a verification code from an authenticator application on your phone."
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password.php:56
 msgid "Set Up"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:10
-msgid "Scan the code with an authenticator app on your phone, such as Google Authenticator, Microsoft Authenticator or FreeOTP, and enter the six digits it shows."
+#: ./plugins/Access/templates/element/one_time_password_setup.php:11
+msgid "Scan the QR code with an authenticator application on your phone, such as Google Authenticator, Microsoft Authenticator or FreeOTP, and enter the six-digit verification code it shows."
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:16
-msgid "QR code for the authenticator app"
+#: ./plugins/Access/templates/element/one_time_password_setup.php:17
+msgid "QR code for the authenticator application"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:21
-msgid "Where the code cannot be scanned, enter this key instead:"
+#: ./plugins/Access/templates/element/one_time_password_setup.php:22
+msgid "Where the QR code cannot be scanned, enter this key instead:"
 msgstr ""
 
 #: ./plugins/Access/templates/element/social_accounts.php:18

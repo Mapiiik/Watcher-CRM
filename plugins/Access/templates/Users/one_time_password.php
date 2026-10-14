@@ -20,10 +20,10 @@
         <div class="users form content">
             <?= $this->Form->create() ?>
             <fieldset>
-                <legend><?= __d('access', 'Set Up One-Time Codes') ?></legend>
+                <legend><?= __d('access', 'Set Up Two-Step Verification') ?></legend>
                 <?= $this->element('Access.one_time_password_setup', compact('secretDataUri', 'secret')) ?>
                 <?= $this->Form->control('code', [
-                    'label' => __d('access', 'Code'),
+                    'label' => __d('access', 'Verification Code'),
                     'required' => true,
                     'autocomplete' => 'one-time-code',
                     'inputmode' => 'numeric',

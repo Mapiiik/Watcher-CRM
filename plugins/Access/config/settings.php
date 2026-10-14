@@ -30,13 +30,13 @@ return [
                     . 'and the most common passwords.',
                 ),
             ),
-            'totp_required' => new BoolType(
+            'two_step_verification_required' => new BoolType(
                 default: false,
-                hint: __d('access', 'Everybody signs in with a one-time code from an authenticator app.'),
+                hint: __d('access', 'Everybody signs in with two-step verification.'),
             ),
-            'totp_required_high_security' => new BoolType(
+            'two_step_verification_required_high_security' => new BoolType(
                 default: false,
-                hint: __d('access', 'Accounts held to the stricter rules sign in with a one-time code.'),
+                hint: __d('access', 'Accounts held to the stricter rules sign in with two-step verification.'),
             ),
             'login_attempts' => NumberType::ofInt(
                 default: 5,

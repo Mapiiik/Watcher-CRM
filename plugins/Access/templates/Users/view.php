@@ -39,14 +39,14 @@
                     ],
                 ) ?>
             <?php endif; ?>
-            <?php if ($user->secret_verified) : ?>
+            <?php if ($user->hasTwoStepVerification()) : ?>
                 <?= $this->Form->postLink(
-                    __d('access', 'Reset One-Time Codes'),
+                    __d('access', 'Reset Two-Step Verification'),
                     ['action' => 'resetOneTimePasswordAuthenticator', $user->id],
                     [
                         'confirm' => __d(
                             'access',
-                            'The account will have to set its authenticator app up again. Reset?',
+                            'The account will have to set its authenticator application up again. Reset?',
                         ),
                         'class' => 'side-nav-item',
                     ],
@@ -108,8 +108,8 @@
                             <td><?= $user->api_token ? __d('access', 'Set') : __d('access', 'None') ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('access', 'One-Time Codes') ?></th>
-                            <td><?= $user->secret_verified ? __d('access', 'On') : __d('access', 'Off') ?></td>
+                            <th><?= __d('access', 'Two-Step Verification') ?></th>
+                            <td><?= $user->hasTwoStepVerification() ? __d('access', 'On') : __d('access', 'Off') ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('access', 'Last Login') ?></th>

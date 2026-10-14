@@ -52,10 +52,12 @@ Signing in, failures and refusals are written to the log scope `auth`. Unless th
 configures a log of that name, they go to syslog with the facility `auth`, under the name
 `watcher-` followed by `APP_NAME`. Passwords, codes and tokens are never written.
 
-Signing in asks for a one-time code from an authenticator app where `access.security` requires
-it of the account, or where its owner set the app up of their own accord. The codes are TOTP of
-RFC 6238, made here; the QR code is drawn by `tecnickcom/tc-lib-barcode`, so the secret goes to no
-other service. A code is accepted once. Ten recovery codes stand in for the phone, each once.
+Two-step verification asks for a verification code from an authenticator application where
+`access.security` requires it of the account, or where its owner turned it on of their own accord.
+The codes are TOTP of RFC 6238, made here; the QR code is drawn by `tecnickcom/tc-lib-barcode`, so
+the secret goes to no other service. A code is accepted once. Ten recovery codes stand in for the
+phone, each once. The pages name the method "Authenticator Application (TOTP)", so another method
+can stand beside it under the same heading.
 
 API clients sign in with a key sent as a Bearer token. A key in the address still works and is
 logged as `api key in the address`. Only the SHA-256 of a key is kept, so an admin makes a new

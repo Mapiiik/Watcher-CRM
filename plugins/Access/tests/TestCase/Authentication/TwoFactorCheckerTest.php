@@ -67,8 +67,8 @@ class TwoFactorCheckerTest extends TestCase
         array $user,
         bool $asked,
     ): void {
-        Settings::set('access.security.totp_required', $everybody);
-        Settings::set('access.security.totp_required_high_security', $highSecurity);
+        Settings::set('access.security.two_step_verification_required', $everybody);
+        Settings::set('access.security.two_step_verification_required_high_security', $highSecurity);
 
         $this->assertSame($asked, (new TwoFactorChecker())->isRequired($user));
     }
@@ -102,7 +102,7 @@ class TwoFactorCheckerTest extends TestCase
      */
     public function testNothingIsAskedForWhereCodesAreOff(): void
     {
-        Settings::set('access.security.totp_required', true);
+        Settings::set('access.security.two_step_verification_required', true);
 
         $this->assertFalse((new TwoFactorChecker())->isRequired(null));
         Configure::write('OneTimePasswordAuthenticator.login', false);

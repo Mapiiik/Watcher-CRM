@@ -72,7 +72,7 @@ class OneTimePasswordTest extends TestCase
      */
     public function testAnAccountThatHasToUseCodesSetsThemUpOnSigningIn(): void
     {
-        Settings::set('access.security.totp_required', true);
+        Settings::set('access.security.two_step_verification_required', true);
         $id = (string)$this->addAccount()->get('id');
 
         $this->signIn();
@@ -160,7 +160,7 @@ class OneTimePasswordTest extends TestCase
     {
         $id = $this->addAccountWithCodes();
         $this->session(['Auth' => $this->account($id)]);
-        Settings::set('access.security.totp_required', true);
+        Settings::set('access.security.two_step_verification_required', true);
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/users/disable-one-time-password', [
@@ -168,7 +168,7 @@ class OneTimePasswordTest extends TestCase
         ]);
         $this->assertTrue($this->account($id)->get('secret_verified'));
 
-        Settings::set('access.security.totp_required', false);
+        Settings::set('access.security.two_step_verification_required', false);
         Cache::clear('default');
         $this->enableCsrfToken();
         $this->enableSecurityToken();
@@ -187,7 +187,8 @@ class OneTimePasswordTest extends TestCase
     }
 
     /**
-     * An admin takes somebody's codes away, for them to set the app up again, and the log says who.
+     * An admin sees in the list of accounts who has two-step verification on, and takes it away
+     * from somebody, for them to set the app up again. The log says who did.
      *
      * @return void
      */
@@ -195,8 +196,12 @@ class OneTimePasswordTest extends TestCase
     {
         $id = $this->addAccountWithCodes();
         $this->session(['Auth' => ['id' => $id, 'username' => 'admin', 'role' => 'admin']]);
+        $this->get('/users/index');
+        $this->assertResponseOk();
+        $this->assertResponseContains('Two-Step Verification');
+        $this->assertResponseContains('<td>On</td>');
         $this->get('/users/view/' . $id);
-        $this->assertResponseContains('Reset One-Time Codes');
+        $this->assertResponseContains('Reset Two-Step Verification');
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
@@ -204,6 +209,8 @@ class OneTimePasswordTest extends TestCase
 
         $this->assertNull($this->account($id)->get('secret'));
         $this->assertSame(0, $this->getTableLocator()->get('Access.RecoveryCodes')->left($id));
+        $this->get('/users/index');
+        $this->assertResponseNotContains('<td>On</td>');
         /** @var \Cake\Log\Engine\ArrayLog $log */
         $log = Log::engine('auth');
         $this->assertStringContainsString(
@@ -239,6 +246,7 @@ class OneTimePasswordTest extends TestCase
         $this->assertResponseContains('Recovery Codes');
         $this->get('/profile');
         $this->assertResponseOk();
+        $this->assertResponseContains('<h5>Authenticator Application (TOTP)</h5>');
         $this->assertResponseContains('On. Recovery codes left: 10.');
         $this->assertResponseContains('action="/users/new-recovery-codes"');
         $this->assertResponseContains('action="/users/disable-one-time-password"');

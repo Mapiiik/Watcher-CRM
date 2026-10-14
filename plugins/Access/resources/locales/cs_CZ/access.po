@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 22:49+0200\n"
+"POT-Creation-Date: 2026-10-14 22:05+0200\n"
 "PO-Revision-Date: 2026-10-13 23:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -35,13 +35,14 @@ msgstr ""
 "nebo jejich řadou a nejběžnější hesla."
 
 #: plugins/Access/config/settings.php:35
-msgid "Everybody signs in with a one-time code from an authenticator app."
-msgstr "Všichni se přihlašují i jednorázovým kódem z ověřovací aplikace."
+msgid "Everybody signs in with two-step verification."
+msgstr "Všichni se přihlašují s dvoufázovým ověřením."
 
 #: plugins/Access/config/settings.php:39
-msgid "Accounts held to the stricter rules sign in with a one-time code."
+msgid "Accounts held to the stricter rules sign in with two-step verification."
 msgstr ""
-"Účty, na které platí přísnější pravidla, se přihlašují i jednorázovým kódem."
+"Účty, na které platí přísnější pravidla, se přihlašují s dvoufázovým "
+"ověřením."
 
 #: plugins/Access/config/settings.php:43
 msgid ""
@@ -100,16 +101,16 @@ msgid "The code is not right. Please try again."
 msgstr "Kód je nesprávný. Zkuste to prosím znovu."
 
 #: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:136
-msgid "Your account has to sign in with one-time codes."
-msgstr "Váš účet se musí přihlašovat jednorázovými kódy."
+msgid "Your account has to use two-step verification."
+msgstr "Váš účet musí používat dvoufázové ověření."
 
 #: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:145
-msgid "One-time codes are turned off."
-msgstr "Jednorázové kódy jsou vypnuté."
+msgid "Two-step verification is turned off."
+msgstr "Dvoufázové ověření je vypnuté."
 
 #: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:218
-msgid "The one-time codes of {0} are reset."
-msgstr "Jednorázové kódy účtu {0} byly zrušeny."
+msgid "The two-step verification of {0} is reset."
+msgstr "Dvoufázové ověření účtu {0} je resetované."
 
 #: plugins/Access/src/Controller/Trait/PasswordResetTrait.php:54
 msgid ""
@@ -216,11 +217,11 @@ msgstr "Nemáte oprávnění pro přístup k této stránce."
 msgid "This identity is already linked to another account."
 msgstr "Sociální účet je již propojený s jiným uživatelem."
 
-#: plugins/Access/src/Model/Table/UsersTable.php:175
+#: plugins/Access/src/Model/Table/UsersTable.php:197
 msgid "The two passwords are not the same."
 msgstr "Zadaná hesla se neshodují."
 
-#: plugins/Access/src/Model/Table/UsersTable.php:205
+#: plugins/Access/src/Model/Table/UsersTable.php:227
 msgid "This username is already taken."
 msgstr "Toto uživatelské jméno už existuje."
 
@@ -228,7 +229,7 @@ msgstr "Toto uživatelské jméno už existuje."
 #: plugins/Access/templates/Users/api_token.php:10
 #: plugins/Access/templates/Users/change_password.php:13
 #: plugins/Access/templates/Users/edit.php:10
-#: plugins/Access/templates/Users/index.php:29
+#: plugins/Access/templates/Users/index.php:30
 #: plugins/Access/templates/Users/one_time_password.php:11
 #: plugins/Access/templates/Users/profile.php:11
 #: plugins/Access/templates/Users/view.php:10
@@ -303,12 +304,12 @@ msgid "Confirm password"
 msgstr "Potvrďte heslo"
 
 #: plugins/Access/templates/Users/edit.php:12
-#: plugins/Access/templates/Users/index.php:57
+#: plugins/Access/templates/Users/index.php:59
 msgid "Delete"
 msgstr "Odstranit"
 
 #: plugins/Access/templates/Users/edit.php:15
-#: plugins/Access/templates/Users/index.php:59
+#: plugins/Access/templates/Users/index.php:61
 #: plugins/Access/templates/Users/view.php:20
 msgid "Are you sure you want to delete # {0}?"
 msgstr "Opravdu chcete odstranit # {0}?"
@@ -327,36 +328,52 @@ msgstr "Nový uživatel"
 msgid "Users"
 msgstr "Uživatelé"
 
-#: plugins/Access/templates/Users/index.php:39
-#: plugins/Access/templates/Users/index.php:41
+#: plugins/Access/templates/Users/index.php:26
+#: plugins/Access/templates/Users/view.php:111
+#: plugins/Access/templates/element/one_time_password.php:16
+msgid "Two-Step Verification"
+msgstr "Dvoufázové ověření"
+
+#: plugins/Access/templates/Users/index.php:40
+#: plugins/Access/templates/Users/index.php:42
 #: plugins/Access/templates/Users/view.php:95
 #: plugins/Access/templates/Users/view.php:99
 #: plugins/Access/templates/Users/view.php:146
 msgid "Yes"
 msgstr "Ano"
 
-#: plugins/Access/templates/Users/index.php:39
-#: plugins/Access/templates/Users/index.php:41
+#: plugins/Access/templates/Users/index.php:40
+#: plugins/Access/templates/Users/index.php:42
 #: plugins/Access/templates/Users/view.php:95
 #: plugins/Access/templates/Users/view.php:99
 #: plugins/Access/templates/Users/view.php:146
 msgid "No"
 msgstr "Ne"
 
-#: plugins/Access/templates/Users/index.php:48
+#: plugins/Access/templates/Users/index.php:44
+#: plugins/Access/templates/Users/view.php:112
+msgid "On"
+msgstr "Zapnuté"
+
+#: plugins/Access/templates/Users/index.php:44
+#: plugins/Access/templates/Users/view.php:112
+msgid "Off"
+msgstr "Vypnuté"
+
+#: plugins/Access/templates/Users/index.php:50
 msgid "View"
 msgstr "Zobrazit"
 
-#: plugins/Access/templates/Users/index.php:52
+#: plugins/Access/templates/Users/index.php:54
 msgid "Edit"
 msgstr "Upravit"
 
-#: plugins/Access/templates/Users/index.php:62
+#: plugins/Access/templates/Users/index.php:64
 #: plugins/Access/templates/Users/profile.php:13
 msgid "Change Password"
 msgstr "Změnit heslo"
 
-#: plugins/Access/templates/Users/index.php:67
+#: plugins/Access/templates/Users/index.php:69
 #: plugins/Access/templates/Users/profile.php:18
 msgid "User Settings"
 msgstr "Uživatelské nastavení"
@@ -387,13 +404,13 @@ msgstr "Přihlásit se"
 
 #: plugins/Access/templates/Users/one_time_password.php:23
 #: plugins/Access/templates/Users/verify.php:16
-msgid "Set Up One-Time Codes"
-msgstr "Nastavení jednorázových kódů"
+msgid "Set Up Two-Step Verification"
+msgstr "Nastavení dvoufázového ověření"
 
 #: plugins/Access/templates/Users/one_time_password.php:26
-#: plugins/Access/templates/Users/verify.php:28
-msgid "Code"
-msgstr "Kód"
+#: plugins/Access/templates/Users/verify.php:29
+msgid "Verification Code"
+msgstr "Ověřovací kód"
 
 #: plugins/Access/templates/Users/one_time_password.php:33
 msgid "Turn On"
@@ -426,15 +443,15 @@ msgstr "Poslední přihlášení"
 
 #: plugins/Access/templates/Users/recovery_codes.php:10
 msgid "Recovery Codes"
-msgstr "Záchranné kódy"
+msgstr "Kódy pro obnovení"
 
 #: plugins/Access/templates/Users/recovery_codes.php:11
 msgid ""
-"Each of these codes signs you in once in place of a one-time code, should "
-"you lose your phone. Keep them somewhere safe, away from the phone. They are "
-"shown only now."
+"Each of these codes signs you in once in place of a verification code, "
+"should you lose your phone. Keep them somewhere safe, away from the phone. "
+"They are shown only now."
 msgstr ""
-"Každým z těchto kódů se jednou přihlásíte místo jednorázového kódu, kdybyste "
+"Každým z těchto kódů se jednou přihlásíte místo ověřovacího kódu, kdybyste "
 "ztratili telefon. Uložte je na bezpečné místo, mimo telefon. Zobrazují se "
 "jen teď."
 
@@ -456,19 +473,21 @@ msgstr "Nastavit heslo"
 
 #: plugins/Access/templates/Users/verify.php:18
 msgid ""
-"Your account signs in with a code from an app on your phone as well as the "
-"password."
-msgstr "Váš účet se přihlašuje heslem a k tomu kódem z aplikace v telefonu."
+"Your account signs in with the password and a verification code from an "
+"authenticator application on your phone."
+msgstr ""
+"Váš účet se přihlašuje heslem a ověřovacím kódem z ověřovací aplikace v "
+"telefonu."
 
-#: plugins/Access/templates/Users/verify.php:25
-msgid "Enter the code from your authenticator app"
-msgstr "Zadejte kód z ověřovací aplikace"
+#: plugins/Access/templates/Users/verify.php:26
+msgid "Enter the verification code from your authenticator application"
+msgstr "Zadejte ověřovací kód z ověřovací aplikace"
 
-#: plugins/Access/templates/Users/verify.php:32
+#: plugins/Access/templates/Users/verify.php:33
 msgid "Lost your phone? Enter one of your recovery codes instead."
-msgstr "Ztratili jste telefon? Zadejte místo toho jeden ze záchranných kódů."
+msgstr "Ztratili jste telefon? Zadejte místo toho jeden z kódů pro obnovení."
 
-#: plugins/Access/templates/Users/verify.php:35
+#: plugins/Access/templates/Users/verify.php:36
 msgid "Verify"
 msgstr "Ověřit"
 
@@ -493,12 +512,13 @@ msgid "No client will sign in with the key any more. Remove it?"
 msgstr "Žádný klient se už tímto klíčem nepřihlásí. Odebrat?"
 
 #: plugins/Access/templates/Users/view.php:44
-msgid "Reset One-Time Codes"
-msgstr "Zrušit jednorázové kódy"
+msgid "Reset Two-Step Verification"
+msgstr "Resetovat dvoufázové ověření"
 
 #: plugins/Access/templates/Users/view.php:47
-msgid "The account will have to set its authenticator app up again. Reset?"
-msgstr "Účet si bude muset ověřovací aplikaci nastavit znovu. Zrušit?"
+msgid ""
+"The account will have to set its authenticator application up again. Reset?"
+msgstr "Účet si bude muset ověřovací aplikaci nastavit znovu. Resetovat?"
 
 #: plugins/Access/templates/Users/view.php:69
 msgid "User"
@@ -520,19 +540,6 @@ msgstr "Nastavený"
 #: plugins/Access/templates/Users/view.php:108
 msgid "None"
 msgstr "Žádný"
-
-#: plugins/Access/templates/Users/view.php:111
-#: plugins/Access/templates/element/one_time_password.php:14
-msgid "One-Time Codes"
-msgstr "Jednorázové kódy"
-
-#: plugins/Access/templates/Users/view.php:112
-msgid "On"
-msgstr "Zapnuté"
-
-#: plugins/Access/templates/Users/view.php:112
-msgid "Off"
-msgstr "Vypnuté"
 
 #: plugins/Access/templates/Users/view.php:119
 #: plugins/Access/templates/Users/view.php:139
@@ -556,61 +563,66 @@ msgstr "Poskytovatel"
 msgid "Reference"
 msgstr "Reference"
 
-#: plugins/Access/templates/element/one_time_password.php:16
+#: plugins/Access/templates/element/one_time_password.php:17
+msgid "Authenticator Application (TOTP)"
+msgstr "Ověřovací aplikace (TOTP)"
+
+#: plugins/Access/templates/element/one_time_password.php:19
 msgid "On. Recovery codes left: {0}."
-msgstr "Zapnuté. Zbývající záchranné kódy: {0}."
+msgstr "Zapnuté. Zbývající kódy pro obnovení: {0}."
 
-#: plugins/Access/templates/element/one_time_password.php:21
-msgid "A code from the app, to make new recovery codes"
-msgstr "Kód z aplikace pro vytvoření nových záchranných kódů"
+#: plugins/Access/templates/element/one_time_password.php:24
+msgid "A verification code, to make new recovery codes"
+msgstr "Ověřovací kód pro vytvoření nových kódů pro obnovení"
 
-#: plugins/Access/templates/element/one_time_password.php:26
+#: plugins/Access/templates/element/one_time_password.php:29
 msgid "New Recovery Codes"
-msgstr "Nové záchranné kódy"
+msgstr "Nové kódy pro obnovení"
 
-#: plugins/Access/templates/element/one_time_password.php:33
-msgid "A code from the app, to turn one-time codes off"
-msgstr "Kód z aplikace pro vypnutí jednorázových kódů"
+#: plugins/Access/templates/element/one_time_password.php:36
+msgid "A verification code, to turn two-step verification off"
+msgstr "Ověřovací kód pro vypnutí dvoufázového ověření"
 
-#: plugins/Access/templates/element/one_time_password.php:38
+#: plugins/Access/templates/element/one_time_password.php:41
 msgid "Turn Off"
 msgstr "Vypnout"
 
-#: plugins/Access/templates/element/one_time_password.php:46
+#: plugins/Access/templates/element/one_time_password.php:49
 msgid ""
-"Off. Your account has to use them, so you set them up the next time you sign "
-"in."
+"Off. Your account has to use it, so you set it up the next time you sign in."
 msgstr ""
-"Vypnuté. Váš účet je používat musí, takže si je nastavíte při příštím "
+"Vypnuté. Váš účet ho musí používat, takže si ho nastavíte při příštím "
 "přihlášení."
 
-#: plugins/Access/templates/element/one_time_password.php:47
+#: plugins/Access/templates/element/one_time_password.php:50
 msgid ""
-"Off. Once they are on, signing in also asks for a code from an app on your "
-"phone."
-msgstr "Vypnuté. Po zapnutí bude přihlášení chtít i kód z aplikace v telefonu."
+"Off. Once it is on, signing in also asks for a verification code from an "
+"authenticator application on your phone."
+msgstr ""
+"Vypnuté. Po zapnutí bude přihlášení chtít i ověřovací kód z ověřovací "
+"aplikace v telefonu."
 
-#: plugins/Access/templates/element/one_time_password.php:49
+#: plugins/Access/templates/element/one_time_password.php:56
 msgid "Set Up"
 msgstr "Nastavit"
 
-#: plugins/Access/templates/element/one_time_password_setup.php:10
+#: plugins/Access/templates/element/one_time_password_setup.php:11
 msgid ""
-"Scan the code with an authenticator app on your phone, such as Google "
-"Authenticator, Microsoft Authenticator or FreeOTP, and enter the six digits "
-"it shows."
+"Scan the QR code with an authenticator application on your phone, such as "
+"Google Authenticator, Microsoft Authenticator or FreeOTP, and enter the six-"
+"digit verification code it shows."
 msgstr ""
-"Naskenujte kód ověřovací aplikací v telefonu, například Google "
-"Authenticator, Microsoft Authenticator nebo FreeOTP, a zadejte šest číslic, "
-"které zobrazí."
+"Naskenujte QR kód ověřovací aplikací v telefonu, například Google "
+"Authenticator, Microsoft Authenticator nebo FreeOTP, a zadejte šestimístný "
+"ověřovací kód, který zobrazí."
 
-#: plugins/Access/templates/element/one_time_password_setup.php:16
-msgid "QR code for the authenticator app"
+#: plugins/Access/templates/element/one_time_password_setup.php:17
+msgid "QR code for the authenticator application"
 msgstr "QR kód pro ověřovací aplikaci"
 
-#: plugins/Access/templates/element/one_time_password_setup.php:21
-msgid "Where the code cannot be scanned, enter this key instead:"
-msgstr "Pokud kód nejde naskenovat, zadejte místo něj tento klíč:"
+#: plugins/Access/templates/element/one_time_password_setup.php:22
+msgid "Where the QR code cannot be scanned, enter this key instead:"
+msgstr "Pokud QR kód nejde naskenovat, zadejte místo něj tento klíč:"
 
 #: plugins/Access/templates/element/social_accounts.php:18
 msgid "Social Accounts"
@@ -655,6 +667,3 @@ msgid ""
 msgstr ""
 "Odkaz platí hodinu a jen jednou. Pokud jste to nebyli vy, nemusíte nic "
 "dělat, heslo zůstává beze změny."
-
-#~ msgid "Holds Tasks"
-#~ msgstr "Přijímá úkoly"

@@ -92,6 +92,17 @@ class User extends Entity
     }
 
     /**
+     * Whether the account signs in with two-step verification, by any of its methods. The one
+     * method so far is the authenticator application (TOTP).
+     *
+     * @return bool
+     */
+    public function hasTwoStepVerification(): bool
+    {
+        return (bool)$this->get('secret_verified');
+    }
+
+    /**
      * Keeps an API key as its SHA-256 only. A key is looked up by its hash, so nothing readable is
      * kept, and a key can be shown only when it is made.
      *

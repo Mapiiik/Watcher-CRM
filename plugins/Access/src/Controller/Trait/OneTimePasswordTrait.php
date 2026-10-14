@@ -133,7 +133,7 @@ trait OneTimePasswordTrait
         $user = $this->signedInAccount(secrets: true);
 
         if (SecurityPolicy::requiresOneTimePassword($user->toArray())) {
-            $this->Flash->error(__d('access', 'Your account has to sign in with one-time codes.'));
+            $this->Flash->error(__d('access', 'Your account has to use two-step verification.'));
         } elseif ($this->acceptCode($user, (string)$this->getRequest()->getData('code')) !== 'one-time code') {
             $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
         } else {
@@ -142,7 +142,7 @@ trait OneTimePasswordTrait
                 'user' => (string)$user->get('username'),
                 'ip' => AuthLog::address($this->getRequest()),
             ]);
-            $this->Flash->success(__d('access', 'One-time codes are turned off.'));
+            $this->Flash->success(__d('access', 'Two-step verification is turned off.'));
         }
 
         return $this->redirect(['action' => 'profile']);
@@ -215,7 +215,7 @@ trait OneTimePasswordTrait
             'by' => (string)($this->getRequest()->getAttribute('identity')['username'] ?? ''),
             'ip' => AuthLog::address($this->getRequest()),
         ]);
-        $this->Flash->success(__d('access', 'The one-time codes of {0} are reset.', $user->get('username')));
+        $this->Flash->success(__d('access', 'The two-step verification of {0} is reset.', $user->get('username')));
 
         return $this->redirect($this->getRequest()->referer() ?? ['action' => 'view', $id]);
     }
