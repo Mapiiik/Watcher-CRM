@@ -46,7 +46,7 @@ class CustomerProposalChecksTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',

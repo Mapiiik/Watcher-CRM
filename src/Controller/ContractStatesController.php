@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\AppUser;
+use App\Model\Entity\User;
 use Cake\Http\Response;
 
 /**
@@ -99,7 +99,7 @@ class ContractStatesController extends AppController
             'name',
         ]);
 
-        $roles = (new AppUser())->getRoleOptions();
+        $roles = (new User())->getRoleOptions();
         $this->set(compact('contractState', 'requiresOpenTaskTypes', 'requiresOpenCustomerTaskTypes', 'roles'));
 
         return null;
@@ -132,7 +132,7 @@ class ContractStatesController extends AppController
             'name',
         ]);
 
-        $roles = (new AppUser())->getRoleOptions();
+        $roles = (new User())->getRoleOptions();
         $this->set(compact('contractState', 'requiresOpenTaskTypes', 'requiresOpenCustomerTaskTypes', 'roles'));
 
         return null;

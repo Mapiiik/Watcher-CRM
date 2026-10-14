@@ -18,11 +18,11 @@ use Override;
  * Single database table
  *
  * @extends \Cake\ORM\Table<array<string, \Cake\ORM\Behavior>>
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Creators
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Removers
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Revokers
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Archivers
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Removers
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Revokers
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Archivers
  */
 class AppTable extends Table
 {
@@ -50,31 +50,31 @@ class AppTable extends Table
 
         if ($this->hasField('created_by')) {
             $this->belongsTo('Creators', [
-                'className' => 'AppUsers',
+                'className' => 'Users',
                 'foreignKey' => 'created_by',
             ]);
         }
         if ($this->hasField('modified_by')) {
             $this->belongsTo('Modifiers', [
-                'className' => 'AppUsers',
+                'className' => 'Users',
                 'foreignKey' => 'modified_by',
             ]);
         }
         if ($this->hasField('removed_by')) {
             $this->belongsTo('Removers', [
-                'className' => 'AppUsers',
+                'className' => 'Users',
                 'foreignKey' => 'removed_by',
             ]);
         }
         if ($this->hasField('revoked_by')) {
             $this->belongsTo('Revokers', [
-                'className' => 'AppUsers',
+                'className' => 'Users',
                 'foreignKey' => 'revoked_by',
             ]);
         }
         if ($this->hasField('archived_by')) {
             $this->belongsTo('Archivers', [
-                'className' => 'AppUsers',
+                'className' => 'Users',
                 'foreignKey' => 'archived_by',
             ]);
         }

@@ -16,7 +16,7 @@ use App\Model\Entity\AppEntity;
  * @property bool $may_edit
  *
  * @property \WorkReports\Model\Entity\WorkReportWorker $work_report_worker
- * @property \App\Model\Entity\AppUser $user
+ * @property \App\Model\Entity\User $user
  */
 class WorkReportWorkerRecipient extends AppEntity
 {

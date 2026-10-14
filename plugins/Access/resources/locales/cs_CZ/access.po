@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-14 23:06+0200\n"
+"POT-Creation-Date: 2026-10-15 00:29+0200\n"
 "PO-Revision-Date: 2026-10-13 23:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -86,7 +86,7 @@ msgid "The API key of {0} is removed."
 msgstr "API klíč účtu {0} byl odebrán."
 
 #: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:71
-#: plugins/Access/src/Controller/UsersController.php:107
+#: plugins/Access/src/Controller/UsersController.php:111
 msgid "Too many failed sign-ins. Try again in a few minutes."
 msgstr "Příliš mnoho neúspěšných přihlášení. Zkuste to znovu za několik minut."
 
@@ -150,11 +150,11 @@ msgstr "Propojení sociálního účtu bylo zrušeno."
 msgid "The identity could not be unlinked."
 msgstr "Propojení sociálního účtu se nepodařilo zrušit."
 
-#: plugins/Access/src/Controller/UsersController.php:108
+#: plugins/Access/src/Controller/UsersController.php:112
 msgid "The username or the password is not right."
 msgstr "Uživatelské jméno nebo heslo je nesprávné."
 
-#: plugins/Access/src/Controller/UsersController.php:129
+#: plugins/Access/src/Controller/UsersController.php:133
 msgid ""
 "No account here is linked to that identity. Sign in with your password and "
 "link it in your profile."
@@ -162,45 +162,45 @@ msgstr ""
 "S tímto sociálním účtem tu není propojený žádný účet. Přihlaste se heslem a "
 "propojte ho ve svém profilu."
 
-#: plugins/Access/src/Controller/UsersController.php:156
+#: plugins/Access/src/Controller/UsersController.php:160
 msgid "You have signed out."
 msgstr "Úspěšně jste se odhlásili."
 
-#: plugins/Access/src/Controller/UsersController.php:193
+#: plugins/Access/src/Controller/UsersController.php:197
 msgid "Only a superuser changes the password of somebody else."
 msgstr "Heslo jiného uživatele může změnit jen superuživatel."
 
-#: plugins/Access/src/Controller/UsersController.php:214
+#: plugins/Access/src/Controller/UsersController.php:218
 msgid "This is not the current password."
 msgstr "Současné heslo je nesprávné."
 
-#: plugins/Access/src/Controller/UsersController.php:217
+#: plugins/Access/src/Controller/UsersController.php:221
 msgid "The new password has to differ from the current one."
 msgstr "Nové heslo se musí lišit od současného."
 
-#: plugins/Access/src/Controller/UsersController.php:226
+#: plugins/Access/src/Controller/UsersController.php:230
 msgid "The password has been changed."
 msgstr "Heslo bylo úspěšně změněno."
 
-#: plugins/Access/src/Controller/UsersController.php:230
+#: plugins/Access/src/Controller/UsersController.php:234
 msgid "The password could not be changed."
 msgstr "Heslo se nepodařilo změnit."
 
-#: plugins/Access/src/Controller/UsersController.php:286
-#: plugins/Access/src/Controller/UsersController.php:310
+#: plugins/Access/src/Controller/UsersController.php:290
+#: plugins/Access/src/Controller/UsersController.php:314
 msgid "The account has been saved."
 msgstr "Účet byl uložen."
 
-#: plugins/Access/src/Controller/UsersController.php:290
-#: plugins/Access/src/Controller/UsersController.php:314
+#: plugins/Access/src/Controller/UsersController.php:294
+#: plugins/Access/src/Controller/UsersController.php:318
 msgid "The account could not be saved."
 msgstr "Účet se nepodařilo uložit."
 
-#: plugins/Access/src/Controller/UsersController.php:332
+#: plugins/Access/src/Controller/UsersController.php:336
 msgid "The account has been deleted."
 msgstr "Účet byl smazán."
 
-#: plugins/Access/src/Controller/UsersController.php:334
+#: plugins/Access/src/Controller/UsersController.php:338
 msgid "The account could not be deleted."
 msgstr "Účet se nepodařilo smazat."
 

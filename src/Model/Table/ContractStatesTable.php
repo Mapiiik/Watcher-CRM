@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Model\Entity\AppUser;
+use App\Model\Entity\User;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
 use Override;
@@ -112,7 +112,7 @@ class ContractStatesTable extends AppTable
                     if (!is_array($value)) {
                         return false;
                     }
-                    $roles = array_keys((new AppUser())->getRoleOptions());
+                    $roles = array_keys((new User())->getRoleOptions());
 
                     return array_diff($value, $roles) === [];
                 },

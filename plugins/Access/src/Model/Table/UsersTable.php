@@ -20,7 +20,7 @@ use Override;
 /**
  * The accounts people sign in with, shared by the applications.
  *
- * Each application extends this as its `AppUsersTable` and adds what accounts are named on there.
+ * Each application extends this as its `UsersTable` and adds what accounts are named on there.
  *
  * @method \Access\Model\Entity\User get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \Access\Model\Entity\User newEmptyEntity()

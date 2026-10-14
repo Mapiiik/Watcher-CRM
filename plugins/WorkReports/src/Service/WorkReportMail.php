@@ -21,8 +21,8 @@ abstract class WorkReportMail
     /**
      * Render one work report email and send it.
      *
-     * @param list<\App\Model\Entity\AppUser> $to Whom the mail is for.
-     * @param list<\App\Model\Entity\AppUser> $cc Who is told as well.
+     * @param list<\App\Model\Entity\User> $to Whom the mail is for.
+     * @param list<\App\Model\Entity\User> $cc Who is told as well.
      * @param string $subject What the mail says it is.
      * @param string $template Email template of the plugin to render.
      * @param \WorkReports\Model\Entity\WorkReport $workReport The report the mail is about.
@@ -81,7 +81,7 @@ abstract class WorkReportMail
     /**
      * The addresses of the users who have one, to their names.
      *
-     * @param list<\App\Model\Entity\AppUser> $users Users.
+     * @param list<\App\Model\Entity\User> $users Users.
      * @return array<string, string>
      */
     private static function addresses(array $users): array

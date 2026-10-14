@@ -44,7 +44,7 @@ class WorkReportItemsControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'plugin.WorkReports.WorkReportItemTypes',
         'plugin.WorkReports.WorkReports',
         'plugin.WorkReports.WorkReportItems',
@@ -820,7 +820,7 @@ class WorkReportItemsControllerTest extends TestCase
      */
     private function loginAs(string $id, string $role, bool $superuser = true): void
     {
-        $user = $this->getTableLocator()->get('AppUsers')->get($id);
+        $user = $this->getTableLocator()->get('Users')->get($id);
         $user->role = $role;
         // the user of the fixture is a superuser, whom the permissions do not stop
         $user->set('is_superuser', $superuser);
@@ -835,7 +835,7 @@ class WorkReportItemsControllerTest extends TestCase
      */
     private function otherUser(): string
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $user = $users->newEmptyEntity();
         $user->username = 'other';
         // the fixture states its number itself, so the sequence would hand out the same one

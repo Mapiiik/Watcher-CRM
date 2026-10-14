@@ -14,7 +14,6 @@
         <directory name="plugins/"/>
         <directory name="config/"/>
         <ignoreFiles>
-            <directory name="templates/AppUsers/"/>
             <directory name="vendor/"/>
         </ignoreFiles>
     </projectFiles>

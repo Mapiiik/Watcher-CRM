@@ -14,9 +14,9 @@ use WorkReports\Model\Entity\WorkReport;
 /**
  * WorkReports Model
  *
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Submitters
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Returners
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Submitters
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Returners
  * @property \WorkReports\Model\Table\WorkReportWorkersTable&\Cake\ORM\Association\BelongsTo $Worker
  * @property \WorkReports\Model\Table\WorkReportItemsTable&\Cake\ORM\Association\HasMany $WorkReportItems
  * @property \WorkReports\Model\Table\WorkReportOnCallsTable&\Cake\ORM\Association\HasMany $WorkReportOnCalls
@@ -49,16 +49,16 @@ class WorkReportsTable extends AppTable
         $this->addBehavior('Footprint');
 
         $this->belongsTo('Users', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('Submitters', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'submitted_by',
         ]);
         $this->belongsTo('Returners', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'returned_by',
         ]);
         // the row that says the user reports work, and at what workload a month of theirs starts

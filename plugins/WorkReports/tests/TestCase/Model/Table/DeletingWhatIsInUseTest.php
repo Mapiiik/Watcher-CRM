@@ -31,7 +31,7 @@ class DeletingWhatIsInUseTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'plugin.WorkReports.WorkReportItemTypes',
         'plugin.WorkReports.WorkReports',
         'plugin.WorkReports.WorkReportItems',

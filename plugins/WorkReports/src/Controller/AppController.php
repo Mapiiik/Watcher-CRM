@@ -142,20 +142,20 @@ class AppController extends BaseController
      */
     protected function visibleWorkers(): array
     {
-        /** @var \App\Model\Table\AppUsersTable $users */
-        $users = $this->fetchTable('AppUsers');
+        /** @var \App\Model\Table\UsersTable $users */
+        $users = $this->fetchTable('Users');
 
         /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
         $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
 
         // whoever reports their work, or of them those whose reports the user gets
         $others = $this->seesEverybody()
-            ? ['AppUsers.id IN' => $workers->activeIds()]
-            : ['AppUsers.id IN' => $workers->workersOf($this->identityId())];
+            ? ['Users.id IN' => $workers->activeIds()]
+            : ['Users.id IN' => $workers->workersOf($this->identityId())];
 
         // and the user themselves, so that they get to their own months - but only if they keep any
         $own = $workers->isWorker($this->identityId())
-            ? [['AppUsers.id' => $this->identityId()]]
+            ? [['Users.id' => $this->identityId()]]
             : [];
 
         return $this->usersForSelect($users->find()
@@ -172,8 +172,8 @@ class AppController extends BaseController
     protected function usersForSelect(SelectQuery $query): array
     {
         $list = [];
-        $query->orderBy(['AppUsers.active' => 'DESC', 'AppUsers.last_name', 'AppUsers.first_name'], true);
-        /** @var \App\Model\Entity\AppUser $user */
+        $query->orderBy(['Users.active' => 'DESC', 'Users.last_name', 'Users.first_name'], true);
+        /** @var \App\Model\Entity\User $user */
         foreach ($query->all() as $user) {
             $list[] = [
                 'value' => $user->id,

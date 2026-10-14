@@ -197,7 +197,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                 ['controller' => 'Settings', 'action' => 'index', 'plugin' => null, 'customer_id' => false],
                 ['class' => 'button button-small' . $buttonSelected([
                     'Settings',
-                    'AppUsers',
+                    'Users',
                 ])],
             ) ?>
 
@@ -281,7 +281,7 @@ $urlWithQuery = function ($query = []) use ($request) {
 
             <?= $request->getAttribute('identity') != null ? $this->AuthLink->link(
                 __('Logout'),
-                ['controller' => 'AppUsers', 'action' => 'logout', 'plugin' => null],
+                ['controller' => 'Users', 'action' => 'logout', 'plugin' => null],
                 ['class' => 'button button-small button-outline'],
             ) : '' ?>
         </div>

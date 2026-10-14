@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-14 23:34+0200\n"
+"POT-Creation-Date: 2026-10-15 00:30+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2255,20 +2255,20 @@ msgstr ""
 "Související štítky zákazníků nelze aktualizovat. Zkuste to prosím znovu."
 
 #: src/Controller/LoginsController.php:92
-#: src/Controller/LoginsController.php:153
+#: src/Controller/LoginsController.php:159
 msgid "The login has been saved."
 msgstr "Přihlášení bylo uloženo."
 
 #: src/Controller/LoginsController.php:96
-#: src/Controller/LoginsController.php:157
+#: src/Controller/LoginsController.php:163
 msgid "The login could not be saved. Please, try again."
 msgstr "Přihlášení nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/LoginsController.php:186
+#: src/Controller/LoginsController.php:192
 msgid "The login has been deleted."
 msgstr "Přihlášení bylo odstraněno."
 
-#: src/Controller/LoginsController.php:189
+#: src/Controller/LoginsController.php:195
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Zkuste to prosím znovu."
 
@@ -2593,54 +2593,6 @@ msgstr "Nepodepsané dokumenty"
 msgid "The service is not configured."
 msgstr "Služba není nakonfigurována."
 
-#: src/Model/Entity/AppUser.php:39 src/Model/Enum/LoginRights.php:28
-#: templates/Tasks/add.php:44 templates/Tasks/edit.php:57
-#: templates/Tasks/index.php:105 templates/Tasks/view.php:54
-#: templates/element/Contracts/Tasks.php:25
-#: templates/element/Tasks/email_detail.php:48
-msgid "User"
-msgstr "Uživatel"
-
-#: src/Model/Entity/AppUser.php:40
-msgid "Customer Service Technician"
-msgstr "Technik zákaznického servisu"
-
-#: src/Model/Entity/AppUser.php:41
-msgid "Network Technician"
-msgstr "Síťový technik"
-
-#: src/Model/Entity/AppUser.php:42
-msgid "Network Manager"
-msgstr "Správce sítě"
-
-#: src/Model/Entity/AppUser.php:43
-msgid "Sales Representative"
-msgstr "Obchodní zástupce"
-
-#: src/Model/Entity/AppUser.php:44
-msgid "Sales Manager"
-msgstr "Manažer prodeje"
-
-#: src/Model/Entity/AppUser.php:45
-msgid "Bookkeeper"
-msgstr "Účetní"
-
-#: src/Model/Entity/AppUser.php:46
-msgid "Admin"
-msgstr "Admin"
-
-#: src/Model/Entity/AppUser.php:47
-msgid "API"
-msgstr "API"
-
-#: src/Model/Entity/AppUser.php:48
-msgid "Customer Portal"
-msgstr "Zákaznický portál"
-
-#: src/Model/Entity/AppUser.php:49
-msgid "Customer Identification"
-msgstr "Identifikace zákazníka"
-
 #: src/Model/Entity/Billing.php:418
 msgid "Contract data not available."
 msgstr "Údaje o smlouvě nejsou k dispozici."
@@ -2706,6 +2658,54 @@ msgstr "Změny aplikovány"
 #: src/Model/Entity/CustomerProposal.php:183
 msgid "Contract proposal data not available."
 msgstr "Návrhy smluv nejsou načtené."
+
+#: src/Model/Entity/User.php:39 src/Model/Enum/LoginRights.php:28
+#: templates/Tasks/add.php:44 templates/Tasks/edit.php:57
+#: templates/Tasks/index.php:105 templates/Tasks/view.php:54
+#: templates/element/Contracts/Tasks.php:25
+#: templates/element/Tasks/email_detail.php:48
+msgid "User"
+msgstr "Uživatel"
+
+#: src/Model/Entity/User.php:40
+msgid "Customer Service Technician"
+msgstr "Technik zákaznického servisu"
+
+#: src/Model/Entity/User.php:41
+msgid "Network Technician"
+msgstr "Síťový technik"
+
+#: src/Model/Entity/User.php:42
+msgid "Network Manager"
+msgstr "Správce sítě"
+
+#: src/Model/Entity/User.php:43
+msgid "Sales Representative"
+msgstr "Obchodní zástupce"
+
+#: src/Model/Entity/User.php:44
+msgid "Sales Manager"
+msgstr "Manažer prodeje"
+
+#: src/Model/Entity/User.php:45
+msgid "Bookkeeper"
+msgstr "Účetní"
+
+#: src/Model/Entity/User.php:46
+msgid "Admin"
+msgstr "Admin"
+
+#: src/Model/Entity/User.php:47
+msgid "API"
+msgstr "API"
+
+#: src/Model/Entity/User.php:48
+msgid "Customer Portal"
+msgstr "Zákaznický portál"
+
+#: src/Model/Entity/User.php:49
+msgid "Customer Identification"
+msgstr "Identifikace zákazníka"
 
 #: src/Model/Enum/AccessMedium.php:30
 msgid "Wireless"
@@ -3299,11 +3299,6 @@ msgstr "Jméno a příjmení jsou povinné, pokud není vyplněno jméno společ
 msgid "Company is required when first and last name are not filled in."
 msgstr "Jméno společnosti je povinné, pokud není vyplněno jméno a příjmení."
 
-#: src/Model/Table/AppUsersTable.php:102
-msgid "This account is still named on tasks. Move them to somebody else first."
-msgstr ""
-"Na tomto účtu jsou stále vedeny úkoly. Nejprve je přesuňte na někoho jiného."
-
 #: src/Model/Table/AvailableConnectionsTable.php:82
 #: src/Model/Table/AvailableConnectionsTable.php:87
 msgid "Pick the address from the national address registry."
@@ -3598,6 +3593,11 @@ msgstr "Zadaný typ úkolu vyžaduje přiřazení smlouvy."
 #: src/Model/Table/TasksTable.php:146
 msgid "The specified task type requires the assignment of an access point."
 msgstr "Zadaný typ úkolu vyžaduje přiřazení přístupového bodu."
+
+#: src/Model/Table/UsersTable.php:102
+msgid "This account is still named on tasks. Move them to somebody else first."
+msgstr ""
+"Na tomto účtu jsou stále vedeny úkoly. Nejprve je přesuňte na někoho jiného."
 
 #: src/Model/Validation/ContractStateValidator.php:167
 msgid "The selected contract state cannot be used for new contracts."

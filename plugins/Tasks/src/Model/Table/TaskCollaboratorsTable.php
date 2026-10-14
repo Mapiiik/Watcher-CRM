@@ -16,7 +16,7 @@ use Override;
  * taking them off it again, is written into the history the same way every other change is.
  *
  * @property \Tasks\Model\Table\TasksTable&\Cake\ORM\Association\BelongsTo $Tasks
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @method \Tasks\Model\Entity\TaskCollaborator newEmptyEntity()
  * @method \Tasks\Model\Entity\TaskCollaborator newEntity(array $data, array $options = [])
  * @method \Tasks\Model\Entity\TaskCollaborator[] newEntities(array $data, array $options = [])
@@ -57,7 +57,7 @@ class TaskCollaboratorsTable extends AppTable
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('Users', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);

@@ -136,7 +136,7 @@ $this->Html->script('expandable-text.js', ['block' => true]);
                     <td>
                         <?= $task->user !== null ? $this->Html->link(
                             $task->user->name ?? '(' . $task->user->id . ')',
-                            ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
+                            ['controller' => 'Users', 'action' => 'view', $task->user->id],
                         ) : '' ?>
                         <?php // under the holder rather than in a column of its own; the listing
                               // is wide enough, and the two answer the same question ?>

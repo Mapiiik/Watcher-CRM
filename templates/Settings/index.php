@@ -13,12 +13,12 @@ use Cake\Core\Plugin;
             <div>
                 <?= $this->AuthLink->link(
                     __('User Profile'),
-                    ['controller' => 'AppUsers', 'action' => 'profile'],
+                    ['controller' => 'Users', 'action' => 'profile'],
                     ['class' => 'side-nav-item'],
                 ) ?>
                 <?= $this->AuthLink->link(
                     __('List Users'),
-                    ['controller' => 'AppUsers', 'action' => 'index'],
+                    ['controller' => 'Users', 'action' => 'index'],
                     ['class' => 'side-nav-item'],
                 ) ?>
             </div>

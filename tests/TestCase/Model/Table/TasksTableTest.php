@@ -51,7 +51,7 @@ class TasksTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',
@@ -552,7 +552,7 @@ class TasksTableTest extends TestCase
     {
         $this->advanceIdentity('users', 'nid');
 
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $person = $users->newEmptyEntity();
         $person->patch([
             'username' => $username,

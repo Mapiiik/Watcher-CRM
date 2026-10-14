@@ -29,7 +29,7 @@ use Override;
 /**
  * Signing in, the profile and the accounts, shared by the applications.
  *
- * Each application extends this as its `AppUsersController`, which is what the configuration and
+ * Each application extends this as its `UsersController`, which is what the configuration and
  * the permissions name.
  *
  * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication

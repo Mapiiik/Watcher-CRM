@@ -54,7 +54,7 @@ class CustomerPortalControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',
@@ -90,9 +90,9 @@ class CustomerPortalControllerTest extends TestCase
         // the failed attempts of one test would otherwise block the next
         Cache::clear('default');
 
-        $this->getTableLocator()->get('AppUsers')->updateAll(
+        $this->getTableLocator()->get('Users')->updateAll(
             ['role' => 'customer-portal', 'is_superuser' => false, 'active' => true, 'api_token' => hash('sha256', self::PORTAL_KEY)],
-            ['id' => $this->firstId('AppUsers')],
+            ['id' => $this->firstId('Users')],
         );
         $this->storePassword(Passwords::hash(self::PASSWORD));
         $this->getTableLocator()->get('Logins')->updateAll(['locked' => false], ['id' => self::LOGIN_ID]);
@@ -532,7 +532,7 @@ class CustomerPortalControllerTest extends TestCase
      */
     public function testOtherRolesAreRefused(): void
     {
-        $this->getTableLocator()->get('AppUsers')->updateAll(['role' => 'api'], ['id' => $this->firstId('AppUsers')]);
+        $this->getTableLocator()->get('Users')->updateAll(['role' => 'api'], ['id' => $this->firstId('Users')]);
 
         $this->asPortal();
         $this->get('/api/customer-portal/identify?ip=192.168.11.11');
@@ -585,8 +585,8 @@ class CustomerPortalControllerTest extends TestCase
      */
     private function asService(): void
     {
-        $this->getTableLocator()->get('AppUsers')
-            ->updateAll(['role' => 'customer-identification'], ['id' => $this->firstId('AppUsers')]);
+        $this->getTableLocator()->get('Users')
+            ->updateAll(['role' => 'customer-identification'], ['id' => $this->firstId('Users')]);
         $this->asPortal();
     }
 

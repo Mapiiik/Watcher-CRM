@@ -29,7 +29,7 @@ use WorkReports\Model\Enum\TimeMode;
  * @property \WorkReports\Model\Table\WorkReportItemLabelsTable&\Cake\ORM\Association\HasMany $WorkReportItemLabels
  * @property \WorkReports\Model\Table\WorkLabelsTable&\Cake\ORM\Association\BelongsToMany $WorkLabels
  * @property \WorkReports\Model\Table\WorkReportItemCollaboratorsTable&\Cake\ORM\Association\HasMany $WorkReportItemCollaborators
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsToMany $Collaborators
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsToMany $Collaborators
  * @method \WorkReports\Model\Entity\WorkReportItem newEmptyEntity()
  * @method \WorkReports\Model\Entity\WorkReportItem newEntity(array $data, array $options = [])
  * @method \WorkReports\Model\Entity\WorkReportItem get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
@@ -114,7 +114,7 @@ class WorkReportItemsTable extends AppTable
             'dependent' => true,
         ]);
         $this->belongsToMany('Collaborators', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'through' => 'WorkReports.WorkReportItemCollaborators',
             'foreignKey' => 'work_report_item_id',
             'targetForeignKey' => 'user_id',

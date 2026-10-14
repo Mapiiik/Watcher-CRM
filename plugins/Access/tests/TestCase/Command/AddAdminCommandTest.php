@@ -25,7 +25,7 @@ class AddAdminCommandTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
     ];
 
     /**
@@ -42,7 +42,7 @@ class AddAdminCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputRegExp('/password \S+$/m');
         preg_match('/password (\S+)$/m', (string)$this->_out?->output(), $shown);
-        $admin = $this->getTableLocator()->get('AppUsers')
+        $admin = $this->getTableLocator()->get('Users')
             ->find('withSecrets')
             ->where(['username' => 'anovak'])
             ->firstOrFail();
@@ -61,7 +61,7 @@ class AddAdminCommandTest extends TestCase
     public function testANameAlreadyTakenAddsNobody(): void
     {
         $this->addAccount();
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $before = $users->find()->count();
 
         $this->exec('access add_admin jnovak anna.novak@example.com');

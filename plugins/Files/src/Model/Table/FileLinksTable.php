@@ -12,8 +12,8 @@ use Override;
  * FileLinks Model
  *
  * @property \Files\Model\Table\FilesTable&\Cake\ORM\Association\BelongsTo $Files
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Creators
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
  * @method \Files\Model\Entity\FileLink newEmptyEntity()
  * @method \Files\Model\Entity\FileLink newEntity(array $data, array $options = [])
  * @method \Files\Model\Entity\FileLink[] newEntities(array $data, array $options = [])

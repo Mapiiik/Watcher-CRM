@@ -16,7 +16,7 @@ final class ReturnedWorkReportMail extends WorkReportMail
      * Send the notice.
      *
      * @param \WorkReports\Model\Entity\WorkReport $workReport Report with its user and returner contained.
-     * @param list<\App\Model\Entity\AppUser> $recipients Who gets the worker's reports.
+     * @param list<\App\Model\Entity\User> $recipients Who gets the worker's reports.
      * @param \App\Messages\Messages $messages Where to leave what happened.
      * @return bool Whether it went out.
      */

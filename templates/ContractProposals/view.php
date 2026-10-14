@@ -228,7 +228,7 @@ foreach ($filed as $byVariant) {
                                     $settler->username ?? '(' . $settler->id . ')',
                                     [
                                         'plugin' => null,
-                                        'controller' => 'AppUsers',
+                                        'controller' => 'Users',
                                         'action' => 'view',
                                         $settler->id,
                                     ],

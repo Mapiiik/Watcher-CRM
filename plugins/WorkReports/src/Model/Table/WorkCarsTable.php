@@ -14,7 +14,7 @@ use Override;
  *
  * A car without an owner belongs to the company, one with an owner is that person's own.
  *
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Owners
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Owners
  * @property \WorkReports\Model\Table\WorkReportItemsTable&\Cake\ORM\Association\HasMany $DrivenAsPrivate
  * @property \WorkReports\Model\Table\WorkReportItemsTable&\Cake\ORM\Association\HasMany $DrivenAsCompany
  * @property \WorkReports\Model\Table\WorkReportWorkersTable&\Cake\ORM\Association\HasMany $UsualPrivateCarOf
@@ -46,7 +46,7 @@ class WorkCarsTable extends AppTable
         $this->addBehavior('Footprint');
 
         $this->belongsTo('Owners', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'owner_id',
         ]);
 

@@ -14,7 +14,7 @@ use Tasks\Model\Table\TaskCollaboratorsTable as TasksTaskCollaboratorsTable;
  * `TaskCollaborators` goes through.
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\BelongsTo $Tasks
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @method \App\Model\Entity\TaskCollaborator newEmptyEntity()
  * @method \App\Model\Entity\TaskCollaborator newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\TaskCollaborator[] newEntities(array $data, array $options = [])

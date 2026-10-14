@@ -20,17 +20,17 @@ use CakeDC\Auth\Social\Mapper\Google as GoogleMapper;
 use CakeDC\Auth\Social\Service\OAuth2Service;
 use League\OAuth2\Client\Provider\Google;
 
-$users = ['plugin' => false, 'prefix' => false, 'controller' => 'AppUsers'];
+$users = ['plugin' => false, 'prefix' => false, 'controller' => 'Users'];
 $login = $users + ['action' => 'login'];
 // accounts that are not active do not sign in, whichever way they try
-$resolver = ['className' => 'Authentication.Orm', 'userModel' => 'AppUsers', 'finder' => 'active'];
+$resolver = ['className' => 'Authentication.Orm', 'userModel' => 'Users', 'finder' => 'active'];
 $base = Router::fullBaseUrl();
 
 return [
     'Users' => [
         // the application's own classes, which the permissions and the templates name
-        'controller' => 'AppUsers',
-        'table' => 'AppUsers',
+        'controller' => 'Users',
+        'table' => 'Users',
         'Social' => [
             // signing in with Google is offered where the installation has a client for it
             'login' => (bool)env('GOOGLE_OAUTH_CLIENT_ID', false),

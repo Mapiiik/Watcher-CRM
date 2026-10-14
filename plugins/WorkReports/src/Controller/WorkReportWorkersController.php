@@ -63,8 +63,8 @@ class WorkReportWorkersController extends AppController
      */
     protected function setFormLists(): void
     {
-        /** @var \App\Model\Table\AppUsersTable $users */
-        $users = $this->fetchTable('AppUsers');
+        /** @var \App\Model\Table\UsersTable $users */
+        $users = $this->fetchTable('Users');
 
         $people = $this->usersForSelect($users->find('holdingTasks'));
         $privateCars = $this->WorkReportWorkers->DefaultPrivateCars->find('list')

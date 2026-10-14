@@ -30,7 +30,7 @@ class TasksControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',
@@ -96,7 +96,7 @@ class TasksControllerTest extends TestCase
      */
     public function testSearchFindsWhoseATaskIsByTheirUsername(): void
     {
-        $holder = $this->getTableLocator()->get('AppUsers')->find()->firstOrFail();
+        $holder = $this->getTableLocator()->get('Users')->find()->firstOrFail();
         // The fixture hands its own task to this same person, which would leave the count saying
         // nothing about the cut. Nobody holds it now.
         $this->getTableLocator()->get('Tasks')->updateAll(['user_id' => null], []);
@@ -125,7 +125,7 @@ class TasksControllerTest extends TestCase
      */
     public function testSearchCountsTheTasksSomebodyWasPutOnAsTheirs(): void
     {
-        $helper = $this->getTableLocator()->get('AppUsers')->find()->firstOrFail();
+        $helper = $this->getTableLocator()->get('Users')->find()->firstOrFail();
         // The fixture hands its own task to this same person, which would answer the question
         // before it is asked. Nobody holds anything now.
         $this->getTableLocator()->get('Tasks')->updateAll(['user_id' => null], []);
@@ -160,7 +160,7 @@ class TasksControllerTest extends TestCase
      */
     public function testSearchSaysWhoTheNameTurnedOutToBe(): void
     {
-        $holder = $this->getTableLocator()->get('AppUsers')->find()->firstOrFail();
+        $holder = $this->getTableLocator()->get('Users')->find()->firstOrFail();
 
         $this->login('api');
         $this->get('/api/tasks/search.json?user=' . urlencode((string)$holder->get('username')));
@@ -186,7 +186,7 @@ class TasksControllerTest extends TestCase
      */
     public function testSearchHandsOverWhoElseIsOnATask(): void
     {
-        $helper = $this->getTableLocator()->get('AppUsers')->find()->firstOrFail();
+        $helper = $this->getTableLocator()->get('Users')->find()->firstOrFail();
 
         $place = Text::uuid();
         $this->taskAt($place, 'Two of us are going');

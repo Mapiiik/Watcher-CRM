@@ -36,7 +36,7 @@ class HakomTest extends TestCase
      * @var list<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'plugin.Settings.Settings',
     ];
 

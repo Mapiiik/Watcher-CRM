@@ -21,7 +21,7 @@
             <?php if ($entity->creator !== null) : ?>
                 <?= $this->Html->link(
                     $entity->creator->username ?? '(' . $entity->creator->id . ')',
-                    ['plugin' => null, 'controller' => 'AppUsers', 'action' => 'view', $entity->creator->id],
+                    ['plugin' => null, 'controller' => 'Users', 'action' => 'view', $entity->creator->id],
                 ) ?>
             <?php else : ?>
                 <?= h($entity->created_by) ?>
@@ -40,7 +40,7 @@
             <?php if ($entity->modifier !== null) : ?>
                 <?= $this->Html->link(
                     $entity->modifier->username ?? '(' . $entity->modifier->id . ')',
-                    ['plugin' => null, 'controller' => 'AppUsers', 'action' => 'view', $entity->modifier->id],
+                    ['plugin' => null, 'controller' => 'Users', 'action' => 'view', $entity->modifier->id],
                 ) ?>
             <?php else : ?>
                 <?= h($entity->modified_by) ?>
@@ -60,7 +60,7 @@
             <?php if ($entity->remover !== null) : ?>
                 <?= $this->Html->link(
                     $entity->remover->username ?? '(' . $entity->remover->id . ')',
-                    ['plugin' => null, 'controller' => 'AppUsers', 'action' => 'view', $entity->remover->id],
+                    ['plugin' => null, 'controller' => 'Users', 'action' => 'view', $entity->remover->id],
                 ) ?>
             <?php else : ?>
                 <?= h($entity->removed_by) ?>
@@ -81,7 +81,7 @@
             <?php if ($entity->revoker !== null) : ?>
                 <?= $this->Html->link(
                     $entity->revoker->username ?? '(' . $entity->revoker->id . ')',
-                    ['plugin' => null, 'controller' => 'AppUsers', 'action' => 'view', $entity->revoker->id],
+                    ['plugin' => null, 'controller' => 'Users', 'action' => 'view', $entity->revoker->id],
                 ) ?>
             <?php else : ?>
                 <?= h($entity->revoked_by) ?>
@@ -102,7 +102,7 @@
             <?php if ($entity->archiver !== null) : ?>
                 <?= $this->Html->link(
                     $entity->archiver->username ?? '(' . $entity->archiver->id . ')',
-                    ['plugin' => null, 'controller' => 'AppUsers', 'action' => 'view', $entity->archiver->id],
+                    ['plugin' => null, 'controller' => 'Users', 'action' => 'view', $entity->archiver->id],
                 ) ?>
             <?php else : ?>
                 <?= h($entity->archived_by) ?>

@@ -31,8 +31,8 @@ trait ControllerTestTrait
      */
     protected function login(string $role = 'admin', array $userSettings = []): void
     {
-        /** @var \App\Model\Table\AppUsersTable $usersTable */
-        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'AppUsers'));
+        /** @var \App\Model\Table\UsersTable $usersTable */
+        $usersTable = $this->getTableLocator()->get(Configure::read('Users.table', 'Users'));
 
         $user = $usersTable->newEmptyEntity();
         $user->username = 'tester';

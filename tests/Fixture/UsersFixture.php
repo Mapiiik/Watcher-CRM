@@ -7,9 +7,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 use Override;
 
 /**
- * AppUsersFixture
+ * UsersFixture
  */
-class AppUsersFixture extends TestFixture
+class UsersFixture extends TestFixture
 {
     /**
      * Table name

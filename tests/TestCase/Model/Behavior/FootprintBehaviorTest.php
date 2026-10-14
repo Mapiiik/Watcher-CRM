@@ -26,7 +26,7 @@ class FootprintBehaviorTest extends TestCase
     use IdentityColumnTrait;
 
     /**
-     * The user from the AppUsers fixture, standing in for whoever is logged in.
+     * The user from the Users fixture, standing in for whoever is logged in.
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class FootprintBehaviorTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.Labels',
     ];
 
@@ -124,7 +124,7 @@ class FootprintBehaviorTest extends TestCase
         // a second user to tell the two columns apart; the password goes in past its setter, which
         // reaches for a hasher the test environment does not configure
         $this->advanceIdentity('users', 'nid');
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $creator = $users->newEmptyEntity();
         $creator->patch(['username' => 'author', 'role' => 'admin', 'active' => true]);
         $creator->set('password', 'irrelevant-for-this-test', ['setter' => false]);

@@ -27,7 +27,7 @@ class LinkedSocialIdentifierTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
     ];
 
     /**
@@ -62,7 +62,7 @@ class LinkedSocialIdentifierTest extends TestCase
     public function testAnIdentityNobodyLinkedSignsNobodyIn(): void
     {
         $this->addAccount();
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $before = $users->find()->count();
 
         $found = $this->identifier()->identify($this->identity('108234567890', 'jan.novak@example.com'));
@@ -92,7 +92,7 @@ class LinkedSocialIdentifierTest extends TestCase
         $this->assertInstanceOf(ArrayAccess::class, $found);
         $this->assertSame($user->get('id'), $found['id']);
 
-        $this->getTableLocator()->get('AppUsers')->updateQuery()
+        $this->getTableLocator()->get('Users')->updateQuery()
             ->set(['active' => false])
             ->where(['id' => $user->get('id')])
             ->execute();
@@ -124,7 +124,7 @@ class LinkedSocialIdentifierTest extends TestCase
     private function identifier(): LinkedSocialIdentifier
     {
         return new LinkedSocialIdentifier([
-            'resolver' => ['className' => 'Authentication.Orm', 'userModel' => 'AppUsers', 'finder' => 'active'],
+            'resolver' => ['className' => 'Authentication.Orm', 'userModel' => 'Users', 'finder' => 'active'],
         ]);
     }
 

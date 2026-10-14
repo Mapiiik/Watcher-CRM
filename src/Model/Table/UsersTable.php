@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Access\Model\Table\UsersTable;
+use Access\Model\Table\UsersTable as AccessUsersTable;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -14,23 +14,23 @@ use Override;
  *
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
  * @property \App\Model\Table\TaskCollaboratorsTable&\Cake\ORM\Association\HasMany $TaskCollaborators
- * @method \App\Model\Entity\AppUser get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\AppUser newEmptyEntity()
- * @method \App\Model\Entity\AppUser newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\AppUser[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\AppUser get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
- * @method \App\Model\Entity\AppUser findOrCreate($search, callable|array|null $callback = null, $options = [])
- * @method \App\Model\Entity\AppUser patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\AppUser[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\AppUser|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\AppUser saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method iterable<\App\Model\Entity\AppUser>|false saveMany(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\AppUser> saveManyOrFail(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\AppUser>|false deleteMany(iterable $entities, $options = [])
- * @method iterable<\App\Model\Entity\AppUser> deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\User get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\User newEmptyEntity()
+ * @method \App\Model\Entity\User newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\User get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\User findOrCreate($search, callable|array|null $callback = null, $options = [])
+ * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\User[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\User|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\User saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method iterable<\App\Model\Entity\User>|false saveMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\User> saveManyOrFail(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\User>|false deleteMany(iterable $entities, $options = [])
+ * @method iterable<\App\Model\Entity\User> deleteManyOrFail(iterable $entities, $options = [])
  * @psalm-suppress MethodSignatureMismatch
  */
-class AppUsersTable extends UsersTable
+class UsersTable extends AccessUsersTable
 {
     /**
      * Initialize method
@@ -58,8 +58,8 @@ class AppUsersTable extends UsersTable
      * `active` - and chained with it where both have to be true, as when a task is being handed
      * to somebody for the first time.
      *
-     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\AppUser> $query The query to scope.
-     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\AppUser>
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\User> $query The query to scope.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\User>
      */
     public function findHoldingTasks(SelectQuery $query): SelectQuery
     {

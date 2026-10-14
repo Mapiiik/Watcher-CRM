@@ -60,7 +60,7 @@
             <td><?= $task->user !== null ?
                 $this->Html->link(
                     $task->user->name ?? '(' . $task->user->id . ')',
-                    ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
+                    ['controller' => 'Users', 'action' => 'view', $task->user->id],
                 ) : '' ?>
                 <?php if ($task->collaborator_names !== '') : ?>
                     <br><small title="<?= h(__d('app_tasks', 'Collaborators')) ?>">

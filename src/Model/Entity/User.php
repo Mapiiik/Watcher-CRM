@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use Access\Model\Entity\User;
+use Access\Model\Entity\User as AccessUser;
 use Override;
 
 /**
@@ -11,7 +11,7 @@ use Override;
  *
  * @property bool $holds_tasks
  */
-class AppUser extends User
+class User extends AccessUser
 {
     /**
      * An account, which a form may also say holds tasks.

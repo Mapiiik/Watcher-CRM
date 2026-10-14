@@ -64,7 +64,7 @@ class TasksControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',
@@ -214,9 +214,9 @@ class TasksControllerTest extends TestCase
      */
     public function testAddDoesNotOfferAnAccountThatHoldsNoTasks(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
-        /** @var \App\Model\Entity\AppUser $integration */
-        $integration = $users->get($this->firstId('AppUsers'));
+        $users = $this->getTableLocator()->get('Users');
+        /** @var \App\Model\Entity\User $integration */
+        $integration = $users->get($this->firstId('Users'));
 
         // the switch only goes off once no task names the account, which is the rule the form
         // itself enforces - so the tasks are moved away first, exactly as it asks
@@ -667,12 +667,12 @@ class TasksControllerTest extends TestCase
         ]));
 
         // the settings belong to a user, so the one signed in has to be one the table holds
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $user = $users->find()->firstOrFail();
         $user->set('role', 'admin');
         $this->session(['Auth' => $user]);
 
-        $this->get('/app-users/user-settings');
+        $this->get('/users/user-settings');
 
         $this->assertResponseOk();
 
@@ -691,7 +691,7 @@ class TasksControllerTest extends TestCase
      */
     public function testTheSettingsRememberTheTaskTypesChosen(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $user = $users->find()->firstOrFail();
         $user->set('role', 'admin');
         $this->session(['Auth' => $user]);
@@ -700,7 +700,7 @@ class TasksControllerTest extends TestCase
 
         $chosen = $this->firstId('TaskTypes');
 
-        $this->post('/app-users/user-settings', [
+        $this->post('/users/user-settings', [
             'user_settings' => [
                 'tasks' => [
                     'task_type_ids' => [$chosen],
@@ -1002,7 +1002,7 @@ class TasksControllerTest extends TestCase
      */
     private function loginAs(string $userId): void
     {
-        $this->session(['Auth' => $this->getTableLocator()->get('AppUsers')->get($userId)]);
+        $this->session(['Auth' => $this->getTableLocator()->get('Users')->get($userId)]);
     }
 
     /**
@@ -1109,7 +1109,7 @@ class TasksControllerTest extends TestCase
     {
         $this->advanceIdentity('users', 'nid');
 
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $person = $users->newEmptyEntity();
         $person->patch([
             'username' => $username,

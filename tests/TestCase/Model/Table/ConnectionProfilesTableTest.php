@@ -28,7 +28,7 @@ class ConnectionProfilesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.ConnectionProfiles',
         'app.ServiceTypes',
         'app.Services',

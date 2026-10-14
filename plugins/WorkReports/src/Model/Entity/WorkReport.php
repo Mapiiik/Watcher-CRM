@@ -22,9 +22,9 @@ use Cake\I18n\Date;
  * @property \Cake\I18n\Date|null $closed_until
  * @property string|null $note
  *
- * @property \App\Model\Entity\AppUser $user
- * @property \App\Model\Entity\AppUser|null $submitter
- * @property \App\Model\Entity\AppUser|null $returner
+ * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\User|null $submitter
+ * @property \App\Model\Entity\User|null $returner
  * @property \WorkReports\Model\Entity\WorkReportItem[] $work_report_items
  * @property \WorkReports\Model\Entity\WorkReportOnCall[] $work_report_on_calls
  */

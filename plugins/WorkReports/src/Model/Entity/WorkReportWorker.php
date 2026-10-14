@@ -16,8 +16,8 @@ use App\Model\Entity\AppEntity;
  * @property string|null $default_company_car_id
  * @property bool $active
  *
- * @property \App\Model\Entity\AppUser $user
- * @property \App\Model\Entity\AppUser[] $recipients
+ * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\User[] $recipients
  * @property \WorkReports\Model\Entity\WorkReportWorkerRecipient[] $work_report_worker_recipients
  * @property \WorkReports\Model\Entity\WorkCar|null $default_private_car
  * @property \WorkReports\Model\Entity\WorkCar|null $default_company_car

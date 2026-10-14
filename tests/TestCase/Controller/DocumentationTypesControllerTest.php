@@ -33,7 +33,7 @@ class DocumentationTypesControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'plugin.Files.DocumentationTypes',
         'plugin.Files.Documentations',
     ];

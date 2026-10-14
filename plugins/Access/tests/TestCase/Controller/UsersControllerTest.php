@@ -31,7 +31,7 @@ class UsersControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
     ];
 
     /**
@@ -99,7 +99,7 @@ class UsersControllerTest extends TestCase
      */
     public function testSigningInMovesAnOldPasswordToArgon2id(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $id = $this->addAccount()->get('id');
         $users->updateQuery()
             ->set(['password' => password_hash('Kopr na zahrade 7x', PASSWORD_BCRYPT)])
@@ -197,7 +197,7 @@ class UsersControllerTest extends TestCase
      */
     public function testEditingAnAccountLeavesItsPasswordAlone(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $this->session(['Auth' => $this->addAccount(role: 'admin')]);
         $other = $this->addOtherAccount();
         $before = (string)$users->get($other->get('id'), finder: 'withSecrets')->get('password');
@@ -264,7 +264,7 @@ class UsersControllerTest extends TestCase
         $this->post('/login', ['username' => 'jan.novak@example.com', 'password' => 'Kopr na zahrade 7x']);
         $this->assertRedirect('/');
 
-        $this->getTableLocator()->get('AppUsers')->updateQuery()
+        $this->getTableLocator()->get('Users')->updateQuery()
             ->set(['active' => false])
             ->where(['id' => $user->get('id')])
             ->execute();
@@ -284,8 +284,8 @@ class UsersControllerTest extends TestCase
     {
         $this->get('/login');
 
-        $this->assertSame('AppUsers', Configure::read('Users.controller'));
-        $this->assertSame('AppUsers', Configure::read('Users.table'));
+        $this->assertSame('Users', Configure::read('Users.controller'));
+        $this->assertSame('Users', Configure::read('Users.table'));
     }
 
     /**
@@ -337,7 +337,7 @@ class UsersControllerTest extends TestCase
     public function testOwnPasswordIsChangedWithTheCurrentOne(): void
     {
         $id = (string)$this->addAccount()->get('id');
-        $this->session(['Auth' => $this->getTableLocator()->get('AppUsers')->get($id)]);
+        $this->session(['Auth' => $this->getTableLocator()->get('Users')->get($id)]);
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();
@@ -357,7 +357,7 @@ class UsersControllerTest extends TestCase
             'password_confirm' => 'Celer v zahradce 8y',
         ]);
         $this->assertRedirect('/profile');
-        $stored = (string)$this->getTableLocator()->get('AppUsers')->get($id, finder: 'withSecrets')->get('password');
+        $stored = (string)$this->getTableLocator()->get('Users')->get($id, finder: 'withSecrets')->get('password');
         $this->assertTrue(password_verify('Celer v zahradce 8y', $stored));
         /** @var \Cake\Log\Engine\ArrayLog $log */
         $log = Log::engine('auth');
@@ -372,7 +372,7 @@ class UsersControllerTest extends TestCase
      */
     public function testThePasswordFormDoesNotCarryTheHash(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $id = (string)$this->addAccount(superuser: true)->get('id');
         $other = $this->addOtherAccount();
         $this->session(['Auth' => $users->get($id)]);
@@ -394,7 +394,7 @@ class UsersControllerTest extends TestCase
     public function testOnlyASuperuserChangesThePasswordOfSomebodyElse(): void
     {
         $id = (string)$this->addAccount()->get('id');
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $other = $this->addOtherAccount();
         $this->session(['Auth' => $users->get($id)]);
 

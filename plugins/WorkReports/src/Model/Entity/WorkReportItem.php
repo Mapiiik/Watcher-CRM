@@ -49,7 +49,7 @@ use Cake\Core\Configure;
  * @property \WorkReports\Model\Entity\WorkCar|null $company_car
  * @property \WorkReports\Model\Entity\WorkRate|null $work_rate
  * @property \WorkReports\Model\Entity\WorkLabel[] $work_labels
- * @property \App\Model\Entity\AppUser[] $collaborators
+ * @property \App\Model\Entity\User[] $collaborators
  */
 class WorkReportItem extends AppEntity
 {

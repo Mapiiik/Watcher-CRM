@@ -16,7 +16,7 @@ final class SubmittedWorkReportMail extends WorkReportMail
      *
      * @param \WorkReports\Model\Entity\WorkReport $workReport Report with its user and its items contained.
      * @param \WorkReports\Service\WorkReportSummary $summary What the report adds up to.
-     * @param list<\App\Model\Entity\AppUser> $recipients Who gets the worker's reports.
+     * @param list<\App\Model\Entity\User> $recipients Who gets the worker's reports.
      * @param \App\Messages\Messages $messages Where to leave what happened.
      * @return bool Whether it went out.
      */

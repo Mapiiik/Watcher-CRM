@@ -33,7 +33,7 @@ class PasswordResetTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
     ];
 
     /**
@@ -73,7 +73,7 @@ class PasswordResetTest extends TestCase
         $url = $this->askForLink('jnovak');
         $this->assertMailSentTo('jan.novak@example.com');
         $token = substr($url, strrpos($url, '/') + 1);
-        $stored = $this->getTableLocator()->get('AppUsers')->get($id);
+        $stored = $this->getTableLocator()->get('Users')->get($id);
         $this->assertSame(hash('sha256', $token), $stored->get('token'));
 
         $this->get($url);
@@ -84,7 +84,7 @@ class PasswordResetTest extends TestCase
         $this->enableSecurityToken();
         $this->post($url, ['password' => 'Celer v zahradce 8y', 'password_confirm' => 'Celer v zahradce 8y']);
         $this->assertRedirect('/login');
-        $stored = $this->getTableLocator()->get('AppUsers')->get($id, finder: 'withSecrets');
+        $stored = $this->getTableLocator()->get('Users')->get($id, finder: 'withSecrets');
         $this->assertTrue(password_verify('Celer v zahradce 8y', (string)$stored->get('password')));
         $this->assertNull($stored->get('token'));
 
@@ -102,7 +102,7 @@ class PasswordResetTest extends TestCase
         $id = (string)$this->addAccount()->get('id');
         $url = $this->askForLink('jan.novak@example.com');
 
-        $this->getTableLocator()->get('AppUsers')->updateQuery()
+        $this->getTableLocator()->get('Users')->updateQuery()
             ->set(['token_expires' => DateTime::now()->subMinutes(1)])
             ->where(['id' => $id])
             ->execute();
@@ -127,7 +127,7 @@ class PasswordResetTest extends TestCase
         $this->askForLink('nobody');
         $this->assertSame($answer, $this->_requestSession?->read('Flash.flash.0.message'));
 
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $users->updateQuery()->set(['active' => false])->where(['id' => $user->get('id')])->execute();
         $this->askForLink('jnovak');
         $this->assertSame($answer, $this->_requestSession?->read('Flash.flash.0.message'));

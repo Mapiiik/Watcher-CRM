@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-14 23:06+0200\n"
+"POT-Creation-Date: 2026-10-15 00:29+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -71,7 +71,7 @@ msgid "The API key of {0} is removed."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:71
-#: ./plugins/Access/src/Controller/UsersController.php:107
+#: ./plugins/Access/src/Controller/UsersController.php:111
 msgid "Too many failed sign-ins. Try again in a few minutes."
 msgstr ""
 
@@ -129,53 +129,53 @@ msgstr ""
 msgid "The identity could not be unlinked."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:108
+#: ./plugins/Access/src/Controller/UsersController.php:112
 msgid "The username or the password is not right."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:129
+#: ./plugins/Access/src/Controller/UsersController.php:133
 msgid "No account here is linked to that identity. Sign in with your password and link it in your profile."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:156
+#: ./plugins/Access/src/Controller/UsersController.php:160
 msgid "You have signed out."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:193
+#: ./plugins/Access/src/Controller/UsersController.php:197
 msgid "Only a superuser changes the password of somebody else."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:214
+#: ./plugins/Access/src/Controller/UsersController.php:218
 msgid "This is not the current password."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:217
+#: ./plugins/Access/src/Controller/UsersController.php:221
 msgid "The new password has to differ from the current one."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:226
+#: ./plugins/Access/src/Controller/UsersController.php:230
 msgid "The password has been changed."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:230
+#: ./plugins/Access/src/Controller/UsersController.php:234
 msgid "The password could not be changed."
-msgstr ""
-
-#: ./plugins/Access/src/Controller/UsersController.php:286
-#: ./plugins/Access/src/Controller/UsersController.php:310
-msgid "The account has been saved."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/UsersController.php:290
 #: ./plugins/Access/src/Controller/UsersController.php:314
+msgid "The account has been saved."
+msgstr ""
+
+#: ./plugins/Access/src/Controller/UsersController.php:294
+#: ./plugins/Access/src/Controller/UsersController.php:318
 msgid "The account could not be saved."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:332
+#: ./plugins/Access/src/Controller/UsersController.php:336
 msgid "The account has been deleted."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:334
+#: ./plugins/Access/src/Controller/UsersController.php:338
 msgid "The account could not be deleted."
 msgstr ""
 

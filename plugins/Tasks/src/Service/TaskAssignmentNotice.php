@@ -19,7 +19,7 @@ final class TaskAssignmentNotice extends TaskMail
      * Tell the people this task has been left with.
      *
      * @param \Tasks\Model\Entity\Task $task The task, read together with `TasksTable::reportContain()`.
-     * @param list<\App\Model\Entity\AppUser> $people Who to tell.
+     * @param list<\App\Model\Entity\User> $people Who to tell.
      * @param bool $new Whether the task has only just been written down.
      * @param \App\Messages\Messages $messages Where to leave what happened, for the layer above.
      * @return bool Whether it went out.

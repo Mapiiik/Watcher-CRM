@@ -12,10 +12,10 @@ use Override;
 /**
  * WorkReportWorkers Model
  *
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \WorkReports\Model\Table\WorkReportWorkerRecipientsTable&\Cake\ORM\Association\HasMany $WorkReportWorkerRecipients
  * @property \WorkReports\Model\Table\WorkReportsTable&\Cake\ORM\Association\HasMany $WorkReports
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsToMany $Recipients
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsToMany $Recipients
  * @property \WorkReports\Model\Table\WorkCarsTable&\Cake\ORM\Association\BelongsTo $DefaultPrivateCars
  * @property \WorkReports\Model\Table\WorkCarsTable&\Cake\ORM\Association\BelongsTo $DefaultCompanyCars
  * @method \WorkReports\Model\Entity\WorkReportWorker newEmptyEntity()
@@ -45,7 +45,7 @@ class WorkReportWorkersTable extends AppTable
         $this->addBehavior('Footprint');
 
         $this->belongsTo('Users', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
@@ -69,7 +69,7 @@ class WorkReportWorkersTable extends AppTable
             'dependent' => true,
         ]);
         $this->belongsToMany('Recipients', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'through' => 'WorkReports.WorkReportWorkerRecipients',
             'foreignKey' => 'work_report_worker_id',
             'targetForeignKey' => 'user_id',
@@ -280,7 +280,7 @@ class WorkReportWorkersTable extends AppTable
      * Who gets the reports of the worker.
      *
      * @param string $userId The worker.
-     * @return list<\App\Model\Entity\AppUser>
+     * @return list<\App\Model\Entity\User>
      */
     public function recipientsOf(string $userId): array
     {

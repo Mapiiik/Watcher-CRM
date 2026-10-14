@@ -27,7 +27,7 @@ class ApiTokenTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
     ];
 
     /**
@@ -76,7 +76,7 @@ class ApiTokenTest extends TestCase
         $this->assertResponseOk();
         $this->assertSame(1, preg_match('/<code>([A-Za-z0-9_-]{43})<\/code>/', $this->_getBodyAsString(), $match));
         $key = $match[1] ?? '';
-        $stored = (string)$this->getTableLocator()->get('AppUsers')->get($id)->get('api_token');
+        $stored = (string)$this->getTableLocator()->get('Users')->get($id)->get('api_token');
         $this->assertSame(hash('sha256', $key), $stored);
         $this->session($_SESSION ?? []);
         $this->get('/users/api-token');
@@ -97,7 +97,7 @@ class ApiTokenTest extends TestCase
     {
         $user = $this->addAccount(role: 'api');
         $user->set('api_token', 'client-key');
-        $this->getTableLocator()->get('AppUsers')->saveOrFail($user);
+        $this->getTableLocator()->get('Users')->saveOrFail($user);
         $id = (string)$user->get('id');
         $this->session(['Auth' => ['id' => $id, 'username' => 'admin', 'role' => 'admin']]);
         $this->get('/users/view/' . $id);
@@ -108,7 +108,7 @@ class ApiTokenTest extends TestCase
         $this->post('/users/remove-api-token/' . $id);
 
         $this->assertRedirectContains('/users/view/' . $id);
-        $this->assertNull($this->getTableLocator()->get('AppUsers')->get($id)->get('api_token'));
+        $this->assertNull($this->getTableLocator()->get('Users')->get($id)->get('api_token'));
         $this->_session = [];
         $this->configRequest(['headers' => ['Authorization' => 'Bearer client-key']]);
         $this->get('/login');
@@ -125,7 +125,7 @@ class ApiTokenTest extends TestCase
     {
         $user = $this->addAccount(role: 'api');
         $user->set('api_token', 'client-key');
-        $this->getTableLocator()->get('AppUsers')->saveOrFail($user);
+        $this->getTableLocator()->get('Users')->saveOrFail($user);
 
         $this->get('/login?api_key=client-key');
         $this->assertRedirect('/');
@@ -144,7 +144,7 @@ class ApiTokenTest extends TestCase
      */
     public function testTheAuditLogKeepsNoSecrets(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $user = $this->addAccount();
         $auditLogs = $this->getTableLocator()->get('AuditStash.AuditLogs');
         $auditLogs->deleteAll(['1 = 1']);

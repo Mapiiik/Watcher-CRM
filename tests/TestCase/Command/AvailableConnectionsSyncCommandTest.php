@@ -31,7 +31,7 @@ class AvailableConnectionsSyncCommandTest extends TestCase
      * @var list<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',

@@ -30,7 +30,7 @@ class RedirectHandler extends CakeRedirectHandler
         'url' => [
             'plugin' => false,
             'prefix' => false,
-            'controller' => 'AppUsers',
+            'controller' => 'Users',
             'action' => 'login',
         ],
         'queryParam' => 'redirect',

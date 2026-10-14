@@ -45,7 +45,7 @@ trait UserSettingsTrait
             return $this->redirect(['action' => 'profile']);
         }
 
-        /** @var \App\Model\Table\AppUsersTable $usersTable */
+        /** @var \App\Model\Table\UsersTable $usersTable */
         $usersTable = $this->fetchTable(Configure::read('Users.table'));
 
         $user = $usersTable->get(
@@ -59,7 +59,7 @@ trait UserSettingsTrait
         );
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            /** @var \App\Model\Entity\AppUser $user */
+            /** @var \App\Model\Entity\User $user */
             $user = $usersTable->patchEntity($user, [
                 'user_settings' => $this->getRequest()->getData('user_settings'),
             ], ['accessibleFields' => ['user_settings' => true]]);

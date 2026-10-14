@@ -109,7 +109,7 @@ class ContractProposalsTable extends AppTable
         // Declared here rather than beside the others every table gets, because this is the only
         // table that has the field - and a name is what the card has to show, not a uuid.
         $this->belongsTo('LeftOutSettlers', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'left_out_settled_by',
             'joinType' => 'LEFT',
         ]);

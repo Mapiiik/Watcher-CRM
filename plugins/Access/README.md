@@ -12,14 +12,15 @@ the accounts and the mail.
 
 | Plugin | Application |
 |---|---|
-| `Access\Controller\UsersController` | `App\Controller\AppUsersController extends` it |
-| `Access\Model\Table\UsersTable` | `App\Model\Table\AppUsersTable extends` it |
-| `Access\Model\Entity\User` | `App\Model\Entity\AppUser extends` it and lists the roles |
+| `Access\Controller\UsersController` | `App\Controller\UsersController extends` it |
+| `Access\Model\Table\UsersTable` | `App\Model\Table\UsersTable extends` it |
+| `Access\Model\Entity\User` | `App\Model\Entity\User extends` it and lists the roles |
 | `AuthLinkHelper` | `App\View\AppView` loads it as `AuthLink`: links shown only where they may be opened |
 
-The classes keep their application names because the configuration, the permissions and many
-templates name them. The templates under `templates/AppUsers/` stay in the application too, as
-they show fields that only the application has.
+The application's classes carry the same short names in its own namespace, and its configuration
+and permissions name them `Users`. The pages are the plugin's. An application overrides in
+`templates/plugin/Access/` only what it shows otherwise, its own fields of an account through the
+element `account_fields`.
 
 The plugin reads `config/users.php` on its own, and adds the authentication and the authorization
 middleware after the application's. What differs between installations comes from the environment,

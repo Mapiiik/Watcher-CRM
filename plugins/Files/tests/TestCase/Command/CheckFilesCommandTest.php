@@ -33,7 +33,7 @@ class CheckFilesCommandTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
     ];

@@ -27,7 +27,7 @@ trait AccountsTrait
         bool $superuser = false,
     ): EntityInterface {
         $this->removeFixtureAccounts();
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $user = $users->newEmptyEntity();
         $user->patch([
             'username' => 'jnovak',
@@ -51,7 +51,7 @@ trait AccountsTrait
      */
     protected function addOtherAccount(?string $email = null): EntityInterface
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $user = $users->newEmptyEntity();
         $user->patch([
             'username' => 'pdvorak',
@@ -73,6 +73,6 @@ trait AccountsTrait
     {
         // the identities linked to them hold on to them
         $this->getTableLocator()->get('Access.SocialAccounts')->deleteAll(['1 = 1']);
-        $this->getTableLocator()->get('AppUsers')->deleteAll(['username !=' => 'jnovak']);
+        $this->getTableLocator()->get('Users')->deleteAll(['username !=' => 'jnovak']);
     }
 }

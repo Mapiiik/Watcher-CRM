@@ -12,7 +12,7 @@ use Override;
  * WorkReportItemCollaborators Model
  *
  * @property \WorkReports\Model\Table\WorkReportItemsTable&\Cake\ORM\Association\BelongsTo $WorkReportItems
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @method \WorkReports\Model\Entity\WorkReportItemCollaborator newEmptyEntity()
  * @method \WorkReports\Model\Entity\WorkReportItemCollaborator get(mixed $primaryKey, array|string $finder = 'all', null|\Psr\SimpleCache\CacheInterface|string $cache = null, null|\Closure|string $cacheKey = null, mixed ...$args)
  * @method \WorkReports\Model\Entity\WorkReportItemCollaborator patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
@@ -45,7 +45,7 @@ class WorkReportItemCollaboratorsTable extends AppTable
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('Users', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);

@@ -32,7 +32,7 @@ class OneTimePasswordTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'plugin.Settings.Settings',
     ];
 
@@ -336,7 +336,7 @@ class OneTimePasswordTest extends TestCase
     private function addAccountWithCodes(): string
     {
         $id = (string)$this->addAccount()->get('id');
-        $this->getTableLocator()->get('AppUsers')->updateQuery()
+        $this->getTableLocator()->get('Users')->updateQuery()
             ->set(['secret' => self::SECRET, 'secret_verified' => true])
             ->where(['id' => $id])
             ->execute();
@@ -352,7 +352,7 @@ class OneTimePasswordTest extends TestCase
      */
     private function account(string $id): EntityInterface
     {
-        return $this->getTableLocator()->get('AppUsers')->get($id, finder: 'withSecrets');
+        return $this->getTableLocator()->get('Users')->get($id, finder: 'withSecrets');
     }
 
     /**

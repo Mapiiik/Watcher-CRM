@@ -22,7 +22,7 @@ class UsersTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
     ];
 
     /**
@@ -32,7 +32,7 @@ class UsersTableTest extends TestCase
      */
     public function testANewPasswordIsHeldToTheRulesOfItsRole(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
 
         $user = $users->newEntity([
             'username' => 'jnovak',
@@ -61,7 +61,7 @@ class UsersTableTest extends TestCase
      */
     public function testAChangedPasswordIsHeldToTheRulesOfTheStoredAccount(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $superuser = $this->addAccount(superuser: true);
         $user = $users->newEntity([], ['validate' => false]);
         $user->setNew(false);
@@ -86,7 +86,7 @@ class UsersTableTest extends TestCase
      */
     public function testAPasswordSetWithoutTheFormIsNotChecked(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $user = $this->addAccount();
 
         $user->set('password', 'short');
@@ -102,7 +102,7 @@ class UsersTableTest extends TestCase
      */
     public function testSecretsAreReadOnlyWhenAskedFor(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $id = (string)$this->addAccount()->get('id');
         $users->updateQuery()->set(['secret' => 'JBSWY3DPEHPK3PXP'])->where(['id' => $id])->execute();
         $links = $this->getTableLocator()->get('Access.SocialAccounts');
@@ -118,7 +118,7 @@ class UsersTableTest extends TestCase
 
         // a join that only filters adds no columns, so its query serves as a list of ids
         $linked = $links->find()->select(['SocialAccounts.user_id'])->innerJoinWith('Users');
-        $this->assertSame(1, $users->find()->where(['AppUsers.id IN' => $linked])->count());
+        $this->assertSame(1, $users->find()->where(['Users.id IN' => $linked])->count());
 
         $asked = $users->get($id, finder: 'withSecrets');
         $this->assertStringStartsWith('$argon2id$', $asked->get('password'));
@@ -133,7 +133,7 @@ class UsersTableTest extends TestCase
      */
     public function testAFormSetsOnlyWhatAnAccountIsMadeOf(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
 
         $user = $users->newEntity([
             'username' => 'jnovak',

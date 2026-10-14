@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
 /**
  * An account people sign in with, shared by the applications.
  *
- * Each application extends this as its `AppUser` and says which roles it knows.
+ * Each application extends this as its own `User` and says which roles it knows.
  *
  * @property string $id
  * @property int $nid

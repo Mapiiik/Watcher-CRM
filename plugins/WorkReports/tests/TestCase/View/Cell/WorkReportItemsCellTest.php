@@ -37,7 +37,7 @@ class WorkReportItemsCellTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',
@@ -88,7 +88,7 @@ class WorkReportItemsCellTest extends TestCase
     {
         parent::setUp();
 
-        $user = $this->getTableLocator()->get('AppUsers')->get(self::WORKER);
+        $user = $this->getTableLocator()->get('Users')->get(self::WORKER);
         $user->role = 'admin';
         $this->session(['Auth' => $user]);
 

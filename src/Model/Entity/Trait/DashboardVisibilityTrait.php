@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity\Trait;
 
-use App\Model\Entity\AppUser;
+use App\Model\Entity\User;
 
 /**
  * Shared by the records an operator can pick out for the dashboard.
@@ -22,7 +22,7 @@ trait DashboardVisibilityTrait
      */
     protected function _getDashboardRoleNames(): array
     {
-        $options = (new AppUser())->getRoleOptions();
+        $options = (new User())->getRoleOptions();
 
         return array_values(array_map(
             fn(string $role): string => $options[$role] ?? $role,

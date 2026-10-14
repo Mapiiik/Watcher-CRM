@@ -54,7 +54,7 @@
                             <th><?= __('User') ?></th>
                             <td><?= $task->user !== null ? $this->Html->link(
                                 $task->user->name ?? '(' . $task->user->id . ')',
-                                ['controller' => 'AppUsers', 'action' => 'view', $task->user->id],
+                                ['controller' => 'Users', 'action' => 'view', $task->user->id],
                             ) : '' ?></td>
                         </tr>
                         <tr>
@@ -63,7 +63,7 @@
                                 <?php foreach ($task->collaborators as $i => $person) : ?>
                                     <?= $i > 0 ? ', ' : '' ?><?= $this->Html->link(
                                         $person->name ?? '(' . $person->id . ')',
-                                        ['controller' => 'AppUsers', 'action' => 'view', $person->id],
+                                        ['controller' => 'Users', 'action' => 'view', $person->id],
                                     ) ?>
                                 <?php endforeach; ?>
                             </td>

@@ -23,9 +23,9 @@ use Tasks\Service\TaskAssignmentNotice;
  *
  * @property \App\Model\Table\TaskStatesTable&\Cake\ORM\Association\BelongsTo $TaskStates
  * @property \App\Model\Table\TaskTypesTable&\Cake\ORM\Association\BelongsTo $TaskTypes
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsTo $Users
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\TaskCollaboratorsTable&\Cake\ORM\Association\HasMany $TaskCollaborators
- * @property \App\Model\Table\AppUsersTable&\Cake\ORM\Association\BelongsToMany $Collaborators
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsToMany $Collaborators
  * @method \Tasks\Model\Entity\Task newEmptyEntity()
  * @method \Tasks\Model\Entity\Task newEntity(array $data, array $options = [])
  * @method \Tasks\Model\Entity\Task[] newEntities(array $data, array $options = [])
@@ -82,7 +82,7 @@ class TasksTable extends AppTable
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('Users', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'foreignKey' => 'user_id',
         ]);
 
@@ -95,7 +95,7 @@ class TasksTable extends AppTable
             'dependent' => true,
         ]);
         $this->belongsToMany('Collaborators', [
-            'className' => 'AppUsers',
+            'className' => 'Users',
             'through' => 'TaskCollaborators',
             'foreignKey' => 'task_id',
             'targetForeignKey' => 'user_id',
@@ -346,7 +346,7 @@ class TasksTable extends AppTable
      * that holds however they are named on it.
      *
      * @param \Tasks\Model\Entity\Task $task The task, read together with {@see self::reportContain()}.
-     * @return list<\App\Model\Entity\AppUser>
+     * @return list<\App\Model\Entity\User>
      */
     private function peopleToTell(Task $task): array
     {

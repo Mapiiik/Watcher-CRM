@@ -100,7 +100,7 @@ class WorkReportsController extends AppController
         $summary = WorkReportSummary::fromSettings($workReport);
         $days = $this->daysOf($workReport);
         $workers = $this->visibleWorkers();
-        $workerName = $this->fetchTable('AppUsers')->get($userId)->get('name');
+        $workerName = $this->fetchTable('Users')->get($userId)->get('name');
 
         // asked of the NMS only when the month has any of its access points
         $accessPoints = array_filter(array_map(
@@ -222,7 +222,7 @@ class WorkReportsController extends AppController
 
                 /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
                 $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
-                $workReport->returner = $this->fetchTable('AppUsers')->get($this->identityId());
+                $workReport->returner = $this->fetchTable('Users')->get($this->identityId());
                 $messages = new Messages();
                 ReturnedWorkReportMail::send($workReport, $workers->recipientsOf($workReport->user_id), $messages);
                 $this->handleMessages($messages);

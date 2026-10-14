@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-14 23:34+0200\n"
+"POT-Creation-Date: 2026-10-15 00:30+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -2069,20 +2069,20 @@ msgid "The related customer labels could not be updated. Please, try again."
 msgstr ""
 
 #: ./src/Controller/LoginsController.php:92
-#: ./src/Controller/LoginsController.php:153
+#: ./src/Controller/LoginsController.php:159
 msgid "The login has been saved."
 msgstr ""
 
 #: ./src/Controller/LoginsController.php:96
-#: ./src/Controller/LoginsController.php:157
+#: ./src/Controller/LoginsController.php:163
 msgid "The login could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:186
+#: ./src/Controller/LoginsController.php:192
 msgid "The login has been deleted."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:189
+#: ./src/Controller/LoginsController.php:195
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 
@@ -2408,57 +2408,6 @@ msgstr ""
 msgid "The service is not configured."
 msgstr ""
 
-#: ./src/Model/Entity/AppUser.php:39
-#: ./src/Model/Enum/LoginRights.php:28
-#: ./templates/Tasks/add.php:44
-#: ./templates/Tasks/edit.php:57
-#: ./templates/Tasks/index.php:105
-#: ./templates/Tasks/view.php:54
-#: ./templates/element/Contracts/Tasks.php:25
-#: ./templates/element/Tasks/email_detail.php:48
-msgid "User"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:40
-msgid "Customer Service Technician"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:41
-msgid "Network Technician"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:42
-msgid "Network Manager"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:43
-msgid "Sales Representative"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:44
-msgid "Sales Manager"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:45
-msgid "Bookkeeper"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:46
-msgid "Admin"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:47
-msgid "API"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:48
-msgid "Customer Portal"
-msgstr ""
-
-#: ./src/Model/Entity/AppUser.php:49
-msgid "Customer Identification"
-msgstr ""
-
 #: ./src/Model/Entity/Billing.php:418
 msgid "Contract data not available."
 msgstr ""
@@ -2529,6 +2478,57 @@ msgstr ""
 
 #: ./src/Model/Entity/CustomerProposal.php:183
 msgid "Contract proposal data not available."
+msgstr ""
+
+#: ./src/Model/Entity/User.php:39
+#: ./src/Model/Enum/LoginRights.php:28
+#: ./templates/Tasks/add.php:44
+#: ./templates/Tasks/edit.php:57
+#: ./templates/Tasks/index.php:105
+#: ./templates/Tasks/view.php:54
+#: ./templates/element/Contracts/Tasks.php:25
+#: ./templates/element/Tasks/email_detail.php:48
+msgid "User"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:40
+msgid "Customer Service Technician"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:41
+msgid "Network Technician"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:42
+msgid "Network Manager"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:43
+msgid "Sales Representative"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:44
+msgid "Sales Manager"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:45
+msgid "Bookkeeper"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:46
+msgid "Admin"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:47
+msgid "API"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:48
+msgid "Customer Portal"
+msgstr ""
+
+#: ./src/Model/Entity/User.php:49
+msgid "Customer Identification"
 msgstr ""
 
 #: ./src/Model/Enum/AccessMedium.php:30
@@ -3215,10 +3215,6 @@ msgstr ""
 msgid "Company is required when first and last name are not filled in."
 msgstr ""
 
-#: ./src/Model/Table/AppUsersTable.php:102
-msgid "This account is still named on tasks. Move them to somebody else first."
-msgstr ""
-
 #: ./src/Model/Table/AvailableConnectionsTable.php:82
 #: ./src/Model/Table/AvailableConnectionsTable.php:87
 msgid "Pick the address from the national address registry."
@@ -3456,6 +3452,10 @@ msgstr ""
 
 #: ./src/Model/Table/TasksTable.php:146
 msgid "The specified task type requires the assignment of an access point."
+msgstr ""
+
+#: ./src/Model/Table/UsersTable.php:102
+msgid "This account is still named on tasks. Move them to somebody else first."
 msgstr ""
 
 #: ./src/Model/Validation/ContractStateValidator.php:167

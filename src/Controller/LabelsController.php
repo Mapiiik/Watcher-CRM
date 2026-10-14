@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Application;
-use App\Model\Entity\AppUser;
+use App\Model\Entity\User;
 use Cake\Console\CommandRunner;
 use Cake\Http\Response;
 
@@ -99,7 +99,7 @@ class LabelsController extends AppController
             }
             $this->Flash->error(__('The label could not be saved. Please, try again.'));
         }
-        $roles = (new AppUser())->getRoleOptions();
+        $roles = (new User())->getRoleOptions();
         $this->set(compact('label', 'roles'));
 
         return null;
@@ -132,7 +132,7 @@ class LabelsController extends AppController
             }
             $this->Flash->error(__('The label could not be saved. Please, try again.'));
         }
-        $roles = (new AppUser())->getRoleOptions();
+        $roles = (new User())->getRoleOptions();
         $this->set(compact('label', 'roles'));
 
         return null;

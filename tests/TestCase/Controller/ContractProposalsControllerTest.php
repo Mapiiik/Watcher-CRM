@@ -104,7 +104,7 @@ class ContractProposalsControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',
@@ -1852,8 +1852,8 @@ class ContractProposalsControllerTest extends TestCase
      */
     public function testTheCardNamesWhoSawToWhatWasLeftOut(): void
     {
-        $users = $this->getTableLocator()->get('AppUsers');
-        $user = $users->find()->where(['AppUsers.username IS NOT' => null])->firstOrFail();
+        $users = $this->getTableLocator()->get('Users');
+        $user = $users->find()->where(['Users.username IS NOT' => null])->firstOrFail();
 
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposals->saveOrFail(

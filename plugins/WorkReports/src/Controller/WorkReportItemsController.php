@@ -280,10 +280,10 @@ class WorkReportItemsController extends AppController
         $workLabels = $table->WorkLabels->find('list', order: ['name'])
             ->where(['WorkLabels.active' => true]);
 
-        /** @var \App\Model\Table\AppUsersTable $users */
-        $users = $this->fetchTable('AppUsers');
+        /** @var \App\Model\Table\UsersTable $users */
+        $users = $this->fetchTable('Users');
         $collaborators = $this->usersForSelect($users->find('holdingTasks')
-            ->where(['AppUsers.id !=' => $userId]));
+            ->where(['Users.id !=' => $userId]));
 
         $mayInvoice = $this->mayInvoice();
 

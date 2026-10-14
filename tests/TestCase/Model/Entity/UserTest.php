@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Entity;
 
-use App\Model\Entity\AppUser;
+use App\Model\Entity\User;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
- * App\Model\Entity\AppUser Test Case
+ * App\Model\Entity\User Test Case
  */
-#[UsesClass(AppUser::class)]
-class AppUserTest extends TestCase
+#[UsesClass(User::class)]
+class UserTest extends TestCase
 {
     /**
      * A user is shown by their name alone. Telling two people of the same name apart is what the
@@ -19,11 +19,11 @@ class AppUserTest extends TestCase
      * apart.
      *
      * @return void
-     * @link \App\Model\Entity\AppUser::_getName()
+     * @link \App\Model\Entity\User::_getName()
      */
     public function testAUserIsShownByTheirNameAlone(): void
     {
-        $user = new AppUser([
+        $user = new User([
             'first_name' => 'Jan',
             'last_name' => 'Novak',
             'username' => 'jnovak',
@@ -36,11 +36,11 @@ class AppUserTest extends TestCase
      * A user who has no name filled in is shown by their username rather than by nothing at all.
      *
      * @return void
-     * @link \App\Model\Entity\AppUser::_getName()
+     * @link \App\Model\Entity\User::_getName()
      */
     public function testAUserWithoutANameIsShownByTheirUsername(): void
     {
-        $user = new AppUser([
+        $user = new User([
             'username' => 'jnovak',
         ]);
 
@@ -52,11 +52,11 @@ class AppUserTest extends TestCase
      * told apart when one of them has to be picked.
      *
      * @return void
-     * @link \App\Model\Entity\AppUser::_getNameForLists()
+     * @link \App\Model\Entity\User::_getNameForLists()
      */
     public function testListsPutTheSurnameFirstAndNameTheAccount(): void
     {
-        $user = new AppUser([
+        $user = new User([
             'first_name' => 'Jan',
             'last_name' => 'Novak',
             'username' => 'jnovak',
@@ -71,11 +71,11 @@ class AppUserTest extends TestCase
      * show up as somebody unable to do their work.
      *
      * @return void
-     * @link \App\Model\Entity\AppUser::getRoleOptions()
+     * @link \App\Model\Entity\User::getRoleOptions()
      */
     public function testTheRolesOfferedAreTheOnesThePermissionsAreWrittenFor(): void
     {
-        $roles = array_keys((new AppUser())->getRoleOptions());
+        $roles = array_keys((new User())->getRoleOptions());
 
         sort($roles);
 
@@ -98,11 +98,11 @@ class AppUserTest extends TestCase
      * A role is shown under the name it is offered by rather than under the value stored for it.
      *
      * @return void
-     * @link \App\Model\Entity\AppUser::getRoleName()
+     * @link \App\Model\Entity\User::getRoleName()
      */
     public function testARoleIsShownUnderTheNameItIsOfferedBy(): void
     {
-        $user = new AppUser();
+        $user = new User();
         $user->role = 'network-technician';
 
         $this->assertSame('Network Technician', $user->getRoleName());
@@ -113,11 +113,11 @@ class AppUserTest extends TestCase
      * is shown as it stands rather than as nothing at all.
      *
      * @return void
-     * @link \App\Model\Entity\AppUser::getRoleName()
+     * @link \App\Model\Entity\User::getRoleName()
      */
     public function testARoleNothingOffersIsShownAsItStands(): void
     {
-        $user = new AppUser();
+        $user = new User();
         $user->role = 'warehouse-keeper';
 
         $this->assertSame('warehouse-keeper', $user->getRoleName());

@@ -32,7 +32,7 @@ class HomeControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.TaskStates',
         'app.TaskTypes',
     ];
@@ -152,13 +152,13 @@ class HomeControllerTest extends TestCase
         // the settings belong to a user, so the one signed in has to be one the table holds -
         // and a superuser is allowed everywhere, which would answer the question before it is
         // asked
-        $users = $this->getTableLocator()->get('AppUsers');
+        $users = $this->getTableLocator()->get('Users');
         $user = $users->find()->firstOrFail();
         $user->set('role', 'user');
         $user->set('is_superuser', false);
         $this->session(['Auth' => $user]);
 
-        $this->get('/app-users/user-settings');
+        $this->get('/users/user-settings');
 
         $this->assertResponseOk();
 

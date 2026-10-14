@@ -4,7 +4,7 @@
  *
  * @var \App\View\AppView $this
  * @var string $part
- * @var \App\Model\Entity\AppUser|null $user
+ * @var \App\Model\Entity\User|null $user
  */
 ?>
 <?php if ($part === 'heading') : ?>

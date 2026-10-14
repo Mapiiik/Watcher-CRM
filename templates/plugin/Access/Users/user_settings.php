@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\AppUser $user
+ * @var \App\Model\Entity\User $user
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taskTypes
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $taskStates
  * @var array<string, string> $landingPages

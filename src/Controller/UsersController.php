@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Access\Controller\UsersController;
+use Access\Controller\UsersController as AccessUsersController;
 use App\Controller\Traits\UserSettingsTrait;
 
 /**
  * Users Controller
  *
- * @property \App\Model\Table\AppUsersTable $Users
+ * @property \App\Model\Table\UsersTable $Users
  */
-class AppUsersController extends UsersController
+class UsersController extends AccessUsersController
 {
     use UserSettingsTrait;
 }

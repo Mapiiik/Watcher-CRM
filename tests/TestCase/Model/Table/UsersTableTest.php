@@ -3,24 +3,24 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\AppUsersTable;
+use App\Model\Table\UsersTable;
 use App\Test\Traits\TableTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 
 /**
- * App\Model\Table\AppUsersTable Test Case
+ * App\Model\Table\UsersTable Test Case
  */
-class AppUsersTableTest extends TestCase
+class UsersTableTest extends TestCase
 {
     use TableTestTrait;
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\AppUsersTable
+     * @var \App\Model\Table\UsersTable
      */
-    protected $AppUsers;
+    protected $Users;
 
     /**
      * Fixtures
@@ -28,7 +28,7 @@ class AppUsersTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
-        'app.AppUsers',
+        'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
         'app.Countries',
@@ -52,8 +52,8 @@ class AppUsersTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $config = $this->getTableLocator()->exists('AppUsers') ? [] : ['className' => AppUsersTable::class];
-        $this->AppUsers = $this->getTableLocator()->get('AppUsers', $config);
+        $config = $this->getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
+        $this->Users = $this->getTableLocator()->get('Users', $config);
     }
 
     /**
@@ -65,7 +65,7 @@ class AppUsersTableTest extends TestCase
     protected function tearDown(): void
     {
         /** @phpstan-ignore unset.possiblyHookedProperty */
-        unset($this->AppUsers);
+        unset($this->Users);
 
         parent::tearDown();
     }
@@ -79,7 +79,7 @@ class AppUsersTableTest extends TestCase
      */
     public function testValidationDefault(): void
     {
-        $this->assertEmptyRecordIsRefused($this->AppUsers);
+        $this->assertEmptyRecordIsRefused($this->Users);
     }
 
     /**
@@ -90,14 +90,14 @@ class AppUsersTableTest extends TestCase
      * waits until the tasks have been moved.
      *
      * @return void
-     * @link \App\Model\Table\AppUsersTable::buildRules()
+     * @link \App\Model\Table\UsersTable::buildRules()
      */
     public function testHoldsTasksCannotBeTurnedOffWhileTasksNameTheAccount(): void
     {
-        /** @var \App\Model\Entity\AppUser $user */
-        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Users->find()->orderBy(['id'])->firstOrFail();
 
-        $saved = $this->AppUsers->save($this->AppUsers->patchEntity($user, ['holds_tasks' => false]));
+        $saved = $this->Users->save($this->Users->patchEntity($user, ['holds_tasks' => false]));
 
         $this->assertFalse($saved);
         $this->assertArrayHasKey('holdsNoTasks', $user->getError('holds_tasks'));
@@ -110,20 +110,20 @@ class AppUsersTableTest extends TestCase
      * elsewhere first.
      *
      * @return void
-     * @link \App\Model\Table\AppUsersTable::buildRules()
+     * @link \App\Model\Table\UsersTable::buildRules()
      */
     public function testHoldsTasksGoesOffOnceNoTaskNamesTheAccount(): void
     {
-        /** @var \App\Model\Entity\AppUser $user */
-        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Users->find()->orderBy(['id'])->firstOrFail();
 
         $tasks = $this->getTableLocator()->get('Tasks');
         $tasks->updateAll(['user_id' => null], ['user_id' => $user->id]);
 
-        $saved = $this->AppUsers->save($this->AppUsers->patchEntity($user, ['holds_tasks' => false]));
+        $saved = $this->Users->save($this->Users->patchEntity($user, ['holds_tasks' => false]));
 
         $this->assertNotFalse($saved);
-        $this->assertFalse($this->AppUsers->get($user->id)->holds_tasks);
+        $this->assertFalse($this->Users->get($user->id)->holds_tasks);
     }
 
     /**
@@ -133,14 +133,14 @@ class AppUsersTableTest extends TestCase
      * save would lock out everybody who holds one.
      *
      * @return void
-     * @link \App\Model\Table\AppUsersTable::buildRules()
+     * @link \App\Model\Table\UsersTable::buildRules()
      */
     public function testAnAccountThatHoldsTasksCanStillBeSavedForOtherReasons(): void
     {
-        /** @var \App\Model\Entity\AppUser $user */
-        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Users->find()->orderBy(['id'])->firstOrFail();
 
-        $saved = $this->AppUsers->save($this->AppUsers->patchEntity($user, ['first_name' => 'Renamed']));
+        $saved = $this->Users->save($this->Users->patchEntity($user, ['first_name' => 'Renamed']));
 
         $this->assertNotFalse($saved);
     }
@@ -153,15 +153,15 @@ class AppUsersTableTest extends TestCase
      * comes back false and the controller says so.
      *
      * @return void
-     * @link \App\Model\Table\AppUsersTable::buildRules()
+     * @link \App\Model\Table\UsersTable::buildRules()
      */
     public function testAnAccountTasksNameCannotBeDeleted(): void
     {
-        /** @var \App\Model\Entity\AppUser $user */
-        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Users->find()->orderBy(['id'])->firstOrFail();
 
-        $this->assertFalse($this->AppUsers->delete($user));
-        $this->assertNotEmpty($this->AppUsers->get($user->id));
+        $this->assertFalse($this->Users->delete($user));
+        $this->assertNotEmpty($this->Users->get($user->id));
     }
 
     /**
@@ -171,17 +171,17 @@ class AppUsersTableTest extends TestCase
      * named - so the switch waits either way.
      *
      * @return void
-     * @link \App\Model\Table\AppUsersTable::buildRules()
+     * @link \App\Model\Table\UsersTable::buildRules()
      */
     public function testHoldsTasksCannotBeTurnedOffWhileTheAccountIsOnSomebodyElsesTask(): void
     {
-        /** @var \App\Model\Entity\AppUser $user */
-        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Users->find()->orderBy(['id'])->firstOrFail();
 
         // nothing is held any more, so what answers below is the list rather than the column
         $this->putOnEverySomebodyElsesTask($user->id);
 
-        $saved = $this->AppUsers->save($this->AppUsers->patchEntity($user, ['holds_tasks' => false]));
+        $saved = $this->Users->save($this->Users->patchEntity($user, ['holds_tasks' => false]));
 
         $this->assertFalse($saved);
         $this->assertArrayHasKey('holdsNoTasks', $user->getError('holds_tasks'));
@@ -191,17 +191,17 @@ class AppUsersTableTest extends TestCase
      * Nor can such an account be deleted, for the same reason and by the same two locks.
      *
      * @return void
-     * @link \App\Model\Table\AppUsersTable::buildRules()
+     * @link \App\Model\Table\UsersTable::buildRules()
      */
     public function testAnAccountOnSomebodyElsesTaskCannotBeDeleted(): void
     {
-        /** @var \App\Model\Entity\AppUser $user */
-        $user = $this->AppUsers->find()->orderBy(['id'])->firstOrFail();
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Users->find()->orderBy(['id'])->firstOrFail();
 
         $this->putOnEverySomebodyElsesTask($user->id);
 
-        $this->assertFalse($this->AppUsers->delete($user));
-        $this->assertNotEmpty($this->AppUsers->get($user->id));
+        $this->assertFalse($this->Users->delete($user));
+        $this->assertNotEmpty($this->Users->get($user->id));
     }
 
     /**

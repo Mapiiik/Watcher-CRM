@@ -17,7 +17,7 @@ use App\Model\Entity\AppEntity;
  * @property string|null $note
  * @property string $name_for_lists
  *
- * @property \App\Model\Entity\AppUser|null $owner
+ * @property \App\Model\Entity\User|null $owner
  */
 class WorkCar extends AppEntity
 {

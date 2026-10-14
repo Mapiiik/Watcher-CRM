@@ -59,7 +59,7 @@ $permissions = [
         [
             'prefix' => false,
             'plugin' => null,
-            'controller' => 'AppUsers',
+            'controller' => 'Users',
             'action' => [
                 // signing in and out
                 'login',
@@ -87,7 +87,7 @@ $permissions = [
         [
             'role' => '*',
             'plugin' => null,
-            'controller' => 'AppUsers',
+            'controller' => 'Users',
             'action' => [
                 'profile',
                 'changePassword',

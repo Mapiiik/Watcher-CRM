@@ -36,8 +36,8 @@ use Cake\I18n\Date;
  *
  * @property \App\Model\Entity\TaskState $task_state
  * @property \App\Model\Entity\TaskType $task_type
- * @property \App\Model\Entity\AppUser|null $user
- * @property array<\App\Model\Entity\AppUser> $collaborators
+ * @property \App\Model\Entity\User|null $user
+ * @property array<\App\Model\Entity\User> $collaborators
  */
 class Task extends AppEntity
 {

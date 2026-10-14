@@ -20,7 +20,7 @@ use App\Model\Entity\AppEntity;
  * @property string $user_id
  *
  * @property \Tasks\Model\Entity\Task $task
- * @property \App\Model\Entity\AppUser $user
+ * @property \App\Model\Entity\User $user
  */
 class TaskCollaborator extends AppEntity
 {

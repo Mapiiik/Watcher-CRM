@@ -100,12 +100,12 @@ class WorkReportWorkerRecipientsController extends AppController
      */
     protected function setFormLists(WorkReportWorkerRecipient $recipient): void
     {
-        /** @var \App\Model\Table\AppUsersTable $users */
-        $users = $this->fetchTable('AppUsers');
+        /** @var \App\Model\Table\UsersTable $users */
+        $users = $this->fetchTable('Users');
 
         $this->set('recipient', $recipient);
         $this->set('people', $this->usersForSelect($users->find()->where([
-            'OR' => ['AppUsers.active' => true, 'AppUsers.id IS' => $recipient->user_id],
+            'OR' => ['Users.active' => true, 'Users.id IS' => $recipient->user_id],
         ])));
     }
 }
