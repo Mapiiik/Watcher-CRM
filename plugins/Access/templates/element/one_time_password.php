@@ -10,13 +10,15 @@
 use Access\Authentication\SecurityPolicy;
 
 $required = SecurityPolicy::requiresOneTimePassword($user->toArray());
+
+// a form addresses the plugin of its template unless told, and the controller is the application's
 ?>
 <h4><?= __d('access', 'One-Time Codes') ?></h4>
 <?php if ($user->secret_verified) : ?>
     <p><?= __d('access', 'On. Recovery codes left: {0}.', $recoveryCodesLeft) ?></p>
     <div class="row">
         <div class="column">
-            <?= $this->Form->create(null, ['url' => ['action' => 'newRecoveryCodes']]) ?>
+            <?= $this->Form->create(null, ['url' => ['plugin' => null, 'action' => 'newRecoveryCodes']]) ?>
             <?= $this->Form->control('code', [
                 'label' => __d('access', 'A code from the app, to make new recovery codes'),
                 'required' => true,
@@ -28,7 +30,7 @@ $required = SecurityPolicy::requiresOneTimePassword($user->toArray());
         </div>
         <div class="column">
             <?php if (!$required) : ?>
-                <?= $this->Form->create(null, ['url' => ['action' => 'disableOneTimePassword']]) ?>
+                <?= $this->Form->create(null, ['url' => ['plugin' => null, 'action' => 'disableOneTimePassword']]) ?>
                 <?= $this->Form->control('code', [
                     'label' => __d('access', 'A code from the app, to turn one-time codes off'),
                     'required' => true,

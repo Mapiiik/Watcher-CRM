@@ -238,7 +238,10 @@ class OneTimePasswordTest extends TestCase
         $this->get('/users/recovery-codes');
         $this->assertResponseContains('Recovery Codes');
         $this->get('/profile');
+        $this->assertResponseOk();
         $this->assertResponseContains('On. Recovery codes left: 10.');
+        $this->assertResponseContains('action="/users/new-recovery-codes"');
+        $this->assertResponseContains('action="/users/disable-one-time-password"');
     }
 
     /**
