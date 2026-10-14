@@ -138,7 +138,7 @@ class User extends Entity
 
     /**
      * What the person is called, surname first and with the account named, for picking one out
-     * of a list.
+     * of a list. An account with no name filled in is the account alone.
      *
      * @return string
      */
@@ -149,7 +149,7 @@ class User extends Entity
             $this->first_name,
         ]));
 
-        return $name . ' (' . $this->username . ')';
+        return $name !== '' ? $name . ' (' . $this->username . ')' : (string)$this->username;
     }
 
     /**
