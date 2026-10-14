@@ -9,7 +9,5 @@ parameters:
         - tests/
         - plugins/
         - config/
-    excludePaths:
-        - templates/AppUsers/
     ignoreErrors:
         - identifier: missingType.iterableValue
