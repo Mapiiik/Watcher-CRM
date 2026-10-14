@@ -7970,7 +7970,7 @@ msgstr "Konfigurace zpráv zákazníkům"
 
 #: templates/Settings/index.php:66
 msgid "Dashboard Configuration"
-msgstr "Nastavení nástěnky"
+msgstr "Konfigurace nástěnky"
 
 #: templates/Settings/index.php:74
 msgid "Bookkeeping Settings"
