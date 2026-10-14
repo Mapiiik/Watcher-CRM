@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 22:49+0200\n"
+"POT-Creation-Date: 2026-10-14 23:34+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -7980,13 +7980,13 @@ msgstr "Uživatelský profil"
 msgid "List Users"
 msgstr "Seznam uživatelů"
 
-#: templates/Settings/index.php:25
-msgid "Sign-in Security Configuration"
-msgstr "Nastavení zabezpečení přihlášení"
-
-#: templates/Settings/index.php:33
+#: templates/Settings/index.php:28
 msgid "Application Settings"
 msgstr "Nastavení aplikace"
+
+#: templates/Settings/index.php:31
+msgid "Sign-in Security Configuration"
+msgstr "Konfigurace zabezpečení přihlášení"
 
 #: templates/Settings/index.php:36
 msgid "Company Configuration"
@@ -7998,7 +7998,7 @@ msgstr "Konfigurace zákazníků"
 
 #: templates/Settings/index.php:46
 msgid "Customer Portal Configuration"
-msgstr "Nastavení zákaznického portálu"
+msgstr "Konfigurace zákaznického portálu"
 
 #: templates/Settings/index.php:51
 msgid "Business Register Configuration"
@@ -8022,7 +8022,7 @@ msgstr "Konfigurace zpráv zákazníkům"
 
 #: templates/Settings/index.php:76
 msgid "Dashboard Configuration"
-msgstr "Nastavení nástěnky"
+msgstr "Konfigurace nástěnky"
 
 #: templates/Settings/index.php:84
 msgid "Bookkeeping Settings"

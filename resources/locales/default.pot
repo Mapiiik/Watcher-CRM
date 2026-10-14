@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 22:49+0200\n"
+"POT-Creation-Date: 2026-10-14 23:34+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -8151,12 +8151,12 @@ msgstr ""
 msgid "List Users"
 msgstr ""
 
-#: ./templates/Settings/index.php:25
-msgid "Sign-in Security Configuration"
+#: ./templates/Settings/index.php:28
+msgid "Application Settings"
 msgstr ""
 
-#: ./templates/Settings/index.php:33
-msgid "Application Settings"
+#: ./templates/Settings/index.php:31
+msgid "Sign-in Security Configuration"
 msgstr ""
 
 #: ./templates/Settings/index.php:36

@@ -21,17 +21,17 @@ use Cake\Core\Plugin;
                     ['controller' => 'AppUsers', 'action' => 'index'],
                     ['class' => 'side-nav-item'],
                 ) ?>
-                <?= $this->AuthLink->link(
-                    __('Sign-in Security Configuration'),
-                    ['controller' => 'Settings', 'action' => 'edit', 'access.security'],
-                    ['class' => 'side-nav-item'],
-                ) ?>
             </div>
         </div>
 
         <div class="related">
             <h4><?= __('Application Settings') ?></h4>
             <div>
+                <?= $this->AuthLink->link(
+                    __('Sign-in Security Configuration'),
+                    ['controller' => 'Settings', 'action' => 'edit', 'access.security'],
+                    ['class' => 'side-nav-item'],
+                ) ?>
                 <?= $this->AuthLink->link(
                     __('Company Configuration'),
                     ['controller' => 'Settings', 'action' => 'edit', 'core.company'],
