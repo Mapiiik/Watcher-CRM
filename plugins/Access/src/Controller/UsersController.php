@@ -95,7 +95,11 @@ class UsersController extends AppController
      */
     public function login(): ?Response
     {
-        $this->getRequest()->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        // only a new sign-in drops one waiting for its code; the page alone is asked for by
+        // browsers on their own too, sent here by a request of theirs
+        if ($this->getRequest()->is('post')) {
+            $this->getRequest()->getSession()->delete(AuthenticationService::TWO_FACTOR_VERIFY_SESSION_KEY);
+        }
 
         if ($this->Authentication->getResult()?->isValid()) {
             return $this->signedIn();

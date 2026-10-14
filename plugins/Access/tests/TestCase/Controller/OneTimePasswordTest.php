@@ -126,6 +126,27 @@ class OneTimePasswordTest extends TestCase
     }
 
     /**
+     * A sign-in waiting for its code outlasts the sign-in page shown in the meantime, as a browser
+     * sent there by a request of its own, or another tab, does.
+     *
+     * @return void
+     */
+    public function testASignInWaitingForItsCodeOutlastsTheSignInPage(): void
+    {
+        $this->addAccountWithCodes();
+
+        $this->signIn();
+        $this->assertRedirectContains('/verify');
+        $this->get('/login');
+        $this->assertResponseOk();
+        $this->carrySession();
+        $this->enterCode(OneTimePassword::code(self::SECRET, intdiv(time(), 30)));
+        $this->get('/login');
+
+        $this->assertRedirect('/');
+    }
+
+    /**
      * A recovery code signs in in place of a one-time code, once.
      *
      * @return void
@@ -314,12 +335,13 @@ class OneTimePasswordTest extends TestCase
      * Carries what the last request left in the session on to the next one.
      *
      * Read from `$_SESSION`, as asking the request's session for all of it starts it again, which on
-     * the command line empties it.
+     * the command line empties it. It takes the place of what was carried before, so that what the
+     * request took out of the session stays out, as in a browser.
      *
      * @return void
      */
     private function carrySession(): void
     {
-        $this->session($_SESSION ?? []);
+        $this->_session = $_SESSION ?? [];
     }
 }
