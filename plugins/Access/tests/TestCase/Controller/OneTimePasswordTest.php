@@ -191,6 +191,18 @@ class OneTimePasswordTest extends TestCase
 
         Settings::set('access.security.two_step_verification_required', false);
         Cache::clear('default');
+        $this->get('/users/disable-one-time-password');
+        $this->assertResponseOk();
+        $this->assertResponseContains('action="/users/disable-one-time-password"');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/disable-one-time-password', [
+            'code' => OneTimePassword::code(self::SECRET, intdiv(time(), 30) - 10),
+        ]);
+        $this->assertResponseOk();
+        $this->assertResponseContains('The code is not right.');
+        $this->assertTrue($this->account($id)->get('secret_verified'));
+
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/users/disable-one-time-password', [
@@ -222,7 +234,7 @@ class OneTimePasswordTest extends TestCase
         $this->assertResponseContains('Two-Step Verification');
         $this->assertResponseContains('<td>On</td>');
         $this->get('/users/view/' . $id);
-        $this->assertResponseContains('Reset Two-Step Verification');
+        $this->assertResponseContains('action="/users/reset-one-time-password-authenticator/' . $id . '"');
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
@@ -267,10 +279,48 @@ class OneTimePasswordTest extends TestCase
         $this->assertResponseContains('Recovery Codes');
         $this->get('/profile');
         $this->assertResponseOk();
-        $this->assertResponseContains('<h5>Authenticator Application (TOTP)</h5>');
-        $this->assertResponseContains('On. Recovery codes left: 10.');
+        $this->assertResponseContains('<td>Authenticator Application (TOTP)</td>');
+        $this->assertResponseContains('<td>10</td>');
+        $this->assertResponseContains('href="/users/new-recovery-codes"');
+        $this->assertResponseContains('href="/users/disable-one-time-password"');
+    }
+
+    /**
+     * New recovery codes are made on a page of their own, with a verification code. A wrong code
+     * leaves the codes there are.
+     *
+     * @return void
+     */
+    public function testNewRecoveryCodesAskForAVerificationCode(): void
+    {
+        $id = $this->addAccountWithCodes();
+        $codes = $this->getTableLocator()->get('Access.RecoveryCodes');
+        $codes->renew($id);
+        $before = $codes->find()->where(['user_id' => $id])->all()->extract('id')->toList();
+        $this->session(['Auth' => $this->account($id)]);
+        $this->get('/users/new-recovery-codes');
+        $this->assertResponseOk();
         $this->assertResponseContains('action="/users/new-recovery-codes"');
-        $this->assertResponseContains('action="/users/disable-one-time-password"');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/new-recovery-codes', [
+            'code' => OneTimePassword::code(self::SECRET, intdiv(time(), 30) - 10),
+        ]);
+        $this->assertResponseOk();
+        $this->assertResponseContains('The code is not right.');
+        $this->assertSame($before, $codes->find()->where(['user_id' => $id])->all()->extract('id')->toList());
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/new-recovery-codes', ['code' => OneTimePassword::code(self::SECRET, intdiv(time(), 30))]);
+        $this->assertRedirectContains('/users/recovery-codes');
+        $this->carrySession();
+        $this->session(['Auth' => $this->account($id)]);
+        $this->get('/users/recovery-codes');
+        $this->assertResponseOk();
+        $this->assertSame(10, preg_match_all('/<td><code>/', $this->_getBodyAsString()));
+        $this->assertNotContains($before[0], $codes->find()->where(['user_id' => $id])->all()->extract('id')->toList());
     }
 
     /**

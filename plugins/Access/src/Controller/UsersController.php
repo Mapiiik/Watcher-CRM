@@ -263,7 +263,12 @@ class UsersController extends AppController
      */
     public function view(?string $id = null): ?Response
     {
-        $this->set('user', $this->getUsersTable()->get($id));
+        $user = $this->getUsersTable()->get($id, contain: ['SocialAccounts']);
+
+        $this->set([
+            'user' => $user,
+            'recoveryCodesLeft' => $this->recoveryCodesTable()->left((string)$user->id),
+        ]);
 
         return null;
     }

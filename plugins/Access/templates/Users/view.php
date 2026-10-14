@@ -2,7 +2,10 @@
 /**
  * @var \App\View\AppView $this
  * @var \Access\Model\Entity\User $user
+ * @var int $recoveryCodesLeft
  */
+
+use Access\Social\Providers;
 ?>
 <div class="row">
     <aside class="column">
@@ -39,19 +42,6 @@
                     ],
                 ) ?>
             <?php endif; ?>
-            <?php if ($user->hasTwoStepVerification()) : ?>
-                <?= $this->Form->postLink(
-                    __d('access', 'Reset Two-Step Verification'),
-                    ['action' => 'resetOneTimePasswordAuthenticator', $user->id],
-                    [
-                        'confirm' => __d(
-                            'access',
-                            'The account will have to set its authenticator application up again. Reset?',
-                        ),
-                        'class' => 'side-nav-item',
-                    ],
-                ) ?>
-            <?php endif; ?>
             <?= $this->Html->link(
                 __d('access', 'List Users'),
                 ['action' => 'index'],
@@ -66,7 +56,7 @@
     </aside>
     <div class="column column-90">
         <div class="users view content">
-            <?= $this->record(__d('access', 'User'), (string)$user->username) ?>
+            <?= $this->record(__d('access', 'User'), $user->name) ?>
             <div class="row">
                 <div class="column">
                     <table>
@@ -75,16 +65,16 @@
                             <td><?= h($user->username) ?></td>
                         </tr>
                         <tr>
-                            <th><?= __d('access', 'Email') ?></th>
-                            <td><?= h($user->email) ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __d('access', 'First Name') ?></th>
                             <td><?= h($user->first_name) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('access', 'Last Name') ?></th>
                             <td><?= h($user->last_name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('access', 'Email') ?></th>
+                            <td><?= h($user->email) ?></td>
                         </tr>
                         <tr>
                             <th><?= __d('access', 'Role') ?></th>
@@ -104,14 +94,6 @@
                 <div class="column">
                     <table>
                         <tr>
-                            <th><?= __d('access', 'API Key') ?></th>
-                            <td><?= $user->api_token ? __d('access', 'Set') : __d('access', 'None') ?></td>
-                        </tr>
-                        <tr>
-                            <th><?= __d('access', 'Two-Step Verification') ?></th>
-                            <td><?= $user->hasTwoStepVerification() ? __d('access', 'On') : __d('access', 'Off') ?></td>
-                        </tr>
-                        <tr>
                             <th><?= __d('access', 'Last Login') ?></th>
                             <td><?= h($user->last_login) ?></td>
                         </tr>
@@ -123,34 +105,45 @@
                             <th><?= __d('access', 'Modified') ?></th>
                             <td><?= h($user->modified) ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __d('access', 'API Key') ?></th>
+                            <td><?= $user->api_token ? __d('access', 'Set') : __d('access', 'None') ?></td>
+                        </tr>
                     </table>
                 </div>
             </div>
-            <div class="related">
-                <h4><?= __d('access', 'Related Social Accounts') ?></h4>
-                <?php if (!empty($user->social_accounts)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __d('access', 'Provider') ?></th>
-                            <th><?= __d('access', 'Username') ?></th>
-                            <th><?= __d('access', 'Reference') ?></th>
-                            <th><?= __d('access', 'Active') ?></th>
-                            <th><?= __d('access', 'Created') ?></th>
-                        </tr>
-                        <?php foreach ($user->social_accounts as $socialAccounts) : ?>
-                        <tr>
-                            <td><?= h($socialAccounts->provider) ?></td>
-                            <td><?= h($socialAccounts->username) ?></td>
-                            <td><?= h($socialAccounts->reference) ?></td>
-                            <td><?= $socialAccounts->active ? __d('access', 'Yes') : __d('access', 'No') ?></td>
-                            <td><?= h($socialAccounts->created) ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
+            <?= $this->element('Access.two_step_verification', [
+                'user' => $user,
+                'recoveryCodesLeft' => $recoveryCodesLeft,
+                'own' => false,
+            ]) ?>
+            <?php if (!empty($user->social_accounts) || Providers::names() !== []) : ?>
+                <div class="related">
+                    <h4><?= __d('access', 'Social Accounts') ?></h4>
+                    <?php if (!empty($user->social_accounts)) : ?>
+                        <div class="table-responsive">
+                            <table>
+                                <tr>
+                                    <th><?= __d('access', 'Provider') ?></th>
+                                    <th><?= __d('access', 'Username') ?></th>
+                                    <th><?= __d('access', 'Reference') ?></th>
+                                    <th><?= __d('access', 'Active') ?></th>
+                                    <th><?= __d('access', 'Created') ?></th>
+                                </tr>
+                                <?php foreach ($user->social_accounts as $link) : ?>
+                                    <tr>
+                                        <td><?= h(Providers::label($link->provider)) ?></td>
+                                        <td><?= h($link->username) ?></td>
+                                        <td><?= h($link->reference) ?></td>
+                                        <td><?= $link->active ? __d('access', 'Yes') : __d('access', 'No') ?></td>
+                                        <td><?= h($link->created) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <?php endif; ?>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

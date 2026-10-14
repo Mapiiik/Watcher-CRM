@@ -129,23 +129,31 @@ trait OneTimePasswordTrait
      */
     public function disableOneTimePassword(): ?Response
     {
-        $this->getRequest()->allowMethod('post');
         $user = $this->signedInAccount(secrets: true);
-
+        if (!$user->get('secret_verified')) {
+            return $this->redirect(['action' => 'profile']);
+        }
         if (SecurityPolicy::requiresOneTimePassword($user->toArray())) {
             $this->Flash->error(__d('access', 'Your account has to use two-step verification.'));
-        } elseif ($this->acceptCode($user, (string)$this->getRequest()->getData('code')) !== 'one-time code') {
-            $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
-        } else {
-            $this->forgetOneTimePassword($user);
-            AuthLog::notice('one-time password turned off', [
-                'user' => (string)$user->get('username'),
-                'ip' => AuthLog::address($this->getRequest()),
-            ]);
-            $this->Flash->success(__d('access', 'Two-step verification is turned off.'));
+
+            return $this->redirect(['action' => 'profile']);
         }
 
-        return $this->redirect(['action' => 'profile']);
+        if ($this->getRequest()->is('post')) {
+            if ($this->acceptCode($user, (string)$this->getRequest()->getData('code')) === 'one-time code') {
+                $this->forgetOneTimePassword($user);
+                AuthLog::notice('one-time password turned off', [
+                    'user' => (string)$user->get('username'),
+                    'ip' => AuthLog::address($this->getRequest()),
+                ]);
+                $this->Flash->success(__d('access', 'Two-step verification is turned off.'));
+
+                return $this->redirect(['action' => 'profile']);
+            }
+            $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
+        }
+
+        return null;
     }
 
     /**
@@ -156,28 +164,28 @@ trait OneTimePasswordTrait
      */
     public function newRecoveryCodes(): ?Response
     {
-        $this->getRequest()->allowMethod('post');
         $user = $this->signedInAccount(secrets: true);
-
-        if (
-            !$user->get('secret_verified')
-            || $this->acceptCode($user, (string)$this->getRequest()->getData('code')) !== 'one-time code'
-        ) {
-            $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
-
+        if (!$user->get('secret_verified')) {
             return $this->redirect(['action' => 'profile']);
         }
 
-        $this->getRequest()->getSession()->write(
-            self::recoveryCodesKey(),
-            $this->recoveryCodesTable()->renew((string)$user->get('id')),
-        );
-        AuthLog::notice('recovery codes renewed', [
-            'user' => (string)$user->get('username'),
-            'ip' => AuthLog::address($this->getRequest()),
-        ]);
+        if ($this->getRequest()->is('post')) {
+            if ($this->acceptCode($user, (string)$this->getRequest()->getData('code')) === 'one-time code') {
+                $this->getRequest()->getSession()->write(
+                    self::recoveryCodesKey(),
+                    $this->recoveryCodesTable()->renew((string)$user->get('id')),
+                );
+                AuthLog::notice('recovery codes renewed', [
+                    'user' => (string)$user->get('username'),
+                    'ip' => AuthLog::address($this->getRequest()),
+                ]);
 
-        return $this->redirect(['action' => 'recoveryCodes']);
+                return $this->redirect(['action' => 'recoveryCodes']);
+            }
+            $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
+        }
+
+        return null;
     }
 
     /**
@@ -192,7 +200,10 @@ trait OneTimePasswordTrait
             return $this->redirect(['action' => 'profile']);
         }
 
-        $this->set('codes', $codes);
+        $this->set([
+            'user' => $this->signedInAccount(),
+            'codes' => $codes,
+        ]);
 
         return null;
     }

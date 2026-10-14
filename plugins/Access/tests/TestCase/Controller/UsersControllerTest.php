@@ -289,6 +289,24 @@ class UsersControllerTest extends TestCase
     }
 
     /**
+     * An admin sees on the page of an account the identities linked to it at other providers.
+     *
+     * @return void
+     */
+    public function testTheAccountPageShowsItsLinkedSocialAccounts(): void
+    {
+        $this->session(['Auth' => $this->addAccount(role: 'admin')]);
+        $id = (string)$this->addOtherAccount()->get('id');
+        $this->getTableLocator()->get('Access.SocialAccounts')->link($id, 'google', '108234567890', null);
+
+        $this->get('/users/view/' . $id);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('Social Accounts');
+        $this->assertResponseContains('<td>108234567890</td>');
+    }
+
+    /**
      * Somebody not signed in is sent to sign in, and from there on to the page they wanted - but
      * never to another site.
      *
