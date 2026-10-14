@@ -7,6 +7,7 @@ use App\Controller\LoginsController;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -154,6 +155,49 @@ class LoginsControllerTest extends TestCase
         $this->assertRedirect();
         $added = $this->addedRecord('Logins', $before);
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
+    }
+
+    /**
+     * The login offered for a new record is the customer's surname and given name with a dot
+     * between them, and the dot only between names there are. A company with no contact person is
+     * offered none.
+     *
+     * @param string|null $lastName The surname.
+     * @param string|null $firstName The given name.
+     * @param string $offered What the form offers.
+     * @return void
+     * @link \App\Controller\LoginsController::add()
+     */
+    #[DataProvider('namesAndOfferedLogins')]
+    public function testTheLoginOfferedIsMadeOfTheNamesThereAre(
+        ?string $lastName,
+        ?string $firstName,
+        string $offered,
+    ): void {
+        $this->getTableLocator()->get('Customers')->updateQuery()
+            ->set(['last_name' => $lastName, 'first_name' => $firstName])
+            ->where(['id' => self::CUSTOMER_ID])
+            ->execute();
+        $this->login();
+
+        $this->get('/customers/' . self::CUSTOMER_ID . '/logins/add');
+
+        $this->assertResponseOk();
+        $this->assertSame($offered, $this->viewVariable('new_login'));
+    }
+
+    /**
+     * @return array<string, array{string|null, string|null, string}>
+     */
+    public static function namesAndOfferedLogins(): array
+    {
+        return [
+            'both names' => ['Smith', 'Jane', 'smith.jane'],
+            'surname only' => ['Smith', null, 'smith'],
+            'given name only' => [null, 'Jane', 'jane'],
+            'neither' => [null, null, ''],
+            'blank' => [' ', '', ''],
+        ];
     }
 
     /**

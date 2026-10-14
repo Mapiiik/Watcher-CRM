@@ -107,17 +107,23 @@ class LoginsController extends AppController
 
             // START find free login
             $customer = $this->Logins->Customers->get($this->customer_id);
-            $new_login = strtolower(Strings::removeAccents($customer->last_name . '.' . $customer->first_name));
+            // the dot goes only between names there are, a company with no contact person gets none
+            $new_login = strtolower(Strings::removeAccents(implode('.', array_filter(
+                [trim((string)$customer->last_name), trim((string)$customer->first_name)],
+                fn(string $name): bool => $name !== '',
+            ))));
 
-            $i = 1;
-            $test_login = $new_login;
-            while ($this->Logins->exists(['login' => $test_login])) {
-                $i++;
-                $test_login = $new_login . '.' . $i;
+            if ($new_login !== '') {
+                $i = 1;
+                $test_login = $new_login;
+                while ($this->Logins->exists(['login' => $test_login])) {
+                    $i++;
+                    $test_login = $new_login . '.' . $i;
+                }
+                $new_login = $test_login;
+                unset($test_login);
+                unset($i);
             }
-            $new_login = $test_login;
-            unset($test_login);
-            unset($i);
             // END find free login
         }
 
