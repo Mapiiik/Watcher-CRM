@@ -73,9 +73,6 @@ $urlWithQuery = function ($query = []) use ($request) {
     $milligram = '/vendor/milligram/milligram.min.css';
 
     switch (Configure::read('UI.theme')) {
-        case 'legacy':
-            echo $this->Html->css([$normalize, 'legacy']);
-            break;
         case 'light':
             echo $this->Html->css([$normalize, $milligram, 'cake']);
             break;
@@ -254,7 +251,6 @@ $urlWithQuery = function ($query = []) use ($request) {
                     $urlWithQuery(['theme' => 'light']) => __('Light'),
                     $urlWithQuery(['theme' => 'dark']) => __('Dark'),
                     $urlWithQuery(['theme' => 'contrast']) => __('Contrast'),
-                    $urlWithQuery(['theme' => 'legacy']) => __('Legacy'),
                 ],
                 [
                     'value' => $urlWithQuery(['theme' => Configure::read('UI.theme')]),

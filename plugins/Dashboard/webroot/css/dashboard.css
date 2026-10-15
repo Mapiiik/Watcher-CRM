@@ -41,11 +41,10 @@
 }
 
 /*
- * The themes leave a few pixels of side margin beside a table so its shadow has room -
- * `cake.css` pairs `calc(100% - 3px)` with a right margin, `legacy.css` a left one. Taking
- * the full width back without dropping that margin pushed the table past the card, and the
- * card scrolled sideways over a gap nobody could see. Inside a card the card is the
- * surface, so the margin goes.
+ * `cake.css` leaves a few pixels of margin beside a table so its shadow has room, pairing
+ * `calc(100% - 3px)` with a right margin. Taking the full width back without dropping that
+ * margin pushed the table past the card, and the card scrolled sideways over a gap nobody could
+ * see. Inside a card the card is the surface, so the margin goes.
  */
 .dashboard-table {
     width: 100%;

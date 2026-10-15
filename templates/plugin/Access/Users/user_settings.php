@@ -56,7 +56,6 @@
                         'light' => __('Light'),
                         'dark' => __('Dark'),
                         'contrast' => __('Contrast'),
-                        'legacy' => __('Legacy'),
                     ],
                 ]);
                 echo $this->Form->control('user_settings.landing_page', [
