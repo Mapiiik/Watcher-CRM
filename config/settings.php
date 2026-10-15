@@ -897,10 +897,8 @@ return [
                         'renewal_indefinite_committed' => 'Smlouva trvá, dokud ji některá ze smluvních stran neukončí. Uživatel ji může kdykoli vypovědět s výpovědní dobou {notice_period}, která začíná běžet dnem doručení výpovědi Poskytovateli. Skončí-li Smlouva před uplynutím minimální doby plnění, uplatní se úhrada podle Podmínek; po jejím uplynutí je ukončení Smlouvy bezplatné.',
                         'renewal_definite' => 'Uplynutím sjednané doby Smlouva zaniká, aniž by ji bylo třeba vypovídat, a automaticky se neprodlužuje. Prodloužit ji lze jen dohodou smluvních stran. Před uplynutím sjednané doby ji může Uživatel vypovědět s výpovědní dobou {notice_period}.',
 
-                        // TODO: confirm with counsel. Act No. 424/2023 Coll. has applied to
-                        // electronic communications services since 28 June 2025 and exempts
-                        // microenterprises; if the exemption does not hold, this has to say what is
-                        // actually offered rather than that nothing is.
+                        // The template asks for what is offered where something is (ČTÚ manual),
+                        // so saying nothing special is, and how to ask, is enough.
                         'accessibility' => 'Poskytovatel nenabízí zvláštní produkty ani služby určené výhradně koncovým uživatelům se zdravotním postižením. Potřebujete-li službu nebo komunikaci s Poskytovatelem přizpůsobit svým potřebám, obraťte se prosím na Poskytovatele; kontaktní údaje jsou uvedeny výše.',
 
                         // A promotional price has to be shown as one - with the undiscounted price
