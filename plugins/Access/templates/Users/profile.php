@@ -47,6 +47,15 @@
                             <th><?= __d('access', 'Role') ?></th>
                             <td><?= h($user->getRoleName()) ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __d('access', 'Is Superuser') ?></th>
+                            <td><?= $user->is_superuser ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('access', 'Active') ?></th>
+                            <td><?= $user->active ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
+                        </tr>
+                        <?= $this->element('Access.account_fields', ['part' => 'details', 'user' => $user]) ?>
                     </table>
                 </div>
                 <div class="column">
@@ -55,6 +64,10 @@
                         <tr>
                             <th><?= __d('access', 'Created') ?></th>
                             <td><?= h($user->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __d('access', 'Modified') ?></th>
+                            <td><?= h($user->modified) ?></td>
                         </tr>
                     </table>
                 </div>

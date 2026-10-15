@@ -271,6 +271,10 @@ class UsersControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains('<td>2001:db8::20</td>');
         $this->assertResponseContains('<td>192.0.2.10</td>');
+        // the profile shows what the page of the account does
+        foreach (['Is Superuser', 'Active', 'Modified', 'Password Sign-In', 'API Key Sign-In'] as $heading) {
+            $this->assertResponseContains('<th>' . $heading . '</th>');
+        }
     }
 
     /**
