@@ -53,6 +53,11 @@ class UsersTable extends Table
     public const SECRETS = ['password', 'secret'];
 
     /**
+     * Read with an account in place of its password: whether it signs in with one at all.
+     */
+    public const PASSWORD_SIGN_IN = 'password_sign_in';
+
+    /**
      * Initialize method
      *
      * @param array<array-key, mixed> $config The configuration for the Table.
@@ -109,7 +114,10 @@ class UsersTable extends Table
 
         if ($primary) {
             if ($query->clause('select') === []) {
-                $query->selectAllExcept($this, self::SECRETS);
+                // whether there is a password, never the password
+                $query->selectAllExcept($this, self::SECRETS)
+                    ->select([self::PASSWORD_SIGN_IN => $query->expr()->isNotNull($this->aliasField('password'))]);
+                $query->getSelectTypeMap()->addDefaults([self::PASSWORD_SIGN_IN => 'boolean']);
             }
 
             return;
@@ -138,14 +146,15 @@ class UsersTable extends Table
     }
 
     /**
-     * Accounts that may sign in, with what signing in checks.
+     * Accounts that may sign in with a password, with what signing in checks.
      *
      * @param \Cake\ORM\Query\SelectQuery<\Access\Model\Entity\User> $query The query.
      * @return \Cake\ORM\Query\SelectQuery<\Access\Model\Entity\User>
      */
     public function findSignIn(SelectQuery $query): SelectQuery
     {
-        return $this->findWithSecrets($this->findActive($query));
+        return $this->findWithSecrets($this->findActive($query))
+            ->where([$this->aliasField('password') . ' IS NOT' => null]);
     }
 
     /**
@@ -283,9 +292,11 @@ class UsersTable extends Table
             return null;
         }
 
-        // an e-mail several accounts share names none of them
+        // an e-mail several accounts share names none of them; an account that does not sign in
+        // with a password gets none by e-mail either
         $accounts = $this->find('active')
             ->where(['OR' => [$this->aliasField('username') => $reference, $this->aliasField('email') => $reference]])
+            ->where([$this->aliasField('password') . ' IS NOT' => null])
             ->limit(2)
             ->all();
         $user = $accounts->first();
@@ -324,6 +335,21 @@ class UsersTable extends Table
                 $this->aliasField('token_expires') . ' >' => DateTime::now(),
             ])
             ->first();
+    }
+
+    /**
+     * Turns off signing in to an account with a password: it keeps none, and no link to set one
+     * is sent. A key and an identity provider still sign it in. Setting a password turns it on.
+     *
+     * @param string $id The account.
+     * @return void
+     */
+    public function turnOffPasswordSignIn(string $id): void
+    {
+        $this->updateQuery()
+            ->set(['password' => null, 'token' => null, 'token_expires' => null])
+            ->where(['id' => $id])
+            ->execute();
     }
 
     /**

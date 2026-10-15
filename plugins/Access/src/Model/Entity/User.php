@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Access\Model\Entity;
 
 use Access\Authentication\Argon2idPasswordHasher;
+use Access\Model\Table\UsersTable;
 use Cake\ORM\Entity;
 
 /**
@@ -15,7 +16,7 @@ use Cake\ORM\Entity;
  * @property int $nid
  * @property string $username
  * @property string|null $email
- * @property string $password
+ * @property string|null $password
  * @property string|null $first_name
  * @property string|null $last_name
  * @property string|null $role
@@ -26,6 +27,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $token_expires
  * @property string|null $secret
  * @property bool $secret_verified
+ * @property bool|null $password_sign_in
  * @property int|null $otp_last_timestep
  * @property \Cake\I18n\DateTime|null $last_granted
  * @property string|null $last_granted_ip
@@ -103,6 +105,22 @@ class User extends Entity
     public function hasTwoStepVerification(): bool
     {
         return (bool)$this->get('secret_verified');
+    }
+
+    /**
+     * Whether the account signs in with a password at all. An account without one signs in only
+     * with a key or through an identity provider.
+     *
+     * An account is read with whether it has a password rather than the password, see
+     * UsersTable::beforeFind(); one read with its secrets has the password itself.
+     *
+     * @return bool
+     */
+    public function hasPasswordSignIn(): bool
+    {
+        $known = $this->get(UsersTable::PASSWORD_SIGN_IN);
+
+        return $known !== null ? (bool)$known : $this->get('password') !== null;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Access\Test\TestCase\Controller;
 
 use Access\Authentication\LoginThrottle;
 use Access\Controller\UsersController;
+use Access\Model\Entity\User;
 use Access\Test\TestCase\AccountsTrait;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
@@ -479,5 +480,89 @@ class UsersControllerTest extends TestCase
         $this->get('/users/change-password/' . $other->get('id'));
 
         $this->assertRedirect('/profile');
+    }
+
+    /**
+     * A superuser turns off signing in to an account with a password: the password no longer
+     * signs it in, no link to set one is sent, and the list and the page of the account say so.
+     * Setting a password turns it on again.
+     *
+     * @return void
+     */
+    public function testASuperuserTurnsOffSigningInWithAPassword(): void
+    {
+        $users = $this->getTableLocator()->get('Users');
+        $this->session(['Auth' => $this->addAccount(role: 'admin', superuser: true)]);
+        $other = (string)$this->addOtherAccount('petr.dvorak@example.com')->get('id');
+
+        $this->get('/users/view/' . $other);
+        $this->assertResponseContains('Turn Off Password Sign-In');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/turn-off-password-sign-in/' . $other);
+
+        $this->assertRedirectContains('/users/view/' . $other);
+        $this->assertNull($users->get($other, finder: 'withSecrets')->get('password'));
+        $this->assertFalse($users->get($other)->hasPasswordSignIn());
+        $this->assertNull($users->newPasswordToken('pdvorak'));
+        $this->get('/users');
+        $this->assertResponseOk();
+        $this->assertSame(
+            [true, false],
+            array_map(
+                fn(User $user): bool => $user->hasPasswordSignIn(),
+                iterator_to_array($this->viewVariable('users')),
+            ),
+        );
+
+        $this->_session = [];
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'pdvorak', 'password' => 'Mrkev na zahrade 9z']);
+        $this->assertNoRedirect();
+        $this->assertSession(null, 'Auth');
+
+        $this->session(['Auth' => $users->get($this->firstAccountId())]);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/change-password/' . $other, [
+            'password' => 'Celer v zahradce 8y',
+            'password_confirm' => 'Celer v zahradce 8y',
+        ]);
+        $this->assertTrue($users->get($other)->hasPasswordSignIn());
+    }
+
+    /**
+     * Only a superuser turns signing in with a password off, and not for their own account.
+     *
+     * @return void
+     */
+    public function testSigningInWithAPasswordIsTurnedOffOnlyByASuperuserForSomebodyElse(): void
+    {
+        $users = $this->getTableLocator()->get('Users');
+        $admin = $this->addAccount(role: 'admin');
+        $other = (string)$this->addOtherAccount()->get('id');
+
+        $this->session(['Auth' => $admin]);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/turn-off-password-sign-in/' . $other);
+        $this->assertTrue($users->get($other)->hasPasswordSignIn());
+
+        $users->updateAll(['is_superuser' => true], ['id' => $admin->get('id')]);
+        $this->session(['Auth' => $users->get($admin->get('id'))]);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/turn-off-password-sign-in/' . $admin->get('id'));
+        $this->assertTrue($users->get($admin->get('id'))->hasPasswordSignIn());
+    }
+
+    /**
+     * The account `addAccount()` made, by its username.
+     *
+     * @return string
+     */
+    private function firstAccountId(): string
+    {
+        return (string)$this->getTableLocator()->get('Users')->find()->where(['username' => 'jnovak'])->firstOrFail()->get('id');
     }
 }

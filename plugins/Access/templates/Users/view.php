@@ -6,6 +6,10 @@
  */
 
 use Access\Social\Providers;
+
+$identity = $this->getRequest()->getAttribute('identity');
+$superuser = (bool)($identity['is_superuser'] ?? false);
+$own = ($identity['id'] ?? null) === $user->id;
 ?>
 <div class="row">
     <aside class="column">
@@ -41,6 +45,27 @@ use Access\Social\Providers;
                         'class' => 'side-nav-item',
                     ],
                 ) ?>
+            <?php endif; ?>
+            <?php if ($superuser && !$own) : ?>
+                <?= $this->Html->link(
+                    $user->hasPasswordSignIn() ? __d('access', 'Change Password') : __d('access', 'Set Password'),
+                    ['action' => 'changePassword', $user->id],
+                    ['class' => 'side-nav-item win-link'],
+                ) ?>
+                <?php if ($user->hasPasswordSignIn()) : ?>
+                    <?= $this->Form->postLink(
+                        __d('access', 'Turn Off Password Sign-In'),
+                        ['action' => 'turnOffPasswordSignIn', $user->id],
+                        [
+                            'confirm' => __d(
+                                'access',
+                                'The account will sign in only with a key or through an identity provider. '
+                                . 'Turn off its password?',
+                            ),
+                            'class' => 'side-nav-item',
+                        ],
+                    ) ?>
+                <?php endif; ?>
             <?php endif; ?>
             <?= $this->Html->link(
                 __d('access', 'List Users'),

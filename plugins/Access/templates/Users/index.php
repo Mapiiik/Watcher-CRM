@@ -35,6 +35,7 @@
                     <?= $this->element('Access.account_fields', ['part' => 'heading']) ?>
                     <th><?= $this->Paginator->sort('is_superuser') ?></th>
                     <th><?= $this->Paginator->sort('role') ?></th>
+                    <th><?= __d('access', 'Password Sign-In') ?></th>
                     <th><?= $this->Paginator->sort('secret_verified', __d('access', 'Two-Step Verification')) ?></th>
                     <th><?= $this->Paginator->sort('last_granted', __d('access', 'Last Granted')) ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
@@ -53,6 +54,7 @@
                     <?= $this->element('Access.account_fields', ['part' => 'cell', 'user' => $user]) ?>
                     <td><?= $user->is_superuser ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                     <td><?= h($user->getRoleName()) ?></td>
+                    <td><?= $user->hasPasswordSignIn() ? __d('access', 'On') : __d('access', 'Off') ?></td>
                     <td><?= $user->hasTwoStepVerification() ? __d('access', 'On') : __d('access', 'Off') ?></td>
                     <td><?= h($user->last_granted) ?></td>
                     <td><?= h($user->created) ?></td>

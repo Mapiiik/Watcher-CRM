@@ -236,7 +236,7 @@ class OneTimePasswordTest extends TestCase
         $this->get('/users/index');
         $this->assertResponseOk();
         $this->assertResponseContains('Two-Step Verification');
-        $this->assertResponseContains('<td>On</td>');
+        $this->assertSame(['jnovak' => true], $this->listedTwoStepVerification());
         $this->get('/users/view/' . $id);
         $this->assertResponseContains('action="/users/reset-one-time-password-authenticator/' . $id . '"');
         $this->enableCsrfToken();
@@ -247,7 +247,7 @@ class OneTimePasswordTest extends TestCase
         $this->assertNull($this->account($id)->get('secret'));
         $this->assertSame(0, $this->getTableLocator()->get('Access.RecoveryCodes')->left($id));
         $this->get('/users/index');
-        $this->assertResponseNotContains('<td>On</td>');
+        $this->assertSame(['jnovak' => false], $this->listedTwoStepVerification());
         /** @var \Cake\Log\Engine\ArrayLog $log */
         $log = Log::engine('auth');
         $this->assertStringContainsString(
@@ -357,6 +357,22 @@ class OneTimePasswordTest extends TestCase
     private function account(string $id): EntityInterface
     {
         return $this->getTableLocator()->get('Users')->get($id, finder: 'withSecrets');
+    }
+
+    /**
+     * Whether the accounts the list of accounts shows sign in with two-step verification, by
+     * username.
+     *
+     * @return array<string, bool>
+     */
+    private function listedTwoStepVerification(): array
+    {
+        $listed = [];
+        foreach ($this->viewVariable('users') as $user) {
+            $listed[(string)$user->get('username')] = $user->hasTwoStepVerification();
+        }
+
+        return $listed;
     }
 
     /**

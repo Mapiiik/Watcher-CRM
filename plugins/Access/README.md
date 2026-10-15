@@ -66,5 +66,10 @@ would end up in the logs. A client asking for data (JSON or XML) that may not ha
 one on the user's page and sees it once. Passwords, one-time secrets and keys are written to the
 audit log as `****`.
 
+An account may have no password: a superuser turns signing in with one off on the account's page,
+for a client that signs in only with its key or for somebody who signs in only through an identity
+provider. No link to set a password is sent to it, and setting a password turns it on again. The
+list of accounts, the profile and the account's page say whether it is on.
+
 Failed sign-ins are counted in the cache `login_throttle`. Where an installation runs on more
 than one server, the cache has to be shared by all of them, such as one Redis database.

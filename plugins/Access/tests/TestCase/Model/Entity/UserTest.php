@@ -22,7 +22,7 @@ class UserTest extends TestCase
     {
         $user = new User(['password' => 'Kopr na zahrade 7x']);
 
-        $this->assertStringStartsWith('$argon2id$', $user->password);
+        $this->assertStringStartsWith('$argon2id$', (string)$user->password);
         $this->assertTrue($user->checkPassword('Kopr na zahrade 7x'));
         $this->assertFalse($user->checkPassword('Kopr na zahrade 8x'));
         $this->assertFalse((new User())->checkPassword(''));
@@ -99,6 +99,20 @@ class UserTest extends TestCase
         $this->assertTrue((new User(['secret_verified' => true]))->hasTwoStepVerification());
         $this->assertFalse((new User(['secret_verified' => false]))->hasTwoStepVerification());
         $this->assertFalse((new User())->hasTwoStepVerification());
+    }
+
+    /**
+     * An account signs in with a password where it has one: as an account is read, by whether
+     * there is one, and as read with its secrets, by the password itself.
+     *
+     * @return void
+     */
+    public function testAPasswordSignsInWhereThereIsOne(): void
+    {
+        $this->assertTrue((new User(['password_sign_in' => true]))->hasPasswordSignIn());
+        $this->assertFalse((new User(['password_sign_in' => false]))->hasPasswordSignIn());
+        $this->assertTrue((new User(['password' => 'Kopr na zahrade 7x']))->hasPasswordSignIn());
+        $this->assertFalse((new User())->hasPasswordSignIn());
     }
 
     /**

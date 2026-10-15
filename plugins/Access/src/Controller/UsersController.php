@@ -243,6 +243,36 @@ class UsersController extends AppController
     }
 
     /**
+     * Turns off signing in to an account with a password, for a client that signs in only with
+     * its key or somebody who signs in only through an identity provider. A superuser does so, as
+     * only they set the password that turns it on again, and never for their own account.
+     *
+     * @param string|null $id The account.
+     * @return \Cake\Http\Response|null
+     */
+    public function turnOffPasswordSignIn(?string $id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post']);
+        $signedIn = $this->signedInAccount();
+        $user = $this->getUsersTable()->get($id);
+        if (!$signedIn->get('is_superuser')) {
+            $this->Flash->error(__d('access', 'Only a superuser turns off signing in with a password.'));
+        } elseif ($user->get('id') === $signedIn->get('id')) {
+            $this->Flash->error(__d('access', 'Signing in to your own account with a password stays on.'));
+        } else {
+            $this->getUsersTable()->turnOffPasswordSignIn((string)$user->get('id'));
+            AuthLog::notice('password sign-in turned off', [
+                'user' => (string)$user->get('username'),
+                'by' => (string)$signedIn->get('username'),
+                'ip' => AuthLog::address($this->getRequest()),
+            ]);
+            $this->Flash->success(__d('access', 'Signing in with a password is off. Setting a password turns it on.'));
+        }
+
+        return $this->redirect(['action' => 'view', $user->get('id')]);
+    }
+
+    /**
      * The accounts, the active ones first.
      *
      * @return \Cake\Http\Response|null

@@ -1,11 +1,16 @@
 <?php
 /**
- * When and from where an account last signed in, and somebody last failed to: rows of a table.
+ * How an account signs in, when and from where it last did, and somebody last failed to: rows of
+ * a table.
  *
  * @var \App\View\AppView $this
  * @var \Access\Model\Entity\User $user
  */
 ?>
+<tr>
+    <th><?= __d('access', 'Password Sign-In') ?></th>
+    <td><?= $user->hasPasswordSignIn() ? __d('access', 'On') : __d('access', 'Off') ?></td>
+</tr>
 <tr>
     <th><?= __d('access', 'Last Granted') ?></th>
     <td><?= h($user->last_granted) ?></td>
