@@ -190,6 +190,8 @@ class User extends Entity
      */
     public function getRoleName(): string
     {
-        return $this->getRoleOptions()[$this->role] ?? (string)$this->role;
+        $role = (string)$this->role;
+
+        return $this->getRoleOptions()[$role] ?? $role;
     }
 }
