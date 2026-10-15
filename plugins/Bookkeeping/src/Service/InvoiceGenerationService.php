@@ -211,8 +211,6 @@ final readonly class InvoiceGenerationService
     {
         if ($contract->getInvoiceText()) {
             return strtr($contract->getInvoiceText(), [
-                '{number}' => $contract->number, // legacy
-                '{month}' => $month->i18nFormat('MM/yyyy'), // legacy
                 '{contract_number}' => $contract->number,
                 '{invoiced_month}' => $month->i18nFormat('MM/yyyy'),
             ]);
