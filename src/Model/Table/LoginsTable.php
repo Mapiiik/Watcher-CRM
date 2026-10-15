@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Customer;
 use App\Model\Enum\LoginRights;
+use App\Utility\Strings;
 use Cake\Database\Type\EnumType;
 use Cake\ORM\RulesChecker;
 use Cake\Validation\Validator;
@@ -133,5 +135,50 @@ class LoginsTable extends AppTable
         $rules->add($rules->existsIn(['customer_id'], 'Customers'), ['errorField' => 'customer_id']);
 
         return $rules;
+    }
+
+    /**
+     * A login no one has yet, made of the customer's names: `surname.first-name`, the company
+     * where there are no names, as RADIUS accounts are named, and the customer number where there
+     * is neither. A taken one gets `.2`, `.3` and so on.
+     *
+     * @param \App\Model\Entity\Customer $customer The customer.
+     * @return string
+     */
+    public function suggestLogin(Customer $customer): string
+    {
+        // the dot goes only between names there are
+        $login = self::loginOf(implode('.', array_filter(
+            [trim((string)$customer->last_name), trim((string)$customer->first_name)],
+            fn(string $name): bool => $name !== '',
+        )));
+        if ($login === '') {
+            $login = self::loginOf(strtr((string)$customer->company, ['.' => '', ',' => '']));
+        }
+        if ($login === '') {
+            $login = $customer->number;
+        }
+
+        $free = $login;
+        $i = 1;
+        while ($this->exists(['login' => $free])) {
+            $free = $login . '.' . ++$i;
+        }
+
+        return $free;
+    }
+
+    /**
+     * Text as a login: lower case without accents, words joined by dashes, nothing else.
+     *
+     * @param string $text The text.
+     * @return string
+     */
+    private static function loginOf(string $text): string
+    {
+        $login = strtolower(Strings::removeAccents(trim($text)));
+        $login = (string)preg_replace(['/\s*-\s*|\s+/', '/[^a-z0-9.\-]/', '/-{2,}/'], ['-', '', '-'], $login);
+
+        return trim($login, '.-');
     }
 }

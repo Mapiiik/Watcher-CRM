@@ -160,22 +160,26 @@ class LoginsControllerTest extends TestCase
     /**
      * The login offered for a new record is the customer's surname and given name with a dot
      * between them, and the dot only between names there are. A company with no contact person is
-     * offered none.
+     * offered its name as RADIUS accounts are named, and a customer with neither their number.
      *
      * @param string|null $lastName The surname.
      * @param string|null $firstName The given name.
-     * @param string $offered What the form offers.
+     * @param string|null $company The company.
+     * @param string|null $offered What the form offers, the customer number where null.
      * @return void
      * @link \App\Controller\LoginsController::add()
+     * @link \App\Model\Table\LoginsTable::suggestLogin()
      */
     #[DataProvider('namesAndOfferedLogins')]
     public function testTheLoginOfferedIsMadeOfTheNamesThereAre(
         ?string $lastName,
         ?string $firstName,
-        string $offered,
+        ?string $company,
+        ?string $offered,
     ): void {
-        $this->getTableLocator()->get('Customers')->updateQuery()
-            ->set(['last_name' => $lastName, 'first_name' => $firstName])
+        $customers = $this->getTableLocator()->get('Customers');
+        $customers->updateQuery()
+            ->set(['last_name' => $lastName, 'first_name' => $firstName, 'company' => $company])
             ->where(['id' => self::CUSTOMER_ID])
             ->execute();
         $this->login();
@@ -183,20 +187,26 @@ class LoginsControllerTest extends TestCase
         $this->get('/customers/' . self::CUSTOMER_ID . '/logins/add');
 
         $this->assertResponseOk();
-        $this->assertSame($offered, $this->viewVariable('new_login'));
+        $this->assertSame(
+            $offered ?? $customers->get(self::CUSTOMER_ID)->get('number'),
+            $this->viewVariable('new_login'),
+        );
     }
 
     /**
-     * @return array<string, array{string|null, string|null, string}>
+     * @return array<string, array{string|null, string|null, string|null, string|null}>
      */
     public static function namesAndOfferedLogins(): array
     {
         return [
-            'both names' => ['Smith', 'Jane', 'smith.jane'],
-            'surname only' => ['Smith', null, 'smith'],
-            'given name only' => [null, 'Jane', 'jane'],
-            'neither' => [null, null, ''],
-            'blank' => [' ', '', ''],
+            'both names' => ['Smith', 'Jane', 'Acme Ltd.', 'smith.jane'],
+            'surname only' => ['Smith', null, null, 'smith'],
+            'given name only' => [null, 'Jane', null, 'jane'],
+            'names with accents and spaces' => ['Nováková Dvořáková', 'Jana Marie', null, 'novakova-dvorakova.jana-marie'],
+            'company only' => [null, null, 'Acme - Network Services, s.r.o.', 'acme-network-services-sro'],
+            'company and blank names' => [' ', '', 'Šťastný & syn', 'stastny-syn'],
+            'neither' => [null, null, null, null],
+            'blank' => [' ', '', ' ', null],
         ];
     }
 
