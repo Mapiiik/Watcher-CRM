@@ -656,6 +656,24 @@ class CustomerPortalControllerTest extends TestCase
     }
 
     /**
+     * The number of a contract typed in place of the customer number names the contract's
+     * customer, whatever shape contract numbers have. One no contract has names nobody.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::accessRequest()
+     */
+    public function testAContractNumberNamesItsCustomer(): void
+    {
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $contracts->updateAll(['number' => '110001-T6723'], ['id' => self::CONTRACT_ID]);
+
+        $answer = $this->requestAccess('110001-T6723', 'customer@example.com');
+        $this->assertSame('found', $answer['status']);
+        $this->assertSame(self::CUSTOMER_ID, $answer['customer']['id']);
+        $this->assertSame('unknown', $this->requestAccess('110001-T6724', 'customer@example.com')['status']);
+    }
+
+    /**
      * Where every login of the customer is locked, the portal is told so rather than given a
      * link, to tell the customer in the e-mail.
      *

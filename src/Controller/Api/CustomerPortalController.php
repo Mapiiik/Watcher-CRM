@@ -261,9 +261,7 @@ class CustomerPortalController extends AppController
         }
         $throttle->failed($key, $ip);
 
-        $customer = ctype_digit($number) ? $this->fetchTable('Customers')->find()
-            ->where(['Customers.nid' => (int)$number - (int)Configure::read('Customers.series')])
-            ->first() : null;
+        $customer = $this->customerByNumber($number);
         $links = new AccessLinks();
         if (!$customer instanceof Customer || !$links->isEmailOf($customer->id, $email)) {
             Log::notice(sprintf('Customer portal: access request for %s from %s, no such pair', $number, $ip));
@@ -501,6 +499,36 @@ class CustomerPortalController extends AppController
         }
 
         return $login;
+    }
+
+    /**
+     * The customer a number typed names: their customer number, or the number of one of their
+     * contracts, which customers mix it up with.
+     *
+     * @param string $number The number typed.
+     * @return \App\Model\Entity\Customer|null
+     */
+    private function customerByNumber(string $number): ?Customer
+    {
+        $customers = $this->fetchTable('Customers');
+        if (ctype_digit($number)) {
+            $customer = $customers->find()
+                ->where(['Customers.nid' => (int)$number - (int)Configure::read('Customers.series')])
+                ->first();
+            if ($customer instanceof Customer) {
+                return $customer;
+            }
+        }
+
+        $contract = $this->fetchTable('Contracts')->find()
+            ->select(['Contracts.customer_id'])
+            ->where(['Contracts.number' => $number])
+            ->first();
+        $customer = $contract === null ? null : $customers->find()
+            ->where(['Customers.id' => $contract->get('customer_id')])
+            ->first();
+
+        return $customer instanceof Customer ? $customer : null;
     }
 
     /**
