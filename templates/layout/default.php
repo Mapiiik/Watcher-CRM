@@ -198,24 +198,6 @@ $urlWithQuery = function ($query = []) use ($request) {
                 ])],
             ) ?>
 
-            <?php if (file_exists(WWW_ROOT . 'legacy' . DS) && is_dir(WWW_ROOT . 'legacy' . DS)) : ?>
-                <?php if ($request->getParam('customer_id')) { ?>
-                    <?= $this->Html->link(
-                        __('Old NMS'),
-                        '/legacy/redirect.php?customer_id=' . $request->getParam('customer_id'),
-                        ['class' => 'button button-small'],
-                    ) ?>
-                <?php } elseif ($this->getName() == 'Tasks' && $request->getParam('id')) { ?>
-                    <?= $this->Html->link(
-                        __('Old NMS'),
-                        '/legacy/redirect.php?task_id=' . $request->getParam('id'),
-                        ['class' => 'button button-small'],
-                    ) ?>
-                <?php } else { ?>
-                    <?= $this->Html->link(__('Old NMS'), '/legacy', ['class' => 'button button-small']) ?>
-                <?php } ?>
-            <?php endif; ?>
-
             <?= Links::home() !== null ?
                 $this->Html->link(
                     __('Network Management System'),

@@ -226,9 +226,7 @@ return [
         'skipLog' => [],
         'log' => true,
         'trace' => true,
-        'ignoredDeprecationPaths' => [
-            'vendor/cakephp/cakephp/src/Core/PluginCollection.php', // TODO - waiting for CakePHP/Queue 2.2.1 release
-        ],
+        'ignoredDeprecationPaths' => [],
         'traceFormat' => null,
     ],
 

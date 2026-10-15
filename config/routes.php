@@ -27,26 +27,6 @@ use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
 /*
- * Redirect /legacy/ URLs to /admin/ with all parameters if not called from CLI
- */
-/*
-if (PHP_SAPI !== 'cli') {
-    $url =
-        (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http')
-        . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-    if (mb_strpos($url, '/legacy/') !== false) {
-        header('Location: ' . mb_ereg_replace('/legacy/', '/', $url), true, 303);
-        die;
-    }
-    if (mb_strpos($url, '/admin/') !== false) {
-        header('Location: ' . mb_ereg_replace('/admin/', '/', $url), true, 303);
-        die;
-    }
-}
-*/
-
-/*
  * This file is loaded in the context of the `Application` class.
   * So you can use  `$this` to reference the application class instance
   * if required.

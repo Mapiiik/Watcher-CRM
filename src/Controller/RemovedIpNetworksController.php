@@ -99,7 +99,6 @@ class RemovedIpNetworksController extends AppController
                 $this->dataWithNesting($this->RemovedIpNetworks, $this->getRequest()->getData()),
             );
 
-            // TODO - add who and when deleted this
             $removedIpNetwork->removed = DateTime::now();
             $removedIpNetwork->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 

@@ -228,7 +228,6 @@ class IpNetworksController extends AppController
         $removedIpNetwork = $removedIpNetworksTable->newEmptyEntity();
         $removedIpNetwork = $removedIpNetworksTable->patchEntity($removedIpNetwork, $ipNetwork->toArray());
 
-        // TODO - add who and when deleted this
         $removedIpNetwork->removed = DateTime::now();
         $removedIpNetwork->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
 
