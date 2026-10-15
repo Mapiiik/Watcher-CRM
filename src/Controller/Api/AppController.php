@@ -13,10 +13,10 @@ use Override;
  *
  * Everything here speaks JSON.
  *
- * Writing is open only to a client that sends its key as a Bearer token in the `Authorization`
- * header. Such a request has no cookie to forge, so CSRF and FormProtection are skipped for it;
- * a request with `api_key` in the address, or from this application's own JavaScript, keeps both
- * guards. What a client may write is still decided by its role in `config/permissions.php`.
+ * A client signs in with its key as a Bearer token in the `Authorization` header. Such a request
+ * has no cookie to forge, so CSRF and FormProtection are skipped for it; a request from this
+ * application's own JavaScript keeps both guards. What a client may write is still decided by its
+ * role in `config/permissions.php`.
  */
 class AppController extends BaseController
 {

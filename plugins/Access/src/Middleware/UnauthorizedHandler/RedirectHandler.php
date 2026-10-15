@@ -7,6 +7,7 @@ use Authorization\Exception\Exception;
 use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\UnauthorizedHandler\CakeRedirectHandler;
+use Cake\Http\Response;
 use Cake\Http\ServerRequest;
 use Cake\Http\Session;
 use Override;
@@ -16,6 +17,9 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Where a page somebody may not open sends them: to sign in when nobody is signed in, and back
  * where they came from, with a word why, when they are.
+ *
+ * A client asking for data rather than a page gets no page to sign in on, but 401 without a valid
+ * key and 403 with one that may not do it.
  */
 class RedirectHandler extends CakeRedirectHandler
 {
@@ -47,6 +51,16 @@ class RedirectHandler extends CakeRedirectHandler
         ServerRequestInterface $request,
         array $options = [],
     ): ResponseInterface {
+        if ($request instanceof ServerRequest && ($request->is('json') || $request->is('xml'))) {
+            $signedIn = $request->getAttribute('identity') !== null;
+            $response = (new Response())
+                ->withStatus($signedIn ? 403 : 401)
+                ->withType('json')
+                ->withStringBody((string)json_encode(['message' => $signedIn ? 'Forbidden' : 'Unauthorized']));
+
+            return $signedIn ? $response : $response->withHeader('WWW-Authenticate', 'Bearer');
+        }
+
         $response = parent::handle($exception, $request, $options + $this->defaultOptions);
 
         $session = $request->getAttribute('session');

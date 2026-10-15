@@ -60,8 +60,9 @@ the secret goes to no other service. A code is accepted once. Ten recovery codes
 phone, each once. The pages name the method "Authenticator Application (TOTP)", so another method
 can stand beside it under the same heading.
 
-API clients sign in with a key sent as a Bearer token. A key in the address still works and is
-logged as `api key in the address`. Only the SHA-256 of a key is kept, so an admin makes a new
+API clients sign in with a key sent as a Bearer token. A key in the address is not read, as it
+would end up in the logs. A client asking for data (JSON or XML) that may not have it gets 401 or
+403 rather than the sign-in page. Only the SHA-256 of a key is kept, so an admin makes a new
 one on the user's page and sees it once. Passwords, one-time secrets and keys are written to the
 audit log as `****`.
 

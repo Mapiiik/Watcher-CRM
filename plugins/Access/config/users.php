@@ -9,7 +9,6 @@
 
 use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\FormAuthenticator;
-use Access\Authentication\TokenAuthenticator;
 use Access\Authentication\TwoFactorChecker;
 use Access\Middleware\UnauthorizedHandler\RedirectHandler;
 use Cake\Core\Configure;
@@ -72,14 +71,13 @@ return [
                     ],
                 ],
             ],
-            // API clients send their key as a Bearer token; in the address it still works, and
-            // is logged
+            // API clients send their key as a Bearer token, never in the address, which ends up
+            // in the logs
             'Token' => [
-                'className' => TokenAuthenticator::class,
+                'className' => 'Authentication.Token',
                 'skipTwoFactorVerify' => true,
                 'header' => 'Authorization',
                 'tokenPrefix' => 'Bearer',
-                'queryParam' => 'api_key',
                 'identifier' => [
                     'Authentication.Token' => [
                         'tokenField' => 'api_token',

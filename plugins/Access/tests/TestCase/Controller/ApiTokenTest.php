@@ -116,25 +116,54 @@ class ApiTokenTest extends TestCase
     }
 
     /**
-     * A key in the address still signs in, and says so in the log, so that the clients left on it
-     * can be found. A key that is not one does not sign in.
+     * A key signs in only as a Bearer token. In the address, where it would end up in the logs,
+     * it is not read at all, and neither is its hash as a key.
      *
      * @return void
      */
-    public function testAKeyInTheAddressStillSignsInAndIsLogged(): void
+    public function testAKeyInTheAddressSignsNobodyIn(): void
     {
         $user = $this->addAccount(role: 'api');
         $user->set('api_token', 'client-key');
         $this->getTableLocator()->get('Users')->saveOrFail($user);
 
         $this->get('/login?api_key=client-key');
-        $this->assertRedirect('/');
-        /** @var \Cake\Log\Engine\ArrayLog $log */
-        $log = Log::engine('auth');
-        $this->assertStringContainsString('api key in the address path="/login"', implode("\n", $log->read()));
-
-        $this->get('/login?api_key=' . hash('sha256', 'client-key'));
         $this->assertResponseOk();
+
+        $this->configRequest(['headers' => ['Authorization' => 'Bearer ' . hash('sha256', 'client-key')]]);
+        $this->get('/login');
+        $this->assertResponseOk();
+    }
+
+    /**
+     * A client asking for data is not sent to sign in: without a valid key it gets 401, and with a
+     * key that may not do it 403.
+     *
+     * @return void
+     */
+    public function testAClientAskingForDataIsAnsweredWithAStatusNotTheSignInPage(): void
+    {
+        $user = $this->addAccount(role: 'user');
+        $user->set('api_token', 'client-key');
+        $this->getTableLocator()->get('Users')->saveOrFail($user);
+
+        $this->configRequest(['headers' => ['Accept' => 'application/json']]);
+        $this->get('/users');
+        $this->assertResponseCode(401);
+        $this->assertHeader('WWW-Authenticate', 'Bearer');
+        $this->assertContentType('application/json');
+
+        $this->configRequest(['headers' => ['Accept' => 'application/json', 'Authorization' => 'Bearer wrong']]);
+        $this->get('/users');
+        $this->assertResponseCode(401);
+
+        $this->configRequest(['headers' => ['Accept' => 'application/json', 'Authorization' => 'Bearer client-key']]);
+        $this->get('/users');
+        $this->assertResponseCode(403);
+
+        $this->configRequest(['headers' => []]);
+        $this->get('/users');
+        $this->assertRedirectContains('/login');
     }
 
     /**

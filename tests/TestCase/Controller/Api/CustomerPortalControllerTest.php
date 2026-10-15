@@ -520,7 +520,7 @@ class CustomerPortalControllerTest extends TestCase
         $this->asPortal();
         $this->get('/api/customer-portal/identify?ip=192.168.11.11');
 
-        $this->assertRedirect();
+        $this->assertResponseCode(403);
         $this->assertResponseNotContains('NETAIR');
     }
 
@@ -537,8 +537,7 @@ class CustomerPortalControllerTest extends TestCase
         $this->asPortal();
         $this->get('/api/customer-portal/identify?ip=192.168.11.11');
 
-        // refused the way the authorization middleware refuses anybody, by sending them away
-        $this->assertRedirect();
+        $this->assertResponseCode(403);
         $this->assertResponseNotContains('192.168.11.11');
     }
 
