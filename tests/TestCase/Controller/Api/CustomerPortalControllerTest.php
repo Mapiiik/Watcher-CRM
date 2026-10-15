@@ -563,6 +563,188 @@ class CustomerPortalControllerTest extends TestCase
     }
 
     /**
+     * A customer who forgot their password asks by their number and an e-mail of theirs, in any
+     * case, sets a new one with the link and signs in with it. The link is spent by it.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::accessRequest()
+     * @link \App\Controller\Api\CustomerPortalController::access()
+     * @link \App\Controller\Api\CustomerPortalController::setAccess()
+     */
+    public function testAnAccessLinkSetsAForgottenPassword(): void
+    {
+        $answer = $this->requestAccess($this->customerNumber(self::CUSTOMER_ID), 'Customer@Example.com');
+        $this->assertSame('found', $answer['status']);
+        $this->assertSame(self::CUSTOMER_ID, $answer['customer']['id']);
+        $token = (string)$answer['token'];
+
+        $this->asPortal();
+        $this->get('/api/customer-portal/access?token=' . urlencode($token));
+        $answer = $this->answer();
+        $this->assertSame('valid', $answer['status']);
+        $this->assertSame('customer@example.com', $answer['email']);
+        $this->assertSame([['id' => self::LOGIN_ID, 'login' => self::LOGIN]], $answer['logins']);
+        $this->assertNull($answer['new_login']);
+
+        $this->asPortal();
+        $this->post('/api/customer-portal/access', ['token' => $token, 'password' => 'short', 'ip' => '192.0.2.10']);
+        $this->assertResponseCode(422);
+
+        $this->asPortal();
+        $this->post('/api/customer-portal/access', [
+            'token' => $token,
+            'password' => 'a new password of mine',
+            'ip' => '192.0.2.10',
+        ]);
+        $this->assertResponseOk();
+        $this->assertSame(['status' => 'saved', 'login' => self::LOGIN], $this->answer());
+        $this->assertSame('granted', $this->signIn('a new password of mine')['status']);
+
+        $this->asPortal();
+        $this->get('/api/customer-portal/access?token=' . urlencode($token));
+        $this->assertSame('invalid', $this->answer()['status']);
+    }
+
+    /**
+     * A customer with no login gets one with the link, named after them.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::setAccess()
+     */
+    public function testAnAccessLinkMakesALoginWhereThereIsNone(): void
+    {
+        $this->getTableLocator()->get('Customers')->updateAll(
+            ['last_name' => 'Smith', 'first_name' => 'Jane'],
+            ['id' => self::OTHER_CUSTOMER_ID],
+        );
+        $emails = $this->getTableLocator()->get('Emails');
+        $emails->saveOrFail($emails->newEntity(
+            ['customer_id' => self::OTHER_CUSTOMER_ID, 'email' => 'jane@example.com'],
+            ['accessibleFields' => ['customer_id' => true]],
+        ));
+
+        $token = (string)$this->requestAccess($this->customerNumber(self::OTHER_CUSTOMER_ID), 'jane@example.com')['token'];
+        $this->asPortal();
+        $this->get('/api/customer-portal/access?token=' . urlencode($token));
+        $answer = $this->answer();
+        $this->assertSame([], $answer['logins']);
+        $this->assertSame('smith.jane', $answer['new_login']);
+
+        $this->asPortal();
+        $this->post('/api/customer-portal/access', ['token' => $token, 'password' => 'jane at home 2026', 'ip' => '192.0.2.10']);
+        $this->assertSame(['status' => 'saved', 'login' => 'smith.jane'], $this->answer());
+        $this->assertSame('granted', $this->signIn('jane at home 2026', 'smith.jane')['status']);
+    }
+
+    /**
+     * A number and an e-mail that do not belong together get no link, whichever of them is
+     * someone's.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::accessRequest()
+     */
+    public function testANumberAndAnEmailThatDoNotBelongTogetherGetNoLink(): void
+    {
+        $number = $this->customerNumber(self::CUSTOMER_ID);
+
+        $this->assertSame(['status' => 'unknown'], $this->requestAccess($number, 'someone@example.com'));
+        $this->assertSame(
+            ['status' => 'unknown'],
+            $this->requestAccess($this->customerNumber(self::OTHER_CUSTOMER_ID), 'customer@example.com'),
+        );
+        $this->assertSame(['status' => 'unknown'], $this->requestAccess('NETAIR', 'customer@example.com'));
+    }
+
+    /**
+     * Where every login of the customer is locked, the portal is told so rather than given a
+     * link, to tell the customer in the e-mail.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::accessRequest()
+     */
+    public function testEveryLoginLockedGetsNoLink(): void
+    {
+        $this->getTableLocator()->get('Logins')->updateAll(['locked' => true], ['customer_id' => self::CUSTOMER_ID]);
+
+        $answer = $this->requestAccess($this->customerNumber(self::CUSTOMER_ID), 'customer@example.com');
+
+        $this->assertSame('locked', $answer['status']);
+        $this->assertArrayNotHasKey('token', $answer);
+    }
+
+    /**
+     * Requests for one customer number are limited, as each of them sends an e-mail.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::accessRequest()
+     */
+    public function testAccessRequestsAreLimited(): void
+    {
+        Settings::set('core.customer_portal.access_requests_per_customer', 2);
+        $number = $this->customerNumber(self::CUSTOMER_ID);
+
+        $this->assertSame('found', $this->requestAccess($number, 'customer@example.com')['status']);
+        $this->assertSame('unknown', $this->requestAccess($number, 'someone@example.com')['status']);
+        $this->assertSame('blocked', $this->requestAccess($number, 'customer@example.com', '198.51.100.7')['status']);
+    }
+
+    /**
+     * A link sets the password only of a login of its customer that is not locked.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::setAccess()
+     */
+    public function testAnAccessLinkSetsOnlyAnOpenLoginOfItsCustomer(): void
+    {
+        $logins = $this->getTableLocator()->get('Logins');
+        $other = $logins->newEntity(
+            ['login' => 'other.login', 'customer_id' => self::OTHER_CUSTOMER_ID, 'password' => 'whatever it is'],
+            ['accessibleFields' => ['customer_id' => true]],
+        );
+        $logins->saveOrFail($other);
+        $token = (string)$this->requestAccess($this->customerNumber(self::CUSTOMER_ID), 'customer@example.com')['token'];
+
+        $this->asPortal();
+        $this->post('/api/customer-portal/access', [
+            'token' => $token,
+            'login_id' => $other->get('id'),
+            'password' => 'a new password of mine',
+            'ip' => '192.0.2.10',
+        ]);
+
+        $this->assertResponseCode(404);
+        $this->assertSame('invalid', $this->answer()['status']);
+    }
+
+    /**
+     * Asks for an access link through the portal and returns the answer.
+     *
+     * @param string $number The customer number typed.
+     * @param string $email The e-mail typed.
+     * @param string $ip The customer's address.
+     * @return array<string, mixed>
+     */
+    private function requestAccess(string $number, string $email, string $ip = '192.0.2.10'): array
+    {
+        $this->asPortal();
+        $this->post('/api/customer-portal/access-request', ['customer_number' => $number, 'email' => $email, 'ip' => $ip]);
+        $this->assertResponseOk();
+
+        return $this->answer();
+    }
+
+    /**
+     * The number a customer knows themselves by.
+     *
+     * @param string $id The customer.
+     * @return string
+     */
+    private function customerNumber(string $id): string
+    {
+        return (string)$this->getTableLocator()->get('Customers')->get($id)->get('number');
+    }
+
+    /**
      * The next request goes out as the portal, with a customer token when one is given.
      *
      * @param string|null $customerToken The customer token.

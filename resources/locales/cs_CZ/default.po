@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-15 00:30+0200\n"
+"POT-Creation-Date: 2026-10-15 12:24+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -225,44 +225,56 @@ msgstr ""
 "Nejkratší heslo, které si zákazník může nastavit v zákaznickém portálu."
 
 #: config/settings.php:427
+msgid ""
+"Links for a new password or a new login one customer number may ask for in "
+"an hour."
+msgstr "Kolik odkazů pro nové heslo nebo nový přístup si může jedno číslo zákazníka vyžádat za hodinu."
+
+#: config/settings.php:431
+msgid ""
+"Links for a new password or a new login one address may ask for in an hour, "
+"whatever the customer."
+msgstr "Kolik odkazů pro nové heslo nebo nový přístup si může jedna adresa vyžádat za hodinu, ať je zákazník kdokoli."
+
+#: config/settings.php:435
 msgid "Addresses a service may look up in a minute before more are refused."
 msgstr ""
 "Počet adres, které služba může vyhledat za minutu, než se další odmítnou."
 
-#: config/settings.php:434
+#: config/settings.php:442
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 "Kolik řádků karta uvádí, než se zobrazí pouze informace o tom, kolik dalších "
 "zbývá."
 
-#: config/settings.php:440
+#: config/settings.php:448
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr "Jak dlouho před termínem řešení úkolu se již považuje za naléhavé."
 
-#: config/settings.php:444
+#: config/settings.php:452
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 "Jak dlouho může nedokončený úkol zůstat bez povšimnutí, než se na něj "
 "upozorní."
 
-#: config/settings.php:451
+#: config/settings.php:459
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr "Jak dlouho před koncem závazku se na něj upozorňuje."
 
-#: config/settings.php:785
+#: config/settings.php:793
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr "Tři úvodní odrážky předepsané šablonou shrnutí smlouvy."
 
-#: config/settings.php:836
+#: config/settings.php:844
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 "Podíl inzerované rychlosti, který se bere jako běžně dostupná rychlost."
 
-#: config/settings.php:841
+#: config/settings.php:849
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
 
-#: config/settings.php:919
+#: config/settings.php:927
 msgid "Documents the summary points the customer to."
 msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
 
@@ -2255,20 +2267,20 @@ msgstr ""
 "Související štítky zákazníků nelze aktualizovat. Zkuste to prosím znovu."
 
 #: src/Controller/LoginsController.php:92
-#: src/Controller/LoginsController.php:159
+#: src/Controller/LoginsController.php:140
 msgid "The login has been saved."
 msgstr "Přihlášení bylo uloženo."
 
 #: src/Controller/LoginsController.php:96
-#: src/Controller/LoginsController.php:163
+#: src/Controller/LoginsController.php:144
 msgid "The login could not be saved. Please, try again."
 msgstr "Přihlášení nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/LoginsController.php:192
+#: src/Controller/LoginsController.php:173
 msgid "The login has been deleted."
 msgstr "Přihlášení bylo odstraněno."
 
-#: src/Controller/LoginsController.php:195
+#: src/Controller/LoginsController.php:176
 msgid "The login could not be deleted. Please, try again."
 msgstr "Přihlášení nelze odstranit. Zkuste to prosím znovu."
 

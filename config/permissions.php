@@ -198,6 +198,9 @@ $permissions = [
                 'password',
                 'invoices',
                 'invoiceDownload',
+                'accessRequest',
+                'access',
+                'setAccess',
             ],
         ],
         //services that recognise a customer by the address they come from, such as a TV gateway

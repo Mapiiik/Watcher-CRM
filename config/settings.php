@@ -422,6 +422,14 @@ return [
                 default: 8,
                 hint: __('The shortest password a customer may set in the customer portal.'),
             ),
+            'access_requests_per_customer' => NumberType::ofInt(
+                default: 3,
+                hint: __('Links for a new password or a new login one customer number may ask for in an hour.'),
+            ),
+            'access_requests_per_address' => NumberType::ofInt(
+                default: 10,
+                hint: __('Links for a new password or a new login one address may ask for in an hour, whatever the customer.'),
+            ),
             'identify_per_minute' => NumberType::ofInt(
                 default: 30,
                 hint: __('Addresses a service may look up in a minute before more are refused.'),

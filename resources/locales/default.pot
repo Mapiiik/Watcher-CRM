@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-15 00:30+0200\n"
+"POT-Creation-Date: 2026-10-15 12:24+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -161,38 +161,46 @@ msgid "The shortest password a customer may set in the customer portal."
 msgstr ""
 
 #: ./config/settings.php:427
+msgid "Links for a new password or a new login one customer number may ask for in an hour."
+msgstr ""
+
+#: ./config/settings.php:431
+msgid "Links for a new password or a new login one address may ask for in an hour, whatever the customer."
+msgstr ""
+
+#: ./config/settings.php:435
 msgid "Addresses a service may look up in a minute before more are refused."
 msgstr ""
 
-#: ./config/settings.php:434
+#: ./config/settings.php:442
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 
-#: ./config/settings.php:440
+#: ./config/settings.php:448
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr ""
 
-#: ./config/settings.php:444
+#: ./config/settings.php:452
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 
-#: ./config/settings.php:451
+#: ./config/settings.php:459
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr ""
 
-#: ./config/settings.php:785
+#: ./config/settings.php:793
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr ""
 
-#: ./config/settings.php:836
+#: ./config/settings.php:844
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 
-#: ./config/settings.php:841
+#: ./config/settings.php:849
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr ""
 
-#: ./config/settings.php:919
+#: ./config/settings.php:927
 msgid "Documents the summary points the customer to."
 msgstr ""
 
@@ -2069,20 +2077,20 @@ msgid "The related customer labels could not be updated. Please, try again."
 msgstr ""
 
 #: ./src/Controller/LoginsController.php:92
-#: ./src/Controller/LoginsController.php:159
+#: ./src/Controller/LoginsController.php:140
 msgid "The login has been saved."
 msgstr ""
 
 #: ./src/Controller/LoginsController.php:96
-#: ./src/Controller/LoginsController.php:163
+#: ./src/Controller/LoginsController.php:144
 msgid "The login could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:192
+#: ./src/Controller/LoginsController.php:173
 msgid "The login has been deleted."
 msgstr ""
 
-#: ./src/Controller/LoginsController.php:195
+#: ./src/Controller/LoginsController.php:176
 msgid "The login could not be deleted. Please, try again."
 msgstr ""
 

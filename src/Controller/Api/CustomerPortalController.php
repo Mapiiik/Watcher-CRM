@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\CustomerPortal\AccessLinks;
 use App\CustomerPortal\Lookups;
 use App\CustomerPortal\Passwords;
 use App\CustomerPortal\Throttle;
@@ -16,10 +17,12 @@ use App\Model\Entity\Login;
 use App\Model\Enum\AddressType;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\IpNetworkTypeOfUse;
+use App\Model\Table\LoginsTable;
 use BackedEnum;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Chronos\ChronosDate;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\HttpException;
@@ -226,6 +229,159 @@ class CustomerPortalController extends AppController
     }
 
     /**
+     * A customer who forgot their password, or has no login yet, asks for a link to set one, by
+     * their customer number and an e-mail they have.
+     *
+     * Answers `found` with the link's token for the portal to send to that e-mail, `locked` when
+     * every login of the customer is locked (the portal says so in the e-mail instead), `unknown`
+     * when the two do not belong together, or `blocked` after too many requests. What the portal
+     * shows the customer must not tell these apart.
+     *
+     * @return void
+     */
+    public function accessRequest(): void
+    {
+        $this->getRequest()->allowMethod(['post']);
+        $number = trim((string)$this->getRequest()->getData('customer_number'));
+        $email = trim((string)$this->getRequest()->getData('email'));
+        $ip = (string)$this->getRequest()->getData('ip');
+        if ($number === '' || $email === '' || filter_var($ip, FILTER_VALIDATE_IP) === false) {
+            throw new BadRequestException('A customer number, an e-mail and the customer\'s ip address are required.');
+        }
+
+        $perCustomer = Throttle::setting('access_requests_per_customer', 3);
+        $throttle = new Throttle($perCustomer, Throttle::setting('access_requests_per_address', 10), $perCustomer, 60);
+        // every request counts, as each sends an e-mail
+        $key = 'access-request|' . $number;
+        if ($throttle->blocked($key, $ip)) {
+            Log::notice(sprintf('Customer portal: access request for %s from %s refused, too many', $number, $ip));
+            $this->answer(['status' => 'blocked']);
+
+            return;
+        }
+        $throttle->failed($key, $ip);
+
+        $customer = ctype_digit($number) ? $this->fetchTable('Customers')->find()
+            ->where(['Customers.nid' => (int)$number - (int)Configure::read('Customers.series')])
+            ->first() : null;
+        $links = new AccessLinks();
+        if (!$customer instanceof Customer || !$links->isEmailOf($customer->id, $email)) {
+            Log::notice(sprintf('Customer portal: access request for %s from %s, no such pair', $number, $ip));
+            $this->answer(['status' => 'unknown']);
+
+            return;
+        }
+
+        $logins = $this->fetchTable('Logins')->find()->where(['customer_id' => $customer->id])->all();
+        if (!$logins->isEmpty() && $logins->every(fn(Login $login): bool => (bool)$login->locked)) {
+            Log::notice(sprintf('Customer portal: access request for %s from %s, every login locked', $number, $ip));
+            $this->answer(['status' => 'locked', 'email' => $email, 'customer' => $this->customerSummary($customer)]);
+
+            return;
+        }
+
+        $link = $links->issue($customer->id, $email);
+        Log::notice(sprintf('Customer portal: access link for %s sent from %s', $number, $ip));
+        $this->answer([
+            'status' => 'found',
+            'token' => $link['token'],
+            'expires' => $link['expires'],
+            'email' => $email,
+            'customer' => $this->customerSummary($customer),
+        ]);
+    }
+
+    /**
+     * What a link from `accessRequest` lets the customer do: set the password of one of their
+     * logins that is not locked, or get the login offered where they have none.
+     *
+     * Answers `valid` with the logins or the new login, or `invalid` for a link that is not one,
+     * has expired or has been used.
+     *
+     * @return void
+     */
+    public function access(): void
+    {
+        $this->getRequest()->allowMethod(['get']);
+        $link = $this->accessLink((string)$this->getRequest()->getQuery('token'));
+        if ($link === null) {
+            $this->answer(['status' => 'invalid']);
+
+            return;
+        }
+
+        [$customer, $email] = $link;
+        $logins = $this->openLogins($customer->id);
+        $this->answer([
+            'status' => 'valid',
+            'email' => $email,
+            'customer' => $this->customerSummary($customer),
+            'logins' => array_map(fn(Login $login): array => ['id' => $login->id, 'login' => $login->login], $logins),
+            'new_login' => $logins === [] ? $this->fetchTable(LoginsTable::class)->suggestLogin($customer) : null,
+            'password_min_length' => self::passwordMinLength(),
+        ]);
+    }
+
+    /**
+     * Sets the password a link from `accessRequest` was sent for: of the login chosen, the only
+     * one, or of a new login where the customer has none. The link is spent by it.
+     *
+     * Answers `saved` with the login to sign in with, `too_short` with 422 and the length, or
+     * `invalid` with 404 for a link that no longer works or a login that is not the customer's.
+     *
+     * @return void
+     */
+    public function setAccess(): void
+    {
+        $this->getRequest()->allowMethod(['post']);
+        $password = (string)$this->getRequest()->getData('password');
+        $ip = (string)$this->getRequest()->getData('ip');
+        if ($password === '' || filter_var($ip, FILTER_VALIDATE_IP) === false) {
+            throw new BadRequestException('A password and the customer\'s ip address are required.');
+        }
+        $minLength = self::passwordMinLength();
+        if (mb_strlen($password) < $minLength) {
+            $this->setResponse($this->getResponse()->withStatus(422));
+            $this->answer(['status' => 'too_short', 'min_length' => $minLength]);
+
+            return;
+        }
+
+        $customer = $this->accessLink((string)$this->getRequest()->getData('token'))[0] ?? null;
+        $logins = $this->fetchTable(LoginsTable::class);
+        $open = $customer === null ? [] : $this->openLogins($customer->id);
+        $chosen = (string)$this->getRequest()->getData('login_id');
+        $login = match (true) {
+            $customer === null => null,
+            $open === [] => $logins->newEntity(
+                ['login' => $logins->suggestLogin($customer), 'customer_id' => $customer->id],
+                ['validate' => false, 'accessibleFields' => ['login' => true, 'customer_id' => true]],
+            ),
+            count($open) === 1 && $chosen === '' => $open[0],
+            default => array_values(array_filter($open, fn(Login $login): bool => $login->id === $chosen))[0] ?? null,
+        };
+        if (!$customer instanceof Customer || !$login instanceof Login) {
+            $this->setResponse($this->getResponse()->withStatus(404));
+            $this->answer(['status' => 'invalid']);
+
+            return;
+        }
+
+        $made = $login->isNew();
+        $login->set('password', $password);
+        $logins->saveOrFail($login);
+        Log::notice(sprintf(
+            'Customer portal: %s of "%s" for customer %s set from %s with an access link',
+            $made ? 'new login' : 'password',
+            $login->login,
+            $customer->number,
+            $ip,
+        ));
+
+        $this->answer(['status' => 'saved', 'login' => $login->login]);
+    }
+
+    /**
      * The signed-in customer's invoices, newest first.
      *
      * @return void
@@ -345,6 +501,38 @@ class CustomerPortalController extends AppController
         }
 
         return $login;
+    }
+
+    /**
+     * The customer an access link is for, and the e-mail it was sent to, while it works.
+     *
+     * @param string $token The token of the link.
+     * @return array{0: \App\Model\Entity\Customer, 1: string}|null
+     */
+    private function accessLink(string $token): ?array
+    {
+        $link = $token === '' ? null : (new AccessLinks())->read($token);
+        $customer = $link === null ? null : $this->fetchTable('Customers')->find()
+            ->where(['Customers.id' => $link['customer_id']])
+            ->first();
+
+        return $link !== null && $customer instanceof Customer ? [$customer, $link['email']] : null;
+    }
+
+    /**
+     * The customer's logins an access link may set a password for: those not locked.
+     *
+     * @param string $customerId The customer.
+     * @return list<\App\Model\Entity\Login>
+     */
+    private function openLogins(string $customerId): array
+    {
+        /** @var list<\App\Model\Entity\Login> */
+        return $this->fetchTable('Logins')->find()
+            ->where(['customer_id' => $customerId, 'locked' => false])
+            ->orderBy(['login' => 'ASC'])
+            ->all()
+            ->toList();
     }
 
     /**
