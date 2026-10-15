@@ -4,6 +4,18 @@
  * @var iterable<\Access\Model\Entity\User> $users
  */
 ?>
+<?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
+<div class="row">
+    <div class="column">
+        <?= $this->Form->control('search', [
+            'label' => __d('access', 'Search'),
+            'type' => 'search',
+            'onchange' => $this::SUBMIT_ON_CHANGE,
+        ]) ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
+
 <div class="users index content">
     <?= $this->Html->link(
         __d('access', 'New User'),

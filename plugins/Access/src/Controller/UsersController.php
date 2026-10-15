@@ -244,13 +244,30 @@ class UsersController extends AppController
     }
 
     /**
-     * The accounts.
+     * The accounts, the active ones first.
      *
      * @return \Cake\Http\Response|null
      */
     public function index(): ?Response
     {
-        $this->set('users', $this->paginate($this->getUsersTable()));
+        $table = $this->getUsersTable();
+        $alias = $table->getAlias();
+        $query = $table->find();
+
+        $search = trim((string)$this->getRequest()->getQuery('search'));
+        if ($search !== '') {
+            $query->where(['OR' => array_fill_keys(
+                array_map(
+                    fn(string $field): string => $alias . '.' . $field . ' ILIKE',
+                    ['username', 'email', 'first_name', 'last_name'],
+                ),
+                '%' . $search . '%',
+            )]);
+        }
+
+        $this->set('users', $this->paginate($query, [
+            'order' => [$alias . '.active' => 'DESC', $alias . '.username' => 'ASC'],
+        ]));
 
         return null;
     }

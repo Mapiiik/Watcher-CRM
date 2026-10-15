@@ -307,6 +307,46 @@ class UsersControllerTest extends TestCase
     }
 
     /**
+     * The accounts are listed the active ones first, then by username, and a search looks in
+     * their names and e-mails.
+     *
+     * @return void
+     */
+    public function testTheAccountsAreListedActiveFirstAndSearched(): void
+    {
+        $this->session(['Auth' => $this->addAccount(role: 'admin')]);
+        $other = $this->addOtherAccount('petr.dvorak@example.com');
+        $users = $this->getTableLocator()->get('Users');
+        $inactive = $users->newEmptyEntity();
+        $inactive->patch([
+            'username' => 'aformer',
+            'password' => 'Salat na zahrade 5w',
+            'role' => 'user',
+            'active' => false,
+        ], ['guard' => false]);
+        $users->saveOrFail($inactive);
+
+        $this->get('/users');
+        $this->assertResponseOk();
+        $listed = array_map(
+            fn(EntityInterface $user): string => (string)$user->get('username'),
+            iterator_to_array($this->viewVariable('users')),
+        );
+        $this->assertSame(['jnovak', 'pdvorak', 'aformer'], $listed);
+
+        $this->get('/users?search=DVORAK@');
+        $this->assertResponseOk();
+        $this->assertSame(
+            [$other->get('id')],
+            array_map(
+                fn(EntityInterface $user): string => (string)$user->get('id'),
+                iterator_to_array($this->viewVariable('users')),
+            ),
+        );
+        $this->assertResponseContains('type="search"');
+    }
+
+    /**
      * Somebody not signed in is sent to sign in, and from there on to the page they wanted - but
      * never to another site.
      *

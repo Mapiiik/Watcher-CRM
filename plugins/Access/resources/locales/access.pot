@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-15 00:29+0200\n"
+"POT-Creation-Date: 2026-10-15 10:53+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -161,21 +161,21 @@ msgstr ""
 msgid "The password could not be changed."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:290
-#: ./plugins/Access/src/Controller/UsersController.php:314
+#: ./plugins/Access/src/Controller/UsersController.php:307
+#: ./plugins/Access/src/Controller/UsersController.php:331
 msgid "The account has been saved."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:294
-#: ./plugins/Access/src/Controller/UsersController.php:318
+#: ./plugins/Access/src/Controller/UsersController.php:311
+#: ./plugins/Access/src/Controller/UsersController.php:335
 msgid "The account could not be saved."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:336
+#: ./plugins/Access/src/Controller/UsersController.php:353
 msgid "The account has been deleted."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/UsersController.php:338
+#: ./plugins/Access/src/Controller/UsersController.php:355
 msgid "The account could not be deleted."
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/change_password.php:13
 #: ./plugins/Access/templates/Users/disable_one_time_password.php:9
 #: ./plugins/Access/templates/Users/edit.php:10
-#: ./plugins/Access/templates/Users/index.php:30
+#: ./plugins/Access/templates/Users/index.php:42
 #: ./plugins/Access/templates/Users/new_recovery_codes.php:9
 #: ./plugins/Access/templates/Users/one_time_password.php:11
 #: ./plugins/Access/templates/Users/profile.php:11
@@ -299,12 +299,12 @@ msgid "Turn Off"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/edit.php:12
-#: ./plugins/Access/templates/Users/index.php:59
+#: ./plugins/Access/templates/Users/index.php:71
 msgid "Delete"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/edit.php:15
-#: ./plugins/Access/templates/Users/index.php:61
+#: ./plugins/Access/templates/Users/index.php:73
 #: ./plugins/Access/templates/Users/view.php:23
 msgid "Are you sure you want to delete # {0}?"
 msgstr ""
@@ -314,60 +314,64 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:9
+#: ./plugins/Access/templates/Users/index.php:11
+msgid "Search"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/index.php:21
 #: ./plugins/Access/templates/Users/view.php:51
 msgid "New User"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:13
+#: ./plugins/Access/templates/Users/index.php:25
 msgid "Users"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:26
+#: ./plugins/Access/templates/Users/index.php:38
 #: ./plugins/Access/templates/element/two_step_verification.php:50
 msgid "Two-Step Verification"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:40
-#: ./plugins/Access/templates/Users/index.php:42
+#: ./plugins/Access/templates/Users/index.php:52
+#: ./plugins/Access/templates/Users/index.php:54
 #: ./plugins/Access/templates/Users/view.php:85
 #: ./plugins/Access/templates/Users/view.php:89
 #: ./plugins/Access/templates/Users/view.php:138
 msgid "Yes"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:40
-#: ./plugins/Access/templates/Users/index.php:42
+#: ./plugins/Access/templates/Users/index.php:52
+#: ./plugins/Access/templates/Users/index.php:54
 #: ./plugins/Access/templates/Users/view.php:85
 #: ./plugins/Access/templates/Users/view.php:89
 #: ./plugins/Access/templates/Users/view.php:138
 msgid "No"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:44
+#: ./plugins/Access/templates/Users/index.php:56
 #: ./plugins/Access/templates/element/two_step_verification.php:59
 msgid "On"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:44
+#: ./plugins/Access/templates/Users/index.php:56
 #: ./plugins/Access/templates/element/two_step_verification.php:59
 msgid "Off"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:50
+#: ./plugins/Access/templates/Users/index.php:62
 msgid "View"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:54
+#: ./plugins/Access/templates/Users/index.php:66
 msgid "Edit"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:64
+#: ./plugins/Access/templates/Users/index.php:76
 #: ./plugins/Access/templates/Users/profile.php:13
 msgid "Change Password"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/index.php:69
+#: ./plugins/Access/templates/Users/index.php:81
 #: ./plugins/Access/templates/Users/profile.php:18
 msgid "User Settings"
 msgstr ""
