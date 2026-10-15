@@ -1,0 +1,9 @@
+# Behind a proxy that routes TLS by SNI without terminating it, such as HAProxy. The proxy owns
+# port 80 and redirects it to HTTPS, so the certificate is obtained with the TLS-ALPN challenge,
+# which travels inside the TLS connection it passes on.
+
+auto_https disable_redirects
+
+cert_issuer acme {
+	disable_http_challenge
+}

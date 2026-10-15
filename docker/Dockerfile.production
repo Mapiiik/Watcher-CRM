@@ -1,150 +1,155 @@
 # syntax=docker/dockerfile:1
 
-FROM webdevops/php-nginx:8.4-alpine
+############################
+# Dependencies
+############################
+FROM composer:2 AS vendor
+
+WORKDIR /app
+COPY composer.json composer.lock ./
+# The extensions are the runtime's, checked there against the lock file
+RUN composer install \
+    --no-dev \
+    --no-interaction \
+    --no-progress \
+    --no-scripts \
+    --no-autoloader \
+    --ignore-platform-reqs
+# the classmap is built from the code, so the code has to be there first
+COPY src/ ./src/
+COPY plugins/ ./plugins/
+RUN composer dump-autoload --no-dev --optimize
+
+############################
+# Runtime
+############################
+FROM dunglas/frankenphp:php8.4-alpine
 
 ARG buildno
 ARG gitcommithash
 
+ARG APPLICATION_USER=application
+
+LABEL application="Watcher CRM"
+LABEL maintainer="github.com/Mapiiik"
+
 RUN echo "Build number: $buildno"
 RUN echo "Based on commit: $gitcommithash"
 
-ENV WEB_DOCUMENT_ROOT="/app/webroot"
+############################
+# PHP
+############################
+RUN install-php-extensions \
+    mbstring \
+    intl \
+    pdo \
+    pdo_pgsql \
+    simplexml \
+    gd \
+    imagick \
+    redis \
+    sockets \
+    bcmath \
+    dbase \
+    opcache
 
-# Copy app data
-COPY --chown="${APPLICATION_USER}":"${APPLICATION_USER}" ./ /app
-
-# Install PECL-DBASE extension
-RUN set -x \
- && apk add -U --no-cache autoconf gcc libc-dev make \
- && CPPFLAGS="-DHAVE_SYS_FILE_H" pecl install dbase \
- && docker-php-ext-enable dbase \
- && docker-run-bootstrap
-
-# imagick, with the delegates for HEIC, TIFF and PDF, comes from the base image along with
-# ghostscript. It is the one that reads what a phone and a scanner send and gd cannot.
-#
-# It is handed files uploaded from outside, and what it ships with is the open policy - which says
-# of itself that it is for a container behind a firewall. Ours names the formats a scan or a
-# photograph arrives in and refuses the rest.
+# ImageMagick is handed files uploaded from outside, and what it ships with is the open policy -
+# which says of itself that it is for a container behind a firewall. Ours names the formats a scan
+# or a photograph arrives in and refuses the rest.
 COPY docker/imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
 
-# Letting the file into the build context above also let it into `/app`, which is meant to be the
-# application and nothing else. It has been read by now and has no business staying there.
-RUN rm -rf /app/docker
+# Production defaults, with what the installations on a server have set for their pools.
+# The code does not change inside an image, so OPcache need not look at the files again.
+RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini \
+ && echo "expose_php = Off" > $PHP_INI_DIR/conf.d/99-expose.ini \
+ && echo "memory_limit = 1024M" > $PHP_INI_DIR/conf.d/99-memory.ini \
+ && echo "disable_functions = passthru,system" > $PHP_INI_DIR/conf.d/99-disable-functions.ini \
+ && { \
+      echo "opcache.memory_consumption = 256"; \
+      echo "opcache.max_accelerated_files = 20000"; \
+      echo "opcache.validate_timestamps = 0"; \
+    } > $PHP_INI_DIR/conf.d/99-opcache.ini
 
 # Uploads: a signed contract comes back as a handful of scanned pages, and a phone makes them
-# large. The base image allows 50M in three places at once, and the smallest of them decides -
-# so nginx is raised as well, or it refuses the request before PHP ever sees it. The POST limit
-# is the higher of the two because it carries the rest of the form beside the files.
+# large. The POST limit is the higher of the two because it carries the rest of the form as well.
 # How many, rather than how large, is its own limit - and the one that says nothing when
 # it bites: PHP takes the first `max_file_uploads` of them and drops the rest before the
 # application is running. Twenty is the default, and a round of photographs is more.
-# The ini sorts after the base image's own 98-webdevops.ini, which is what makes it win. The
-# nginx limit is rewritten rather than added to: the directive may not be given twice in one
-# context, so a second file holding it stops the server from starting at all.
-RUN echo "upload_max_filesize = 250M" > "$PHP_INI_DIR/conf.d/zz-uploads.ini" \
- && echo "post_max_size = 256M" >> "$PHP_INI_DIR/conf.d/zz-uploads.ini" \
- && echo "max_file_uploads = 200" >> "$PHP_INI_DIR/conf.d/zz-uploads.ini" \
- && sed -i "s/^client_max_body_size .*/client_max_body_size 256m;/" /opt/docker/etc/nginx/vhost.common.d/10-general.conf
+RUN echo "upload_max_filesize = 250M" > $PHP_INI_DIR/conf.d/zz-uploads.ini \
+ && echo "post_max_size = 256M" >> $PHP_INI_DIR/conf.d/zz-uploads.ini \
+ && echo "max_file_uploads = 200" >> $PHP_INI_DIR/conf.d/zz-uploads.ini
 
-# Composer install
-RUN gosu "${APPLICATION_USER}" composer install -d /app --no-interaction --no-dev --optimize-autoloader
+# Composer stays for the scripts the container runs on start (composer.json says which)
+COPY --from=vendor /usr/bin/composer /usr/local/bin/composer
 
-# Add on-start commands
-RUN cat <<'EOF' >> /opt/docker/provision/entrypoint.d/99-composer.sh
-# Composer operations
+############################
+# Application
+############################
+RUN adduser -D ${APPLICATION_USER}
 
-# The steps and their order are update.sh's, which does the same work for an installation
-# that does not run in a container.
-gosu "${APPLICATION_USER}" composer run-script migrations -d /app -- --no-lock
+COPY --from=vendor --chown=${APPLICATION_USER}:${APPLICATION_USER} /app/vendor /app/vendor
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} composer.json composer.lock /app/
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} bin/ /app/bin/
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} config/ /app/config/
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} plugins/ /app/plugins/
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} resources/ /app/resources/
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} src/ /app/src/
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} templates/ /app/templates/
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} webroot/ /app/webroot/
 
-# Link the plugins' assets into the webroot, so the web server serves them itself rather
-# than every request for them going through PHP. Here rather than at build time, alongside
-# the others, because this is where the application has its environment.
-gosu "${APPLICATION_USER}" composer run-script plugin-assets -d /app
+# What `composer install` would have done after installing, skipped above: config/app_local.php
+# with a salt of its own, the writable and the data directories. Then whether the extensions
+# installed above are what the lock file asks for.
+RUN chown ${APPLICATION_USER}:${APPLICATION_USER} /app \
+ && su ${APPLICATION_USER} -s /bin/sh -c "composer run-script post-install-cmd --no-interaction -d /app" \
+ && composer check-platform-reqs --no-dev -d /app
 
-# What the code of the previous image left cached. `tmp` is a tmpfs and empties itself, but
-# the caches are pointed at Redis, which keeps a volume of its own under a prefix that does
-# not change between builds - so translations and the rest outlive the container they were
-# written by, for as long as the duration they were written with.
-gosu "${APPLICATION_USER}" composer run-script cache-clear -d /app
+############################
+# Caddy configuration
+############################
+# Shared by all our Caddy servers: PROXY protocol always on, LISTENER_MODE direct or behind-proxy
+COPY docker/caddy/ /etc/frankenphp/
+ENV SERVER_ROOT=webroot/
+
+############################
+# Start
+############################
+# The steps and their order are update.sh's, which does the same work for an installation that
+# does not run in a container.
+RUN cat <<'EOF' > /usr/local/bin/docker-entrypoint-custom
+#!/bin/sh
+set -e
+
+composer run-script migrations -d /app -- --no-lock
+
+# Link the plugins' assets into the webroot, so they are served as files rather than every
+# request for them going through PHP. Here rather than at build time, because this is where the
+# application has its environment.
+composer run-script plugin-assets -d /app
+
+# What the code of the previous image left cached. `tmp` is a tmpfs and empties itself, but the
+# caches are pointed at Redis, which outlives the container they were written by.
+composer run-script cache-clear -d /app
 
 # Read the new schema once here rather than on somebody's first request. After the clearing,
 # not before, or it would throw away what it had just built.
-gosu "${APPLICATION_USER}" composer run-script schema-cache -d /app
+composer run-script schema-cache -d /app
+
+exec docker-php-entrypoint "$@"
 EOF
 
-RUN chmod +x /opt/docker/provision/entrypoint.d/99-composer.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint-custom
 
-###################################
-# ACME TLS certificate management #
-###################################
-# Install acme.sh and create volume for data
-ENV LE_WORKING_DIR="/acme.sh"
-ENV LE_CONFIG_HOME="/acme"
-VOLUME [ "/acme" ]
-RUN curl https://get.acme.sh | sh
-RUN ln -s /acme.sh/acme.sh /usr/local/bin/acme.sh
+ENTRYPOINT ["docker-entrypoint-custom"]
+CMD ["--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]
 
-# Set default server name for TLS certificate generation
-# (used in self-signed certs and as default domain for ACME)
-ENV SERVER_NAME="localhost"
+############################
+# Non-root runtime
+############################
+RUN \
+    # Add additional capability to bind to port 80 and 443
+    setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp; \
+    # Give write access to /config/caddy and /data/caddy
+    chown -R ${APPLICATION_USER}:${APPLICATION_USER} /config/caddy /data/caddy
 
-RUN cat <<'EOF' > /opt/docker/provision/entrypoint.d/90-acme.sh
-#!/bin/sh
-set -e
-
-CERT_DIR="/acme/certs/${SERVER_NAME}"
-
-mkdir -p /opt/docker/etc/nginx/ssl
-ln -sf "${CERT_DIR}/fullchain.pem" /opt/docker/etc/nginx/ssl/server.crt
-ln -sf "${CERT_DIR}/key.pem"       /opt/docker/etc/nginx/ssl/server.key
-
-if [ ! -f "${CERT_DIR}/fullchain.pem" ]; then
-  echo "No certificate found, generating self-signed cert"
-
-  mkdir -p "${CERT_DIR}"
-
-  openssl req -x509 -nodes -newkey rsa:2048 \
-    -days 365 \
-    -keyout "${CERT_DIR}/key.pem" \
-    -out "${CERT_DIR}/fullchain.pem" \
-    -subj "/CN=${SERVER_NAME}"
-fi
-EOF
-RUN chmod +x /opt/docker/provision/entrypoint.d/90-acme.sh
-
-RUN cat <<'EOF' > /opt/docker/provision/entrypoint.d/91-acme-renew.sh
-#!/bin/sh
-set -e
-
-if [ "${SERVER_NAME}" = "localhost" ]; then
-  echo "ACME disabled: SERVER_NAME is set to 'localhost'. Set a valid domain to enable automatic TLS certificates."
-else
-  CERT_DIR="/acme/certs/${SERVER_NAME}"
-
-  acme.sh --set-default-ca --server letsencrypt
-
-  if ! acme.sh --list | grep -q "${SERVER_NAME}"; then
-    echo "Certificate for ${SERVER_NAME} not found, issuing new certificate"
-    acme.sh --issue \
-      -d "${SERVER_NAME}" \
-      --webroot "${WEB_DOCUMENT_ROOT}" \
-      --key-file "${CERT_DIR}/key.pem" \
-      --fullchain-file "${CERT_DIR}/fullchain.pem" \
-      --reloadcmd "nginx -t && nginx -s reload"
-  else
-    echo "Certificate for ${SERVER_NAME} found, attempting renewal if necessary"
-  fi
-
-  (
-    while true; do
-      echo "ACME renew check for ${SERVER_NAME} at $(date)"
-      acme.sh --renew -d "${SERVER_NAME}" \
-        --reloadcmd "nginx -t && nginx -s reload"
-      sleep 12h
-    done
-  ) &
-fi
-EOF
-RUN chmod +x /opt/docker/provision/entrypoint.d/91-acme-renew.sh
+USER ${APPLICATION_USER}

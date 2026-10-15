@@ -1,5 +1,6 @@
 *
 !bin
+!docker/caddy
 !config
 !plugins
 !resources
@@ -10,3 +11,18 @@
 !composer.json
 !composer.lock
 !docker/imagemagick-policy.xml
+
+# What a working copy holds for itself, never for an image
+config/.env
+config/app_local.php
+config/permissions_local.php
+
+# Plugin assets the working copy has linked into the webroot; the container links its own on start
+webroot/bookkeeping
+webroot/cake_d_c
+webroot/dashboard
+webroot/debug_kit
+webroot/files
+webroot/maps
+webroot/radius
+webroot/settings

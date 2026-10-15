@@ -1,18 +1,30 @@
 name: CI
 
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
   push:
     branches:
       - '2.x'
       - '3.x'
       - '4.x'
       - '5.x'
+    tags:
+      - '*'
   pull_request:
     branches:
       - '*'
 
 permissions:
   contents: read
+  packages: write
+
+env:
+  # The branch the image `latest` is built from, the one production runs. A nightly run builds
+  # this branch rather than the default one, which is what a schedule would check out.
+  LATEST_BRANCH: '5.x'
+  BASE_IMAGE: dunglas/frankenphp:php8.4-alpine
 
 jobs:
   testsuite:
@@ -63,6 +75,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || '' }}
         
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -144,6 +158,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || '' }}
         
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -166,3 +182,225 @@ jobs:
       - name: Run phpstan
         if: success() || failure()
         run: vendor/bin/phpstan.phar analyse --error-format=checkstyle | cs2pr
+
+  ##########################################################################
+  # The image: from the branch production runs and from git tags, after the
+  # tests. Resolve what to build, once, and share it with the build jobs.
+  ##########################################################################
+  setup:
+    name: Resolve version and base image
+    needs:
+      - testsuite
+      - coding-standard
+    # the branch is LATEST_BRANCH, which a job's condition cannot read
+    if: >-
+      github.event_name == 'pull_request'
+      || github.event_name == 'schedule'
+      || github.event_name == 'workflow_dispatch'
+      || github.ref_type == 'tag'
+      || github.ref_name == '5.x'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      key: ${{ steps.key.outputs.key }}
+      image: ${{ steps.image.outputs.name }}
+      ref: ${{ steps.version.outputs.ref }}
+      skip_build: ${{ steps.image_check.outputs.skip_build }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || '' }}
+
+      # The commit actually checked out: on a schedule that is the head of LATEST_BRANCH, not
+      # the commit of the default branch the run was started from
+      - name: Version from the commit
+        id: version
+        run: |
+          echo "ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "version=$(git rev-parse --short=7 HEAD)" >> "$GITHUB_OUTPUT"
+
+      # A new base image (PHP, Caddy or Alpine fixes) is a reason to rebuild too
+      - name: Build key from commit and base image digest
+        id: key
+        run: |
+          BASE_DIGEST="$(docker buildx imagetools inspect --raw "$BASE_IMAGE" | sha256sum | cut -c1-12)"
+          echo "::notice::Base image $BASE_IMAGE digest $BASE_DIGEST"
+          echo "key=build-${{ steps.version.outputs.version }}-${BASE_DIGEST}" >> "$GITHUB_OUTPUT"
+
+      # docker/metadata-action lowercases the image name on its own, but the
+      # digest push and the manifest merge below address the registry directly,
+      # so the lowercase name has to be built here explicitly.
+      - name: Normalize image name
+        id: image
+        run: |
+          REPO="${{ github.repository }}"
+          echo "name=ghcr.io/${REPO,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if image already exists (for scheduler)
+        id: image_check
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            IMAGE="${{ steps.image.outputs.name }}:${{ steps.key.outputs.key }}"
+
+            echo "::notice::Checking if image exists: $IMAGE"
+
+            if docker manifest inspect "$IMAGE"; then
+              echo "::notice::Image already exists, skipping scheduled build."
+              echo "skip_build=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "::notice::Image not found or registry error – proceeding with build."
+            fi
+          else
+            echo "::notice::Triggered by ${{ github.event_name }} – forcing rebuild."
+          fi
+
+  ##########################################################################
+  # One job per architecture, each on a native runner (no QEMU emulation).
+  # Nothing is tagged here - each job pushes an untagged image and reports
+  # back only its digest.
+  ##########################################################################
+  build:
+    name: Build ${{ matrix.platform }}
+    needs: setup
+    if: needs.setup.outputs.skip_build != 'true'
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            arch: amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            arch: arm64
+            runner: ubuntu-24.04-arm
+
+    steps:
+      - name: Announce build
+        run: |
+          echo "::notice::Building ${{ matrix.platform }} image for ${{ needs.setup.outputs.version }}"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.setup.outputs.ref }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ needs.setup.outputs.image }}
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      # Pull requests cannot push, so they build into the cache only and
+      # produce no digest for the merge job.
+      - name: Build and push by digest
+        id: build
+        uses: docker/build-push-action@v7
+        with:
+          platforms: ${{ matrix.platform }}
+          context: .
+          file: docker/Dockerfile.production
+          pull: true
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          tags: ${{ needs.setup.outputs.image }}
+          outputs: ${{ github.event_name != 'pull_request' && 'type=image,push-by-digest=true,name-canonical=true,push=true' || 'type=cacheonly' }}
+          build-args: |
+            buildno=${{ github.run_number }}
+            gitcommithash=${{ needs.setup.outputs.ref }}
+          cache-from: type=gha,scope=${{ matrix.platform }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.platform }}
+
+      - name: Export digest
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          digest="${{ steps.build.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: digests-${{ matrix.arch }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  ##########################################################################
+  # Join the per-architecture digests into one multi-arch manifest and
+  # attach the real tags to it: a git tag gets its version (5.0.0, 5.0, 5,
+  # a release candidate only its own), the branch gets its name and latest.
+  ##########################################################################
+  merge:
+    name: Push multi-arch manifest
+    needs:
+      - setup
+      - build
+    if: needs.setup.outputs.skip_build != 'true' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v8
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-*
+          merge-multiple: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ needs.setup.outputs.image }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=raw,value=${{ env.LATEST_BRANCH }},enable=${{ github.ref_type != 'tag' }}
+            type=raw,value=latest,enable=${{ github.ref_type != 'tag' }}
+            type=raw,value=sha-${{ needs.setup.outputs.version }}
+            type=raw,value=${{ needs.setup.outputs.key }}
+          flavor: |
+            latest=false
+
+      - name: Create manifest list and push
+        working-directory: ${{ runner.temp }}/digests
+        run: |
+          docker buildx imagetools create \
+            $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ needs.setup.outputs.image }}@sha256:%s ' *)
+
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect \
+            "${{ needs.setup.outputs.image }}:${{ needs.setup.outputs.key }}"

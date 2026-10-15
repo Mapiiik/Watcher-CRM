@@ -52,9 +52,10 @@ docker compose -f compose.production.yaml up -d
 
 The production image runs `composer run-script migrations` and rebuilds the
 schema cache automatically on container start, so the app is reachable at
-`http://localhost` (and `https://localhost` with a self-signed cert) once the
-container is healthy. Set `SERVER_NAME` in the compose environment to a real
-domain to enable Let's Encrypt issuance via the bundled `acme.sh`.
+`https://localhost` (with a certificate of Caddy's local CA) once the
+container is healthy. It runs FrankenPHP with the Caddy configuration in
+`docker/caddy/`. Set `SERVER_NAME` in the compose environment to a real
+domain and Caddy obtains a Let's Encrypt certificate itself.
 
 ### Option B — Bare-metal (host nginx + PHP-FPM, FrankenPHP, …)
 
@@ -186,18 +187,14 @@ check that a backup is one.
 
 ## Development
 
-Two compose files target local development:
-
-- `compose.dev-frankenphp.yaml` — FrankenPHP (HTTP/1.1, HTTP/2, HTTP/3)
-- `compose.dev-nginx.yaml` — classic nginx + PHP-FPM
-
-Both bind-mount the working tree into the container and place `vendor/`,
-`tmp/`, `logs/`, `node_modules/`, plus the PostgreSQL data directory and
-Redis data on tmpfs — fast iteration and disposable state, but everything in
+`compose.development.yaml` targets local development, with FrankenPHP
+(HTTP/1.1, HTTP/2, HTTP/3). It bind-mounts the working tree into the container
+and places `vendor/`, `tmp/`, `logs/`, `node_modules/`, plus the PostgreSQL
+data directory and Redis data on tmpfs — fast iteration and disposable state, but everything in
 those paths is lost when the stack is torn down.
 
 ```bash
-docker compose -f compose.dev-frankenphp.yaml up
+docker compose -f compose.development.yaml up
 ```
 
 The Postgres and Redis ports are exposed to the host (`5432`, `6379`) so you

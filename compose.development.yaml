@@ -2,7 +2,7 @@ services:
   webserver-dev:
     build:
       context: .
-      dockerfile: docker/Dockerfile.dev-nginx
+      dockerfile: docker/Dockerfile.development
       args:
         - buildno
         - gitcommithash
@@ -29,7 +29,10 @@ services:
       CACHE_ADDRESSES_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_api_addresses_&duration=${CACHE_DURATION:-+2 minutes}"
       CACHE_BUSINESS_REGISTER_URL: "redis://cache-dev:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_business_register_&duration=${CACHE_DURATION:-+2 minutes}"
     ports:
-      - 80:80/tcp
+      - 80:80/tcp # HTTP
+      - 443:443/tcp # HTTPS
+      - 443:443/udp # HTTP/3
+    tty: true
 
   database-dev:
     image: postgres:18

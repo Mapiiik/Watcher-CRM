@@ -1,0 +1,19 @@
+# What belongs to this application, imported by the Caddyfile, which is the same in every image.
+
+# Classic mode, not a worker: the application keeps state between requests. A page of a customer
+# or a contract asks for hundreds of things at once, most of them waiting on the NMS, so the threads
+# are many; `auto` would size them by memory_limit and leave a handful.
+(app_frankenphp) {
+	num_threads {$PHP_NUM_THREADS:32}
+	max_threads {$PHP_MAX_THREADS:300}
+}
+
+# Maps load tiles from elsewhere, so there is no Content-Security-Policy
+(app_site) {
+	header ?X-Frame-Options "SAMEORIGIN"
+	header ?Referrer-Policy "same-origin"
+}
+
+# php_server as it comes
+(app_php_server) {
+}
