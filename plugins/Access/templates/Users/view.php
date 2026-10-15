@@ -127,10 +127,6 @@ $own = ($identity['id'] ?? null) === $user->id;
                             <th><?= __d('access', 'Modified') ?></th>
                             <td><?= h($user->modified) ?></td>
                         </tr>
-                        <tr>
-                            <th><?= __d('access', 'API Key') ?></th>
-                            <td><?= $user->api_token ? __d('access', 'Set') : __d('access', 'None') ?></td>
-                        </tr>
                     </table>
                 </div>
             </div>

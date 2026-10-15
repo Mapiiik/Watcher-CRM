@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-15 13:58+0200\n"
+"POT-Creation-Date: 2026-10-15 15:20+0200\n"
 "PO-Revision-Date: 2026-10-13 23:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -255,7 +255,7 @@ msgstr "Akce"
 #: plugins/Access/templates/Users/add.php:12
 #: plugins/Access/templates/Users/change_password.php:15
 #: plugins/Access/templates/Users/edit.php:20
-#: plugins/Access/templates/Users/view.php:70
+#: plugins/Access/templates/Users/view.php:71
 msgid "List Users"
 msgstr "Seznam uživatelů"
 
@@ -275,7 +275,6 @@ msgid "View User"
 msgstr "Zobrazit uživatele"
 
 #: plugins/Access/templates/Users/api_token.php:20
-#: plugins/Access/templates/Users/view.php:130
 msgid "API Key"
 msgstr "API klíč"
 
@@ -365,7 +364,7 @@ msgid "Search"
 msgstr "Hledat"
 
 #: plugins/Access/templates/Users/index.php:21
-#: plugins/Access/templates/Users/view.php:75
+#: plugins/Access/templates/Users/view.php:76
 msgid "New User"
 msgstr "Nový uživatel"
 
@@ -384,29 +383,30 @@ msgid "Two-Step Verification"
 msgstr "Dvoufázové ověření"
 
 #: plugins/Access/templates/Users/index.php:40
-#: plugins/Access/templates/element/sign_ins.php:15
+#: plugins/Access/templates/element/sign_ins.php:19
 msgid "Last Granted"
 msgstr "Naposledy povoleno"
 
 #: plugins/Access/templates/Users/index.php:53
 #: plugins/Access/templates/Users/index.php:55
-#: plugins/Access/templates/Users/view.php:109
-#: plugins/Access/templates/Users/view.php:113
-#: plugins/Access/templates/Users/view.php:159
+#: plugins/Access/templates/Users/view.php:110
+#: plugins/Access/templates/Users/view.php:114
+#: plugins/Access/templates/Users/view.php:156
 msgid "Yes"
 msgstr "Ano"
 
 #: plugins/Access/templates/Users/index.php:53
 #: plugins/Access/templates/Users/index.php:55
-#: plugins/Access/templates/Users/view.php:109
-#: plugins/Access/templates/Users/view.php:113
-#: plugins/Access/templates/Users/view.php:159
+#: plugins/Access/templates/Users/view.php:110
+#: plugins/Access/templates/Users/view.php:114
+#: plugins/Access/templates/Users/view.php:156
 msgid "No"
 msgstr "Ne"
 
 #: plugins/Access/templates/Users/index.php:57
 #: plugins/Access/templates/Users/index.php:58
 #: plugins/Access/templates/element/sign_ins.php:12
+#: plugins/Access/templates/element/sign_ins.php:16
 #: plugins/Access/templates/element/two_step_verification.php:59
 msgid "On"
 msgstr "Zapnuté"
@@ -414,6 +414,7 @@ msgstr "Zapnuté"
 #: plugins/Access/templates/Users/index.php:57
 #: plugins/Access/templates/Users/index.php:58
 #: plugins/Access/templates/element/sign_ins.php:12
+#: plugins/Access/templates/element/sign_ins.php:16
 #: plugins/Access/templates/element/two_step_verification.php:59
 msgid "Off"
 msgstr "Vypnuté"
@@ -443,8 +444,8 @@ msgstr "Zadejte prosím své uživatelské jméno a heslo"
 
 #: plugins/Access/templates/Users/login.php:11
 #: plugins/Access/templates/Users/profile.php:31
-#: plugins/Access/templates/Users/view.php:88
-#: plugins/Access/templates/Users/view.php:149
+#: plugins/Access/templates/Users/view.php:89
+#: plugins/Access/templates/Users/view.php:146
 #: plugins/Access/templates/element/social_accounts.php:23
 msgid "Username"
 msgstr "Uživatelské jméno"
@@ -485,28 +486,28 @@ msgid "Turn On"
 msgstr "Zapnout"
 
 #: plugins/Access/templates/Users/profile.php:35
-#: plugins/Access/templates/Users/view.php:92
+#: plugins/Access/templates/Users/view.php:93
 msgid "First Name"
 msgstr "Jméno"
 
 #: plugins/Access/templates/Users/profile.php:39
-#: plugins/Access/templates/Users/view.php:96
+#: plugins/Access/templates/Users/view.php:97
 msgid "Last Name"
 msgstr "Příjmení"
 
 #: plugins/Access/templates/Users/profile.php:43
-#: plugins/Access/templates/Users/view.php:100
+#: plugins/Access/templates/Users/view.php:101
 msgid "Email"
 msgstr "E-mail"
 
 #: plugins/Access/templates/Users/profile.php:47
-#: plugins/Access/templates/Users/view.php:104
+#: plugins/Access/templates/Users/view.php:105
 msgid "Role"
 msgstr "Role"
 
 #: plugins/Access/templates/Users/profile.php:56
-#: plugins/Access/templates/Users/view.php:122
-#: plugins/Access/templates/Users/view.php:152
+#: plugins/Access/templates/Users/view.php:123
+#: plugins/Access/templates/Users/view.php:149
 msgid "Created"
 msgstr "Vytvořeno"
 
@@ -592,44 +593,38 @@ msgstr "Vypnout přihlášení heslem"
 msgid ""
 "The account will sign in only with a key or through an identity provider. "
 "Turn off its password?"
-msgstr "Účet se pak přihlásí jen klíčem API nebo přes poskytovatele identity. Vypnout přihlášení heslem?"
+msgstr ""
+"Účet se pak přihlásí jen klíčem API nebo přes poskytovatele identity. "
+"Vypnout přihlášení heslem?"
 
-#: plugins/Access/templates/Users/view.php:83
+#: plugins/Access/templates/Users/view.php:84
 msgid "User"
 msgstr "Uživatel"
 
-#: plugins/Access/templates/Users/view.php:108
+#: plugins/Access/templates/Users/view.php:109
 msgid "Is Superuser"
 msgstr "Je superuživatel"
 
-#: plugins/Access/templates/Users/view.php:112
-#: plugins/Access/templates/Users/view.php:151
+#: plugins/Access/templates/Users/view.php:113
+#: plugins/Access/templates/Users/view.php:148
 msgid "Active"
 msgstr "Aktivní"
 
-#: plugins/Access/templates/Users/view.php:126
+#: plugins/Access/templates/Users/view.php:127
 msgid "Modified"
 msgstr "Upraveno"
 
-#: plugins/Access/templates/Users/view.php:131
-msgid "Set"
-msgstr "Nastavený"
-
-#: plugins/Access/templates/Users/view.php:131
-msgid "None"
-msgstr "Žádný"
-
-#: plugins/Access/templates/Users/view.php:143
+#: plugins/Access/templates/Users/view.php:140
 #: plugins/Access/templates/element/social_accounts.php:18
 msgid "Social Accounts"
 msgstr "Sociální účty"
 
-#: plugins/Access/templates/Users/view.php:148
+#: plugins/Access/templates/Users/view.php:145
 #: plugins/Access/templates/element/social_accounts.php:22
 msgid "Provider"
 msgstr "Poskytovatel"
 
-#: plugins/Access/templates/Users/view.php:150
+#: plugins/Access/templates/Users/view.php:147
 msgid "Reference"
 msgstr "Reference"
 
@@ -651,15 +646,19 @@ msgstr "QR kód pro ověřovací aplikaci"
 msgid "Where the QR code cannot be scanned, enter this key instead:"
 msgstr "Pokud QR kód nejde naskenovat, zadejte místo něj tento klíč:"
 
-#: plugins/Access/templates/element/sign_ins.php:19
+#: plugins/Access/templates/element/sign_ins.php:15
+msgid "API Key Sign-In"
+msgstr "Přihlášení API klíčem"
+
+#: plugins/Access/templates/element/sign_ins.php:23
 msgid "Last Granted IP Address"
 msgstr "Poslední povolená IP adresa"
 
-#: plugins/Access/templates/element/sign_ins.php:23
+#: plugins/Access/templates/element/sign_ins.php:27
 msgid "Last Denied"
 msgstr "Naposledy odepřeno"
 
-#: plugins/Access/templates/element/sign_ins.php:27
+#: plugins/Access/templates/element/sign_ins.php:31
 msgid "Last Denied IP Address"
 msgstr "Poslední odepřená IP adresa"
 

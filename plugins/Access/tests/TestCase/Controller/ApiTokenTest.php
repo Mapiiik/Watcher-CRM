@@ -102,6 +102,7 @@ class ApiTokenTest extends TestCase
         $this->session(['Auth' => ['id' => $id, 'username' => 'admin', 'role' => 'admin']]);
         $this->get('/users/view/' . $id);
         $this->assertResponseContains('Remove API Key');
+        $this->assertResponseContains("<th>API Key Sign-In</th>\n    <td>On</td>");
 
         $this->enableCsrfToken();
         $this->enableSecurityToken();

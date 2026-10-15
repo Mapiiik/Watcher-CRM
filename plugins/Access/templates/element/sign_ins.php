@@ -12,6 +12,10 @@
     <td><?= $user->hasPasswordSignIn() ? __d('access', 'On') : __d('access', 'Off') ?></td>
 </tr>
 <tr>
+    <th><?= __d('access', 'API Key Sign-In') ?></th>
+    <td><?= $user->api_token ? __d('access', 'On') : __d('access', 'Off') ?></td>
+</tr>
+<tr>
     <th><?= __d('access', 'Last Granted') ?></th>
     <td><?= h($user->last_granted) ?></td>
 </tr>

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-15 13:58+0200\n"
+"POT-Creation-Date: 2026-10-15 15:20+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -230,7 +230,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/add.php:12
 #: ./plugins/Access/templates/Users/change_password.php:15
 #: ./plugins/Access/templates/Users/edit.php:20
-#: ./plugins/Access/templates/Users/view.php:70
+#: ./plugins/Access/templates/Users/view.php:71
 msgid "List Users"
 msgstr ""
 
@@ -250,7 +250,6 @@ msgid "View User"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/api_token.php:20
-#: ./plugins/Access/templates/Users/view.php:130
 msgid "API Key"
 msgstr ""
 
@@ -331,7 +330,7 @@ msgid "Search"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/index.php:21
-#: ./plugins/Access/templates/Users/view.php:75
+#: ./plugins/Access/templates/Users/view.php:76
 msgid "New User"
 msgstr ""
 
@@ -350,29 +349,30 @@ msgid "Two-Step Verification"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/index.php:40
-#: ./plugins/Access/templates/element/sign_ins.php:15
+#: ./plugins/Access/templates/element/sign_ins.php:19
 msgid "Last Granted"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/index.php:53
 #: ./plugins/Access/templates/Users/index.php:55
-#: ./plugins/Access/templates/Users/view.php:109
-#: ./plugins/Access/templates/Users/view.php:113
-#: ./plugins/Access/templates/Users/view.php:159
+#: ./plugins/Access/templates/Users/view.php:110
+#: ./plugins/Access/templates/Users/view.php:114
+#: ./plugins/Access/templates/Users/view.php:156
 msgid "Yes"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/index.php:53
 #: ./plugins/Access/templates/Users/index.php:55
-#: ./plugins/Access/templates/Users/view.php:109
-#: ./plugins/Access/templates/Users/view.php:113
-#: ./plugins/Access/templates/Users/view.php:159
+#: ./plugins/Access/templates/Users/view.php:110
+#: ./plugins/Access/templates/Users/view.php:114
+#: ./plugins/Access/templates/Users/view.php:156
 msgid "No"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/index.php:57
 #: ./plugins/Access/templates/Users/index.php:58
 #: ./plugins/Access/templates/element/sign_ins.php:12
+#: ./plugins/Access/templates/element/sign_ins.php:16
 #: ./plugins/Access/templates/element/two_step_verification.php:59
 msgid "On"
 msgstr ""
@@ -380,6 +380,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/index.php:57
 #: ./plugins/Access/templates/Users/index.php:58
 #: ./plugins/Access/templates/element/sign_ins.php:12
+#: ./plugins/Access/templates/element/sign_ins.php:16
 #: ./plugins/Access/templates/element/two_step_verification.php:59
 msgid "Off"
 msgstr ""
@@ -409,8 +410,8 @@ msgstr ""
 
 #: ./plugins/Access/templates/Users/login.php:11
 #: ./plugins/Access/templates/Users/profile.php:31
-#: ./plugins/Access/templates/Users/view.php:88
-#: ./plugins/Access/templates/Users/view.php:149
+#: ./plugins/Access/templates/Users/view.php:89
+#: ./plugins/Access/templates/Users/view.php:146
 #: ./plugins/Access/templates/element/social_accounts.php:23
 msgid "Username"
 msgstr ""
@@ -447,28 +448,28 @@ msgid "Turn On"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/profile.php:35
-#: ./plugins/Access/templates/Users/view.php:92
+#: ./plugins/Access/templates/Users/view.php:93
 msgid "First Name"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/profile.php:39
-#: ./plugins/Access/templates/Users/view.php:96
+#: ./plugins/Access/templates/Users/view.php:97
 msgid "Last Name"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/profile.php:43
-#: ./plugins/Access/templates/Users/view.php:100
+#: ./plugins/Access/templates/Users/view.php:101
 msgid "Email"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/profile.php:47
-#: ./plugins/Access/templates/Users/view.php:104
+#: ./plugins/Access/templates/Users/view.php:105
 msgid "Role"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/profile.php:56
-#: ./plugins/Access/templates/Users/view.php:122
-#: ./plugins/Access/templates/Users/view.php:152
+#: ./plugins/Access/templates/Users/view.php:123
+#: ./plugins/Access/templates/Users/view.php:149
 msgid "Created"
 msgstr ""
 
@@ -544,42 +545,34 @@ msgstr ""
 msgid "The account will sign in only with a key or through an identity provider. Turn off its password?"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:83
+#: ./plugins/Access/templates/Users/view.php:84
 msgid "User"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:108
+#: ./plugins/Access/templates/Users/view.php:109
 msgid "Is Superuser"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:112
-#: ./plugins/Access/templates/Users/view.php:151
+#: ./plugins/Access/templates/Users/view.php:113
+#: ./plugins/Access/templates/Users/view.php:148
 msgid "Active"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:126
+#: ./plugins/Access/templates/Users/view.php:127
 msgid "Modified"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:131
-msgid "Set"
-msgstr ""
-
-#: ./plugins/Access/templates/Users/view.php:131
-msgid "None"
-msgstr ""
-
-#: ./plugins/Access/templates/Users/view.php:143
+#: ./plugins/Access/templates/Users/view.php:140
 #: ./plugins/Access/templates/element/social_accounts.php:18
 msgid "Social Accounts"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:148
+#: ./plugins/Access/templates/Users/view.php:145
 #: ./plugins/Access/templates/element/social_accounts.php:22
 msgid "Provider"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/view.php:150
+#: ./plugins/Access/templates/Users/view.php:147
 msgid "Reference"
 msgstr ""
 
@@ -595,15 +588,19 @@ msgstr ""
 msgid "Where the QR code cannot be scanned, enter this key instead:"
 msgstr ""
 
-#: ./plugins/Access/templates/element/sign_ins.php:19
-msgid "Last Granted IP Address"
+#: ./plugins/Access/templates/element/sign_ins.php:15
+msgid "API Key Sign-In"
 msgstr ""
 
 #: ./plugins/Access/templates/element/sign_ins.php:23
-msgid "Last Denied"
+msgid "Last Granted IP Address"
 msgstr ""
 
 #: ./plugins/Access/templates/element/sign_ins.php:27
+msgid "Last Denied"
+msgstr ""
+
+#: ./plugins/Access/templates/element/sign_ins.php:31
 msgid "Last Denied IP Address"
 msgstr ""
 
