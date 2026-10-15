@@ -119,7 +119,7 @@ read at boot). `config/.env.example` is the canonical list; common groups are:
 
 - **Database / cache:** `DATABASE_URL`, `CACHE_*_URL`
 - **Integrations:** `WATCHER_NMS_URL/_KEY`, `WATCHER_AGENT_URL/_KEY`,
-  `ADDRESSES_API_URL/_KEY`, `EUROFAKTURA_API_URL`, `ANDROID_SMS_GATEWAY_URL`, …
+  `ADDRESSES_API_URL/_KEY`, `ANDROID_SMS_GATEWAY_URL`, …
 
 ### Pictures of filed documents
 

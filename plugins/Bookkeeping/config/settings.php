@@ -59,11 +59,11 @@ return [
 
                     // API
                     'api' => [
-                        'url' => (string)env('POHODA_MSERVER_URL', 'http://localhost:44444'),
+                        'url' => 'http://localhost:44444',
 
                         // which accounting unit mServer is to answer for, named by its
                         // identity number - a test file is reached by naming a different one
-                        'accounting_unit' => (string)env('POHODA_COMPANY_ID', '00000000'),
+                        'accounting_unit' => '00000000',
 
                         'timeout' => NumberType::ofInt(
                             default: 3600,
@@ -148,7 +148,7 @@ return [
 
                     // API
                     'api' => [
-                        'url' => (string)env('EUROFAKTURA_API_URL', 'https://e-racuni.com/H7i/API'),
+                        'url' => 'https://e-racuni.com/H7i/API',
                         'timeout' => NumberType::ofInt(
                             default: 3600,
                             hint: __d('bookkeeping', 'How long to wait for the accounting API, in seconds.'),
@@ -220,11 +220,11 @@ return [
             // passed over.
             'thresholds' => [
                 'allowed_payment_delay' => NumberType::ofInt(
-                    default: (int)env('DEBTORS_ALLOWED_PAYMENT_DELAY', '0'),
+                    default: 0,
                     hint: __d('bookkeeping', 'How many days a payment may be late before it counts.'),
                 ),
                 'allowed_total_overdue_debt' => NumberType::ofDecimal(
-                    default: (float)env('DEBTORS_ALLOWED_TOTAL_OVERDUE_DEBT', '0'),
+                    default: 0.0,
                     scale: 2,
                     hint: __d('bookkeeping', 'How small an overdue debt is passed over.'),
                 ),
@@ -234,10 +234,7 @@ return [
                 'enabled' => new BoolType(default: true), // global kill‑switch
 
                 'days' => ListType::ofInts(
-                    default: array_map(
-                        intval(...),
-                        array_filter(explode(',', (string)env('DEBTORS_NOTIFY_DAYS', '5,10'))),
-                    ),
+                    default: [5, 10],
                     hint: __d(
                         'bookkeeping',
                         'How many days before the due date a debtor is warned on. An empty list [] warns on none.',
@@ -268,7 +265,7 @@ return [
                 'enabled' => new BoolType(default: true), // global kill‑switch
 
                 // the label a blocked customer is given; nothing named leaves them unlabelled
-                'blocked_label_id' => (string)env('DEBTORS_BLOCKED_LABEL_ID', ''),
+                'blocked_label_id' => '',
 
                 'services' => [
                     'sledovani_tv' => [
@@ -278,7 +275,7 @@ return [
                         'enabled' => new BoolType(default: true),
 
                         // the firewall address list the blocked addresses are written into
-                        'address_list' => (string)env('DEBTORS_ADDRESS_LIST', ''),
+                        'address_list' => '',
                     ],
                 ],
             ],
