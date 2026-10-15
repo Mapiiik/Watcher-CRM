@@ -27,7 +27,10 @@ use Cake\ORM\Entity;
  * @property string|null $secret
  * @property bool $secret_verified
  * @property int|null $otp_last_timestep
- * @property \Cake\I18n\DateTime|null $last_login
+ * @property \Cake\I18n\DateTime|null $last_granted
+ * @property string|null $last_granted_ip
+ * @property \Cake\I18n\DateTime|null $last_denied
+ * @property string|null $last_denied_ip
  * @property array|null $user_settings
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified

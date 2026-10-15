@@ -235,6 +235,44 @@ class UsersControllerTest extends TestCase
     }
 
     /**
+     * The account notes when and from where it last signed in, and when and from where somebody
+     * last failed to, by its username or its e-mail. A name no account has notes nothing.
+     *
+     * @return void
+     */
+    public function testSignInsAndFailuresAreNotedOnTheAccount(): void
+    {
+        $id = $this->addAccount()->get('id');
+        $users = $this->getTableLocator()->get('Users');
+
+        $this->configRequest(['environment' => ['REMOTE_ADDR' => '192.0.2.10']]);
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'jan.novak@example.com', 'password' => 'Not the password 1']);
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'nobody', 'password' => 'Not the password 1']);
+        $user = $users->get($id);
+        $this->assertNotNull($user->get('last_denied'));
+        $this->assertSame('192.0.2.10', $user->get('last_denied_ip'));
+        $this->assertNull($user->get('last_granted'));
+
+        // configRequest() merges, the address is replaced
+        $this->_request = ['environment' => ['REMOTE_ADDR' => '2001:db8::20']];
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => 'jnovak', 'password' => 'Kopr na zahrade 7x']);
+        $this->assertRedirect('/');
+        $user = $users->get($id);
+        $this->assertNotNull($user->get('last_granted'));
+        $this->assertSame('2001:db8::20', $user->get('last_granted_ip'));
+        $this->assertSame('192.0.2.10', $user->get('last_denied_ip'));
+
+        $this->_session = $_SESSION ?? [];
+        $this->get('/profile');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<td>2001:db8::20</td>');
+        $this->assertResponseContains('<td>192.0.2.10</td>');
+    }
+
+    /**
      * Nothing signs in without a password and without the second factor: no cookie remembering
      * somebody, no link sent by e-mail. A session ends after eight hours idle.
      *

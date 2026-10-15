@@ -7,8 +7,10 @@ use Access\Model\Table\UsersTable;
 use Authentication\Authenticator\FormAuthenticator as BaseFormAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Override;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -16,10 +18,13 @@ use Psr\Http\Message\ServerRequestInterface;
  * Signing in with a username and a password, with failures counted.
  *
  * An account that failed too often from one address, or an address that failed too often, is
- * refused for a while without its password being looked at. Every failure and refusal is logged.
+ * refused for a while without its password being looked at. Every failure and refusal is logged,
+ * and a failure is noted on the account too.
  */
 class FormAuthenticator extends BaseFormAuthenticator
 {
+    use LocatorAwareTrait;
+
     /**
      * Refused for too many failures, without the password being looked at.
      */
@@ -68,6 +73,7 @@ class FormAuthenticator extends BaseFormAuthenticator
             $throttle->succeeded($account, $address);
         } elseif ($result->getStatus() !== Result::FAILURE_CREDENTIALS_MISSING) {
             $throttle->failed($account, $address);
+            $this->usersTable()->noteDenied($account, $address);
             AuthLog::warning('sign-in failed', [
                 'user' => $account,
                 'ip' => $address,
@@ -76,6 +82,17 @@ class FormAuthenticator extends BaseFormAuthenticator
         }
 
         return $result;
+    }
+
+    /**
+     * The accounts, as the application extends them.
+     *
+     * @return \Access\Model\Table\UsersTable
+     */
+    private function usersTable(): UsersTable
+    {
+        /** @var \Access\Model\Table\UsersTable */
+        return $this->fetchTable((string)Configure::read('Users.table'));
     }
 
     /**

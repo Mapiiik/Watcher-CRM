@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-15 10:53+0200\n"
+"POT-Creation-Date: 2026-10-15 12:03+0200\n"
 "PO-Revision-Date: 2026-10-13 23:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -85,30 +85,30 @@ msgstr "Heslo patří mezi nejběžnější."
 msgid "The API key of {0} is removed."
 msgstr "API klíč účtu {0} byl odebrán."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:71
-#: plugins/Access/src/Controller/UsersController.php:111
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:72
+#: plugins/Access/src/Controller/UsersController.php:110
 msgid "Too many failed sign-ins. Try again in a few minutes."
 msgstr "Příliš mnoho neúspěšných přihlášení. Zkuste to znovu za několik minut."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:72
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:73
 msgid "The code is not right. Please sign in again."
 msgstr "Kód je nesprávný. Přihlaste se prosím znovu."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:116
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:153
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:185
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:117
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:154
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:186
 msgid "The code is not right. Please try again."
 msgstr "Kód je nesprávný. Zkuste to prosím znovu."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:137
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:138
 msgid "Your account has to use two-step verification."
 msgstr "Váš účet musí používat dvoufázové ověření."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:149
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:150
 msgid "Two-step verification is turned off."
 msgstr "Dvoufázové ověření je vypnuté."
 
-#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:229
+#: plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:230
 msgid "The two-step verification of {0} is reset."
 msgstr "Dvoufázové ověření účtu {0} je resetované."
 
@@ -150,11 +150,11 @@ msgstr "Propojení sociálního účtu bylo zrušeno."
 msgid "The identity could not be unlinked."
 msgstr "Propojení sociálního účtu se nepodařilo zrušit."
 
-#: plugins/Access/src/Controller/UsersController.php:112
+#: plugins/Access/src/Controller/UsersController.php:111
 msgid "The username or the password is not right."
 msgstr "Uživatelské jméno nebo heslo je nesprávné."
 
-#: plugins/Access/src/Controller/UsersController.php:133
+#: plugins/Access/src/Controller/UsersController.php:132
 msgid ""
 "No account here is linked to that identity. Sign in with your password and "
 "link it in your profile."
@@ -162,45 +162,45 @@ msgstr ""
 "S tímto sociálním účtem tu není propojený žádný účet. Přihlaste se heslem a "
 "propojte ho ve svém profilu."
 
-#: plugins/Access/src/Controller/UsersController.php:160
+#: plugins/Access/src/Controller/UsersController.php:159
 msgid "You have signed out."
 msgstr "Úspěšně jste se odhlásili."
 
-#: plugins/Access/src/Controller/UsersController.php:197
+#: plugins/Access/src/Controller/UsersController.php:196
 msgid "Only a superuser changes the password of somebody else."
 msgstr "Heslo jiného uživatele může změnit jen superuživatel."
 
-#: plugins/Access/src/Controller/UsersController.php:218
+#: plugins/Access/src/Controller/UsersController.php:217
 msgid "This is not the current password."
 msgstr "Současné heslo je nesprávné."
 
-#: plugins/Access/src/Controller/UsersController.php:221
+#: plugins/Access/src/Controller/UsersController.php:220
 msgid "The new password has to differ from the current one."
 msgstr "Nové heslo se musí lišit od současného."
 
-#: plugins/Access/src/Controller/UsersController.php:230
+#: plugins/Access/src/Controller/UsersController.php:229
 msgid "The password has been changed."
 msgstr "Heslo bylo úspěšně změněno."
 
-#: plugins/Access/src/Controller/UsersController.php:234
+#: plugins/Access/src/Controller/UsersController.php:233
 msgid "The password could not be changed."
 msgstr "Heslo se nepodařilo změnit."
 
-#: plugins/Access/src/Controller/UsersController.php:307
-#: plugins/Access/src/Controller/UsersController.php:331
+#: plugins/Access/src/Controller/UsersController.php:306
+#: plugins/Access/src/Controller/UsersController.php:330
 msgid "The account has been saved."
 msgstr "Účet byl uložen."
 
-#: plugins/Access/src/Controller/UsersController.php:311
-#: plugins/Access/src/Controller/UsersController.php:335
+#: plugins/Access/src/Controller/UsersController.php:310
+#: plugins/Access/src/Controller/UsersController.php:334
 msgid "The account could not be saved."
 msgstr "Účet se nepodařilo uložit."
 
-#: plugins/Access/src/Controller/UsersController.php:353
+#: plugins/Access/src/Controller/UsersController.php:352
 msgid "The account has been deleted."
 msgstr "Účet byl smazán."
 
-#: plugins/Access/src/Controller/UsersController.php:355
+#: plugins/Access/src/Controller/UsersController.php:354
 msgid "The account could not be deleted."
 msgstr "Účet se nepodařilo smazat."
 
@@ -209,7 +209,7 @@ msgstr "Účet se nepodařilo smazat."
 msgid "A new password for {0}"
 msgstr "Nové heslo pro {0}"
 
-#: plugins/Access/src/Middleware/UnauthorizedHandler/RedirectHandler.php:56
+#: plugins/Access/src/Middleware/UnauthorizedHandler/RedirectHandler.php:70
 msgid "You are not allowed to open that page."
 msgstr "Nemáte oprávnění pro přístup k této stránce."
 
@@ -263,7 +263,7 @@ msgid "View User"
 msgstr "Zobrazit uživatele"
 
 #: plugins/Access/templates/Users/api_token.php:20
-#: plugins/Access/templates/Users/view.php:109
+#: plugins/Access/templates/Users/view.php:106
 msgid "API Key"
 msgstr "API klíč"
 
@@ -366,11 +366,16 @@ msgstr "Uživatelé"
 msgid "Two-Step Verification"
 msgstr "Dvoufázové ověření"
 
+#: plugins/Access/templates/Users/index.php:39
+#: plugins/Access/templates/element/sign_ins.php:10
+msgid "Last Granted"
+msgstr "Naposledy povoleno"
+
 #: plugins/Access/templates/Users/index.php:52
 #: plugins/Access/templates/Users/index.php:54
 #: plugins/Access/templates/Users/view.php:85
 #: plugins/Access/templates/Users/view.php:89
-#: plugins/Access/templates/Users/view.php:138
+#: plugins/Access/templates/Users/view.php:135
 msgid "Yes"
 msgstr "Ano"
 
@@ -378,7 +383,7 @@ msgstr "Ano"
 #: plugins/Access/templates/Users/index.php:54
 #: plugins/Access/templates/Users/view.php:85
 #: plugins/Access/templates/Users/view.php:89
-#: plugins/Access/templates/Users/view.php:138
+#: plugins/Access/templates/Users/view.php:135
 msgid "No"
 msgstr "Ne"
 
@@ -417,7 +422,7 @@ msgstr "Zadejte prosím své uživatelské jméno a heslo"
 #: plugins/Access/templates/Users/login.php:11
 #: plugins/Access/templates/Users/profile.php:31
 #: plugins/Access/templates/Users/view.php:64
-#: plugins/Access/templates/Users/view.php:128
+#: plugins/Access/templates/Users/view.php:125
 #: plugins/Access/templates/element/social_accounts.php:23
 msgid "Username"
 msgstr "Uživatelské jméno"
@@ -477,14 +482,9 @@ msgstr "E-mail"
 msgid "Role"
 msgstr "Role"
 
-#: plugins/Access/templates/Users/profile.php:55
-#: plugins/Access/templates/Users/view.php:97
-msgid "Last Login"
-msgstr "Poslední přihlášení"
-
-#: plugins/Access/templates/Users/profile.php:59
-#: plugins/Access/templates/Users/view.php:101
-#: plugins/Access/templates/Users/view.php:131
+#: plugins/Access/templates/Users/profile.php:56
+#: plugins/Access/templates/Users/view.php:98
+#: plugins/Access/templates/Users/view.php:128
 msgid "Created"
 msgstr "Vytvořeno"
 
@@ -567,33 +567,33 @@ msgid "Is Superuser"
 msgstr "Je superuživatel"
 
 #: plugins/Access/templates/Users/view.php:88
-#: plugins/Access/templates/Users/view.php:130
+#: plugins/Access/templates/Users/view.php:127
 msgid "Active"
 msgstr "Aktivní"
 
-#: plugins/Access/templates/Users/view.php:105
+#: plugins/Access/templates/Users/view.php:102
 msgid "Modified"
 msgstr "Upraveno"
 
-#: plugins/Access/templates/Users/view.php:110
+#: plugins/Access/templates/Users/view.php:107
 msgid "Set"
 msgstr "Nastavený"
 
-#: plugins/Access/templates/Users/view.php:110
+#: plugins/Access/templates/Users/view.php:107
 msgid "None"
 msgstr "Žádný"
 
-#: plugins/Access/templates/Users/view.php:122
+#: plugins/Access/templates/Users/view.php:119
 #: plugins/Access/templates/element/social_accounts.php:18
 msgid "Social Accounts"
 msgstr "Sociální účty"
 
-#: plugins/Access/templates/Users/view.php:127
+#: plugins/Access/templates/Users/view.php:124
 #: plugins/Access/templates/element/social_accounts.php:22
 msgid "Provider"
 msgstr "Poskytovatel"
 
-#: plugins/Access/templates/Users/view.php:129
+#: plugins/Access/templates/Users/view.php:126
 msgid "Reference"
 msgstr "Reference"
 
@@ -614,6 +614,18 @@ msgstr "QR kód pro ověřovací aplikaci"
 #: plugins/Access/templates/element/one_time_password_setup.php:22
 msgid "Where the QR code cannot be scanned, enter this key instead:"
 msgstr "Pokud QR kód nejde naskenovat, zadejte místo něj tento klíč:"
+
+#: plugins/Access/templates/element/sign_ins.php:14
+msgid "Last Granted IP Address"
+msgstr "Poslední povolená IP adresa"
+
+#: plugins/Access/templates/element/sign_ins.php:18
+msgid "Last Denied"
+msgstr "Naposledy odepřeno"
+
+#: plugins/Access/templates/element/sign_ins.php:22
+msgid "Last Denied IP Address"
+msgstr "Poslední odepřená IP adresa"
 
 #: plugins/Access/templates/element/social_accounts.php:32
 msgid "Unlink"

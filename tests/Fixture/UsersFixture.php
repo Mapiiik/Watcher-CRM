@@ -44,7 +44,7 @@ class UsersFixture extends TestFixture
                 'modified' => 1698515383,
                 'secret' => 'Lorem ipsum dolor sit amet',
                 'secret_verified' => 1,
-                'last_login' => 1698515383,
+                'last_granted' => 1698515383,
                 'nid' => 1,
                 'user_settings' => null,
                 'id' => '11edb519-be76-4d66-aea0-34188d31eae1',

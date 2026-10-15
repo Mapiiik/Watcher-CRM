@@ -21,7 +21,6 @@ use Authentication\Identifier\PasswordIdentifier;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
-use Cake\I18n\DateTime;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Traits\IsAuthorizedTrait;
 use Override;
@@ -359,8 +358,8 @@ class UsersController extends AppController
     }
 
     /**
-     * Finishes signing in: stores a password hashed the old way again, notes the time and sends
-     * the account where it was going.
+     * Finishes signing in: stores a password hashed the old way again, notes when and from where
+     * and sends the account where it was going.
      *
      * @return \Cake\Http\Response|null
      */
@@ -375,15 +374,12 @@ class UsersController extends AppController
         }
 
         $this->rehashPassword($provider, $user);
-        $user->set('last_login', DateTime::now());
-        $this->getUsersTable()->updateQuery()
-            ->set(['last_login' => $user->get('last_login')])
-            ->where(['id' => $user->get('id')])
-            ->execute();
+        $address = AuthLog::address($this->getRequest());
+        $this->getUsersTable()->noteGranted((string)$user->get('id'), $address);
 
         AuthLog::info('signed in', [
             'user' => (string)$user->get('username'),
-            'ip' => AuthLog::address($this->getRequest()),
+            'ip' => $address,
             'with' => namespaceSplit($provider::class)[1],
         ]);
 

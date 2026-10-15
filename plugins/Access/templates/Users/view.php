@@ -93,10 +93,7 @@ use Access\Social\Providers;
                 </div>
                 <div class="column">
                     <table>
-                        <tr>
-                            <th><?= __d('access', 'Last Login') ?></th>
-                            <td><?= h($user->last_login) ?></td>
-                        </tr>
+                        <?= $this->element('Access.sign_ins', ['user' => $user]) ?>
                         <tr>
                             <th><?= __d('access', 'Created') ?></th>
                             <td><?= h($user->created) ?></td>

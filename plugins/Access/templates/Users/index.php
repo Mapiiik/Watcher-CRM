@@ -36,7 +36,7 @@
                     <th><?= $this->Paginator->sort('is_superuser') ?></th>
                     <th><?= $this->Paginator->sort('role') ?></th>
                     <th><?= $this->Paginator->sort('secret_verified', __d('access', 'Two-Step Verification')) ?></th>
-                    <th><?= $this->Paginator->sort('last_login') ?></th>
+                    <th><?= $this->Paginator->sort('last_granted', __d('access', 'Last Granted')) ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
                     <th class="actions"><?= __d('access', 'Actions') ?></th>
@@ -54,7 +54,7 @@
                     <td><?= $user->is_superuser ? __d('access', 'Yes') : __d('access', 'No'); ?></td>
                     <td><?= h($user->getRoleName()) ?></td>
                     <td><?= $user->hasTwoStepVerification() ? __d('access', 'On') : __d('access', 'Off') ?></td>
-                    <td><?= h($user->last_login) ?></td>
+                    <td><?= h($user->last_granted) ?></td>
                     <td><?= h($user->created) ?></td>
                     <td><?= h($user->modified) ?></td>
                     <td class="actions">

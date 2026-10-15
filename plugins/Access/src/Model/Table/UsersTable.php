@@ -327,6 +327,53 @@ class UsersTable extends Table
     }
 
     /**
+     * Notes when and from where the account last signed in.
+     *
+     * @param string $id The account.
+     * @param string $ip The address it signed in from.
+     * @return void
+     */
+    public function noteGranted(string $id, string $ip): void
+    {
+        $this->updateQuery()
+            ->set(['last_granted' => DateTime::now(), 'last_granted_ip' => self::address($ip)])
+            ->where(['id' => $id])
+            ->execute();
+    }
+
+    /**
+     * Notes when and from where somebody last failed to sign in to the account that a username or
+     * an e-mail names, with a wrong password or a wrong code.
+     *
+     * @param string $reference A username or an e-mail.
+     * @param string $ip The address of the attempt.
+     * @return void
+     */
+    public function noteDenied(string $reference, string $ip): void
+    {
+        $reference = trim($reference);
+        if ($reference === '') {
+            return;
+        }
+
+        $this->updateQuery()
+            ->set(['last_denied' => DateTime::now(), 'last_denied_ip' => self::address($ip)])
+            ->where(['OR' => ['username' => $reference, 'email' => $reference]])
+            ->execute();
+    }
+
+    /**
+     * An address as the database keeps it, or nothing where it is not one.
+     *
+     * @param string $ip The address.
+     * @return string|null
+     */
+    private static function address(string $ip): ?string
+    {
+        return filter_var($ip, FILTER_VALIDATE_IP) !== false ? $ip : null;
+    }
+
+    /**
      * What decides the rules for a password: the account as stored, with whatever the same form
      * changes on it.
      *

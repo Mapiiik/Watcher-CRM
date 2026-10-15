@@ -112,6 +112,8 @@ class OneTimePasswordTest extends TestCase
         $this->enterCode($code);
         $this->get('/login');
         $this->assertRedirect('/');
+        $this->assertNotNull($this->account($id)->get('last_granted'));
+        $this->assertNull($this->account($id)->get('last_denied'));
 
         $this->_session = [];
         $this->signIn();
@@ -119,6 +121,8 @@ class OneTimePasswordTest extends TestCase
 
         $this->assertRedirectContains('/login');
         $this->assertSession(null, 'Auth');
+        // the password was right, the code was not
+        $this->assertNotNull($this->account($id)->get('last_denied'));
         /** @var \Cake\Log\Engine\ArrayLog $log */
         $log = Log::engine('auth');
         $this->assertStringContainsString('one-time code refused user="jnovak"', implode("\n", $log->read()));

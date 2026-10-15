@@ -142,11 +142,12 @@ class UsersTableTest extends TestCase
             'api_token' => 'a key',
             'secret' => 'JBSWY3DPEHPK3PXP',
             'is_superuser' => true,
-            'last_login' => '2026-10-13 12:00:00',
+            'last_granted' => '2026-10-13 12:00:00',
+            'last_denied_ip' => '192.0.2.1',
         ], ['validate' => false]);
 
         $this->assertSame('Jan', $user->get('first_name'));
-        foreach (['password', 'api_token', 'secret', 'is_superuser', 'last_login'] as $field) {
+        foreach (['password', 'api_token', 'secret', 'is_superuser', 'last_granted', 'last_denied_ip'] as $field) {
             $this->assertFalse($user->has($field), $field);
         }
     }

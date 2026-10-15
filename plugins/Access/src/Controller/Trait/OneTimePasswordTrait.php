@@ -60,6 +60,7 @@ trait OneTimePasswordTrait
         if ($how === null) {
             if (!$blocked) {
                 $throttle->failed($username, $address);
+                $this->getUsersTable()->noteDenied($username, $address);
             }
             AuthLog::warning($blocked ? 'one-time code blocked' : 'one-time code refused', [
                 'user' => $username,
