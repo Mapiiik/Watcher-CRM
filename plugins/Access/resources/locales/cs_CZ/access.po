@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-15 15:20+0200\n"
+"POT-Creation-Date: 2026-10-17 17:51+0200\n"
 "PO-Revision-Date: 2026-10-13 23:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -208,11 +208,11 @@ msgstr "Účet byl uložen."
 msgid "The account could not be saved."
 msgstr "Účet se nepodařilo uložit."
 
-#: plugins/Access/src/Controller/UsersController.php:382
+#: plugins/Access/src/Controller/UsersController.php:383
 msgid "The account has been deleted."
 msgstr "Účet byl smazán."
 
-#: plugins/Access/src/Controller/UsersController.php:384
+#: plugins/Access/src/Controller/UsersController.php:386
 msgid "The account could not be deleted."
 msgstr "Účet se nepodařilo smazat."
 
@@ -229,13 +229,17 @@ msgstr "Nemáte oprávnění pro přístup k této stránce."
 msgid "This identity is already linked to another account."
 msgstr "Sociální účet je již propojený s jiným uživatelem."
 
-#: plugins/Access/src/Model/Table/UsersTable.php:206
+#: plugins/Access/src/Model/Table/UsersTable.php:207
 msgid "The two passwords are not the same."
 msgstr "Zadaná hesla se neshodují."
 
-#: plugins/Access/src/Model/Table/UsersTable.php:236
+#: plugins/Access/src/Model/Table/UsersTable.php:237
 msgid "This username is already taken."
 msgstr "Toto uživatelské jméno už existuje."
+
+#: plugins/Access/src/Model/Table/UsersTable.php:247
+msgid "Records still refer to this account. Deactivate it instead."
+msgstr "Na účet stále odkazují jiné záznamy. Místo smazání ho deaktivujte."
 
 #: plugins/Access/templates/Users/add.php:10
 #: plugins/Access/templates/Users/api_token.php:10
@@ -389,6 +393,8 @@ msgstr "Naposledy povoleno"
 
 #: plugins/Access/templates/Users/index.php:53
 #: plugins/Access/templates/Users/index.php:55
+#: plugins/Access/templates/Users/profile.php:52
+#: plugins/Access/templates/Users/profile.php:56
 #: plugins/Access/templates/Users/view.php:110
 #: plugins/Access/templates/Users/view.php:114
 #: plugins/Access/templates/Users/view.php:156
@@ -397,6 +403,8 @@ msgstr "Ano"
 
 #: plugins/Access/templates/Users/index.php:53
 #: plugins/Access/templates/Users/index.php:55
+#: plugins/Access/templates/Users/profile.php:52
+#: plugins/Access/templates/Users/profile.php:56
 #: plugins/Access/templates/Users/view.php:110
 #: plugins/Access/templates/Users/view.php:114
 #: plugins/Access/templates/Users/view.php:156
@@ -505,11 +513,27 @@ msgstr "E-mail"
 msgid "Role"
 msgstr "Role"
 
-#: plugins/Access/templates/Users/profile.php:56
+#: plugins/Access/templates/Users/profile.php:51
+#: plugins/Access/templates/Users/view.php:109
+msgid "Is Superuser"
+msgstr "Je superuživatel"
+
+#: plugins/Access/templates/Users/profile.php:55
+#: plugins/Access/templates/Users/view.php:113
+#: plugins/Access/templates/Users/view.php:148
+msgid "Active"
+msgstr "Aktivní"
+
+#: plugins/Access/templates/Users/profile.php:65
 #: plugins/Access/templates/Users/view.php:123
 #: plugins/Access/templates/Users/view.php:149
 msgid "Created"
 msgstr "Vytvořeno"
+
+#: plugins/Access/templates/Users/profile.php:69
+#: plugins/Access/templates/Users/view.php:127
+msgid "Modified"
+msgstr "Upraveno"
 
 #: plugins/Access/templates/Users/recovery_codes.php:21
 msgid "Recovery Codes"
@@ -600,19 +624,6 @@ msgstr ""
 #: plugins/Access/templates/Users/view.php:84
 msgid "User"
 msgstr "Uživatel"
-
-#: plugins/Access/templates/Users/view.php:109
-msgid "Is Superuser"
-msgstr "Je superuživatel"
-
-#: plugins/Access/templates/Users/view.php:113
-#: plugins/Access/templates/Users/view.php:148
-msgid "Active"
-msgstr "Aktivní"
-
-#: plugins/Access/templates/Users/view.php:127
-msgid "Modified"
-msgstr "Upraveno"
 
 #: plugins/Access/templates/Users/view.php:140
 #: plugins/Access/templates/element/social_accounts.php:18

@@ -378,10 +378,14 @@ class UsersController extends AppController
     {
         $this->getRequest()->allowMethod(['post', 'delete']);
         $users = $this->getUsersTable();
-        if ($users->delete($users->get($id))) {
+        $user = $users->get($id);
+        if ($users->delete($user)) {
             $this->Flash->success(__d('access', 'The account has been deleted.'));
         } else {
-            $this->Flash->error(__d('access', 'The account could not be deleted.'));
+            $this->Flash->error(implode(' ', [
+                __d('access', 'The account could not be deleted.'),
+                ...array_values($user->getError('id')),
+            ]));
         }
 
         return $this->redirect(['action' => 'index']);

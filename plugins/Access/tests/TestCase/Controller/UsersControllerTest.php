@@ -561,6 +561,47 @@ class UsersControllerTest extends TestCase
     }
 
     /**
+     * An account that other records still refer to is not deleted, and the operator is told why
+     * rather than shown an error. One that nothing refers to is deleted.
+     *
+     * @return void
+     */
+    public function testAnAccountStillReferredToIsNotDeleted(): void
+    {
+        $users = $this->getTableLocator()->get('Users');
+        $this->session(['Auth' => $this->addAccount(role: 'admin', superuser: true)]);
+        $other = (string)$this->addOtherAccount()->get('id');
+        $connection = $users->getConnection();
+        $connection->execute('CREATE TABLE access_test_notes (
+            created_by uuid REFERENCES users (id),
+            user_id uuid REFERENCES users (id) ON DELETE CASCADE
+        )');
+        try {
+            $connection->insertQuery('access_test_notes', ['created_by' => $other])->execute();
+
+            $this->enableCsrfToken();
+            $this->enableSecurityToken();
+            $this->post('/users/delete/' . $other);
+
+            $this->assertRedirectContains('/users');
+            $this->assertFlashMessage(
+                'The account could not be deleted. Records still refer to this account. Deactivate it instead.',
+            );
+            $this->assertTrue($users->exists(['id' => $other]));
+
+            $connection->updateQuery('access_test_notes', ['created_by' => null, 'user_id' => $other])->execute();
+            $this->enableCsrfToken();
+            $this->enableSecurityToken();
+            $this->post('/users/delete/' . $other);
+
+            $this->assertFlashMessage('The account has been deleted.');
+            $this->assertFalse($users->exists(['id' => $other]));
+        } finally {
+            $connection->execute('DROP TABLE access_test_notes');
+        }
+    }
+
+    /**
      * The account `addAccount()` made, by its username.
      *
      * @return string

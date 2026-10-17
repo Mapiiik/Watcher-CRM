@@ -8,6 +8,7 @@ use Access\Model\Entity\User;
 use ArrayObject;
 use AuditStash\Persister\TablePersister;
 use Cake\Collection\CollectionInterface;
+use Cake\Database\Schema\TableSchema;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\I18n\DateTime;
@@ -236,7 +237,61 @@ class UsersTable extends Table
             'message' => __d('access', 'This username is already taken.'),
         ]);
 
+        // The database refuses this too, but by raising, which reaches the operator as an error
+        // page rather than as an answer.
+        $rules->addDelete(
+            fn(EntityInterface $entity): bool => !$this->isReferred((string)$entity->get('id')),
+            'notReferred',
+            [
+                'errorField' => 'id',
+                'message' => __d('access', 'Records still refer to this account. Deactivate it instead.'),
+            ],
+        );
+
         return $rules;
+    }
+
+    /**
+     * Whether a record refers to the account by a foreign key that keeps it from being deleted.
+     *
+     * Every table and user column (author, editor, holder) would otherwise need its own rule, so
+     * the foreign keys are read from the schema, which is cached in production. Keys that delete
+     * or clear what refers to the account do not count.
+     *
+     * @param string $id The account.
+     * @return bool
+     */
+    public function isReferred(string $id): bool
+    {
+        $connection = $this->getConnection();
+        $schemas = $connection->getSchemaCollection();
+        foreach ($schemas->listTables() as $table) {
+            $schema = $schemas->describe($table);
+            foreach ($schema->constraints() as $name) {
+                $constraint = (array)$schema->getConstraint($name);
+                if (
+                    ($constraint['type'] ?? null) !== TableSchema::CONSTRAINT_FOREIGN
+                    || ($constraint['references'][0] ?? null) !== $this->getTable()
+                    || in_array($constraint['delete'] ?? null, [
+                        TableSchema::ACTION_CASCADE,
+                        TableSchema::ACTION_SET_NULL,
+                        TableSchema::ACTION_SET_DEFAULT,
+                    ], true)
+                ) {
+                    continue;
+                }
+                $referred = $connection->selectQuery(['1'], $table)
+                    ->where([$constraint['columns'][0] => $id])
+                    ->limit(1)
+                    ->execute()
+                    ->fetch();
+                if ($referred !== false) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
