@@ -367,6 +367,64 @@ class OneTimePasswordTest extends TestCase
     }
 
     /**
+     * Whoever sets the app up on signing in chooses the hash function; the settings name only the
+     * one offered first. Choosing draws a new QR code and asks for no code yet, so it is no failure.
+     *
+     * @return void
+     */
+    public function testTheHashFunctionIsChosenOnSigningIn(): void
+    {
+        Settings::set('access.security.two_step_verification_required', true);
+        $id = (string)$this->addAccount()->get('id');
+
+        $this->signIn();
+        $this->get('/verify');
+        $this->assertResponseContains('<option value="SHA1" selected="selected">');
+        $this->assertSame(32, strlen((string)$this->account($id)->get('secret')));
+
+        $this->chooseAlgorithm('/verify', 'SHA512');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<option value="SHA512" selected="selected">');
+        $account = $this->account($id);
+        $this->assertSame('SHA512', $account->get('otp_algorithm'));
+        $secret = (string)$account->get('secret');
+        $this->assertSame(103, strlen($secret));
+        $this->assertNull($account->get('last_denied'));
+
+        $this->enterCode(OneTimePassword::code($secret, intdiv(time(), 30), OneTimePasswordAlgorithm::Sha512));
+        $this->get('/login');
+        $this->assertRedirect('/users/recovery-codes');
+        $this->assertTrue($this->account($id)->get('secret_verified'));
+    }
+
+    /**
+     * Whoever sets the app up from the profile chooses the hash function too.
+     *
+     * @return void
+     */
+    public function testTheHashFunctionIsChosenInTheProfile(): void
+    {
+        $id = (string)$this->addAccount()->get('id');
+        $this->session(['Auth' => $this->account($id)]);
+        $this->get('/users/one-time-password');
+
+        $this->chooseAlgorithm('/users/one-time-password', 'SHA256');
+        $this->assertResponseOk();
+        $this->assertResponseContains('understands SHA-256');
+        $secret = (string)$this->account($id)->get('secret');
+        $this->assertSame(52, strlen($secret));
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/one-time-password', [
+            'algorithm' => 'SHA256',
+            'code' => OneTimePassword::code($secret, intdiv(time(), 30), OneTimePasswordAlgorithm::Sha256),
+        ]);
+        $this->assertRedirectContains('/users/recovery-codes');
+        $this->assertSame('SHA256', $this->account($id)->get('otp_algorithm'));
+    }
+
+    /**
      * A key that cannot be read, as after the salt changed, is set up again on signing in rather
      * than let the account in without a code.
      *
@@ -464,6 +522,22 @@ class OneTimePasswordTest extends TestCase
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/verify', ['code' => $code]);
+        $this->carrySession();
+    }
+
+    /**
+     * Chooses a hash function on a page that sets the app up, as the list does when it changes.
+     *
+     * @param string $url The page.
+     * @param string $algorithm The hash function.
+     * @return void
+     */
+    private function chooseAlgorithm(string $url, string $algorithm): void
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->setUnlockedFields(['refresh']);
+        $this->post($url, ['algorithm' => $algorithm, 'code' => '', 'refresh' => 'refresh']);
         $this->carrySession();
     }
 

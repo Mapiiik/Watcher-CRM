@@ -1,7 +1,8 @@
 <?php
 /**
- * How to set an authenticator application up: the QR code to scan, and the key to type where it
- * cannot be.
+ * How to set an authenticator application up: the hash function, the QR code to scan, and the key
+ * to type where it cannot be. Choosing another hash function sends the form of the code, which is
+ * where the element is rendered, for a new QR code.
  *
  * @var \App\View\AppView $this
  * @var string $secretDataUri
@@ -25,6 +26,15 @@ use Access\Authentication\OneTimePasswordAlgorithm;
         . 'Microsoft Authenticator does not understand it and shows codes that are not right.',
         $algorithm->title(),
     ) ?></p>
+<br>
+<?= $this->Form->control('algorithm', [
+    'type' => 'select',
+    'label' => __d('access', 'Algorithm'),
+    'options' => OneTimePasswordAlgorithm::options(),
+    'value' => $algorithm->value,
+    'onchange' => $this::REFRESH_ON_CHANGE,
+]) ?>
+<?php $this->Form->unlockField('refresh'); ?>
 <p><?= $this->Html->image($secretDataUri, [
     'alt' => __d('access', 'QR code for the authenticator application'),
     'width' => 200,

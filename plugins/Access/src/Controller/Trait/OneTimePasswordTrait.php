@@ -56,7 +56,12 @@ trait OneTimePasswordTrait
             ]);
         }
         if (!$user->get('secret_verified')) {
-            $this->showSetUp($user);
+            $chosen = $this->chosenAlgorithm();
+            $this->showSetUp($user, $chosen);
+            if ($chosen !== null) {
+                // a new QR code to scan, so no code is asked for yet
+                return null;
+            }
         }
         if (!$this->getRequest()->is('post')) {
             return null;
@@ -118,7 +123,8 @@ trait OneTimePasswordTrait
             return $this->redirect(['action' => 'profile']);
         }
 
-        if ($this->getRequest()->is('post')) {
+        $chosen = $this->chosenAlgorithm();
+        if ($chosen === null && $this->getRequest()->is('post')) {
             if ($this->acceptCode($user, (string)$this->getRequest()->getData('code')) === 'one-time code') {
                 $this->confirmSetUp($user);
 
@@ -127,7 +133,7 @@ trait OneTimePasswordTrait
             $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
         }
 
-        $this->showSetUp($user);
+        $this->showSetUp($user, $chosen);
 
         return null;
     }
@@ -286,17 +292,38 @@ trait OneTimePasswordTrait
     }
 
     /**
+     * The hash function somebody setting the app up chose to have a new QR code for, if they did.
+     *
+     * The settings name the one offered first; the best one the app understands is the owner's
+     * choice.
+     *
+     * @return \Access\Authentication\OneTimePasswordAlgorithm|null
+     */
+    protected function chosenAlgorithm(): ?OneTimePasswordAlgorithm
+    {
+        $request = $this->getRequest();
+        if (!$request->is('post') || $request->getData('refresh') !== 'refresh') {
+            return null;
+        }
+
+        return OneTimePasswordAlgorithm::tryFrom((string)$request->getData('algorithm'))
+            ?? SecurityPolicy::oneTimePasswordAlgorithm();
+    }
+
+    /**
      * Shows the QR code and the key to set the app up with, making the key where there is none,
-     * or where it was made for another hash function than the settings now name.
+     * or where another hash function was chosen for it.
      *
      * @param \Cake\Datasource\EntityInterface $user The account.
+     * @param \Access\Authentication\OneTimePasswordAlgorithm|null $chosen The hash function chosen, if one was.
      * @return void
      */
-    protected function showSetUp(EntityInterface $user): void
+    protected function showSetUp(EntityInterface $user, ?OneTimePasswordAlgorithm $chosen = null): void
     {
-        $algorithm = SecurityPolicy::oneTimePasswordAlgorithm();
         $secret = (string)$user->get('secret');
-        if ($secret === '' || OneTimePasswordAlgorithm::of((string)$user->get('otp_algorithm')) !== $algorithm) {
+        $stored = OneTimePasswordAlgorithm::of((string)$user->get('otp_algorithm'));
+        $algorithm = $chosen ?? ($secret === '' ? SecurityPolicy::oneTimePasswordAlgorithm() : $stored);
+        if ($secret === '' || $stored !== $algorithm) {
             $secret = OneTimePassword::createSecret($algorithm);
             $this->getUsersTable()->updateQuery()
                 ->set([

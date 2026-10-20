@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-20 16:41+0200\n"
+"POT-Creation-Date: 2026-10-20 17:48+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -39,7 +39,7 @@ msgid "Accounts held to the stricter rules sign in with two-step verification."
 msgstr ""
 
 #: ./plugins/Access/config/settings.php:45
-msgid "The hash function of one-time codes set up from now on; those already set up keep theirs. Microsoft Authenticator understands SHA-1 alone."
+msgid "The hash function offered first when one-time codes are set up; whoever sets them up may choose the best one their app understands. Microsoft Authenticator understands SHA-1 alone."
 msgstr ""
 
 #: ./plugins/Access/config/settings.php:53
@@ -86,30 +86,30 @@ msgstr ""
 msgid "The API key of {0} is removed."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:82
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:87
 #: ./plugins/Access/src/Controller/UsersController.php:110
 msgid "Too many failed sign-ins. Try again in a few minutes."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:83
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:88
 msgid "The code is not right. Please sign in again."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:127
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:164
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:196
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:133
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:170
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:202
 msgid "The code is not right. Please try again."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:148
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:154
 msgid "Your account has to use two-step verification."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:160
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:166
 msgid "Two-step verification is turned off."
 msgstr ""
 
-#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:240
+#: ./plugins/Access/src/Controller/Trait/OneTimePasswordTrait.php:246
 msgid "The two-step verification of {0} is reset."
 msgstr ""
 
@@ -603,19 +603,24 @@ msgstr ""
 msgid "Reference"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:16
+#: ./plugins/Access/templates/element/one_time_password_setup.php:17
 msgid "Scan the QR code with an authenticator application on your phone, such as Google Authenticator, Microsoft Authenticator or Bitwarden Authenticator, and enter the six-digit verification code it shows."
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:21
+#: ./plugins/Access/templates/element/one_time_password_setup.php:22
 msgid "Scan the QR code with an authenticator application on your phone that understands {0}, such as Google Authenticator or Bitwarden Authenticator, and enter the six-digit verification code it shows. Microsoft Authenticator does not understand it and shows codes that are not right."
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:29
+#: ./plugins/Access/templates/element/one_time_password_setup.php:31
+#: ./plugins/Access/templates/element/two_step_verification.php:56
+msgid "Algorithm"
+msgstr ""
+
+#: ./plugins/Access/templates/element/one_time_password_setup.php:38
 msgid "QR code for the authenticator application"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:34
+#: ./plugins/Access/templates/element/one_time_password_setup.php:43
 msgid "Where the QR code cannot be scanned, enter this key instead:"
 msgstr ""
 
@@ -669,10 +674,6 @@ msgstr ""
 
 #: ./plugins/Access/templates/element/two_step_verification.php:55
 msgid "State"
-msgstr ""
-
-#: ./plugins/Access/templates/element/two_step_verification.php:56
-msgid "Algorithm"
 msgstr ""
 
 #: ./plugins/Access/templates/element/two_step_verification.php:57

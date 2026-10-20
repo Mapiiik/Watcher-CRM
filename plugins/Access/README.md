@@ -61,9 +61,9 @@ the secret goes to no other service. A code is accepted once. Ten recovery codes
 phone, each once. The pages name the method "Authenticator Application (TOTP)", so another method
 can stand beside it under the same heading.
 
-The codes are made with SHA-1 unless `access.security.two_step_verification_algorithm` names
-SHA-256 or SHA-512 for those set up from then on; an account keeps the one it was set up with.
-SHA-1 is the one every app understands. Microsoft Authenticator reads the others from the QR code
+Whoever sets the codes up chooses their hash function, SHA-1, SHA-256 or SHA-512, from a list that
+offers first the one `access.security.two_step_verification_algorithm` names, SHA-1 unless it says
+otherwise. An account keeps the one it was set up with. SHA-1 is the one every app understands. Microsoft Authenticator reads the others from the QR code
 and makes SHA-1 codes all the same, which shows when setting it up refuses the first code.
 
 The secret of the codes is kept encrypted with AES-256-GCM, under a key derived from

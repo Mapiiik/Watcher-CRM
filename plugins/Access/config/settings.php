@@ -44,8 +44,8 @@ return [
                 default: OneTimePasswordAlgorithm::Sha1,
                 hint: __d(
                     'access',
-                    'The hash function of one-time codes set up from now on; those already set up keep theirs. '
-                    . 'Microsoft Authenticator understands SHA-1 alone.',
+                    'The hash function offered first when one-time codes are set up; whoever sets them up may '
+                    . 'choose the best one their app understands. Microsoft Authenticator understands SHA-1 alone.',
                 ),
             ),
             'login_attempts' => NumberType::ofInt(

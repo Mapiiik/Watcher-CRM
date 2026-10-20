@@ -70,8 +70,8 @@ final class SecurityPolicy
     }
 
     /**
-     * The hash function one-time codes set up from now on are made with. Those already set up
-     * keep theirs.
+     * The hash function offered first when one-time codes are set up. Whoever sets them up may
+     * choose another, and codes already set up keep theirs.
      *
      * @return \Access\Authentication\OneTimePasswordAlgorithm
      */
