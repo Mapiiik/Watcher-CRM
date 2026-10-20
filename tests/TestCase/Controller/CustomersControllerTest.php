@@ -102,6 +102,9 @@ class CustomersControllerTest extends TestCase
         'app.TaskCollaborators',
         'app.DealerCommissions',
         'app.FulltextSearchCustomers',
+        'app.ServiceOverrides',
+        'plugin.Radius.Accounts',
+        'plugin.Radius.Radusergroup',
     ];
 
     /**
@@ -420,6 +423,24 @@ class CustomersControllerTest extends TestCase
 
         $this->assertContains('missing_installation_address', $reported, 'No address check reached the card.');
         $this->assertResponseContains('Contract Without an Installation Address');
+    }
+
+    /**
+     * The RADIUS accounts are held against the tariffs on the card too, drawn by the plugin's
+     * own listing. The fixtures put the customer's account in another group than their tariff names.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::problems()
+     */
+    public function testViewShowsTheRadiusAccountsNotMatchingTheirTariff(): void
+    {
+        $this->login();
+        $this->get('/customers/problems/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertContains('radius_group_mismatch', $this->reportedChecks());
+        $this->assertResponseContains('RADIUS Group Not Matching the Tariff');
+        $this->assertResponseContains('/radius/accounts/view/ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63');
     }
 
     /**

@@ -48,6 +48,8 @@ class OverviewsControllerTest extends TestCase
         'app.Billings',
         'plugin.Radius.Accounts',
         'plugin.Radius.Radacct',
+        'plugin.Radius.Radusergroup',
+        'app.ServiceOverrides',
     ];
 
     /**
@@ -391,6 +393,25 @@ class OverviewsControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertTrue($this->viewVariable('shown')['billing_gap']);
         $this->assertArrayHasKey('billing_gap', $this->viewVariable('results'));
+    }
+
+    /**
+     * The RADIUS checks come from their plugin and are listed by its own element. The fixtures
+     * put the account in another group than its tariff names.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContractProblems()
+     */
+    public function testOverviewOfContractProblemsListsTheRadiusAccounts(): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-contract-problems');
+
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('shown')['radius_group_mismatch']);
+        $this->assertCount(1, $this->viewVariable('results')['radius_group_mismatch']);
+        $this->assertResponseContains('/radius/accounts/view/ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63');
     }
 
     /**

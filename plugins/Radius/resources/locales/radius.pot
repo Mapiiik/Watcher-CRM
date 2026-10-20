@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-19 12:50+0200\n"
+"POT-Creation-Date: 2026-10-20 22:59+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -13,6 +13,22 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ./plugins/Radius/src/Check/RadiusAccountWithoutTariffCheck.php:30
+msgid "Active RADIUS Account Without a Tariff"
+msgstr ""
+
+#: ./plugins/Radius/src/Check/RadiusAccountWithoutTariffCheck.php:39
+msgid "Every active RADIUS account has a tariff naming its group."
+msgstr ""
+
+#: ./plugins/Radius/src/Check/RadiusGroupMismatchCheck.php:30
+msgid "RADIUS Group Not Matching the Tariff"
+msgstr ""
+
+#: ./plugins/Radius/src/Check/RadiusGroupMismatchCheck.php:39
+msgid "Every active RADIUS account is in the group its tariff names."
+msgstr ""
 
 #: ./plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:37
 msgid "Required state of accounts."
@@ -45,6 +61,8 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/monitoring.php:93
 #: ./plugins/Radius/templates/Accounts/view.php:68
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:12
+#: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:24
+#: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:20
 msgid "Customer"
 msgstr ""
 
@@ -56,6 +74,8 @@ msgstr ""
 #: ./plugins/Radius/templates/Accounts/view.php:84
 #: ./plugins/Radius/templates/cell/Accounts/display.php:15
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:13
+#: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:27
+#: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:23
 msgid "Contract"
 msgstr ""
 
@@ -84,6 +104,8 @@ msgstr ""
 #: ./plugins/Radius/templates/cell/Accounts/display.php:21
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:19
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:20
+#: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:31
+#: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:26
 msgid "RADIUS User Groups"
 msgstr ""
 
@@ -125,7 +147,7 @@ msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr ""
 
 #: ./plugins/Radius/src/Controller/AccountsController.php:393
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:200
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:197
 msgid "No active RADIUS session for {0} found."
 msgstr ""
 
@@ -301,55 +323,55 @@ msgstr ""
 msgid "Nothing has changed."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:96
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:93
 msgid "The RADIUS account has been updated."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:100
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:97
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:135
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:132
 msgid "Nothing has been selected for update."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:177
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:174
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:224
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:221
 msgid "Related entries for {0} RADIUS accounts were processed, {1} accounts were updated, and {2} accounts failed to update."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:254
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:251
 msgid "Automatic RADIUS account changes"
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:271
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:268
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:278
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:275
 msgid "Automatic RADIUS account changes have been reported."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:284
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:281
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:443
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:440
 msgid "The RADIUS replies for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:449
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:446
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:559
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:485
 msgid "The RADIUS user groups for {0} could not be found automatically. Please, set it manually."
 msgstr ""
 
-#: ./plugins/Radius/src/Updater/AccountsUpdater.php:565
+#: ./plugins/Radius/src/Updater/AccountsUpdater.php:491
 msgid "The billings for the contract for the current or upcoming period are probably not set correctly."
 msgstr ""
 
@@ -444,6 +466,8 @@ msgstr ""
 #: ./plugins/Radius/templates/Radreply/view.php:41
 #: ./plugins/Radius/templates/Radusergroup/view.php:41
 #: ./plugins/Radius/templates/cell/Accounts/display.php:17
+#: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:30
+#: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:25
 msgid "Username"
 msgstr ""
 
@@ -1342,6 +1366,26 @@ msgstr ""
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:18
 #: ./plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:20
 msgid "Changed"
+msgstr ""
+
+#: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:13
+msgid "Either the billing is missing, or the account should have been deactivated. Where a tariff starts later, the day is given."
+msgstr ""
+
+#: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:29
+msgid "Contract State"
+msgstr ""
+
+#: ./plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:32
+msgid "Tariff From"
+msgstr ""
+
+#: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:13
+msgid "Updating the related records of the account puts it in the group its tariff names."
+msgstr ""
+
+#: ./plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:27
+msgid "Group of the Tariff"
 msgstr ""
 
 #: ./plugins/Radius/templates/element/common/paginator.php:13

@@ -61,6 +61,8 @@ class DashboardControllerTest extends TestCase
         'app.Tasks',
         'app.TaskCollaborators',
         'plugin.Bookkeeping.Invoices',
+        'plugin.Radius.Accounts',
+        'plugin.Radius.Radusergroup',
     ];
 
     /**
@@ -814,6 +816,31 @@ class DashboardControllerTest extends TestCase
             // as well - the same finding under two different numbers reads as a fault
             $this->assertSame(1, $row['url']['?']['ignore_inactive']);
         }
+    }
+
+    /**
+     * The RADIUS accounts are counted on the contract card. The fixtures bill nothing, so the
+     * account has no tariff to be in a group of.
+     *
+     * @return void
+     * @link \App\Dashboard\Card\ContractProblemsCard::data()
+     */
+    public function testContractProblemsCardCountsTheRadiusAccounts(): void
+    {
+        $this->login('bookkeeper');
+        $this->get('/dashboard/card/contract_problems');
+
+        $this->assertResponseOk();
+
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+        $rows = array_filter(
+            $card->data()['rows'],
+            fn(array $row): bool => ($row['url']['?']['checks']['radius_account_without_tariff'] ?? 0) === 1,
+        );
+
+        $this->assertSame([1], array_column($rows, 'total'));
+        $this->assertResponseContains('Active RADIUS Account Without a Tariff');
     }
 
     /**

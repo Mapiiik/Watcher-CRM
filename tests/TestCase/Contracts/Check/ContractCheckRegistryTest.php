@@ -5,7 +5,9 @@ namespace App\Test\TestCase\Contracts\Check;
 
 use App\Contracts\Check\ContractCheckInterface;
 use App\Contracts\Check\ContractCheckRegistry;
+use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -42,7 +44,24 @@ class ContractCheckRegistryTest extends TestCase
         'app.ConnectionProfiles',
         'app.Services',
         'app.Billings',
+        'app.ServiceOverrides',
+        'plugin.Radius.Accounts',
+        'plugin.Radius.Radusergroup',
     ];
+
+    /**
+     * The RADIUS checks are registered only with their plugin, and a unit test boots none, so it is
+     * loaded here for the rest to go through them too.
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->loadPlugins(['Radius']);
+    }
 
     /**
      * Every registered check has to be able to run and to say how many it found. A check
@@ -199,6 +218,29 @@ class ContractCheckRegistryTest extends TestCase
         );
 
         $this->assertSame($listed, array_unique($listed));
+    }
+
+    /**
+     * Without the RADIUS plugin there are no accounts to hold against the tariffs.
+     *
+     * @return void
+     * @link \App\Contracts\Check\ContractCheckRegistry::__construct()
+     */
+    public function testTheRadiusChecksComeWithTheirPlugin(): void
+    {
+        $this->assertNotNull((new ContractCheckRegistry())->get('radius_group_mismatch'));
+        $this->assertNotNull((new ContractCheckRegistry())->get('radius_account_without_tariff'));
+
+        $plugins = Plugin::getCollection();
+        $radius = $plugins->get('Radius');
+        $plugins->remove('Radius');
+
+        try {
+            $this->assertNull((new ContractCheckRegistry())->get('radius_group_mismatch'));
+            $this->assertNull((new ContractCheckRegistry())->get('radius_account_without_tariff'));
+        } finally {
+            $plugins->add($radius);
+        }
     }
 
     /**

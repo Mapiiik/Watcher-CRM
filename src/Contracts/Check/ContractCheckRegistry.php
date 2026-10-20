@@ -11,6 +11,10 @@ use App\Model\Table\BorrowedEquipmentsTable;
 use App\Model\Table\ContractProposalsTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractVersionsTable;
+use Cake\Core\Plugin;
+use Radius\Check\RadiusAccountWithoutTariffCheck;
+use Radius\Check\RadiusGroupMismatchCheck;
+use Radius\Check\TariffComparison;
 
 /**
  * Registry of the checks that can be run against the contracts on file.
@@ -66,6 +70,11 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
             'contract_version_gap' => fn() => new ContractVersionGapCheck($versions, $this->scope),
             'active_without_billing' => fn() => new ActiveWithoutBillingCheck($contracts, $this->scope),
             'inactive_with_billing' => fn() => new InactiveWithBillingCheck($contracts, $this->scope),
+        ];
+
+        $this->factories += $this->radiusChecks($contracts);
+
+        $this->factories += [
             'billing_service_type_mismatch' => fn() => new BillingServiceTypeMismatchCheck($billings, $this->scope),
             'non_standard_service' => fn() => new NonStandardServiceCheck($billings, $this->scope),
             'partly_applied_contract_proposal' =>
@@ -82,6 +91,30 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
             'missing_access_point' => fn() => new MissingAccessPointCheck($contracts, $this->scope),
             'impossible_contract_dates' => fn() => new ImpossibleContractDatesCheck($contracts, $this->scope),
             'impossible_borrowed_period' => fn() => new ImpossibleBorrowedPeriodCheck($equipments, $this->scope),
+        ];
+    }
+
+    /**
+     * The RADIUS accounts held against the tariffs, where the plugin keeping them is loaded.
+     *
+     * Both checks read one comparison, so the accounts are fetched once.
+     *
+     * @param \App\Model\Table\ContractsTable $contracts Contracts table.
+     * @return array<string, callable(): \App\Contracts\Check\ContractCheckInterface>
+     */
+    private function radiusChecks(ContractsTable $contracts): array
+    {
+        if (!Plugin::isLoaded('Radius')) {
+            return [];
+        }
+
+        $comparison = new TariffComparison($this->scope);
+
+        return [
+            'radius_group_mismatch' =>
+                fn() => new RadiusGroupMismatchCheck($contracts, $this->scope, $comparison),
+            'radius_account_without_tariff' =>
+                fn() => new RadiusAccountWithoutTariffCheck($contracts, $this->scope, $comparison),
         ];
     }
 }

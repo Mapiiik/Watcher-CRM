@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-19 12:50+0200\n"
+"POT-Creation-Date: 2026-10-20 22:59+0200\n"
 "PO-Revision-Date: 2026-08-22 17:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,6 +14,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.9\n"
+
+#: plugins/Radius/src/Check/RadiusAccountWithoutTariffCheck.php:30
+msgid "Active RADIUS Account Without a Tariff"
+msgstr "Aktivní účet RADIUS bez tarifu"
+
+#: plugins/Radius/src/Check/RadiusAccountWithoutTariffCheck.php:39
+msgid "Every active RADIUS account has a tariff naming its group."
+msgstr "Každý aktivní účet RADIUS má tarif, který určuje jeho skupinu."
+
+#: plugins/Radius/src/Check/RadiusGroupMismatchCheck.php:30
+msgid "RADIUS Group Not Matching the Tariff"
+msgstr "Skupina RADIUS neodpovídá tarifu"
+
+#: plugins/Radius/src/Check/RadiusGroupMismatchCheck.php:39
+msgid "Every active RADIUS account is in the group its tariff names."
+msgstr "Každý aktivní účet RADIUS je ve skupině, kterou určuje jeho tarif."
 
 #: plugins/Radius/src/Command/UpdateRelatedRecordsForAccountsCommand.php:37
 msgid "Required state of accounts."
@@ -46,6 +62,8 @@ msgstr "Odeslání protokolu změn e-mailem."
 #: plugins/Radius/templates/Accounts/monitoring.php:93
 #: plugins/Radius/templates/Accounts/view.php:68
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:12
+#: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:24
+#: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:20
 msgid "Customer"
 msgstr "Zákazník"
 
@@ -57,6 +75,8 @@ msgstr "Zákazník"
 #: plugins/Radius/templates/Accounts/view.php:84
 #: plugins/Radius/templates/cell/Accounts/display.php:15
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:13
+#: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:27
+#: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:23
 msgid "Contract"
 msgstr "Smlouva"
 
@@ -85,6 +105,8 @@ msgstr "Odpovědi RADIUS"
 #: plugins/Radius/templates/cell/Accounts/display.php:21
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:19
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:20
+#: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:31
+#: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:26
 msgid "RADIUS User Groups"
 msgstr "Skupiny uživatelů RADIUS"
 
@@ -126,7 +148,7 @@ msgid "The RADIUS account could not be deleted. Please, try again."
 msgstr "Účet RADIUS nelze odstranit. Zkuste to prosím znovu."
 
 #: plugins/Radius/src/Controller/AccountsController.php:393
-#: plugins/Radius/src/Updater/AccountsUpdater.php:200
+#: plugins/Radius/src/Updater/AccountsUpdater.php:197
 msgid "No active RADIUS session for {0} found."
 msgstr "Nebyla nalezena žádná aktivní relace RADIUS pro {0}."
 
@@ -302,23 +324,23 @@ msgstr "Přístupový bod aktualizován."
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:96
+#: plugins/Radius/src/Updater/AccountsUpdater.php:93
 msgid "The RADIUS account has been updated."
 msgstr "Účet RADIUS byl aktualizován."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:100
+#: plugins/Radius/src/Updater/AccountsUpdater.php:97
 msgid "The RADIUS account could not be updated. Please, try again."
 msgstr "Účet RADIUS nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:135
+#: plugins/Radius/src/Updater/AccountsUpdater.php:132
 msgid "Nothing has been selected for update."
 msgstr "Nic nebylo vybráno k aktualizaci."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:177
+#: plugins/Radius/src/Updater/AccountsUpdater.php:174
 msgid "The RADIUS account {0} could not be updated. Please, try again."
 msgstr "Účet RADIUS {0} nelze aktualizovat. Zkuste to prosím znovu."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:224
+#: plugins/Radius/src/Updater/AccountsUpdater.php:221
 msgid ""
 "Related entries for {0} RADIUS accounts were processed, {1} accounts were "
 "updated, and {2} accounts failed to update."
@@ -326,23 +348,23 @@ msgstr ""
 "Související záznamy pro {0} účtů RADIUS byly zpracovány, {1} účtů bylo "
 "aktualizováno a {2} účtů se nepodařilo aktualizovat."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:254
+#: plugins/Radius/src/Updater/AccountsUpdater.php:251
 msgid "Automatic RADIUS account changes"
 msgstr "Automatické změny účtu RADIUS"
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:271
+#: plugins/Radius/src/Updater/AccountsUpdater.php:268
 msgid "These automatic RADIUS account changes have just taken place."
 msgstr "Tyto automatické změny účtu RADIUS právě proběhly."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:278
+#: plugins/Radius/src/Updater/AccountsUpdater.php:275
 msgid "Automatic RADIUS account changes have been reported."
 msgstr "Byly nahlášeny automatické změny účtu RADIUS."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:284
+#: plugins/Radius/src/Updater/AccountsUpdater.php:281
 msgid "Automatic RADIUS account changes cannot be reported."
 msgstr "Automatické změny účtu RADIUS nelze nahlásit."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:443
+#: plugins/Radius/src/Updater/AccountsUpdater.php:440
 msgid ""
 "The RADIUS replies for {0} could not be found automatically. Please, set it "
 "manually."
@@ -350,11 +372,11 @@ msgstr ""
 "Odpovědi RADIUS pro {0} nebyly automaticky nalezeny. Nastavte je prosím "
 "ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:449
+#: plugins/Radius/src/Updater/AccountsUpdater.php:446
 msgid "The IP addresses for the contract are probably not set correctly."
 msgstr "IP adresy pro smlouvu pravděpodobně nejsou správně nastaveny."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:559
+#: plugins/Radius/src/Updater/AccountsUpdater.php:485
 msgid ""
 "The RADIUS user groups for {0} could not be found automatically. Please, set "
 "it manually."
@@ -362,7 +384,7 @@ msgstr ""
 "Skupiny uživatelů RADIUS pro {0} nebyly nalezeny automaticky. Nastavte je "
 "prosím ručně."
 
-#: plugins/Radius/src/Updater/AccountsUpdater.php:565
+#: plugins/Radius/src/Updater/AccountsUpdater.php:491
 msgid ""
 "The billings for the contract for the current or upcoming period are "
 "probably not set correctly."
@@ -462,6 +484,8 @@ msgstr "Přidat účet RADIUS"
 #: plugins/Radius/templates/Radreply/view.php:41
 #: plugins/Radius/templates/Radusergroup/view.php:41
 #: plugins/Radius/templates/cell/Accounts/display.php:17
+#: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:30
+#: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:25
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -1365,6 +1389,34 @@ msgstr "Původní"
 #: plugins/Radius/templates/element/Accounts/UpdateRelatedRecordsSummary.php:20
 msgid "Changed"
 msgstr "Změněno"
+
+#: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:13
+msgid ""
+"Either the billing is missing, or the account should have been deactivated. "
+"Where a tariff starts later, the day is given."
+msgstr ""
+"Buď chybí fakturace, nebo měl být účet deaktivován. Pokud tarif začíná "
+"později, je uveden den jeho začátku."
+
+#: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:29
+msgid "Contract State"
+msgstr "Stav smlouvy"
+
+#: plugins/Radius/templates/element/ContractChecks/radius_account_without_tariff.php:32
+msgid "Tariff From"
+msgstr "Tarif od"
+
+#: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:13
+msgid ""
+"Updating the related records of the account puts it in the group its tariff "
+"names."
+msgstr ""
+"Aktualizace souvisejících záznamů účtu ho přesune do skupiny, kterou určuje "
+"jeho tarif."
+
+#: plugins/Radius/templates/element/ContractChecks/radius_group_mismatch.php:27
+msgid "Group of the Tariff"
+msgstr "Skupina tarifu"
 
 #: plugins/Radius/templates/element/common/paginator.php:13
 msgid "first"
