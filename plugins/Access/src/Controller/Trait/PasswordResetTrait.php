@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Access\Controller\Trait;
 
 use Access\Authentication\AuthLog;
+use Access\Authentication\LoginThrottle;
 use Access\Authentication\SecurityPolicy;
 use Access\Mailer\UsersMailer;
 use Cake\Http\Response;
@@ -16,7 +17,9 @@ use Throwable;
  * account.
  *
  * The answer to asking is the same whether an account was found or not, so it tells nobody which
- * accounts exist. The link works for an hour and once, and only its hash is kept.
+ * accounts exist. The link works for an hour and once, and only its hash is kept. Asking counts
+ * against the address like a failed sign-in, and an account gets a new link five minutes after
+ * the last at the soonest.
  */
 trait PasswordResetTrait
 {
@@ -34,8 +37,15 @@ trait PasswordResetTrait
 
         $reference = (string)$this->getRequest()->getData('reference');
         $address = AuthLog::address($this->getRequest());
-        $issued = $this->getUsersTable()->newPasswordToken($reference);
-        if ($issued === null) {
+        $throttle = LoginThrottle::fromSettings();
+        $blocked = $throttle->addressBlocked($address);
+        if (!$blocked) {
+            $throttle->requested($address);
+        }
+        $issued = $blocked ? null : $this->getUsersTable()->newPasswordToken($reference);
+        if ($blocked) {
+            AuthLog::warning('password link blocked', ['reference' => $reference, 'ip' => $address]);
+        } elseif ($issued === null) {
             AuthLog::notice('password link not sent', ['reference' => $reference, 'ip' => $address]);
         } else {
             [$user, $token] = $issued;

@@ -140,6 +140,50 @@ class PasswordResetTest extends TestCase
     }
 
     /**
+     * An account gets a new link five minutes after the last at the soonest, so that asking again
+     * and again neither fills its mailbox nor spoils the link on its way.
+     *
+     * @return void
+     */
+    public function testANewLinkIsSentFiveMinutesAfterTheLastAtTheSoonest(): void
+    {
+        $id = (string)$this->addAccount()->get('id');
+        $first = $this->askForLink('jnovak');
+        $this->assertNotSame('', $first);
+        TestEmailTransport::clearMessages();
+
+        $this->assertSame('', $this->askForLink('jnovak'));
+        $this->get($first);
+        $this->assertResponseOk();
+
+        $this->getTableLocator()->get('Users')->updateQuery()
+            ->set(['token_expires' => DateTime::now()->modify('+1 hour')->subMinutes(5)->subSeconds(1)])
+            ->where(['id' => $id])
+            ->execute();
+        $this->assertNotSame('', $this->askForLink('jnovak'));
+    }
+
+    /**
+     * Asking counts against the address like a failed sign-in, so that nobody sends mail without
+     * end from one place.
+     *
+     * @return void
+     */
+    public function testAskingFromOneAddressIsLimited(): void
+    {
+        $this->addAccount();
+        for ($i = 0; $i < 20; $i++) {
+            $this->askForLink('nobody' . $i);
+        }
+
+        $this->assertSame('', $this->askForLink('jnovak'));
+        $this->assertNoMailSent();
+        /** @var \Cake\Log\Engine\ArrayLog $log */
+        $log = Log::engine('auth');
+        $this->assertStringContainsString('password link blocked reference="jnovak"', implode("\n", $log->read()));
+    }
+
+    /**
      * Asks for a link for a new password, and returns the address in the mail, if one was sent.
      *
      * @param string $reference A username or an e-mail.

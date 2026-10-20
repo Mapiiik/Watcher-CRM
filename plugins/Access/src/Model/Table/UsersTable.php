@@ -46,6 +46,12 @@ class UsersTable extends Table
     public const PASSWORD_TOKEN_LIFETIME = '+1 hour';
 
     /**
+     * How long after one link for setting a new password the next is sent, so that asking again
+     * and again neither fills the mailbox nor spoils the link on its way.
+     */
+    public const PASSWORD_TOKEN_INTERVAL = '5 minutes';
+
+    /**
      * What an account keeps that no page, form or session needs. A query reads it only when it
      * asks for it with the finder `withSecrets`.
      *
@@ -335,7 +341,8 @@ class UsersTable extends Table
      * Makes a link for setting a new password, for the active account that a username or an
      * e-mail names alone, where it has an e-mail to send the link to.
      *
-     * Only the hash of the token is kept, and a new one replaces the last.
+     * Only the hash of the token is kept, and a new one replaces the last - though not sooner than
+     * `PASSWORD_TOKEN_INTERVAL` after it.
      *
      * @param string $reference A username or an e-mail.
      * @return array{0: \Access\Model\Entity\User, 1: string}|null The account and the token.
@@ -356,6 +363,14 @@ class UsersTable extends Table
             ->all();
         $user = $accounts->first();
         if ($accounts->count() !== 1 || !$user instanceof User || (string)$user->email === '') {
+            return null;
+        }
+        // the last link was sent less than an interval ago where it expires later than a new one
+        // sent an interval ago would
+        $sentAnIntervalAgo = DateTime::now()
+            ->modify(self::PASSWORD_TOKEN_LIFETIME)
+            ->modify('-' . self::PASSWORD_TOKEN_INTERVAL);
+        if ($user->token_expires?->greaterThan($sentAnIntervalAgo)) {
             return null;
         }
 

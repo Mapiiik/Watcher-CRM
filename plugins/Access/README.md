@@ -30,7 +30,8 @@ not from this plugin.
 
 The sign-in page offers a link for a new password, sent to the e-mail of the account a username or
 an e-mail names. The answer is the same whether such an account exists or not. The link works for
-an hour and once, and only its hash is kept.
+an hour and once, and only its hash is kept. An account gets a new link five minutes after the last
+at the soonest, and asking counts against the address like a failed sign-in.
 
 ## Other identity providers
 

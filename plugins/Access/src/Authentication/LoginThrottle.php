@@ -12,6 +12,9 @@ use Cake\Cache\Cache;
  * tries. Nothing is counted for an account alone, so nobody can lock somebody else out by
  * guessing at their account from many places; that shows in the log instead. IPv6 addresses count
  * by their /64, which one subscriber usually holds.
+ *
+ * Asking for a link to set a new password counts as a failure of the address, so that nobody
+ * sends mail without end from one place.
  */
 final class LoginThrottle
 {
@@ -82,6 +85,30 @@ final class LoginThrottle
     }
 
     /**
+     * Whether more requests from this address are refused for now, whatever the account.
+     *
+     * @param string $ip The address.
+     * @return bool
+     */
+    public function addressBlocked(string $ip): bool
+    {
+        return (int)Cache::pool($this->cacheConfig)->get($this->addressKey($ip), 0) >= $this->perAddress;
+    }
+
+    /**
+     * Counts a request from this address that is limited like a failed sign-in.
+     *
+     * @param string $ip The address.
+     * @return void
+     */
+    public function requested(string $ip): void
+    {
+        $pool = Cache::pool($this->cacheConfig);
+        $key = $this->addressKey($ip);
+        $pool->set($key, (int)$pool->get($key, 0) + 1, $this->minutes * 60);
+    }
+
+    /**
      * Forgets the failures of this account from this address after it signed in.
      *
      * @param string $account The account as typed.
@@ -119,8 +146,17 @@ final class LoginThrottle
     {
         return [
             $this->key('pair', $this->pair($account, $ip)) => $this->perAccountAndAddress,
-            $this->key('address', self::network($ip)) => $this->perAddress,
+            $this->addressKey($ip) => $this->perAddress,
         ];
+    }
+
+    /**
+     * @param string $ip The address.
+     * @return string
+     */
+    private function addressKey(string $ip): string
+    {
+        return $this->key('address', self::network($ip));
     }
 
     /**
