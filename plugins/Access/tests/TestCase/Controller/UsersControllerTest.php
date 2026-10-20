@@ -9,6 +9,7 @@ use Access\Model\Entity\User;
 use Access\Test\TestCase\AccountsTrait;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Datasource\EntityInterface;
 use Cake\Log\Engine\ArrayLog;
 use Cake\Log\Log;
@@ -329,6 +330,26 @@ class UsersControllerTest extends TestCase
 
         $this->assertSame('Users', Configure::read('Users.controller'));
         $this->assertSame('Users', Configure::read('Users.table'));
+    }
+
+    /**
+     * Only the session and a client's key skip the second factor. Every way of signing in that a
+     * person uses goes through it, an identity at another provider such as Google too.
+     *
+     * @return void
+     */
+    public function testOnlyTheSessionAndAKeySkipTheSecondFactor(): void
+    {
+        $config = include Plugin::path('Access') . 'config' . DS . 'users.php';
+
+        $skipping = [];
+        foreach ($config['Auth']['Authenticators'] as $name => $authenticator) {
+            if (!empty($authenticator['skipTwoFactorVerify'])) {
+                $skipping[] = $name;
+            }
+        }
+        $this->assertSame(['Session', 'Token'], $skipping);
+        $this->assertArrayHasKey('Social', $config['Auth']['Authenticators']);
     }
 
     /**

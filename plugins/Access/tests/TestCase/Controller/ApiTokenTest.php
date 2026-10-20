@@ -5,12 +5,15 @@ namespace Access\Test\TestCase\Controller;
 
 use Access\Controller\UsersController;
 use Access\Test\TestCase\AccountsTrait;
+use Cake\Cache\Cache;
 use Cake\Log\Engine\ArrayLog;
 use Cake\Log\Log;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Settings\Service\SettingsService;
+use Settings\Utility\Settings;
 
 /**
  * API keys, and what of an account the audit log keeps.
@@ -28,6 +31,7 @@ class ApiTokenTest extends TestCase
      */
     protected array $fixtures = [
         'app.Users',
+        'plugin.Settings.Settings',
     ];
 
     /**
@@ -49,6 +53,9 @@ class ApiTokenTest extends TestCase
     protected function tearDown(): void
     {
         Log::drop('auth');
+        // the settings are cached, and kept in memory too, so the next test reads them again
+        Cache::clear('default');
+        Settings::setInstance(new SettingsService());
 
         parent::tearDown();
     }
@@ -165,6 +172,25 @@ class ApiTokenTest extends TestCase
         $this->configRequest(['headers' => []]);
         $this->get('/users');
         $this->assertRedirectContains('/login');
+    }
+
+    /**
+     * A client signs in with its key even where everybody has to use two-step verification: the
+     * key is the second thing it has, and nobody is there to type a code.
+     *
+     * @return void
+     */
+    public function testAKeySignsInWhereTwoStepVerificationIsRequired(): void
+    {
+        Settings::set('access.security.two_step_verification_required', true);
+        $user = $this->addAccount(role: 'admin');
+        $user->set('api_token', 'client-key');
+        $this->getTableLocator()->get('Users')->saveOrFail($user);
+
+        $this->configRequest(['headers' => ['Authorization' => 'Bearer client-key']]);
+        $this->get('/users');
+
+        $this->assertResponseOk();
     }
 
     /**
