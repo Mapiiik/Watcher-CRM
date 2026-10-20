@@ -4,12 +4,9 @@ declare(strict_types=1);
 namespace Radius\Updater;
 
 use App\Messages\Messages;
-use App\Model\Entity\Service;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\IpNetworkTypeOfUse;
-use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractsTable;
-use App\Model\Table\ServiceOverridesTable;
 use App\Service\OperatorReport;
 use Cake\Core\Configure;
 use Cake\I18n\Date;
@@ -462,71 +459,6 @@ class AccountsUpdater
     }
 
     /**
-     * Loads the active service (with connection profile) for the account's contract, considering possible overrides.
-     *
-     * @param \Radius\Model\Entity\Account $account RADIUS account entity
-     * @return \App\Model\Entity\Service|null The active service or null if not found.
-     */
-    private function loadActiveService(Account $account): ?Service
-    {
-        // load current date
-        $now = Date::now();
-
-        // load active override (with connection profile) for contract if exists
-        /** @var \App\Model\Entity\ServiceOverride|null $override */
-        $override = $this->fetchTable(ServiceOverridesTable::class)
-            ->find()
-            ->innerJoinWith('Services.ConnectionProfiles')
-            ->where([
-                'ServiceOverrides.contract_id' => $account->contract_id,
-                'ConnectionProfiles.radius_group IS NOT NULL',
-                'ServiceOverrides.valid_from <=' => $now,
-                'ServiceOverrides.valid_until >=' => $now,
-                'ServiceOverrides.revoked IS' => null,
-            ])
-            ->contain([
-                'Services' => 'ConnectionProfiles',
-            ])
-            ->orderBy([
-                'ServiceOverrides.created' => 'DESC',
-            ])
-            ->first();
-
-        if ($override) {
-            return $override->service;
-        }
-
-        // load active billing (with connection profile) for contract if exists
-        /** @var \App\Model\Entity\Billing|null $billing */
-        $billing = $this->fetchTable(BillingsTable::class)
-            ->find()
-            ->innerJoinWith('Services.ConnectionProfiles')
-            ->where([
-                'Billings.contract_id' => $account->contract_id,
-                'ConnectionProfiles.radius_group IS NOT NULL',
-                'Billings.billing_from <=' => $now->addMonths(1),
-                'OR' => [
-                    'Billings.billing_until IS NULL',
-                    'Billings.billing_until >=' => $now,
-                ],
-            ])
-            ->contain([
-                'Services' => 'ConnectionProfiles',
-            ])
-            ->orderBy([
-                'Billings.billing_from' => 'ASC',
-            ])
-            ->first();
-
-        if ($billing) {
-            return $billing->service;
-        }
-
-        // nothing usable found
-        return null;
-    }
-
-    /**
      * generate data for radusergroup table for customer
      *
      * @param \Radius\Model\Entity\Account $account RADIUS account entity
@@ -534,22 +466,16 @@ class AccountsUpdater
      */
     public function autoRadusergroupData(Account $account): array
     {
-        // load active service for account's contract
-        $service = $this->loadActiveService($account);
+        $groupname = (new ExpectedUserGroups())->forContract($account->contract_id);
 
         $radusergroup = [];
 
-        if (
-            isset($service)
-            && isset($service->connection_profile)
-            && isset($service->connection_profile->radius_group)
-            && !empty($service->connection_profile->radius_group)
-        ) {
+        if (!empty($groupname)) {
             // return radusergroup record with current (or the near future) connection profile name as groupname
             $radusergroup[] = $this->Radusergroup
                 ->findOrNewEntity([
                     'username' => $account->username,
-                    'groupname' => $service->connection_profile->radius_group,
+                    'groupname' => $groupname,
                     'priority' => 0,
                 ]);
         }
