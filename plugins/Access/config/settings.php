@@ -3,7 +3,9 @@
  * Default settings of signing in, merged into the application's own.
  */
 
+use Access\Authentication\OneTimePasswordAlgorithm;
 use Settings\ValueObject\Type\BoolType;
+use Settings\ValueObject\Type\ChoiceType;
 use Settings\ValueObject\Type\ListType;
 use Settings\ValueObject\Type\NumberType;
 
@@ -37,6 +39,14 @@ return [
             'two_step_verification_required_high_security' => new BoolType(
                 default: false,
                 hint: __d('access', 'Accounts held to the stricter rules sign in with two-step verification.'),
+            ),
+            'two_step_verification_algorithm' => new ChoiceType(
+                default: OneTimePasswordAlgorithm::Sha1,
+                hint: __d(
+                    'access',
+                    'The hash function of one-time codes set up from now on; those already set up keep theirs. '
+                    . 'Microsoft Authenticator understands SHA-1 alone.',
+                ),
             ),
             'login_attempts' => NumberType::ofInt(
                 default: 5,

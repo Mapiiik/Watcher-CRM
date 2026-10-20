@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var string $secretDataUri
  * @var string $secret
+ * @var \Access\Authentication\OneTimePasswordAlgorithm $algorithm
  */
 ?>
 <div class="row">
@@ -21,7 +22,7 @@
             <?= $this->Form->create() ?>
             <fieldset>
                 <legend><?= __d('access', 'Set Up Two-Step Verification') ?></legend>
-                <?= $this->element('Access.one_time_password_setup', compact('secretDataUri', 'secret')) ?>
+                <?= $this->element('Access.one_time_password_setup', compact('secretDataUri', 'secret', 'algorithm')) ?>
                 <?= $this->Form->control('code', [
                     'label' => __d('access', 'Verification Code'),
                     'required' => true,

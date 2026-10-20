@@ -6,6 +6,7 @@ namespace Access\Controller\Trait;
 use Access\Authentication\AuthLog;
 use Access\Authentication\LoginThrottle;
 use Access\Authentication\OneTimePassword;
+use Access\Authentication\OneTimePasswordAlgorithm;
 use Access\Authentication\SecurityPolicy;
 use Access\Model\Entity\User;
 use Access\Model\Table\RecoveryCodesTable;
@@ -45,6 +46,15 @@ trait OneTimePasswordTrait
         }
 
         $user = $this->getUsersTable()->get($pending['id'], finder: 'withSecrets');
+        if ($user->get('secret_verified') && (string)$user->get('secret') === '') {
+            // the key cannot be read, as after the salt changed, so the app is set up again
+            $this->forgetOneTimePassword($user);
+            $user->patch(['secret' => null, 'secret_verified' => false], ['guard' => false]);
+            AuthLog::warning('one-time password unreadable', [
+                'user' => (string)$user->get('username'),
+                'ip' => AuthLog::address($this->getRequest()),
+            ]);
+        }
         if (!$user->get('secret_verified')) {
             $this->showSetUp($user);
         }
@@ -247,7 +257,11 @@ trait OneTimePasswordTrait
         $digits = (string)preg_replace('/\s+/', '', $code);
         $secret = (string)$user->get('secret');
         if (preg_match('/^\d{6}$/', $digits) === 1 && $secret !== '') {
-            $timeslice = OneTimePassword::verify($secret, $digits);
+            $timeslice = OneTimePassword::verify(
+                $secret,
+                $digits,
+                algorithm: OneTimePasswordAlgorithm::of((string)$user->get('otp_algorithm')),
+            );
             if ($timeslice === null) {
                 return null;
             }
@@ -272,29 +286,37 @@ trait OneTimePasswordTrait
     }
 
     /**
-     * Shows the QR code and the key to set the app up with, making the key where there is none.
+     * Shows the QR code and the key to set the app up with, making the key where there is none,
+     * or where it was made for another hash function than the settings now name.
      *
      * @param \Cake\Datasource\EntityInterface $user The account.
      * @return void
      */
     protected function showSetUp(EntityInterface $user): void
     {
+        $algorithm = SecurityPolicy::oneTimePasswordAlgorithm();
         $secret = (string)$user->get('secret');
-        if ($secret === '') {
-            $secret = OneTimePassword::createSecret();
+        if ($secret === '' || OneTimePasswordAlgorithm::of((string)$user->get('otp_algorithm')) !== $algorithm) {
+            $secret = OneTimePassword::createSecret($algorithm);
             $this->getUsersTable()->updateQuery()
-                ->set(['secret' => $secret, 'secret_verified' => false, 'otp_last_timestep' => null])
+                ->set([
+                    'secret' => $secret,
+                    'otp_algorithm' => $algorithm->value,
+                    'secret_verified' => false,
+                    'otp_last_timestep' => null,
+                ])
                 ->where(['id' => $user->get('id')])
                 ->execute();
-            $user->set('secret', $secret);
+            $user->patch(['secret' => $secret, 'otp_algorithm' => $algorithm->value], ['guard' => false]);
         }
 
         $issuer = (string)Configure::read('OneTimePasswordAuthenticator.issuer', 'Watcher');
         $this->set([
             'secretDataUri' => OneTimePassword::qrCode(
-                OneTimePassword::uri($issuer, (string)$user->get('username'), $secret),
+                OneTimePassword::uri($issuer, (string)$user->get('username'), $secret, $algorithm),
             ),
             'secret' => $secret,
+            'algorithm' => $algorithm,
         ]);
     }
 

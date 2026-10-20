@@ -6,8 +6,8 @@ namespace Access\Authentication;
 use Com\Tecnick\Barcode\Barcode;
 
 /**
- * One-time codes from an authenticator app: TOTP of RFC 6238, with SHA-1, six digits and a code
- * every 30 seconds, as every authenticator app understands.
+ * One-time codes from an authenticator app: TOTP of RFC 6238, six digits and a code every 30
+ * seconds, with the hash function the account was set up with.
  */
 final class OneTimePassword
 {
@@ -18,13 +18,15 @@ final class OneTimePassword
     private const BASE32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 
     /**
-     * A new secret: 160 random bits, as RFC 4226 recommends, in Base32.
+     * A new secret in Base32, as long as the hash: 160 random bits for SHA-1, as RFC 4226
+     * recommends.
      *
+     * @param \Access\Authentication\OneTimePasswordAlgorithm $algorithm The hash function.
      * @return string
      */
-    public static function createSecret(): string
+    public static function createSecret(OneTimePasswordAlgorithm $algorithm = OneTimePasswordAlgorithm::Sha1): string
     {
-        return self::base32Encode(random_bytes(20));
+        return self::base32Encode(random_bytes($algorithm->secretBytes()));
     }
 
     /**
@@ -34,10 +36,15 @@ final class OneTimePassword
      * @param string $secret The secret in Base32.
      * @param string $code The code as typed, digits only.
      * @param int|null $time The time to check at, now where none is given.
+     * @param \Access\Authentication\OneTimePasswordAlgorithm $algorithm The hash function.
      * @return int|null The time step, or null where the code is not right.
      */
-    public static function verify(string $secret, string $code, ?int $time = null): ?int
-    {
+    public static function verify(
+        string $secret,
+        string $code,
+        ?int $time = null,
+        OneTimePasswordAlgorithm $algorithm = OneTimePasswordAlgorithm::Sha1,
+    ): ?int {
         if (preg_match('/^\d{' . self::DIGITS . '}$/', $code) !== 1) {
             return null;
         }
@@ -46,7 +53,7 @@ final class OneTimePassword
         $match = null;
         // every step is compared, so that how long the answer takes says nothing
         foreach ([$now - 1, $now, $now + 1] as $step) {
-            if (hash_equals(self::code($secret, $step), $code)) {
+            if (hash_equals(self::code($secret, $step, $algorithm), $code)) {
                 $match = $step;
             }
         }
@@ -59,12 +66,17 @@ final class OneTimePassword
      *
      * @param string $secret The secret in Base32.
      * @param int $step The time step.
+     * @param \Access\Authentication\OneTimePasswordAlgorithm $algorithm The hash function.
      * @return string
      */
-    public static function code(string $secret, int $step): string
-    {
-        $hash = hash_hmac('sha1', pack('J', $step), self::base32Decode($secret), true);
-        $offset = ord($hash[19]) & 0x0f;
+    public static function code(
+        string $secret,
+        int $step,
+        OneTimePasswordAlgorithm $algorithm = OneTimePasswordAlgorithm::Sha1,
+    ): string {
+        $hash = hash_hmac($algorithm->hash(), pack('J', $step), self::base32Decode($secret), true);
+        // where the code is read from is said by the last byte, whatever the length of the hash
+        $offset = ord($hash[strlen($hash) - 1]) & 0x0f;
         $value = (ord($hash[$offset]) & 0x7f) << 24
             | ord($hash[$offset + 1]) << 16
             | ord($hash[$offset + 2]) << 8
@@ -79,15 +91,20 @@ final class OneTimePassword
      * @param string $issuer What the app calls the application.
      * @param string $account The account.
      * @param string $secret The secret in Base32.
+     * @param \Access\Authentication\OneTimePasswordAlgorithm $algorithm The hash function.
      * @return string
      */
-    public static function uri(string $issuer, string $account, string $secret): string
-    {
+    public static function uri(
+        string $issuer,
+        string $account,
+        string $secret,
+        OneTimePasswordAlgorithm $algorithm = OneTimePasswordAlgorithm::Sha1,
+    ): string {
         return 'otpauth://totp/' . rawurlencode($issuer) . ':' . rawurlencode($account) . '?'
             . http_build_query([
                 'secret' => $secret,
                 'issuer' => $issuer,
-                'algorithm' => 'SHA1',
+                'algorithm' => $algorithm->value,
                 'digits' => self::DIGITS,
                 'period' => self::PERIOD,
             ], '', '&', PHP_QUERY_RFC3986);

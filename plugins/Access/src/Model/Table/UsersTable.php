@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace Access\Model\Table;
 
 use Access\Authentication\PasswordRules;
+use Access\Database\Type\EncryptedType;
 use Access\Model\Entity\User;
 use ArrayObject;
 use AuditStash\Persister\TablePersister;
 use Cake\Collection\CollectionInterface;
 use Cake\Database\Schema\TableSchema;
+use Cake\Database\TypeFactory;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\I18n\DateTime;
@@ -79,6 +81,10 @@ class UsersTable extends Table
         $this->setDisplayField('username');
         $this->setPrimaryKey('id');
         $this->addBehavior('Timestamp');
+
+        // the key of the one-time codes is kept encrypted
+        TypeFactory::map(EncryptedType::NAME, EncryptedType::class);
+        $this->getSchema()->setColumnType('secret', EncryptedType::NAME);
 
         // Persisting audit log
         $this->addBehavior('AuditStash.AuditLog');

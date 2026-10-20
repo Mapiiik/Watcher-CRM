@@ -61,6 +61,16 @@ the secret goes to no other service. A code is accepted once. Ten recovery codes
 phone, each once. The pages name the method "Authenticator Application (TOTP)", so another method
 can stand beside it under the same heading.
 
+The codes are made with SHA-1 unless `access.security.two_step_verification_algorithm` names
+SHA-256 or SHA-512 for those set up from then on; an account keeps the one it was set up with.
+SHA-1 is the one every app understands. Microsoft Authenticator reads the others from the QR code
+and makes SHA-1 codes all the same, which shows when setting it up refuses the first code.
+
+The secret of the codes is kept encrypted with AES-256-GCM, under a key derived from
+`SECURITY_SALT`, so a copy of the database does not give it away. A new salt makes the secrets
+unreadable: each account then sets its app up again the next time it signs in, which is logged as
+`one-time password unreadable`. It is never let in without a code.
+
 API clients sign in with a key sent as a Bearer token. A key in the address is not read, as it
 would end up in the logs. A client asking for data (JSON or XML) that may not have it gets 401 or
 403 rather than the sign-in page. Only the SHA-256 of a key is kept, so an admin makes a new

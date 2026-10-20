@@ -5,6 +5,7 @@ namespace Access\Test\TestCase\Controller;
 
 use Access\Authentication\LoginThrottle;
 use Access\Authentication\OneTimePassword;
+use Access\Authentication\OneTimePasswordAlgorithm;
 use Access\Controller\UsersController;
 use Access\Test\TestCase\AccountsTrait;
 use Cake\Cache\Cache;
@@ -15,6 +16,7 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Settings\Service\SettingsService;
 use Settings\Utility\Settings;
 
 /**
@@ -60,6 +62,8 @@ class OneTimePasswordTest extends TestCase
         Log::drop('auth');
         Cache::clear(LoginThrottle::CACHE);
         Cache::clear('default');
+        // the settings are kept in memory too, so the next test reads them again
+        Settings::setInstance(new SettingsService());
 
         parent::tearDown();
     }
@@ -285,6 +289,7 @@ class OneTimePasswordTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains('<td>Authenticator Application (TOTP)</td>');
         $this->assertResponseContains('<td>10</td>');
+        $this->assertResponseContains('<td>SHA-1</td>');
         $this->assertResponseContains('href="/users/new-recovery-codes"');
         $this->assertResponseContains('href="/users/disable-one-time-password"');
     }
@@ -325,6 +330,67 @@ class OneTimePasswordTest extends TestCase
         $this->assertResponseOk();
         $this->assertSame(10, preg_match_all('/<td><code>/', $this->_getBodyAsString()));
         $this->assertNotContains($before[0], $codes->find()->where(['user_id' => $id])->all()->extract('id')->toList());
+    }
+
+    /**
+     * Codes are set up with the hash function the settings name, and an account keeps its own
+     * after the settings name another.
+     *
+     * @return void
+     */
+    public function testCodesAreSetUpWithTheHashFunctionTheSettingsName(): void
+    {
+        Settings::set('access.security.two_step_verification_required', true);
+        Settings::set('access.security.two_step_verification_algorithm', 'SHA256');
+        $id = (string)$this->addAccount()->get('id');
+
+        $this->signIn();
+        $this->get('/verify');
+        $this->assertResponseContains('understands SHA-256');
+        $this->assertResponseNotContains('Microsoft Authenticator or Bitwarden Authenticator');
+        $account = $this->account($id);
+        $this->assertSame('SHA256', $account->get('otp_algorithm'));
+        $secret = (string)$account->get('secret');
+        $this->assertSame(52, strlen($secret));
+
+        $this->enterCode(OneTimePassword::code($secret, intdiv(time(), 30), OneTimePasswordAlgorithm::Sha256));
+        $this->get('/login');
+        $this->assertTrue($this->account($id)->get('secret_verified'));
+
+        Settings::set('access.security.two_step_verification_algorithm', 'SHA1');
+        $this->_session = [];
+        $this->signIn();
+        $this->enterCode(OneTimePassword::code($secret, intdiv(time(), 30) + 1, OneTimePasswordAlgorithm::Sha256));
+        $this->get('/login');
+        $this->assertRedirect('/');
+        $this->assertSame('SHA256', $this->account($id)->get('otp_algorithm'));
+    }
+
+    /**
+     * A key that cannot be read, as after the salt changed, is set up again on signing in rather
+     * than let the account in without a code.
+     *
+     * @return void
+     */
+    public function testAKeyThatCannotBeReadIsSetUpAgain(): void
+    {
+        $id = $this->addAccountWithCodes();
+        $users = $this->getTableLocator()->get('Users');
+        $users->getConnection()->updateQuery('users', ['secret' => 'v1:c3RvcmVkIHVuZGVyIGFub3RoZXIgc2FsdA=='])
+            ->where(['id' => $id])
+            ->execute();
+
+        $this->signIn();
+        $this->assertRedirectContains('/verify');
+        $this->get('/verify');
+
+        $this->assertResponseContains('data:image/svg+xml;base64,');
+        $account = $this->account($id);
+        $this->assertFalse($account->get('secret_verified'));
+        $this->assertSame(32, strlen((string)$account->get('secret')));
+        /** @var \Cake\Log\Engine\ArrayLog $log */
+        $log = Log::engine('auth');
+        $this->assertStringContainsString('one-time password unreadable user="jnovak"', implode("\n", $log->read()));
     }
 
     /**

@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var string|null $secretDataUri
  * @var string|null $secret
+ * @var \Access\Authentication\OneTimePasswordAlgorithm|null $algorithm
  */
 
 $settingUp = !empty($secretDataUri) && !empty($secret);
@@ -21,7 +22,7 @@ $settingUp = !empty($secretDataUri) && !empty($secret);
                     . 'application on your phone.',
                 ) ?>
             </p>
-            <?= $this->element('Access.one_time_password_setup', compact('secretDataUri', 'secret')) ?>
+            <?= $this->element('Access.one_time_password_setup', compact('secretDataUri', 'secret', 'algorithm')) ?>
         <?php else : ?>
             <legend><?= __d('access', 'Enter the verification code from your authenticator application') ?></legend>
         <?php endif; ?>

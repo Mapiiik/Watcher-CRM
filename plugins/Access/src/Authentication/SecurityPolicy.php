@@ -70,6 +70,17 @@ final class SecurityPolicy
     }
 
     /**
+     * The hash function one-time codes set up from now on are made with. Those already set up
+     * keep theirs.
+     *
+     * @return \Access\Authentication\OneTimePasswordAlgorithm
+     */
+    public static function oneTimePasswordAlgorithm(): OneTimePasswordAlgorithm
+    {
+        return OneTimePasswordAlgorithm::of((string)self::setting('two_step_verification_algorithm', 'SHA1'));
+    }
+
+    /**
      * Whether an account has to sign in with a one-time code, whether or not it has chosen to.
      *
      * @param \ArrayAccess<string, mixed>|array<string, mixed> $user The account.

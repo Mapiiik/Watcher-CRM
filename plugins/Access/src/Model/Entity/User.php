@@ -27,6 +27,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $token_expires
  * @property string|null $secret
  * @property bool $secret_verified
+ * @property string $otp_algorithm
  * @property bool|null $password_sign_in
  * @property int|null $otp_last_timestep
  * @property \Cake\I18n\DateTime|null $last_granted

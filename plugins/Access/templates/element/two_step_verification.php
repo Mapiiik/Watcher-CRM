@@ -9,6 +9,7 @@
  * @var bool $own Whether the account is the one signed in.
  */
 
+use Access\Authentication\OneTimePasswordAlgorithm;
 use Access\Authentication\SecurityPolicy;
 
 $required = SecurityPolicy::requiresOneTimePassword($user->toArray());
@@ -52,11 +53,13 @@ $totp = (bool)$user->secret_verified;
         <tr>
             <th><?= __d('access', 'Method') ?></th>
             <th><?= __d('access', 'State') ?></th>
+            <th><?= __d('access', 'Algorithm') ?></th>
             <th><?= __d('access', 'Recovery Codes Left') ?></th>
         </tr>
         <tr>
             <td><?= __d('access', 'Authenticator Application (TOTP)') ?></td>
             <td><?= $totp ? __d('access', 'On') : __d('access', 'Off') ?></td>
+            <td><?= $totp ? h(OneTimePasswordAlgorithm::of($user->otp_algorithm)->title()) : '' ?></td>
             <td><?= $totp ? $recoveryCodesLeft : '' ?></td>
         </tr>
     </table>
