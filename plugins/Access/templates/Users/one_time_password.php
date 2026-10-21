@@ -24,7 +24,7 @@
                 <legend><?= __d('access', 'Set Up Two-Step Verification') ?></legend>
                 <?= $this->element('Access.one_time_password_setup', compact('secretDataUri', 'secret', 'algorithm')) ?>
                 <?= $this->Form->control('code', [
-                    'label' => __d('access', 'Verification Code'),
+                    'label' => __d('access', 'Verification Code (TOTP)'),
                     'required' => true,
                     'autocomplete' => 'one-time-code',
                     'inputmode' => 'numeric',

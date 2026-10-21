@@ -70,7 +70,7 @@ $totp = (bool)$user->secret_verified;
                     ? __d('access', 'Your account has to use it, so you set it up the next time you sign in.')
                     : __d(
                         'access',
-                        'Once it is on, signing in also asks for a verification code from an authenticator '
+                        'Once it is on, signing in also asks for a verification code (TOTP) from an authenticator '
                         . 'application on your phone.',
                     ) ?>
             </p>

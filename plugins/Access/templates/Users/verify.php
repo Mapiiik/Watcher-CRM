@@ -18,16 +18,18 @@ $settingUp = !empty($secretDataUri) && !empty($secret);
             <p>
                 <?= __d(
                     'access',
-                    'Your account signs in with the password and a verification code from an authenticator '
+                    'Your account signs in with the password and a verification code (TOTP) from an authenticator '
                     . 'application on your phone.',
                 ) ?>
             </p>
             <?= $this->element('Access.one_time_password_setup', compact('secretDataUri', 'secret', 'algorithm')) ?>
         <?php else : ?>
-            <legend><?= __d('access', 'Enter the verification code from your authenticator application') ?></legend>
+            <legend>
+                <?= __d('access', 'Enter the verification code (TOTP) from your authenticator application') ?>
+            </legend>
         <?php endif; ?>
         <?= $this->Form->control('code', [
-            'label' => __d('access', 'Verification Code'),
+            'label' => __d('access', 'Verification Code (TOTP)'),
             'required' => true,
             'autocomplete' => 'one-time-code',
             'autofocus' => true,

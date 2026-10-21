@@ -22,7 +22,7 @@
             <p>
                 <?= __d(
                     'access',
-                    'Each of these codes signs you in once in place of a verification code, should you lose '
+                    'Each of these codes signs you in once in place of a verification code (TOTP), should you lose '
                     . 'your phone. Keep them somewhere safe, away from the phone. They are shown only now.',
                 ) ?>
             </p>

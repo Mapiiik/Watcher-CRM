@@ -17,13 +17,14 @@ use Access\Authentication\OneTimePasswordAlgorithm;
     ? __d(
         'access',
         'Scan the QR code with an authenticator application on your phone, such as Google Authenticator, '
-        . 'Microsoft Authenticator or Bitwarden Authenticator, and enter the six-digit verification code it shows.',
+        . 'Microsoft Authenticator or Bitwarden Authenticator, and enter the six-digit verification code (TOTP) '
+        . 'it shows.',
     )
     : __d(
         'access',
         'Scan the QR code with an authenticator application on your phone that understands {0}, such as '
-        . 'Google Authenticator or Bitwarden Authenticator, and enter the six-digit verification code it shows. '
-        . 'Microsoft Authenticator does not understand it and shows codes that are not right.',
+        . 'Google Authenticator or Bitwarden Authenticator, and enter the six-digit verification code (TOTP) it '
+        . 'shows. Microsoft Authenticator does not understand it and shows codes that are not right.',
         $algorithm->title(),
     ) ?></p>
 <br>

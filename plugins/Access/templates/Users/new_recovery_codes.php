@@ -20,7 +20,7 @@
             <fieldset>
                 <legend><?= __d('access', 'New Recovery Codes') ?></legend>
                 <?= $this->Form->control('code', [
-                    'label' => __d('access', 'Verification Code'),
+                    'label' => __d('access', 'Verification Code (TOTP)'),
                     'required' => true,
                     'autocomplete' => 'one-time-code',
                     'inputmode' => 'numeric',

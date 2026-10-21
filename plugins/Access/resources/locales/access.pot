@@ -317,7 +317,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/new_recovery_codes.php:23
 #: ./plugins/Access/templates/Users/one_time_password.php:27
 #: ./plugins/Access/templates/Users/verify.php:30
-msgid "Verification Code"
+msgid "Verification Code (TOTP)"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/disable_one_time_password.php:28
@@ -518,7 +518,7 @@ msgid "Recovery Codes"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/recovery_codes.php:23
-msgid "Each of these codes signs you in once in place of a verification code, should you lose your phone. Keep them somewhere safe, away from the phone. They are shown only now."
+msgid "Each of these codes signs you in once in place of a verification code (TOTP), should you lose your phone. Keep them somewhere safe, away from the phone. They are shown only now."
 msgstr ""
 
 #: ./plugins/Access/templates/Users/recovery_codes.php:42
@@ -538,11 +538,11 @@ msgid "Set the password"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/verify.php:19
-msgid "Your account signs in with the password and a verification code from an authenticator application on your phone."
+msgid "Your account signs in with the password and a verification code (TOTP) from an authenticator application on your phone."
 msgstr ""
 
 #: ./plugins/Access/templates/Users/verify.php:27
-msgid "Enter the verification code from your authenticator application"
+msgid "Enter the verification code (TOTP) from your authenticator application"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/verify.php:34
@@ -604,11 +604,11 @@ msgid "Reference"
 msgstr ""
 
 #: ./plugins/Access/templates/element/one_time_password_setup.php:17
-msgid "Scan the QR code with an authenticator application on your phone, such as Google Authenticator, Microsoft Authenticator or Bitwarden Authenticator, and enter the six-digit verification code it shows."
+msgid "Scan the QR code with an authenticator application on your phone, such as Google Authenticator, Microsoft Authenticator or Bitwarden Authenticator, and enter the six-digit verification code (TOTP) it shows."
 msgstr ""
 
 #: ./plugins/Access/templates/element/one_time_password_setup.php:22
-msgid "Scan the QR code with an authenticator application on your phone that understands {0}, such as Google Authenticator or Bitwarden Authenticator, and enter the six-digit verification code it shows. Microsoft Authenticator does not understand it and shows codes that are not right."
+msgid "Scan the QR code with an authenticator application on your phone that understands {0}, such as Google Authenticator or Bitwarden Authenticator, and enter the six-digit verification code (TOTP) it shows. Microsoft Authenticator does not understand it and shows codes that are not right."
 msgstr ""
 
 #: ./plugins/Access/templates/element/one_time_password_setup.php:31
@@ -689,7 +689,7 @@ msgid "Your account has to use it, so you set it up the next time you sign in."
 msgstr ""
 
 #: ./plugins/Access/templates/element/two_step_verification.php:71
-msgid "Once it is on, signing in also asks for a verification code from an authenticator application on your phone."
+msgid "Once it is on, signing in also asks for a verification code (TOTP) from an authenticator application on your phone."
 msgstr ""
 
 #: ./plugins/Access/templates/element/two_step_verification.php:79
