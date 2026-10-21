@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-07 12:30+0200\n"
+"POT-Creation-Date: 2026-10-21 23:58+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid "How small an overdue debt is passed over."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:241
+#: ./plugins/Bookkeeping/config/settings.php:238
 msgid "How many days before the due date a debtor is warned on. An empty list [] warns on none."
 msgstr ""
 

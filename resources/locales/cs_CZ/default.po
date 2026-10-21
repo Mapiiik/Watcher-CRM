@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-15 12:24+0200\n"
+"POT-Creation-Date: 2026-10-21 23:58+0200\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -228,13 +228,17 @@ msgstr ""
 msgid ""
 "Links for a new password or a new login one customer number may ask for in "
 "an hour."
-msgstr "Kolik odkazů pro nové heslo nebo nový přístup si může jedno číslo zákazníka vyžádat za hodinu."
+msgstr ""
+"Kolik odkazů pro nové heslo nebo nový přístup si může jedno číslo zákazníka "
+"vyžádat za hodinu."
 
 #: config/settings.php:431
 msgid ""
 "Links for a new password or a new login one address may ask for in an hour, "
 "whatever the customer."
-msgstr "Kolik odkazů pro nové heslo nebo nový přístup si může jedna adresa vyžádat za hodinu, ať je zákazník kdokoli."
+msgstr ""
+"Kolik odkazů pro nové heslo nebo nový přístup si může jedna adresa vyžádat "
+"za hodinu, ať je zákazník kdokoli."
 
 #: config/settings.php:435
 msgid "Addresses a service may look up in a minute before more are refused."
@@ -274,7 +278,7 @@ msgstr ""
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
 
-#: config/settings.php:927
+#: config/settings.php:925
 msgid "Documents the summary points the customer to."
 msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
 
@@ -2171,14 +2175,14 @@ msgid "The IP address could not be deleted. Please, try again."
 msgstr "IP adresu nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/IpAddressesController.php:383
-#: src/Controller/RemovedIpAddressesController.php:107
-#: src/Controller/RemovedIpAddressesController.php:163
+#: src/Controller/RemovedIpAddressesController.php:106
+#: src/Controller/RemovedIpAddressesController.php:162
 msgid "The removed IP address has been saved."
 msgstr "Odebraná IP adresa byla uložena."
 
 #: src/Controller/IpAddressesController.php:389
-#: src/Controller/RemovedIpAddressesController.php:111
-#: src/Controller/RemovedIpAddressesController.php:167
+#: src/Controller/RemovedIpAddressesController.php:110
+#: src/Controller/RemovedIpAddressesController.php:166
 msgid "The removed IP address could not be saved. Please, try again."
 msgstr "Odebranou IP adresu nelze uložit. Opakujte akci."
 
@@ -2220,15 +2224,15 @@ msgstr "IP síť byla odstraněna."
 msgid "The IP network could not be deleted. Please, try again."
 msgstr "IP síť nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/IpNetworksController.php:236
-#: src/Controller/RemovedIpNetworksController.php:107
-#: src/Controller/RemovedIpNetworksController.php:160
+#: src/Controller/IpNetworksController.php:235
+#: src/Controller/RemovedIpNetworksController.php:106
+#: src/Controller/RemovedIpNetworksController.php:159
 msgid "The removed IP network has been saved."
 msgstr "Odebraná IP síť byla uložena."
 
-#: src/Controller/IpNetworksController.php:241
-#: src/Controller/RemovedIpNetworksController.php:111
-#: src/Controller/RemovedIpNetworksController.php:164
+#: src/Controller/IpNetworksController.php:240
+#: src/Controller/RemovedIpNetworksController.php:110
+#: src/Controller/RemovedIpNetworksController.php:163
 msgid "The removed IP network could not be saved. Please, try again."
 msgstr "Odebranou IP síť nelze uložit. Zkuste to prosím znovu."
 
@@ -2325,19 +2329,19 @@ msgstr "Telefony nelze aktualizovat. Zkuste to prosím znovu."
 msgid "The phones have been updated."
 msgstr "Telefony byly aktualizovány."
 
-#: src/Controller/RemovedIpAddressesController.php:210
+#: src/Controller/RemovedIpAddressesController.php:209
 msgid "The removed IP address has been deleted."
 msgstr "Odebraná IP adresa byla odstraněna."
 
-#: src/Controller/RemovedIpAddressesController.php:213
+#: src/Controller/RemovedIpAddressesController.php:212
 msgid "The removed IP address could not be deleted. Please, try again."
 msgstr "Odebranou IP adresu nelze odstranit. Opakujte akci."
 
-#: src/Controller/RemovedIpNetworksController.php:210
+#: src/Controller/RemovedIpNetworksController.php:209
 msgid "The removed IP network has been deleted."
 msgstr "Odebraná IP síť byla odstraněna."
 
-#: src/Controller/RemovedIpNetworksController.php:213
+#: src/Controller/RemovedIpNetworksController.php:212
 msgid "The removed IP network could not be deleted. Please, try again."
 msgstr "Odebranou IP síť nelze odstranit. Zkuste to prosím znovu."
 
@@ -3175,7 +3179,7 @@ msgid "Account change"
 msgstr "Změna účtu"
 
 #: src/Model/Enum/HistoricalConnectionSource.php:30
-#: src/Model/Enum/LandingPage.php:41 templates/layout/default.php:156
+#: src/Model/Enum/LandingPage.php:41 templates/layout/default.php:153
 msgid "RADIUS"
 msgstr "RADIUS"
 
@@ -3207,35 +3211,35 @@ msgstr "Síť zákazníka nastavená ručně"
 msgid "Technology network set manually"
 msgstr "Síť technologie nastavená ručně"
 
-#: src/Model/Enum/LandingPage.php:37 templates/layout/default.php:136
+#: src/Model/Enum/LandingPage.php:37 templates/layout/default.php:133
 msgid "Dashboard"
 msgstr "Nástěnka"
 
 #: src/Model/Enum/LandingPage.php:38
 #: templates/Customers/identity_number_check.php:8
-#: templates/Customers/index.php:63 templates/layout/default.php:141
+#: templates/Customers/index.php:63 templates/layout/default.php:138
 msgid "Customers"
 msgstr "Zákazníci"
 
 #: src/Model/Enum/LandingPage.php:39 templates/Contracts/view.php:152
 #: templates/Contracts/view.php:512 templates/Customers/view.php:175
 #: templates/Customers/view.php:920 templates/Tasks/index.php:96
-#: templates/Tasks/map.php:36 templates/layout/default.php:146
+#: templates/Tasks/map.php:36 templates/layout/default.php:143
 msgid "Tasks"
 msgstr "Úkoly"
 
-#: src/Model/Enum/LandingPage.php:40 templates/layout/default.php:151
+#: src/Model/Enum/LandingPage.php:40 templates/layout/default.php:148
 msgid "Bookkeeping"
 msgstr "Účetnictví"
 
 #: src/Model/Enum/LandingPage.php:42 templates/Overviews/index.php:9
-#: templates/layout/default.php:183
+#: templates/layout/default.php:180
 msgid "Overviews"
 msgstr "Přehledy"
 
 #: src/Model/Enum/LandingPage.php:43
 #: templates/Billings/bulk_service_change.php:17 templates/Settings/index.php:9
-#: templates/layout/default.php:196
+#: templates/layout/default.php:193
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -9057,7 +9061,7 @@ msgstr "Celkem"
 
 #: templates/element/Settings/FormFields.php:34
 #: templates/element/Settings/FormFields.php:51
-#: templates/layout/default.php:252
+#: templates/layout/default.php:231
 msgid "Default"
 msgstr "Výchozí"
 
@@ -9167,58 +9171,54 @@ msgstr "Uzavřel"
 msgid "Closed"
 msgstr "Uzavřeno"
 
-#: templates/layout/default.php:172
+#: templates/layout/default.php:169
 msgid "Work Reports"
 msgstr "Výkazy práce"
 
-#: templates/layout/default.php:188
+#: templates/layout/default.php:185
 msgid "Files"
 msgstr "Soubory"
 
-#: templates/layout/default.php:207 templates/layout/default.php:213
-#: templates/layout/default.php:218
-msgid "Old NMS"
-msgstr "Starý NMS"
-
-#: templates/layout/default.php:224
+#: templates/layout/default.php:203
 msgid "Network Management System"
 msgstr "Systém správy sítě"
 
-#: templates/layout/default.php:254
+#: templates/layout/default.php:233
 #: templates/plugin/Access/Users/user_settings.php:56
 msgid "Light"
 msgstr "Světlý"
 
-#: templates/layout/default.php:255
+#: templates/layout/default.php:234
 #: templates/plugin/Access/Users/user_settings.php:57
 msgid "Dark"
 msgstr "Tmavý"
 
-#: templates/layout/default.php:256
+#: templates/layout/default.php:235
 #: templates/plugin/Access/Users/user_settings.php:58
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: templates/layout/default.php:257
-#: templates/plugin/Access/Users/user_settings.php:59
-msgid "Legacy"
-msgstr "Starší"
-
-#: templates/layout/default.php:283
+#: templates/layout/default.php:261
 msgid "Logout"
 msgstr "Odhlášení"
 
-#: templates/layout/default.php:306
+#: templates/layout/default.php:284
 msgid "Changelog"
 msgstr "Seznam změn"
 
-#: templates/layout/default.php:307
+#: templates/layout/default.php:285
 msgid "Source Code"
 msgstr "Zdrojový kód"
 
-#: templates/layout/default.php:309
+#: templates/layout/default.php:287
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "Old NMS"
+#~ msgstr "Starý NMS"
+
+#~ msgid "Legacy"
+#~ msgstr "Starší"
 
 #~ msgid ""
 #~ "Contract versions taking effect before this day are left alone. What an "

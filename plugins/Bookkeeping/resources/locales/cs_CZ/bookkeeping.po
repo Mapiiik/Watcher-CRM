@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-07 12:30+0200\n"
+"POT-Creation-Date: 2026-10-21 23:58+0200\n"
 "PO-Revision-Date: 2026-08-26 13:21+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -25,8 +25,8 @@ msgid ""
 "Send the customer to the address book before their invoice and link the "
 "invoice to it. Turn on only once the address book has been filled."
 msgstr ""
-"Před fakturou poslat zákazníka do adresáře a fakturu na něj navázat. "
-"Zapněte až po naplnění adresáře."
+"Před fakturou poslat zákazníka do adresáře a fakturu na něj navázat. Zapněte "
+"až po naplnění adresáře."
 
 #: plugins/Bookkeeping/config/settings.php:168
 msgid ""
@@ -49,7 +49,7 @@ msgstr "O kolik dní se může platba opozdit, než se to začne počítat."
 msgid "How small an overdue debt is passed over."
 msgstr "Jak malá částka splatného dluhu se přehlíží."
 
-#: plugins/Bookkeeping/config/settings.php:241
+#: plugins/Bookkeeping/config/settings.php:238
 msgid ""
 "How many days before the due date a debtor is warned on. An empty list [] "
 "warns on none."

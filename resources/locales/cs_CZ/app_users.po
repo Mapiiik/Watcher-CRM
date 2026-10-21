@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CakeDC Users\n"
-"POT-Creation-Date: 2026-10-13 22:49+0200\n"
+"POT-Creation-Date: 2026-10-21 23:58+0200\n"
 "PO-Revision-Date: 2026-08-21 11:32+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: Martin Patočka <mapik@mapik.net>\n"
@@ -55,47 +55,47 @@ msgstr "Počet řádků na stránku"
 msgid "Theme"
 msgstr "Motiv"
 
-#: templates/plugin/Access/Users/user_settings.php:63
+#: templates/plugin/Access/Users/user_settings.php:62
 msgid "Landing Page"
 msgstr "Výchozí stránka"
 
-#: templates/plugin/Access/Users/user_settings.php:68
-#: templates/plugin/Access/Users/user_settings.php:74
+#: templates/plugin/Access/Users/user_settings.php:67
+#: templates/plugin/Access/Users/user_settings.php:73
 msgid "Customers"
 msgstr "Zákazníci"
 
-#: templates/plugin/Access/Users/user_settings.php:69
+#: templates/plugin/Access/Users/user_settings.php:68
 msgid "Advanced Search by Default"
 msgstr "Ve výchozím stavu pokročilé vyhledávání"
 
-#: templates/plugin/Access/Users/user_settings.php:75
+#: templates/plugin/Access/Users/user_settings.php:74
 msgid "Show Historical Records by Default"
 msgstr "Ve výchozím stavu zobrazovat historické záznamy"
 
-#: templates/plugin/Access/Users/user_settings.php:80
-#: templates/plugin/Access/Users/user_settings.php:88
-#: templates/plugin/Access/Users/user_settings.php:96
-#: templates/plugin/Access/Users/user_settings.php:106
+#: templates/plugin/Access/Users/user_settings.php:79
+#: templates/plugin/Access/Users/user_settings.php:87
+#: templates/plugin/Access/Users/user_settings.php:95
+#: templates/plugin/Access/Users/user_settings.php:105
 msgid "Tasks"
 msgstr "Úkoly"
 
-#: templates/plugin/Access/Users/user_settings.php:82
+#: templates/plugin/Access/Users/user_settings.php:81
 msgid "Show Tasks for All Users by Default"
 msgstr "Ve výchozím stavu zobrazovat úkoly všech uživatelů"
 
-#: templates/plugin/Access/Users/user_settings.php:90
+#: templates/plugin/Access/Users/user_settings.php:89
 msgid "Use Expandable Text by Default"
 msgstr "Ve výchozím stavu používat rozbalitelný text"
 
-#: templates/plugin/Access/Users/user_settings.php:98
+#: templates/plugin/Access/Users/user_settings.php:97
 msgid "Show Only These Task Types by Default"
 msgstr "Ve výchozím stavu zobrazovat jen tyto typy úkolů"
 
-#: templates/plugin/Access/Users/user_settings.php:108
+#: templates/plugin/Access/Users/user_settings.php:107
 msgid "Show Only These Task States by Default"
 msgstr "Ve výchozím stavu zobrazovat jen tyto stavy úkolů"
 
-#: templates/plugin/Access/Users/user_settings.php:116
+#: templates/plugin/Access/Users/user_settings.php:115
 msgid "Submit"
 msgstr "Odeslat"
 

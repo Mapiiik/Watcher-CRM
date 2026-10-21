@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-13 22:49+0200\n"
+"POT-Creation-Date: 2026-10-21 23:58+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -54,47 +54,47 @@ msgstr ""
 msgid "Theme"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:63
+#: ./templates/plugin/Access/Users/user_settings.php:62
 msgid "Landing Page"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:68
-#: ./templates/plugin/Access/Users/user_settings.php:74
+#: ./templates/plugin/Access/Users/user_settings.php:67
+#: ./templates/plugin/Access/Users/user_settings.php:73
 msgid "Customers"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:69
+#: ./templates/plugin/Access/Users/user_settings.php:68
 msgid "Advanced Search by Default"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:75
+#: ./templates/plugin/Access/Users/user_settings.php:74
 msgid "Show Historical Records by Default"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:80
-#: ./templates/plugin/Access/Users/user_settings.php:88
-#: ./templates/plugin/Access/Users/user_settings.php:96
-#: ./templates/plugin/Access/Users/user_settings.php:106
+#: ./templates/plugin/Access/Users/user_settings.php:79
+#: ./templates/plugin/Access/Users/user_settings.php:87
+#: ./templates/plugin/Access/Users/user_settings.php:95
+#: ./templates/plugin/Access/Users/user_settings.php:105
 msgid "Tasks"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:82
+#: ./templates/plugin/Access/Users/user_settings.php:81
 msgid "Show Tasks for All Users by Default"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:90
+#: ./templates/plugin/Access/Users/user_settings.php:89
 msgid "Use Expandable Text by Default"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:98
+#: ./templates/plugin/Access/Users/user_settings.php:97
 msgid "Show Only These Task Types by Default"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:108
+#: ./templates/plugin/Access/Users/user_settings.php:107
 msgid "Show Only These Task States by Default"
 msgstr ""
 
-#: ./templates/plugin/Access/Users/user_settings.php:116
+#: ./templates/plugin/Access/Users/user_settings.php:115
 msgid "Submit"
 msgstr ""
 
