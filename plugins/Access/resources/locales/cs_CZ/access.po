@@ -693,8 +693,8 @@ msgid "QR code for the authenticator application"
 msgstr "QR kód pro ověřovací aplikaci"
 
 #: plugins/Access/templates/element/one_time_password_setup.php:43
-msgid "Where the QR code cannot be scanned, enter this key instead:"
-msgstr "Pokud QR kód nejde naskenovat, zadejte místo něj tento klíč:"
+msgid "Where the QR code cannot be scanned, enter this authenticator application key (TOTP) instead:"
+msgstr "Pokud QR kód nejde naskenovat, zadejte místo něj tento klíč ověřovací aplikace (TOTP):"
 
 #: plugins/Access/templates/element/sign_ins.php:15
 msgid "API Key Sign-In"

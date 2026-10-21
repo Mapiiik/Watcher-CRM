@@ -41,6 +41,9 @@ use Access\Authentication\OneTimePasswordAlgorithm;
     'height' => 200,
 ]) ?></p>
 <p>
-    <?= __d('access', 'Where the QR code cannot be scanned, enter this key instead:') ?>
+    <?= __d(
+        'access',
+        'Where the QR code cannot be scanned, enter this authenticator application key (TOTP) instead:',
+    ) ?>
     <code><?= h(trim(chunk_split($secret, 4, ' '))) ?></code>
 </p>
