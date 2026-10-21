@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-20 17:48+0200\n"
+"POT-Creation-Date: 2026-10-21 23:57+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -316,7 +316,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/disable_one_time_password.php:23
 #: ./plugins/Access/templates/Users/new_recovery_codes.php:23
 #: ./plugins/Access/templates/Users/one_time_password.php:27
-#: ./plugins/Access/templates/Users/verify.php:30
+#: ./plugins/Access/templates/Users/verify.php:32
 msgid "Verification Code (TOTP)"
 msgstr ""
 
@@ -541,15 +541,15 @@ msgstr ""
 msgid "Your account signs in with the password and a verification code (TOTP) from an authenticator application on your phone."
 msgstr ""
 
-#: ./plugins/Access/templates/Users/verify.php:27
+#: ./plugins/Access/templates/Users/verify.php:28
 msgid "Enter the verification code (TOTP) from your authenticator application"
 msgstr ""
 
-#: ./plugins/Access/templates/Users/verify.php:34
+#: ./plugins/Access/templates/Users/verify.php:36
 msgid "Lost your phone? Enter one of your recovery codes instead."
 msgstr ""
 
-#: ./plugins/Access/templates/Users/verify.php:37
+#: ./plugins/Access/templates/Users/verify.php:39
 msgid "Verify"
 msgstr ""
 
@@ -607,20 +607,20 @@ msgstr ""
 msgid "Scan the QR code with an authenticator application on your phone, such as Google Authenticator, Microsoft Authenticator or Bitwarden Authenticator, and enter the six-digit verification code (TOTP) it shows."
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:22
+#: ./plugins/Access/templates/element/one_time_password_setup.php:23
 msgid "Scan the QR code with an authenticator application on your phone that understands {0}, such as Google Authenticator or Bitwarden Authenticator, and enter the six-digit verification code (TOTP) it shows. Microsoft Authenticator does not understand it and shows codes that are not right."
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:31
+#: ./plugins/Access/templates/element/one_time_password_setup.php:33
 #: ./plugins/Access/templates/element/two_step_verification.php:56
 msgid "Algorithm"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:38
+#: ./plugins/Access/templates/element/one_time_password_setup.php:40
 msgid "QR code for the authenticator application"
 msgstr ""
 
-#: ./plugins/Access/templates/element/one_time_password_setup.php:43
+#: ./plugins/Access/templates/element/one_time_password_setup.php:45
 msgid "Where the QR code cannot be scanned, enter this authenticator application key (TOTP) instead:"
 msgstr ""
 

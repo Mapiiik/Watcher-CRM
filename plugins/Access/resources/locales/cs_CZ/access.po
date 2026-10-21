@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-20 17:48+0200\n"
+"POT-Creation-Date: 2026-10-21 23:57+0200\n"
 "PO-Revision-Date: 2026-10-13 23:30+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -353,7 +353,7 @@ msgstr "Vypnutí dvoufázového ověření"
 #: plugins/Access/templates/Users/disable_one_time_password.php:23
 #: plugins/Access/templates/Users/new_recovery_codes.php:23
 #: plugins/Access/templates/Users/one_time_password.php:27
-#: plugins/Access/templates/Users/verify.php:30
+#: plugins/Access/templates/Users/verify.php:32
 msgid "Verification Code (TOTP)"
 msgstr "Ověřovací kód (TOTP)"
 
@@ -592,18 +592,18 @@ msgid ""
 "Your account signs in with the password and a verification code (TOTP) from "
 "an authenticator application on your phone."
 msgstr ""
-"Váš účet se přihlašuje heslem a ověřovacím kódem (TOTP) z ověřovací "
-"aplikace v telefonu."
+"Váš účet se přihlašuje heslem a ověřovacím kódem (TOTP) z ověřovací aplikace "
+"v telefonu."
 
-#: plugins/Access/templates/Users/verify.php:27
+#: plugins/Access/templates/Users/verify.php:28
 msgid "Enter the verification code (TOTP) from your authenticator application"
 msgstr "Zadejte ověřovací kód (TOTP) z ověřovací aplikace"
 
-#: plugins/Access/templates/Users/verify.php:34
+#: plugins/Access/templates/Users/verify.php:36
 msgid "Lost your phone? Enter one of your recovery codes instead."
 msgstr "Ztratili jste telefon? Zadejte místo toho jeden z kódů pro obnovení."
 
-#: plugins/Access/templates/Users/verify.php:37
+#: plugins/Access/templates/Users/verify.php:39
 msgid "Verify"
 msgstr "Ověřit"
 
@@ -671,7 +671,7 @@ msgstr ""
 "Authenticator, Microsoft Authenticator nebo Bitwarden Authenticator, a "
 "zadejte šestimístný ověřovací kód (TOTP), který zobrazí."
 
-#: plugins/Access/templates/element/one_time_password_setup.php:22
+#: plugins/Access/templates/element/one_time_password_setup.php:23
 msgid ""
 "Scan the QR code with an authenticator application on your phone that "
 "understands {0}, such as Google Authenticator or Bitwarden Authenticator, "
@@ -683,18 +683,22 @@ msgstr ""
 "ověřovací kód (TOTP), který zobrazí. Microsoft Authenticator ji neumí a "
 "ukazuje kódy, které nejsou správné."
 
-#: plugins/Access/templates/element/one_time_password_setup.php:31
+#: plugins/Access/templates/element/one_time_password_setup.php:33
 #: plugins/Access/templates/element/two_step_verification.php:56
 msgid "Algorithm"
 msgstr "Algoritmus"
 
-#: plugins/Access/templates/element/one_time_password_setup.php:38
+#: plugins/Access/templates/element/one_time_password_setup.php:40
 msgid "QR code for the authenticator application"
 msgstr "QR kód pro ověřovací aplikaci"
 
-#: plugins/Access/templates/element/one_time_password_setup.php:43
-msgid "Where the QR code cannot be scanned, enter this authenticator application key (TOTP) instead:"
-msgstr "Pokud QR kód nejde naskenovat, zadejte místo něj tento klíč ověřovací aplikace (TOTP):"
+#: plugins/Access/templates/element/one_time_password_setup.php:45
+msgid ""
+"Where the QR code cannot be scanned, enter this authenticator application "
+"key (TOTP) instead:"
+msgstr ""
+"Pokud QR kód nejde naskenovat, zadejte místo něj tento klíč ověřovací "
+"aplikace (TOTP):"
 
 #: plugins/Access/templates/element/sign_ins.php:15
 msgid "API Key Sign-In"
@@ -767,8 +771,8 @@ msgid ""
 "Once it is on, signing in also asks for a verification code (TOTP) from an "
 "authenticator application on your phone."
 msgstr ""
-"Po zapnutí bude přihlášení chtít i ověřovací kód (TOTP) z ověřovací "
-"aplikace v telefonu."
+"Po zapnutí bude přihlášení chtít i ověřovací kód (TOTP) z ověřovací aplikace "
+"v telefonu."
 
 #: plugins/Access/templates/element/two_step_verification.php:79
 msgid ""
