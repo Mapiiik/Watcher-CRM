@@ -57,6 +57,12 @@ container is healthy. It runs FrankenPHP with the Caddy configuration in
 `docker/caddy/`. Set `SERVER_NAME` in the compose environment to a real
 domain and Caddy obtains a Let's Encrypt certificate itself.
 
+Behind an SNI proxy such as HAProxy, set `LISTENER_MODE=behind-proxy` and `PROXY_ALLOW` to the
+proxy's network. Only on an internal network, for a test before DNS points at the server or for
+good, set `LISTENER_MODE=internal`: Caddy issues the certificate from its own CA and `SERVER_NAME`
+can be the internal name or the server's IP address. Browsers warn until they trust its root
+certificate, `/data/caddy/pki/authorities/local/root.crt` in the container.
+
 ### Option B — Bare-metal (host nginx + PHP-FPM, FrankenPHP, …)
 
 For hosts already running their own PHP webserver:

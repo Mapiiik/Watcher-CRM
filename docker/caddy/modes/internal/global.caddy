@@ -1,0 +1,9 @@
+# Only on an internal network, nothing comes from the internet. Caddy issues the certificate from its
+# own CA, browsers warn until they trust its root certificate (see the README).
+
+local_certs
+skip_install_trust
+
+# Browsers send no name when SERVER_NAME is an IP address, and in a container Caddy sees its own
+# address instead of the server's
+default_sni {$SERVER_NAME}
