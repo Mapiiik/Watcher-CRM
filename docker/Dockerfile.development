@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 
-FROM dunglas/frankenphp:php8.4-alpine
+# The base of the production image (github.com/Mapiiik/frankenphp)
+FROM ghcr.io/mapiiik/frankenphp:php8.4
 
 ARG buildno
 ARG gitcommithash
@@ -47,8 +48,9 @@ RUN echo "pcov.enabled = 0" > $PHP_INI_DIR/conf.d/pcov.ini
 
 # git for composer
 RUN set -x \
- && apk add -U --no-cache \
-    git
+ && apt-get update \
+ && apt-get install -y --no-install-recommends git \
+ && rm -rf /var/lib/apt/lists/*
 
 # Development, with room for the test suite
 RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
@@ -69,8 +71,9 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 # Caddy configuration
 ############################
 # The Caddy configuration of the production image, with its headers and threads, so that the
-# pages are tried the way they are served. A change in docker/caddy/ needs `docker compose build`.
-COPY docker/caddy/ /etc/frankenphp/
+# pages are tried the way they are served. A change in docker/caddy/app.caddy needs
+# `docker compose build`.
+COPY docker/caddy/app.caddy /etc/frankenphp/app.caddy
 
 ############################
 # Start
@@ -93,14 +96,5 @@ RUN chmod +x /usr/local/bin/docker-entrypoint-custom
 ENTRYPOINT ["docker-entrypoint-custom"]
 CMD ["--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]
 
-############################
-# Non-root runtime
-############################
-RUN \
-    adduser -D ${APPLICATION_USER}; \
-    # Add additional capability to bind to port 80 and 443
-    setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp; \
-    # Give write access to /config/caddy and /data/caddy
-    chown -R ${APPLICATION_USER}:${APPLICATION_USER} /config/caddy /data/caddy
-
+# The user comes with the base image
 USER ${APPLICATION_USER}

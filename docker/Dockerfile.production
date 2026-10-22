@@ -23,11 +23,14 @@ RUN composer dump-autoload --no-dev --optimize
 ############################
 # Runtime
 ############################
-FROM dunglas/frankenphp:php8.4-alpine
+# Our FrankenPHP (github.com/Mapiiik/frankenphp): PHP in production settings, the non-root user and
+# the Caddyfile with its modes, which app.caddy below fills in
+FROM ghcr.io/mapiiik/frankenphp:php8.4
 
 ARG buildno
 ARG gitcommithash
 
+# The user the base image brings
 ARG APPLICATION_USER=application
 
 LABEL application="Watcher CRM"
@@ -58,11 +61,10 @@ RUN install-php-extensions \
 # or a photograph arrives in and refuses the rest.
 COPY docker/imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
 
-# Production defaults, with what the installations on a server have set for their pools.
-# The code does not change inside an image, so OPcache need not look at the files again.
-RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini \
- && echo "expose_php = Off" > $PHP_INI_DIR/conf.d/99-expose.ini \
- && echo "memory_limit = 1024M" > $PHP_INI_DIR/conf.d/99-memory.ini \
+# On top of the production defaults of the base image, what the installations on a server have set
+# for their pools. The code does not change inside an image, so OPcache need not look at the files
+# again.
+RUN echo "memory_limit = 1024M" > $PHP_INI_DIR/conf.d/99-memory.ini \
  && echo "disable_functions = passthru,system" > $PHP_INI_DIR/conf.d/99-disable-functions.ini \
  && { \
       echo "opcache.memory_consumption = 256"; \
@@ -85,8 +87,6 @@ COPY --from=vendor /usr/bin/composer /usr/local/bin/composer
 ############################
 # Application
 ############################
-RUN adduser -D ${APPLICATION_USER}
-
 COPY --from=vendor --chown=${APPLICATION_USER}:${APPLICATION_USER} /app/vendor /app/vendor
 COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} composer.json composer.lock /app/
 COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} bin/ /app/bin/
@@ -107,8 +107,8 @@ RUN chown ${APPLICATION_USER}:${APPLICATION_USER} /app \
 ############################
 # Caddy configuration
 ############################
-# Shared by all our Caddy servers: PROXY protocol always on, LISTENER_MODE direct or behind-proxy
-COPY docker/caddy/ /etc/frankenphp/
+# The Caddyfile and its modes come with the base image, the application brings its snippets
+COPY docker/caddy/app.caddy /etc/frankenphp/app.caddy
 ENV SERVER_ROOT=webroot/
 
 ############################
@@ -142,15 +142,6 @@ RUN chmod +x /usr/local/bin/docker-entrypoint-custom
 
 ENTRYPOINT ["docker-entrypoint-custom"]
 CMD ["--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]
-
-############################
-# Non-root runtime
-############################
-RUN \
-    # Add additional capability to bind to port 80 and 443
-    setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp; \
-    # Give write access to /config/caddy and /data/caddy
-    chown -R ${APPLICATION_USER}:${APPLICATION_USER} /config/caddy /data/caddy
 
 ############################
 # Version

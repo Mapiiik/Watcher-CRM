@@ -24,7 +24,8 @@ env:
   # The branch the image `latest` is built from, the one production runs. A nightly run builds
   # this branch rather than the default one, which is what a schedule would check out.
   LATEST_BRANCH: '5.x'
-  BASE_IMAGE: dunglas/frankenphp:php8.4-alpine
+  # Our FrankenPHP, built an hour before; a new one is a reason for a nightly build
+  BASE_IMAGE: ghcr.io/mapiiik/frankenphp:php8.4
 
 jobs:
   testsuite:

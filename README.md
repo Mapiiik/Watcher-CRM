@@ -53,9 +53,11 @@ docker compose -f compose.production.yaml up -d
 The production image runs `composer run-script migrations` and rebuilds the
 schema cache automatically on container start, so the app is reachable at
 `https://localhost` (with a certificate of Caddy's local CA) once the
-container is healthy. It runs FrankenPHP with the Caddy configuration in
-`docker/caddy/`. Set `SERVER_NAME` in the compose environment to a real
-domain and Caddy obtains a Let's Encrypt certificate itself.
+container is healthy. It runs on [our FrankenPHP](https://github.com/Mapiiik/frankenphp)
+(Debian), whose Caddyfile `docker/caddy/app.caddy` fills in. Set `SERVER_NAME` in the
+compose environment to a real domain and Caddy obtains a Let's Encrypt certificate itself.
+The base image also restricts paths to administrators' addresses (`ACCESS`) and limits
+sign-in attempts per address (`RATE_LIMIT`) when asked to, see its README.
 
 Behind an SNI proxy such as HAProxy, set `LISTENER_MODE=behind-proxy` and `PROXY_ALLOW` to the
 proxy's network. Only on an internal network, for a test before DNS points at the server or for
