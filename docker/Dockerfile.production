@@ -152,4 +152,12 @@ RUN \
     # Give write access to /config/caddy and /data/caddy
     chown -R ${APPLICATION_USER}:${APPLICATION_USER} /config/caddy /data/caddy
 
+############################
+# Version
+############################
+# What git says of the commit the image is built from, for the footer, written by CI as the
+# image has neither the repository nor git. Last, as it changes with every build. composer.json
+# is copied again only so that a build without the two files has something to copy and goes on.
+COPY --chown=${APPLICATION_USER}:${APPLICATION_USER} composer.json VERSION* CHANGELOG* /app/
+
 USER ${APPLICATION_USER}

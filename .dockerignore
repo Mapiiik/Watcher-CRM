@@ -10,6 +10,9 @@
 !webroot
 !composer.json
 !composer.lock
+# written from git by CI, as the image has neither the repository nor git
+!VERSION
+!CHANGELOG
 !docker/imagemagick-policy.xml
 
 # What a working copy holds for itself, never for an image

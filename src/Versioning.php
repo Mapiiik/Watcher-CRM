@@ -6,7 +6,10 @@ namespace App;
 use Cake\Cache\Cache;
 
 /**
- * Versioning
+ * The version of the application and its last changes, as git says them.
+ *
+ * Where the application runs without its repository, as in the image, they are read from the
+ * files `VERSION` and `CHANGELOG`, which the build writes from git.
  */
 class Versioning
 {
@@ -50,7 +53,7 @@ class Versioning
                     }
                 }
 
-                return __('Not installed via Git');
+                return self::written('VERSION') ?? __('Not installed via Git');
             },
         );
     }
@@ -73,8 +76,25 @@ class Versioning
                     }
                 }
 
-                return __('Not installed via Git');
+                return self::written('CHANGELOG') ?? __('Not installed via Git');
             },
         );
+    }
+
+    /**
+     * What the build wrote from git into a file beside the application, if it did.
+     *
+     * @param string $name The file.
+     * @return string|null
+     */
+    private static function written(string $name): ?string
+    {
+        $file = dirname(__DIR__, 1) . '/' . $name;
+        if (!is_file($file) || !is_readable($file)) {
+            return null;
+        }
+        $written = rtrim((string)file_get_contents($file));
+
+        return $written === '' ? null : $written;
     }
 }

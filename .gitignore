@@ -8,6 +8,10 @@
 /tmp/*
 /vendor/*
 
+# Written from git by the build of the image, for the version in the footer
+/VERSION
+/CHANGELOG
+
 # Plugin assets, linked into the webroot by `bin/cake plugin assets symlink` so the web
 # server serves them itself. They are made from the plugins and belong to nobody's history.
 /webroot/bookkeeping

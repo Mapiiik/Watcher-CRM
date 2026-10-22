@@ -293,6 +293,15 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: ${{ needs.setup.outputs.ref }}
+          # the whole history and its tags, for git describe
+          fetch-depth: 0
+
+      # The image has neither the repository nor git, so what git says of the
+      # commit goes in as files, for the version and the changes in the footer.
+      - name: Describe the commit
+        run: |
+          git describe --tags --always > VERSION
+          git log -10 --decorate=short > CHANGELOG
 
       - name: Extract metadata
         id: meta
