@@ -16,38 +16,6 @@ $required = SecurityPolicy::requiresOneTimePassword($user->toArray());
 $totp = (bool)$user->secret_verified;
 ?>
 <div class="related">
-    <?php if ($own && !$totp) : ?>
-        <?= $this->Html->link(
-            __d('access', 'Set Up'),
-            ['action' => 'oneTimePassword'],
-            ['class' => 'button button-small float-right'],
-        ) ?>
-    <?php elseif ($own) : ?>
-        <?php if (!$required) : ?>
-            <?= $this->Html->link(
-                __d('access', 'Turn Off'),
-                ['action' => 'disableOneTimePassword'],
-                ['class' => 'button button-small button-outline float-right'],
-            ) ?>
-        <?php endif; ?>
-        <?= $this->Html->link(
-            __d('access', 'New Recovery Codes'),
-            ['action' => 'newRecoveryCodes'],
-            ['class' => 'button button-small float-right'],
-        ) ?>
-    <?php elseif ($user->hasTwoStepVerification()) : ?>
-        <?= $this->Form->postLink(
-            __d('access', 'Reset'),
-            ['action' => 'resetOneTimePasswordAuthenticator', $user->id],
-            [
-                'confirm' => __d(
-                    'access',
-                    'The account will have to set its authenticator application up again. Reset?',
-                ),
-                'class' => 'button button-small float-right',
-            ],
-        ) ?>
-    <?php endif; ?>
     <h4><?= __d('access', 'Two-Step Verification') ?></h4>
     <table>
         <tr>
@@ -55,12 +23,34 @@ $totp = (bool)$user->secret_verified;
             <th><?= __d('access', 'State') ?></th>
             <th><?= __d('access', 'Algorithm') ?></th>
             <th><?= __d('access', 'Recovery Codes Left') ?></th>
+            <th class="actions"><?= __d('access', 'Actions') ?></th>
         </tr>
         <tr>
             <td><?= __d('access', 'Authenticator Application (TOTP)') ?></td>
             <td><?= $totp ? __d('access', 'On') : __d('access', 'Off') ?></td>
             <td><?= $totp ? h(OneTimePasswordAlgorithm::of($user->otp_algorithm)->title()) : '' ?></td>
             <td><?= $totp ? $recoveryCodesLeft : '' ?></td>
+            <td class="actions">
+                <?php if ($own && !$totp) : ?>
+                    <?= $this->Html->link(__d('access', 'Set Up'), ['action' => 'oneTimePassword']) ?>
+                <?php elseif ($own) : ?>
+                    <?= $this->Html->link(__d('access', 'New Recovery Codes'), ['action' => 'newRecoveryCodes']) ?>
+                    <?php if (!$required) : ?>
+                        <?= $this->Html->link(__d('access', 'Turn Off'), ['action' => 'disableOneTimePassword']) ?>
+                    <?php endif; ?>
+                <?php elseif ($user->hasTwoStepVerification()) : ?>
+                    <?= $this->Form->postLink(
+                        __d('access', 'Reset'),
+                        ['action' => 'resetOneTimePasswordAuthenticator', $user->id],
+                        [
+                            'confirm' => __d(
+                                'access',
+                                'The account will have to set its authenticator application up again. Reset?',
+                            ),
+                        ],
+                    ) ?>
+                <?php endif; ?>
+            </td>
         </tr>
     </table>
     <?php if (!$user->hasTwoStepVerification()) : ?>

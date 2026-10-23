@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-24 01:01+0200\n"
+"POT-Creation-Date: 2026-10-24 01:55+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -262,7 +262,8 @@ msgstr ""
 #: ./plugins/Access/templates/Users/recovery_codes.php:11
 #: ./plugins/Access/templates/Users/view.php:17
 #: ./plugins/Access/templates/Users/view.php:150
-#: ./plugins/Access/templates/element/social_accounts.php:24
+#: ./plugins/Access/templates/element/social_accounts.php:31
+#: ./plugins/Access/templates/element/two_step_verification.php:26
 msgid "Actions"
 msgstr ""
 
@@ -344,7 +345,7 @@ msgid "Signing in then asks for the password alone, and the recovery codes stop 
 msgstr ""
 
 #: ./plugins/Access/templates/Users/disable_one_time_password.php:34
-#: ./plugins/Access/templates/element/two_step_verification.php:28
+#: ./plugins/Access/templates/element/two_step_verification.php:39
 msgid "Turn Off"
 msgstr ""
 
@@ -383,7 +384,7 @@ msgid "Password Sign-In"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/index.php:39
-#: ./plugins/Access/templates/element/two_step_verification.php:51
+#: ./plugins/Access/templates/element/two_step_verification.php:19
 msgid "Two-Step Verification"
 msgstr ""
 
@@ -416,7 +417,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/index.php:58
 #: ./plugins/Access/templates/element/sign_ins.php:12
 #: ./plugins/Access/templates/element/sign_ins.php:16
-#: ./plugins/Access/templates/element/two_step_verification.php:61
+#: ./plugins/Access/templates/element/two_step_verification.php:30
 msgid "On"
 msgstr ""
 
@@ -424,7 +425,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/index.php:58
 #: ./plugins/Access/templates/element/sign_ins.php:12
 #: ./plugins/Access/templates/element/sign_ins.php:16
-#: ./plugins/Access/templates/element/two_step_verification.php:61
+#: ./plugins/Access/templates/element/two_step_verification.php:30
 msgid "Off"
 msgstr ""
 
@@ -455,7 +456,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/profile.php:31
 #: ./plugins/Access/templates/Users/view.php:89
 #: ./plugins/Access/templates/Users/view.php:146
-#: ./plugins/Access/templates/element/social_accounts.php:23
+#: ./plugins/Access/templates/element/social_accounts.php:30
 msgid "Username"
 msgstr ""
 
@@ -473,7 +474,7 @@ msgstr ""
 
 #: ./plugins/Access/templates/Users/new_recovery_codes.php:21
 #: ./plugins/Access/templates/Users/new_recovery_codes.php:34
-#: ./plugins/Access/templates/element/two_step_verification.php:34
+#: ./plugins/Access/templates/element/two_step_verification.php:37
 msgid "New Recovery Codes"
 msgstr ""
 
@@ -609,12 +610,12 @@ msgid "User"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:140
-#: ./plugins/Access/templates/element/social_accounts.php:18
+#: ./plugins/Access/templates/element/social_accounts.php:25
 msgid "Social Accounts"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:145
-#: ./plugins/Access/templates/element/social_accounts.php:22
+#: ./plugins/Access/templates/element/social_accounts.php:29
 msgid "Provider"
 msgstr ""
 
@@ -623,12 +624,12 @@ msgid "Reference"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:161
-#: ./plugins/Access/templates/element/social_accounts.php:32
+#: ./plugins/Access/templates/element/social_accounts.php:39
 msgid "Unlink"
 msgstr ""
 
 #: ./plugins/Access/templates/Users/view.php:164
-#: ./plugins/Access/templates/element/social_accounts.php:34
+#: ./plugins/Access/templates/element/social_accounts.php:41
 msgid "Are you sure you want to unlink {0}?"
 msgstr ""
 
@@ -641,7 +642,7 @@ msgid "Scan the QR code with an authenticator application on your phone that und
 msgstr ""
 
 #: ./plugins/Access/templates/element/one_time_password_setup.php:33
-#: ./plugins/Access/templates/element/two_step_verification.php:56
+#: ./plugins/Access/templates/element/two_step_verification.php:24
 msgid "Algorithm"
 msgstr ""
 
@@ -669,7 +670,7 @@ msgstr ""
 msgid "Last Denied IP Address"
 msgstr ""
 
-#: ./plugins/Access/templates/element/social_accounts.php:43
+#: ./plugins/Access/templates/element/social_accounts.php:20
 msgid "Link an account at {0}"
 msgstr ""
 
@@ -677,43 +678,43 @@ msgstr ""
 msgid "Sign in with {0}"
 msgstr ""
 
-#: ./plugins/Access/templates/element/two_step_verification.php:21
-msgid "Set Up"
-msgstr ""
-
-#: ./plugins/Access/templates/element/two_step_verification.php:40
-msgid "Reset"
-msgstr ""
-
-#: ./plugins/Access/templates/element/two_step_verification.php:43
-msgid "The account will have to set its authenticator application up again. Reset?"
-msgstr ""
-
-#: ./plugins/Access/templates/element/two_step_verification.php:54
+#: ./plugins/Access/templates/element/two_step_verification.php:22
 msgid "Method"
 msgstr ""
 
-#: ./plugins/Access/templates/element/two_step_verification.php:55
+#: ./plugins/Access/templates/element/two_step_verification.php:23
 msgid "State"
 msgstr ""
 
-#: ./plugins/Access/templates/element/two_step_verification.php:57
+#: ./plugins/Access/templates/element/two_step_verification.php:25
 msgid "Recovery Codes Left"
 msgstr ""
 
-#: ./plugins/Access/templates/element/two_step_verification.php:60
+#: ./plugins/Access/templates/element/two_step_verification.php:29
 msgid "Authenticator Application (TOTP)"
 msgstr ""
 
-#: ./plugins/Access/templates/element/two_step_verification.php:70
+#: ./plugins/Access/templates/element/two_step_verification.php:35
+msgid "Set Up"
+msgstr ""
+
+#: ./plugins/Access/templates/element/two_step_verification.php:43
+msgid "Reset"
+msgstr ""
+
+#: ./plugins/Access/templates/element/two_step_verification.php:46
+msgid "The account will have to set its authenticator application up again. Reset?"
+msgstr ""
+
+#: ./plugins/Access/templates/element/two_step_verification.php:60
 msgid "Your account has to use it, so you set it up the next time you sign in."
 msgstr ""
 
-#: ./plugins/Access/templates/element/two_step_verification.php:71
+#: ./plugins/Access/templates/element/two_step_verification.php:61
 msgid "Once it is on, signing in also asks for a verification code (TOTP) from an authenticator application on your phone."
 msgstr ""
 
-#: ./plugins/Access/templates/element/two_step_verification.php:79
+#: ./plugins/Access/templates/element/two_step_verification.php:69
 msgid "The account has to use it, so it is set up the next time the account signs in."
 msgstr ""
 
