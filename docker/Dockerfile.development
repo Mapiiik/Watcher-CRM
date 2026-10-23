@@ -27,7 +27,6 @@ RUN install-php-extensions \
     gd \
     imagick \
     redis \
-    sockets \
     bcmath \
     dbase \
     opcache
