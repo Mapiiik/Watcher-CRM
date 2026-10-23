@@ -62,9 +62,12 @@ RUN install-php-extensions \
 COPY docker/imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
 
 # On top of the production defaults of the base image, what the installations on a server have set
-# for their pools. The code does not change inside an image, so OPcache need not look at the files
-# again.
+# for their pools. Their time limit counted only the processor time of PHP-FPM, here it is the whole
+# request, waiting for the database, the NMS or a router included. An import of invoices takes about
+# six minutes, nothing else came near half a minute. The code does not change inside an image, so
+# OPcache need not look at the files again.
 RUN echo "memory_limit = 1024M" > $PHP_INI_DIR/conf.d/99-memory.ini \
+ && echo "max_execution_time = 1200" > $PHP_INI_DIR/conf.d/99-time-limit.ini \
  && echo "disable_functions = passthru,system" > $PHP_INI_DIR/conf.d/99-disable-functions.ini \
  && { \
       echo "opcache.memory_consumption = 256"; \
