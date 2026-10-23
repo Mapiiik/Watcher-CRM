@@ -178,6 +178,9 @@ class Canvas
     {
         $page = $this->pdf()->addPage(['time' => $this->pageTimestamp()]);
         $this->pages++;
+        // Every page starts from the defaults of PDF, so the line width set for the document is
+        // written on each. Without it, lines are a point wide.
+        $this->pdf()->page->addContent($this->pdf()->graph->getStyle());
 
         $this->pageWidth = $page['width'];
         $this->pageHeight = $page['height'];
