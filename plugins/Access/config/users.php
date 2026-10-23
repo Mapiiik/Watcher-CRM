@@ -11,12 +11,15 @@ use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\FormAuthenticator;
 use Access\Authentication\TwoFactorChecker;
 use Access\Middleware\UnauthorizedHandler\RedirectHandler;
+use Access\Social\Mapper\Oidc as OidcMapper;
+use Access\Social\Service\OidcService;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 use CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor;
 use CakeDC\Auth\Authenticator\SocialAuthenticator;
 use CakeDC\Auth\Social\Mapper\Google as GoogleMapper;
 use CakeDC\Auth\Social\Service\OAuth2Service;
+use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Provider\Google;
 
 $users = ['plugin' => false, 'prefix' => false, 'controller' => 'Users'];
@@ -31,8 +34,9 @@ return [
         'controller' => 'Users',
         'table' => 'Users',
         'Social' => [
-            // signing in with Google is offered where the installation has a client for it
-            'login' => (bool)env('GOOGLE_OAUTH_CLIENT_ID', false),
+            // signing in with Google or an OpenID Connect provider is offered where the
+            // installation has a client for it
+            'login' => (bool)env('GOOGLE_OAUTH_CLIENT_ID', false) || (bool)env('OIDC_ISSUER', false),
         ],
         'Superuser' => [
             'allowedToChangeSettings' => true,
@@ -130,6 +134,22 @@ return [
                     'redirectUri' => $base . '/auth/google',
                     'linkSocialUri' => $base . '/link-social/google',
                     'callbackLinkSocialUri' => $base . '/callback-link-social/google',
+                ],
+            ],
+            // any OpenID Connect provider, such as Authentik or Keycloak, its addresses read from the
+            // issuer; the button says "Single Sign-On" unless OIDC_LABEL names it
+            'oidc' => [
+                'service' => OidcService::class,
+                'className' => GenericProvider::class,
+                'mapper' => OidcMapper::class,
+                'label' => env('OIDC_LABEL', null),
+                'options' => [
+                    'issuer' => env('OIDC_ISSUER', null),
+                    'clientId' => env('OIDC_CLIENT_ID', null),
+                    'clientSecret' => env('OIDC_CLIENT_SECRET', null),
+                    'redirectUri' => $base . '/auth/oidc',
+                    'linkSocialUri' => $base . '/link-social/oidc',
+                    'callbackLinkSocialUri' => $base . '/callback-link-social/oidc',
                 ],
             ],
         ],

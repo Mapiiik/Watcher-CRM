@@ -41,6 +41,24 @@ never makes an account, nor changes one, not even one with the same e-mail. An i
 linked is logged as `social account not linked`, with its reference. The second factor is asked for
 after it as after a password.
 
+Signing in through any OpenID Connect provider, such as Authentik or Keycloak, is offered where
+`OIDC_ISSUER`, `OIDC_CLIENT_ID` and `OIDC_CLIENT_SECRET` are set; its button says "Single Sign-On"
+unless `OIDC_LABEL` names the provider. The addresses are read from the discovery document of the
+issuer, and the redirect URIs to register are `/auth/oidc` and `/callback-link-social/oidc`. It is
+the authorization code flow with PKCE (S256), a state and a nonce, and the ID token is taken only
+once its signature (by the keys the provider publishes), issuer, audience, time and nonce hold. Its
+`sub` is what an account is linked to, the same way as with Google: nothing is made or changed by
+signing in.
+
+Where the methods the ID token names (`amr`) include a second factor, such as `mfa`, the account is
+not asked for its own one-time code; where they do not, the rules of the application decide as
+after a password, which is logged as `no second factor at provider`. The methods go into the log of
+the sign-in. Signing out of an account signed in through the provider ends its session with the
+application there too (`end_session_endpoint` with `id_token_hint`), and comes back to the sign-in
+page. An account may have no password and sign in only through the provider; whoever gets the
+password wrong is told, the same for every account, that an account without one signs in with the
+button.
+
 ## The first account
 
 `bin/cake access add_admin <username> <email>` adds an admin, with a password made up for it and

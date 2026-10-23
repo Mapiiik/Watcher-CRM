@@ -11,8 +11,11 @@ use Access\Controller\Trait\ApiTokenTrait;
 use Access\Controller\Trait\OneTimePasswordTrait;
 use Access\Controller\Trait\PasswordResetTrait;
 use Access\Controller\Trait\SocialAccountsTrait;
+use Access\Identifier\LinkedSocialIdentifier;
 use Access\Model\Entity\User;
 use Access\Model\Table\UsersTable;
+use Access\Social\Providers;
+use Access\Social\Service\OidcService;
 use App\Controller\AppController;
 use Authentication\Authenticator\AuthenticatorInterface;
 use Authentication\Authenticator\SessionAuthenticator;
@@ -21,6 +24,8 @@ use Authentication\Identifier\PasswordIdentifier;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\Routing\Router;
+use Cake\Utility\Text;
 use CakeDC\Auth\Authentication\AuthenticationService;
 use CakeDC\Auth\Traits\IsAuthorizedTrait;
 use Override;
@@ -108,12 +113,34 @@ class UsersController extends AppController
             $this->Flash->error(
                 $this->failureOf(FormAuthenticator::class) === FormAuthenticator::FAILURE_BLOCKED
                     ? __d('access', 'Too many failed sign-ins. Try again in a few minutes.')
-                    : __d('access', 'The username or the password is not right.'),
+                    : $this->wrongCredentials(),
                 ['key' => 'auth'],
             );
         }
 
         return null;
+    }
+
+    /**
+     * What somebody is told when the username or the password is not right. Where another provider
+     * is offered, also that an account without a password signs in with it: said to everybody, so
+     * that it tells nobody which accounts have one.
+     *
+     * @return string
+     */
+    private function wrongCredentials(): string
+    {
+        $wrong = __d('access', 'The username or the password is not right.');
+        $providers = Providers::names();
+        if ($providers === []) {
+            return $wrong;
+        }
+
+        return $wrong . ' ' . __d(
+            'access',
+            'An account without a password signs in with {0}.',
+            Text::toList(array_map(Providers::label(...), $providers), __d('access', 'or')),
+        );
     }
 
     /**
@@ -128,16 +155,21 @@ class UsersController extends AppController
             return $this->signedIn();
         }
 
+        // the provider sent back an error rather than an identity: refused, cancelled or unavailable
+        $provider = (string)$this->getRequest()->getParam('provider');
         $this->Flash->error(
-            __d(
-                'access',
-                'No account here is linked to that identity. '
-                . 'Sign in with your password and link it in your profile.',
-            ),
+            $this->getRequest()->getQuery('error') !== null
+                ? __d('access', 'Signing in with {0} did not finish. Please try again.', Providers::label($provider))
+                : __d(
+                    'access',
+                    'No account here is linked to that identity. '
+                    . 'Sign in with your password and link it in your profile.',
+                ),
             ['key' => 'auth'],
         );
 
-        return $this->redirect($this->loginAction());
+        // not where the provider sent them, with its code in the address
+        return $this->redirect((array)Configure::read('Auth.AuthenticationComponent.loginAction'));
     }
 
     /**
@@ -154,11 +186,17 @@ class UsersController extends AppController
                 'ip' => AuthLog::address($this->getRequest()),
             ]);
         }
+        $idToken = $user instanceof User ? (string)$user->get(LinkedSocialIdentifier::ID_TOKEN) : '';
 
         $this->getRequest()->getSession()->destroy();
         $this->Flash->success(__d('access', 'You have signed out.'));
+        $signedOut = $this->Authentication->logout() ?? $this->loginAction();
 
-        return $this->redirect($this->Authentication->logout() ?? $this->loginAction());
+        // who signed in through an OpenID Connect provider ends the session with this application
+        // there too, and comes back
+        $atProvider = $idToken !== '' ? OidcService::endSessionUrl($idToken, Router::url($signedOut, true)) : null;
+
+        return $this->redirect($atProvider ?? $signedOut);
     }
 
     /**
@@ -415,6 +453,10 @@ class UsersController extends AppController
             'user' => (string)$user->get('username'),
             'ip' => $address,
             'with' => namespaceSplit($provider::class)[1],
+            // what an identity provider says the person signed in with there
+            'methods' => is_array($user->get(LinkedSocialIdentifier::METHODS))
+                ? implode('+', $user->get(LinkedSocialIdentifier::METHODS))
+                : null,
         ]);
 
         // somebody who has just set their app up is shown the recovery codes made for them

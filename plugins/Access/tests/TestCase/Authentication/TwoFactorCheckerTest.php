@@ -52,7 +52,7 @@ class TwoFactorCheckerTest extends TestCase
 
     /**
      * A code is asked for where the settings require one of the account, and where its owner set
-     * one up of their own accord.
+     * one up of their own accord - unless the identity provider asked for a second factor itself.
      *
      * @param bool $everybody Whether everybody has to use one.
      * @param bool $highSecurity Whether the stricter roles have to.
@@ -92,6 +92,11 @@ class TwoFactorCheckerTest extends TestCase
             'the stricter roles, a superuser' => [false, true, $superuser, true],
             'everybody, a user' => [true, false, $user, true],
             'everybody, an admin' => [true, false, $admin, true],
+            // signing in through an identity provider that asked for a second factor itself
+            'everybody, the provider asked' => [true, false, ['second_factor_at_provider' => true] + $admin, false],
+            'chosen, the provider asked' => [false, false, ['second_factor_at_provider' => true] + $chosen, false],
+            'everybody, the provider did not ask' => [true, false, ['second_factor_at_provider' => false] + $user, true],
+            'nothing required, the provider did not ask' => [false, false, ['second_factor_at_provider' => false] + $user, false],
         ];
     }
 

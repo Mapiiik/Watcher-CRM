@@ -25,7 +25,9 @@ class Providers
         $names = [];
         foreach ((array)Configure::read('OAuth.providers') as $name => $provider) {
             $options = (array)($provider['options'] ?? []);
-            if (!empty($options['clientId']) && !empty($options['clientSecret'])) {
+            // an OpenID Connect provider needs its issuer as well
+            $issuer = !array_key_exists('issuer', $options) || !empty($options['issuer']);
+            if (!empty($options['clientId']) && !empty($options['clientSecret']) && $issuer) {
                 $names[] = (string)$name;
             }
         }
@@ -41,6 +43,11 @@ class Providers
      */
     public static function label(string $name): string
     {
-        return (string)Configure::read('OAuth.providers.' . $name . '.label', ucfirst($name));
+        $label = Configure::read('OAuth.providers.' . $name . '.label');
+        if (is_string($label) && $label !== '') {
+            return $label;
+        }
+
+        return $name === 'oidc' ? __d('access', 'Single Sign-On') : ucfirst($name);
     }
 }

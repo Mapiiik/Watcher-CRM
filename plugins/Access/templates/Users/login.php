@@ -12,7 +12,7 @@
         <?= $this->Form->control('password', ['label' => __d('access', 'Password'), 'required' => true]) ?>
         <?= $this->Html->link(__d('access', 'Reset Password'), ['action' => 'requestResetPassword']) ?>
     </fieldset>
-    <?= $this->element('Access.social_sign_in') ?>
     <?= $this->Form->button(__d('access', 'Login')); ?>
+    <?= $this->element('Access.social_sign_in') ?>
     <?= $this->Form->end() ?>
 </div>
