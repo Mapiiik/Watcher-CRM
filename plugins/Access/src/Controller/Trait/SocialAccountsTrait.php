@@ -117,6 +117,36 @@ trait SocialAccountsTrait
     }
 
     /**
+     * Unlinks an identity from whichever account it is linked to, for an admin: where somebody
+     * linked the wrong one, or has left.
+     *
+     * @param string|null $id The link.
+     * @return \Cake\Http\Response|null
+     */
+    public function unlinkSocialAccount(?string $id = null): ?Response
+    {
+        $this->getRequest()->allowMethod(['post', 'delete']);
+        $links = $this->socialAccountsTable();
+        $link = $links->get($id);
+        $owner = $this->getUsersTable()->get($link->get('user_id'));
+
+        if ($links->delete($link)) {
+            AuthLog::notice('social account unlinked', [
+                'user' => (string)$owner->get('username'),
+                'by' => (string)($this->getRequest()->getAttribute('identity')['username'] ?? ''),
+                'provider' => (string)$link->get('provider'),
+                'reference' => (string)$link->get('reference'),
+                'ip' => AuthLog::address($this->getRequest()),
+            ]);
+            $this->Flash->success(__d('access', 'The identity is unlinked.'));
+        } else {
+            $this->Flash->error(__d('access', 'The identity could not be unlinked.'));
+        }
+
+        return $this->redirect(['action' => 'view', $owner->get('id')]);
+    }
+
+    /**
      * The identities linked to accounts.
      *
      * @return \Access\Model\Table\SocialAccountsTable

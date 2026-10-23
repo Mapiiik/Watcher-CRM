@@ -147,6 +147,7 @@ $own = ($identity['id'] ?? null) === $user->id;
                                     <th><?= __d('access', 'Reference') ?></th>
                                     <th><?= __d('access', 'Active') ?></th>
                                     <th><?= __d('access', 'Created') ?></th>
+                                    <th class="actions"><?= __d('access', 'Actions') ?></th>
                                 </tr>
                                 <?php foreach ($user->social_accounts as $link) : ?>
                                     <tr>
@@ -155,6 +156,19 @@ $own = ($identity['id'] ?? null) === $user->id;
                                         <td><?= h($link->reference) ?></td>
                                         <td><?= $link->active ? __d('access', 'Yes') : __d('access', 'No') ?></td>
                                         <td><?= h($link->created) ?></td>
+                                        <td class="actions">
+                                            <?= $this->Form->postLink(
+                                                __d('access', 'Unlink'),
+                                                ['action' => 'unlinkSocialAccount', $link->id],
+                                                [
+                                                    'confirm' => __d(
+                                                        'access',
+                                                        'Are you sure you want to unlink {0}?',
+                                                        $link->username,
+                                                    ),
+                                                ],
+                                            ) ?>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </table>

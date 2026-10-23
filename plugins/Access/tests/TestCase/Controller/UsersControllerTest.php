@@ -372,6 +372,42 @@ class UsersControllerTest extends TestCase
     }
 
     /**
+     * An admin unlinks an identity from somebody's account, which is logged with who did it. A user
+     * unlinks only their own, in the profile.
+     *
+     * @return void
+     */
+    public function testAnAdminUnlinksAnIdentityFromAnAccount(): void
+    {
+        $links = $this->getTableLocator()->get('Access.SocialAccounts');
+        $this->session(['Auth' => $this->addAccount(role: 'admin')]);
+        $other = $this->addOtherAccount();
+        $link = $links->link((string)$other->get('id'), 'google', '108234567890', 'petr@example.com');
+
+        $this->get('/users/view/' . $other->get('id'));
+        $this->assertResponseContains('/users/unlink-social-account/' . $link->get('id'));
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/unlink-social-account/' . $link->get('id'));
+
+        $this->assertRedirect('/users/view/' . $other->get('id'));
+        $this->assertFalse($links->exists(['id' => $link->get('id')]));
+        /** @var \Cake\Log\Engine\ArrayLog $log */
+        $log = Log::engine('auth');
+        $this->assertStringContainsString(
+            'social account unlinked user="pdvorak" by="jnovak" provider="google" reference="108234567890"',
+            implode("\n", $log->read()),
+        );
+
+        $link = $links->link((string)$other->get('id'), 'google', '108234567890', 'petr@example.com');
+        $this->session(['Auth' => $other]);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/unlink-social-account/' . $link->get('id'));
+        $this->assertTrue($links->exists(['id' => $link->get('id')]));
+    }
+
+    /**
      * The accounts are listed the active ones first, then by username, and a search looks in
      * their names and e-mails.
      *

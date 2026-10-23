@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-24 00:38+0200\n"
+"POT-Creation-Date: 2026-10-24 01:01+0200\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -138,10 +138,12 @@ msgid "The identity at {0} is linked."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/Trait/SocialAccountsTrait.php:111
+#: ./plugins/Access/src/Controller/Trait/SocialAccountsTrait.php:141
 msgid "The identity is unlinked."
 msgstr ""
 
 #: ./plugins/Access/src/Controller/Trait/SocialAccountsTrait.php:113
+#: ./plugins/Access/src/Controller/Trait/SocialAccountsTrait.php:143
 msgid "The identity could not be unlinked."
 msgstr ""
 
@@ -259,6 +261,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/profile.php:11
 #: ./plugins/Access/templates/Users/recovery_codes.php:11
 #: ./plugins/Access/templates/Users/view.php:17
+#: ./plugins/Access/templates/Users/view.php:150
 #: ./plugins/Access/templates/element/social_accounts.php:24
 msgid "Actions"
 msgstr ""
@@ -395,7 +398,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/profile.php:56
 #: ./plugins/Access/templates/Users/view.php:110
 #: ./plugins/Access/templates/Users/view.php:114
-#: ./plugins/Access/templates/Users/view.php:156
+#: ./plugins/Access/templates/Users/view.php:157
 msgid "Yes"
 msgstr ""
 
@@ -405,7 +408,7 @@ msgstr ""
 #: ./plugins/Access/templates/Users/profile.php:56
 #: ./plugins/Access/templates/Users/view.php:110
 #: ./plugins/Access/templates/Users/view.php:114
-#: ./plugins/Access/templates/Users/view.php:156
+#: ./plugins/Access/templates/Users/view.php:157
 msgid "No"
 msgstr ""
 
@@ -619,6 +622,16 @@ msgstr ""
 msgid "Reference"
 msgstr ""
 
+#: ./plugins/Access/templates/Users/view.php:161
+#: ./plugins/Access/templates/element/social_accounts.php:32
+msgid "Unlink"
+msgstr ""
+
+#: ./plugins/Access/templates/Users/view.php:164
+#: ./plugins/Access/templates/element/social_accounts.php:34
+msgid "Are you sure you want to unlink {0}?"
+msgstr ""
+
 #: ./plugins/Access/templates/element/one_time_password_setup.php:17
 msgid "Scan the QR code with an authenticator application on your phone, such as Google Authenticator, Microsoft Authenticator or Bitwarden Authenticator, and enter the six-digit verification code (TOTP) it shows."
 msgstr ""
@@ -654,14 +667,6 @@ msgstr ""
 
 #: ./plugins/Access/templates/element/sign_ins.php:31
 msgid "Last Denied IP Address"
-msgstr ""
-
-#: ./plugins/Access/templates/element/social_accounts.php:32
-msgid "Unlink"
-msgstr ""
-
-#: ./plugins/Access/templates/element/social_accounts.php:34
-msgid "Are you sure you want to unlink {0}?"
 msgstr ""
 
 #: ./plugins/Access/templates/element/social_accounts.php:43
