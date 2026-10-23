@@ -64,7 +64,7 @@ class AnswerTest extends TestCase
     {
         $answer = Answer::failed('Watcher NMS answered 500.');
 
-        $this->assertFalse($answer->ok());
+        $this->assertFalse($this->ok($answer));
         $this->assertTrue($answer->unanswered());
         $this->assertNull($answer->data);
         $this->assertSame('Watcher NMS answered 500.', $answer->failure);
@@ -95,7 +95,7 @@ class AnswerTest extends TestCase
     {
         $answer = Answer::notAsked();
 
-        $this->assertFalse($answer->ok());
+        $this->assertFalse($this->ok($answer));
         $this->assertFalse($answer->unanswered());
         $this->assertNull($answer->failure);
     }
@@ -173,5 +173,17 @@ class AnswerTest extends TestCase
         $never = Answer::notAsked();
         $notAsked = $never->map(fn(array $rows): int => count($rows));
         $this->assertFalse($notAsked->asked);
+    }
+
+    /**
+     * Whether an answer is one to work with, asked of it as the code that receives one asks: not
+     * knowing which kind it is, which the type of an answer that never has data would tell.
+     *
+     * @param \App\Http\Answer<mixed> $answer The answer.
+     * @return bool
+     */
+    private function ok(Answer $answer): bool
+    {
+        return $answer->ok();
     }
 }

@@ -17,7 +17,7 @@ use App\Model\Entity\AppEntity;
  * @property string $contract_id
  * @property string $style
  *
- * @property \App\Model\Entity\Customer $customer
+ * @property \App\Model\Entity\Customer|null $customer
  * @property \App\Model\Entity\Contract $contract
  * @property \Radius\Model\Entity\Radcheck[] $radcheck
  * @property \Radius\Model\Entity\Radreply[] $radreply

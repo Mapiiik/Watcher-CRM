@@ -27,14 +27,15 @@ class ContractTest extends TestCase
      */
     public function testTheContractNamesItselfInOneLine(): void
     {
+        $address = new Address(['street' => 'Main street', 'number' => '76']);
         $contract = new Contract([
             'number' => '110946-4212',
             'service_type' => new ServiceType(['name' => 'Wireless']),
-            'installation_address' => new Address(['street' => 'Main street', 'number' => '76']),
+            'installation_address' => $address,
         ]);
 
         $this->assertSame(
-            'Wireless - ' . $contract->installation_address->address . ' (110946-4212)',
+            'Wireless - ' . $address->address . ' (110946-4212)',
             $contract->getName(),
         );
 

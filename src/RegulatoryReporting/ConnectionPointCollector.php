@@ -76,6 +76,10 @@ class ConnectionPointCollector
         foreach ($billings as $billing) {
             $category = $this->categoryOfBilling($billing);
             $address = $billing->contract->installation_address;
+            // the query reads only billings at an address in the register
+            if ($address === null) {
+                continue;
+            }
             $key = $address->address_registry_source . '|' . $address->address_registry_reference;
 
             $points[$category][$key] ??= new ConnectionPoint(

@@ -53,7 +53,7 @@ use RuntimeException;
  * @property \Cake\I18n\Date|null $ends_on
  *
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\Address $installation_address
+ * @property \App\Model\Entity\Address|null $installation_address
  * @property \App\Model\Entity\Address $billing_address
  * @property \App\Model\Entity\Address $delivery_address
  * @property \App\Model\Entity\Address $permanent_address

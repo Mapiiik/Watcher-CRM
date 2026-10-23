@@ -121,16 +121,16 @@ class PasswordResetTest extends TestCase
     {
         $user = $this->addAccount();
         $this->askForLink('jnovak');
-        $answer = $this->_requestSession?->read('Flash.flash.0.message');
+        $answer = $this->answer();
         TestEmailTransport::clearMessages();
 
         $this->askForLink('nobody');
-        $this->assertSame($answer, $this->_requestSession?->read('Flash.flash.0.message'));
+        $this->assertSame($answer, $this->answer());
 
         $users = $this->getTableLocator()->get('Users');
         $users->updateQuery()->set(['active' => false])->where(['id' => $user->get('id')])->execute();
         $this->askForLink('jnovak');
-        $this->assertSame($answer, $this->_requestSession?->read('Flash.flash.0.message'));
+        $this->assertSame($answer, $this->answer());
 
         $users->updateQuery()->set(['active' => true])->where(['id' => $user->get('id')])->execute();
         $this->addOtherAccount('jan.novak@example.com');
@@ -181,6 +181,17 @@ class PasswordResetTest extends TestCase
         /** @var \Cake\Log\Engine\ArrayLog $log */
         $log = Log::engine('auth');
         $this->assertStringContainsString('password link blocked reference="jnovak"', implode("\n", $log->read()));
+    }
+
+    /**
+     * What the last request answered, as each request leaves an answer of its own.
+     *
+     * @return mixed
+     * @phpstan-impure
+     */
+    private function answer(): mixed
+    {
+        return $this->_requestSession?->read('Flash.flash.0.message');
     }
 
     /**

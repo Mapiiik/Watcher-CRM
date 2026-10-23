@@ -170,6 +170,10 @@ class AvailableConnectionsSyncCommand extends Command
         foreach ($contracts as $contract) {
             /** @var \App\Model\Entity\Contract $contract */
             $address = $contract->installation_address;
+            // the query reads only contracts with an address in the register
+            if ($address === null) {
+                continue;
+            }
 
             foreach ($contract->billings ?? [] as $billing) {
                 $profile = $billing->service?->connection_profile;

@@ -100,16 +100,15 @@
             </tr>
             <tr>
                 <th><?= __('Activation Fee') ?></th>
-                <td><?= h($contract->activation_fee) ?><?= $contract->service_type !== null ?
-                    ' (' . h($contract->service_type->activation_fee) . ')' : '' ?></td>
+                <td><?= h($contract->activation_fee) ?><?=
+                    ' (' . h($contract->service_type->activation_fee) . ')' ?></td>
             </tr>
             <tr>
                 <th><?= __('Activation Fee With Obligation') ?></th>
                 <td><?=
                     h($contract->activation_fee_with_obligation)
                 ?><?=
-                    $contract->service_type !== null ?
-                        ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' : '' ?></td>
+                    ' (' . h($contract->service_type->activation_fee_with_obligation) . ')' ?></td>
             </tr>
             <tr>
                 <th><?= __('Minimum Connection Price') ?></th>

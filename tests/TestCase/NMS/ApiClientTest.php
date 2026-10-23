@@ -147,8 +147,11 @@ class ApiClientTest extends TestCase
             'accessPoints' => [['id' => '1', 'name' => 'Hilltop', 'archived' => null]],
         ]));
 
-        $this->assertSame(['1' => 'Hilltop'], ApiClient::getAccessPointsList()->data);
-        $this->assertSame(['1' => 'Hilltop'], ApiClient::getAccessPointsList()->data);
+        $first = ApiClient::getAccessPointsList();
+        $again = ApiClient::getAccessPointsList();
+
+        $this->assertSame(['1' => 'Hilltop'], $first->data);
+        $this->assertSame(['1' => 'Hilltop'], $again->data);
         $this->assertSame(1, $this->asked);
     }
 

@@ -27,7 +27,7 @@ use Cake\I18n\Date;
  * @property string|null $accounting_identifier
  * @property string $style
  *
- * @property \App\Model\Entity\Customer $customer
+ * @property \App\Model\Entity\Customer|null $customer
  */
 class Invoice extends AppEntity
 {
