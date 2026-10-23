@@ -734,7 +734,8 @@ return [
      */
     'Session' => [
         'defaults' => 'database',
-        'timeout' => 480,
+        // Minutes without a request; every request starts the count again
+        'timeout' => (int)env('APP_SESSION_TIMEOUT', '1440'),
     ],
 
     /**

@@ -280,11 +280,12 @@ class UsersControllerTest extends TestCase
 
     /**
      * Nothing signs in without a password and without the second factor: no cookie remembering
-     * somebody, no link sent by e-mail. A session ends after eight hours idle.
+     * somebody, no link sent by e-mail. A session ends after a day idle unless APP_SESSION_TIMEOUT says
+     * otherwise.
      *
      * @return void
      */
-    public function testNoWayInSkipsThePasswordAndTheSessionEndsAfterEightHours(): void
+    public function testNoWayInSkipsThePasswordAndTheSessionEndsAfterADayByDefault(): void
     {
         $this->get('/login');
 
@@ -292,7 +293,7 @@ class UsersControllerTest extends TestCase
         $authenticators = array_keys((array)Configure::read('Auth.Authenticators'));
         $this->assertNotContains('Cookie', $authenticators);
         $this->assertNotContains('OneTimeToken', $authenticators);
-        $this->assertSame(480, Configure::read('Session.timeout'));
+        $this->assertSame(1440, Configure::read('Session.timeout'));
     }
 
     /**
