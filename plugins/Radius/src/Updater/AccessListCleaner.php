@@ -3,34 +3,21 @@ declare(strict_types=1);
 
 namespace Radius\Updater;
 
+use App\Agent\ApiClient as AgentApiClient;
 use App\Messages\Messages;
-use Cake\Core\Configure;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Radius\Model\Entity\Account;
 use Radius\Model\Entity\Radacct;
-use RouterOS\Client;
-use RouterOS\Exceptions\ClientException;
-use RouterOS\Query;
 
 /**
  * Removes the MAC address of an account from the access list on the access point it connected to last,
  * so that a station accepted earlier has to authenticate again.
+ *
+ * The access point is changed by the Watcher Agent, which sits in its network.
  */
 class AccessListCleaner
 {
     use LocatorAwareTrait;
-
-    /**
-     * Access lists of the legacy wireless package and of the wifi package, the latter also under
-     * its name before RouterOS 7.13. A router has only some of them.
-     *
-     * @var list<string>
-     */
-    private const ACCESS_LISTS = [
-        '/interface/wireless/access-list',
-        '/interface/wifi/access-list',
-        '/interface/wifiwave2/access-list',
-    ];
 
     /**
      * Messages
@@ -69,49 +56,37 @@ class AccessListCleaner
             return false;
         }
 
-        try {
-            $client = new Client([
-                'host' => $session->nasipaddress,
-                'user' => Configure::read('Radius.routerosUsername'),
-                'pass' => Configure::read('Radius.routerosPassword'),
-            ]);
-        } catch (ClientException $e) {
+        if ($session->callingstationid === null || $session->callingstationid === '') {
+            $this->Messages->warning(__d(
+                'radius',
+                'The last RADIUS session of {0} carries no MAC address.',
+                $account->username,
+            ));
+
+            return false;
+        }
+
+        $answer = AgentApiClient::removeFromAccessList($session->nasipaddress, $session->callingstationid);
+
+        if (!$answer->ok()) {
             $this->Messages->error(__d(
                 'radius',
                 'Problem connecting to an access point: {0}',
-                $e->getMessage(),
+                $answer->failure ?? __d('radius', 'Watcher Agent is not configured.'),
             ));
 
             return false;
         }
 
         $result = '';
-        foreach (self::ACCESS_LISTS as $menu) {
-            $query = new Query($menu . '/print');
-            $query
-                ->where('mac-address', $session->callingstationid)
-                ->equal('.proplist', '.id,interface,mac-address');
-
-            foreach ($client->query($query)->read() as $item) {
-                // a menu the router lacks answers with an error instead of entries
-                if (!isset($item['.id'])) {
-                    continue;
-                }
-
-                $query = new Query($menu . '/remove');
-                $query->equal('.id', $item['.id']);
-
-                // an empty response means no error message
-                if (empty($client->query($query)->read())) {
-                    $result .= __d(
-                        'radius',
-                        'Removed MAC address entry {0} on interface {1} from router {2}.',
-                        $item['mac-address'],
-                        $item['interface'] ?? '',
-                        $session->nasipaddress,
-                    ) . PHP_EOL;
-                }
-            }
+        foreach ($answer->data->removed as $entry) {
+            $result .= __d(
+                'radius',
+                'Removed MAC address entry {0} on interface {1} from router {2}.',
+                $entry->macAddress,
+                $entry->interface,
+                $session->nasipaddress,
+            ) . PHP_EOL;
         }
 
         $this->Messages->success(

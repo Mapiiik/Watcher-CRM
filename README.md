@@ -24,10 +24,12 @@ CRM for Internet Service Providers, built on [CakePHP](https://github.com/cakeph
   handed over, it just has no thumbnail)
 - PECL `dbase` extension (only when using the POHODA invoice export)
 - [Watcher Agent](https://github.com/Mapiiik/Watcher-Agent) — required only for
-  host reachability checks (ping) and RADIUS session disconnect. It is a
-  separate service (run it in Docker, even on the same host; it supports the
-  PROXY protocol). These actions no longer run locally, so the app container
-  needs no `ping` binary.
+  host reachability checks (ping), RADIUS session disconnect and changes on
+  RouterOS devices (the address list debtors are blocked by, the access lists
+  of access points). It is a separate service (run it in Docker, even on the
+  same host; it supports the PROXY protocol), and it holds the account for the
+  routers. These actions no longer run locally, so the app container needs no
+  `ping` binary and no router passwords.
 - [geo-addresses-postgis](https://github.com/Mapiiik/geo-addresses-postgis) —
   required only for address validation and registry lookups (CZ RUIAN / HR DGU).
   It is a separate service exposing a REST API; point the app at it via

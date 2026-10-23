@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Debtors;
 
+use App\Agent\ApiClient as AgentApiClient;
+use App\Agent\Dto\AddressListChanges;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Contracts\Unsigned\UnsignedWaits;
 use App\Messages\Messages;
@@ -27,8 +29,6 @@ use Cake\ORM\Association;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Query\SelectQuery;
 use InvalidArgumentException;
-use RouterOS\Client;
-use RouterOS\Query;
 use RuntimeException;
 use Settings\Utility\Settings;
 use Throwable;
@@ -82,6 +82,8 @@ class DebtorsProcessor
     /**
      * Safely call a function and handle any exceptions
      *
+     * What comes back is escaped: it carries comments as a router had them, not just what was sent.
+     *
      * @return void
      */
     private function safeCall(callable $fn, string $label): void
@@ -90,7 +92,7 @@ class DebtorsProcessor
             $result = $fn();
             $this->messages->success(
                 '<strong>' . $label . '</strong><br>'
-                    . ($result ? nl2br((string)$result) : __d('bookkeeping', 'Nothing has changed.')),
+                    . ($result ? nl2br(h((string)$result)) : __d('bookkeeping', 'Nothing has changed.')),
                 ['escape' => false],
             );
         } catch (Throwable $e) {
@@ -111,7 +113,7 @@ class DebtorsProcessor
 
             $this->messages->error(
                 '<strong>' . $errorLabel . '</strong><br>'
-                    . ($errorMessage ? nl2br($errorMessage) : __d('bookkeeping', 'Unknown error.')),
+                    . ($errorMessage ? nl2br(h($errorMessage)) : __d('bookkeeping', 'Unknown error.')),
                 ['escape' => false],
             );
         }
@@ -528,7 +530,7 @@ class DebtorsProcessor
      * Automatic Update of Debtor Blocking
      *
      * Whoever is blocked has to be worked out in one pass, whatever the reasons. The address
-     * list on each router is wiped and rebuilt here rather than added to - that is how
+     * list on each router is made to hold exactly this set rather than added to - that is how
      * anybody who has paid gets let back in - so a second pass over a second set of customers
      * would not add to this one, it would undo it.
      *
@@ -1004,19 +1006,22 @@ class DebtorsProcessor
      *
      * Input example: ['ipv4' => ['0.0.0.0' => 'comment'], 'ipv6' => ['0::1/128' => 'comment']]
      *
+     * The routers are changed by the Watcher Agent, which sits in their network. One that cannot be
+     * reached does not hold up the others: all of them are tried, and what failed is reported along
+     * with what was done on the rest.
+     *
      * @param array<string, mixed> $ips List of IPv4 and IPv6 adresses/networks.
      * @param bool $block Defaults to unblock (false) / block (true)
-     * @param bool $clear Before the operation, clear the address list on the router. Default (false).
+     * @param bool $clear Make the address list hold exactly these addresses. Default (false).
      * @return string List of performed changes
      * @throws \InvalidArgumentException When incorrect IP addresses input format.
-     * @throws \RuntimeException When an operation on a RouterOS device fails.
+     * @throws \RuntimeException When a router could not be updated.
      */
     private function updateRouters(array $ips, bool $block = false, bool $clear = false): string
     {
         if (!isset($ips['ipv4']) || !isset($ips['ipv6']) || !is_array($ips['ipv4']) || !is_array($ips['ipv6'])) {
             throw new InvalidArgumentException('Incorrect IP addresses input format.');
         }
-        $result = '';
 
         $routersIpAddresses = (string)Configure::read('Bookkeeping.debtors.routersIpAddresses');
         if ($routersIpAddresses === '') {
@@ -1028,204 +1033,103 @@ class DebtorsProcessor
             throw new InvalidArgumentException('No firewall address list is configured for debtors.');
         }
 
-        $routers = explode(' ', $routersIpAddresses);
-        foreach ($routers as $router) {
-            try {
-                $result .= $this->updateRouter($router, $addressList, $ips, $block, $clear);
-            } catch (Throwable $e) {
-                throw new RuntimeException(
-                    __d(
-                        'bookkeeping',
-                        'RouterOS device {0}: {1}',
-                        $router,
-                        $e->getMessage(),
-                    ),
-                    (int)$e->getCode(),
-                    $e,
-                );
+        $entries = [];
+        foreach ([$ips['ipv4'], $ips['ipv6']] as $family) {
+            foreach ($family as $address => $comment) {
+                // RouterOS does not read comments as UTF-8
+                $entries[(string)$address] = Strings::removeAccents((string)$comment);
             }
+        }
+
+        $result = '';
+        $failures = [];
+
+        foreach (explode(' ', $routersIpAddresses) as $router) {
+            $answer = match (true) {
+                $clear => AgentApiClient::syncAddressList($router, $addressList, $entries),
+                $block => AgentApiClient::addToAddressList($router, $addressList, $entries),
+                default => AgentApiClient::removeFromAddressList($router, $addressList, array_keys($entries)),
+            };
+
+            if (!$answer->ok()) {
+                $failures[] = __d(
+                    'bookkeeping',
+                    'RouterOS device {0}: {1}',
+                    $router,
+                    $answer->failure ?? __d('bookkeeping', 'Watcher Agent is not configured.'),
+                );
+                continue;
+            }
+
+            $result .= $this->routerChangeNotes($router, $answer->data);
+        }
+
+        if ($failures !== []) {
+            throw new RuntimeException(trim(implode(PHP_EOL, $failures) . PHP_EOL . $result));
         }
 
         return $result;
     }
 
     /**
-     * Update a single RouterOS device
+     * What was done to the address list on one router, for the report the operator reads.
      *
-     * Performs the firewall address list operations on one router.
-     *
-     * @param string $router Router IP address.
-     * @param string $addressList Firewall address list name.
-     * @param array<string, mixed> $ips List of IPv4 and IPv6 adresses/networks.
-     * @param bool $block Defaults to unblock (false) / block (true)
-     * @param bool $clear Before the operation, clear the address list on the router.
-     * @return string List of performed changes
+     * @param string $router The router.
+     * @param \App\Agent\Dto\AddressListChanges $changes What the agent did there.
+     * @return string
      */
-    private function updateRouter(string $router, string $addressList, array $ips, bool $block, bool $clear): string
+    private function routerChangeNotes(string $router, AddressListChanges $changes): string
     {
-        $result = '';
+        $notes = '';
 
-        $client = new Client([
-            'host' => $router,
-            'user' => Configure::read('Bookkeeping.debtors.routersUsername'),
-            'pass' => Configure::read('Bookkeeping.debtors.routersPassword'),
-        ]);
-
-        // process IPv4 firewall address list
-        if ($clear) {
-            $query = new Query('/ip/firewall/address-list/print');
-            $query
-                ->where('list', $addressList)
-                ->equal('.proplist', '.id,address');
-
-            $response = $client->query($query)->read();
-
-            foreach ($response as $item) {
-                $query = new Query('/ip/firewall/address-list/remove');
-                $query->equal('.id', $item['.id']);
-
-                $response = $client->query($query)->read();
-
-                // check if no error message
-                if (empty($response)) {
-                    $result .= __d(
-                        'bookkeeping',
-                        'Removed IPv4 record {0} from router {1}.',
-                        $item['address'],
-                        $router,
-                    ) . PHP_EOL;
-                }
-            }
+        // Every sentence is written out in full: the extractor reads the literal it is given and a
+        // message picked inside the call would not reach the catalogue at all.
+        foreach ($changes->added as $entry) {
+            $notes .= ($entry->isIpv6()
+                ? __d(
+                    'bookkeeping',
+                    'Added IPv6 record {0} ({1}) to router {2}.',
+                    $entry->address,
+                    $entry->comment,
+                    $router,
+                )
+                : __d(
+                    'bookkeeping',
+                    'Added IPv4 record {0} ({1}) to router {2}.',
+                    $entry->address,
+                    $entry->comment,
+                    $router,
+                )
+            ) . PHP_EOL;
         }
 
-        foreach ($ips['ipv4'] as $ipv4 => $comment) {
-            if (!$clear) {
-                $query = new Query('/ip/firewall/address-list/print');
-                $query
-                    ->where('address', $ipv4)
-                    ->where('list', $addressList)
-                    ->equal('.proplist', '.id');
-
-                $response = $client->query($query)->read();
-
-                foreach ($response as $item) {
-                    $query = new Query('/ip/firewall/address-list/remove');
-                    $query->equal('.id', $item['.id']);
-
-                    $response = $client->query($query)->read();
-
-                    // check if no error message
-                    if (empty($response)) {
-                        $result .= __d(
-                            'bookkeeping',
-                            'Removed IPv4 record {0} from router {1}.',
-                            $ipv4,
-                            $router,
-                        ) . PHP_EOL;
-                    }
-                }
-            }
-
-            if ($block) {
-                $query = new Query('/ip/firewall/address-list/add');
-                $query
-                    ->equal('address', $ipv4)
-                    ->equal('list', $addressList)
-                    ->equal('comment', addslashes(Strings::removeAccents($comment)));
-
-                $response = $client->query($query)->read();
-
-                // check if added
-                if (isset($response['after']['ret'])) {
-                    $result .= __d(
-                        'bookkeeping',
-                        'Added IPv4 record {0} ({1}) to router {2}.',
-                        $ipv4,
-                        Strings::removeAccents($comment),
-                        $router,
-                    ) . PHP_EOL;
-                }
-            }
+        foreach ($changes->updated as $entry) {
+            $notes .= ($entry->isIpv6()
+                ? __d(
+                    'bookkeeping',
+                    'Updated IPv6 record {0} ({1}) on router {2}.',
+                    $entry->address,
+                    $entry->comment,
+                    $router,
+                )
+                : __d(
+                    'bookkeeping',
+                    'Updated IPv4 record {0} ({1}) on router {2}.',
+                    $entry->address,
+                    $entry->comment,
+                    $router,
+                )
+            ) . PHP_EOL;
         }
 
-        // process IPv6 firewall address list
-        if ($clear) {
-            $query = new Query('/ipv6/firewall/address-list/print');
-            $query
-                ->where('list', $addressList)
-                ->equal('.proplist', '.id,address');
-
-            $response = $client->query($query)->read();
-
-            foreach ($response as $item) {
-                $query = new Query('/ipv6/firewall/address-list/remove');
-                $query->equal('.id', $item['.id']);
-
-                $response = $client->query($query)->read();
-
-                // check if no error message
-                if (empty($response)) {
-                    $result .= __d(
-                        'bookkeeping',
-                        'Removed IPv6 record {0} from router {1}.',
-                        $item['address'],
-                        $router,
-                    ) . PHP_EOL;
-                }
-            }
+        foreach ($changes->removed as $entry) {
+            $notes .= ($entry->isIpv6()
+                ? __d('bookkeeping', 'Removed IPv6 record {0} from router {1}.', $entry->address, $router)
+                : __d('bookkeeping', 'Removed IPv4 record {0} from router {1}.', $entry->address, $router)
+            ) . PHP_EOL;
         }
 
-        foreach ($ips['ipv6'] as $ipv6 => $comment) {
-            if (!$clear) {
-                $query = new Query('/ipv6/firewall/address-list/print');
-                $query
-                    ->where('address', $ipv6)
-                    ->where('list', $addressList)
-                    ->equal('.proplist', '.id');
-
-                $response = $client->query($query)->read();
-
-                foreach ($response as $item) {
-                    $query = new Query('/ipv6/firewall/address-list/remove');
-                    $query->equal('.id', $item['.id']);
-
-                    $response = $client->query($query)->read();
-
-                    // check if no error message
-                    if (empty($response)) {
-                        $result .= __d(
-                            'bookkeeping',
-                            'Removed IPv6 record {0} from router {1}.',
-                            $ipv6,
-                            $router,
-                        ) . PHP_EOL;
-                    }
-                }
-            }
-
-            if ($block) {
-                $query = new Query('/ipv6/firewall/address-list/add');
-                $query
-                    ->equal('address', $ipv6)
-                    ->equal('list', $addressList)
-                    ->equal('comment', addslashes(Strings::removeAccents($comment)));
-
-                $response = $client->query($query)->read();
-
-                // check if added
-                if (isset($response['after']['ret'])) {
-                    $result .= __d(
-                        'bookkeeping',
-                        'Added IPv6 record {0} ({1}) to router {2}.',
-                        $ipv6,
-                        Strings::removeAccents($comment),
-                        $router,
-                    ) . PHP_EOL;
-                }
-            }
-        }
-
-        return $result;
+        return $notes;
     }
 
     /**

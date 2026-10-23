@@ -469,10 +469,8 @@ return [
      */
     'Bookkeeping' => [
         'debtors' => [
-            // where the blocking is carried out, and what it signs in with
+            // where the blocking is carried out; the Watcher Agent holds what it signs in with
             'routersIpAddresses' => (string)env('DEBTORS_ROUTERS_IP_ADDRESSES', ''),
-            'routersUsername' => (string)env('DEBTORS_ROUTERS_USERNAME', 'admin'),
-            'routersPassword' => (string)env('DEBTORS_ROUTERS_PASSWORD', ''),
         ],
         'eurofaktura' => [
             'username' => (string)env('EUROFAKTURA_USERNAME', ''),
@@ -492,8 +490,6 @@ return [
     'Radius' => [
         // nothing named leaves an account's group alone
         'defaultUserGroup' => (string)env('RADIUS_DEFAULT_USER_GROUP', ''),
-        'routerosUsername' => (string)env('ROUTEROS_USERNAME', 'admin'),
-        'routerosPassword' => (string)env('ROUTEROS_PASSWORD', ''),
     ],
 
     /*

@@ -3,15 +3,21 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Debtors;
 
+use App\Messages\Message;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\IpNetworkTypeOfUse;
+use ArrayObject;
 use Bookkeeping\Debtors\Debtor;
 use Bookkeeping\Debtors\DebtorsProcessor;
+use Cake\Core\Configure;
+use Cake\Http\Client\Response;
+use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Psr\Http\Message\RequestInterface;
 use ReflectionMethod;
 use ReflectionProperty;
 use Settings\Utility\Settings;
@@ -26,7 +32,29 @@ use Settings\Utility\Settings;
 #[UsesClass(DebtorsProcessor::class)]
 class DebtorsProcessorTest extends TestCase
 {
+    use HttpClientTrait;
     use LocatorAwareTrait;
+
+    /**
+     * Where the agent listens.
+     *
+     * @var string
+     */
+    private const AGENT = 'https://agent.example.com';
+
+    /**
+     * A router the agent cannot reach.
+     *
+     * @var string
+     */
+    private const ROUTER_DOWN = '10.0.0.1';
+
+    /**
+     * A router the agent changes.
+     *
+     * @var string
+     */
+    private const ROUTER_UP = '10.0.0.2';
 
     /**
      * Customer the invoice from the fixture belongs to.
@@ -211,7 +239,7 @@ class DebtorsProcessorTest extends TestCase
 
     /**
      * A running service with no signed contract is cut off by this same pass, because the
-     * address list on the router is wiped and rebuilt here - a pass of its own would undo
+     * address list on the router is made to hold exactly this set - a pass of its own would undo
      * this one rather than add to it. Which is also why the pass works the set out for
      * itself: a caller that handed it in would be one of two callers, and the other would
      * quietly reconnect everybody.
@@ -319,6 +347,165 @@ class DebtorsProcessorTest extends TestCase
 
         $this->assertCount(1, $labels);
         $this->assertSame('blocked state', $labels[0]->note);
+    }
+
+    /**
+     * The routers are changed by the agent, which makes the list on each of them hold exactly
+     * whoever is blocked. A router that cannot be reached does not hold up the next one, and the
+     * operator is told which it was beside what was done on the others.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::updateRouters()
+     */
+    public function testTheBlockingUpdateSyncsEveryRouterThroughTheAgent(): void
+    {
+        $this->throughTheAgent(self::ROUTER_DOWN . ' ' . self::ROUTER_UP);
+        $sent = $this->agentAnswers('sync', [
+            self::ROUTER_DOWN => $this->agentAnswer(502, [
+                'error' => 'routeros_unreachable',
+                'message' => 'no connection to the router',
+            ]),
+            self::ROUTER_UP => $this->agentAnswer(200, [
+                'host' => self::ROUTER_UP,
+                'transport' => 'api-ssl',
+                'added' => [['address' => '192.168.11.11', 'family' => 'ipv4', 'comment' => '1 - Customer']],
+                'updated' => [],
+                'removed' => [['address' => '2001:db8::1/128', 'family' => 'ipv6', 'comment' => 'paid']],
+                'unchanged' => 1,
+            ]),
+        ]);
+
+        $processor = new DebtorsProcessor();
+        $processor->blockingUpdate();
+
+        $this->assertSame([self::ROUTER_DOWN, self::ROUTER_UP], array_column($sent->getArrayCopy(), 'host'));
+        foreach ($sent as $request) {
+            $this->assertSame('debtors', $request['list']);
+            $this->assertSame(['192.168.11.11', '10.0.0.0/8'], array_column($request['entries'], 'address'));
+        }
+
+        $error = $this->onlyMessage($processor, 'error');
+        $this->assertStringContainsString('RouterOS device 10.0.0.1:', $error);
+        $this->assertStringContainsString('no connection to the router', $error);
+        $this->assertStringContainsString('Added IPv4 record 192.168.11.11 (1 - Customer) to router 10.0.0.2.', $error);
+        $this->assertStringContainsString('Removed IPv6 record 2001:db8::1/128 from router 10.0.0.2.', $error);
+    }
+
+    /**
+     * Blocking one customer by hand puts their addresses on the list and leaves the rest of it
+     * alone, and letting them back in takes the same addresses off.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::updateRouters()
+     */
+    public function testOneCustomerIsAddedAndRemovedThroughTheAgent(): void
+    {
+        $this->throughTheAgent(self::ROUTER_UP);
+        $nothing = ['added' => [], 'updated' => [], 'removed' => [], 'unchanged' => 2];
+        $added = $this->agentAnswers('add', [self::ROUTER_UP => $this->agentAnswer(200, $nothing)]);
+        $removed = $this->agentAnswers('remove', [self::ROUTER_UP => $this->agentAnswer(200, [
+            'removed' => [['address' => '10.0.0.0/8', 'family' => 'ipv4', 'comment' => 'MANUAL ENTRY']],
+        ] + $nothing)]);
+
+        $processor = new DebtorsProcessor();
+        $processor->block(self::CUSTOMER_ID);
+        $processor->unblock(self::CUSTOMER_ID);
+
+        $this->assertCount(1, $added);
+        $this->assertSame(['192.168.11.11', '10.0.0.0/8'], array_column($added[0]['entries'], 'address'));
+        foreach ($added[0]['entries'] as $entry) {
+            $this->assertStringStartsWith('MANUAL ENTRY - ', $entry['comment']);
+        }
+
+        $this->assertCount(1, $removed);
+        $this->assertSame(['192.168.11.11', '10.0.0.0/8'], $removed[0]['addresses']);
+
+        $messages = array_filter(
+            $processor->getMessages()->getMessages(),
+            fn(Message $message): bool => $message->type === 'error',
+        );
+        $this->assertSame([], $messages);
+    }
+
+    /**
+     * Routers switched on and changed through an agent that answers as it is told to.
+     *
+     * The fixture contracts are VIP, which the nightly pass leaves alone, so they are made
+     * ordinary here.
+     *
+     * @param string $routers The routers, as the configuration lists them.
+     * @return void
+     */
+    private function throughTheAgent(string $routers): void
+    {
+        $this->onlyLabelling();
+        Settings::set('bookkeeping.debtors.blocking.services.routers.enabled', true);
+        Settings::set('bookkeeping.debtors.blocking.services.routers.address_list', 'debtors');
+
+        Configure::write('Bookkeeping.debtors.routersIpAddresses', $routers);
+        Configure::write('Agent.url', self::AGENT);
+        Configure::write('Agent.token', 'agent-token');
+
+        $this->fetchTable('Contracts')->updateAll(['vip' => false], ['1 = 1']);
+    }
+
+    /**
+     * Have the agent answer an address list operation per router, writing down what it was asked.
+     *
+     * @param string $operation `sync`, `add` or `remove`.
+     * @param array<string, \Cake\Http\Client\Response> $answers What it answers, by router.
+     * @return \ArrayObject<int, mixed>
+     */
+    private function agentAnswers(string $operation, array $answers): ArrayObject
+    {
+        /** @var \ArrayObject<int, mixed> $sent */
+        $sent = new ArrayObject();
+
+        foreach ($answers as $router => $answer) {
+            $this->mockClientPost(
+                self::AGENT . '/api/routeros/address-list/' . $operation,
+                $answer,
+                ['match' => function (RequestInterface $request) use ($router, $sent): bool {
+                    $body = json_decode((string)$request->getBody(), true);
+                    if (!is_array($body) || ($body['host'] ?? null) !== $router) {
+                        return false;
+                    }
+                    $sent[] = $body;
+
+                    return true;
+                }],
+            );
+        }
+
+        return $sent;
+    }
+
+    /**
+     * @param int $status What the agent answers with.
+     * @param array<string, mixed> $body What it says.
+     * @return \Cake\Http\Client\Response
+     */
+    private function agentAnswer(int $status, array $body): Response
+    {
+        return $this->newClientResponse($status, ['Content-Type: application/json'], (string)json_encode($body));
+    }
+
+    /**
+     * The one message of the type, which there has to be.
+     *
+     * @param \Bookkeeping\Debtors\DebtorsProcessor $processor What processed.
+     * @param string $type The type of message.
+     * @return string
+     */
+    private function onlyMessage(DebtorsProcessor $processor, string $type): string
+    {
+        $messages = array_values(array_filter(
+            $processor->getMessages()->getMessages(),
+            fn(Message $message): bool => $message->type === $type,
+        ));
+        $this->assertCount(1, $messages);
+
+        return $messages[0]->text;
     }
 
     /**

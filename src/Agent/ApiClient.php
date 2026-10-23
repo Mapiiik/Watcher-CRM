@@ -105,6 +105,110 @@ class ApiClient
     }
 
     /**
+     * Make a firewall address list on a router hold exactly the given addresses.
+     *
+     * @param string $host The router.
+     * @param string $list The address list.
+     * @param array<string, string> $entries Comment by address or network, IPv4 and IPv6 alike.
+     * @return \App\Http\Answer<\App\Agent\Dto\AddressListChanges>
+     */
+    public static function syncAddressList(string $host, string $list, array $entries): Answer
+    {
+        return self::changeAddressList('sync', [
+            'host' => $host,
+            'list' => $list,
+            'entries' => self::addressListEntries($entries),
+        ]);
+    }
+
+    /**
+     * Put addresses on a firewall address list of a router, leaving the rest of it alone.
+     *
+     * @param string $host The router.
+     * @param string $list The address list.
+     * @param array<string, string> $entries Comment by address or network, IPv4 and IPv6 alike.
+     * @return \App\Http\Answer<\App\Agent\Dto\AddressListChanges>
+     */
+    public static function addToAddressList(string $host, string $list, array $entries): Answer
+    {
+        return self::changeAddressList('add', [
+            'host' => $host,
+            'list' => $list,
+            'entries' => self::addressListEntries($entries),
+        ]);
+    }
+
+    /**
+     * Take addresses off a firewall address list of a router.
+     *
+     * @param string $host The router.
+     * @param string $list The address list.
+     * @param array<string> $addresses Addresses or networks, IPv4 and IPv6 alike.
+     * @return \App\Http\Answer<\App\Agent\Dto\AddressListChanges>
+     */
+    public static function removeFromAddressList(string $host, string $list, array $addresses): Answer
+    {
+        return self::changeAddressList('remove', [
+            'host' => $host,
+            'list' => $list,
+            'addresses' => array_values($addresses),
+        ]);
+    }
+
+    /**
+     * Take a station off the access lists of an access point, so that it has to be accepted again.
+     *
+     * @param string $host The access point.
+     * @param string $macAddress The station.
+     * @return \App\Http\Answer<\App\Agent\Dto\AccessListChanges>
+     */
+    public static function removeFromAccessList(string $host, string $macAddress): Answer
+    {
+        return self::ask(
+            function: 'routeros/access-list/remove',
+            data: [
+                'host' => $host,
+                'mac_address' => $macAddress,
+            ],
+            timeout: 15,
+            expect: 'removed',
+        )->map(AgentPayloadNormalizer::accessList(...));
+    }
+
+    /**
+     * One of the address list operations. A whole list may take a while on a router that has much to
+     * correct, hence the longer wait.
+     *
+     * @param string $operation `sync`, `add` or `remove`.
+     * @param array<string, mixed> $data What to send.
+     * @return \App\Http\Answer<\App\Agent\Dto\AddressListChanges>
+     */
+    private static function changeAddressList(string $operation, array $data): Answer
+    {
+        return self::ask(
+            function: 'routeros/address-list/' . $operation,
+            data: $data,
+            timeout: 60,
+            expect: 'removed',
+        )->map(AgentPayloadNormalizer::addressList(...));
+    }
+
+    /**
+     * @param array<string, string> $entries Comment by address.
+     * @return list<array<string, string>>
+     * @phpstan-return list<array{address: string, comment: string}>
+     */
+    private static function addressListEntries(array $entries): array
+    {
+        $list = [];
+        foreach ($entries as $address => $comment) {
+            $list[] = ['address' => (string)$address, 'comment' => $comment];
+        }
+
+        return $list;
+    }
+
+    /**
      * RADIUS disconnect
      *
      * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.

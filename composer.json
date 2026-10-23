@@ -32,7 +32,6 @@
         "dereuromark/cakephp-audit-stash": "^2.0.1",
         "dereuromark/cakephp-decimal": "^2.4",
         "doctrine/sql-formatter": "^1.5",
-        "evilfreelancer/routeros-api-php": "^1.6",
         "giggsey/libphonenumber-for-php": "^9.0",
         "josegonzalez/dotenv": "^4.0",
         "league/flysystem": "^3.36",
