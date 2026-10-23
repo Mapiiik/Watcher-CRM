@@ -15,6 +15,13 @@ if ($providers === []) {
 $linked = array_map(fn($link) => $link->provider, $user->social_accounts ?? []);
 ?>
 <div class="related">
+<?php foreach (array_diff($providers, $linked) as $provider) : ?>
+    <?= $this->Html->link(
+        __d('access', 'Link an account at {0}', Providers::label($provider)),
+        ['action' => 'linkSocial', 'provider' => $provider],
+        ['class' => 'button button-small float-right'],
+    ) ?>
+<?php endforeach; ?>
 <h4><?= __d('access', 'Social Accounts') ?></h4>
 <?php if (!empty($user->social_accounts)) : ?>
     <table>
@@ -38,11 +45,4 @@ $linked = array_map(fn($link) => $link->provider, $user->social_accounts ?? []);
         <?php endforeach; ?>
     </table>
 <?php endif; ?>
-<?php foreach (array_diff($providers, $linked) as $provider) : ?>
-    <?= $this->Html->link(
-        __d('access', 'Link an account at {0}', Providers::label($provider)),
-        ['action' => 'linkSocial', 'provider' => $provider],
-        ['class' => 'button button-outline'],
-    ) ?>
-<?php endforeach; ?>
 </div>
