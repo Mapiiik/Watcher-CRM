@@ -367,6 +367,8 @@ return [
     'Nms' => [
         'url' => (string)env('WATCHER_NMS_URL', ''),
         'key' => (string)env('WATCHER_NMS_KEY', ''),
+        // off only against a development Watcher NMS with a certificate of its own
+        'verifyTls' => filter_var(env('WATCHER_NMS_VERIFY_TLS', true), FILTER_VALIDATE_BOOLEAN),
     ],
 
     'Agent' => [
@@ -374,6 +376,8 @@ return [
         'token' => (string)env('WATCHER_AGENT_TOKEN', ''),
         // what the RADIUS server expects of whoever asks it to drop a session
         'radiusSecret' => (string)env('RADIUS_SECRET', ''),
+        // off only against a development agent with a certificate of its own
+        'verifyTls' => filter_var(env('WATCHER_AGENT_VERIFY_TLS', true), FILTER_VALIDATE_BOOLEAN),
     ],
 
     'Addresses' => [

@@ -210,6 +210,12 @@ docker compose -f compose.development.yaml up
 The Postgres and Redis ports are exposed to the host (`5432`, `6379`) so you
 can connect with local clients while the stack is running.
 
+Mail goes to Mailpit, http://localhost:8025. The development Watcher NMS and agent are reached
+through the ports they publish on the host, `https://host.docker.internal:<port>`, with
+`WATCHER_NMS_VERIFY_TLS=false` and `WATCHER_AGENT_VERIFY_TLS=false`, as their certificates are
+their own. What the compose file sets (`DATABASE_URL`, `EMAIL_TRANSPORT_*_URL`) stays out of
+`config/.env`: a variable set in both stops the bootstrap.
+
 ## License
 
 Watcher CRM is licensed under the GNU Affero General Public License v3.0.

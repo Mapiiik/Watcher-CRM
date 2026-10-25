@@ -312,8 +312,17 @@ class ApiClient
         $where = rtrim((string)Configure::read('Nms.url'), '/') . $path;
 
         try {
+            $verify = Configure::read('Nms.verifyTls') !== false;
+
             $client = Client::createFromUrl((string)Configure::read('Nms.url'));
-            $client->setConfig('timeout', self::TIMEOUT);
+            $client->setConfig([
+                'timeout' => self::TIMEOUT,
+                // the name is checked by `ssl_verify_peer_name` in the stream adapter, by
+                // `ssl_verify_host` in curl
+                'ssl_verify_peer' => $verify,
+                'ssl_verify_peer_name' => $verify,
+                'ssl_verify_host' => $verify,
+            ]);
 
             $response = $client->get($path, $query, [
                 'headers' => ['Authorization' => 'Bearer ' . Configure::read('Nms.key')],

@@ -315,6 +315,40 @@ class ApiClientTest extends TestCase
     }
 
     /**
+     * The certificate is checked unless the installation says otherwise, which only a development
+     * Watcher NMS with a certificate of its own has any business doing.
+     *
+     * @return void
+     * @link \App\NMS\ApiClient::getAccessPoints()
+     */
+    public function testTheCertificateIsCheckedUnlessTurnedOff(): void
+    {
+        $checked = [];
+        $this->mockClientGet(
+            'https://nms.example.com/api/access-points.json?',
+            $this->jsonResponse(['accessPoints' => []]),
+            ['match' => function (RequestInterface $request, array $options) use (&$checked): bool {
+                $checked[] = [
+                    $options['ssl_verify_peer'],
+                    $options['ssl_verify_peer_name'],
+                    $options['ssl_verify_host'],
+                ];
+
+                return true;
+            }],
+        );
+
+        Configure::write('Nms.verifyTls', true);
+        ApiClient::getAccessPoints();
+
+        Cache::clear('api_client');
+        Configure::write('Nms.verifyTls', false);
+        ApiClient::getAccessPoints();
+
+        $this->assertSame([[true, true, true], [false, false, false]], $checked);
+    }
+
+    /**
      * A search carries its conditions alongside the key, and the point a device serves from comes
      * back read into a point of its own.
      *

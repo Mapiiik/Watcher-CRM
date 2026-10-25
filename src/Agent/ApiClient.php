@@ -47,12 +47,19 @@ class ApiClient
             return Answer::notAsked();
         }
 
+        $verify = Configure::read('Agent.verifyTls') !== false;
+
         $http = new Client([
             'headers' => [
                 'Authorization' => 'Bearer ' . $agentToken,
                 'Accept' => 'application/json',
             ],
             'timeout' => $timeout,
+            // the name is checked by `ssl_verify_peer_name` in the stream adapter, by
+            // `ssl_verify_host` in curl
+            'ssl_verify_peer' => $verify,
+            'ssl_verify_peer_name' => $verify,
+            'ssl_verify_host' => $verify,
         ]);
 
         $where = $agentUrl . '/api/' . $function;

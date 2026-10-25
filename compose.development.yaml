@@ -10,6 +10,7 @@ services:
       - database-dev
       - database-radius-dev
       - cache-dev
+      - mail-dev
     tmpfs:
       - /app/logs:uid=1000,gid=1000
       - /app/tmp:uid=1000,gid=1000
@@ -18,7 +19,17 @@ services:
     volumes:
       - ./:/app
     working_dir: /app/
+    # the other development applications, reached through the ports they publish on the host
+    extra_hosts:
+      - host.docker.internal:host-gateway
     environment:
+      # the certificate Caddy issues itself has to cover the name the other containers use
+      SERVER_NAME: "localhost, host.docker.internal"
+      # the mail ends up in Mailpit, http://localhost:8025
+      EMAIL_TRANSPORT_DEFAULT_URL: smtp://mail-dev:1025
+      EMAIL_TRANSPORT_INVOICES_URL: smtp://mail-dev:1025
+      EMAIL_TRANSPORT_CONTRACTS_URL: smtp://mail-dev:1025
+      EMAIL_TRANSPORT_SUPPORT_URL: smtp://mail-dev:1025
       DATABASE_URL: postgres://postgres@database-dev/watcher_crm
       DATABASE_RADIUS_URL: postgres://postgres@database-radius-dev/watcher_crm_radius
       CACHE_DURATION: "${CACHE_DURATION:-+2 minutes}"
@@ -63,3 +74,8 @@ services:
     ports:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass redis
+
+  mail-dev:
+    image: axllent/mailpit:v1.27
+    ports:
+      - 8025:8025/tcp # web interface
