@@ -6,6 +6,7 @@ namespace App\Customers\Check;
 use App\Check\AbstractCheck;
 use App\Check\CheckScope;
 use App\Model\Table\CustomerProposalsTable;
+use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Query\SelectQuery;
 use Override;
 
@@ -73,5 +74,32 @@ abstract class AbstractCustomerProposalCheck extends AbstractCheck implements Cu
         }
 
         return $query;
+    }
+
+    /**
+     * Leaves out a proposal that only carries the papers of contracts.
+     *
+     * The contract checks report those paper by paper, so counting the proposal here as well would
+     * show the same contract twice wherever the two agendas stand side by side.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query What is being asked.
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     */
+    protected function withPapersOfTheirOwn(SelectQuery $query): SelectQuery
+    {
+        return $query->where(function (QueryExpression $exp, SelectQuery $q): QueryExpression {
+            // A paper given up on is nobody's finding, so it does not take the proposal away.
+            $parts = $q->getConnection()->selectQuery()
+                ->select(['1'])
+                ->from(['Parts' => 'contract_proposals'])
+                ->where(['Parts.revoked IS' => null]);
+
+            $parts->where($parts->expr()->equalFields('Parts.customer_proposal_id', 'CustomerProposals.id'));
+
+            return $exp->or([
+                $q->expr()->isNotNull('CustomerProposals.purpose'),
+                $q->expr()->notExists($parts),
+            ]);
+        });
     }
 }

@@ -62,7 +62,7 @@ class UnsentCustomerProposalCheck extends AbstractCustomerProposalCheck
     {
         $within = $this->days(self::WITHIN_DAYS_PATH, self::WITHIN_DAYS);
 
-        $query = $this->candidates()->find('open');
+        $query = $this->withPapersOfTheirOwn($this->candidates()->find('open'));
 
         LateProposals::neverSent($query, 'CustomerProposals', $within);
 

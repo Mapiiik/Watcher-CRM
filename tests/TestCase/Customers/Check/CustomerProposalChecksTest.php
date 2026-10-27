@@ -41,6 +41,11 @@ class CustomerProposalChecksTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
+     * The fixture proposal with no purpose of its own, carrying the papers of a contract.
+     */
+    private const CONTRACT_PAPERS = 'a7c1d5e2-3f48-4b90-9c61-2d0e7a5b8f34';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -55,7 +60,9 @@ class CustomerProposalChecksTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
+        'app.ContractVersions',
         'app.CustomerProposals',
+        'app.ContractProposals',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
         'plugin.Settings.Settings',
@@ -197,6 +204,57 @@ class CustomerProposalChecksTest extends TestCase
         ]);
 
         $this->assertNotContains($proposal, $this->unfiled());
+    }
+
+    /**
+     * A proposal that only carries the papers of contracts is reported by the contract checks,
+     * paper by paper, and is not counted again here.
+     *
+     * @return void
+     */
+    public function testAProposalThatCarriesOnlyContractPapersIsLeftToTheContracts(): void
+    {
+        // never sent, and its day is past
+        $this->assertNotContains(self::CONTRACT_PAPERS, $this->unsent());
+
+        $this->getTableLocator()->get('CustomerProposals')->updateAll(
+            ['sent_date' => Date::now()->subDays(30)],
+            ['id' => self::CONTRACT_PAPERS],
+        );
+
+        $this->assertNotContains(self::CONTRACT_PAPERS, $this->unanswered());
+    }
+
+    /**
+     * Once the contract papers in it are given up on, nothing else reports the proposal.
+     *
+     * @return void
+     */
+    public function testAProposalWhoseContractPapersWereGivenUpOnIsFoundAgain(): void
+    {
+        $this->getTableLocator()->get('ContractProposals')->updateAll(
+            ['revoked' => DateTime::now()->subDays(1)],
+            ['customer_proposal_id' => self::CONTRACT_PAPERS],
+        );
+
+        $this->assertContains(self::CONTRACT_PAPERS, $this->unsent());
+    }
+
+    /**
+     * A consent sent together with the papers of a contract is still the customer's own paper.
+     *
+     * @return void
+     */
+    public function testAConsentSentWithContractPapersIsStillFound(): void
+    {
+        $proposal = $this->proposal(['sent_date' => Date::now()->subDays(30)]);
+
+        $this->getTableLocator()->get('ContractProposals')->updateAll(
+            ['customer_proposal_id' => $proposal],
+            ['customer_proposal_id' => self::CONTRACT_PAPERS],
+        );
+
+        $this->assertContains($proposal, $this->unanswered());
     }
 
     /**

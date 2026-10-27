@@ -62,7 +62,7 @@ class UnsignedCustomerProposalCheck extends AbstractCustomerProposalCheck
     {
         $after = $this->days(self::AFTER_DAYS_PATH, self::AFTER_DAYS);
 
-        $query = $this->candidates()->find('open');
+        $query = $this->withPapersOfTheirOwn($this->candidates()->find('open'));
 
         LateProposals::unanswered($query, 'CustomerProposals', $after);
 
