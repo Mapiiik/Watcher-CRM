@@ -30,7 +30,6 @@ $today = Date::today();
                 <?php // whether the papers ever went out is the first thing to know before
                       // chasing somebody about them not coming back ?>
                 <th><?= __('Sent To The Customer') ?></th>
-                <th><?= __('Conclusion Date') ?></th>
                 <?php // which of the two waits a version is past, and so what is about to
                       // happen to it if nobody does anything ?>
                 <th><?= __('Deadline') ?></th>
@@ -53,13 +52,6 @@ $today = Date::today();
                             <em><?= __x('sending date', 'Not recorded') ?></em>
                         <?php else : ?>
                             <?= h($version->getSending()) ?>
-                        <?php endif ?>
-                    </td>
-                    <td>
-                        <?php if ($version->conclusion_date === null) : ?>
-                            <em><?= __x('conclusion date', 'None') ?></em>
-                        <?php else : ?>
-                            <?= h($version->conclusion_date) ?>
                         <?php endif ?>
                     </td>
                     <td>
