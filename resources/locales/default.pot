@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-21 23:58+0200\n"
+"POT-Creation-Date: 2026-10-27 11:07+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -303,7 +303,7 @@ msgstr ""
 #: ./src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: ./src/Controller/Api/CustomersController.php:178
 #: ./src/Controller/OverviewsController.php:93
-#: ./src/RegulatoryReporting/ConnectionPointCollector.php:185
+#: ./src/RegulatoryReporting/ConnectionPointCollector.php:189
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr ""
 
@@ -1074,7 +1074,7 @@ msgstr ""
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:28
 #: ./templates/element/ContractChecks/inactive_with_billing.php:26
 #: ./templates/element/ContractChecks/unsettled_obligation.php:30
-#: ./templates/element/Contracts/facts.php:158
+#: ./templates/element/Contracts/facts.php:157
 #: ./templates/element/Contracts/related.php:36
 msgid "Date of Termination of Services"
 msgstr ""
@@ -2408,7 +2408,7 @@ msgstr ""
 msgid "Planned Power Outages"
 msgstr ""
 
-#: ./src/Dashboard/Card/UnsignedContractsCard.php:71
+#: ./src/Dashboard/Card/UnsignedDocumentsCard.php:84
 msgid "Unsigned Documents"
 msgstr ""
 
@@ -3121,6 +3121,7 @@ msgstr ""
 #: ./src/Model/Enum/LandingPage.php:38
 #: ./templates/Customers/identity_number_check.php:8
 #: ./templates/Customers/index.php:63
+#: ./templates/element/Dashboard/unsigned_documents.php:136
 #: ./templates/layout/default.php:138
 msgid "Customers"
 msgstr ""
@@ -3592,7 +3593,7 @@ msgstr ""
 msgid "Signed"
 msgstr ""
 
-#: ./src/RegulatoryReporting/ConnectionPointCollector.php:200
+#: ./src/RegulatoryReporting/ConnectionPointCollector.php:204
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr ""
 
@@ -3636,8 +3637,8 @@ msgstr ""
 msgid "APP_FULL_BASE_URL is not set, so the links in this report are relative and will not lead anywhere from somebody's mail."
 msgstr ""
 
-#: ./src/Versioning.php:53
-#: ./src/Versioning.php:76
+#: ./src/Versioning.php:56
+#: ./src/Versioning.php:79
 msgid "Not installed via Git"
 msgstr ""
 
@@ -4630,6 +4631,7 @@ msgstr ""
 #: ./templates/Customers/view.php:131
 #: ./templates/Customers/view.php:628
 #: ./templates/element/AddressChecks/several_contracts_at_one_address.php:21
+#: ./templates/element/Dashboard/unsigned_documents.php:114
 msgid "Contracts"
 msgstr ""
 
@@ -6027,7 +6029,7 @@ msgstr ""
 #: ./templates/Customers/view.php:639
 #: ./templates/Overviews/overview_of_contracts.php:70
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:26
-#: ./templates/element/Contracts/facts.php:126
+#: ./templates/element/Contracts/facts.php:125
 #: ./templates/element/Contracts/related.php:32
 msgid "Installation/Establishment Date"
 msgstr ""
@@ -6037,7 +6039,7 @@ msgstr ""
 #: ./templates/Customers/view.php:640
 #: ./templates/Overviews/overview_of_contracts.php:75
 #: ./templates/element/ContractChecks/impossible_contract_dates.php:27
-#: ./templates/element/Contracts/facts.php:142
+#: ./templates/element/Contracts/facts.php:141
 #: ./templates/element/Contracts/related.php:34
 msgid "Uninstallation/Cancellation Date"
 msgstr ""
@@ -8935,16 +8937,16 @@ msgstr ""
 msgid "Network Map"
 msgstr ""
 
-#: ./templates/element/Contracts/facts.php:115
+#: ./templates/element/Contracts/facts.php:114
 msgid "Minimum Connection Price"
 msgstr ""
 
-#: ./templates/element/Contracts/facts.php:130
+#: ./templates/element/Contracts/facts.php:129
 #: ./templates/element/Contracts/related.php:33
 msgid "Installation Technician"
 msgstr ""
 
-#: ./templates/element/Contracts/facts.php:146
+#: ./templates/element/Contracts/facts.php:145
 #: ./templates/element/Contracts/related.php:35
 msgid "Uninstallation Technician"
 msgstr ""
@@ -9076,49 +9078,91 @@ msgstr ""
 msgid "Customer connections affected"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:20
-msgid "in effect and unsigned, still inside every deadline"
+#: ./templates/element/Dashboard/unsigned_documents.php:50
+msgid "Open the contract proposals nobody has sent"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:21
-msgid "past the reminder deadline"
+#: ./templates/element/Dashboard/unsigned_documents.php:60
+msgid "Open the contract proposals waiting for a signature"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:22
-msgid "past the disconnection deadline"
+#: ./templates/element/Dashboard/unsigned_documents.php:70
+msgid "Open the contract proposals nobody filed"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:28
-msgid "created and never sent"
+#: ./templates/element/Dashboard/unsigned_documents.php:83
+msgid "Open the customer proposals nobody has sent"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:28
-msgid "Open the proposals nobody has sent"
+#: ./templates/element/Dashboard/unsigned_documents.php:93
+msgid "Open the customer proposals waiting for a signature"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:31
-msgid "sent to the customer and still not signed"
+#: ./templates/element/Dashboard/unsigned_documents.php:103
+msgid "Open the customer proposals nobody filed"
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:33
-msgid "Open the proposals waiting for a signature"
-msgstr ""
-
-#: ./templates/element/Dashboard/unsigned_contracts.php:37
-msgid "signed, with the signed documents not filed"
-msgstr ""
-
-#: ./templates/element/Dashboard/unsigned_contracts.php:39
-msgid "Open the signatures nobody filed"
-msgstr ""
-
-#: ./templates/element/Dashboard/unsigned_contracts.php:44
+#: ./templates/element/Dashboard/unsigned_documents.php:111
 msgid "Every running service has a signed contract, and nothing is waiting to be sent."
 msgstr ""
 
-#: ./templates/element/Dashboard/unsigned_contracts.php:53
+#: ./templates/element/Dashboard/unsigned_documents.php:122
 msgid "Open the contract problems"
 msgstr ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:28
+msgid "in effect and unsigned, still inside every deadline"
+msgid_plural "in effect and unsigned, still inside every deadline"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:34
+msgid "past the reminder deadline"
+msgid_plural "past the reminder deadline"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:35
+msgid "past the disconnection deadline"
+msgid_plural "past the disconnection deadline"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:44
+msgid "contract proposal created and never sent"
+msgid_plural "contract proposals created and never sent"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:54
+msgid "contract proposal sent and still not signed"
+msgid_plural "contract proposals sent and still not signed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:64
+msgid "contract proposal signed, with the signed documents not filed"
+msgid_plural "contract proposals signed, with the signed documents not filed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:77
+msgid "customer proposal created and never sent"
+msgid_plural "customer proposals created and never sent"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:87
+msgid "customer proposal sent and still not signed"
+msgid_plural "customer proposals sent and still not signed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ./templates/element/Dashboard/unsigned_documents.php:97
+msgid "customer proposal signed, with the signed documents not filed"
+msgid_plural "customer proposals signed, with the signed documents not filed"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ./templates/element/Documents/proposals.php:33
 msgid "No proposals have been created here yet."

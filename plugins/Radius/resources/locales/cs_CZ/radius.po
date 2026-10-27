@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-20 22:59+0200\n"
+"POT-Creation-Date: 2026-10-27 10:54+0100\n"
 "PO-Revision-Date: 2026-08-22 17:20+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -304,23 +304,32 @@ msgstr "PPPoE"
 msgid "An active RADIUS account cannot be deleted. Deactivate it first."
 msgstr "Aktivní účet RADIUS nelze odstranit. Nejprve ho deaktivujte."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:63
+#: plugins/Radius/src/Updater/AccessListCleaner.php:50
 msgid "No RADIUS session for {0} found."
 msgstr "Nebyla nalezena žádná relace RADIUS pro {0}."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:79
+#: plugins/Radius/src/Updater/AccessListCleaner.php:60
+msgid "The last RADIUS session of {0} carries no MAC address."
+msgstr "Poslední relace RADIUS pro {0} neobsahuje adresu MAC."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:72
 msgid "Problem connecting to an access point: {0}"
 msgstr "Problém s připojením k přístupovému bodu: {0}"
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:106
+#: plugins/Radius/src/Updater/AccessListCleaner.php:75
+#: plugins/Radius/src/Updater/RadiusRequestSender.php:57
+msgid "Watcher Agent is not configured."
+msgstr "Watcher Agent není nakonfigurován."
+
+#: plugins/Radius/src/Updater/AccessListCleaner.php:83
 msgid "Removed MAC address entry {0} on interface {1} from router {2}."
 msgstr "Odstraněn záznam adresy MAC {0} na rozhraní {1} ze směrovače {2}."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:118
+#: plugins/Radius/src/Updater/AccessListCleaner.php:93
 msgid "Access point updated."
 msgstr "Přístupový bod aktualizován."
 
-#: plugins/Radius/src/Updater/AccessListCleaner.php:119
+#: plugins/Radius/src/Updater/AccessListCleaner.php:94
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
@@ -397,10 +406,6 @@ msgstr ""
 msgid ""
 "The RADIUS session for {0} started on {1} could not be disconnected ({2})."
 msgstr "Relace RADIUS pro {0} zahájená {1} nemohla být odpojena ({2})."
-
-#: plugins/Radius/src/Updater/RadiusRequestSender.php:57
-msgid "Watcher Agent is not configured."
-msgstr "Watcher Agent není nakonfigurován."
 
 #: plugins/Radius/src/Updater/RadiusRequestSender.php:69
 msgid "The RADIUS session for {0} started on {1} has been disconnected ({2})."

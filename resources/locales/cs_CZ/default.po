@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-21 23:58+0200\n"
+"POT-Creation-Date: 2026-10-27 11:07+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -382,7 +382,7 @@ msgstr "Adresa instalace (registr)"
 #: src/BulkMessages/Filter/RegistryAddressFilter.php:136
 #: src/Controller/Api/CustomersController.php:178
 #: src/Controller/OverviewsController.php:93
-#: src/RegulatoryReporting/ConnectionPointCollector.php:185
+#: src/RegulatoryReporting/ConnectionPointCollector.php:189
 msgid "Could not retrieve addresses from national address registry: {0}"
 msgstr "Nepodařilo se načíst adresy z národního adresního registru: {0}"
 
@@ -1191,7 +1191,7 @@ msgstr "Smlouva na dobu určitou, závazek běží do jejího konce"
 #: templates/element/ContractChecks/impossible_contract_dates.php:28
 #: templates/element/ContractChecks/inactive_with_billing.php:26
 #: templates/element/ContractChecks/unsettled_obligation.php:30
-#: templates/element/Contracts/facts.php:158
+#: templates/element/Contracts/facts.php:157
 #: templates/element/Contracts/related.php:36
 msgid "Date of Termination of Services"
 msgstr "Datum ukončení poskytování služeb"
@@ -2601,7 +2601,7 @@ msgstr "Dluhy mimo automatické blokování"
 msgid "Planned Power Outages"
 msgstr "Plánované odstávky elektřiny"
 
-#: src/Dashboard/Card/UnsignedContractsCard.php:71
+#: src/Dashboard/Card/UnsignedDocumentsCard.php:84
 msgid "Unsigned Documents"
 msgstr "Nepodepsané dokumenty"
 
@@ -3217,7 +3217,9 @@ msgstr "Nástěnka"
 
 #: src/Model/Enum/LandingPage.php:38
 #: templates/Customers/identity_number_check.php:8
-#: templates/Customers/index.php:63 templates/layout/default.php:138
+#: templates/Customers/index.php:63
+#: templates/element/Dashboard/unsigned_documents.php:136
+#: templates/layout/default.php:138
 msgid "Customers"
 msgstr "Zákazníci"
 
@@ -3784,7 +3786,7 @@ msgstr "Vydáno"
 msgid "Signed"
 msgstr "Podepsáno"
 
-#: src/RegulatoryReporting/ConnectionPointCollector.php:200
+#: src/RegulatoryReporting/ConnectionPointCollector.php:204
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
 msgstr "Neplatné RUIAN GID: {0} pro adresy spojené se smlouvami: {1}"
 
@@ -3837,7 +3839,7 @@ msgstr ""
 "Není nastaveno APP_FULL_BASE_URL, takže odkazy v tomto reportu jsou "
 "relativní a z e-mailu nikam nepovedou."
 
-#: src/Versioning.php:53 src/Versioning.php:76
+#: src/Versioning.php:56 src/Versioning.php:79
 msgid "Not installed via Git"
 msgstr "Není nainstalováno přes Git"
 
@@ -4569,6 +4571,7 @@ msgstr "Přípona"
 #: templates/Customers/index.php:74 templates/Customers/view.php:131
 #: templates/Customers/view.php:628
 #: templates/element/AddressChecks/several_contracts_at_one_address.php:21
+#: templates/element/Dashboard/unsigned_documents.php:114
 msgid "Contracts"
 msgstr "Smlouvy"
 
@@ -5898,7 +5901,7 @@ msgstr ""
 #: templates/Customers/view.php:639
 #: templates/Overviews/overview_of_contracts.php:70
 #: templates/element/ContractChecks/impossible_contract_dates.php:26
-#: templates/element/Contracts/facts.php:126
+#: templates/element/Contracts/facts.php:125
 #: templates/element/Contracts/related.php:32
 msgid "Installation/Establishment Date"
 msgstr "Datum instalace/zřízení"
@@ -5907,7 +5910,7 @@ msgstr "Datum instalace/zřízení"
 #: templates/Customers/view.php:640
 #: templates/Overviews/overview_of_contracts.php:75
 #: templates/element/ContractChecks/impossible_contract_dates.php:27
-#: templates/element/Contracts/facts.php:142
+#: templates/element/Contracts/facts.php:141
 #: templates/element/Contracts/related.php:34
 msgid "Uninstallation/Cancellation Date"
 msgstr "Datum deinstalace/zrušení"
@@ -8841,16 +8844,16 @@ msgstr "Odstraněno"
 msgid "Network Map"
 msgstr "Mapa sítě"
 
-#: templates/element/Contracts/facts.php:115
+#: templates/element/Contracts/facts.php:114
 msgid "Minimum Connection Price"
 msgstr "Minimální cena za připojení"
 
-#: templates/element/Contracts/facts.php:130
+#: templates/element/Contracts/facts.php:129
 #: templates/element/Contracts/related.php:33
 msgid "Installation Technician"
 msgstr "Instalační technik"
 
-#: templates/element/Contracts/facts.php:146
+#: templates/element/Contracts/facts.php:145
 #: templates/element/Contracts/related.php:35
 msgid "Uninstallation Technician"
 msgstr "Technik pro deinstalaci"
@@ -8993,51 +8996,102 @@ msgstr "U žádného našeho přístupového bodu není známa plánovaná odst�
 msgid "Customer connections affected"
 msgstr "Dotčené zákaznické přípojky"
 
-#: templates/element/Dashboard/unsigned_contracts.php:20
-msgid "in effect and unsigned, still inside every deadline"
-msgstr "platných a nepodepsaných, zatím v termínu"
+#: templates/element/Dashboard/unsigned_documents.php:50
+msgid "Open the contract proposals nobody has sent"
+msgstr "Otevřít návrhy smluv, které nikdo neodeslal"
 
-#: templates/element/Dashboard/unsigned_contracts.php:21
-msgid "past the reminder deadline"
-msgstr "po lhůtě pro upomínku"
+#: templates/element/Dashboard/unsigned_documents.php:60
+msgid "Open the contract proposals waiting for a signature"
+msgstr "Otevřít návrhy smluv čekající na podpis"
 
-#: templates/element/Dashboard/unsigned_contracts.php:22
-msgid "past the disconnection deadline"
-msgstr "po lhůtě pro odpojení"
+#: templates/element/Dashboard/unsigned_documents.php:70
+msgid "Open the contract proposals nobody filed"
+msgstr "Otevřít návrhy smluv bez nahraných dokumentů"
 
-#: templates/element/Dashboard/unsigned_contracts.php:28
-msgid "created and never sent"
-msgstr "vytvořených a nikdy neodeslaných"
+#: templates/element/Dashboard/unsigned_documents.php:83
+msgid "Open the customer proposals nobody has sent"
+msgstr "Otevřít návrhy zákazníků, které nikdo neodeslal"
 
-#: templates/element/Dashboard/unsigned_contracts.php:28
-msgid "Open the proposals nobody has sent"
-msgstr "Otevřít návrhy, které nikdo neodeslal"
+#: templates/element/Dashboard/unsigned_documents.php:93
+msgid "Open the customer proposals waiting for a signature"
+msgstr "Otevřít návrhy zákazníků čekající na podpis"
 
-#: templates/element/Dashboard/unsigned_contracts.php:31
-msgid "sent to the customer and still not signed"
-msgstr "odeslaných zákazníkovi a stále nepodepsaných"
+#: templates/element/Dashboard/unsigned_documents.php:103
+msgid "Open the customer proposals nobody filed"
+msgstr "Otevřít návrhy zákazníků bez nahraných dokumentů"
 
-#: templates/element/Dashboard/unsigned_contracts.php:33
-msgid "Open the proposals waiting for a signature"
-msgstr "Otevřít návrhy čekající na podpis"
-
-#: templates/element/Dashboard/unsigned_contracts.php:37
-msgid "signed, with the signed documents not filed"
-msgstr "podepsaných, ale bez nahraných dokumentů"
-
-#: templates/element/Dashboard/unsigned_contracts.php:39
-msgid "Open the signatures nobody filed"
-msgstr "Otevřít podpisy bez nahraných dokumentů"
-
-#: templates/element/Dashboard/unsigned_contracts.php:44
+#: templates/element/Dashboard/unsigned_documents.php:111
 msgid ""
 "Every running service has a signed contract, and nothing is waiting to be "
 "sent."
 msgstr "U všech běžících služeb je podepsaná smlouva a nic nečeká na odeslání."
 
-#: templates/element/Dashboard/unsigned_contracts.php:53
+#: templates/element/Dashboard/unsigned_documents.php:122
 msgid "Open the contract problems"
 msgstr "Otevřít problémy smluv"
+
+#: templates/element/Dashboard/unsigned_documents.php:28
+msgid "in effect and unsigned, still inside every deadline"
+msgid_plural "in effect and unsigned, still inside every deadline"
+msgstr[0] "platná a nepodepsaná, zatím v termínu"
+msgstr[1] "platné a nepodepsané, zatím v termínu"
+msgstr[2] "platných a nepodepsaných, zatím v termínu"
+
+#: templates/element/Dashboard/unsigned_documents.php:34
+msgid "past the reminder deadline"
+msgid_plural "past the reminder deadline"
+msgstr[0] "po lhůtě pro upomínku"
+msgstr[1] "po lhůtě pro upomínku"
+msgstr[2] "po lhůtě pro upomínku"
+
+#: templates/element/Dashboard/unsigned_documents.php:35
+msgid "past the disconnection deadline"
+msgid_plural "past the disconnection deadline"
+msgstr[0] "po lhůtě pro odpojení"
+msgstr[1] "po lhůtě pro odpojení"
+msgstr[2] "po lhůtě pro odpojení"
+
+#: templates/element/Dashboard/unsigned_documents.php:44
+msgid "contract proposal created and never sent"
+msgid_plural "contract proposals created and never sent"
+msgstr[0] "návrh smlouvy vytvořený a nikdy neodeslaný"
+msgstr[1] "návrhy smluv vytvořené a nikdy neodeslané"
+msgstr[2] "návrhů smluv vytvořených a nikdy neodeslaných"
+
+#: templates/element/Dashboard/unsigned_documents.php:54
+msgid "contract proposal sent and still not signed"
+msgid_plural "contract proposals sent and still not signed"
+msgstr[0] "návrh smlouvy odeslaný a stále nepodepsaný"
+msgstr[1] "návrhy smluv odeslané a stále nepodepsané"
+msgstr[2] "návrhů smluv odeslaných a stále nepodepsaných"
+
+#: templates/element/Dashboard/unsigned_documents.php:64
+msgid "contract proposal signed, with the signed documents not filed"
+msgid_plural "contract proposals signed, with the signed documents not filed"
+msgstr[0] "návrh smlouvy podepsaný, ale bez nahraných dokumentů"
+msgstr[1] "návrhy smluv podepsané, ale bez nahraných dokumentů"
+msgstr[2] "návrhů smluv podepsaných, ale bez nahraných dokumentů"
+
+#: templates/element/Dashboard/unsigned_documents.php:77
+msgid "customer proposal created and never sent"
+msgid_plural "customer proposals created and never sent"
+msgstr[0] "návrh zákazníka vytvořený a nikdy neodeslaný"
+msgstr[1] "návrhy zákazníků vytvořené a nikdy neodeslané"
+msgstr[2] "návrhů zákazníků vytvořených a nikdy neodeslaných"
+
+#: templates/element/Dashboard/unsigned_documents.php:87
+msgid "customer proposal sent and still not signed"
+msgid_plural "customer proposals sent and still not signed"
+msgstr[0] "návrh zákazníka odeslaný a stále nepodepsaný"
+msgstr[1] "návrhy zákazníků odeslané a stále nepodepsané"
+msgstr[2] "návrhů zákazníků odeslaných a stále nepodepsaných"
+
+#: templates/element/Dashboard/unsigned_documents.php:97
+msgid "customer proposal signed, with the signed documents not filed"
+msgid_plural "customer proposals signed, with the signed documents not filed"
+msgstr[0] "návrh zákazníka podepsaný, ale bez nahraných dokumentů"
+msgstr[1] "návrhy zákazníků podepsané, ale bez nahraných dokumentů"
+msgstr[2] "návrhů zákazníků podepsaných, ale bez nahraných dokumentů"
 
 #: templates/element/Documents/proposals.php:33
 msgid "No proposals have been created here yet."
@@ -9213,6 +9267,42 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:287
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "contract proposals created and never sent"
+#~ msgstr "návrhů smluv vytvořených a nikdy neodeslaných"
+
+#~ msgid "contract proposals sent and still not signed"
+#~ msgstr "návrhů smluv odeslaných a stále nepodepsaných"
+
+#~ msgid "contract proposals signed, with the signed documents not filed"
+#~ msgstr "návrhů smluv podepsaných, ale bez nahraných dokumentů"
+
+#~ msgid "customer proposals created and never sent"
+#~ msgstr "návrhů zákazníků vytvořených a nikdy neodeslaných"
+
+#~ msgid "customer proposals sent and still not signed"
+#~ msgstr "návrhů zákazníků odeslaných a stále nepodepsaných"
+
+#~ msgid "customer proposals signed, with the signed documents not filed"
+#~ msgstr "návrhů zákazníků podepsaných, ale bez nahraných dokumentů"
+
+#~ msgid "created and never sent"
+#~ msgstr "vytvořených a nikdy neodeslaných"
+
+#~ msgid "Open the proposals nobody has sent"
+#~ msgstr "Otevřít návrhy, které nikdo neodeslal"
+
+#~ msgid "sent to the customer and still not signed"
+#~ msgstr "odeslaných zákazníkovi a stále nepodepsaných"
+
+#~ msgid "Open the proposals waiting for a signature"
+#~ msgstr "Otevřít návrhy čekající na podpis"
+
+#~ msgid "signed, with the signed documents not filed"
+#~ msgstr "podepsaných, ale bez nahraných dokumentů"
+
+#~ msgid "Open the signatures nobody filed"
+#~ msgstr "Otevřít podpisy bez nahraných dokumentů"
 
 #~ msgid "Old NMS"
 #~ msgstr "Starý NMS"

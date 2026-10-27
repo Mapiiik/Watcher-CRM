@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-21 23:58+0200\n"
+"POT-Creation-Date: 2026-10-27 10:54+0100\n"
 "PO-Revision-Date: 2026-08-26 13:21+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -433,27 +433,27 @@ msgstr[0] "Faktura k odeslání ve frontě, zbývá {0} e-mail."
 msgstr[1] "Faktury k odeslání ve frontě, zbývají {0} e-maily."
 msgstr[2] "Faktury k odeslání ve frontě, zbývá {0} e-mailů."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:93
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:95
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:105
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:107
 msgid "{0} failed"
 msgstr "{0} selhala"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:114
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:116
 msgid "Unknown error."
 msgstr "Neznámá chyba."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:180
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:182
 msgid "Debtors data is not available."
 msgstr "Údaje o dlužnících nejsou k dispozici."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:325
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:379
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:434
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:486
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:546
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:327
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:381
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:436
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:488
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:548
 msgid ""
 "Debtor blocking is globally disabled by settings. No external systems were "
 "modified."
@@ -461,68 +461,78 @@ msgstr ""
 "Blokování dlužníků je globálně deaktivováno v nastavení. Žádné externí "
 "systémy nebyly upraveny."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:334
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:388
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:336
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:390
 msgid "Customer ID of the debtor must be provided."
 msgstr "Je nutné uvést identifikační číslo dlužníka."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:353
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:407
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:459
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:511
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:596
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:355
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:409
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:461
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:513
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:598
 msgid "SledovaniTV blocking update"
 msgstr "Aktualizace blokace SledovaniTV"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:364
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:418
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:470
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:522
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:607
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:366
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:420
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:472
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:524
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:609
 msgid "Routers blocking update"
 msgstr "Aktualizace blokace routerů"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:565
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:674
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:781
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:567
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:676
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:783
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:639
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:641
 msgid "blocked state"
 msgstr "blokovaný stav"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1037
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1055
 msgid "RouterOS device {0}: {1}"
 msgstr "RouterOS zařízení {0}: {1}"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1091
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1119
-msgid "Removed IPv4 record {0} from router {1}."
-msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1059
+msgid "Watcher Agent is not configured."
+msgstr "Watcher Agent není nakonfigurován."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1140
-msgid "Added IPv4 record {0} ({1}) to router {2}."
-msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
-
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1168
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1196
-msgid "Removed IPv6 record {0} from router {1}."
-msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
-
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1217
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1089
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1247
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1096
+msgid "Added IPv4 record {0} ({1}) to router {2}."
+msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1108
+msgid "Updated IPv6 record {0} ({1}) on router {2}."
+msgstr "Upraven záznam IPv6 {0} ({1}) na směrovači {2}."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1115
+msgid "Updated IPv4 record {0} ({1}) on router {2}."
+msgstr "Upraven záznam IPv4 {0} ({1}) na směrovači {2}."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1127
+msgid "Removed IPv6 record {0} from router {1}."
+msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1128
+msgid "Removed IPv4 record {0} from router {1}."
+msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
+
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1151
 msgid "SledovaniTV is not configured."
 msgstr "SledovaniTV není nakonfigurováno."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1309
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1213
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1315
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1219
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
