@@ -5,6 +5,7 @@ use Cake\Core\Plugin;
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Customer $customer
  * @var bool $show_historical_records
+ * @var bool $writes_partner_card
  */
 
 // The RADIUS accounts below are drawn by a cell, and a cell renders in a view of its own, so
@@ -326,7 +327,25 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
                         </tr>
                         <tr>
                             <th><?= __('Synchronize to Accounting System') ?></th>
-                            <td><?= $customer->sync_to_accounting ? __('Yes') : __('No'); ?></td>
+                            <td>
+                                <?= $customer->sync_to_accounting ? __('Yes') : __('No'); ?>
+                                <?php
+                                // the brackets go with the link, which is not there for whoever
+                                // may not send the customer
+                                $send_now = $writes_partner_card ? $this->AuthLink->postLink(
+                                    __('Send Now'),
+                                    [
+                                        'plugin' => 'Bookkeeping',
+                                        'controller' => 'Partners',
+                                        'action' => 'send',
+                                        $customer->id,
+                                    ],
+                                ) : '';
+                                ?>
+                                <?php if ($send_now !== '') : ?>
+                                    (<?= $send_now ?>)
+                                <?php endif ?>
+                            </td>
                         </tr>
                         <tr>
                             <th><?= __('Dealer') ?></th>

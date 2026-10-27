@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Provider;
 
 use App\Model\Entity\AccountingProfile;
+use App\Model\Entity\Customer;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
@@ -81,10 +82,30 @@ interface AccountingProviderInterface
      * - perform domain validation
      * - resolve duplicates or conflicts
      *
+     * A customer whose partner card is not ours to write ({@see writesPartnerCardOf()}) is left out.
+     *
      * @param list<\App\Model\Entity\Customer> $customers Customers to send.
+     * @param int|null $timeout How long to wait for each answer at most, in seconds; the configured
+     *   timeout where it is shorter or this is null.
      * @return void
      */
-    public function sendPartners(array $customers): void;
+    public function sendPartners(array $customers, ?int $timeout = null): void;
+
+    /**
+     * The customer number the partner cards in the accounting system are ours from, 0 where they
+     * all are.
+     *
+     * @return int
+     */
+    public static function minCustomerNumber(): int;
+
+    /**
+     * Whether the customer's partner card in the accounting system is ours to write.
+     *
+     * @param \App\Model\Entity\Customer $customer Customer.
+     * @return bool
+     */
+    public static function writesPartnerCardOf(Customer $customer): bool;
 
     /**
      * Export invoices into a file-based format.

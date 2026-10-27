@@ -74,7 +74,8 @@ return [
                     // Customers (sync) - the partner card in the address book is found by its
                     // external ID, which is the prefix followed by the customer number. Changing the
                     // prefix once the address book is filled makes the next run add every customer
-                    // again.
+                    // again. A card made by hand carries no external ID, so the customers who had
+                    // one before the first run are left out by their number.
                     'customers' => [
                         'use_buyer_code' => new BoolType(
                             default: false,
@@ -85,6 +86,14 @@ return [
                             ),
                         ),
                         'code_prefix' => '',
+                        'min_customer_number' => NumberType::ofInt(
+                            default: 0,
+                            hint: __d(
+                                'bookkeeping',
+                                'Customers with a lower number are not written into the address book, '
+                                . 'as their cards there were made by hand. 0 writes everybody.',
+                            ),
+                        ),
                     ],
                 ],
 
@@ -144,6 +153,14 @@ return [
                     'customers' => [
                         'use_buyer_code' => new BoolType(default: false),
                         'code_prefix' => '',
+                        'min_customer_number' => NumberType::ofInt(
+                            default: 0,
+                            hint: __d(
+                                'bookkeeping',
+                                'Customers with a lower number are not written into the address book, '
+                                . 'as their cards there were made by hand. 0 writes everybody.',
+                            ),
+                        ),
                     ],
 
                     // API

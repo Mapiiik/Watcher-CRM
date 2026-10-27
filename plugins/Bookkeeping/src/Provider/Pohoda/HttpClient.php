@@ -34,9 +34,11 @@ class HttpClient
      * Send XML request to Pohoda mServer.
      *
      * @param string $xml XML request body.
+     * @param int|null $timeout How long to wait at most, in seconds; the configured timeout where it
+     *   is shorter or this is null.
      * @return \App\Http\Answer<\SimpleXMLElement>
      */
-    public function send(string $xml): Answer
+    public function send(string $xml, ?int $timeout = null): Answer
     {
         $url = Settings::getString(
             PohodaProvider::SETTINGS_ROOT . '.api.url',
@@ -52,10 +54,10 @@ class HttpClient
         try {
             $username = (string)Configure::read('Bookkeeping.pohoda.username');
             $password = (string)Configure::read('Bookkeeping.pohoda.password');
-            $timeout = (int)Settings::get(
+            $timeout = min($timeout ?? PHP_INT_MAX, (int)Settings::get(
                 PohodaProvider::SETTINGS_ROOT . '.api.timeout',
                 3600,
-            );
+            ));
 
             $http = new Client([
                 'headers' => [

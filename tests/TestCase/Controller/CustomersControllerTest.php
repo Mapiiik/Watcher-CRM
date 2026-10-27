@@ -9,6 +9,7 @@ use App\Model\Enum\CustomerInvoiceDeliveryType;
 use App\Test\TestCase\BusinessRegister\Source\StubSource;
 use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
+use Bookkeeping\Provider\Pohoda\PohodaProvider;
 use Cake\Cache\Cache;
 use Cake\Database\Connection;
 use Cake\Database\Log\LoggedQuery;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
+use Settings\Utility\Settings;
 use Stringable;
 
 /**
@@ -105,6 +107,7 @@ class CustomersControllerTest extends TestCase
         'app.ServiceOverrides',
         'plugin.Radius.Accounts',
         'plugin.Radius.Radusergroup',
+        'plugin.Settings.Settings',
     ];
 
     /**
@@ -274,6 +277,54 @@ class CustomersControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseContains(__('Obligation Until'));
+    }
+
+    /**
+     * The card offers to send the customer to the accounting system at once, rather than on the
+     * next scheduled run - only where their partner card there is ours to write, and only to whoever
+     * may send it.
+     *
+     * @return array<string, array{string, bool, int, bool}>
+     */
+    public static function partnerCards(): array
+    {
+        return [
+            'to be synchronized' => ['admin', true, 0, true],
+            'not to be synchronized' => ['admin', false, 0, false],
+            'below the first number' => ['admin', true, 999999999, false],
+            'for whoever may not send it' => ['user', true, 0, false],
+        ];
+    }
+
+    /**
+     * @param string $role Role to sign in as.
+     * @param bool $syncToAccounting Whether the customer is to be synchronized.
+     * @param int $minCustomerNumber The number the partner cards are ours from.
+     * @param bool $offered Whether the card offers to send them.
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    #[DataProvider('partnerCards')]
+    public function testViewOffersToSendTheCustomerToTheAccountingSystem(
+        string $role,
+        bool $syncToAccounting,
+        int $minCustomerNumber,
+        bool $offered,
+    ): void {
+        Cache::clear('default');
+        Settings::set('bookkeeping.accounting.default_provider', 'pohoda');
+        Settings::set(PohodaProvider::SETTINGS_ROOT . '.customers.min_customer_number', $minCustomerNumber);
+        $this->getTableLocator()->get('Customers')
+            ->updateAll(['sync_to_accounting' => $syncToAccounting], ['id' => self::CUSTOMER_ID]);
+
+        $this->login($role);
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+        Cache::clear('default');
+
+        $this->assertResponseOk();
+        $offered
+            ? $this->assertResponseContains('/bookkeeping/partners/send/' . self::CUSTOMER_ID)
+            : $this->assertResponseNotContains('/bookkeeping/partners/send/');
     }
 
     /**

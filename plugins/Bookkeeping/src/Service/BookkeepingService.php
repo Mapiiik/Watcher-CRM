@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bookkeeping\Service;
 
 use App\Model\Entity\AccountingProfile;
+use App\Model\Entity\Customer;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
@@ -28,6 +29,17 @@ use Settings\Utility\Settings;
  */
 class BookkeepingService
 {
+    /**
+     * What a customer is loaded with to be sent as a partner.
+     *
+     * @var list<string>
+     */
+    public const PARTNER_ASSOCIATIONS = [
+        'Addresses.Countries',
+        'Emails',
+        'Phones',
+    ];
+
     private AccountingProviderInterface $provider;
 
     private readonly InvoiceMapperService $invoiceMapper;
@@ -117,12 +129,36 @@ class BookkeepingService
     /**
      * Send partners (customers) to the accounting system.
      *
-     * @param list<\App\Model\Entity\Customer> $customers List of customers.
+     * @param list<\App\Model\Entity\Customer> $customers List of customers, loaded with
+     *   {@see PARTNER_ASSOCIATIONS}.
+     * @param int|null $timeout How long to wait for each answer at most, in seconds.
      * @return void
      */
-    public function sendPartners(array $customers): void
+    public function sendPartners(array $customers, ?int $timeout = null): void
     {
-        $this->provider->sendPartners($customers);
+        $this->provider->sendPartners($customers, $timeout);
+    }
+
+    /**
+     * The customer number the partner cards in the accounting system are ours from, 0 where they
+     * all are.
+     *
+     * @return int
+     */
+    public function minCustomerNumber(): int
+    {
+        return $this->provider::minCustomerNumber();
+    }
+
+    /**
+     * Whether the customer's partner card in the accounting system is ours to write.
+     *
+     * @param \App\Model\Entity\Customer $customer Customer.
+     * @return bool
+     */
+    public function writesPartnerCardOf(Customer $customer): bool
+    {
+        return $this->provider::writesPartnerCardOf($customer);
     }
 
     /**

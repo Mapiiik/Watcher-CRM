@@ -1052,6 +1052,21 @@ $permissions = [
                 'unblock',
             ],
         ],
+        //the customer's card in the accounting system may be written at once by whoever may edit the customer
+        [
+            'role' => [
+                'network-manager',
+                'sales-representative',
+                'manager',
+            ],
+            'plugin' => 'Bookkeeping',
+            'controller' => [
+                'Partners',
+            ],
+            'action' => [
+                'send',
+            ],
+        ],
         //allow all in bookkeeping plugin for sales-managers and bookkeepers
         [
             'role' => [

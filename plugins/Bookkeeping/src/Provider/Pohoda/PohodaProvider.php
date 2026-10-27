@@ -10,10 +10,10 @@ use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Provider\AccountingProviderInterface;
+use Bookkeeping\Provider\PartnerCardsTrait;
 use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
-use Cake\Log\Log;
 use RuntimeException;
 use Settings\Utility\Settings;
 use SimpleXMLElement;
@@ -34,6 +34,8 @@ use SimpleXMLElement;
  */
 class PohodaProvider implements AccountingProviderInterface
 {
+    use PartnerCardsTrait;
+
     public const SETTINGS_ROOT = 'bookkeeping.accounting.providers.pohoda';
 
     /**
@@ -225,38 +227,21 @@ class PohodaProvider implements AccountingProviderInterface
      * stop the others, and every refusal is reported together once the run is through.
      *
      * @param list<\App\Model\Entity\Customer> $customers Customers to send.
+     * @param int|null $timeout How long to wait for each answer at most, in seconds.
      * @return void
      * @throws \RuntimeException When mServer cannot be reached or refuses any customer.
      */
-    public function sendPartners(array $customers): void
+    public function sendPartners(array $customers, ?int $timeout = null): void
     {
-        // the customer says whether their partner card is ours to write; an invoice for them
-        // still goes out, only this push in front of it is left undone
-        $customers = array_values(array_filter(
-            $customers,
-            function (Customer $customer): bool {
-                if ($customer->sync_to_accounting) {
-                    return true;
-                }
-
-                Log::info(
-                    'Partner sync skipped for customer ' . $customer->number
-                    . ': synchronization to the accounting system is turned off.',
-                );
-
-                return false;
-            },
-        ));
-
         $failures = [];
 
-        foreach (array_chunk($customers, self::PARTNERS_PER_PACK) as $pack) {
+        foreach (array_chunk(self::partnersToWrite($customers), self::PARTNERS_PER_PACK) as $pack) {
             // 1) Build XML request
             $xmlRequest = $this->xmlRequestBuilder->buildPartnersRequest($pack);
 
             // 2) Send it, and let an unreachable mServer end the run
             /** @var \SimpleXMLElement $responseXml */
-            $responseXml = $this->httpClient->send($xmlRequest)->orFail(
+            $responseXml = $this->httpClient->send($xmlRequest, $timeout)->orFail(
                 __d('bookkeeping', 'Pohoda mServer is not configured.'),
             );
 

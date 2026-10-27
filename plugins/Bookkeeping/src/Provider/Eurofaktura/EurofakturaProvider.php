@@ -11,10 +11,10 @@ use Bookkeeping\Model\Enum\InvoiceExportFormat;
 use Bookkeeping\Model\Enum\InvoiceImportFormat;
 use Bookkeeping\Model\Enum\InvoiceSyncMode;
 use Bookkeeping\Provider\AccountingProviderInterface;
+use Bookkeeping\Provider\PartnerCardsTrait;
 use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
-use Cake\Log\Log;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use RuntimeException;
 use Settings\Utility\Settings;
@@ -40,6 +40,7 @@ use Settings\Utility\Settings;
 class EurofakturaProvider implements AccountingProviderInterface
 {
     use LocatorAwareTrait;
+    use PartnerCardsTrait;
 
     public const SETTINGS_ROOT = 'bookkeeping.accounting.providers.eurofaktura';
 
@@ -316,22 +317,12 @@ class EurofakturaProvider implements AccountingProviderInterface
      * - Resolve duplicates or conflicts
      *
      * @param list<\App\Model\Entity\Customer> $customers Customers to send.
+     * @param int|null $timeout How long to wait for each answer at most, in seconds.
      * @return void
      */
-    public function sendPartners(array $customers): void
+    public function sendPartners(array $customers, ?int $timeout = null): void
     {
-        foreach ($customers as $customer) {
-            // the customer says whether their partner card is ours to write; an invoice for them
-            // still goes out, only this push in front of it is left undone
-            if (!$customer->sync_to_accounting) {
-                Log::info(
-                    'Partner sync skipped for customer ' . $customer->number
-                    . ': synchronization to the accounting system is turned off.',
-                );
-
-                continue;
-            }
-
+        foreach (self::partnersToWrite($customers) as $customer) {
             try {
                 // 1) Build Partner payload
                 $partner = $this->jsonRequestBuilder->buildPartner($customer);
@@ -343,6 +334,7 @@ class EurofakturaProvider implements AccountingProviderInterface
                     [
                         'partner' => $partner,
                     ],
+                    $timeout,
                 );
 
                 // 3) Validate response

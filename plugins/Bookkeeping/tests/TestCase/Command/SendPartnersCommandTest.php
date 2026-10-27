@@ -4,9 +4,13 @@ declare(strict_types=1);
 namespace Bookkeeping\Test\TestCase\Command;
 
 use Bookkeeping\Command\SendPartnersCommand;
+use Bookkeeping\Provider\Pohoda\PohodaProvider;
+use Cake\Cache\Cache;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Settings\Utility\Settings;
 
 /**
  * Bookkeeping\Command\SendPartnersCommand Test Case
@@ -38,7 +42,35 @@ class SendPartnersCommandTest extends TestCase
         'app.Addresses',
         'app.Emails',
         'app.Phones',
+        'plugin.Settings.Settings',
     ];
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Cache::clear('default');
+        Settings::set('bookkeeping.accounting.default_provider', 'pohoda');
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        Cache::clear('default');
+
+        parent::tearDown();
+    }
 
     /**
      * The name a cron entry calls the command by.
@@ -120,6 +152,40 @@ class SendPartnersCommandTest extends TestCase
 
         $this->assertExitSuccess();
         $this->assertOutputContains('Skipping customer');
+        $this->assertErrorContains('No customers to send.');
+    }
+
+    /**
+     * The option may raise the number the partner cards are ours from, never take a run below it:
+     * there the run would set a second card beside every one made by hand.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\SendPartnersCommand::execute()
+     */
+    public function testTheOptionDoesNotGoBelowTheSetting(): void
+    {
+        Settings::set(PohodaProvider::SETTINGS_ROOT . '.customers.min_customer_number', 999999999);
+
+        $this->exec('send_partners --min-customer-number 1');
+
+        $this->assertExitSuccess();
+        $this->assertOutputContains('greater than or equal to: 999999999');
+        $this->assertErrorContains('No customers to send.');
+    }
+
+    /**
+     * Nor does naming one customer.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\SendPartnersCommand::execute()
+     */
+    public function testOneCustomerBelowTheSettingIsNotSent(): void
+    {
+        Settings::set(PohodaProvider::SETTINGS_ROOT . '.customers.min_customer_number', 999999999);
+
+        $this->exec('send_partners -c 403bab0e-52cd-4a8e-83f8-43c2457d0481');
+
+        $this->assertExitSuccess();
         $this->assertErrorContains('No customers to send.');
     }
 }

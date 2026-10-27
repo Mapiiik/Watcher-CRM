@@ -76,7 +76,7 @@ class XmlExporter
             // ID - the address then comes from the card, as in Stormware's own sample of the link -
             // or the address written out on the invoice. A customer whose card is not ours to
             // write may not carry our external ID, so their invoice keeps the address.
-            $partnerIdentity = $useBuyerCode && $invoice->customer->sync_to_accounting
+            $partnerIdentity = $useBuyerCode && PohodaProvider::writesPartnerCardOf($invoice->customer)
                 ? [
                     'extId' => PohodaProvider::partnerExtId($invoice->customer),
                 ]

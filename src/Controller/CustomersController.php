@@ -11,6 +11,7 @@ use App\Customers\Check\CustomerCheckRegistry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
 use App\Model\Entity\Customer;
 use App\View\PdfView;
+use Bookkeeping\Service\BookkeepingService;
 use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Form\Form;
@@ -403,6 +404,8 @@ class CustomersController extends AppController
         }
 
         $customer = $this->Customers->get($id, contain: $contain);
+
+        $this->set('writes_partner_card', (new BookkeepingService())->writesPartnerCardOf($customer));
 
         $this->set(compact(
             'customer',

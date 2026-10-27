@@ -77,7 +77,8 @@ class SendPartnersCommand extends Command
             ->addOption('min-customer-number', [
                 'help' => __d(
                     'bookkeeping',
-                    'Send only customers with customer number greater than or equal to this value.',
+                    'Send only customers with customer number greater than or equal to this value. '
+                    . 'The lowest number set for the accounting system still applies.',
                 ),
             ])
             ->addOption('max-customer-number', [
@@ -101,8 +102,17 @@ class SendPartnersCommand extends Command
     {
         try {
             $customerId = $args->getOption('customer-id');
-            $customerMinNumber = $args->getOption('min-customer-number');
             $customerMaxNumber = $args->getOption('max-customer-number');
+
+            $bookkeeping = new BookkeepingService();
+
+            // below the number the partner cards are ours from, a run would set a second card beside
+            // the one made by hand - so the option may only raise it, for one customer as for all
+            $customerMinNumber = $bookkeeping->minCustomerNumber();
+            $askedMinNumber = $args->getOption('min-customer-number');
+            if (is_numeric($askedMinNumber)) {
+                $customerMinNumber = max($customerMinNumber, (int)$askedMinNumber);
+            }
 
             /** @var \App\Model\Table\CustomersTable $customersTable */
             $customersTable = $this->fetchTable(CustomersTable::class);
@@ -117,11 +127,7 @@ class SendPartnersCommand extends Command
                 $customers = [
                     $customersTable->get(
                         $customerId,
-                        contain: [
-                            'Addresses.Countries',
-                            'Emails',
-                            'Phones',
-                        ],
+                        contain: BookkeepingService::PARTNER_ASSOCIATIONS,
                     ),
                 ];
             } else {
@@ -130,41 +136,36 @@ class SendPartnersCommand extends Command
                     'Sending all customers.',
                 ));
 
-                /** @var \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Customer> $customers */
+                /** @var list<\App\Model\Entity\Customer> $customers */
                 $customers = $customersTable->find()
-                    ->contain([
-                        'Addresses.Countries',
-                        'Emails',
-                        'Phones',
-                    ])
+                    ->contain(BookkeepingService::PARTNER_ASSOCIATIONS)
                     ->orderBy(['Customers.nid' => 'ASC'])
-                    ->all();
+                    ->all()
+                    ->toList();
+            }
 
-                if (is_numeric($customerMinNumber)) {
-                    $io->out(__d(
-                        'bookkeeping',
-                        'Filtering customers with customer number greater than or equal to: {0}',
-                        $customerMinNumber,
-                    ));
+            if ($customerMinNumber > 0) {
+                $io->out(__d(
+                    'bookkeeping',
+                    'Filtering customers with customer number greater than or equal to: {0}',
+                    $customerMinNumber,
+                ));
 
-                    $customers = $customers->filter(function (Customer $customer) use ($customerMinNumber): bool {
-                        return (int)$customer->number >= (int)$customerMinNumber;
-                    });
-                }
+                $customers = array_filter($customers, function (Customer $customer) use ($customerMinNumber): bool {
+                    return (int)$customer->number >= $customerMinNumber;
+                });
+            }
 
-                if (is_numeric($customerMaxNumber)) {
-                    $io->out(__d(
-                        'bookkeeping',
-                        'Filtering customers with customer number less than or equal to: {0}',
-                        $customerMaxNumber,
-                    ));
+            if (is_numeric($customerMaxNumber)) {
+                $io->out(__d(
+                    'bookkeeping',
+                    'Filtering customers with customer number less than or equal to: {0}',
+                    $customerMaxNumber,
+                ));
 
-                    $customers = $customers->filter(function (Customer $customer) use ($customerMaxNumber): bool {
-                        return (int)$customer->number <= (int)$customerMaxNumber;
-                    });
-                }
-
-                $customers = $customers->toList();
+                $customers = array_filter($customers, function (Customer $customer) use ($customerMaxNumber): bool {
+                    return (int)$customer->number <= (int)$customerMaxNumber;
+                });
             }
 
             // a customer somebody has unticked is left where they are: the accounting system holds
@@ -202,7 +203,6 @@ class SendPartnersCommand extends Command
             }
 
             // Delegate sending to provider
-            $bookkeeping = new BookkeepingService();
             $bookkeeping->sendPartners($customers);
 
             $io->success(__d(

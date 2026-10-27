@@ -178,4 +178,22 @@ class XmlExporterTest extends TestCase
         $this->assertSame([], $identity->xpath('./typ:extId'));
         $this->assertSame('Springfield', (string)($identity->xpath('./typ:address/typ:city') ?: [''])[0]);
     }
+
+    /**
+     * Nor is the card ours below the number the cards are ours from: it was made by hand, without
+     * our external ID.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlExporter::export()
+     */
+    public function testACustomerBelowTheFirstNumberKeepsTheAddress(): void
+    {
+        Settings::set(PohodaProvider::SETTINGS_ROOT . '.customers.use_buyer_code', true);
+        Settings::set(PohodaProvider::SETTINGS_ROOT . '.customers.min_customer_number', 117600);
+
+        $identity = $this->partnerIdentity();
+
+        $this->assertSame([], $identity->xpath('./typ:extId'));
+        $this->assertSame('Springfield', (string)($identity->xpath('./typ:address/typ:city') ?: [''])[0]);
+    }
 }
