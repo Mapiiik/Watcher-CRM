@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-27 10:54+0100\n"
+"POT-Creation-Date: 2026-10-27 18:54+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -15,31 +15,36 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: ./plugins/Bookkeeping/config/settings.php:70
-#: ./plugins/Bookkeeping/config/settings.php:154
+#: ./plugins/Bookkeeping/config/settings.php:171
 msgid "How long to wait for the accounting API, in seconds."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:81
+#: ./plugins/Bookkeeping/config/settings.php:82
 msgid "Send the customer to the address book before their invoice and link the invoice to it. Turn on only once the address book has been filled."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:168
+#: ./plugins/Bookkeeping/config/settings.php:91
+#: ./plugins/Bookkeeping/config/settings.php:158
+msgid "Customers with a lower number are not written into the address book, as their cards there were made by hand. 0 writes everybody."
+msgstr ""
+
+#: ./plugins/Bookkeeping/config/settings.php:185
 msgid "Also the default the invoicing command takes when it is called without --schedule."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:178
+#: ./plugins/Bookkeeping/config/settings.php:195
 msgid "Leave the period being invoiced today open, so it can still be corrected."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:224
+#: ./plugins/Bookkeeping/config/settings.php:241
 msgid "How many days a payment may be late before it counts."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:229
+#: ./plugins/Bookkeeping/config/settings.php:246
 msgid "How small an overdue debt is passed over."
 msgstr ""
 
-#: ./plugins/Bookkeeping/config/settings.php:238
+#: ./plugins/Bookkeeping/config/settings.php:255
 msgid "How many days before the due date a debtor is warned on. An empty list [] warns on none."
 msgstr ""
 
@@ -60,12 +65,11 @@ msgid "Accounting profile identifier (ID)."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:120
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:78
 msgid "Send only customers with customer number greater than or equal to this value."
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:127
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:84
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:85
 msgid "Send only customers with customer number less than or equal to this value."
 msgstr ""
 
@@ -98,12 +102,12 @@ msgid "No accounting profile ID provided. Use --accounting-profile-id option to 
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:241
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:144
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:148
 msgid "Filtering customers with customer number greater than or equal to: {0}"
 msgstr ""
 
 #: ./plugins/Bookkeeping/src/Command/IssueInvoicesCommand.php:249
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:156
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:160
 msgid "Filtering customers with customer number less than or equal to: {0}"
 msgstr ""
 
@@ -274,19 +278,23 @@ msgstr ""
 msgid "Send only a single customer by ID."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:111
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:78
+msgid "Send only customers with customer number greater than or equal to this value. The lowest number set for the accounting system still applies."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:121
 msgid "Sending customer ID: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:128
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:134
 msgid "Sending all customers."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:185
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:186
 msgid "Skipping customer {0}: synchronization to the accounting system is turned off."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:196
+#: ./plugins/Bookkeeping/src/Command/SendPartnersCommand.php:197
 msgid "No customers to send."
 msgstr ""
 
@@ -350,6 +358,18 @@ msgid "Invoice to send in the queue, {0} email left."
 msgid_plural "Invoices to send in the queue, {0} emails left."
 msgstr[0] ""
 msgstr[1] ""
+
+#: ./plugins/Bookkeeping/src/Controller/PartnersController.php:45
+msgid "This customer is not sent to the accounting system."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Controller/PartnersController.php:50
+msgid "The customer has been sent to the accounting system."
+msgstr ""
+
+#: ./plugins/Bookkeeping/src/Controller/PartnersController.php:54
+msgid "The customer could not be sent to the accounting system: {0}"
+msgstr ""
 
 #: ./plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:95
 msgid "Nothing has changed."
@@ -476,46 +496,46 @@ msgstr ""
 msgid "On the last day of the month it covers"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:79
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:80
 msgid "Eurofaktura / E-racuni is not configured."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:101
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:118
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:102
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:119
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:50
 msgid "Unknown error"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:104
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:115
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:105
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:116
 #: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonParser.php:46
 msgid "Eurofaktura API error: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:286
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:287
 msgid "Failed to send invoice for customer {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:290
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:359
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:291
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:351
 msgid "Unknown"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:355
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:347
 msgid "Failed to send partner for customer {0}: {1}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:391
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:413
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:435
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:383
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:405
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:427
 msgid "Not implemented in Eurofaktura Provider."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:490
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:482
 msgid "Invalid PDF data received from Eurofaktura API."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:505
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/EurofakturaProvider.php:497
 msgid "Invoice PDF not found or could not be downloaded: {0}"
 msgstr ""
 
@@ -559,29 +579,29 @@ msgstr ""
 msgid "Unable to read record {0} of the DBF file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:117
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:195
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:260
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:119
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:197
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:245
 msgid "Pohoda mServer is not configured."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:187
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:189
 msgid "Failed to read generated XML file."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:206
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:208
 msgid "Pohoda refused these invoices: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:271
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:256
 msgid "Pohoda refused these customers: {0}"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:372
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:357
 msgid "Invalid XML response from Pohoda mServer."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:381
+#: ./plugins/Bookkeeping/src/Provider/Pohoda/PohodaProvider.php:366
 msgid "Pohoda mServer returned an error response (STATE: {0}, NOTE: {1})"
 msgstr ""
 
@@ -605,11 +625,11 @@ msgstr ""
 msgid "no reason given"
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Service/BookkeepingService.php:59
+#: ./plugins/Bookkeeping/src/Service/BookkeepingService.php:71
 msgid "Provider class not defined for provider \"{0}\"."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Service/BookkeepingService.php:70
+#: ./plugins/Bookkeeping/src/Service/BookkeepingService.php:82
 msgid "Provider class \"{0}\" is not subclass of \"{1}\"."
 msgstr ""
 
