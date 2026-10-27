@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-27 17:20+0100\n"
+"POT-Creation-Date: 2026-10-27 17:26+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1048,7 +1048,6 @@ msgstr ""
 #: templates/element/ContractChecks/implausible_conclusion_date.php:30
 #: templates/element/ContractChecks/impossible_contract_version_period.php:28
 #: templates/element/ContractChecks/proposal_table.php:19
-#: templates/element/ContractChecks/unsigned_contract_version.php:33
 #: templates/element/Contracts/ContractVersions.php:19
 #: templates/element/CustomerChecks/customer_proposal.php:25
 msgid "Conclusion Date"
@@ -5673,11 +5672,6 @@ msgctxt "installation date"
 msgid "None"
 msgstr "Žádné"
 
-#: templates/element/ContractChecks/unsigned_contract_version.php:60
-msgctxt "conclusion date"
-msgid "None"
-msgstr "Žádné"
-
 #: templates/ContractProposals/view.php:180
 #: templates/CustomerProposals/view.php:141
 msgid "{0} generated, {1} received"
@@ -8648,7 +8642,7 @@ msgid "Covered Until"
 msgstr "Kryto do"
 
 #: templates/element/ContractChecks/service_without_contract_version.php:35
-#: templates/element/ContractChecks/unsigned_contract_version.php:36
+#: templates/element/ContractChecks/unsigned_contract_version.php:35
 msgid "Deadline"
 msgstr "Lhůta"
 
@@ -8657,17 +8651,17 @@ msgid "No version ever drawn"
 msgstr "Verze nikdy nevznikla"
 
 #: templates/element/ContractChecks/service_without_contract_version.php:74
-#: templates/element/ContractChecks/unsigned_contract_version.php:74
+#: templates/element/ContractChecks/unsigned_contract_version.php:66
 msgid "Due to be cut off"
 msgstr "K odpojení"
 
 #: templates/element/ContractChecks/service_without_contract_version.php:76
-#: templates/element/ContractChecks/unsigned_contract_version.php:76
+#: templates/element/ContractChecks/unsigned_contract_version.php:68
 msgid "Due a reminder"
 msgstr "K upomínce"
 
 #: templates/element/ContractChecks/service_without_contract_version.php:78
-#: templates/element/ContractChecks/unsigned_contract_version.php:78
+#: templates/element/ContractChecks/unsigned_contract_version.php:70
 msgid "In time until {0}"
 msgstr "V termínu do {0}"
 
@@ -8716,7 +8710,7 @@ msgstr ""
 msgid "Nothing says when it was concluded."
 msgstr "Nic neříká, kdy byla uzavřená."
 
-#: templates/element/ContractChecks/unsigned_contract_version.php:53
+#: templates/element/ContractChecks/unsigned_contract_version.php:52
 msgctxt "sending date"
 msgid "Not recorded"
 msgstr "Nezaznamenáno"
@@ -9307,6 +9301,10 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:287
 msgid "Version"
 msgstr "Verze"
+
+#~ msgctxt "conclusion date"
+#~ msgid "None"
+#~ msgstr "Žádné"
 
 #~ msgid ""
 #~ "How long before a contract version takes effect it may have been "

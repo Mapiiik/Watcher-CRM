@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-27 17:20+0100\n"
+"POT-Creation-Date: 2026-10-27 17:26+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -941,7 +941,6 @@ msgstr ""
 #: ./templates/element/ContractChecks/implausible_conclusion_date.php:30
 #: ./templates/element/ContractChecks/impossible_contract_version_period.php:28
 #: ./templates/element/ContractChecks/proposal_table.php:19
-#: ./templates/element/ContractChecks/unsigned_contract_version.php:33
 #: ./templates/element/Contracts/ContractVersions.php:19
 #: ./templates/element/CustomerChecks/customer_proposal.php:25
 msgid "Conclusion Date"
@@ -5760,11 +5759,6 @@ msgctxt "installation date"
 msgid "None"
 msgstr ""
 
-#: ./templates/element/ContractChecks/unsigned_contract_version.php:60
-msgctxt "conclusion date"
-msgid "None"
-msgstr ""
-
 #: ./templates/ContractProposals/view.php:180
 #: ./templates/CustomerProposals/view.php:141
 msgid "{0} generated, {1} received"
@@ -8755,7 +8749,7 @@ msgid "Covered Until"
 msgstr ""
 
 #: ./templates/element/ContractChecks/service_without_contract_version.php:35
-#: ./templates/element/ContractChecks/unsigned_contract_version.php:36
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:35
 msgid "Deadline"
 msgstr ""
 
@@ -8764,17 +8758,17 @@ msgid "No version ever drawn"
 msgstr ""
 
 #: ./templates/element/ContractChecks/service_without_contract_version.php:74
-#: ./templates/element/ContractChecks/unsigned_contract_version.php:74
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:66
 msgid "Due to be cut off"
 msgstr ""
 
 #: ./templates/element/ContractChecks/service_without_contract_version.php:76
-#: ./templates/element/ContractChecks/unsigned_contract_version.php:76
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:68
 msgid "Due a reminder"
 msgstr ""
 
 #: ./templates/element/ContractChecks/service_without_contract_version.php:78
-#: ./templates/element/ContractChecks/unsigned_contract_version.php:78
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:70
 msgid "In time until {0}"
 msgstr ""
 
@@ -8802,7 +8796,7 @@ msgstr ""
 msgid "Nothing says when it was concluded."
 msgstr ""
 
-#: ./templates/element/ContractChecks/unsigned_contract_version.php:53
+#: ./templates/element/ContractChecks/unsigned_contract_version.php:52
 msgctxt "sending date"
 msgid "Not recorded"
 msgstr ""
