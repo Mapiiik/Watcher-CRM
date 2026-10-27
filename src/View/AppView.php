@@ -26,6 +26,7 @@ use Override;
  *
  * @link https://book.cakephp.org/5/en/views.html#the-app-view
  * @property \Access\View\Helper\AuthLinkHelper $AuthLink
+ * @property \App\View\Helper\BillingHelper $Billing
  * @property \Files\View\Helper\PreviewHelper $Preview
  * @property \Files\View\Helper\RecordHelper $Record
  * @property \Files\View\Helper\UploadHelper $Upload

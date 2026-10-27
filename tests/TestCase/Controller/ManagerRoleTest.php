@@ -34,6 +34,7 @@ class ManagerRoleTest extends TestCase
         'app.EquipmentTypes',
         'app.TaskStates',
         'app.TaskTypes',
+        'plugin.Files.DocumentationTypes',
         'plugin.WorkReports.WorkCars',
         'plugin.WorkReports.WorkLabels',
         'plugin.WorkReports.WorkRates',
@@ -50,6 +51,7 @@ class ManagerRoleTest extends TestCase
     public static function pagesOfTheManager(): array
     {
         return [
+            'documentation types' => ['/documentation-types/add'],
             'equipment types' => ['/equipment-types/add'],
             'task states' => ['/task-states/add'],
             'task types' => ['/task-types/add'],

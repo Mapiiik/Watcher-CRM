@@ -23,21 +23,21 @@ class AppController extends BaseController
     }
 
     /**
-     * Whether the user signed in sees the reports of everybody.
+     * Whether the user signed in sees the reports of everybody - an admin or a manager.
      *
      * @return bool
      */
     protected function seesEverybody(): bool
     {
-        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+        return in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin', 'manager'], true);
     }
 
     /**
      * Whether the user signed in may see the reports of the worker: their own if they are one,
-     * those they get, and anybody's for an admin.
+     * those they get, and anybody's for whoever sees everybody.
      *
      * A month belongs to whoever is on the list of workers. Somebody who is not on it has no
-     * report to look at, admin or not, and the way there is not offered to them.
+     * report to look at, seeing everybody or not, and the way there is not offered to them.
      *
      * @param string $userId Worker.
      * @return bool
@@ -56,7 +56,8 @@ class AppController extends BaseController
 
     /**
      * Whether the user signed in may change the reports of the worker: their own while they
-     * report work, those they get with the right to change them, and anybody's for an admin.
+     * report work, those they get with the right to change them, and anybody's for whoever sees
+     * everybody.
      *
      * A worker whose row has been switched off keeps the months they wrote, to look at. Writing
      * into them is then somebody else's to do.
@@ -77,15 +78,32 @@ class AppController extends BaseController
     }
 
     /**
+     * Whether the user signed in oversees the reports of the worker, and so returns a submitted
+     * one and opens closed days. Whoever sees everybody does, a manager except on their own.
+     *
+     * @param string $userId Worker.
+     * @return bool
+     */
+    protected function oversees(string $userId): bool
+    {
+        if (!$this->seesEverybody()) {
+            return false;
+        }
+
+        return $userId !== $this->identityId()
+            || ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+    }
+
+    /**
      * Whether the user signed in may return a submitted report of the worker. The worker does not
-     * return their own, unless they are an admin.
+     * return their own, unless they oversee their own too.
      *
      * @param string $userId Worker.
      * @return bool
      */
     protected function mayReopen(string $userId): bool
     {
-        if ($this->seesEverybody()) {
+        if ($this->oversees($userId)) {
             return true;
         }
 

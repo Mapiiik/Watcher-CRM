@@ -544,14 +544,14 @@ class CustomerProposalsController extends AppController
     /**
      * Whether this request is one that may be offered the way into an invoiced period at all.
      *
-     * Offered to an administrator and to nobody else, and even there it is a box that has to be
-     * ticked - the same gate carrying one contract's papers over has always had.
+     * Offered to an administrator and a manager and to nobody else, and even there it is a box that
+     * has to be ticked - the same gate carrying one contract's papers over has always had.
      *
      * @return bool
      */
     private function mayReachIntoClosedPeriods(): bool
     {
-        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+        return $this->oversees();
     }
 
     /**
@@ -562,20 +562,32 @@ class CustomerProposalsController extends AppController
      */
     private function mayGoBelowMinimum(): bool
     {
-        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+        return $this->oversees();
     }
 
     /**
      * Whether this request may pass over a line whose billing is no longer on the contract.
      *
-     * An administrator and nobody else. What is passed over is somebody's to see to afterwards,
-     * and a signed proposal is not something to be settled by halves without deciding to.
+     * An administrator or a manager and nobody else, ticking a box for it. What is passed over is
+     * somebody's to see to afterwards, and a signed proposal is not something to be settled by
+     * halves without deciding to.
      *
      * @return bool
      */
     private function mayLeaveLinesOut(): bool
     {
-        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+        return $this->oversees();
+    }
+
+    /**
+     * Whether whoever is asking is an administrator or a manager, who are offered the boxes that
+     * override what the others are held to.
+     *
+     * @return bool
+     */
+    private function oversees(): bool
+    {
+        return in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin', 'manager'], true);
     }
 
     /**

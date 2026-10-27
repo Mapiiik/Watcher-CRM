@@ -692,6 +692,67 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
+     * A manager oversees the months of everybody the way an admin does, where the other roles read
+     * only those whose reports they get.
+     *
+     * @return void
+     */
+    public function testAManagerReadsTheMonthsOfEverybody(): void
+    {
+        $other = $this->otherUser();
+
+        $this->loginAs($other, 'manager', superuser: false);
+        $this->get('/work-reports/work-reports/sheet?user_id=' . self::WORKER);
+        $this->assertResponseOk();
+        $this->assertResponseContains(self::WORKER);
+
+        $this->loginAs($other, 'sales-manager', superuser: false);
+        $this->get('/work-reports/work-reports/sheet?user_id=' . self::WORKER);
+        $this->assertResponseCode(403);
+    }
+
+    /**
+     * A manager opens the closed days of the others and returns their reports, but on their own
+     * months is a worker like anybody else, so as not to approve their own work.
+     *
+     * @return void
+     */
+    public function testAManagerDoesNotOverseeTheirOwnMonths(): void
+    {
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $report = $this->monthOfVacation();
+        $report->set('closed_until', new Date('2026-06-15'));
+        $reports->saveOrFail($report);
+        $other = $this->otherUser();
+
+        $this->loginAs(self::WORKER, 'manager', superuser: false);
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '']);
+        $this->assertResponseOk();
+        $this->assertEquals(new Date('2026-06-15'), $reports->get($report->id)->closed_until);
+
+        $this->loginAs($other, 'manager', superuser: false);
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '']);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertNull($reports->get($report->id)->closed_until);
+
+        $report = $reports->get($report->id);
+        $report->set('submitted', DateTime::now());
+        $reports->saveOrFail($report);
+
+        $this->loginAs(self::WORKER, 'manager', superuser: false);
+        $this->get('/work-reports/work-reports/sheet?month=2026-06');
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('/work-reports/work-reports/reopen/' . $report->id);
+        $this->post('/work-reports/work-reports/reopen/' . $report->id);
+        $this->assertResponseCode(403);
+
+        $this->loginAs($other, 'manager', superuser: false);
+        $this->get('/work-reports/work-reports/reopen/' . $report->id);
+        $this->assertResponseOk();
+        $this->assertResponseContains('return_reason');
+    }
+
+    /**
      * A worker who has stopped reporting keeps the months they wrote, to look at.
      *
      * @return void

@@ -144,7 +144,7 @@ use Cake\Collection\Collection;
                                 <?= $this->AuthLink->postLink(
                                     __('Delete'),
                                     ['controller' => 'Billings', 'action' => 'delete', $billing->id],
-                                    ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id)],
+                                    ['confirm' => $this->Billing->deleteConfirmation($billing)],
                                 ) ?>
                             </td>
                         </tr>

@@ -8,6 +8,7 @@ use App\Model\Table\BillingsTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -148,21 +149,23 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
-     * An administrator removes a billing somebody has been invoiced for, and the request carries
-     * the override that gets it past the table's rule.
+     * An admin or a manager removes a billing somebody has been invoiced for, and the request
+     * carries the override that gets it past the table's rule.
      *
      * Whether anybody else is even offered the button is the permissions' answer - they ask
      * `mayBeDeleted()` themselves - so it is not asked again here.
      *
+     * @param string $role The role asking.
      * @return void
      * @link \App\Controller\BillingsController::delete()
      */
-    public function testAnAdministratorRemovesABillingInvoicedFor(): void
+    #[DataProvider('rolesOfferedTheBoxes')]
+    public function testRemovingABillingInvoicedFor(string $role): void
     {
         $billings = $this->getTableLocator()->get('Billings');
         $invoiced = $this->closedBillingId();
 
-        $this->login('admin');
+        $this->login($role);
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/billings/delete/' . $invoiced);
@@ -444,12 +447,28 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
-     * And the admin may say they mean it, which is the whole of what the box on the form does.
+     * The roles offered the boxes that override what the others are held to.
      *
+     * @return array<string, array{string}>
+     */
+    public static function rolesOfferedTheBoxes(): array
+    {
+        return [
+            'admin' => ['admin'],
+            'manager' => ['manager'],
+        ];
+    }
+
+    /**
+     * And an admin or a manager may say they mean it, which is the whole of what the box on the
+     * form does.
+     *
+     * @param string $role The role asking.
      * @return void
      * @link \App\Controller\BillingsController::edit()
      */
-    public function testAnAdminTickingTheBoxMovesItAnyway(): void
+    #[DataProvider('rolesOfferedTheBoxes')]
+    public function testTickingTheBoxMovesItAnyway(string $role): void
     {
         $billings = $this->getTableLocator()->get('Billings');
         $billingId = $billings
@@ -459,7 +478,7 @@ class BillingsControllerTest extends TestCase
             ->get('id');
         $moved = $billings->firstOpenPeriodStart();
 
-        $this->login();
+        $this->login($role);
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/billings/edit/' . $billingId, [
@@ -550,13 +569,15 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
-     * The letter goes out over the company's name, so the option is the admin's - and unticked
-     * even there, because a service is usually changed on the customer's own word.
+     * The letter goes out over the company's name, so the option is an admin's or a manager's -
+     * and unticked even there, because a service is usually changed on the customer's own word.
      *
+     * @param string $role The role asking.
      * @return void
      * @link \App\Controller\BillingsController::serviceChange()
      */
-    public function testTheCustomerNotificationIsOfferedToAnAdminAloneAndUnticked(): void
+    #[DataProvider('rolesOfferedTheBoxes')]
+    public function testTheCustomerNotificationIsOfferedToTheFewAndUnticked(string $role): void
     {
         $billingId = $this->firstId('Billings');
 
@@ -567,7 +588,7 @@ class BillingsControllerTest extends TestCase
         $this->assertResponseNotContains('send-customer-notification');
         $this->assertResponseNotContains('version-without-legislative-information');
 
-        $this->login();
+        $this->login($role);
         $this->get('/billings/service-change/' . $billingId);
 
         $this->assertResponseOk();
@@ -803,17 +824,20 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
-     * The admin is offered the box, and without ticking it is refused the same as anybody.
+     * An admin and a manager are offered the box, and without ticking it are refused the same as
+     * anybody.
      *
+     * @param string $role The role asking.
      * @return void
      * @link \App\Controller\BillingsController::add()
      */
-    public function testAnAdminTickingTheBoxPricesTheConnectionBelowTheMinimum(): void
+    #[DataProvider('rolesOfferedTheBoxes')]
+    public function testTickingTheBoxPricesTheConnectionBelowTheMinimum(string $role): void
     {
         $this->agreeMinimum('100');
         $before = $this->idsIn('Billings');
 
-        $this->login();
+        $this->login($role);
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/billings/add', $this->connectionPricedAt('50'));
@@ -828,6 +852,82 @@ class BillingsControllerTest extends TestCase
 
         $this->assertRedirect();
         $this->assertNotSame($before, $this->idsIn('Billings'));
+    }
+
+    /**
+     * Deleting has no box to tick, only the confirmation behind the link. Whoever may price the
+     * connection below the minimum may also take it away, the others are refused.
+     *
+     * @param string $role The role asking.
+     * @return void
+     * @link \App\Controller\BillingsController::delete()
+     */
+    #[DataProvider('rolesOfferedTheBoxes')]
+    public function testDeletingTheConnectionTheMinimumRestsOn(string $role): void
+    {
+        $this->agreeMinimum('100');
+        $before = $this->idsIn('Billings');
+        $billings = $this->getTableLocator()->get('Billings');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/billings/add', $this->connectionPricedAt('150'));
+        $this->assertRedirect();
+        $billingId = (string)$this->addedRecord('Billings', $before)->get('id');
+
+        $this->login('bookkeeper');
+        $this->post('/billings/delete/' . $billingId);
+
+        // let through to the action, and refused there rather than at the door
+        $this->assertRedirectContains('/billings');
+        $this->assertTrue($billings->exists(['id' => $billingId]));
+
+        $this->login($role);
+        $this->post('/billings/delete/' . $billingId);
+
+        $this->assertFalse($billings->exists(['id' => $billingId]));
+    }
+
+    /**
+     * The button on a billing invoiced for is drawn only for whoever may override the invoiced
+     * periods, and its question warns them what they are about to change.
+     *
+     * @return void
+     * @link \App\View\Helper\BillingHelper::deleteConfirmation()
+     */
+    public function testTheDeleteConfirmationWarnsOfAnInvoicedPeriod(): void
+    {
+        $warning = 'deleting it changes a period whose invoices have gone out';
+        $billings = $this->getTableLocator()->get('Billings');
+        $invoiced = $this->closedBillingId();
+        $open = $billings->saveOrFail($billings->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+            'text' => 'Not invoiced for yet',
+            'quantity' => 1,
+            'separate_invoice' => false,
+            'billing_from' => $billings->firstOpenPeriodStart()->toDateString(),
+        ]));
+
+        $this->login('manager');
+        $this->get('/billings/view/' . $invoiced);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('/billings/delete/' . $invoiced);
+        $this->assertResponseContains($warning);
+
+        $this->get('/billings/view/' . $open->id);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('/billings/delete/' . $open->id);
+        $this->assertResponseNotContains($warning);
+
+        $this->login('bookkeeper');
+        $this->get('/billings/view/' . $invoiced);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('/billings/delete/' . $invoiced);
     }
 
     /**

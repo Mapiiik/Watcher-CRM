@@ -677,7 +677,6 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
-                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -1114,6 +1113,7 @@ $permissions = [
             ],
             'plugin' => null,
             'controller' => [
+                'DocumentationTypes',
                 'EquipmentTypes',
                 'TaskStates',
                 'TaskTypes',
@@ -1135,6 +1135,19 @@ $permissions = [
             ],
             'action' => [
                 'updateRelatedCustomerLabels',
+            ],
+        ],
+        //deleting a billing whatever its dates, which moving them into an invoiced period would get to anyway
+        [
+            'role' => [
+                'manager',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Billings',
+            ],
+            'action' => [
+                'delete',
             ],
         ],
         [

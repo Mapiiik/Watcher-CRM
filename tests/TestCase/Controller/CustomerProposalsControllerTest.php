@@ -838,6 +838,36 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
+     * A manager applying the changes is offered the boxes an administrator is, and the other roles
+     * are not.
+     *
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
+     * @return void
+     */
+    public function testAManagerIsOfferedTheBoxesOnApplyingTheChanges(): void
+    {
+        $proposal = $this->drawOneUpWithPapers();
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $this->post($at . 'send/' . $proposal->id, [
+            'sent_date' => '2026-10-01',
+            'delivery_type' => DocumentsDeliveryType::Post->value,
+        ]);
+        $this->post($at . 'conclude/' . $proposal->id, ['conclusion_date' => '2026-10-05']);
+
+        $this->login('manager');
+        $this->get($at . 'apply-changes/' . $proposal->id);
+        $this->assertResponseOk();
+        $this->assertTrue($this->viewVariable('closed_period_override'));
+        $this->assertTrue($this->viewVariable('below_minimum_override'));
+
+        $this->login('bookkeeper');
+        $this->get($at . 'apply-changes/' . $proposal->id);
+        $this->assertResponseOk();
+        $this->assertFalse($this->viewVariable('closed_period_override'));
+        $this->assertFalse($this->viewVariable('below_minimum_override'));
+    }
+
+    /**
      * Papers given up on by themselves keep the day and the name that are against them, because
      * that is when somebody gave up on those papers.
      *

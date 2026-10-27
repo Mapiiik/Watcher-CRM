@@ -510,14 +510,14 @@ class BillingsController extends AppController
     /**
      * Whether this request is one that may be offered the way into an invoiced period at all.
      *
-     * Offered to an admin and to nobody else. What has been invoiced is not meant to be rewritten
-     * by not noticing, so even there it is a box that has to be ticked.
+     * Offered to an admin and a manager and to nobody else. What has been invoiced is not meant to
+     * be rewritten by not noticing, so even there it is a box that has to be ticked.
      *
      * @return bool
      */
     private function mayReachIntoClosedPeriods(): bool
     {
-        return $this->isAdmin();
+        return $this->isAdmin() || $this->isManager();
     }
 
     /**
@@ -527,7 +527,7 @@ class BillingsController extends AppController
      */
     private function mayGoBelowMinimum(): bool
     {
-        return $this->isAdmin();
+        return $this->isAdmin() || $this->isManager();
     }
 
     /**
@@ -540,7 +540,7 @@ class BillingsController extends AppController
      */
     private function mayNotifyTheCustomer(): bool
     {
-        return $this->isAdmin();
+        return $this->isAdmin() || $this->isManager();
     }
 
     /**
@@ -551,6 +551,16 @@ class BillingsController extends AppController
     private function isAdmin(): bool
     {
         return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+    }
+
+    /**
+     * Whether whoever is asking looks after the others, and is offered the boxes they are not.
+     *
+     * @return bool
+     */
+    private function isManager(): bool
+    {
+        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'manager';
     }
 
     /**

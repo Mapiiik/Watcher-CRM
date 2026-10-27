@@ -852,6 +852,38 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * A manager is offered the box an administrator is, and only ticking it lets the line through.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::billingLine()
+     */
+    public function testAManagerTickingTheBoxAllowsALineBelowTheMinimum(): void
+    {
+        $this->agreeMinimum('100');
+        $line = [
+            'service_id' => self::OPEN_SERVICE_ID,
+            'quantity' => '1',
+            'price' => '50',
+        ];
+
+        $this->login('manager');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/billing-line/' . self::PROPOSAL_ID, $line);
+
+        $this->assertNoRedirect();
+        $this->assertResponseContains('below_minimum_allowed');
+
+        $this->post('/contract-proposals/billing-line/' . self::PROPOSAL_ID, $line + [
+            'below_minimum_allowed' => '1',
+        ]);
+
+        $this->assertRedirect();
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $this->assertTrue($proposals->get(self::PROPOSAL_ID)->proposedChanges()->billings[0]->below_minimum_allowed);
+    }
+
+    /**
      * Puts a minimum on the contract the proposal is about.
      *
      * @param string $minimum The minimum.

@@ -572,7 +572,7 @@ class ContractProposalsController extends AppController
                 $data + ['billing_id' => $replaces],
                 $edited,
                 $this->chosenService(is_string($service_id) ? $service_id : null),
-                $this->isAdmin(),
+                $this->mayGoBelowMinimum(),
             );
 
             $refused = $this->belowTheMinimum($proposal, $changes->withLine($written), $written);
@@ -589,7 +589,7 @@ class ContractProposalsController extends AppController
         $this->set('replaced', $replaced);
         // a refused line comes back as it was typed, not as it was before
         $this->set('values', $written?->toArray() ?? $form->fill($edited, $replaced));
-        $this->set('below_minimum_override', $this->isAdmin());
+        $this->set('below_minimum_override', $this->mayGoBelowMinimum());
         $this->set('below_minimum_refused', $refused);
         $this->set('services', $this->servicesFor($proposal, [
             $edited?->service_id,
@@ -1500,12 +1500,13 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * Whether whoever is asking is trusted with the whole application.
+     * Whether whoever is asking may be offered to allow a line below the contract's minimum - an
+     * admin or a manager, and even then it is a box on the line that has to be ticked.
      *
      * @return bool
      */
-    private function isAdmin(): bool
+    private function mayGoBelowMinimum(): bool
     {
-        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
+        return in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin', 'manager'], true);
     }
 }

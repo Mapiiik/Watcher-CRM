@@ -19,7 +19,7 @@
             <?= $this->AuthLink->postLink(
                 __('Delete Billing'),
                 ['action' => 'delete', $billing->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $billing->id), 'class' => 'side-nav-item'],
+                ['confirm' => $this->Billing->deleteConfirmation($billing), 'class' => 'side-nav-item'],
             ) ?>
             <?= $this->AuthLink->link(__('List Billings'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->AuthLink->link(__('New Billing'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
