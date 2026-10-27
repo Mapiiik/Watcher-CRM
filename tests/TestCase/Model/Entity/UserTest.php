@@ -86,6 +86,7 @@ class UserTest extends TestCase
             'customer-identification',
             'customer-portal',
             'customer-service-technician',
+            'manager',
             'network-manager',
             'network-technician',
             'sales-manager',

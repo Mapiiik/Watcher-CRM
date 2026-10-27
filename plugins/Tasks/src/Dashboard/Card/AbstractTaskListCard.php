@@ -29,6 +29,7 @@ abstract class AbstractTaskListCard extends AbstractDashboardCard
         'sales-representative',
         'sales-manager',
         'bookkeeper',
+        'manager',
     ];
 
     /**

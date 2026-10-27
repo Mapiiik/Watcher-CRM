@@ -127,6 +127,7 @@ class CustomersController extends AppController
             'sales-representative',
             'sales-manager',
             'bookkeeper',
+            'manager',
             'admin',
         ]);
 

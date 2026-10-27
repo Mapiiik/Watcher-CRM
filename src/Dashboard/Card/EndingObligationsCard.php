@@ -47,7 +47,7 @@ class EndingObligationsCard extends AbstractDashboardCard
     #[Override]
     public function roles(): array
     {
-        return ['sales-representative', 'sales-manager', 'bookkeeper'];
+        return ['sales-representative', 'sales-manager', 'bookkeeper', 'manager'];
     }
 
     /**

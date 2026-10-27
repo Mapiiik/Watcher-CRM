@@ -51,7 +51,7 @@ class ContractProblemsCard extends AbstractDashboardCard
     #[Override]
     public function roles(): array
     {
-        return ['bookkeeper', 'sales-manager', 'sales-representative'];
+        return ['bookkeeper', 'sales-manager', 'sales-representative', 'manager'];
     }
 
     /**

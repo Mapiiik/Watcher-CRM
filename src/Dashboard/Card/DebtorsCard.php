@@ -34,7 +34,7 @@ class DebtorsCard extends AbstractDebtorCard
     #[Override]
     public function roles(): array
     {
-        return ['bookkeeper', 'sales-representative', 'sales-manager', 'network-manager'];
+        return ['bookkeeper', 'sales-representative', 'sales-manager', 'network-manager', 'manager'];
     }
 
     /**

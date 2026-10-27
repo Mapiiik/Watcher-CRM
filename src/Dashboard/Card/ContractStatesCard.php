@@ -51,7 +51,7 @@ class ContractStatesCard extends AbstractCustomerListingCard
     #[Override]
     public function roles(): array
     {
-        return ['network-manager', 'sales-representative', 'sales-manager', 'bookkeeper'];
+        return ['network-manager', 'sales-representative', 'sales-manager', 'bookkeeper', 'manager'];
     }
 
     /**

@@ -37,7 +37,7 @@ class StaleTasksCard extends AbstractTaskListCard
     #[Override]
     public function roles(): array
     {
-        return ['network-manager', 'sales-manager', 'bookkeeper', 'sales-representative'];
+        return ['network-manager', 'sales-manager', 'bookkeeper', 'sales-representative', 'manager'];
     }
 
     /**

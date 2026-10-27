@@ -43,6 +43,7 @@ class User extends AccessUser
             'sales-representative' => __('Sales Representative'),
             'sales-manager' => __('Sales Manager'),
             'bookkeeper' => __('Bookkeeper'),
+            'manager' => __('Manager'),
             'admin' => __('Admin'),
             'api' => __('API'),
             'customer-portal' => __('Customer Portal'),

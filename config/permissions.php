@@ -338,6 +338,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -388,6 +389,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -403,6 +405,7 @@ $permissions = [
             'role' => [
                 'network-manager',
                 'sales-manager',
+                'manager',
             ],
             'plugin' => null,
             'controller' => '*',
@@ -422,6 +425,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => 'Files',
             'controller' => [
@@ -439,6 +443,7 @@ $permissions = [
         [
             'role' => [
                 'network-manager',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -458,6 +463,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -514,6 +520,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -544,6 +551,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -565,6 +573,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -584,6 +593,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -643,6 +653,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -666,6 +677,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -703,6 +715,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -741,6 +754,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -800,6 +814,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -838,6 +853,7 @@ $permissions = [
         [
             'role' => [
                 'network-manager',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -855,6 +871,7 @@ $permissions = [
         [
             'role' => [
                 'network-manager',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -881,6 +898,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -895,6 +913,7 @@ $permissions = [
         [
             'role' => [
                 'sales-manager',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -909,6 +928,7 @@ $permissions = [
             'role' => [
                 'bookkeeper',
                 'sales-representative',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -930,6 +950,7 @@ $permissions = [
             'role' => [
                 'network-manager',
                 'sales-manager',
+                'manager',
             ],
             'plugin' => null,
             'controller' => [
@@ -944,6 +965,7 @@ $permissions = [
         [
             'role' => [
                 'sales-representative',
+                'manager',
             ],
             'plugin' => 'Bookkeeping',
             'controller' => [
@@ -959,6 +981,7 @@ $permissions = [
             'role' => [
                 'network-manager',
                 'sales-representative',
+                'manager',
             ],
             'plugin' => 'Bookkeeping',
             'controller' => [
@@ -974,6 +997,7 @@ $permissions = [
             'role' => [
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => 'Bookkeeping',
             'controller' => '*',
@@ -983,6 +1007,7 @@ $permissions = [
         [
             'role' => [
                 'customer-service-technician',
+                'manager',
             ],
             'plugin' => 'Radius',
             'controller' => [
@@ -1002,6 +1027,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => 'Radius',
             'controller' => [
@@ -1027,6 +1053,7 @@ $permissions = [
                 'sales-representative',
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => 'WorkReports',
             'controller' => [
@@ -1054,6 +1081,7 @@ $permissions = [
                 'network-technician',
                 'network-manager',
                 'sales-manager',
+                'manager',
             ],
             'plugin' => 'WorkReports',
             'controller' => [
@@ -1068,6 +1096,7 @@ $permissions = [
             'role' => [
                 'sales-manager',
                 'bookkeeper',
+                'manager',
             ],
             'plugin' => 'WorkReports',
             'controller' => [

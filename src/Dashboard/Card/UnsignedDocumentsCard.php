@@ -90,7 +90,7 @@ class UnsignedDocumentsCard extends AbstractDashboardCard
     #[Override]
     public function roles(): array
     {
-        return ['sales-manager', 'sales-representative', 'bookkeeper', 'network-manager'];
+        return ['sales-manager', 'sales-representative', 'bookkeeper', 'network-manager', 'manager'];
     }
 
     /**
