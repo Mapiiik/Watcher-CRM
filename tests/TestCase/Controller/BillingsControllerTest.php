@@ -576,6 +576,37 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
+     * Nor is the letter written for whoever is not offered the box, though the request asks for it.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::serviceChange()
+     */
+    public function testTheCustomerNotificationIsNotWrittenForTheOthers(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billing = $billings->find()->where(['Billings.billing_until IS' => null])->firstOrFail();
+        $service = $billings->Services
+            ->find()
+            ->where(['Services.id IS NOT' => $billing->get('service_id')])
+            ->firstOrFail();
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('CustomerMessages');
+        $this->post('/billings/service-change/' . $billing->get('id'), [
+            'service_id' => $service->get('id'),
+            'billing_from' => $billings->firstOpenPeriodStart()->toDateString(),
+            'send_customer_notification' => '1',
+        ]);
+
+        // the change itself goes through, only the letter does not
+        $this->assertRedirectContains('/billings/view/');
+        $this->assertSame($before, $this->idsIn('CustomerMessages'));
+    }
+
+    /**
      * Changing the prices of hundreds of contracts at one submission stays the admin's.
      *
      * @return void

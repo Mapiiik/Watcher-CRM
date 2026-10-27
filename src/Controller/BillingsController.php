@@ -580,9 +580,9 @@ class BillingsController extends AppController
     {
         $request = $this->getRequest();
 
-        // Determine if customer notification should be sent
-        $sendCustomerNotification =
-            ($request->getData('send_customer_notification') === '1');
+        // Determine if customer notification should be sent, asked only of whoever is offered it
+        $sendCustomerNotification = $this->mayNotifyTheCustomer()
+            && $request->getData('send_customer_notification') === '1';
 
         // Determine if version without legislative information should be used for customer message
         $versionWithoutLegislativeInformation =
