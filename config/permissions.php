@@ -1107,6 +1107,57 @@ $permissions = [
                 'markInvoiced',
             ],
         ],
+        //what a manager may do beyond the other roles, each thing given to it on its own
+        [
+            'role' => [
+                'manager',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'EquipmentTypes',
+                'TaskStates',
+                'TaskTypes',
+            ],
+            'action' => [
+                'add',
+                'edit',
+                'delete',
+            ],
+        ],
+        //working out again who carries a label, but not writing the query behind one
+        [
+            'role' => [
+                'manager',
+            ],
+            'plugin' => null,
+            'controller' => [
+                'Labels',
+            ],
+            'action' => [
+                'updateRelatedCustomerLabels',
+            ],
+        ],
+        [
+            'role' => [
+                'manager',
+            ],
+            'plugin' => 'WorkReports',
+            'controller' => [
+                'WorkCars',
+                'WorkLabels',
+                'WorkRates',
+                'WorkReportItemTypes',
+                'WorkReportWorkers',
+                'WorkReportWorkerRecipients',
+            ],
+            'action' => [
+                'index',
+                'view',
+                'add',
+                'edit',
+                'delete',
+            ],
+        ],
     ],
 ];
 
