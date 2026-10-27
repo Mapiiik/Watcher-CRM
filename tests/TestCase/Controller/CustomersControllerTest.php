@@ -767,7 +767,7 @@ class CustomersControllerTest extends TestCase
      */
     public function testAddIsRefusedToANonAdminRole(): void
     {
-        $this->login('api');
+        $this->login('user');
 
         $this->get('/customers/add');
 
@@ -775,7 +775,7 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
-     * The same role does get to list customers, which every role is allowed. Without this the test
+     * The same role does get to list customers, which all the staff are allowed. Without this the test
      * above would pass just as well on a role that is refused everything, and would be saying
      * nothing about the permissions at all.
      *
@@ -784,7 +784,7 @@ class CustomersControllerTest extends TestCase
      */
     public function testIndexIsAllowedToANonAdminRole(): void
     {
-        $this->login('api');
+        $this->login('user');
 
         $this->get('/customers');
 

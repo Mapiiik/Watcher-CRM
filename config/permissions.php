@@ -51,6 +51,22 @@ use Cake\Validation\Validation;
  */
 
 /*
+ * The people working in the application. The machine roles talk to it through the Api prefix and
+ * are let in by rules of their own, so the ordinary pages are not theirs - not even the ones open
+ * to everybody else.
+ */
+$staff = [
+    'user',
+    'customer-service-technician',
+    'network-technician',
+    'network-manager',
+    'sales-representative',
+    'sales-manager',
+    'bookkeeper',
+    'manager',
+];
+
+/*
  * Default permissions
  */
 $permissions = [
@@ -83,9 +99,9 @@ $permissions = [
             'controller' => '*',
             'action' => '*',
         ],
-        //specific actions allowed for the all roles in Users plugin
+        //specific actions allowed for all the staff in Users plugin
         [
-            'role' => '*',
+            'role' => $staff,
             'plugin' => null,
             'controller' => 'Users',
             'action' => [
@@ -230,9 +246,9 @@ $permissions = [
                 'download',
             ],
         ],
-        //all roles access
+        //what all the staff may look at
         [
-            'role' => '*',
+            'role' => $staff,
             'plugin' => null,
             'controller' => [
                 'Settings',
@@ -242,7 +258,7 @@ $permissions = [
             ],
         ],
         [
-            'role' => '*',
+            'role' => $staff,
             'plugin' => null,
             'controller' => [
                 'Customers',
@@ -255,7 +271,7 @@ $permissions = [
         //the findings on a record are fetched on their own so they do not hold its page up,
         //which makes them an action of their own - open to whoever may look at the record
         [
-            'role' => '*',
+            'role' => $staff,
             'plugin' => null,
             'controller' => [
                 'Customers',
@@ -267,7 +283,7 @@ $permissions = [
             ],
         ],
         [
-            'role' => '*',
+            'role' => $staff,
             'plugin' => null,
             'controller' => [
                 'Contracts',
@@ -293,7 +309,7 @@ $permissions = [
             ],
         ],
         [
-            'role' => '*',
+            'role' => $staff,
             'prefix' => 'Api',
             'plugin' => null,
             'controller' => [
@@ -306,7 +322,7 @@ $permissions = [
             ],
         ],
         [
-            'role' => '*',
+            'role' => $staff,
             'prefix' => 'Api',
             'plugin' => null,
             'controller' => [
@@ -317,7 +333,7 @@ $permissions = [
             ],
         ],
         [
-            'role' => '*',
+            'role' => $staff,
             'prefix' => 'Api',
             'plugin' => null,
             'controller' => [
@@ -503,7 +519,7 @@ $permissions = [
         //the papers: anybody who may look at the record may see what it has on file, and the
         //workbench is where they are looked at
         [
-            'role' => '*',
+            'role' => $staff,
             'plugin' => null,
             'controller' => [
                 'Documents',
@@ -532,7 +548,7 @@ $permissions = [
         ],
         //documentation: whoever may look at a record may look at what is kept about it
         [
-            'role' => '*',
+            'role' => $staff,
             'plugin' => null,
             'controller' => [
                 'Documentations',

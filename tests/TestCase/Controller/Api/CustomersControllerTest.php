@@ -76,6 +76,28 @@ class CustomersControllerTest extends TestCase
     }
 
     /**
+     * The customers are handed to the role the network management system signs in with. The
+     * customer portal asks only about the customers signed in to it, and is not handed them all.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomersController::index()
+     */
+    public function testTheOtherMachineRolesAreNotHandedTheCustomers(): void
+    {
+        $this->configRequest(['headers' => ['Accept' => 'application/json']]);
+
+        $this->login('api');
+        $this->get('/api/customers.json');
+        $this->assertResponseOk();
+
+        foreach (['customer-portal', 'customer-identification'] as $role) {
+            $this->login($role);
+            $this->get('/api/customers.json');
+            $this->assertResponseCode(403, 'The ' . $role . ' role was handed the customers.');
+        }
+    }
+
+    /**
      * A single customer serializes with everything that hangs off them.
      *
      * @return void
