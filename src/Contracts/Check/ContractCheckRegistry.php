@@ -66,6 +66,7 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
             'overlapping_contract_versions' => fn() => new OverlappingContractVersionsCheck($versions, $this->scope),
             'impossible_contract_version_period' =>
                 fn() => new ImpossibleContractVersionPeriodCheck($versions, $this->scope),
+            'implausible_conclusion_date' => fn() => new ImplausibleConclusionDateCheck($versions, $this->scope),
             'unsettled_obligation' => fn() => new UnsettledObligationCheck($versions, $this->scope),
             'contract_version_gap' => fn() => new ContractVersionGapCheck($versions, $this->scope),
             'active_without_billing' => fn() => new ActiveWithoutBillingCheck($contracts, $this->scope),

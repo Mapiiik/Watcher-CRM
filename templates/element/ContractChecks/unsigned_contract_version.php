@@ -14,7 +14,7 @@ $customer_column ??= true;
 $today = Date::today();
 ?>
 <p>
-    <?= __('Either nothing says when it was concluded, or what says so is from long before it took effect.') ?>
+    <?= __('Nothing says when it was concluded.') ?>
 </p>
 <div class="table-responsive">
     <table>

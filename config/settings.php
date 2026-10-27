@@ -154,6 +154,14 @@ return [
                     default: ['1800-01-01'],
                     hint: __('Days that stand for "not known" rather than for a day. The checks pass over them.'),
                 ),
+                'concluded_in_advance_months' => NumberType::ofInt(
+                    default: 3,
+                    hint: __('How long before a contract version takes effect it may have been concluded before the date is pointed out.'),
+                ),
+                'concluded_retroactively_months' => NumberType::ofInt(
+                    default: 3,
+                    hint: __('How long after a contract version takes effect it may still have been concluded before the date is pointed out.'),
+                ),
             ],
 
             // Running a service on paperwork nobody has signed, and the papers drawn up for one
@@ -178,10 +186,6 @@ return [
                             hint: __('Whether a service that is charged for with no contract version'
                                 . ' behind it counts as unsigned as well. It is the ordinary case'
                                 . ' while the papers wait on a proposal.'),
-                        ),
-                        'signature_expected_within_months' => NumberType::ofInt(
-                            default: 3,
-                            hint: __('How long before a contract version takes effect it may have been concluded.'),
                         ),
                     ],
                     'notifications' => [

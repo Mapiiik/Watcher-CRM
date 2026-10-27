@@ -98,17 +98,17 @@ class UnsignedContractVersionCheckTest extends TestCase
     }
 
     /**
-     * Paper from long before the version it is meant to be behind is what carrying the
-     * previous version's date onto a new one looks like.
+     * A day on file is a signature on file, however far it is from the version. Whether it fits
+     * is a slip in the date, and the check of implausible conclusion dates asks it.
      *
      * @return void
      * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
      */
-    public function testAVersionConcludedLongBeforeItTookEffectIsReported(): void
+    public function testAVersionWithAnyPaperIsNotUnsigned(): void
     {
         $this->agreed('2024-01-01', '2022-06-01');
 
-        $this->assertCount(1, $this->found());
+        $this->assertSame([], $this->found());
     }
 
     /**
@@ -137,39 +137,6 @@ class UnsignedContractVersionCheckTest extends TestCase
         $this->agreed(self::START_NOT_KNOWN, null);
 
         $this->assertCount(1, $this->found());
-    }
-
-    /**
-     * The same version with paper on it cannot be judged by how old the paper is, because
-     * there is no day to judge it against.
-     *
-     * @return void
-     * @link \App\Contracts\Check\AbstractContractCheck::knownDate()
-     */
-    public function testAVersionWhoseStartNobodyKnowsIsNotJudgedByHowOldItsPaperIs(): void
-    {
-        $this->agreed(self::START_NOT_KNOWN, '2024-01-01');
-
-        $this->assertSame([], $this->found());
-    }
-
-    /**
-     * How old the paper may be is a matter of how the company works, so it is asked of the
-     * settings rather than settled here.
-     *
-     * @return void
-     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
-     */
-    public function testHowOldThePaperMayBeComesFromTheSettings(): void
-    {
-        $this->agreed('2024-01-01', '2023-09-01');
-
-        // four months before it took effect is beyond the three the settings ship with
-        $this->assertCount(1, $this->found());
-
-        Settings::set('core.contracts.paperwork.unsigned.thresholds.signature_expected_within_months', 12);
-
-        $this->assertSame([], $this->found(), 'The check did not ask the settings again.');
     }
 
     /**
@@ -310,24 +277,6 @@ class UnsignedContractVersionCheckTest extends TestCase
 
             $this->assertSame([], $this->foundToday());
             $this->assertCount(1, $this->found(), 'The history still has it.');
-        });
-    }
-
-    /**
-     * Paper applied from the previous version is worth putting straight, but it is not
-     * what anybody gets written to or cut off for: for that, the version has to say nothing
-     * at all about when it was concluded.
-     *
-     * @return void
-     * @link \App\Contracts\Check\UnsignedContractVersionCheck::find()
-     */
-    public function testPaperAppliedFromAnEarlierVersionIsHistoryRatherThanTheDaysWork(): void
-    {
-        $this->onDay('2026-06-01', function (): void {
-            $this->agreed(valid_from: '2026-05-01', conclusion_date: '2022-06-01');
-
-            $this->assertSame([], $this->foundToday());
-            $this->assertCount(1, $this->found());
         });
     }
 

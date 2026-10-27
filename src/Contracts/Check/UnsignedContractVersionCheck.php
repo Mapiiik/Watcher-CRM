@@ -12,11 +12,11 @@ use Cake\ORM\Query\SelectQuery;
 use Override;
 
 /**
- * A version of a contract with no paper behind it, or with paper too old to be its own.
+ * A version of a contract with no paper behind it.
  *
- * Either nothing says when it was concluded, or what says so is from long before the version
- * took effect - which is what carrying the previous version's date onto the new one looks
- * like. In both cases what is on file cannot show what the customer actually agreed to.
+ * Nothing says when it was concluded, so what is on file cannot show what the customer agreed
+ * to. A day that is there but does not fit the version is a slip in the date rather than a
+ * missing signature, and {@see \App\Contracts\Check\ImplausibleConclusionDateCheck} asks it.
  *
  * The check answers two different questions depending on whether it is asked to keep to what
  * is running, because the same fault means two different things:
@@ -32,18 +32,6 @@ use Override;
  */
 class UnsignedContractVersionCheck extends AbstractContractCheck
 {
-    /**
-     * Where the settings say how old the paper may be.
-     */
-    private const SETTINGS_PATH =
-        'core.contracts.paperwork.unsigned.thresholds.signature_expected_within_months';
-
-    /**
-     * How long before a version takes effect it may have been concluded, if nothing says
-     * otherwise.
-     */
-    private const MONTHS = 3;
-
     /**
      * @param \App\Model\Table\ContractVersionsTable $versions Contract versions table.
      * @param \App\Contracts\Unsigned\UnsignedPaperwork $paperwork What counts as unsigned,
@@ -155,11 +143,7 @@ class UnsignedContractVersionCheck extends AbstractContractCheck
      */
     private function everything(): SelectQuery
     {
-        $months = $this->days(self::SETTINGS_PATH, self::MONTHS);
-
-        $query = $this->versions->find();
-
-        return $query
+        return $this->versions->find()
             // The state comes along because the deadlines are only shown against a contract
             // that still serves somebody, and that is asked of the state.
             // The sending is on the proposals now, and the listing shows it.
@@ -167,26 +151,8 @@ class UnsignedContractVersionCheck extends AbstractContractCheck
                 'Contracts' => ['Customers', 'ContractStates'],
                 'ContractProposals' => ['CustomerProposals'],
             ])
-            ->where([
-                'OR' => [
-                    // No paper at all is a finding whatever the version says about itself -
-                    // including the thousand an import left with a start nobody knows, which
-                    // is why this limb is not held to a start that means anything.
-                    'ContractVersions.conclusion_date IS' => null,
-                    [
-                        $this->knownDate($query, 'ContractVersions.valid_from'),
-                        // paper from long before the version it is meant to be behind, which
-                        // is what the previous version's date carried onto a new one looks like
-                        $query->expr()->lt(
-                            'ContractVersions.conclusion_date',
-                            $query->expr(sprintf(
-                                "ContractVersions.valid_from - INTERVAL '%d months'",
-                                $months,
-                            )),
-                        ),
-                    ],
-                ],
-            ])
+            // including the thousand an import left with a start nobody knows
+            ->where(['ContractVersions.conclusion_date IS' => null])
             ->orderBy(['ContractVersions.valid_from' => 'DESC']);
     }
 }
