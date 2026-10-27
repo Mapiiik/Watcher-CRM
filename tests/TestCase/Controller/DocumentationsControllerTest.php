@@ -195,6 +195,72 @@ class DocumentationsControllerTest extends TestCase
     }
 
     /**
+     * Whoever may look at the documentation may fetch back the files in it, also a role that does
+     * not draw the papers up. Those it is not handed, whatever else is filed, and a plain user
+     * neither.
+     *
+     * @link \Files\Controller\FileLinksController::download()
+     * @return void
+     */
+    public function testWhoeverReadsTheDocumentationFetchesItsFilesAndOnlyThose(): void
+    {
+        $documentation = $this->documentations()->saveOrFail($this->documentations()->newEntity([
+            'documentation_type_id' => $this->kind(),
+            'contract_id' => self::CONTRACT_ID,
+            'customer_id' => self::CUSTOMER_ID,
+            'name' => 'The installation',
+        ]));
+
+        $storage = new FileStorage();
+        $file = $storage->store('rack 3, port 12', 'text/plain');
+        $link = $storage->link(
+            $file,
+            Documentations::MODEL,
+            (string)$documentation->id,
+            Documentations::ATTACHMENT,
+            Documentations::UPLOADED,
+        );
+        $paper = $storage->link(
+            $storage->store('what the customer signed', 'text/plain'),
+            'Contracts',
+            self::CONTRACT_ID,
+            'contract',
+            'signed',
+        );
+
+        $this->login('user');
+
+        $this->get('/documentations/view/' . $documentation->id);
+        $this->assertRedirect('/');
+        $this->get('/files/file-links/download/' . $link->id);
+        $this->assertRedirect('/');
+
+        $this->login('customer-service-technician');
+
+        $this->get('/documentations/view/' . $documentation->id);
+        $this->assertResponseOk();
+        $this->assertResponseContains('/files/file-links/download/' . $link->id);
+
+        $this->get('/files/file-links/download/' . $link->id);
+        $this->assertResponseOk();
+        $this->assertNotNull($this->_response);
+        $this->assertSame('rack 3, port 12', (string)$this->_response->getBody());
+
+        $this->get('/files/file-links/open/' . $link->id);
+        $this->assertResponseOk();
+
+        $this->get('/files/file-links/download/' . $paper->id);
+        $this->assertRedirect('/');
+
+        $this->get('/files/file-links');
+        $this->assertRedirect('/');
+
+        $this->post('/files/file-links/delete/' . $link->id);
+        $this->assertRedirect('/');
+        $this->assertTrue($storage->has($file));
+    }
+
+    /**
      * Every page of the agenda answers. Little is asked of them beyond that, but a page that has
      * stopped rendering at all is worth hearing about from the suite rather than from somebody
      * clicking.

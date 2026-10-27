@@ -13,6 +13,7 @@ use App\Model\Enum\DocumentVariant;
 use Cake\Http\ServerRequest;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validation;
+use Files\Service\Documentations;
 
 /*
  * This is a quick roles-permissions implementation
@@ -546,9 +547,17 @@ $permissions = [
                 'generate',
             ],
         ],
-        //documentation: whoever may look at a record may look at what is kept about it
+        //documentation: the staff who may look at a record may look at what is kept about it
         [
-            'role' => $staff,
+            'role' => [
+                'customer-service-technician',
+                'network-technician',
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+                'manager',
+            ],
             'plugin' => null,
             'controller' => [
                 'Documentations',
@@ -557,6 +566,42 @@ $permissions = [
                 'index',
                 'view',
             ],
+        ],
+        //and fetch back the files kept in it - those only, what else is filed is for whoever draws
+        //the papers up, the rule for them coming earlier
+        [
+            'role' => [
+                'customer-service-technician',
+                'network-technician',
+                'network-manager',
+                'sales-representative',
+                'sales-manager',
+                'bookkeeper',
+                'manager',
+            ],
+            'plugin' => 'Files',
+            'controller' => [
+                'FileLinks',
+            ],
+            'action' => [
+                'download',
+                'open',
+                'thumbnail',
+                'preview',
+            ],
+            //Keep it last: the rule is read key by key and this one ends the reading.
+            'allowed' => function ($_user, $_role, ServerRequest $request): bool {
+                $id = $request->getParam('pass.0');
+
+                if (!is_string($id) || !Validation::uuid($id)) {
+                    return false;
+                }
+
+                return TableRegistry::getTableLocator()->get('Files.FileLinks')->exists([
+                    'FileLinks.id' => $id,
+                    'FileLinks.model' => Documentations::MODEL,
+                ]);
+            },
         ],
         //and keeping it up to date goes with doing the work it records. Letting a folder go is
         //here too, unlike a paper we drew up: nothing in one was generated, so nothing is
