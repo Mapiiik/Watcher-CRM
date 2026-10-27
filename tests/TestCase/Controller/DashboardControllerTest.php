@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\DashboardController;
+use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Test\Traits\ControllerTestTrait;
 use App\Test\Traits\WatcherNmsAnswersTrait;
@@ -273,28 +274,46 @@ class DashboardControllerTest extends TestCase
         $this->assertNotContains('debtors', $ids);
         $this->assertNotContains('unassigned_tasks', $ids);
         // chasing paperwork is the office's work, not the technician's
-        $this->assertNotContains('unsigned_contracts', $ids);
+        $this->assertNotContains('unsigned_documents', $ids);
         // whoever picks up the telephone may be asked about an outage
         $this->assertContains('power_outages', $ids);
     }
 
     /**
      * The card counts unsigned paperwork several times over - by two sets of deadlines, and then
-     * twice more over the proposals - so every one of those queries has to actually run.
+     * over the proposals of both agendas - so every one of those queries has to actually run.
      *
      * @return void
-     * @link \App\Dashboard\Card\UnsignedContractsCard::data()
+     * @link \App\Dashboard\Card\UnsignedDocumentsCard::data()
      */
-    public function testUnsignedContractsCard(): void
+    public function testUnsignedDocumentsCard(): void
     {
+        // a consent that went out a month ago and never came back
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+        $proposals->saveOrFail($proposals->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'purpose' => CustomerProposalPurpose::GdprConsent->value,
+            'effective_from' => Date::now()->subDays(30),
+            'sent_date' => Date::now()->subDays(30),
+        ]), ['checkRules' => false]);
+
         $this->login();
-        $this->get('/dashboard/card/unsigned_contracts');
+        $this->get('/dashboard/card/unsigned_documents');
 
         $this->assertResponseOk();
         $this->assertResponseNotContains('<html');
 
-        // the fixture carries a proposal drawn up, never sent, and due to take effect
-        $this->assertResponseContains('created and never sent');
+        // the fixture carries one contract proposal drawn up, never sent, and due to take effect,
+        // and the caption under the figure agrees with it
+        $this->assertResponseContains('contract proposal created and never sent');
+        $this->assertResponseNotContains('contract proposals created and never sent');
+        // and the customer proposal it rides in is counted under the contracts alone
+        $this->assertResponseNotRegExp('/customer proposals? created and never sent/');
+
+        $this->assertResponseContains('customer proposal sent and still not signed');
+        $this->assertResponseContains('overview-of-customer-problems');
+        // with both parts on the card, a line stands between them
+        $this->assertResponseContains('<hr>');
     }
 
     /**

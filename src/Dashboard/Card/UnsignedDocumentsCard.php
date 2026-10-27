@@ -9,6 +9,10 @@ use App\Contracts\Check\UnsentContractProposalCheck;
 use App\Contracts\Check\UnsignedContractProposalCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Contracts\Unsigned\UnsignedWaits;
+use App\Customers\Check\CustomerCheckRegistry;
+use App\Customers\Check\UnfiledCustomerProposalCheck;
+use App\Customers\Check\UnsentCustomerProposalCheck;
+use App\Customers\Check\UnsignedCustomerProposalCheck;
 use Cake\I18n\Date;
 use Dashboard\Card\AbstractDashboardCard;
 use Override;
@@ -27,29 +31,38 @@ use Override;
  * the letters are going to, and what is past the blocking deadline is about to cost the
  * customer their service. The three are cut so that they add up to the whole.
  *
- * Under them stand two counts of proposals, which are a different thing and so are not mixed in.
- * A version reads as unsigned only where nothing was ever signed for it, so an amendment or an
- * agreement to end a contract - drawn up on a version that is signed - is invisible to the three
- * above however long it sits at the customer. Nobody is cut off over those, which is why they
- * stand apart rather than being folded into the same wait.
+ * Under them stand the counts of contract proposals, which are a different thing and so are not
+ * mixed in. A version reads as unsigned only where nothing was ever signed for it, so an amendment
+ * or an agreement to end a contract - drawn up on a version that is signed - is invisible to the
+ * three above however long it sits at the customer. Nobody is cut off over those, which is why
+ * they stand apart rather than being folded into the same wait.
+ *
+ * The papers put to the customer themselves, a consent above all, are counted last and apart from
+ * the contracts, so that each figure says which agenda it belongs to.
  *
  * Versions rather than customers. One customer can be carrying several unsigned versions and
  * each is its own piece of paper to chase, so this is a count of work rather than of people -
  * which is also what the overview behind the link holds, so the two agree.
  */
-class UnsignedContractsCard extends AbstractDashboardCard
+class UnsignedDocumentsCard extends AbstractDashboardCard
 {
     /**
      * @param \App\Contracts\Unsigned\UnsignedPaperwork $paperwork What counts as unsigned.
      * @param \App\Contracts\Check\UnsignedContractProposalCheck $unsigned Papers out and not signed.
      * @param \App\Contracts\Check\UnsentContractProposalCheck $unsent Papers drawn up and never sent.
      * @param \App\Contracts\Check\UnfiledContractProposalCheck $unfiled Signed, and the scan never arrived.
+     * @param \App\Customers\Check\UnsignedCustomerProposalCheck $customer_unsigned The customer's own papers out and not signed.
+     * @param \App\Customers\Check\UnsentCustomerProposalCheck $customer_unsent The customer's own papers never sent.
+     * @param \App\Customers\Check\UnfiledCustomerProposalCheck $customer_unfiled The customer's own scans never arrived.
      */
     public function __construct(
         private UnsignedPaperwork $paperwork,
         private UnsignedContractProposalCheck $unsigned,
         private UnsentContractProposalCheck $unsent,
         private UnfiledContractProposalCheck $unfiled,
+        private UnsignedCustomerProposalCheck $customer_unsigned,
+        private UnsentCustomerProposalCheck $customer_unsent,
+        private UnfiledCustomerProposalCheck $customer_unfiled,
     ) {
     }
 
@@ -59,7 +72,7 @@ class UnsignedContractsCard extends AbstractDashboardCard
     #[Override]
     public function id(): string
     {
-        return 'unsigned_contracts';
+        return 'unsigned_documents';
     }
 
     /**
@@ -112,18 +125,24 @@ class UnsignedContractsCard extends AbstractDashboardCard
             'waiting' => max(0, $total - $notified),
             'notifying' => max(0, $notified - $blocking),
             'blocking' => $blocking,
-            'url' => $this->overviewUrl('unsigned_contract_version', 'service_without_contract_version'),
+            'url' => $this->contractsUrl('unsigned_contract_version', 'service_without_contract_version'),
             // The same wait seen from the papers rather than from the version, which is where
             // an amendment or an agreement to end a contract shows up at all - the version
             // behind those is signed, so the three counts above cannot see them. Asked of the
             // checks themselves, so that the figure and the listing it links to agree.
             'unanswered' => $this->unsigned->count(),
-            'unanswered_url' => $this->overviewUrl('unsigned_contract_proposal'),
+            'unanswered_url' => $this->contractsUrl('unsigned_contract_proposal'),
             'unsent' => $this->unsent->count(),
-            'unsent_url' => $this->overviewUrl('unsent_contract_proposal'),
+            'unsent_url' => $this->contractsUrl('unsent_contract_proposal'),
             // The end of the same job: signed, and the papers never arrived.
             'unfiled' => $this->unfiled->count(),
-            'unfiled_url' => $this->overviewUrl('unfiled_contract_proposal'),
+            'unfiled_url' => $this->contractsUrl('unfiled_contract_proposal'),
+            'customer_unanswered' => $this->customer_unsigned->count(),
+            'customer_unanswered_url' => $this->customersUrl('unsigned_customer_proposal'),
+            'customer_unsent' => $this->customer_unsent->count(),
+            'customer_unsent_url' => $this->customersUrl('unsent_customer_proposal'),
+            'customer_unfiled' => $this->customer_unfiled->count(),
+            'customer_unfiled_url' => $this->customersUrl('unfiled_customer_proposal'),
         ];
     }
 
@@ -152,24 +171,48 @@ class UnsignedContractsCard extends AbstractDashboardCard
     /**
      * The contract problems overview, showing these findings and nothing else.
      *
+     * @param string ...$wanted The ids of the checks the overview is to show.
+     * @return array<string, mixed>
+     */
+    private function contractsUrl(string ...$wanted): array
+    {
+        return $this->overviewUrl('overviewOfContractProblems', (new ContractCheckRegistry())->all(), $wanted);
+    }
+
+    /**
+     * The customer problems overview, showing these findings and nothing else.
+     *
+     * @param string ...$wanted The ids of the checks the overview is to show.
+     * @return array<string, mixed>
+     */
+    private function customersUrl(string ...$wanted): array
+    {
+        return $this->overviewUrl('overviewOfCustomerProblems', (new CustomerCheckRegistry())->all(), $wanted);
+    }
+
+    /**
+     * An overview of findings, showing the wanted checks and nothing else.
+     *
      * Every other check has to be named as off rather than left out: the overview reads a
      * check that is not in the query string as being at its default, so a link that only
      * switched one on would arrive with the rest switched on beside it and hold a different
      * number than the card that led there.
      *
-     * @param string ...$wanted The ids of the checks the overview is to show.
+     * @param string $action The overview to open.
+     * @param list<\App\Check\CheckInterface> $all Every check the overview knows.
+     * @param array<string> $wanted The ids of the checks it is to show.
      * @return array<string, mixed>
      */
-    private function overviewUrl(string ...$wanted): array
+    private function overviewUrl(string $action, array $all, array $wanted): array
     {
         $checks = [];
-        foreach ((new ContractCheckRegistry())->all() as $check) {
+        foreach ($all as $check) {
             $checks[$check->id()] = (int)in_array($check->id(), $wanted, true);
         }
 
         return [
             'controller' => 'Overviews',
-            'action' => 'overviewOfContractProblems',
+            'action' => $action,
             'customer_id' => false,
             // The card counts the day's work, so the link has to ask for the day's work.
             '?' => ['checks' => $checks, 'ignore_inactive' => 1],

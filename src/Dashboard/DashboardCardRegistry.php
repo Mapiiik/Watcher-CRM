@@ -10,6 +10,9 @@ use App\Contracts\Check\UnsentContractProposalCheck;
 use App\Contracts\Check\UnsignedContractProposalCheck;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Customers\Check\CustomerCheckRegistry;
+use App\Customers\Check\UnfiledCustomerProposalCheck;
+use App\Customers\Check\UnsentCustomerProposalCheck;
+use App\Customers\Check\UnsignedCustomerProposalCheck;
 use App\Dashboard\Card\AddressProblemsCard;
 use App\Dashboard\Card\ContractProblemsCard;
 use App\Dashboard\Card\ContractStatesCard;
@@ -19,11 +22,12 @@ use App\Dashboard\Card\EndingObligationsCard;
 use App\Dashboard\Card\LabelsCard;
 use App\Dashboard\Card\ManualShutoffDebtorsCard;
 use App\Dashboard\Card\PowerOutagesCard;
-use App\Dashboard\Card\UnsignedContractsCard;
+use App\Dashboard\Card\UnsignedDocumentsCard;
 use App\Model\Table\ContractProposalsTable;
 use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractStatesTable;
 use App\Model\Table\ContractVersionsTable;
+use App\Model\Table\CustomerProposalsTable;
 use App\Model\Table\LabelsTable;
 use App\Model\Table\TasksTable;
 use Cake\Core\Plugin;
@@ -97,13 +101,18 @@ final class DashboardCardRegistry implements CardRegistryInterface
         // debtors, and stands whether or not the plugin is there.
         /** @var \App\Model\Table\ContractProposalsTable $proposals */
         $proposals = $this->fetchTable(ContractProposalsTable::class);
+        /** @var \App\Model\Table\CustomerProposalsTable $customer_proposals */
+        $customer_proposals = $this->fetchTable(CustomerProposalsTable::class);
 
-        $this->factories['unsigned_contracts'] =
-            fn(): DashboardCardInterface => new UnsignedContractsCard(
+        $this->factories['unsigned_documents'] =
+            fn(): DashboardCardInterface => new UnsignedDocumentsCard(
                 new UnsignedPaperwork($contract_versions),
                 new UnsignedContractProposalCheck($proposals),
                 new UnsentContractProposalCheck($proposals),
                 new UnfiledContractProposalCheck($proposals),
+                new UnsignedCustomerProposalCheck($customer_proposals),
+                new UnsentCustomerProposalCheck($customer_proposals),
+                new UnfiledCustomerProposalCheck($customer_proposals),
             );
 
         // The debtor cards read the accounting records, which only exist with the plugin.

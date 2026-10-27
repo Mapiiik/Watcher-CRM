@@ -408,7 +408,7 @@ class UnsignedPaperworkTest extends TestCase
      * wait always holding everything a longer one holds.
      *
      * @return void
-     * @link \App\Dashboard\Card\UnsignedContractsCard::data()
+     * @link \App\Dashboard\Card\UnsignedDocumentsCard::data()
      */
     public function testWithNoWaitAVersionIsDueAsSoonAsItIsInEffect(): void
     {
@@ -420,7 +420,7 @@ class UnsignedPaperworkTest extends TestCase
 
     /**
      * @return void
-     * @link \App\Dashboard\Card\UnsignedContractsCard::data()
+     * @link \App\Dashboard\Card\UnsignedDocumentsCard::data()
      */
     public function testAVersionNotYetInEffectIsNotDueEvenWithNoWait(): void
     {

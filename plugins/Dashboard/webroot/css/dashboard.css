@@ -40,6 +40,12 @@
     color: var(--color-headings);
 }
 
+/* Between the parts of a card that count different things, drawn as the card's heading is underlined. */
+.dashboard-cards hr {
+    border-top-color: var(--color-table-headings-bg);
+    margin: 1.5rem 0;
+}
+
 /*
  * `cake.css` leaves a few pixels of margin beside a table so its shadow has room, pairing
  * `calc(100% - 3px)` with a right margin. Taking the full width back without dropping that
