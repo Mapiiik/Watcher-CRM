@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-27 11:07+0100\n"
+"POT-Creation-Date: 2026-10-27 17:20+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -59,7 +59,23 @@ msgid ""
 msgstr ""
 "Dny, které znamenají „nevíme“ místo konkrétního dne. Kontroly je přeskakují."
 
-#: config/settings.php:166
+#: config/settings.php:159
+msgid ""
+"How long before a contract version takes effect it may have been concluded "
+"before the date is pointed out."
+msgstr ""
+"Jak dlouho před začátkem platnosti smí být verze smlouvy uzavřená, než se "
+"datum ohlásí."
+
+#: config/settings.php:163
+msgid ""
+"How long after a contract version takes effect it may still have been "
+"concluded before the date is pointed out."
+msgstr ""
+"Jak dlouho po začátku platnosti smí být verze smlouvy ještě uzavřená, než se "
+"datum ohlásí."
+
+#: config/settings.php:174
 msgid ""
 "Records taking effect before this day are left alone. What an import left "
 "behind is not work anybody is going to do, and mailing about it would be "
@@ -69,11 +85,11 @@ msgstr ""
 "zanechal import, stejně nikdo dohánět nebude, a obesílat kvůli tomu "
 "zákazníky by bylo horší než to nechat být."
 
-#: config/settings.php:170
+#: config/settings.php:178
 msgid "What the wait for a signature is counted from."
 msgstr "Od čeho se počítá čekání na podpis."
 
-#: config/settings.php:178
+#: config/settings.php:186
 msgid ""
 "Whether a service that is charged for with no contract version behind it "
 "counts as unsigned as well. It is the ordinary case while the papers wait on "
@@ -82,22 +98,17 @@ msgstr ""
 "Jestli se za nepodepsanou počítá i služba, která se fakturuje a nestojí za "
 "ní žádná verze smlouvy. Dokud papíry čekají na návrh, je to běžný případ."
 
-#: config/settings.php:184
-msgid ""
-"How long before a contract version takes effect it may have been concluded."
-msgstr "Jak dlouho před začátkem platnosti verze smlouvy smí být uzavřená."
-
-#: config/settings.php:190
+#: config/settings.php:194
 msgid ""
 "Whether the customer is written to at all about documents nobody has signed."
 msgstr "Zda se zákazníkům vůbec píše o nepodepsaných dokumentech."
 
-#: config/settings.php:195
+#: config/settings.php:199
 msgid ""
 "Days after the day the wait is counted from before the customer is reminded."
 msgstr "Za kolik dní od počátku lhůty se zákazníkovi připomene."
 
-#: config/settings.php:199
+#: config/settings.php:203
 msgid ""
 "Days after what is running took effect before the customer is reminded. Both "
 "waits have to be up."
@@ -105,12 +116,12 @@ msgstr ""
 "Za kolik dní od nabytí účinnosti toho, co běží, se zákazníkovi připomene. "
 "Musí uplynout obě lhůty."
 
-#: config/settings.php:203
+#: config/settings.php:207
 msgid ""
 "Which days after the wait runs out to write on. 0 is the day it runs out."
 msgstr "Ve které dny po uplynutí lhůty psát. 0 je den, kdy lhůta uplynula."
 
-#: config/settings.php:207
+#: config/settings.php:211
 msgid ""
 "Once the days above are used up, keep writing every day until the signed "
 "contract comes in."
@@ -118,18 +129,18 @@ msgstr ""
 "Po vyčerpání dnů uvedených výše psát každý další den, dokud podepsaná "
 "smlouva nedojde."
 
-#: config/settings.php:233
+#: config/settings.php:237
 msgid ""
 "Whether unsigned documents cut the service off, the same way an unpaid "
 "invoice does."
 msgstr "Zda nepodepsané dokumenty omezí službu stejně jako neuhrazená faktura."
 
-#: config/settings.php:238
+#: config/settings.php:242
 msgid ""
 "Days after the day the wait is counted from before the service is cut off."
 msgstr "Za kolik dní od počátku lhůty se služba omezí."
 
-#: config/settings.php:242
+#: config/settings.php:246
 msgid ""
 "Days after what is running took effect before the service is cut off. Both "
 "waits have to be up."
@@ -137,7 +148,7 @@ msgstr ""
 "Za kolik dní od nabytí účinnosti toho, co běží, se služba omezí. Musí "
 "uplynout obě lhůty."
 
-#: config/settings.php:320
+#: config/settings.php:324
 msgid ""
 "How far ahead a proposal nobody has sent is worth raising. It has to be sent "
 "before the day it speaks about."
@@ -145,16 +156,16 @@ msgstr ""
 "Jak dlouho dopředu hlásit návrh, který nikdo neodeslal. Musí být odeslán "
 "dřív, než nastane den, o kterém mluví."
 
-#: config/settings.php:327 config/settings.php:370
+#: config/settings.php:331 config/settings.php:374
 msgid "Days after the proposal was sent before a missing signature is raised."
 msgstr "Kolik dní po odeslání návrhu se začne hlásit chybějící podpis."
 
-#: config/settings.php:334 config/settings.php:377
+#: config/settings.php:338 config/settings.php:381
 msgid ""
 "Days after the signature was written down before the missing scan is raised."
 msgstr "Kolik dní po zapsání podpisu se chybějící sken začne hlásit."
 
-#: config/settings.php:340
+#: config/settings.php:344
 msgid ""
 "How far ahead a signed proposal whose changes nobody has applied is worth "
 "raising. Until its day comes there is nothing to do about it."
@@ -162,37 +173,37 @@ msgstr ""
 "Jak dlouho dopředu upozorňovat na podepsaný návrh, jehož změny nikdo "
 "neaplikoval. Dokud jeho den nenastane, není co řešit."
 
-#: config/settings.php:351
+#: config/settings.php:355
 msgid ""
 "How a business is told from a household in the reports for the regulator."
 msgstr ""
 "Jak se ve výkazech pro regulátora pozná firemní zákazník od domácnosti."
 
-#: config/settings.php:359
+#: config/settings.php:363
 msgid "Proposals taking effect before this day are left alone."
 msgstr "Návrhy, které nabyly účinnosti před tímto dnem, se neřeší."
 
-#: config/settings.php:364
+#: config/settings.php:368
 msgid "How far ahead a proposal nobody has sent is worth raising."
 msgstr "Jak dlouho dopředu hlásit návrh, který nikdo neodeslal."
 
-#: config/settings.php:385
+#: config/settings.php:389
 msgid "Labels that say the missing details are known about and accepted."
 msgstr "Štítky, které říkají, že o chybějících údajích víme a je to v pořádku."
 
-#: config/settings.php:389
+#: config/settings.php:393
 msgid "Labels that say the missing e-mail address is known about and accepted."
 msgstr "Štítky, které říkají, že o chybějícím e-mailu víme a je to v pořádku."
 
-#: config/settings.php:393
+#: config/settings.php:397
 msgid "Labels that say the missing consent is known about and accepted."
 msgstr "Štítky, které říkají, že o chybějícím souhlasu víme a je to v pořádku."
 
-#: config/settings.php:403
+#: config/settings.php:407
 msgid "How long a customer stays signed in to the customer portal."
 msgstr "Jak dlouho zůstává zákazník přihlášený do zákaznického portálu."
 
-#: config/settings.php:407
+#: config/settings.php:411
 msgid ""
 "Failed sign-ins of one login from one address before more are refused for a "
 "while."
@@ -200,7 +211,7 @@ msgstr ""
 "Počet neúspěšných přihlášení jednoho loginu z jedné adresy, po kterém se "
 "další na čas odmítají."
 
-#: config/settings.php:411
+#: config/settings.php:415
 msgid ""
 "Failed sign-ins from one address, whatever the login, before more are "
 "refused."
@@ -208,23 +219,23 @@ msgstr ""
 "Počet neúspěšných přihlášení z jedné adresy k jakýmkoli loginům, po kterém "
 "se další odmítají."
 
-#: config/settings.php:415
+#: config/settings.php:419
 msgid "Failed sign-ins of one login, from anywhere, before more are refused."
 msgstr ""
 "Počet neúspěšných přihlášení jednoho loginu odkudkoli, po kterém se další "
 "odmítají."
 
-#: config/settings.php:419
+#: config/settings.php:423
 msgid "How long failed sign-ins are remembered and refusals last."
 msgstr ""
 "Jak dlouho se neúspěšná přihlášení pamatují a jak dlouho odmítání trvá."
 
-#: config/settings.php:423
+#: config/settings.php:427
 msgid "The shortest password a customer may set in the customer portal."
 msgstr ""
 "Nejkratší heslo, které si zákazník může nastavit v zákaznickém portálu."
 
-#: config/settings.php:427
+#: config/settings.php:431
 msgid ""
 "Links for a new password or a new login one customer number may ask for in "
 "an hour."
@@ -232,7 +243,7 @@ msgstr ""
 "Kolik odkazů pro nové heslo nebo nový přístup si může jedno číslo zákazníka "
 "vyžádat za hodinu."
 
-#: config/settings.php:431
+#: config/settings.php:435
 msgid ""
 "Links for a new password or a new login one address may ask for in an hour, "
 "whatever the customer."
@@ -240,45 +251,45 @@ msgstr ""
 "Kolik odkazů pro nové heslo nebo nový přístup si může jedna adresa vyžádat "
 "za hodinu, ať je zákazník kdokoli."
 
-#: config/settings.php:435
+#: config/settings.php:439
 msgid "Addresses a service may look up in a minute before more are refused."
 msgstr ""
 "Počet adres, které služba může vyhledat za minutu, než se další odmítnou."
 
-#: config/settings.php:442
+#: config/settings.php:446
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 "Kolik řádků karta uvádí, než se zobrazí pouze informace o tom, kolik dalších "
 "zbývá."
 
-#: config/settings.php:448
+#: config/settings.php:452
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr "Jak dlouho před termínem řešení úkolu se již považuje za naléhavé."
 
-#: config/settings.php:452
+#: config/settings.php:456
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 "Jak dlouho může nedokončený úkol zůstat bez povšimnutí, než se na něj "
 "upozorní."
 
-#: config/settings.php:459
+#: config/settings.php:463
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr "Jak dlouho před koncem závazku se na něj upozorňuje."
 
-#: config/settings.php:793
+#: config/settings.php:797
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr "Tři úvodní odrážky předepsané šablonou shrnutí smlouvy."
 
-#: config/settings.php:844
+#: config/settings.php:848
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 "Podíl inzerované rychlosti, který se bere jako běžně dostupná rychlost."
 
-#: config/settings.php:849
+#: config/settings.php:853
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
 
-#: config/settings.php:925
+#: config/settings.php:929
 msgid "Documents the summary points the customer to."
 msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
 
@@ -866,6 +877,14 @@ msgstr "Mezera mezi navazujícími verzemi smlouvy"
 msgid "No contract is left without a version in force between two of them."
 msgstr "Žádná smlouva nezůstává mezi dvěma verzemi bez platné verze."
 
+#: src/Contracts/Check/ImplausibleConclusionDateCheck.php:68
+msgid "Implausible Conclusion Date"
+msgstr "Nevěrohodné datum uzavření"
+
+#: src/Contracts/Check/ImplausibleConclusionDateCheck.php:77
+msgid "Every contract version was concluded on a day that fits it."
+msgstr "Každá verze smlouvy má datum uzavření, které k ní sedí."
+
 #: src/Contracts/Check/ImpossibleBillingPeriodCheck.php:59
 msgid "Impossible Billing Period"
 msgstr "Nemožné období fakturace"
@@ -1005,11 +1024,11 @@ msgstr "Návrh smlouvy čekající na podpis"
 msgid "Every proposal that went out has come back signed."
 msgstr "Každý odeslaný návrh se vrátil podepsaný."
 
-#: src/Contracts/Check/UnsignedContractVersionCheck.php:85
+#: src/Contracts/Check/UnsignedContractVersionCheck.php:73
 msgid "Contract Version Without Signed Documents"
 msgstr "Verze smlouvy bez podepsaných dokumentů"
 
-#: src/Contracts/Check/UnsignedContractVersionCheck.php:94
+#: src/Contracts/Check/UnsignedContractVersionCheck.php:82
 msgid "Every contract version says when it was concluded."
 msgstr "Každá verze smlouvy uvádí, kdy byla uzavřená."
 
@@ -1026,6 +1045,7 @@ msgstr ""
 #: templates/ContractVersions/view.php:120
 #: templates/CustomerProposals/conclude.php:44
 #: templates/CustomerProposals/view.php:132
+#: templates/element/ContractChecks/implausible_conclusion_date.php:30
 #: templates/element/ContractChecks/impossible_contract_version_period.php:28
 #: templates/element/ContractChecks/proposal_table.php:19
 #: templates/element/ContractChecks/unsigned_contract_version.php:33
@@ -1133,6 +1153,7 @@ msgstr "Aplikovat ho smí jen administrátor, a to po výslovném povolení."
 #: templates/element/ContractChecks/billing_service_type_mismatch.php:23
 #: templates/element/ContractChecks/contract.php:26
 #: templates/element/ContractChecks/contract_version_gap.php:23
+#: templates/element/ContractChecks/implausible_conclusion_date.php:26
 #: templates/element/ContractChecks/impossible_billing_period.php:23
 #: templates/element/ContractChecks/impossible_borrowed_period.php:26
 #: templates/element/ContractChecks/impossible_contract_dates.php:24
@@ -1200,6 +1221,7 @@ msgstr "Datum ukončení poskytování služeb"
 #: templates/ContractVersions/view.php:98
 #: templates/ServiceOverrides/view.php:102
 #: templates/element/ContractChecks/contract_version_gap.php:25
+#: templates/element/ContractChecks/implausible_conclusion_date.php:28
 #: templates/element/ContractChecks/impossible_contract_version_period.php:25
 #: templates/element/ContractChecks/overlapping_contract_versions.php:25
 #: templates/element/ContractChecks/unsettled_obligation.php:28
@@ -1212,6 +1234,7 @@ msgstr "Platnost od"
 #: templates/ContractVersions/view.php:102
 #: templates/ServiceOverrides/view.php:106
 #: templates/element/ContractChecks/contract_version_gap.php:26
+#: templates/element/ContractChecks/implausible_conclusion_date.php:29
 #: templates/element/ContractChecks/impossible_contract_version_period.php:26
 #: templates/element/ContractChecks/overlapping_contract_versions.php:26
 #: templates/element/ContractChecks/unsettled_obligation.php:29
@@ -1382,7 +1405,7 @@ msgid "Unknown business register."
 msgstr "Neznámý obchodní rejstřík."
 
 #: src/Controller/Api/BusinessRegisterBridgeController.php:58
-#: src/Controller/CustomersController.php:642
+#: src/Controller/CustomersController.php:643
 msgid "The business register is not configured."
 msgstr "Obchodní rejstřík není nakonfigurován."
 
@@ -1434,7 +1457,7 @@ msgstr "Fakturace byla uložena."
 
 #: src/Controller/BillingsController.php:142
 #: src/Controller/BillingsController.php:243
-#: src/Controller/BillingsController.php:646
+#: src/Controller/BillingsController.php:656
 #: src/Controller/ContractsController.php:863
 msgid "The billing could not be saved. Please, try again."
 msgstr "Fakturace nelze uložit. Opakujte akci."
@@ -1447,7 +1470,7 @@ msgstr "Fakturace byla odstraněna."
 msgid "The billing could not be deleted. Please, try again."
 msgstr "Fakturace nelze odstranit. Opakujte akci."
 
-#: src/Controller/BillingsController.php:647
+#: src/Controller/BillingsController.php:657
 #: templates/CustomerMessages/add_bulk/step_compose.php:150
 #: templates/CustomerMessages/add_bulk/step_done.php:108
 #: templates/element/Overviews/contracts_in_period.php:21
@@ -1578,28 +1601,28 @@ msgid "The proposal could not be saved. Please, try again."
 msgstr "Návrh nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractProposalsController.php:867
-#: src/Controller/CustomerProposalsController.php:636
+#: src/Controller/CustomerProposalsController.php:648
 msgid "The proposal could not be deleted. Please, try again."
 msgstr "Návrh nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractProposalsController.php:872
-#: src/Controller/CustomerProposalsController.php:641
+#: src/Controller/CustomerProposalsController.php:653
 msgid "The proposal has been deleted."
 msgstr "Návrh byl odstraněn."
 
 #: src/Controller/ContractProposalsController.php:896
 #: src/Controller/CustomerProposalsController.php:177
-#: src/Controller/CustomerProposalsController.php:595
+#: src/Controller/CustomerProposalsController.php:607
 msgid "This proposal has already been settled."
 msgstr "Tento návrh je již vyřízený."
 
 #: src/Controller/ContractProposalsController.php:905
-#: src/Controller/CustomerProposalsController.php:603
+#: src/Controller/CustomerProposalsController.php:615
 msgid "The proposal has been revoked."
 msgstr "Návrh byl zrušen."
 
 #: src/Controller/ContractProposalsController.php:908
-#: src/Controller/CustomerProposalsController.php:606
+#: src/Controller/CustomerProposalsController.php:618
 msgid "The proposal could not be revoked. Please, try again."
 msgstr "Návrh nelze zrušit. Zkuste to prosím znovu."
 
@@ -1980,7 +2003,7 @@ msgstr ""
 "Smlouva {0} má nyní datum ukončení. Její stav se nezměnil, protože změna "
 "stavu má vlastní podmínky."
 
-#: src/Controller/CustomerProposalsController.php:629
+#: src/Controller/CustomerProposalsController.php:641
 msgid "This proposal can no longer be deleted."
 msgstr "Tento návrh už nelze odstranit."
 
@@ -1993,7 +2016,7 @@ msgstr[0] "Změny návrhu byly aplikovány do živých záznamů."
 msgstr[1] "Změny návrhu a všeho v něm byly aplikovány do živých záznamů."
 msgstr[2] "Změny návrhu a všeho v něm byly aplikovány do živých záznamů."
 
-#: src/Controller/CustomersController.php:156
+#: src/Controller/CustomersController.php:157
 msgid ""
 "Please use the customer number or company identification number in the "
 "search."
@@ -2001,37 +2024,37 @@ msgstr ""
 "Při vyhledávání prosím použijte zákaznické číslo nebo identifikační číslo "
 "společnosti."
 
-#: src/Controller/CustomersController.php:462
-#: src/Controller/CustomersController.php:513
+#: src/Controller/CustomersController.php:463
+#: src/Controller/CustomersController.php:514
 msgid "The customer has been saved."
 msgstr "Zákazník byl uložen."
 
-#: src/Controller/CustomersController.php:466
-#: src/Controller/CustomersController.php:517
+#: src/Controller/CustomersController.php:467
+#: src/Controller/CustomersController.php:518
 msgid "The customer could not be saved. Please, try again."
 msgstr "Zákazníka nelze uložit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:572
+#: src/Controller/CustomersController.php:573
 msgid "Could not retrieve the company from the business register: {0}"
 msgstr "Společnost se nepodařilo vyhledat v obchodním rejstříku: {0}"
 
-#: src/Controller/CustomersController.php:635
+#: src/Controller/CustomersController.php:636
 msgid "Invalid business register reference."
 msgstr "Neplatný odkaz na obchodní rejstřík."
 
-#: src/Controller/CustomersController.php:645
+#: src/Controller/CustomersController.php:646
 msgid "The company is no longer held by the register."
 msgstr "Společnost již není vedena v rejstříku."
 
-#: src/Controller/CustomersController.php:695
+#: src/Controller/CustomersController.php:696
 msgid "The customer has been deleted."
 msgstr "Zákazník byl odstraněn."
 
-#: src/Controller/CustomersController.php:698
+#: src/Controller/CustomersController.php:699
 msgid "The customer could not be deleted. Please, try again."
 msgstr "Zákazníka nelze odstranit. Opakujte akci."
 
-#: src/Controller/CustomersController.php:727
+#: src/Controller/CustomersController.php:728
 msgid "There is no such number to ask about."
 msgstr "Na takové číslo se nelze zeptat."
 
@@ -2708,18 +2731,22 @@ msgid "Bookkeeper"
 msgstr "Účetní"
 
 #: src/Model/Entity/User.php:46
+msgid "Manager"
+msgstr "Manažer"
+
+#: src/Model/Entity/User.php:47
 msgid "Admin"
 msgstr "Admin"
 
-#: src/Model/Entity/User.php:47
+#: src/Model/Entity/User.php:48
 msgid "API"
 msgstr "API"
 
-#: src/Model/Entity/User.php:48
+#: src/Model/Entity/User.php:49
 msgid "Customer Portal"
 msgstr "Zákaznický portál"
 
-#: src/Model/Entity/User.php:49
+#: src/Model/Entity/User.php:50
 msgid "Customer Identification"
 msgstr "Identifikace zákazníka"
 
@@ -3843,6 +3870,86 @@ msgstr ""
 msgid "Not installed via Git"
 msgstr "Není nainstalováno přes Git"
 
+#: src/View/Helper/BillingHelper.php:31 templates/AccessCredentials/edit.php:17
+#: templates/AccessCredentials/index.php:86
+#: templates/AccessCredentials/view.php:20
+#: templates/AccountingProfiles/edit.php:15
+#: templates/AccountingProfiles/index.php:60
+#: templates/AccountingProfiles/view.php:20
+#: templates/AccountingProfiles/view.php:123 templates/Addresses/edit.php:20
+#: templates/Addresses/index.php:103 templates/Addresses/view.php:19
+#: templates/AvailableConnections/view.php:38
+#: templates/BorrowedEquipments/edit.php:18
+#: templates/BorrowedEquipments/index.php:86
+#: templates/BorrowedEquipments/view.php:20 templates/Commissions/edit.php:15
+#: templates/Commissions/index.php:44 templates/Commissions/view.php:20
+#: templates/Commissions/view.php:80 templates/ConnectionProfiles/edit.php:17
+#: templates/ConnectionProfiles/index.php:70
+#: templates/ConnectionProfiles/view.php:21
+#: templates/ConnectionProfiles/view.php:160
+#: templates/ContractStates/edit.php:17 templates/ContractStates/index.php:68
+#: templates/ContractStates/view.php:20 templates/ContractVersions/edit.php:20
+#: templates/ContractVersions/index.php:82
+#: templates/ContractVersions/view.php:20 templates/Contracts/edit.php:26
+#: templates/Contracts/index.php:125 templates/Contracts/view.php:33
+#: templates/Countries/edit.php:14 templates/Countries/index.php:46
+#: templates/Countries/view.php:19 templates/Countries/view.php:119
+#: templates/CustomerLabels/edit.php:18 templates/CustomerLabels/index.php:75
+#: templates/CustomerLabels/view.php:20 templates/CustomerMessages/edit.php:16
+#: templates/CustomerMessages/index.php:82
+#: templates/CustomerMessages/view.php:20 templates/Customers/edit.php:19
+#: templates/Customers/view.php:46 templates/Customers/view.php:428
+#: templates/Customers/view.php:477 templates/Customers/view.php:530
+#: templates/Customers/view.php:613 templates/Customers/view.php:685
+#: templates/DealerCommissions/edit.php:17
+#: templates/DealerCommissions/index.php:66
+#: templates/DealerCommissions/view.php:20 templates/Emails/edit.php:15
+#: templates/Emails/index.php:59 templates/Emails/view.php:19
+#: templates/EquipmentTypes/edit.php:15 templates/EquipmentTypes/index.php:54
+#: templates/EquipmentTypes/view.php:20 templates/EquipmentTypes/view.php:116
+#: templates/EquipmentTypes/view.php:172 templates/IpAddresses/edit.php:16
+#: templates/IpAddresses/index.php:67 templates/IpAddresses/view.php:19
+#: templates/IpNetworks/edit.php:16 templates/IpNetworks/index.php:72
+#: templates/IpNetworks/view.php:19 templates/Labels/edit.php:18
+#: templates/Labels/index.php:84 templates/Labels/view.php:22
+#: templates/Labels/view.php:139 templates/Logins/edit.php:15
+#: templates/Logins/index.php:65 templates/Logins/view.php:19
+#: templates/Phones/edit.php:15 templates/Phones/index.php:59
+#: templates/Phones/view.php:19 templates/RemovedIpAddresses/edit.php:17
+#: templates/RemovedIpAddresses/index.php:73
+#: templates/RemovedIpAddresses/view.php:20
+#: templates/RemovedIpNetworks/edit.php:17
+#: templates/RemovedIpNetworks/index.php:71
+#: templates/RemovedIpNetworks/view.php:20
+#: templates/ServiceOverrides/edit.php:31
+#: templates/ServiceOverrides/index.php:117
+#: templates/ServiceOverrides/view.php:32 templates/ServiceTypes/edit.php:15
+#: templates/ServiceTypes/index.php:81 templates/ServiceTypes/view.php:20
+#: templates/ServiceTypes/view.php:155 templates/Services/edit.php:16
+#: templates/Services/index.php:72 templates/Services/view.php:23
+#: templates/SoldEquipments/edit.php:18 templates/SoldEquipments/index.php:78
+#: templates/SoldEquipments/view.php:20 templates/Tasks/edit.php:20
+#: templates/Tasks/view.php:15
+#: templates/element/Contracts/BorrowedEquipments.php:69
+#: templates/element/Contracts/ContractVersions.php:54
+#: templates/element/Contracts/IpAddresses.php:98
+#: templates/element/Contracts/IpNetworks.php:69
+#: templates/element/Contracts/RemovedIpAddresses.php:52
+#: templates/element/Contracts/RemovedIpNetworks.php:65
+#: templates/element/Contracts/SoldEquipments.php:63
+#: templates/element/Contracts/Tasks.php:70
+#: templates/element/Contracts/related.php:120
+msgid "Are you sure you want to delete # {0}?"
+msgstr "Opravdu chcete odstranit # {0}?"
+
+#: src/View/Helper/BillingHelper.php:37
+msgid ""
+"This billing has been invoiced for, so deleting it changes a period whose "
+"invoices have gone out."
+msgstr ""
+"Tato položka už byla vyfakturována, takže jejím odstraněním se změní období, "
+"za které už faktury odešly."
+
 #: templates/AccessCredentials/add.php:12
 #: templates/AccessCredentials/edit.php:12
 #: templates/AccessCredentials/index.php:41
@@ -4105,80 +4212,6 @@ msgstr "Potvrdit"
 msgid "Delete"
 msgstr "Odstranit"
 
-#: templates/AccessCredentials/edit.php:17
-#: templates/AccessCredentials/index.php:86
-#: templates/AccessCredentials/view.php:20
-#: templates/AccountingProfiles/edit.php:15
-#: templates/AccountingProfiles/index.php:60
-#: templates/AccountingProfiles/view.php:20
-#: templates/AccountingProfiles/view.php:123 templates/Addresses/edit.php:20
-#: templates/Addresses/index.php:103 templates/Addresses/view.php:19
-#: templates/AvailableConnections/view.php:38 templates/Billings/edit.php:20
-#: templates/Billings/index.php:93 templates/Billings/service_change.php:22
-#: templates/Billings/view.php:21 templates/BorrowedEquipments/edit.php:18
-#: templates/BorrowedEquipments/index.php:86
-#: templates/BorrowedEquipments/view.php:20 templates/Commissions/edit.php:15
-#: templates/Commissions/index.php:44 templates/Commissions/view.php:20
-#: templates/Commissions/view.php:80 templates/ConnectionProfiles/edit.php:17
-#: templates/ConnectionProfiles/index.php:70
-#: templates/ConnectionProfiles/view.php:21
-#: templates/ConnectionProfiles/view.php:160
-#: templates/ContractStates/edit.php:17 templates/ContractStates/index.php:68
-#: templates/ContractStates/view.php:20 templates/ContractVersions/edit.php:20
-#: templates/ContractVersions/index.php:82
-#: templates/ContractVersions/view.php:20 templates/Contracts/edit.php:26
-#: templates/Contracts/index.php:125 templates/Contracts/view.php:33
-#: templates/Countries/edit.php:14 templates/Countries/index.php:46
-#: templates/Countries/view.php:19 templates/Countries/view.php:119
-#: templates/CustomerLabels/edit.php:18 templates/CustomerLabels/index.php:75
-#: templates/CustomerLabels/view.php:20 templates/CustomerMessages/edit.php:16
-#: templates/CustomerMessages/index.php:82
-#: templates/CustomerMessages/view.php:20 templates/Customers/edit.php:19
-#: templates/Customers/view.php:46 templates/Customers/view.php:428
-#: templates/Customers/view.php:477 templates/Customers/view.php:530
-#: templates/Customers/view.php:613 templates/Customers/view.php:685
-#: templates/DealerCommissions/edit.php:17
-#: templates/DealerCommissions/index.php:66
-#: templates/DealerCommissions/view.php:20 templates/Emails/edit.php:15
-#: templates/Emails/index.php:59 templates/Emails/view.php:19
-#: templates/EquipmentTypes/edit.php:15 templates/EquipmentTypes/index.php:54
-#: templates/EquipmentTypes/view.php:20 templates/EquipmentTypes/view.php:116
-#: templates/EquipmentTypes/view.php:172 templates/IpAddresses/edit.php:16
-#: templates/IpAddresses/index.php:67 templates/IpAddresses/view.php:19
-#: templates/IpNetworks/edit.php:16 templates/IpNetworks/index.php:72
-#: templates/IpNetworks/view.php:19 templates/Labels/edit.php:18
-#: templates/Labels/index.php:84 templates/Labels/view.php:22
-#: templates/Labels/view.php:139 templates/Logins/edit.php:15
-#: templates/Logins/index.php:65 templates/Logins/view.php:19
-#: templates/Phones/edit.php:15 templates/Phones/index.php:59
-#: templates/Phones/view.php:19 templates/RemovedIpAddresses/edit.php:17
-#: templates/RemovedIpAddresses/index.php:73
-#: templates/RemovedIpAddresses/view.php:20
-#: templates/RemovedIpNetworks/edit.php:17
-#: templates/RemovedIpNetworks/index.php:71
-#: templates/RemovedIpNetworks/view.php:20
-#: templates/ServiceOverrides/edit.php:31
-#: templates/ServiceOverrides/index.php:117
-#: templates/ServiceOverrides/view.php:32 templates/ServiceTypes/edit.php:15
-#: templates/ServiceTypes/index.php:81 templates/ServiceTypes/view.php:20
-#: templates/ServiceTypes/view.php:155 templates/Services/edit.php:16
-#: templates/Services/index.php:72 templates/Services/view.php:23
-#: templates/Services/view.php:147 templates/SoldEquipments/edit.php:18
-#: templates/SoldEquipments/index.php:78 templates/SoldEquipments/view.php:20
-#: templates/Tasks/edit.php:20 templates/Tasks/view.php:15
-#: templates/element/Contracts/Billings.php:89
-#: templates/element/Contracts/BorrowedEquipments.php:69
-#: templates/element/Contracts/ContractVersions.php:54
-#: templates/element/Contracts/IpAddresses.php:98
-#: templates/element/Contracts/IpNetworks.php:69
-#: templates/element/Contracts/RemovedIpAddresses.php:52
-#: templates/element/Contracts/RemovedIpNetworks.php:65
-#: templates/element/Contracts/SoldEquipments.php:63
-#: templates/element/Contracts/Tasks.php:70
-#: templates/element/Contracts/related.php:120
-msgid "Are you sure you want to delete # {0}?"
-msgstr "Opravdu chcete odstranit # {0}?"
-
 #: templates/AccessCredentials/edit.php:32
 #: templates/AccessCredentials/view.php:12
 msgid "Edit Access Credential"
@@ -4383,6 +4416,7 @@ msgstr "Přístupové oprávnění"
 #: templates/element/ContractChecks/billing_service_type_mismatch.php:20
 #: templates/element/ContractChecks/contract.php:23
 #: templates/element/ContractChecks/contract_version_gap.php:20
+#: templates/element/ContractChecks/implausible_conclusion_date.php:23
 #: templates/element/ContractChecks/impossible_billing_period.php:20
 #: templates/element/ContractChecks/impossible_borrowed_period.php:23
 #: templates/element/ContractChecks/impossible_contract_dates.php:21
@@ -8487,6 +8521,16 @@ msgstr "Další platná od"
 msgid "Days Without a Version"
 msgstr "Dnů bez verze"
 
+#: templates/element/ContractChecks/implausible_conclusion_date.php:13
+msgid ""
+"A version is concluded not long before or after the day it takes effect, "
+"never after it ends and never ahead of today. A day outside that is usually "
+"a mistyped year."
+msgstr ""
+"Verze se uzavírá krátce před začátkem své platnosti nebo krátce po něm, "
+"nikdy po svém konci a nikdy s datem v budoucnu. Jiné datum bývá obvykle "
+"překlep v roce."
+
 #: templates/element/ContractChecks/impossible_billing_period.php:13
 msgid "A billing that ends before it begins invoices nothing at all."
 msgstr "Fakturace, která končí dřív, než začíná, nenafakturuje vůbec nic."
@@ -8669,12 +8713,8 @@ msgstr ""
 "do záznamů neaplikují."
 
 #: templates/element/ContractChecks/unsigned_contract_version.php:17
-msgid ""
-"Either nothing says when it was concluded, or what says so is from long "
-"before it took effect."
-msgstr ""
-"Buď nic neříká, kdy byla uzavřená, nebo je to z doby dlouho před začátkem "
-"její platnosti."
+msgid "Nothing says when it was concluded."
+msgstr "Nic neříká, kdy byla uzavřená."
 
 #: templates/element/ContractChecks/unsigned_contract_version.php:53
 msgctxt "sending date"
@@ -9267,6 +9307,18 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:287
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid ""
+#~ "How long before a contract version takes effect it may have been "
+#~ "concluded."
+#~ msgstr "Jak dlouho před začátkem platnosti verze smlouvy smí být uzavřená."
+
+#~ msgid ""
+#~ "Either nothing says when it was concluded, or what says so is from long "
+#~ "before it took effect."
+#~ msgstr ""
+#~ "Buď nic neříká, kdy byla uzavřená, nebo je to z doby dlouho před začátkem "
+#~ "její platnosti."
 
 #~ msgid "contract proposals created and never sent"
 #~ msgstr "návrhů smluv vytvořených a nikdy neodeslaných"

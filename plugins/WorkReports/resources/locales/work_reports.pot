@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-24 11:49+0200\n"
+"POT-Creation-Date: 2026-10-27 17:20+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -30,11 +30,11 @@ msgstr ""
 msgid "Hours an on-call public holiday is worth."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/AppController.php:120
+#: ./plugins/WorkReports/src/Controller/AppController.php:138
 msgid "These reports are not yours to change."
 msgstr ""
 
-#: ./plugins/WorkReports/src/Controller/AppController.php:134
+#: ./plugins/WorkReports/src/Controller/AppController.php:152
 msgid "These reports are not yours to see."
 msgstr ""
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-09-24 11:49+0200\n"
+"POT-Creation-Date: 2026-10-27 17:20+0100\n"
 "PO-Revision-Date: 2026-09-22 01:00+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -30,11 +30,11 @@ msgstr "Kolik hodin má den pohotovosti o víkendu."
 msgid "Hours an on-call public holiday is worth."
 msgstr "Kolik hodin má den pohotovosti ve státní svátek."
 
-#: plugins/WorkReports/src/Controller/AppController.php:120
+#: plugins/WorkReports/src/Controller/AppController.php:138
 msgid "These reports are not yours to change."
 msgstr "Tyto výkazy nemůžete měnit."
 
-#: plugins/WorkReports/src/Controller/AppController.php:134
+#: plugins/WorkReports/src/Controller/AppController.php:152
 msgid "These reports are not yours to see."
 msgstr "Tyto výkazy nemůžete zobrazit."
 
