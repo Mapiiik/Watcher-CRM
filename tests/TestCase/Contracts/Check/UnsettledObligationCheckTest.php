@@ -119,6 +119,24 @@ class UnsettledObligationCheckTest extends TestCase
     }
 
     /**
+     * A version re-signed over by a new contract has outlived nothing: the customer is bound by
+     * the term of the one that replaced it.
+     *
+     * @return void
+     * @link \App\Contracts\Check\UnsettledObligationCheck::find()
+     */
+    public function testATermOfAReplacedVersionIsNotReported(): void
+    {
+        // the contract runs on under the new version
+        $this->Contracts->updateAll(['termination_date' => null], ['id' => self::CONTRACT_ID]);
+
+        $this->agreed('-1 month', '-1 day', '+2 years');
+        $this->agreed('today', null, '+2 years');
+
+        $this->assertSame([], $this->found());
+    }
+
+    /**
      * A term already run out has nothing left to ask for and nothing left to waive, so daily
      * work is not shown a list of things that cannot be done.
      *

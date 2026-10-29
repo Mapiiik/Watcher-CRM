@@ -80,7 +80,8 @@ class UnsettledObligationCheck extends AbstractContractCheck
     #[Override]
     public function find(): SelectQuery
     {
-        $query = $this->versions->find();
+        // A version re-signed over has outlived nothing: the term that binds is the new one's.
+        $query = $this->versions->find('notReplaced');
 
         $query
             ->contain(['Contracts' => ['Customers']])

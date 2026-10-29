@@ -84,22 +84,34 @@ class ContractVersionsTable extends AppTable
     {
         $today = Date::today();
 
+        return $this->findNotReplaced($query->where([
+            'ContractVersions.obligations_settled' => false,
+            'ContractVersions.obligation_until >=' => $today,
+            'ContractVersions.obligation_until <=' => $today->addDays($within_days),
+        ]));
+    }
+
+    /**
+     * Versions no later version of the same contract has taken over from.
+     *
+     * A replaced version keeps its term on record, but the term that binds the customer is the
+     * one on the version that replaced it.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersion> $query The query to scope.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\ContractVersion>
+     */
+    public function findNotReplaced(SelectQuery $query): SelectQuery
+    {
         $replaced = $this->getConnection()
             ->selectQuery()
             ->select(1)
-            ->from(['LaterVersions' => 'contract_versions'])
+            ->from(['LaterVersions' => $this->getTable()])
             ->where([
-                'LaterVersions.contract_id' => new IdentifierExpression('ContractVersions.contract_id'),
-                'LaterVersions.valid_from >' => new IdentifierExpression('ContractVersions.valid_from'),
+                'LaterVersions.contract_id' => new IdentifierExpression($this->aliasField('contract_id')),
+                'LaterVersions.valid_from >' => new IdentifierExpression($this->aliasField('valid_from')),
             ]);
 
-        return $query
-            ->where([
-                'ContractVersions.obligations_settled' => false,
-                'ContractVersions.obligation_until >=' => $today,
-                'ContractVersions.obligation_until <=' => $today->addDays($within_days),
-            ])
-            ->where(fn(QueryExpression $exp): QueryExpression => $exp->notExists($replaced));
+        return $query->where(fn(QueryExpression $exp): QueryExpression => $exp->notExists($replaced));
     }
 
     /**

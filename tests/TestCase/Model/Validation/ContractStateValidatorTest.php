@@ -399,6 +399,71 @@ class ContractStateValidatorTest extends TestCase
     }
 
     /**
+     * A term still running binds the customer, so the state waits for it to be settled.
+     *
+     * @return void
+     * @link \App\Model\Validation\ContractStateValidator::validateRequiresNoActiveObligations()
+     */
+    public function testAnObligationStillRunningIsRefused(): void
+    {
+        $this->versionsAgreed([['-1 year', null, '+1 year']]);
+
+        $errors = (new ContractStateValidator())->validate(
+            $this->contractChangingIntoAStateWith(['requires_no_active_obligations' => true]),
+        );
+
+        $this->assertArrayHasKey('contract_state_id', $errors);
+    }
+
+    /**
+     * A version re-signed over by a new contract keeps its term on record, but what binds the
+     * customer is the version that replaced it.
+     *
+     * @return void
+     * @link \App\Model\Validation\ContractStateValidator::validateRequiresNoActiveObligations()
+     */
+    public function testAnObligationOfAReplacedVersionIsTaken(): void
+    {
+        $this->versionsAgreed([
+            ['-1 year', '-1 day', '+1 year'],
+            ['today', null, null],
+        ]);
+
+        $errors = (new ContractStateValidator())->validate(
+            $this->contractChangingIntoAStateWith(['requires_no_active_obligations' => true]),
+        );
+
+        $this->assertSame([], $errors);
+    }
+
+    /**
+     * Replaces the contract's versions with the given ones, days relative to today.
+     *
+     * @param list<array{0: string, 1: string|null, 2: string|null}> $versions Each one's start,
+     *   end and obligation.
+     * @return void
+     */
+    private function versionsAgreed(array $versions): void
+    {
+        $table = $this->getTableLocator()->get('ContractVersions');
+        $table->deleteAll(['contract_id' => self::CONTRACT_ID]);
+
+        $day = fn(?string $modifier): ?string => $modifier === null
+            ? null
+            : Date::now()->modify($modifier)->format('Y-m-d');
+
+        foreach ($versions as [$from, $until, $obligation]) {
+            $table->saveOrFail($table->newEntity([
+                'contract_id' => self::CONTRACT_ID,
+                'valid_from' => $day($from),
+                'valid_until' => $day($until),
+                'obligation_until' => $day($obligation),
+                'number_of_amendments' => 0,
+            ]));
+        }
+    }
+
+    /**
      * Equipment lent on past the uninstallation is hardware nobody is going to come back for.
      *
      * @return void

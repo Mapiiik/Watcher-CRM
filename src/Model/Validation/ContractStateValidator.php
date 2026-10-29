@@ -879,7 +879,8 @@ class ContractStateValidator
         $contractVersionsTable = $this->fetchTable(ContractVersionsTable::class);
         $today = Date::now();
 
-        $exists = $contractVersionsTable->find()
+        // A version re-signed over does not bind: the term of the one that replaced it does.
+        $exists = $contractVersionsTable->find('notReplaced')
             ->where([
                 'contract_id' => $contract->id,
                 'obligation_until IS NOT' => null,
