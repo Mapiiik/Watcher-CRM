@@ -1134,8 +1134,8 @@ class ContractPDF extends AppPDF
     }
 
     /**
-     * The exchange protocol: what goes back and in what state, what is lent in its place, and what
-     * the customer is confirming by signing.
+     * The exchange protocol: what goes back and in what state, everything borrowed once the
+     * exchange is done, and what the customer is confirming by signing.
      *
      * The installation protocol with the returned equipment of the uninstallation one in it, so
      * that a swapped box is one paper rather than two. The day of the exchange and who took the
@@ -1175,10 +1175,12 @@ class ContractPDF extends AppPDF
         $this->printTableCaption($this->handoverText('texts.uninstallation_equipment_state'));
         $this->printParagraph($checks, gap: 4.0);
 
+        // Everything borrowed once the exchange is done, so the protocol is the whole list the
+        // contract speaks of from that day, what stays included.
         $this->printSectionHeading($this->handoverText('sections.exchange_borrowed'));
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         $this->printTableCaption($this->handoverText('texts.borrowed_equipment_intro'));
-        $this->printBorrowedEquipmentTable($moved->lent ?? [], padTo: 0);
+        $this->printBorrowedEquipmentTable($data->equipmentLentAfterwards(), padTo: 0);
         $this->Ln(2);
         $this->printParagraph($this->handoverText('texts.borrowed_equipment_return'), gap: 2.0);
 

@@ -675,7 +675,7 @@ return [
                         'uninstallation_borrowed_equipment' => 'Poskytnutá zařízení, jejich stav a náhrada nákladů',
                         'uninstallation_cash_payment' => 'Úhrada v hotovosti',
                         'exchange_returned' => 'Vrácená zařízení a jejich stav',
-                        'exchange_borrowed' => 'Nově poskytnutá zařízení',
+                        'exchange_borrowed' => 'Poskytnutá zařízení po výměně',
                     ],
 
                     'texts' => [
@@ -793,11 +793,11 @@ return [
                         'exchange_received_on_site' => 'Za Uživatele převzal na místě (jméno a podpis): ____________________',
 
                         'exchange_final_statements_text' => <<<TEXT
-                            Smluvní strany se dohodly, že zařízení uvedená v části Vrácená zařízení a jejich stav se ke dni výměny uvedenému v tomto předávacím protokolu nahrazují zařízeními uvedenými v části Nově poskytnutá zařízení. Ode dne výměny se ustanovení Smlouvy o Poskytnutých zařízeních vztahují na nově poskytnutá zařízení. Tento předávací protokol je nedílnou součástí Smlouvy č. {contract_number}. Ostatní ustanovení Smlouvy zůstávají beze změny.
+                            Smluvní strany se dohodly, že ke dni výměny uvedenému v tomto předávacím protokolu Uživatel vrací Poskytovateli zařízení uvedená v části Vrácená zařízení a jejich stav a že Poskytnutými zařízeními podle Smlouvy jsou ode dne výměny zařízení uvedená v části Poskytnutá zařízení po výměně. Tento předávací protokol je nedílnou součástí Smlouvy č. {contract_number}. Ostatní ustanovení Smlouvy zůstávají beze změny.
 
                             Poskytovatel svým podpisem stvrzuje, že zařízení, která mu byla vrácena, převzal ve stavu popsaném výše.
 
-                            Uživatel svým podpisem stvrzuje, že nově poskytnutá zařízení převzal nainstalovaná a plně funkční.
+                            Uživatel svým podpisem stvrzuje, že zařízení uvedená v části Poskytnutá zařízení po výměně má nainstalovaná a plně funkční.
 
                             Uživatel se zavazuje uhradit částky uvedené v části Aktivační poplatek, prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).
 
