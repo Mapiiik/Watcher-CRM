@@ -628,7 +628,7 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'changes',
                 'message' => __('A borrowed equipment can be ended only by a contract replacing an'
-                    . ' earlier version, once, and only if the snapshot knows it.'),
+                    . ' earlier version or by an exchange, once, and only if the snapshot knows it.'),
             ],
         );
 
