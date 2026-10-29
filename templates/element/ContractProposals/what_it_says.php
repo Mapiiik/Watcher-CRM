@@ -11,6 +11,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool, dropped: bool}> $rows
+ * @var array<array{equipment: \App\Model\Entity\BorrowedEquipment, line: \App\Contracts\Proposal\ProposedEquipment|null}> $equipmentRows
  * @var list<\App\Contracts\Proposal\PlannedChange> $planned
  * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
@@ -30,6 +31,12 @@ $answered = $confirmations->toArray();
     'mayBeEdited' => $mayBeEdited,
 ]) ?>
 
+<?= $this->element('ContractProposals/proposed_equipments', [
+    'contractProposal' => $contractProposal,
+    'equipmentRows' => $equipmentRows,
+    'mayBeEdited' => $mayBeEdited,
+]) ?>
+
 <?php if ($planned !== []) : ?>
     <h4><?= __('Changes to the records') ?></h4>
     <?= $this->element('ContractProposals/planned_changes', [
@@ -39,6 +46,7 @@ $answered = $confirmations->toArray();
 <?php endif; ?>
 
 <?php if ($answered !== []) : ?>
+    <br>
     <h4><?= __('What was confirmed') ?></h4>
     <table>
         <?php foreach (ProposalConfirmations::QUESTIONS as $question) : ?>

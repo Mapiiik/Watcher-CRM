@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposalSnapshot;
+use App\Contracts\Proposal\ProposedEquipment;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
@@ -345,6 +346,7 @@ class ContractProposalsTable extends AppTable
         );
 
         $this->addShapeRules($rules);
+        $this->addEquipmentRules($rules);
         $this->addBelongingRules($rules);
         $this->addTerminationRules($rules);
         $this->addPaperworkRules($rules);
@@ -463,6 +465,96 @@ class ContractProposalsTable extends AppTable
             [
                 'errorField' => 'changes',
                 'message' => __('Two proposed changes refer to the same billing.'),
+            ],
+        );
+    }
+
+    /**
+     * What a proposal may say about the equipment lent with the contract.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return void
+     */
+    private function addEquipmentRules(RulesChecker $rules): void
+    {
+        // Equipment changes hands with papers that set it down, which a change of services and an
+        // ending are not.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                $changes = $this->readChanges($entity);
+
+                return $changes === null || $changes->equipments === [] || $entity->purpose->movesEquipment();
+            },
+            'equipmentMovesWithANewContract',
+            [
+                'errorField' => 'changes',
+                'message' => __('Only a new contract can add or end borrowed equipments.'),
+            ],
+        );
+
+        // Taken back is only what the contract lent before, which a contract replacing an earlier
+        // version has and the snapshot knows - once each, or it would be returned twice.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                $changes = $this->readChanges($entity);
+                $snapshot = $this->readSnapshot($entity);
+
+                if ($changes === null || $snapshot === null) {
+                    return true;
+                }
+
+                $named = [];
+
+                foreach ($changes->equipments as $line) {
+                    if (!$line->takesBack()) {
+                        continue;
+                    }
+
+                    $id = (string)$line->borrowed_equipment_id;
+
+                    if (
+                        !$entity->mayTakeEquipmentBack()
+                        || !$snapshot->knowsBorrowedEquipment($id)
+                        || in_array($id, $named, true)
+                    ) {
+                        return false;
+                    }
+
+                    $named[] = $id;
+                }
+
+                return true;
+            },
+            'equipmentTakenBackIsInTheSnapshot',
+            [
+                'errorField' => 'changes',
+                'message' => __('A borrowed equipment can be ended only by a contract replacing an'
+                    . ' earlier version, once, and only if the snapshot knows it.'),
+            ],
+        );
+
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                $lent = $this->readChanges($entity)?->equipmentLent() ?? [];
+
+                if ($lent === []) {
+                    return true;
+                }
+
+                $kinds = array_values(array_unique(array_map(
+                    fn(ProposedEquipment $line): string => (string)$line->equipment_type_id,
+                    $lent,
+                )));
+
+                return TableRegistry::getTableLocator()->get('EquipmentTypes')
+                    ->find()
+                    ->where(['EquipmentTypes.id IN' => $kinds])
+                    ->count() === count($kinds);
+            },
+            'equipmentLentIsOfAKnownType',
+            [
+                'errorField' => 'changes',
+                'message' => __('A borrowed equipment of the proposal is of a type that does not exist.'),
             ],
         );
     }

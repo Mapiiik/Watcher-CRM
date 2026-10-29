@@ -47,6 +47,8 @@ class ChangeApplicationTest extends TestCase
      */
     private const GONE_LINE_ID = 'l1000000-0000-4000-8000-000000000001';
 
+    private const EQUIPMENT_TYPE_ID = '582ff5cb-62c6-42bd-a1bb-7f3d167124a4';
+
     /**
      * Fixtures
      *
@@ -68,6 +70,8 @@ class ChangeApplicationTest extends TestCase
         'app.Billings',
         'app.CustomerProposals',
         'app.ContractProposals',
+        'app.EquipmentTypes',
+        'app.BorrowedEquipments',
         'plugin.Settings.Settings',
     ];
 
@@ -938,5 +942,162 @@ class ChangeApplicationTest extends TestCase
                 ->get(self::OPEN_BILLING_ID)
                 ->billing_until?->toDateString(),
         );
+    }
+
+    /**
+     * A new contract swapping one box for another: the old one goes back and the new one is lent,
+     * both on the day the equipment changed hands rather than on the day the papers take effect.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::applyTheEquipment()
+     */
+    public function testEquipmentIsSwappedOnTheDayItChangedHands(): void
+    {
+        $lent = $this->aPieceLent();
+
+        (new ChangeApplication())->apply($this->swapping($lent), handed_over_on: new Date('2026-10-25'));
+
+        $equipments = $this->getTableLocator()->get('BorrowedEquipments');
+        $this->assertSame('2026-10-25', $equipments->get($lent)->borrowed_until?->toDateString());
+
+        /** @var \App\Model\Entity\BorrowedEquipment $new */
+        $new = $equipments->find()
+            ->where(['contract_id' => self::CONTRACT_ID, 'serial_number' => 'SN-NEW-1'])
+            ->firstOrFail();
+        $this->assertSame('2026-10-25', $new->borrowed_from?->toDateString());
+        $this->assertNull($new->borrowed_until);
+        $this->assertSame(self::EQUIPMENT_TYPE_ID, (string)$new->equipment_type_id);
+    }
+
+    /**
+     * Equipment is recorded once it is handed over, so a day still to come is refused.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::apply()
+     */
+    public function testEquipmentIsNotHandedOverOnADayStillToCome(): void
+    {
+        $proposal = $this->swapping($this->aPieceLent());
+
+        $this->expectException(RuntimeException::class);
+
+        (new ChangeApplication())->apply($proposal, handed_over_on: Date::today()->addDays(1));
+    }
+
+    /**
+     * A piece somebody took back by hand while the papers were out keeps the day they wrote.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::applyTheEquipment()
+     */
+    public function testEquipmentReturnedByHandIsLeftAsItIs(): void
+    {
+        $lent = $this->aPieceLent();
+        $proposal = $this->swapping($lent);
+
+        $equipments = $this->getTableLocator()->get('BorrowedEquipments');
+        $equipments->updateAll(['borrowed_until' => '2026-10-01'], ['id' => $lent]);
+
+        (new ChangeApplication())->apply($proposal, handed_over_on: new Date('2026-10-25'));
+
+        $this->assertSame('2026-10-01', $equipments->get($lent)->borrowed_until?->toDateString());
+    }
+
+    /**
+     * A piece that is no longer on file stops everything, and nothing is written - unless it may be
+     * passed over, and then it is written down for somebody to see to.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::applyTheEquipment()
+     */
+    public function testEquipmentThatIsGoneStopsItUnlessItMayBeLeftOut(): void
+    {
+        $lent = $this->aPieceLent();
+        $proposal = $this->swapping($lent);
+
+        $equipments = $this->getTableLocator()->get('BorrowedEquipments');
+        $equipments->deleteAll(['id' => $lent]);
+        $newOnes = fn(): int => $equipments->find()->where(['serial_number' => 'SN-NEW-1'])->count();
+
+        try {
+            (new ChangeApplication())->apply($proposal, handed_over_on: new Date('2026-10-25'));
+            $this->fail('A return of equipment that is gone was applied.');
+        } catch (RuntimeException) {
+            $this->assertSame(0, $newOnes(), 'Something was written although it stopped.');
+        }
+
+        $proposal = $this->proposal();
+        (new ChangeApplication())->apply(
+            $proposal,
+            leave_out_what_is_gone: true,
+            handed_over_on: new Date('2026-10-25'),
+        );
+
+        $this->assertSame(1, $newOnes());
+        $this->assertArrayHasKey(
+            'return',
+            $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->whatWasLeftOut(),
+        );
+    }
+
+    /**
+     * A piece of equipment lent on the contract by the previous papers.
+     *
+     * @return string Its id.
+     */
+    private function aPieceLent(): string
+    {
+        $equipments = $this->getTableLocator()->get('BorrowedEquipments');
+        $equipment = $equipments->newEntity([
+            'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
+            'contract_id' => self::CONTRACT_ID,
+            'equipment_type_id' => self::EQUIPMENT_TYPE_ID,
+            'serial_number' => 'SN-OLD-1',
+            'borrowed_from' => '2022-01-01',
+        ]);
+        $equipments->saveOrFail($equipment);
+
+        return (string)$equipment->id;
+    }
+
+    /**
+     * A signed new contract replacing the earlier version that takes the given piece back and lends
+     * a new one in its place.
+     *
+     * @param string $lent The piece taken back.
+     * @return \App\Model\Entity\ContractProposal
+     */
+    private function swapping(string $lent): ContractProposal
+    {
+        $replaced = $this->theVersionTheNewPapersTakeOverFrom();
+
+        $snapshot = $this->proposalWithoutAVersion([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'effective_from' => '2026-11-01',
+            'conclusion_date' => '2026-10-20',
+            'terminates_contract_version_id' => $replaced->id,
+            'terminated_contract_number' => '2022/0001',
+        ])->snapshot;
+        $snapshot['borrowed_equipments'] = [[
+            'id' => $lent,
+            'serial_number' => 'SN-OLD-1',
+            'equipment_type' => ['id' => self::EQUIPMENT_TYPE_ID, 'name' => 'Old box', 'price' => '1.00'],
+        ]];
+
+        return $this->proposal([
+            'snapshot' => $snapshot,
+            'changes' => [
+                'equipments' => [
+                    ['id' => 'return', 'move' => 'return', 'borrowed_equipment_id' => $lent],
+                    [
+                        'id' => 'lend',
+                        'move' => 'lend',
+                        'equipment_type_id' => self::EQUIPMENT_TYPE_ID,
+                        'serial_number' => 'SN-NEW-1',
+                        'equipment_type' => ['id' => self::EQUIPMENT_TYPE_ID, 'name' => 'New box', 'price' => '1.00'],
+                    ],
+                ],
+            ],
+        ]);
     }
 }

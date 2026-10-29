@@ -67,6 +67,7 @@ foreach ($parts as $part) {
                     'planned' => $part['planned'],
                     'billingsNow' => $part['billingsNow'],
                     'billingsAfterwards' => $part['billingsAfterwards'],
+                    'equipmentMoved' => $part['equipmentMoved'],
                 ]) ?>
                 </div>
                 <br>
@@ -89,6 +90,18 @@ foreach ($parts as $part) {
                     <p><?= __('Either all of the changes are applied, or none of them. A partly'
                         . ' applied proposal would leave no trace of which part went through.') ?></p>
                 <?php endif; ?>
+                <?php foreach ($parts as $part) : ?>
+                    <?php if ($part['handedOverOn'] !== null) : ?>
+                        <?= $this->Form->control('handed_over_on.' . $part['papers']->id, [
+                            'type' => 'date',
+                            'value' => $part['handedOverOn'],
+                            'label' => __('Borrowed Equipments Handed Over On - {0}', $part['papers']->getName()),
+                            'help' => __('Borrowed equipments the proposal adds are borrowed from this day,'
+                                . ' and the ones it ends are borrowed until it. Change it where the'
+                                . ' installation took place on another day.'),
+                        ]) ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
                 <?php if ($closed_period_override) : ?>
                     <?= $this->Form->control(BillingsTable::ALLOW_CLOSED_PERIODS, [
                         'type' => 'checkbox',

@@ -11,7 +11,10 @@
  * @var array<\App\Model\Entity\Billing> $billingsNow
  * @var array<\App\Model\Entity\Billing> $billingsAfterwards
  * @var list<\App\Contracts\Proposal\PlannedChange> $planned
+ * @var list<array{equipment: \App\Model\Entity\BorrowedEquipment, line: \App\Contracts\Proposal\ProposedEquipment}> $equipmentMoved
  */
+
+$equipmentMoved ??= [];
 
 $changesNothing = $contractProposal->proposedChanges()->isEmpty();
 ?>
@@ -40,6 +43,20 @@ $changesNothing = $contractProposal->proposedChanges()->isEmpty();
         <?= $this->element('ContractProposals/billings', ['billings' => $billingsAfterwards]) ?>
     </div>
 </div>
+<?php endif; ?>
+
+<?php if ($equipmentMoved !== []) : ?>
+    <h5><?= __('Borrowed Equipments') ?></h5>
+    <ul>
+        <?php foreach ($equipmentMoved as $moved) : ?>
+            <li><?= h(sprintf(
+                '%s: %s%s',
+                $moved['line']->move->label(),
+                $moved['equipment']->equipment_type->name ?? '',
+                $moved['equipment']->serial_number === null ? '' : ' (' . $moved['equipment']->serial_number . ')',
+            )) ?></li>
+        <?php endforeach; ?>
+    </ul>
 <?php endif; ?>
 
 <?php if ($planned !== []) : ?>

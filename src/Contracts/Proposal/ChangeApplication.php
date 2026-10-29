@@ -9,6 +9,7 @@ use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Table\BillingsTable;
 use App\Model\Table\ContractProposalsTable;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use RuntimeException;
@@ -41,8 +42,12 @@ final class ChangeApplication
      * @param string|null $by Who is applying it.
      * @param bool $reach_into_closed_periods Whether invoiced periods may be written into.
      * @param bool $go_below_minimum Whether any line may price the connection below the minimum.
-     * @param bool $leave_out_what_is_gone Whether a line whose billing is no longer on the
-     *   contract may be passed over and written down rather than stopping the whole thing.
+     * @param bool $leave_out_what_is_gone Whether a line whose billing or equipment is no longer
+     *   on the contract may be passed over and written down rather than stopping the whole thing.
+     * @param \App\Model\Audit\AuditTrail|null $trail What the writes are logged under, where the
+     *   proposal is one part of a larger act.
+     * @param \Cake\I18n\Date|null $handed_over_on The day the equipment changed hands; the day the
+     *   proposal takes effect when not said, but never a day still to come.
      * @return void
      * @throws \RuntimeException When the proposal is in no state to be applied.
      */
@@ -53,9 +58,18 @@ final class ChangeApplication
         bool $go_below_minimum = false,
         bool $leave_out_what_is_gone = false,
         ?AuditTrail $trail = null,
+        ?Date $handed_over_on = null,
     ): void {
         if (!$proposal->hasBeenConcluded()) {
             throw new RuntimeException('A proposal is not carried over before it has been concluded.');
+        }
+
+        $handed_over_on ??= self::handedOverOnByDefault($proposal);
+
+        if ($handed_over_on->greaterThan(Date::today())) {
+            throw new RuntimeException(
+                'A borrowed equipment cannot be recorded as handed over on a day still to come.',
+            );
         }
 
         if (!$proposal->isOpen()) {
@@ -78,6 +92,7 @@ final class ChangeApplication
                 $leave_out_what_is_gone,
                 $proposals,
                 $trail,
+                $handed_over_on,
             ): void {
                 $options = [
                     BillingsTable::ALLOW_CLOSED_PERIODS => $reach_into_closed_periods,
@@ -88,6 +103,7 @@ final class ChangeApplication
                 $planned = (new ChangePlan())->of($proposal);
 
                 $this->applyTheBillings($proposal, $options, $go_below_minimum, $leave_out_what_is_gone);
+                $this->applyTheEquipment($proposal, $options, $handed_over_on, $leave_out_what_is_gone);
 
                 // A contract that keeps no versions never gets one, not even from a new contract.
                 if ($proposal->keepsVersions()) {
@@ -105,6 +121,22 @@ final class ChangeApplication
         if ($alone) {
             $trail->flush($proposals, $proposal);
         }
+    }
+
+    /**
+     * The day the equipment is taken to have changed hands where nobody said otherwise.
+     *
+     * The day the proposal takes effect, unless that is still to come: equipment is recorded once
+     * it is handed over, and the papers are often printed ahead.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return \Cake\I18n\Date
+     */
+    public static function handedOverOnByDefault(ContractProposal $proposal): Date
+    {
+        $today = Date::today();
+
+        return $proposal->effective_from->greaterThan($today) ? $today : $proposal->effective_from;
     }
 
     /**
@@ -179,6 +211,79 @@ final class ChangeApplication
 
             if ($to_save !== [] && $billings->saveMany($to_save, $allowed + $options) === false) {
                 throw new RuntimeException($this->whatWentWrong($to_save));
+            }
+        }
+    }
+
+    /**
+     * Takes back and lends what the proposal says, on the day the equipment changed hands.
+     *
+     * The live records are what is written onto. A piece already taken back by hand is left as it
+     * is, and a piece that is no longer on file stops everything unless it may be written down.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param array<string, mixed> $options What to save with.
+     * @param \Cake\I18n\Date $handed_over_on The day the equipment changed hands.
+     * @param bool $leave_out_what_is_gone Whether a piece that has gone is passed over.
+     * @return void
+     * @throws \RuntimeException When the records will not take it.
+     */
+    private function applyTheEquipment(
+        ContractProposal $proposal,
+        array $options,
+        Date $handed_over_on,
+        bool $leave_out_what_is_gone,
+    ): void {
+        $changes = $proposal->proposedChanges();
+
+        if ($changes->equipments === []) {
+            return;
+        }
+
+        $equipments = $this->fetchTable('BorrowedEquipments');
+        $contract = $this->fetchTable('Contracts')->get($proposal->contract_id);
+
+        foreach ($changes->equipments as $line) {
+            if ($line->takesBack()) {
+                $lent = $equipments->find()
+                    ->where(['BorrowedEquipments.id' => $line->borrowed_equipment_id])
+                    ->first();
+
+                if ($lent === null) {
+                    if (!$leave_out_what_is_gone) {
+                        throw new RuntimeException(sprintf(
+                            'The borrowed equipment %s this proposal ends is no longer on the contract.',
+                            (string)$line->borrowed_equipment_id,
+                        ));
+                    }
+
+                    $proposal->set('left_out', $proposal->whatWasLeftOut() + [
+                        $line->id => sprintf(
+                            'The borrowed equipment %s is no longer on the contract.',
+                            (string)$line->borrowed_equipment_id,
+                        ),
+                    ]);
+
+                    continue;
+                }
+
+                if ($lent->get('borrowed_until') !== null) {
+                    continue;
+                }
+
+                $equipments->patchEntity($lent, ['borrowed_until' => $handed_over_on->toDateString()]);
+            } else {
+                $lent = $equipments->newEntity([
+                    'customer_id' => $contract->customer_id,
+                    'contract_id' => $proposal->contract_id,
+                    'equipment_type_id' => $line->equipment_type_id,
+                    'serial_number' => $line->serial_number,
+                    'borrowed_from' => $handed_over_on->toDateString(),
+                ]);
+            }
+
+            if (!$equipments->save($lent, $options)) {
+                throw new RuntimeException($this->whatWentWrong([$lent]));
             }
         }
     }

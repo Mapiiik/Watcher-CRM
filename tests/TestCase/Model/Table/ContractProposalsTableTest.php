@@ -90,6 +90,7 @@ class ContractProposalsTableTest extends TestCase
         'app.Billings',
         'app.CustomerProposals',
         'app.ContractProposals',
+        'app.EquipmentTypes',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
         'plugin.Settings.Settings',
@@ -669,6 +670,44 @@ class ContractProposalsTableTest extends TestCase
             'changes' => ['version' => ['obligation_until' => '2027-12-31']],
         ]);
         $this->assertEmpty($newContract->getErrors());
+    }
+
+    /**
+     * Equipment changes hands with a new contract, and only one replacing an earlier version takes
+     * anything back. What is lent has to be a kind there is.
+     *
+     * @return void
+     */
+    public function testEquipmentLinesKeepToWhatTheyMayDo(): void
+    {
+        $lend = ['id' => 'lend', 'move' => 'lend', 'equipment_type_id' => '582ff5cb-62c6-42bd-a1bb-7f3d167124a4'];
+        $return = ['id' => 'back', 'move' => 'return', 'borrowed_equipment_id' => 'e1000000-0000-4000-8000-000000000001'];
+        $knowingIt = $this->aSnapshot() + [
+            'borrowed_equipments' => [['id' => 'e1000000-0000-4000-8000-000000000001']],
+        ];
+
+        $amendment = $this->save(['changes' => ['equipments' => [$lend]]]);
+        $this->assertArrayHasKey('equipmentMovesWithANewContract', $amendment->getError('changes'));
+
+        $lending = $this->save([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'changes' => ['equipments' => [$lend]],
+        ]);
+        $this->assertEmpty($lending->getErrors());
+
+        $unknownKind = $this->save([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'changes' => ['equipments' => [['equipment_type_id' => 'a0000000-0000-4000-8000-000000000000'] + $lend]],
+        ]);
+        $this->assertArrayHasKey('equipmentLentIsOfAKnownType', $unknownKind->getError('changes'));
+
+        // a new contract that replaces nothing has nothing lent to take back
+        $returning = $this->save([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'snapshot' => $knowingIt,
+            'changes' => ['equipments' => [$return]],
+        ]);
+        $this->assertArrayHasKey('equipmentTakenBackIsInTheSnapshot', $returning->getError('changes'));
     }
 
     /**

@@ -308,6 +308,19 @@ class ContractProposal extends AppEntity
     }
 
     /**
+     * Whether the proposal may take back equipment the contract has lent.
+     *
+     * Only a new contract replacing an earlier version: the earlier one lent it, and the new one
+     * says what goes on being lent. A contract that replaces nothing has nothing lent yet.
+     *
+     * @return bool
+     */
+    public function mayTakeEquipmentBack(): bool
+    {
+        return $this->purpose->movesEquipment() && $this->terminatesAnotherVersion();
+    }
+
+    /**
      * Whether the papers charge for setting the connection up.
      *
      * A new contract always does. One replacing an earlier version does only where the connection

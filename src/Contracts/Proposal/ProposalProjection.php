@@ -160,6 +160,58 @@ final class ProposalProjection
     }
 
     /**
+     * The equipment lent with the contract as the proposal would leave it.
+     *
+     * @param array<\App\Model\Entity\BorrowedEquipment> $borrowed The equipment as the snapshot took it.
+     * @param \App\Contracts\Proposal\ProposalChanges $changes What the proposal asks for.
+     * @param array<string, \App\Model\Entity\BorrowedEquipment> $lent What its lines lend, by line.
+     * @return \App\Contracts\Proposal\ProjectedEquipment Unsaved records; never put them back on a contract.
+     */
+    public function projectEquipment(array $borrowed, ProposalChanges $changes, array $lent): ProjectedEquipment
+    {
+        $takenBack = $changes->equipmentTakenBack();
+        $continuing = [];
+        $returned = [];
+
+        foreach ($borrowed as $equipment) {
+            if (isset($takenBack[(string)$equipment->id])) {
+                $returned[] = $equipment;
+            } else {
+                $continuing[] = $equipment;
+            }
+        }
+
+        return new ProjectedEquipment($continuing, array_values($lent), $returned);
+    }
+
+    /**
+     * The same projection, with each piece saying where it comes from.
+     *
+     * What the proposal's own table is drawn from: what stays as it is, what goes back and what is
+     * lent, each with the line that says so.
+     *
+     * @param array<\App\Model\Entity\BorrowedEquipment> $borrowed The equipment as the snapshot took it.
+     * @param \App\Contracts\Proposal\ProposalChanges $changes What the proposal asks for.
+     * @param array<string, \App\Model\Entity\BorrowedEquipment> $lent What its lines lend, by line.
+     * @return list<array{equipment: \App\Model\Entity\BorrowedEquipment, line: \App\Contracts\Proposal\ProposedEquipment|null}>
+     */
+    public function explainEquipment(array $borrowed, ProposalChanges $changes, array $lent): array
+    {
+        $takenBack = $changes->equipmentTakenBack();
+        $rows = [];
+
+        foreach ($borrowed as $equipment) {
+            $rows[] = ['equipment' => $equipment, 'line' => $takenBack[(string)$equipment->id] ?? null];
+        }
+
+        foreach ($lent as $line_id => $equipment) {
+            $rows[] = ['equipment' => $equipment, 'line' => $changes->equipmentLine((string)$line_id)];
+        }
+
+        return $rows;
+    }
+
+    /**
      * The version as the proposal would leave it.
      *
      * @param \App\Model\Entity\ContractVersion $version The version as the snapshot took it.

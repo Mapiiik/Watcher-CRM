@@ -33,13 +33,15 @@ final class ReadinessChecks
      * Which questions this contract has to answer before a proposal on it may be saved.
      *
      * @param \App\Model\Entity\Contract $contract The contract, with its equipment and addresses.
+     * @param \App\Contracts\Proposal\ProposalChanges|null $changes What the proposal asks for, where
+     *   it has been drawn up already.
      * @return array<string> The questions, by the name the confirmations know them under.
      */
-    public function questionsFor(Contract $contract): array
+    public function questionsFor(Contract $contract, ?ProposalChanges $changes = null): array
     {
         $asked = [];
 
-        if ($this->wantsBorrowedEquipment($contract)) {
+        if ($this->wantsBorrowedEquipment($contract, $changes)) {
             $asked[] = ProposalConfirmations::OWN_EQUIPMENT;
         }
 
@@ -59,11 +61,16 @@ final class ReadinessChecks
      *
      * @param \App\Model\Entity\Contract $contract The contract.
      * @param \App\Contracts\Proposal\ProposalConfirmations $answers What has been confirmed.
+     * @param \App\Contracts\Proposal\ProposalChanges|null $changes What the proposal asks for, where
+     *   it has been drawn up already.
      * @return array<string>
      */
-    public function unansweredFor(Contract $contract, ProposalConfirmations $answers): array
-    {
-        return $answers->unanswered($this->questionsFor($contract));
+    public function unansweredFor(
+        Contract $contract,
+        ProposalConfirmations $answers,
+        ?ProposalChanges $changes = null,
+    ): array {
+        return $answers->unanswered($this->questionsFor($contract, $changes));
     }
 
     /**
@@ -93,14 +100,18 @@ final class ReadinessChecks
     /**
      * Whether the contract is one that normally has equipment lent to it, and has none.
      *
+     * What the proposal itself lends counts as lent.
+     *
      * @param \App\Model\Entity\Contract $contract The contract.
+     * @param \App\Contracts\Proposal\ProposalChanges|null $changes What the proposal asks for.
      * @return bool
      */
-    private function wantsBorrowedEquipment(Contract $contract): bool
+    private function wantsBorrowedEquipment(Contract $contract, ?ProposalChanges $changes): bool
     {
         return $contract->service_type->have_equipments
             && $contract->service_type->normally_with_borrowed_equipment
-            && empty($contract->borrowed_equipments);
+            && empty($contract->borrowed_equipments)
+            && ($changes?->equipmentLent() ?? []) === [];
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Contracts\Proposal\ChangePreview;
 use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalProjection;
 use App\Model\Audit\AuditTrail;
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
@@ -367,6 +368,7 @@ class CustomerProposalsController extends AppController
 
             $found = $preview->of($papers);
             $anythingGone = $anythingGone || $preview->anythingIsGone($found);
+            $movesEquipment = $papers->proposedChanges()->equipments !== [];
 
             $parts[] = [
                 'papers' => $papers,
@@ -374,6 +376,12 @@ class CustomerProposalsController extends AppController
                 'planned' => $plan->of($papers),
                 'billingsNow' => $preview->billingsNow($papers),
                 'billingsAfterwards' => $preview->billingsAfterwards($papers),
+                'equipmentMoved' => $preview->equipmentMoved($papers),
+                // Asked only where equipment changes hands, and said on the papers' own day
+                // unless the operator knows it happened on another.
+                'handedOverOn' => $movesEquipment
+                    ? $this->handedOverOn($papers) ?? ChangeApplication::handedOverOnByDefault($papers)
+                    : null,
             ];
         }
 
@@ -394,6 +402,9 @@ class CustomerProposalsController extends AppController
             if ($this->anythingStops($parts, $preview, $leavingOut)) {
                 $this->Flash->error(__('The changes of this proposal cannot be applied in its'
                     . ' current state.'));
+            } elseif ($this->anyHandoverIsStillToCome($parts)) {
+                $this->Flash->error(__('Borrowed equipments cannot be recorded as handed over on a'
+                    . ' day still to come.'));
             } elseif ($this->applyTheWholePackage($parts, $leavingOut)) {
                 return $this->onFromTheStep((string)$id);
             }
@@ -408,6 +419,44 @@ class CustomerProposalsController extends AppController
         $this->set('leave_out_override', $leaveOut);
 
         return null;
+    }
+
+    /**
+     * The day the operator says one part's equipment changed hands, where they said one.
+     *
+     * @param \App\Model\Entity\ContractProposal $papers The part.
+     * @return \Cake\I18n\Date|null
+     */
+    private function handedOverOn(ContractProposal $papers): ?Date
+    {
+        $said = $this->request->getData('handed_over_on.' . $papers->id);
+
+        if (!is_string($said) || trim($said) === '') {
+            return null;
+        }
+
+        try {
+            return new Date(trim($said));
+        } catch (Exception) {
+            return null;
+        }
+    }
+
+    /**
+     * Whether any part says its equipment changed hands on a day still to come.
+     *
+     * @param array<array<string, mixed>> $parts What is to be applied.
+     * @return bool
+     */
+    private function anyHandoverIsStillToCome(array $parts): bool
+    {
+        foreach ($parts as $part) {
+            if ($part['handedOverOn'] instanceof Date && $part['handedOverOn']->greaterThan(Date::today())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -463,6 +512,7 @@ class CustomerProposalsController extends AppController
                             $belowMinimum,
                             $leavingOut,
                             $trail,
+                            $part['handedOverOn'] ?? null,
                         );
                     }
                 },
@@ -515,6 +565,8 @@ class CustomerProposalsController extends AppController
         foreach ((new WholeProposal())->partsOf((string)$proposal->id) as $part) {
             $changes = $part->proposedChanges();
             $snapshot = $part->stateOfThings();
+            $asItStood = $snapshot->hydrate();
+            $projection = new ProposalProjection();
 
             $said[] = [
                 'papers' => $part,
@@ -522,11 +574,16 @@ class CustomerProposalsController extends AppController
                 'mayBeEdited' => $papers->mayBeEdited($part),
                 // The same projection the documents print from, so the table and the paper cannot
                 // disagree.
-                'rows' => (new ProposalProjection())->explain(
-                    $snapshot->hydrate()->billings,
+                'rows' => $projection->explain(
+                    $asItStood->billings,
                     $changes,
                     $part->effective_from,
                     $snapshot->servicesChosenBy($changes),
+                ),
+                'equipmentRows' => $projection->explainEquipment(
+                    $asItStood->borrowed_equipments ?? [],
+                    $changes,
+                    $snapshot->equipmentLentBy($changes),
                 ),
                 // Only what the papers ask for: the rest of what applying them would write is
                 // worked out against the records as they stand, which means something in the

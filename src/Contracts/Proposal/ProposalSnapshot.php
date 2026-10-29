@@ -165,6 +165,78 @@ final class ProposalSnapshot
     }
 
     /**
+     * Whether the papers owe a handover protocol wherever equipment changes hands.
+     *
+     * Snapshots taken before the protocols were owed do not say so, and stay under the rules they
+     * were drawn up under, when a protocol was drawn only if somebody wanted one.
+     *
+     * @return bool
+     */
+    public function owesHandoverProtocols(): bool
+    {
+        return ($this->taken['handover_protocols_owed'] ?? false) === true;
+    }
+
+    /**
+     * The equipment lent as it stood, by its id.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function borrowedEquipments(): array
+    {
+        $found = [];
+
+        foreach ($this->part('borrowed_equipments') as $equipment) {
+            $equipment = (array)$equipment;
+            $id = $equipment['id'] ?? null;
+
+            if ($id !== null) {
+                $found[(string)$id] = $equipment;
+            }
+        }
+
+        return $found;
+    }
+
+    /**
+     * Whether the snapshot knows the given piece of lent equipment.
+     *
+     * @param string $borrowed_equipment_id Which piece.
+     * @return bool
+     */
+    public function knowsBorrowedEquipment(string $borrowed_equipment_id): bool
+    {
+        return array_key_exists($borrowed_equipment_id, $this->borrowedEquipments());
+    }
+
+    /**
+     * The equipment the proposal's own lines lend, as unsaved records.
+     *
+     * Each brings its kind as it stood when it was chosen: the snapshot was taken before and has
+     * never heard of it, and the papers print its name and value.
+     *
+     * @param \App\Contracts\Proposal\ProposalChanges $changes What the proposal asks for.
+     * @return array<string, \App\Model\Entity\BorrowedEquipment> By the line that lends each.
+     */
+    public function equipmentLentBy(ProposalChanges $changes): array
+    {
+        $lent = [];
+
+        foreach ($changes->equipmentLent() as $line) {
+            /** @var \App\Model\Entity\BorrowedEquipment $equipment */
+            $equipment = $this->record('BorrowedEquipments', [
+                'equipment_type_id' => $line->equipment_type_id,
+                'serial_number' => $line->serial_number,
+            ]);
+            $equipment->set('equipment_type', $this->record('EquipmentTypes', $line->equipment_type ?? []));
+
+            $lent[$line->id] = $equipment;
+        }
+
+        return $lent;
+    }
+
+    /**
      * Which terms of the given billing have moved since the snapshot was taken.
      *
      * A snapshot can only testify about what it kept. A term it never held - because the shape has

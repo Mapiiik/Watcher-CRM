@@ -9,6 +9,7 @@ use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -70,6 +71,8 @@ class CustomerProposalsControllerTest extends TestCase
         'app.Services',
         'app.Billings',
         'app.ContractProposals',
+        'app.EquipmentTypes',
+        'app.BorrowedEquipments',
         'plugin.Settings.Settings',
     ];
 
@@ -865,6 +868,71 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertFalse($this->viewVariable('closed_period_override'));
         $this->assertFalse($this->viewVariable('below_minimum_override'));
+    }
+
+    /**
+     * Equipment the papers lend is recorded on the day it changed hands, which the operator says
+     * when applying them - never a day still to come.
+     *
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
+     * @return void
+     */
+    public function testEquipmentIsRecordedOnTheDayItChangedHands(): void
+    {
+        $proposal = $this->drawOneUpWithPapers();
+        $papers = $this->papersOf((string)$proposal->id)[0];
+
+        $this->post('/contract-proposals/equipment-line/' . $papers->id, [
+            'equipment_type_id' => '582ff5cb-62c6-42bd-a1bb-7f3d167124a4',
+            'serial_number' => 'SN-NEW-1',
+        ]);
+        $this->assertRedirect();
+
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $this->post($at . 'send/' . $proposal->id, [
+            'sent_date' => '2026-10-01',
+            'delivery_type' => DocumentsDeliveryType::Post->value,
+        ]);
+        $this->post($at . 'conclude/' . $proposal->id, ['conclusion_date' => '2026-10-05']);
+
+        $this->get($at . 'apply-changes/' . $proposal->id);
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="handed_over_on[' . $papers->id . ']"');
+        $this->assertSame('2026-09-30', $this->viewVariable('parts')[0]['handedOverOn']->toDateString());
+
+        $this->post($at . 'apply-changes/' . $proposal->id, [
+            'handed_over_on' => [$papers->id => Date::today()->addDays(1)->toDateString()],
+        ]);
+        $this->assertResponseOk();
+        $this->assertSame([], $this->lentAs('SN-NEW-1'), 'Equipment was recorded on a day still to come.');
+
+        $this->post($at . 'apply-changes/' . $proposal->id, [
+            'handed_over_on' => [$papers->id => '2026-10-03'],
+        ]);
+        $this->assertRedirectContains('/customer-proposals/view/' . $proposal->id);
+
+        $recorded = $this->lentAs('SN-NEW-1');
+        $this->assertCount(1, $recorded);
+        $this->assertSame('2026-10-03', $recorded[0]->borrowed_from?->toDateString());
+    }
+
+    /**
+     * The equipment on file under a serial number, as it stands now.
+     *
+     * @param string $serial_number The serial number.
+     * @return list<\App\Model\Entity\BorrowedEquipment>
+     * @phpstan-impure
+     */
+    private function lentAs(string $serial_number): array
+    {
+        /** @var list<\App\Model\Entity\BorrowedEquipment> $lent */
+        $lent = $this->getTableLocator()->get('BorrowedEquipments')
+            ->find()
+            ->where(['serial_number' => $serial_number])
+            ->all()
+            ->toList();
+
+        return $lent;
     }
 
     /**

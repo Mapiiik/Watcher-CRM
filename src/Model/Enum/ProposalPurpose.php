@@ -93,6 +93,20 @@ enum ProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
+     * Whether a proposal for this purpose may lend equipment or take it back.
+     *
+     * A new contract may, because that is where the equipment is set down, and one replacing an
+     * earlier version is how a box is swapped for another kind. A change of services hands
+     * nothing over, and an ending takes back everything by its own protocol.
+     *
+     * @return bool
+     */
+    public function movesEquipment(): bool
+    {
+        return $this === self::NewContract;
+    }
+
+    /**
      * Whether a proposal for this purpose may set the version's term and obligation.
      *
      * Only a new contract may. The customer agrees to a term by signing a contract that states it,

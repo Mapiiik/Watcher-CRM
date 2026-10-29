@@ -200,6 +200,7 @@ foreach ($filed as $byVariant) {
             <?= $this->element('ContractProposals/what_it_says', [
                 'contractProposal' => $part['papers'],
                 'rows' => $part['rows'],
+                'equipmentRows' => $part['equipmentRows'],
                 'planned' => $part['planned'],
                 'confirmations' => $part['confirmations'],
                 'mayBeEdited' => $part['mayBeEdited'],

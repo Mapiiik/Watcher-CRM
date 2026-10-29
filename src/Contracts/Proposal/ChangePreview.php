@@ -68,6 +68,21 @@ final class ChangePreview
     public const NOTHING_SIGNED_ON_FILE = 'nothing_signed_on_file';
 
     /**
+     * A piece of equipment the proposal takes back is no longer on the contract.
+     */
+    public const EQUIPMENT_GONE = 'equipment_gone';
+
+    /**
+     * A piece of equipment the proposal takes back has been taken back already.
+     */
+    public const EQUIPMENT_ALREADY_BACK = 'equipment_already_back';
+
+    /**
+     * Equipment has been lent on the contract since the snapshot while the proposal lends some too.
+     */
+    public const EQUIPMENT_APPEARED = 'equipment_appeared';
+
+    /**
      * What stands in the way of applying the proposal, if anything.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
@@ -87,6 +102,7 @@ final class ChangePreview
 
         $found = array_merge($found, $this->whatIsNotOnFile($proposal));
         $found = array_merge($found, $this->whatMovedInTheBillings($proposal));
+        $found = array_merge($found, $this->whatMovedInTheEquipment($proposal));
         $found = array_merge($found, $this->whatMovedOnTheVersion($proposal));
 
         $found = array_merge($found, $this->whatHasBeenInvoicedFor($proposal));
@@ -109,7 +125,7 @@ final class ChangePreview
     {
         $stopping = $lines_may_be_left_out
             ? [self::NOT_CONCLUDED]
-            : [self::NOT_CONCLUDED, self::BILLING_GONE];
+            : [self::NOT_CONCLUDED, self::BILLING_GONE, self::EQUIPMENT_GONE];
 
         foreach ($found as $one) {
             if (in_array($one['what'], $stopping, true)) {
@@ -132,7 +148,7 @@ final class ChangePreview
     public function anythingIsGone(array $found): bool
     {
         foreach ($found as $one) {
-            if ($one['what'] === self::BILLING_GONE) {
+            if ($one['what'] === self::BILLING_GONE || $one['what'] === self::EQUIPMENT_GONE) {
                 return true;
             }
         }
@@ -260,6 +276,73 @@ final class ChangePreview
     }
 
     /**
+     * What has happened to the equipment since the snapshot was taken.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return array<int, array{what: string, said: string}>
+     */
+    private function whatMovedInTheEquipment(ContractProposal $proposal): array
+    {
+        $changes = $proposal->proposedChanges();
+
+        if ($changes->equipments === []) {
+            return [];
+        }
+
+        /** @var array<string, \App\Model\Entity\BorrowedEquipment> $live */
+        $live = $this->fetchTable('BorrowedEquipments')
+            ->find()
+            ->where(['BorrowedEquipments.contract_id' => $proposal->contract_id])
+            ->all()
+            ->indexBy('id')
+            ->toArray();
+
+        $found = [];
+
+        foreach (array_keys($changes->equipmentTakenBack()) as $id) {
+            $one = $live[$id] ?? null;
+
+            if ($one === null) {
+                $found[] = [
+                    'what' => self::EQUIPMENT_GONE,
+                    'said' => __('A borrowed equipment this proposal ends is no longer on the contract.'),
+                ];
+            } elseif ($one->borrowed_until !== null) {
+                $found[] = [
+                    'what' => self::EQUIPMENT_ALREADY_BACK,
+                    'said' => __(
+                        'A borrowed equipment this proposal ends was ended on {0} already, and is left'
+                        . ' as it is.',
+                        $one->borrowed_until,
+                    ),
+                ];
+            }
+        }
+
+        if ($changes->equipmentLent() === []) {
+            return $found;
+        }
+
+        $snapshot = $proposal->stateOfThings();
+
+        foreach ($live as $id => $one) {
+            if ($one->borrowed_until === null && !$snapshot->knowsBorrowedEquipment((string)$id)) {
+                $found[] = [
+                    'what' => self::EQUIPMENT_APPEARED,
+                    'said' => __(
+                        'A borrowed equipment has been added to the contract since this proposal was'
+                        . ' created. If it is the one the proposal adds, it would be recorded twice.',
+                    ),
+                ];
+
+                break;
+            }
+        }
+
+        return $found;
+    }
+
+    /**
      * Whether the version still says what it said when the proposal was drawn up.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
@@ -366,6 +449,38 @@ final class ChangePreview
             $proposal->effective_from,
             $snapshot->servicesChosenBy($changes),
         );
+    }
+
+    /**
+     * What applying the changes would take back and lend, each piece with the line that says so.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return list<array{equipment: \App\Model\Entity\BorrowedEquipment, line: \App\Contracts\Proposal\ProposedEquipment}>
+     */
+    public function equipmentMoved(ContractProposal $proposal): array
+    {
+        $snapshot = $proposal->stateOfThings();
+        $changes = $proposal->proposedChanges();
+
+        if ($changes->equipments === []) {
+            return [];
+        }
+
+        $moved = [];
+
+        foreach (
+            (new ProposalProjection())->explainEquipment(
+                $snapshot->hydrate()->borrowed_equipments ?? [],
+                $changes,
+                $snapshot->equipmentLentBy($changes),
+            ) as $row
+        ) {
+            if ($row['line'] !== null) {
+                $moved[] = ['equipment' => $row['equipment'], 'line' => $row['line']];
+            }
+        }
+
+        return $moved;
     }
 
     /**

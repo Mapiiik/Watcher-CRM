@@ -12,6 +12,7 @@ use App\Contracts\Proposal\ProposalProjection;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedBillingForm;
+use App\Contracts\Proposal\ProposedEquipment;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Contracts\Proposal\ReadinessChecks;
 use App\Contracts\Proposal\SnapshotShape;
@@ -22,9 +23,11 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\CustomerProposal;
+use App\Model\Entity\EquipmentType;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentVariant;
+use App\Model\Enum\EquipmentMove;
 use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\Datasource\Exception\RecordNotFoundException;
@@ -32,6 +35,8 @@ use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
+use Cake\Utility\Text;
+use Cake\Validation\Validation;
 use Exception;
 use Files\Service\FileStorage;
 use Throwable;
@@ -53,6 +58,7 @@ class ContractProposalsController extends AppController
         'view',
         'recreate',
         'billingLine',
+        'equipmentLine',
     ];
 
     /**
@@ -62,6 +68,7 @@ class ContractProposalsController extends AppController
         'view',
         'recreate',
         'billingLine',
+        'equipmentLine',
     ];
 
     /**
@@ -293,9 +300,14 @@ class ContractProposalsController extends AppController
             }
 
             $takenBack = $this->dropLinesWhoseBillingIsGone($proposal);
+            $returnsTakenBack = $this->dropReturnsOfWhatIsGone($proposal);
 
             if ($this->saveProposal($proposal)) {
                 $this->sayWhatWasTakenBack($takenBack);
+                if ($returnsTakenBack > 0) {
+                    $this->Flash->warning(__('A borrowed equipment the proposal ended is no longer on the'
+                        . ' contract, so its line has been taken back.'));
+                }
                 $this->sayWhatWasDiscarded($this->discardTheDocuments($drawnFromTheOldOne));
                 $this->Flash->success(__('The contract proposal has been recreated.'));
 
@@ -306,7 +318,11 @@ class ContractProposalsController extends AppController
         $contract = $this->contractFor((string)$proposal->contract_id);
 
         $this->set('contractProposal', $proposal);
-        $this->set('questions', $this->readinessQuestions($contract, $proposal->keepsVersions()));
+        $this->set('questions', $this->readinessQuestions(
+            $contract,
+            $proposal->keepsVersions(),
+            $proposal->proposedChanges(),
+        ));
         $this->set('wording', ReadinessChecks::wording());
         $this->set('proposals', $this->openProposalsOf($contract->customer_id ?? $this->customer_id));
         $this->set('contractNumbers', $this->numbersOfferedFor($contract));
@@ -472,11 +488,18 @@ class ContractProposalsController extends AppController
      *
      * @param \App\Model\Entity\Contract|null $contract The contract, where there is one.
      * @param bool $keepsVersions Whether its service keeps versions.
+     * @param \App\Contracts\Proposal\ProposalChanges|null $changes What the proposal asks for, where
+     *   it has been drawn up already.
      * @return array<string>
      */
-    private function readinessQuestions(?Contract $contract, bool $keepsVersions): array
-    {
-        return $contract === null || !$keepsVersions ? [] : (new ReadinessChecks())->questionsFor($contract);
+    private function readinessQuestions(
+        ?Contract $contract,
+        bool $keepsVersions,
+        ?ProposalChanges $changes = null,
+    ): array {
+        return $contract === null || !$keepsVersions
+            ? []
+            : (new ReadinessChecks())->questionsFor($contract, $changes);
     }
 
     /**
@@ -742,6 +765,183 @@ class ContractProposalsController extends AppController
         $this->saveChanges($proposal, $proposal->proposedChanges()->withoutLine((string)$line));
 
         return $this->redirect(['action' => 'view', $proposal->id]);
+    }
+
+    /**
+     * Lends a piece of equipment by the proposal, or changes what an earlier line lends.
+     *
+     * Edited on a page of its own, the same way a billing line is. The equipment reaches the
+     * contract only when the changes are applied, on the day it was handed over.
+     *
+     * @param string|null $id Contract proposal id.
+     * @param string|null $line The line being changed; a new one when there is none.
+     * @return \Cake\Http\Response|null Redirects when saved, renders the form otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function equipmentLine(?string $id = null, ?string $line = null): ?Response
+    {
+        $proposal = $this->openProposal($id);
+
+        if (!$proposal instanceof ContractProposal) {
+            return $proposal;
+        }
+
+        $changes = $proposal->proposedChanges();
+        $edited = $line === null ? null : $changes->equipmentLine($line);
+
+        if ($line !== null && ($edited === null || !$edited->lends())) {
+            throw new RecordNotFoundException(__('There is no such line on this proposal.'));
+        }
+
+        $values = $edited?->toArray() ?? [];
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData();
+            $values = array_intersect_key($data, array_flip(['equipment_type_id', 'serial_number', 'note']));
+            $type = $this->equipmentTypeFor((string)($data['equipment_type_id'] ?? ''));
+
+            if ($type === null) {
+                $this->Flash->error(__('Choose the equipment type.'));
+            } else {
+                $written = new ProposedEquipment(
+                    id: $edited->id ?? Text::uuid(),
+                    move: EquipmentMove::Lend,
+                    borrowed_equipment_id: null,
+                    equipment_type_id: (string)$type->id,
+                    serial_number: $this->filledIn($data['serial_number'] ?? null),
+                    equipment_type: $type->extract(SnapshotShape::EQUIPMENT_TYPE),
+                    note: $this->filledIn($data['note'] ?? null),
+                );
+
+                if ($this->saveChanges($proposal, $changes->withEquipmentLine($written))) {
+                    return $this->redirect(['action' => 'view', $proposal->id]);
+                }
+            }
+        }
+
+        $this->set('contractProposal', $proposal);
+        $this->set('line', $edited);
+        $this->set('values', $values);
+        $this->set('equipmentTypes', $this->ContractProposals->Contracts->BorrowedEquipments->EquipmentTypes
+            ->find('list', order: ['name']));
+
+        return null;
+    }
+
+    /**
+     * Takes back a piece of equipment the contract has lent, by the proposal.
+     *
+     * @param string|null $id Contract proposal id.
+     * @param string|null $borrowed_equipment_id What is taken back.
+     * @return \Cake\Http\Response|null Redirects to the proposal.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function returnEquipment(?string $id = null, ?string $borrowed_equipment_id = null): ?Response
+    {
+        $this->request->allowMethod(['post']);
+
+        $proposal = $this->openProposal($id);
+
+        if (!$proposal instanceof ContractProposal) {
+            return $proposal;
+        }
+
+        $changes = $proposal->proposedChanges();
+
+        // One line to a piece: taking back what is already being taken back changes nothing.
+        if (!isset($changes->equipmentTakenBack()[(string)$borrowed_equipment_id])) {
+            $this->saveChanges($proposal, $changes->withEquipmentLine(new ProposedEquipment(
+                id: Text::uuid(),
+                move: EquipmentMove::Return,
+                borrowed_equipment_id: (string)$borrowed_equipment_id,
+                equipment_type_id: null,
+            )));
+        }
+
+        return $this->redirect(['action' => 'view', $proposal->id]);
+    }
+
+    /**
+     * Takes an equipment line back out of the proposal, leaving the contract's equipment as it is.
+     *
+     * @param string|null $id Contract proposal id.
+     * @param string|null $line Which line.
+     * @return \Cake\Http\Response|null Redirects to the proposal.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function dropEquipmentLine(?string $id = null, ?string $line = null): ?Response
+    {
+        $this->request->allowMethod(['post', 'delete']);
+
+        $proposal = $this->openProposal($id);
+
+        if (!$proposal instanceof ContractProposal) {
+            return $proposal;
+        }
+
+        $this->saveChanges($proposal, $proposal->proposedChanges()->withoutEquipmentLine((string)$line));
+
+        return $this->redirect(['action' => 'view', $proposal->id]);
+    }
+
+    /**
+     * One kind of equipment, as it stands now.
+     *
+     * @param string $id Which kind.
+     * @return \App\Model\Entity\EquipmentType|null
+     */
+    private function equipmentTypeFor(string $id): ?EquipmentType
+    {
+        if (!Validation::uuid($id)) {
+            return null;
+        }
+
+        /** @var \App\Model\Entity\EquipmentType|null $type */
+        $type = $this->ContractProposals->Contracts->BorrowedEquipments->EquipmentTypes
+            ->find()
+            ->where(['EquipmentTypes.id' => $id])
+            ->first();
+
+        return $type;
+    }
+
+    /**
+     * What a field of the form says, with nothing written meaning nothing said.
+     *
+     * @param mixed $value What the field sent.
+     * @return string|null
+     */
+    private function filledIn(mixed $value): ?string
+    {
+        return is_string($value) && trim($value) !== '' ? trim($value) : null;
+    }
+
+    /**
+     * Takes back the returns of equipment the new snapshot no longer knows.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal and its new snapshot.
+     * @return int How many lines were taken back.
+     */
+    private function dropReturnsOfWhatIsGone(ContractProposal $proposal): int
+    {
+        $snapshot = $proposal->stateOfThings();
+        $changes = $proposal->proposedChanges();
+        $takenBack = 0;
+
+        foreach ($changes->equipmentTakenBack() as $borrowed_equipment_id => $line) {
+            if ($snapshot->knowsBorrowedEquipment((string)$borrowed_equipment_id)) {
+                continue;
+            }
+
+            $changes = $changes->withoutEquipmentLine($line->id);
+            $takenBack++;
+        }
+
+        if ($takenBack > 0) {
+            $proposal->set('changes', $changes->toArray());
+        }
+
+        return $takenBack;
     }
 
     /**
@@ -1136,7 +1336,7 @@ class ContractProposalsController extends AppController
         // The questions are about what goes on paper, and a contract that keeps no versions has none.
         if ($contract !== null && $proposal->keepsVersions()) {
             $unanswered = (new ReadinessChecks())
-                ->unansweredFor($contract, $proposal->confirmations());
+                ->unansweredFor($contract, $proposal->confirmations(), $proposal->proposedChanges());
 
             if ($unanswered !== []) {
                 // Each answer is a box on the form named after this column, so the complaint lands
@@ -1493,11 +1693,18 @@ class ContractProposalsController extends AppController
         $this->set('confirmations', $proposal->confirmations());
         // What would be billed for, each row saying where it comes from - the same projection the
         // documents print from, so the table and the paper cannot disagree.
-        $this->set('rows', (new ProposalProjection())->explain(
-            $snapshot->hydrate()->billings,
+        $asItStood = $snapshot->hydrate();
+        $projection = new ProposalProjection();
+        $this->set('rows', $projection->explain(
+            $asItStood->billings,
             $changes,
             $proposal->effective_from,
             $snapshot->servicesChosenBy($changes),
+        ));
+        $this->set('equipmentRows', $projection->explainEquipment(
+            $asItStood->borrowed_equipments ?? [],
+            $changes,
+            $snapshot->equipmentLentBy($changes),
         ));
         $this->set('mayBeEdited', $this->ContractProposals->mayBeEdited($proposal));
         $this->set('mayBeDeleted', $this->ContractProposals->mayBeDeleted($proposal));

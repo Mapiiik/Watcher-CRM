@@ -8,14 +8,14 @@ use InvalidArgumentException;
 /**
  * What a proposal asks to happen once it is signed.
  *
- * The top-level keys are the records being asked: the billing lines, the version the proposal
- * belongs to, and the contract itself. A key that is not there means that record is left alone,
- * which is how a proposal that changes nothing looks - and that is the ordinary case, not an odd
- * one. A new contract has its billings in place before the papers are printed, so the proposal
- * behind them is only a stamp.
+ * The top-level keys are the records being asked: the billing lines, the equipment lent with the
+ * contract, the version the proposal belongs to, and the contract itself. A key that is not there
+ * means that record is left alone, which is how a proposal that changes nothing looks - and that is
+ * the ordinary case, not an odd one. A new contract has its billings in place before the papers are
+ * printed, so the proposal behind them is only a stamp.
  *
- * Equipment and IP addresses will be asked for here in time; the snapshot already carries them,
- * so it will take a value object and a step in applying the changes, and no migration.
+ * IP addresses will be asked for here in time; the snapshot already carries them, so it will take
+ * a value object and a step in applying the changes, and no migration.
  */
 final class ProposalChanges
 {
@@ -23,6 +23,11 @@ final class ProposalChanges
      * The billing lines.
      */
     public const BILLINGS = 'billings';
+
+    /**
+     * The equipment lent with the contract.
+     */
+    public const EQUIPMENTS = 'equipments';
 
     /**
      * The version the proposal belongs to.
@@ -41,6 +46,7 @@ final class ProposalChanges
      */
     public const DOMAINS = [
         self::BILLINGS,
+        self::EQUIPMENTS,
         self::VERSION,
         self::CONTRACT,
     ];
@@ -49,11 +55,13 @@ final class ProposalChanges
      * @param array<\App\Contracts\Proposal\ProposedBilling> $billings The billing lines.
      * @param \App\Contracts\Proposal\ProposedVersion $version What the version is asked to become.
      * @param \App\Contracts\Proposal\ProposedContract $contract What the contract is asked to become.
+     * @param array<\App\Contracts\Proposal\ProposedEquipment> $equipments The equipment lines.
      */
     private function __construct(
         public readonly array $billings,
         public readonly ProposedVersion $version,
         public readonly ProposedContract $contract,
+        public readonly array $equipments = [],
     ) {
     }
 
@@ -75,6 +83,7 @@ final class ProposalChanges
     public function isEmpty(): bool
     {
         return $this->billings === []
+            && $this->equipments === []
             && $this->version->isEmpty()
             && $this->contract->isEmpty();
     }
@@ -158,7 +167,7 @@ final class ProposalChanges
             $lines[] = $line;
         }
 
-        return new self($lines, $this->version, $this->contract);
+        return new self($lines, $this->version, $this->contract, $this->equipments);
     }
 
     /**
@@ -176,6 +185,113 @@ final class ProposalChanges
             )),
             $this->version,
             $this->contract,
+            $this->equipments,
+        );
+    }
+
+    /**
+     * What the proposal lends.
+     *
+     * @return list<\App\Contracts\Proposal\ProposedEquipment>
+     */
+    public function equipmentLent(): array
+    {
+        return array_values(array_filter(
+            $this->equipments,
+            fn(ProposedEquipment $line): bool => $line->lends(),
+        ));
+    }
+
+    /**
+     * What the proposal takes back, by the piece of equipment each line names.
+     *
+     * @return array<string, \App\Contracts\Proposal\ProposedEquipment>
+     */
+    public function equipmentTakenBack(): array
+    {
+        $found = [];
+
+        foreach ($this->equipments as $line) {
+            if ($line->takesBack()) {
+                $found[(string)$line->borrowed_equipment_id] = $line;
+            }
+        }
+
+        return $found;
+    }
+
+    /**
+     * Whether equipment goes both ways: something taken back and something else lent.
+     *
+     * @return bool
+     */
+    public function exchangesEquipment(): bool
+    {
+        return $this->equipmentLent() !== [] && $this->equipmentTakenBack() !== [];
+    }
+
+    /**
+     * One of the equipment lines, by its own name.
+     *
+     * @param string $id Which line.
+     * @return \App\Contracts\Proposal\ProposedEquipment|null
+     */
+    public function equipmentLine(string $id): ?ProposedEquipment
+    {
+        foreach ($this->equipments as $line) {
+            if ($line->id === $id) {
+                return $line;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * The same changes with one equipment line put in, replacing the one of that name.
+     *
+     * @param \App\Contracts\Proposal\ProposedEquipment $line The line.
+     * @return self
+     */
+    public function withEquipmentLine(ProposedEquipment $line): self
+    {
+        $lines = [];
+        $replaced = false;
+
+        foreach ($this->equipments as $one) {
+            if ($one->id === $line->id) {
+                $lines[] = $line;
+                $replaced = true;
+
+                continue;
+            }
+
+            $lines[] = $one;
+        }
+
+        if (!$replaced) {
+            $lines[] = $line;
+        }
+
+        return new self($this->billings, $this->version, $this->contract, $lines);
+    }
+
+    /**
+     * The same changes with one equipment line taken out.
+     *
+     * @param string $id Which line.
+     * @return self
+     */
+    public function withoutEquipmentLine(string $id): self
+    {
+        return new self(
+            $this->billings,
+            $this->version,
+            $this->contract,
+            array_values(array_filter(
+                $this->equipments,
+                fn(ProposedEquipment $one): bool => $one->id !== $id,
+            )),
         );
     }
 
@@ -187,7 +303,7 @@ final class ProposalChanges
      */
     public function withVersion(ProposedVersion $version): self
     {
-        return new self($this->billings, $version, $this->contract);
+        return new self($this->billings, $version, $this->contract, $this->equipments);
     }
 
     /**
@@ -198,7 +314,7 @@ final class ProposalChanges
      */
     public function withContract(ProposedContract $contract): self
     {
-        return new self($this->billings, $this->version, $contract);
+        return new self($this->billings, $this->version, $contract, $this->equipments);
     }
 
     /**
@@ -225,6 +341,10 @@ final class ProposalChanges
             ),
             version: ProposedVersion::fromArray((array)($stored[self::VERSION] ?? [])),
             contract: ProposedContract::fromArray((array)($stored[self::CONTRACT] ?? [])),
+            equipments: array_map(
+                fn(array $line): ProposedEquipment => ProposedEquipment::fromArray($line),
+                array_values((array)($stored[self::EQUIPMENTS] ?? [])),
+            ),
         );
     }
 
@@ -244,6 +364,13 @@ final class ProposalChanges
             $stored[self::BILLINGS] = array_map(
                 fn(ProposedBilling $line): array => $line->toArray(),
                 $this->billings,
+            );
+        }
+
+        if ($this->equipments !== []) {
+            $stored[self::EQUIPMENTS] = array_map(
+                fn(ProposedEquipment $line): array => $line->toArray(),
+                $this->equipments,
             );
         }
 

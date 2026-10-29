@@ -8,6 +8,7 @@ use App\Contracts\Proposal\ProposalProjection;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Model\Entity\Billing;
+use App\Model\Entity\BorrowedEquipment;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\Service;
 use Cake\I18n\Date;
@@ -330,5 +331,38 @@ class ProposalProjectionTest extends TestCase
 
         $this->assertSame(self::DAY_BEFORE, $projected->valid_until?->toDateString());
         $this->assertNull($version->valid_until, 'The record the projection was made from moved.');
+    }
+
+    /**
+     * What a proposal does to the equipment is read in three lists: what stays lent, what goes
+     * back and what is lent now. The table on the proposal reads the same, line by line.
+     *
+     * @return void
+     */
+    public function testTheEquipmentIsSplitByWhereItGoes(): void
+    {
+        $kept = new BorrowedEquipment(['id' => 'kept']);
+        $back = new BorrowedEquipment(['id' => 'back']);
+        $new = new BorrowedEquipment(['serial_number' => 'SN-NEW']);
+
+        $changes = ProposalChanges::fromArray([ProposalChanges::EQUIPMENTS => [
+            ['id' => 'return', 'move' => 'return', 'borrowed_equipment_id' => 'back'],
+            ['id' => 'lend', 'move' => 'lend', 'equipment_type_id' => 'type-1'],
+        ]]);
+
+        $projected = (new ProposalProjection())->projectEquipment([$kept, $back], $changes, ['lend' => $new]);
+
+        $this->assertSame([$kept], $projected->continuing);
+        $this->assertSame([$back], $projected->returned);
+        $this->assertSame([$new], $projected->lent);
+        $this->assertSame([$kept, $new], $projected->afterwards());
+        $this->assertTrue($projected->isAnExchange());
+
+        $rows = (new ProposalProjection())->explainEquipment([$kept, $back], $changes, ['lend' => $new]);
+
+        $this->assertNull($rows[0]['line']);
+        $this->assertSame('return', $rows[1]['line']?->id);
+        $this->assertSame($new, $rows[2]['equipment']);
+        $this->assertSame('lend', $rows[2]['line']?->id);
     }
 }

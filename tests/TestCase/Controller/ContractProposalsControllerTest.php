@@ -78,6 +78,16 @@ class ContractProposalsControllerTest extends TestCase
     private const CONTRACT_VERSION_ID = '74824fba-20b2-46fc-806c-df795aa9e429';
 
     /**
+     * The kind of equipment the fixtures know.
+     */
+    private const EQUIPMENT_TYPE_ID = '582ff5cb-62c6-42bd-a1bb-7f3d167124a4';
+
+    /**
+     * A piece of equipment a snapshot says the contract has lent.
+     */
+    private const LENT_ID = 'e1000000-0000-4000-8000-000000000001';
+
+    /**
      * A billing the fixture proposal's snapshot knows about.
      *
      * @var string
@@ -1097,6 +1107,132 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertCount(1, $lines);
         $this->assertTrue($lines[0]->terminatesOnly());
+    }
+
+    /**
+     * Equipment is lent on a page of its own, and the line brings the kind with it, so the papers
+     * can print its name and value.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::equipmentLine()
+     */
+    public function testEquipmentIsLentOnItsOwnPage(): void
+    {
+        $this->theProposalIs(['purpose' => ProposalPurpose::NewContract->value]);
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->assertResponseContains('/contract-proposals/equipment-line/' . self::PROPOSAL_ID);
+
+        $this->get(self::NESTED . '/contract-proposals/equipment-line/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/equipment-line/' . self::PROPOSAL_ID, [
+            'equipment_type_id' => self::EQUIPMENT_TYPE_ID,
+            'serial_number' => ' SN-NEW-1 ',
+            'note' => '',
+        ]);
+        $this->assertRedirect();
+
+        $lent = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)
+            ->proposedChanges()
+            ->equipmentLent();
+
+        $this->assertCount(1, $lent);
+        $this->assertSame('SN-NEW-1', $lent[0]->serial_number);
+        $this->assertNull($lent[0]->note);
+        $this->assertSame(self::EQUIPMENT_TYPE_ID, $lent[0]->equipment_type['id'] ?? null);
+    }
+
+    /**
+     * A contract replacing an earlier version takes back what that one lent, once, and the return
+     * can be taken back off the proposal again.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::returnEquipment()
+     */
+    public function testEquipmentIsTakenBackByAReplacingContract(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $earlier = $versions->newEntity([
+            'contract_id' => self::CONTRACT_ID,
+            'valid_from' => '2020-01-01',
+            'valid_until' => '2020-12-31',
+            'conclusion_date' => '2019-12-15',
+            'number_of_amendments' => 0,
+        ]);
+        $versions->saveOrFail($earlier, ['checkRules' => false]);
+
+        $proposal = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID);
+        $snapshot = $proposal->snapshot;
+        $snapshot['borrowed_equipments'] = [['id' => self::LENT_ID, 'serial_number' => 'SN-OLD-1']];
+
+        $this->theProposalIs([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'terminates_contract_version_id' => $earlier->id,
+            'terminated_contract_number' => '2022/0001',
+            'snapshot' => $snapshot,
+        ]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/return-equipment/' . self::PROPOSAL_ID . '/' . self::LENT_ID);
+        $this->post('/contract-proposals/return-equipment/' . self::PROPOSAL_ID . '/' . self::LENT_ID);
+        $this->assertRedirect();
+
+        $changes = $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->proposedChanges();
+        $this->assertSame([self::LENT_ID], array_keys($changes->equipmentTakenBack()));
+
+        $line = $changes->equipmentTakenBack()[self::LENT_ID];
+        $this->post('/contract-proposals/drop-equipment-line/' . self::PROPOSAL_ID . '/' . $line->id);
+
+        $this->assertSame([], $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)
+            ->proposedChanges()
+            ->equipments);
+    }
+
+    /**
+     * Once the papers have gone out their equipment is settled too, for every role that may draw
+     * papers up - the same gate the billing lines have.
+     *
+     * @param string $role The role to ask as.
+     * @return void
+     * @link \App\Controller\ContractProposalsController::equipmentLine()
+     */
+    #[DataProvider('rolesThatDrawUpPapers')]
+    public function testTheEquipmentOfASentProposalIsLeftAlone(string $role): void
+    {
+        $this->theProposalIs(['purpose' => ProposalPurpose::NewContract->value]);
+        $this->theProposalSays(['sent_date' => '2026-10-01', 'delivery_type' => DocumentsDeliveryType::Email]);
+
+        $this->login($role);
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('/contract-proposals/equipment-line/' . self::PROPOSAL_ID);
+
+        $this->get(self::NESTED . '/contract-proposals/equipment-line/' . self::PROPOSAL_ID);
+        $this->assertRedirect();
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+        $this->assertRedirect();
+    }
+
+    /**
+     * Says something of the papers themselves, past the rules - the way a fixture would.
+     *
+     * @param array<string, mixed> $says What the papers say.
+     * @return void
+     */
+    private function theProposalIs(array $says): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), $says),
+            ['checkRules' => false],
+        );
     }
 
     /**
