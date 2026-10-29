@@ -6,6 +6,7 @@ namespace App\Proposals;
 use App\Contracts\Proposal\ProposalDocumentTypes;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\CustomerProposal;
+use App\Model\Enum\ContractDocumentType;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\ORM\Locator\LocatorAwareTrait;
@@ -38,8 +39,30 @@ final class WhatIsOwed
         }
 
         return $proposal instanceof ContractProposal
-            ? (new ProposalDocumentTypes())->expectedOf($proposal)
+            ? (new ProposalDocumentTypes())->expectedOf($proposal, $this->onFile($proposal))
             : $this->ofTheCustomers($proposal);
+    }
+
+    /**
+     * What kinds of paper are already on file against an ending.
+     *
+     * Only an ending is asked, because only there does a paper on file change what is owed.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return array<\App\Model\Enum\ContractDocumentType>
+     */
+    private function onFile(ContractProposal $proposal): array
+    {
+        if (!$proposal->purpose->ends()) {
+            return [];
+        }
+
+        $filed = (new ContractDocuments())->filedAgainst([$proposal])[(string)$proposal->id] ?? [];
+
+        return array_values(array_filter(array_map(
+            fn(int|string $type): ?ContractDocumentType => ContractDocumentType::tryFrom((string)$type),
+            array_keys($filed),
+        )));
     }
 
     /**

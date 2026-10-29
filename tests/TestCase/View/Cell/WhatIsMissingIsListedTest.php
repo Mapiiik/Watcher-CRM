@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\View\Cell;
 
+use App\Model\Enum\ProposalPurpose;
 use App\Test\Traits\ControllerTestTrait;
 use App\View\Cell\DocumentsCell;
 use Cake\I18n\DateTime;
@@ -225,14 +226,17 @@ class WhatIsMissingIsListedTest extends TestCase
      */
     public function testAPaperNobodyHasToHaveIsSaidMoreQuietly(): void
     {
-        // The handover protocol is offered where there is equipment to hand over, and the papers
-        // are drawn from the snapshot rather than from the records.
+        // The handover protocol is offered with a new contract where there is equipment to hand
+        // over, and the papers are drawn from the snapshot rather than from the records.
         $proposals = $this->getTableLocator()->get('ContractProposals');
         $proposal = $proposals->get(self::PROPOSAL_ID);
         $snapshot = $proposal->snapshot;
         $snapshot['contract']['service_type']['have_equipments'] = true;
         $proposals->saveOrFail(
-            $proposals->patchEntity($proposal, ['snapshot' => $snapshot]),
+            $proposals->patchEntity($proposal, [
+                'snapshot' => $snapshot,
+                'purpose' => ProposalPurpose::NewContract->value,
+            ]),
             ['checkRules' => false],
         );
 

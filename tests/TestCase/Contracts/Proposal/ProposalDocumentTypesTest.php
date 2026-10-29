@@ -180,6 +180,50 @@ class ProposalDocumentTypesTest extends TestCase
     }
 
     /**
+     * The customer's notice or a death certificate is what ends the contract, so with one of them
+     * on file the agreement may still be drawn but is not missing.
+     *
+     * @return void
+     */
+    public function testAnEndingWithTheOtherSidesPaperOnFileOwesNoAgreement(): void
+    {
+        $papers = new ProposalDocumentTypes();
+        $ending = $this->proposal(self::ending() + [
+            'snapshot' => [
+                'contract' => ['service_type' => ['have_equipments' => false]],
+                'customer' => [],
+                'version' => ['conclusion_date' => '2026-01-01'],
+                'billings' => [],
+            ],
+        ]);
+        $agreement = ContractDocumentType::ContractTermination->value;
+
+        $this->assertTrue($papers->expectedOf($ending)[$agreement]);
+        $this->assertTrue($papers->expectedOf($ending, [ContractDocumentType::Other])[$agreement]);
+
+        foreach ([ContractDocumentType::TerminationNotice, ContractDocumentType::DeathCertificate] as $theirs) {
+            $this->assertFalse(
+                $papers->expectedOf($ending, [$theirs])[$agreement],
+                'The agreement was still owed with ' . $theirs->value . ' on file.',
+            );
+        }
+    }
+
+    /**
+     * An amendment changes what is billed for and hands no equipment over, so it offers no
+     * handover protocol.
+     *
+     * @return void
+     */
+    public function testAnAmendmentHandsNothingOver(): void
+    {
+        $offered = $this->offered($this->proposal(['purpose' => ProposalPurpose::ServiceChange]));
+
+        $this->assertNotContains(ContractDocumentType::HandoverInstallation->value, $offered);
+        $this->assertNotContains(ContractDocumentType::HandoverUninstallation->value, $offered);
+    }
+
+    /**
      * Whatever else was handed over - a power of attorney, the owner of the building agreeing to
      * the cabling - belongs to no purpose in particular, so it is offered under every one of them.
      * Filed and nothing more, the same as what the other side writes: never printed, never owed.

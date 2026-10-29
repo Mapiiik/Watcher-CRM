@@ -101,7 +101,9 @@ final class ProposalDocumentTypes
                 // something - and that is deliberate, because the contract is what says which
                 // equipment the customer has, so swapping a box is a new version rather than a
                 // protocol of its own.
-                ContractDocumentType::HandoverInstallation => $has_equipment && !$ends,
+                // An amendment changes what is billed for and hands nothing over.
+                ContractDocumentType::HandoverInstallation => $has_equipment && !$ends
+                    && $purpose !== ProposalPurpose::ServiceChange,
                 ContractDocumentType::HandoverUninstallation => $has_equipment && ($ends || $replaces),
                 // What comes from the other side of an ending: the customer's own letter, or the
                 // certificate where there is nobody left to write one. Both belong to an ending
@@ -147,9 +149,10 @@ final class ProposalDocumentTypes
      * working them out twice would be two chances to disagree.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param array<\App\Model\Enum\ContractDocumentType> $on_file What is already on file against it.
      * @return array<string, bool> The document type, and whether it is required.
      */
-    public function expectedOf(ContractProposal $proposal): array
+    public function expectedOf(ContractProposal $proposal, array $on_file = []): array
     {
         $snapshot = $proposal->stateOfThings();
         $has_equipment = (bool)($snapshot->part('contract')['service_type']['have_equipments'] ?? false);
@@ -165,10 +168,36 @@ final class ProposalDocumentTypes
                 continue;
             }
 
-            $expected[$type->value] = !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true);
+            $expected[$type->value] = !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true)
+                && !$this->answeredByTheOtherSide($type, $on_file);
         }
 
         return $expected;
+    }
+
+    /**
+     * Whether the agreement is not owed because the other side's paper already ends the contract.
+     *
+     * The customer's notice or a death certificate is the reason the contract ends, so an agreement
+     * on top of it may be drawn but is not missing.
+     *
+     * @param \App\Model\Enum\ContractDocumentType $type The paper being asked about.
+     * @param array<\App\Model\Enum\ContractDocumentType> $on_file What is on file.
+     * @return bool
+     */
+    private function answeredByTheOtherSide(ContractDocumentType $type, array $on_file): bool
+    {
+        if ($type !== ContractDocumentType::ContractTermination) {
+            return false;
+        }
+
+        foreach ($on_file as $filed) {
+            if ($filed->speaksForItself()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
