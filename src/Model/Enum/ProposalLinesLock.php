@@ -35,15 +35,14 @@ enum ProposalLinesLock: string implements EnumLabelInterface
     {
         return match ($this) {
             self::PapersDrawn => __(
-                'Documents have already been generated from this proposal, and they say what its lines'
-                . ' say now. So that the papers and the proposal do not part company, the lines cannot'
-                . ' be changed while those documents are kept. Discard them to change the lines, and'
-                . ' generate them again afterwards.',
+                'Documents have already been generated from this proposal, so its lines stay as the'
+                . ' documents have them. To change the lines, discard the documents and generate them'
+                . ' again.',
             ),
             self::SignedByTheCustomer => __(
-                'The customer has already signed a document from this proposal, so its lines can no'
-                . ' longer be changed: they are what the customer agreed to. If something else is to be'
-                . ' agreed, revoke this proposal and draw up a new one.',
+                'The customer has already signed a document from this proposal, so its lines stay as'
+                . ' they agreed to them. To agree on something else, revoke this proposal and draw up a'
+                . ' new one.',
             ),
         };
     }
