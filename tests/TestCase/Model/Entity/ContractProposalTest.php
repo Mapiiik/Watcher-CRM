@@ -47,4 +47,29 @@ class ContractProposalTest extends TestCase
             $papers->getName(),
         );
     }
+
+    /**
+     * A new contract charges for setting the connection up. One replacing an earlier version only
+     * where the connection is set up again, and nothing else sets anything up.
+     *
+     * @return void
+     * @link \App\Model\Entity\ContractProposal::activatesTheService()
+     */
+    public function testOnlyWhatSetsTheConnectionUpChargesForIt(): void
+    {
+        $replacing = ['terminates_contract_version_id' => '74824fba-20b2-46fc-806c-df795aa9e429'];
+
+        $this->assertTrue((new ContractProposal(['purpose' => ProposalPurpose::NewContract]))
+            ->activatesTheService());
+        $this->assertFalse((new ContractProposal(['purpose' => ProposalPurpose::NewContract] + $replacing))
+            ->activatesTheService());
+        $this->assertTrue((new ContractProposal(
+            ['purpose' => ProposalPurpose::NewContract, 'reactivates' => true] + $replacing,
+        ))->activatesTheService());
+
+        foreach ([ProposalPurpose::ServiceChange, ProposalPurpose::Termination] as $purpose) {
+            $this->assertFalse((new ContractProposal(['purpose' => $purpose, 'reactivates' => true]))
+                ->activatesTheService());
+        }
+    }
 }

@@ -208,6 +208,18 @@ $endsOn = $changes->version->names('valid_until')
                         'label' => __('Number of the contract being terminated'),
                     ]);
                 }
+
+                // A new contract replacing an earlier one takes the connection over as it is, unless
+                // it is set up again - for another technology, say - and that is charged for.
+                $replacing = $contractProposal->terminates_contract_version_id !== null;
+                if ($purpose === ProposalPurpose::NewContract && $replacing) {
+                    echo $this->Form->control('reactivates', [
+                        'type' => 'checkbox',
+                        'label' => __('The connection is set up again, and the activation fee is charged'),
+                        'help' => __('Without it the new contract takes the connection over as it is, and'
+                            . ' its documents charge no activation fee.'),
+                    ]);
+                }
                 echo $this->Form->control('note');
                 ?>
             </fieldset>

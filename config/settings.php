@@ -684,6 +684,7 @@ return [
                         'activation_fee_intro' => 'Aktivační poplatek zahrnující náklady na zřízení koncového bodu Poskytovatelovy sítě elektronických komunikací:',
                         'activation_fee_items_intro' => 'Poskytovatel dodal Uživateli tato zařízení a příslušenství a provedl práce nad rámec aktivačního poplatku:',
                         'activation_fee_obligation' => 'Uživatel se zavazuje uhradit Poskytovateli aktivační poplatek a cenu prodaných zařízení, příslušenství a prací.',
+                        'activation_fee_obligation_without_fee' => 'Uživatel se zavazuje uhradit Poskytovateli cenu prodaných zařízení, příslušenství a prací.',
                         'early_termination_clause' => 'Smluvní strany konstatují, že běžná prodejní cena dodaných zařízení je {full_price}, avšak s ohledem na uzavření smlouvy s minimální dobou plnění v trvání {duration} byla tato zařízení Uživateli prodána pouze za {discounted_price}, proto v případě předčasného ukončení smlouvy z důvodu na straně Uživatele se tento zavazuje Poskytovateli doplatit zbývajících {remaining_payment}.',
 
                         'portal_access_html' => <<<HTML

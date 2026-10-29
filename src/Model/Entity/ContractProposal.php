@@ -8,6 +8,7 @@ use App\Contracts\Proposal\ProposalConfirmations;
 use App\Contracts\Proposal\ProposalSnapshot;
 use App\Model\Entity\Trait\SendingTrait;
 use App\Model\Enum\DocumentsDeliveryType;
+use App\Model\Enum\ProposalPurpose;
 use App\Model\Enum\ProposalStep;
 use App\Proposals\ProposalLifecycleTrait;
 use App\Proposals\Settlement;
@@ -24,6 +25,7 @@ use RuntimeException;
  * @property string|null $contract_version_id
  * @property string|null $terminates_contract_version_id
  * @property string|null $terminated_contract_number
+ * @property bool $reactivates
  * @property \App\Model\Enum\ProposalPurpose $purpose
  * @property \Cake\I18n\Date $effective_from
  * @property array<string, mixed> $snapshot
@@ -70,6 +72,7 @@ class ContractProposal extends AppEntity
         'purpose' => true,
         'terminates_contract_version_id' => true,
         'terminated_contract_number' => true,
+        'reactivates' => true,
         'effective_from' => true,
         'snapshot' => true,
         'snapshot_taken' => true,
@@ -302,6 +305,24 @@ class ContractProposal extends AppEntity
     public function terminatesAnotherVersion(): bool
     {
         return $this->terminates_contract_version_id !== null;
+    }
+
+    /**
+     * Whether the papers charge for setting the connection up.
+     *
+     * A new contract always does. One replacing an earlier version does only where the connection
+     * is set up again, for another technology say, and the operator said so. Nothing else charges
+     * it, because nothing else sets anything up.
+     *
+     * @return bool
+     */
+    public function activatesTheService(): bool
+    {
+        if ($this->purpose !== ProposalPurpose::NewContract) {
+            return false;
+        }
+
+        return !$this->terminatesAnotherVersion() || (bool)$this->reactivates;
     }
 
     /**

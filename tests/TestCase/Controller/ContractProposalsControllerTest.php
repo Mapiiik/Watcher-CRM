@@ -299,6 +299,54 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * Setting the connection up again is asked only of a new contract replacing an earlier one,
+     * and a new contract that replaces nothing cannot be said to set it up again.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testOnlyAReplacingContractIsAskedWhetherTheConnectionIsSetUpAgain(): void
+    {
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/add?purpose=' . ProposalPurpose::NewContract->value);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('name="reactivates"');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'refresh' => 'refresh',
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'terminates_contract_version_id' => self::CONTRACT_VERSION_ID,
+        ]);
+        $this->assertResponseContains('name="reactivates"');
+
+        $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => '',
+            'effective_from' => '2026-11-01',
+            'reactivates' => 1,
+            'confirmations' => [
+                'fixed_term' => 1,
+                'own_equipment' => 1,
+                'does_not_use_ip_addresses' => 1,
+                'does_not_use_radius' => 1,
+            ],
+        ]);
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        $this->assertFalse($drawn->reactivates);
+    }
+
+    /**
      * There is one proposal and it is put to the customer. Papers drawn up from the contract
      * rather than from a proposal are given one of their own, so nothing stands outside one.
      *

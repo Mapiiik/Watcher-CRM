@@ -129,6 +129,19 @@ final class ContractPrintData
     }
 
     /**
+     * Whether the papers charge for setting the connection up.
+     *
+     * The proposal says. Printed without one, a contract replacing an earlier version is taken to
+     * take the connection over as it is.
+     *
+     * @return bool
+     */
+    public function activatesTheService(): bool
+    {
+        return $this->proposal?->activatesTheService() ?? $this->type !== ContractDocumentType::ContractNewX;
+    }
+
+    /**
      * @return \Cake\Collection\CollectionInterface<array-key, \App\Model\Entity\Billing>
      */
     public function getActiveStandardBillings(): CollectionInterface

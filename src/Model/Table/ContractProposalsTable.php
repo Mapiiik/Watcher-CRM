@@ -57,6 +57,7 @@ class ContractProposalsTable extends AppTable
         'effective_from',
         'terminates_contract_version_id',
         'terminated_contract_number',
+        'reactivates',
     ];
 
     /**
@@ -256,6 +257,10 @@ class ContractProposalsTable extends AppTable
             ->scalar('terminated_contract_number')
             ->maxLength('terminated_contract_number', 255)
             ->allowEmptyString('terminated_contract_number');
+
+        $validator
+            ->boolean('reactivates')
+            ->allowEmptyString('reactivates');
 
         $validator
             ->date('effective_from')

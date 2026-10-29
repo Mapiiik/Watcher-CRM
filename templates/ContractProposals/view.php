@@ -259,6 +259,10 @@ foreach ($filed as $byVariant) {
                             <th><?= __('Number of the contract being terminated') ?></th>
                             <td><?= h($contractProposal->terminated_contract_number) ?></td>
                         </tr>
+                        <tr>
+                            <th><?= __('Activation Fee Charged') ?></th>
+                            <td><?= $contractProposal->activatesTheService() ? __('Yes') : __('No') ?></td>
+                        </tr>
                         <?php endif; ?>
                     </table>
                 </div>

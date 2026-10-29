@@ -949,6 +949,10 @@ class ContractProposalsController extends AppController
         // The billings are added a line at a time afterwards and never travel in this submission.
         $data['changes'] = $form->changesFrom($data, $purpose, $keepsVersions);
         $data['confirmations'] = $form->confirmationsFrom($data);
+        // Setting the connection up again is asked only of a new contract replacing an earlier one.
+        $data['reactivates'] = $purpose === ProposalPurpose::NewContract
+            && !empty($data['terminates_contract_version_id'])
+            && !empty($data['reactivates']);
         $ends = $this->endOfTheVersion($data);
 
         // The form's own fields have been read by now, and the marshaller must not see them: it

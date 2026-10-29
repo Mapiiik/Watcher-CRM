@@ -504,7 +504,9 @@ class ContractSummaryPDF extends AppPDF
             ? $data->contract->activation_fee_with_obligation_sum
             : $data->contract->activation_fee_sum;
 
-        if ($activationFee->isPositive()) {
+        // Only where these papers set the connection up: a contract replacing an earlier one takes
+        // it over as it is, and an amendment sets nothing up.
+        if ($data->activatesTheService() && $activationFee->isPositive()) {
             $amounts[] = [
                 $this->summaryText($committed
                     ? 'labels.activation_fee_with_obligation'
@@ -574,7 +576,11 @@ class ContractSummaryPDF extends AppPDF
         // repeats the contract's own clause rather than pointing at it - and repeats the same
         // one the contract picked, which turns on whether any equipment was lent with it.
         $contract = $data->contract;
-        if ($contractVersion->minimum_duration > 0 && $contract->activation_fee_sum->isPositive()) {
+        if (
+            $data->activatesTheService()
+            && $contractVersion->minimum_duration > 0
+            && $contract->activation_fee_sum->isPositive()
+        ) {
             $clauseKey = $this->lendsEquipment($data)
                 ? 'activation_fee_clause_with_installation'
                 : 'activation_fee_clause';

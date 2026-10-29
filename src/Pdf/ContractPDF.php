@@ -805,12 +805,12 @@ class ContractPDF extends AppPDF
             $this->printBorrowedEquipmentForContract($data);
 
             // activation fee with installation
-            $this->printActivationFee($contract, $executed, $type, true);
+            $this->printActivationFee($data, $executed, true);
         } else {
             $this->printParagraph($this->contractText('texts.user_equipment_installation_costs'));
 
             // activation fee without installation
-            $this->printActivationFee($contract, $executed, $type, false);
+            $this->printActivationFee($data, $executed, false);
         }
 
         $this->printAgreedTerms($contract);
@@ -883,59 +883,57 @@ class ContractPDF extends AppPDF
      * depending on contract duration, contract type, and whether installation
      * of borrowed equipment is included.
      *
+     * - Nothing where the papers do not set the connection up: a contract replacing an earlier
+     *   one takes it over as it is unless the operator said it is set up again.
      * - If the contract has no minimum duration, prints the "no commitment" text.
      * - If the contract has a minimum duration, prints the "with commitment" text
      *   and the clause explaining the difference in activation fee.
      * - The parameter $withInstallation determines whether the installation
      *   wording is included (borrowed equipment) or excluded (user equipment).
      *
-     * @param \App\Model\Entity\Contract        $contract         Current contract instance containing fee sums.
+     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
      * @param \App\Model\Entity\ContractVersion $contract_version Current contract version with duration info.
-     * @param \App\Model\Enum\ContractDocumentType $type             Contract print type.
-     * @param bool                              $withInstallation Whether installation of borrowed equipment
-     *                                                            should be mentioned in the activation fee text.
+     * @param bool $withInstallation Whether installation of borrowed equipment should be mentioned
+     *   in the activation fee text.
      * @return void
      */
     private function printActivationFee(
-        Contract $contract,
+        ContractPrintData $data,
         ContractVersion $contract_version,
-        ContractDocumentType $type,
         bool $withInstallation,
     ): void {
-        if (!$contract->activation_fee_sum->isPositive()) {
+        $contract = $data->contract;
+
+        if (!$data->activatesTheService() || !$contract->activation_fee_sum->isPositive()) {
             return;
         }
 
         if ($contract_version->minimum_duration <= 0) {
-            if ($type === ContractDocumentType::ContractNew) {
-                $key = $withInstallation
-                    ? 'activation_fee_no_commitment_with_installation'
-                    : 'activation_fee_no_commitment';
+            $key = $withInstallation
+                ? 'activation_fee_no_commitment_with_installation'
+                : 'activation_fee_no_commitment';
 
-                $this->printParagraph(
-                    strtr($this->contractText('texts.' . $key), [
-                        '{activation_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
-                    ]),
-                    bold: true,
-                );
-            }
+            $this->printParagraph(
+                strtr($this->contractText('texts.' . $key), [
+                    '{activation_fee}' => Number::currency($contract->activation_fee_sum->toFloat()),
+                ]),
+                bold: true,
+            );
 
             return;
         }
 
-        if ($type === ContractDocumentType::ContractNew) {
-            $key = $withInstallation
-                ? 'activation_fee_with_commitment_with_installation'
-                : 'activation_fee_with_commitment';
+        $key = $withInstallation
+            ? 'activation_fee_with_commitment_with_installation'
+            : 'activation_fee_with_commitment';
 
-            $this->printParagraph(
-                strtr($this->contractText('texts.' . $key), [
-                    '{activation_fee_obligation}' =>
-                        Number::currency($contract->activation_fee_with_obligation_sum->toFloat()),
-                ]),
-                bold: true,
-            );
-        }
+        $this->printParagraph(
+            strtr($this->contractText('texts.' . $key), [
+                '{activation_fee_obligation}' =>
+                    Number::currency($contract->activation_fee_with_obligation_sum->toFloat()),
+            ]),
+            bold: true,
+        );
 
         $clauseKey = $withInstallation
             ? 'activation_fee_clause_with_installation'
@@ -1057,6 +1055,7 @@ class ContractPDF extends AppPDF
         [$soldEquipmentsDiscount, $soldEquipmentsValue] = $this->printActivationFeeAndSoldEquipment(
             $contract,
             $executed,
+            $data->activatesTheService(),
         );
 
         $this->printHandoverSection(
@@ -1378,35 +1377,46 @@ class ContractPDF extends AppPDF
      * The price a piece of equipment goes on the protocol at depends on whether the customer
      * committed: the discount is the provider's, and leaving early gives it back.
      *
+     * Where the papers do not set the connection up, there is no fee to charge and only what is
+     * sold is added up.
+     *
      * @param \App\Model\Entity\Contract $contract Contract being printed
      * @param \App\Model\Entity\ContractVersion $contract_version Version being executed
+     * @param bool $activates Whether the papers charge for setting the connection up
      * @return array Discount given for the commitment, and the undiscounted value
      * @phpstan-return array{0: \PhpCollective\DecimalObject\Decimal, 1: \PhpCollective\DecimalObject\Decimal}
      */
-    private function printActivationFeeAndSoldEquipment(Contract $contract, ContractVersion $contract_version): array
-    {
+    private function printActivationFeeAndSoldEquipment(
+        Contract $contract,
+        ContractVersion $contract_version,
+        bool $activates = true,
+    ): array {
         $this->printSectionHeading($this->handoverText('sections.activation_fee'));
 
-        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->printTableCaption(
-            $this->handoverText(
-                count($contract->borrowed_equipments) > 0
-                    ? 'texts.activation_fee_intro_with_equipment'
-                    : 'texts.activation_fee_intro',
-            ),
-        );
+        $subtotal = Decimal::create(0, 2);
 
-        $subtotal = $contract_version->minimum_duration <= 0
-            ? $contract->activation_fee_sum
-            : $contract->activation_fee_with_obligation_sum;
+        if ($activates) {
+            $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+            $this->printTableCaption(
+                $this->handoverText(
+                    count($contract->borrowed_equipments) > 0
+                        ? 'texts.activation_fee_intro_with_equipment'
+                        : 'texts.activation_fee_intro',
+                ),
+            );
 
-        $this->printFramedRow(
-            [$this->handoverText('tables.sold_equipments.activation_fee'), Number::currency($subtotal->toFloat())],
-            [155, 25],
-            ['L', 'R'],
-        );
+            $subtotal = $contract_version->minimum_duration <= 0
+                ? $contract->activation_fee_sum
+                : $contract->activation_fee_with_obligation_sum;
 
-        $this->Ln(2);
+            $this->printFramedRow(
+                [$this->handoverText('tables.sold_equipments.activation_fee'), Number::currency($subtotal->toFloat())],
+                [155, 25],
+                ['L', 'R'],
+            );
+
+            $this->Ln(2);
+        }
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         $this->printTableCaption($this->handoverText('texts.activation_fee_items_intro'));
@@ -1472,7 +1482,9 @@ class ContractPDF extends AppPDF
         $this->Ln(2);
 
         $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
-        $this->printTableCaption($this->handoverText('texts.activation_fee_obligation'));
+        $this->printTableCaption($this->handoverText($activates
+            ? 'texts.activation_fee_obligation'
+            : 'texts.activation_fee_obligation_without_fee'));
 
         // The total carries the weight of the statement above it, and is set to match.
         $this->printFramedRow(
