@@ -191,6 +191,8 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseNotContains('value="2022-11-30"');
+        // An amendment does not change the term, so the version's dates are not asked for.
+        $this->assertResponseNotContains('version_change_named[obligation_until]');
         // The hint names that day, written the way the application writes days.
         $day = $this->getTableLocator()->get('ContractVersions')
             ->get(self::CONTRACT_VERSION_ID)
@@ -675,8 +677,9 @@ class ContractProposalsControllerTest extends TestCase
         $offered = TheUsualTerm::from($version->valid_from);
 
         $this->login();
+        // Only a new contract sets a term, so that is where it is offered.
         $this->get(self::NESTED . '/contract-proposals/add?purpose='
-            . ProposalPurpose::ServiceChange->value
+            . ProposalPurpose::NewContract->value
             . '&contract_version_id=' . self::CONTRACT_VERSION_ID);
 
         $this->assertResponseOk();

@@ -93,6 +93,19 @@ enum ProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
+     * Whether a proposal for this purpose may set the version's term and obligation.
+     *
+     * Only a new contract may. The customer agrees to a term by signing a contract that states it,
+     * and an amendment states only the services and their prices.
+     *
+     * @return bool
+     */
+    public function mayChangeTheTerm(): bool
+    {
+        return $this === self::NewContract;
+    }
+
+    /**
      * The document to offer first, before the operator has chosen one.
      *
      * Only a suggestion: which documents may be printed at all is worked out from the proposal, so

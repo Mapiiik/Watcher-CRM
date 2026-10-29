@@ -651,6 +651,50 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
+     * An amendment prints the services and their prices and nothing about the term, so a term
+     * changed by one would bind the customer to something the paper never showed.
+     *
+     * @return void
+     */
+    public function testOnlyANewContractChangesTheTerm(): void
+    {
+        $amendment = $this->save([
+            'purpose' => ProposalPurpose::ServiceChange->value,
+            'changes' => ['version' => ['obligation_until' => '2027-12-31']],
+        ]);
+        $this->assertArrayHasKey('onlyANewContractChangesTheTerm', $amendment->getError('changes'));
+
+        $newContract = $this->save([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'changes' => ['version' => ['obligation_until' => '2027-12-31']],
+        ]);
+        $this->assertEmpty($newContract->getErrors());
+    }
+
+    /**
+     * Asked only when the changes are written, so that an amendment drawn up before the rule can
+     * still be signed and applied.
+     *
+     * @return void
+     */
+    public function testAnOlderAmendmentWithATermIsLeftAlone(): void
+    {
+        $older = $this->save([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'changes' => ['version' => ['obligation_until' => '2027-12-31']],
+        ]);
+        $this->Proposals->updateAll(
+            ['purpose' => ProposalPurpose::ServiceChange->value],
+            ['id' => $older->id],
+        );
+
+        $again = $this->Proposals->get($older->id);
+        $again->set('note', 'Looked at again');
+
+        $this->assertNotFalse($this->Proposals->save($again));
+    }
+
+    /**
      * A line has to act on a billing the snapshot knows, or there is nothing to say what it
      * replaces and nothing to hold the live record up against before applying it.
      *

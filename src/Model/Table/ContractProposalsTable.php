@@ -782,6 +782,33 @@ class ContractProposalsTable extends AppTable
             ],
         );
 
+        // An amendment states the services and their prices, so a term set by one would bind the
+        // customer to something the paper never showed. Asked only when the changes are written,
+        // so that a proposal drawn up before this rule can still be applied.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                if (
+                    $entity->purpose->mayChangeTheTerm()
+                    || $entity->purpose->ends()
+                    || !($entity->isNew() || $entity->isDirty('changes'))
+                ) {
+                    return true;
+                }
+
+                $changes = $this->readChanges($entity);
+
+                return $changes === null || $changes->version->isEmpty();
+            },
+            'onlyANewContractChangesTheTerm',
+            [
+                'errorField' => 'changes',
+                'message' => __(
+                    'Only a new contract can change the term or the obligation. Draw up a new'
+                    . ' contract instead of an amendment.',
+                ),
+            ],
+        );
+
         // The number goes on the paper, and a proposal is where it now stays; before, it was typed
         // in at every printing and thrown away afterwards.
         $rules->add(

@@ -53,6 +53,14 @@ final class ProposalForm
             return $this->ending($data, $existing);
         }
 
+        // The term and the obligation change only with a new contract, never by an amendment.
+        if (!$purpose->mayChangeTheTerm()) {
+            return $existing
+                ->withVersion(ProposedVersion::untouched())
+                ->withContract(ProposedContract::untouched())
+                ->toArray();
+        }
+
         return $existing
             ->withVersion(ProposedVersion::fromArray($this->dates(
                 (array)($data['version_change'] ?? []),

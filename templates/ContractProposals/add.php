@@ -210,7 +210,7 @@ $endsOn = $changes->version->names('valid_until')
                 }
                 ?>
             </fieldset>
-            <?php elseif ($keepsVersions) : ?>
+            <?php elseif ($keepsVersions && $purpose->mayChangeTheTerm()) : ?>
             <fieldset>
                 <legend><?= __('Contract Version') ?></legend>
                 <p><?= __('Only what is ticked here is changed. The rest is left as it stands.') ?></p>
