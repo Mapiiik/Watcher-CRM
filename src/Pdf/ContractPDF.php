@@ -1204,7 +1204,8 @@ class ContractPDF extends AppPDF
         $this->printEarlyTerminationTerms($executed, $soldEquipmentsDiscount, $soldEquipmentsValue);
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        $this->printParagraph($this->handoverText('texts.exchange_date_line'), gap: 2.0);
+        // A line of air between the two, because both are written in by hand.
+        $this->printParagraph($this->handoverText('texts.exchange_date_line'), gap: 2.0 + self::LINE_HEIGHT);
         $this->printParagraph($this->handoverText('texts.exchange_received_on_site'), gap: 4.0);
 
         $this->printSectionHeading($this->handoverText('sections.final_statements'));
