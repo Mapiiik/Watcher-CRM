@@ -81,6 +81,8 @@ final class ProposalDocumentTypes
         bool $replaces,
     ): array {
         $purpose = $proposal->purpose;
+        // A box swapped for another is one paper: the exchange protocol stands in for the two.
+        $exchanges = $has_equipment && $replaces && $proposal->proposedChanges()->exchangesEquipment();
 
         return array_values(array_filter(
             ContractDocumentType::cases(),
@@ -103,8 +105,10 @@ final class ProposalDocumentTypes
                 // protocol of its own.
                 // An amendment changes what is billed for and hands nothing over.
                 ContractDocumentType::HandoverInstallation => $has_equipment && !$ends
-                    && $purpose !== ProposalPurpose::ServiceChange,
-                ContractDocumentType::HandoverUninstallation => $has_equipment && ($ends || $replaces),
+                    && $purpose !== ProposalPurpose::ServiceChange && !$exchanges,
+                ContractDocumentType::HandoverUninstallation => $has_equipment && ($ends || $replaces)
+                    && !$exchanges,
+                ContractDocumentType::HandoverExchange => $exchanges,
                 // What comes from the other side of an ending: the customer's own letter, or the
                 // certificate where there is nobody left to write one. Both belong to an ending
                 // and to nothing else, and neither is ever owed - an ending has one of them, and
@@ -122,9 +126,9 @@ final class ProposalDocumentTypes
     /**
      * The ones of them that have to exist, as against the ones that may.
      *
-     * A handover protocol is drawn up when somebody wants one - equipment changes hands without a
-     * version ending, and an installation is not always signed for - so its absence is not a gap.
-     * Everything else here is the paper the papers are about.
+     * A handover protocol is owed where equipment changes hands. Proposals drawn up before that was
+     * so keep the rules they were drawn up under, when a protocol was drawn only if somebody wanted
+     * one. Everything else here is the paper the papers are about.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param bool $has_equipment Whether the contract is one that has equipment at all.
@@ -138,7 +142,7 @@ final class ProposalDocumentTypes
     ): array {
         return array_values(array_filter(
             $this->for($proposal, $has_equipment, $version_concluded),
-            fn(ContractDocumentType $type): bool => !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true),
+            fn(ContractDocumentType $type): bool => $this->isOwed($type, $proposal, []),
         ));
     }
 
@@ -168,11 +172,53 @@ final class ProposalDocumentTypes
                 continue;
             }
 
-            $expected[$type->value] = !in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true)
-                && !$this->answeredByTheOtherSide($type, $on_file);
+            $expected[$type->value] = $this->isOwed($type, $proposal, $on_file);
         }
 
         return $expected;
+    }
+
+    /**
+     * Whether a paper the proposal may have has to exist.
+     *
+     * @param \App\Model\Enum\ContractDocumentType $type The paper.
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param array<\App\Model\Enum\ContractDocumentType> $on_file What is already on file against it.
+     * @return bool
+     */
+    private function isOwed(ContractDocumentType $type, ContractProposal $proposal, array $on_file): bool
+    {
+        if ($this->answeredByTheOtherSide($type, $on_file)) {
+            return false;
+        }
+
+        if (!in_array($type, self::WHEN_SOMEBODY_WANTS_ONE, true)) {
+            return true;
+        }
+
+        $snapshot = $proposal->stateOfThings();
+
+        if (!$snapshot->owesHandoverProtocols()) {
+            return false;
+        }
+
+        $changes = $proposal->proposedChanges();
+        $lends = $changes->equipmentLent() !== [];
+        $takesBack = $changes->equipmentTakenBack() !== [];
+
+        // A contract replacing an earlier one owes the protocol of what it hands over or takes
+        // back, and nothing where it moves nothing: the customer keeps what they have. Anything
+        // else owes it wherever equipment is lent once it has been put into effect - a new
+        // contract hands all of it over, and an ending of the contract takes all of it back.
+        $installs = $type === ContractDocumentType::HandoverInstallation;
+
+        if ($proposal->terminatesAnotherVersion()) {
+            return $installs ? $lends && !$takesBack : $takesBack && !$lends;
+        }
+
+        return $installs
+            ? $snapshot->borrowedEquipments() !== [] || $lends
+            : $proposal->endsTheContract() && $snapshot->borrowedEquipments() !== [];
     }
 
     /**

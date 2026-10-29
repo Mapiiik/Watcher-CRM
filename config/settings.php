@@ -662,6 +662,7 @@ return [
                     'title' => 'PŘEDÁVACÍ PROTOKOL',
                     'subtitle_installation' => 'ke Smlouvě o poskytování služeb',
                     'subtitle_uninstallation' => 'k ukončení Smlouvy o poskytování služeb',
+                    'subtitle_exchange' => 'o výměně zařízení ke Smlouvě o poskytování služeb',
 
                     'sections' => [
                         'access_info' => 'Přístupové údaje a technické informace',
@@ -673,6 +674,8 @@ return [
                         'final_statements' => 'Závěrečná ustanovení',
                         'uninstallation_borrowed_equipment' => 'Poskytnutá zařízení, jejich stav a náhrada nákladů',
                         'uninstallation_cash_payment' => 'Úhrada v hotovosti',
+                        'exchange_returned' => 'Vrácená zařízení a jejich stav',
+                        'exchange_borrowed' => 'Nově poskytnutá zařízení',
                     ],
 
                     'texts' => [
@@ -753,6 +756,52 @@ return [
                             Uživatel se zavazuje uhradit hodnotu zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené výše).
 
                             Byla-li deinstalace provedena Poskytovatelem, Uživatel potvrzuje, že s jejím provedením souhlasí a nemá vůči ní žádné námitky.
+
+                            Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
+
+                            Tento předávací protokol (ke smlouvě č. {contract_number}) je vyhotoven ve dvou stejnopisech.
+                            TEXT,
+
+                        'exchange_equipment_checks_text' => <<<TEXT
+                            ▢ ano / ▢ ne - zařízení byla Poskytovateli vrácena
+
+                            ▢ ano / ▢ ne - demontáž zařízení provedl Uživatel sám (ne = demontáž provedl Poskytovatel na místě instalace)
+
+                            ▢ ano / ▢ ne - zařízení byla vrácena kompletní podle soupisu uvedeného výše
+
+                            ▢ ano / ▢ ne - Poskytovateli byla umožněna zkouška funkčnosti zařízení při jejich předání, jejich zapnutím, připojením
+                                                    se do jejich konfiguračního rozhraní pokud to umožňují a provedením diagnostiky
+
+                            ▢ ano / ▢ ne - provedením zkoušky funkčnosti zařízení při předání byla zjištěna jejich nefunkčnost
+
+                            ▢ ano / ▢ ne - zařízení má viditelnou vadu nebo poškození způsobené neodborným zacházením ze strany Uživatele
+
+                            zjištěné nedostatky a poznámky:
+
+                            _______________________________________________________________________________________________________
+
+                            _______________________________________________________________________________________________________
+
+                            _______________________________________________________________________________________________________
+
+                            Nebyla-li zkouška funkčnosti provedena při předání, bude provedena následně v provozovně Poskytovatele.
+
+                            V případě viditelné vady, poškození nebo zjištění nefunkčnosti těchto zařízení se Uživatel zavazuje uhradit hodnotu těchto zařízení.
+                            TEXT,
+
+                        'exchange_date_line' => 'Datum výměny: ____________________',
+                        'exchange_received_on_site' => 'Za Uživatele převzal na místě (jméno a podpis): ____________________',
+
+                        'exchange_final_statements_text' => <<<TEXT
+                            Smluvní strany se dohodly, že zařízení uvedená v části Vrácená zařízení a jejich stav se ke dni výměny uvedenému v tomto předávacím protokolu nahrazují zařízeními uvedenými v části Nově poskytnutá zařízení. Ode dne výměny se ustanovení Smlouvy o Poskytnutých zařízeních vztahují na nově poskytnutá zařízení. Tento předávací protokol je nedílnou součástí Smlouvy č. {contract_number}. Ostatní ustanovení Smlouvy zůstávají beze změny.
+
+                            Poskytovatel svým podpisem stvrzuje, že zařízení, která mu byla vrácena, převzal ve stavu popsaném výše.
+
+                            Uživatel svým podpisem stvrzuje, že nově poskytnutá zařízení převzal nainstalovaná a plně funkční.
+
+                            Uživatel se zavazuje uhradit částky uvedené v části Aktivační poplatek, prodaná zařízení a příslušenství a práce nad rámec aktivačního poplatku nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti potvrzené příjmovým pokladním dokladem).
+
+                            Uživatel se zavazuje uhradit hodnotu vrácených zařízení v případě jejich viditelné vady, poškození nebo zjištěné nefunkčnosti nejpozději do 10 dnů ode dne doručení faktury (pokud nedošlo k úhradě v hotovosti).
 
                             Všechny ceny uvedené v tomto předávacím protokolu jsou vyjádřeny včetně daně z přidané hodnoty, pokud není výslovně stanoveno jinak.
 

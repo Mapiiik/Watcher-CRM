@@ -12,9 +12,9 @@ namespace App\Contracts\Proposal;
 final class ProjectedEquipment
 {
     /**
-     * @param list<\App\Model\Entity\BorrowedEquipment> $continuing What stays lent as it is.
-     * @param list<\App\Model\Entity\BorrowedEquipment> $lent What the proposal lends.
-     * @param list<\App\Model\Entity\BorrowedEquipment> $returned What it takes back.
+     * @param array<\App\Model\Entity\BorrowedEquipment> $continuing What stays lent as it is.
+     * @param array<\App\Model\Entity\BorrowedEquipment> $lent What the proposal lends.
+     * @param array<\App\Model\Entity\BorrowedEquipment> $returned What it takes back.
      */
     public function __construct(
         public readonly array $continuing,
@@ -26,7 +26,7 @@ final class ProjectedEquipment
     /**
      * Everything lent once the proposal has been applied.
      *
-     * @return list<\App\Model\Entity\BorrowedEquipment>
+     * @return array<\App\Model\Entity\BorrowedEquipment>
      */
     public function afterwards(): array
     {

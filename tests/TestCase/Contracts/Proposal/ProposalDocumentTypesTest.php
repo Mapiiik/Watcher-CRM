@@ -210,6 +210,148 @@ class ProposalDocumentTypesTest extends TestCase
     }
 
     /**
+     * A proposal drawn up today, whose snapshot says the protocols are owed.
+     *
+     * @param array<string, mixed> $says What it says.
+     * @param list<array<string, mixed>> $borrowed What the snapshot says the contract lends.
+     * @return \App\Model\Entity\ContractProposal
+     */
+    private function drawnUpToday(array $says = [], array $borrowed = []): ContractProposal
+    {
+        return $this->proposal($says + [
+            'snapshot' => [
+                'contract' => ['service_type' => ['have_equipments' => true]],
+                'customer' => [],
+                'version' => ['conclusion_date' => '2026-01-01'],
+                'billings' => [],
+                'borrowed_equipments' => $borrowed,
+                'handover_protocols_owed' => true,
+            ],
+        ]);
+    }
+
+    /**
+     * Which handover protocols a proposal owes, by type.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param array<\App\Model\Enum\ContractDocumentType> $on_file What is on file.
+     * @return array<string, bool>
+     */
+    private function protocolsOf(ContractProposal $proposal, array $on_file = []): array
+    {
+        return array_intersect_key(
+            (new ProposalDocumentTypes())->expectedOf($proposal, $on_file),
+            array_flip([
+                ContractDocumentType::HandoverInstallation->value,
+                ContractDocumentType::HandoverUninstallation->value,
+                ContractDocumentType::HandoverExchange->value,
+            ]),
+        );
+    }
+
+    /**
+     * A new contract owes the installation protocol where it lends anything, whether the
+     * equipment was put on the contract before the papers or is added by their lines.
+     *
+     * @return void
+     */
+    public function testANewContractOwesTheInstallationProtocolWhereItLends(): void
+    {
+        $installation = ContractDocumentType::HandoverInstallation->value;
+        $lend = ['id' => 'lend', 'move' => 'lend', 'equipment_type_id' => 'type-1'];
+
+        $this->assertTrue($this->protocolsOf($this->drawnUpToday([], [['id' => 'kept']]))[$installation]);
+        $this->assertTrue($this->protocolsOf($this->drawnUpToday(['changes' => ['equipments' => [$lend]]]))[$installation]);
+        $this->assertFalse($this->protocolsOf($this->drawnUpToday())[$installation]);
+    }
+
+    /**
+     * A contract replacing an earlier one owes the protocol of what changes hands: what it adds,
+     * what it ends, or one protocol of the exchange where it does both. Where nothing changes
+     * hands the installation protocol may still be drawn as a list of what the customer has.
+     *
+     * @return void
+     */
+    public function testAReplacingContractOwesTheProtocolOfWhatChangesHands(): void
+    {
+        $replacing = ['terminates_contract_version_id' => 'a1b2c3d4-0000-4000-8000-000000000002'];
+        $lend = ['id' => 'lend', 'move' => 'lend', 'equipment_type_id' => 'type-1'];
+        $end = ['id' => 'end', 'move' => 'return', 'borrowed_equipment_id' => 'old'];
+        $old = [['id' => 'old']];
+
+        $this->assertSame(
+            [
+                ContractDocumentType::HandoverInstallation->value => false,
+                ContractDocumentType::HandoverUninstallation->value => false,
+            ],
+            $this->protocolsOf($this->drawnUpToday($replacing, $old)),
+        );
+        $this->assertSame(
+            [
+                ContractDocumentType::HandoverInstallation->value => true,
+                ContractDocumentType::HandoverUninstallation->value => false,
+            ],
+            $this->protocolsOf($this->drawnUpToday($replacing + ['changes' => ['equipments' => [$lend]]], $old)),
+        );
+        $this->assertSame(
+            [
+                ContractDocumentType::HandoverInstallation->value => false,
+                ContractDocumentType::HandoverUninstallation->value => true,
+            ],
+            $this->protocolsOf($this->drawnUpToday($replacing + ['changes' => ['equipments' => [$end]]], $old)),
+        );
+        $this->assertSame(
+            [ContractDocumentType::HandoverExchange->value => true],
+            $this->protocolsOf($this->drawnUpToday(
+                $replacing + ['changes' => ['equipments' => [$end, $lend]]],
+                $old,
+            )),
+        );
+    }
+
+    /**
+     * Ending the contract takes back what it lends, so the uninstallation protocol is owed there.
+     * Ending one version while the contract runs on takes nothing back.
+     *
+     * @return void
+     */
+    public function testEndingTheContractOwesTheUninstallationProtocolWhereSomethingIsLent(): void
+    {
+        $uninstallation = ContractDocumentType::HandoverUninstallation->value;
+        $versionOnly = [
+            'purpose' => ProposalPurpose::Termination,
+            'changes' => ['version' => ['valid_until' => '2026-09-30']],
+        ];
+
+        $this->assertTrue($this->protocolsOf($this->drawnUpToday(self::ending(), [['id' => 'kept']]))[$uninstallation]);
+        $this->assertFalse($this->protocolsOf($this->drawnUpToday(self::ending()))[$uninstallation]);
+        $this->assertFalse($this->protocolsOf($this->drawnUpToday($versionOnly, [['id' => 'kept']]))[$uninstallation]);
+    }
+
+    /**
+     * A proposal drawn up before the protocols were owed keeps the rules it was drawn up under.
+     *
+     * @return void
+     */
+    public function testAnOlderProposalOwesNoProtocol(): void
+    {
+        $older = $this->proposal(self::ending() + [
+            'snapshot' => [
+                'contract' => ['service_type' => ['have_equipments' => true]],
+                'customer' => [],
+                'version' => ['conclusion_date' => '2026-01-01'],
+                'billings' => [],
+                'borrowed_equipments' => [['id' => 'kept']],
+            ],
+        ]);
+
+        $this->assertSame(
+            [ContractDocumentType::HandoverUninstallation->value => false],
+            $this->protocolsOf($older),
+        );
+    }
+
+    /**
      * An amendment changes what is billed for and hands no equipment over, so it offers no
      * handover protocol.
      *

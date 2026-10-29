@@ -101,6 +101,7 @@ class ContractDocumentTypeTest extends TestCase
                 ContractDocumentType::ContractAmendment,
                 ContractDocumentType::ContractSummary,
                 ContractDocumentType::HandoverInstallation,
+                ContractDocumentType::HandoverExchange,
             ],
             $this->typesWhere(fn(ContractDocumentType $type): bool => $type->requiresContractVersionToBeExecuted()),
         );
@@ -160,6 +161,7 @@ class ContractDocumentTypeTest extends TestCase
             [
                 ContractDocumentType::HandoverInstallation,
                 ContractDocumentType::HandoverUninstallation,
+                ContractDocumentType::HandoverExchange,
             ],
             $this->typesWhere(fn(ContractDocumentType $type): bool => $type->isHandoverProtocol()),
         );

@@ -21,6 +21,7 @@ enum ContractDocumentType: string implements EnumLabelInterface
     case ContractSummary = 'contract-summary';
     case HandoverInstallation = 'handover-protocol-installation';
     case HandoverUninstallation = 'handover-protocol-uninstallation';
+    case HandoverExchange = 'handover-protocol-exchange';
 
     // Papers of an ending that come from the other side. Nobody draws them here - one is written
     // by the customer and the other by an office - but they belong to the papers of the ending as
@@ -61,6 +62,9 @@ enum ContractDocumentType: string implements EnumLabelInterface
 
             self::HandoverUninstallation =>
                 __('Handover protocol - Internet connection uninstallation'),
+
+            self::HandoverExchange =>
+                __('Handover protocol - Exchange of borrowed equipments'),
 
             self::TerminationNotice =>
                 __('Notice of termination from the customer'),
@@ -145,6 +149,7 @@ enum ContractDocumentType: string implements EnumLabelInterface
             self::ContractAmendment,
             self::ContractSummary,
             self::HandoverInstallation,
+            self::HandoverExchange,
         ], true);
     }
 
@@ -250,6 +255,7 @@ enum ContractDocumentType: string implements EnumLabelInterface
         return in_array($this, [
             self::HandoverInstallation,
             self::HandoverUninstallation,
+            self::HandoverExchange,
         ], true);
     }
 }

@@ -48,6 +48,8 @@ final class ProposalSnapshotBuilder
             'sold_equipments' => $this->equipments($contract->sold_equipments ?? []),
             'ip_addresses' => $this->ipAddresses($contract),
             'ip_networks' => $this->each($contract->ip_networks ?? [], SnapshotShape::IP_NETWORK),
+            // The rules a proposal's papers are held to are the ones of the day it was drawn up.
+            'handover_protocols_owed' => true,
         ];
     }
 

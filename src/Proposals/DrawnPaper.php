@@ -264,6 +264,15 @@ final class DrawnPaper
             $snapshot->servicesChosenBy($changes),
         );
 
+        // Only where the lines move equipment, so that every paper without them prints as it did.
+        if ($changes->equipments !== []) {
+            $data->projectedEquipment = $projection->projectEquipment(
+                $asItStood->borrowed_equipments ?? [],
+                $changes,
+                $snapshot->equipmentLentBy($changes),
+            );
+        }
+
         return $data;
     }
 

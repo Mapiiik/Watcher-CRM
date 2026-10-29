@@ -97,11 +97,12 @@ class ContractPDF extends AppPDF
 
         $this->printDocumentHeader(
             $this->handoverText('title'),
-            $this->handoverText(
-                $data->type === ContractDocumentType::HandoverInstallation
-                    ? 'subtitle_installation'
-                    : 'subtitle_uninstallation',
-            ),
+            $this->handoverText(match ($data->type) {
+                ContractDocumentType::HandoverInstallation => 'subtitle_installation',
+                ContractDocumentType::HandoverUninstallation => 'subtitle_uninstallation',
+                ContractDocumentType::HandoverExchange => 'subtitle_exchange',
+                default => throw new InvalidArgumentException('Unsupported handover protocol: ' . $data->type->value),
+            }),
         );
 
         $this->printHandoverIdentification($data);
@@ -114,11 +115,12 @@ class ContractPDF extends AppPDF
         $this->printCustomerBlock($contract);
         $this->drawSeparator(AppPDF::SEPARATOR_OFFSET_X, lnAfter: 4.0);
 
-        if ($data->type === ContractDocumentType::HandoverInstallation) {
-            $this->printInstallationProtocol($data);
-        } else {
-            $this->printUninstallationProtocol($data);
-        }
+        match ($data->type) {
+            ContractDocumentType::HandoverInstallation => $this->printInstallationProtocol($data),
+            ContractDocumentType::HandoverUninstallation => $this->printUninstallationProtocol($data),
+            ContractDocumentType::HandoverExchange => $this->printExchangeProtocol($data),
+            default => throw new InvalidArgumentException('Unsupported handover protocol: ' . $data->type->value),
+        };
 
         $this->printSignatureSection('double');
 
@@ -204,11 +206,11 @@ class ContractPDF extends AppPDF
 
         if (
             $data->contractVersionToBeExecuted === null
-            && $data->type === ContractDocumentType::HandoverInstallation
+            && $data->type->requiresContractVersionToBeExecuted()
         ) {
             throw new InvalidArgumentException(
                 'The contract version to be executed must be provided in order to generate'
-                    . ' a handover protocol for installation',
+                    . ' a handover protocol for installation or exchange',
             );
         }
 
@@ -379,15 +381,21 @@ class ContractPDF extends AppPDF
      */
     private function printHandoverIdentification(ContractPrintData $data): void
     {
-        $columns = $data->type === ContractDocumentType::HandoverInstallation
-            ? [
+        $columns = match ($data->type) {
+            ContractDocumentType::HandoverInstallation => [
                 [$this->label('contract_number'), (string)$data->contract->number],
                 [$this->label('start_date'), (string)$this->executedVersion($data)->valid_from],
-            ]
-            : [
+            ],
+            // The day of the exchange is written in by hand, because the papers are printed ahead.
+            ContractDocumentType::HandoverUninstallation => [
                 [$this->label('contract_number'), (string)$data->contractNumberToBeTerminated],
                 [$this->label('end_date'), (string)$this->terminatedVersion($data)->valid_until],
-            ];
+            ],
+            ContractDocumentType::HandoverExchange => [
+                [$this->label('contract_number'), (string)$data->contract->number],
+            ],
+            default => throw new InvalidArgumentException('Unsupported handover protocol: ' . $data->type->value),
+        };
 
         $this->printLabelledRow($columns, 90.0);
     }
@@ -801,7 +809,7 @@ class ContractPDF extends AppPDF
 
         $this->drawSeparator(lnBefore: 0.4, lnAfter: 1.0);
 
-        if (count($contract->borrowed_equipments) > 0) {
+        if (count($data->equipmentLentAfterwards()) > 0) {
             $this->printBorrowedEquipmentForContract($data);
 
             // activation fee with installation
@@ -825,19 +833,46 @@ class ContractPDF extends AppPDF
      */
     private function printBorrowedEquipmentForContract(ContractPrintData $data): void
     {
-        $contract = $data->contract;
-
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+
         if ($data->type === ContractDocumentType::ContractNew) {
             $this->printTableCaption($this->contractText('texts.borrowed_equipment_intro_new'));
+            $this->printContractEquipmentTable($data->equipmentLentAfterwards());
         } else {
-            $this->printTableCaption(
-                strtr($this->contractText('texts.borrowed_equipment_intro_old'), [
-                    '{old_conclusion_date}' => $this->terminatedVersion($data)->conclusion_date,
-                ]),
-            );
+            // A replacing contract says what the earlier one lent and goes on being lent, and then
+            // what it lends itself.
+            $continuing = $data->projectedEquipment->continuing ?? $data->contract->borrowed_equipments;
+            $added = $data->projectedEquipment->lent ?? [];
+
+            if ($continuing !== []) {
+                $this->printTableCaption(
+                    strtr($this->contractText('texts.borrowed_equipment_intro_old'), [
+                        '{old_conclusion_date}' => $this->terminatedVersion($data)->conclusion_date,
+                    ]),
+                );
+                $this->printContractEquipmentTable($continuing);
+                $this->printParagraph($this->contractText('texts.borrowed_equipment_continue'));
+            }
+
+            if ($added !== []) {
+                $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+                $this->printTableCaption($this->contractText('texts.borrowed_equipment_intro_new'));
+                $this->printContractEquipmentTable($added);
+            }
         }
 
+        $this->printParagraph($this->contractText('texts.borrowed_equipment_return'));
+        $this->printParagraph($this->contractText('texts.borrowed_equipment_installation_costs'));
+    }
+
+    /**
+     * The table of equipment the contract lends, with the value of each piece.
+     *
+     * @param array<\App\Model\Entity\BorrowedEquipment> $equipments What is listed.
+     * @return void
+     */
+    private function printContractEquipmentTable(array $equipments): void
+    {
         $this->SetFont(self::FONT_FAMILY, 'B', self::BODY_FONT_SIZE);
         $this->Cell(
             130,
@@ -855,7 +890,7 @@ class ContractPDF extends AppPDF
         $this->Ln();
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        foreach ($contract->borrowed_equipments as $borrowed_equipment) {
+        foreach ($equipments as $borrowed_equipment) {
             $this->Cell(130, self::TABLE_ROW_HEIGHT, $borrowed_equipment->equipment_type->name, 1);
             $this->Cell(
                 30,
@@ -867,13 +902,6 @@ class ContractPDF extends AppPDF
             $this->Ln();
         }
         $this->Ln();
-
-        if ($data->type === ContractDocumentType::ContractNewX) {
-            $this->printParagraph($this->contractText('texts.borrowed_equipment_continue'));
-        }
-
-        $this->printParagraph($this->contractText('texts.borrowed_equipment_return'));
-        $this->printParagraph($this->contractText('texts.borrowed_equipment_installation_costs'));
     }
 
     /**
@@ -1047,7 +1075,7 @@ class ContractPDF extends AppPDF
         $executed = $this->executedVersion($data);
 
         $this->printAccessInformation($data);
-        $this->printBorrowedEquipmentForInstallation($contract);
+        $this->printBorrowedEquipmentForInstallation($data->equipmentHandedOver());
 
         $this->drawCross();
         $this->AddPage();
@@ -1056,6 +1084,7 @@ class ContractPDF extends AppPDF
             $contract,
             $executed,
             $data->activatesTheService(),
+            count($data->equipmentLentAfterwards()) > 0,
         );
 
         $this->printHandoverSection(
@@ -1082,7 +1111,7 @@ class ContractPDF extends AppPDF
      */
     private function printUninstallationProtocol(ContractPrintData $data): void
     {
-        $this->printBorrowedEquipmentForUninstallation($data->contract);
+        $this->printBorrowedEquipmentForUninstallation($data->equipmentTakenBack());
 
         $this->drawCross();
         $this->AddPage();
@@ -1101,6 +1130,84 @@ class ContractPDF extends AppPDF
         $this->printSectionHeading($this->handoverText('sections.final_statements'));
         $this->printParagraph(strtr($this->handoverText('texts.uninstallation_final_statements_text'), [
             '{contract_number}' => (string)$data->contractNumberToBeTerminated,
+        ]));
+    }
+
+    /**
+     * The exchange protocol: what goes back and in what state, what is lent in its place, and what
+     * the customer is confirming by signing.
+     *
+     * The installation protocol with the returned equipment of the uninstallation one in it, so
+     * that a swapped box is one paper rather than two. The day of the exchange and who took the
+     * equipment over on the spot are written in by hand, because the papers are printed ahead and
+     * whoever signs for the customer is not always the one at the door.
+     *
+     * @param \App\Service\ContractPrint\ContractPrintData $data Prepared print data
+     * @return void
+     */
+    private function printExchangeProtocol(ContractPrintData $data): void
+    {
+        $contract = $data->contract;
+        $executed = $this->executedVersion($data);
+        $moved = $data->projectedEquipment;
+
+        $this->printAccessInformation($data);
+
+        // What goes back and what comes in its place are read together, so they start a sheet
+        // of their own.
+        $this->drawCross();
+        $this->AddPage();
+
+        $this->printSectionHeading($this->handoverText('sections.exchange_returned'));
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+        $this->printTableCaption($this->handoverText('texts.uninstallation_borrowed_equipment_intro'));
+        $this->printBorrowedEquipmentTable($moved->returned ?? [], padTo: self::BORROWED_EQUIPMENT_ROWS);
+        $this->Ln(2);
+
+        // The access details come first here, so the checks rarely fit under the table, and the
+        // line that introduces them goes over with them rather than staying behind on its own.
+        $checks = $this->handoverText('texts.exchange_equipment_checks_text');
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+        $this->keepTogether(
+            ($this->getNumLines($checks . PHP_EOL, self::TEXT_WIDTH) + 1) * self::LINE_HEIGHT,
+        );
+        $this->SetFont(self::FONT_FAMILY, 'U', self::BODY_FONT_SIZE);
+        $this->printTableCaption($this->handoverText('texts.uninstallation_equipment_state'));
+        $this->printParagraph($checks, gap: 4.0);
+
+        $this->printSectionHeading($this->handoverText('sections.exchange_borrowed'));
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+        $this->printTableCaption($this->handoverText('texts.borrowed_equipment_intro'));
+        $this->printBorrowedEquipmentTable($moved->lent ?? [], padTo: 0);
+        $this->Ln(2);
+        $this->printParagraph($this->handoverText('texts.borrowed_equipment_return'), gap: 2.0);
+
+        $this->drawCross();
+        $this->AddPage();
+
+        [$soldEquipmentsDiscount, $soldEquipmentsValue] = $this->printActivationFeeAndSoldEquipment(
+            $contract,
+            $executed,
+            $data->activatesTheService(),
+            count($data->equipmentLentAfterwards()) > 0,
+        );
+
+        $this->printHandoverSection(
+            'connection_point_state',
+            'connection_point_state_text',
+            lnBeforeText: 3,
+        );
+        $this->printHandoverSection('general_statements', 'general_statements_text', lnBeforeText: 4);
+
+        $this->printEarlyTerminationTerms($executed, $soldEquipmentsDiscount, $soldEquipmentsValue);
+
+        $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
+        $this->printParagraph($this->handoverText('texts.exchange_date_line'), gap: 2.0);
+        $this->printParagraph($this->handoverText('texts.exchange_received_on_site'), gap: 4.0);
+
+        $this->printSectionHeading($this->handoverText('sections.final_statements'));
+        $this->printParagraph(strtr($this->handoverText('texts.exchange_final_statements_text'), [
+            '{contract_number}' => (string)$contract->number,
         ]));
     }
 
@@ -1293,12 +1400,12 @@ class ContractPDF extends AppPDF
     /**
      * The equipment lent to the customer, listed on the installation protocol they sign for.
      *
-     * @param \App\Model\Entity\Contract $contract Contract being printed
+     * @param array<\App\Model\Entity\BorrowedEquipment> $equipments What is listed
      * @return void
      */
-    private function printBorrowedEquipmentForInstallation(Contract $contract): void
+    private function printBorrowedEquipmentForInstallation(array $equipments): void
     {
-        if (count($contract->borrowed_equipments) === 0) {
+        if (count($equipments) === 0) {
             return;
         }
 
@@ -1307,7 +1414,7 @@ class ContractPDF extends AppPDF
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         $this->printTableCaption($this->handoverText('texts.borrowed_equipment_intro'));
 
-        $this->printBorrowedEquipmentTable($contract, padTo: 0);
+        $this->printBorrowedEquipmentTable($equipments, padTo: 0);
 
         $this->Ln(2);
         $this->printParagraph($this->handoverText('texts.borrowed_equipment_return'), gap: 2.0);
@@ -1316,17 +1423,17 @@ class ContractPDF extends AppPDF
     /**
      * The equipment being taken back, and the state it is being taken back in.
      *
-     * @param \App\Model\Entity\Contract $contract Contract being printed
+     * @param array<\App\Model\Entity\BorrowedEquipment> $equipments What is listed
      * @return void
      */
-    private function printBorrowedEquipmentForUninstallation(Contract $contract): void
+    private function printBorrowedEquipmentForUninstallation(array $equipments): void
     {
         $this->printSectionHeading($this->handoverText('sections.uninstallation_borrowed_equipment'));
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         $this->printTableCaption($this->handoverText('texts.uninstallation_borrowed_equipment_intro'));
 
-        $this->printBorrowedEquipmentTable($contract, padTo: self::BORROWED_EQUIPMENT_ROWS);
+        $this->printBorrowedEquipmentTable($equipments, padTo: self::BORROWED_EQUIPMENT_ROWS);
 
         $this->Ln(2);
         $this->SetFont(self::FONT_FAMILY, 'U', self::BODY_FONT_SIZE);
@@ -1338,11 +1445,11 @@ class ContractPDF extends AppPDF
     /**
      * The table of lent equipment, optionally padded out with blank rows to write into.
      *
-     * @param \App\Model\Entity\Contract $contract Contract being printed
+     * @param array<\App\Model\Entity\BorrowedEquipment> $equipments What is listed
      * @param int $padTo Number of rows the table is filled out to, or zero to list only what there is
      * @return void
      */
-    private function printBorrowedEquipmentTable(Contract $contract, int $padTo): void
+    private function printBorrowedEquipmentTable(array $equipments, int $padTo): void
     {
         $this->printFramedRow(
             [
@@ -1356,7 +1463,7 @@ class ContractPDF extends AppPDF
         );
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
-        foreach ($contract->borrowed_equipments as $borrowed_equipment) {
+        foreach ($equipments as $borrowed_equipment) {
             $this->printFramedRow(
                 [
                     $borrowed_equipment->equipment_type->name,
@@ -1368,7 +1475,7 @@ class ContractPDF extends AppPDF
             );
         }
 
-        $this->printBlankRows($padTo - min($padTo, count($contract->borrowed_equipments)), [130, 25, 25]);
+        $this->printBlankRows($padTo - min($padTo, count($equipments)), [130, 25, 25]);
     }
 
     /**
@@ -1383,13 +1490,15 @@ class ContractPDF extends AppPDF
      * @param \App\Model\Entity\Contract $contract Contract being printed
      * @param \App\Model\Entity\ContractVersion $contract_version Version being executed
      * @param bool $activates Whether the papers charge for setting the connection up
+     * @param bool $withEquipment Whether any equipment is lent once the papers take effect
      * @return array Discount given for the commitment, and the undiscounted value
      * @phpstan-return array{0: \PhpCollective\DecimalObject\Decimal, 1: \PhpCollective\DecimalObject\Decimal}
      */
     private function printActivationFeeAndSoldEquipment(
         Contract $contract,
         ContractVersion $contract_version,
-        bool $activates = true,
+        bool $activates,
+        bool $withEquipment,
     ): array {
         $this->printSectionHeading($this->handoverText('sections.activation_fee'));
 
@@ -1399,7 +1508,7 @@ class ContractPDF extends AppPDF
             $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
             $this->printTableCaption(
                 $this->handoverText(
-                    count($contract->borrowed_equipments) > 0
+                    $withEquipment
                         ? 'texts.activation_fee_intro_with_equipment'
                         : 'texts.activation_fee_intro',
                 ),

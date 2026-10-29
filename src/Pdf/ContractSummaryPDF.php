@@ -759,7 +759,7 @@ class ContractSummaryPDF extends AppPDF
      */
     private function lendsEquipment(ContractPrintData $data): bool
     {
-        return count($data->contract->borrowed_equipments ?? []) > 0;
+        return count($data->equipmentLentAfterwards()) > 0;
     }
 
     /**

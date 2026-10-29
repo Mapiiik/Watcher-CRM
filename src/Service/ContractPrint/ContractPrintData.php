@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service\ContractPrint;
 
+use App\Contracts\Proposal\ProjectedEquipment;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
@@ -93,6 +94,13 @@ final class ContractPrintData
     public ?array $projectedBillings = null;
 
     /**
+     * The borrowed equipments as the proposal would leave them, where its lines move any.
+     *
+     * Null where they move none, and then the papers print what the snapshot holds.
+     */
+    public ?ProjectedEquipment $projectedEquipment = null;
+
+    /**
      * Active billings applicable at the time of the contract version.
      *
      * Typically split later into:
@@ -139,6 +147,50 @@ final class ContractPrintData
     public function activatesTheService(): bool
     {
         return $this->proposal?->activatesTheService() ?? $this->type !== ContractDocumentType::ContractNewX;
+    }
+
+    /**
+     * The equipment borrowed once the papers take effect.
+     *
+     * @return array<\App\Model\Entity\BorrowedEquipment>
+     */
+    public function equipmentLentAfterwards(): array
+    {
+        return $this->projectedEquipment?->afterwards() ?? $this->contract->borrowed_equipments ?? [];
+    }
+
+    /**
+     * The equipment an installation protocol hands over.
+     *
+     * A new contract hands over everything it lends. One replacing an earlier version hands over
+     * only what it adds, because the rest is already with the customer.
+     *
+     * @return array<\App\Model\Entity\BorrowedEquipment>
+     */
+    public function equipmentHandedOver(): array
+    {
+        if ($this->projectedEquipment === null) {
+            return $this->contract->borrowed_equipments ?? [];
+        }
+
+        return $this->proposal?->terminatesAnotherVersion() ?? false
+            ? $this->projectedEquipment->lent
+            : $this->projectedEquipment->afterwards();
+    }
+
+    /**
+     * The equipment an uninstallation protocol takes back.
+     *
+     * Where the proposal ends particular pieces, only those. Otherwise everything, as an ending
+     * takes it all back.
+     *
+     * @return array<\App\Model\Entity\BorrowedEquipment>
+     */
+    public function equipmentTakenBack(): array
+    {
+        $returned = $this->projectedEquipment->returned ?? [];
+
+        return $returned === [] ? $this->contract->borrowed_equipments ?? [] : $returned;
     }
 
     /**

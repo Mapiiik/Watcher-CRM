@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Pdf;
 
+use App\Contracts\Proposal\ProjectedEquipment;
+use App\Model\Entity\BorrowedEquipment;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
+use App\Model\Entity\EquipmentType;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\ProposalPurpose;
 use App\Pdf\ContractPDF;
@@ -111,6 +114,131 @@ class ProposalPapersTest extends TestCase
         $data->proposal = new ContractProposal(['purpose' => ProposalPurpose::NewContract]);
 
         $this->assertTrue($data->activatesTheService());
+    }
+
+    /**
+     * Where nothing moves, the projection says what the snapshot says, so a paper printed with one
+     * is the paper printed without. That is what keeps every paper without equipment lines as it
+     * was.
+     *
+     * @return void
+     */
+    public function testEquipmentThatStaysPrintsAsItDid(): void
+    {
+        $this->furnishTheContract();
+
+        $newContract = [
+            ContractDocumentType::ContractNew,
+            ContractDocumentType::ContractSummary,
+            ContractDocumentType::HandoverInstallation,
+            ContractDocumentType::HandoverUninstallation,
+        ];
+
+        foreach ($newContract as $type) {
+            $this->assertSame(
+                $this->printedForANewContract($type, projected: false),
+                $this->printedForANewContract($type, projected: true),
+                $type->value . ' printed differently once the equipment was projected.',
+            );
+        }
+
+        foreach ([ContractDocumentType::ContractNewX, ContractDocumentType::ContractSummary] as $type) {
+            $contract = $this->liveContract();
+            $version = $this->liveVersion();
+            $version->set('valid_until', null);
+
+            $without = $this->replacing($type, $contract, $version, reactivates: false);
+            $with = $this->replacing($type, $contract, $version, reactivates: false);
+            $with->projectedEquipment = new ProjectedEquipment($contract->borrowed_equipments, [], []);
+
+            $this->assertSame($this->print($without), $this->print($with), $type->value . ' moved.');
+        }
+    }
+
+    /**
+     * A box swapped by a replacing contract shows on the contract, which lists what is added, and
+     * on the exchange protocol, which lists what goes back and what comes in its place.
+     *
+     * @return void
+     */
+    public function testASwappedBoxIsOnTheContractAndTheExchangeProtocol(): void
+    {
+        $this->furnishTheContract();
+
+        foreach ([ContractDocumentType::ContractNewX, ContractDocumentType::HandoverExchange] as $type) {
+            $contract = $this->liveContract();
+            $version = $this->liveVersion();
+            $version->set('valid_until', null);
+
+            $asItWas = $this->replacing($type, $contract, $version, reactivates: false);
+            $swapped = $this->replacing($type, $contract, $version, reactivates: false);
+            $swapped->projectedEquipment = new ProjectedEquipment([], [$this->anotherBox()], $contract->borrowed_equipments);
+
+            $this->assertNotSame($this->print($asItWas), $this->print($swapped), $type->value . ' did not change.');
+        }
+    }
+
+    /**
+     * A contract replacing an earlier one hands over only what it adds - the rest is with the
+     * customer already - so its installation protocol is the one a new contract lending only
+     * that would print.
+     *
+     * @return void
+     */
+    public function testAReplacingContractHandsOverOnlyWhatItAdds(): void
+    {
+        $this->furnishTheContract();
+
+        $contract = $this->liveContract();
+        $version = $this->liveVersion();
+        $version->set('valid_until', null);
+        $added = $this->anotherBox();
+
+        $replacing = $this->replacing(ContractDocumentType::HandoverInstallation, $contract, $version, reactivates: true);
+        $replacing->projectedEquipment = new ProjectedEquipment($contract->borrowed_equipments, [$added], []);
+
+        $lendingOnlyThat = $this->liveContract();
+        $lendingOnlyThat->set('borrowed_equipments', [$added]);
+        $new = $this->printData(ContractDocumentType::HandoverInstallation, $lendingOnlyThat, $version);
+        $new->proposal = new ContractProposal(['purpose' => ProposalPurpose::NewContract]);
+
+        $this->assertSame($this->print($new), $this->print($replacing));
+    }
+
+    /**
+     * One paper of a new contract, with its equipment projected as staying or not projected at all.
+     *
+     * @param \App\Model\Enum\ContractDocumentType $type Which paper.
+     * @param bool $projected Whether the equipment is projected.
+     * @return string
+     */
+    private function printedForANewContract(ContractDocumentType $type, bool $projected): string
+    {
+        $contract = $this->liveContract();
+        $version = $this->liveVersion();
+        $version->set('valid_until', null);
+
+        $data = $this->printData($type, $contract, $version);
+        $data->proposal = new ContractProposal(['purpose' => ProposalPurpose::NewContract]);
+
+        if ($projected) {
+            $data->projectedEquipment = new ProjectedEquipment($contract->borrowed_equipments, [], []);
+        }
+
+        return $this->print($data);
+    }
+
+    /**
+     * A box of another kind, as a line adding it brings it.
+     *
+     * @return \App\Model\Entity\BorrowedEquipment
+     */
+    private function anotherBox(): BorrowedEquipment
+    {
+        return new BorrowedEquipment([
+            'serial_number' => 'SN-NEW-1',
+            'equipment_type' => new EquipmentType(['name' => 'Another box', 'price' => Decimal::create('2500', 2)]),
+        ]);
     }
 
     /**

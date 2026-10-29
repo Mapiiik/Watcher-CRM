@@ -66,16 +66,7 @@ final class ContractPrintDataEnricher
         ContractPrintData $data,
     ): void {
         // Technical details are only relevant for handover protocol documents
-        if (
-            !in_array(
-                $data->type,
-                [
-                    ContractDocumentType::HandoverInstallation,
-                    ContractDocumentType::HandoverUninstallation,
-                ],
-                true,
-            )
-        ) {
+        if (!$data->type->isHandoverProtocol()) {
             return;
         }
 
