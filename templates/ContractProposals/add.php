@@ -38,6 +38,8 @@ use App\Model\Enum\ProposalPurpose;
 $changes = $contractProposal->proposedChanges();
 
 $ending = $purpose === ProposalPurpose::Termination;
+// An exchange of borrowed equipments changes neither the contract nor its version.
+$exchange = !$purpose->needsAVersion();
 $keepsVersions ??= true;
 $endsOn = $changes->version->names('valid_until')
     ? $changes->version->get('valid_until')
@@ -111,7 +113,11 @@ $endsOn = $changes->version->names('valid_until')
                 // A new contract may be put on paper before the version it is about exists: left empty, the
                 // version comes into being when the papers are applied. Everything else is about a
                 // version that is already there.
-                if ($keepsVersions) {
+                if ($exchange) {
+                    echo '<p>' . __('An exchange of borrowed equipments changes neither the contract nor its'
+                        . ' version. The equipment is added and ended on the borrowed equipment lines,'
+                        . ' once the proposal is created.') . '</p>';
+                } elseif ($keepsVersions) {
                     echo $this->Form->control('contract_version_id', [
                         'options' => $versions,
                         'empty' => true,
@@ -129,9 +135,11 @@ $endsOn = $changes->version->names('valid_until')
                 }
 
                 // Without a version there is no day to take, so it is asked for here as well.
-                $asksForTheDay = $purpose->asksForItsOwnDay()
+                $asksForTheDay = !$exchange && (
+                    $purpose->asksForItsOwnDay()
                     || ($purpose->mayStartAVersion() && $contractProposal->contract_version_id === null)
-                    || (!$keepsVersions && !$ending);
+                    || (!$keepsVersions && !$ending)
+                );
 
                 // A change is agreed while the version runs, so it says its own day. A new contract starts
                 // with its version, and an ending says the day it ends on - both are worked out rather than
@@ -157,7 +165,7 @@ $endsOn = $changes->version->names('valid_until')
                             ),
                         },
                     ]);
-                } elseif (!$ending) {
+                } elseif (!$ending && !$exchange) {
                     echo '<p>' . __('This contract proposal takes effect with the contract version'
                         . ' it is for.') . '</p>';
                 }
@@ -248,7 +256,7 @@ $endsOn = $changes->version->names('valid_until')
                 }
                 ?>
             </fieldset>
-            <?php elseif ($keepsVersions && $purpose->mayChangeTheTerm()) : ?>
+            <?php elseif ($keepsVersions && $purpose->mayChangeTheTerm() && !$exchange) : ?>
             <fieldset>
                 <legend><?= __('Contract Version') ?></legend>
                 <p><?= __('Only what is ticked here is changed. The rest is left as it stands.') ?></p>
@@ -317,7 +325,7 @@ $endsOn = $changes->version->names('valid_until')
             <?php
             // An end date on a version is also how an ending and a superseded version are recorded, so a paper
             // meant to run for a fixed term is said out loud rather than assumed. An ending never asks.
-            if (!$ending && $keepsVersions) {
+            if (!$ending && !$exchange && $keepsVersions) {
                 echo $this->Form->control('confirmations.fixed_term', [
                     'type' => 'checkbox',
                     'checked' => $contractProposal->confirmations()->confirms('fixed_term'),

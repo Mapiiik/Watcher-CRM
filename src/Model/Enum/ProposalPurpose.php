@@ -26,6 +26,7 @@ enum ProposalPurpose: string implements EnumLabelInterface
     case NewContract = 'new-contract';
     case ServiceChange = 'service-change';
     case Termination = 'termination';
+    case EquipmentChange = 'equipment-change';
 
     /**
      * @return string
@@ -37,6 +38,7 @@ enum ProposalPurpose: string implements EnumLabelInterface
             self::NewContract => __('New contract'),
             self::ServiceChange => __('Change of services'),
             self::Termination => __('Contract termination'),
+            self::EquipmentChange => __('Exchange of borrowed equipments'),
         };
     }
 
@@ -75,7 +77,7 @@ enum ProposalPurpose: string implements EnumLabelInterface
     public function lastStep(): ProposalStep
     {
         return match ($this) {
-            self::NewContract, self::ServiceChange, self::Termination => ProposalStep::Applied,
+            self::NewContract, self::ServiceChange, self::Termination, self::EquipmentChange => ProposalStep::Applied,
         };
     }
 
@@ -95,15 +97,52 @@ enum ProposalPurpose: string implements EnumLabelInterface
     /**
      * Whether a proposal for this purpose may lend equipment or take it back.
      *
-     * A new contract may, because that is where the equipment is set down, and one replacing an
-     * earlier version is how a box is swapped for another kind. A change of services hands
-     * nothing over, and an ending takes back everything by its own protocol.
+     * A new contract may, because that is where the equipment is set down, and an exchange of
+     * borrowed equipments is nothing else. A change of services hands nothing over, and an ending
+     * takes back everything by its own protocol.
      *
      * @return bool
      */
     public function movesEquipment(): bool
     {
-        return $this === self::NewContract;
+        return $this === self::NewContract || $this === self::EquipmentChange;
+    }
+
+    /**
+     * Whether a proposal for this purpose belongs to a version of the contract.
+     *
+     * An exchange of borrowed equipments changes neither the contract nor its term, and works on a
+     * contract that has no version on record as well, so it names none.
+     *
+     * @return bool
+     */
+    public function needsAVersion(): bool
+    {
+        return $this !== self::EquipmentChange;
+    }
+
+    /**
+     * Whether a proposal for this purpose may change what is billed for.
+     *
+     * @return bool
+     */
+    public function changesBillings(): bool
+    {
+        return $this !== self::EquipmentChange;
+    }
+
+    /**
+     * Whether a signed copy of the given paper is the customer's agreement to these papers.
+     *
+     * The agreement itself everywhere, and the exchange protocol where it is the only paper there is.
+     *
+     * @param \App\Model\Enum\ContractDocumentType $type The paper.
+     * @return bool
+     */
+    public function isSignedBy(ContractDocumentType $type): bool
+    {
+        return $type->isTheAgreement()
+            || ($this === self::EquipmentChange && $type === ContractDocumentType::HandoverExchange);
     }
 
     /**
@@ -136,6 +175,7 @@ enum ProposalPurpose: string implements EnumLabelInterface
                 : ContractDocumentType::ContractNew,
             self::ServiceChange => ContractDocumentType::ContractAmendment,
             self::Termination => ContractDocumentType::ContractTermination,
+            self::EquipmentChange => ContractDocumentType::HandoverExchange,
         };
     }
 }

@@ -1041,6 +1041,74 @@ class ChangeApplicationTest extends TestCase
     }
 
     /**
+     * An exchange of borrowed equipments hands equipment over and touches nothing else: no version
+     * is started, and the one the contract has keeps the day it was signed.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::apply()
+     */
+    public function testAnExchangeHandsEquipmentOverAndNothingElse(): void
+    {
+        $lent = $this->aPieceLent();
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $before = $versions->find()->where(['contract_id' => self::CONTRACT_ID])->count();
+        $signed = $versions->get(self::VERSION_ID)->get('conclusion_date');
+
+        (new ChangeApplication())->apply($this->exchanging($lent), handed_over_on: new Date('2026-10-24'));
+
+        $this->assertSame($before, $versions->find()->where(['contract_id' => self::CONTRACT_ID])->count());
+        $this->assertEquals($signed, $versions->get(self::VERSION_ID)->get('conclusion_date'));
+        $this->assertSame(
+            '2026-10-24',
+            $this->getTableLocator()->get('BorrowedEquipments')->get($lent)->borrowed_until?->toDateString(),
+        );
+        $this->assertNull(
+            $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->contract_version_id,
+        );
+    }
+
+    /**
+     * The exchange is drawn up before the equipment changes hands, so a day before it is refused.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::apply()
+     */
+    public function testAnExchangeIsNotHandedOverBeforeItWasDrawnUp(): void
+    {
+        $proposal = $this->exchanging($this->aPieceLent());
+
+        $this->expectException(RuntimeException::class);
+
+        (new ChangeApplication())->apply($proposal, handed_over_on: new Date('2026-10-19'));
+    }
+
+    /**
+     * A signed exchange of borrowed equipments drawn up on 20 October that ends the given piece.
+     *
+     * @param string $lent The piece taken back.
+     * @return \App\Model\Entity\ContractProposal
+     */
+    private function exchanging(string $lent): ContractProposal
+    {
+        $snapshot = $this->proposal()->snapshot;
+        $snapshot['version'] = null;
+        $snapshot['borrowed_equipments'] = [[
+            'id' => $lent,
+            'serial_number' => 'SN-OLD-1',
+            'equipment_type' => ['id' => self::EQUIPMENT_TYPE_ID, 'name' => 'Old box', 'price' => '1.00'],
+        ]];
+
+        return $this->proposal([
+            'purpose' => ProposalPurpose::EquipmentChange->value,
+            'contract_version_id' => null,
+            'effective_from' => '2026-10-20',
+            'conclusion_date' => '2026-10-22',
+            'snapshot' => $snapshot,
+            'changes' => ['equipments' => [['id' => 'end', 'move' => 'return', 'borrowed_equipment_id' => $lent]]],
+        ]);
+    }
+
+    /**
      * A piece of equipment lent on the contract by the previous papers.
      *
      * @return string Its id.

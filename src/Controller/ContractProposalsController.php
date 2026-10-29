@@ -320,7 +320,7 @@ class ContractProposalsController extends AppController
         $this->set('contractProposal', $proposal);
         $this->set('questions', $this->readinessQuestions(
             $contract,
-            $proposal->keepsVersions(),
+            $proposal->keepsVersions() && $proposal->purpose->needsAVersion(),
             $proposal->proposedChanges(),
         ));
         $this->set('wording', ReadinessChecks::wording());
@@ -388,8 +388,9 @@ class ContractProposalsController extends AppController
         // A contract whose service keeps no versions is photographed without one.
         $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
         $terminates = $keepsVersions ? $proposal->terminates_contract_version_id : null;
+        $needsOne = $proposal->purpose->needsAVersion();
         $version = match (true) {
-            $contract === null, !$keepsVersions => null,
+            $contract === null, !$keepsVersions, !$needsOne => null,
             $proposal->contract_version_id !== null => $this->versionFor($proposal->contract_version_id),
             // Papers for a new contract may be about a version that is still to come, and are
             // photographed as it will be, the same way they were when they were drawn up.
@@ -399,7 +400,7 @@ class ContractProposalsController extends AppController
             ]),
         };
 
-        if ($contract === null || ($version === null && $keepsVersions)) {
+        if ($contract === null || ($version === null && $keepsVersions && $needsOne)) {
             return false;
         }
 
@@ -1146,6 +1147,13 @@ class ContractProposalsController extends AppController
             $data['terminates_contract_version_id'] = null;
         }
 
+        // An exchange of borrowed equipments names no version and replaces nothing.
+        if (!$purpose->needsAVersion()) {
+            $data['contract_version_id'] = null;
+            $data['terminates_contract_version_id'] = null;
+            $data['terminated_contract_number'] = null;
+        }
+
         // The billings are added a line at a time afterwards and never travel in this submission.
         $data['changes'] = $form->changesFrom($data, $purpose, $keepsVersions);
         $data['confirmations'] = $form->confirmationsFrom($data);
@@ -1194,6 +1202,10 @@ class ContractProposalsController extends AppController
             }
 
             $data['effective_from'] = $ends->addDays(1)->toDateString();
+        } elseif (!$purpose->needsAVersion()) {
+            // The day it is drawn up. The day the equipment changes hands is written in by hand on
+            // the protocol and said again when the changes are applied.
+            $data['effective_from'] = Date::today()->toDateString();
         } elseif (!$keepsVersions) {
             // With no version to take the day from, the day has to be said.
             if ($saidNothing) {
@@ -1209,7 +1221,7 @@ class ContractProposalsController extends AppController
             $data['effective_from'] = $version->valid_from->toDateString();
         }
 
-        if ($contract !== null && !$keepsVersions) {
+        if ($contract !== null && (!$keepsVersions || !$purpose->needsAVersion())) {
             $data['snapshot'] = (new ProposalSnapshotBuilder())->take($contract, null);
             $data['snapshot_taken'] = DateTime::now();
         } else {
@@ -1334,7 +1346,7 @@ class ContractProposalsController extends AppController
         $contract = $this->contractFor((string)$proposal->contract_id);
 
         // The questions are about what goes on paper, and a contract that keeps no versions has none.
-        if ($contract !== null && $proposal->keepsVersions()) {
+        if ($contract !== null && $proposal->keepsVersions() && $proposal->purpose->needsAVersion()) {
             $unanswered = (new ReadinessChecks())
                 ->unansweredFor($contract, $proposal->confirmations(), $proposal->proposedChanges());
 
@@ -1524,7 +1536,10 @@ class ContractProposalsController extends AppController
                 : ['ContractVersions.contract_id' => $contract->id])
             ->orderBy(['ContractVersions.valid_from' => 'DESC']);
 
-        $questions = $this->readinessQuestions($contract, $keepsVersions);
+        $questions = $this->readinessQuestions(
+            $contract,
+            $keepsVersions && ($proposal->purpose ?? ProposalPurpose::NewContract)->needsAVersion(),
+        );
         $contractNumbers = $this->numbersOfferedFor($contract);
 
         $version = $this->versionFor((string)$proposal->contract_version_id);

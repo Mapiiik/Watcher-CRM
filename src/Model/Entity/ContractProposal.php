@@ -310,14 +310,16 @@ class ContractProposal extends AppEntity
     /**
      * Whether the proposal may take back equipment the contract has lent.
      *
-     * Only a new contract replacing an earlier version: the earlier one lent it, and the new one
-     * says what goes on being lent. A contract that replaces nothing has nothing lent yet.
+     * An exchange of borrowed equipments, and a new contract replacing an earlier version: the
+     * earlier one lent it, and the new one says what goes on being lent. A contract that replaces
+     * nothing has nothing lent yet.
      *
      * @return bool
      */
     public function mayTakeEquipmentBack(): bool
     {
-        return $this->purpose->movesEquipment() && $this->terminatesAnotherVersion();
+        return $this->purpose === ProposalPurpose::EquipmentChange
+            || ($this->purpose->movesEquipment() && $this->terminatesAnotherVersion());
     }
 
     /**

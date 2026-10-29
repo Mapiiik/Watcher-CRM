@@ -182,8 +182,9 @@ final class ChangePreview
                 return [];
             }
 
-            // Otherwise it is a signed copy of the agreement; a signed protocol does not stand in.
-            if (!($type?->isTheAgreement() ?? false)) {
+            // Otherwise it is a signed copy of the agreement; a signed protocol does not stand in,
+            // unless the protocol is all the papers there are.
+            if ($type === null || !$proposal->purpose->isSignedBy($type)) {
                 continue;
             }
 

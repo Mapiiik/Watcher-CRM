@@ -488,7 +488,7 @@ class ContractProposalsTable extends AppTable
             'equipmentMovesWithANewContract',
             [
                 'errorField' => 'changes',
-                'message' => __('Only a new contract can add or end borrowed equipments.'),
+                'message' => __('Only a new contract or an exchange of borrowed equipments can add or end them.'),
             ],
         );
 
@@ -530,6 +530,21 @@ class ContractProposalsTable extends AppTable
                 'errorField' => 'changes',
                 'message' => __('A borrowed equipment can be ended only by a contract replacing an'
                     . ' earlier version, once, and only if the snapshot knows it.'),
+            ],
+        );
+
+        // An exchange hands equipment over and nothing else: the contract and what it costs
+        // stay as they are.
+        $rules->add(
+            function (ContractProposal $entity): bool {
+                $changes = $this->readChanges($entity);
+
+                return $changes === null || $changes->billings === [] || $entity->purpose->changesBillings();
+            },
+            'anExchangeChangesNoBilling',
+            [
+                'errorField' => 'changes',
+                'message' => __('An exchange of borrowed equipments cannot change what is billed for.'),
             ],
         );
 
@@ -587,6 +602,7 @@ class ContractProposalsTable extends AppTable
             function (ContractProposal $entity): bool {
                 return $entity->contract_version_id !== null
                     || $entity->purpose->mayStartAVersion()
+                    || !$entity->purpose->needsAVersion()
                     || !$entity->keepsVersions();
             },
             'onlyANewContractStartsItsVersion',

@@ -329,6 +329,26 @@ class ProposalDocumentTypesTest extends TestCase
     }
 
     /**
+     * An exchange of borrowed equipments has its protocol and nothing else of ours: no contract,
+     * no summary, and neither of the protocols the exchange stands in for. The protocol is owed.
+     *
+     * @return void
+     */
+    public function testAnExchangeHasItsProtocolAndNothingElse(): void
+    {
+        $exchange = $this->drawnUpToday(['purpose' => ProposalPurpose::EquipmentChange], [['id' => 'old']]);
+
+        $this->assertSame(
+            [ContractDocumentType::HandoverExchange->value, ContractDocumentType::Other->value],
+            $this->offered($exchange),
+        );
+        $this->assertSame(
+            [ContractDocumentType::HandoverExchange->value => true],
+            (new ProposalDocumentTypes())->expectedOf($exchange),
+        );
+    }
+
+    /**
      * A proposal drawn up before the protocols were owed keeps the rules it was drawn up under.
      *
      * @return void
@@ -447,7 +467,7 @@ class ProposalDocumentTypesTest extends TestCase
 
     /**
      * The uninstallation protocol wants something to end, because it names the contract being
-     * terminated. Swapping a box on a running contract is a new version, not a protocol of its own.
+     * terminated. Swapping a box is the exchange protocol's.
      *
      * @return void
      */

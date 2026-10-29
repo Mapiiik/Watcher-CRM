@@ -41,8 +41,9 @@ final class ChangePlan
      */
     public function of(ContractProposal $proposal): array
     {
-        // A contract that keeps no versions has only itself to write onto.
-        if (!$proposal->keepsVersions()) {
+        // A contract that keeps no versions has only itself to write onto, and papers that belong to
+        // no version write nothing onto one.
+        if (!$proposal->keepsVersions() || !$proposal->purpose->needsAVersion()) {
             return $this->onTheContract($proposal);
         }
 

@@ -391,10 +391,12 @@ final class ProposalSnapshot
      */
     public function hydrateVersion(): ContractVersion
     {
-        /** @var \App\Model\Entity\ContractVersion $version */
+        /** @var \App\Model\Entity\ContractVersion|null $version */
         $version = $this->record('ContractVersions', $this->part('version'));
 
-        return $version;
+        // Papers that belong to no version - an exchange of borrowed equipments - get an empty one,
+        // which binds nobody to anything.
+        return $version ?? $this->fetchTable('ContractVersions')->newEmptyEntity();
     }
 
     /**

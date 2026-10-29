@@ -119,6 +119,14 @@ final class DrawnPaper
                 return [__('This document does not belong to this proposal.')];
             }
 
+            // An exchange protocol with nothing on it would be signed for nothing.
+            if (
+                $type === ContractDocumentType::HandoverExchange
+                && $proposal->proposedChanges()->equipments === []
+            ) {
+                return [__('Add or end a borrowed equipment on the proposal first.')];
+            }
+
             $errors = (new ContractPrintValidator())->validate(
                 $this->whatTheContractsSays($proposal, $document_type, $signed),
                 $signed ? ['signed' => '1'] : [],

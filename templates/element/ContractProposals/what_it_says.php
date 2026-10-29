@@ -25,11 +25,13 @@ $answered = $confirmations->toArray();
 // Passed through rather than left to be found: what one element was handed does not reach the
 // next, only what the page itself set.
 ?>
-<?= $this->element('ContractProposals/proposed_billings', [
-    'contractProposal' => $contractProposal,
-    'rows' => $rows,
-    'mayBeEdited' => $mayBeEdited,
-]) ?>
+<?php if ($contractProposal->purpose->changesBillings()) : ?>
+    <?= $this->element('ContractProposals/proposed_billings', [
+        'contractProposal' => $contractProposal,
+        'rows' => $rows,
+        'mayBeEdited' => $mayBeEdited,
+    ]) ?>
+<?php endif; ?>
 
 <?= $this->element('ContractProposals/proposed_equipments', [
     'contractProposal' => $contractProposal,

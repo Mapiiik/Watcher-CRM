@@ -5,6 +5,7 @@ namespace App\Proposals;
 
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentVariant;
+use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
@@ -154,6 +155,11 @@ final class LateProposals
                         ['FiledCheck.document_type IN' => self::contractTypes(
                             fn(ContractDocumentType $type): bool => $type->speaksForItself(),
                         )],
+                        // An exchange of borrowed equipments has its protocol and nothing else to sign.
+                        $answered + [
+                            'FiledCheck.document_type' => ContractDocumentType::HandoverExchange->value,
+                            $alias . '.purpose' => ProposalPurpose::EquipmentChange->value,
+                        ],
                     ]];
                 }
 

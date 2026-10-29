@@ -72,6 +72,13 @@ final class ChangeApplication
             );
         }
 
+        // An exchange is drawn up before the equipment changes hands, never after.
+        if (!$proposal->purpose->needsAVersion() && $handed_over_on->lessThan($proposal->effective_from)) {
+            throw new RuntimeException(
+                'Borrowed equipments cannot be exchanged before the day the exchange was drawn up.',
+            );
+        }
+
         if (!$proposal->isOpen()) {
             throw new RuntimeException('This proposal has already been settled.');
         }
@@ -105,8 +112,9 @@ final class ChangeApplication
                 $this->applyTheBillings($proposal, $options, $go_below_minimum, $leave_out_what_is_gone);
                 $this->applyTheEquipment($proposal, $options, $handed_over_on, $leave_out_what_is_gone);
 
-                // A contract that keeps no versions never gets one, not even from a new contract.
-                if ($proposal->keepsVersions()) {
+                // A contract that keeps no versions never gets one, not even from a new contract, and
+                // papers that belong to no version do not start one.
+                if ($proposal->keepsVersions() && $proposal->purpose->needsAVersion()) {
                     $this->applyTheVersions($proposal, $planned, $options);
                 }
 
@@ -127,7 +135,8 @@ final class ChangeApplication
      * The day the equipment is taken to have changed hands where nobody said otherwise.
      *
      * The day the proposal takes effect, unless that is still to come: equipment is recorded once
-     * it is handed over, and the papers are often printed ahead.
+     * it is handed over, and the papers are often printed ahead. An exchange takes effect the day
+     * it is drawn up, which is before anything changes hands, so it offers the day it was signed.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return \Cake\I18n\Date
@@ -135,8 +144,11 @@ final class ChangeApplication
     public static function handedOverOnByDefault(ContractProposal $proposal): Date
     {
         $today = Date::today();
+        $day = $proposal->purpose->needsAVersion()
+            ? $proposal->effective_from
+            : $proposal->conclusion_date ?? $today;
 
-        return $proposal->effective_from->greaterThan($today) ? $today : $proposal->effective_from;
+        return $day->greaterThan($today) ? $today : $day;
     }
 
     /**

@@ -81,8 +81,12 @@ final class ProposalDocumentTypes
         bool $replaces,
     ): array {
         $purpose = $proposal->purpose;
-        // A box swapped for another is one paper: the exchange protocol stands in for the two.
-        $exchanges = $has_equipment && $replaces && $proposal->proposedChanges()->exchangesEquipment();
+        // A box swapped for another is one paper: the exchange protocol stands in for the two. An
+        // exchange of borrowed equipments has that paper and no other of ours.
+        $exchanges = $has_equipment && (
+            !$purpose->needsAVersion()
+            || ($replaces && $proposal->proposedChanges()->exchangesEquipment())
+        );
 
         return array_values(array_filter(
             ContractDocumentType::cases(),
@@ -95,15 +99,12 @@ final class ProposalDocumentTypes
                     && $version_concluded,
                 ContractDocumentType::ContractTermination => $ends,
                 // The summary says what is on offer before anybody is bound by it, and an ending
-                // offers nothing.
-                ContractDocumentType::ContractSummary => !$ends,
-                // The installation protocol hangs off the version, which every proposal has, but
-                // nothing is installed on the way out. The uninstallation one wants a version to
-                // end and a number to name, so it has nothing to go on unless the proposal ends
-                // something - and that is deliberate, because the contract is what says which
-                // equipment the customer has, so swapping a box is a new version rather than a
-                // protocol of its own.
-                // An amendment changes what is billed for and hands nothing over.
+                // offers nothing. Nor does an exchange, which leaves the contract as it is.
+                ContractDocumentType::ContractSummary => !$ends && $purpose->needsAVersion(),
+                // The installation protocol hangs off the version, but nothing is installed on the
+                // way out and an amendment hands nothing over. The uninstallation one wants a
+                // version to end and a number to name, so it has nothing to go on unless the
+                // proposal ends something. A box swapped for another is the exchange protocol's.
                 ContractDocumentType::HandoverInstallation => $has_equipment && !$ends
                     && $purpose !== ProposalPurpose::ServiceChange && !$exchanges,
                 ContractDocumentType::HandoverUninstallation => $has_equipment && ($ends || $replaces)

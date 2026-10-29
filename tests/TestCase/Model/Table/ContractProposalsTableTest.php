@@ -711,6 +711,30 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
+     * An exchange of borrowed equipments belongs to no version, takes back what the contract lends
+     * and bills nothing.
+     *
+     * @return void
+     */
+    public function testAnExchangeNeedsNoVersionAndBillsNothing(): void
+    {
+        $return = ['id' => 'back', 'move' => 'return', 'borrowed_equipment_id' => 'e1000000-0000-4000-8000-000000000001'];
+        $exchange = [
+            'purpose' => ProposalPurpose::EquipmentChange->value,
+            'contract_version_id' => null,
+            'snapshot' => ['version' => null] + $this->aSnapshot() + [
+                'borrowed_equipments' => [['id' => 'e1000000-0000-4000-8000-000000000001']],
+            ],
+        ];
+
+        $taking = $this->save($exchange + ['changes' => ['equipments' => [$return]]]);
+        $this->assertEmpty($taking->getErrors());
+
+        $billing = $this->save($exchange + ['changes' => ['billings' => [['quantity' => 1, 'text' => 'Lorem']]]]);
+        $this->assertArrayHasKey('anExchangeChangesNoBilling', $billing->getError('changes'));
+    }
+
+    /**
      * Asked only when the changes are written, so that an amendment drawn up before the rule can
      * still be signed and applied.
      *

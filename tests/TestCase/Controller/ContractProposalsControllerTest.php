@@ -12,6 +12,7 @@ use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
+use App\Proposals\DrawnPaper;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Core\Configure;
@@ -1218,6 +1219,56 @@ class ContractProposalsControllerTest extends TestCase
 
         $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
         $this->assertRedirect();
+    }
+
+    /**
+     * An exchange of borrowed equipments is drawn up without a version, on the day it is drawn up,
+     * and offers to end what the contract lends - but not its billings. Its protocol is not drawn
+     * before a line says what is exchanged.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testAnExchangeIsDrawnUpWithoutAVersion(): void
+    {
+        $equipments = $this->getTableLocator()->get('BorrowedEquipments');
+        $lent = $equipments->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+            'equipment_type_id' => self::EQUIPMENT_TYPE_ID,
+            'serial_number' => 'SN-OLD-1',
+            'borrowed_from' => '2022-01-01',
+        ]);
+        $equipments->saveOrFail($lent);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::EquipmentChange->value,
+            'contract_id' => self::CONTRACT_ID,
+        ]);
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        $this->assertNull($drawn->contract_version_id);
+        $this->assertSame(Date::today()->toDateString(), $drawn->effective_from->toDateString());
+        $this->assertTrue($drawn->stateOfThings()->knowsBorrowedEquipment((string)$lent->id));
+
+        $this->get(self::NESTED . '/contract-proposals/view/' . $drawn->id);
+        $this->assertResponseOk();
+        $this->assertResponseContains('/contract-proposals/return-equipment/' . $drawn->id . '/' . $lent->id);
+        $this->assertResponseNotContains('/contract-proposals/billing-line/' . $drawn->id);
+
+        $this->assertNotSame(
+            [],
+            (new DrawnPaper())->problemsWith($drawn, ContractDocumentType::HandoverExchange->value),
+        );
     }
 
     /**
