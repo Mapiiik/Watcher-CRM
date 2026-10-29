@@ -647,6 +647,62 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * A version nobody recorded the signature of cannot be replaced, and an old contract often
+     * has one. The form says so as soon as it is chosen, with the way to put it right.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testAnUnsignedVersionToBeReplacedIsPointedOut(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $versions->updateAll(['conclusion_date' => null], ['id' => self::CONTRACT_VERSION_ID]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'refresh' => 'refresh',
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'terminates_contract_version_id' => self::CONTRACT_VERSION_ID,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('The version being replaced has no conclusion date.');
+        $this->assertResponseContains('/contract-versions/edit/' . self::CONTRACT_VERSION_ID);
+
+        // a signed one is replaced without a word
+        $versions->updateAll(['conclusion_date' => '2022-11-30'], ['id' => self::CONTRACT_VERSION_ID]);
+        $this->post('/contract-proposals/add', [
+            'refresh' => 'refresh',
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'terminates_contract_version_id' => self::CONTRACT_VERSION_ID,
+        ]);
+        $this->assertResponseNotContains('The version being replaced has no conclusion date.');
+    }
+
+    /**
+     * A contract with no version on record has nothing a new contract could replace, which the
+     * form says beside the field that would name it.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::add()
+     */
+    public function testAContractWithoutAVersionSaysThereIsNothingToReplace(): void
+    {
+        $this->getTableLocator()->get('ContractProposals')->deleteAll(['contract_id' => self::CONTRACT_ID]);
+        $this->getTableLocator()->get('ContractVersions')->deleteAll(['contract_id' => self::CONTRACT_ID]);
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/add?purpose=' . ProposalPurpose::NewContract->value);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('No version of this contract is on record.');
+    }
+
+    /**
      * Says something of the proposal these papers go out in.
      *
      * The sending and the signature belong to the envelope, so a test that puts papers in either

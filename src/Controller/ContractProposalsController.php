@@ -1336,6 +1336,13 @@ class ContractProposalsController extends AppController
         $purpose = $proposal->purpose ?? ProposalPurpose::NewContract;
         $purposes = ProposalPurpose::options();
 
+        // A new contract replaces an earlier version only once that one is on record and signed,
+        // so the form says what is missing where the operator chooses it.
+        $replacing = $purpose === ProposalPurpose::NewContract && $keepsVersions && $contract !== null;
+        $nothingToReplace = $replacing && $versions->count() === 0;
+        $toReplace = $replacing ? $this->versionFor((string)$proposal->terminates_contract_version_id) : null;
+        $unconcludedToReplace = $toReplace?->conclusion_date === null ? $toReplace : null;
+
         // The envelopes of this customer that are still open, so papers drawn up now can go out
         // with whatever else is already waiting to.
         $proposals = $this->openProposalsOf($contract->customer_id ?? $this->customer_id);
@@ -1356,6 +1363,8 @@ class ContractProposalsController extends AppController
             'proposalPurposes',
             'effectiveFromDefault',
             'obligationOffered',
+            'nothingToReplace',
+            'unconcludedToReplace',
         ));
         $this->set('wording', ReadinessChecks::wording());
     }

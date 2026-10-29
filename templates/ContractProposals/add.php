@@ -26,6 +26,9 @@
  * @var \App\Model\Enum\ProposalPurpose $purpose
  * @var \Cake\I18n\Date|null $effectiveFromDefault
  * @var \Cake\I18n\Date|null $obligationOffered The day a minimum term usually runs to.
+ * @var bool|null $nothingToReplace Whether the contract has no version a new one could replace.
+ * @var \App\Model\Entity\ContractVersion|null $unconcludedToReplace The version chosen to be replaced,
+ *   where nobody recorded when it was signed.
  */
 
 use App\Model\Enum\ProposalPurpose;
@@ -169,7 +172,30 @@ $endsOn = $changes->version->names('valid_until')
                         // Naming one is what makes the number below worth asking for, so saying it
                         // draws the form again.
                         'onchange' => $this::REFRESH_ON_CHANGE,
+                        'help' => !empty($nothingToReplace)
+                            ? __('No version of this contract is on record. To replace an earlier'
+                                . ' contract, add its version first, with the day it was concluded.')
+                            : null,
                     ]);
+
+                    // An old contract often has its version without the day it was signed, and a
+                    // version nobody signed cannot be replaced. Put right in a window of its own,
+                    // after which this page is read again.
+                    if (!empty($unconcludedToReplace)) {
+                        echo $this->Html->div('message warning', __(
+                            'The version being replaced has no conclusion date. Fill it in from the'
+                            . ' signed contract before this proposal is saved. {0}',
+                            $this->AuthLink->link(
+                                __('Edit the Version'),
+                                [
+                                    'controller' => 'ContractVersions',
+                                    'action' => 'edit',
+                                    $unconcludedToReplace->id,
+                                ],
+                                ['class' => 'win-link'],
+                            ),
+                        ), ['role' => 'status']);
+                    }
                 }
 
                 // The number goes on the paper of whatever is being ended, so it is asked only where
