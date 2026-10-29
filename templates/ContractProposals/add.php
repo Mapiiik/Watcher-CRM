@@ -220,13 +220,29 @@ $endsOn = $changes->version->names('valid_until')
                     $named = $changes->version->names($field);
                     $id = 'version-change-' . str_replace('_', '-', $field);
 
+                    // A minimum term usually runs the same length, so it is offered rather than typed. Two
+                    // gestures, neither of them surprising: the box says there is one, the offer fills the day
+                    // in. What is offered is counted in PHP, so the reader sees the very day before clicking -
+                    // and if the day the papers take effect moves, the form is drawn again and so is this.
+                    $offer = $field === 'obligation_until' && $obligationOffered !== null
+                        ? $this->element('Contracts/usual_term_offer', [
+                            'offered' => $obligationOffered,
+                            'box' => 'version-change-named-' . str_replace('_', '-', $field),
+                            'day' => $id,
+                            'alsoEnabled' => [],
+                        ])
+                        : '';
+
                     // The box turns its own day on and off, the way the dates on a contract version do.
                     echo $this->Form->control("version_change_named.{$field}", [
                         'type' => 'checkbox',
                         'checked' => $named,
-                        'label' => $field === 'valid_until'
-                            ? __('Change the day the version stops being valid')
-                            : __('Change the day the obligation runs out'),
+                        'label' => [
+                            'text' => h($field === 'valid_until'
+                                ? __('Change the day the version stops being valid')
+                                : __('Change the day the obligation runs out')) . $offer,
+                            'escape' => false,
+                        ],
                         'onclick' => sprintf('document.getElementById("%s").disabled = !this.checked;', $id),
                     ]);
 
@@ -242,27 +258,6 @@ $endsOn = $changes->version->names('valid_until')
                         'disabled' => !$named,
                     ]);
                     $this->Form->unlockField("version_change.{$field}");
-
-                    // A minimum term usually runs the same length, so it is offered rather than typed. Two
-                    // gestures, neither of them surprising: the box says there is one, the offer fills the day
-                    // in. What is offered is counted in PHP, so the reader sees the very day before clicking -
-                    // and if the day the papers take effect moves, the form is drawn again and so is this.
-                    if ($field === 'obligation_until' && $obligationOffered !== null) {
-                        echo $this->Html->para('offered', $this->Html->link(
-                            __('Set the obligation until {0}', $obligationOffered),
-                            '#',
-                            [
-                                'onclick' => sprintf(
-                                    'document.getElementById("%s").checked = true;'
-                                    . 'var day = document.getElementById("%s");'
-                                    . 'day.disabled = false; day.value = "%s"; return false;',
-                                    'version-change-named-' . str_replace('_', '-', $field),
-                                    $id,
-                                    h($obligationOffered->toDateString()),
-                                ),
-                            ],
-                        ));
-                    }
                 }
                 ?>
             </fieldset>

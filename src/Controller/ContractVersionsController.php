@@ -114,12 +114,15 @@ class ContractVersionsController extends AppController
                 $contractVersion,
                 $this->dataWithNesting($this->ContractVersions, $this->getRequest()->getData()),
             );
-            if ($this->ContractVersions->save($contractVersion)) {
+            if ($this->getRequest()->getData('refresh') === 'refresh') {
+                // only refresh
+            } elseif ($this->ContractVersions->save($contractVersion)) {
                 $this->Flash->success(__('The contract version has been saved.'));
 
                 return $this->afterAddRedirect(['action' => 'view', $contractVersion->id]);
+            } else {
+                $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
         }
         $contracts = $this->ContractVersions->Contracts->find(
             'list',
@@ -156,12 +159,15 @@ class ContractVersionsController extends AppController
         $contractVersion = $this->ContractVersions->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $contractVersion = $this->ContractVersions->patchEntity($contractVersion, $this->getRequest()->getData());
-            if ($this->ContractVersions->save($contractVersion)) {
+            if ($this->getRequest()->getData('refresh') === 'refresh') {
+                // only refresh
+            } elseif ($this->ContractVersions->save($contractVersion)) {
                 $this->Flash->success(__('The contract version has been saved.'));
 
                 return $this->afterEditRedirect(['action' => 'view', $contractVersion->id]);
+            } else {
+                $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
         }
         $contracts = $this->ContractVersions->Contracts->find(
             'list',

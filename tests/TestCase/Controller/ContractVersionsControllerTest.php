@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Contracts\TheUsualTerm;
 use App\Controller\ContractVersionsController;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentVariant;
@@ -301,6 +302,111 @@ class ContractVersionsControllerTest extends TestCase
         $added = $this->addedRecord('ContractVersions', $before);
         // a contract version hangs off the contract alone and has no customer of its own
         $this->assertSame(self::CONTRACT_ID, $added->get('contract_id'));
+    }
+
+    /**
+     * Until the version says when it starts, there is nothing to count the usual term from, so
+     * none is offered.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::add()
+     */
+    public function testNoTermIsOfferedBeforeTheVersionStarts(): void
+    {
+        $this->login();
+        $this->get('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/contract-versions/add');
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('class="offered"');
+    }
+
+    /**
+     * Saying the day a new version starts draws the form again, offering the usual term counted
+     * from that day - beside the field, which stays empty - and nothing is saved yet.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::add()
+     */
+    public function testTheStartOfANewVersionRedrawsTheUsualTerm(): void
+    {
+        $offered = TheUsualTerm::from(new Date('2026-11-01'));
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $before = $this->idsIn('ContractVersions');
+        $this->post('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/contract-versions/add', [
+            'refresh' => 'refresh',
+            'valid_from' => '2026-11-01',
+            'enable_obligation_until' => '0',
+            'obligation_until' => '',
+            'number_of_amendments' => 0,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(h((string)$offered));
+        $this->assertResponseContains($offered->toDateString());
+        $this->assertResponseNotContains('value="' . $offered->toDateString() . '"');
+        $this->assertSame($before, $this->idsIn('ContractVersions'));
+    }
+
+    /**
+     * A box ticked before its day is filled in stays ticked when the form is drawn again, and its
+     * day stays open to be written in - rather than greyed out beside a ticked box, which would
+     * save no term at all.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::add()
+     */
+    public function testATickedBoxKeepsItsDayOpen(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/contract-versions/add', [
+            'refresh' => 'refresh',
+            'valid_from' => '2026-11-01',
+            'enable_obligation_until' => '1',
+            'obligation_until' => '',
+            'number_of_amendments' => 0,
+        ]);
+
+        $this->assertResponseOk();
+        preg_match('/<input type="date"[^>]*id="obligation-until"[^>]*>/', $this->_getBodyAsString(), $field);
+        $this->assertNotEmpty($field);
+        $this->assertStringNotContainsString('disabled', $field[0] ?? '');
+    }
+
+    /**
+     * The same on an existing version, which keeps what it says until it is saved.
+     *
+     * @return void
+     * @link \App\Controller\ContractVersionsController::edit()
+     */
+    public function testTheStartOfAnExistingVersionOnlyRedrawsTheForm(): void
+    {
+        $offered = TheUsualTerm::from(new Date('2026-11-01'));
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $version = $versions->get(self::VERSION_ID);
+
+        $this->post('/contract-versions/edit/' . self::VERSION_ID, [
+            'refresh' => 'refresh',
+            'valid_from' => '2026-11-01',
+            'enable_obligation_until' => '0',
+            'obligation_until' => '',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(h((string)$offered));
+        $this->assertResponseNotContains('value="' . $offered->toDateString() . '"');
+        $this->assertEquals($version->valid_from, $versions->get(self::VERSION_ID)->valid_from);
     }
 
     /**
