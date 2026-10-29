@@ -572,6 +572,7 @@ class CustomerProposalsController extends AppController
                 'papers' => $part,
                 'confirmations' => $part->confirmations(),
                 'mayBeEdited' => $papers->mayBeEdited($part),
+                'linesLock' => $papers->linesLock($part),
                 // The same projection the documents print from, so the table and the paper cannot
                 // disagree.
                 'rows' => $projection->explain(

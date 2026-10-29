@@ -24,9 +24,7 @@ use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Entity\EquipmentType;
-use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\CustomerProposalPurpose;
-use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\EquipmentMove;
 use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
@@ -272,7 +270,7 @@ class ContractProposalsController extends AppController
 
         // Read before anything is written, because the form has to say what stands to be thrown
         // away before the operator agrees to it.
-        $drawnFromTheOldOne = $this->documentsWeDrewUp($proposal);
+        $drawnFromTheOldOne = $this->ContractProposals->papersDrawnFrom($proposal);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
@@ -415,41 +413,48 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * The documents on file that we drew up ourselves.
+     * Throws away the documents drawn from the proposal, so that its lines may be changed again.
      *
-     * Two questions, and both have to be asked. What kind of paper it is says whether anybody here
-     * draws it at all - a notice of termination is written by the customer and a death certificate
-     * by an office, and those are filed with the papers of an ending without ever being ours.
-     * Which copy it is says whether this one came back rather than went out.
+     * The paper on file says what the lines said when it was drawn, and it is never drawn again,
+     * so the lines wait until it is gone. A copy the customer has signed is not ours to throw
+     * away, and the operator is told why.
      *
-     * @param \App\Model\Entity\ContractProposal $proposal The papers.
-     * @return array<\Files\Model\Entity\FileLink>
+     * @param string|null $id Contract proposal id.
+     * @return \Cake\Http\Response|null Redirects to the proposal.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    private function documentsWeDrewUp(ContractProposal $proposal): array
+    public function discardDocuments(?string $id = null): ?Response
     {
-        $drawnHere = array_map(
-            fn(ContractDocumentType $type): string => $type->value,
-            array_filter(
-                ContractDocumentType::cases(),
-                fn(ContractDocumentType $type): bool => $type->canBeGenerated(),
-            ),
-        );
+        $this->request->allowMethod(['post']);
 
-        /** @var array<\Files\Model\Entity\FileLink> $ours */
-        $ours = $this->fetchTable('Files.FileLinks')
-            ->find()
-            ->where([
-                'FileLinks.model' => ContractDocuments::MODEL,
-                'FileLinks.foreign_key' => $proposal->id,
-                'FileLinks.document_type IN' => array_values($drawnHere),
-                'FileLinks.variant IN' => [
-                    DocumentVariant::Generated->value,
-                    DocumentVariant::GeneratedSignedByUs->value,
-                ],
-            ])
-            ->toArray();
+        $proposal = $this->ContractProposals->get($id, contain: ['CustomerProposals']);
 
-        return $ours;
+        if (!$this->ContractProposals->mayBeEdited($proposal)) {
+            $this->Flash->error(__('This proposal can no longer be changed.'));
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        $lock = $this->ContractProposals->linesLock($proposal);
+
+        if ($lock !== null && !$lock->mayBeLifted()) {
+            $this->Flash->error($lock->label());
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        $discarded = $this->discardTheDocuments($this->ContractProposals->papersDrawnFrom($proposal));
+
+        if ($discarded > 0) {
+            $this->Flash->success(__n(
+                'One generated document has been deleted. The lines may be changed again.',
+                '{0} generated documents have been deleted. The lines may be changed again.',
+                $discarded,
+                $discarded,
+            ));
+        }
+
+        return $this->redirect(['action' => 'view', $id]);
     }
 
     /**
@@ -946,7 +951,9 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * The proposal, if it is one that may still be changed.
+     * The proposal, if its lines may still be changed.
+     *
+     * Where a paper drawn from it stands in the way, the operator is told which and what to do.
      *
      * @param string|null $id Contract version proposal id.
      * @return \App\Model\Entity\ContractProposal|\Cake\Http\Response|null
@@ -959,13 +966,21 @@ class ContractProposalsController extends AppController
             'CustomerProposals',
         ]);
 
-        if ($this->ContractProposals->mayBeEdited($proposal)) {
-            return $proposal;
+        if (!$this->ContractProposals->mayBeEdited($proposal)) {
+            $this->Flash->error(__('This proposal can no longer be changed.'));
+
+            return $this->redirect(['action' => 'view', $id]);
         }
 
-        $this->Flash->error(__('This proposal can no longer be changed.'));
+        $lock = $this->ContractProposals->linesLock($proposal);
 
-        return $this->redirect(['action' => 'view', $id]);
+        if ($lock !== null) {
+            $this->Flash->error($lock->label());
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        return $proposal;
     }
 
     /**
@@ -1722,6 +1737,7 @@ class ContractProposalsController extends AppController
             $snapshot->equipmentLentBy($changes),
         ));
         $this->set('mayBeEdited', $this->ContractProposals->mayBeEdited($proposal));
+        $this->set('linesLock', $this->ContractProposals->linesLock($proposal));
         $this->set('mayBeDeleted', $this->ContractProposals->mayBeDeleted($proposal));
         // Only the count: the table itself is drawn by a cell, which asks for what it draws.
         $this->set('filed', (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? []);

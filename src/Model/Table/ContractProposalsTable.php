@@ -11,6 +11,9 @@ use App\Contracts\Proposal\ProposedVersion;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\CustomerProposal;
+use App\Model\Enum\ContractDocumentType;
+use App\Model\Enum\DocumentVariant;
+use App\Model\Enum\ProposalLinesLock;
 use App\Model\Enum\ProposalPurpose;
 use App\Service\ContractPrint\ContractDocuments;
 use Cake\Database\Type\EnumType;
@@ -181,6 +184,102 @@ class ContractProposalsTable extends AppTable
             && !$envelope->hasBeenConcluded()
             && !$proposal->hasBeenApplied()
             && !$this->anyPapersAreFiledAgainst($proposal);
+    }
+
+    /**
+     * Whether the billing and equipment lines of the proposal may be changed.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal being asked about.
+     * @return bool
+     */
+    public function mayChangeLines(ContractProposal $proposal): bool
+    {
+        return $this->mayBeEdited($proposal) && $this->linesLock($proposal) === null;
+    }
+
+    /**
+     * Why the lines of the proposal may not be changed, where a paper drawn from it stands in the way.
+     *
+     * Only papers of ours count. What the other side wrote - a notice, a certificate - is not drawn
+     * from the lines, so it says nothing a changed line could contradict.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal being asked about.
+     * @return \App\Model\Enum\ProposalLinesLock|null
+     */
+    public function linesLock(ContractProposal $proposal): ?ProposalLinesLock
+    {
+        $variants = $this->filedOurs($proposal)
+            ->select(['FileLinks.variant'])
+            ->distinct(['FileLinks.variant'])
+            ->all()
+            ->extract('variant')
+            ->toList();
+
+        $lock = null;
+
+        foreach ($variants as $variant) {
+            $variant = DocumentVariant::tryFrom((string)$variant);
+
+            if ($variant?->carriesTheCustomersSignature() ?? false) {
+                return ProposalLinesLock::SignedByTheCustomer;
+            }
+
+            if ($variant?->isGeneratedByUs() ?? false) {
+                $lock = ProposalLinesLock::PapersDrawn;
+            }
+        }
+
+        return $lock;
+    }
+
+    /**
+     * The documents we drew from the proposal ourselves, as they are on file.
+     *
+     * The copies that went out from here and nothing that came back: a signed copy is the customer's
+     * answer, and that is not ours to throw away.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return array<\Files\Model\Entity\FileLink>
+     */
+    public function papersDrawnFrom(ContractProposal $proposal): array
+    {
+        /** @var array<\Files\Model\Entity\FileLink> $drawn */
+        $drawn = $this->filedOurs($proposal)
+            ->where(['FileLinks.variant IN' => [
+                DocumentVariant::Generated->value,
+                DocumentVariant::GeneratedSignedByUs->value,
+            ]])
+            ->toArray();
+
+        return $drawn;
+    }
+
+    /**
+     * What is on file against the proposal of the kinds of paper we draw.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\FileLink>
+     */
+    private function filedOurs(ContractProposal $proposal): SelectQuery
+    {
+        $ours = [];
+
+        foreach (ContractDocumentType::cases() as $type) {
+            if ($type->canBeGenerated()) {
+                $ours[] = $type->value;
+            }
+        }
+
+        /** @var \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\FileLink> $query */
+        $query = TableRegistry::getTableLocator()->get('Files.FileLinks')
+            ->find()
+            ->where([
+                'FileLinks.model' => ContractDocuments::MODEL,
+                'FileLinks.foreign_key' => $proposal->id,
+                'FileLinks.document_type IN' => $ours,
+            ]);
+
+        return $query;
     }
 
     /**

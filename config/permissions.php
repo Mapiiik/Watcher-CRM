@@ -825,6 +825,7 @@ $permissions = [
                 'equipmentLine',
                 'returnEquipment',
                 'dropEquipmentLine',
+                'discardDocuments',
                 'delete',
             ],
             //The table says what may still be touched. The condition reads the record, so it also
@@ -861,9 +862,18 @@ $permissions = [
                     return false;
                 }
 
-                return $request->getParam('action') === 'delete'
-                    ? $proposals->mayBeDeleted($proposal)
-                    : $proposals->mayBeEdited($proposal);
+                // The lines wait while a paper drawn from them is kept; the rest of the papers only
+                // ask whether they may be touched at all.
+                return match ($request->getParam('action')) {
+                    'delete' => $proposals->mayBeDeleted($proposal),
+                    'billingLine',
+                    'endBilling',
+                    'dropBillingLine',
+                    'equipmentLine',
+                    'returnEquipment',
+                    'dropEquipmentLine' => $proposals->mayChangeLines($proposal),
+                    default => $proposals->mayBeEdited($proposal),
+                };
             },
         ],
         //a proposal put to the customer is settled by sending it, the same as a contract's proposal: what has

@@ -204,6 +204,7 @@ foreach ($filed as $byVariant) {
                 'planned' => $part['planned'],
                 'confirmations' => $part['confirmations'],
                 'mayBeEdited' => $part['mayBeEdited'],
+                'linesLock' => $part['linesLock'],
                 ]) ?>
         </div>
         <?php endforeach; ?>

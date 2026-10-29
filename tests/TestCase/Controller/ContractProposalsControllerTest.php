@@ -10,6 +10,7 @@ use App\Controller\CustomerProposalsController;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
+use App\Model\Enum\ProposalLinesLock;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
 use App\Proposals\DrawnPaper;
@@ -1269,6 +1270,90 @@ class ContractProposalsControllerTest extends TestCase
             [],
             (new DrawnPaper())->problemsWith($drawn, ContractDocumentType::HandoverExchange->value),
         );
+    }
+
+    /**
+     * A document generated from the proposal locks its lines, the page says why and offers to
+     * discard it, and once it is gone the lines may be changed again.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::discardDocuments()
+     */
+    public function testGeneratedDocumentsLockTheLinesUntilTheyAreDiscarded(): void
+    {
+        Configure::write('Files.root', TMP . 'lines-lock-' . uniqid());
+        $storage = new FileStorage();
+        $drawn = $storage->link(
+            $storage->store('%PDF-1.7 ours', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::Generated->value,
+            ['name' => 'amendment.pdf'],
+        );
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains('/contract-proposals/discard-documents/' . self::PROPOSAL_ID);
+        $this->assertResponseNotContains('/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+        $this->assertRedirect();
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/discard-documents/' . self::PROPOSAL_ID);
+        $this->assertRedirect();
+        $this->assertFalse($this->getTableLocator()->get('Files.FileLinks')->exists(['id' => $drawn->id]));
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+
+        Configure::delete('Files.root');
+    }
+
+    /**
+     * The customer's signed copy is what they agreed to, so nothing is discarded and the page says
+     * why and what to do instead.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::discardDocuments()
+     */
+    public function testASignedCopyIsNotDiscarded(): void
+    {
+        Configure::write('Files.root', TMP . 'lines-lock-' . uniqid());
+        $storage = new FileStorage();
+        $drawn = $storage->link(
+            $storage->store('%PDF-1.7 ours', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::Generated->value,
+            ['name' => 'amendment.pdf'],
+        );
+        $storage->link(
+            $storage->store('%PDF-1.7 signed', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::ReceivedSignedByCustomer->value,
+            ['name' => 'amendment-signed.pdf'],
+        );
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertResponseContains(h(ProposalLinesLock::SignedByTheCustomer->label()));
+        $this->assertResponseNotContains('/contract-proposals/discard-documents/' . self::PROPOSAL_ID);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/discard-documents/' . self::PROPOSAL_ID);
+        $this->assertRedirect();
+        $this->assertTrue($this->getTableLocator()->get('Files.FileLinks')->exists(['id' => $drawn->id]));
+
+        Configure::delete('Files.root');
     }
 
     /**

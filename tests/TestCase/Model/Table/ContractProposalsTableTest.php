@@ -5,8 +5,10 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Contracts\Proposal\ProposalConfirmations;
 use App\Model\Entity\ContractProposal;
+use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
+use App\Model\Enum\ProposalLinesLock;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\ContractProposalsTable;
 use App\Service\ContractPrint\ContractDocuments;
@@ -732,6 +734,46 @@ class ContractProposalsTableTest extends TestCase
 
         $billing = $this->save($exchange + ['changes' => ['billings' => [['quantity' => 1, 'text' => 'Lorem']]]]);
         $this->assertArrayHasKey('anExchangeChangesNoBilling', $billing->getError('changes'));
+    }
+
+    /**
+     * A paper drawn from the proposal locks its lines until it is discarded, and the customer's
+     * signed copy locks them for good. What the other side wrote is not drawn from the lines, so it
+     * locks nothing.
+     *
+     * @return void
+     */
+    public function testPapersDrawnFromTheProposalLockItsLines(): void
+    {
+        Configure::write('Files.root', TMP . 'lines-lock-' . uniqid());
+        $storage = new FileStorage();
+        $proposal = $this->Proposals->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
+        $file = fn(string $type, DocumentVariant $variant) => $storage->link(
+            $storage->store('%PDF-1.7 ' . $type, 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            $type,
+            $variant->value,
+            ['name' => $type . '.pdf'],
+        );
+
+        $this->assertNull($this->Proposals->linesLock($proposal));
+
+        $file(ContractDocumentType::TerminationNotice->value, DocumentVariant::Received);
+        $this->assertNull($this->Proposals->linesLock($proposal));
+
+        $drawn = $file(ContractDocumentType::ContractAmendment->value, DocumentVariant::Generated);
+        $this->assertSame(ProposalLinesLock::PapersDrawn, $this->Proposals->linesLock($proposal));
+        $this->assertFalse($this->Proposals->mayChangeLines($proposal));
+        $this->assertSame([$drawn->id], array_map(
+            fn($link) => $link->id,
+            $this->Proposals->papersDrawnFrom($proposal),
+        ));
+
+        $file(ContractDocumentType::ContractAmendment->value, DocumentVariant::ReceivedSignedByCustomer);
+        $this->assertSame(ProposalLinesLock::SignedByTheCustomer, $this->Proposals->linesLock($proposal));
+
+        Configure::delete('Files.root');
     }
 
     /**

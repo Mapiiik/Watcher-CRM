@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
+ * @var \App\Model\Enum\ProposalLinesLock|null $linesLock Why the lines cannot be changed now.
  * @var bool $mayBeDeleted
  * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
  * @var array<string, array<string, array<\Files\Model\Entity\FileLink>>> $filed
@@ -112,6 +113,7 @@ foreach ($filed as $byVariant) {
                 ['class' => 'button float-right'],
             ) ?>
             <?= $this->element('ContractProposals/heading') ?>
+            <?= $this->element('ContractProposals/lines_locked') ?>
             <?php if ($contractProposal->customer_proposal !== null) : ?>
                 <?php
                 // Papers of a contract are a part of a proposal put to the customer, and the way
@@ -271,7 +273,7 @@ foreach ($filed as $byVariant) {
                 </div>
             </div>
 
-            <?= $this->element('ContractProposals/what_it_says') ?>
+            <?= $this->element('ContractProposals/what_it_says', ['linesLockSaidAbove' => true]) ?>
 
             <?php if (!empty($contractProposal->note)) : ?>
                 <h4><?= __('Note') ?></h4>

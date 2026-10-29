@@ -15,12 +15,28 @@
  * @var list<\App\Contracts\Proposal\PlannedChange> $planned
  * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
+ * @var \App\Model\Enum\ProposalLinesLock|null $linesLock Why the lines cannot be changed now.
+ * @var bool|null $linesLockSaidAbove Whether the page already said why, higher up.
  */
 
 use App\Contracts\Proposal\ProposalConfirmations;
 
 $answered = $confirmations->toArray();
+$linesLock ??= null;
+// The lines wait while a paper drawn from them is kept; the rest of the proposal does not.
+$mayChangeLines = $mayBeEdited && $linesLock === null;
 ?>
+<?php
+// The proposal's own page says it at the top, where it is read first.
+if (empty($linesLockSaidAbove)) {
+    echo $this->element('ContractProposals/lines_locked', [
+        'contractProposal' => $contractProposal,
+        'mayBeEdited' => $mayBeEdited,
+        'linesLock' => $linesLock,
+    ]);
+}
+?>
+
 <?php
 // Passed through rather than left to be found: what one element was handed does not reach the
 // next, only what the page itself set.
@@ -29,14 +45,14 @@ $answered = $confirmations->toArray();
     <?= $this->element('ContractProposals/proposed_billings', [
         'contractProposal' => $contractProposal,
         'rows' => $rows,
-        'mayBeEdited' => $mayBeEdited,
+        'mayBeEdited' => $mayChangeLines,
     ]) ?>
 <?php endif; ?>
 
 <?= $this->element('ContractProposals/proposed_equipments', [
     'contractProposal' => $contractProposal,
     'equipmentRows' => $equipmentRows,
-    'mayBeEdited' => $mayBeEdited,
+    'mayBeEdited' => $mayChangeLines,
 ]) ?>
 
 <?php if ($planned !== []) : ?>
