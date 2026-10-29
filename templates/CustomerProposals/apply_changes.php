@@ -92,6 +92,7 @@ foreach ($parts as $part) {
                 <?php endif; ?>
                 <?php foreach ($parts as $part) : ?>
                     <?php if ($part['handedOverOn'] !== null) : ?>
+                        <br>
                         <?= $this->Form->control('handed_over_on.' . $part['papers']->id, [
                             'type' => 'date',
                             'value' => $part['handedOverOn'],
