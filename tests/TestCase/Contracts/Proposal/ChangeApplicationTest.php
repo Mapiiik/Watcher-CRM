@@ -128,6 +128,17 @@ class ChangeApplicationTest extends TestCase
     }
 
     /**
+     * The first day of next month. Invoicing has not reached it whenever the tests run, so a
+     * billing may still be ended the day before it.
+     *
+     * @return \Cake\I18n\Date
+     */
+    private function nextMonth(): Date
+    {
+        return Date::today()->firstOfMonth()->addMonths(1);
+    }
+
+    /**
      * The ordinary proposal behind a new contract's papers changes nothing, and is applied all
      * the same - otherwise it would sit in the checks for ever as signed and not dealt with.
      *
@@ -186,9 +197,10 @@ class ChangeApplicationTest extends TestCase
      */
     public function testAReplacedBillingIsEndedAndItsReplacementStarted(): void
     {
+        $takesEffect = $this->nextMonth();
         $proposal = $this->proposal([
             'conclusion_date' => '2026-09-15',
-            'effective_from' => '2026-10-01',
+            'effective_from' => $takesEffect->toDateString(),
             'changes' => ['billings' => [[
                 'billing_id' => self::OPEN_BILLING_ID,
                 'terminates_only' => false,
@@ -203,12 +215,12 @@ class ChangeApplicationTest extends TestCase
         $billings = $this->getTableLocator()->get('Billings');
 
         $ended = $billings->get(self::OPEN_BILLING_ID);
-        $this->assertSame('2026-09-30', $ended->billing_until?->toDateString());
+        $this->assertSame($takesEffect->subDays(1)->toDateString(), $ended->billing_until?->toDateString());
 
         $started = $billings->find()
             ->where([
                 'Billings.contract_id' => self::CONTRACT_ID,
-                'Billings.billing_from' => '2026-10-01',
+                'Billings.billing_from' => $takesEffect->toDateString(),
             ])
             ->firstOrFail();
         $this->assertSame('299.00', $started->get('price')?->toString());
@@ -224,9 +236,12 @@ class ChangeApplicationTest extends TestCase
      */
     public function testABillingThatWouldNeverRunIsTakenAwayRatherThanEnded(): void
     {
-        $this->theBillingBegins('2026-12-01');
+        // still to come, or it could not be taken away
+        $this->theBillingBegins($this->nextMonth()->addMonths(1)->toDateString());
 
-        (new ChangeApplication())->apply($this->terminationEndingTheBilling('2026-09-15', '2026-10-01'));
+        (new ChangeApplication())->apply(
+            $this->terminationEndingTheBilling('2026-09-15', $this->nextMonth()->toDateString()),
+        );
 
         $this->assertFalse(
             $this->getTableLocator()->get('Billings')->exists(['id' => self::OPEN_BILLING_ID]),
@@ -639,7 +654,7 @@ class ChangeApplicationTest extends TestCase
 
         return $this->proposal([
             'conclusion_date' => '2026-09-15',
-            'effective_from' => '2026-10-01',
+            'effective_from' => $this->nextMonth()->toDateString(),
             'changes' => ['billings' => [[
                 'billing_id' => self::OPEN_BILLING_ID,
                 'terminates_only' => false,
@@ -925,9 +940,10 @@ class ChangeApplicationTest extends TestCase
      */
     public function testTheDayItTakesEffectIsTheProposals(): void
     {
+        $takesEffect = $this->nextMonth();
         $proposal = $this->proposal([
             'conclusion_date' => '2026-09-15',
-            'effective_from' => '2026-11-01',
+            'effective_from' => $takesEffect->toDateString(),
             'changes' => ['billings' => [[
                 'billing_id' => self::OPEN_BILLING_ID,
                 'terminates_only' => true,
@@ -937,7 +953,7 @@ class ChangeApplicationTest extends TestCase
         (new ChangeApplication())->apply($proposal);
 
         $this->assertSame(
-            (new Date('2026-10-31'))->toDateString(),
+            $takesEffect->subDays(1)->toDateString(),
             $this->getTableLocator()->get('Billings')
                 ->get(self::OPEN_BILLING_ID)
                 ->billing_until?->toDateString(),
