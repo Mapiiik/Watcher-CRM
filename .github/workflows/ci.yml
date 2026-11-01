@@ -2,6 +2,11 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or tag to build from (a release tag is rebuilt with its version tags)
+        type: string
+        required: false
   schedule:
     - cron: '0 3 * * *'
   push:
@@ -22,7 +27,8 @@ permissions:
 
 env:
   # The branch the image `latest` is built from, the one production runs. A nightly run builds
-  # this branch rather than the default one, which is what a schedule would check out.
+  # this branch rather than the default one, which is what a schedule would check out, and the
+  # newest release of its line.
   LATEST_BRANCH: '5.x'
   # Our FrankenPHP, built an hour before; a new one is a reason for a nightly build
   BASE_IMAGE: ghcr.io/mapiiik/frankenphp:php8.4
@@ -77,8 +83,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || '' }}
-        
+          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || inputs.ref || '' }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -160,8 +166,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || '' }}
-        
+          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || inputs.ref || '' }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -186,58 +192,37 @@ jobs:
 
   ##########################################################################
   # The image: from the branch production runs and from git tags, after the
-  # tests. Resolve what to build, once, and share it with the build jobs.
+  # tests, and nightly also from the newest release. Resolve what to build,
+  # once, and share it with the build jobs as a list of targets.
   ##########################################################################
   setup:
-    name: Resolve version and base image
+    name: Resolve targets and base image
     needs:
       - testsuite
       - coding-standard
-    # the branch is LATEST_BRANCH, which a job's condition cannot read
+    # It runs when the tests failed too: a release rebuilt for a new base image was tested when
+    # it was made, and the step below decides what failed tests hold back. The branch is
+    # LATEST_BRANCH, which a job's condition cannot read.
     if: >-
-      github.event_name == 'pull_request'
-      || github.event_name == 'schedule'
-      || github.event_name == 'workflow_dispatch'
-      || github.ref_type == 'tag'
-      || github.ref_name == '5.x'
+      !cancelled() && (
+        github.event_name == 'pull_request'
+        || github.event_name == 'schedule'
+        || github.event_name == 'workflow_dispatch'
+        || github.ref_type == 'tag'
+        || github.ref_name == '5.x'
+      )
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version.outputs.version }}
-      key: ${{ steps.key.outputs.key }}
-      image: ${{ steps.image.outputs.name }}
-      ref: ${{ steps.version.outputs.ref }}
-      skip_build: ${{ steps.image_check.outputs.skip_build }}
+      image: ${{ steps.targets.outputs.image }}
+      targets: ${{ steps.targets.outputs.targets }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || '' }}
-
-      # The commit actually checked out: on a schedule that is the head of LATEST_BRANCH, not
-      # the commit of the default branch the run was started from
-      - name: Version from the commit
-        id: version
-        run: |
-          echo "ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          echo "version=$(git rev-parse --short=7 HEAD)" >> "$GITHUB_OUTPUT"
-
-      # A new base image (PHP, Caddy or Alpine fixes) is a reason to rebuild too
-      - name: Build key from commit and base image digest
-        id: key
-        run: |
-          BASE_DIGEST="$(docker buildx imagetools inspect --raw "$BASE_IMAGE" | sha256sum | cut -c1-12)"
-          echo "::notice::Base image $BASE_IMAGE digest $BASE_DIGEST"
-          echo "key=build-${{ steps.version.outputs.version }}-${BASE_DIGEST}" >> "$GITHUB_OUTPUT"
-
-      # docker/metadata-action lowercases the image name on its own, but the
-      # digest push and the manifest merge below address the registry directly,
-      # so the lowercase name has to be built here explicitly.
-      - name: Normalize image name
-        id: image
-        run: |
-          REPO="${{ github.repository }}"
-          echo "name=ghcr.io/${REPO,,}" >> "$GITHUB_OUTPUT"
+          ref: ${{ github.event_name == 'schedule' && env.LATEST_BRANCH || inputs.ref || '' }}
+          # the tags, to find the newest release and to tell a tag from a branch
+          fetch-depth: 0
 
       - name: Log in to GHCR
         uses: docker/login-action@v4
@@ -246,37 +231,120 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check if image already exists (for scheduler)
-        id: image_check
+      # Each target is one commit with every image tag it is owed. Its key is the commit and the
+      # digest of the base image, so a new base image (PHP or Caddy fixes) is a reason to rebuild
+      # too, and a nightly run passes over a target whose key is already in the registry.
+      - name: Targets
+        id: targets
+        env:
+          TESTS_PASSED: ${{ needs.testsuite.result == 'success' && needs.coding-standard.result == 'success' }}
+          INPUT_REF: ${{ inputs.ref }}
         run: |
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            IMAGE="${{ steps.image.outputs.name }}:${{ steps.key.outputs.key }}"
+          set -euo pipefail
 
-            echo "::notice::Checking if image exists: $IMAGE"
+          # docker/metadata-action lowercases the image name on its own, but the digest push and
+          # the manifest merge address the registry directly
+          image="ghcr.io/${GITHUB_REPOSITORY,,}"
+          echo "image=$image" >> "$GITHUB_OUTPUT"
 
-            if docker manifest inspect "$IMAGE"; then
-              echo "::notice::Image already exists, skipping scheduled build."
-              echo "skip_build=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "::notice::Image not found or registry error – proceeding with build."
+          base_digest="$(docker buildx imagetools inspect --raw "$BASE_IMAGE" | sha256sum | cut -c1-12)"
+          echo "::notice::Base image $BASE_IMAGE digest $base_digest"
+
+          # the releases matching a pattern, oldest first, without release candidates
+          releases() {
+            git tag --list "$1" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V || true
+          }
+
+          targets='[]'
+
+          # want <commit-ish> <release or empty> <branch tags: true or false>
+          want() {
+            local sha version key release="$2" branch="$3" minor=false major=false
+            sha="$(git rev-parse "$1^{commit}")"
+            version="${sha:0:7}"
+            key="build-$version-$base_digest"
+
+            # 5.0 and 5 go only to the newest release of each, so that rebuilding an older one,
+            # or a fix of an older line, does not take them back
+            if [ -n "$release" ]; then
+              if [ "$(releases "${release%.*}.*" | tail -n 1)" = "$release" ]; then minor=true; fi
+              if [ "$(releases "${release%%.*}.*" | tail -n 1)" = "$release" ]; then major=true; fi
             fi
-          else
-            echo "::notice::Triggered by ${{ github.event_name }} – forcing rebuild."
-          fi
+
+            if [ "$GITHUB_EVENT_NAME" = schedule ] && docker manifest inspect "$image:$key" > /dev/null 2>&1; then
+              echo "::notice::$image:$key exists, $1 is not built again"
+              return 0
+            fi
+            echo "::notice::Building $1 ($version) as $key"
+
+            # a commit wanted twice, as the branch and as a release, is built once with both
+            targets="$(jq -c \
+              --arg ref "$sha" --arg version "$version" --arg key "$key" --arg release "$release" \
+              --argjson minor "$minor" --argjson major "$major" --argjson branch "$branch" '
+              if any(.[]; .ref == $ref) then
+                map(if .ref == $ref then
+                  (.branch = (.branch or $branch))
+                  | if $release != "" then .release = $release | .minor = $minor | .major = $major else . end
+                else . end)
+              else
+                . + [{ref: $ref, version: $version, key: $key, release: $release,
+                      minor: $minor, major: $major, branch: $branch}]
+              end' <<< "$targets")"
+          }
+
+          case "$GITHUB_EVENT_NAME" in
+            schedule)
+              # the branch once its tests pass, and the newest release of its line whatever they
+              # say, as it was tested when it was made
+              if [ "$TESTS_PASSED" = true ]; then want HEAD '' true; fi
+              latest="$(releases "${LATEST_BRANCH%.x}.*" | tail -n 1)"
+              if [ -n "$latest" ]; then want "$latest" "$latest" false; fi
+              ;;
+            workflow_dispatch)
+              ref="${INPUT_REF:-$GITHUB_REF_NAME}"
+              if git show-ref --verify --quiet "refs/tags/$ref"; then
+                want HEAD "$ref" false
+              elif [ "$TESTS_PASSED" = true ]; then
+                want HEAD '' "$([ "$ref" = "$LATEST_BRANCH" ] && echo true || echo false)"
+              fi
+              ;;
+            push)
+              if [ "$TESTS_PASSED" = true ] && [ "$GITHUB_REF_TYPE" = tag ]; then
+                want HEAD "$GITHUB_REF_NAME" false
+              elif [ "$TESTS_PASSED" = true ]; then
+                want HEAD '' true
+              fi
+              ;;
+            *)
+              if [ "$TESTS_PASSED" = true ]; then want HEAD '' false; fi
+              ;;
+          esac
+
+          echo "targets=$targets" >> "$GITHUB_OUTPUT"
+          echo "::notice::Targets: $(jq -r '
+            if length == 0 then "nothing to build"
+            else map(.version + (if .release != "" then " " + .release else "" end)
+                     + (if .branch then " " + env.LATEST_BRANCH else "" end)) | join(", ")
+            end' <<< "$targets")"
 
   ##########################################################################
-  # One job per architecture, each on a native runner (no QEMU emulation).
-  # Nothing is tagged here - each job pushes an untagged image and reports
-  # back only its digest.
+  # One job per target and architecture, each on a native runner (no QEMU
+  # emulation). Nothing is tagged here - each job pushes an untagged image
+  # and reports back only its digest. A release is built with the workflow
+  # of today and the Dockerfile it was tagged with.
   ##########################################################################
   build:
-    name: Build ${{ matrix.platform }}
+    name: Build ${{ matrix.target.release || matrix.target.version }} ${{ matrix.platform }}
     needs: setup
-    if: needs.setup.outputs.skip_build != 'true'
+    if: needs.setup.outputs.targets != '[]'
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
+        target: ${{ fromJSON(needs.setup.outputs.targets) }}
+        platform:
+          - linux/amd64
+          - linux/arm64
         include:
           - platform: linux/amd64
             arch: amd64
@@ -288,12 +356,12 @@ jobs:
     steps:
       - name: Announce build
         run: |
-          echo "::notice::Building ${{ matrix.platform }} image for ${{ needs.setup.outputs.version }}"
+          echo "::notice::Building ${{ matrix.platform }} image for ${{ matrix.target.version }} ${{ matrix.target.release }}"
 
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          ref: ${{ needs.setup.outputs.ref }}
+          ref: ${{ matrix.target.ref }}
           # the whole history and its tags, for git describe
           fetch-depth: 0
 
@@ -336,7 +404,7 @@ jobs:
           outputs: ${{ github.event_name != 'pull_request' && 'type=image,push-by-digest=true,name-canonical=true,push=true' || 'type=cacheonly' }}
           build-args: |
             buildno=${{ github.run_number }}
-            gitcommithash=${{ needs.setup.outputs.ref }}
+            gitcommithash=${{ matrix.target.ref }}
           cache-from: type=gha,scope=${{ matrix.platform }}
           cache-to: type=gha,mode=max,scope=${{ matrix.platform }}
 
@@ -351,30 +419,35 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v7
         with:
-          name: digests-${{ matrix.arch }}
+          name: digests-${{ matrix.target.key }}-${{ matrix.arch }}
           path: ${{ runner.temp }}/digests/*
           if-no-files-found: error
           retention-days: 1
 
   ##########################################################################
-  # Join the per-architecture digests into one multi-arch manifest and
-  # attach the real tags to it: a git tag gets its version (5.0.0, 5.0, 5,
-  # a release candidate only its own), the branch gets its name and latest.
+  # Join the per-architecture digests of each target into one multi-arch
+  # manifest and attach the real tags to it: a release gets its version
+  # (5.0.0, and 5.0 and 5 while it is the newest of them; a release
+  # candidate only its own), the branch gets its name and latest.
   ##########################################################################
   merge:
-    name: Push multi-arch manifest
+    name: Push ${{ matrix.target.release || matrix.target.version }} manifest
     needs:
       - setup
       - build
-    if: needs.setup.outputs.skip_build != 'true' && github.event_name != 'pull_request'
+    if: needs.setup.outputs.targets != '[]' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.setup.outputs.targets) }}
 
     steps:
       - name: Download digests
         uses: actions/download-artifact@v8
         with:
           path: ${{ runner.temp }}/digests
-          pattern: digests-*
+          pattern: digests-${{ matrix.target.key }}-*
           merge-multiple: true
 
       - name: Set up Docker Buildx
@@ -392,14 +465,16 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ needs.setup.outputs.image }}
+          # The version comes from the target, not from the ref the run was started from: a
+          # nightly run of the branch rebuilds a release as well.
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=raw,value=${{ env.LATEST_BRANCH }},enable=${{ github.ref_type != 'tag' }}
-            type=raw,value=latest,enable=${{ github.ref_type != 'tag' }}
-            type=raw,value=sha-${{ needs.setup.outputs.version }}
-            type=raw,value=${{ needs.setup.outputs.key }}
+            type=semver,pattern={{version}},value=${{ matrix.target.release }},enable=${{ matrix.target.release != '' }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ matrix.target.release }},enable=${{ matrix.target.minor }}
+            type=semver,pattern={{major}},value=${{ matrix.target.release }},enable=${{ matrix.target.major }}
+            type=raw,value=${{ env.LATEST_BRANCH }},enable=${{ matrix.target.branch }}
+            type=raw,value=latest,enable=${{ matrix.target.branch }}
+            type=raw,value=sha-${{ matrix.target.version }}
+            type=raw,value=${{ matrix.target.key }}
           flavor: |
             latest=false
 
@@ -413,4 +488,4 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect \
-            "${{ needs.setup.outputs.image }}:${{ needs.setup.outputs.key }}"
+            "${{ needs.setup.outputs.image }}:${{ matrix.target.key }}"
