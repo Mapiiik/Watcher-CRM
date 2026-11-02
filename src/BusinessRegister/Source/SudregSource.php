@@ -43,7 +43,7 @@ class SudregSource extends BaseSource
     #[Override]
     public function label(): string
     {
-        return __('HR - Sudski registar');
+        return __('HR - Sudski registar (by OIB only)');
     }
 
     /**
@@ -65,36 +65,17 @@ class SudregSource extends BaseSource
     #[Override]
     public function search(string $query, int $limit = 25): Answer
     {
-        $query = trim($query);
-        if ($query === '') {
+        // Only a number is looked for. The register can be searched by name, but what it answers
+        // with is the numbers alone - the name and the seat are in the details of each, which are
+        // given six a minute - so a list of hits would be one nobody could pick from.
+        $number = self::withoutWhitespace($query);
+        if (!IdentityNumber::isValidCroatian($number)) {
             return Answer::of(new Collection([]));
         }
 
-        // A number is the entry itself, and asking for it by name would only find it by accident.
-        $number = self::withoutWhitespace($query);
-        if (IdentityNumber::isValidCroatian($number)) {
-            return $this->byReference($number)->map(
-                fn(?Subject $subject): CollectionInterface => new Collection($subject ? [$subject] : []),
-            );
-        }
-
-        return $this->get('javni/subjekti', [
-            'tvrtka_naziv' => $query,
-            'offset' => 0,
-            'limit' => $limit,
-            'only_active' => 'true',
-            'no_data_error' => '0',
-        ])->map(function (?array $data): CollectionInterface {
-            $mapped = [];
-
-            foreach ($data ?? [] as $subject) {
-                if (is_array($subject)) {
-                    $mapped[] = self::mapSubject($subject);
-                }
-            }
-
-            return self::toSubjects($mapped);
-        });
+        return $this->byReference($number)->map(
+            fn(?Subject $subject): CollectionInterface => new Collection($subject ? [$subject] : []),
+        );
     }
 
     /**

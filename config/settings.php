@@ -106,7 +106,8 @@ return [
             'sudreg' => [
                 'enabled' => new BoolType(
                     default: false,
-                    hint: __('The Croatian court register. It only answers with the credentials issued at sudreg-data.gov.hr.'),
+                    hint: __('The Croatian court register. It answers to an OIB, never to a name, and only with'
+                        . ' the credentials issued at sudreg-data.gov.hr.'),
                 ),
                 'url' => 'https://sudreg-data.gov.hr/api',
                 'client_id' => '',

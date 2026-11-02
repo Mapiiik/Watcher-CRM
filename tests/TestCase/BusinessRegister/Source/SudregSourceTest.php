@@ -118,6 +118,21 @@ class SudregSourceTest extends TestCase
     }
 
     /**
+     * The register is looked in by number only, so a name is answered with nothing - and without
+     * asking it, which a register with no credentials would only fail at.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\SudregSource::search()
+     */
+    public function testANameIsNotLookedFor(): void
+    {
+        $answer = (new SudregSource())->search('Hrvatski Telekom');
+
+        $this->assertTrue($answer->ok());
+        $this->assertSame([], $answer->data->toList());
+    }
+
+    /**
      * The register answers the OIB as a number, so one that starts with a zero comes without it and
      * is given it back.
      *
