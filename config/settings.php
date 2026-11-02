@@ -42,7 +42,6 @@
  *   is for can be read off the line it stands on.
  */
 
-use App\Model\Enum\BusinessCustomerDetection;
 use App\Model\Enum\UnsignedDeadlineAnchor;
 use Settings\ValueObject\Type\BoolType;
 use Settings\ValueObject\Type\ChoiceType;
@@ -350,11 +349,6 @@ return [
         ],
 
         'customers' => [
-            'business_detection' => new ChoiceType(
-                default: BusinessCustomerDetection::IdentityNumber,
-                hint: __('How a business is told from a household in the reports for the regulator.'),
-            ),
-
             // The same family as the contracts', kept apart: a consent is chased by different
             // people, and nothing here reaches the routers.
             'paperwork' => [

@@ -10,6 +10,7 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
 use App\Model\Entity\Service;
 use App\Model\Enum\AccessTechnology;
+use App\Model\Enum\CustomerLegalStatus;
 use App\RegulatoryReporting\ConnectionPoint;
 use App\RegulatoryReporting\Cz\CtuConnectionPointRow;
 use App\RegulatoryReporting\Cz\CtuConnectionPointsCsv;
@@ -129,14 +130,20 @@ class CtuConnectionPointsCsvTest extends TestCase
     }
 
     /**
-     * @param string|null $identityNumber The customer's, null for a household.
+     * @param string|null $identityNumber The customer's, null for a household, which is what
+     *      decides their legal status here.
      * @param int $speedDown The advertised download speed.
      * @return \App\Model\Entity\Billing
      */
     private function connection(?string $identityNumber, int $speedDown): Billing
     {
         return new Billing([
-            'customer' => new Customer(['identity_number' => $identityNumber]),
+            'customer' => new Customer([
+                'identity_number' => $identityNumber,
+                'legal_status' => $identityNumber === null
+                    ? CustomerLegalStatus::NaturalPerson
+                    : CustomerLegalStatus::SoleTrader,
+            ]),
             'contract' => new Contract(['number' => '1']),
             'service' => new Service([
                 'connection_profile' => new ConnectionProfile([

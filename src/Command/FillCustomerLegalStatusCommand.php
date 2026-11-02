@@ -6,6 +6,7 @@ namespace App\Command;
 use App\BusinessRegister\IdentityNumberStatus;
 use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerLegalStatus;
+use App\Model\Enum\LegalStatusGuess;
 use App\Model\Table\CustomersTable;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -20,8 +21,7 @@ use Throwable;
  *
  * Fills in who the customers are in law, from the business registers where they have an
  * identification number, and as a natural person where they have neither that nor a company.
- * Whatever cannot be found out is left as it was and listed, for somebody to fill in by hand - a
- * guess here would decide the clauses of a contract.
+ * Whatever cannot be found out is left as it was and listed, for somebody to fill in by hand.
  *
  * Only the customers with no legal status are asked about, unless told to check them all, and
  * even then only a register's answer overwrites what is there. A run can be repeated at any time:
@@ -30,6 +30,13 @@ use Throwable;
  * ARES turns a long run of lookups away for a while, without saying how many it takes or for how
  * long. A lookup turned away is asked again after a pause, and a register that keeps turning them
  * away is taken for down, so that the rest of the run does not wait on it customer by customer.
+ *
+ * Told to guess, it fills in what the registers could not say the way the installation told a
+ * business from a household before there was a legal status, so that nothing is left empty and
+ * nothing changes from how the customers were counted. Where the registers never say - the
+ * Croatian one does not, and everybody there has an OIB - they need not be asked at all. A guess
+ * only ever fills in what is empty, and the guesses that take a customer for a business are
+ * listed for somebody to check.
  */
 class FillCustomerLegalStatusCommand extends Command
 {
@@ -72,6 +79,24 @@ class FillCustomerLegalStatusCommand extends Command
             'boolean' => true,
         ]);
 
+        $parser->addOption('guess', [
+            'short' => 'g',
+            'help' => __(
+                'Fill in what the business registers cannot say by a guess - {0}.',
+                implode(', ', array_map(
+                    fn(LegalStatusGuess $guess): string => $guess->value . ': ' . $guess->label(),
+                    LegalStatusGuess::cases(),
+                )),
+            ),
+            'choices' => array_map(fn(LegalStatusGuess $guess): string => $guess->value, LegalStatusGuess::cases()),
+        ]);
+
+        $parser->addOption('no-registers', [
+            'short' => 'n',
+            'help' => __('Do not ask the business registers at all and only guess, where they never say.'),
+            'boolean' => true,
+        ]);
+
         $parser->addOption('wait', [
             'short' => 'w',
             'help' => __('Seconds to wait before asking a business register again after it turned a lookup away.'),
@@ -93,7 +118,18 @@ class FillCustomerLegalStatusCommand extends Command
     {
         $recheck = (bool)$args->getOption('recheck');
         $dryRun = (bool)$args->getOption('dry-run');
+        $guess = LegalStatusGuess::tryFrom((string)$args->getOption('guess'));
+        $noRegisters = (bool)$args->getOption('no-registers');
         $wait = max(0, (int)$args->getOption('wait'));
+
+        if ($noRegisters && ($guess === null || $recheck)) {
+            $io->error(__(
+                'Without the business registers there is nothing to go on but a guess, and nothing to'
+                . ' recheck by.',
+            ));
+
+            return static::CODE_ERROR;
+        }
 
         try {
             $customers = $this->fetchTable(CustomersTable::class);
@@ -105,36 +141,51 @@ class FillCustomerLegalStatusCommand extends Command
 
             $outcomes = [
                 'filled' => 0,
+                'guessed' => 0,
                 'corrected' => 0,
                 'confirmed' => 0,
                 'kept' => 0,
                 'unresolved' => 0,
             ];
             $changes = [];
+            $guesses = [];
             $unresolved = [];
             $unreachedInARow = 0;
 
             /** @var \App\Model\Entity\Customer $customer */
             foreach ($query->all() as $customer) {
-                $askedAgain = false;
-                do {
-                    $reason = null;
-                    $unreached = false;
-                    $found = $this->lookUp($customer, $reason, $unreached);
+                $reason = null;
+                $unreached = false;
+                $found = null;
 
-                    $askAgain = $unreached && !$askedAgain && $unreachedInARow < self::GIVE_UP_AFTER;
-                    if ($askAgain) {
-                        $io->out(__(
-                            'A business register turned the lookup of {0} away, asking again in {1} s.',
-                            (string)$customer->identity_number,
-                            $wait,
-                        ));
-                        sleep($wait);
-                        $askedAgain = true;
-                    }
-                } while ($askAgain);
+                if (!$noRegisters) {
+                    $askedAgain = false;
+                    do {
+                        $reason = null;
+                        $unreached = false;
+                        $found = $this->lookUp($customer, $reason, $unreached);
+
+                        $askAgain = $unreached && !$askedAgain && $unreachedInARow < self::GIVE_UP_AFTER;
+                        if ($askAgain) {
+                            $io->out(__(
+                                'A business register turned the lookup of {0} away, asking again in {1} s.',
+                                (string)$customer->identity_number,
+                                $wait,
+                            ));
+                            sleep($wait);
+                            $askedAgain = true;
+                        }
+                    } while ($askAgain);
+                }
 
                 $unreachedInARow = $unreached ? $unreachedInARow + 1 : 0;
+
+                // A guess fills in only what nobody has, and never where a register could not be
+                // reached: that one may yet answer, and the next run asks it again.
+                $guessed = $found === null && $guess !== null && $customer->legal_status === null && !$unreached;
+                if ($guessed) {
+                    $found = $guess->legalStatusOf($customer);
+                }
 
                 if ($found === null) {
                     if ($customer->legal_status === null) {
@@ -178,6 +229,16 @@ class FillCustomerLegalStatusCommand extends Command
                     }
                 }
 
+                if ($guessed) {
+                    $outcomes['guessed']++;
+                    // a household taken for one is what the installation counted them as anyway
+                    if ($found !== CustomerLegalStatus::NaturalPerson) {
+                        $guesses[] = $this->row($customer, (string)$reason, $found->label());
+                    }
+
+                    continue;
+                }
+
                 $outcomes[$was === null ? 'filled' : 'corrected']++;
                 $changes[] = $this->row($customer, (string)$was?->label(), $found->label());
             }
@@ -185,6 +246,7 @@ class FillCustomerLegalStatusCommand extends Command
             $io->helper('Table')->output([
                 [__('Outcome'), __('Customers')],
                 [__('Filled in'), (string)$outcomes['filled']],
+                [__('Guessed'), (string)$outcomes['guessed']],
                 [__('Corrected'), (string)$outcomes['corrected']],
                 [__('Confirmed by the register'), (string)$outcomes['confirmed']],
                 [__('Kept, the register could not say'), (string)$outcomes['kept']],
@@ -196,6 +258,14 @@ class FillCustomerLegalStatusCommand extends Command
                 $io->helper('Table')->output(array_merge(
                     [[__('Customer Number'), __('Customer'), __('Identity Number'), __('Was'), __('Now')]],
                     $changes,
+                ));
+            }
+
+            if ($guesses !== []) {
+                $io->out(__('Guessed to be in business, worth checking:'));
+                $io->helper('Table')->output(array_merge(
+                    [[__('Customer Number'), __('Customer'), __('Identity Number'), __('Reason'), __('Guessed')]],
+                    $guesses,
                 ));
             }
 

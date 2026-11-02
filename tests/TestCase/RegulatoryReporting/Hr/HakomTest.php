@@ -9,7 +9,7 @@ use App\Model\Entity\ConnectionProfile;
 use App\Model\Entity\Customer;
 use App\Model\Entity\Service;
 use App\Model\Enum\AccessTechnology;
-use App\Model\Enum\BusinessCustomerDetection;
+use App\Model\Enum\CustomerLegalStatus;
 use App\RegulatoryReporting\ConnectionPoint;
 use App\RegulatoryReporting\Hr\HakomAddressSpeedBand;
 use App\RegulatoryReporting\Hr\HakomConnectionPointsCsv;
@@ -18,7 +18,6 @@ use App\RegulatoryReporting\Hr\HakomSpeedBand;
 use App\RegulatoryReporting\Hr\HakomTechnology;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Settings\Utility\Settings;
 
 /**
  * Where a connection lands in what HAKOM is sent.
@@ -100,8 +99,6 @@ class HakomTest extends TestCase
      */
     public function testTheListingCountsHouseholdsAndBusinessesApart(): void
     {
-        Settings::set(BusinessCustomerDetection::SETTINGS_PATH, BusinessCustomerDetection::Company->value);
-
         $address = new Address(
             source: 'hr',
             registryReference: 'HR.DGU.RPJ:KB.0000606874',
@@ -134,14 +131,21 @@ class HakomTest extends TestCase
     }
 
     /**
-     * @param string|null $company The customer's company, null for a household.
+     * @param string|null $company The customer's company, null for a household, which is what
+     *      decides their legal status here.
      * @param int $speedDown The contracted download speed.
      * @return \App\Model\Entity\Billing
      */
     private function connection(?string $company, int $speedDown): Billing
     {
         return new Billing([
-            'customer' => new Customer(['company' => $company, 'identity_number' => '12345678903']),
+            'customer' => new Customer([
+                'company' => $company,
+                'identity_number' => '12345678903',
+                'legal_status' => $company === null
+                    ? CustomerLegalStatus::NaturalPerson
+                    : CustomerLegalStatus::LegalEntity,
+            ]),
             'service' => new Service([
                 'connection_profile' => new ConnectionProfile([
                     'speed_down' => $speedDown,

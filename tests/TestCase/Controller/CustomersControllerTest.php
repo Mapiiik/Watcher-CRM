@@ -657,6 +657,7 @@ class CustomersControllerTest extends TestCase
         $this->post('/customers/add', [
             'last_name' => 'Smith',
             'first_name' => 'John',
+            'legal_status' => CustomerLegalStatus::NaturalPerson->value,
             'dealer' => CustomerDealer::Never->value,
             'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
             'accounting_profile_id' => self::ACCOUNTING_PROFILE_ID,
@@ -708,6 +709,7 @@ class CustomersControllerTest extends TestCase
 
         $this->post('/customers/add', [
             'last_name' => 'Baker',
+            'legal_status' => CustomerLegalStatus::NaturalPerson->value,
             'dealer' => CustomerDealer::Never->value,
             'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
             'accounting_profile_id' => self::ACCOUNTING_PROFILE_ID,
@@ -1101,6 +1103,51 @@ class CustomersControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertResponseNotContains('in the register as');
+    }
+
+    /**
+     * A customer is not stored without a legal status, as the clauses of their papers follow it.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddRefusesACustomerWithoutALegalStatus(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/add', [
+            'last_name' => 'Nobody',
+            'legal_status' => '',
+            'dealer' => CustomerDealer::Never->value,
+            'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
+            'accounting_profile_id' => self::ACCOUNTING_PROFILE_ID,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('Choose the legal status, the clauses of the contract papers follow it.');
+        $this->assertSame(0, $this->getTableLocator()->get('Customers')->find()->where(['last_name' => 'Nobody'])->count());
+    }
+
+    /**
+     * A customer nobody has said the legal status of is marked on their detail, so that it is put
+     * right before any papers are drawn for them.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::view()
+     */
+    public function testViewMarksAMissingLegalStatus(): void
+    {
+        $this->givenCustomerNumbers('27496139', 'CZ27496139', null);
+
+        $this->login();
+        $this->get('/customers/view/' . self::CUSTOMER_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(
+            '<span class="error-text">Choose the legal status, the clauses of the contract papers follow it.</span>',
+        );
     }
 
     /**

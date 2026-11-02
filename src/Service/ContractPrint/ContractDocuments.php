@@ -12,6 +12,7 @@ use App\Proposals\FiledPapersTrait;
 use Cake\I18n\Date;
 use Files\Model\Entity\FileLink;
 use Files\Service\FileStorage;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -127,6 +128,16 @@ final class ContractDocuments
      */
     private function draw(ContractPrintData $data, bool $signed): PrintedDocument
     {
+        // The clauses on what a commitment costs follow who the customer is in law, so a paper is
+        // not drawn without it. One already on file is handed over as it was, which is why this is
+        // asked only here.
+        if ($data->contract->customer->legal_status === null) {
+            throw new RuntimeException(__(
+                'The customer has no legal status, and the clauses of the papers follow it. Choose it'
+                . ' on the customer and recreate the contract proposal.',
+            ));
+        }
+
         (new ContractPrintDataEnricher())->enrich($data);
 
         $drawn = $this->output->document($data);

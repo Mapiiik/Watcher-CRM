@@ -962,10 +962,8 @@ class AppPDF extends Canvas
      *
      * Works for both \App\Model\Entity\Customer and \App\Model\Entity\Contract entities.
      *
-     * The customer's legal status says it. Where nobody has filled that in, it is worked out:
-     * - If identity_number is null → non-business
-     * - If company is null → business
-     * - Otherwise → legal entity
+     * The customer's legal status says it, and a customer nobody has said anything about is a
+     * natural person not in business, as the rest of their papers take them for.
      *
      * @param \App\Model\Entity\Customer|\App\Model\Entity\Contract $entity Customer or Contract entity
      * @param int                                                  $width  Cell width in mm (default 60)
@@ -974,30 +972,14 @@ class AppPDF extends Canvas
     protected function printUserType(Customer|Contract $entity, int $width = 60, int $height = 4): void
     {
         $legalStatus = $entity instanceof Contract ? $entity->customer->legal_status : $entity->legal_status;
-        if ($legalStatus !== null) {
-            $key = match ($legalStatus) {
-                CustomerLegalStatus::NaturalPerson => 'non_business',
-                CustomerLegalStatus::SoleTrader => 'business',
-                CustomerLegalStatus::LegalEntity => 'legal',
-            };
-            $this->Cell($width, $height, Settings::getString('core.documents.common.user_types.' . $key));
 
-            return;
-        }
+        $key = match ($legalStatus) {
+            CustomerLegalStatus::NaturalPerson, null => 'non_business',
+            CustomerLegalStatus::SoleTrader => 'business',
+            CustomerLegalStatus::LegalEntity => 'legal',
+        };
 
-        // Normalize: get identity_number and company regardless of entity type
-        $identity_number = $entity instanceof Contract ? $entity->customer->identity_number : $entity->identity_number;
-        $company = $entity->billing_address->company ?? null;
-
-        if (is_null($identity_number)) {
-            $text = Settings::getString('core.documents.common.user_types.non_business');
-        } elseif (is_null($company)) {
-            $text = Settings::getString('core.documents.common.user_types.business');
-        } else {
-            $text = Settings::getString('core.documents.common.user_types.legal');
-        }
-
-        $this->Cell($width, $height, $text);
+        $this->Cell($width, $height, Settings::getString('core.documents.common.user_types.' . $key));
     }
 
     /**

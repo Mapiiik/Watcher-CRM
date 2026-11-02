@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Model\Entity;
 use App\BusinessRegister\VatNumberCheck;
 use App\BusinessRegister\VatNumberStatus;
 use App\Model\Entity\Customer;
+use App\Model\Enum\CustomerLegalStatus;
 use App\Test\TestCase\BusinessRegister\Source\StubSource;
 use App\Test\Traits\ConfigureTestTrait;
 use Cake\Cache\Cache;
@@ -55,6 +56,26 @@ class CustomerTest extends TestCase
         StubSource::reset();
 
         parent::tearDown();
+    }
+
+    /**
+     * A sole trader and a legal entity do business, as ČTÚ counts them, and a natural person not
+     * in business does not - whatever numbers or company are written down for them. A customer
+     * nobody has said anything about is taken for one who does not.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::isBusiness()
+     */
+    public function testTheLegalStatusSaysWhoDoesBusiness(): void
+    {
+        $this->assertTrue((new Customer(['legal_status' => CustomerLegalStatus::SoleTrader]))->isBusiness());
+        $this->assertTrue((new Customer(['legal_status' => CustomerLegalStatus::LegalEntity]))->isBusiness());
+        $this->assertFalse((new Customer([
+            'legal_status' => CustomerLegalStatus::NaturalPerson,
+            'identity_number' => '27496139',
+            'company' => 'NETAIR, s.r.o.',
+        ]))->isBusiness());
+        $this->assertFalse((new Customer(['identity_number' => '27496139', 'company' => 'NETAIR, s.r.o.']))->isBusiness());
     }
 
     /**

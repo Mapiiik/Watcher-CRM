@@ -128,6 +128,66 @@ class ContractDocumentsTest extends TestCase
     }
 
     /**
+     * A paper is not drawn for a customer nobody has said the legal status of, as its clauses
+     * follow it - the operator is sent back and told what to do.
+     *
+     * @link \App\Service\ContractPrint\ContractDocuments::for()
+     * @return void
+     */
+    public function testNoPaperIsDrawnWithoutTheLegalStatus(): void
+    {
+        $this->snapshotWithoutALegalStatus();
+
+        $this->get(sprintf(
+            '/customers/%s/contracts/%s/documents/generate.pdf'
+            . '?agenda=ContractProposals&proposal_id=%s&document_type=%s',
+            self::CUSTOMER_ID,
+            self::CONTRACT_ID,
+            self::PROPOSAL_ID,
+            self::DOCUMENT,
+        ));
+
+        $this->assertRedirect();
+        $this->assertFlashMessage(
+            'The customer has no legal status, and the clauses of the papers follow it. Choose it on the'
+            . ' customer and recreate the contract proposal.',
+        );
+        $this->assertSame(0, $this->stored());
+    }
+
+    /**
+     * A paper already on file is handed over as it was, the legal status or not - what was drawn
+     * then is what was signed.
+     *
+     * @link \App\Service\ContractPrint\ContractDocuments::for()
+     * @return void
+     */
+    public function testAPaperOnFileIsHandedOverWithoutTheLegalStatus(): void
+    {
+        $first = $this->print();
+
+        $this->snapshotWithoutALegalStatus();
+
+        $this->assertSame($first, $this->print());
+    }
+
+    /**
+     * Takes the legal status out of the snapshot the proposal's papers are drawn from, as a proposal
+     * drawn up before there was one has it.
+     *
+     * @return void
+     */
+    private function snapshotWithoutALegalStatus(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $snapshot = $proposal->get('snapshot');
+        unset($snapshot['customer']['legal_status']);
+        $proposal->set('snapshot', $snapshot);
+        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+    }
+
+    /**
      * The promise the whole thing rests on: what somebody signed is what comes back, whatever
      * the records have done since.
      *

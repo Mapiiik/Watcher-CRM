@@ -9,10 +9,9 @@ use App\BusinessRegister\PortalLinks;
 use App\BusinessRegister\Registry;
 use App\BusinessRegister\VatNumberCheck;
 use App\Model\Enum\AddressType;
-use App\Model\Enum\BusinessCustomerDetection;
+use App\Model\Enum\CustomerLegalStatus;
 use Cake\Core\Configure;
 use RuntimeException;
-use Settings\Utility\Settings;
 
 /**
  * Customer Entity
@@ -179,22 +178,17 @@ class Customer extends AppEntity
     /**
      * Whether the customer does business, which the regulators count apart from households.
      *
-     * What tells depends on the country, see {@see \App\Model\Enum\BusinessCustomerDetection}.
+     * A sole trader does business as much as a company does - ČTÚ counts them together, apart
+     * from natural persons who do not. A customer nobody has said anything about is taken for one
+     * who does not, as their papers do.
      *
-     * @param \App\Model\Enum\BusinessCustomerDetection|null $detection How, the configured way
-     *      when not given.
      * @return bool
      */
-    public function isBusiness(?BusinessCustomerDetection $detection = null): bool
+    public function isBusiness(): bool
     {
-        $detection ??= BusinessCustomerDetection::fromSetting(Settings::getString(
-            BusinessCustomerDetection::SETTINGS_PATH,
-            BusinessCustomerDetection::IdentityNumber->value,
-        ));
-
-        return match ($detection) {
-            BusinessCustomerDetection::IdentityNumber => $this->identity_number !== null,
-            BusinessCustomerDetection::Company => trim((string)$this->company) !== '',
+        return match ($this->legal_status) {
+            CustomerLegalStatus::SoleTrader, CustomerLegalStatus::LegalEntity => true,
+            CustomerLegalStatus::NaturalPerson, null => false,
         };
     }
 

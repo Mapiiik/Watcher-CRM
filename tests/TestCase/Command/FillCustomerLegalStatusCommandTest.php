@@ -303,6 +303,116 @@ class FillCustomerLegalStatusCommandTest extends TestCase
     }
 
     /**
+     * What the register cannot say is guessed by the identification number, and a guess that takes
+     * the customer for a business is listed for checking.
+     *
+     * @return void
+     * @link \App\Command\FillCustomerLegalStatusCommand::execute()
+     */
+    public function testWhatTheRegisterCannotSayIsGuessed(): void
+    {
+        $this->givenCustomer(self::COMPANY_ID, legalStatus: null);
+
+        $this->exec('customers fill_legal_status --guess identity-number');
+
+        $this->assertExitSuccess();
+        $this->assertSame(CustomerLegalStatus::LegalEntity, $this->legalStatusOf(self::COMPANY_ID));
+        $this->assertOutputContains('Guessed to be in business, worth checking:');
+        $this->assertOutputContains('Not in the business register.');
+    }
+
+    /**
+     * Where the register does say, it is the register that counts, not the guess.
+     *
+     * @return void
+     * @link \App\Command\FillCustomerLegalStatusCommand::execute()
+     */
+    public function testARegisterAnswerBeatsTheGuess(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.', 'legal_status' => 'sole-trader'],
+        ];
+        $this->givenCustomer(self::COMPANY_ID, legalStatus: null);
+
+        $this->exec('customers fill_legal_status --guess identity-number');
+
+        $this->assertExitSuccess();
+        $this->assertSame(CustomerLegalStatus::SoleTrader, $this->legalStatusOf(self::COMPANY_ID));
+        $this->assertOutputNotContains('Guessed to be in business');
+    }
+
+    /**
+     * Without the registers, the company name decides and no register is asked - the stub one would
+     * have said the number is a sole trader's.
+     *
+     * @return void
+     * @link \App\Command\FillCustomerLegalStatusCommand::execute()
+     */
+    public function testWithoutTheRegistersTheCompanyDecides(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.', 'legal_status' => 'sole-trader'],
+        ];
+        $this->givenCustomer(self::COMPANY_ID, legalStatus: null);
+
+        $this->exec('customers fill_legal_status --guess company --no-registers');
+
+        $this->assertExitSuccess();
+        $this->assertSame(CustomerLegalStatus::LegalEntity, $this->legalStatusOf(self::COMPANY_ID));
+        // the other one has a company and no number, which the company name alone decides too
+        $this->assertSame(CustomerLegalStatus::LegalEntity, $this->legalStatusOf(self::OTHER_ID));
+    }
+
+    /**
+     * A guess fills in only what nobody has, so a sole trader somebody corrected by hand stays one,
+     * a recheck included.
+     *
+     * @return void
+     * @link \App\Command\FillCustomerLegalStatusCommand::execute()
+     */
+    public function testAGuessNeverOverwrites(): void
+    {
+        $this->givenCustomer(self::COMPANY_ID, legalStatus: CustomerLegalStatus::SoleTrader);
+
+        $this->exec('customers fill_legal_status --guess identity-number --recheck');
+
+        $this->assertExitSuccess();
+        $this->assertSame(CustomerLegalStatus::SoleTrader, $this->legalStatusOf(self::COMPANY_ID));
+    }
+
+    /**
+     * A register that cannot be reached may yet answer, so nothing is guessed over it.
+     *
+     * @return void
+     * @link \App\Command\FillCustomerLegalStatusCommand::execute()
+     */
+    public function testNothingIsGuessedOverARegisterThatCannotBeReached(): void
+    {
+        StubSource::$unreachableOnReference = true;
+        $this->givenCustomer(self::COMPANY_ID, legalStatus: null);
+
+        $this->exec('customers fill_legal_status --guess identity-number --wait 0');
+
+        $this->assertExitSuccess();
+        $this->assertNull($this->legalStatusOf(self::COMPANY_ID));
+    }
+
+    /**
+     * Without the registers there is nothing to go on but a guess, and nothing to recheck by.
+     *
+     * @return void
+     * @link \App\Command\FillCustomerLegalStatusCommand::execute()
+     */
+    public function testWithoutTheRegistersAGuessIsNeeded(): void
+    {
+        $this->exec('customers fill_legal_status --no-registers');
+        $this->assertExitError();
+
+        $this->exec('customers fill_legal_status --guess company --no-registers --recheck');
+        $this->assertExitError();
+    }
+
+    /**
      * A dry run says what it would change and writes none of it.
      *
      * @return void

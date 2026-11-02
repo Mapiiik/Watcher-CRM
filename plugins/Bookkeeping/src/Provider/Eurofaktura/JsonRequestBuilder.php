@@ -6,6 +6,7 @@ namespace Bookkeeping\Provider\Eurofaktura;
 use App\Model\Entity\AccountingProfile;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Customer;
+use App\Model\Enum\CustomerLegalStatus;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
@@ -250,10 +251,20 @@ class JsonRequestBuilder
             ],
         ];
 
-        // Legal entity vs natural person
+        // a sole trader trades under a name of their own, so the name goes wherever there is one
         if (!empty($customer->company)) {
             $partner['companyName'] = $customer->company;
-            $partner['companyType'] = 'Organization';
+        }
+
+        // The legal type cannot be given for a consumer at all. A sole trader is the entrepreneur
+        // (obrt), and a legal entity the organisation in general, as its legal form is not kept.
+        $companyType = match ($customer->legal_status) {
+            CustomerLegalStatus::SoleTrader => 'Contractor',
+            CustomerLegalStatus::LegalEntity => 'Organization',
+            CustomerLegalStatus::NaturalPerson, null => null,
+        };
+        if ($companyType !== null) {
+            $partner['companyType'] = $companyType;
         }
 
         if (!empty($customer->first_name)) {

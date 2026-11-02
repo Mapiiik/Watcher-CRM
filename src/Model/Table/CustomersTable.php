@@ -268,9 +268,14 @@ class CustomersTable extends AppTable
             ->maxLength('vat_number', 15)
             ->allowEmptyString('vat_number');
 
+        // the clauses of the contract papers follow it, so a customer is not saved without it
         $validator
             ->enum('legal_status', CustomerLegalStatus::class)
-            ->allowEmptyString('legal_status');
+            ->requirePresence('legal_status', 'create')
+            ->notEmptyString(
+                'legal_status',
+                __('Choose the legal status, the clauses of the contract papers follow it.'),
+            );
 
         $validator
             ->scalar('www')

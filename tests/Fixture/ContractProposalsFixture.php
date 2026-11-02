@@ -32,6 +32,7 @@ class ContractProposalsFixture extends TestFixture
             'customer' => [
                 'id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
                 'nid' => 1,
+                'legal_status' => 'legal-entity',
                 'accounting_profile' => ['vat_rate' => 0.21, 'reverse_charge' => false],
                 'addresses' => [['id' => 'ab4bab00-9fe8-48b1-beef-3832a4f933a8']],
                 'emails' => [],

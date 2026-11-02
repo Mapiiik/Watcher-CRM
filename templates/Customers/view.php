@@ -246,7 +246,11 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
                         </tr>
                         <tr>
                             <th><?= __('Legal Status') ?></th>
-                            <td><?= h($customer->legal_status?->label()) ?></td>
+                            <td><?= $customer->legal_status !== null
+                                ? h($customer->legal_status->label())
+                                : '<span class="error-text">'
+                                    . h(__('Choose the legal status, the clauses of the contract papers follow it.'))
+                                    . '</span>' ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Identity Number') ?></th>
