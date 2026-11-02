@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-29 23:33+0100\n"
+"POT-Creation-Date: 2026-11-02 12:28+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -5022,7 +5022,7 @@ msgstr ""
 #: ./templates/Billings/edit.php:97
 #: ./templates/Billings/service_change.php:183
 #: ./templates/ContractProposals/billing_line.php:128
-#: ./templates/CustomerProposalsly_changes.php:114
+#: ./templates/CustomerProposalsly_changes.php:115
 msgid "Allow a connection price below the minimum set on the contract"
 msgstr ""
 
@@ -6813,42 +6813,42 @@ msgstr ""
 msgid "Either all of the changes are applied, or none of them. A partly applied proposal would leave no trace of which part went through."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:98
+#: ./templates/CustomerProposalsly_changes.php:99
 msgid "Borrowed Equipments Handed Over On - {0}"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:99
+#: ./templates/CustomerProposalsly_changes.php:100
 msgid "Borrowed equipments the proposal adds are borrowed from this day, and the ones it ends are borrowed until it. Change it where the installation took place on another day."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:108
+#: ./templates/CustomerProposalsly_changes.php:109
 msgid "Allow changes in an already invoiced period"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:120
+#: ./templates/CustomerProposalsly_changes.php:121
 msgid "Leave out the lines whose billing is no longer on the contract"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:121
+#: ./templates/CustomerProposalsly_changes.php:122
 msgid "The rest of the proposal is applied and what was left out is written down on it, to be settled by hand. Without this the proposal cannot be applied at all, because a line that has nothing to act on cannot be written and signed papers cannot be edited."
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:129
+#: ./templates/CustomerProposalsly_changes.php:130
 msgid "Mark as Settled"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:129
+#: ./templates/CustomerProposalsly_changes.php:130
 #: ./templates/CustomerProposals/view.php:57
 #: ./templates/element/ContractChecks/proposal_table.php:104
 #: ./templates/element/Documents/proposals.php:148
 msgid "Apply Changes"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:132
+#: ./templates/CustomerProposalsly_changes.php:133
 msgid "Mark this proposal as settled?"
 msgstr ""
 
-#: ./templates/CustomerProposalsly_changes.php:133
+#: ./templates/CustomerProposalsly_changes.php:134
 msgid "Do you really want to apply the changes of this proposal?"
 msgstr ""
 
