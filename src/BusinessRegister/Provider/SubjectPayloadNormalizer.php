@@ -6,6 +6,7 @@ namespace App\BusinessRegister\Provider;
 use App\BusinessRegister\Dto\Officer;
 use App\BusinessRegister\Dto\RegisteredAddress;
 use App\BusinessRegister\Dto\Subject;
+use App\Model\Enum\CustomerLegalStatus;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 
@@ -68,6 +69,7 @@ final class SubjectPayloadNormalizer
             officers: self::officers($entry['officers'] ?? null),
             identityNumber: self::stringOrNull($entry['identity_number'] ?? null),
             vatNumber: self::stringOrNull($entry['vat_number'] ?? null),
+            legalStatus: CustomerLegalStatus::tryFrom((string)self::stringOrNull($entry['legal_status'] ?? null)),
             address: self::stringOrNull($entry['address'] ?? null),
             addresses: self::addresses($entry['addresses'] ?? null),
             raw: $entry,

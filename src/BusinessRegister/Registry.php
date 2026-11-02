@@ -191,6 +191,7 @@ class Registry
                     IdentityNumberStatus::Found,
                     $company,
                     $subject->addresses,
+                    $subject->legalStatus,
                 );
             }
         }

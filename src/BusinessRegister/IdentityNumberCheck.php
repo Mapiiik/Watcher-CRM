@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\BusinessRegister;
 
+use App\Model\Enum\CustomerLegalStatus;
+
 /**
  * What a register answered about an identification number.
  *
@@ -18,11 +20,14 @@ final readonly class IdentityNumberCheck
      *      registered - its seat and wherever else it does business - each naming a place in the
      *      national address registry. Empty where the register hands over no such reference, a
      *      seat abroad included.
+     * @param \App\Model\Enum\CustomerLegalStatus|null $legalStatus Who the holder is in law, null
+     *      where the register does not say.
      */
     public function __construct(
         public IdentityNumberStatus $status,
         public ?string $company = null,
         public array $addresses = [],
+        public ?CustomerLegalStatus $legalStatus = null,
     ) {
     }
 

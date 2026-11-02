@@ -5,6 +5,7 @@ namespace App\Test\Fixture;
 
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
+use App\Model\Enum\CustomerLegalStatus;
 use Cake\TestSuite\Fixture\TestFixture;
 use Override;
 
@@ -37,6 +38,7 @@ class CustomersFixture extends TestFixture
                 'created' => 1698515732,
                 'identity_number' => '27496139',
                 'vat_number' => 'CZ27496139',
+                'legal_status' => CustomerLegalStatus::LegalEntity,
                 'www' => 'Lorem ipsum dolor sit amet',
                 'internal_note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email,
@@ -70,6 +72,8 @@ class CustomersFixture extends TestFixture
                 // record is the one that says what a filled-in identification number looks like
                 'identity_number' => null,
                 'vat_number' => null,
+                // nobody has said who they are, which is where every customer starts
+                'legal_status' => null,
                 'www' => 'Lorem ipsum dolor sit amet',
                 'internal_note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email,

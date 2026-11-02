@@ -32,6 +32,7 @@ use Settings\Utility\Settings;
  * @property string|null $bank_code
  * @property string|null $identity_number
  * @property string|null $vat_number
+ * @property \App\Model\Enum\CustomerLegalStatus|null $legal_status
  * @property string|null $www
  * @property string|null $internal_note
  * @property \App\Model\Enum\CustomerInvoiceDeliveryType $invoice_delivery_type
@@ -107,6 +108,7 @@ class Customer extends AppEntity
         'bank_code' => true,
         'identity_number' => true,
         'vat_number' => true,
+        'legal_status' => true,
         'www' => true,
         'internal_note' => true,
         'invoice_delivery_type' => true,

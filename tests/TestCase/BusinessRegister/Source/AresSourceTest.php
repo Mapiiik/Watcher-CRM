@@ -61,6 +61,7 @@ class AresSourceTest extends TestCase
                 'officers' => [],
                 'identity_number' => '27074358',
                 'vat_number' => 'CZ27074358',
+                'legal_status' => 'legal-entity',
                 'address' => 'Budějovická 778/3a, Michle, 14000 Praha 4',
                 'addresses' => [[
                     'key' => 'cz|41405609',
@@ -117,6 +118,39 @@ class AresSourceTest extends TestCase
         $this->assertNull($mapped['reference']);
         $this->assertNull($mapped['identity_number']);
         $this->assertSame('Asseco Central Europe, a.s.', $mapped['company']);
+    }
+
+    /**
+     * A legal form from 100 to 108 is a natural person in business, who trades under their own
+     * name and so has no company.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\AresSource::mapSubject()
+     */
+    public function testALegalFormOfANaturalPersonIsASoleTrader(): void
+    {
+        $subject = $this->subject();
+        $subject['pravniForma'] = '101';
+
+        $mapped = AresSource::mapSubject($subject);
+
+        $this->assertSame('sole-trader', $mapped['legal_status']);
+        $this->assertNull($mapped['company']);
+    }
+
+    /**
+     * Without a legal form ARES has not said who the subject is, which is not the same as it
+     * being a company.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\AresSource::mapSubject()
+     */
+    public function testWithoutALegalFormTheLegalStatusIsUnknown(): void
+    {
+        $subject = $this->subject();
+        unset($subject['pravniForma']);
+
+        $this->assertNull(AresSource::mapSubject($subject)['legal_status']);
     }
 
     /**

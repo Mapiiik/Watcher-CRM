@@ -228,6 +228,8 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
             'officers' => [],
             'identity_number' => $identityNumber,
             'vat_number' => $memberState . $number,
+            // a VAT registration says nothing of who holds it in law
+            'legal_status' => null,
             'address' => $address,
             // VIES gives the address as one line and no reference to anything
             'addresses' => [],

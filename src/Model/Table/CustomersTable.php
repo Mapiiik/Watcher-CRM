@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use App\Model\Entity\Billing;
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
+use App\Model\Enum\CustomerLegalStatus;
 use Cake\Collection\CollectionInterface;
 use Cake\Database\Type\EnumType;
 use Cake\I18n\Date;
@@ -72,6 +73,11 @@ class CustomersTable extends AppTable
         $this->getSchema()->setColumnType(
             'invoice_delivery_type',
             EnumType::from(CustomerInvoiceDeliveryType::class),
+        );
+
+        $this->getSchema()->setColumnType(
+            'legal_status',
+            EnumType::from(CustomerLegalStatus::class),
         );
 
         $this->addBehavior('Timestamp');
@@ -261,6 +267,10 @@ class CustomersTable extends AppTable
             ->scalar('vat_number')
             ->maxLength('vat_number', 15)
             ->allowEmptyString('vat_number');
+
+        $validator
+            ->enum('legal_status', CustomerLegalStatus::class)
+            ->allowEmptyString('legal_status');
 
         $validator
             ->scalar('www')

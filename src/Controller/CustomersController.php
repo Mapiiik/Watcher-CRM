@@ -10,6 +10,7 @@ use App\Contracts\Check\ContractCheckRegistry;
 use App\Customers\Check\CustomerCheckRegistry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
 use App\Model\Entity\Customer;
+use App\Model\Enum\CustomerLegalStatus;
 use App\View\PdfView;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Core\Configure;
@@ -469,6 +470,9 @@ class CustomersController extends AppController
                 }
                 $this->Flash->error(__('The customer could not be saved. Please, try again.'));
             }
+        } else {
+            // most new customers are households, and a company is picked from the register anyway
+            $customer->legal_status = CustomerLegalStatus::NaturalPerson;
         }
         $accountingProfiles = $this->Customers->AccountingProfiles->find('list', order: [
             'name',
@@ -672,7 +676,7 @@ class CustomersController extends AppController
 
         // every field is handed over, nulls included: a sole trader picked after a company has to
         // clear the company out, or the CRM would go on reading them as a legal entity
-        return [
+        $data = [
             'company' => $subject->company,
             'title' => $subject->title,
             'first_name' => $subject->firstName,
@@ -682,6 +686,14 @@ class CustomersController extends AppController
             'identity_number' => $subject->identityNumber,
             'vat_number' => $subject->vatNumber,
         ];
+
+        // except who the subject is in law, which not every register says, and a register saying
+        // nothing is no reason to undo what the operator chose
+        if ($subject->legalStatus !== null) {
+            $data['legal_status'] = $subject->legalStatus->value;
+        }
+
+        return $data;
     }
 
     /**

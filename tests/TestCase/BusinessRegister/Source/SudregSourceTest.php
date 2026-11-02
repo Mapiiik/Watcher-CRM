@@ -49,6 +49,7 @@ class SudregSourceTest extends TestCase
                 'officers' => [],
                 'identity_number' => '80625159724',
                 'vat_number' => 'HR80625159724',
+                'legal_status' => null,
                 'address' => 'Ilica 1, Zagreb',
                 // the register gives the seat as text, so there is nothing to fill a form in from
                 'addresses' => [],

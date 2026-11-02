@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\BusinessRegister\Dto;
 
+use App\Model\Enum\CustomerLegalStatus;
+
 /**
  * One entry as a business register holds it.
  *
@@ -31,6 +33,8 @@ final readonly class Subject
      * @param list<\App\BusinessRegister\Dto\Officer> $officers Who sits in the statutory body.
      * @param string|null $identityNumber The number the subject is registered under.
      * @param string|null $vatNumber The VAT number, where the register holds one.
+     * @param \App\Model\Enum\CustomerLegalStatus|null $legalStatus Who the subject is in law, null
+     *      where the register does not say.
      * @param string|null $address The seat on one line, as a label and nothing more.
      * @param list<\App\BusinessRegister\Dto\RegisteredAddress> $addresses Where it is registered.
      * @param array<string, mixed> $raw The entry in the shape the registers share.
@@ -47,6 +51,7 @@ final readonly class Subject
         public array $officers = [],
         public ?string $identityNumber = null,
         public ?string $vatNumber = null,
+        public ?CustomerLegalStatus $legalStatus = null,
         public ?string $address = null,
         public array $addresses = [],
         public array $raw = [],
@@ -83,6 +88,7 @@ final readonly class Subject
             officers: $this->officers,
             identityNumber: $this->identityNumber,
             vatNumber: $this->vatNumber,
+            legalStatus: $this->legalStatus,
             address: $this->address,
             addresses: $this->addresses,
             raw: $this->raw,

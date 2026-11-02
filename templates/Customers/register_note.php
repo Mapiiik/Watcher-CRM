@@ -34,6 +34,18 @@ if ($identityNumberCheck !== null) {
         wrong: $identityNumberCheck->status === IdentityNumberStatus::NotFound
             || !$customer->isKnownAs($identityNumberCheck->company),
     );
+
+    // the clauses a contract prints follow the legal status, so one the register disagrees with
+    // is said out loud - and so is one nobody filled in, where the register could have told
+    if (
+        $identityNumberCheck->legalStatus !== null
+        && $identityNumberCheck->legalStatus !== $customer->legal_status
+    ) {
+        echo $remark(
+            __('in the register as {0}', $identityNumberCheck->legalStatus->label()),
+            wrong: true,
+        );
+    }
 }
 
 if ($vatNumberCheck !== null) {

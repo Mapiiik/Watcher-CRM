@@ -7,6 +7,7 @@ use App\BusinessRegister\IdentityNumberStatus;
 use App\BusinessRegister\Registry;
 use App\BusinessRegister\VatNumberCheck;
 use App\BusinessRegister\VatNumberStatus;
+use App\Model\Enum\CustomerLegalStatus;
 use App\Test\TestCase\BusinessRegister\Source\BrokenSource;
 use App\Test\TestCase\BusinessRegister\Source\StubSource;
 use App\Test\Traits\ConfigureTestTrait;
@@ -198,6 +199,43 @@ class RegistryTest extends TestCase
         $this->assertNotNull($check);
         $this->assertSame(IdentityNumberStatus::Found, $check->status);
         $this->assertSame('NETAIR, s.r.o.', $check->company);
+    }
+
+    /**
+     * Who the holder is in law comes along with the answer, which is what the customer's legal
+     * status is measured against.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberCheck()
+     */
+    public function testTheLegalStatusComesAlongWithTheAnswer(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.', 'legal_status' => 'legal-entity'],
+        ];
+
+        $this->assertSame(
+            CustomerLegalStatus::LegalEntity,
+            Registry::identityNumberCheck('27496139')?->legalStatus,
+        );
+    }
+
+    /**
+     * A register that says nothing of the legal status, or something no status is called, has not
+     * said who the holder is.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberCheck()
+     */
+    public function testALegalStatusTheRegisterDoesNotGiveIsUnknown(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.'],
+            ['reference' => '27074358', 'name' => 'Asseco Central Europe, a.s.', 'legal_status' => 'company'],
+        ];
+
+        $this->assertNull(Registry::identityNumberCheck('27496139')?->legalStatus);
+        $this->assertNull(Registry::identityNumberCheck('27074358')?->legalStatus);
     }
 
     /**

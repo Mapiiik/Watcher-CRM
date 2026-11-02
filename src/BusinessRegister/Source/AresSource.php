@@ -8,6 +8,7 @@ use App\BusinessRegister\IdentityNumber;
 use App\BusinessRegister\VatNumberCheck;
 use App\BusinessRegister\VatNumberStatus;
 use App\Http\Answer;
+use App\Model\Enum\CustomerLegalStatus;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
 use Cake\Http\Client\Response;
@@ -263,7 +264,8 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         //
         // Who that person is comes from the trades register, which holds the name in parts - the
         // one line here would only be worth guessing at, and byReference() asks properly.
-        $isPerson = self::isNaturalPerson($subject['pravniForma'] ?? null);
+        $legalStatus = self::legalStatus($subject['pravniForma'] ?? null);
+        $isPerson = $legalStatus === CustomerLegalStatus::SoleTrader;
 
         return [
             'reference' => $ico !== '' ? $ico : null,
@@ -277,6 +279,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
             'officers' => [],
             'identity_number' => $ico !== '' ? $ico : null,
             'vat_number' => $vatNumber !== '' ? $vatNumber : null,
+            'legal_status' => $legalStatus?->value,
             'address' => $address !== '' ? $address : null,
             'addresses' => $seatKey === null ? [] : [[
                 'key' => $seatKey,
@@ -518,22 +521,25 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
     }
 
     /**
-     * Whether the legal form is one a person carries rather than a company.
+     * Who the legal form says the subject is, null when ARES gave none.
      *
      * The codes run 100 to 108 for a natural person - a sole trader under the trades act, a
      * farmer, a person trading under some other act - and from 111 up for the legal entities.
+     * Anyone ARES holds is in business, so a natural person here is always a sole trader.
      *
      * @param mixed $legalForm The `pravniForma` as ARES returned it.
-     * @return bool
+     * @return \App\Model\Enum\CustomerLegalStatus|null
      */
-    private static function isNaturalPerson(mixed $legalForm): bool
+    private static function legalStatus(mixed $legalForm): ?CustomerLegalStatus
     {
         $legalForm = trim((string)$legalForm);
         if (!ctype_digit($legalForm)) {
-            return false;
+            return null;
         }
 
-        return (int)$legalForm >= 100 && (int)$legalForm <= 108;
+        return (int)$legalForm >= 100 && (int)$legalForm <= 108
+            ? CustomerLegalStatus::SoleTrader
+            : CustomerLegalStatus::LegalEntity;
     }
 
     /**

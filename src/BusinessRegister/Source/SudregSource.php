@@ -231,6 +231,8 @@ class SudregSource extends BaseSource
             'officers' => [],
             'identity_number' => $oib !== '' ? $oib : null,
             'vat_number' => $oib !== '' ? 'HR' . $oib : null,
+            // the court register holds sole traders too and does not say which entry is one
+            'legal_status' => null,
             'address' => self::readAddress($subject),
             // the register gives the seat as text and no reference the address registry knows
             'addresses' => [],

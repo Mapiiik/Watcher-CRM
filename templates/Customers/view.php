@@ -245,6 +245,10 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['customer', $customer-
                             <td><?= h($customer->identity_card_number) ?></td>
                         </tr>
                         <tr>
+                            <th><?= __('Legal Status') ?></th>
+                            <td><?= h($customer->legal_status?->label()) ?></td>
+                        </tr>
+                        <tr>
                             <th><?= __('Identity Number') ?></th>
                             <td><?php if ($customer->identity_number !== null) : ?>
                                 <?= h($customer->identity_number) ?>

@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\CustomersController;
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
+use App\Model\Enum\CustomerLegalStatus;
 use App\Test\TestCase\BusinessRegister\Source\StubSource;
 use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
@@ -984,16 +985,21 @@ class CustomersControllerTest extends TestCase
      *
      * @param string $identityNumber The identification number to give them.
      * @param string $vatNumber The VAT number to give them.
+     * @param \App\Model\Enum\CustomerLegalStatus|null $legalStatus Who they are in law.
      * @return void
      */
-    private function givenCustomerNumbers(string $identityNumber, string $vatNumber): void
-    {
+    private function givenCustomerNumbers(
+        string $identityNumber,
+        string $vatNumber,
+        ?CustomerLegalStatus $legalStatus = null,
+    ): void {
         $customers = $this->getTableLocator()->get('Customers');
         /** @var \App\Model\Entity\Customer $customer */
         $customer = $customers->get(self::CUSTOMER_ID);
         $customer->company = 'NETAIR, s.r.o.';
         $customer->identity_number = $identityNumber;
         $customer->vat_number = $vatNumber;
+        $customer->legal_status = $legalStatus;
         $customers->saveOrFail($customer);
     }
 
@@ -1052,6 +1058,161 @@ class CustomersControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains(' (NETAIR s. r. o.)');
         $this->assertResponseNotContains('<span class="error-text"> (NETAIR s. r. o.)</span>');
+    }
+
+    /**
+     * A legal status the register disagrees with is marked, because it decides the clauses the
+     * customer's contract papers print and nothing else on the page would show it.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::registerNote()
+     */
+    public function testRegisterNoteMarksALegalStatusTheRegisterDisagreesWith(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.', 'legal_status' => 'legal-entity'],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        $this->givenCustomerNumbers('27496139', 'CZ27496139', CustomerLegalStatus::NaturalPerson);
+
+        $this->login();
+        $this->get('/customers/register-note/' . self::CUSTOMER_ID . '/identity');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<span class="error-text"> (in the register as Legal Entity)</span>');
+    }
+
+    /**
+     * A legal status the register agrees with needs no remark.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::registerNote()
+     */
+    public function testRegisterNoteLeavesAMatchingLegalStatusUnmarked(): void
+    {
+        StubSource::$entries = [
+            ['reference' => '27496139', 'name' => 'NETAIR, s.r.o.', 'legal_status' => 'legal-entity'],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        $this->givenCustomerNumbers('27496139', 'CZ27496139', CustomerLegalStatus::LegalEntity);
+
+        $this->login();
+        $this->get('/customers/register-note/' . self::CUSTOMER_ID . '/identity');
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('in the register as');
+    }
+
+    /**
+     * A new customer opens as a natural person, which is what most of them are.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddOpensAsANaturalPerson(): void
+    {
+        $this->login();
+        $this->get('/customers/add');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<option value="natural-person" selected="selected">');
+    }
+
+    /**
+     * The legal status chosen on the form is stored.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddStoresTheLegalStatus(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        // the fixtures write the identity column with the values they carry, which leaves the
+        // identity itself where it started
+        $this->advanceIdentity('customers', 'nid');
+
+        $this->post('/customers/add', [
+            'last_name' => 'Smith',
+            'first_name' => 'John',
+            'legal_status' => CustomerLegalStatus::SoleTrader->value,
+            'dealer' => CustomerDealer::Never->value,
+            'invoice_delivery_type' => CustomerInvoiceDeliveryType::Email->value,
+            'accounting_profile_id' => self::ACCOUNTING_PROFILE_ID,
+        ]);
+
+        $this->assertRedirect();
+        /** @var \App\Model\Entity\Customer $stored */
+        $stored = $this->getTableLocator()->get('Customers')->find()->where(['last_name' => 'Smith'])->firstOrFail();
+        $this->assertSame(CustomerLegalStatus::SoleTrader, $stored->legal_status);
+    }
+
+    /**
+     * Picking a company in the register fills its legal status in along with its name.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddFillsTheLegalStatusInFromTheRegister(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '27496139',
+                'name' => 'NETAIR, s.r.o.',
+                'company' => 'NETAIR, s.r.o.',
+                'identity_number' => '27496139',
+                'legal_status' => 'legal-entity',
+            ],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'legal_status' => CustomerLegalStatus::NaturalPerson->value,
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|27496139',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<option value="legal-entity" selected="selected">');
+    }
+
+    /**
+     * A register that does not say who the subject is in law leaves the operator's choice alone.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testAddKeepsTheLegalStatusTheRegisterDoesNotGive(): void
+    {
+        StubSource::$entries = [
+            [
+                'reference' => '27496139',
+                'name' => 'NETAIR, s.r.o.',
+                'company' => 'NETAIR, s.r.o.',
+                'identity_number' => '27496139',
+            ],
+        ];
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'legal_status' => CustomerLegalStatus::SoleTrader->value,
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|27496139',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<option value="sole-trader" selected="selected">');
     }
 
     /**
