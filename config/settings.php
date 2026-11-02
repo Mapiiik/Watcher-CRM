@@ -1011,11 +1011,14 @@ return [
                     Aktuální znění Zásad zpracování osobních údajů je vždy k dispozici na https://netair.cz, ke dni podpisu konkrétně na https://netair.cz/aktualni-dokumenty/.
                     TEXT,
 
+                // A yes and a no for each, as on the handover protocol, and what counts where neither
+                // is ticked - many sign without ticking anything, which said nothing either way. The
+                // commercial communications stay a no, as silence is no consent.
                 'checkboxes' => [
-                    'billing' => '▢ přeji si dostávat korespondenci spojenou s měsíčním vyúčtováním *',
-                    'outages' => '▢ přeji si dostávat informace o odstávkách a poruchách *',
-                    'marketing' => '▢ souhlasím se zasíláním obchodních sdělení *',
-                    'note' => '* zaškrtněte prosím, které zprávy chcete dostávat',
+                    'billing' => '▢ ano / ▢ ne - přeji si dostávat korespondenci spojenou s měsíčním vyúčtováním *',
+                    'outages' => '▢ ano / ▢ ne - přeji si dostávat informace o odstávkách a poruchách *',
+                    'marketing' => '▢ ano / ▢ ne - souhlasím se zasíláním obchodních sdělení *',
+                    'note' => '* Nezaškrtnete-li u položky nic, platí: vyúčtování ano, odstávky a poruchy ano, obchodní sdělení ne.',
                 ],
             ],
 
