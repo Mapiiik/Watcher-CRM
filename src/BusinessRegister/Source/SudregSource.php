@@ -83,7 +83,7 @@ class SudregSource extends BaseSource
             'offset' => 0,
             'limit' => $limit,
             'only_active' => 'true',
-            'expand_relations' => 'true',
+            'no_data_error' => '0',
         ])->map(function (?array $data): CollectionInterface {
             $mapped = [];
 
@@ -112,6 +112,8 @@ class SudregSource extends BaseSource
             'tip_identifikatora' => 'oib',
             'identifikator' => $reference,
             'expand_relations' => 'true',
+            // otherwise a number nobody holds is answered with an error, as if the register were down
+            'no_data_error' => '0',
         ])->map(function (?array $data): ?Subject {
             $data ??= [];
 
@@ -218,7 +220,11 @@ class SudregSource extends BaseSource
      */
     public static function mapSubject(array $subject): array
     {
+        // The register answers the OIB as a number, which loses the zero one may start with.
         $oib = isset($subject['oib']) ? trim((string)$subject['oib']) : '';
+        if (ctype_digit($oib) && strlen($oib) < 11) {
+            $oib = str_pad($oib, 11, '0', STR_PAD_LEFT);
+        }
 
         return [
             'reference' => $oib !== '' ? $oib : null,
@@ -302,7 +308,7 @@ class SudregSource extends BaseSource
 
         $street = trim(implode(' ', array_filter([
             trim((string)($seat['ulica'] ?? '')),
-            trim((string)($seat['kucni_broj'] ?? '')),
+            trim((string)($seat['kucni_broj'] ?? '')) . trim((string)($seat['kucni_podbroj'] ?? '')),
         ])));
 
         $address = implode(', ', array_filter([

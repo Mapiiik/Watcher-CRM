@@ -118,6 +118,35 @@ class SudregSourceTest extends TestCase
     }
 
     /**
+     * The register answers the OIB as a number, so one that starts with a zero comes without it and
+     * is given it back.
+     *
+     * @return void
+     * @link \App\BusinessRegister\SudregSource::mapSubject()
+     */
+    public function testAnOibStartingWithAZeroKeepsIt(): void
+    {
+        $mapped = SudregSource::mapSubject(['oib' => 1234567890]);
+
+        $this->assertSame('01234567890', $mapped['reference']);
+        $this->assertSame('HR01234567890', $mapped['vat_number']);
+    }
+
+    /**
+     * The house number carries its letter, as the register keeps it apart.
+     *
+     * @return void
+     * @link \App\BusinessRegister\SudregSource::mapSubject()
+     */
+    public function testTheHouseNumberCarriesItsLetter(): void
+    {
+        $this->assertSame('Ilica 1a, Zagreb', SudregSource::mapSubject([
+            'oib' => '80625159724',
+            'sjediste' => ['ulica' => 'Ilica', 'kucni_broj' => 1, 'kucni_podbroj' => 'a', 'naziv_naselja' => 'Zagreb'],
+        ])['address']);
+    }
+
+    /**
      * A subject without a number has nothing to be fetched back by.
      *
      * @return void
