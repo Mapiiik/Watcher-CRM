@@ -6,6 +6,7 @@ namespace App\BusinessRegister\Source;
 use App\BusinessRegister\Dto\Subject;
 use App\BusinessRegister\IdentityNumber;
 use App\Http\Answer;
+use App\Model\Enum\CustomerLegalStatus;
 use Cake\Cache\Cache;
 use Cake\Collection\Collection;
 use Cake\Collection\CollectionInterface;
@@ -231,12 +232,36 @@ class SudregSource extends BaseSource
             'officers' => [],
             'identity_number' => $oib !== '' ? $oib : null,
             'vat_number' => $oib !== '' ? 'HR' . $oib : null,
-            // the court register holds sole traders too and does not say which entry is one
-            'legal_status' => null,
+            'legal_status' => self::legalStatus($subject['pravni_oblik'] ?? null)?->value,
             'address' => self::readAddress($subject),
             // the register gives the seat as text and no reference the address registry knows
             'addresses' => [],
         ];
+    }
+
+    /**
+     * Who the legal form says the subject is, null where the register gave none.
+     *
+     * Everything the court register holds is a legal entity but the sole trader (trgovac
+     * pojedinac), a natural person registered there. Its code is 6 and does not repeat, unlike
+     * some of the register's others; the abbreviation is read as well, should the code move.
+     * The crafts (obrt) are not in this register at all.
+     *
+     * @param mixed $legalForm The `pravni_oblik` as the register returned it.
+     * @return \App\Model\Enum\CustomerLegalStatus|null
+     */
+    private static function legalStatus(mixed $legalForm): ?CustomerLegalStatus
+    {
+        $type = is_array($legalForm) ? ($legalForm['vrsta_pravnog_oblika'] ?? null) : null;
+        if (!is_array($type) || ($type['sifra'] ?? $type['kratica'] ?? null) === null) {
+            return null;
+        }
+
+        $abbreviation = mb_strtolower(trim((string)($type['kratica'] ?? '')));
+
+        return (int)($type['sifra'] ?? 0) === 6 || $abbreviation === 't.p.'
+            ? CustomerLegalStatus::SoleTrader
+            : CustomerLegalStatus::LegalEntity;
     }
 
     /**

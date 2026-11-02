@@ -79,6 +79,45 @@ class SudregSourceTest extends TestCase
     }
 
     /**
+     * Everything the court register holds is a legal entity, as its legal form says - here in the
+     * shape the register answered with on 2 November 2026.
+     *
+     * @return void
+     * @link \App\BusinessRegister\SudregSource::mapSubject()
+     */
+    public function testACompanyIsALegalEntity(): void
+    {
+        $mapped = SudregSource::mapSubject([
+            'oib' => '81793146560',
+            'skracena_tvrtka' => ['ime' => 'HT d.d.'],
+            'pravni_oblik' => [
+                'vrsta_pravnog_oblika' => ['sifra' => 4, 'naziv' => 'dioničko društvo', 'kratica' => 'd.d.'],
+            ],
+        ]);
+
+        $this->assertSame('legal-entity', $mapped['legal_status']);
+    }
+
+    /**
+     * But the sole trader (trgovac pojedinac), a natural person registered there, code 6 in the
+     * register's own list.
+     *
+     * @return void
+     * @link \App\BusinessRegister\SudregSource::mapSubject()
+     */
+    public function testATraderOnTheirOwnIsASoleTrader(): void
+    {
+        $mapped = SudregSource::mapSubject([
+            'oib' => '80625159724',
+            'pravni_oblik' => [
+                'vrsta_pravnog_oblika' => ['sifra' => 6, 'naziv' => 'trgovac pojedinac', 'kratica' => 't.p.'],
+            ],
+        ]);
+
+        $this->assertSame('sole-trader', $mapped['legal_status']);
+    }
+
+    /**
      * A subject without a number has nothing to be fetched back by.
      *
      * @return void
