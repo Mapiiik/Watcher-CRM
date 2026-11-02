@@ -141,8 +141,13 @@ class CustomerPDF extends AppPDF
         $this->Write(3, $this->gdprText('checkboxes.billing'), ln: true);
         $this->Write(3, $this->gdprText('checkboxes.outages'), ln: true);
         $this->Write(3, $this->gdprText('checkboxes.marketing'), ln: true);
-        $this->Ln();
-        $this->Write(3, $this->gdprText('checkboxes.note'), ln: true);
+
+        // each line says what counts where nothing is ticked, so a note below is only for whoever wants one
+        $note = $this->gdprText('checkboxes.note');
+        if ($note !== '') {
+            $this->Ln();
+            $this->Write(3, $note, ln: true);
+        }
 
         // Signature section
         $this->printSignatureSection('single-right');
