@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-27 18:54+0100\n"
+"POT-Creation-Date: 2026-11-02 20:34+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -547,13 +547,13 @@ msgstr ""
 msgid "Invalid invoice list received from Eurofaktura API."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:34
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:35
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:132
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:59
 msgid "Invalid invoice data for invoice number {0}."
 msgstr ""
 
-#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:43
+#: ./plugins/Bookkeeping/src/Provider/Eurofaktura/JsonRequestBuilder.php:44
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/DbfExporter.php:141
 #: ./plugins/Bookkeeping/src/Provider/Pohoda/XmlExporter.php:68
 msgid "Missing customer information or billing address for invoice number {0}."
