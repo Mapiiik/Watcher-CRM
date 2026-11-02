@@ -170,6 +170,7 @@ class Registry
         }
 
         $answered = false;
+        $unreached = false;
         foreach ($keys as $key) {
             $answer = self::byReferenceFromCache($key, $identityNumber);
 
@@ -177,6 +178,7 @@ class Registry
                 // one register being down is not the others' answer, so the rest are still asked
                 if ($answer->unanswered()) {
                     Log::error('Could not look the identification number up: ' . $answer->failure);
+                    $unreached = true;
                 }
 
                 continue;
@@ -197,8 +199,9 @@ class Registry
         }
 
         // Every register was asked and none holds it, which is an answer of its own - but only if
-        // they were all actually asked. Where none could be, nobody has said anything.
-        return $answered ? new IdentityNumberCheck(IdentityNumberStatus::NotFound) : null;
+        // they were all actually asked. Where one could not be, it may be the very one holding the
+        // number, and the others having nothing is no answer for it.
+        return $answered && !$unreached ? new IdentityNumberCheck(IdentityNumberStatus::NotFound) : null;
     }
 
     /**

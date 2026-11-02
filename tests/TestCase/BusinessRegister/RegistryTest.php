@@ -303,6 +303,24 @@ class RegistryTest extends TestCase
     }
 
     /**
+     * A register that is down may be the one holding the number, so the others having nothing is
+     * not taken for nobody holding it - ARES turning a run of lookups away while VIES has nothing
+     * to say of a bare number would otherwise be read as a wrong number.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberCheck()
+     */
+    public function testTheOthersHavingNothingIsNoAnswerWhileARegisterIsDown(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => [
+            'broken' => BrokenSource::class,
+            'stub' => StubSource::class,
+        ]]);
+
+        $this->assertNull(Registry::identityNumberCheck('27496139'));
+    }
+
+    /**
      * Where no register could be reached at all, nobody has said anything - which is not the same
      * as every one of them saying the number is held by nobody.
      *
