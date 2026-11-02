@@ -9,7 +9,9 @@ use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Entity\EquipmentType;
+use App\Model\Entity\SoldEquipment;
 use App\Model\Enum\ContractDocumentType;
+use App\Model\Enum\CustomerLegalStatus;
 use App\Model\Enum\ProposalPurpose;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
@@ -18,6 +20,7 @@ use App\Test\Traits\ContractPapersTrait;
 use Cake\TestSuite\TestCase;
 use PhpCollective\DecimalObject\Decimal;
 use PHPUnit\Framework\Attributes\UsesClass;
+use Settings\Utility\Settings;
 
 /**
  * What the papers say depending on what their proposal asks for.
@@ -36,6 +39,18 @@ class ProposalPapersTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     private const VERSION_ID = '74824fba-20b2-46fc-806c-df795aa9e429';
+
+    /**
+     * The texts a legal entity has a wording of its own for.
+     *
+     * @var list<string>
+     */
+    private const CLAUSES_BY_LEGAL_STATUS = [
+        'core.documents.contracts.contract.texts.activation_fee_clause',
+        'core.documents.contracts.handover.texts.early_termination_clause',
+        'core.documents.contracts.summary.texts.renewal_indefinite_committed',
+        'core.documents.contracts.summary.texts.renewal_definite',
+    ];
 
     /**
      * Fixtures
@@ -203,6 +218,126 @@ class ProposalPapersTest extends TestCase
         $new->proposal = new ContractProposal(['purpose' => ProposalPurpose::NewContract]);
 
         $this->assertSame($this->print($new), $this->print($replacing));
+    }
+
+    /**
+     * A legal entity is held to what was agreed, so its papers print the clauses written for it -
+     * on the contract, the summary of both shapes of term, and the installation protocol.
+     *
+     * Told apart by making the clauses for a legal entity say what everybody else's say: the
+     * papers have to change, or they never printed them.
+     *
+     * @return void
+     */
+    public function testALegalEntityGetsTheClausesWrittenForIt(): void
+    {
+        $this->furnishTheContract();
+
+        $asWritten = $this->everyClausedPaper(CustomerLegalStatus::LegalEntity);
+
+        foreach (self::CLAUSES_BY_LEGAL_STATUS as $path) {
+            Settings::set($path . '_legal_entity', Settings::getString($path));
+        }
+
+        foreach ($this->everyClausedPaper(CustomerLegalStatus::LegalEntity) as $paper => $printed) {
+            $this->assertNotSame($asWritten[$paper], $printed, $paper . ' did not print the clause for a legal entity.');
+        }
+    }
+
+    /**
+     * Everybody else - a natural person, a sole trader, and a customer nobody has said anything
+     * about - gets the clauses the law allows to be asked of a natural person, whatever the ones
+     * for a legal entity say.
+     *
+     * @return void
+     */
+    public function testEverybodyElseGetsTheClausesForANaturalPerson(): void
+    {
+        $this->furnishTheContract();
+
+        $legalStatuses = [CustomerLegalStatus::NaturalPerson, CustomerLegalStatus::SoleTrader, null];
+
+        $asWritten = [];
+        foreach ($legalStatuses as $legalStatus) {
+            $asWritten[] = $this->everyClausedPaper($legalStatus);
+        }
+
+        foreach (self::CLAUSES_BY_LEGAL_STATUS as $path) {
+            Settings::set($path . '_legal_entity', 'Lorem ipsum dolor sit amet.');
+        }
+
+        foreach ($legalStatuses as $index => $legalStatus) {
+            $this->assertSame(
+                $asWritten[$index],
+                $this->everyClausedPaper($legalStatus),
+                ($legalStatus->value ?? 'nobody') . ' printed a clause for a legal entity.',
+            );
+        }
+    }
+
+    /**
+     * Every paper that prints a clause on what leaving early costs, for a new contract committing
+     * the customer and selling them a router at a discount, made out to a customer of the legal
+     * status given.
+     *
+     * @param \App\Model\Enum\CustomerLegalStatus|null $legalStatus Who the customer is in law.
+     * @return array<string, string> The papers, by what they are.
+     */
+    private function everyClausedPaper(?CustomerLegalStatus $legalStatus): array
+    {
+        $papers = [];
+
+        foreach (['indefinite' => false, 'definite' => true] as $term => $definite) {
+            foreach ([ContractDocumentType::ContractNew, ContractDocumentType::ContractSummary] as $type) {
+                $papers[$type->value . ', ' . $term] = $this->printedForACustomer($type, $legalStatus, $definite);
+            }
+        }
+
+        $papers[ContractDocumentType::HandoverInstallation->value] = $this->printedForACustomer(
+            ContractDocumentType::HandoverInstallation,
+            $legalStatus,
+        );
+
+        return $papers;
+    }
+
+    /**
+     * One paper of a new contract committing the customer, with a router sold at a discount.
+     *
+     * @param \App\Model\Enum\ContractDocumentType $type Which paper.
+     * @param \App\Model\Enum\CustomerLegalStatus|null $legalStatus Who the customer is in law.
+     * @param bool $definite Whether the term is a fixed one rather than a minimum one.
+     * @return string
+     */
+    private function printedForACustomer(
+        ContractDocumentType $type,
+        ?CustomerLegalStatus $legalStatus,
+        bool $definite = false,
+    ): string {
+        $contract = $this->liveContract();
+        $contract->customer->legal_status = $legalStatus;
+        $contract->set('sold_equipments', [
+            new SoldEquipment([
+                'serial_number' => 'SN-SOLD-1',
+                'equipment_type' => new EquipmentType([
+                    'name' => 'Router',
+                    'price' => Decimal::create('1500', 2),
+                    'price_with_obligation' => Decimal::create('1', 2),
+                ]),
+            ]),
+        ]);
+        $this->withAFee($contract, '2000');
+
+        $version = $this->liveVersion();
+        $this->bound($version, committed: true);
+        if ($definite) {
+            $version->set('valid_until', $version->obligation_until);
+        }
+
+        $data = $this->printData($type, $contract, $version);
+        $data->proposal = new ContractProposal(['purpose' => ProposalPurpose::NewContract]);
+
+        return $this->print($data);
     }
 
     /**

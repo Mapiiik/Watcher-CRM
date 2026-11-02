@@ -563,30 +563,28 @@ class ContractSummaryPDF extends AppPDF
         // A fixed term ends, an indefinite one does not, and what happens next differs enough
         // that one sentence cannot honestly cover both. The notice period belongs here either
         // way: the Act counts it among what the contract has to state.
+        $contract = $data->contract;
         $this->printParagraph(strtr(
-            $this->summaryText('texts.' . match (true) {
+            $this->textByLegalStatus('core.documents.contracts.summary.texts.' . match (true) {
                 $contractVersion->valid_until !== null => 'renewal_definite',
                 $contractVersion->minimum_duration > 0 => 'renewal_indefinite_committed',
                 default => 'renewal_indefinite',
-            }),
+            }, $contract->customer),
             ['{notice_period}' => $this->summaryText('notice_period')],
         ));
 
         // What leaving early costs is a figure customers compare offers on, so the summary
-        // repeats the contract's own clause rather than pointing at it - and repeats the same
-        // one the contract picked, which turns on whether any equipment was lent with it.
-        $contract = $data->contract;
+        // repeats the contract's own clause rather than pointing at it.
         if (
             $data->activatesTheService()
             && $contractVersion->minimum_duration > 0
             && $contract->activation_fee_sum->isPositive()
         ) {
-            $clauseKey = $this->lendsEquipment($data)
-                ? 'activation_fee_clause_with_installation'
-                : 'activation_fee_clause';
-
             $this->printParagraph(strtr(
-                Settings::getString('core.documents.contracts.contract.texts.' . $clauseKey),
+                $this->textByLegalStatus(
+                    'core.documents.contracts.contract.texts.activation_fee_clause',
+                    $contract->customer,
+                ),
                 [
                     '{duration}' => $this->contractDurationBefore($contractVersion->minimum_duration),
                     '{difference}' => Number::currency(

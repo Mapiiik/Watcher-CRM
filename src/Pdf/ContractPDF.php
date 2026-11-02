@@ -963,12 +963,12 @@ class ContractPDF extends AppPDF
             bold: true,
         );
 
-        $clauseKey = $withInstallation
-            ? 'activation_fee_clause_with_installation'
-            : 'activation_fee_clause';
-
+        // what is owed for the fee is the same whatever it covers, which the line above has said
         $this->printParagraph(
-            strtr($this->contractText('texts.' . $clauseKey), [
+            strtr($this->textByLegalStatus(
+                'core.documents.contracts.contract.texts.activation_fee_clause',
+                $contract->customer,
+            ), [
                 '{duration}' => $this->contractDurationBefore($contract_version->minimum_duration),
                 '{difference}' =>
                     Number::currency(
@@ -1094,7 +1094,7 @@ class ContractPDF extends AppPDF
         );
         $this->printHandoverSection('general_statements', 'general_statements_text', lnBeforeText: 4);
 
-        $this->printEarlyTerminationTerms($executed, $soldEquipmentsDiscount, $soldEquipmentsValue);
+        $this->printEarlyTerminationTerms($contract, $executed, $soldEquipmentsDiscount, $soldEquipmentsValue);
 
         $this->printSectionHeading($this->handoverText('sections.final_statements'));
         $this->printParagraph(strtr($this->handoverText('texts.final_statements_text'), [
@@ -1201,7 +1201,7 @@ class ContractPDF extends AppPDF
         );
         $this->printHandoverSection('general_statements', 'general_statements_text', lnBeforeText: 4);
 
-        $this->printEarlyTerminationTerms($executed, $soldEquipmentsDiscount, $soldEquipmentsValue);
+        $this->printEarlyTerminationTerms($contract, $executed, $soldEquipmentsDiscount, $soldEquipmentsValue);
 
         $this->SetFont(self::FONT_FAMILY, '', self::BODY_FONT_SIZE);
         // A line of air between the two, because both are written in by hand.
@@ -1614,12 +1614,14 @@ class ContractPDF extends AppPDF
     /**
      * What leaving early costs, printed only where a discount was actually given.
      *
+     * @param \App\Model\Entity\Contract $contract Contract being printed
      * @param \App\Model\Entity\ContractVersion $contract_version Version being executed
      * @param \PhpCollective\DecimalObject\Decimal $discount Discount given for the commitment
      * @param \PhpCollective\DecimalObject\Decimal $value Undiscounted value of the equipment
      * @return void
      */
     private function printEarlyTerminationTerms(
+        Contract $contract,
         ContractVersion $contract_version,
         Decimal $discount,
         Decimal $value,
@@ -1632,7 +1634,10 @@ class ContractPDF extends AppPDF
 
         /** @psalm-suppress ImplicitToStringCast */
         $this->printParagraph(
-            strtr($this->handoverText('texts.early_termination_clause'), [
+            strtr($this->textByLegalStatus(
+                'core.documents.contracts.handover.texts.early_termination_clause',
+                $contract->customer,
+            ), [
                 '{full_price}' => Number::currency($value->toFloat()),
                 '{duration}' => $this->contractDurationBefore($contract_version->minimum_duration),
                 '{discounted_price}' => Number::currency($value->subtract($discount)->toFloat()),

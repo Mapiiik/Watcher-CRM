@@ -73,6 +73,7 @@ final class SnapshotShape
         'identity_number',
         'identity_card_number',
         'vat_number',
+        'legal_status',
     ];
 
     /**

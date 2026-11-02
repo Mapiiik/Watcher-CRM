@@ -5,6 +5,7 @@ namespace App\Pdf;
 
 use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
+use App\Model\Enum\CustomerLegalStatus;
 use App\Pdf\Trait\ProviderSignatureTrait;
 use Override;
 use Settings\Utility\Settings;
@@ -961,7 +962,7 @@ class AppPDF extends Canvas
      *
      * Works for both \App\Model\Entity\Customer and \App\Model\Entity\Contract entities.
      *
-     * Logic:
+     * The customer's legal status says it. Where nobody has filled that in, it is worked out:
      * - If identity_number is null → non-business
      * - If company is null → business
      * - Otherwise → legal entity
@@ -972,6 +973,18 @@ class AppPDF extends Canvas
      */
     protected function printUserType(Customer|Contract $entity, int $width = 60, int $height = 4): void
     {
+        $legalStatus = $entity instanceof Contract ? $entity->customer->legal_status : $entity->legal_status;
+        if ($legalStatus !== null) {
+            $key = match ($legalStatus) {
+                CustomerLegalStatus::NaturalPerson => 'non_business',
+                CustomerLegalStatus::SoleTrader => 'business',
+                CustomerLegalStatus::LegalEntity => 'legal',
+            };
+            $this->Cell($width, $height, Settings::getString('core.documents.common.user_types.' . $key));
+
+            return;
+        }
+
         // Normalize: get identity_number and company regardless of entity type
         $identity_number = $entity instanceof Contract ? $entity->customer->identity_number : $entity->identity_number;
         $company = $entity->billing_address->company ?? null;
@@ -985,6 +998,30 @@ class AppPDF extends Canvas
         }
 
         $this->Cell($width, $height, $text);
+    }
+
+    /**
+     * One of the texts on what a commitment costs, in the wording for who the customer is in law.
+     *
+     * The law caps what a natural person, a sole trader included, can be asked for when a contract
+     * ends early, while a legal entity is held to what was agreed. Those texts come in two: the one
+     * at the path holds for everybody, and a legal entity gets the one ending in `_legal_entity`.
+     * A text with no such variant is the same for everybody.
+     *
+     * @param string $path Path of the text for everybody.
+     * @param \App\Model\Entity\Customer $customer Who the papers are made out to.
+     * @return string
+     */
+    protected function textByLegalStatus(string $path, Customer $customer): string
+    {
+        if ($customer->legal_status === CustomerLegalStatus::LegalEntity) {
+            $text = Settings::getString($path . '_legal_entity');
+            if ($text !== '') {
+                return $text;
+            }
+        }
+
+        return Settings::getString($path);
     }
 
     /**
