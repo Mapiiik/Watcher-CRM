@@ -333,6 +333,26 @@ class SettingsServiceTest extends TestCase
     }
 
     /**
+     * A text area comes back from the browser with CRLF line endings, and is stored with the ones the
+     * defaults are written with - otherwise a text saved unchanged would differ from the shipped one
+     * by nothing anybody can see.
+     *
+     * @return void
+     * @link \Settings\Service\SettingsService::set()
+     */
+    public function testTextIsStoredWithTheLineEndingsOfTheDefaults(): void
+    {
+        $settings = $this->serviceShipping(['body_text' => "first line\nsecond line"]);
+
+        $settings->set(self::BLOCK . '.body_text', "first line\r\nsecond line\r\n\r\nthird line\rfourth");
+
+        $this->assertSame(
+            "first line\nsecond line\n\nthird line\nfourth",
+            $settings->getOverlay(self::BLOCK . '.body_text'),
+        );
+    }
+
+    /**
      * Turning a switch off has to survive the round trip to the database. Undeclared, it was stored
      * as text, and every value a text field holds that is not empty comes back as true.
      *

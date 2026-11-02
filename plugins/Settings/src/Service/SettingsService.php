@@ -439,6 +439,10 @@ class SettingsService
      * an emptied field falls back to the default. A declared list is exempt from that rule, which
      * is what lets `[]` mean a list with no items in it.
      *
+     * Text is stored with the line endings the defaults are written with. A browser sends a text
+     * area back with CRLF, so a text saved unchanged would otherwise differ from the shipped one by
+     * nothing anybody can see.
+     *
      * @param array<string, mixed> $node   Overlay data, or a branch of it.
      * @param string               $prefix The path the branch hangs at.
      * @return array<string, mixed>        The branch with what need not be stored removed.
@@ -485,6 +489,12 @@ class SettingsService
 
             if ($value === '' || $value === null) {
                 unset($node[$key]);
+
+                continue;
+            }
+
+            if (is_string($value)) {
+                $node[$key] = (string)preg_replace('/\r\n?/', "\n", $value);
             }
         }
 
