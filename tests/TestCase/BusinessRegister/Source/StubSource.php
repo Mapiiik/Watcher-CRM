@@ -56,6 +56,13 @@ class StubSource implements SourceInterface, VatNumberCheckInterface
     public static bool $unreachableOnReference = false;
 
     /**
+     * How many times it turns a fetch away before it answers, the way ARES does with a long run.
+     *
+     * @var int
+     */
+    public static int $turnsAway = 0;
+
+    /**
      * Put back what a test found, so the next one starts from the same place.
      *
      * @return void
@@ -67,6 +74,7 @@ class StubSource implements SourceInterface, VatNumberCheckInterface
         self::$vatNumberCheck = null;
         self::$unreachable = false;
         self::$unreachableOnReference = false;
+        self::$turnsAway = 0;
     }
 
     /**
@@ -113,6 +121,12 @@ class StubSource implements SourceInterface, VatNumberCheckInterface
     {
         if (self::$unreachableOnReference) {
             return Answer::failed('The stub register is unreachable.');
+        }
+
+        if (self::$turnsAway > 0) {
+            self::$turnsAway--;
+
+            return Answer::failed('The stub register turned the request away.');
         }
 
         foreach (self::$entries as $entry) {
