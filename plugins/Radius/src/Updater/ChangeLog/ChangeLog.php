@@ -59,6 +59,16 @@ class ChangeLog
     }
 
     /**
+     * Get the changes that have not reached their accounts.
+     *
+     * @return array<string, \Radius\Updater\ChangeLog\Change>
+     */
+    public function getFailedChanges(): array
+    {
+        return array_filter($this->changes, fn(Change $change): bool => $change->getFailures() !== []);
+    }
+
+    /**
      * Add change for related data
      *
      * @template T of \Radius\Model\Entity\Radcheck|\Radius\Model\Entity\Radreply|\Radius\Model\Entity\Radusergroup

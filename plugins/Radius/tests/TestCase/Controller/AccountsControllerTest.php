@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Radius\Test\TestCase\Controller;
 
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Core\Configure;
+use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -16,6 +18,7 @@ use Radius\Controller\AccountsController;
 class AccountsControllerTest extends TestCase
 {
     use ControllerTestTrait;
+    use HttpClientTrait;
     use IntegrationTestTrait;
 
     /**
@@ -263,5 +266,43 @@ class AccountsControllerTest extends TestCase
         $this->post('/radius/accounts/delete/' . self::ACCOUNT_ID);
 
         $this->assertRedirect();
+    }
+
+    /**
+     * The change log leads with the accounts the change has not reached, and why.
+     *
+     * The page and the e-mail sent from cron render the same element, so this is what the e-mail
+     * says too.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::updateRelatedRecordsForAllAccounts()
+     */
+    public function testUpdateRelatedRecordsForAllAccountsReportsWhatWasNotApplied(): void
+    {
+        Configure::write('Agent.url', 'https://agent.example.com');
+        Configure::write('Agent.token', 'agent-token');
+        $this->fetchTable('Radius.Radacct')->updateAll(['acctstoptime' => null], ['1 = 1']);
+        $this->mockClientPost(
+            'https://agent.example.com/api/radius/disconnect',
+            $this->newClientResponse(200, ['Content-Type: application/json'], (string)json_encode([
+                'success' => false,
+                'result' => 'Timeout after 3 attempts',
+            ])),
+        );
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/update-related-records-for-all-accounts', [
+            'state' => 'active',
+            'radcheck' => '1',
+            'radreply' => '0',
+            'radusergroup' => '0',
+            'reconnect_modified_accounts' => '1',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('The changes could not be applied to these accounts.');
+        $this->assertResponseContains('Timeout after 3 attempts');
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Radius\Test\TestCase\Command;
 
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\Core\Configure;
+use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Radius\Command\UpdateRelatedRecordsForAccountsCommand;
@@ -18,6 +20,7 @@ use Radius\Command\UpdateRelatedRecordsForAccountsCommand;
 class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
+    use HttpClientTrait;
 
     /**
      * Fixtures
@@ -96,5 +99,33 @@ class UpdateRelatedRecordsForAccountsCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputContains('RADIUS Username');
         $this->assertOutputContains('RADIUS Checks');
+    }
+
+    /**
+     * The accounts the change has not reached are listed, and why, ahead of the changes.
+     *
+     * Run from cron without the change log by e-mail, the output is the only place they show up.
+     *
+     * @return void
+     * @link \Radius\Command\UpdateRelatedRecordsForAccountsCommand::execute()
+     */
+    public function testExecuteListsWhatWasNotApplied(): void
+    {
+        Configure::write('Agent.url', 'https://agent.example.com');
+        Configure::write('Agent.token', 'agent-token');
+        $this->fetchTable('Radius.Radacct')->updateAll(['acctstoptime' => null], ['1 = 1']);
+        $this->mockClientPost(
+            'https://agent.example.com/api/radius/disconnect',
+            $this->newClientResponse(200, ['Content-Type: application/json'], (string)json_encode([
+                'success' => false,
+                'result' => 'Timeout after 3 attempts',
+            ])),
+        );
+
+        $this->exec('radius accounts update_related_records --radcheck --reconnect_modified_accounts');
+
+        $this->assertExitSuccess();
+        $this->assertOutputContains('Timeout after 3 attempts');
+        $this->assertErrorContains('The changes could not be applied to these accounts.');
     }
 }

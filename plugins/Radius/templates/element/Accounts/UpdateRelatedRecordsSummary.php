@@ -4,6 +4,30 @@
  * @var \Radius\Updater\ChangeLog\ChangeLog|null $changelog
  */
 ?>
+<?php if (isset($changelog) && $changelog->getFailedChanges() !== []) : ?>
+<p><?= __d('radius', 'The changes could not be applied to these accounts.') ?></p>
+<div class="table-responsive">
+    <table>
+    <thead>
+        <tr>
+            <th><?= __d('radius', 'Customer') ?></th>
+            <th><?= __d('radius', 'Contract') ?></th>
+            <th><?= __d('radius', 'RADIUS Username') ?></th>
+            <th><?= __d('radius', 'Reason') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($changelog->getFailedChanges() as $change) : ?>
+        <tr>
+            <?= $this->element('Radius.Accounts/UpdateRelatedRecordsSummaryCells', ['change' => $change]) ?>
+            <td><?= implode('<br>', array_map(h(...), $change->getFailures())) ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+    </table>
+</div>
+<br>
+<?php endif; ?>
 <?php if (isset($changelog)) : ?>
 <div class="table-responsive">
     <table>
@@ -23,42 +47,7 @@
     <tbody>
         <?php foreach ($changelog->getChanges() as $change) : ?>
         <tr>
-            <td><?= $this->Html
-                ->link(
-                    $change->getCustomer()->name,
-                    [
-                        '_full' => true,
-                        'plugin' => null,
-                        'controller' => 'Customers',
-                        'action' => 'view',
-                        $change->getCustomer()->id,
-                    ],
-                ) ?></td>
-            <td><?= $this->Html
-                ->link(
-                    $change->getContract()->name,
-                    [
-                        '_full' => true,
-                        'plugin' => null,
-                        'controller' => 'Contracts',
-                        'action' => 'view',
-                        $change->getContract()->id,
-                        'customer_id' => $change->getContract()->customer_id,
-                    ],
-                ) ?></td>
-            <td><?= $this->Html
-                ->link(
-                    $change->getAccount()->username,
-                    [
-                        '_full' => true,
-                        'plugin' => 'Radius',
-                        'controller' => 'Accounts',
-                        'action' => 'view',
-                        'customer_id' => $change->getAccount()->customer_id,
-                        'contract_id' => $change->getAccount()->contract_id,
-                        $change->getAccount()->id,
-                    ],
-                ) ?></td>
+            <?= $this->element('Radius.Accounts/UpdateRelatedRecordsSummaryCells', ['change' => $change]) ?>
             <td><pre><?= $change->getRadcheckChange() ?
                 h(json_encode($change->getRadcheckChange()->getOriginal(), JSON_PRETTY_PRINT)) : '' ?></pre></td>
             <td><pre><?= $change->getRadcheckChange() ?

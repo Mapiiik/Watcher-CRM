@@ -90,6 +90,30 @@ class UpdateRelatedRecordsForAccountsCommand extends Command
             // load messages from accounts updater and generate flash messages
             $this->handleMessages($accountsUpdater->Messages, $io);
 
+            // the changes that have not reached their accounts go first
+            if ($changelog->getFailedChanges() !== []) {
+                $io->warning(__d('radius', 'The changes could not be applied to these accounts.'));
+
+                $tableData = [];
+                $tableData[] = [
+                    __d('radius', 'Customer'),
+                    __d('radius', 'Contract'),
+                    __d('radius', 'RADIUS Username'),
+                    __d('radius', 'Reason'),
+                ];
+                foreach ($changelog->getFailedChanges() as $change) {
+                    foreach ($change->getFailures() as $failure) {
+                        $tableData[] = [
+                            $change->getCustomer()->name,
+                            $change->getContract()->number,
+                            $change->getAccount()->username,
+                            $failure,
+                        ];
+                    }
+                }
+                $io->helper('Table')->output($tableData);
+            }
+
             // generate summary table
             $tableData = [];
             $tableData[] = [

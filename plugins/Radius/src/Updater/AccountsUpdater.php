@@ -166,6 +166,8 @@ class AccountsUpdater
 
             $processed++;
             if ($changelog->hasChange($account->username)) {
+                $change = $changelog->getChange($account->username);
+
                 // save modified data
                 if ($this->Accounts->save($account) === false) {
                     $failed++;
@@ -178,12 +180,13 @@ class AccountsUpdater
                         ),
                     );
                     Log::warning('The RADIUS account ' . $account->username . ' could not be updated.');
+                    $change->addFailure(__d('radius', 'The RADIUS account could not be updated.'));
                 } else {
                     $modified++;
 
                     // Send RADIUS disconnect request for modified
                     if ($options['reconnect_modified_accounts'] == true) {
-                        /** @var \Cake\Datasource\ResultSetInterface<array-key, \Radius\Model\Entity\Radacct> $radaccts */
+                        /** @var array<int, \Radius\Model\Entity\Radacct> $radaccts */
                         $radaccts = $this->Accounts->Radacct
                             ->find()
                             ->where([
@@ -199,6 +202,9 @@ class AccountsUpdater
                                 'No active RADIUS session for {0} found.',
                                 $account->username,
                             ));
+                            // an account being changed is expected to be connected, so this may be a fault
+                            Log::warning('No active RADIUS session for ' . $account->username . ' found.');
+                            $change->addFailure(__d('radius', 'No active RADIUS session found.'));
                         } else {
                             // load RADIUS request sender if required
                             if (!isset($radiusRequestSender)) {
@@ -206,8 +212,31 @@ class AccountsUpdater
                             }
 
                             // send RADIUS disconnect requests for all open sessions
-                            foreach ($radaccts as $session) {
-                                $radiusRequestSender->sendDisconnectRequest($session);
+                            $results = array_map($radiusRequestSender->sendDisconnectRequest(...), $radaccts);
+                            $disconnected = array_filter(
+                                $results,
+                                fn(DisconnectRequestResult $result): bool => $result->disconnected,
+                            );
+
+                            // one dropped session is enough, the others are often long dead ones
+                            if ($disconnected === []) {
+                                foreach ($results as $result) {
+                                    $change->addFailure(__d(
+                                        'radius',
+                                        'The RADIUS session started on {0} at {1} could not be disconnected ({2}).',
+                                        $result->session->acctstarttime,
+                                        $result->session->nasipaddress,
+                                        $result->detail,
+                                    ));
+                                }
+                                Log::warning(
+                                    'The RADIUS account ' . $account->username . ' could not be reconnected ('
+                                        . implode('; ', array_map(
+                                            fn(DisconnectRequestResult $result): string => $result->detail,
+                                            $results,
+                                        ))
+                                        . ').',
+                                );
                             }
                         }
 

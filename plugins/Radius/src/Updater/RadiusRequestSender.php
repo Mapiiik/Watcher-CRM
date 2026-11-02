@@ -30,62 +30,61 @@ class RadiusRequestSender
      * Send a RADIUS disconnect request via the Watcher Agent.
      *
      * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
-     * @return bool Returns true if the disconnection was successful.
+     * @return \Radius\Updater\DisconnectRequestResult What came of it.
+     * @psalm-suppress PossiblyUnusedReturnValue
      */
-    public function sendDisconnectRequest(Radacct $session): bool
+    public function sendDisconnectRequest(Radacct $session): DisconnectRequestResult
     {
-        return $this->sendDisconnectRequestViaAgent($session);
+        $result = $this->sendDisconnectRequestViaAgent($session);
+
+        if ($result->disconnected) {
+            $this->Messages->success(__d(
+                'radius',
+                'The RADIUS session for {0} started on {1} has been disconnected ({2}).',
+                $session->username,
+                $session->acctstarttime,
+                $result->detail,
+            ));
+        } else {
+            $this->Messages->error(__d(
+                'radius',
+                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
+                $session->username,
+                $session->acctstarttime,
+                $result->detail,
+            ));
+        }
+
+        return $result;
     }
 
     /**
      * Send disconnect request method (via Watcher Agent)
      *
      * @param \Radius\Model\Entity\Radacct $session RADIUS Accounting Record.
-     * @return bool Returns true if the disconnection was successful.
-     * @psalm-suppress PossiblyUnusedReturnValue
+     * @return \Radius\Updater\DisconnectRequestResult What came of it.
      */
-    private function sendDisconnectRequestViaAgent(Radacct $session): bool
+    private function sendDisconnectRequestViaAgent(Radacct $session): DisconnectRequestResult
     {
         $answer = AgentApiClient::radiusDisconnect($session);
 
         if (!$answer->ok()) {
-            $this->Messages->error(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
-                $session->username,
-                $session->acctstarttime,
+            return new DisconnectRequestResult(
+                $session,
+                false,
                 $answer->failure ?? __d('radius', 'Watcher Agent is not configured.'),
-            ));
-
-            // skip further processing and return false
-            return false;
+            );
         }
 
         /** @var \App\Agent\Dto\DisconnectResult $result */
         $result = $answer->data;
         $error = $this->formatDisconnectErrors($result->errorCauses);
 
-        if ($result->success) {
-            $this->Messages->success(__d(
-                'radius',
-                'The RADIUS session for {0} started on {1} has been disconnected ({2}).',
-                $session->username,
-                $session->acctstarttime,
-                trim(($result->result ?? 'OK') . ($error ? ' - ' . $error : '')),
-            ));
-
-            return true;
-        }
-
-        $this->Messages->error(__d(
-            'radius',
-            'The RADIUS session for {0} started on {1} could not be disconnected ({2}).',
-            $session->username,
-            $session->acctstarttime,
-            trim(($result->result ?? 'Error') . ($error ? ' - ' . $error : '')),
-        ));
-
-        return false;
+        return new DisconnectRequestResult(
+            $session,
+            $result->success,
+            trim(($result->result ?? ($result->success ? 'OK' : 'Error')) . ($error ? ' - ' . $error : '')),
+        );
     }
 
     /**

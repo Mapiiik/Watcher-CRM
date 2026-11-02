@@ -25,6 +25,13 @@ class Change
     private ?RadusergroupChange $radusergroup = null;
 
     /**
+     * Why the change has not reached the account, one line each.
+     *
+     * @var list<string>
+     */
+    private array $failures = [];
+
+    /**
      * Constructor
      */
     public function __construct(Account $account, Customer $customer, Contract $contract)
@@ -80,6 +87,24 @@ class Change
     public function getRadusergroupChange(): ?RadusergroupChange
     {
         return $this->radusergroup;
+    }
+
+    /**
+     * Add Failure
+     */
+    public function addFailure(string $failure): void
+    {
+        $this->failures[] = $failure;
+    }
+
+    /**
+     * Get Failures
+     *
+     * @return list<string>
+     */
+    public function getFailures(): array
+    {
+        return $this->failures;
     }
 
     /**
