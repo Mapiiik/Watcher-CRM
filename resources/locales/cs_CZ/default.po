@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-02 20:57+0100\n"
+"POT-Creation-Date: 2026-11-02 22:01+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -23,43 +23,43 @@ msgstr ""
 
 #: config/settings.php:109
 msgid ""
-"The Croatian court register. It only answers with the credentials issued at "
-"sudreg-data.gov.hr."
+"The Croatian court register. It answers to an OIB, never to a name, and only "
+"with the credentials issued at sudreg-data.gov.hr."
 msgstr ""
-"Chorvatský soudní rejstřík. Odpovídá pouze na dotazy podané pomocí "
-"přihlašovacích údajů vydaných na stránkách sudreg-data.gov.hr."
+"Chorvatský soudní rejstřík. Vždy se vztahuje k OIB, nikdy k názvu, a "
+"odpovídá jen s přihlašovacími údaji vydanými na sudreg-data.gov.hr."
 
-#: config/settings.php:118
+#: config/settings.php:119
 msgid "The European VAT number check. It answers to a number, never to a name."
 msgstr ""
 "Ověření evropského čísla pro účely DPH. Vždy se vztahuje k číslu, nikdy k "
 "jménu."
 
-#: config/settings.php:127
+#: config/settings.php:128
 msgid "How long a minimum term usually runs, offered when one is agreed."
 msgstr "Jak dlouho obvykle běží závazek. Nabídne se, když se nějaký sjednává."
 
-#: config/settings.php:137
+#: config/settings.php:138
 msgid "The suggestions offered under the access description on a contract."
 msgstr "Návrhy uvedené v části „Popis přístupu“ na smlouvě."
 
-#: config/settings.php:146
+#: config/settings.php:147
 msgid "A date before this one is pointed out as mistyped."
 msgstr "Datum starší než toto se hlásí jako překlep."
 
-#: config/settings.php:150
+#: config/settings.php:151
 msgid ""
 "How far ahead a date may still reach before it is pointed out as mistyped."
 msgstr "Jak daleko dopředu smí datum sahat, než se ohlásí jako překlep."
 
-#: config/settings.php:154
+#: config/settings.php:155
 msgid ""
 "Days that stand for \"not known\" rather than for a day. The checks pass "
 "over them."
 msgstr ""
 "Dny, které znamenají „nevíme“ místo konkrétního dne. Kontroly je přeskakují."
 
-#: config/settings.php:158
+#: config/settings.php:159
 msgid ""
 "How long before a contract version takes effect it may have been concluded "
 "before the date is pointed out."
@@ -67,7 +67,7 @@ msgstr ""
 "Jak dlouho před začátkem platnosti smí být verze smlouvy uzavřená, než se "
 "datum ohlásí."
 
-#: config/settings.php:162
+#: config/settings.php:163
 msgid ""
 "How long after a contract version takes effect it may still have been "
 "concluded before the date is pointed out."
@@ -75,7 +75,7 @@ msgstr ""
 "Jak dlouho po začátku platnosti smí být verze smlouvy ještě uzavřená, než se "
 "datum ohlásí."
 
-#: config/settings.php:173
+#: config/settings.php:174
 msgid ""
 "Records taking effect before this day are left alone. What an import left "
 "behind is not work anybody is going to do, and mailing about it would be "
@@ -85,11 +85,11 @@ msgstr ""
 "zanechal import, stejně nikdo dohánět nebude, a obesílat kvůli tomu "
 "zákazníky by bylo horší než to nechat být."
 
-#: config/settings.php:177
+#: config/settings.php:178
 msgid "What the wait for a signature is counted from."
 msgstr "Od čeho se počítá čekání na podpis."
 
-#: config/settings.php:185
+#: config/settings.php:186
 msgid ""
 "Whether a service that is charged for with no contract version behind it "
 "counts as unsigned as well. It is the ordinary case while the papers wait on "
@@ -98,17 +98,17 @@ msgstr ""
 "Jestli se za nepodepsanou počítá i služba, která se fakturuje a nestojí za "
 "ní žádná verze smlouvy. Dokud papíry čekají na návrh, je to běžný případ."
 
-#: config/settings.php:193
+#: config/settings.php:194
 msgid ""
 "Whether the customer is written to at all about documents nobody has signed."
 msgstr "Zda se zákazníkům vůbec píše o nepodepsaných dokumentech."
 
-#: config/settings.php:198
+#: config/settings.php:199
 msgid ""
 "Days after the day the wait is counted from before the customer is reminded."
 msgstr "Za kolik dní od počátku lhůty se zákazníkovi připomene."
 
-#: config/settings.php:202
+#: config/settings.php:203
 msgid ""
 "Days after what is running took effect before the customer is reminded. Both "
 "waits have to be up."
@@ -116,12 +116,12 @@ msgstr ""
 "Za kolik dní od nabytí účinnosti toho, co běží, se zákazníkovi připomene. "
 "Musí uplynout obě lhůty."
 
-#: config/settings.php:206
+#: config/settings.php:207
 msgid ""
 "Which days after the wait runs out to write on. 0 is the day it runs out."
 msgstr "Ve které dny po uplynutí lhůty psát. 0 je den, kdy lhůta uplynula."
 
-#: config/settings.php:210
+#: config/settings.php:211
 msgid ""
 "Once the days above are used up, keep writing every day until the signed "
 "contract comes in."
@@ -129,18 +129,18 @@ msgstr ""
 "Po vyčerpání dnů uvedených výše psát každý další den, dokud podepsaná "
 "smlouva nedojde."
 
-#: config/settings.php:236
+#: config/settings.php:237
 msgid ""
 "Whether unsigned documents cut the service off, the same way an unpaid "
 "invoice does."
 msgstr "Zda nepodepsané dokumenty omezí službu stejně jako neuhrazená faktura."
 
-#: config/settings.php:241
+#: config/settings.php:242
 msgid ""
 "Days after the day the wait is counted from before the service is cut off."
 msgstr "Za kolik dní od počátku lhůty se služba omezí."
 
-#: config/settings.php:245
+#: config/settings.php:246
 msgid ""
 "Days after what is running took effect before the service is cut off. Both "
 "waits have to be up."
@@ -148,7 +148,7 @@ msgstr ""
 "Za kolik dní od nabytí účinnosti toho, co běží, se služba omezí. Musí "
 "uplynout obě lhůty."
 
-#: config/settings.php:323
+#: config/settings.php:324
 msgid ""
 "How far ahead a proposal nobody has sent is worth raising. It has to be sent "
 "before the day it speaks about."
@@ -156,16 +156,16 @@ msgstr ""
 "Jak dlouho dopředu hlásit návrh, který nikdo neodeslal. Musí být odeslán "
 "dřív, než nastane den, o kterém mluví."
 
-#: config/settings.php:330 config/settings.php:368
+#: config/settings.php:331 config/settings.php:369
 msgid "Days after the proposal was sent before a missing signature is raised."
 msgstr "Kolik dní po odeslání návrhu se začne hlásit chybějící podpis."
 
-#: config/settings.php:337 config/settings.php:375
+#: config/settings.php:338 config/settings.php:376
 msgid ""
 "Days after the signature was written down before the missing scan is raised."
 msgstr "Kolik dní po zapsání podpisu se chybějící sken začne hlásit."
 
-#: config/settings.php:343
+#: config/settings.php:344
 msgid ""
 "How far ahead a signed proposal whose changes nobody has applied is worth "
 "raising. Until its day comes there is nothing to do about it."
@@ -173,31 +173,31 @@ msgstr ""
 "Jak dlouho dopředu upozorňovat na podepsaný návrh, jehož změny nikdo "
 "neaplikoval. Dokud jeho den nenastane, není co řešit."
 
-#: config/settings.php:357
+#: config/settings.php:358
 msgid "Proposals taking effect before this day are left alone."
 msgstr "Návrhy, které nabyly účinnosti před tímto dnem, se neřeší."
 
-#: config/settings.php:362
+#: config/settings.php:363
 msgid "How far ahead a proposal nobody has sent is worth raising."
 msgstr "Jak dlouho dopředu hlásit návrh, který nikdo neodeslal."
 
-#: config/settings.php:383
+#: config/settings.php:384
 msgid "Labels that say the missing details are known about and accepted."
 msgstr "Štítky, které říkají, že o chybějících údajích víme a je to v pořádku."
 
-#: config/settings.php:387
+#: config/settings.php:388
 msgid "Labels that say the missing e-mail address is known about and accepted."
 msgstr "Štítky, které říkají, že o chybějícím e-mailu víme a je to v pořádku."
 
-#: config/settings.php:391
+#: config/settings.php:392
 msgid "Labels that say the missing consent is known about and accepted."
 msgstr "Štítky, které říkají, že o chybějícím souhlasu víme a je to v pořádku."
 
-#: config/settings.php:401
+#: config/settings.php:402
 msgid "How long a customer stays signed in to the customer portal."
 msgstr "Jak dlouho zůstává zákazník přihlášený do zákaznického portálu."
 
-#: config/settings.php:405
+#: config/settings.php:406
 msgid ""
 "Failed sign-ins of one login from one address before more are refused for a "
 "while."
@@ -205,7 +205,7 @@ msgstr ""
 "Počet neúspěšných přihlášení jednoho loginu z jedné adresy, po kterém se "
 "další na čas odmítají."
 
-#: config/settings.php:409
+#: config/settings.php:410
 msgid ""
 "Failed sign-ins from one address, whatever the login, before more are "
 "refused."
@@ -213,23 +213,23 @@ msgstr ""
 "Počet neúspěšných přihlášení z jedné adresy k jakýmkoli loginům, po kterém "
 "se další odmítají."
 
-#: config/settings.php:413
+#: config/settings.php:414
 msgid "Failed sign-ins of one login, from anywhere, before more are refused."
 msgstr ""
 "Počet neúspěšných přihlášení jednoho loginu odkudkoli, po kterém se další "
 "odmítají."
 
-#: config/settings.php:417
+#: config/settings.php:418
 msgid "How long failed sign-ins are remembered and refusals last."
 msgstr ""
 "Jak dlouho se neúspěšná přihlášení pamatují a jak dlouho odmítání trvá."
 
-#: config/settings.php:421
+#: config/settings.php:422
 msgid "The shortest password a customer may set in the customer portal."
 msgstr ""
 "Nejkratší heslo, které si zákazník může nastavit v zákaznickém portálu."
 
-#: config/settings.php:425
+#: config/settings.php:426
 msgid ""
 "Links for a new password or a new login one customer number may ask for in "
 "an hour."
@@ -237,7 +237,7 @@ msgstr ""
 "Kolik odkazů pro nové heslo nebo nový přístup si může jedno číslo zákazníka "
 "vyžádat za hodinu."
 
-#: config/settings.php:429
+#: config/settings.php:430
 msgid ""
 "Links for a new password or a new login one address may ask for in an hour, "
 "whatever the customer."
@@ -245,45 +245,45 @@ msgstr ""
 "Kolik odkazů pro nové heslo nebo nový přístup si může jedna adresa vyžádat "
 "za hodinu, ať je zákazník kdokoli."
 
-#: config/settings.php:433
+#: config/settings.php:434
 msgid "Addresses a service may look up in a minute before more are refused."
 msgstr ""
 "Počet adres, které služba může vyhledat za minutu, než se další odmítnou."
 
-#: config/settings.php:440
+#: config/settings.php:441
 msgid "How many rows a card lists before it only says how many more there are."
 msgstr ""
 "Kolik řádků karta uvádí, než se zobrazí pouze informace o tom, kolik dalších "
 "zbývá."
 
-#: config/settings.php:446
+#: config/settings.php:447
 msgid "How far ahead a task deadline is already counted as pressing."
 msgstr "Jak dlouho před termínem řešení úkolu se již považuje za naléhavé."
 
-#: config/settings.php:450
+#: config/settings.php:451
 msgid "How long an unfinished task may lie untouched before it is pointed out."
 msgstr ""
 "Jak dlouho může nedokončený úkol zůstat bez povšimnutí, než se na něj "
 "upozorní."
 
-#: config/settings.php:457
+#: config/settings.php:458
 msgid "How far ahead the end of a minimum term is pointed out."
 msgstr "Jak dlouho před koncem závazku se na něj upozorňuje."
 
-#: config/settings.php:848
+#: config/settings.php:849
 msgid "The three opening bullets prescribed by the contract summary template."
 msgstr "Tři úvodní odrážky předepsané šablonou shrnutí smlouvy."
 
-#: config/settings.php:899
+#: config/settings.php:900
 msgid "Share of the advertised speed taken as the commonly available one."
 msgstr ""
 "Podíl inzerované rychlosti, který se bere jako běžně dostupná rychlost."
 
-#: config/settings.php:904
+#: config/settings.php:905
 msgid "Share of the advertised speed taken as the minimum one."
 msgstr "Podíl inzerované rychlosti, který se bere jako minimální rychlost."
 
-#: config/settings.php:983
+#: config/settings.php:984
 msgid "Documents the summary points the customer to."
 msgstr "Dokumenty, na které shrnutí zákazníka odkazuje."
 
@@ -423,11 +423,11 @@ msgstr "není v registru"
 msgid "CZ - ARES"
 msgstr "CZ – ARES"
 
-#: src/BusinessRegister/Source/SudregSource.php:45
-msgid "HR - Sudski registar"
-msgstr "HR - Sudski registar"
+#: src/BusinessRegister/Source/SudregSource.php:46
+msgid "HR - Sudski registar (by OIB only)"
+msgstr "HR – Sudski registar (pouze podle OIB)"
 
-#: src/BusinessRegister/Source/SudregSource.php:186
+#: src/BusinessRegister/Source/SudregSource.php:170
 msgid "The {0} register did not issue a token."
 msgstr "Registr {0} nevydal token."
 
@@ -3946,11 +3946,11 @@ msgstr ""
 "Tento návrh zákazníka byl odeslán nebo obsahuje návrhy smluv, proto ho nelze "
 "odstranit. Místo toho ho zrušte."
 
-#: src/Model/Table/CustomersTable.php:275 templates/Customers/view.php:252
+#: src/Model/Table/CustomersTable.php:277 templates/Customers/view.php:252
 msgid "Choose the legal status, the clauses of the contract papers follow it."
 msgstr "Zvolte právní postavení, řídí se podle něj doložky smluv."
 
-#: src/Model/Table/CustomersTable.php:364
+#: src/Model/Table/CustomersTable.php:367
 msgid "The specified identification number is not valid."
 msgstr "Zadané identifikační číslo není platné."
 
@@ -9714,6 +9714,16 @@ msgstr "Zdrojový kód"
 #: templates/layout/default.php:287
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid ""
+#~ "The Croatian court register. It only answers with the credentials issued "
+#~ "at sudreg-data.gov.hr."
+#~ msgstr ""
+#~ "Chorvatský soudní rejstřík. Odpovídá pouze na dotazy podané pomocí "
+#~ "přihlašovacích údajů vydaných na stránkách sudreg-data.gov.hr."
+
+#~ msgid "HR - Sudski registar"
+#~ msgstr "HR - Sudski registar"
 
 #~ msgid ""
 #~ "Decide by the company instead of asking the business registers - a legal "
