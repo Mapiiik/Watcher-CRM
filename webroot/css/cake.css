@@ -511,6 +511,12 @@ nav.top-nav {
     padding: 0.5rem 0;
 }
 
+/* a menu that stays in view at the bottom of the window while the page scrolls */
+.side-nav-fixed {
+    position: fixed;
+    bottom: 1rem;
+}
+
 /* View action */
 .view.content .text {
     margin-top: 1.2rem;
@@ -727,13 +733,24 @@ input[type='color'] {
     }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 800px) {
+    /* milligram puts columns side by side from 640px, these keep them stacked up to here */
+    .row {
+        flex-direction: column;
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .row .column {
+        padding: 0;
+    }
+
     /* Fix milligram not having a responsive column system */
     .row .column[class*='column-'] {
         flex: 0 0 100%;
         max-width: 100%
     }
-    
+
     .top-nav {
         margin: 0 auto;
     }
@@ -758,6 +775,11 @@ input[type='color'] {
     .side-nav-item {
         display: inline;
         margin: 0 1.5rem 0 0;
+    }
+
+    /* above the page, kept in view it would cover it */
+    .side-nav-fixed {
+        position: static;
     }
 
     /*

@@ -97,7 +97,7 @@ $inProgress = (string)$this->cell('ProposalsInProgress', ['contract', $contract-
             ) ?>
         </div>
         <?php if (!($this->getRequest()->getQuery('win-link') == 'true')) : ?>
-        <div class="side-nav" style="position: fixed; bottom: 1rem;">
+        <div class="side-nav side-nav-fixed">
             <h4 class="heading"><?= __('Sections') ?></h4>
             <?= $this->AuthLink->link(
                 __('Contract'),
