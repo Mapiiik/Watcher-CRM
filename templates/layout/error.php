@@ -21,7 +21,10 @@
     <title>
         <?= $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
+    <?php // the ICO is for those that cannot take the SVG, and its size keeps those that can on the SVG ?>
+    <?= $this->Html->meta('icon', 'favicon.ico', ['sizes' => '32x32']) ?>
+    <?= $this->Html->meta('icon', 'favicon.svg', ['type' => 'image/svg+xml']) ?>
+    <?= $this->Html->meta(['rel' => 'apple-touch-icon', 'link' => 'apple-touch-icon.png']) ?>
 
     <?= $this->Html->css([
         '/vendor/normalize/normalize.min.css',

@@ -53,7 +53,10 @@ $urlWithQuery = function ($query = []) use ($request) {
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= h($cakeDescription) ?> | <?= h($this->fetch('title')) ?></title>
-    <?= $this->Html->meta('icon') ?>
+    <?php // the ICO is for those that cannot take the SVG, and its size keeps those that can on the SVG ?>
+    <?= $this->Html->meta('icon', 'favicon.ico', ['sizes' => '32x32']) ?>
+    <?= $this->Html->meta('icon', 'favicon.svg', ['type' => 'image/svg+xml']) ?>
+    <?= $this->Html->meta(['rel' => 'apple-touch-icon', 'link' => 'apple-touch-icon.png']) ?>
 
     <?= $this->Html->script([
         '/vendor/jquery/jquery.min.js',
@@ -124,7 +127,9 @@ $urlWithQuery = function ($query = []) use ($request) {
 <body>
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Watcher</span> CRM</a>
+            <a href="<?= $this->Url->build('/') ?>"><?=
+                $this->Html->image('/favicon.svg', ['alt' => '', 'class' => 'top-nav-logo'])
+            ?><span>Watcher</span> CRM</a>
         </div>
 
         <?php if (!($request->getQuery('win-link') == 'true')) : ?>

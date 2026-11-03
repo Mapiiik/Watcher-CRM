@@ -479,13 +479,26 @@ nav.top-nav {
     margin: 0 auto;
 }
 
+/* the name keeps to one line, the links wrap instead */
+.top-nav-title {
+    flex-shrink: 0;
+    margin-right: 1rem;
+}
+
 .top-nav-title a {
     font-size: 2.4rem;
     color: var(--color-cakephp-red);
+    white-space: nowrap;
 }
 
 .top-nav-title span {
     color: var(--color-cakephp-gray);
+}
+
+.top-nav-logo {
+    height: 3rem;
+    margin-right: 0.8rem;
+    vertical-align: -0.65rem;
 }
 
 .top-nav-title a,
@@ -723,6 +736,15 @@ input[type='color'] {
     
     .top-nav {
         margin: 0 auto;
+    }
+
+    /* the logo stands for the name, which still names the link to a screen reader */
+    .top-nav-title a {
+        font-size: 0;
+    }
+
+    .top-nav-logo {
+        margin-right: 0;
     }
 
     .side-nav {
