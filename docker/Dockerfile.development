@@ -45,10 +45,10 @@ COPY docker/imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
 #   php -d pcov.enabled=1 vendor/bin/phpunit --coverage-text
 RUN echo "pcov.enabled = 0" > $PHP_INI_DIR/conf.d/pcov.ini
 
-# git for composer
+# git and unzip for composer
 RUN set -x \
  && apt-get update \
- && apt-get install -y --no-install-recommends git \
+ && apt-get install -y --no-install-recommends git unzip \
  && rm -rf /var/lib/apt/lists/*
 
 # Development, with room for the test suite
