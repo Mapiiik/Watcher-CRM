@@ -866,6 +866,7 @@ $permissions = [
                 // ask whether they may be touched at all.
                 return match ($request->getParam('action')) {
                     'delete' => $proposals->mayBeDeleted($proposal),
+                    'recreate' => $proposals->mayBeRecreated($proposal),
                     'billingLine',
                     'endBilling',
                     'dropBillingLine',

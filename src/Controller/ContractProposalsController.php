@@ -305,8 +305,11 @@ class ContractProposalsController extends AppController
     {
         $proposal = $this->ContractProposals->get($id, contain: ['CustomerProposals']);
 
-        if (!$this->ContractProposals->mayBeEdited($proposal)) {
-            $this->Flash->error(__('This proposal can no longer be changed.'));
+        if (!$this->ContractProposals->mayBeRecreated($proposal)) {
+            $this->Flash->error(
+                $this->ContractProposals->linesLock($proposal)?->label()
+                    ?? __('This proposal can no longer be changed.'),
+            );
 
             return $this->redirect(['action' => 'view', $id]);
         }
@@ -1795,6 +1798,7 @@ class ContractProposalsController extends AppController
             $snapshot->equipmentLentBy($changes),
         ));
         $this->set('mayBeEdited', $this->ContractProposals->mayBeEdited($proposal));
+        $this->set('mayBeRecreated', $this->ContractProposals->mayBeRecreated($proposal));
         $this->set('linesLock', $this->ContractProposals->linesLock($proposal));
         $this->set('mayBeDeleted', $this->ContractProposals->mayBeDeleted($proposal));
         // Only the count: the table itself is drawn by a cell, which asks for what it draws.

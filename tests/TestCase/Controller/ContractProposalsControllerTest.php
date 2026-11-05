@@ -2034,6 +2034,53 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * What the customer signed is what applying the changes has to write. Papers put together again
+     * would say something else than the copy on file, whether or not anybody recorded the signature
+     * or that they went out - a technician bringing it back often comes before either.
+     *
+     * @param string $role The role to ask as.
+     * @return void
+     * @link \App\Model\Table\ContractProposalsTable::mayBeRecreated()
+     */
+    #[DataProvider('rolesThatDrawUpPapers')]
+    public function testRecreatingStopsAtAPaperTheCustomerSigned(string $role): void
+    {
+        Configure::write('Files.root', TMP . 'recreate-papers-' . uniqid());
+        $storage = new FileStorage();
+        $storage->link(
+            $storage->store('%PDF-1.7 signed', 'application/pdf'),
+            ContractDocuments::MODEL,
+            self::PROPOSAL_ID,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::ReceivedSignedByCustomer->value,
+            ['name' => 'amendment-signed.pdf'],
+        );
+
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $before = $proposals->get(self::PROPOSAL_ID)->snapshot_taken;
+
+        $this->login($role);
+        $this->get(self::NESTED . '/contract-proposals/view/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('/contract-proposals/recreate/' . self::PROPOSAL_ID);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
+            'confirmations' => self::EVERYTHING_ANSWERED,
+        ]);
+
+        $this->assertRedirect();
+        $this->assertEquals(
+            $before,
+            $proposals->get(self::PROPOSAL_ID)->snapshot_taken,
+            'The papers were put together again over what the customer signed.',
+        );
+
+        Configure::delete('Files.root');
+    }
+
+    /**
      * Another proposal of the customer that has already gone out, sitting beside the fixture's.
      *
      * @return string Its id.

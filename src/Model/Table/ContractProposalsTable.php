@@ -198,6 +198,21 @@ class ContractProposalsTable extends AppTable
     }
 
     /**
+     * Whether the papers may be put together again from the contract as it stands now.
+     *
+     * Papers we drew go with the old snapshot, so they stand in nobody's way. A copy the customer
+     * signed does: what it says is what applying the changes has to write.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal being asked about.
+     * @return bool
+     */
+    public function mayBeRecreated(ContractProposal $proposal): bool
+    {
+        return $this->mayBeEdited($proposal)
+            && ($this->linesLock($proposal)?->mayBeLifted() ?? true);
+    }
+
+    /**
      * Why the lines of the proposal may not be changed, where a paper drawn from it stands in the way.
      *
      * Only papers of ours count. What the other side wrote - a notice, a certificate - is not drawn

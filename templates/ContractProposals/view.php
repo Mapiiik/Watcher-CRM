@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var \App\Contracts\Proposal\ProposalConfirmations $confirmations
  * @var bool $mayBeEdited
+ * @var bool $mayBeRecreated
  * @var \App\Model\Enum\ProposalLinesLock|null $linesLock Why the lines cannot be changed now.
  * @var bool $mayBeDeleted
  * @var array<array{billing: \App\Model\Entity\Billing, line: \App\Contracts\Proposal\ProposedBilling|null, ending: bool, stopped: bool}> $rows
@@ -36,7 +37,7 @@ foreach ($filed as $byVariant) {
             // put right were always halves of one gesture, and what may not be put right at all
             // is what the papers are about - for that there is Delete.
             ?>
-            <?php if ($mayBeEdited) : ?>
+            <?php if ($mayBeRecreated) : ?>
                 <?= $this->AuthLink->link(
                     __('Recreate Contract Proposal'),
                     ['action' => 'recreate', $contractProposal->id],
