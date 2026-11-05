@@ -14,7 +14,10 @@ trait EnumOptionsTrait
     /**
      * Return options list for backed enums with labels.
      *
-     * @return array<string, string>
+     * The keys are the backing values, which PHP keeps as the integers they are where the enum is
+     * backed by integers.
+     *
+     * @return array<int|string, string>
      */
     public static function options(): array
     {

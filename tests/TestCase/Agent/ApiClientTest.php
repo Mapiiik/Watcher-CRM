@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Agent;
 
 use App\Agent\ApiClient;
-use Cake\Core\Configure;
+use App\Test\Traits\ConfigureTestTrait;
 use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -17,6 +17,7 @@ use Psr\Http\Message\RequestInterface;
 #[CoversClass(ApiClient::class)]
 class ApiClientTest extends TestCase
 {
+    use ConfigureTestTrait;
     use HttpClientTrait;
 
     /**
@@ -29,8 +30,23 @@ class ApiClientTest extends TestCase
     {
         parent::setUp();
 
-        Configure::write('Agent.url', 'https://agent.example.com');
-        Configure::write('Agent.token', 'secret');
+        $this->withConfigure([
+            'Agent.url' => 'https://agent.example.com',
+            'Agent.token' => 'secret',
+        ]);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        $this->restoreConfigure();
+
+        parent::tearDown();
     }
 
     /**
@@ -62,10 +78,10 @@ class ApiClientTest extends TestCase
             }],
         );
 
-        Configure::write('Agent.verifyTls', true);
+        $this->withConfigure(['Agent.verifyTls' => true]);
         $this->assertTrue(ApiClient::ping('192.0.2.1')->orFail()->reachable);
 
-        Configure::write('Agent.verifyTls', false);
+        $this->withConfigure(['Agent.verifyTls' => false]);
         $this->assertTrue(ApiClient::ping('192.0.2.1')->orFail()->reachable);
 
         $this->assertSame([[true, true, true], [false, false, false]], $checked);

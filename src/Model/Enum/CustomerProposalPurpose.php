@@ -72,13 +72,13 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
     /**
      * The purposes a proposal holding contract proposals may have.
      *
-     * @return array<string, string>
+     * @return array<int|string, string>
      */
     public static function forContractProposals(): array
     {
         return array_filter(
             self::options(),
-            static fn(string $value): bool => self::from($value)->comesBackSigned(),
+            static fn(int|string $value): bool => self::from((string)$value)->comesBackSigned(),
             ARRAY_FILTER_USE_KEY,
         );
     }
@@ -90,7 +90,7 @@ enum CustomerProposalPurpose: string implements EnumLabelInterface
      */
     public static function signed(): array
     {
-        return array_keys(self::forContractProposals());
+        return array_map(strval(...), array_keys(self::forContractProposals()));
     }
 
     /**

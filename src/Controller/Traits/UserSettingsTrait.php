@@ -89,7 +89,7 @@ trait UserSettingsTrait
         // may reach can change after the choice is made, so the redirect checks it again.
         $landingPages = array_filter(
             LandingPage::options(),
-            fn(string $value): bool => $this->isAuthorized(LandingPage::from($value)->url()),
+            fn(int|string $value): bool => $this->isAuthorized(LandingPage::from((string)$value)->url()),
             ARRAY_FILTER_USE_KEY,
         );
 
