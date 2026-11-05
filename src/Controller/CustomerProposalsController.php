@@ -24,9 +24,8 @@ use Exception;
 /**
  * CustomerProposals Controller
  *
- * A proposal put to the customer themselves rather than to any one contract. It travels the
- * road a contract's proposal does - drawn up, sent, signed - and stops there, because nothing
- * stands behind it waiting to be written into the live records.
+ * The one proposal put to a customer, and the envelope the papers of their contracts go out in.
+ * It is drawn up, sent and signed here, and applying what its parts ask for happens here too.
  *
  * @property \App\Model\Table\CustomerProposalsTable $CustomerProposals
  */
@@ -221,7 +220,7 @@ class CustomerProposalsController extends AppController
     /**
      * Records the day the customer signed.
      *
-     * This is where a proposal ends: nothing stands behind it waiting to be applied.
+     * What the parts ask for is applied afterwards, which is a step of its own.
      *
      * @param string|null $id Customer proposal id.
      * @return \Cake\Http\Response|null Redirects when recorded, renders the form otherwise.

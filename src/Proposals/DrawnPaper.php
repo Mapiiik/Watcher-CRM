@@ -83,8 +83,8 @@ final class DrawnPaper
     /**
      * Why the paper cannot be drawn yet, where it cannot.
      *
-     * Asked before the link is offered rather than after it is followed, so that a gap in the
-     * records reads as what is missing instead of as a page that did nothing.
+     * Asked before anything is drawn, so that a gap in the records reads as what is missing
+     * instead of as a page that did nothing.
      *
      * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
      * @param string $document_type Which paper.
