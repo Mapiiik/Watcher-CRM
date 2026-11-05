@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Contracts\Proposal;
 
 use App\Model\Enum\ProposalPurpose;
+use Cake\Validation\Validation;
 
 /**
  * What the head of a proposal says, read as what it asks for.
@@ -103,7 +104,7 @@ final class ProposalForm
     {
         $day = $data['ends_on'] ?? null;
 
-        return is_string($day) && trim($day) !== '' ? [self::ENDS_ON => trim($day)] : [];
+        return is_string($day) && Validation::date(trim($day), 'ymd') ? [self::ENDS_ON => trim($day)] : [];
     }
 
     /**

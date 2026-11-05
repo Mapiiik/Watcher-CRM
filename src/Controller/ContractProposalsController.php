@@ -5,14 +5,13 @@ namespace App\Controller;
 
 use App\Contracts\MinimumConnectionPrice;
 use App\Contracts\Proposal\ProposalChanges;
+use App\Contracts\Proposal\ProposalDrafting;
 use App\Contracts\Proposal\ProposalForm;
 use App\Contracts\Proposal\ProposalReading;
-use App\Contracts\Proposal\ProposalSnapshotBuilder;
 use App\Contracts\Proposal\ProposalTerm;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ProposedEquipment;
-use App\Contracts\Proposal\ProposedVersion;
 use App\Contracts\Proposal\ReadinessChecks;
 use App\Contracts\Proposal\SnapshotShape;
 use App\Contracts\TheUsualTerm;
@@ -21,7 +20,6 @@ use App\Model\Audit\AuditTrail;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\ContractProposal;
-use App\Model\Entity\ContractVersion;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Entity\EquipmentType;
 use App\Model\Enum\CustomerProposalPurpose;
@@ -35,7 +33,6 @@ use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Text;
 use Cake\Validation\Validation;
-use Exception;
 use Files\Service\FileStorage;
 use Throwable;
 
@@ -84,23 +81,6 @@ class ContractProposalsController extends AppController
         'note',
         'terminated_contract_number',
         'customer_proposal_id',
-    ];
-
-    /**
-     * What a contract has to be loaded with for a snapshot to be taken of it - the same as printing
-     * used to load it, because that is what the documents read.
-     *
-     * @var array<mixed>
-     */
-    private const FOR_A_SNAPSHOT = [
-        'Billings' => ['Services' => ['ConnectionProfiles']],
-        'ContractStates',
-        'ContractVersions',
-        'Customers' => ['Addresses', 'Emails', 'Phones', 'AccountingProfiles'],
-        'InstallationAddresses',
-        'IpAddresses',
-        'IpNetworks',
-        'ServiceTypes',
     ];
 
     /**
@@ -159,7 +139,7 @@ class ContractProposalsController extends AppController
         }
 
         if ($this->request->is('post')) {
-            $proposal = $this->fillFromForm($proposal, $this->request->getData());
+            $proposal = (new ProposalDrafting())->fill($proposal, $this->request->getData(), $this->isARedraw());
 
             // The lines are put there against the snapshot, so only a submission that got as far
             // as taking one has anything to end. A form asking to be drawn again never takes one,
@@ -243,8 +223,9 @@ class ContractProposalsController extends AppController
             );
 
             $before = $proposal->stateOfThings();
+            $drafting = new ProposalDrafting();
 
-            if (!$this->photographItAgain($proposal)) {
+            if (!$drafting->takeANewSnapshot($proposal)) {
                 $this->Flash->error(__('A new snapshot of this contract cannot be taken. Delete'
                     . ' the proposal and create a new one.'));
 
@@ -259,24 +240,11 @@ class ContractProposalsController extends AppController
                 ]);
             }
 
-            // Something moving underneath the proposal is why anybody asks for a fresh snapshot, so
-            // a line left pointing at what is gone would only have the saving refused.
-            $asked = $proposal->proposedChanges();
-            $snapshot = $proposal->stateOfThings();
-            $billingsKept = $asked->withoutBillingsGoneFrom($snapshot);
-            $kept = $billingsKept->withoutReturnsGoneFrom($snapshot);
-            $takenBack = count($asked->billings) - count($billingsKept->billings);
-            $returnsTakenBack = count($billingsKept->equipments) - count($kept->equipments);
-
-            if ($kept !== $asked) {
-                $proposal->set('changes', $kept->toArray());
-            }
-
-            (new ProposalTerm())->endWhatIsBilledFor($proposal, $before);
+            $takenBack = $drafting->updateLinesForNewSnapshot($proposal, $before);
 
             if ($this->saveProposal($proposal)) {
-                $this->sayWhatWasTakenBack($takenBack);
-                if ($returnsTakenBack > 0) {
+                $this->sayWhatWasTakenBack($takenBack['billings']);
+                if ($takenBack['returns'] > 0) {
                     $this->Flash->warning(__('A borrowed equipment the proposal ended is no longer on the'
                         . ' contract, so its line has been taken back.'));
                 }
@@ -287,7 +255,7 @@ class ContractProposalsController extends AppController
             }
         }
 
-        $contract = $this->contractFor((string)$proposal->contract_id);
+        $contract = (new ProposalDrafting())->contractFor((string)$proposal->contract_id);
 
         $this->set('contractProposal', $proposal);
         $this->set('questions', $this->readinessQuestions(
@@ -344,47 +312,6 @@ class ContractProposalsController extends AppController
             $discarded,
             $discarded,
         ));
-    }
-
-    /**
-     * Photographs the contract again, as it stands now.
-     *
-     * The same reading the papers were drawn up from, asked of the same records - what the papers
-     * are about does not change here, so it is read off the proposal rather than off a form.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal The papers.
-     * @return bool Whether there was anything left to photograph.
-     */
-    private function photographItAgain(ContractProposal $proposal): bool
-    {
-        $contract = $this->contractFor((string)$proposal->contract_id);
-        // A contract whose service keeps no versions is photographed without one.
-        $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
-        $terminates = $keepsVersions ? $proposal->terminates_contract_version_id : null;
-        $needsOne = $proposal->purpose->needsAVersion();
-        $version = match (true) {
-            $contract === null, !$keepsVersions, !$needsOne => null,
-            $proposal->contract_version_id !== null => $this->versionFor($proposal->contract_version_id),
-            // Papers for a new contract may be about a version that is still to come, and are
-            // photographed as it will be, the same way they were when they were drawn up.
-            default => $this->versionToCome($contract->id, [
-                'effective_from' => $proposal->effective_from?->toDateString(),
-                'changes' => $proposal->changes,
-            ]),
-        };
-
-        if ($contract === null || ($version === null && $keepsVersions && $needsOne)) {
-            return false;
-        }
-
-        $proposal->set('snapshot', (new ProposalSnapshotBuilder())->take(
-            $contract,
-            $version,
-            $terminates === null ? null : $this->versionFor($terminates),
-        ));
-        $proposal->set('snapshot_taken', DateTime::now());
-
-        return true;
     }
 
     /**
@@ -991,7 +918,7 @@ class ContractProposalsController extends AppController
      */
     private function servicesFor(ContractProposal $proposal, array $keep = []): SelectQuery
     {
-        $contract = $this->contractFor((string)$proposal->contract_id);
+        $contract = (new ProposalDrafting())->contractFor((string)$proposal->contract_id);
         $keep = array_values(array_filter($keep));
 
         $query = $this->ContractProposals->Contracts->Billings->Services
@@ -1073,209 +1000,6 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * Puts what the form said onto the papers being drawn up, and photographs the contract.
-     *
-     * Only ever while they are being drawn: every field here settles something that is then either
-     * photographed or written into the changes, so reading any of it a second time would leave the
-     * papers printing one thing and the records doing another. Papers already written are put
-     * right on a page of their own, which asks for none of this.
-     *
-     * Which contract the papers are about comes from the form like everything else: the address
-     * only fills that field in, so what was chosen there stands even where it is not the contract
-     * the form was opened under.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal The proposal being drawn up.
-     * @param array<string, mixed> $data What the form sent.
-     * @return \App\Model\Entity\ContractProposal
-     */
-    private function fillFromForm(ContractProposal $proposal, array $data): ContractProposal
-    {
-        // The form asking to be drawn again is not an attempt to save, so a half-filled one is
-        // expected rather than wrong.
-        $redrawing = $this->isARedraw();
-
-        $form = new ProposalForm();
-        $purpose = $this->purposeFrom($data, $proposal);
-        $data['purpose'] = $purpose->value;
-
-        // A contract whose service keeps no versions has none to choose, change or photograph.
-        $contract = $this->contractFor((string)($data['contract_id'] ?? $proposal->contract_id));
-        $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
-
-        if (!$keepsVersions) {
-            $data['contract_version_id'] = null;
-            $data['terminates_contract_version_id'] = null;
-        }
-
-        // An exchange of borrowed equipments names no version and replaces nothing.
-        if (!$purpose->needsAVersion()) {
-            $data['contract_version_id'] = null;
-            $data['terminates_contract_version_id'] = null;
-            $data['terminated_contract_number'] = null;
-        }
-
-        // The billings are added a line at a time afterwards and never travel in this submission.
-        $data['changes'] = $form->changesFrom($data, $purpose, $keepsVersions);
-        $data['confirmations'] = $form->confirmationsFrom($data);
-        // Setting the connection up again is asked only of a new contract replacing an earlier one.
-        $data['reactivates'] = $purpose === ProposalPurpose::NewContract
-            && !empty($data['terminates_contract_version_id'])
-            && !empty($data['reactivates']);
-        $ends = $this->endOfTheVersion($data);
-
-        // The form's own fields have been read by now, and the marshaller must not see them: it
-        // would take a name it shares with an association for a record of its own.
-        unset(
-            $data['version_change'],
-            $data['version_change_named'],
-            $data['ends_on'],
-            $data['version_only'],
-            $data['refresh'],
-        );
-
-        $version = $this->versionFor(
-            (string)($data['contract_version_id'] ?? $proposal->contract_version_id),
-        );
-
-        // A form asking to be drawn again is not an attempt to save, so nothing is held against it
-        // - and the day is left exactly as it was typed. Filling it in here is what would make the
-        // day of one version stay behind in the field after another was chosen.
-        if ($redrawing) {
-            return $this->ContractProposals->patchEntity($proposal, $data, ['validate' => false]);
-        }
-
-        // The day the papers take effect is asked for only where they are a change agreed while the
-        // version runs, and even there it may be left empty. An ending works it out from the day it
-        // ends on, because what is billed for stops the day before the papers apply. Anything else
-        // takes effect with its version.
-        $said = $data['effective_from'] ?? null;
-        $saidNothing = !is_string($said) || trim($said) === '';
-
-        if ($purpose === ProposalPurpose::Termination) {
-            if ($ends === null) {
-                $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
-                    'validate' => false,
-                ]);
-                $proposal->setError('ends_on', [__('Enter the last day of the service.')]);
-
-                return $proposal;
-            }
-
-            $data['effective_from'] = $ends->addDays(1)->toDateString();
-        } elseif (!$purpose->needsAVersion()) {
-            // The day it is drawn up. The day the equipment changes hands is written in by hand on
-            // the protocol and said again when the changes are applied.
-            $data['effective_from'] = Date::today()->toDateString();
-        } elseif (!$keepsVersions) {
-            // With no version to take the day from, the day has to be said.
-            if ($saidNothing) {
-                $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
-                    'validate' => false,
-                ]);
-                $proposal->setError('effective_from', [__('Enter the day the proposal takes'
-                    . ' effect.')]);
-
-                return $proposal;
-            }
-        } elseif ($version !== null && ($saidNothing || !$purpose->asksForItsOwnDay())) {
-            $data['effective_from'] = $version->valid_from->toDateString();
-        }
-
-        if ($contract !== null && (!$keepsVersions || !$purpose->needsAVersion())) {
-            $data['snapshot'] = (new ProposalSnapshotBuilder())->take($contract, null);
-            $data['snapshot_taken'] = DateTime::now();
-        } else {
-            $terminates = $data['terminates_contract_version_id']
-                ?? $proposal->terminates_contract_version_id;
-            $terminated = $terminates === null ? null : $this->versionFor((string)$terminates);
-
-            // Papers for a new contract may be about a version that is still to come, and carrying
-            // them over is what brings it into being. Anything else is about a version that is
-            // already there, so one has to be named.
-            $mayStartOne = $purpose->mayStartAVersion();
-
-            if ($contract === null || ($version === null && !$mayStartOne)) {
-                // Without those there is nothing to take a snapshot of, and the columns that would
-                // hold one are not on the form - so it is said where the operator is looking,
-                // with everything they typed still in front of them.
-                $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
-                    'validate' => false,
-                ]);
-                $proposal->setError(
-                    $contract === null ? 'contract_id' : 'contract_version_id',
-                    [__('Choose which contract and which version of it this contract proposal'
-                        . ' is for.')],
-                );
-
-                return $proposal;
-            }
-
-            // A version that is still to come is photographed as it will be, so that the papers
-            // print the same either way and the record ends up saying what they said.
-            $snapshotted = $version ?? $this->versionToCome($contract->id, $data);
-
-            if ($snapshotted === null) {
-                $proposal = $this->ContractProposals->patchEntity($proposal, $data, [
-                    'validate' => false,
-                ]);
-                $proposal->setError(
-                    'effective_from',
-                    [__('Enter the day the new contract starts.')],
-                );
-
-                return $proposal;
-            }
-
-            $data['snapshot'] = (new ProposalSnapshotBuilder())->take($contract, $snapshotted, $terminated);
-            $data['snapshot_taken'] = DateTime::now();
-        }
-
-        return $this->ContractProposals->patchEntity($proposal, $data);
-    }
-
-    /**
-     * What the papers are being drawn up for.
-     *
-     * The purpose settles what the rest of the submission means, so it is read before any of it.
-     * A form that has never named one is drawing up a new contract, which is the common case.
-     *
-     * @param array<string, mixed> $data What the form sent.
-     * @param \App\Model\Entity\ContractProposal $proposal The proposal being filled in.
-     * @return \App\Model\Enum\ProposalPurpose
-     */
-    private function purposeFrom(array $data, ContractProposal $proposal): ProposalPurpose
-    {
-        $said = $data['purpose'] ?? null;
-
-        if (is_string($said) && ProposalPurpose::tryFrom($said) !== null) {
-            return ProposalPurpose::from($said);
-        }
-
-        return $proposal->purpose ?? ProposalPurpose::NewContract;
-    }
-
-    /**
-     * The day an ending says the version stops being valid on, as the form gave it.
-     *
-     * @param array<string, mixed> $data What the form sent.
-     * @return \Cake\I18n\Date|null
-     */
-    private function endOfTheVersion(array $data): ?Date
-    {
-        $day = $data['ends_on'] ?? null;
-
-        if (!is_string($day) || trim($day) === '') {
-            return null;
-        }
-
-        try {
-            return new Date(trim($day));
-        } catch (Exception) {
-            return null;
-        }
-    }
-
-    /**
      * One of the things a link may have settled before the form was opened.
      *
      * @param string $what Which one.
@@ -1303,7 +1027,7 @@ class ContractProposalsController extends AppController
             return false;
         }
 
-        $contract = $this->contractFor((string)$proposal->contract_id);
+        $contract = (new ProposalDrafting())->contractFor((string)$proposal->contract_id);
 
         // The questions are about what goes on paper, and a contract that keeps no versions has none.
         if ($contract !== null && $proposal->keepsVersions() && $proposal->purpose->needsAVersion()) {
@@ -1381,90 +1105,6 @@ class ContractProposalsController extends AppController
     }
 
     /**
-     * The contract, loaded with everything a snapshot and the readiness checks read.
-     *
-     * @param string $id Which contract.
-     * @return \App\Model\Entity\Contract|null
-     */
-    private function contractFor(string $id): ?Contract
-    {
-        if ($id === '') {
-            return null;
-        }
-
-        /** @var \App\Model\Entity\Contract|null $contract */
-        $contract = $this->ContractProposals->Contracts
-            ->find()
-            ->contain(self::FOR_A_SNAPSHOT)
-            ->contain('BorrowedEquipments.EquipmentTypes', fn(SelectQuery $q): SelectQuery => $q->where([
-                'BorrowedEquipments.borrowed_until IS' => null,
-            ]))
-            ->contain('SoldEquipments.EquipmentTypes', fn(SelectQuery $q): SelectQuery => $q->where([
-                'SoldEquipments.date_of_sale IS' => null,
-            ]))
-            ->where(['Contracts.id' => $id])
-            ->first();
-
-        return $contract;
-    }
-
-    /**
-     * The version the papers will bring into being, as they say it will be.
-     *
-     * Unsaved, and only ever photographed: what actually creates it is applying the proposal.
-     * It starts on the day the papers take effect, which for a new contract is the same day said
-     * twice, so without that day there is nothing to draw.
-     *
-     * @param string $contract_id Whose version it will be.
-     * @param array<string, mixed> $data What the form said.
-     * @return \App\Model\Entity\ContractVersion|null
-     */
-    private function versionToCome(string $contract_id, array $data): ?ContractVersion
-    {
-        $said = $data['effective_from'] ?? null;
-
-        if (!is_string($said) || trim($said) === '') {
-            return null;
-        }
-
-        $asked = ProposedVersion::fromArray((array)($data['changes']['version'] ?? []));
-
-        /** @var \App\Model\Entity\ContractVersion $version */
-        $version = $this->ContractProposals->ContractVersions->newEmptyEntity();
-
-        $version->set('contract_id', $contract_id);
-        $version->set('valid_from', new Date($said));
-        $version->set('valid_until', $asked->names('valid_until') ? $asked->get('valid_until') : null);
-        $version->set(
-            'obligation_until',
-            $asked->names('obligation_until') ? $asked->get('obligation_until') : null,
-        );
-
-        return $version;
-    }
-
-    /**
-     * One contract version.
-     *
-     * @param string $id Which version.
-     * @return \App\Model\Entity\ContractVersion|null
-     */
-    private function versionFor(string $id): ?ContractVersion
-    {
-        if ($id === '') {
-            return null;
-        }
-
-        /** @var \App\Model\Entity\ContractVersion|null $version */
-        $version = $this->ContractProposals->ContractVersions
-            ->find()
-            ->where(['ContractVersions.id' => $id])
-            ->first();
-
-        return $version;
-    }
-
-    /**
      * What the form needs to draw itself.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
@@ -1472,7 +1112,7 @@ class ContractProposalsController extends AppController
      */
     private function setFormViewVars(ContractProposal $proposal): void
     {
-        $contract = $this->contractFor(
+        $contract = (new ProposalDrafting())->contractFor(
             (string)($proposal->contract_id ?? $this->contract_id ?? $this->named('contract_id') ?? ''),
         );
 
@@ -1498,7 +1138,7 @@ class ContractProposalsController extends AppController
         );
         $contractNumbers = $this->numbersOfferedFor($contract);
 
-        $version = $this->versionFor((string)$proposal->contract_version_id);
+        $version = (new ProposalDrafting())->versionFor((string)$proposal->contract_version_id);
 
         // The day the field falls back on when it is left empty, so the hint can name it.
         $effectiveFromDefault = $version?->valid_from;
@@ -1515,7 +1155,9 @@ class ContractProposalsController extends AppController
         // so the form says what is missing where the operator chooses it.
         $replacing = $purpose === ProposalPurpose::NewContract && $keepsVersions && $contract !== null;
         $nothingToReplace = $replacing && $versions->count() === 0;
-        $toReplace = $replacing ? $this->versionFor((string)$proposal->terminates_contract_version_id) : null;
+        $toReplace = $replacing
+            ? (new ProposalDrafting())->versionFor((string)$proposal->terminates_contract_version_id)
+            : null;
         $unconcludedToReplace = $toReplace?->conclusion_date === null ? $toReplace : null;
 
         // The envelopes of this customer that are still open, so papers drawn up now can go out
