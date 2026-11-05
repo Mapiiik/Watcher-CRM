@@ -10,6 +10,7 @@ use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
+use App\Pdf\HandoverProtocolPDF;
 use App\Service\ContractPrint\ContractPrintData;
 use App\Service\ContractPrint\ContractPrintDataEnricher;
 use Cake\ORM\Query\SelectQuery;
@@ -153,16 +154,18 @@ trait ContractPapersTrait
     {
         (new ContractPrintDataEnricher())->enrich($data);
 
-        $pdf = $data->type === ContractDocumentType::ContractSummary
-            ? new ContractSummaryPDF()
-            : new ContractPDF();
+        $pdf = match (true) {
+            $data->type === ContractDocumentType::ContractSummary => new ContractSummaryPDF(),
+            $data->type->isHandoverProtocol() => new HandoverProtocolPDF(),
+            default => new ContractPDF(),
+        };
 
         $pdf->setDocCreationTimestamp(0);
         $pdf->setDocModificationTimestamp(0);
 
         match (true) {
             $pdf instanceof ContractSummaryPDF => $pdf->generateContractSummary($data),
-            $data->type->isHandoverProtocol() => $pdf->generateHandoverProtocol($data),
+            $pdf instanceof HandoverProtocolPDF => $pdf->generateHandoverProtocol($data),
             default => $pdf->generateContract($data),
         };
 

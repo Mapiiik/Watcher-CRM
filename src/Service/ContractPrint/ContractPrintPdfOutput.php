@@ -7,6 +7,7 @@ use App\Documents\PrintedDocument;
 use App\Model\Enum\ContractDocumentType;
 use App\Pdf\ContractPDF;
 use App\Pdf\ContractSummaryPDF;
+use App\Pdf\HandoverProtocolPDF;
 use Cake\I18n\Date;
 use Cake\I18n\I18n;
 use Settings\Utility\Settings;
@@ -39,20 +40,16 @@ final class ContractPrintPdfOutput
     {
         $this->initializeLocale();
 
-        // The summary is its own document with its own layout, so it is its own generator too.
-        $pdf = $data->type === ContractDocumentType::ContractSummary
-            ? new ContractSummaryPDF()
-            : new ContractPDF();
+        $pdf = match (true) {
+            $data->type === ContractDocumentType::ContractSummary => new ContractSummaryPDF(),
+            $data->type->isHandoverProtocol() => new HandoverProtocolPDF(),
+            default => new ContractPDF(),
+        };
 
         match (true) {
-            $pdf instanceof ContractSummaryPDF
-                => $pdf->generateContractSummary($data),
-
-            $data->type->isHandoverProtocol()
-                => $pdf->generateHandoverProtocol($data),
-
-            default
-                => $pdf->generateContract($data),
+            $pdf instanceof ContractSummaryPDF => $pdf->generateContractSummary($data),
+            $pdf instanceof HandoverProtocolPDF => $pdf->generateHandoverProtocol($data),
+            default => $pdf->generateContract($data),
         };
 
         $filename = $this->filename($data, false);
