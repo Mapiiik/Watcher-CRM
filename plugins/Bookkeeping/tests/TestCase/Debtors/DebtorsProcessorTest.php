@@ -456,6 +456,37 @@ class DebtorsProcessorTest extends TestCase
     }
 
     /**
+     * VIP goes by the contract. A customer whose television runs on a VIP contract keeps it, and one
+     * whose VIP contract is for something else loses it with everything else they have.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::customersLeftWithNothing()
+     */
+    public function testATelevisionContractThatIsVipKeepsTheTelevision(): void
+    {
+        $contracts = $this->fetchTable('Contracts');
+        $television = (string)$contracts->get(self::CONTRACT_ID)->service_type_id;
+        $everything = $contracts->find()
+            ->where(['Contracts.customer_id' => self::CUSTOMER_ID])
+            ->all()
+            ->extract('id')
+            ->toList();
+        $leftWithNothing = fn(): array => (new ReflectionMethod(DebtorsProcessor::class, 'customersLeftWithNothing'))
+            ->invoke(new DebtorsProcessor(), $everything);
+
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_id', $television);
+
+        $contracts->updateAll(['vip' => false], ['1 = 1']);
+        $this->assertSame([self::CUSTOMER_ID], $leftWithNothing(), 'Nothing of theirs is VIP.');
+
+        $contracts->updateAll(['vip' => true], ['id' => self::CONTRACT_ID]);
+        $this->assertSame([], $leftWithNothing(), 'The television is on a VIP contract.');
+
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_id', '');
+        $this->assertSame([self::CUSTOMER_ID], $leftWithNothing(), 'Nobody said which contract is the television.');
+    }
+
+    /**
      * @param \Bookkeeping\Debtors\DebtorsProcessor $processor What processed.
      * @return void
      */

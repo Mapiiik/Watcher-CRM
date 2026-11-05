@@ -688,7 +688,7 @@ class DebtorsProcessor
      * Television is sold to a person rather than to one of their contracts - the provider
      * knows them by their customer number and nothing finer - so it can only be switched off
      * when there is nothing of theirs left running. Cutting one contract of three does not
-     * take the television with it.
+     * take the television with it, and neither does cutting anybody whose television is VIP.
      *
      * @param list<string> $blocked_contract_ids The contracts being blocked.
      * @return list<string> Customer ids.
@@ -723,12 +723,32 @@ class DebtorsProcessor
                 ])
                 ->count();
 
-            if ($still_running === 0) {
+            if ($still_running === 0 && !$this->holdsAVipTelevision((string)$customer_id)) {
                 $left[] = (string)$customer_id;
             }
         }
 
         return $left;
+    }
+
+    /**
+     * Whether the customer's television runs on a VIP contract.
+     *
+     * VIP goes by the contract, and the television service knows nothing of contracts, so this is
+     * where the two meet. Which contracts are for television is a setting: nothing else says so.
+     *
+     * @param string $customer_id The customer.
+     * @return bool
+     */
+    private function holdsAVipTelevision(string $customer_id): bool
+    {
+        $serviceType = Settings::getString('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_id');
+
+        return $serviceType !== '' && $this->fetchTable(ContractsTable::class)->exists([
+            'Contracts.customer_id' => $customer_id,
+            'Contracts.service_type_id' => $serviceType,
+            'Contracts.vip' => true,
+        ]);
     }
 
     /**
