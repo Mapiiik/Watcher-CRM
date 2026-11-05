@@ -120,7 +120,7 @@ class InvoicesController extends AppController
             'total_overdue_debt',
             $query
                 ->cleanCopy() // clone the query to avoid modifying the original one
-                ->where(['Invoices.due_date < NOW()'])
+                ->where(['Invoices.due_date <' => Date::today()])
                 ->first()?->get('debt_sum') ?? 0,
         );
 

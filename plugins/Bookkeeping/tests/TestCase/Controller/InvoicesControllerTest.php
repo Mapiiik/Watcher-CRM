@@ -5,6 +5,7 @@ namespace Bookkeeping\Test\TestCase\Controller;
 
 use App\Test\Traits\ControllerTestTrait;
 use Bookkeeping\Controller\InvoicesController;
+use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -46,6 +47,26 @@ class InvoicesControllerTest extends TestCase
         $this->get('/bookkeeping/invoices');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * An invoice due today is not overdue yet, the same as for the debtors the blocking goes by.
+     *
+     * @return void
+     * @link \Bookkeeping\Controller\InvoicesController::index()
+     */
+    public function testAnInvoiceDueTodayIsNotOverdue(): void
+    {
+        $this->getTableLocator()->get('Bookkeeping.Invoices')->updateAll(
+            ['due_date' => Date::today()->toDateString()],
+            ['1 = 1'],
+        );
+
+        $this->login();
+        $this->get('/bookkeeping/invoices');
+
+        $this->assertResponseOk();
+        $this->assertEquals(0, $this->viewVariable('total_overdue_debt'));
     }
 
     /**
