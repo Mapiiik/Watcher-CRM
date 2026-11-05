@@ -3,12 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Contracts\Proposal\ChangeApplication;
-use App\Contracts\Proposal\ChangePlan;
-use App\Contracts\Proposal\ChangePreview;
 use App\Contracts\Proposal\ProposalReading;
-use App\Model\Audit\AuditTrail;
-use App\Model\Entity\ContractProposal;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
@@ -196,7 +191,7 @@ class CustomerProposalsController extends AppController
 
             $proposal = $this->CustomerProposals->patchEntity($proposal, $said, ['validate' => 'sent']);
 
-            if ($this->recordAcrossTheProposal($proposal, ProposalStep::Delivered)) {
+            if ((new WholeProposal())->recordStep($proposal, ProposalStep::Delivered)) {
                 $this->Flash->success(__('The proposal has been recorded as sent.'));
 
                 return $this->onFromTheStep((string)$proposal->id);
@@ -239,7 +234,7 @@ class CustomerProposalsController extends AppController
             $said = ['conclusion_date' => $this->request->getData('conclusion_date')];
             $proposal = $this->CustomerProposals->patchEntity($proposal, $said, ['validate' => 'signed']);
 
-            if ($this->recordAcrossTheProposal($proposal, ProposalStep::Signed)) {
+            if ((new WholeProposal())->recordStep($proposal, ProposalStep::Signed)) {
                 $this->Flash->success(__('The signature has been recorded.'));
 
                 return $this->onFromTheStep((string)$proposal->id);
@@ -288,55 +283,6 @@ class CustomerProposalsController extends AppController
     }
 
     /**
-     * Writes the step onto the proposal, which is what everything in it reads.
-     *
-     * One place rather than one place per set of papers: the envelope went out in one piece and
-     * came back in one, so the day is the envelope's and the papers inside it answer with it.
-     *
-     * A signed consent is also what the customer's own record has been waiting for. The flag used
-     * to be ticked by hand, so a customer could read as having refused while their signed consent
-     * sat on file - this is the same thing the contract's side does when papers are applied.
-     *
-     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
-     * @param \App\Model\Enum\ProposalStep $step Which step is being taken.
-     * @return bool
-     */
-    private function recordAcrossTheProposal(
-        CustomerProposal $proposal,
-        ProposalStep $step,
-    ): bool {
-        $trail = new AuditTrail();
-
-        $recorded = (bool)$this->CustomerProposals->getConnection()->transactional(
-            function () use ($proposal, $step, $trail): bool {
-                if (!$this->CustomerProposals->save($proposal, $trail->options())) {
-                    return false;
-                }
-
-                if ($step === ProposalStep::Signed && $proposal->purpose === CustomerProposalPurpose::GdprConsent) {
-                    $customers = $this->CustomerProposals->Customers;
-                    $customer = $customers->get($proposal->customer_id);
-
-                    if ($customer->agree_gdpr !== true) {
-                        $customers->saveOrFail(
-                            $customers->patchEntity($customer, ['agree_gdpr' => true]),
-                            $trail->options(),
-                        );
-                    }
-                }
-
-                return true;
-            },
-        );
-
-        if ($recorded) {
-            $trail->flush($this->CustomerProposals, $proposal);
-        }
-
-        return $recorded;
-    }
-
-    /**
      * Applies what the whole proposal asks for to the live records.
      *
      * Spelled out a contract at a time, because that is what each part asks about and what each
@@ -359,34 +305,11 @@ class CustomerProposalsController extends AppController
             return $this->onFromTheStep((string)$id);
         }
 
-        $preview = new ChangePreview();
-        $plan = new ChangePlan();
-        $parts = [];
-        $anythingGone = false;
-
-        foreach ((new WholeProposal())->partsOf((string)$proposal->id) as $papers) {
-            if (!$papers->isDueFor(ProposalStep::Applied)) {
-                continue;
-            }
-
-            $found = $preview->of($papers);
-            $anythingGone = $anythingGone || $preview->anythingIsGone($found);
-            $movesEquipment = $papers->proposedChanges()->equipments !== [];
-
-            $parts[] = [
-                'papers' => $papers,
-                'found' => $found,
-                'planned' => $plan->of($papers),
-                'billingsNow' => $preview->billingsNow($papers),
-                'billingsAfterwards' => $preview->billingsAfterwards($papers),
-                'equipmentMoved' => $preview->equipmentMoved($papers),
-                // Asked only where equipment changes hands, and said on the papers' own day
-                // unless the operator knows it happened on another.
-                'handedOverOn' => $movesEquipment
-                    ? $this->handedOverOn($papers) ?? ChangeApplication::handedOverOnByDefault($papers)
-                    : null,
-            ];
-        }
+        $whole = new WholeProposal();
+        $parts = $whole->dueToBeApplied(
+            (string)$proposal->id,
+            (array)($this->request->getData('handed_over_on') ?? []),
+        );
 
         if ($parts === []) {
             $this->Flash->warning(__('There are no changes left to apply in this proposal.'));
@@ -397,15 +320,15 @@ class CustomerProposalsController extends AppController
         // Two questions, not one. Whether the page still has a form to show asks what this reader
         // could allow; whether the button may write asks what they actually did allow. Rolled into
         // one, the form would be hidden from the only person who can unhide it.
-        $leaveOut = $anythingGone && $this->mayLeaveLinesOut();
+        $leaveOut = $whole->anythingIsGone($parts) && $this->mayLeaveLinesOut();
         $leavingOut = $leaveOut && $this->request->getData(self::LEAVE_OUT_WHAT_IS_GONE) == '1';
-        $stopped = $this->anythingStops($parts, $preview, $leaveOut);
+        $stopped = $whole->anythingStops($parts, $leaveOut);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            if ($this->anythingStops($parts, $preview, $leavingOut)) {
+            if ($whole->anythingStops($parts, $leavingOut)) {
                 $this->Flash->error(__('The changes of this proposal cannot be applied in its'
                     . ' current state.'));
-            } elseif ($this->anyHandoverIsStillToCome($parts)) {
+            } elseif ($whole->anyHandoverIsStillToCome($parts)) {
                 $this->Flash->error(__('Borrowed equipments cannot be recorded as handed over on a'
                     . ' day still to come.'));
             } elseif ($this->applyTheWholePackage($parts, $leavingOut)) {
@@ -429,66 +352,6 @@ class CustomerProposalsController extends AppController
     }
 
     /**
-     * The day the operator says one part's equipment changed hands, where they said one.
-     *
-     * @param \App\Model\Entity\ContractProposal $papers The part.
-     * @return \Cake\I18n\Date|null
-     */
-    private function handedOverOn(ContractProposal $papers): ?Date
-    {
-        $said = $this->request->getData('handed_over_on.' . $papers->id);
-
-        if (!is_string($said) || trim($said) === '') {
-            return null;
-        }
-
-        try {
-            return new Date(trim($said));
-        } catch (Exception) {
-            return null;
-        }
-    }
-
-    /**
-     * Whether any part says its equipment changed hands on a day still to come.
-     *
-     * @param array<array<string, mixed>> $parts What is to be applied.
-     * @return bool
-     */
-    private function anyHandoverIsStillToCome(array $parts): bool
-    {
-        foreach ($parts as $part) {
-            if ($part['handedOverOn'] instanceof Date && $part['handedOverOn']->greaterThan(Date::today())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Whether anything across the package stands in the way of applying it.
-     *
-     * @param array<array<string, mixed>> $parts What is to be applied.
-     * @param \App\Contracts\Proposal\ChangePreview $preview What asks the question.
-     * @param bool $leavingOut Whether a line whose billing has gone is passed over.
-     * @return bool
-     */
-    private function anythingStops(array $parts, ChangePreview $preview, bool $leavingOut): bool
-    {
-        foreach ($parts as $part) {
-            /** @var array<int, array{what: string, said: string}> $found */
-            $found = $part['found'];
-
-            if ($preview->anythingStopsIt($found, $leavingOut)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Writes every part of the package, or none of it.
      *
      * @param array<array<string, mixed>> $parts What is to be applied.
@@ -498,33 +361,16 @@ class CustomerProposalsController extends AppController
      */
     private function applyTheWholePackage(array $parts, bool $leavingOut = false): bool
     {
-        $by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
-        $reaching = $this->mayReachIntoClosedPeriods()
-            && $this->request->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1';
-        $belowMinimum = $this->mayGoBelowMinimum()
-            && $this->request->getData(BillingsTable::ALLOW_BELOW_MINIMUM) == '1';
-        $catchingUp = $this->mayOverride() && $this->request->getData(self::CATCHING_UP) == '1';
-
-        // Every part under one trail, written out after the transaction: audit-stash queues
-        // what it logs and nothing inside a transaction ever reaches the log on its own.
-        $trail = new AuditTrail();
-
         try {
-            $this->CustomerProposals->getConnection()->transactional(
-                function () use ($parts, $by, $reaching, $belowMinimum, $leavingOut, $trail, $catchingUp): void {
-                    foreach ($parts as $part) {
-                        (new ChangeApplication())->apply(
-                            $part['papers'],
-                            $by,
-                            $reaching,
-                            $belowMinimum,
-                            $leavingOut,
-                            $trail,
-                            $part['handedOverOn'] ?? null,
-                            $catchingUp,
-                        );
-                    }
-                },
+            (new WholeProposal())->apply(
+                parts: $parts,
+                by: $this->getRequest()->getAttribute('identity')['id'] ?? null,
+                reach_into_closed_periods: $this->mayReachIntoClosedPeriods()
+                    && $this->request->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1',
+                go_below_minimum: $this->mayGoBelowMinimum()
+                    && $this->request->getData(BillingsTable::ALLOW_BELOW_MINIMUM) == '1',
+                leave_out_what_is_gone: $leavingOut,
+                catching_up: $this->mayOverride() && $this->request->getData(self::CATCHING_UP) == '1',
             );
         } catch (Exception $failure) {
             $this->Flash->error(__(
@@ -534,8 +380,6 @@ class CustomerProposalsController extends AppController
 
             return false;
         }
-
-        $trail->flush($this->CustomerProposals, $parts[0]['papers']);
 
         $this->Flash->success(__n(
             'The changes of the proposal have been applied to the live records.',

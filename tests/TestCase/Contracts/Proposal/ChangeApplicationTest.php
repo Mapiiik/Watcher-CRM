@@ -8,6 +8,7 @@ use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\ProposalPurpose;
 use App\Model\Table\BillingsTable;
+use App\Proposals\WholeProposal;
 use App\Test\Traits\TableTestTrait;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
@@ -230,6 +231,42 @@ class ChangeApplicationTest extends TestCase
 
         $this->assertSame('This proposal has already been settled.', $refused);
         $this->assertSame($billings, $this->billingCount());
+    }
+
+    /**
+     * A package is written whole or not at all: one part refused takes back what the parts before
+     * it wrote, and nothing reads as applied.
+     *
+     * @return void
+     * @link \App\Proposals\WholeProposal::apply()
+     */
+    public function testOnePartRefusedTakesTheWholePackageBack(): void
+    {
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => $this->nextMonth()->toDateString(),
+            'changes' => ['billings' => [[
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => false,
+                'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
+                'quantity' => 1,
+                'price' => '299.00',
+            ]]],
+        ]);
+        $billings = $this->billingCount();
+
+        $refused = null;
+
+        try {
+            // the same papers twice: the second is refused once the first has been written
+            (new WholeProposal())->apply([['papers' => $proposal], ['papers' => clone $proposal]], null);
+        } catch (RuntimeException $failure) {
+            $refused = $failure->getMessage();
+        }
+
+        $this->assertSame('This proposal has already been settled.', $refused);
+        $this->assertSame($billings, $this->billingCount());
+        $this->assertNull($this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->applied);
     }
 
     /**
