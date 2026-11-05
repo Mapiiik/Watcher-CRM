@@ -474,7 +474,11 @@ class DebtorsProcessorTest extends TestCase
         $leftWithNothing = fn(): array => (new ReflectionMethod(DebtorsProcessor::class, 'customersLeftWithNothing'))
             ->invoke(new DebtorsProcessor(), $everything);
 
-        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_id', $television);
+        // more than one kind of contract can be for television, and any of them will do
+        Settings::set(
+            'bookkeeping.debtors.blocking.services.sledovani_tv.service_type_ids',
+            ['aaaaaaaa-0000-4000-8000-000000000001', $television],
+        );
 
         $contracts->updateAll(['vip' => false], ['1 = 1']);
         $this->assertSame([self::CUSTOMER_ID], $leftWithNothing(), 'Nothing of theirs is VIP.');
@@ -482,7 +486,7 @@ class DebtorsProcessorTest extends TestCase
         $contracts->updateAll(['vip' => true], ['id' => self::CONTRACT_ID]);
         $this->assertSame([], $leftWithNothing(), 'The television is on a VIP contract.');
 
-        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_id', '');
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_ids', []);
         $this->assertSame([self::CUSTOMER_ID], $leftWithNothing(), 'Nobody said which contract is the television.');
     }
 

@@ -288,8 +288,8 @@ return [
                     'sledovani_tv' => [
                         'enabled' => new BoolType(default: true),
 
-                        // the service type of the contracts for television, for a VIP one to count
-                        'service_type_id' => '',
+                        // the service types of the contracts for television, for a VIP one to count
+                        'service_type_ids' => ListType::ofStrings(default: []),
                     ],
                     'routers' => [
                         'enabled' => new BoolType(default: true),

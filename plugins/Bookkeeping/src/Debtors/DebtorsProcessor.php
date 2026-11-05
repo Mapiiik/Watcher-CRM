@@ -625,11 +625,14 @@ class DebtorsProcessor
      */
     private function holdsAVipTelevision(string $customer_id): bool
     {
-        $serviceType = Settings::getString('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_id');
+        $serviceTypes = (array)Settings::get(
+            'bookkeeping.debtors.blocking.services.sledovani_tv.service_type_ids',
+            [],
+        );
 
-        return $serviceType !== '' && $this->fetchTable(ContractsTable::class)->exists([
+        return $serviceTypes !== [] && $this->fetchTable(ContractsTable::class)->exists([
             'Contracts.customer_id' => $customer_id,
-            'Contracts.service_type_id' => $serviceType,
+            'Contracts.service_type_id IN' => $serviceTypes,
             'Contracts.vip' => true,
         ]);
     }
