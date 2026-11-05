@@ -16,6 +16,7 @@ use Cake\TestSuite\TestCase;
 use PhpCollective\DecimalObject\Decimal;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
+use ReflectionProperty;
 
 /**
  * App\Contracts\Proposal\ProposalProjection Test Case
@@ -244,6 +245,37 @@ class ProposalProjectionTest extends TestCase
         ]);
 
         $this->assertSame('A tariff', $projected[array_key_last($projected)]->name);
+    }
+
+    /**
+     * What starts first comes first, however days are written. A paper is printed with the day in
+     * front, and read as text the first of January comes before the first of December before it.
+     *
+     * @return void
+     */
+    public function testTheOrderGoesByTheDayNotByHowItIsWritten(): void
+    {
+        $december = $this->billing('b1', 'December');
+        $december->set('billing_from', new Date('2026-12-01'));
+        $january = $this->billing('b2', 'January');
+        $january->set('billing_from', new Date('2027-01-01'));
+
+        $format = (new ReflectionProperty(Date::class, '_toStringFormat'))->getValue();
+        Date::setToStringFormat('dd.MM.yyyy');
+
+        try {
+            $projected = $this->project([$january, $december], []);
+            $rows = (new ProposalProjection())->explain(
+                [$january, $december],
+                ProposalChanges::fromArray([]),
+                new Date(self::EFFECTIVE_FROM),
+            );
+        } finally {
+            Date::setToStringFormat($format);
+        }
+
+        $this->assertSame('December', $projected[0]->name);
+        $this->assertSame('December', $rows[0]['billing']->name);
     }
 
     /**

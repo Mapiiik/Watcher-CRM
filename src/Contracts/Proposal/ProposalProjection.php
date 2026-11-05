@@ -150,11 +150,7 @@ final class ProposalProjection
             }
         }
 
-        usort(
-            $rows,
-            fn(array $one, array $other): int => [(string)$one['billing']->billing_from, (string)$one['billing']->name]
-                <=> [(string)$other['billing']->billing_from, (string)$other['billing']->name],
-        );
+        usort($rows, fn(array $one, array $other): int => $this->compare($one['billing'], $other['billing']));
 
         return $rows;
     }
@@ -329,12 +325,23 @@ final class ProposalProjection
      */
     private function inOrder(array $billings): array
     {
-        usort(
-            $billings,
-            fn(Billing $one, Billing $other): int => [(string)$one->billing_from, (string)$one->name]
-                <=> [(string)$other->billing_from, (string)$other->name],
-        );
+        usort($billings, fn(Billing $one, Billing $other): int => $this->compare($one, $other));
 
         return $billings;
+    }
+
+    /**
+     * What starts first comes first, and what starts together goes by its name.
+     *
+     * By the day rather than by how a day is written, which depends on the application's format.
+     *
+     * @param \App\Model\Entity\Billing $one One line.
+     * @param \App\Model\Entity\Billing $other The other.
+     * @return int
+     */
+    private function compare(Billing $one, Billing $other): int
+    {
+        return [$one->billing_from?->toDateString(), (string)$one->name]
+            <=> [$other->billing_from?->toDateString(), (string)$other->name];
     }
 }
