@@ -55,6 +55,13 @@ class ProcessDebtorsCommand extends Command
     private BookkeepingService $bookkeeping;
 
     /**
+     * The invoices that went out in a message without their PDF, to be reported once at the end.
+     *
+     * @var list<string>
+     */
+    private array $invoicesWithoutPdf = [];
+
+    /**
      * The name of this command.
      */
     protected string $name = 'process_debtors';
@@ -311,6 +318,8 @@ class ProcessDebtorsCommand extends Command
                     unset($customerMessage);
                 }
             }
+            $this->reportInvoicesWithoutPdf($io);
+
             $io->info(__d('bookkeeping', 'Done'));
 
             return static::CODE_SUCCESS;
@@ -335,6 +344,28 @@ class ProcessDebtorsCommand extends Command
 
             return static::CODE_ERROR;
         }
+    }
+
+    /**
+     * Says once which invoices went out without their PDF, however many messages named them.
+     *
+     * @param \Cake\Console\ConsoleIo $io The console io
+     * @return void
+     */
+    private function reportInvoicesWithoutPdf(ConsoleIo $io): void
+    {
+        if ($this->invoicesWithoutPdf === []) {
+            return;
+        }
+
+        $said = __d(
+            'bookkeeping',
+            'These invoices went out in debtor messages without their PDF: {0}',
+            implode(', ', array_unique($this->invoicesWithoutPdf)),
+        );
+
+        $io->warning($said);
+        ErrorReport::send(__d('bookkeeping', 'Debtor messages without an invoice PDF'), $said);
     }
 
     /**
@@ -439,7 +470,16 @@ class ProcessDebtorsCommand extends Command
         $attachments = [];
 
         foreach ($debtor->getInvoices() as $invoice) {
-            $filePath = $this->bookkeeping->getInvoicePdfPath($invoice);
+            try {
+                $filePath = $this->bookkeeping->getInvoicePdfPath($invoice);
+            } catch (Throwable $e) {
+                // The message still names the invoice, and everybody after this customer is owed
+                // theirs: the blocking has happened by now.
+                Log::error(sprintf('Invoice %s has no PDF to attach: %s', $invoice->number, $e->getMessage()));
+                $this->invoicesWithoutPdf[] = $invoice->number;
+
+                continue;
+            }
 
             $attachments[basename($filePath)] = [
                 'file' => $filePath,

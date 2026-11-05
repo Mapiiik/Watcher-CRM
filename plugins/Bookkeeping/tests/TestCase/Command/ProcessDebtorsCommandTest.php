@@ -3,10 +3,19 @@ declare(strict_types=1);
 
 namespace Bookkeeping\Test\TestCase\Command;
 
+use App\Model\Entity\Customer;
 use Bookkeeping\Command\ProcessDebtorsCommand;
+use Bookkeeping\Debtors\Debtor;
+use Bookkeeping\Model\Entity\Invoice;
+use Bookkeeping\Service\BookkeepingService;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
+use PhpCollective\DecimalObject\Decimal;
 use PHPUnit\Framework\Attributes\UsesClass;
+use ReflectionMethod;
+use ReflectionProperty;
+use RuntimeException;
 
 /**
  * Bookkeeping\Command\ProcessDebtorsCommand Test Case
@@ -46,6 +55,44 @@ class ProcessDebtorsCommandTest extends TestCase
 
         $this->assertExitSuccess();
         $this->assertOutputContains(ProcessDebtorsCommand::getDescription());
+    }
+
+    /**
+     * An invoice whose PDF cannot be had costs its own message that one attachment and nothing
+     * more. Thrown any further it would end the run, and the blocking has already happened by then:
+     * everybody after this customer would be cut off without a word, the same way every night.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\ProcessDebtorsCommand::getAttachments()
+     */
+    public function testAnInvoiceWithoutItsPdfDoesNotStopTheOthers(): void
+    {
+        $customer = new Customer(['number' => '2024001']);
+        $due = new Date('2026-10-01');
+        $owed = Decimal::create('100');
+        $debtor = new Debtor([
+            new Invoice(['number' => '1', 'customer' => $customer, 'due_date' => $due, 'debt' => $owed]),
+            new Invoice(['number' => '2', 'customer' => $customer, 'due_date' => $due, 'debt' => $owed]),
+        ]);
+
+        $bookkeeping = $this->createStub(BookkeepingService::class);
+        $bookkeeping->method('getInvoicePdfPath')->willReturnCallback(
+            fn(Invoice $invoice): string => $invoice->number === '1'
+                ? throw new RuntimeException('Not there.')
+                : '/invoices/Faktura_2.pdf',
+        );
+
+        $command = new ProcessDebtorsCommand();
+        (new ReflectionProperty(ProcessDebtorsCommand::class, 'bookkeeping'))->setValue($command, $bookkeeping);
+
+        $attachments = (new ReflectionMethod(ProcessDebtorsCommand::class, 'getAttachments'))
+            ->invoke($command, $debtor);
+
+        $this->assertSame(['Faktura_2.pdf'], array_keys($attachments));
+        $this->assertSame(
+            ['1'],
+            (new ReflectionProperty(ProcessDebtorsCommand::class, 'invoicesWithoutPdf'))->getValue($command),
+        );
     }
 
     /**
