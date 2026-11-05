@@ -37,23 +37,6 @@ final class DrawnPaper
     use LocatorAwareTrait;
 
     /**
-     * What a contract's papers need loaded to be drawn.
-     *
-     * @var array<mixed>
-     */
-    private const FOR_PRINTING = [
-        'Contracts' => [
-            'Commissions',
-            'ContractStates',
-            'Customers' => ['Addresses', 'Emails', 'Phones', 'AccountingProfiles'],
-            'InstallationAddresses',
-            'InstallationTechnicians',
-            'ServiceTypes',
-            'UninstallationTechnicians',
-        ],
-    ];
-
-    /**
      * The paper itself.
      *
      * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
@@ -67,17 +50,23 @@ final class DrawnPaper
         string $document_type,
         bool $signed = false,
     ): PrintedDocument {
-        $problems = $this->problemsWith($proposal, $document_type, $signed);
+        $refused = $this->refused($proposal, $document_type);
 
-        if ($problems !== []) {
-            throw new RuntimeException(implode(' ', $problems));
+        if ($refused !== null) {
+            throw new RuntimeException($refused);
         }
 
         if ($proposal instanceof CustomerProposal) {
-            return (new CustomerDocuments())->for($this->whatTheCustomersSays($proposal, $document_type));
+            $data = $this->whatTheCustomersSays($proposal, $document_type);
+            $this->holdUp($this->inWords((new CustomerPrintValidator())->validate($data)));
+
+            return (new CustomerDocuments())->for($data);
         }
 
-        return (new ContractDocuments())->for($this->whatTheContractsSays($proposal, $document_type, $signed));
+        $data = $this->whatTheContractsSays($proposal, $document_type, $signed);
+        $this->holdUp($this->whatIsMissingFrom($data, $signed));
+
+        return (new ContractDocuments())->for($data);
     }
 
     /**
@@ -96,44 +85,83 @@ final class DrawnPaper
         string $document_type,
         bool $signed = false,
     ): array {
+        $refused = $this->refused($proposal, $document_type);
+
+        if ($refused !== null) {
+            return [$refused];
+        }
+
         if ($proposal instanceof CustomerProposal) {
-            $type = CustomerDocumentType::tryFrom($document_type);
-
-            if ($type === null) {
-                return [__('This document does not belong to this proposal.')];
-            }
-
-            $errors = (new CustomerPrintValidator())->validate(
-                $this->whatTheCustomersSays($proposal, $document_type),
-            );
-        } else {
-            // Asked first: there is no version to print from, and nothing of ours to print.
-            if (!$proposal->keepsVersions()) {
-                return [__('No documents are generated for a contract whose service type does'
-                    . ' not use contract versions.')];
-            }
-
-            $type = ContractDocumentType::tryFrom($document_type);
-
-            if ($type === null) {
-                return [__('This document does not belong to this proposal.')];
-            }
-
-            // An exchange protocol with nothing on it would be signed for nothing.
-            if (
-                $type === ContractDocumentType::HandoverExchange
-                && $proposal->proposedChanges()->equipments === []
-            ) {
-                return [__('Add or end a borrowed equipment on the proposal first.')];
-            }
-
-            $errors = (new ContractPrintValidator())->validate(
-                $this->whatTheContractsSays($proposal, $document_type, $signed),
-                $signed ? ['signed' => '1'] : [],
+            return $this->inWords(
+                (new CustomerPrintValidator())->validate($this->whatTheCustomersSays($proposal, $document_type)),
             );
         }
 
-        return $this->inWords($errors);
+        return $this->whatIsMissingFrom($this->whatTheContractsSays($proposal, $document_type, $signed), $signed);
+    }
+
+    /**
+     * Why the paper is out of the question whatever the records say, where it is.
+     *
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @param string $document_type Which paper.
+     * @return string|null
+     */
+    private function refused(ContractProposal|CustomerProposal $proposal, string $document_type): ?string
+    {
+        if ($proposal instanceof CustomerProposal) {
+            return CustomerDocumentType::tryFrom($document_type) === null
+                ? __('This document does not belong to this proposal.')
+                : null;
+        }
+
+        // Asked first: there is no version to print from, and nothing of ours to print.
+        if (!$proposal->keepsVersions()) {
+            return __('No documents are generated for a contract whose service type does'
+                . ' not use contract versions.');
+        }
+
+        $type = ContractDocumentType::tryFrom($document_type);
+
+        if ($type === null) {
+            return __('This document does not belong to this proposal.');
+        }
+
+        // An exchange protocol with nothing on it would be signed for nothing.
+        if (
+            $type === ContractDocumentType::HandoverExchange
+            && $proposal->proposedChanges()->equipments === []
+        ) {
+            return __('Add or end a borrowed equipment on the proposal first.');
+        }
+
+        return null;
+    }
+
+    /**
+     * What a contract's paper is still missing, in words.
+     *
+     * @param \App\Service\ContractPrint\ContractPrintData $data What the paper is drawn from.
+     * @param bool $signed Whether it is the copy carrying our signature.
+     * @return array<string>
+     */
+    private function whatIsMissingFrom(ContractPrintData $data, bool $signed): array
+    {
+        return $this->inWords((new ContractPrintValidator())->validate($data, $signed ? ['signed' => '1'] : []));
+    }
+
+    /**
+     * Stops the drawing where something stands in the way.
+     *
+     * @param array<string> $problems What stands in the way, in words.
+     * @return void
+     * @throws \RuntimeException When there is anything.
+     */
+    private function holdUp(array $problems): void
+    {
+        if ($problems !== []) {
+            throw new RuntimeException(implode(' ', $problems));
+        }
     }
 
     /**
@@ -234,7 +262,7 @@ final class DrawnPaper
         string $document_type,
         bool $signed,
     ): ContractPrintData {
-        $proposal = $this->fetchTable('ContractProposals')->get($asked->id, contain: self::FOR_PRINTING);
+        $proposal = $this->fetchTable('ContractProposals')->get($asked->id);
 
         $snapshot = $proposal->stateOfThings();
         $projection = new ProposalProjection();
