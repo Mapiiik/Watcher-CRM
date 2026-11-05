@@ -191,7 +191,7 @@ class CustomerProposalsController extends AppController
 
             $proposal = $this->CustomerProposals->patchEntity($proposal, $said, ['validate' => 'sent']);
 
-            if ((new WholeProposal())->recordStep($proposal, ProposalStep::Delivered)) {
+            if ((new WholeProposal())->recordStep($proposal, ProposalStep::Delivered) !== false) {
                 $this->Flash->success(__('The proposal has been recorded as sent.'));
 
                 return $this->onFromTheStep((string)$proposal->id);
@@ -234,8 +234,19 @@ class CustomerProposalsController extends AppController
             $said = ['conclusion_date' => $this->request->getData('conclusion_date')];
             $proposal = $this->CustomerProposals->patchEntity($proposal, $said, ['validate' => 'signed']);
 
-            if ((new WholeProposal())->recordStep($proposal, ProposalStep::Signed)) {
+            $corrected = (new WholeProposal())->recordStep($proposal, ProposalStep::Signed);
+
+            if ($corrected !== false) {
                 $this->Flash->success(__('The signature has been recorded.'));
+
+                if ($corrected > 0) {
+                    $this->Flash->success(__n(
+                        'The contract version signed on the old day has been corrected as well.',
+                        '{0} contract versions signed on the old day have been corrected as well.',
+                        $corrected,
+                        $corrected,
+                    ));
+                }
 
                 return $this->onFromTheStep((string)$proposal->id);
             }

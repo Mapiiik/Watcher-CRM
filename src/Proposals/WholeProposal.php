@@ -228,18 +228,26 @@ final class WholeProposal
      * to be ticked by hand, so a customer could read as having refused while their signed consent
      * sat on file - this is the same thing the contract's side does when papers are applied.
      *
+     * A signature corrected after the changes were applied also corrects the versions that took
+     * their day from it, because the checks read the version. Only those: a version signed on
+     * another day was agreed on that day.
+     *
      * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
      * @param \App\Model\Enum\ProposalStep $step Which step is being taken.
-     * @return bool
+     * @return int|false How many versions were corrected with it, or false when it was not recorded.
      */
-    public function recordStep(CustomerProposal $proposal, ProposalStep $step): bool
+    public function recordStep(CustomerProposal $proposal, ProposalStep $step): int|false
     {
         /** @var \App\Model\Table\CustomerProposalsTable $proposals */
         $proposals = $this->fetchTable('CustomerProposals');
         $trail = new AuditTrail();
 
+        // Read first, because saving forgets what the day used to be.
+        $signedBefore = $step === ProposalStep::Signed ? $proposal->getOriginal('conclusion_date') : null;
+        $corrected = 0;
+
         $recorded = (bool)$proposals->getConnection()->transactional(
-            function () use ($proposal, $proposals, $step, $trail): bool {
+            function () use ($proposal, $proposals, $step, $trail, $signedBefore, &$corrected): bool {
                 if (!$proposals->save($proposal, $trail->options())) {
                     return false;
                 }
@@ -256,15 +264,67 @@ final class WholeProposal
                     }
                 }
 
-                return true;
+                if ($signedBefore instanceof Date) {
+                    $corrected = $this->correctVersionsSignedOn($signedBefore, $proposal, $trail);
+                }
+
+                return $corrected !== false;
             },
         );
 
-        if ($recorded) {
-            $trail->flush($proposals, $proposal);
+        if (!$recorded) {
+            return false;
         }
 
-        return $recorded;
+        $trail->flush($proposals, $proposal);
+
+        return $corrected;
+    }
+
+    /**
+     * Moves the versions the proposal applied from the day it used to say to the day it says now.
+     *
+     * @param \Cake\I18n\Date $signedBefore The day that is being corrected.
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal, with the corrected day.
+     * @param \App\Model\Audit\AuditTrail $trail What the writes are logged under.
+     * @return int|false How many were corrected, or false when one of them refused.
+     */
+    private function correctVersionsSignedOn(
+        Date $signedBefore,
+        CustomerProposal $proposal,
+        AuditTrail $trail,
+    ): int|false {
+        $signedNow = $proposal->conclusion_date;
+
+        if ($signedNow === null || $signedNow->equals($signedBefore)) {
+            return 0;
+        }
+
+        $versions = $this->fetchTable('ContractVersions');
+        $corrected = 0;
+
+        foreach ($this->partsOf((string)$proposal->id) as $part) {
+            if (!$part->hasBeenApplied() || $part->contract_version_id === null) {
+                continue;
+            }
+
+            /** @var \App\Model\Entity\ContractVersion $version */
+            $version = $versions->get($part->contract_version_id);
+
+            if ($version->conclusion_date?->equals($signedBefore) !== true) {
+                continue;
+            }
+
+            $version = $versions->patchEntity($version, ['conclusion_date' => $signedNow->toDateString()]);
+
+            if (!$versions->save($version, $trail->options())) {
+                return false;
+            }
+
+            $corrected++;
+        }
+
+        return $corrected;
     }
 
     /**

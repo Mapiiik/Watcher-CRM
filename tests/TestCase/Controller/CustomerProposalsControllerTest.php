@@ -177,6 +177,59 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
+     * A signature corrected after the changes were applied reaches the version that took its day
+     * from it. The checks read the version, so otherwise they would go on reading the wrong day.
+     *
+     * @link \App\Proposals\WholeProposal::recordStep()
+     * @return void
+     */
+    public function testACorrectedSignatureReachesTheVersionThatTookItsDayFromIt(): void
+    {
+        [$proposal, $version] = $this->appliedProposal();
+
+        $this->post($this->conclude($proposal), ['conclusion_date' => '2026-10-04']);
+        $this->assertRedirectContains('/customer-proposals/view/' . $proposal->id);
+
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $this->assertSame('2026-10-04', $versions->get($version)->get('conclusion_date')->toDateString());
+    }
+
+    /**
+     * A version signed on another day was agreed on that day, whatever is corrected on an amendment.
+     *
+     * @link \App\Proposals\WholeProposal::recordStep()
+     * @return void
+     */
+    public function testAVersionSignedOnAnotherDayKeepsItsDay(): void
+    {
+        [$proposal, $version] = $this->appliedProposal();
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $versions->updateAll(['conclusion_date' => '2024-03-01'], ['id' => $version]);
+
+        $this->post($this->conclude($proposal), ['conclusion_date' => '2026-10-04']);
+
+        $this->assertSame('2024-03-01', $versions->get($version)->get('conclusion_date')->toDateString());
+    }
+
+    /**
+     * Before the changes are applied there is nothing to correct on the version yet.
+     *
+     * @link \App\Proposals\WholeProposal::recordStep()
+     * @return void
+     */
+    public function testAFirstSignatureTouchesNoVersion(): void
+    {
+        $proposal = $this->drawOneUpWithPapers();
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $before = $versions->find()->all()->extract('conclusion_date')->toList();
+
+        $this->post($this->conclude($proposal), ['conclusion_date' => '2026-10-05']);
+        $this->post($this->conclude($proposal), ['conclusion_date' => '2026-10-04']);
+
+        $this->assertEquals($before, $versions->find()->all()->extract('conclusion_date')->toList());
+    }
+
+    /**
      * Sending is what locks a proposal: what stood behind a paper that has left the building is not
      * rewritten afterwards.
      *
@@ -1038,5 +1091,43 @@ class CustomerProposalsControllerTest extends TestCase
         $proposal = $this->addedRecord('CustomerProposals', $before);
 
         return $proposal;
+    }
+
+    /**
+     * Where the signature of a proposal is recorded.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @return string
+     */
+    private function conclude(CustomerProposal $proposal): string
+    {
+        return '/customers/' . self::CUSTOMER_ID . '/customer-proposals/conclude/' . $proposal->id;
+    }
+
+    /**
+     * Papers for a new contract, signed on 5 October and applied, which brings a version into being.
+     *
+     * @return array{\App\Model\Entity\CustomerProposal, string} The proposal and the version.
+     */
+    private function appliedProposal(): array
+    {
+        $proposal = $this->drawOneUpWithPapers();
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+
+        $this->post($at . 'send/' . $proposal->id, [
+            'sent_date' => '2026-10-01',
+            'delivery_type' => DocumentsDeliveryType::Post->value,
+        ]);
+        $this->post($this->conclude($proposal), ['conclusion_date' => '2026-10-05']);
+        $this->post($at . 'apply-changes/' . $proposal->id);
+
+        $version = (string)$this->papersOf((string)$proposal->id)[0]->contract_version_id;
+        $this->assertSame(
+            '2026-10-05',
+            $this->getTableLocator()->get('ContractVersions')->get($version)
+                ->get('conclusion_date')->toDateString(),
+        );
+
+        return [$proposal, $version];
     }
 }
