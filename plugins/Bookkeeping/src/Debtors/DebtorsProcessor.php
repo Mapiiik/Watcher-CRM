@@ -323,49 +323,7 @@ class DebtorsProcessor
      */
     public function block(?string $id): void
     {
-        if (!$this->isDebtorBlockingEnabled()) {
-            $this->messages->warning(__d(
-                'bookkeeping',
-                'Debtor blocking is globally disabled by settings. No external systems were modified.',
-            ));
-            // stop execution
-            return;
-        }
-
-        if ($id === null) {
-            $this->messages->error(__d(
-                'bookkeeping',
-                'Customer ID of the debtor must be provided.',
-            ));
-            // stop execution
-            return;
-        }
-
-        $customerIps = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
-
-        $this->addLabel($id);
-
-        if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
-            $this->safeCall(
-                fn(): string => $this->updateSledovaniTV(
-                    ids: [$id],
-                    block: true,
-                    clear: false,
-                ),
-                __d('bookkeeping', 'SledovaniTV blocking update'),
-            );
-        }
-
-        if ($this->isDebtorBlockingEnabled('routers')) {
-            $this->safeCall(
-                fn(): string => $this->updateRouters(
-                    ips: $customerIps,
-                    block: true,
-                    clear: false,
-                ),
-                __d('bookkeeping', 'Routers blocking update'),
-            );
-        }
+        $this->setBlocked($id, true);
     }
 
     /**
@@ -377,6 +335,19 @@ class DebtorsProcessor
      */
     public function unblock(?string $id): void
     {
+        $this->setBlocked($id, false);
+    }
+
+    /**
+     * Blocks a debtor by hand or lets them back in.
+     *
+     * @param string|null $id Customer ID.
+     * @param bool $block Whether they are blocked rather than let back in.
+     * @return void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    private function setBlocked(?string $id, bool $block): void
+    {
         if (!$this->isDebtorBlockingEnabled()) {
             $this->messages->warning(__d(
                 'bookkeeping',
@@ -397,117 +368,17 @@ class DebtorsProcessor
 
         $customerIps = $this->getCustomerIps($id, 'MANUAL ENTRY - ', false);
 
-        $this->removeLabel($id);
-
-        if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
-            $this->safeCall(
-                fn(): string => $this->updateSledovaniTV(
-                    ids: [$id],
-                    block: false,
-                    clear: false,
-                ),
-                __d('bookkeeping', 'SledovaniTV blocking update'),
-            );
-        }
-
-        if ($this->isDebtorBlockingEnabled('routers')) {
-            $this->safeCall(
-                fn(): string => $this->updateRouters(
-                    ips: $customerIps,
-                    block: false,
-                    clear: false,
-                ),
-                __d('bookkeeping', 'Routers blocking update'),
-            );
-        }
-    }
-
-    /**
-     * Block Many Debtors
-     *
-     * @param array<string> $ids Customer IDs.
-     * @return void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function blockMany(array $ids): void
-    {
-        if (!$this->isDebtorBlockingEnabled()) {
-            $this->messages->warning(__d(
-                'bookkeeping',
-                'Debtor blocking is globally disabled by settings. No external systems were modified.',
-            ));
-            // stop execution
-            return;
-        }
-
-        $customerIps = [];
-        foreach ($ids as $id) {
-            $customerIps = array_merge_recursive(
-                $customerIps,
-                $this->getCustomerIps($id, 'MANUAL ENTRY - ', false),
-            );
-
+        if ($block) {
             $this->addLabel($id);
-        }
-
-        if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
-            $this->safeCall(
-                fn(): string => $this->updateSledovaniTV(
-                    ids: $ids,
-                    block: true,
-                    clear: false,
-                ),
-                __d('bookkeeping', 'SledovaniTV blocking update'),
-            );
-        }
-
-        if ($this->isDebtorBlockingEnabled('routers')) {
-            $this->safeCall(
-                fn(): string => $this->updateRouters(
-                    ips: $customerIps,
-                    block: true,
-                    clear: false,
-                ),
-                __d('bookkeeping', 'Routers blocking update'),
-            );
-        }
-    }
-
-    /**
-     * Unblock Many Debtors
-     *
-     * @param array<string> $ids Customer IDs.
-     * @return void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function unblockMany(array $ids): void
-    {
-        if (!$this->isDebtorBlockingEnabled()) {
-            $this->messages->warning(__d(
-                'bookkeeping',
-                'Debtor blocking is globally disabled by settings. No external systems were modified.',
-            ));
-            // stop execution
-            return;
-        }
-
-        $customerIps = [];
-        foreach ($ids as $id) {
-            $customerIps = array_merge_recursive(
-                $customerIps,
-                $this->getCustomerIps($id, 'MANUAL ENTRY - ', false),
-            );
-
+        } else {
             $this->removeLabel($id);
         }
 
         if ($this->isDebtorBlockingEnabled('sledovani_tv')) {
             $this->safeCall(
                 fn(): string => $this->updateSledovaniTV(
-                    ids: $ids,
-                    block: false,
+                    ids: [$id],
+                    block: $block,
                     clear: false,
                 ),
                 __d('bookkeeping', 'SledovaniTV blocking update'),
@@ -518,7 +389,7 @@ class DebtorsProcessor
             $this->safeCall(
                 fn(): string => $this->updateRouters(
                     ips: $customerIps,
-                    block: false,
+                    block: $block,
                     clear: false,
                 ),
                 __d('bookkeeping', 'Routers blocking update'),

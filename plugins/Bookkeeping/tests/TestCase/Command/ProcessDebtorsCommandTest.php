@@ -366,13 +366,13 @@ class ProcessDebtorsCommandTest extends TestCase
      */
     private function assertSaysWhatTheSettingsSay(string $key, string $bodyKey, CustomerMessage $message): void
     {
-        $subject = Settings::getString($key . '.subject');
-        $this->assertStringStartsWith((string)strstr($subject, '{', true), $message->subject);
-        $this->assertStringNotContainsString('{', $message->subject);
+        $subject = (string)strstr(Settings::getString($key . '.subject'), '{', true);
+        $this->assertSame($subject, substr((string)$message->subject, 0, strlen($subject)));
+        $this->assertStringNotContainsString('{', (string)$message->subject);
 
-        $body = Settings::getString($key . '.' . $bodyKey);
-        $this->assertStringStartsWith(substr($body, 0, 20), $message->body);
-        $this->assertStringNotContainsString('{', $message->body);
+        $body = substr(Settings::getString($key . '.' . $bodyKey), 0, 20);
+        $this->assertSame($body, substr((string)$message->body, 0, 20));
+        $this->assertStringNotContainsString('{', (string)$message->body);
     }
 
     /**
