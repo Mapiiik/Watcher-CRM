@@ -426,24 +426,10 @@ class DebtorsProcessor
 
         $start_time = DateTime::now();
 
+        $blocked = $this->contractsToBlock();
+
         // Nobody left to block is the lists being emptied, so both families are always there.
         $customerIps = ['ipv4' => [], 'ipv6' => []];
-
-        // Contracts rather than customers. Owing money is a reason to cut off everything
-        // somebody has, so a debtor names all of theirs - but an unsigned contract says
-        // nothing about the two beside it that are signed and paid for, and neither does a
-        // state an operator has put one contract into.
-        $blocked = [];
-        foreach ($this->getFilteredOverdueDebtors() as $debtor) {
-            foreach ($debtor->getCustomer()->contracts as $contract) {
-                $blocked[$contract->id] = __d('bookkeeping', 'debtor');
-            }
-        }
-
-        // A contract blocked twice over is one blocked contract, and the reason it keeps is
-        // the debt - which is what gets paid off to be let back in.
-        $blocked += $this->unsignedToBlock();
-        $blocked += $this->statedAsBlocked();
 
         foreach (array_keys($blocked) as $contract_id) {
             $customerIps = array_merge_recursive(
@@ -481,6 +467,32 @@ class DebtorsProcessor
                 __d('bookkeeping', 'Routers blocking update'),
             );
         }
+    }
+
+    /**
+     * The contracts to block, each with the reason it is blocked for.
+     *
+     * Contracts rather than customers. Owing money is a reason to cut off everything somebody has,
+     * so a debtor names all of theirs - but an unsigned contract says nothing about the two beside
+     * it that are signed and paid for, and neither does a state an operator has put one contract
+     * into.
+     *
+     * A contract blocked twice over is one blocked contract, and the reason it keeps is the debt,
+     * which is what gets paid off to be let back in.
+     *
+     * @return array<string, string> The reason, by the id of the contract.
+     */
+    private function contractsToBlock(): array
+    {
+        $blocked = [];
+
+        foreach ($this->getFilteredOverdueDebtors() as $debtor) {
+            foreach ($debtor->getCustomer()->contracts as $contract) {
+                $blocked[$contract->id] = __d('bookkeeping', 'debtor');
+            }
+        }
+
+        return $blocked + $this->unsignedToBlock() + $this->statedAsBlocked();
     }
 
     /**
