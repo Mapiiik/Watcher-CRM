@@ -457,8 +457,6 @@ class ProcessDebtorsCommand extends Command
     /**
      * Returns invoice PDF attachments for debtor messages.
      *
-     * File existence is not validated here.
-     *
      * @return array<string, array{
      *     file: string,
      *     mimetype: string,
@@ -476,6 +474,14 @@ class ProcessDebtorsCommand extends Command
                 // The message still names the invoice, and everybody after this customer is owed
                 // theirs: the blocking has happened by now.
                 Log::error(sprintf('Invoice %s has no PDF to attach: %s', $invoice->number, $e->getMessage()));
+                $this->invoicesWithoutPdf[] = $invoice->number;
+
+                continue;
+            }
+
+            // A path to nothing would have the whole message refused when its turn comes.
+            if (!is_file($filePath)) {
+                Log::error(sprintf('Invoice %s has no PDF at %s', $invoice->number, $filePath));
                 $this->invoicesWithoutPdf[] = $invoice->number;
 
                 continue;

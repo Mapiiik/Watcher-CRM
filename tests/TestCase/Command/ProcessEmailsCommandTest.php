@@ -141,6 +141,36 @@ class ProcessEmailsCommandTest extends TestCase
     }
 
     /**
+     * A file that is not there will not be there next time either. Left waiting, the message would
+     * be tried again every run, oldest first, and enough of them hold up everything behind them.
+     *
+     * @return void
+     * @link \App\Command\ProcessEmailsCommand::execute()
+     */
+    public function testExecuteFailsAMessageWhoseAttachmentIsNotThere(): void
+    {
+        $stuck = $this->message(['attachments' => [
+            'Faktura_1.pdf' => ['file' => TMP . 'no-such-invoice.pdf', 'mimetype' => 'application/pdf'],
+        ]]);
+        $waiting = $this->message();
+
+        $this->exec('process_emails');
+
+        $this->assertExitSuccess();
+
+        $messages = $this->getTableLocator()->get('CustomerMessages');
+        $this->assertSame(
+            CustomerMessageDeliveryStatus::Failed,
+            $messages->get($stuck)->get('delivery_status'),
+            'A message that can never be sent is still waiting.',
+        );
+        $this->assertNotSame(
+            CustomerMessageDeliveryStatus::Pending,
+            $messages->get($waiting)->get('delivery_status'),
+        );
+    }
+
+    /**
      * A message already sent is not sent again.
      *
      * @return void

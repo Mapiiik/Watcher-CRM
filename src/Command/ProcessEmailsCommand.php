@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
@@ -101,6 +102,25 @@ class ProcessEmailsCommand extends Command
     }
 
     /**
+     * The first file the message attaches that is not there, if there is one.
+     *
+     * @param \App\Model\Entity\CustomerMessage $emailMessage The message.
+     * @return string|null
+     */
+    private function missingAttachment(CustomerMessage $emailMessage): ?string
+    {
+        foreach ($emailMessage->attachments ?? [] as $attachment) {
+            $file = is_array($attachment) ? ($attachment['file'] ?? null) : $attachment;
+
+            if (is_string($file) && !is_file($file)) {
+                return $file;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Implement this method with your command's logic.
      *
      * @param \Cake\Console\Arguments $args The command arguments.
@@ -151,6 +171,30 @@ class ProcessEmailsCommand extends Command
                     $reason = 'Email message with ID ' . $emailMessage->id . ' names nobody to send it to.';
                     Log::error($reason);
                     $io->error(__('Message with ID {0} names nobody to send it to.', $emailMessage->id));
+                    ErrorReport::send(
+                        __('Email message with ID {0} could not be sent', $emailMessage->id),
+                        $reason,
+                    );
+
+                    continue;
+                }
+
+                // A file that is not there will not be there next time either, and waiting would
+                // keep a place at the head of the queue for days. A failure of the transport is
+                // another matter, and stays to be tried again.
+                $missing = $this->missingAttachment($emailMessage);
+
+                if ($missing !== null) {
+                    $emailMessage->delivery_status = CustomerMessageDeliveryStatus::Failed;
+                    $customerMessagesTable->saveOrFail($emailMessage);
+
+                    $reason = sprintf(
+                        'Email message with ID %s attaches a file that is not there: %s',
+                        $emailMessage->id,
+                        $missing,
+                    );
+                    Log::error($reason);
+                    $io->error(__('Message with ID {0} attaches a file that is not there.', $emailMessage->id));
                     ErrorReport::send(
                         __('Email message with ID {0} could not be sent', $emailMessage->id),
                         $reason,
