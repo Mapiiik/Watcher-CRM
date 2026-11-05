@@ -28,6 +28,11 @@ class ChangeApplicationTest extends TestCase
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
 
     /**
+     * A contract nothing here is about.
+     */
+    private const ANOTHER_CONTRACT_ID = '9c0d5e5c-2a6b-4f8e-9a3d-1b7c4e2f6a90';
+
+    /**
      * A concluded version of it.
      */
     private const VERSION_ID = '74824fba-20b2-46fc-806c-df795aa9e429';
@@ -1195,6 +1200,64 @@ class ChangeApplicationTest extends TestCase
         $this->assertSame(1, $newOnes());
         $this->assertArrayHasKey(
             'return',
+            $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->whatWasLeftOut(),
+        );
+    }
+
+    /**
+     * A piece moved to another contract is gone from this one, which is what the preview says. It
+     * belongs to somebody else's contract now, so it is left where it is.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::applyTheEquipment()
+     */
+    public function testEquipmentMovedToAnotherContractIsNotTakenBackFromThere(): void
+    {
+        $lent = $this->aPieceLent();
+        $proposal = $this->swapping($lent);
+
+        $equipments = $this->getTableLocator()->get('BorrowedEquipments');
+        $equipments->updateAll(['contract_id' => self::ANOTHER_CONTRACT_ID], ['id' => $lent]);
+
+        (new ChangeApplication())->apply(
+            $proposal,
+            leave_out_what_is_gone: true,
+            handed_over_on: new Date('2026-10-25'),
+        );
+
+        $this->assertNull($equipments->get($lent)->borrowed_until, 'It was taken back off the other contract.');
+        $this->assertArrayHasKey(
+            'return',
+            $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->whatWasLeftOut(),
+        );
+    }
+
+    /**
+     * The same goes for a billing.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::applyTheBillings()
+     */
+    public function testABillingMovedToAnotherContractIsNotEndedThere(): void
+    {
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => '2026-10-01',
+            'changes' => ['billings' => [[
+                'id' => self::GONE_LINE_ID,
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => true,
+            ]]],
+        ]);
+
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->updateAll(['contract_id' => self::ANOTHER_CONTRACT_ID], ['id' => self::OPEN_BILLING_ID]);
+
+        (new ChangeApplication())->apply($proposal, null, false, false, true);
+
+        $this->assertNull($billings->get(self::OPEN_BILLING_ID)->billing_until, 'It was ended on the other contract.');
+        $this->assertArrayHasKey(
+            self::GONE_LINE_ID,
             $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->whatWasLeftOut(),
         );
     }

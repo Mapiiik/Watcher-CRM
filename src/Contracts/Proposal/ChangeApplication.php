@@ -186,7 +186,7 @@ final class ChangeApplication
 
             if (!$line->isAddition()) {
                 $ending = $billings->find()
-                    ->where(['Billings.id' => $line->billing_id])
+                    ->where(['Billings.id' => $line->billing_id, 'Billings.contract_id' => $proposal->contract_id])
                     ->first();
 
                 // Somebody took the billing off the contract while the papers were out. Passed
@@ -259,7 +259,10 @@ final class ChangeApplication
         foreach ($changes->equipments as $line) {
             if ($line->takesBack()) {
                 $lent = $equipments->find()
-                    ->where(['BorrowedEquipments.id' => $line->borrowed_equipment_id])
+                    ->where([
+                        'BorrowedEquipments.id' => $line->borrowed_equipment_id,
+                        'BorrowedEquipments.contract_id' => $proposal->contract_id,
+                    ])
                     ->first();
 
                 if ($lent === null) {
