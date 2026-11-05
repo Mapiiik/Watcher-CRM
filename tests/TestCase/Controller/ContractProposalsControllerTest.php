@@ -2354,6 +2354,29 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * What somebody wrote down about a billing goes on to what replaces it, unless they say
+     * otherwise. Everything else on the form starts from what is there, and so does this.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBillingForm::fill()
+     */
+    public function testChangingABillingOpensWithItsNote(): void
+    {
+        $this->getTableLocator()->get('Billings')->updateAll(
+            ['note' => 'Agreed over the phone'],
+            ['id' => self::KNOWN_BILLING_ID],
+        );
+        $this->theProposalIsForATerm(Date::today()->addYears(1));
+        $this->recreateThePapers();
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID);
+
+        $this->assertResponseOk();
+        $this->assertSame('Agreed over the phone', $this->viewVariable('values')['note']);
+    }
+
+    /**
      * The same goes for a line that only ends the billing, opened to be changed.
      *
      * @return void

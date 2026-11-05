@@ -163,6 +163,7 @@ final class SnapshotShape
         'fixed_discount',
         'percentage_discount',
         'separate_invoice',
+        'note',
     ];
 
     /**
