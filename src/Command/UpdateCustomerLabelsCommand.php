@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Model\Audit\AuditTrail;
 use App\Model\Table\LabelsTable;
 use App\Service\ErrorReport;
 use Cake\Collection\Collection;
@@ -179,6 +180,7 @@ class UpdateCustomerLabelsCommand extends Command
                                     'modified <' => $startTime->subDays($label->validity),
                                 ])
                                 ->all(),
+                            AuditTrail::batchOptions(),
                         ) === false
                     ) {
                         Log::error('The related dynamic customer labels could not be deleted. Please, try again.');
@@ -195,6 +197,7 @@ class UpdateCustomerLabelsCommand extends Command
                                 'label_id' => $label->id,
                                 'created <' => $startTime->subDays($label->validity),
                             ])->all(),
+                            AuditTrail::batchOptions(),
                         ) === false
                     ) {
                         Log::error('The related static customer labels could not be deleted. Please, try again.');

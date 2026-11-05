@@ -8,6 +8,7 @@ use App\Agent\Dto\AddressListChanges;
 use App\Contracts\Unsigned\UnsignedPaperwork;
 use App\Contracts\Unsigned\UnsignedWaits;
 use App\Messages\Messages;
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\Customer;
 use App\Model\Entity\CustomerLabel;
 use App\Model\Table\ContractsTable;
@@ -724,6 +725,7 @@ class DebtorsProcessor
 
         return $customerLabelsTable->deleteMany(
             $customerLabelsToDelete,
+            AuditTrail::batchOptions(),
         );
     }
 
@@ -756,6 +758,7 @@ class DebtorsProcessor
 
         return $customerLabelsTable->deleteMany(
             $customerLabelsToDelete,
+            AuditTrail::batchOptions(),
         );
     }
 

@@ -139,7 +139,7 @@ class AvailableConnectionsSyncCommand extends Command
         }
 
         // One transaction for the lot: quicker, and the audit log keeps the run together.
-        $available->saveManyOrFail($changed, (new AuditTrail())->options());
+        $available->saveManyOrFail($changed, AuditTrail::batchOptions());
 
         return static::CODE_SUCCESS;
     }

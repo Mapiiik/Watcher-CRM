@@ -62,6 +62,19 @@ final class AuditTrail
     }
 
     /**
+     * The options of one saveMany or deleteMany outside a transaction.
+     *
+     * Such a batch writes itself out when it commits, so there is nothing to flush. Every batch
+     * needs its own: a queue handed on to the next one would log the first batch a second time.
+     *
+     * @return array<string, mixed>
+     */
+    public static function batchOptions(): array
+    {
+        return (new self())->options();
+    }
+
+    /**
      * Writes the queue out, once, after the transaction has committed.
      *
      * Any audited table the transaction touched will do: the queue holds the events of all of
