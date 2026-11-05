@@ -16,6 +16,7 @@ use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalStep;
 use App\Model\Table\BillingsTable;
 use App\Proposals\WholeProposal;
+use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\Http\Response;
 use Cake\I18n\Date;
@@ -582,7 +583,7 @@ class CustomerProposalsController extends AppController
                 'papers' => $part,
                 'confirmations' => $part->confirmations(),
                 'mayBeEdited' => $papers->mayBeEdited($part),
-                'linesLock' => $papers->linesLock($part),
+                'linesLock' => (new ContractDocuments())->linesLock($part),
                 // The same projection the documents print from, so the table and the paper cannot
                 // disagree.
                 'rows' => $projection->explain(

@@ -307,7 +307,7 @@ class ContractProposalsController extends AppController
 
         if (!$this->ContractProposals->mayBeRecreated($proposal)) {
             $this->Flash->error(
-                $this->ContractProposals->linesLock($proposal)?->label()
+                (new ContractDocuments())->linesLock($proposal)?->label()
                     ?? __('This proposal can no longer be changed.'),
             );
 
@@ -316,7 +316,7 @@ class ContractProposalsController extends AppController
 
         // Read before anything is written, because the form has to say what stands to be thrown
         // away before the operator agrees to it.
-        $drawnFromTheOldOne = $this->ContractProposals->papersDrawnFrom($proposal);
+        $drawnFromTheOldOne = (new ContractDocuments())->drawnFrom($proposal);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
@@ -485,7 +485,7 @@ class ContractProposalsController extends AppController
             return $this->redirect(['action' => 'view', $id]);
         }
 
-        $lock = $this->ContractProposals->linesLock($proposal);
+        $lock = (new ContractDocuments())->linesLock($proposal);
 
         if ($lock !== null && !$lock->mayBeLifted()) {
             $this->Flash->error($lock->label());
@@ -493,7 +493,7 @@ class ContractProposalsController extends AppController
             return $this->redirect(['action' => 'view', $id]);
         }
 
-        $discarded = $this->discardTheDocuments($this->ContractProposals->papersDrawnFrom($proposal));
+        $discarded = $this->discardTheDocuments((new ContractDocuments())->drawnFrom($proposal));
 
         if ($discarded > 0) {
             $this->Flash->success(__n(
@@ -1052,7 +1052,7 @@ class ContractProposalsController extends AppController
             return $this->redirect(['action' => 'view', $id]);
         }
 
-        $lock = $this->ContractProposals->linesLock($proposal);
+        $lock = (new ContractDocuments())->linesLock($proposal);
 
         if ($lock !== null) {
             $this->Flash->error($lock->label());
@@ -1823,7 +1823,7 @@ class ContractProposalsController extends AppController
         ));
         $this->set('mayBeEdited', $this->ContractProposals->mayBeEdited($proposal));
         $this->set('mayBeRecreated', $this->ContractProposals->mayBeRecreated($proposal));
-        $this->set('linesLock', $this->ContractProposals->linesLock($proposal));
+        $this->set('linesLock', (new ContractDocuments())->linesLock($proposal));
         $this->set('mayBeDeleted', $this->ContractProposals->mayBeDeleted($proposal));
         // Only the count: the table itself is drawn by a cell, which asks for what it draws.
         $this->set('filed', (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? []);

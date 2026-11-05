@@ -757,21 +757,21 @@ class ContractProposalsTableTest extends TestCase
             ['name' => $type . '.pdf'],
         );
 
-        $this->assertNull($this->Proposals->linesLock($proposal));
+        $this->assertNull((new ContractDocuments())->linesLock($proposal));
 
         $file(ContractDocumentType::TerminationNotice->value, DocumentVariant::Received);
-        $this->assertNull($this->Proposals->linesLock($proposal));
+        $this->assertNull((new ContractDocuments())->linesLock($proposal));
 
         $drawn = $file(ContractDocumentType::ContractAmendment->value, DocumentVariant::Generated);
-        $this->assertSame(ProposalLinesLock::PapersDrawn, $this->Proposals->linesLock($proposal));
+        $this->assertSame(ProposalLinesLock::PapersDrawn, (new ContractDocuments())->linesLock($proposal));
         $this->assertFalse($this->Proposals->mayChangeLines($proposal));
         $this->assertSame([$drawn->id], array_map(
             fn($link) => $link->id,
-            $this->Proposals->papersDrawnFrom($proposal),
+            (new ContractDocuments())->drawnFrom($proposal),
         ));
 
         $file(ContractDocumentType::ContractAmendment->value, DocumentVariant::ReceivedSignedByCustomer);
-        $this->assertSame(ProposalLinesLock::SignedByTheCustomer, $this->Proposals->linesLock($proposal));
+        $this->assertSame(ProposalLinesLock::SignedByTheCustomer, (new ContractDocuments())->linesLock($proposal));
 
         Configure::delete('Files.root');
     }
