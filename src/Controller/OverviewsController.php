@@ -523,7 +523,7 @@ class OverviewsController extends AppController
                         $service->set(
                             'number_of_uses_nonbusiness',
                             $billings
-                                ->match(['customer.identity_number' => null])
+                                ->reject(fn(Billing $billing): bool => $billing->customer->isBusiness())
                                 ->sumOf('quantity'),
                         );
 
@@ -570,7 +570,7 @@ class OverviewsController extends AppController
                         $service->set(
                             'total_sum_nonbusiness',
                             $billings
-                                ->match(['customer.identity_number' => null])
+                                ->reject(fn(Billing $billing): bool => $billing->customer->isBusiness())
                                 ->sumOf(
                                     function (Billing $billing) {
                                         return $billing->total_price->toFloat();

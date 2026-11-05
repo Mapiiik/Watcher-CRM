@@ -5,7 +5,9 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\OverviewsController;
 use App\Model\Enum\ContractPeriodSource;
+use App\Model\Enum\CustomerLegalStatus;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Collection\Collection;
 use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -114,6 +116,46 @@ class OverviewsControllerTest extends TestCase
         $this->get('/overviews/overview-of-active-services');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * Who is in business is read off the legal status, as in every other report. A sole trader whose
+     * number nobody filled in is still one, and a person with a number on file need not be.
+     *
+     * @param string $status The customer's legal status.
+     * @param string|null $number Their identity number.
+     * @param int $uses How many uses of the service are expected to count as not in business.
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfActiveServices()
+     */
+    #[DataProvider('whoIsInBusiness')]
+    public function testOverviewOfActiveServicesGoesByTheLegalStatus(string $status, ?string $number, int $uses): void
+    {
+        $this->getTableLocator()->get('Customers')->updateAll(
+            ['legal_status' => $status, 'identity_number' => $number],
+            ['id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481'],
+        );
+
+        $this->login();
+        $this->get('/overviews/overview-of-active-services');
+
+        $this->assertResponseOk();
+
+        $service = (new Collection($this->viewVariable('services')))
+            ->firstMatch(['id' => '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2']);
+
+        $this->assertSame($uses, $service->number_of_uses_nonbusiness);
+    }
+
+    /**
+     * @return array<string, array{string, string|null, int}>
+     */
+    public static function whoIsInBusiness(): array
+    {
+        return [
+            'a sole trader without a number' => [CustomerLegalStatus::SoleTrader->value, null, 0],
+            'a natural person with a number' => [CustomerLegalStatus::NaturalPerson->value, '12345678', 2],
+        ];
     }
 
     /**
