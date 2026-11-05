@@ -19,11 +19,13 @@ final class MonthlyInvoice
      * @param \PhpCollective\DecimalObject\Decimal $total What it comes to.
      * @param \App\Model\Entity\Contract|null $contract The contract it is for alone.
      * @param \App\Model\Entity\Billing|null $billing The billing it is for alone.
+     * @param list<\App\Model\Entity\Billing> $items The billings it is made of.
      */
     public function __construct(
         public readonly Decimal $total,
         public readonly ?Contract $contract = null,
         public readonly ?Billing $billing = null,
+        public readonly array $items = [],
     ) {
     }
 }

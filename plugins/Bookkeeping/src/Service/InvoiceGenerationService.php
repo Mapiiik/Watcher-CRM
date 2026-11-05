@@ -8,6 +8,8 @@ use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
 use App\Model\Entity\Customer;
 use App\Model\Table\CustomersTable;
+use App\Service\CustomerPrint\MonthlyInvoice;
+use App\Service\CustomerPrint\MonthlyInvoices;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
 use Cake\I18n\Date;
 use PhpCollective\DecimalObject\Decimal;
@@ -74,69 +76,73 @@ final readonly class InvoiceGenerationService
             });
         }
 
+        $split = new MonthlyInvoices();
+
         foreach ($customers as $customer) {
-            // Customer-level aggregation
-            $billingCustomerTotal = Decimal::create(0, 2);
-            $billingCustomerItems = [];
+            $invoices = $split->split(
+                $customer->contracts,
+                fn(Contract $contract): array => $contract->billings,
+                fn(Billing $billing): Decimal => $billing->period_total,
+            );
 
-            foreach ($customer->contracts as $contract) {
-                // Contract-level aggregation
-                $billingContractTotal = Decimal::create(0, 2);
-                $billingContractItems = [];
-
-                foreach ($contract->billings as $billing) {
-                    if ($billing->isSeparateInvoice() && !$billing->period_total->isZero()) {
-                        // Separate invoice per billing item
-                        $drafts[] = $this->createDraft(
-                            number: (string)($prefix + $index++),
-                            customer: $customer,
-                            total: $billing->period_total,
-                            items: $contract->isInvoiceWithItems() || $customer->isInvoiceWithItems() ? [$billing] : [],
-                            text: $this->buildSeparateBillingText($billing, $invoicedMonth),
-                            invoicedMonth: $invoicedMonth,
-                            internalNote: 'separate',
-                        );
-                    } else {
-                        $billingContractTotal = $billingContractTotal->add($billing->period_total);
-                        $billingContractItems[] = $billing;
-                    }
-                }
-
-                if ($contract->isSeparateInvoice() && !$billingContractTotal->isZero()) {
-                    // Separate invoice per contract
-                    $drafts[] = $this->createDraft(
-                        number: (string)($prefix + $index++),
-                        customer: $customer,
-                        total: $billingContractTotal,
-                        items: $contract->isInvoiceWithItems() ? $billingContractItems : [],
-                        text: $this->buildContractInvoiceText($contract, $invoicedMonth),
-                        invoicedMonth: $invoicedMonth,
-                        internalNote: 'separate',
-                    );
-                } else {
-                    // Merge into customer invoice
-                    $billingCustomerTotal = $billingCustomerTotal->add($billingContractTotal);
-                    $billingCustomerItems = array_merge(
-                        $billingCustomerItems,
-                        $billingContractItems,
-                    );
-                }
-            }
-
-            if (!$billingCustomerTotal->isZero()) {
-                // Customer-level invoice
-                $drafts[] = $this->createDraft(
-                    number: (string)($prefix + $index++),
-                    customer: $customer,
-                    total: $billingCustomerTotal,
-                    items: $customer->isInvoiceWithItems() ? $billingCustomerItems : [],
-                    text: $this->buildCustomerInvoiceText($customer, $invoicedMonth),
-                    invoicedMonth: $invoicedMonth,
-                );
+            foreach ($invoices as $invoice) {
+                $drafts[] = $this->draftOf($invoice, $customer, (string)($prefix + $index++), $invoicedMonth);
             }
         }
 
         return $drafts;
+    }
+
+    /**
+     * The draft of one invoice, written according to what the invoice is for.
+     *
+     * @param \App\Service\CustomerPrint\MonthlyInvoice $invoice The invoice.
+     * @param \App\Model\Entity\Customer $customer Whose it is.
+     * @param string $number Its number.
+     * @param \Cake\I18n\Date $invoicedMonth The month it is for.
+     * @return \Bookkeeping\Model\ValueObject\InvoiceDraft
+     */
+    private function draftOf(
+        MonthlyInvoice $invoice,
+        Customer $customer,
+        string $number,
+        Date $invoicedMonth,
+    ): InvoiceDraft {
+        $contract = $invoice->contract;
+        $billing = $invoice->billing;
+
+        if ($contract !== null && $billing !== null) {
+            return $this->createDraft(
+                number: $number,
+                customer: $customer,
+                total: $invoice->total,
+                items: $contract->isInvoiceWithItems() || $customer->isInvoiceWithItems() ? $invoice->items : [],
+                text: $this->buildSeparateBillingText($billing, $invoicedMonth),
+                invoicedMonth: $invoicedMonth,
+                internalNote: 'separate',
+            );
+        }
+
+        if ($contract !== null) {
+            return $this->createDraft(
+                number: $number,
+                customer: $customer,
+                total: $invoice->total,
+                items: $contract->isInvoiceWithItems() ? $invoice->items : [],
+                text: $this->buildContractInvoiceText($contract, $invoicedMonth),
+                invoicedMonth: $invoicedMonth,
+                internalNote: 'separate',
+            );
+        }
+
+        return $this->createDraft(
+            number: $number,
+            customer: $customer,
+            total: $invoice->total,
+            items: $customer->isInvoiceWithItems() ? $invoice->items : [],
+            text: $this->buildCustomerInvoiceText($customer, $invoicedMonth),
+            invoicedMonth: $invoicedMonth,
+        );
     }
 
     /**

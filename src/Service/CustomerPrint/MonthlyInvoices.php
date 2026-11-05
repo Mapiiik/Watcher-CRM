@@ -12,11 +12,9 @@ use PhpCollective\DecimalObject\Decimal;
 /**
  * The invoices a customer is sent each month, and what each of them comes to.
  *
- * Split the way the bookkeeping splits them when it writes them
- * ({@see \Bookkeeping\Service\InvoiceGenerationService::generate()}), so that what a list of the
- * services tells the customer to pay is what the invoices will ask for. A service billed on its
- * own gets an invoice of its own, so does a contract whose service type is invoiced separately,
- * and the rest goes on one invoice together. Change one and the other has to follow.
+ * {@see self::split()} is the rule, and the bookkeeping writes the invoices by the same one
+ * ({@see \Bookkeeping\Service\InvoiceGenerationService::generate()}), so what a list of the
+ * services tells the customer to pay is what the invoices will ask for.
  *
  * Only what is billed on the day counts: a contract in a state that is not billed, or a billing
  * that has not started yet, is not paid for yet.
@@ -31,37 +29,58 @@ final class MonthlyInvoices
      */
     public function of(Customer $customer, Date $day): array
     {
+        return $this->split(
+            array_filter($customer->contracts ?? [], fn(Contract $contract): bool => (bool)$contract->billed),
+            fn(Contract $contract): array => $this->billedOn($contract, $day),
+            fn(Billing $billing): Decimal => $billing->total_price,
+        );
+    }
+
+    /**
+     * Which invoices the billings of a customer go on.
+     *
+     * A service billed on its own gets an invoice of its own, so does a contract whose service type
+     * is invoiced separately, and the rest goes on one invoice together. What comes to nothing
+     * stays with the rest, so it is still listed there.
+     *
+     * @param iterable<\App\Model\Entity\Contract> $contracts The contracts.
+     * @param callable(\App\Model\Entity\Contract): iterable<\App\Model\Entity\Billing> $billingsOf
+     *   Which billings of a contract count.
+     * @param callable(\App\Model\Entity\Billing): \PhpCollective\DecimalObject\Decimal $amountOf
+     *   What a billing comes to.
+     * @return list<\App\Service\CustomerPrint\MonthlyInvoice> The invoices, the common one last.
+     */
+    public function split(iterable $contracts, callable $billingsOf, callable $amountOf): array
+    {
         $invoices = [];
         $common = Decimal::create(0, 2);
+        $commonItems = [];
 
-        foreach ($customer->contracts ?? [] as $contract) {
-            if (!$contract->billed) {
-                continue;
-            }
-
+        foreach ($contracts as $contract) {
             $together = Decimal::create(0, 2);
+            $items = [];
 
-            foreach ($this->billedOn($contract, $day) as $billing) {
-                if ($billing->isSeparateInvoice() && !$billing->total_price->isZero()) {
-                    $invoices[] = new MonthlyInvoice($billing->total_price, $contract, $billing);
+            foreach ($billingsOf($contract) as $billing) {
+                $amount = $amountOf($billing);
+
+                if ($billing->isSeparateInvoice() && !$amount->isZero()) {
+                    $invoices[] = new MonthlyInvoice($amount, $contract, $billing, [$billing]);
                 } else {
-                    $together = $together->add($billing->total_price);
+                    $together = $together->add($amount);
+                    $items[] = $billing;
                 }
             }
 
-            if ($together->isZero()) {
-                continue;
-            }
-
-            if ($contract->isSeparateInvoice()) {
-                $invoices[] = new MonthlyInvoice($together, $contract);
+            if ($contract->isSeparateInvoice() && !$together->isZero()) {
+                $invoices[] = new MonthlyInvoice($together, $contract, items: $items);
             } else {
                 $common = $common->add($together);
+                $commonItems = array_merge($commonItems, $items);
             }
         }
 
         if (!$common->isZero()) {
-            $invoices[] = new MonthlyInvoice($common);
+            $invoices[] = new MonthlyInvoice($common, items: $commonItems);
         }
 
         return $invoices;

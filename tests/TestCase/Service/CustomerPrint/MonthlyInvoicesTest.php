@@ -128,6 +128,41 @@ class MonthlyInvoicesTest extends TestCase
     }
 
     /**
+     * Each invoice says which billings it is made of, and the bookkeeping lists them from that. What
+     * comes to nothing stays with the rest, even from a contract invoiced separately, because a
+     * free service is still listed and an invoice for nothing is not written.
+     *
+     * @return void
+     * @link \App\Service\CustomerPrint\MonthlyInvoices::split()
+     */
+    public function testAnInvoiceSaysWhichBillingsItIsMadeOf(): void
+    {
+        $alone = $this->billing('100', separate: true);
+        $withTheRest = $this->billing('350');
+        $ofTheContract = $this->billing('200');
+        $free = $this->billing('0');
+
+        $contracts = [
+            $this->contract('A', [$alone, $withTheRest]),
+            $this->contract('B', [$ofTheContract], separate: true),
+            $this->contract('C', [$free], separate: true),
+        ];
+
+        $invoices = (new MonthlyInvoices())->split(
+            $contracts,
+            fn(Contract $contract): array => $contract->billings,
+            fn(Billing $billing): Decimal => $billing->total_price,
+        );
+
+        $this->assertCount(3, $invoices);
+        $this->assertSame([$alone], $invoices[0]->items);
+        $this->assertSame([$ofTheContract], $invoices[1]->items);
+        $this->assertSame($contracts[1], $invoices[1]->contract);
+        $this->assertSame([$withTheRest, $free], $invoices[2]->items);
+        $this->assertNull($invoices[2]->contract);
+    }
+
+    /**
      * What is paid changes on the day a service starts and on the day after one ends, and on no
      * day before the list is drawn up or on a contract that is not billed.
      *
