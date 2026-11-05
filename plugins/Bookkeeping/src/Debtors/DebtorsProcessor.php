@@ -555,7 +555,8 @@ class DebtorsProcessor
 
         $start_time = DateTime::now();
 
-        $customerIps = [];
+        // Nobody left to block is the lists being emptied, so both families are always there.
+        $customerIps = ['ipv4' => [], 'ipv6' => []];
 
         // Contracts rather than customers. Owing money is a reason to cut off everything
         // somebody has, so a debtor names all of theirs - but an unsigned contract says
@@ -1157,7 +1158,7 @@ class DebtorsProcessor
                 keyField: 'id',
                 valueField: 'number',
             )
-            ->whereInList('id', $ids)
+            ->whereInList('id', $ids, ['allowEmpty' => true])
             ->toArray();
 
         $result = '';

@@ -392,6 +392,93 @@ class DebtorsProcessorTest extends TestCase
     }
 
     /**
+     * Nobody left to block is the list being emptied, not nothing to do: whoever was on it has
+     * paid, and has to be let back in.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::blockingUpdate()
+     */
+    public function testTheLastDebtorPayingEmptiesTheList(): void
+    {
+        $this->throughTheAgent(self::ROUTER_UP);
+        $this->fetchTable('Bookkeeping.Invoices')->deleteAll(['1 = 1']);
+        $sent = $this->agentAnswers('sync', [
+            self::ROUTER_UP => $this->agentAnswer(200, [
+                'host' => self::ROUTER_UP,
+                'transport' => 'api-ssl',
+                'added' => [],
+                'updated' => [],
+                'removed' => [['address' => '192.168.11.11', 'family' => 'ipv4', 'comment' => 'paid']],
+                'unchanged' => 0,
+            ]),
+        ]);
+
+        $processor = new DebtorsProcessor();
+        $processor->blockingUpdate();
+
+        $this->assertCount(1, $sent, 'The router was not told the list is empty.');
+        $this->assertSame([], $sent[0]['entries']);
+        $this->assertNoErrors($processor);
+    }
+
+    /**
+     * The same goes for the television: nobody left to block lets back in whoever was switched off.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::updateSledovaniTV()
+     */
+    public function testTheLastDebtorPayingLetsTheViewerBackIn(): void
+    {
+        $this->onlyLabelling();
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.enabled', true);
+        Configure::write('SledovaniTv.username', 'partner');
+        Configure::write('SledovaniTv.password', 'secret');
+        $this->fetchTable('Bookkeeping.Invoices')->deleteAll(['1 = 1']);
+
+        $this->mockClientPost(
+            'https://sledovanitv.cz/partner/api/get-users',
+            $this->agentAnswer(200, [
+                'users' => [['id' => '7', 'partnerid' => '2024001', 'active' => 1, 'suspended' => 1]],
+            ]),
+        );
+        $this->mockClientPost(
+            'https://sledovanitv.cz/partner/api/unsuspend-user',
+            $this->agentAnswer(200, ['activated' => true]),
+        );
+
+        $processor = new DebtorsProcessor();
+        $processor->blockingUpdate();
+
+        Configure::delete('SledovaniTv');
+
+        $this->assertNoErrors($processor);
+        $this->assertStringContainsString('Unsuspended user with ID: 7', $this->allMessages($processor));
+    }
+
+    /**
+     * @param \Bookkeeping\Debtors\DebtorsProcessor $processor What processed.
+     * @return void
+     */
+    private function assertNoErrors(DebtorsProcessor $processor): void
+    {
+        foreach ($processor->getMessages()->getMessages() as $message) {
+            $this->assertNotSame('error', $message->type, $message->text);
+        }
+    }
+
+    /**
+     * @param \Bookkeeping\Debtors\DebtorsProcessor $processor What processed.
+     * @return string Everything it said.
+     */
+    private function allMessages(DebtorsProcessor $processor): string
+    {
+        return implode(PHP_EOL, array_map(
+            fn(Message $message): string => $message->text,
+            $processor->getMessages()->getMessages(),
+        ));
+    }
+
+    /**
      * Blocking one customer by hand puts their addresses on the list and leaves the rest of it
      * alone, and letting them back in takes the same addresses off.
      *
