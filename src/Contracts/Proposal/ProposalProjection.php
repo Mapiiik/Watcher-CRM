@@ -291,7 +291,7 @@ final class ProposalProjection
         $starting->patch([
             'billing_from' => $line->startsOn($effective_from),
             'billing_until' => $line->billing_until,
-            'service_id' => $line->service_id,
+            'service_id' => $line->leavesTheServiceAlone() ? $replaced?->service_id : $line->service_id,
             'text' => $line->text,
             'quantity' => $line->quantity,
             'price' => $line->price,

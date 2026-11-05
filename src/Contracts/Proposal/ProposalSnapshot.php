@@ -141,8 +141,7 @@ final class ProposalSnapshot
     {
         $found = [];
 
-        foreach ($this->part('billings') as $billing) {
-            $billing = (array)$billing;
+        foreach ($this->billingsTaken() as $billing) {
             $id = $billing['id'] ?? null;
 
             if ($id !== null) {
@@ -151,6 +150,31 @@ final class ProposalSnapshot
         }
 
         return $found;
+    }
+
+    /**
+     * The billings as they were taken, each with the id of its service beside it.
+     *
+     * The service is kept whole, because the papers print its name and its price. Its id is read
+     * out of it here, so that whoever reads a line finds it where a record has it.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function billingsTaken(): array
+    {
+        $taken = [];
+
+        foreach ($this->part('billings') as $billing) {
+            $billing = (array)$billing;
+
+            if (array_key_exists('service', $billing)) {
+                $billing['service_id'] = ((array)$billing['service'])['id'] ?? null;
+            }
+
+            $taken[] = $billing;
+        }
+
+        return $taken;
     }
 
     /**
@@ -258,17 +282,11 @@ final class ProposalSnapshot
         $moved = [];
 
         foreach (self::BILLING_TERMS as $term) {
-            // The service is kept whole rather than as an id, because the papers print its name
-            // and its price, so that is where its id is to be found.
-            $key = $term === 'service_id' ? 'service' : $term;
-
-            if (!array_key_exists($key, $taken)) {
+            if (!array_key_exists($term, $taken)) {
                 continue;
             }
 
-            $before = $key === 'service' ? ($taken['service']['id'] ?? null) : $taken[$term];
-
-            if ($this->comparably($before) !== $this->comparably($live->get($term))) {
+            if ($this->comparably($taken[$term]) !== $this->comparably($live->get($term))) {
                 $moved[] = $term;
             }
         }
@@ -427,8 +445,7 @@ final class ProposalSnapshot
     {
         $billings = [];
 
-        foreach ($this->part('billings') as $taken) {
-            $taken = (array)$taken;
+        foreach ($this->billingsTaken() as $taken) {
             /** @var \App\Model\Entity\Billing $billing */
             $billing = $this->record('Billings', $taken);
 

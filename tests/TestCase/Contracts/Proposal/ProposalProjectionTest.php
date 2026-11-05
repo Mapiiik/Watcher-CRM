@@ -229,8 +229,8 @@ class ProposalProjectionTest extends TestCase
     }
 
     /**
-     * A line that names no service and no text keeps the service of what it replaces. Read back from
-     * a snapshot, the billing has the service whole and no id beside it, so this is how it comes in.
+     * A line that names no service and no text keeps the service of what it replaces, the record of
+     * it as well as what the paper prints.
      *
      * @return void
      */
@@ -238,13 +238,16 @@ class ProposalProjectionTest extends TestCase
     {
         $billing = $this->billing('b-1');
         $billing->unset('text');
+        $billing->set('service_id', 's-1');
         $billing->set('service', new Service(['id' => 's-1', 'name' => 'A tariff', 'price' => 450]));
 
         $projected = $this->project([$billing], [
             'billings' => [['billing_id' => 'b-1', 'percentage_discount' => 100]],
         ]);
 
-        $this->assertSame('A tariff', $projected[array_key_last($projected)]->name);
+        $replacement = $projected[array_key_last($projected)];
+        $this->assertSame('A tariff', $replacement->name);
+        $this->assertSame('s-1', $replacement->service_id);
     }
 
     /**

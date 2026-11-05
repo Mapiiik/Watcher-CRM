@@ -38,8 +38,7 @@ final class ProposedBillingForm
         if ($replaced !== null) {
             return [
                 'billing_id' => (string)$replaced->id,
-                // Read back from a snapshot it has the service whole and no id beside it.
-                'service_id' => $replaced->service_id ?? $replaced->service?->id,
+                'service_id' => $replaced->service_id,
                 'text' => $replaced->text,
                 'quantity' => $replaced->quantity,
                 'price' => $replaced->price?->toString(),

@@ -330,6 +330,32 @@ class ProposalSnapshotTest extends TestCase
     }
 
     /**
+     * Read back, a billing says which service it is for just as a record does. That the snapshot
+     * keeps the service whole is the snapshot's business and not whoever reads the line.
+     *
+     * @return void
+     */
+    public function testABillingReadBackSaysWhichServiceItIsFor(): void
+    {
+        $serviceId = 'aaaaaaaa-0000-4000-8000-000000000001';
+
+        $snapshot = ProposalSnapshot::fromArray([
+            'contract' => ['id' => 'c1'],
+            'customer' => ['id' => 'x1'],
+            'version' => [],
+            'billings' => [
+                ['id' => 'b1', 'service' => ['id' => $serviceId, 'name' => 'Internet']],
+                ['id' => 'b2', 'text' => 'A text of its own', 'service' => null],
+            ],
+        ]);
+
+        [$service, $text] = $snapshot->hydrate()->billings;
+
+        $this->assertSame($serviceId, $service->service_id);
+        $this->assertNull($text->service_id);
+    }
+
+    /**
      * A term the snapshot never kept is passed over rather than read as having moved, or every
      * proposal drawn before the shape grew would carry the same false alarm for ever.
      *
