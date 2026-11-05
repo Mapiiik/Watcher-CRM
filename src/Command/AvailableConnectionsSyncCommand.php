@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Addresses\Resolver as AddressesResolver;
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\AvailableConnection;
 use App\Model\Enum\AccessMedium;
 use App\Model\Enum\AvailableConnectionOrigin;
@@ -138,7 +139,7 @@ class AvailableConnectionsSyncCommand extends Command
         }
 
         // One transaction for the lot: quicker, and the audit log keeps the run together.
-        $available->saveManyOrFail($changed);
+        $available->saveManyOrFail($changed, (new AuditTrail())->options());
 
         return static::CODE_SUCCESS;
     }

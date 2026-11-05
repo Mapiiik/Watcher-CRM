@@ -129,6 +129,40 @@ class AuditTrailTest extends TestCase
     }
 
     /**
+     * A batch outside a transaction writes itself out, and the trail is what keeps it one act:
+     * without it every record is logged as an act of its own.
+     *
+     * @return void
+     */
+    public function testABatchOutsideATransactionIsOneAct(): void
+    {
+        $states = $this->getTableLocator()->get('ContractStates');
+        $second = $states->find()->firstOrFail()->toArray();
+        unset($second['id']);
+
+        $states->saveOrFail(
+            $states->newEntity($second, ['validate' => false, 'accessibleFields' => ['*' => true]]),
+            ['checkRules' => false],
+        );
+        $states->getConnection()->execute('DELETE FROM audit_logs');
+
+        $batch = $states->find()->all()->toList();
+        foreach ($batch as $position => $state) {
+            $state->set('name', 'Renamed ' . $position);
+        }
+
+        $states->saveManyOrFail($batch, (new AuditTrail())->options());
+
+        $this->assertSame(2, $this->logged());
+        $this->assertSame(
+            1,
+            (int)$states->getConnection()
+                ->execute('SELECT count(DISTINCT transaction_key) FROM audit_logs')
+                ->fetchColumn(0),
+        );
+    }
+
+    /**
      * A trail written out through a table that keeps no log says so, because every table of ours
      * keeps one - but it does not bring the request down over a transaction that has committed.
      *
