@@ -16,7 +16,8 @@ use Cake\Validation\Validation;
  *
  * The historical connections are left out of the answer on purpose. What they say is where a
  * customer was connected at the time, and they keep the name of the place beside its number for
- * exactly that reason - a mast that is gone does not make the history of it wrong.
+ * exactly that reason - a mast that is gone does not make the history of it wrong. The same goes
+ * for work reports and for connections no longer offered: nobody can move them elsewhere first.
  */
 class AccessPointsController extends AppController
 {
@@ -45,6 +46,13 @@ class AccessPointsController extends AppController
             'tasks' => $this->fetchTable('Tasks')
                 ->find()
                 ->where(['Tasks.access_point_id' => $id])
+                ->count(),
+            'available_connections' => $this->fetchTable('AvailableConnections')
+                ->find()
+                ->where([
+                    'AvailableConnections.access_point_id' => $id,
+                    'AvailableConnections.retired IS' => null,
+                ])
                 ->count(),
         ];
 

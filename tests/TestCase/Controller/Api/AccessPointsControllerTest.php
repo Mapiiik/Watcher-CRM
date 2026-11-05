@@ -45,6 +45,7 @@ class AccessPointsControllerTest extends TestCase
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
+        'app.AvailableConnections',
         'app.TaskStates',
         'app.TaskTypes',
         'app.Tasks',
@@ -60,15 +61,40 @@ class AccessPointsControllerTest extends TestCase
     public function testAPlaceSomethingStandsOnIsCounted(): void
     {
         $this->taskAt(self::ACCESS_POINT_ID);
+        $this->getTableLocator()->get('AvailableConnections')->updateAll(
+            ['access_point_id' => self::ACCESS_POINT_ID],
+            ['1 = 1'],
+        );
 
         $this->login();
         $this->get('/api/access-points/' . self::ACCESS_POINT_ID . '/references.json');
 
         $this->assertResponseOk();
         $this->assertSame(
-            ['contracts' => 1, 'tasks' => 1],
+            ['contracts' => 1, 'tasks' => 1, 'available_connections' => 1],
             $this->viewVariable('references'),
         );
+    }
+
+    /**
+     * A connection nobody offers any more is the same kind of history as a historical connection,
+     * so it does not hold on to the place.
+     *
+     * @return void
+     * @link \App\Controller\Api\AccessPointsController::references()
+     */
+    public function testARetiredConnectionHoldsNothing(): void
+    {
+        $this->getTableLocator()->get('AvailableConnections')->updateAll(
+            ['access_point_id' => self::ACCESS_POINT_ID, 'retired' => '2026-01-01 00:00:00'],
+            ['1 = 1'],
+        );
+
+        $this->login();
+        $this->get('/api/access-points/' . self::ACCESS_POINT_ID . '/references.json');
+
+        $this->assertResponseOk();
+        $this->assertSame(0, $this->viewVariable('references')['available_connections']);
     }
 
     /**
@@ -84,7 +110,10 @@ class AccessPointsControllerTest extends TestCase
         $this->get('/api/access-points/' . Text::uuid() . '/references.json');
 
         $this->assertResponseOk();
-        $this->assertSame(['contracts' => 0, 'tasks' => 0], $this->viewVariable('references'));
+        $this->assertSame(
+            ['contracts' => 0, 'tasks' => 0, 'available_connections' => 0],
+            $this->viewVariable('references'),
+        );
     }
 
     /**
