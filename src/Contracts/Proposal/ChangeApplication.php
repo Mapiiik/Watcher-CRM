@@ -381,22 +381,18 @@ final class ChangeApplication
         string $customer_id,
         ?Billing $replaced = null,
     ): Billing {
+        $terms = $line->terms($replaced);
+
         /** @var \App\Model\Entity\Billing $starting */
         $starting = $this->fetchTable('Billings')->newEntity([
             'customer_id' => $customer_id,
             'contract_id' => $proposal->contract_id,
             'billing_from' => $line->startsOn($proposal->effective_from)->toDateString(),
+            // Days and money are held as objects and the marshaller takes only what a form would send.
             'billing_until' => $line->billing_until?->toDateString(),
-            'service_id' => $line->leavesTheServiceAlone() ? $replaced?->service_id : $line->service_id,
-            'text' => $line->text,
-            'quantity' => $line->quantity,
-            // Money is held as an object and the marshaller takes only what a form would send.
             'price' => $line->price?->toString(),
             'fixed_discount' => $line->fixed_discount?->toString(),
-            'percentage_discount' => $line->percentage_discount,
-            'separate_invoice' => $line->separate_invoice,
-            'note' => $line->note,
-        ]);
+        ] + $terms);
 
         return $starting;
     }
@@ -479,29 +475,19 @@ final class ChangeApplication
     /**
      * The version the papers brought into being, as they said it would be.
      *
-     * Drawn from the snapshot and the proposed changes rather than from anything live, so that the
-     * record ends up saying what the printed paper says. The day it starts is the day the papers
-     * take effect, which for a new contract is the same thing said twice.
-     *
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @return \App\Model\Entity\ContractVersion An unsaved record.
      */
     private function versionFromThePapers(ContractProposal $proposal): ContractVersion
     {
-        $snapshot = $proposal->stateOfThings();
-        $projected = (new ProposalProjection())->projectVersion(
-            $snapshot->hydrateVersion(),
-            $proposal->proposedChanges()->version,
-        );
-
         /** @var \App\Model\Entity\ContractVersion $version */
         $version = $this->fetchTable('ContractVersions')->newEmptyEntity();
 
         $version->set('contract_id', $proposal->contract_id);
-        $version->set('valid_from', $proposal->effective_from);
-        $version->set('valid_until', $projected->valid_until);
-        $version->set('obligation_until', $projected->obligation_until);
-        $version->set('conclusion_date', $proposal->conclusion_date);
+
+        foreach ((new ProposalProjection())->versionToStart($proposal) as $field => $value) {
+            $version->set($field, $value);
+        }
 
         return $version;
     }

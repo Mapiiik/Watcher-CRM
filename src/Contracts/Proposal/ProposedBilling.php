@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contracts\Proposal;
 
+use App\Model\Entity\Billing;
 use Cake\I18n\Date;
 use Cake\Utility\Text;
 use InvalidArgumentException;
@@ -127,6 +128,29 @@ final class ProposedBilling
     public function leavesTheServiceAlone(): bool
     {
         return $this->service_id === null && $this->text === null;
+    }
+
+    /**
+     * What the billing this line puts in place says.
+     *
+     * Said once, because the papers and the records have to end up saying the same.
+     *
+     * @param \App\Model\Entity\Billing|null $replaced What it replaces, where it replaces one.
+     * @return array<string, mixed>
+     */
+    public function terms(?Billing $replaced): array
+    {
+        return [
+            'billing_until' => $this->billing_until,
+            'service_id' => $this->leavesTheServiceAlone() ? $replaced?->service_id : $this->service_id,
+            'text' => $this->text,
+            'quantity' => $this->quantity,
+            'price' => $this->price,
+            'fixed_discount' => $this->fixed_discount,
+            'percentage_discount' => $this->percentage_discount,
+            'separate_invoice' => $this->separate_invoice,
+            'note' => $this->note,
+        ];
     }
 
     /**

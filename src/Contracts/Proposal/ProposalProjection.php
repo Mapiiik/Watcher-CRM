@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Contracts\Proposal;
 
 use App\Model\Entity\Billing;
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use Cake\I18n\Date;
 
@@ -34,47 +35,25 @@ final class ProposalProjection
         Date $effective_from,
         array $services = [],
     ): array {
-        $acted_on = $changes->billingsByBillingId();
         $projected = [];
 
-        foreach ($billings as $billing) {
-            $line = $acted_on[(string)$billing->id] ?? null;
-
-            if ($line === null) {
-                $projected[] = $billing;
-
-                continue;
-            }
-
+        foreach ($this->explain($billings, $changes, $effective_from, $services) as $row) {
             // A billing the papers end before it ever began is removed rather than ended, so
-            // afterwards there is no such billing to show - and showing it with a last day before
-            // its first would be a date nothing could write.
-            if (!$line->neverRunsAfterAll($effective_from, $billing->billing_from)) {
-                // What is replaced or ended stops the day before what replaces it starts - the
-                // same two halves applying the changes will write. A line that starts later than
-                // the proposal leaves the old billing running until then.
-                $projected[] = $this->ending($billing, $line, $effective_from);
-            }
-
-            if ($line->startsABilling()) {
-                $projected[] = $this->starting($line, $billing, $effective_from, $services);
+            // afterwards there is no such billing to show.
+            if (!$row['dropped']) {
+                $projected[] = $row['billing'];
             }
         }
 
-        foreach ($changes->billings as $line) {
-            if ($line->isAddition()) {
-                $projected[] = $this->starting($line, null, $effective_from, $services);
-            }
-        }
-
-        return $this->inOrder($projected);
+        return $projected;
     }
 
     /**
-     * The same projection, with each line saying where it comes from.
+     * The billing lines as the proposal would leave them, each saying where it comes from.
      *
      * This is what the proposal's own table is drawn from: the operator reads what would be billed
-     * for and, on each row, whether it stands as it is, was changed, was added, or stops here.
+     * for and, on each row, whether it stands as it is, was changed, was added, or stops here. The
+     * papers read the same rows, so the two cannot disagree.
      *
      * @param array<\App\Model\Entity\Billing> $billings The billings as the snapshot took them.
      * @param \App\Contracts\Proposal\ProposalChanges $changes What the proposal asks for.
@@ -116,6 +95,9 @@ final class ProposalProjection
             // rather than showing a last day before the first.
             $dropped = $line->neverRunsAfterAll($effective_from, $billing->billing_from);
 
+            // What is replaced or ended stops the day before what replaces it starts - the same two
+            // halves applying the changes will write. A line that starts later than the proposal
+            // leaves the old billing running until then.
             $rows[] = [
                 'billing' => $dropped ? $billing : $this->ending($billing, $line, $effective_from),
                 'line' => $line->terminatesOnly() ? $line : null,
@@ -226,6 +208,31 @@ final class ProposalProjection
     }
 
     /**
+     * What the version papers bring into being says, where there is none yet.
+     *
+     * Drawn from the snapshot and the proposed changes rather than from anything live, so that the
+     * record ends up saying what the printed paper says. The day it starts is the day the papers
+     * take effect, which for a new contract is the same thing said twice.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return array{valid_from: \Cake\I18n\Date|null, valid_until: \Cake\I18n\Date|null, obligation_until: \Cake\I18n\Date|null, conclusion_date: \Cake\I18n\Date|null}
+     */
+    public function versionToStart(ContractProposal $proposal): array
+    {
+        $projected = $this->projectVersion(
+            $proposal->stateOfThings()->hydrateVersion(),
+            $proposal->proposedChanges()->version,
+        );
+
+        return [
+            'valid_from' => $proposal->effective_from,
+            'valid_until' => $projected->valid_until,
+            'obligation_until' => $projected->obligation_until,
+            'conclusion_date' => $proposal->conclusion_date,
+        ];
+    }
+
+    /**
      * A version an earlier proposal is replacing, as it would stand once it has.
      *
      * @param \App\Model\Entity\ContractVersion $version The version being replaced.
@@ -288,18 +295,7 @@ final class ProposalProjection
         $starting = $replaced === null ? new Billing() : clone $replaced;
 
         $starting->unset('id');
-        $starting->patch([
-            'billing_from' => $line->startsOn($effective_from),
-            'billing_until' => $line->billing_until,
-            'service_id' => $line->leavesTheServiceAlone() ? $replaced?->service_id : $line->service_id,
-            'text' => $line->text,
-            'quantity' => $line->quantity,
-            'price' => $line->price,
-            'fixed_discount' => $line->fixed_discount,
-            'percentage_discount' => $line->percentage_discount,
-            'separate_invoice' => $line->separate_invoice,
-            'note' => $line->note,
-        ]);
+        $starting->patch(['billing_from' => $line->startsOn($effective_from)] + $line->terms($replaced));
 
         // The service is what the document names and prices the line by. A line that names one
         // brings it - the contract's own snapshot has never heard of it - and only a line that
@@ -315,19 +311,6 @@ final class ProposalProjection
         }
 
         return $starting;
-    }
-
-    /**
-     * The lines in the order a document reads them.
-     *
-     * @param array<\App\Model\Entity\Billing> $billings The lines.
-     * @return array<\App\Model\Entity\Billing>
-     */
-    private function inOrder(array $billings): array
-    {
-        usort($billings, fn(Billing $one, Billing $other): int => $this->compare($one, $other));
-
-        return $billings;
     }
 
     /**

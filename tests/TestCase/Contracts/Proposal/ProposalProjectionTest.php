@@ -9,7 +9,9 @@ use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedVersion;
 use App\Model\Entity\Billing;
 use App\Model\Entity\BorrowedEquipment;
+use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
+use App\Model\Entity\CustomerProposal;
 use App\Model\Entity\Service;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
@@ -413,6 +415,58 @@ class ProposalProjectionTest extends TestCase
 
         $this->assertSame(self::DAY_BEFORE, $projected->valid_until?->toDateString());
         $this->assertNull($version->valid_until, 'The record the projection was made from moved.');
+    }
+
+    /**
+     * The papers and the table read the same rows. A billing that never runs is on the table, which
+     * has to say it goes, and not on the papers, which say what is left.
+     *
+     * @return void
+     */
+    public function testThePapersReadWhatTheTableReads(): void
+    {
+        $billing = $this->billing('b-1');
+        $billing->set('billing_from', new Date('2027-06-01'));
+        $changes = ProposalChanges::fromArray([
+            'billings' => [
+                ['billing_id' => 'b-1', 'terminates_only' => true],
+                ['billing_id' => 'b-2', 'terminates_only' => true],
+            ],
+        ]);
+        $billings = [$billing, $this->billing('b-2'), $this->billing('b-3')];
+        $projection = new ProposalProjection();
+        $day = new Date('2027-01-01');
+
+        $rows = $projection->explain($billings, $changes, $day);
+        $kept = array_filter($rows, fn(array $row): bool => !$row['dropped']);
+
+        $this->assertCount(3, $rows);
+        $this->assertEquals(
+            array_column($kept, 'billing'),
+            $projection->projectBillings($billings, $changes, $day),
+        );
+    }
+
+    /**
+     * What a version the papers start says, for the plan and for the record alike.
+     *
+     * @return void
+     */
+    public function testTheVersionThePapersStartIsWhatTheySay(): void
+    {
+        $proposal = new ContractProposal([
+            'effective_from' => new Date('2027-01-01'),
+            'snapshot' => ['contract' => [], 'customer' => [], 'version' => [], 'billings' => []],
+            'changes' => ['version' => ['valid_until' => '2028-12-31']],
+            'customer_proposal' => new CustomerProposal(['conclusion_date' => new Date('2026-12-15')]),
+        ]);
+
+        $starting = (new ProposalProjection())->versionToStart($proposal);
+
+        $this->assertSame('2027-01-01', $starting['valid_from']?->toDateString());
+        $this->assertSame('2028-12-31', $starting['valid_until']?->toDateString());
+        $this->assertNull($starting['obligation_until']);
+        $this->assertSame('2026-12-15', $starting['conclusion_date']?->toDateString());
     }
 
     /**

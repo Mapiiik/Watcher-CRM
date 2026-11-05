@@ -131,17 +131,7 @@ final class ChangePlan
      */
     private function startingTheVersion(ContractProposal $proposal): array
     {
-        $projected = (new ProposalProjection())->projectVersion(
-            $proposal->stateOfThings()->hydrateVersion(),
-            $proposal->proposedChanges()->version,
-        );
-
-        $starting = [
-            'valid_from' => $proposal->effective_from,
-            'valid_until' => $projected->valid_until,
-            'obligation_until' => $projected->obligation_until,
-            'conclusion_date' => $proposal->conclusion_date,
-        ];
+        $starting = (new ProposalProjection())->versionToStart($proposal);
 
         $planned = [];
 
