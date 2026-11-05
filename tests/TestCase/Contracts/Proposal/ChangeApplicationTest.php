@@ -1205,6 +1205,28 @@ class ChangeApplicationTest extends TestCase
     }
 
     /**
+     * What a version has come to say since the papers were signed is no reason to refuse them. The
+     * question about the term is asked when the papers are written, and these are written: nothing
+     * is left that could answer it, so a signed proposal would stay unappliable for good.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractProposalsTable::lastDayOfTheTerm()
+     */
+    public function testAVersionGivenAnEndSinceTheSignatureDoesNotStopTheChanges(): void
+    {
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'confirmations' => [],
+        ]);
+
+        (new ChangeApplication())->apply($proposal);
+
+        $this->assertTrue(
+            $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->hasBeenApplied(),
+        );
+    }
+
+    /**
      * A piece moved to another contract is gone from this one, which is what the preview says. It
      * belongs to somebody else's contract now, so it is left where it is.
      *

@@ -1064,6 +1064,17 @@ class ContractProposalsTable extends AppTable
         // have the obligation moved to the day the customer left, losing that they left early.
         $rules->add(
             function (ContractProposal $entity): bool {
+                // Asked of the papers as they are written. The version may be given an end later
+                // on, and papers already signed have nothing left to answer that with.
+                $written = $entity->isNew()
+                    || $entity->isDirty('changes')
+                    || $entity->isDirty('confirmations')
+                    || $entity->isDirty('snapshot');
+
+                if (!$written) {
+                    return true;
+                }
+
                 $ends = $this->lastDayOfTheTerm($entity);
 
                 if ($ends === null) {
