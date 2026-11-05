@@ -134,17 +134,7 @@ $endsOn = $changes->version->names('valid_until')
                         . ' no documents are generated for this proposal.') . '</p>';
                 }
 
-                // Without a version there is no day to take, so it is asked for here as well.
-                $asksForTheDay = !$exchange && (
-                    $purpose->asksForItsOwnDay()
-                    || ($purpose->mayStartAVersion() && $contractProposal->contract_version_id === null)
-                    || (!$keepsVersions && !$ending)
-                );
-
-                // A change is agreed while the version runs, so it says its own day. A new contract starts
-                // with its version, and an ending says the day it ends on - both are worked out rather than
-                // asked, because asking twice would only invite the two to disagree.
-                if ($asksForTheDay) {
+                if ($purpose->asksForTheDay($keepsVersions, $contractProposal->contract_version_id !== null)) {
                     echo $this->Form->control('effective_from', [
                         'label' => __('Effective From'),
                         // The day a minimum term is offered from, so saying it draws the offer again - once

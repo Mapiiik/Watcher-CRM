@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Proposals;
 
-use App\Model\Entity\ContractProposal;
 use App\Model\Entity\CustomerProposal;
 
 /**
@@ -35,24 +34,17 @@ final class ProposalRows
     /**
      * One proposal, as a listing wants it.
      *
-     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
      * @return array<string, mixed>
      */
-    private function row(ContractProposal|CustomerProposal $proposal): array
+    private function row(CustomerProposal $proposal): array
     {
-        $ofAContract = $proposal instanceof ContractProposal;
-
         return [
             'id' => (string)$proposal->id,
-            'agenda' => $ofAContract ? 'ContractProposals' : 'CustomerProposals',
             'proposal' => $proposal,
-            'customer' => $ofAContract
-                ? ($proposal->contract->customer ?? null)
-                : ($proposal->customer ?? null),
-            'contract' => $ofAContract ? ($proposal->contract ?? null) : null,
-            'covers' => $ofAContract ? [] : $this->contractsCovered($proposal),
-            'version' => $ofAContract ? ($proposal->contract_version ?? null) : null,
-            'purpose' => $ofAContract ? $proposal->purpose->label() : $proposal->whatItIsFor(),
+            'customer' => $proposal->customer ?? null,
+            'covers' => $this->contractsCovered($proposal),
+            'purpose' => $proposal->whatItIsFor(),
         ];
     }
 

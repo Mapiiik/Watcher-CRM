@@ -7,6 +7,7 @@ use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\ProposalPurpose;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * App\Model\Enum\ProposalPurpose Test Case
@@ -52,5 +53,42 @@ class ProposalPurposeTest extends TestCase
         $this->assertTrue(ProposalPurpose::NewContract->movesEquipment());
         $this->assertFalse(ProposalPurpose::ServiceChange->movesEquipment());
         $this->assertFalse(ProposalPurpose::Termination->movesEquipment());
+    }
+
+    /**
+     * The form asks for the day only where it cannot be worked out.
+     *
+     * @param \App\Model\Enum\ProposalPurpose $purpose The purpose.
+     * @param bool $keepsVersions Whether the contract keeps versions.
+     * @param bool $hasVersion Whether a version has been chosen.
+     * @param bool $asks Whether the day is asked for.
+     * @return void
+     */
+    #[DataProvider('whereTheDayIsAskedFor')]
+    public function testTheDayIsAskedForOnlyWhereItCannotBeWorkedOut(
+        ProposalPurpose $purpose,
+        bool $keepsVersions,
+        bool $hasVersion,
+        bool $asks,
+    ): void {
+        $this->assertSame($asks, $purpose->asksForTheDay($keepsVersions, $hasVersion));
+    }
+
+    /**
+     * @return array<string, array{\App\Model\Enum\ProposalPurpose, bool, bool, bool}>
+     */
+    public static function whereTheDayIsAskedFor(): array
+    {
+        return [
+            'a change says its own' => [ProposalPurpose::ServiceChange, true, true, true],
+            'a new contract takes its version\'s' => [ProposalPurpose::NewContract, true, true, false],
+            'a new contract with no version says its own' => [ProposalPurpose::NewContract, true, false, true],
+            'an ending works it out' => [ProposalPurpose::Termination, true, true, false],
+            'an ending of a contract without versions too' => [ProposalPurpose::Termination, false, false, false],
+            'without versions it is said' => [ProposalPurpose::ServiceChange, false, false, true],
+            'a new contract without versions as well' => [ProposalPurpose::NewContract, false, false, true],
+            'an exchange never' => [ProposalPurpose::EquipmentChange, true, true, false],
+            'an exchange without versions neither' => [ProposalPurpose::EquipmentChange, false, false, false],
+        ];
     }
 }

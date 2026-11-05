@@ -1511,7 +1511,7 @@ class ContractProposalsController extends AppController
             return null;
         }
 
-        return $services->extract(['id', 'name', 'price'])
+        return $services->extract(SnapshotShape::SERVICE)
             + ['connection_profile' => $services->connection_profile?->extract(SnapshotShape::CONNECTION_PROFILE)];
     }
 

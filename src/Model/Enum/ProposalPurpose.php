@@ -56,6 +56,29 @@ enum ProposalPurpose: string implements EnumLabelInterface
     }
 
     /**
+     * Whether the day the proposal takes effect is asked for on the form.
+     *
+     * Everywhere else it is worked out, because asking twice would only invite the two to disagree.
+     * Without a version there is no day to take, so a new contract with none chosen says its own,
+     * and so does anything on a contract that keeps no versions - except an ending, which says the
+     * day it ends on, and an exchange, which is dated when the equipment changes hands.
+     *
+     * @param bool $keeps_versions Whether the contract's service keeps versions at all.
+     * @param bool $has_version Whether a version has been chosen.
+     * @return bool
+     */
+    public function asksForTheDay(bool $keeps_versions, bool $has_version): bool
+    {
+        if (!$this->needsAVersion()) {
+            return false;
+        }
+
+        return $this->asksForItsOwnDay()
+            || ($this->mayStartAVersion() && !$has_version)
+            || (!$keeps_versions && !$this->ends());
+    }
+
+    /**
      * Whether a proposal for this purpose brings the version it belongs to to an end.
      *
      * @return bool

@@ -125,29 +125,6 @@ final class ProposalDocumentTypes
     }
 
     /**
-     * The ones of them that have to exist, as against the ones that may.
-     *
-     * A handover protocol is owed where equipment changes hands. Proposals drawn up before that was
-     * so keep the rules they were drawn up under, when a protocol was drawn only if somebody wanted
-     * one. Everything else here is the paper the papers are about.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
-     * @param bool $has_equipment Whether the contract is one that has equipment at all.
-     * @param bool $version_concluded Whether the version the proposal belongs to has been concluded.
-     * @return array<\App\Model\Enum\ContractDocumentType>
-     */
-    public function required(
-        ContractProposal $proposal,
-        bool $has_equipment,
-        bool $version_concluded,
-    ): array {
-        return array_values(array_filter(
-            $this->for($proposal, $has_equipment, $version_concluded),
-            fn(ContractDocumentType $type): bool => $this->isOwed($type, $proposal, []),
-        ));
-    }
-
-    /**
      * The documents this proposal may be printed as, and whether each of them has to exist.
      *
      * Both answers at once, because a page that lists what is missing wants them together and
@@ -181,6 +158,10 @@ final class ProposalDocumentTypes
 
     /**
      * Whether a paper the proposal may have has to exist.
+     *
+     * A handover protocol is owed where equipment changes hands. Proposals drawn up before that was
+     * so keep the rules they were drawn up under, when a protocol was drawn only if somebody wanted
+     * one. Everything else here is the paper the papers are about.
      *
      * @param \App\Model\Enum\ContractDocumentType $type The paper.
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
