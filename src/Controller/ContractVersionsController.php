@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use Cake\Http\Response;
 use Settings\Utility\Settings;
 
@@ -13,6 +14,8 @@ use Settings\Utility\Settings;
  */
 class ContractVersionsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -124,16 +127,7 @@ class ContractVersionsController extends AppController
                 $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
             }
         }
-        $contracts = $this->ContractVersions->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $contracts = $this->contractsList();
 
         if ($this->customer_id !== null) {
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
@@ -169,16 +163,7 @@ class ContractVersionsController extends AppController
                 $this->Flash->error(__('The contract version could not be saved. Please, try again.'));
             }
         }
-        $contracts = $this->ContractVersions->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $contracts = $this->contractsList();
 
         if ($this->customer_id !== null) {
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);

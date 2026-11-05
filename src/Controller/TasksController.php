@@ -506,11 +506,7 @@ class TasksController extends AppController
             }
         }
         $taskTypes = $this->Tasks->TaskTypes->find('list', order: ['name'])->all();
-        $customers = $this->Tasks->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
         $contracts = [];
         // Somebody a task can be handed to for the first time: one who can still sign in, and
         // whose account is one that takes work on rather than one an integration signs in as.
@@ -653,11 +649,7 @@ class TasksController extends AppController
             }
         }
         $taskTypes = $this->Tasks->TaskTypes->find('list', order: ['name'])->all();
-        $customers = $this->Tasks->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
         $contracts = [];
         // An account that holds no tasks can be named on none, so offering it could only ever
         // answer with nothing. The ones greyed out below are the accounts that do hold tasks but

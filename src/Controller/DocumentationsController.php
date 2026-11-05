@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use Files\Controller\Trait\DocumentationsControllerTrait;
 
 /**
@@ -12,6 +13,8 @@ use Files\Controller\Trait\DocumentationsControllerTrait;
  */
 class DocumentationsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     use DocumentationsControllerTrait;
 
     /**
@@ -57,19 +60,11 @@ class DocumentationsController extends AppController
     protected function setFormViewVars(): void
     {
         if ($this->customer_id === null) {
-            $this->set('customers', $this->Documentations->Customers->find('list', order: [
-                'company',
-                'last_name',
-                'first_name',
-            ]));
+            $this->set('customers', $this->customersList());
         }
 
         if ($this->contract_id === null) {
-            $contracts = $this->Documentations->Contracts->find(
-                'list',
-                contain: ['InstallationAddresses', 'ServiceTypes'],
-                order: ['Contracts.number'],
-            );
+            $contracts = $this->contractsList();
 
             // under a customer the contract is still chosen, but only from among their own
             if ($this->customer_id !== null) {

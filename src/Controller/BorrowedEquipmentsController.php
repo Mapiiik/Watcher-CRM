@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use Cake\Http\Response;
 
 /**
@@ -12,6 +13,8 @@ use Cake\Http\Response;
  */
 class BorrowedEquipmentsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -107,24 +110,8 @@ class BorrowedEquipmentsController extends AppController
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->BorrowedEquipments->Customers->find(
-            'list',
-            order: [
-                'company',
-                'last_name',
-                'first_name',
-            ],
-        );
-        $contracts = $this->BorrowedEquipments->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', order: [
             'name',
         ]);
@@ -164,24 +151,8 @@ class BorrowedEquipmentsController extends AppController
             }
             $this->Flash->error(__('The borrowed equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->BorrowedEquipments->Customers->find(
-            'list',
-            order: [
-                'company',
-                'last_name',
-                'first_name',
-            ],
-        );
-        $contracts = $this->BorrowedEquipments->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
         $equipmentTypes = $this->BorrowedEquipments->EquipmentTypes->find('list', order: [
             'name',
         ]);

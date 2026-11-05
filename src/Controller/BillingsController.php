@@ -142,21 +142,8 @@ class BillingsController extends AppController
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Billings->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
-        $contracts = $this->Billings->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
         $services = $this->Billings->Services->find('list', order: [
             'name',
         ]);
@@ -243,21 +230,8 @@ class BillingsController extends AppController
                 $this->Flash->error(__('The billing could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Billings->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
-        $contracts = $this->Billings->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
         $services = $this->Billings->Services->find('list', order: [
             'name',
         ]);

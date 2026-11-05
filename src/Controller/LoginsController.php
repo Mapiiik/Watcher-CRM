@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Utility\Strings;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
@@ -14,6 +15,8 @@ use Cake\I18n\DateTime;
  */
 class LoginsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -96,11 +99,7 @@ class LoginsController extends AppController
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }
-        $customers = $this->Logins->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
 
         $new_login = '';
         if ($this->customer_id !== null) {
@@ -146,11 +145,7 @@ class LoginsController extends AppController
             }
             $this->Flash->error(__('The login could not be saved. Please, try again.'));
         }
-        $customers = $this->Logins->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use Cake\Http\Response;
 
 /**
@@ -12,6 +13,8 @@ use Cake\Http\Response;
  */
 class CustomerLabelsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -106,11 +109,7 @@ class CustomerLabelsController extends AppController
         $labels = $this->CustomerLabels->Labels->find('list', order: [
             'name',
         ]);
-        $customers = $this->CustomerLabels->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
         $contracts = isset($customerLabel->customer_id) ?
             $this->CustomerLabels->Contracts->find(
                 'list',
@@ -159,11 +158,7 @@ class CustomerLabelsController extends AppController
         $labels = $this->CustomerLabels->Labels->find('list', order: [
             'name',
         ]);
-        $customers = $this->CustomerLabels->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
         $contracts = isset($customerLabel->customer_id) ?
             $this->CustomerLabels->Contracts->find(
                 'list',

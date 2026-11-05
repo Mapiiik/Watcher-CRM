@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Phones\Formatter as PhoneFormatter;
 use Cake\Http\Response;
 use Cake\Utility\Text;
@@ -15,6 +16,8 @@ use SplObjectStorage;
  */
 class PhonesController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * How many of the numbers that could not be read are named in the message about them.
      *
@@ -105,11 +108,7 @@ class PhonesController extends AppController
             }
             $this->Flash->error(__('The phone could not be saved. Please, try again.'));
         }
-        $customers = $this->Phones->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
 
         if ($this->customer_id !== null) {
             $customers->where(['id' => $this->customer_id]);
@@ -139,11 +138,7 @@ class PhonesController extends AppController
             }
             $this->Flash->error(__('The phone could not be saved. Please, try again.'));
         }
-        $customers = $this->Phones->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);

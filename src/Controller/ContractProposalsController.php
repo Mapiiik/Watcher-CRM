@@ -16,6 +16,7 @@ use App\Contracts\Proposal\ProposedVersion;
 use App\Contracts\Proposal\ReadinessChecks;
 use App\Contracts\Proposal\SnapshotShape;
 use App\Contracts\TheUsualTerm;
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Audit\AuditTrail;
 use App\Model\Entity\Billing;
 use App\Model\Entity\Contract;
@@ -45,6 +46,8 @@ use Throwable;
  */
 class ContractProposalsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Every page here is about one proposal, and the bar over it is what says whose papers
      * these are - so a page asked for without the nesting is sent to where it belongs.
@@ -1610,11 +1613,7 @@ class ContractProposalsController extends AppController
         );
 
         // Named the way every other form names a contract: its number, the service and where it is.
-        $contracts = $this->ContractProposals->Contracts->find(
-            'list',
-            contain: ['InstallationAddresses', 'ServiceTypes'],
-            order: ['Contracts.number'],
-        );
+        $contracts = $this->contractsList();
         if ($this->customer_id !== null) {
             $contracts->where(['Contracts.customer_id' => $this->customer_id]);
         }

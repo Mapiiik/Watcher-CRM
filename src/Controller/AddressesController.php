@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Addresses\ApiClient as AddressesApiClient;
 use App\Addresses\Resolver as AddressesResolver;
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Entity\Address;
 use App\Model\Enum\AddressNumberType;
 use Cake\Http\Response;
@@ -17,6 +18,8 @@ use RuntimeException;
  */
 class AddressesController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -166,11 +169,7 @@ class AddressesController extends AppController
                 $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Addresses->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
         $countries = $this->Addresses->Countries->find('list', order: [
             'name',
         ]);
@@ -263,11 +262,7 @@ class AddressesController extends AppController
                 $this->Flash->error(__('The address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->Addresses->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
         $countries = $this->Addresses->Countries->find('list', order: [
             'name',
         ]);

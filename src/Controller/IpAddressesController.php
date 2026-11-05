@@ -116,24 +116,8 @@ class IpAddressesController extends AppController
             }
             $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }
-        $customers = $this->IpAddresses->Customers->find(
-            'list',
-            order: [
-                'company',
-                'last_name',
-                'first_name',
-            ],
-        );
-        $contracts = $this->IpAddresses->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
@@ -181,24 +165,8 @@ class IpAddressesController extends AppController
                 $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
             }
         }
-        $customers = $this->IpAddresses->Customers->find(
-            'list',
-            order: [
-                'company',
-                'last_name',
-                'first_name',
-            ],
-        );
-        $contracts = $this->IpAddresses->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
@@ -306,21 +274,8 @@ class IpAddressesController extends AppController
             }
             $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
         }
-        $customers = $this->IpAddresses->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
-        $contracts = $this->IpAddresses->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);

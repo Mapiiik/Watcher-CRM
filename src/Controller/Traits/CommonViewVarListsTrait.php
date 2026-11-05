@@ -11,6 +11,7 @@ use App\Model\Table\ServiceTypesTable;
 use App\NMS\ApiClient as NMSApiClient;
 use App\NMS\Dto\AccessPoint;
 use App\NMS\Dto\IpAddressRange;
+use Cake\ORM\Query\SelectQuery;
 
 /**
  * @psalm-require-extends \Cake\Controller\Controller
@@ -18,6 +19,39 @@ use App\NMS\Dto\IpAddressRange;
  */
 trait CommonViewVarListsTrait
 {
+    /**
+     * The customers, as a form offers them.
+     *
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface|array<mixed>>
+     */
+    protected function customersList(): SelectQuery
+    {
+        return $this->fetchTable('Customers')->find('list', order: [
+            'company',
+            'last_name',
+            'first_name',
+        ]);
+    }
+
+    /**
+     * The contracts, as a form offers them.
+     *
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface|array<mixed>>
+     */
+    protected function contractsList(): SelectQuery
+    {
+        return $this->fetchTable('Contracts')->find(
+            'list',
+            contain: [
+                'InstallationAddresses',
+                'ServiceTypes',
+            ],
+            order: [
+                'Contracts.number',
+            ],
+        );
+    }
+
     /**
      * Set the `serviceTypes` view var (alphabetical list).
      */

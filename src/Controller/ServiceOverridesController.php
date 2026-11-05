@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
 
@@ -13,6 +14,8 @@ use Cake\I18n\DateTime;
  */
 class ServiceOverridesController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -131,16 +134,7 @@ class ServiceOverridesController extends AppController
                 $this->Flash->error(__('The service override could not be saved. Please, try again.'));
             }
         }
-        $contracts = $this->ServiceOverrides->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $contracts = $this->contractsList();
         $services = $this->ServiceOverrides->Services->find('list', order: [
             'name',
         ]);
@@ -212,16 +206,7 @@ class ServiceOverridesController extends AppController
                 $this->Flash->error(__('The service override could not be saved. Please, try again.'));
             }
         }
-        $contracts = $this->ServiceOverrides->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $contracts = $this->contractsList();
         $services = $this->ServiceOverrides->Services->find('list', order: [
             'name',
         ]);

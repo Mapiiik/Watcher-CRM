@@ -310,11 +310,7 @@ class ContractsController extends AppController
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
-        $customers = $this->Contracts->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
         $contractStates = $this->Contracts->ContractStates
             ->find('list', order: [
                 'name',
@@ -430,11 +426,7 @@ class ContractsController extends AppController
             }
             $this->Flash->error(__('The contract could not be saved. Please, try again.'));
         }
-        $customers = $this->Contracts->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
         $contractStates = $this->Contracts->ContractStates->find('list', order: [
             'name',
         ]);

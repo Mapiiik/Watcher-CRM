@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use Cake\Http\Response;
 
 /**
@@ -12,6 +13,8 @@ use Cake\Http\Response;
  */
 class SoldEquipmentsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -107,24 +110,8 @@ class SoldEquipmentsController extends AppController
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->SoldEquipments->Customers->find(
-            'list',
-            order: [
-                'company',
-                'last_name',
-                'first_name',
-            ],
-        );
-        $contracts = $this->SoldEquipments->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
         $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', order: [
         'name',
         ]);
@@ -164,24 +151,8 @@ class SoldEquipmentsController extends AppController
             }
             $this->Flash->error(__('The sold equipment could not be saved. Please, try again.'));
         }
-        $customers = $this->SoldEquipments->Customers->find(
-            'list',
-            order: [
-                'company',
-                'last_name',
-                'first_name',
-            ],
-        );
-        $contracts = $this->SoldEquipments->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
         $equipmentTypes = $this->SoldEquipments->EquipmentTypes->find('list', order: [
         'name',
         ]);

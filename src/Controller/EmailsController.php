@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use Cake\Http\Response;
 
 /**
@@ -12,6 +13,8 @@ use Cake\Http\Response;
  */
 class EmailsController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -94,11 +97,7 @@ class EmailsController extends AppController
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
         }
-        $customers = $this->Emails->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
@@ -128,11 +127,7 @@ class EmailsController extends AppController
             }
             $this->Flash->error(__('The email could not be saved. Please, try again.'));
         }
-        $customers = $this->Emails->Customers->find('list', order: [
-            'company',
-            'last_name',
-            'first_name',
-        ]);
+        $customers = $this->customersList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);

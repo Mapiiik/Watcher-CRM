@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Model\Table\RemovedIpNetworksTable;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
@@ -14,6 +15,8 @@ use Cake\I18n\DateTime;
  */
 class IpNetworksController extends AppController
 {
+    use CommonViewVarListsTrait;
+
     /**
      * Index method
      *
@@ -105,24 +108,8 @@ class IpNetworksController extends AppController
             }
             $this->Flash->error(__('The IP network could not be saved. Please, try again.'));
         }
-        $customers = $this->IpNetworks->Customers->find(
-            'list',
-            order: [
-                'company',
-                'last_name',
-                'first_name',
-            ],
-        );
-        $contracts = $this->IpNetworks->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
@@ -156,24 +143,8 @@ class IpNetworksController extends AppController
             }
             $this->Flash->error(__('The IP network could not be saved. Please, try again.'));
         }
-        $customers = $this->IpNetworks->Customers->find(
-            'list',
-            order: [
-                'company',
-                'last_name',
-                'first_name',
-            ],
-        );
-        $contracts = $this->IpNetworks->Contracts->find(
-            'list',
-            contain: [
-                'InstallationAddresses',
-                'ServiceTypes',
-            ],
-            order: [
-                'Contracts.number',
-            ],
-        );
+        $customers = $this->customersList();
+        $contracts = $this->contractsList();
 
         if ($this->customer_id !== null) {
             $customers->where(['Customers.id' => $this->customer_id]);
