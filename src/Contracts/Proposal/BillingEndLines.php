@@ -8,14 +8,14 @@ use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
- * Until when the papers leave anything to be billed for, and the lines that stop it there.
+ * The lines that end billings on the day the papers say billing has to stop.
  */
-final class ProposalTerm
+final class BillingEndLines
 {
     use LocatorAwareTrait;
 
     /**
-     * Stops everything the contract is billed for, where the papers say when it has to stop.
+     * Adds the lines ending what the contract is billed for, where the papers say when it stops.
      *
      * An ending means nothing goes on being charged for, and a fixed term means nothing goes on
      * past it, so the lines that say so are put there rather than clicked one at a time. They are
@@ -33,7 +33,7 @@ final class ProposalTerm
      *   What already ran on in it had its line then, so a line missing now was taken back.
      * @return void
      */
-    public function endWhatIsBilledFor(ContractProposal $proposal, ?ProposalSnapshot $before = null): void
+    public function addMissing(ContractProposal $proposal, ?ProposalSnapshot $before = null): void
     {
         $lastDay = $this->lastDayBilledFor($proposal);
 

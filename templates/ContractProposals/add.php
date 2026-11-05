@@ -9,7 +9,7 @@
  * about a fixed term that an ending is not.
  *
  * All of it is asked only while the papers are being drawn up. Every field here settles something
- * that is then photographed or written into the changes, so papers already written are put right
+ * that then goes into the snapshot or the changes, so papers already written are put right
  * on a page of their own, which asks for none of this.
  *
  * @var \App\View\AppView $this

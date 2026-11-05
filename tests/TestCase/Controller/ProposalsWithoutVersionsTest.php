@@ -114,7 +114,7 @@ class ProposalsWithoutVersionsTest extends TestCase
     }
 
     /**
-     * A change is photographed without a version, goes out and is signed with the rest, and is
+     * A change gets its snapshot without a version, goes out and is signed with the rest, and is
      * applied without one either.
      *
      * @return void

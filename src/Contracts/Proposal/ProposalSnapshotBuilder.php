@@ -38,7 +38,7 @@ final class ProposalSnapshotBuilder
         return [
             'contract' => $this->contract($contract),
             'customer' => $this->customer($contract),
-            // A contract whose service keeps no versions has none to photograph.
+            // A contract whose service keeps no versions has none to keep.
             'version' => $version === null ? null : $this->fields($version, SnapshotShape::VERSION),
             'terminated_version' => $terminated === null
                 ? null

@@ -8,17 +8,17 @@ use App\Service\ContractPrint\ContractDocuments;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
- * What the papers of one contract say, the way a page reads them.
+ * What a page needs to show the papers of one contract.
  *
  * Their own page and the page of the whole proposal ask the same question, so a new thing to show
  * is added here once.
  */
-final class ProposalReading
+final class ContractProposalViewData
 {
     use LocatorAwareTrait;
 
     /**
-     * The papers, read.
+     * The view variables of the papers.
      *
      * @param \App\Model\Entity\ContractProposal $papers The papers of one contract.
      * @return array<string, mixed>

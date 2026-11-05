@@ -401,7 +401,7 @@ class ProposalDocumentTypesTest extends TestCase
         $other = ContractDocumentType::Other;
 
         // What is owed is read off the snapshot, so each of these carries the least it may.
-        $photographed = [
+        $inTheSnapshot = [
             'snapshot' => [
                 'contract' => ['service_type' => ['have_equipments' => true]],
                 'customer' => [],
@@ -411,9 +411,9 @@ class ProposalDocumentTypesTest extends TestCase
         ];
 
         $anyPurpose = [
-            $this->proposal($photographed),
-            $this->proposal(self::ending() + $photographed),
-            $this->proposal(['purpose' => ProposalPurpose::ServiceChange] + $photographed),
+            $this->proposal($inTheSnapshot),
+            $this->proposal(self::ending() + $inTheSnapshot),
+            $this->proposal(['purpose' => ProposalPurpose::ServiceChange] + $inTheSnapshot),
         ];
 
         foreach ($anyPurpose as $any) {

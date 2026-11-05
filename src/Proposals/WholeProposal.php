@@ -89,7 +89,7 @@ final class WholeProposal
                 // Asked only where equipment changes hands, and said on the papers' own day
                 // unless the operator knows it happened on another.
                 'handedOverOn' => $movesEquipment
-                    ? $this->dayIn($handed_over_on[(string)$papers->id] ?? null)
+                    ? $this->parseDay($handed_over_on[(string)$papers->id] ?? null)
                         ?? ChangeApplication::handedOverOnByDefault($papers)
                     : null,
             ];
@@ -273,7 +273,7 @@ final class WholeProposal
      * @param mixed $said What they typed.
      * @return \Cake\I18n\Date|null
      */
-    private function dayIn(mixed $said): ?Date
+    private function parseDay(mixed $said): ?Date
     {
         if (!is_string($said) || trim($said) === '') {
             return null;

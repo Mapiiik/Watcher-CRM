@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Contracts\Proposal;
 
+use App\Contracts\Proposal\BillingEndLines;
 use App\Contracts\Proposal\ProposalSnapshot;
-use App\Contracts\Proposal\ProposalTerm;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ProposalPurpose;
@@ -13,10 +13,10 @@ use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * App\Contracts\Proposal\ProposalTerm Test Case
+ * App\Contracts\Proposal\BillingEndLines Test Case
  */
-#[CoversClass(ProposalTerm::class)]
-class ProposalTermTest extends TestCase
+#[CoversClass(BillingEndLines::class)]
+class BillingEndLinesTest extends TestCase
 {
     /**
      * Papers on a contract, with what it was billed for when they were drawn up.
@@ -72,7 +72,7 @@ class ProposalTermTest extends TestCase
             ['contract' => ['termination_date' => '2026-12-31']],
         );
 
-        (new ProposalTerm())->endWhatIsBilledFor($proposal);
+        (new BillingEndLines())->addMissing($proposal);
 
         $lines = $this->lines($proposal);
         $this->assertSame(['running', 'runs-on'], array_keys($lines));
@@ -95,7 +95,7 @@ class ProposalTermTest extends TestCase
             ['version' => ['valid_until' => '2026-12-31']],
         );
 
-        (new ProposalTerm())->endWhatIsBilledFor($proposal);
+        (new BillingEndLines())->addMissing($proposal);
 
         $this->assertSame([], $this->lines($proposal));
     }
@@ -118,7 +118,7 @@ class ProposalTermTest extends TestCase
             ['version' => ['valid_until' => '2099-12-31']],
         );
 
-        (new ProposalTerm())->endWhatIsBilledFor($proposal);
+        (new BillingEndLines())->addMissing($proposal);
 
         $lines = $this->lines($proposal);
         $this->assertSame(['running', 'longer'], array_keys($lines));
@@ -141,7 +141,7 @@ class ProposalTermTest extends TestCase
             ],
         );
 
-        (new ProposalTerm())->endWhatIsBilledFor($proposal);
+        (new BillingEndLines())->addMissing($proposal);
 
         $lines = $this->lines($proposal);
         $this->assertCount(1, $lines);
@@ -170,7 +170,7 @@ class ProposalTermTest extends TestCase
             ['version' => ['valid_until' => '2099-12-31']],
         );
 
-        (new ProposalTerm())->endWhatIsBilledFor($proposal, $before);
+        (new BillingEndLines())->addMissing($proposal, $before);
 
         $this->assertSame(['moved'], array_keys($this->lines($proposal)));
     }

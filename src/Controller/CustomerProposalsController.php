@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Contracts\Proposal\ProposalReading;
+use App\Contracts\Proposal\ContractProposalViewData;
 use App\Model\Entity\CustomerProposal;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
@@ -412,11 +412,11 @@ class CustomerProposalsController extends AppController
      */
     private function whatEachPartSays(CustomerProposal $proposal): array
     {
-        $reading = new ProposalReading();
+        $viewData = new ContractProposalViewData();
         $said = [];
 
         foreach ((new WholeProposal())->partsOf((string)$proposal->id) as $part) {
-            $said[] = ['papers' => $part] + $reading->of($part);
+            $said[] = ['papers' => $part] + $viewData->of($part);
         }
 
         return $said;

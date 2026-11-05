@@ -2,10 +2,10 @@
 /**
  * Putting a proposal together again from the contract as it stands now.
  *
- * What the papers are about is not asked here. All of it was photographed or written into the
+ * What the papers are about is not asked here. All of it went into the snapshot or was written into the
  * changes when the papers were drawn up, so asking it again would leave them printing one thing
  * and doing another - which is why wanting any of it different means new papers. What is left is
- * what nothing is worked out from, and the fresh photograph that is the reason to come at all.
+ * what nothing is worked out from, and the new snapshot that is the reason to come at all.
  *
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\ContractProposal $contractProposal

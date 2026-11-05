@@ -267,7 +267,7 @@ class ProcessDebtorsCommand extends Command
                 'bookkeeping',
                 'Notification email has been generated'
                     . ' for customer {customer_number}, recipients: {recipients}',
-                $this->written($debtor, $this->generateEmail($debtor, 'notify', $customer->billing_emails)),
+                $this->messageLogValues($debtor, $this->generateEmail($debtor, 'notify', $customer->billing_emails)),
             ));
         }
 
@@ -282,7 +282,7 @@ class ProcessDebtorsCommand extends Command
                 'bookkeeping',
                 'Notification SMS has been generated'
                     . ' for customer {customer_number}, recipients: {recipients}',
-                $this->written($debtor, $this->generateSms($debtor, 'notify', $customer->billing_phones)),
+                $this->messageLogValues($debtor, $this->generateSms($debtor, 'notify', $customer->billing_phones)),
             ));
         }
     }
@@ -306,7 +306,7 @@ class ProcessDebtorsCommand extends Command
             && !$args->getOption('skip_emails')
             && static::isDebtorNotificationEnabled($messageType, 'email')
         ) {
-            $said = $this->written($debtor, $this->generateEmail($debtor, $messageType, $customer->emails));
+            $said = $this->messageLogValues($debtor, $this->generateEmail($debtor, $messageType, $customer->emails));
 
             $io->info($messageType === 'block'
                 ? __d(
@@ -329,7 +329,7 @@ class ProcessDebtorsCommand extends Command
             && !$args->getOption('skip_sms')
             && static::isDebtorNotificationEnabled($messageType, 'sms')
         ) {
-            $said = $this->written($debtor, $this->generateSms($debtor, $messageType, $customer->phones));
+            $said = $this->messageLogValues($debtor, $this->generateSms($debtor, $messageType, $customer->phones));
 
             $io->info($messageType === 'block'
                 ? __d(
@@ -354,7 +354,7 @@ class ProcessDebtorsCommand extends Command
      * @param \App\Model\Entity\CustomerMessage $message What was written.
      * @return array<string, string>
      */
-    private function written(Debtor $debtor, CustomerMessage $message): array
+    private function messageLogValues(Debtor $debtor, CustomerMessage $message): array
     {
         return [
             'customer_number' => $debtor->getCustomer()->number,

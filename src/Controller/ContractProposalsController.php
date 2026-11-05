@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Contracts\MinimumConnectionPrice;
+use App\Contracts\Proposal\BillingEndLines;
+use App\Contracts\Proposal\ContractProposalViewData;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalDrafting;
 use App\Contracts\Proposal\ProposalForm;
-use App\Contracts\Proposal\ProposalReading;
-use App\Contracts\Proposal\ProposalTerm;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ProposedEquipment;
@@ -72,7 +72,7 @@ class ContractProposalsController extends AppController
      * The fields a proposal may have put right without being drawn up again.
      *
      * Nothing is worked out from any of them: they are written where they are read. Everything
-     * else the papers say is either photographed or turned into the changes the moment it is
+     * else the papers say either goes into the snapshot or is turned into the changes the moment it is
      * first said, and reading it a second time is what would set the two at odds.
      *
      * @var list<string>
@@ -145,7 +145,7 @@ class ContractProposalsController extends AppController
             // as taking one has anything to end. A form asking to be drawn again never takes one,
             // and one that stopped on a question the operator has to answer never got there.
             if (!$this->isARedraw() && !$proposal->hasErrors()) {
-                (new ProposalTerm())->endWhatIsBilledFor($proposal);
+                (new BillingEndLines())->addMissing($proposal);
             }
 
             // Changing the contract redraws the form so that its versions and services are the
@@ -178,16 +178,16 @@ class ContractProposalsController extends AppController
      * Puts the papers together again from the contract as it stands now.
      *
      * What the papers are about - the contract, its version, what they are for, the days they turn
-     * on - is settled when they are drawn up. All of it is either photographed or written into the
+     * on - is settled when they are drawn up. All of it is either in the snapshot or written into the
      * changes the moment it is said, so a second reading of those fields would leave the papers
      * printing one thing and the records doing another. Wanting any of it different is wanting
      * different papers: the way to that is to delete these and draw up new ones.
      *
      * What is left here is what nothing is worked out from - the questions the operator answers,
      * the note, the number on the paper of the contract being ended, and which envelope the papers
-     * go out in - and a fresh photograph of the contract, which is the reason to come here at all.
+     * go out in - and a new snapshot of the contract, which is the reason to come here at all.
      *
-     * The documents drawn from the old photograph go with it, because that is what makes them
+     * The documents drawn from the old snapshot go with it, because that is what makes them
      * wrong. Only the ones we drew: an ending is filed with the customer's own notice and with what
      * an office wrote, and neither is ours to throw away.
      *
@@ -1305,7 +1305,7 @@ class ContractProposalsController extends AppController
      */
     private function setProposalViewVars(ContractProposal $proposal): void
     {
-        $this->set((new ProposalReading())->of($proposal));
+        $this->set((new ContractProposalViewData())->of($proposal));
         $this->set('mayBeRecreated', $this->ContractProposals->mayBeRecreated($proposal));
         $this->set('mayBeDeleted', $this->ContractProposals->mayBeDeleted($proposal));
         // Only the count: the table itself is drawn by a cell, which asks for what it draws.

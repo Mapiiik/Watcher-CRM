@@ -50,21 +50,21 @@ final class DrawnPaper
         string $document_type,
         bool $signed = false,
     ): PrintedDocument {
-        $refused = $this->refused($proposal, $document_type);
+        $refusal = $this->refusalReason($proposal, $document_type);
 
-        if ($refused !== null) {
-            throw new RuntimeException($refused);
+        if ($refusal !== null) {
+            throw new RuntimeException($refusal);
         }
 
         if ($proposal instanceof CustomerProposal) {
             $data = $this->whatTheCustomersSays($proposal, $document_type);
-            $this->holdUp($this->inWords((new CustomerPrintValidator())->validate($data)));
+            $this->throwOnProblems($this->inWords((new CustomerPrintValidator())->validate($data)));
 
             return (new CustomerDocuments())->for($data);
         }
 
         $data = $this->whatTheContractsSays($proposal, $document_type, $signed);
-        $this->holdUp($this->whatIsMissingFrom($data, $signed));
+        $this->throwOnProblems($this->whatIsMissingFrom($data, $signed));
 
         return (new ContractDocuments())->for($data);
     }
@@ -85,10 +85,10 @@ final class DrawnPaper
         string $document_type,
         bool $signed = false,
     ): array {
-        $refused = $this->refused($proposal, $document_type);
+        $refusal = $this->refusalReason($proposal, $document_type);
 
-        if ($refused !== null) {
-            return [$refused];
+        if ($refusal !== null) {
+            return [$refusal];
         }
 
         if ($proposal instanceof CustomerProposal) {
@@ -107,7 +107,7 @@ final class DrawnPaper
      * @param string $document_type Which paper.
      * @return string|null
      */
-    private function refused(ContractProposal|CustomerProposal $proposal, string $document_type): ?string
+    private function refusalReason(ContractProposal|CustomerProposal $proposal, string $document_type): ?string
     {
         if ($proposal instanceof CustomerProposal) {
             return CustomerDocumentType::tryFrom($document_type) === null
@@ -157,7 +157,7 @@ final class DrawnPaper
      * @return void
      * @throws \RuntimeException When there is anything.
      */
-    private function holdUp(array $problems): void
+    private function throwOnProblems(array $problems): void
     {
         if ($problems !== []) {
             throw new RuntimeException(implode(' ', $problems));

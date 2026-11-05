@@ -345,7 +345,7 @@ class ContractDocumentsTest extends TestCase
     {
         $withOne = $this->print();
 
-        // The same papers, no longer naming a version. What they were photographed against has not
+        // The same papers, no longer naming a version. What their snapshot was taken against has not
         // moved, so nothing about them has changed except where the version is kept.
         $this->fetchTable('Files.FileLinks')->deleteAll([]);
 

@@ -42,10 +42,10 @@ final class ProposalDrafting
     ];
 
     /**
-     * Puts what the form said onto the papers being drawn up, and photographs the contract.
+     * Puts what the form said onto the papers being drawn up, and takes a snapshot of the contract.
      *
      * Only ever while they are being drawn: every field here settles something that is then either
-     * photographed or written into the changes, so reading any of it a second time would leave the
+     * kept in the snapshot or written into the changes, so reading any of it a second time would leave the
      * papers printing one thing and the records doing another. Papers already written are put
      * right on a page of their own, which asks for none of this.
      *
@@ -65,7 +65,7 @@ final class ProposalDrafting
         $purpose = $this->purposeFrom($data, $proposal);
         $data['purpose'] = $purpose->value;
 
-        // A contract whose service keeps no versions has none to choose, change or photograph.
+        // A contract whose service keeps no versions has none to choose, change or keep in a snapshot.
         $contract = $this->contractFor((string)($data['contract_id'] ?? $proposal->contract_id));
         $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
 
@@ -177,7 +177,7 @@ final class ProposalDrafting
                 return $proposal;
             }
 
-            // A version that is still to come is photographed as it will be, so that the papers
+            // A version that is still to come goes into the snapshot as it will be, so that the papers
             // print the same either way and the record ends up saying what they said.
             $snapshotted = $version ?? $this->versionToCome($contract->id, $data);
 
@@ -243,18 +243,18 @@ final class ProposalDrafting
     }
 
     /**
-     * Photographs the contract again, as it stands now.
+     * Takes a new snapshot of the contract, as it stands now.
      *
      * The same reading the papers were drawn up from, asked of the same records - what the papers
      * are about does not change here, so it is read off the proposal rather than off a form.
      *
      * @param \App\Model\Entity\ContractProposal $proposal The papers.
-     * @return bool Whether there was anything left to photograph.
+     * @return bool Whether there was anything left to take a snapshot of.
      */
     public function takeANewSnapshot(ContractProposal $proposal): bool
     {
         $contract = $this->contractFor((string)$proposal->contract_id);
-        // A contract whose service keeps no versions is photographed without one.
+        // A contract whose service keeps no versions gets a snapshot without one.
         $keepsVersions = $contract?->service_type->have_contract_versions ?? true;
         $terminates = $keepsVersions ? $proposal->terminates_contract_version_id : null;
         $needsOne = $proposal->purpose->needsAVersion();
@@ -262,7 +262,7 @@ final class ProposalDrafting
             $contract === null, !$keepsVersions, !$needsOne => null,
             $proposal->contract_version_id !== null => $this->versionFor($proposal->contract_version_id),
             // Papers for a new contract may be about a version that is still to come, and are
-            // photographed as it will be, the same way they were when they were drawn up.
+            // kept in the snapshot as it will be, the same way as when they were drawn up.
             default => $this->versionToCome($contract->id, [
                 'effective_from' => $proposal->effective_from?->toDateString(),
                 'changes' => $proposal->changes,
@@ -305,7 +305,7 @@ final class ProposalDrafting
             $proposal->set('changes', $kept->toArray());
         }
 
-        (new ProposalTerm())->endWhatIsBilledFor($proposal, $before);
+        (new BillingEndLines())->addMissing($proposal, $before);
 
         return [
             'billings' => count($asked->billings) - count($billingsKept->billings),
@@ -344,7 +344,7 @@ final class ProposalDrafting
     /**
      * The version the papers will bring into being, as they say it will be.
      *
-     * Unsaved, and only ever photographed: what actually creates it is applying the proposal.
+     * Unsaved, and only ever kept in a snapshot: what actually creates it is applying the proposal.
      * It starts on the day the papers take effect, which for a new contract is the same day said
      * twice, so without that day there is nothing to draw.
      *
