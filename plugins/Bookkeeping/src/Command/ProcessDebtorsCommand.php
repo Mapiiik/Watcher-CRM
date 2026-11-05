@@ -253,8 +253,9 @@ class ProcessDebtorsCommand extends Command
      */
     private function remind(Debtor $debtor, Arguments $args, ConsoleIo $io): void
     {
-        $emails_available = (count($debtor->getCustomer()->billing_emails) > 0);
-        $phones_available = (count($debtor->getCustomer()->billing_phones) > 0);
+        $customer = $debtor->getCustomer();
+        $emails_available = (count($customer->billing_emails) > 0);
+        $phones_available = (count($customer->billing_phones) > 0);
 
         // notify emails
         if (
@@ -262,17 +263,12 @@ class ProcessDebtorsCommand extends Command
             && !$args->getOption('skip_emails')
             && static::isDebtorNotificationEnabled('notify', 'email')
         ) {
-            $customerMessage = $this->generateNotifyEmail($debtor);
             $io->info(__d(
                 'bookkeeping',
                 'Notification email has been generated'
                     . ' for customer {customer_number}, recipients: {recipients}',
-                [
-                    'customer_number' => $debtor->getCustomer()->number,
-                    'recipients' => implode(', ', $customerMessage->recipients),
-                ],
+                $this->written($debtor, $this->generateEmail($debtor, 'notify', $customer->billing_emails)),
             ));
-            unset($customerMessage);
         }
 
         // notify SMS
@@ -282,17 +278,12 @@ class ProcessDebtorsCommand extends Command
             && !$args->getOption('skip_sms')
             && static::isDebtorNotificationEnabled('notify', 'sms')
         ) {
-            $customerMessage = $this->generateNotifySms($debtor);
             $io->info(__d(
                 'bookkeeping',
                 'Notification SMS has been generated'
                     . ' for customer {customer_number}, recipients: {recipients}',
-                [
-                    'customer_number' => $debtor->getCustomer()->number,
-                    'recipients' => implode(', ', $customerMessage->recipients),
-                ],
+                $this->written($debtor, $this->generateSms($debtor, 'notify', $customer->billing_phones)),
             ));
-            unset($customerMessage);
         }
     }
 
@@ -306,73 +297,69 @@ class ProcessDebtorsCommand extends Command
      */
     private function tellTheBlocked(Debtor $debtor, Arguments $args, ConsoleIo $io): void
     {
-        $emails_available = (count($debtor->getCustomer()->emails) > 0);
-        $phones_available = (count($debtor->getCustomer()->phones) > 0);
-        $messageType = $debtor->getCustomer()->active_services ? 'block' : 'inactive';
+        $customer = $debtor->getCustomer();
+        $messageType = $customer->active_services ? 'block' : 'inactive';
 
         // block emails
         if (
-            $emails_available
+            count($customer->emails) > 0
             && !$args->getOption('skip_emails')
             && static::isDebtorNotificationEnabled($messageType, 'email')
         ) {
-            if ($messageType === 'block') {
-                $customerMessage = $this->generateBlockEmail($debtor);
-                $io->info(__d(
+            $said = $this->written($debtor, $this->generateEmail($debtor, $messageType, $customer->emails));
+
+            $io->info($messageType === 'block'
+                ? __d(
                     'bookkeeping',
                     'Blocking email has been generated'
                         . ' for customer {customer_number}, recipients: {recipients}',
-                    [
-                        'customer_number' => $debtor->getCustomer()->number,
-                        'recipients' => implode(', ', $customerMessage->recipients),
-                    ],
-                ));
-            } else {
-                $customerMessage = $this->generateNotifyEmailForInactiveServices($debtor);
-                $io->info(__d(
+                    $said,
+                )
+                : __d(
                     'bookkeeping',
                     'Notification email has been generated for inactive services'
                         . ' for customer {customer_number}, recipients: {recipients}',
-                    [
-                        'customer_number' => $debtor->getCustomer()->number,
-                        'recipients' => implode(', ', $customerMessage->recipients),
-                    ],
+                    $said,
                 ));
-            }
-            unset($customerMessage);
         }
 
         // block SMS
         if (
-            $phones_available
+            count($customer->phones) > 0
             && !$args->getOption('skip_sms')
             && static::isDebtorNotificationEnabled($messageType, 'sms')
         ) {
-            if ($messageType === 'block') {
-                $customerMessage = $this->generateBlockSms($debtor);
-                $io->info(__d(
+            $said = $this->written($debtor, $this->generateSms($debtor, $messageType, $customer->phones));
+
+            $io->info($messageType === 'block'
+                ? __d(
                     'bookkeeping',
                     'Blocking SMS has been generated'
                         . ' for customer {customer_number}, recipients: {recipients}',
-                    [
-                        'customer_number' => $debtor->getCustomer()->number,
-                        'recipients' => implode(', ', $customerMessage->recipients),
-                    ],
-                ));
-            } else {
-                $customerMessage = $this->generateNotifySmsForInactiveServices($debtor);
-                $io->info(__d(
+                    $said,
+                )
+                : __d(
                     'bookkeeping',
                     'Notification SMS has been generated for inactive services'
                         . ' for customer {customer_number}, recipients: {recipients}',
-                    [
-                        'customer_number' => $debtor->getCustomer()->number,
-                        'recipients' => implode(', ', $customerMessage->recipients),
-                    ],
+                    $said,
                 ));
-            }
-            unset($customerMessage);
         }
+    }
+
+    /**
+     * Who a message went to, the way the output of the run says it.
+     *
+     * @param \Bookkeeping\Debtors\Debtor $debtor Who was written to.
+     * @param \App\Model\Entity\CustomerMessage $message What was written.
+     * @return array<string, string>
+     */
+    private function written(Debtor $debtor, CustomerMessage $message): array
+    {
+        return [
+            'customer_number' => $debtor->getCustomer()->number,
+            'recipients' => implode(', ', $message->recipients),
+        ];
     }
 
     /**
@@ -566,115 +553,67 @@ class ProcessDebtorsCommand extends Command
     }
 
     /**
-     * Generate Email Message
+     * Writes an email to a debtor, with the invoices it is about.
      *
-     * @param array<\App\Model\Entity\Email>|array<string> $recipients
+     * @param \Bookkeeping\Debtors\Debtor $debtor Who it is for.
+     * @param string $kind Which of the texts: notify, block or inactive.
+     * @param array<\App\Model\Entity\Email> $recipients Where it goes.
+     * @return \App\Model\Entity\CustomerMessage
      */
-    private function generateEmail(
-        Debtor $debtor,
-        array $recipients,
-        string $subjectTemplate,
-        string $contentTemplate,
-    ): CustomerMessage {
-        $replacements = [
-            '{date}' => Date::now(),
-            '{total_overdue_debt}' => Number::currency($debtor->getTotalOverdueDebt()),
-            '{customer_number}' => $debtor->getCustomer()->number,
-            '{invoices_table}' => $this->getInvoicesTable($debtor),
-
-            // company placeholders
-            '{company_name}' => Settings::getString('core.company.name'),
-            '{company_address_line_1}' => Settings::getString('core.company.address_line_1'),
-            '{company_address_line_2}' => Settings::getString('core.company.address_line_2'),
-            '{identity_number}' => Settings::getString('core.company.identity_number'),
-            '{vat_number}' => Settings::getString('core.company.vat_number'),
-
-            // billing/contact placeholders
-            '{company_invoices_email}' => Settings::getString('core.company.invoices.email'),
-            '{company_invoices_phone}' => Settings::getString('core.company.invoices.phone'),
-            '{bank_account_number}' => Settings::getString('core.company.bank_account_number'),
-            '{user_portal_url}' => Settings::getString('core.company.user_portal_url'),
-        ];
-
-        $customerMessagesTable = $this->fetchTable(CustomerMessagesTable::class);
-
-        $customerMessage = $customerMessagesTable->newEmptyEntity();
-
-        $customerMessage->type = CustomerMessageType::EmailInvoices;
-        $customerMessage->direction = CustomerMessageDirection::Outgoing;
-        $customerMessage->body_format = CustomerMessageBodyFormat::Plaintext;
-        $customerMessage->delivery_status = CustomerMessageDeliveryStatus::Pending;
-
-        $customerMessage->customer_id = $debtor->getCustomer()->id;
-        $customerMessage->recipients = $recipients;
-        $customerMessage->subject = strtr($subjectTemplate, $replacements);
-        $customerMessage->body = strtr($contentTemplate, $replacements);
-
-        $customerMessage->attachments = $this->getAttachments($debtor);
-
-        return $customerMessagesTable->saveOrFail($customerMessage);
-    }
-
-    /**
-     * Generate Notify Email Message
-     */
-    private function generateNotifyEmail(Debtor $debtor): CustomerMessage
+    private function generateEmail(Debtor $debtor, string $kind, array $recipients): CustomerMessage
     {
-        $subjectTemplate = Settings::getString('bookkeeping.debtors.emails.notify.subject');
-        $contentTemplate = Settings::getString('bookkeeping.debtors.emails.notify.body_text');
+        return $this->saveMessage(
+            debtor: $debtor,
+            type: CustomerMessageType::EmailInvoices,
+            recipients: $recipients,
+            subject: Settings::getString('bookkeeping.debtors.emails.' . $kind . '.subject'),
+            body: Settings::getString('bookkeeping.debtors.emails.' . $kind . '.body_text'),
+            replacements: $this->placeholders($debtor) + [
+                '{invoices_table}' => $this->getInvoicesTable($debtor),
 
-        return $this->generateEmail(
-            $debtor,
-            $debtor->getCustomer()->billing_emails,
-            $subjectTemplate,
-            $contentTemplate,
+                // company placeholders
+                '{company_address_line_1}' => Settings::getString('core.company.address_line_1'),
+                '{company_address_line_2}' => Settings::getString('core.company.address_line_2'),
+                '{identity_number}' => Settings::getString('core.company.identity_number'),
+                '{vat_number}' => Settings::getString('core.company.vat_number'),
+
+                // billing/contact placeholders
+                '{company_invoices_email}' => Settings::getString('core.company.invoices.email'),
+                '{user_portal_url}' => Settings::getString('core.company.user_portal_url'),
+            ],
+            attachments: $this->getAttachments($debtor),
         );
     }
 
     /**
-     * Generate Notify Email Message for Inactive Services
-     */
-    private function generateNotifyEmailForInactiveServices(Debtor $debtor): CustomerMessage
-    {
-        $subjectTemplate = Settings::getString('bookkeeping.debtors.emails.inactive.subject');
-        $contentTemplate = Settings::getString('bookkeeping.debtors.emails.inactive.body_text');
-
-        return $this->generateEmail(
-            $debtor,
-            $debtor->getCustomer()->emails,
-            $subjectTemplate,
-            $contentTemplate,
-        );
-    }
-
-    /**
-     * Generate Block Email Message
-     */
-    private function generateBlockEmail(Debtor $debtor): CustomerMessage
-    {
-        $subjectTemplate = Settings::getString('bookkeeping.debtors.emails.block.subject');
-        $contentTemplate = Settings::getString('bookkeeping.debtors.emails.block.body_text');
-
-        return $this->generateEmail(
-            $debtor,
-            $debtor->getCustomer()->emails,
-            $subjectTemplate,
-            $contentTemplate,
-        );
-    }
-
-    /**
-     * Generate SMS Message
+     * Writes an SMS to a debtor.
      *
-     * @param array<\App\Model\Entity\Phone>|array<string> $recipients
+     * @param \Bookkeeping\Debtors\Debtor $debtor Who it is for.
+     * @param string $kind Which of the texts: notify, block or inactive.
+     * @param array<\App\Model\Entity\Phone> $recipients Where it goes.
+     * @return \App\Model\Entity\CustomerMessage
      */
-    private function generateSms(
-        Debtor $debtor,
-        array $recipients,
-        string $subjectTemplate,
-        string $contentTemplate,
-    ): CustomerMessage {
-        $replacements = [
+    private function generateSms(Debtor $debtor, string $kind, array $recipients): CustomerMessage
+    {
+        return $this->saveMessage(
+            debtor: $debtor,
+            type: CustomerMessageType::Sms,
+            recipients: $recipients,
+            subject: Settings::getString('bookkeeping.debtors.sms.' . $kind . '.subject'),
+            body: Settings::getString('bookkeeping.debtors.sms.' . $kind . '.body'),
+            replacements: $this->placeholders($debtor),
+        );
+    }
+
+    /**
+     * What the texts of every channel can say.
+     *
+     * @param \Bookkeeping\Debtors\Debtor $debtor Who is written to.
+     * @return array<string, mixed>
+     */
+    private function placeholders(Debtor $debtor): array
+    {
+        return [
             '{date}' => Date::now(),
             '{total_overdue_debt}' => Number::currency($debtor->getTotalOverdueDebt()),
             '{customer_number}' => $debtor->getCustomer()->number,
@@ -682,69 +621,44 @@ class ProcessDebtorsCommand extends Command
             '{company_invoices_phone}' => Settings::getString('core.company.invoices.phone'),
             '{bank_account_number}' => Settings::getString('core.company.bank_account_number'),
         ];
+    }
 
+    /**
+     * Puts a message to a debtor in the queue.
+     *
+     * @param \Bookkeeping\Debtors\Debtor $debtor Who it is for.
+     * @param \App\Model\Enum\CustomerMessageType $type How it goes.
+     * @param array<\App\Model\Entity\Email>|array<\App\Model\Entity\Phone> $recipients Where it goes.
+     * @param string $subject The subject, placeholders still in it.
+     * @param string $body The body, placeholders still in it.
+     * @param array<string, mixed> $replacements What the placeholders stand for.
+     * @param array<string, array<string, string>>|null $attachments What goes with it.
+     * @return \App\Model\Entity\CustomerMessage
+     */
+    private function saveMessage(
+        Debtor $debtor,
+        CustomerMessageType $type,
+        array $recipients,
+        string $subject,
+        string $body,
+        array $replacements,
+        ?array $attachments = null,
+    ): CustomerMessage {
         $customerMessagesTable = $this->fetchTable(CustomerMessagesTable::class);
 
         $customerMessage = $customerMessagesTable->newEmptyEntity();
 
-        $customerMessage->type = CustomerMessageType::Sms;
+        $customerMessage->type = $type;
         $customerMessage->direction = CustomerMessageDirection::Outgoing;
         $customerMessage->body_format = CustomerMessageBodyFormat::Plaintext;
         $customerMessage->delivery_status = CustomerMessageDeliveryStatus::Pending;
 
         $customerMessage->customer_id = $debtor->getCustomer()->id;
         $customerMessage->recipients = $recipients;
-        $customerMessage->subject = strtr($subjectTemplate, $replacements);
-        $customerMessage->body = strtr($contentTemplate, $replacements);
+        $customerMessage->subject = strtr($subject, $replacements);
+        $customerMessage->body = strtr($body, $replacements);
+        $customerMessage->attachments = $attachments;
 
         return $customerMessagesTable->saveOrFail($customerMessage);
-    }
-
-    /**
-     * Generate Notify SMS Message
-     */
-    private function generateNotifySms(Debtor $debtor): CustomerMessage
-    {
-        $subjectTemplate = Settings::getString('bookkeeping.debtors.sms.notify.subject');
-        $contentTemplate = Settings::getString('bookkeeping.debtors.sms.notify.body');
-
-        return $this->generateSms(
-            $debtor,
-            $debtor->getCustomer()->billing_phones,
-            $subjectTemplate,
-            $contentTemplate,
-        );
-    }
-
-    /**
-     * Generate Notify SMS Message for Inactive Services
-     */
-    private function generateNotifySmsForInactiveServices(Debtor $debtor): CustomerMessage
-    {
-        $subjectTemplate = Settings::getString('bookkeeping.debtors.sms.inactive.subject');
-        $contentTemplate = Settings::getString('bookkeeping.debtors.sms.inactive.body');
-
-        return $this->generateSms(
-            $debtor,
-            $debtor->getCustomer()->phones,
-            $subjectTemplate,
-            $contentTemplate,
-        );
-    }
-
-    /**
-     * Generate Block SMS Message
-     */
-    private function generateBlockSms(Debtor $debtor): CustomerMessage
-    {
-        $subjectTemplate = Settings::getString('bookkeeping.debtors.sms.block.subject');
-        $contentTemplate = Settings::getString('bookkeeping.debtors.sms.block.body');
-
-        return $this->generateSms(
-            $debtor,
-            $debtor->getCustomer()->phones,
-            $subjectTemplate,
-            $contentTemplate,
-        );
     }
 }
