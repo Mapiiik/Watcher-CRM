@@ -293,7 +293,11 @@ class ContractProposalsTable extends AppTable
      */
     private function theEnvelopeOf(ContractProposal $proposal): CustomerProposal
     {
-        if (isset($proposal->customer_proposal)) {
+        // What came loaded says nothing once the papers are being pointed at another one.
+        if (
+            isset($proposal->customer_proposal)
+            && $proposal->customer_proposal->id === $proposal->customer_proposal_id
+        ) {
             return $proposal->customer_proposal;
         }
 

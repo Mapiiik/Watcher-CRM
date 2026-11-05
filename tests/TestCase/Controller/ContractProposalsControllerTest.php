@@ -2034,6 +2034,73 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * Another proposal of the customer that has already gone out, sitting beside the fixture's.
+     *
+     * @return string Its id.
+     */
+    private function aProposalAlreadySent(): string
+    {
+        $envelopes = $this->getTableLocator()->get('CustomerProposals');
+        $sent = $envelopes->saveOrFail($envelopes->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'effective_from' => '2026-10-01',
+            'sent_date' => '2026-10-02',
+            'delivery_type' => DocumentsDeliveryType::Email,
+        ]), ['checkRules' => false]);
+
+        return (string)$sent->id;
+    }
+
+    /**
+     * Papers put together again may move to another proposal, but not to one that has gone out:
+     * they would read as having gone out with it, and its signature would carry them over.
+     *
+     * The proposal the papers are in comes loaded, and what asks has to look at the new one.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractProposalsTable::theEnvelopeOf()
+     */
+    public function testRecreatingDoesNotMoveThePapersIntoASentProposal(): void
+    {
+        $sent = $this->aProposalAlreadySent();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
+            'customer_proposal_id' => $sent,
+            'confirmations' => self::EVERYTHING_ANSWERED,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertSame(
+            self::ROUND_ID,
+            $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->customer_proposal_id,
+            'The papers moved into a proposal that has gone out.',
+        );
+    }
+
+    /**
+     * A proposal that has gone out takes nothing more, so it is not offered.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::openProposalsOf()
+     */
+    public function testASentProposalIsNotOfferedToJoin(): void
+    {
+        $sent = $this->aProposalAlreadySent();
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+
+        $offered = $this->viewVariable('proposals');
+        $this->assertArrayHasKey(self::ROUND_ID, $offered);
+        $this->assertArrayNotHasKey($sent, $offered);
+    }
+
+    /**
      * A version that runs on has no term to ask about.
      *
      * @return void

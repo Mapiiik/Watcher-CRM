@@ -1752,6 +1752,11 @@ class ContractProposalsController extends AppController
                 continue;
             }
 
+            // One that has gone out takes nothing more, so offering it only sets up a refusal.
+            if (!$this->ContractProposals->CustomerProposals->mayBeEdited($customer_proposal)) {
+                continue;
+            }
+
             $found[(string)$customer_proposal->id] = sprintf(
                 '%s - %s',
                 $customer_proposal->effective_from,
