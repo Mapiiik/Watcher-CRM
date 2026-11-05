@@ -900,6 +900,7 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertTrue($this->viewVariable('closed_period_override'));
         $this->assertTrue($this->viewVariable('below_minimum_override'));
+        $this->assertFalse($this->viewVariable('catching_up_override'), 'There is no exchange to catch up on.');
 
         $this->login('bookkeeper');
         $this->get($at . 'apply-changes/' . $proposal->id);

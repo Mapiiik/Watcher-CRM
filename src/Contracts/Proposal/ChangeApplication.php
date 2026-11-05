@@ -48,6 +48,8 @@ final class ChangeApplication
      *   proposal is one part of a larger act.
      * @param \Cake\I18n\Date|null $handed_over_on The day the equipment changed hands; the day the
      *   proposal takes effect when not said, but never a day still to come.
+     * @param bool $catching_up Whether an exchange may be handed over before it was drawn up, for
+     *   somebody writing down one that had already happened.
      * @return void
      * @throws \RuntimeException When the proposal is in no state to be applied.
      */
@@ -59,6 +61,7 @@ final class ChangeApplication
         bool $leave_out_what_is_gone = false,
         ?AuditTrail $trail = null,
         ?Date $handed_over_on = null,
+        bool $catching_up = false,
     ): void {
         if (!$proposal->hasBeenConcluded()) {
             throw new RuntimeException('A proposal is not carried over before it has been concluded.');
@@ -73,7 +76,11 @@ final class ChangeApplication
         }
 
         // An exchange is drawn up before the equipment changes hands, never after.
-        if (!$proposal->purpose->needsAVersion() && $handed_over_on->lessThan($proposal->effective_from)) {
+        if (
+            !$catching_up
+            && !$proposal->purpose->needsAVersion()
+            && $handed_over_on->lessThan($proposal->effective_from)
+        ) {
             throw new RuntimeException(
                 'Borrowed equipments cannot be exchanged before the day the exchange was drawn up.',
             );

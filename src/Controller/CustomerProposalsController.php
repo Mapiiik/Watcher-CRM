@@ -38,6 +38,11 @@ class CustomerProposalsController extends AppController
     public const LEAVE_OUT_WHAT_IS_GONE = 'leave_out_what_is_gone';
 
     /**
+     * The box an administrator ticks to write down an exchange that has already taken place.
+     */
+    public const CATCHING_UP = 'catching_up';
+
+    /**
      * Every page here is about one proposal, and the bar over it is what says whose papers
      * these are - so a page asked for without the nesting is sent to where it belongs.
      *
@@ -417,6 +422,10 @@ class CustomerProposalsController extends AppController
         $this->set('below_minimum_override', $this->mayGoBelowMinimum());
         // Offered only where it is needed, and only to somebody who may answer for it.
         $this->set('leave_out_override', $leaveOut);
+        $this->set('catching_up_override', $this->oversees() && array_filter(
+            $parts,
+            fn(array $part): bool => !$part['papers']->purpose->needsAVersion(),
+        ) !== []);
 
         return null;
     }
@@ -496,6 +505,7 @@ class CustomerProposalsController extends AppController
             && $this->request->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1';
         $belowMinimum = $this->mayGoBelowMinimum()
             && $this->request->getData(BillingsTable::ALLOW_BELOW_MINIMUM) == '1';
+        $catchingUp = $this->oversees() && $this->request->getData(self::CATCHING_UP) == '1';
 
         // Every part under one trail, written out after the transaction: audit-stash queues
         // what it logs and nothing inside a transaction ever reaches the log on its own.
@@ -503,7 +513,7 @@ class CustomerProposalsController extends AppController
 
         try {
             $this->CustomerProposals->getConnection()->transactional(
-                function () use ($parts, $by, $reaching, $belowMinimum, $leavingOut, $trail): void {
+                function () use ($parts, $by, $reaching, $belowMinimum, $leavingOut, $trail, $catchingUp): void {
                     foreach ($parts as $part) {
                         (new ChangeApplication())->apply(
                             $part['papers'],
@@ -513,6 +523,7 @@ class CustomerProposalsController extends AppController
                             $leavingOut,
                             $trail,
                             $part['handedOverOn'] ?? null,
+                            $catchingUp,
                         );
                     }
                 },

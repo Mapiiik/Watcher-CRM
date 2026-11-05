@@ -12,6 +12,7 @@
  * @var bool $closed_period_override
  * @var bool $below_minimum_override
  * @var bool $leave_out_override
+ * @var bool $catching_up_override
  */
 
 use App\Controller\CustomerProposalsController;
@@ -113,6 +114,13 @@ foreach ($parts as $part) {
                     <?= $this->Form->control(BillingsTable::ALLOW_BELOW_MINIMUM, [
                         'type' => 'checkbox',
                         'label' => __('Allow a connection price below the minimum set on the contract'),
+                    ]) ?>
+                <?php endif; ?>
+                <?php if ($catching_up_override) : ?>
+                    <?= $this->Form->control(CustomerProposalsController::CATCHING_UP, [
+                        'type' => 'checkbox',
+                        'label' => __('Allow a handover before the exchange was drawn up'),
+                        'help' => __('For writing down an exchange that has already taken place.'),
                     ]) ?>
                 <?php endif; ?>
                 <?php if ($leave_out_override) : ?>

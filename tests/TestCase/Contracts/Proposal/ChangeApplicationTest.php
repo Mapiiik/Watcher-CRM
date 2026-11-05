@@ -1285,6 +1285,33 @@ class ChangeApplicationTest extends TestCase
     }
 
     /**
+     * An exchange is drawn up before the equipment changes hands, so a day before that is a mistake
+     * and stops it. Somebody catching up on one that happened first may say so, and only then is
+     * the day taken as it stands.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::apply()
+     */
+    public function testAnExchangeIsHandedOverBeforeItWasDrawnUpOnlyByCatchingUp(): void
+    {
+        $lent = $this->aPieceLent();
+        $proposal = $this->exchanging($lent);
+        $equipments = $this->getTableLocator()->get('BorrowedEquipments');
+        $theDayBefore = new Date('2026-10-19');
+
+        try {
+            (new ChangeApplication())->apply($proposal, handed_over_on: $theDayBefore);
+            $this->fail('An exchange was handed over before it was drawn up.');
+        } catch (RuntimeException) {
+            $this->assertNull($equipments->get($lent)->borrowed_until);
+        }
+
+        (new ChangeApplication())->apply($proposal, handed_over_on: $theDayBefore, catching_up: true);
+
+        $this->assertSame('2026-10-19', $equipments->get($lent)->get('borrowed_until')?->toDateString());
+    }
+
+    /**
      * An exchange of borrowed equipments hands equipment over and touches nothing else: no version
      * is started, and the one the contract has keeps the day it was signed.
      *
