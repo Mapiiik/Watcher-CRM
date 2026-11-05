@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\BillingsController;
+use App\Model\Entity\Billing;
 use App\Model\Table\BillingsTable;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -37,6 +38,20 @@ class BillingsControllerTest extends TestCase
      * @var string
      */
     private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
+     * Service a bulk change is asked to leave.
+     *
+     * @var string
+     */
+    private const BULK_ORIGINAL_SERVICE_ID = 'eaacfeb3-1430-43ce-842e-497c5c95d953';
+
+    /**
+     * Service a bulk change is asked to move to.
+     *
+     * @var string
+     */
+    private const BULK_NEW_SERVICE_ID = '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2';
 
     /**
      * Fixtures
@@ -643,6 +658,243 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
+     * A new tariff from a day on: what ran on the old one ends the day before and goes on under the
+     * new one, with everything that was its own, and the fixed end of a billing is kept.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testTheBulkChangeCarriesTheBillingsOverToTheNewService(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $from = $billings->firstOpenPeriodStart();
+
+        [$open, $fixed] = $this->billedCustomers(2);
+        $fixedUntil = $from->addYears(1)->toDateString();
+        $billings->updateAll(['billing_until' => $fixedUntil], ['id' => $fixed['billing_id']]);
+        $billings->updateAll(['note' => 'Kept with the billing', 'quantity' => 2], ['id' => $open['billing_id']]);
+
+        $this->bulkChange(['active_on_date' => $from->toDateString()], [
+            'billing_from' => $from->toDateString(),
+        ]);
+
+        $this->assertFlashElement('flash/success');
+        foreach ([$open, $fixed] as $customer) {
+            $this->assertSame(
+                $from->subDays(1)->toDateString(),
+                $billings->get($customer['billing_id'])->get('billing_until')->toDateString(),
+            );
+        }
+
+        $replacement = $this->replacementOn($open['contract_id']);
+        $this->assertSame($from->toDateString(), $replacement->get('billing_from')->toDateString());
+        $this->assertNull($replacement->get('billing_until'));
+        $this->assertSame($open['customer_id'], $replacement->get('customer_id'));
+        $this->assertSame('Kept with the billing', $replacement->get('note'));
+        $this->assertSame(2, $replacement->get('quantity'));
+
+        $this->assertSame(
+            $fixedUntil,
+            $this->replacementOn($fixed['contract_id'])->get('billing_until')->toDateString(),
+        );
+    }
+
+    /**
+     * Only what the form listed is changed: a price of its own stays out unless it is asked for, and
+     * asked for by the price, the listing and the change agree.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testTheBulkChangeTakesBillingsOfAPriceOfTheirOwnOnlyWhenAskedTo(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $from = $billings->firstOpenPeriodStart();
+
+        [$standard, $discounted] = $this->billedCustomers(2);
+        $billings->updateAll(['price' => '12.50'], ['id' => $discounted['billing_id']]);
+
+        $this->bulkChange(['active_on_date' => $from->toDateString()], [
+            'billing_from' => $from->toDateString(),
+        ]);
+        $this->assertNull($billings->get($discounted['billing_id'])->get('billing_until'));
+        $this->assertNotNull($billings->get($standard['billing_id'])->get('billing_until'));
+
+        $this->bulkChange(
+            [
+                'active_on_date' => $from->toDateString(),
+                'standard_prices_only' => '0',
+                'price' => '12.50',
+                'empty_is_null' => '1',
+            ],
+            ['billing_from' => $from->toDateString(), 'price' => '10.25'],
+        );
+
+        $this->assertNotNull($billings->get($discounted['billing_id'])->get('billing_until'));
+        $this->assertSame('10.25', $this->replacementOn($discounted['contract_id'])->get('price')->toString());
+    }
+
+    /**
+     * The fibre reaching one block of flats: narrowed by the access point, the change stays there.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testTheBulkChangeStaysOnTheAccessPointAskedFor(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $from = $billings->firstOpenPeriodStart();
+
+        [$here, $elsewhere] = $this->billedCustomers(2);
+        $accessPointId = 'a0000000-0000-4000-8000-000000000001';
+        $billings->Contracts->updateAll(['access_point_id' => $accessPointId], ['id' => $here['contract_id']]);
+
+        $this->bulkChange(
+            ['active_on_date' => $from->toDateString(), 'access_point_id' => $accessPointId],
+            ['billing_from' => $from->toDateString()],
+        );
+
+        $this->assertNotNull($billings->get($here['billing_id'])->get('billing_until'));
+        $this->assertNull($billings->get($elsewhere['billing_id'])->get('billing_until'));
+    }
+
+    /**
+     * Taken in batches, every customer changed is written to at their own address.
+     *
+     * The limit is what makes this worth asking: it cuts the billings, and the customers' addresses
+     * have to be read for those billings and not for as many customers as the limit says.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testEveryCustomerOfABatchIsToldAtTheirOwnAddress(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $from = $billings->firstOpenPeriodStart();
+
+        $customers = $this->billedCustomers(6);
+
+        $before = $this->idsIn('CustomerMessages');
+        $this->bulkChange(
+            ['active_on_date' => $from->toDateString(), 'processing_limit' => '3'],
+            ['billing_from' => $from->toDateString(), 'send_customer_notification' => '1'],
+        );
+
+        $this->assertFlashElement('flash/success');
+        $addresses = array_column($customers, 'email', 'customer_id');
+        $messages = $this->getTableLocator()->get('CustomerMessages')
+            ->find()
+            ->where(['id NOT IN' => $before])
+            ->all();
+
+        $this->assertCount(3, $messages);
+        foreach ($messages as $message) {
+            $this->assertSame([$addresses[$message->get('customer_id')]], $message->get('recipients'));
+        }
+    }
+
+    /**
+     * Taken again before the day of the change, what has been changed still shows as running. It
+     * must not be billed twice: the batch stops there and says on which contract.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testABatchTakenAgainDoesNotBillTwice(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $from = $billings->firstOpenPeriodStart()->addMonths(1);
+
+        [$customer] = $this->billedCustomers(1);
+        $filter = ['active_on_date' => $from->subDays(1)->toDateString()];
+        $change = ['billing_from' => $from->toDateString()];
+
+        $this->bulkChange($filter, $change);
+        $this->assertFlashElement('flash/success');
+
+        $this->bulkChange($filter, $change);
+        $this->assertFlashMessage('The billing could not be saved. Please, try again. (Contract Number: BULK-0)');
+
+        $this->assertSame(1, $billings->find()->where([
+            'contract_id' => $customer['contract_id'],
+            'service_id' => self::BULK_NEW_SERVICE_ID,
+        ])->count());
+    }
+
+    /**
+     * The form goes through with the tokens it was rendered with. The other tests here have theirs
+     * made for them, so they would not notice a field the form protection turns away.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testTheBulkFormGoesThroughAsItWasRendered(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $from = $billings->firstOpenPeriodStart();
+        [$customer] = $this->billedCustomers(1);
+
+        $this->login();
+        $this->enableCsrfToken();
+
+        $url = '/billings/bulk-service-change?' . http_build_query([
+            'original_service_id' => self::BULK_ORIGINAL_SERVICE_ID,
+            'active_on_date' => $from->toDateString(),
+            'processing_limit' => '100',
+        ]);
+        $this->get($url);
+        $this->assertResponseOk();
+
+        // the listing below has forms of its own, each with tokens of its own
+        $form = (string)strstr((string)strstr($this->_getBodyAsString(), 'name="service_id"'), '</form>', true);
+        preg_match_all('~name="_Token\[(\w+)\]"[^>]*value="([^"]*)"~', $form, $tokens, PREG_SET_ORDER);
+
+        $this->post($url, [
+            'service_id' => self::BULK_NEW_SERVICE_ID,
+            'billing_from' => $from->toDateString(),
+            'price' => '',
+            'fixed_discount' => '',
+            'percentage_discount' => '',
+            'send_customer_notification' => '0',
+            'version_without_legislative_information' => '0',
+            'allow_below_minimum' => '0',
+            '_Token' => array_column(
+                array_map(fn(array $token): array => [$token[1], html_entity_decode($token[2])], $tokens),
+                1,
+                0,
+            ),
+        ]);
+
+        $this->assertRedirect();
+        $this->assertSame(
+            $from->subDays(1)->toDateString(),
+            $billings->get($customer['billing_id'])->get('billing_until')->toDateString(),
+        );
+    }
+
+    /**
+     * The form lists what the request narrowed it to.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testTheBulkFormListsWhatIsAboutToChange(): void
+    {
+        $from = $this->getTableLocator()->get('Billings')->firstOpenPeriodStart();
+        $this->billedCustomers(3);
+
+        $this->login();
+        $this->get('/billings/bulk-service-change?' . http_build_query([
+            'original_service_id' => self::BULK_ORIGINAL_SERVICE_ID,
+            'active_on_date' => $from->toDateString(),
+            'processing_limit' => '2',
+        ]));
+
+        $this->assertResponseOk();
+        $this->assertCount(2, $this->viewVariable('billings'));
+    }
+
+    /**
      * A box that cannot be saved is shut rather than argued with afterwards - and told why, or
      * being shut is its own puzzle.
      *
@@ -995,5 +1247,106 @@ class BillingsControllerTest extends TestCase
             'separate_invoice' => '0',
             'billing_from' => $this->getTableLocator()->get('Billings')->firstOpenPeriodStart()->toDateString(),
         ];
+    }
+
+    /**
+     * Customers of their own, each with a contract, a billing address and a billing at the standard
+     * price running on the service a bulk change leaves.
+     *
+     * Written past the application, which has its own opinions on what a customer needs. The ids
+     * run against the order of the rows, so that what is read first is not also what sorts first.
+     *
+     * @param int $count How many.
+     * @return array<int, array{customer_id: string, contract_id: string, billing_id: string, email: string}>
+     */
+    private function billedCustomers(int $count): array
+    {
+        $connection = $this->getTableLocator()->get('Billings')->getConnection();
+        $id = fn(int $kind, int $number): string => sprintf('%08d-0000-4000-8000-%012d', $kind, $count - $number);
+
+        $customers = [];
+        for ($number = 0; $number < $count; $number++) {
+            $customer = [
+                'customer_id' => $id(1, $number),
+                'contract_id' => $id(2, $number),
+                'billing_id' => $id(3, $number),
+                'email' => 'customer' . $number . '@example.com',
+            ];
+
+            $connection->insert('customers', [
+                'id' => $customer['customer_id'],
+                'nid' => 9000 + $number,
+                'accounting_profile_id' => 'ab05963c-1531-4677-a9ee-80cecde25124',
+                'last_name' => 'Customer ' . $number,
+            ]);
+            $connection->insert('contracts', [
+                'id' => $customer['contract_id'],
+                'nid' => 9000 + $number,
+                'customer_id' => $customer['customer_id'],
+                'number' => 'BULK-' . $number,
+                'contract_state_id' => '3fc51c92-5dbb-4bd4-9a47-237169c2755c',
+                'service_type_id' => '907cbc5c-af88-43b6-b535-959b4fa2ce3d',
+            ]);
+            $connection->insert('emails', [
+                'customer_id' => $customer['customer_id'],
+                'email' => $customer['email'],
+                'use_for_billing' => true,
+            ]);
+            $connection->insert('billings', [
+                'id' => $customer['billing_id'],
+                'customer_id' => $customer['customer_id'],
+                'contract_id' => $customer['contract_id'],
+                'service_id' => self::BULK_ORIGINAL_SERVICE_ID,
+                'billing_from' => '2022-01-01',
+                'quantity' => 1,
+            ]);
+
+            $customers[] = $customer;
+        }
+
+        return $customers;
+    }
+
+    /**
+     * Submits the bulk change the way the form does: the filter in the address, the change in the body.
+     *
+     * @param array<string, string> $filter What the listing is narrowed by.
+     * @param array<string, string> $change What the form says.
+     * @return void
+     */
+    private function bulkChange(array $filter, array $change): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post(
+            '/billings/bulk-service-change?' . http_build_query($filter + [
+                'original_service_id' => self::BULK_ORIGINAL_SERVICE_ID,
+            ]),
+            $change + [
+                'service_id' => self::BULK_NEW_SERVICE_ID,
+                'price' => '',
+                'fixed_discount' => '',
+                'percentage_discount' => '',
+            ],
+        );
+
+        $this->assertRedirect();
+    }
+
+    /**
+     * What a bulk change left running on a contract.
+     *
+     * @param string $contractId The contract.
+     * @return \App\Model\Entity\Billing
+     */
+    private function replacementOn(string $contractId): Billing
+    {
+        /** @var \App\Model\Entity\Billing */
+        return $this->getTableLocator()->get('Billings')
+            ->find()
+            ->where(['contract_id' => $contractId, 'service_id' => self::BULK_NEW_SERVICE_ID])
+            ->firstOrFail();
     }
 }
