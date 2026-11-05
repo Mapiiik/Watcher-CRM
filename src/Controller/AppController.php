@@ -219,6 +219,28 @@ class AppController extends Controller
     }
 
     /**
+     * Whether whoever is asking is an administrator or a manager, who are offered the boxes that
+     * override what the others are held to.
+     *
+     * @return bool
+     */
+    protected function mayOverride(): bool
+    {
+        return in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin', 'manager'], true);
+    }
+
+    /**
+     * Whether this request may be offered to price a connection below the contract's minimum, and
+     * even then it is a box that has to be ticked.
+     *
+     * @return bool
+     */
+    protected function mayGoBelowMinimum(): bool
+    {
+        return $this->mayOverride();
+    }
+
+    /**
      * Generate actual URL with added query paramaters
      *
      * @param array <string, mixed> $query Query parameters to be added to the URL

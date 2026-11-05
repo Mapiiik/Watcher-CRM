@@ -4,11 +4,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Contracts\MinimumConnectionPrice;
-use App\Contracts\Proposal\ChangePlan;
-use App\Contracts\Proposal\PlannedChange;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalForm;
-use App\Contracts\Proposal\ProposalProjection;
+use App\Contracts\Proposal\ProposalReading;
 use App\Contracts\Proposal\ProposalSnapshot;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
 use App\Contracts\Proposal\ProposedBilling;
@@ -1802,48 +1800,10 @@ class ContractProposalsController extends AppController
      */
     private function setProposalViewVars(ContractProposal $proposal): void
     {
-        $changes = $proposal->proposedChanges();
-        $snapshot = $proposal->stateOfThings();
-
-        $this->set('confirmations', $proposal->confirmations());
-        // What would be billed for, each row saying where it comes from - the same projection the
-        // documents print from, so the table and the paper cannot disagree.
-        $asItStood = $snapshot->hydrate();
-        $projection = new ProposalProjection();
-        $this->set('rows', $projection->explain(
-            $asItStood->billings,
-            $changes,
-            $proposal->effective_from,
-            $snapshot->servicesChosenBy($changes),
-        ));
-        $this->set('equipmentRows', $projection->explainEquipment(
-            $asItStood->borrowed_equipments ?? [],
-            $changes,
-            $snapshot->equipmentLentBy($changes),
-        ));
-        $this->set('mayBeEdited', $this->ContractProposals->mayBeEdited($proposal));
+        $this->set((new ProposalReading())->of($proposal));
         $this->set('mayBeRecreated', $this->ContractProposals->mayBeRecreated($proposal));
-        $this->set('linesLock', (new ContractDocuments())->linesLock($proposal));
         $this->set('mayBeDeleted', $this->ContractProposals->mayBeDeleted($proposal));
         // Only the count: the table itself is drawn by a cell, which asks for what it draws.
         $this->set('filed', (new ContractDocuments())->filedAgainst([$proposal])[$proposal->id] ?? []);
-        // Only what the proposal asks for. The rest of what applying it would write is worked
-        // out against the records as they stand today, so it means something on the preview, where
-        // it is about to happen, and nothing here.
-        $this->set('planned', array_values(array_filter(
-            (new ChangePlan())->of($proposal),
-            fn(PlannedChange $one): bool => $one->asked,
-        )));
-    }
-
-    /**
-     * Whether whoever is asking may be offered to allow a line below the contract's minimum - an
-     * admin or a manager, and even then it is a box on the line that has to be ticked.
-     *
-     * @return bool
-     */
-    private function mayGoBelowMinimum(): bool
-    {
-        return in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin', 'manager'], true);
     }
 }

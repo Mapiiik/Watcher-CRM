@@ -517,17 +517,7 @@ class BillingsController extends AppController
      */
     private function mayReachIntoClosedPeriods(): bool
     {
-        return $this->isAdmin() || $this->isManager();
-    }
-
-    /**
-     * Whether this request may be offered to price the connection below the contract's minimum.
-     *
-     * @return bool
-     */
-    private function mayGoBelowMinimum(): bool
-    {
-        return $this->isAdmin() || $this->isManager();
+        return $this->mayOverride();
     }
 
     /**
@@ -540,27 +530,7 @@ class BillingsController extends AppController
      */
     private function mayNotifyTheCustomer(): bool
     {
-        return $this->isAdmin() || $this->isManager();
-    }
-
-    /**
-     * Whether whoever is asking is trusted with the whole application.
-     *
-     * @return bool
-     */
-    private function isAdmin(): bool
-    {
-        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'admin';
-    }
-
-    /**
-     * Whether whoever is asking looks after the others, and is offered the boxes they are not.
-     *
-     * @return bool
-     */
-    private function isManager(): bool
-    {
-        return ($this->getRequest()->getAttribute('identity')['role'] ?? null) === 'manager';
+        return $this->mayOverride();
     }
 
     /**

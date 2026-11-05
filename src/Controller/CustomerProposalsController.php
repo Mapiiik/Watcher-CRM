@@ -6,8 +6,7 @@ namespace App\Controller;
 use App\Contracts\Proposal\ChangeApplication;
 use App\Contracts\Proposal\ChangePlan;
 use App\Contracts\Proposal\ChangePreview;
-use App\Contracts\Proposal\PlannedChange;
-use App\Contracts\Proposal\ProposalProjection;
+use App\Contracts\Proposal\ProposalReading;
 use App\Model\Audit\AuditTrail;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\CustomerProposal;
@@ -16,7 +15,6 @@ use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalStep;
 use App\Model\Table\BillingsTable;
 use App\Proposals\WholeProposal;
-use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\Http\Response;
 use Cake\I18n\Date;
@@ -422,7 +420,7 @@ class CustomerProposalsController extends AppController
         $this->set('below_minimum_override', $this->mayGoBelowMinimum());
         // Offered only where it is needed, and only to somebody who may answer for it.
         $this->set('leave_out_override', $leaveOut);
-        $this->set('catching_up_override', $this->oversees() && array_filter(
+        $this->set('catching_up_override', $this->mayOverride() && array_filter(
             $parts,
             fn(array $part): bool => !$part['papers']->purpose->needsAVersion(),
         ) !== []);
@@ -505,7 +503,7 @@ class CustomerProposalsController extends AppController
             && $this->request->getData(BillingsTable::ALLOW_CLOSED_PERIODS) == '1';
         $belowMinimum = $this->mayGoBelowMinimum()
             && $this->request->getData(BillingsTable::ALLOW_BELOW_MINIMUM) == '1';
-        $catchingUp = $this->oversees() && $this->request->getData(self::CATCHING_UP) == '1';
+        $catchingUp = $this->mayOverride() && $this->request->getData(self::CATCHING_UP) == '1';
 
         // Every part under one trail, written out after the transaction: audit-stash queues
         // what it logs and nothing inside a transaction ever reaches the log on its own.
@@ -570,41 +568,11 @@ class CustomerProposalsController extends AppController
      */
     private function whatEachPartSays(CustomerProposal $proposal): array
     {
-        $papers = $this->CustomerProposals->ContractProposals;
+        $reading = new ProposalReading();
         $said = [];
 
         foreach ((new WholeProposal())->partsOf((string)$proposal->id) as $part) {
-            $changes = $part->proposedChanges();
-            $snapshot = $part->stateOfThings();
-            $asItStood = $snapshot->hydrate();
-            $projection = new ProposalProjection();
-
-            $said[] = [
-                'papers' => $part,
-                'confirmations' => $part->confirmations(),
-                'mayBeEdited' => $papers->mayBeEdited($part),
-                'linesLock' => (new ContractDocuments())->linesLock($part),
-                // The same projection the documents print from, so the table and the paper cannot
-                // disagree.
-                'rows' => $projection->explain(
-                    $asItStood->billings,
-                    $changes,
-                    $part->effective_from,
-                    $snapshot->servicesChosenBy($changes),
-                ),
-                'equipmentRows' => $projection->explainEquipment(
-                    $asItStood->borrowed_equipments ?? [],
-                    $changes,
-                    $snapshot->equipmentLentBy($changes),
-                ),
-                // Only what the papers ask for: the rest of what applying them would write is
-                // worked out against the records as they stand, which means something in the
-                // moment before it happens and nothing here.
-                'planned' => array_values(array_filter(
-                    (new ChangePlan())->of($part),
-                    fn(PlannedChange $one): bool => $one->asked,
-                )),
-            ];
+            $said[] = ['papers' => $part] + $reading->of($part);
         }
 
         return $said;
@@ -620,18 +588,7 @@ class CustomerProposalsController extends AppController
      */
     private function mayReachIntoClosedPeriods(): bool
     {
-        return $this->oversees();
-    }
-
-    /**
-     * Whether this request may apply a connection priced below the contract's minimum that
-     * nobody allowed on the line itself.
-     *
-     * @return bool
-     */
-    private function mayGoBelowMinimum(): bool
-    {
-        return $this->oversees();
+        return $this->mayOverride();
     }
 
     /**
@@ -645,18 +602,7 @@ class CustomerProposalsController extends AppController
      */
     private function mayLeaveLinesOut(): bool
     {
-        return $this->oversees();
-    }
-
-    /**
-     * Whether whoever is asking is an administrator or a manager, who are offered the boxes that
-     * override what the others are held to.
-     *
-     * @return bool
-     */
-    private function oversees(): bool
-    {
-        return in_array($this->getRequest()->getAttribute('identity')['role'] ?? null, ['admin', 'manager'], true);
+        return $this->mayOverride();
     }
 
     /**
