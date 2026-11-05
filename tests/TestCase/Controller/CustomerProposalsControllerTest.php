@@ -316,6 +316,44 @@ class CustomerProposalsControllerTest extends TestCase
     }
 
     /**
+     * A step is the recording of a day, so without one there is nothing to record. A day emptied on
+     * a proposal that already has one would otherwise read as recorded and quietly undo the step:
+     * the sending is what locks the papers, and the signature what carries them over.
+     *
+     * @link \App\Controller\CustomerProposalsController::send()
+     * @link \App\Controller\CustomerProposalsController::conclude()
+     * @return void
+     */
+    public function testAStepWithoutADayRecordsNothing(): void
+    {
+        $proposal = $this->drawOneUp();
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+
+        $this->post('/customer-proposals/send/' . $proposal->id, [
+            'sent_date' => '2026-10-01',
+            'delivery_type' => DocumentsDeliveryType::Post->value,
+        ]);
+        $this->post('/customer-proposals/conclude/' . $proposal->id, ['conclusion_date' => '2026-10-05']);
+
+        $this->post('/customer-proposals/conclude/' . $proposal->id, ['conclusion_date' => '']);
+        $this->assertResponseOk();
+        $this->assertSame('2026-10-05', $proposals->get($proposal->id)->conclusion_date?->toDateString());
+
+        $unsigned = $this->drawOneUp();
+        $this->post('/customer-proposals/send/' . $unsigned->id, [
+            'sent_date' => '2026-10-01',
+            'delivery_type' => DocumentsDeliveryType::Post->value,
+        ]);
+
+        $this->post('/customer-proposals/send/' . $unsigned->id, [
+            'sent_date' => '',
+            'delivery_type' => DocumentsDeliveryType::Post->value,
+        ]);
+        $this->assertResponseOk();
+        $this->assertTrue($proposals->get($unsigned->id)->hasBeenSent());
+    }
+
+    /**
      * Giving up on a proposal settles it without pretending it never happened.
      *
      * @link \App\Controller\CustomerProposalsController::revoke()

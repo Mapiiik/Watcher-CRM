@@ -191,7 +191,7 @@ class CustomerProposalsController extends AppController
                 $said['conclusion_date'] = $said['sent_date'];
             }
 
-            $proposal = $this->CustomerProposals->patchEntity($proposal, $said);
+            $proposal = $this->CustomerProposals->patchEntity($proposal, $said, ['validate' => 'sent']);
 
             if ($this->recordAcrossTheProposal($proposal, ProposalStep::Delivered)) {
                 $this->Flash->success(__('The proposal has been recorded as sent.'));
@@ -234,7 +234,7 @@ class CustomerProposalsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $said = ['conclusion_date' => $this->request->getData('conclusion_date')];
-            $proposal = $this->CustomerProposals->patchEntity($proposal, $said);
+            $proposal = $this->CustomerProposals->patchEntity($proposal, $said, ['validate' => 'signed']);
 
             if ($this->recordAcrossTheProposal($proposal, ProposalStep::Signed)) {
                 $this->Flash->success(__('The signature has been recorded.'));

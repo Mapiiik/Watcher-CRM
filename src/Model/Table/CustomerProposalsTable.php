@@ -202,6 +202,30 @@ class CustomerProposalsTable extends AppTable
     }
 
     /**
+     * The step of recording that the papers went out, which is the recording of a day.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationSent(Validator $validator): Validator
+    {
+        return $this->validationDefault($validator)
+            ->notEmptyDate('sent_date', __('Enter the day the proposal went out.'));
+    }
+
+    /**
+     * The step of recording the signature, which is the recording of a day.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationSigned(Validator $validator): Validator
+    {
+        return $this->validationDefault($validator)
+            ->notEmptyDate('conclusion_date', __('Enter the day the customer signed.'));
+    }
+
+    /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
