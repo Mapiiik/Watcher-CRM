@@ -4,15 +4,17 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\BulkMessages\BulkRecipientFilterRegistry;
+use App\BulkMessages\BulkRecipients;
+use App\BulkMessages\BulkSendSummary;
 use App\Controller\CustomerMessagesController;
+use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessagePurpose;
+use App\Model\Enum\CustomerMessageType;
 use App\Model\Enum\ServiceCriticalityLevel;
 use App\Test\Traits\ControllerTestTrait;
-use Cake\Http\ServerRequest;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
-use ReflectionMethod;
 
 /**
  * App\Controller\CustomerMessagesController Test Case
@@ -175,7 +177,7 @@ class CustomerMessagesControllerTest extends TestCase
      * contract (here: no contract at all) is not offered as a recipient.
      *
      * @return void
-     * @link \App\Controller\CustomerMessagesController::findBulkCustomers()
+     * @link \App\BulkMessages\BulkRecipients::findCustomers()
      */
     public function testContractScopedFilterExcludesCustomersWithoutQualifyingContract(): void
     {
@@ -192,7 +194,7 @@ class CustomerMessagesControllerTest extends TestCase
      * The billing flavour behaves the same way against the `billed` state flag.
      *
      * @return void
-     * @link \App\Controller\CustomerMessagesController::findBulkCustomers()
+     * @link \App\BulkMessages\BulkRecipients::findCustomers()
      */
     public function testBilledFilterExcludesCustomersWithoutBilledContract(): void
     {
@@ -210,7 +212,7 @@ class CustomerMessagesControllerTest extends TestCase
      * depend on contracts, so a consenting customer with no contract is offered.
      *
      * @return void
-     * @link \App\Controller\CustomerMessagesController::findBulkCustomers()
+     * @link \App\BulkMessages\BulkRecipients::findCustomers()
      */
     public function testNoContractFilterIncludesCustomersWithoutContracts(): void
     {
@@ -225,7 +227,7 @@ class CustomerMessagesControllerTest extends TestCase
      * behave like no filter — contractless customers stay eligible.
      *
      * @return void
-     * @link \App\Controller\CustomerMessagesController::findBulkCustomers()
+     * @link \App\BulkMessages\BulkRecipients::findCustomers()
      */
     public function testContractScopedFilterOffIncludesCustomersWithoutContracts(): void
     {
@@ -300,8 +302,7 @@ class CustomerMessagesControllerTest extends TestCase
      */
     public function testServiceFiltersIgnoreInvalidSelections(): void
     {
-        $controller = new CustomerMessagesController(new ServerRequest());
-        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
+        $registry = new BulkRecipientFilterRegistry($this->getTableLocator()->get('CustomerMessages'));
 
         foreach (['service_ids', 'service_type_ids'] as $key) {
             $filter = $registry->get($key);
@@ -323,8 +324,7 @@ class CustomerMessagesControllerTest extends TestCase
      */
     public function testServiceFilterControlsOfferSeededOptions(): void
     {
-        $controller = new CustomerMessagesController(new ServerRequest());
-        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
+        $registry = new BulkRecipientFilterRegistry($this->getTableLocator()->get('CustomerMessages'));
 
         $serviceTypeControls = $registry->get('service_type_ids')?->controls(null) ?? [];
         $this->assertCount(1, $serviceTypeControls);
@@ -348,7 +348,7 @@ class CustomerMessagesControllerTest extends TestCase
      * about the customer today, however critical it was.
      *
      * @return void
-     * @link \App\Controller\CustomerMessagesController::buildRecipientRow()
+     * @link \App\BulkMessages\BulkRecipients::groupByAccessPoint()
      */
     public function testPreviewRowsCarryContractAndServiceFlags(): void
     {
@@ -373,17 +373,15 @@ class CustomerMessagesControllerTest extends TestCase
      * The warning counts people, not rows — and only those whose flags are set.
      *
      * @return void
-     * @link \App\Controller\CustomerMessagesController::countFlaggedCustomers()
+     * @link \App\BulkMessages\BulkRecipients::countFlagged()
      */
     public function testFlaggedRecipientsAreCountedPerCustomer(): void
     {
-        $controller = new CustomerMessagesController(new ServerRequest());
-        $customers = $this->findBulkCustomers($controller, CustomerMessagePurpose::Outages, []);
-        $method = new ReflectionMethod(CustomerMessagesController::class, 'countFlaggedCustomers');
+        $customers = $this->findBulkCustomers(CustomerMessagePurpose::Outages, []);
 
         $this->assertSame(
             ['vip' => 1, 'critical' => 1],
-            $method->invoke($controller, $customers),
+            (new BulkRecipients())->countFlagged($customers),
         );
     }
 
@@ -397,8 +395,7 @@ class CustomerMessagesControllerTest extends TestCase
      */
     public function testPurposeDefaultsSeedTheRestrictingFilters(): void
     {
-        $controller = new CustomerMessagesController(new ServerRequest());
-        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
+        $registry = new BulkRecipientFilterRegistry($this->getTableLocator()->get('CustomerMessages'));
 
         $this->assertSame(
             ['active_services_contract' => true],
@@ -433,8 +430,7 @@ class CustomerMessagesControllerTest extends TestCase
      */
     public function testActiveFiltersDescribeThemselvesForTheReport(): void
     {
-        $controller = new CustomerMessagesController(new ServerRequest());
-        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
+        $registry = new BulkRecipientFilterRegistry($this->getTableLocator()->get('CustomerMessages'));
 
         // the locale is not fixed for tests, so the expectation goes through the
         // same translation the filters do
@@ -464,23 +460,19 @@ class CustomerMessagesControllerTest extends TestCase
      * must be reported by name, not silently left out.
      *
      * @return void
-     * @link \App\Controller\CustomerMessagesController::findDroppedRecipients()
+     * @link \App\BulkMessages\BulkRecipients::findDropped()
      */
     public function testRecipientsLostBetweenPreviewAndSendAreReported(): void
     {
-        $controller = new CustomerMessagesController(new ServerRequest());
         // only the contracted customer still resolves; the other one was
         // approved in the preview and has since fallen out
         $customers = $this->findBulkCustomers(
-            $controller,
             CustomerMessagePurpose::Outages,
             ['active_services_contract' => true],
         );
-        $method = new ReflectionMethod(CustomerMessagesController::class, 'findDroppedRecipients');
 
         /** @var list<array{number: string|null, name: string}> $dropped */
-        $dropped = $method->invoke(
-            $controller,
+        $dropped = (new BulkRecipients())->findDropped(
             [self::CUSTOMER_WITH_CONTRACT, self::CUSTOMER_WITHOUT_CONTRACT],
             $customers,
         );
@@ -491,8 +483,61 @@ class CustomerMessagesControllerTest extends TestCase
         // nothing was lost when every selected customer still resolves
         $this->assertSame(
             [],
-            $method->invoke($controller, [self::CUSTOMER_WITH_CONTRACT], $customers),
+            (new BulkRecipients())->findDropped([self::CUSTOMER_WITH_CONTRACT], $customers),
         );
+    }
+
+    /**
+     * The whole wizard, the way an operator goes through it: a purpose, the filters, the message,
+     * and a summary at the end of what was queued.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::addBulk()
+     * @link \App\BulkMessages\BulkSendSummary::build()
+     */
+    public function testTheWizardQueuesTheMessageAndSaysWhatWentOut(): void
+    {
+        $wizard = [
+            'CustomerMessages.bulkWizard' => [
+                'purpose' => CustomerMessagePurpose::Outages->value,
+                'filters' => [],
+                'ignore_customer_consent' => true,
+                'ignore_contact_use' => true,
+            ],
+        ];
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->session($wizard);
+        $this->get('/customer-messages/add-bulk?step=compose');
+        $this->assertResponseOk();
+
+        $before = $this->idsIn('CustomerMessages');
+        $this->session($wizard);
+        $this->post('/customer-messages/add-bulk?step=compose', [
+            'type' => CustomerMessageType::EmailSupport->value,
+            'subject' => 'A planned outage',
+            'body' => 'Tonight, for an hour.',
+            'body_format' => CustomerMessageBodyFormat::Plaintext->value,
+            'send_to' => [self::CUSTOMER_WITH_CONTRACT],
+        ]);
+        $this->assertRedirectContains('step=done');
+
+        $queued = $this->addedRecord('CustomerMessages', $before);
+        $this->assertSame(self::CUSTOMER_WITH_CONTRACT, $queued->get('customer_id'));
+        $this->assertSame('A planned outage', $queued->get('subject'));
+        $this->assertSame(['customer@example.com'], $queued->get('recipients'));
+
+        $summary = $_SESSION['CustomerMessages']['bulkResult'];
+        $this->assertSame(1, $summary['sent']);
+        $this->assertSame('A planned outage', $summary['subject']);
+
+        $this->session(['CustomerMessages.bulkResult' => $summary]);
+        $this->get('/customer-messages/add-bulk?step=done');
+        $this->assertResponseOk();
+        $this->assertResponseContains('A planned outage');
     }
 
     /**
@@ -500,14 +545,11 @@ class CustomerMessagesControllerTest extends TestCase
      * filters, every recipient with the addresses it went to, and the text.
      *
      * @return void
-     * @link \App\Controller\CustomerMessagesController::renderBulkSendReport()
+     * @link \App\BulkMessages\BulkSendSummary::render()
      */
     public function testSummaryEmailBodyCarriesTheWholeSend(): void
     {
-        $controller = new CustomerMessagesController(new ServerRequest());
-        $method = new ReflectionMethod(CustomerMessagesController::class, 'renderBulkSendReport');
-
-        $body = $method->invoke($controller, [
+        $body = (new BulkSendSummary())->render([
             'sent' => 1,
             'channel' => 'E-mail (support)',
             'is_sms' => false,
@@ -537,9 +579,9 @@ class CustomerMessagesControllerTest extends TestCase
             'skipped' => [['id' => 'x', 'number' => 'C-2', 'name' => 'No Contact Ltd.']],
             'dropped' => [['number' => 'C-3', 'name' => 'Gone Away Ltd.']],
             'flagged' => ['vip' => 1, 'critical' => 1],
+            'summary_mailed' => false,
         ]);
 
-        $this->assertIsString($body);
         foreach (
             [
                 'Outage notification',
@@ -574,7 +616,6 @@ class CustomerMessagesControllerTest extends TestCase
     private function resolveBulkCustomers(CustomerMessagePurpose $purpose, array $filters): array
     {
         $customers = $this->findBulkCustomers(
-            new CustomerMessagesController(new ServerRequest()),
             $purpose,
             $filters,
         );
@@ -592,12 +633,10 @@ class CustomerMessagesControllerTest extends TestCase
      */
     private function resolveBulkPreviewRows(CustomerMessagePurpose $purpose, array $filters): array
     {
-        $controller = new CustomerMessagesController(new ServerRequest());
-        $customers = $this->findBulkCustomers($controller, $purpose, $filters);
-        $method = new ReflectionMethod(CustomerMessagesController::class, 'groupCustomersByAccessPoint');
+        $customers = $this->findBulkCustomers($purpose, $filters);
 
         /** @var list<array{rows: list<array<string, mixed>>}> $groups */
-        $groups = $method->invoke($controller, $customers, []);
+        $groups = (new BulkRecipients())->groupByAccessPoint($customers, []);
 
         $rows = [];
         foreach ($groups as $group) {
@@ -612,22 +651,14 @@ class CustomerMessagesControllerTest extends TestCase
     /**
      * Invoke the controller's private recipient resolver against the fixtures.
      *
-     * @param \App\Controller\CustomerMessagesController $controller Controller to invoke on.
      * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
      * @param array<string, mixed> $filters Stored filter values keyed by filter id.
      * @return array<\App\Model\Entity\Customer> Matched customers.
      */
-    private function findBulkCustomers(
-        CustomerMessagesController $controller,
-        CustomerMessagePurpose $purpose,
-        array $filters,
-    ): array {
-        $registry = new BulkRecipientFilterRegistry($controller->CustomerMessages);
-        $method = new ReflectionMethod(CustomerMessagesController::class, 'findBulkCustomers');
+    private function findBulkCustomers(CustomerMessagePurpose $purpose, array $filters): array
+    {
+        $registry = new BulkRecipientFilterRegistry($this->getTableLocator()->get('CustomerMessages'));
 
-        /** @var array<\App\Model\Entity\Customer> $customers */
-        $customers = $method->invoke($controller, $purpose, $filters, $registry, false, true);
-
-        return $customers;
+        return (new BulkRecipients())->findCustomers($purpose, $filters, $registry, false, true);
     }
 }

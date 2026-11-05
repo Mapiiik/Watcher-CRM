@@ -4,25 +4,19 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\BulkMessages\BulkRecipientFilterRegistry;
-use App\BulkMessages\Filter\ContractScopedFilterInterface;
-use App\BulkMessages\Filter\CustomerScopedFilterInterface;
+use App\BulkMessages\BulkRecipients;
+use App\BulkMessages\BulkSendSummary;
 use App\Controller\Traits\CommonViewVarListsTrait;
-use App\Model\Entity\Contract;
-use App\Model\Entity\Customer;
 use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
 use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessagePurpose;
 use App\Model\Enum\CustomerMessageType;
-use App\Model\Enum\ServiceCriticalityLevel;
 use App\NMS\ApiClient as NMSApiClient;
-use App\Service\OperatorReport;
 use Cake\Http\Response;
 use Cake\Http\Session;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
-use Cake\ORM\Query\SelectQuery;
 use Cake\Utility\Text;
 use Settings\Utility\Settings;
 use SplObjectStorage;
@@ -32,41 +26,7 @@ use Throwable;
  * CustomerMessages Controller
  *
  * @property \App\Model\Table\CustomerMessagesTable $CustomerMessages
- * @phpstan-type BulkRecipientRow array{
- *     customer: \App\Model\Entity\Customer,
- *     contract: \App\Model\Entity\Contract|null,
- *     services: list<string>,
- *     vip: bool,
- *     criticality: \App\Model\Enum\ServiceCriticalityLevel|null
- * }
- * @phpstan-type BulkSendReport array{
- *     sent: int,
- *     channel: string,
- *     is_sms: bool,
- *     purpose: string,
- *     subject: string,
- *     body: string,
- *     filters: list<string>,
- *     ignored_customer_consent: bool,
- *     ignored_contact_use: bool,
- *     groups: list<array{
- *         ap_id: string|null,
- *         ap_name: string,
- *         customers: list<array{
- *             number: string|null,
- *             name: string,
- *             contract_number: string|null,
- *             services: list<string>,
- *             vip: bool,
- *             criticality: string|null,
- *             recipients: list<string>
- *         }>
- *     }>,
- *     skipped: list<array{id: string, number: string|null, name: string}>,
- *     dropped: list<array{number: string|null, name: string}>,
- *     flagged: array{vip: int, critical: int},
- *     summary_mailed: bool
- * }
+ * @phpstan-import-type SendSummary from \App\BulkMessages\BulkSendSummary
  */
 class CustomerMessagesController extends AppController
 {
@@ -338,7 +298,7 @@ class CustomerMessagesController extends AppController
         array $state,
         BulkRecipientFilterRegistry $registry,
     ): bool {
-        $customers = $this->findBulkCustomers(
+        $customers = (new BulkRecipients())->findCustomers(
             $purpose,
             $state['filters'] ?? [],
             $registry,
@@ -380,7 +340,7 @@ class CustomerMessagesController extends AppController
         if ($previewed !== []) {
             $sendTo = array_values(array_intersect($sendTo, $previewed));
         }
-        $dropped = $this->findDroppedRecipients($sendTo, $customers);
+        $dropped = (new BulkRecipients())->findDropped($sendTo, $customers);
 
         $customerMessages = [];
         // selected customers with no eligible contact for this channel, kept for
@@ -445,7 +405,7 @@ class CustomerMessagesController extends AppController
             return false;
         }
 
-        $report = $this->buildBulkSendReport(
+        $report = (new BulkSendSummary())->build(
             $purpose,
             $state,
             $registry,
@@ -466,172 +426,19 @@ class CustomerMessagesController extends AppController
     }
 
     /**
-     * Selected recipients that the send-time query no longer returns.
-     *
-     * @param list<string> $sendTo Customer ids the operator kept checked.
-     * @param array<\App\Model\Entity\Customer> $customers Recipients resolved at send time.
-     * @return list<array{number: string|null, name: string}>
-     */
-    private function findDroppedRecipients(array $sendTo, array $customers): array
-    {
-        $resolved = [];
-        foreach ($customers as $customer) {
-            $resolved[(string)$customer->id] = true;
-        }
-
-        $droppedIds = array_values(array_diff(array_unique($sendTo), array_keys($resolved)));
-        if ($droppedIds === []) {
-            return [];
-        }
-
-        // they are gone from the recipient query, so their names have to come
-        // from the customers table directly
-        $dropped = [];
-        foreach (
-            $this->CustomerMessages->Customers
-                ->find()
-                ->where(['Customers.id IN' => $droppedIds])
-                ->all() as $customer
-        ) {
-            $dropped[] = [
-                'number' => $customer->number,
-                'name' => $customer->name,
-            ];
-        }
-
-        return $dropped;
-    }
-
-    /**
-     * Assemble the record of what a bulk send did: the message itself, the
-     * filters that picked the recipients, and every recipient grouped by access
-     * point with their services, flags and the addresses the message went to.
-     *
-     * The same structure feeds the done step and the summary e-mail, so both
-     * always tell the same story.
-     *
-     * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
-     * @param array{purpose?: int, filters?: array<string, mixed>, preview?: list<string>, ignore_customer_consent?: bool, ignore_contact_use?: bool} $state Wizard state.
-     * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
-     * @param \App\Model\Entity\CustomerMessage $customerMessage Composed message.
-     * @param list<\App\Model\Entity\Customer> $messaged Customers a message was built for.
-     * @param list<\App\Model\Entity\CustomerMessage> $customerMessages Their messages, in the same order.
-     * @param list<array{id: string, number: string|null, name: string}> $skipped Selected but without a usable contact.
-     * @param list<array{number: string|null, name: string}> $dropped Selected but no longer eligible.
-     * @return BulkSendReport
-     */
-    private function buildBulkSendReport(
-        CustomerMessagePurpose $purpose,
-        array $state,
-        BulkRecipientFilterRegistry $registry,
-        CustomerMessage $customerMessage,
-        array $messaged,
-        array $customerMessages,
-        array $skipped,
-        array $dropped,
-    ): array {
-        // the entity normalises contacts into plain addresses, which is exactly
-        // what the report should show
-        $recipientsByCustomer = [];
-        foreach ($customerMessages as $index => $message) {
-            $customer = $messaged[$index] ?? null;
-            if ($customer !== null) {
-                $recipientsByCustomer[(string)$customer->id] = array_values(
-                    array_map('strval', $message->recipients),
-                );
-            }
-        }
-
-        $apNames = NMSApiClient::getAccessPointsList(onlyActive: false)->or([]);
-        $groups = [];
-        foreach ($this->groupCustomersByAccessPoint($messaged, $apNames) as $group) {
-            $customers = [];
-            foreach ($group['rows'] as $row) {
-                $customers[] = [
-                    'number' => $row['customer']->number,
-                    'name' => $row['customer']->name,
-                    'contract_number' => $row['contract']?->number,
-                    'services' => $row['services'],
-                    'vip' => $row['vip'],
-                    'criticality' => $row['criticality']?->label(),
-                    'recipients' => $recipientsByCustomer[(string)$row['customer']->id] ?? [],
-                ];
-            }
-
-            $groups[] = [
-                'ap_id' => $group['ap_id'],
-                'ap_name' => $group['ap_name'],
-                'customers' => $customers,
-            ];
-        }
-
-        return [
-            'sent' => count($customerMessages),
-            'channel' => $customerMessage->type->label(),
-            'is_sms' => $customerMessage->type === CustomerMessageType::Sms,
-            'purpose' => $purpose->label(),
-            'subject' => (string)$customerMessage->subject,
-            'body' => (string)$customerMessage->body,
-            'filters' => $registry->describeFilters($purpose, $state['filters'] ?? []),
-            'ignored_customer_consent' => ($state['ignore_customer_consent'] ?? false) === true,
-            'ignored_contact_use' => ($state['ignore_contact_use'] ?? false) === true,
-            'groups' => $groups,
-            'skipped' => $skipped,
-            'dropped' => $dropped,
-            'flagged' => $this->countFlaggedCustomers($messaged),
-            // the caller flips this once the summary has actually gone out
-            'summary_mailed' => false,
-        ];
-    }
-
-    /**
-     * Names of the services a contract currently bills.
-     *
-     * @param \App\Model\Entity\Contract|null $contract Contract to inspect.
-     * @return list<string>
-     */
-    private function contractServiceNames(?Contract $contract): array
-    {
-        if ($contract === null) {
-            return [];
-        }
-
-        $names = [];
-        foreach ($contract->billings as $billing) {
-            $name = $billing->service->name ?? null;
-            if (is_string($name) && $name !== '' && !in_array($name, $names, true)) {
-                $names[] = $name;
-            }
-        }
-
-        return $names;
-    }
-
-    /**
      * Mail the send report to the operator who sent it, plus the reporting
      * addresses the console commands already use.
      *
      * With no address to send to there is nothing to do but log it — the
      * messages themselves are already saved either way.
      *
-     * @param BulkSendReport $report Report to send.
+     * @param SendSummary $report Report to send.
      * @return bool True when the summary was handed to the mailer.
      */
     private function mailBulkSendReport(array $report): bool
     {
-        $identity = $this->getRequest()->getAttribute('identity');
-        $addresses = [];
-
-        $operator = $identity['email'] ?? null;
-        if (is_string($operator) && $operator !== '') {
-            $addresses[] = $operator;
-        }
-
-        foreach (OperatorReport::recipients() as $address) {
-            if (!in_array($address, $addresses, true)) {
-                $addresses[] = $address;
-            }
-        }
+        $summary = new BulkSendSummary();
+        $addresses = $summary->recipients($this->getRequest()->getAttribute('identity')['email'] ?? null);
 
         if ($addresses === []) {
             Log::warning('Bulk customer message summary has no recipient address, not sending it.');
@@ -642,19 +449,8 @@ class CustomerMessagesController extends AppController
             return false;
         }
 
-        $mailer = new Mailer('default');
-        foreach ($addresses as $address) {
-            $mailer->addTo($address);
-        }
-
-        $mailer->setSubject(__(
-            'Bulk customer message: {0} — {1} message(s) sent',
-            $report['purpose'],
-            $report['sent'],
-        ));
-
         try {
-            $mailer->deliver($this->renderBulkSendReport($report));
+            $summary->mail($report, $addresses);
         } catch (Throwable $e) {
             // the messages themselves are already saved and will go out, so a
             // broken summary must not take the send down with it
@@ -668,86 +464,6 @@ class CustomerMessagesController extends AppController
         }
 
         return true;
-    }
-
-    /**
-     * Render the send report as the plain-text body of the summary e-mail.
-     *
-     * @param BulkSendReport $report Report to render.
-     * @return string
-     */
-    private function renderBulkSendReport(array $report): string
-    {
-        $lines = [
-            __('Purpose: {0}', $report['purpose']),
-            __('Channel: {0}', $report['channel']),
-            __('{0} message(s) queued for sending.', $report['sent']),
-            '',
-            __('Recipient filters:'),
-        ];
-
-        $lines = array_merge(
-            $lines,
-            $report['filters'] === []
-                ? ['- ' . __('No filter was applied.')]
-                : array_map(static fn(string $filter): string => '- ' . $filter, $report['filters']),
-        );
-
-        if ($report['ignored_customer_consent']) {
-            $lines[] = '- ' . __('Customer mailing consent was ignored.');
-        }
-        if ($report['ignored_contact_use']) {
-            $lines[] = '- ' . __('Per-contact routing flag was ignored.');
-        }
-
-        $lines[] = '';
-        $lines[] = __('Recipients:');
-        foreach ($report['groups'] as $group) {
-            $lines[] = '';
-            $lines[] = $group['ap_name'] . ' (' . count($group['customers']) . ')';
-            foreach ($group['customers'] as $customer) {
-                $flags = [];
-                if ($customer['vip']) {
-                    $flags[] = __('VIP');
-                }
-                if ($customer['criticality'] !== null) {
-                    $flags[] = $customer['criticality'];
-                }
-
-                $lines[] = '  ' . implode(' | ', array_filter([
-                    trim($customer['number'] . ' ' . $customer['name']),
-                    $customer['contract_number'],
-                    implode(', ', $customer['services']),
-                    implode(', ', $customer['recipients']),
-                    $flags === [] ? null : '!! ' . implode(', ', $flags),
-                ]));
-            }
-        }
-
-        foreach (
-            [
-                __('Not sent — no usable contact:') => $report['skipped'],
-                __('Not sent — no longer eligible when sending:') => $report['dropped'],
-            ] as $heading => $customers
-        ) {
-            if ($customers === []) {
-                continue;
-            }
-
-            $lines[] = '';
-            $lines[] = $heading;
-            foreach ($customers as $customer) {
-                $lines[] = '  ' . trim($customer['number'] . ' ' . $customer['name']);
-            }
-        }
-
-        $lines[] = '';
-        $lines[] = str_repeat('-', 60);
-        $lines[] = __('Subject: {0}', $report['subject']);
-        $lines[] = '';
-        $lines[] = $report['body'];
-
-        return implode(PHP_EOL, $lines);
     }
 
     /**
@@ -791,138 +507,6 @@ class CustomerMessagesController extends AppController
         }
 
         $this->set('saveFailures', $failures);
-    }
-
-    /**
-     * Resolve the eligible recipient customers for the given purpose/filters.
-     *
-     * Contained emails/phones are restricted to those flagged for the purpose,
-     * and customers to those who gave mailing consent. The two overrides bypass
-     * these independently (customer mailing consent vs. per-contact routing).
-     * With no filter selected the message targets everyone who consented (or the
-     * whole customer base when consent is overridden too).
-     *
-     * @param \App\Model\Enum\CustomerMessagePurpose $purpose Selected purpose.
-     * @param array<string, mixed> $filters Submitted filter values keyed by filter key.
-     * @param \App\BulkMessages\BulkRecipientFilterRegistry $registry Filter registry.
-     * @param bool $ignoreCustomerConsent Whether to bypass the customer mailing consent (agree_mailing_*).
-     * @param bool $ignoreContactUse Whether to bypass the per-contact routing flag (use_for_*).
-     * @return array<\App\Model\Entity\Customer>
-     */
-    private function findBulkCustomers(
-        CustomerMessagePurpose $purpose,
-        array $filters,
-        BulkRecipientFilterRegistry $registry,
-        bool $ignoreCustomerConsent,
-        bool $ignoreContactUse,
-    ): array {
-        $conditions = [];
-        // conditions applied to the *contained* Contracts so the preview's
-        // access-point grouping hides contracts a filter excludes (e.g. a
-        // non-active / non-billed contract state) instead of surfacing them
-        $containedContractConditions = [];
-        foreach ($filters as $key => $value) {
-            $filter = $registry->get($key);
-            if ($filter === null) {
-                continue;
-            }
-            if ($filter instanceof ContractScopedFilterInterface) {
-                // contract-scoped filters are correlated on a single contract
-                // below (not added as independent per-filter customer conditions)
-                $contained = $filter->containedContractConditions($value);
-                if ($contained !== null) {
-                    $containedContractConditions[] = $contained;
-                }
-            } elseif ($filter instanceof CustomerScopedFilterInterface) {
-                $filterConditions = $filter->conditions($value);
-                if ($filterConditions !== null) {
-                    $conditions[] = $filterConditions;
-                }
-            }
-        }
-
-        // contract-scoped filters must be satisfied by the *same* contract: a
-        // customer qualifies only when one contract matches all of them together
-        // (e.g. an active contract *on* the selected access point), never when
-        // different contracts each satisfy a different filter
-        if ($containedContractConditions !== []) {
-            $conditions[] = [
-                'Customers.id IN' => $this->CustomerMessages->Customers->Contracts
-                    ->find()
-                    ->select(['customer_id'])
-                    ->distinct()
-                    ->where($containedContractConditions),
-            ];
-        }
-
-        // mailing consent (unless overridden). With no filter selected this is
-        // the only constraint; with consent also overridden the message targets
-        // the entire customer base — intentional (e.g. a marketing campaign).
-        if (!$ignoreCustomerConsent) {
-            $conditions[] = ['Customers.' . $purpose->customerConsentField() => true];
-        }
-
-        $useField = $purpose->contactUseField();
-        $contactFinder = function (SelectQuery $query, string $alias) use ($ignoreContactUse, $useField): SelectQuery {
-            if ($ignoreContactUse) {
-                return $query;
-            }
-
-            return $query->where([$alias . '.' . $useField => true]);
-        };
-
-        return $this->CustomerMessages->Customers->find()
-            ->contain([
-                'Emails' => fn(SelectQuery $q): SelectQuery => $contactFinder($q, 'Emails'),
-                'Phones' => fn(SelectQuery $q): SelectQuery => $contactFinder($q, 'Phones'),
-                // contracts drive the access-point grouping in the preview;
-                // any contract-scoped filter (e.g. contract state) narrows them
-                // so excluded contracts never surface a customer under an AP
-                'Contracts' => function (SelectQuery $q) use ($containedContractConditions): SelectQuery {
-                    $q = $q
-                        ->select([
-                            'Contracts.id',
-                            'Contracts.customer_id',
-                            'Contracts.access_point_id',
-                            // shown (and linked) in the preview so the operator
-                            // can tell a customer's contracts apart
-                            'Contracts.number',
-                            // guaranteed / VIP flag, warned about before sending
-                            'Contracts.vip',
-                        ])
-                        // the billed services carry the second flag (their
-                        // criticality level); only non-historical billings say
-                        // anything about what the customer has today
-                        ->contain([
-                            'Billings' => [
-                                'finder' => 'activeOrFuture',
-                                'fields' => [
-                                    'Billings.id',
-                                    'Billings.contract_id',
-                                    'Billings.service_id',
-                                ],
-                                'Services' => [
-                                    'fields' => [
-                                        'Services.id',
-                                        'Services.name',
-                                        'Services.criticality_level',
-                                    ],
-                                ],
-                            ],
-                        ]);
-
-                    return $containedContractConditions === []
-                        ? $q
-                        : $q->where($containedContractConditions);
-                },
-            ])
-            ->where($conditions)
-            ->orderBy([
-                'Customers.company',
-                'Customers.last_name',
-                'Customers.first_name',
-            ])
-            ->toArray();
     }
 
     /**
@@ -989,7 +573,7 @@ class CustomerMessagesController extends AppController
     ): void {
         $ignoreCustomerConsent = $state['ignore_customer_consent'] ?? false;
         $ignoreContactUse = $state['ignore_contact_use'] ?? false;
-        $customers = $this->findBulkCustomers(
+        $customers = (new BulkRecipients())->findCustomers(
             $purpose,
             $state['filters'] ?? [],
             $registry,
@@ -1019,9 +603,9 @@ class CustomerMessagesController extends AppController
         $apNames = $answer->or([]);
 
         // contract-scoped filters (access point, contract state) have already
-        // narrowed the contained contracts in findBulkCustomers(), so grouping
+        // narrowed the contained contracts in findCustomers(), so grouping
         // only ever sees contracts the active filters allow
-        $apGroups = $this->groupCustomersByAccessPoint($customers, $apNames);
+        $apGroups = (new BulkRecipients())->groupByAccessPoint($customers, $apNames);
 
         // remember what was offered, so the send can tell whether the recipient
         // set changed underneath the operator
@@ -1032,7 +616,7 @@ class CustomerMessagesController extends AppController
             'purpose' => $purpose,
             'customers' => $customers,
             'apGroups' => $apGroups,
-            'flagged' => $this->countFlaggedCustomers($customers),
+            'flagged' => (new BulkRecipients())->countFlagged($customers),
             'ignoreCustomerConsent' => $ignoreCustomerConsent,
             'ignoreContactUse' => $ignoreContactUse,
         ]);
@@ -1058,140 +642,6 @@ class CustomerMessagesController extends AppController
         $customerMessage->subject = Settings::getString($path . '.subject');
         $customerMessage->body = Settings::getString($path . '.body_text');
         $customerMessage->body_format = CustomerMessageBodyFormat::Plaintext;
-    }
-
-    /**
-     * Group recipients by the access point(s) of their contracts, one row per
-     * contract — a customer with contracts on several access points is listed
-     * under each (so it is visible everywhere it belongs). The opt-out checkbox
-     * of every row submits the customer id, so unchecking one row still sends as
-     * long as another stays checked; the send step then builds a single message
-     * per customer. Contracts without an access point, and customers without any
-     * contract at all, form a trailing group.
-     *
-     * @param array<\App\Model\Entity\Customer> $customers Deduplicated recipients.
-     * @param array<array-key, string> $apNames Access point id => name map.
-     * @return list<array{ap_id: string|null, ap_name: string, rows: list<BulkRecipientRow>}>
-     */
-    private function groupCustomersByAccessPoint(array $customers, array $apNames): array
-    {
-        /** @var array<string, list<BulkRecipientRow>> $byAccessPoint */
-        $byAccessPoint = [];
-        /** @var list<BulkRecipientRow> $withoutAccessPoint */
-        $withoutAccessPoint = [];
-
-        foreach ($customers as $customer) {
-            if ($customer->contracts === []) {
-                $withoutAccessPoint[] = $this->buildRecipientRow($customer, null);
-
-                continue;
-            }
-
-            foreach ($customer->contracts as $contract) {
-                $apId = $contract->access_point_id;
-                $row = $this->buildRecipientRow($customer, $contract);
-                if (is_string($apId) && $apId !== '') {
-                    $byAccessPoint[$apId][] = $row;
-                } else {
-                    $withoutAccessPoint[] = $row;
-                }
-            }
-        }
-
-        $groups = [];
-        foreach ($byAccessPoint as $apId => $rows) {
-            $groups[] = [
-                'ap_id' => $apId,
-                'ap_name' => $apNames[$apId] ?? __('Unknown access point'),
-                'rows' => $rows,
-            ];
-        }
-        usort($groups, static fn(array $a, array $b): int => strnatcasecmp($a['ap_name'], $b['ap_name']));
-
-        if ($withoutAccessPoint !== []) {
-            $groups[] = [
-                'ap_id' => null,
-                'ap_name' => __('No access point'),
-                'rows' => $withoutAccessPoint,
-            ];
-        }
-
-        return $groups;
-    }
-
-    /**
-     * Build one preview row: the customer as seen through one of its contracts,
-     * carrying the two flags the operator must notice before sending.
-     *
-     * @param \App\Model\Entity\Customer $customer Recipient customer.
-     * @param \App\Model\Entity\Contract|null $contract Contract the row stands for, if any.
-     * @return BulkRecipientRow
-     */
-    private function buildRecipientRow(Customer $customer, ?Contract $contract): array
-    {
-        return [
-            'customer' => $customer,
-            'contract' => $contract,
-            'services' => $this->contractServiceNames($contract),
-            'vip' => $contract?->vip === true,
-            'criticality' => $this->highestServiceCriticality($contract),
-        ];
-    }
-
-    /**
-     * Highest above-normal criticality level among the services the contract
-     * currently bills, or null when it bills nothing noteworthy.
-     *
-     * @param \App\Model\Entity\Contract|null $contract Contract to inspect.
-     * @return \App\Model\Enum\ServiceCriticalityLevel|null
-     */
-    private function highestServiceCriticality(?Contract $contract): ?ServiceCriticalityLevel
-    {
-        if ($contract === null) {
-            return null;
-        }
-
-        $highest = null;
-        foreach ($contract->billings as $billing) {
-            $level = $billing->service->criticality_level ?? null;
-            if (!$level instanceof ServiceCriticalityLevel || $level === ServiceCriticalityLevel::Normal) {
-                continue;
-            }
-            if ($highest === null || $level->value > $highest->value) {
-                $highest = $level;
-            }
-        }
-
-        return $highest;
-    }
-
-    /**
-     * How many of the given customers carry each flag — counted per customer, so
-     * someone with two VIP contracts is one person to double-check, not two.
-     *
-     * @param array<\App\Model\Entity\Customer> $customers Recipients to inspect.
-     * @return array{vip: int, critical: int}
-     */
-    private function countFlaggedCustomers(array $customers): array
-    {
-        $vip = 0;
-        $critical = 0;
-        foreach ($customers as $customer) {
-            $isVip = false;
-            $isCritical = false;
-            foreach ($customer->contracts as $contract) {
-                $isVip = $isVip || $contract->vip === true;
-                $isCritical = $isCritical || $this->highestServiceCriticality($contract) !== null;
-            }
-
-            $vip += (int)$isVip;
-            $critical += (int)$isCritical;
-        }
-
-        return [
-            'vip' => $vip,
-            'critical' => $critical,
-        ];
     }
 
     /**
