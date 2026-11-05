@@ -6,6 +6,7 @@ namespace App\Contracts\Proposal;
 use App\Model\Entity\ContractProposal;
 use App\Model\Entity\ContractVersion;
 use App\Model\Enum\ProposalPurpose;
+use Cake\I18n\Date;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
@@ -216,8 +217,9 @@ final class ChangePlan
     private function onTheContract(ContractProposal $proposal): array
     {
         $asked = $proposal->proposedChanges()->contract;
+        $lastDay = $this->lastDayOfANewTerm($proposal);
 
-        if ($asked->isEmpty()) {
+        if ($asked->isEmpty() && $lastDay === null) {
             return [];
         }
 
@@ -239,7 +241,40 @@ final class ChangePlan
             );
         }
 
+        // The papers say the day of the version, and the contract ends with it. Only a contract
+        // with no end of its own: one that has it is somebody's decision.
+        if ($lastDay !== null && $contract->termination_date === null) {
+            $planned[] = new PlannedChange(
+                self::CONTRACT,
+                (string)$contract->id,
+                (string)$contract->number,
+                'termination_date',
+                ProposedContract::label('termination_date'),
+                null,
+                $lastDay,
+                false,
+            );
+        }
+
         return $planned;
+    }
+
+    /**
+     * The last day of the fixed term a new contract sets, where it sets one that is still to run.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @return \Cake\I18n\Date|null
+     */
+    private function lastDayOfANewTerm(ContractProposal $proposal): ?Date
+    {
+        if (!$proposal->purpose->mayChangeTheTerm()) {
+            return null;
+        }
+
+        /** @var \App\Model\Table\ContractProposalsTable $proposals */
+        $proposals = $this->fetchTable('ContractProposals');
+
+        return $proposals->lastDayOfARunningTerm($proposal);
     }
 
     /**

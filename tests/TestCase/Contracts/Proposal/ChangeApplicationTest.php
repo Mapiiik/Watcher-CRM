@@ -228,6 +228,108 @@ class ChangeApplicationTest extends TestCase
     }
 
     /**
+     * A line that names no service and no text of its own leaves the service as it is. That is how
+     * the papers print it, and the records have to end up saying what the papers said.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::startingBilling()
+     */
+    public function testALineNamingNothingKeepsTheServiceOfTheBillingItReplaces(): void
+    {
+        $takesEffect = $this->nextMonth();
+        $billings = $this->getTableLocator()->get('Billings');
+        $service = $billings->get(self::OPEN_BILLING_ID)->service_id;
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => $takesEffect->toDateString(),
+            'changes' => ['billings' => [[
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => false,
+                'quantity' => 1,
+                'percentage_discount' => 100,
+            ]]],
+        ]);
+
+        (new ChangeApplication())->apply($proposal);
+
+        $started = $billings->find()
+            ->where([
+                'Billings.contract_id' => self::CONTRACT_ID,
+                'Billings.billing_from' => $takesEffect->toDateString(),
+            ])
+            ->firstOrFail();
+
+        $this->assertNotNull($service);
+        $this->assertSame($service, $started->get('service_id'));
+        $this->assertSame(100, $started->get('percentage_discount'));
+    }
+
+    /**
+     * A text of its own is the operator saying what the line is, so the service stays behind.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::startingBilling()
+     */
+    public function testALineWithATextOfItsOwnLeavesTheServiceBehind(): void
+    {
+        $takesEffect = $this->nextMonth();
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => $takesEffect->toDateString(),
+            'changes' => ['billings' => [[
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => false,
+                'text' => 'An individual line',
+                'quantity' => 1,
+                'price' => '299.00',
+            ]]],
+        ]);
+
+        (new ChangeApplication())->apply($proposal);
+
+        $started = $this->getTableLocator()->get('Billings')->find()
+            ->where([
+                'Billings.contract_id' => self::CONTRACT_ID,
+                'Billings.billing_from' => $takesEffect->toDateString(),
+            ])
+            ->firstOrFail();
+
+        $this->assertNull($started->get('service_id'));
+        $this->assertSame('An individual line', $started->get('text'));
+    }
+
+    /**
+     * A line stopping a billing with a fixed term gives it the last day of the term and leaves
+     * everything else about it alone: nothing starts, and it runs until then as it always has.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBilling::endsTheBillingOn()
+     */
+    public function testALineStoppingABillingOnADayOfItsOwnWritesThatDay(): void
+    {
+        $takesEffect = $this->nextMonth();
+        $lastDay = $takesEffect->addYears(1);
+        $before = $this->billingCount();
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => $takesEffect->toDateString(),
+            'changes' => ['billings' => [[
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => true,
+                'billing_from' => $lastDay->addDays(1)->toDateString(),
+            ]]],
+        ]);
+
+        (new ChangeApplication())->apply($proposal);
+
+        $this->assertSame(
+            $lastDay->toDateString(),
+            $this->getTableLocator()->get('Billings')->get(self::OPEN_BILLING_ID)->billing_until?->toDateString(),
+        );
+        $this->assertSame($before, $this->billingCount());
+    }
+
+    /**
      * A billing written to begin after the papers end the contract never runs, so it is taken
      * away rather than given a last day before its first - which the records would refuse.
      *
@@ -762,6 +864,47 @@ class ChangeApplicationTest extends TestCase
             'contract_version_id' => null,
             'snapshot' => $snapshot,
         ]);
+    }
+
+    /**
+     * A new contract for a fixed term puts its last day on the version it starts and on the contract.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangePlan::onTheContract()
+     */
+    public function testAFixedTermIsWrittenOntoTheVersionAndTheContract(): void
+    {
+        $takesEffect = $this->nextMonth();
+        $lastDay = $takesEffect->addYears(1);
+        $contracts = $this->getTableLocator()->get('Contracts');
+        $contracts->updateAll(['termination_date' => null], ['id' => self::CONTRACT_ID]);
+
+        $proposal = $this->proposalWithoutAVersion([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => $takesEffect->toDateString(),
+            'confirmations' => ['fixed_term' => true],
+            'changes' => ['version' => [
+                'valid_until' => $lastDay->toDateString(),
+                'obligation_until' => $lastDay->toDateString(),
+            ]],
+        ]);
+
+        (new ChangeApplication())->apply($proposal);
+
+        $version = $this->getTableLocator()->get('ContractVersions')->find()
+            ->where([
+                'ContractVersions.contract_id' => self::CONTRACT_ID,
+                'ContractVersions.valid_from' => $takesEffect->toDateString(),
+            ])
+            ->firstOrFail();
+
+        $this->assertSame($lastDay->toDateString(), $version->get('valid_until')?->toDateString());
+        $this->assertSame($lastDay->toDateString(), $version->get('obligation_until')?->toDateString());
+        $this->assertSame(
+            $lastDay->toDateString(),
+            $contracts->get(self::CONTRACT_ID)->termination_date?->toDateString(),
+        );
     }
 
     /**

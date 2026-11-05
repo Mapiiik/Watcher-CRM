@@ -1045,11 +1045,7 @@ class ContractProposalsTable extends AppTable
         // have the obligation moved to the day the customer left, losing that they left early.
         $rules->add(
             function (ContractProposal $entity): bool {
-                if ($entity->purpose === ProposalPurpose::Termination) {
-                    return true;
-                }
-
-                $ends = $this->versionEndAfterProposal($entity);
+                $ends = $this->lastDayOfTheTerm($entity);
 
                 if ($ends === null) {
                     return true;
@@ -1130,6 +1126,37 @@ class ContractProposalsTable extends AppTable
                 'message' => __('A proposal whose changes have been applied cannot be revoked.'),
             ],
         );
+    }
+
+    /**
+     * The last day of the fixed term the papers are for, where they are for one.
+     *
+     * On anything but an ending, an end date on the version means a fixed term.
+     *
+     * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
+     * @return \Cake\I18n\Date|null Null when the version runs on, or when the papers end it.
+     */
+    public function lastDayOfTheTerm(ContractProposal $entity): ?Date
+    {
+        return $entity->purpose === ProposalPurpose::Termination
+            ? null
+            : $this->versionEndAfterProposal($entity);
+    }
+
+    /**
+     * The last day of a fixed term that has not run out yet.
+     *
+     * A day already gone says nothing about today: it is how a superseded version is recorded, and
+     * papers for one are a copy of what was once agreed.
+     *
+     * @param \App\Model\Entity\ContractProposal $entity The proposal being asked about.
+     * @return \Cake\I18n\Date|null
+     */
+    public function lastDayOfARunningTerm(ContractProposal $entity): ?Date
+    {
+        $lastDay = $this->lastDayOfTheTerm($entity);
+
+        return $lastDay !== null && $lastDay->lessThan(Date::today()) ? null : $lastDay;
     }
 
     /**

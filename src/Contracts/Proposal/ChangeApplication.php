@@ -180,6 +180,7 @@ final class ChangeApplication
 
         foreach ($changes->billings as $line) {
             $to_save = [];
+            $ending = null;
             // an administrator who allowed it on the line has already made the decision
             $allowed = [BillingsTable::ALLOW_BELOW_MINIMUM => $go_below_minimum || $line->below_minimum_allowed];
 
@@ -218,7 +219,7 @@ final class ChangeApplication
             }
 
             if ($line->startsABilling()) {
-                $to_save[] = $this->startingBilling($line, $proposal, (string)$contract->customer_id);
+                $to_save[] = $this->startingBilling($line, $proposal, (string)$contract->customer_id, $ending);
             }
 
             if ($to_save !== [] && $billings->saveMany($to_save, $allowed + $options) === false) {
@@ -348,12 +349,14 @@ final class ChangeApplication
      * @param \App\Contracts\Proposal\ProposedBilling $line What the proposal asks for.
      * @param \App\Model\Entity\ContractProposal $proposal The proposal.
      * @param string $customer_id Who it belongs to.
+     * @param \App\Model\Entity\Billing|null $replaced What it replaces, where it replaces something.
      * @return \App\Model\Entity\Billing
      */
     private function startingBilling(
         ProposedBilling $line,
         ContractProposal $proposal,
         string $customer_id,
+        ?Billing $replaced = null,
     ): Billing {
         /** @var \App\Model\Entity\Billing $starting */
         $starting = $this->fetchTable('Billings')->newEntity([
@@ -361,7 +364,7 @@ final class ChangeApplication
             'contract_id' => $proposal->contract_id,
             'billing_from' => $line->startsOn($proposal->effective_from)->toDateString(),
             'billing_until' => $line->billing_until?->toDateString(),
-            'service_id' => $line->service_id,
+            'service_id' => $line->leavesTheServiceAlone() ? $replaced?->service_id : $line->service_id,
             'text' => $line->text,
             'quantity' => $line->quantity,
             // Money is held as an object and the marshaller takes only what a form would send.

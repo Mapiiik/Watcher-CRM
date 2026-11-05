@@ -7,6 +7,7 @@ use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\TheUsualTerm;
 use App\Controller\ContractProposalsController;
 use App\Controller\CustomerProposalsController;
+use App\Model\Entity\ContractProposal;
 use App\Model\Enum\ContractDocumentType;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\DocumentVariant;
@@ -107,6 +108,18 @@ class ContractProposalsControllerTest extends TestCase
      * A service still sold, and one the fixtures mark as no longer offered.
      */
     private const OPEN_SERVICE_ID = '5f6a2f47-0a4d-4c05-9bcb-2f0dc0a3f0d2';
+
+    /**
+     * Every box of the form ticked, the term among them.
+     *
+     * @var array<string, int>
+     */
+    private const EVERYTHING_ANSWERED = [
+        'fixed_term' => 1,
+        'own_equipment' => 1,
+        'does_not_use_ip_addresses' => 1,
+        'does_not_use_radius' => 1,
+    ];
 
     private const RETIRED_SERVICE_ID = 'eaacfeb3-1430-43ce-842e-497c5c95d953';
 
@@ -1820,6 +1833,443 @@ class ContractProposalsControllerTest extends TestCase
             $ended,
             'A billing that stopped years ago was given an ending.',
         );
+    }
+
+    /**
+     * Draws up a new contract for a fixed term through the form.
+     *
+     * @param \Cake\I18n\Date $ends The last day of the term.
+     * @return \App\Model\Entity\ContractProposal What was drawn up.
+     */
+    private function drawUpAFixedTerm(Date $ends): ContractProposal
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/add', [
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_id' => self::CONTRACT_ID,
+            'contract_version_id' => '',
+            'effective_from' => Date::today()->toDateString(),
+            'version_change_named' => ['valid_until' => '1', 'obligation_until' => '1'],
+            'version_change' => [
+                'valid_until' => $ends->toDateString(),
+                'obligation_until' => $ends->toDateString(),
+            ],
+            'confirmations' => self::EVERYTHING_ANSWERED,
+        ]);
+
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\ContractProposal $drawn */
+        $drawn = $this->getTableLocator()->get('ContractProposals')
+            ->find()
+            ->orderByDesc('created')
+            ->firstOrFail();
+
+        return $drawn;
+    }
+
+    /**
+     * Says when a billing stops, past the rules - the way somebody on the contract's own page would.
+     *
+     * @param string $id Which billing.
+     * @param \Cake\I18n\Date|null $until The day.
+     * @return void
+     */
+    private function theBillingRunsUntil(string $id, ?Date $until): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->saveOrFail(
+            $billings->patchEntity($billings->get($id), ['billing_until' => $until?->toDateString()]),
+            ['checkRules' => false],
+        );
+    }
+
+    /**
+     * Turns the fixture's proposal into a new contract for a fixed term that has not run out.
+     *
+     * @param \Cake\I18n\Date $ends The last day of the term.
+     * @param array<array<string, mixed>> $lines Its billing lines.
+     * @return void
+     */
+    private function theProposalIsForATerm(Date $ends, array $lines = []): void
+    {
+        $this->theProposalIs([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_version_id' => null,
+            'effective_from' => Date::today()->toDateString(),
+            'confirmations' => self::EVERYTHING_ANSWERED,
+            'changes' => [
+                'billings' => $lines,
+                'version' => [
+                    'valid_until' => $ends->toDateString(),
+                    'obligation_until' => $ends->toDateString(),
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Puts the papers together again, with every question answered.
+     *
+     * @return void
+     */
+    private function recreateThePapers(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
+            'confirmations' => self::EVERYTHING_ANSWERED,
+        ]);
+
+        $this->assertRedirectContains('/contract-proposals/view/' . self::PROPOSAL_ID);
+    }
+
+    /**
+     * What the proposal's lines say about each billing, read as they were saved.
+     *
+     * @return array<string, \App\Contracts\Proposal\ProposedBilling>
+     */
+    private function linesOfTheProposal(): array
+    {
+        return $this->getTableLocator()->get('ContractProposals')
+            ->get(self::PROPOSAL_ID)
+            ->proposedChanges()
+            ->billingsByBillingId();
+    }
+
+    /**
+     * A fixed term stops what is billed for on its last day, and what stopped earlier needs nothing.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::endWhatTheContractIsBilledFor()
+     */
+    public function testAFixedTermStopsWhatIsBilledForOnItsLastDay(): void
+    {
+        $ends = Date::today()->addYears(1);
+
+        $drawn = $this->drawUpAFixedTerm($ends);
+
+        $lines = $drawn->proposedChanges()->billingsByBillingId();
+
+        $this->assertArrayHasKey(self::KNOWN_BILLING_ID, $lines, 'What is still billed for was not stopped.');
+        $this->assertArrayNotHasKey(self::CLOSED_BILLING_ID, $lines, 'Something long stopped got a line.');
+
+        $line = $lines[self::KNOWN_BILLING_ID];
+        $this->assertTrue($line->terminatesOnly(), 'Nothing is meant to take its place.');
+        $this->assertSame(
+            $ends->toDateString(),
+            $line->endsTheBillingOn($drawn->effective_from, null)?->toDateString(),
+        );
+    }
+
+    /**
+     * A billing that stops sooner than the term is somebody's decision, and it is never lengthened
+     * for them: a tariff followed by another looks exactly the same.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::runsPast()
+     */
+    public function testAFixedTermLeavesAloneWhatStopsSooner(): void
+    {
+        $this->theBillingRunsUntil(self::KNOWN_BILLING_ID, Date::today()->addMonths(2));
+
+        $drawn = $this->drawUpAFixedTerm(Date::today()->addYears(1));
+
+        $this->assertSame([], $drawn->proposedChanges()->billingsByBillingId());
+    }
+
+    /**
+     * Something running on past the term is brought back to it.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::runsPast()
+     */
+    public function testAFixedTermStopsWhatRunsLonger(): void
+    {
+        $ends = Date::today()->addYears(1);
+        $this->theBillingRunsUntil(self::KNOWN_BILLING_ID, $ends->addMonths(3));
+
+        $drawn = $this->drawUpAFixedTerm($ends);
+
+        $this->assertArrayHasKey(self::KNOWN_BILLING_ID, $drawn->proposedChanges()->billingsByBillingId());
+    }
+
+    /**
+     * Putting the papers together again replaces every answer, so the one about the term is asked
+     * too. Without the box the saving would be refused over something nobody can tick.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::recreate()
+     */
+    public function testRecreatingAsksAboutTheTerm(): void
+    {
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="confirmations[fixed_term]"');
+        $this->assertTrue($this->viewVariable('contractProposal')->confirmations()->confirms('fixed_term'));
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID, [
+            'confirmations' => ['fixed_term' => 0] + self::EVERYTHING_ANSWERED,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertArrayHasKey('confirmations', $this->viewVariable('contractProposal')->getErrors());
+
+        $this->recreateThePapers();
+
+        $this->assertTrue(
+            $this->getTableLocator()->get('ContractProposals')
+                ->get(self::PROPOSAL_ID)
+                ->confirmations()
+                ->confirms('fixed_term'),
+            'The answer did not survive.',
+        );
+    }
+
+    /**
+     * A version that runs on has no term to ask about.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::recreate()
+     */
+    public function testRecreatingAsksNothingAboutATermThereIsNot(): void
+    {
+        $versions = $this->getTableLocator()->get('ContractVersions');
+        $versions->saveOrFail(
+            $versions->patchEntity($versions->get(self::CONTRACT_VERSION_ID), ['valid_until' => null]),
+            ['checkRules' => false],
+        );
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/recreate/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('confirmations[fixed_term]');
+    }
+
+    /**
+     * A billing that stopped sooner than the term has its end cleared on the contract, and the
+     * papers put together again have to notice.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::endWhatTheContractIsBilledFor()
+     */
+    public function testRecreatingStopsWhatHasStartedToRunPastTheTerm(): void
+    {
+        $ends = Date::today()->addYears(1);
+        $this->theBillingRunsUntil(self::KNOWN_BILLING_ID, Date::today()->addMonths(2));
+        $this->theProposalIsForATerm($ends);
+        $this->recreateThePapers();
+
+        $this->assertSame([], $this->linesOfTheProposal());
+
+        $this->theBillingRunsUntil(self::KNOWN_BILLING_ID, null);
+        $this->recreateThePapers();
+
+        $this->assertArrayHasKey(self::KNOWN_BILLING_ID, $this->linesOfTheProposal());
+    }
+
+    /**
+     * Something that already ran on in the last snapshot had its line then, so one that is missing
+     * was taken back on purpose and does not come back.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::endWhatTheContractIsBilledFor()
+     */
+    public function testRecreatingDoesNotBringBackALineTakenBack(): void
+    {
+        $this->theProposalIsForATerm(Date::today()->addYears(1));
+
+        $this->recreateThePapers();
+
+        $this->assertSame([], $this->linesOfTheProposal());
+    }
+
+    /**
+     * A billing added while an ending waits is ended with the rest once the papers are put together
+     * again, or it would go on being charged for after the contract is gone.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::endWhatTheContractIsBilledFor()
+     */
+    public function testRecreatingAnEndingStopsWhatWasAddedSince(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $added = $billings->saveOrFail($billings->newEntity([
+            'customer_id' => self::CUSTOMER_ID,
+            'contract_id' => self::CONTRACT_ID,
+            'text' => 'Added while the papers waited',
+            'quantity' => 1,
+            'price' => '10',
+            'billing_from' => '2026-01-01',
+            'separate_invoice' => false,
+        ]), ['checkRules' => false]);
+
+        $this->theProposalIs([
+            'purpose' => ProposalPurpose::Termination->value,
+            'effective_from' => '2030-01-01',
+            'terminated_contract_number' => '2022/0001',
+            'changes' => [
+                'version' => ['valid_until' => '2029-12-31'],
+                'contract' => ['termination_date' => '2029-12-31'],
+            ],
+        ]);
+
+        $this->recreateThePapers();
+
+        $lines = $this->linesOfTheProposal();
+
+        $this->assertArrayHasKey((string)$added->id, $lines, 'What was added since runs on past the end.');
+        $this->assertArrayNotHasKey(self::KNOWN_BILLING_ID, $lines, 'A line nobody drew has appeared.');
+    }
+
+    /**
+     * A billing written on a fixed term opens with the day the term ends, whether it is new or
+     * replaces one. It is only what the form opens with, so the operator may say otherwise.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBillingForm::fill()
+     */
+    public function testANewBillingOpensWithTheLastDayOfTheTerm(): void
+    {
+        $ends = Date::today()->addYears(1);
+        $this->theProposalIsForATerm($ends);
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+        $this->assertResponseOk();
+        $this->assertSame($ends->toDateString(), $this->viewVariable('values')['billing_until']);
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID);
+        $this->assertResponseOk();
+        $this->assertSame($ends->toDateString(), $this->viewVariable('values')['billing_until']);
+    }
+
+    /**
+     * A term that has run out says nothing about what is billed for today, and a last day before
+     * the first would be refused by the records anyway.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractProposalsTable::lastDayOfARunningTerm()
+     */
+    public function testANewBillingOpensWithNothingOnceTheTermHasRunOut(): void
+    {
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertNull($this->viewVariable('values')['billing_until']);
+    }
+
+    /**
+     * A line that only ends a billing says nothing about what the billing is, and saving the form
+     * replaces the billing with what the form says. Opened empty, it would take the tariff and the
+     * price off the contract.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBillingForm::fill()
+     */
+    public function testEditingALineThatOnlyEndsStartsFromTheBilling(): void
+    {
+        $ends = Date::today()->addYears(1);
+        $this->theProposalIsForATerm($ends, [[
+            'id' => 'f0000000-0000-4000-8000-000000000001',
+            'billing_id' => self::KNOWN_BILLING_ID,
+            'terminates_only' => true,
+            'billing_from' => $ends->addDays(1)->toDateString(),
+        ]]);
+
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '/f0000000-0000-4000-8000-000000000001');
+
+        $this->assertResponseOk();
+
+        $values = $this->viewVariable('values');
+        $this->assertSame(self::KNOWN_BILLING_ID, $values['billing_id']);
+        $this->assertSame('Sed do eiusmod tempor', $values['text']);
+        $this->assertSame('2.00', $values['price']);
+        $this->assertSame($ends->toDateString(), $values['billing_until']);
+    }
+
+    /**
+     * A snapshot keeps the service whole rather than as an id, so a billing read back from one has
+     * no `service_id` and the form has to find the service where it is.
+     *
+     * The snapshot is taken here rather than read from the fixture, which holds no service.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBillingForm::fill()
+     */
+    public function testChangingABillingOpensOnItsService(): void
+    {
+        $this->theProposalIsForATerm(Date::today()->addYears(1));
+        $this->recreateThePapers();
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID);
+
+        $this->assertResponseOk();
+        $this->assertSame(self::OPEN_SERVICE_ID, $this->viewVariable('values')['service_id']);
+    }
+
+    /**
+     * The same goes for a line that only ends the billing, opened to be changed.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBillingForm::fill()
+     */
+    public function testEditingALineThatOnlyEndsOpensOnTheService(): void
+    {
+        $ends = Date::today()->addYears(1);
+        $this->theProposalIsForATerm($ends, [[
+            'id' => 'f0000000-0000-4000-8000-000000000002',
+            'billing_id' => self::KNOWN_BILLING_ID,
+            'terminates_only' => true,
+            'billing_from' => $ends->addDays(1)->toDateString(),
+        ]]);
+        $this->recreateThePapers();
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '/f0000000-0000-4000-8000-000000000002');
+
+        $this->assertResponseOk();
+        $this->assertSame(self::OPEN_SERVICE_ID, $this->viewVariable('values')['service_id']);
+    }
+
+    /**
+     * A billing on a tariff nobody may take any more keeps it on the list when it is changed, or
+     * the form would move it onto another one without saying so.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::billingLine()
+     */
+    public function testChangingABillingKeepsItsRetiredServiceOnTheList(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->saveOrFail(
+            $billings->patchEntity($billings->get(self::KNOWN_BILLING_ID), [
+                'service_id' => self::RETIRED_SERVICE_ID,
+            ]),
+            ['checkRules' => false],
+        );
+
+        $this->theProposalIsForATerm(Date::today()->addYears(1));
+        $this->recreateThePapers();
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID);
+
+        $this->assertResponseOk();
+        $this->assertArrayHasKey(self::RETIRED_SERVICE_ID, $this->viewVariable('services')->toArray());
     }
 
     /**

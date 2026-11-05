@@ -166,6 +166,95 @@ class ChangePlanTest extends TestCase
     }
 
     /**
+     * A new contract for a fixed term, on a contract with the given end.
+     *
+     * @param \Cake\I18n\Date $lastDay The last day of the term.
+     * @param \Cake\I18n\Date|null $contractEnds The end the contract already has.
+     * @return \App\Model\Entity\ContractProposal
+     */
+    private function aFixedTerm(Date $lastDay, ?Date $contractEnds = null): ContractProposal
+    {
+        $proposal = $this->proposal([
+            'purpose' => ProposalPurpose::NewContract->value,
+            'contract_version_id' => null,
+            'conclusion_date' => '2026-09-15',
+            'changes' => ['version' => [
+                'valid_until' => $lastDay->toDateString(),
+                'obligation_until' => $lastDay->toDateString(),
+            ]],
+        ]);
+
+        $this->getTableLocator()->get('Contracts')->updateAll(
+            ['termination_date' => $contractEnds?->toDateString()],
+            ['id' => $proposal->contract_id],
+        );
+
+        return $proposal;
+    }
+
+    /**
+     * A contract for a fixed term ends with it, though the papers only say so of the version.
+     *
+     * @return void
+     */
+    public function testAFixedTermEndsTheContractThoughNobodyAskedForIt(): void
+    {
+        $lastDay = Date::today()->addYears(1);
+
+        $write = $this->planned($this->aFixedTerm($lastDay), 'termination_date');
+
+        $this->assertNotNull($write);
+        $this->assertFalse($write->asked, 'The end was put down as something asked for.');
+        $this->assertSame(ChangePlan::CONTRACT, $write->target);
+        $this->assertInstanceOf(Date::class, $write->to);
+        $this->assertSame($lastDay->toDateString(), $write->to->toDateString());
+    }
+
+    /**
+     * An end the contract already has is somebody's decision, and is not written over.
+     *
+     * @return void
+     */
+    public function testAContractWithAnEndOfItsOwnKeepsIt(): void
+    {
+        $lastDay = Date::today()->addYears(1);
+
+        $proposal = $this->aFixedTerm($lastDay, $lastDay->subMonths(2));
+
+        $this->assertNull($this->planned($proposal, 'termination_date'));
+    }
+
+    /**
+     * A term already over is a copy of old papers, and says nothing about the contract today.
+     *
+     * @return void
+     */
+    public function testATermThatHasRunOutEndsNothing(): void
+    {
+        $proposal = $this->aFixedTerm(Date::today()->subDays(1));
+
+        $this->assertNull($this->planned($proposal, 'termination_date'));
+    }
+
+    /**
+     * Only a new contract says anything about the term, so an amendment leaves the contract alone.
+     *
+     * @return void
+     */
+    public function testAnAmendmentOfAFixedTermDoesNotEndTheContract(): void
+    {
+        $lastDay = Date::today()->addYears(1);
+        $this->version(['valid_until' => $lastDay->toDateString(), 'obligation_until' => $lastDay->toDateString()]);
+        $proposal = $this->proposal(['purpose' => ProposalPurpose::ServiceChange->value]);
+        $this->getTableLocator()->get('Contracts')->updateAll(
+            ['termination_date' => null],
+            ['id' => $proposal->contract_id],
+        );
+
+        $this->assertNull($this->planned($proposal, 'termination_date'));
+    }
+
+    /**
      * A version the papers bring into being is not a record yet, so nothing planned for it points
      * anywhere - a page drawing the list has to be able to tell that from a record it may open.
      *

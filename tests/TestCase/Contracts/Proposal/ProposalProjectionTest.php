@@ -13,6 +13,7 @@ use App\Model\Entity\ContractVersion;
 use App\Model\Entity\Service;
 use Cake\I18n\Date;
 use Cake\TestSuite\TestCase;
+use PhpCollective\DecimalObject\Decimal;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 
@@ -224,6 +225,52 @@ class ProposalProjectionTest extends TestCase
         $this->assertCount(1, $projected);
         $this->assertSame(self::EFFECTIVE_FROM, $projected[0]->billing_from?->toDateString());
         $this->assertSame(2, $projected[0]->quantity);
+    }
+
+    /**
+     * A line that names no service and no text keeps the service of what it replaces. Read back from
+     * a snapshot, the billing has the service whole and no id beside it, so this is how it comes in.
+     *
+     * @return void
+     */
+    public function testALineNamingNothingKeepsTheServiceOnThePaper(): void
+    {
+        $billing = $this->billing('b-1');
+        $billing->unset('text');
+        $billing->set('service', new Service(['id' => 's-1', 'name' => 'A tariff', 'price' => 450]));
+
+        $projected = $this->project([$billing], [
+            'billings' => [['billing_id' => 'b-1', 'percentage_discount' => 100]],
+        ]);
+
+        $this->assertSame('A tariff', $projected[array_key_last($projected)]->name);
+    }
+
+    /**
+     * A line with a text of its own is no longer for a service, so the paper says what the records
+     * will: neither the name of the service nor its price.
+     *
+     * @return void
+     */
+    public function testALineWithATextOfItsOwnLeavesTheServiceBehindOnThePaper(): void
+    {
+        $billing = $this->billing('b-1');
+        $billing->unset('text');
+        $billing->set('service', new Service([
+            'id' => 's-1',
+            'name' => 'A tariff',
+            'price' => Decimal::create('450.00'),
+        ]));
+
+        $projected = $this->project([$billing], [
+            'billings' => [['billing_id' => 'b-1', 'text' => 'An individual line']],
+        ]);
+
+        $line = $projected[array_key_last($projected)];
+
+        $this->assertSame('An individual line', $line->name);
+        $this->assertNull($line->service);
+        $this->assertSame('0.00', (string)$line->total_price);
     }
 
     /**

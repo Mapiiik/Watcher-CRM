@@ -21,33 +21,40 @@ final class ProposedBillingForm
      *
      * @param \App\Contracts\Proposal\ProposedBilling|null $line The line being edited, if any.
      * @param \App\Model\Entity\Billing|null $replaced What it replaces, when it replaces something.
+     * @param \Cake\I18n\Date|null $term_ends The last day of a fixed term, which a new billing
+     *   runs to unless the operator says otherwise.
      * @return array<string, mixed>
      */
-    public function fill(?ProposedBilling $line, ?Billing $replaced = null): array
+    public function fill(?ProposedBilling $line, ?Billing $replaced = null, ?Date $term_ends = null): array
     {
-        if ($line !== null) {
+        // A line that only ends a billing has no terms of its own, and saving this form replaces
+        // the billing with what it says.
+        if ($line !== null && ($replaced === null || !$line->terminatesOnly())) {
             return $line->toArray();
         }
+
+        $until = $term_ends?->toDateString();
 
         // Replacing something starts from what is there, so that the operator changes the one
         // thing they came to change rather than typing the rest in again.
         if ($replaced !== null) {
             return [
                 'billing_id' => (string)$replaced->id,
-                'service_id' => $replaced->service_id,
+                // Read back from a snapshot it has the service whole and no id beside it.
+                'service_id' => $replaced->service_id ?? $replaced->service?->id,
                 'text' => $replaced->text,
                 'quantity' => $replaced->quantity,
                 'price' => $replaced->price?->toString(),
                 'fixed_discount' => $replaced->fixed_discount?->toString(),
                 'percentage_discount' => $replaced->percentage_discount,
                 'billing_from' => null,
-                'billing_until' => null,
+                'billing_until' => $until,
                 'separate_invoice' => $replaced->separate_invoice,
                 'note' => $replaced->note,
             ];
         }
 
-        return ['quantity' => 1, 'separate_invoice' => false];
+        return ['quantity' => 1, 'billing_until' => $until, 'separate_invoice' => false];
     }
 
     /**

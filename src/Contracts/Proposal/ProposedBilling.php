@@ -97,6 +97,19 @@ final class ProposedBilling
     }
 
     /**
+     * Whether the line says nothing about what is billed for, which then stays as it is.
+     *
+     * A text of its own does say something: that the line is no longer for a service. Asked in one
+     * place, because the papers and the records have to read it the same way.
+     *
+     * @return bool
+     */
+    public function leavesTheServiceAlone(): bool
+    {
+        return $this->service_id === null && $this->text === null;
+    }
+
+    /**
      * The day this line starts, given the day the proposal takes effect.
      *
      * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.

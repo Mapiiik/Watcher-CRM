@@ -11,6 +11,7 @@
  * @var \App\Model\Entity\ContractProposal $contractProposal
  * @var array<string> $questions
  * @var array<string, string> $wording
+ * @var bool $asksAboutTheTerm Whether the version ends on a day, which has to be meant.
  * @var array<string, string> $proposals
  * @var array<string, string> $contractNumbers
  * @var array<\Files\Model\Entity\FileLink> $documentsToDiscard
@@ -96,6 +97,17 @@ use App\Model\Enum\ProposalPurpose;
                 <?php endforeach; ?>
             </fieldset>
             <?php endif; ?>
+
+            <?php
+            // Everything answered here replaces what was answered before, so this is asked again too.
+            if ($asksAboutTheTerm) {
+                echo $this->Form->control('confirmations.fixed_term', [
+                    'type' => 'checkbox',
+                    'checked' => $contractProposal->confirmations()->confirms('fixed_term'),
+                    'label' => __('This is a fixed-term contract, and the obligation runs to the end of it.'),
+                ]);
+            }
+            ?>
 
             <?php if ($documentsToDiscard !== []) : ?>
             <fieldset>

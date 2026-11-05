@@ -305,10 +305,10 @@ final class ProposalProjection
             'note' => $line->note,
         ]);
 
-        // The service is what the document names and prices the line by. A line that changes it
-        // brings the one it chose - the contract's own snapshot has never heard of it - and a line
-        // that leaves it alone keeps what was there.
-        if ($replaced === null || $line->service_id !== $replaced->service_id) {
+        // The service is what the document names and prices the line by. A line that names one
+        // brings it - the contract's own snapshot has never heard of it - and only a line that
+        // leaves it alone keeps what was there.
+        if ($replaced === null || !$line->leavesTheServiceAlone()) {
             $chosen = $services[(string)$line->service_id] ?? null;
 
             if ($chosen === null) {
