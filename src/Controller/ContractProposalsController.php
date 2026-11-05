@@ -640,8 +640,10 @@ class ContractProposalsController extends AppController
         $replaced = $replaces === null ? null : $this->billingOnTheContract($proposal, $replaces);
 
         $form = new ProposedBillingForm();
+        $lastDay = $this->ContractProposals->lastDayOfARunningTerm($proposal);
         $written = null;
         $refused = null;
+        $pastTheTerm = null;
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
@@ -655,20 +657,17 @@ class ContractProposalsController extends AppController
             );
 
             $refused = $this->belowTheMinimum($proposal, $changes->withLine($written), $written);
+            $pastTheTerm = $this->pastTheTerm($proposal, $written, $lastDay);
 
-            if ($refused !== null) {
-                $this->Flash->error($refused);
+            if ($refused !== null || $pastTheTerm !== null) {
+                $this->Flash->error((string)($refused ?? $pastTheTerm));
             } elseif ($this->saveChanges($proposal, $changes->withLine($written))) {
                 return $this->redirect(['action' => 'view', $proposal->id]);
             }
         }
 
         // a refused line comes back as it was typed, not as it was before
-        $values = $written?->toArray() ?? $form->fill(
-            $edited,
-            $replaced,
-            $this->ContractProposals->lastDayOfARunningTerm($proposal),
-        );
+        $values = $written?->toArray() ?? $form->fill($edited, $replaced, $lastDay);
 
         $this->set('contractProposal', $proposal);
         $this->set('line', $edited);
@@ -676,12 +675,31 @@ class ContractProposalsController extends AppController
         $this->set('values', $values);
         $this->set('below_minimum_override', $this->mayGoBelowMinimum());
         $this->set('below_minimum_refused', $refused);
+        $this->set('last_day_of_the_term', $lastDay);
+        $this->set('past_the_term_refused', $pastTheTerm);
         $this->set('services', $this->servicesFor($proposal, [
             $edited?->service_id,
             $values['service_id'] ?? null,
         ]));
 
         return null;
+    }
+
+    /**
+     * Why the line just written may not stand, where it would bill past a fixed term.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
+     * @param \App\Contracts\Proposal\ProposedBilling $written The line just written.
+     * @param \Cake\I18n\Date|null $lastDay The last day of the term, where one is running.
+     * @return string|null What the operator is told, or null where the line may stand.
+     */
+    private function pastTheTerm(ContractProposal $proposal, ProposedBilling $written, ?Date $lastDay): ?string
+    {
+        if ($lastDay === null || $written->staysWithin($lastDay, $proposal->effective_from)) {
+            return null;
+        }
+
+        return __('The contract runs for a fixed term until {0}, and nothing is billed past it.', $lastDay);
     }
 
     /**

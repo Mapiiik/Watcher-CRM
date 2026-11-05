@@ -33,8 +33,6 @@ final class ProposedBillingForm
             return $line->toArray();
         }
 
-        $until = $term_ends?->toDateString();
-
         // Replacing something starts from what is there, so that the operator changes the one
         // thing they came to change rather than typing the rest in again.
         if ($replaced !== null) {
@@ -48,13 +46,27 @@ final class ProposedBillingForm
                 'fixed_discount' => $replaced->fixed_discount?->toString(),
                 'percentage_discount' => $replaced->percentage_discount,
                 'billing_from' => null,
-                'billing_until' => $until,
+                'billing_until' => $this->endOf($replaced, $term_ends)?->toDateString(),
                 'separate_invoice' => $replaced->separate_invoice,
                 'note' => $replaced->note,
             ];
         }
 
-        return ['quantity' => 1, 'billing_until' => $until, 'separate_invoice' => false];
+        return ['quantity' => 1, 'billing_until' => $term_ends?->toDateString(), 'separate_invoice' => false];
+    }
+
+    /**
+     * The day a billing's replacement runs to: the billing's own, as far as the term reaches.
+     *
+     * @param \App\Model\Entity\Billing $replaced What is being replaced.
+     * @param \Cake\I18n\Date|null $term_ends The last day of a fixed term.
+     * @return \Cake\I18n\Date|null
+     */
+    private function endOf(Billing $replaced, ?Date $term_ends): ?Date
+    {
+        $own = $replaced->billing_until;
+
+        return $own !== null && ($term_ends === null || $own->lessThan($term_ends)) ? $own : $term_ends;
     }
 
     /**

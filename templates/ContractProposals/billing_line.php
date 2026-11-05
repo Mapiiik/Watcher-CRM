@@ -8,6 +8,8 @@
  * @var \Cake\Collection\CollectionInterface<string, string>|array<string> $services
  * @var bool $below_minimum_override
  * @var string|null $below_minimum_refused Why the price was refused, where it was.
+ * @var \Cake\I18n\Date|null $last_day_of_the_term The last day of a fixed term that is running.
+ * @var string|null $past_the_term_refused Why the days were refused, where they were.
  */
 
 $changing = $replaced === null
@@ -103,9 +105,12 @@ $changing = $replaced === null
                     </div>
                 </div>
                 <?php
+                $latest = $last_day_of_the_term?->toDateString();
+
                 echo $this->Form->control('billing_from', [
                     'type' => 'date',
                     'empty' => true,
+                    'max' => $latest,
                     'value' => $values['billing_from'] ?? null,
                     'label' => __('Billing From'),
                     'help' => __('If left empty, billing starts on the day the contract'
@@ -114,9 +119,13 @@ $changing = $replaced === null
                 echo $this->Form->control('billing_until', [
                     'type' => 'date',
                     'empty' => true,
+                    'max' => $latest,
                     'value' => $values['billing_until'] ?? null,
                     'label' => __('Billing Until'),
                 ]);
+                if (!empty($past_the_term_refused)) {
+                    echo $this->Html->div('error-message', h($past_the_term_refused));
+                }
                 echo $this->Form->control('separate_invoice', [
                     'type' => 'checkbox',
                     'checked' => (bool)($values['separate_invoice'] ?? false),

@@ -2309,6 +2309,133 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * A billing with an end of its own keeps it on the form: somebody decided that. Only the term
+     * stands above it, because nothing is billed past the end of a fixed-term contract.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBillingForm::fill()
+     */
+    public function testChangingABillingOpensWithItsOwnEndUpToTheTerm(): void
+    {
+        $ends = Date::today()->addYears(1);
+        $sooner = Date::today()->addMonths(2);
+
+        $this->theBillingRunsUntil(self::KNOWN_BILLING_ID, $sooner);
+        $this->theProposalIsForATerm($ends);
+        $this->recreateThePapers();
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID);
+        $this->assertSame($sooner->toDateString(), $this->viewVariable('values')['billing_until']);
+
+        $this->theBillingRunsUntil(self::KNOWN_BILLING_ID, $ends->addMonths(3));
+        $this->recreateThePapers();
+        $this->dropEveryLine();
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID);
+        $this->assertSame($ends->toDateString(), $this->viewVariable('values')['billing_until']);
+    }
+
+    /**
+     * Without a term the billing's own end is all there is to go by, and it is not lost.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBillingForm::fill()
+     */
+    public function testChangingABillingKeepsItsEndWithoutATerm(): void
+    {
+        $until = Date::today()->addMonths(2);
+        $this->theBillingRunsUntil(self::KNOWN_BILLING_ID, $until);
+        $this->recreateThePapers();
+
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID
+            . '?replaces=' . self::KNOWN_BILLING_ID);
+
+        $this->assertSame($until->toDateString(), $this->viewVariable('values')['billing_until']);
+    }
+
+    /**
+     * Takes back whatever lines the proposal holds.
+     *
+     * @return void
+     */
+    private function dropEveryLine(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $changes = $proposal->changes;
+        unset($changes['billings']);
+        $this->theProposalIs(['changes' => $changes]);
+    }
+
+    /**
+     * What a line would bill for past the end of a fixed term, or without any end, is refused:
+     * nothing is to run after the contract does.
+     *
+     * @param string $day What the line says, in days from the last day of the term.
+     * @param string $field Which day it says it about.
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBilling::staysWithin()
+     */
+    #[DataProvider('daysPastTheTerm')]
+    public function testALineMayNotRunPastTheTerm(string $day, string $field): void
+    {
+        $ends = Date::today()->addYears(1);
+        $this->theProposalIsForATerm($ends);
+
+        $said = ['service_id' => self::OPEN_SERVICE_ID, 'quantity' => '1', 'billing_until' => $ends->toDateString()];
+        $said[$field] = $day === '' ? '' : $ends->addDays((int)$day)->toDateString();
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/billing-line/' . self::PROPOSAL_ID, $said);
+
+        $this->assertResponseOk();
+        $this->assertSame(
+            [],
+            $this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->proposedChanges()->billings,
+            'A line running past the term was saved.',
+        );
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function daysPastTheTerm(): array
+    {
+        return [
+            'ends after it' => ['1', 'billing_until'],
+            'has no end' => ['', 'billing_until'],
+            'starts after it' => ['1', 'billing_from'],
+        ];
+    }
+
+    /**
+     * A line ending with the term is what the form opens with, so it is saved.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ProposedBilling::staysWithin()
+     */
+    public function testALineEndingWithTheTermIsSaved(): void
+    {
+        $ends = Date::today()->addYears(1);
+        $this->theProposalIsForATerm($ends);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/billing-line/' . self::PROPOSAL_ID, [
+            'service_id' => self::OPEN_SERVICE_ID,
+            'quantity' => '1',
+            'billing_until' => $ends->toDateString(),
+        ]);
+
+        $this->assertRedirectContains('/contract-proposals/view/' . self::PROPOSAL_ID);
+    }
+
+    /**
      * A term that has run out says nothing about what is billed for today, and a last day before
      * the first would be refused by the records anyway.
      *

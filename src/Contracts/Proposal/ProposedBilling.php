@@ -97,6 +97,26 @@ final class ProposedBilling
     }
 
     /**
+     * Whether what the line puts in place is over by the given day.
+     *
+     * A line that only ends something puts nothing in place, and one with no end runs on past any
+     * day there is.
+     *
+     * @param \Cake\I18n\Date $last_day The day.
+     * @param \Cake\I18n\Date $effective_from The day the proposal takes effect.
+     * @return bool
+     */
+    public function staysWithin(Date $last_day, Date $effective_from): bool
+    {
+        return !$this->startsABilling()
+            || (
+                $this->billing_until !== null
+                && !$this->billing_until->greaterThan($last_day)
+                && !$this->startsOn($effective_from)->greaterThan($last_day)
+            );
+    }
+
+    /**
      * Whether the line says nothing about what is billed for, which then stays as it is.
      *
      * A text of its own does say something: that the line is no longer for a service. Asked in one
