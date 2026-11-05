@@ -751,13 +751,19 @@ class ContractProposalsController extends AppController
 
         $line = (new ProposedBillingForm())->ending((string)$billing_id);
 
-        $this->saveChanges($proposal, $changes->withLine($line));
+        if (!$this->saveChanges($proposal, $changes->withLine($line))) {
+            return $this->redirect(['action' => 'view', $proposal->id]);
+        }
 
         // Said here rather than only at the button: a billing that has not begun yet is taken off
         // the contract rather than ended, and this is the moment the operator decided it.
-        $billing = $this->ContractProposals->Contracts->Billings->get((string)$billing_id);
+        /** @var \App\Model\Entity\Billing|null $billing */
+        $billing = $this->ContractProposals->Contracts->Billings
+            ->find()
+            ->where(['Billings.id' => (string)$billing_id])
+            ->first();
 
-        if ($line->neverRunsAfterAll($proposal->effective_from, $billing->billing_from)) {
+        if ($billing !== null && $line->neverRunsAfterAll($proposal->effective_from, $billing->billing_from)) {
             $this->Flash->info(__(
                 'This billing begins on {0}, after the day the proposal takes effect, so it never'
                 . ' runs. Applying the changes will remove it from the contract rather than end'

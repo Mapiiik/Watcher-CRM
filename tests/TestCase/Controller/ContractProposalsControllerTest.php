@@ -919,6 +919,29 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * A billing taken off the contract while the proposal waits is still on its table. Ending it
+     * lands back on the proposal, where the preview goes on to say what became of it.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::endBilling()
+     */
+    public function testEndingABillingAlreadyGoneComesBackToTheProposal(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->deleteOrFail(
+            $billings->get(self::KNOWN_BILLING_ID),
+            [BillingsTable::ALLOW_CLOSED_PERIODS => true],
+        );
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contract-proposals/end-billing/' . self::PROPOSAL_ID . '/' . self::KNOWN_BILLING_ID);
+
+        $this->assertRedirectContains('/contract-proposals/view/' . self::PROPOSAL_ID);
+    }
+
+    /**
      * The form of a line has no record behind it for Cake to read the types from, so the money on
      * it is declared by hand. As plain text a decimal comma reaches the line as written, and the
      * line cannot read it as money.
