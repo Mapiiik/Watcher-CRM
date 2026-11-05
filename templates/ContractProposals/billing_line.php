@@ -75,7 +75,10 @@ $changing = $replaced === null
                             'value' => $values['quantity'] ?? 1,
                             'label' => __('Quantity'),
                         ]);
+                        // No record stands behind this form, so the types are not read off a schema.
                         echo $this->Form->control('price', [
+                            'type' => 'number',
+                            'step' => '0.01',
                             'value' => $values['price'] ?? null,
                             'label' => __('Price'),
                             'placeholder' => __('Price list'),
@@ -86,6 +89,8 @@ $changing = $replaced === null
                             echo $this->Html->div('error-message', h($below_minimum_refused));
                         }
                         echo $this->Form->control('fixed_discount', [
+                            'type' => 'number',
+                            'step' => '0.01',
                             'value' => $values['fixed_discount'] ?? null,
                             'label' => __('Fixed Discount'),
                         ]);

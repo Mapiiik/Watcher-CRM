@@ -919,6 +919,24 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * The form of a line has no record behind it for Cake to read the types from, so the money on
+     * it is declared by hand. As plain text a decimal comma reaches the line as written, and the
+     * line cannot read it as money.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::billingLine()
+     */
+    public function testTheMoneyOnALineIsAskedForAsNumbers(): void
+    {
+        $this->login();
+        $this->get(self::NESTED . '/contract-proposals/billing-line/' . self::PROPOSAL_ID);
+
+        $this->assertResponseOk();
+        $this->assertResponseRegExp('/<input[^>]*type="number"[^>]*name="price"[^>]*step="0\.01"/');
+        $this->assertResponseRegExp('/<input[^>]*type="number"[^>]*name="fixed_discount"[^>]*step="0\.01"/');
+    }
+
+    /**
      * A line below the contract's minimum is not saved, and the box means nothing coming from
      * somebody who is not offered it.
      *
