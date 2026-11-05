@@ -8,9 +8,9 @@ use Cake\Utility\Security;
 /**
  * The token a customer portal holds for a signed-in customer.
  *
- * It names the login and the customer and when it stops being valid, signed with a key derived
- * from the application's salt, so nothing has to be stored for it. The portal can ask only about
- * the customer a token names, and only until it expires.
+ * It names the login and the customer and when it was issued and stops being valid, signed with a
+ * key derived from the application's salt, so nothing has to be stored for it. The portal can ask
+ * only about the customer a token names, and only until it expires.
  */
 final class Tokens
 {
@@ -24,8 +24,14 @@ final class Tokens
      */
     public static function issue(string $loginId, string $customerId, int $hours): array
     {
-        $expires = time() + max(1, $hours) * 3600;
-        $payload = self::encode((string)json_encode(['l' => $loginId, 'c' => $customerId, 'e' => $expires]));
+        $issued = time();
+        $expires = $issued + max(1, $hours) * 3600;
+        $payload = self::encode((string)json_encode([
+            'l' => $loginId,
+            'c' => $customerId,
+            'e' => $expires,
+            'i' => $issued,
+        ]));
 
         return ['token' => $payload . '.' . self::encode(self::sign($payload)), 'expires' => $expires];
     }
@@ -34,7 +40,7 @@ final class Tokens
      * Reads a token, or null when it is not one this application signed or it has expired.
      *
      * @param string $token The token.
-     * @return array{login_id: string, customer_id: string, expires: int}|null
+     * @return array{login_id: string, customer_id: string, expires: int, issued: int}|null
      */
     public static function read(string $token): ?array
     {
@@ -47,7 +53,12 @@ final class Tokens
             return null;
         }
 
-        return ['login_id' => (string)$data['l'], 'customer_id' => (string)$data['c'], 'expires' => (int)$data['e']];
+        return [
+            'login_id' => (string)$data['l'],
+            'customer_id' => (string)$data['c'],
+            'expires' => (int)$data['e'],
+            'issued' => (int)($data['i'] ?? 0),
+        ];
     }
 
     /**

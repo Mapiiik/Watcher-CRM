@@ -211,6 +211,31 @@ class LoginsControllerTest extends TestCase
     }
 
     /**
+     * A password changed here ends what the customer portal holds for the login, and nothing else
+     * on the form does.
+     *
+     * @return void
+     * @link \App\Controller\LoginsController::edit()
+     */
+    public function testANewPasswordEndsTheSessionsOfTheLogin(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $loginId = $this->firstId('Logins');
+        $logins = $this->getTableLocator()->get('Logins');
+
+        $this->post('/logins/edit/' . $loginId, ['login' => 'renamed-login', 'new_password' => '']);
+        $this->assertRedirect();
+        $this->assertNull($logins->get($loginId)->get('sessions_valid_from'), 'Nothing about the password changed.');
+
+        $this->post('/logins/edit/' . $loginId, ['login' => 'renamed-login', 'new_password' => 'a new one']);
+        $this->assertRedirect();
+        $this->assertNotNull($logins->get($loginId)->get('sessions_valid_from'));
+    }
+
+    /**
      * A change made on the form reaches the record.
      *
      * @return void

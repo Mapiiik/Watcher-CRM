@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Utility\Strings;
 use Cake\Http\Response;
+use Cake\I18n\DateTime;
 
 /**
  * Logins Controller
@@ -133,6 +134,8 @@ class LoginsController extends AppController
             // change password if is set new
             if ((string)$this->getRequest()->getData('new_password', '') !== '') {
                 $login->password = $this->getRequest()->getData('new_password');
+                // whoever was signed in with the old one is signed out, wherever they are
+                $login->sessions_valid_from = DateTime::now();
             }
 
             $login = $this->Logins->patchEntity($login, $this->getRequest()->getData());

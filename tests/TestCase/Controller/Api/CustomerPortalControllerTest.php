@@ -13,6 +13,7 @@ use Cake\Cache\Cache;
 use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -114,10 +115,10 @@ class CustomerPortalControllerTest extends TestCase
         $this->assertSame(self::LOGIN_ID, $answer['login']['id']);
         $this->assertSame(LoginRights::User->value, $answer['login']['rights']);
         $this->assertSame(8, $answer['password_min_length']);
-        $this->assertSame(
-            ['login_id' => self::LOGIN_ID, 'customer_id' => self::CUSTOMER_ID, 'expires' => $answer['expires']],
-            Tokens::read($answer['token']),
-        );
+        $token = Tokens::read($answer['token']);
+        $this->assertSame(self::LOGIN_ID, $token['login_id'] ?? null);
+        $this->assertSame(self::CUSTOMER_ID, $token['customer_id'] ?? null);
+        $this->assertSame($answer['expires'], $token['expires'] ?? null);
         $this->assertSame('192.0.2.10', $this->storedLogin()->get('last_granted_ip'));
     }
 
@@ -235,6 +236,34 @@ class CustomerPortalControllerTest extends TestCase
         $this->asPortal($token);
         $this->get('/api/customer-portal/customer');
         $this->assertResponseCode(401);
+    }
+
+    /**
+     * Sessions ended on the login end every token issued before that, and none issued after.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::signedIn()
+     */
+    public function testSessionsEndedOnTheLoginEndTheTokensIssuedBefore(): void
+    {
+        $token = $this->signIn(self::PASSWORD)['token'];
+        $logins = $this->getTableLocator()->get('Logins');
+
+        $logins->updateAll(
+            ['sessions_valid_from' => DateTime::createFromTimestamp(time() + 60)],
+            ['id' => self::LOGIN_ID],
+        );
+        $this->asPortal($token);
+        $this->get('/api/customer-portal/customer');
+        $this->assertResponseCode(401);
+
+        $logins->updateAll(
+            ['sessions_valid_from' => DateTime::createFromTimestamp(time() - 60)],
+            ['id' => self::LOGIN_ID],
+        );
+        $this->asPortal($token);
+        $this->get('/api/customer-portal/customer');
+        $this->assertResponseOk();
     }
 
     /**

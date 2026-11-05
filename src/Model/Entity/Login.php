@@ -19,6 +19,7 @@ use App\CustomerPortal\Passwords;
  * @property string|null $last_granted_ip
  * @property \Cake\I18n\DateTime|null $last_denied
  * @property string|null $last_denied_ip
+ * @property \Cake\I18n\DateTime|null $sessions_valid_from
  *
  * @property \App\Model\Entity\Customer $customer
  */
@@ -58,6 +59,17 @@ class Login extends AppEntity
     protected array $_hidden = [
         'password',
     ];
+
+    /**
+     * Whether a token issued at the given moment still counts.
+     *
+     * @param int $issued When it was issued, as a timestamp.
+     * @return bool
+     */
+    public function sessionsAllow(int $issued): bool
+    {
+        return $this->sessions_valid_from === null || $issued >= $this->sessions_valid_from->getTimestamp();
+    }
 
     /**
      * Stores the password hashed for the customer portal, see Passwords

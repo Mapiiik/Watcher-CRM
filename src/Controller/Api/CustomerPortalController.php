@@ -494,7 +494,7 @@ class CustomerPortalController extends AppController
         $login = $token === null ? null : $this->fetchTable('Logins')->find()
             ->where(['Logins.id' => $token['login_id'], 'Logins.customer_id' => $token['customer_id']])
             ->first();
-        if (!$login instanceof Login || $login->locked) {
+        if (!$login instanceof Login || $login->locked || !$login->sessionsAllow((int)$token['issued'])) {
             throw new UnauthorizedException('The customer token is missing, expired or no longer valid.');
         }
 

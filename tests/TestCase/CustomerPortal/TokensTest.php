@@ -33,7 +33,12 @@ class TokensTest extends TestCase
 
         $this->assertEqualsWithDelta(time() + 8 * 3600, $issued['expires'], 5);
         $this->assertSame(
-            ['login_id' => self::LOGIN_ID, 'customer_id' => self::CUSTOMER_ID, 'expires' => $issued['expires']],
+            [
+                'login_id' => self::LOGIN_ID,
+                'customer_id' => self::CUSTOMER_ID,
+                'expires' => $issued['expires'],
+                'issued' => $issued['expires'] - 8 * 3600,
+            ],
             Tokens::read($issued['token']),
         );
     }
