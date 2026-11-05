@@ -13,6 +13,7 @@ use App\Model\Table\CustomerMessagesTable;
 use App\Service\ErrorReport;
 use Bookkeeping\Debtors\Debtor;
 use Bookkeeping\Debtors\DebtorsProcessor;
+use Bookkeeping\Debtors\InvoicePdfUnavailableException;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -21,6 +22,7 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\I18n\Date;
 use Cake\I18n\Number;
 use Cake\Log\Log;
+use Closure;
 use Override;
 use Settings\Utility\Settings;
 use Throwable;
@@ -55,11 +57,11 @@ class ProcessDebtorsCommand extends Command
     private BookkeepingService $bookkeeping;
 
     /**
-     * The invoices that went out in a message without their PDF, to be reported once at the end.
+     * Who got no message and why, to be reported once at the end.
      *
      * @var list<string>
      */
-    private array $invoicesWithoutPdf = [];
+    private array $passedOver = [];
 
     /**
      * The name of this command.
@@ -205,120 +207,15 @@ class ProcessDebtorsCommand extends Command
 
             /** @var \Bookkeeping\Debtors\Debtor $debtor */
             foreach ($debtorsToNotify as $debtor) {
-                $emails_available = (count($debtor->getCustomer()->billing_emails) > 0);
-                $phones_available = (count($debtor->getCustomer()->billing_phones) > 0);
-
-                // notify emails
-                if (
-                    $emails_available
-                    && !$args->getOption('skip_emails')
-                    && static::isDebtorNotificationEnabled('notify', 'email')
-                ) {
-                    $customerMessage = $this->generateNotifyEmail($debtor);
-                    $io->info(__d(
-                        'bookkeeping',
-                        'Notification email has been generated'
-                            . ' for customer {customer_number}, recipients: {recipients}',
-                        [
-                            'customer_number' => $debtor->getCustomer()->number,
-                            'recipients' => implode(', ', $customerMessage->recipients),
-                        ],
-                    ));
-                    unset($customerMessage);
-                }
-
-                // notify SMS
-                if (
-                    !$emails_available
-                    && $phones_available
-                    && !$args->getOption('skip_sms')
-                    && static::isDebtorNotificationEnabled('notify', 'sms')
-                ) {
-                    $customerMessage = $this->generateNotifySms($debtor);
-                    $io->info(__d(
-                        'bookkeeping',
-                        'Notification SMS has been generated'
-                            . ' for customer {customer_number}, recipients: {recipients}',
-                        [
-                            'customer_number' => $debtor->getCustomer()->number,
-                            'recipients' => implode(', ', $customerMessage->recipients),
-                        ],
-                    ));
-                    unset($customerMessage);
-                }
+                $this->writingTo($debtor, $this->remind(...), $args, $io);
             }
 
             /** @var \Bookkeeping\Debtors\Debtor $debtor */
             foreach ($debtorsToBlock as $debtor) {
-                $emails_available = (count($debtor->getCustomer()->emails) > 0);
-                $phones_available = (count($debtor->getCustomer()->phones) > 0);
-                $messageType = $debtor->getCustomer()->active_services ? 'block' : 'inactive';
-
-                // block emails
-                if (
-                    $emails_available
-                    && !$args->getOption('skip_emails')
-                    && static::isDebtorNotificationEnabled($messageType, 'email')
-                ) {
-                    if ($messageType === 'block') {
-                        $customerMessage = $this->generateBlockEmail($debtor);
-                        $io->info(__d(
-                            'bookkeeping',
-                            'Blocking email has been generated'
-                                . ' for customer {customer_number}, recipients: {recipients}',
-                            [
-                                'customer_number' => $debtor->getCustomer()->number,
-                                'recipients' => implode(', ', $customerMessage->recipients),
-                            ],
-                        ));
-                    } else {
-                        $customerMessage = $this->generateNotifyEmailForInactiveServices($debtor);
-                        $io->info(__d(
-                            'bookkeeping',
-                            'Notification email has been generated for inactive services'
-                                . ' for customer {customer_number}, recipients: {recipients}',
-                            [
-                                'customer_number' => $debtor->getCustomer()->number,
-                                'recipients' => implode(', ', $customerMessage->recipients),
-                            ],
-                        ));
-                    }
-                    unset($customerMessage);
-                }
-
-                // block SMS
-                if (
-                    $phones_available
-                    && !$args->getOption('skip_sms')
-                    && static::isDebtorNotificationEnabled($messageType, 'sms')
-                ) {
-                    if ($messageType === 'block') {
-                        $customerMessage = $this->generateBlockSms($debtor);
-                        $io->info(__d(
-                            'bookkeeping',
-                            'Blocking SMS has been generated'
-                                . ' for customer {customer_number}, recipients: {recipients}',
-                            [
-                                'customer_number' => $debtor->getCustomer()->number,
-                                'recipients' => implode(', ', $customerMessage->recipients),
-                            ],
-                        ));
-                    } else {
-                        $customerMessage = $this->generateNotifySmsForInactiveServices($debtor);
-                        $io->info(__d(
-                            'bookkeeping',
-                            'Notification SMS has been generated for inactive services'
-                                . ' for customer {customer_number}, recipients: {recipients}',
-                            [
-                                'customer_number' => $debtor->getCustomer()->number,
-                                'recipients' => implode(', ', $customerMessage->recipients),
-                            ],
-                        ));
-                    }
-                    unset($customerMessage);
-                }
+                $this->writingTo($debtor, $this->tellTheBlocked(...), $args, $io);
             }
-            $this->reportInvoicesWithoutPdf($io);
+
+            $this->reportWhoWasPassedOver($io);
 
             $io->info(__d('bookkeeping', 'Done'));
 
@@ -347,25 +244,188 @@ class ProcessDebtorsCommand extends Command
     }
 
     /**
-     * Says once which invoices went out without their PDF, however many messages named them.
+     * Reminds a debtor by the channel they can be reached on.
+     *
+     * @param \Bookkeeping\Debtors\Debtor $debtor Who is being written to.
+     * @param \Cake\Console\Arguments $args The command arguments.
+     * @param \Cake\Console\ConsoleIo $io The console io
+     * @return void
+     */
+    private function remind(Debtor $debtor, Arguments $args, ConsoleIo $io): void
+    {
+        $emails_available = (count($debtor->getCustomer()->billing_emails) > 0);
+        $phones_available = (count($debtor->getCustomer()->billing_phones) > 0);
+
+        // notify emails
+        if (
+            $emails_available
+            && !$args->getOption('skip_emails')
+            && static::isDebtorNotificationEnabled('notify', 'email')
+        ) {
+            $customerMessage = $this->generateNotifyEmail($debtor);
+            $io->info(__d(
+                'bookkeeping',
+                'Notification email has been generated'
+                    . ' for customer {customer_number}, recipients: {recipients}',
+                [
+                    'customer_number' => $debtor->getCustomer()->number,
+                    'recipients' => implode(', ', $customerMessage->recipients),
+                ],
+            ));
+            unset($customerMessage);
+        }
+
+        // notify SMS
+        if (
+            !$emails_available
+            && $phones_available
+            && !$args->getOption('skip_sms')
+            && static::isDebtorNotificationEnabled('notify', 'sms')
+        ) {
+            $customerMessage = $this->generateNotifySms($debtor);
+            $io->info(__d(
+                'bookkeeping',
+                'Notification SMS has been generated'
+                    . ' for customer {customer_number}, recipients: {recipients}',
+                [
+                    'customer_number' => $debtor->getCustomer()->number,
+                    'recipients' => implode(', ', $customerMessage->recipients),
+                ],
+            ));
+            unset($customerMessage);
+        }
+    }
+
+    /**
+     * Tells a debtor they have been blocked, or that their services are gone and the debt is not.
+     *
+     * @param \Bookkeeping\Debtors\Debtor $debtor Who is being written to.
+     * @param \Cake\Console\Arguments $args The command arguments.
+     * @param \Cake\Console\ConsoleIo $io The console io
+     * @return void
+     */
+    private function tellTheBlocked(Debtor $debtor, Arguments $args, ConsoleIo $io): void
+    {
+        $emails_available = (count($debtor->getCustomer()->emails) > 0);
+        $phones_available = (count($debtor->getCustomer()->phones) > 0);
+        $messageType = $debtor->getCustomer()->active_services ? 'block' : 'inactive';
+
+        // block emails
+        if (
+            $emails_available
+            && !$args->getOption('skip_emails')
+            && static::isDebtorNotificationEnabled($messageType, 'email')
+        ) {
+            if ($messageType === 'block') {
+                $customerMessage = $this->generateBlockEmail($debtor);
+                $io->info(__d(
+                    'bookkeeping',
+                    'Blocking email has been generated'
+                        . ' for customer {customer_number}, recipients: {recipients}',
+                    [
+                        'customer_number' => $debtor->getCustomer()->number,
+                        'recipients' => implode(', ', $customerMessage->recipients),
+                    ],
+                ));
+            } else {
+                $customerMessage = $this->generateNotifyEmailForInactiveServices($debtor);
+                $io->info(__d(
+                    'bookkeeping',
+                    'Notification email has been generated for inactive services'
+                        . ' for customer {customer_number}, recipients: {recipients}',
+                    [
+                        'customer_number' => $debtor->getCustomer()->number,
+                        'recipients' => implode(', ', $customerMessage->recipients),
+                    ],
+                ));
+            }
+            unset($customerMessage);
+        }
+
+        // block SMS
+        if (
+            $phones_available
+            && !$args->getOption('skip_sms')
+            && static::isDebtorNotificationEnabled($messageType, 'sms')
+        ) {
+            if ($messageType === 'block') {
+                $customerMessage = $this->generateBlockSms($debtor);
+                $io->info(__d(
+                    'bookkeeping',
+                    'Blocking SMS has been generated'
+                        . ' for customer {customer_number}, recipients: {recipients}',
+                    [
+                        'customer_number' => $debtor->getCustomer()->number,
+                        'recipients' => implode(', ', $customerMessage->recipients),
+                    ],
+                ));
+            } else {
+                $customerMessage = $this->generateNotifySmsForInactiveServices($debtor);
+                $io->info(__d(
+                    'bookkeeping',
+                    'Notification SMS has been generated for inactive services'
+                        . ' for customer {customer_number}, recipients: {recipients}',
+                    [
+                        'customer_number' => $debtor->getCustomer()->number,
+                        'recipients' => implode(', ', $customerMessage->recipients),
+                    ],
+                ));
+            }
+            unset($customerMessage);
+        }
+    }
+
+    /**
+     * Writes to a debtor, or passes over them where the PDF of an invoice cannot be had.
+     *
+     * A message goes out with its invoices, so without one of them it does not go out at all. The
+     * rest of the run is not held up for it: the blocking has happened by now, and everybody after
+     * this customer would be cut off without a word.
+     *
+     * @param \Bookkeeping\Debtors\Debtor $debtor Who is being written to.
+     * @param \Closure $write What writes to them.
+     * @param \Cake\Console\Arguments $args The command arguments.
+     * @param \Cake\Console\ConsoleIo $io The console io
+     * @return void
+     */
+    private function writingTo(Debtor $debtor, Closure $write, Arguments $args, ConsoleIo $io): void
+    {
+        try {
+            $write($debtor, $args, $io);
+        } catch (InvoicePdfUnavailableException $e) {
+            $said = __d(
+                'bookkeeping',
+                'Customer {0}, invoice {1}: {2}',
+                $debtor->getCustomer()->number,
+                $e->invoice->number,
+                $e->getMessage(),
+            );
+
+            Log::error($said);
+            $io->error($said);
+
+            $this->passedOver[] = $said;
+        }
+    }
+
+    /**
+     * Says once who got no message, which invoice it was over and what the accounting system said.
      *
      * @param \Cake\Console\ConsoleIo $io The console io
      * @return void
      */
-    private function reportInvoicesWithoutPdf(ConsoleIo $io): void
+    private function reportWhoWasPassedOver(ConsoleIo $io): void
     {
-        if ($this->invoicesWithoutPdf === []) {
+        if ($this->passedOver === []) {
             return;
         }
 
-        $said = __d(
-            'bookkeeping',
-            'These invoices went out in debtor messages without their PDF: {0}',
-            implode(', ', array_unique($this->invoicesWithoutPdf)),
+        ErrorReport::send(
+            __d('bookkeeping', 'Debtors left without a message'),
+            __d('bookkeeping', 'These customers got no message, because the PDF of an invoice could not be had:')
+                . PHP_EOL . PHP_EOL
+                . implode(PHP_EOL, array_unique($this->passedOver)),
         );
-
-        $io->warning($said);
-        ErrorReport::send(__d('bookkeeping', 'Debtor messages without an invoice PDF'), $said);
     }
 
     /**
@@ -473,12 +533,7 @@ class ProcessDebtorsCommand extends Command
             try {
                 $filePath = $this->bookkeeping->getInvoicePdfPath($invoice);
             } catch (Throwable $e) {
-                // The message still names the invoice, and everybody after this customer is owed
-                // theirs: the blocking has happened by now.
-                Log::error(sprintf('Invoice %s has no PDF to attach: %s', $invoice->number, $e->getMessage()));
-                $this->invoicesWithoutPdf[] = $invoice->number;
-
-                continue;
+                throw new InvoicePdfUnavailableException($invoice, $e);
             }
 
             $attachments[basename($filePath)] = [

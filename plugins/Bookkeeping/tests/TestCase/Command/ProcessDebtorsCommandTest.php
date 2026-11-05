@@ -8,8 +8,13 @@ use Bookkeeping\Command\ProcessDebtorsCommand;
 use Bookkeeping\Debtors\Debtor;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Service\BookkeepingService;
+use Cake\Console\Arguments;
+use Cake\Console\ConsoleIo;
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
+use Cake\Console\TestSuite\StubConsoleOutput;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\TestCase;
 use PhpCollective\DecimalObject\Decimal;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -29,6 +34,7 @@ use RuntimeException;
 class ProcessDebtorsCommandTest extends TestCase
 {
     use ConsoleIntegrationTestTrait;
+    use EmailTrait;
 
     /**
      * The name a cron entry calls the command by.
@@ -58,41 +64,85 @@ class ProcessDebtorsCommandTest extends TestCase
     }
 
     /**
-     * An invoice whose PDF cannot be had costs its own message that one attachment and nothing
-     * more. Thrown any further it would end the run, and the blocking has already happened by then:
-     * everybody after this customer would be cut off without a word, the same way every night.
+     * A debtor with one invoice of a given number.
+     *
+     * @param int $nid What the customer's number is worked out from.
+     * @param string $invoice The number of the invoice.
+     * @return \Bookkeeping\Debtors\Debtor
+     */
+    private function debtor(int $nid, string $invoice): Debtor
+    {
+        return new Debtor([new Invoice([
+            'number' => $invoice,
+            'customer' => new Customer(['nid' => $nid]),
+            'due_date' => new Date('2026-10-01'),
+            'debt' => Decimal::create('100'),
+        ])]);
+    }
+
+    /**
+     * A message goes out with its invoices, so a customer whose PDF cannot be had gets none at all,
+     * and whoever is on call is told who it was, which invoice it was and what the accounting
+     * system said. Nobody after them is held up: the blocking has happened by then, and they would
+     * be cut off without a word.
      *
      * @return void
-     * @link \Bookkeeping\Command\ProcessDebtorsCommand::getAttachments()
+     * @link \Bookkeeping\Command\ProcessDebtorsCommand::writingTo()
      */
-    public function testAnInvoiceWithoutItsPdfDoesNotStopTheOthers(): void
+    public function testACustomerWhoseInvoiceHasNoPdfIsPassedOverAndReported(): void
     {
-        $customer = new Customer(['number' => '2024001']);
-        $due = new Date('2026-10-01');
-        $owed = Decimal::create('100');
-        $debtor = new Debtor([
-            new Invoice(['number' => '1', 'customer' => $customer, 'due_date' => $due, 'debt' => $owed]),
-            new Invoice(['number' => '2', 'customer' => $customer, 'due_date' => $due, 'debt' => $owed]),
-        ]);
+        Configure::write('Report.errorEmails', ['operator@example.com']);
 
         $bookkeeping = $this->createStub(BookkeepingService::class);
-        $bookkeeping->method('getInvoicePdfPath')->willReturnCallback(
-            fn(Invoice $invoice): string => $invoice->number === '1'
-                ? throw new RuntimeException('Not there.')
-                : '/invoices/Faktura_2.pdf',
+        $bookkeeping->method('getInvoicePdfPath')->willThrowException(
+            new RuntimeException('Eurofaktura API error: Error nr: 7 #documentNotFound'),
         );
 
         $command = new ProcessDebtorsCommand();
         (new ReflectionProperty(ProcessDebtorsCommand::class, 'bookkeeping'))->setValue($command, $bookkeeping);
 
-        $attachments = (new ReflectionMethod(ProcessDebtorsCommand::class, 'getAttachments'))
-            ->invoke($command, $debtor);
+        $attachments = new ReflectionMethod(ProcessDebtorsCommand::class, 'getAttachments');
+        $writingTo = new ReflectionMethod(ProcessDebtorsCommand::class, 'writingTo');
+        $io = new ConsoleIo(new StubConsoleOutput(), new StubConsoleOutput());
+        $args = new Arguments([], [], []);
 
-        $this->assertSame(['Faktura_2.pdf'], array_keys($attachments));
-        $this->assertSame(
-            ['1'],
-            (new ReflectionProperty(ProcessDebtorsCommand::class, 'invoicesWithoutPdf'))->getValue($command),
+        $missing = $this->debtor(7001, 'FA-1');
+        $reached = false;
+
+        $writingTo->invoke($command, $missing, fn(): mixed => $attachments->invoke($command, $missing), $args, $io);
+        $writingTo->invoke($command, $this->debtor(7002, 'FA-2'), function () use (&$reached): void {
+            $reached = true;
+        }, $args, $io);
+
+        (new ReflectionMethod(ProcessDebtorsCommand::class, 'reportWhoWasPassedOver'))->invoke($command, $io);
+
+        Configure::delete('Report.errorEmails');
+
+        $this->assertTrue($reached, 'The customer after them was held up.');
+        $this->assertMailSentTo('operator@example.com');
+        $this->assertMailContains($missing->getCustomer()->number);
+        $this->assertMailContains('FA-1');
+        $this->assertMailContains('Eurofaktura API error: Error nr: 7 #documentNotFound');
+    }
+
+    /**
+     * Nobody passed over, nothing to report.
+     *
+     * @return void
+     * @link \Bookkeeping\Command\ProcessDebtorsCommand::reportWhoWasPassedOver()
+     */
+    public function testNobodyPassedOverReportsNothing(): void
+    {
+        Configure::write('Report.errorEmails', ['operator@example.com']);
+
+        (new ReflectionMethod(ProcessDebtorsCommand::class, 'reportWhoWasPassedOver'))->invoke(
+            new ProcessDebtorsCommand(),
+            new ConsoleIo(new StubConsoleOutput(), new StubConsoleOutput()),
         );
+
+        Configure::delete('Report.errorEmails');
+
+        $this->assertNoMailSent();
     }
 
     /**
