@@ -195,6 +195,44 @@ class ChangeApplicationTest extends TestCase
     }
 
     /**
+     * Two windows open on one proposal both read it as open. The second to press the button is told
+     * it is settled and writes nothing, or the billing is replaced twice over.
+     *
+     * @return void
+     * @link \App\Contracts\Proposal\ChangeApplication::apply()
+     */
+    public function testASecondWindowDoesNotApplyTheProposalAgain(): void
+    {
+        $proposal = $this->proposal([
+            'conclusion_date' => '2026-09-15',
+            'effective_from' => $this->nextMonth()->toDateString(),
+            'changes' => ['billings' => [[
+                'billing_id' => self::OPEN_BILLING_ID,
+                'terminates_only' => false,
+                'service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953',
+                'quantity' => 1,
+                'price' => '299.00',
+            ]]],
+        ]);
+        $secondWindow = $this->getTableLocator()->get('ContractProposals')
+            ->get(self::PROPOSAL_ID, contain: ['CustomerProposals']);
+
+        (new ChangeApplication())->apply($proposal);
+        $billings = $this->billingCount();
+
+        $refused = null;
+
+        try {
+            (new ChangeApplication())->apply($secondWindow);
+        } catch (RuntimeException $failure) {
+            $refused = $failure->getMessage();
+        }
+
+        $this->assertSame('This proposal has already been settled.', $refused);
+        $this->assertSame($billings, $this->billingCount());
+    }
+
+    /**
      * A replaced billing stops the day before its replacement starts - the two halves the preview
      * showed, written as one act.
      *

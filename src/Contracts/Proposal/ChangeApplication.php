@@ -108,6 +108,19 @@ final class ChangeApplication
                 $trail,
                 $handed_over_on,
             ): void {
+                // Asked again under a lock: two windows can both have got past the question above,
+                // and the second to arrive here waits until the first is written.
+                /** @var \App\Model\Entity\ContractProposal $current */
+                $current = $proposals->find()
+                    ->select(['applied'])
+                    ->where(['ContractProposals.id' => $proposal->id])
+                    ->epilog('FOR UPDATE')
+                    ->firstOrFail();
+
+                if ($current->hasBeenApplied()) {
+                    throw new RuntimeException('This proposal has already been settled.');
+                }
+
                 $options = [
                     BillingsTable::ALLOW_CLOSED_PERIODS => $reach_into_closed_periods,
                 ] + $trail->options();
