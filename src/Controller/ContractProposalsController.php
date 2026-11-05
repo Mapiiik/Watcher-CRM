@@ -7,8 +7,8 @@ use App\Contracts\MinimumConnectionPrice;
 use App\Contracts\Proposal\ProposalChanges;
 use App\Contracts\Proposal\ProposalForm;
 use App\Contracts\Proposal\ProposalReading;
-use App\Contracts\Proposal\ProposalSnapshot;
 use App\Contracts\Proposal\ProposalSnapshotBuilder;
+use App\Contracts\Proposal\ProposalTerm;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedBillingForm;
 use App\Contracts\Proposal\ProposedEquipment;
@@ -165,7 +165,7 @@ class ContractProposalsController extends AppController
             // as taking one has anything to end. A form asking to be drawn again never takes one,
             // and one that stopped on a question the operator has to answer never got there.
             if (!$this->isARedraw() && !$proposal->hasErrors()) {
-                $this->endWhatTheContractIsBilledFor($proposal);
+                (new ProposalTerm())->endWhatIsBilledFor($proposal);
             }
 
             // Changing the contract redraws the form so that its versions and services are the
@@ -182,93 +182,6 @@ class ContractProposalsController extends AppController
         $this->setFormViewVars($proposal);
 
         return null;
-    }
-
-    /**
-     * Stops everything the contract is billed for, where the papers say when it has to stop.
-     *
-     * An ending means nothing goes on being charged for, and a fixed term means nothing goes on
-     * past it, so the lines that say so are put there rather than clicked one at a time. They are
-     * the proposal's own lines, no different from any other, so anything that is to run on can be
-     * taken back off the proposal's table.
-     *
-     * A version ending while the contract runs on gets none of this: what is billed for hangs off
-     * the contract, which carries on, and the version that follows says what becomes of it.
-     *
-     * What is still billed for is read off the snapshot, so this is asked only of a proposal that
-     * has one - which a half-filled form being drawn again has not.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal The proposal being drawn up.
-     * @param \App\Contracts\Proposal\ProposalSnapshot|null $before The snapshot this one replaces.
-     *   What already ran on in it had its line then, so a line missing now was taken back.
-     * @return void
-     */
-    private function endWhatTheContractIsBilledFor(ContractProposal $proposal, ?ProposalSnapshot $before = null): void
-    {
-        $lastDay = $this->lastDayBilledFor($proposal);
-
-        if ($lastDay === null) {
-            return;
-        }
-
-        // An ending stops on the day the proposal takes effect, a fixed term on a day of its own.
-        $stopsOn = $proposal->purpose->ends() ? null : $lastDay->addDays(1);
-        $asked = $proposal->proposedChanges();
-        $changes = $asked;
-        $spokenFor = $asked->billingsByBillingId();
-        $known = $before?->billings() ?? [];
-        $lines = new ProposedBillingForm();
-
-        foreach ($proposal->stateOfThings()->billings() as $billing_id => $billing) {
-            $id = (string)$billing_id;
-
-            if (
-                !isset($spokenFor[$id])
-                && $this->runsPast($billing, $lastDay)
-                && !(isset($known[$id]) && $this->runsPast($known[$id], $lastDay))
-            ) {
-                $changes = $changes->withLine($lines->ending($id, $stopsOn));
-            }
-        }
-
-        if ($changes !== $asked) {
-            $proposal->set('changes', $changes->toArray());
-        }
-    }
-
-    /**
-     * The last day the papers leave anything to be billed for, where they say one.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal The proposal.
-     * @return \Cake\I18n\Date|null
-     */
-    private function lastDayBilledFor(ContractProposal $proposal): ?Date
-    {
-        if ($proposal->purpose->ends()) {
-            return $proposal->endsTheContract() ? $proposal->dayBeforeItTakesEffect() : null;
-        }
-
-        return $proposal->purpose->mayChangeTheTerm()
-            ? $this->ContractProposals->lastDayOfARunningTerm($proposal)
-            : null;
-    }
-
-    /**
-     * Whether a billing the snapshot took down is still billed for after the given day.
-     *
-     * A billing that stops by then is left alone. Stopped years ago it has nothing left to end, and
-     * stopping sooner than a fixed term is somebody's decision: a tariff followed by another looks
-     * the same.
-     *
-     * @param array<string, mixed> $billing The billing as the snapshot holds it.
-     * @param \Cake\I18n\Date $day The day.
-     * @return bool
-     */
-    private function runsPast(array $billing, Date $day): bool
-    {
-        $stops = $billing['billing_until'] ?? null;
-
-        return $stops === null || new Date((string)$stops) > $day;
     }
 
     /**
@@ -346,9 +259,20 @@ class ContractProposalsController extends AppController
                 ]);
             }
 
-            $takenBack = $this->dropLinesWhoseBillingIsGone($proposal);
-            $returnsTakenBack = $this->dropReturnsOfWhatIsGone($proposal);
-            $this->endWhatTheContractIsBilledFor($proposal, $before);
+            // Something moving underneath the proposal is why anybody asks for a fresh snapshot, so
+            // a line left pointing at what is gone would only have the saving refused.
+            $asked = $proposal->proposedChanges();
+            $snapshot = $proposal->stateOfThings();
+            $billingsKept = $asked->withoutBillingsGoneFrom($snapshot);
+            $kept = $billingsKept->withoutReturnsGoneFrom($snapshot);
+            $takenBack = count($asked->billings) - count($billingsKept->billings);
+            $returnsTakenBack = count($billingsKept->equipments) - count($kept->equipments);
+
+            if ($kept !== $asked) {
+                $proposal->set('changes', $kept->toArray());
+            }
+
+            (new ProposalTerm())->endWhatIsBilledFor($proposal, $before);
 
             if ($this->saveProposal($proposal)) {
                 $this->sayWhatWasTakenBack($takenBack);
@@ -576,38 +500,6 @@ class ContractProposalsController extends AppController
         ])));
 
         return array_combine($numbers, $numbers);
-    }
-
-    /**
-     * Takes back the lines that ask about a billing the new snapshot no longer knows.
-     *
-     * Something moving underneath the proposal is why anybody asks for a fresh snapshot in the
-     * first place, so a line left pointing at a billing that is gone would only have the saving
-     * refused over a table this form does not even show.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal The proposal and its new snapshot.
-     * @return int How many lines were taken back.
-     */
-    private function dropLinesWhoseBillingIsGone(ContractProposal $proposal): int
-    {
-        $snapshot = $proposal->stateOfThings();
-        $changes = $proposal->proposedChanges();
-        $takenBack = 0;
-
-        foreach ($changes->billings as $line) {
-            if ($line->billing_id === null || $snapshot->knowsBilling($line->billing_id)) {
-                continue;
-            }
-
-            $changes = $changes->withoutLine($line->id);
-            $takenBack++;
-        }
-
-        if ($takenBack > 0) {
-            $proposal->set('changes', $changes->toArray());
-        }
-
-        return $takenBack;
     }
 
     /**
@@ -1001,34 +893,6 @@ class ContractProposalsController extends AppController
     private function filledIn(mixed $value): ?string
     {
         return is_string($value) && trim($value) !== '' ? trim($value) : null;
-    }
-
-    /**
-     * Takes back the returns of equipment the new snapshot no longer knows.
-     *
-     * @param \App\Model\Entity\ContractProposal $proposal The proposal and its new snapshot.
-     * @return int How many lines were taken back.
-     */
-    private function dropReturnsOfWhatIsGone(ContractProposal $proposal): int
-    {
-        $snapshot = $proposal->stateOfThings();
-        $changes = $proposal->proposedChanges();
-        $takenBack = 0;
-
-        foreach ($changes->equipmentTakenBack() as $borrowed_equipment_id => $line) {
-            if ($snapshot->knowsBorrowedEquipment((string)$borrowed_equipment_id)) {
-                continue;
-            }
-
-            $changes = $changes->withoutEquipmentLine($line->id);
-            $takenBack++;
-        }
-
-        if ($takenBack > 0) {
-            $proposal->set('changes', $changes->toArray());
-        }
-
-        return $takenBack;
     }
 
     /**

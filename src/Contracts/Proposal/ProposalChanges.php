@@ -318,6 +318,44 @@ final class ProposalChanges
     }
 
     /**
+     * The changes without the lines acting on a billing the snapshot no longer knows.
+     *
+     * @param \App\Contracts\Proposal\ProposalSnapshot $snapshot What the contract holds now.
+     * @return self The same changes where nothing is gone.
+     */
+    public function withoutBillingsGoneFrom(ProposalSnapshot $snapshot): self
+    {
+        $kept = $this;
+
+        foreach ($this->billings as $line) {
+            if ($line->billing_id !== null && !$snapshot->knowsBilling($line->billing_id)) {
+                $kept = $kept->withoutLine($line->id);
+            }
+        }
+
+        return $kept;
+    }
+
+    /**
+     * The changes without the returns of equipment the snapshot no longer knows.
+     *
+     * @param \App\Contracts\Proposal\ProposalSnapshot $snapshot What the contract holds now.
+     * @return self The same changes where nothing is gone.
+     */
+    public function withoutReturnsGoneFrom(ProposalSnapshot $snapshot): self
+    {
+        $kept = $this;
+
+        foreach ($this->equipmentTakenBack() as $borrowed_equipment_id => $line) {
+            if (!$snapshot->knowsBorrowedEquipment((string)$borrowed_equipment_id)) {
+                $kept = $kept->withoutEquipmentLine($line->id);
+            }
+        }
+
+        return $kept;
+    }
+
+    /**
      * Reads the changes back from the stored shape.
      *
      * @param array<string, mixed> $stored The stored changes.

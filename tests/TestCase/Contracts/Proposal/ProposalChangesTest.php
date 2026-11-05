@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Contracts\Proposal;
 
 use App\Contracts\Proposal\ProposalChanges;
+use App\Contracts\Proposal\ProposalSnapshot;
 use App\Contracts\Proposal\ProposedBilling;
 use App\Contracts\Proposal\ProposedContract;
 use App\Contracts\Proposal\ProposedVersion;
@@ -272,6 +273,65 @@ class ProposalChangesTest extends TestCase
         ProposalChanges::fromArray([
             'billings' => [['billing_id' => null, 'terminates_only' => true]],
         ]);
+    }
+
+    /**
+     * A fresh snapshot takes back the lines about what is gone from the contract. What is still
+     * there stays, and so does whatever adds something new.
+     *
+     * @return void
+     */
+    public function testLinesAboutWhatIsGoneAreTakenBack(): void
+    {
+        $snapshot = ProposalSnapshot::fromArray([
+            'contract' => [],
+            'customer' => [],
+            'version' => [],
+            'billings' => [['id' => 'still-there']],
+            'borrowed_equipments' => [['id' => 'still-lent']],
+        ]);
+
+        $changes = ProposalChanges::fromArray([
+            'billings' => [
+                ['billing_id' => 'still-there', 'terminates_only' => true],
+                ['billing_id' => 'gone', 'terminates_only' => true],
+                ['service_id' => 'eaacfeb3-1430-43ce-842e-497c5c95d953'],
+            ],
+            'equipments' => [
+                ['move' => 'return', 'borrowed_equipment_id' => 'still-lent'],
+                ['move' => 'return', 'borrowed_equipment_id' => 'gone'],
+                ['move' => 'lend', 'equipment_type_id' => 'type-1'],
+            ],
+        ]);
+
+        $kept = $changes->withoutBillingsGoneFrom($snapshot)->withoutReturnsGoneFrom($snapshot);
+
+        $this->assertSame(['still-there'], array_keys($kept->billingsByBillingId()));
+        $this->assertCount(2, $kept->billings);
+        $this->assertSame(['still-lent'], array_keys($kept->equipmentTakenBack()));
+        $this->assertCount(2, $kept->equipments);
+    }
+
+    /**
+     * Nothing gone leaves the very same changes, which is how the caller knows not to write them.
+     *
+     * @return void
+     */
+    public function testNothingGoneLeavesTheChangesAsTheyWere(): void
+    {
+        $snapshot = ProposalSnapshot::fromArray([
+            'contract' => [],
+            'customer' => [],
+            'version' => [],
+            'billings' => [['id' => 'still-there']],
+        ]);
+
+        $changes = ProposalChanges::fromArray([
+            'billings' => [['billing_id' => 'still-there', 'terminates_only' => true]],
+        ]);
+
+        $this->assertSame($changes, $changes->withoutBillingsGoneFrom($snapshot));
+        $this->assertSame($changes, $changes->withoutReturnsGoneFrom($snapshot));
     }
 
     /**
