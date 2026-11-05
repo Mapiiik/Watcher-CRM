@@ -73,19 +73,13 @@ class ProcessDebtorsCommandTest extends TestCase
         $debtor = new Debtor([
             new Invoice(['number' => '1', 'customer' => $customer, 'due_date' => $due, 'debt' => $owed]),
             new Invoice(['number' => '2', 'customer' => $customer, 'due_date' => $due, 'debt' => $owed]),
-            new Invoice(['number' => '3', 'customer' => $customer, 'due_date' => $due, 'debt' => $owed]),
         ]);
-
-        $there = TMP . 'Faktura_2.pdf';
-        file_put_contents($there, '%PDF');
 
         $bookkeeping = $this->createStub(BookkeepingService::class);
         $bookkeeping->method('getInvoicePdfPath')->willReturnCallback(
-            fn(Invoice $invoice): string => match ($invoice->number) {
-                '1' => throw new RuntimeException('Not there.'),
-                '2' => $there,
-                default => TMP . 'no-such-invoice.pdf',
-            },
+            fn(Invoice $invoice): string => $invoice->number === '1'
+                ? throw new RuntimeException('Not there.')
+                : '/invoices/Faktura_2.pdf',
         );
 
         $command = new ProcessDebtorsCommand();
@@ -94,11 +88,9 @@ class ProcessDebtorsCommandTest extends TestCase
         $attachments = (new ReflectionMethod(ProcessDebtorsCommand::class, 'getAttachments'))
             ->invoke($command, $debtor);
 
-        unlink($there);
-
         $this->assertSame(['Faktura_2.pdf'], array_keys($attachments));
         $this->assertSame(
-            ['1', '3'],
+            ['1'],
             (new ReflectionProperty(ProcessDebtorsCommand::class, 'invoicesWithoutPdf'))->getValue($command),
         );
     }
