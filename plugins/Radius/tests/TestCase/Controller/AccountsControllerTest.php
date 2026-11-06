@@ -357,6 +357,26 @@ class AccountsControllerTest extends TestCase
     }
 
     /**
+     * The RADIUS database knows nothing of what happens to a contract, and an account whose
+     * contract is gone stops the nightly update of the accounts where it stands.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractsTable::buildRules()
+     */
+    public function testAContractWithAnAccountIsNotDeleted(): void
+    {
+        $contractId = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/contracts/delete/' . $contractId);
+
+        $this->assertTrue($this->fetchTable('Contracts')->exists(['id' => $contractId]));
+        $this->assertStringContainsString('still has a RADIUS account', $this->messagesLeft());
+    }
+
+    /**
      * What was left for the next page to say.
      *
      * @return string

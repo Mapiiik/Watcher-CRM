@@ -10,11 +10,13 @@ use App\Model\Enum\ContractPeriodSource;
 use App\Model\Rule\ExistingAccessPointRule;
 use App\Model\Validation\ContractStateValidator;
 use ArrayObject;
+use Cake\Core\Plugin;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Override;
 
@@ -500,6 +502,17 @@ class ContractsTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('SoldEquipments'));
         $rules->addDelete($rules->isNotLinkedTo('Tasks'));
         $rules->addDelete($rules->isNotLinkedTo('CustomerLabels'));
+        // kept in a database of its own, so nothing there stops the contract going, and the nightly
+        // update of the accounts stops at one whose contract is gone
+        if (Plugin::isLoaded('Radius')) {
+            $rules->addDelete(
+                fn(Contract $contract): bool => !TableRegistry::getTableLocator()->get('Radius.Accounts')->exists([
+                    'contract_id' => $contract->id,
+                ]),
+                'hasNoRadiusAccount',
+                ['errorField' => 'id', 'message' => __('The contract still has a RADIUS account.')],
+            );
+        }
 
         // Set once by whoever writes the contract, and changed afterwards only by whom the
         // permissions let - which the controller asks and passes on.
