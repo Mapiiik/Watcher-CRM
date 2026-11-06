@@ -70,8 +70,8 @@ class FiledPages
         string $variant,
         array $files,
     ): int {
-        $filed = 0;
-
+        // all of it first: what is sent again after a refusal must not be filed twice
+        $pages = [];
         foreach ($files as $file) {
             $refused = $this->refusalOf($file);
             if ($refused !== null) {
@@ -83,8 +83,10 @@ class FiledPages
             }
 
             $path = $this->pathOf($file);
-            $mime_type = $this->mimeTypeOf($path);
+            $pages[] = [$file, $path, $this->mimeTypeOf($path)];
+        }
 
+        foreach ($pages as [$file, $path, $mime_type]) {
             $this->storage->link(
                 $this->storage->storeFile($path, $mime_type),
                 $model,
@@ -93,11 +95,9 @@ class FiledPages
                 $variant,
                 ['name' => $file->getClientFilename()],
             );
-
-            $filed++;
         }
 
-        return $filed;
+        return count($pages);
     }
 
     /**

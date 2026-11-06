@@ -1455,4 +1455,31 @@ class CustomersControllerTest extends TestCase
         // instead of waiting in the session
         $this->assertResponseContains('The company is no longer held by the register.');
     }
+
+    /**
+     * A number too long for a customer number is looked for among the identity numbers, whatever
+     * its length: an OIB has eleven digits, a Czech birth number ten.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::index()
+     */
+    public function testALongNumberIsLookedForAsAnIdentityNumber(): void
+    {
+        $this->login();
+        $customerId = $this->firstId('Customers');
+        $this->getTableLocator()->get('Customers')->updateAll(
+            ['identity_number' => '12345678901'],
+            ['id' => $customerId],
+        );
+
+        $this->get('/customers?search=12345678901');
+        $this->assertResponseOk();
+        $this->assertSame(
+            [$customerId],
+            array_map(fn($customer): string => $customer->id, $this->viewVariable('customers')->toArray()),
+        );
+
+        $this->get('/customers?search=9999999999');
+        $this->assertResponseOk();
+    }
 }

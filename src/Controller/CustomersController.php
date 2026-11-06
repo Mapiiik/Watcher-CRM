@@ -146,12 +146,13 @@ class CustomersController extends AppController
                     new FulltextSearchCustomersExpression(trim($search)),
                 ],
             ]);
-        } elseif (ctype_digit($search) && strlen($search) <= 10) { // strlen($search) <= 19 for BIGINT
-            // search by customer number
+        } elseif (ctype_digit($search) && strlen($search) <= 12) {
+            // search by customer number, as far as it is sure to fit an integer, or identity number
             $customersQuery->where([
-                'OR' => [
-                    '(Customers.nid + ' . (int)Configure::read('Customers.series') . ') =' => (int)trim($search),
-                    'Customers.identity_number' => trim($search),
+                'OR' => (strlen($search) <= 9 ? [
+                    '(Customers.nid + ' . (int)Configure::read('Customers.series') . ') =' => (int)$search,
+                ] : []) + [
+                    'Customers.identity_number' => $search,
                 ],
             ]);
         } elseif ($search !== '' && $search !== '0' || !$allow_advanced_search) {

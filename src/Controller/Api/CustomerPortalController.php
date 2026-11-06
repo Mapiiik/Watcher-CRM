@@ -527,7 +527,7 @@ class CustomerPortalController extends AppController
     private function customerByNumber(string $number): ?Customer
     {
         $customers = $this->fetchTable('Customers');
-        if (ctype_digit($number)) {
+        if (ctype_digit($number) && strlen($number) <= 9) {
             $customer = $customers->find()
                 ->where(['Customers.nid' => (int)$number - (int)Configure::read('Customers.series')])
                 ->first();

@@ -69,6 +69,7 @@ class DocumentsController extends AppController
         }
 
         $page = $this->paginate($proposals, [
+            'order' => ['CustomerProposals.effective_from' => 'DESC'],
             'sortableFields' => [
                 'CustomerProposals.effective_from',
                 'CustomerProposals.sent_date',
@@ -138,7 +139,10 @@ class DocumentsController extends AppController
         $this->set('version', $version);
         $this->set('proposal', $proposal);
         $this->set('proposals', (new ProposalRows())->of(
-            $this->whatIsStillWorkedOn($this->proposalsInView($version), $proposal),
+            $this->whatIsStillWorkedOn(
+                $this->proposalsInView($version)->orderByDesc('CustomerProposals.effective_from'),
+                $proposal,
+            ),
         ));
         $this->set('scope', $this->scopeOfTheTable($proposal, $version));
         $this->set('about', $this->whatTheTableIsOf($proposal, $version, $contract, $customer));
@@ -213,8 +217,10 @@ class DocumentsController extends AppController
             $files = $this->getRequest()->getUploadedFiles()['papers'] ?? [];
             $model = $printed[$holder]['model'] ?? null;
 
-            if ($variant === null || $document_type === '' || $model === null || !is_array($files)) {
+            $received = $variant !== null && isset(DocumentVariant::received()[$variant->value]);
+            if (!$received || $document_type === '' || $model === null || !is_array($files)) {
                 $this->Flash->error(__('Choose which document the pages belong to.'));
+                $this->offerThePapers($proposal, $printed);
 
                 return null;
             }
@@ -248,12 +254,24 @@ class DocumentsController extends AppController
             }
         }
 
+        $this->offerThePapers($proposal, $printed);
+
+        return null;
+    }
+
+    /**
+     * What the form of the pages that came back draws itself from.
+     *
+     * @param \App\Model\Entity\ContractProposal|\App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @param array<string, mixed> $printed What may come back for it.
+     * @return void
+     */
+    private function offerThePapers(ContractProposal|CustomerProposal $proposal, array $printed): void
+    {
         $this->set('proposal', $proposal);
         $this->set('about', $this->whatTheProposalIsCalled($proposal));
         $this->set('printed', $printed);
         $this->set('variants', DocumentVariant::received());
-
-        return null;
     }
 
     /**
@@ -598,8 +616,7 @@ class DocumentsController extends AppController
     {
         $proposals = $this->fetchTable('CustomerProposals')
             ->find($finder)
-            ->contain(['Customers', 'ContractProposals' => ['Contracts']])
-            ->orderByDesc('CustomerProposals.effective_from');
+            ->contain(['Customers', 'ContractProposals' => ['Contracts']]);
 
         if ($this->customer_id !== null) {
             $proposals->where(['CustomerProposals.customer_id' => $this->customer_id]);
@@ -705,7 +722,7 @@ class DocumentsController extends AppController
 
         $said['CustomerProposals.id IN'] = $ofAContract;
 
-        if (ctype_digit($search) && strlen($search) <= 10) {
+        if (ctype_digit($search) && strlen($search) <= 9) {
             $series = (int)Configure::read('Customers.series');
             $said['(Customers.nid + ' . $series . ') ='] = (int)$search;
         }

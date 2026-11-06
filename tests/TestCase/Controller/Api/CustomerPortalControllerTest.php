@@ -966,4 +966,18 @@ class CustomerPortalControllerTest extends TestCase
     {
         return $this->getTableLocator()->get('Logins')->get(self::LOGIN_ID);
     }
+
+    /**
+     * A phone number typed for the customer number is somebody unknown, not a failure of the portal.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::accessRequest()
+     */
+    public function testANumberTooLongForACustomerIsSomebodyUnknown(): void
+    {
+        $answer = $this->requestAccess('9999999999', 'nobody@example.com');
+
+        $this->assertResponseOk();
+        $this->assertSame('unknown', $answer['status']);
+    }
 }

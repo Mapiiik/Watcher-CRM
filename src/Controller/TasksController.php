@@ -278,7 +278,7 @@ class TasksController extends AppController
                     'Tasks.subject ILIKE' => '%' . $search . '%',
                     'Tasks.text ILIKE' => '%' . $search . '%',
                 ] + (
-                    ctype_digit($search) && strlen($search) <= 10 ? // strlen($search) <= 19 for BIGINT
+                    ctype_digit($search) && strlen($search) <= 9 ? // what is sure to fit an integer
                     [
                         'Tasks.nid' => (int)$search,
                     ] : []

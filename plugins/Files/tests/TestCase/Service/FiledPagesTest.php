@@ -128,6 +128,29 @@ class FiledPagesTest extends TestCase
     }
 
     /**
+     * What arrives together is taken together. Filing the first pages of a refused batch would
+     * put them on file twice when the person sends the batch again.
+     *
+     * @link \Files\Service\FiledPages::take()
+     * @return void
+     */
+    public function testARefusedPageLeavesTheWholeBatchOut(): void
+    {
+        $pages = new FiledPages(null, ['text/plain']);
+
+        try {
+            $pages->take(self::MODEL, self::RECORD, self::DOCUMENT, self::VARIANT, [
+                $this->upload('wiring.txt', 'rack 3, port 12'),
+                $this->upload('scan.pdf', "%PDF-1.4
+"),
+            ]);
+            $this->fail('The batch should have been refused.');
+        } catch (RuntimeException) {
+            $this->assertSame([], $this->namesOnFile());
+        }
+    }
+
+    /**
      * @link \Files\Service\FiledPages::take()
      * @return void
      */

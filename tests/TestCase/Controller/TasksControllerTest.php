@@ -1157,4 +1157,20 @@ class TasksControllerTest extends TestCase
         $this->assertNull($task->customer_id);
         $this->assertNull($task->contract_id);
     }
+
+    /**
+     * A number too long for the number of a task is searched for as text. It reached the database
+     * as a number, and the search kept in the session then took the whole listing down.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::index()
+     */
+    public function testALongNumberIsSearchedForAsText(): void
+    {
+        $this->login();
+
+        $this->get('/tasks?search=9999999999');
+
+        $this->assertResponseOk();
+    }
 }

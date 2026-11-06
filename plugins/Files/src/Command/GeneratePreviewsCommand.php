@@ -123,20 +123,21 @@ class GeneratePreviewsCommand extends Command
 
             // Both sizes together, because they are asked for from the same places and making
             // one of them means the content has already been read and decoded.
-            $wanted = false;
+            $drawn = false;
             foreach ([Previews::THUMBNAIL, Previews::PREVIEW] as $size) {
                 if (is_file(Previews::pathFor((string)$file->id, $size))) {
                     continue;
                 }
 
-                $wanted = true;
-
                 if ($previews->generate($file, $size) === null) {
                     $refused++;
+                } else {
+                    $drawn = true;
                 }
             }
 
-            if ($wanted) {
+            // only what was made counts, or files that can never be read would use the limit up
+            if ($drawn) {
                 $made++;
             }
         }
