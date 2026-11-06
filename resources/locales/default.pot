@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-06 12:05+0100\n"
+"POT-Creation-Date: 2026-11-06 15:37+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1278,7 +1278,7 @@ msgstr ""
 
 #: ./src/Contracts/Proposal/ChangeApplication.php:90
 #: ./src/Contracts/Proposal/ChangeApplication.php:121
-#: ./src/Controller/ContractProposalsController.php:984
+#: ./src/Controller/ContractProposalsController.php:985
 #: ./src/Controller/CustomerProposalsController.php:182
 #: ./src/Controller/CustomerProposalsController.php:554
 msgid "This proposal has already been settled."
@@ -1783,7 +1783,7 @@ msgstr ""
 
 #: ./src/Controller/ContractProposalsController.php:205
 #: ./src/Controller/ContractProposalsController.php:335
-#: ./src/Controller/ContractProposalsController.php:842
+#: ./src/Controller/ContractProposalsController.php:843
 #: ./src/Controller/CustomerProposalsController.php:146
 msgid "This proposal can no longer be changed."
 msgstr ""
@@ -1804,83 +1804,83 @@ msgstr ""
 msgid "The contract proposal has been recreated."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:384
+#: ./src/Controller/ContractProposalsController.php:385
 #: ./src/Controller/CustomerProposalsController.php:287
 msgid "A generated document could not be deleted. Please delete it manually."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:455
-#: ./src/Controller/ContractProposalsController.php:699
+#: ./src/Controller/ContractProposalsController.php:456
+#: ./src/Controller/ContractProposalsController.php:700
 msgid "There is no such line on this proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:522
+#: ./src/Controller/ContractProposalsController.php:523
 msgid "The contract runs for a fixed term until {0}, and nothing is billed past it."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:605
+#: ./src/Controller/ContractProposalsController.php:606
 msgid "This billing begins on {0}, after the day the proposal takes effect, so it never runs. Applying the changes will remove it from the contract rather than end it."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:634
+#: ./src/Controller/ContractProposalsController.php:635
 msgid "Nothing was left out of this proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:645
+#: ./src/Controller/ContractProposalsController.php:646
 msgid "What was left out has been marked as settled."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:647
+#: ./src/Controller/ContractProposalsController.php:648
 msgid "It could not be marked as settled. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:710
+#: ./src/Controller/ContractProposalsController.php:711
 msgid "Choose the equipment type."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:872
-#: ./src/Controller/ContractProposalsController.php:1067
+#: ./src/Controller/ContractProposalsController.php:873
+#: ./src/Controller/ContractProposalsController.php:1068
 #: ./src/Controller/CustomerProposalsController.php:116
 #: ./src/Controller/CustomerProposalsController.php:155
 msgid "The proposal has been saved."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:878
-#: ./src/Controller/ContractProposalsController.php:1073
+#: ./src/Controller/ContractProposalsController.php:879
+#: ./src/Controller/ContractProposalsController.php:1074
 #: ./src/Controller/CustomerProposalsController.php:125
 #: ./src/Controller/CustomerProposalsController.php:161
 msgid "The proposal could not be saved. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:955
+#: ./src/Controller/ContractProposalsController.php:956
 #: ./src/Controller/CustomerProposalsController.php:687
 msgid "The proposal could not be deleted. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:960
+#: ./src/Controller/ContractProposalsController.php:961
 #: ./src/Controller/CustomerProposalsController.php:692
 msgid "The proposal has been deleted."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:993
+#: ./src/Controller/ContractProposalsController.php:994
 #: ./src/Controller/CustomerProposalsController.php:562
 msgid "The proposal has been revoked."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:996
+#: ./src/Controller/ContractProposalsController.php:997
 #: ./src/Controller/CustomerProposalsController.php:566
 msgid "The proposal could not be revoked. Please, try again."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1044
+#: ./src/Controller/ContractProposalsController.php:1045
 msgid "Please answer this before the proposal is sent."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1049
+#: ./src/Controller/ContractProposalsController.php:1050
 msgid "The contract is not ready for a contract proposal."
 msgstr ""
 
-#: ./src/Controller/ContractProposalsController.php:1227
+#: ./src/Controller/ContractProposalsController.php:1228
 msgid "A customer proposal for this contract proposal could not be created."
 msgstr ""
 
@@ -3559,7 +3559,7 @@ msgstr ""
 #: ./src/Model/Enum/LandingPage.php:43
 #: ./templates/Billings/bulk_service_change.php:17
 #: ./templates/Settings/index.php:9
-#: ./templates/layout/default.php:198
+#: ./templates/layout/default.php:199
 msgid "Settings"
 msgstr ""
 
@@ -4059,11 +4059,11 @@ msgstr ""
 msgid "Signed"
 msgstr ""
 
-#: ./src/Proposals/TakingBackTheSending.php:58
+#: ./src/Proposals/TakingBackTheSending.php:59
 msgid "The customer has already signed a document from this proposal, so the sending stands. To agree on something else, revoke this proposal and draw up a new one."
 msgstr ""
 
-#: ./src/Proposals/TakingBackTheSending.php:66
+#: ./src/Proposals/TakingBackTheSending.php:67
 msgid "Only papers handed over in person can be taken back, because papers sent any other way may already be with the customer. To agree on something else, revoke this proposal and draw up a new one."
 msgstr ""
 
@@ -6065,8 +6065,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: ./templates/ContractProposals/recreate.php:135
-msgid "This document will be permanently deleted. Continue?"
-msgid_plural "These {0} documents will be permanently deleted. Continue?"
+msgid "This document will be moved to the trash. Continue?"
+msgid_plural "These {0} documents will be moved to the trash. Continue?"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -9664,7 +9664,7 @@ msgstr ""
 
 #: ./templates/element/Settings/FormFields.php:34
 #: ./templates/element/Settings/FormFields.php:51
-#: ./templates/layout/default.php:236
+#: ./templates/layout/default.php:237
 msgid "Default"
 msgstr ""
 
@@ -9778,38 +9778,38 @@ msgstr ""
 msgid "Files"
 msgstr ""
 
-#: ./templates/layout/default.php:208
+#: ./templates/layout/default.php:209
 msgid "Network Management System"
 msgstr ""
 
-#: ./templates/layout/default.php:238
+#: ./templates/layout/default.php:239
 #: ./templates/plugin/Access/Users/user_settings.php:56
 msgid "Light"
 msgstr ""
 
-#: ./templates/layout/default.php:239
+#: ./templates/layout/default.php:240
 #: ./templates/plugin/Access/Users/user_settings.php:57
 msgid "Dark"
 msgstr ""
 
-#: ./templates/layout/default.php:240
+#: ./templates/layout/default.php:241
 #: ./templates/plugin/Access/Users/user_settings.php:58
 msgid "Contrast"
 msgstr ""
 
-#: ./templates/layout/default.php:266
+#: ./templates/layout/default.php:267
 msgid "Logout"
 msgstr ""
 
-#: ./templates/layout/default.php:289
+#: ./templates/layout/default.php:290
 msgid "Changelog"
 msgstr ""
 
-#: ./templates/layout/default.php:290
+#: ./templates/layout/default.php:291
 msgid "Source Code"
 msgstr ""
 
-#: ./templates/layout/default.php:292
+#: ./templates/layout/default.php:293
 msgid "Version"
 msgstr ""
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-10-03 00:34+0200\n"
+"POT-Creation-Date: 2026-11-06 15:37+0100\n"
 "PO-Revision-Date: 2026-09-11 02:09+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,65 +14,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:85
+#: plugins/Files/src/Command/CheckFilesCommand.php:87
 msgid ""
 "Checks the stored content against what the records say, and reports what "
 "does not match."
 msgstr "Porovná uložený obsah s tím, co říká evidence, a nahlásí, co nesedí."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:91
-msgid "Throw away the bytes nobody has a row for. Nothing else is touched."
+#: plugins/Files/src/Command/CheckFilesCommand.php:93
+msgid ""
+"Throw away the bytes and the pictures nobody has a row for. Nothing else is "
+"touched."
 msgstr ""
-"Zahodit bajty, ke kterým nikdo nemá řádek. Ničeho jiného se to nedotkne."
+"Zahodit bajty a náhledy, ke kterým nikdo nemá řádek. Ničeho jiného se to "
+"nedotkne."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:135
+#: plugins/Files/src/Command/CheckFilesCommand.php:143
 msgid "{0} rows, {1} of them with their content stored."
 msgstr "Řádků {0}, z toho {1} s uloženým obsahem."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:142
+#: plugins/Files/src/Command/CheckFilesCommand.php:150
 msgid "Rows whose bytes are gone"
 msgstr "Řádky, jejichž bajty zmizely"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:147
+#: plugins/Files/src/Command/CheckFilesCommand.php:155
 msgid "Rows whose bytes are not the size they say"
 msgstr "Řádky, jejichž bajty nemají udanou velikost"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:152
+#: plugins/Files/src/Command/CheckFilesCommand.php:160
 msgid "Bytes nobody has a row for"
 msgstr "Bajty, ke kterým nikdo nemá řádek"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:155
+#: plugins/Files/src/Command/CheckFilesCommand.php:161
+msgid "Pictures of content nobody has a row for"
+msgstr "Náhledy obsahu, ke kterému nikdo nemá řádek"
+
+#: plugins/Files/src/Command/CheckFilesCommand.php:164
 msgid ""
 "{0} rows nothing points at. They are safe to let go of one at a time from "
 "the storage page."
 msgstr ""
 "Na {0} řádků nic neukazuje. Lze je po jednom odebrat na stránce úložiště."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:167
+#: plugins/Files/src/Command/CheckFilesCommand.php:180
+#: plugins/Files/src/Command/FilesTrashPurgeCommand.php:99
 msgid "{0} thrown away."
 msgstr "Zahozeno: {0}."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:173
+#: plugins/Files/src/Command/CheckFilesCommand.php:187
 msgid "The store and the records agree."
 msgstr "Úložiště a evidence se shodují."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:174
+#: plugins/Files/src/Command/CheckFilesCommand.php:188
 msgid "Nothing is missing. Run this again with --fix to throw the rest away."
 msgstr "Nic nechybí. Zbytek zahodí opakované spuštění s --fix."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:196
+#: plugins/Files/src/Command/CheckFilesCommand.php:210
 msgid "The store no longer holds everything the records point at."
 msgstr "Úložiště už nedrží všechno, na co evidence ukazuje."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:198
+#: plugins/Files/src/Command/CheckFilesCommand.php:212
 msgid "Rows whose bytes are gone: {0}"
 msgstr "Řádky, jejichž bajty zmizely: {0}"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:199
+#: plugins/Files/src/Command/CheckFilesCommand.php:213
 msgid "Rows whose bytes are not the size they say: {0}"
 msgstr "Řádky, jejichž bajty nemají udanou velikost: {0}"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:201
+#: plugins/Files/src/Command/CheckFilesCommand.php:215
 msgid ""
 "Run `bin/cake check_files` to see which. What is missing has to come back "
 "from a backup - neither can be put right from there."
@@ -80,13 +88,33 @@ msgstr ""
 "Které to jsou, ukáže `bin/cake check_files`. Co chybí, se musí vrátit ze "
 "zálohy, odtamtud to spravit nejde."
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:209
+#: plugins/Files/src/Command/CheckFilesCommand.php:223
 msgid "File store check failed"
 msgstr "Kontrola úložiště souborů selhala"
 
-#: plugins/Files/src/Command/CheckFilesCommand.php:258
+#: plugins/Files/src/Command/CheckFilesCommand.php:272
 msgid "  ... and {0} more."
 msgstr "  ... a dalších {0}."
+
+#: plugins/Files/src/Command/FilesTrashPurgeCommand.php:70
+msgid "Throws away what has been in the trash for long enough."
+msgstr "Zahodí to, co je v koši dost dlouho."
+
+#: plugins/Files/src/Command/FilesTrashPurgeCommand.php:73
+msgid "How many days the trash keeps what was removed."
+msgstr "Kolik dní koš drží to, co bylo odstraněno."
+
+#: plugins/Files/src/Command/FilesTrashPurgeCommand.php:92
+msgid "The number of days has to be a whole number of at least 1."
+msgstr "Počet dní musí být celé číslo, nejméně 1."
+
+#: plugins/Files/src/Command/FilesTrashPurgeCommand.php:105
+msgid "The trash could not let go of {0} of what had expired."
+msgstr "Koš nedokázal zahodit {0} položek po lhůtě."
+
+#: plugins/Files/src/Command/FilesTrashPurgeCommand.php:108
+msgid "Emptying the trash failed"
+msgstr "Vyprázdnění koše selhalo"
 
 #: plugins/Files/src/Command/GeneratePreviewsCommand.php:80
 msgid ""
@@ -108,19 +136,11 @@ msgstr "Vytvořeno {0}."
 msgid "{0} could not be made. The log says why."
 msgstr "{0} se nepodařilo vytvořit. Důvod je v logu."
 
-#: plugins/Files/src/Controller/FileLinksController.php:167
-msgid "There is no picture of this document."
-msgstr "K tomuto dokumentu není náhled."
-
-#: plugins/Files/src/Controller/FileLinksController.php:194
-msgid "The content of this document is not in the store."
-msgstr "Obsah tohoto dokumentu není v úložišti."
-
-#: plugins/Files/src/Controller/FileLinksController.php:244
+#: plugins/Files/src/Controller/FileLinksController.php:144
 msgid "The document has been removed."
 msgstr "Dokument byl odebrán."
 
-#: plugins/Files/src/Controller/FileLinksController.php:246
+#: plugins/Files/src/Controller/FileLinksController.php:146
 msgid "The document could not be removed: {0}"
 msgstr "Dokument se nepodařilo odebrat: {0}"
 
@@ -152,40 +172,72 @@ msgstr "Dokumentace byla uložena."
 msgid "The documentation could not be saved. Please, try again."
 msgstr "Dokumentaci se nepodařilo uložit. Zkuste to prosím znovu."
 
-#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:211
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:209
 msgid "The documentation has been deleted."
 msgstr "Dokumentace byla odstraněna."
 
-#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:214
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:212
 msgid "The documentation could not be deleted. Please, try again."
 msgstr "Dokumentaci se nepodařilo odstranit. Zkuste to prosím znovu."
 
-#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:258
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:256
 msgid "Nothing was chosen to file."
 msgstr "Nebylo vybráno nic k založení."
 
-#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:283
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:281
 msgid "The file has been removed from the documentation."
 msgstr "Soubor byl z dokumentace odebrán."
 
-#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:285
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:283
 msgid "The file could not be removed: {0}"
 msgstr "Soubor se nepodařilo odebrat: {0}"
 
-#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:307
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:305
 msgid "The files could not be reordered: {0}"
 msgstr "Soubory se nepodařilo přeuspořádat: {0}"
 
-#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:333
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:331
 msgid "That file belongs to something else."
 msgstr "Ten soubor patří k něčemu jinému."
 
-#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:247
+#: plugins/Files/src/Controller/Trait/DocumentationsControllerTrait.php:245
 msgid "{0} file has been filed."
 msgid_plural "{0} files have been filed."
 msgstr[0] "Byl založen {0} soubor."
 msgstr[1] "Byly založeny {0} soubory."
 msgstr[2] "Bylo založeno {0} souborů."
+
+#: plugins/Files/src/Controller/Trait/HandsOverContentTrait.php:57
+msgid "There is no picture of this document."
+msgstr "K tomuto dokumentu není náhled."
+
+#: plugins/Files/src/Controller/Trait/HandsOverContentTrait.php:82
+msgid "The content of this document is not in the store."
+msgstr "Obsah tohoto dokumentu není v úložišti."
+
+#: plugins/Files/src/Controller/TrashController.php:155
+msgid "The file could not be restored: {0}"
+msgstr "Soubor se nepodařilo obnovit: {0}"
+
+#: plugins/Files/src/Controller/TrashController.php:176
+msgid "The file has been deleted for good."
+msgstr "Soubor byl trvale odstraněn."
+
+#: plugins/Files/src/Controller/TrashController.php:178
+msgid ""
+"Removed from the trash. The content stays, as another record still uses it."
+msgstr "Odstraněno z koše. Obsah zůstává, protože ho používá jiný záznam."
+
+#: plugins/Files/src/Controller/TrashController.php:184
+msgid "The file could not be deleted: {0}"
+msgstr "Soubor se nepodařilo odstranit: {0}"
+
+#: plugins/Files/src/Controller/TrashController.php:147
+msgid "The file has been restored."
+msgid_plural "{0} files have been restored."
+msgstr[0] "Soubor byl obnoven."
+msgstr[1] "{0} soubory byly obnoveny."
+msgstr[2] "{0} souborů bylo obnoveno."
 
 #: plugins/Files/src/Model/Table/DocumentationsTable.php:123
 msgid ""
@@ -199,11 +251,11 @@ msgstr ""
 msgid "This documentation type is filed under the day it is about."
 msgstr "Tento typ dokumentace se zakládá ke dni, kterého se týká."
 
-#: plugins/Files/src/Model/Table/FilesTable.php:86
+#: plugins/Files/src/Model/Table/FilesTable.php:92
 msgid "The hash of the content is written in hexadecimal."
 msgstr "Otisk obsahu je zapsaný šestnáctkově."
 
-#: plugins/Files/src/Service/FiledPages.php:227
+#: plugins/Files/src/Service/FiledPages.php:229
 msgid ""
 "This server takes at most {0} files at once, so whatever was chosen beyond "
 "that never arrived. Send the rest as a second batch."
@@ -211,31 +263,39 @@ msgstr ""
 "Tento server přijme najednou nejvýš {0} souborů, takže co bylo vybráno nad "
 "tento počet, vůbec nedorazilo. Zbytek pošlete jako druhou dávku."
 
-#: plugins/Files/src/Service/FiledPages.php:316
+#: plugins/Files/src/Service/FiledPages.php:318
 msgid "The file"
 msgstr "Soubor"
 
-#: plugins/Files/src/Service/FiledPages.php:320
+#: plugins/Files/src/Service/FiledPages.php:322
 msgid "{0} is larger than this server takes in one go."
 msgstr "{0} je větší, než tento server zvládne najednou."
 
-#: plugins/Files/src/Service/FiledPages.php:325
+#: plugins/Files/src/Service/FiledPages.php:327
 msgid "{0} only arrived in part."
 msgstr "{0} dorazil jen zčásti."
 
-#: plugins/Files/src/Service/FiledPages.php:326
+#: plugins/Files/src/Service/FiledPages.php:328
 msgid "{0} could not be taken in."
 msgstr "{0} se nepodařilo převzít."
 
-#: plugins/Files/src/Service/FiledPages.php:345
+#: plugins/Files/src/Service/FiledPages.php:347
 msgid "The uploaded file could not be read."
 msgstr "Nahraný soubor se nepodařilo přečíst."
 
-#: plugins/Files/src/Service/FiledPages.php:366
+#: plugins/Files/src/Service/FiledPages.php:368
 msgid "A {0} is not a document that can be filed."
 msgstr "{0} není dokument, který jde založit."
 
-#: plugins/Files/src/View/Helper/PreviewHelper.php:98
+#: plugins/Files/src/Service/Trash.php:287
+msgid "This document has been made again since, so its place is taken."
+msgstr "Dokument byl mezitím vygenerován znovu, jeho místo je obsazené."
+
+#: plugins/Files/src/Service/Trash.php:295
+msgid "The record it belonged to no longer exists."
+msgstr "Záznam, ke kterému patřil, už neexistuje."
+
+#: plugins/Files/src/View/Helper/PreviewHelper.php:99
 msgid "Look through ({0})"
 msgstr "Prohlédnout ({0})"
 
@@ -255,104 +315,119 @@ msgstr ""
 "Vybráno je %s a tento server jich najednou přijme nejvýše {0}. Pošlete je na "
 "víc dávek."
 
-#: plugins/Files/templates/FileLinks/index.php:14
-#: plugins/Files/templates/FileLinks/index.php:59
-#: plugins/Files/templates/Storage/view.php:85
+#: plugins/Files/templates/FileLinks/index.php:18
+#: plugins/Files/templates/FileLinks/index.php:71
+#: plugins/Files/templates/Storage/view.php:97
+#: plugins/Files/templates/Trash/index.php:19
+#: plugins/Files/templates/Trash/index.php:52
 msgid "Model"
 msgstr "Model"
 
-#: plugins/Files/templates/FileLinks/index.php:22
-#: plugins/Files/templates/FileLinks/index.php:60
-#: plugins/Files/templates/Storage/view.php:87
+#: plugins/Files/templates/FileLinks/index.php:26
+#: plugins/Files/templates/FileLinks/index.php:72
+#: plugins/Files/templates/Storage/view.php:99
+#: plugins/Files/templates/Trash/index.php:53
 msgid "Document Type"
 msgstr "Typ dokumentu"
 
-#: plugins/Files/templates/FileLinks/index.php:30
-#: plugins/Files/templates/FileLinks/index.php:61
-#: plugins/Files/templates/Storage/view.php:88
+#: plugins/Files/templates/FileLinks/index.php:34
+#: plugins/Files/templates/FileLinks/index.php:73
+#: plugins/Files/templates/Storage/view.php:100
+#: plugins/Files/templates/Trash/index.php:54
 msgid "Variant"
 msgstr "Varianta"
 
-#: plugins/Files/templates/FileLinks/index.php:38
-#: plugins/Files/templates/FileLinks/index.php:63
-#: plugins/Files/templates/Storage/view.php:90
+#: plugins/Files/templates/FileLinks/index.php:42
+#: plugins/Files/templates/FileLinks/index.php:75
+#: plugins/Files/templates/Storage/view.php:102
+#: plugins/Files/templates/Trash/index.php:27
+#: plugins/Files/templates/Trash/index.php:55
 #: plugins/Files/templates/cell/Documentations/contents.php:39
 msgid "Name"
 msgstr "Název"
 
-#: plugins/Files/templates/FileLinks/index.php:48
+#: plugins/Files/templates/FileLinks/index.php:52
 #: plugins/Files/templates/Storage/index.php:40
 #: plugins/Files/templates/Storage/view.php:13
 msgid "Storage"
 msgstr "Úložiště"
 
-#: plugins/Files/templates/FileLinks/index.php:52
+#: plugins/Files/templates/FileLinks/index.php:57
+#: plugins/Files/templates/Trash/index.php:41
+#: plugins/Files/templates/Trash/index.php:44
+msgid "Trash"
+msgstr "Koš"
+
+#: plugins/Files/templates/FileLinks/index.php:61
+#: plugins/Files/templates/FileLinks/index.php:64
 #: plugins/Files/templates/Storage/index.php:36
 #: plugins/Files/templates/Storage/index.php:54
 #: plugins/Files/templates/Storage/view.php:18
 #: plugins/Files/templates/Storage/view.php:68
+#: plugins/Files/templates/Trash/index.php:37
 msgid "File Links"
 msgstr "Vazby souboru"
 
-#: plugins/Files/templates/FileLinks/index.php:53
+#: plugins/Files/templates/FileLinks/index.php:63
 msgid "Every file the records have, and what each of them is filed as."
 msgstr "Každý soubor, který evidence má, a jako co je založený."
 
-#: plugins/Files/templates/FileLinks/index.php:58
+#: plugins/Files/templates/FileLinks/index.php:70
 #: plugins/Files/templates/Storage/index.php:50
 #: plugins/Files/templates/Storage/view.php:58
 #: plugins/Files/templates/cell/Documentations/contents.php:41
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: plugins/Files/templates/FileLinks/index.php:62
-#: plugins/Files/templates/Storage/view.php:89
+#: plugins/Files/templates/FileLinks/index.php:74
+#: plugins/Files/templates/Storage/view.php:101
 msgid "Position"
 msgstr "Pozice"
 
-#: plugins/Files/templates/FileLinks/index.php:64
+#: plugins/Files/templates/FileLinks/index.php:76
 #: plugins/Files/templates/Storage/index.php:53
 #: plugins/Files/templates/Storage/view.php:50
+#: plugins/Files/templates/Trash/index.php:56
 #: plugins/Files/templates/cell/Documentations/contents.php:40
 #: plugins/Files/templates/cell/Documentations/display.php:24
 msgid "Size"
 msgstr "Velikost"
 
-#: plugins/Files/templates/FileLinks/index.php:65
+#: plugins/Files/templates/FileLinks/index.php:78
 #: plugins/Files/templates/Storage/index.php:55
 #: plugins/Files/templates/Storage/view.php:11
-#: plugins/Files/templates/Storage/view.php:91
+#: plugins/Files/templates/Storage/view.php:103
+#: plugins/Files/templates/Trash/index.php:58
 #: plugins/Files/templates/cell/Documentations/contents.php:42
 msgid "Actions"
 msgstr "Akce"
 
-#: plugins/Files/templates/FileLinks/index.php:80
-#: plugins/Files/templates/Storage/view.php:105
+#: plugins/Files/templates/FileLinks/index.php:94
+#: plugins/Files/templates/Storage/view.php:117
+#: plugins/Files/templates/Trash/index.php:81
 msgid "Open"
 msgstr "Otevřít"
 
-#: plugins/Files/templates/FileLinks/index.php:85
-#: plugins/Files/templates/Storage/view.php:110
+#: plugins/Files/templates/FileLinks/index.php:99
+#: plugins/Files/templates/Storage/view.php:122
+#: plugins/Files/templates/Trash/index.php:86
 #: plugins/Files/templates/cell/Documentations/contents.php:53
 msgid "Download"
 msgstr "Stáhnout"
 
-#: plugins/Files/templates/FileLinks/index.php:89
+#: plugins/Files/templates/FileLinks/index.php:103
 msgid "Content"
 msgstr "Obsah"
 
-#: plugins/Files/templates/FileLinks/index.php:94
+#: plugins/Files/templates/FileLinks/index.php:108
+#: plugins/Files/templates/Trash/index.php:107
 #: plugins/Files/templates/cell/Documentations/contents.php:62
 msgid "Delete"
 msgstr "Odstranit"
 
-#: plugins/Files/templates/FileLinks/index.php:96
-msgid ""
-"Remove this document from the record? The content itself goes only if "
-"nothing else wants it."
-msgstr ""
-"Odebrat tento dokument ze záznamu? Samotný obsah zmizí, jen když ho nikdo "
-"jiný nechce."
+#: plugins/Files/templates/FileLinks/index.php:110
+msgid "Remove this document from the record? It goes to the trash."
+msgstr "Odebrat tento dokument ze záznamu? Přesune se do koše."
 
 #: plugins/Files/templates/Storage/index.php:13
 #: plugins/Files/templates/Storage/index.php:52
@@ -382,15 +457,19 @@ msgstr ""
 msgid "Hash"
 msgstr "Otisk"
 
-#: plugins/Files/templates/Storage/index.php:68
+#: plugins/Files/templates/Storage/index.php:69
 msgid "nothing"
 msgstr "nic"
 
 #: plugins/Files/templates/Storage/index.php:72
+msgid "{0} in the trash"
+msgstr "v koši: {0}"
+
+#: plugins/Files/templates/Storage/index.php:76
 msgid "View"
 msgstr "Zobrazit"
 
-#: plugins/Files/templates/Storage/index.php:82
+#: plugins/Files/templates/Storage/index.php:86
 msgid "{0} in the store, {1} in all, {2} of them pointed at by nothing."
 msgstr "{0} v úložišti, {1} celkem, na {2} z nich neukazuje nic."
 
@@ -420,15 +499,58 @@ msgstr "Vytvořil"
 
 #: plugins/Files/templates/Storage/view.php:72
 msgid ""
+"{0} removed from the records and waiting in the trash, which keeps this "
+"content until it has let go of them."
+msgstr ""
+"V koši čeká odstraněných položek: {0}. Koš tento obsah drží, dokud je "
+"nezahodí."
+
+#: plugins/Files/templates/Storage/view.php:84
+msgid ""
 "Nothing points at this content. It is what a backup taken while something "
 "was being written leaves behind, and it is safe to throw away."
 msgstr ""
 "Na tento obsah nic neukazuje. Nechá ho po sobě záloha pořízená ve chvíli, "
 "kdy se něco zapisovalo, a jde bez obav zahodit."
 
-#: plugins/Files/templates/Storage/view.php:86
+#: plugins/Files/templates/Storage/view.php:98
 msgid "Foreign Key"
 msgstr "Cizí klíč"
+
+#: plugins/Files/templates/Trash/index.php:43
+msgid ""
+"What was removed from the records, until it comes back or its time is up."
+msgstr ""
+"Co bylo ze záznamů odstraněno, dokud se to nevrátí nebo nevyprší lhůta."
+
+#: plugins/Files/templates/Trash/index.php:50
+msgid "Removed"
+msgstr "Odstraněno"
+
+#: plugins/Files/templates/Trash/index.php:51
+msgid "Removed By"
+msgstr "Odstranil"
+
+#: plugins/Files/templates/Trash/index.php:91
+#: plugins/Files/templates/Trash/index.php:103
+msgid "Restore"
+msgstr "Obnovit"
+
+#: plugins/Files/templates/Trash/index.php:94
+msgid ""
+"Restore this document? It says what it said when it was made, which may no "
+"longer be what the record says."
+msgstr ""
+"Obnovit tento dokument? Obsahuje údaje z doby, kdy byl vygenerován, a ty už "
+"nemusí odpovídat záznamu."
+
+#: plugins/Files/templates/Trash/index.php:99
+msgid "Restore this file?"
+msgstr "Obnovit tento soubor?"
+
+#: plugins/Files/templates/Trash/index.php:109
+msgid "Delete this file for good? This cannot be undone."
+msgstr "Trvale odstranit tento soubor? Tuto akci nelze vrátit zpět."
 
 #: plugins/Files/templates/cell/Documentations/contents.php:23
 msgid "Nothing is filed in this documentation yet."
@@ -475,6 +597,17 @@ msgid_plural "{0} files"
 msgstr[0] "{0} soubor"
 msgstr[1] "{0} soubory"
 msgstr[2] "{0} souborů"
+
+#~ msgid "Throw away the bytes nobody has a row for. Nothing else is touched."
+#~ msgstr ""
+#~ "Zahodit bajty, ke kterým nikdo nemá řádek. Ničeho jiného se to nedotkne."
+
+#~ msgid ""
+#~ "Remove this document from the record? The content itself goes only if "
+#~ "nothing else wants it."
+#~ msgstr ""
+#~ "Odebrat tento dokument ze záznamu? Samotný obsah zmizí, jen když ho nikdo "
+#~ "jiný nechce."
 
 #~ msgid "Documents"
 #~ msgstr "Dokumenty"

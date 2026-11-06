@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-06 12:05+0100\n"
+"POT-Creation-Date: 2026-11-06 15:37+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -1382,7 +1382,7 @@ msgstr "Zapůjčená zařízení nelze vyměnit přede dnem založení návrhu v
 
 #: src/Contracts/Proposal/ChangeApplication.php:90
 #: src/Contracts/Proposal/ChangeApplication.php:121
-#: src/Controller/ContractProposalsController.php:984
+#: src/Controller/ContractProposalsController.php:985
 #: src/Controller/CustomerProposalsController.php:182
 #: src/Controller/CustomerProposalsController.php:554
 msgid "This proposal has already been settled."
@@ -1936,7 +1936,7 @@ msgstr "Profil připojení nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractProposalsController.php:205
 #: src/Controller/ContractProposalsController.php:335
-#: src/Controller/ContractProposalsController.php:842
+#: src/Controller/ContractProposalsController.php:843
 #: src/Controller/CustomerProposalsController.php:146
 msgid "This proposal can no longer be changed."
 msgstr "Tento návrh už nelze měnit."
@@ -1964,23 +1964,23 @@ msgstr ""
 msgid "The contract proposal has been recreated."
 msgstr "Návrh smlouvy byl sestaven znovu."
 
-#: src/Controller/ContractProposalsController.php:384
+#: src/Controller/ContractProposalsController.php:385
 #: src/Controller/CustomerProposalsController.php:287
 msgid "A generated document could not be deleted. Please delete it manually."
 msgstr ""
 "Vygenerovaný dokument se nepodařilo odstranit. Odstraňte ho prosím ručně."
 
-#: src/Controller/ContractProposalsController.php:455
-#: src/Controller/ContractProposalsController.php:699
+#: src/Controller/ContractProposalsController.php:456
+#: src/Controller/ContractProposalsController.php:700
 msgid "There is no such line on this proposal."
 msgstr "Taková položka na návrhu není."
 
-#: src/Controller/ContractProposalsController.php:522
+#: src/Controller/ContractProposalsController.php:523
 msgid ""
 "The contract runs for a fixed term until {0}, and nothing is billed past it."
 msgstr "Smlouva je na dobu určitou do {0} a po tomto dni se nic nefakturuje."
 
-#: src/Controller/ContractProposalsController.php:605
+#: src/Controller/ContractProposalsController.php:606
 msgid ""
 "This billing begins on {0}, after the day the proposal takes effect, so it "
 "never runs. Applying the changes will remove it from the contract rather "
@@ -1989,65 +1989,65 @@ msgstr ""
 "Tato fakturace začíná {0}, tedy po dni účinnosti návrhu, takže vůbec "
 "neproběhne. Aplikováním změn bude ze smlouvy odstraněna, nikoli ukončena."
 
-#: src/Controller/ContractProposalsController.php:634
+#: src/Controller/ContractProposalsController.php:635
 msgid "Nothing was left out of this proposal."
 msgstr "Z tohoto návrhu nebylo nic vynecháno."
 
-#: src/Controller/ContractProposalsController.php:645
+#: src/Controller/ContractProposalsController.php:646
 msgid "What was left out has been marked as settled."
 msgstr "Vynechané bylo označeno jako vyřízené."
 
-#: src/Controller/ContractProposalsController.php:647
+#: src/Controller/ContractProposalsController.php:648
 msgid "It could not be marked as settled. Please, try again."
 msgstr "Nepodařilo se to označit jako vyřízené. Zkuste to prosím znovu."
 
-#: src/Controller/ContractProposalsController.php:710
+#: src/Controller/ContractProposalsController.php:711
 msgid "Choose the equipment type."
 msgstr "Vyberte typ zařízení."
 
-#: src/Controller/ContractProposalsController.php:872
-#: src/Controller/ContractProposalsController.php:1067
+#: src/Controller/ContractProposalsController.php:873
+#: src/Controller/ContractProposalsController.php:1068
 #: src/Controller/CustomerProposalsController.php:116
 #: src/Controller/CustomerProposalsController.php:155
 msgid "The proposal has been saved."
 msgstr "Návrh byl uložen."
 
-#: src/Controller/ContractProposalsController.php:878
-#: src/Controller/ContractProposalsController.php:1073
+#: src/Controller/ContractProposalsController.php:879
+#: src/Controller/ContractProposalsController.php:1074
 #: src/Controller/CustomerProposalsController.php:125
 #: src/Controller/CustomerProposalsController.php:161
 msgid "The proposal could not be saved. Please, try again."
 msgstr "Návrh nelze uložit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractProposalsController.php:955
+#: src/Controller/ContractProposalsController.php:956
 #: src/Controller/CustomerProposalsController.php:687
 msgid "The proposal could not be deleted. Please, try again."
 msgstr "Návrh nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractProposalsController.php:960
+#: src/Controller/ContractProposalsController.php:961
 #: src/Controller/CustomerProposalsController.php:692
 msgid "The proposal has been deleted."
 msgstr "Návrh byl odstraněn."
 
-#: src/Controller/ContractProposalsController.php:993
+#: src/Controller/ContractProposalsController.php:994
 #: src/Controller/CustomerProposalsController.php:562
 msgid "The proposal has been revoked."
 msgstr "Návrh byl zrušen."
 
-#: src/Controller/ContractProposalsController.php:996
+#: src/Controller/ContractProposalsController.php:997
 #: src/Controller/CustomerProposalsController.php:566
 msgid "The proposal could not be revoked. Please, try again."
 msgstr "Návrh nelze zrušit. Zkuste to prosím znovu."
 
-#: src/Controller/ContractProposalsController.php:1044
+#: src/Controller/ContractProposalsController.php:1045
 msgid "Please answer this before the proposal is sent."
 msgstr "Odpovězte prosím dříve, než bude návrh odeslán."
 
-#: src/Controller/ContractProposalsController.php:1049
+#: src/Controller/ContractProposalsController.php:1050
 msgid "The contract is not ready for a contract proposal."
 msgstr "Smlouva není připravená na návrh smlouvy."
 
-#: src/Controller/ContractProposalsController.php:1227
+#: src/Controller/ContractProposalsController.php:1228
 msgid "A customer proposal for this contract proposal could not be created."
 msgstr "Pro tento návrh smlouvy se nepodařilo vytvořit návrh zákazníka."
 
@@ -3681,7 +3681,7 @@ msgstr "Přehledy"
 
 #: src/Model/Enum/LandingPage.php:43
 #: templates/Billings/bulk_service_change.php:17 templates/Settings/index.php:9
-#: templates/layout/default.php:198
+#: templates/layout/default.php:199
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -4307,7 +4307,7 @@ msgstr "Vydáno"
 msgid "Signed"
 msgstr "Podepsáno"
 
-#: src/Proposals/TakingBackTheSending.php:58
+#: src/Proposals/TakingBackTheSending.php:59
 msgid ""
 "The customer has already signed a document from this proposal, so the "
 "sending stands. To agree on something else, revoke this proposal and draw up "
@@ -4316,7 +4316,7 @@ msgstr ""
 "Zákazník už podepsal dokument z tohoto návrhu, a proto odeslání platí. Pokud "
 "se má dohodnout něco jiného, návrh zrušte a vytvořte nový."
 
-#: src/Proposals/TakingBackTheSending.php:66
+#: src/Proposals/TakingBackTheSending.php:67
 msgid ""
 "Only papers handed over in person can be taken back, because papers sent any "
 "other way may already be with the customer. To agree on something else, "
@@ -6087,11 +6087,11 @@ msgstr[1] "Odstranit tyto {0} dokumenty."
 msgstr[2] "Odstranit těchto {0} dokumentů."
 
 #: templates/ContractProposals/recreate.php:135
-msgid "This document will be permanently deleted. Continue?"
-msgid_plural "These {0} documents will be permanently deleted. Continue?"
-msgstr[0] "Tento dokument bude nenávratně odstraněn. Pokračovat?"
-msgstr[1] "Tyto {0} dokumenty budou nenávratně odstraněny. Pokračovat?"
-msgstr[2] "Těchto {0} dokumentů bude nenávratně odstraněno. Pokračovat?"
+msgid "This document will be moved to the trash. Continue?"
+msgid_plural "These {0} documents will be moved to the trash. Continue?"
+msgstr[0] "Tento dokument bude přesunut do koše. Pokračovat?"
+msgstr[1] "Tyto {0} dokumenty budou přesunuty do koše. Pokračovat?"
+msgstr[2] "Těchto {0} dokumentů bude přesunuto do koše. Pokračovat?"
 
 #: templates/ContractProposals/view.php:49
 #: templates/CustomerProposals/view.php:74
@@ -9745,7 +9745,7 @@ msgstr "Celkem"
 
 #: templates/element/Settings/FormFields.php:34
 #: templates/element/Settings/FormFields.php:51
-#: templates/layout/default.php:236
+#: templates/layout/default.php:237
 msgid "Default"
 msgstr "Výchozí"
 
@@ -9863,40 +9863,46 @@ msgstr "Výkazy práce"
 msgid "Files"
 msgstr "Soubory"
 
-#: templates/layout/default.php:208
+#: templates/layout/default.php:209
 msgid "Network Management System"
 msgstr "Systém správy sítě"
 
-#: templates/layout/default.php:238
+#: templates/layout/default.php:239
 #: templates/plugin/Access/Users/user_settings.php:56
 msgid "Light"
 msgstr "Světlý"
 
-#: templates/layout/default.php:239
+#: templates/layout/default.php:240
 #: templates/plugin/Access/Users/user_settings.php:57
 msgid "Dark"
 msgstr "Tmavý"
 
-#: templates/layout/default.php:240
+#: templates/layout/default.php:241
 #: templates/plugin/Access/Users/user_settings.php:58
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: templates/layout/default.php:266
+#: templates/layout/default.php:267
 msgid "Logout"
 msgstr "Odhlášení"
 
-#: templates/layout/default.php:289
+#: templates/layout/default.php:290
 msgid "Changelog"
 msgstr "Seznam změn"
 
-#: templates/layout/default.php:290
+#: templates/layout/default.php:291
 msgid "Source Code"
 msgstr "Zdrojový kód"
 
-#: templates/layout/default.php:292
+#: templates/layout/default.php:293
 msgid "Version"
 msgstr "Verze"
+
+#~ msgid "This document will be permanently deleted. Continue?"
+#~ msgid_plural "These {0} documents will be permanently deleted. Continue?"
+#~ msgstr[0] "Tento dokument bude nenávratně odstraněn. Pokračovat?"
+#~ msgstr[1] "Tyto {0} dokumenty budou nenávratně odstraněny. Pokračovat?"
+#~ msgstr[2] "Těchto {0} dokumentů bude nenávratně odstraněno. Pokračovat?"
 
 #~ msgid ""
 #~ "The Croatian court register. It only answers with the credentials issued "
