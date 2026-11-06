@@ -64,14 +64,14 @@ final class ChangeApplication
         bool $catching_up = false,
     ): void {
         if (!$proposal->hasBeenConcluded()) {
-            throw new RuntimeException('A proposal is not carried over before it has been concluded.');
+            throw new RuntimeException(__('A proposal is not carried over before it has been concluded.'));
         }
 
         $handed_over_on ??= self::handedOverOnByDefault($proposal);
 
         if ($handed_over_on->greaterThan(Date::today())) {
             throw new RuntimeException(
-                'A borrowed equipment cannot be recorded as handed over on a day still to come.',
+                __('A borrowed equipment cannot be recorded as handed over on a day still to come.'),
             );
         }
 
@@ -82,12 +82,12 @@ final class ChangeApplication
             && $handed_over_on->lessThan($proposal->effective_from)
         ) {
             throw new RuntimeException(
-                'Borrowed equipments cannot be exchanged before the day the exchange was drawn up.',
+                __('Borrowed equipments cannot be exchanged before the day the exchange was drawn up.'),
             );
         }
 
         if (!$proposal->isOpen()) {
-            throw new RuntimeException('This proposal has already been settled.');
+            throw new RuntimeException(__('This proposal has already been settled.'));
         }
 
         $proposals = $this->proposals();
@@ -118,7 +118,7 @@ final class ChangeApplication
                     ->firstOrFail();
 
                 if ($current->hasBeenApplied()) {
-                    throw new RuntimeException('This proposal has already been settled.');
+                    throw new RuntimeException(__('This proposal has already been settled.'));
                 }
 
                 $options = [
@@ -214,8 +214,8 @@ final class ChangeApplication
                 // give up on a proposal the customer has signed over a line nobody can write.
                 if (!$ending instanceof Billing) {
                     if (!$leave_out_what_is_gone) {
-                        throw new RuntimeException(sprintf(
-                            'The billing %s this proposal changes is no longer on the contract.',
+                        throw new RuntimeException(__(
+                            'The billing {0} this proposal changes is no longer on the contract.',
                             (string)$line->billing_id,
                         ));
                     }
@@ -287,8 +287,8 @@ final class ChangeApplication
 
                 if ($lent === null) {
                     if (!$leave_out_what_is_gone) {
-                        throw new RuntimeException(sprintf(
-                            'The borrowed equipment %s this proposal ends is no longer on the contract.',
+                        throw new RuntimeException(__(
+                            'The borrowed equipment {0} this proposal ends is no longer on the contract.',
                             (string)$line->borrowed_equipment_id,
                         ));
                     }
@@ -543,7 +543,7 @@ final class ChangeApplication
         }
 
         return $said === []
-            ? 'The billing could not be saved.'
+            ? __('The billing could not be saved.')
             : implode(' ', $said);
     }
 
