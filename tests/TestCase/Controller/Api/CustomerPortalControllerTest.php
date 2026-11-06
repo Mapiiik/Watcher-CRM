@@ -980,4 +980,59 @@ class CustomerPortalControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertSame('unknown', $answer['status']);
     }
+
+    /**
+     * A login spelled with a NUL byte reached the account under a counter of its own, as the
+     * database driver cuts the text there, so a guesser never ran into the limit of the login.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::login()
+     */
+    public function testALoginNobodyCouldHaveTypedReachesNoAccount(): void
+    {
+        $answer = $this->signIn(self::PASSWORD, self::LOGIN . "\0x");
+        $this->assertSame('denied', $answer['status']);
+
+        $answer = $this->signIn(self::PASSWORD, "\xFF");
+        $this->assertSame('denied', $answer['status']);
+    }
+
+    /**
+     * Two spellings of one customer number are one customer, and each request sends an e-mail.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::accessRequest()
+     */
+    public function testAccessRequestsCountByTheCustomer(): void
+    {
+        Cache::clear('default');
+        Settings::set('core.customer_portal.access_requests_per_customer', 3);
+        $number = $this->customerNumber(self::CUSTOMER_ID);
+        foreach (['', '0', '00'] as $zeros) {
+            $this->assertSame('found', $this->requestAccess($zeros . $number, 'customer@example.com', '192.0.2.20')['status']);
+        }
+
+        $answer = $this->requestAccess('000' . $number, 'customer@example.com', '192.0.2.21');
+
+        $this->assertSame('blocked', $answer['status']);
+    }
+
+    /**
+     * Failing to sign in says nothing about asking for a new password, which is what somebody
+     * does next.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::accessRequest()
+     */
+    public function testFailedSignInsDoNotBlockAnAccessRequest(): void
+    {
+        Settings::set('core.customer_portal.access_requests_per_address', 2);
+        foreach (['first', 'second', 'third'] as $login) {
+            $this->signIn('wrong', $login, '192.0.2.30');
+        }
+
+        $answer = $this->requestAccess($this->customerNumber(self::CUSTOMER_ID), 'customer@example.com', '192.0.2.30');
+
+        $this->assertSame('found', $answer['status']);
+    }
 }

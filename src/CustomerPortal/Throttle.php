@@ -24,6 +24,7 @@ final class Throttle
      * @param int $perLogin Failures of one login, any address.
      * @param int $minutes How long failures are remembered and how long a block lasts.
      * @param string $cacheConfig Where the counters are kept.
+     * @param string $scope What is counted, so that failing at one thing does not block another.
      */
     public function __construct(
         private int $perLoginAndAddress,
@@ -31,6 +32,7 @@ final class Throttle
         private int $perLogin,
         private int $minutes,
         private string $cacheConfig = 'default',
+        private string $scope = 'sign_in',
     ) {
     }
 
@@ -160,6 +162,6 @@ final class Throttle
      */
     private function key(string $kind, string $value): string
     {
-        return 'customer_portal_throttle_' . $kind . '_' . hash('sha256', $value);
+        return 'customer_portal_throttle_' . $this->scope . '_' . $kind . '_' . hash('sha256', $value);
     }
 }

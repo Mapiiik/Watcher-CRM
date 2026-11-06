@@ -69,14 +69,18 @@ class CustomerPortalController extends AppController
 
         $throttle = Throttle::fromSettings();
         if ($throttle->blocked($login, $ip)) {
-            Log::notice(sprintf('Customer portal: sign-in of "%s" from %s refused, too many attempts', $login, $ip));
+            Log::notice(sprintf(
+                'Customer portal: sign-in of "%s" from %s refused, too many attempts',
+                self::forLog($login),
+                $ip,
+            ));
             $this->answer(['status' => 'blocked']);
 
             return;
         }
 
         $logins = $this->fetchTable('Logins');
-        $record = $logins->find()
+        $record = !self::isTyped($login) ? null : $logins->find()
             ->contain(['Customers'])
             ->where(['Logins.login' => $login])
             ->first();
@@ -90,7 +94,7 @@ class CustomerPortalController extends AppController
             if ($record instanceof Login) {
                 $logins->updateAll(['last_denied' => DateTime::now(), 'last_denied_ip' => $ip], ['id' => $record->id]);
             }
-            Log::notice(sprintf('Customer portal: sign-in of "%s" from %s denied', $login, $ip));
+            Log::notice(sprintf('Customer portal: sign-in of "%s" from %s denied', self::forLog($login), $ip));
             $this->answer(['status' => 'denied']);
 
             return;
@@ -250,21 +254,35 @@ class CustomerPortalController extends AppController
         }
 
         $perCustomer = Throttle::setting('access_requests_per_customer', 3);
-        $throttle = new Throttle($perCustomer, Throttle::setting('access_requests_per_address', 10), $perCustomer, 60);
-        // every request counts, as each sends an e-mail
-        $key = 'access-request|' . $number;
+        $throttle = new Throttle(
+            $perCustomer,
+            Throttle::setting('access_requests_per_address', 10),
+            $perCustomer,
+            60,
+            scope: 'access_request',
+        );
+        $customer = self::isTyped($number) ? $this->customerByNumber($number) : null;
+        // every request counts, as each sends an e-mail, and a customer is one however it is spelled
+        $key = 'access-request|' . ($customer->id ?? $number);
         if ($throttle->blocked($key, $ip)) {
-            Log::notice(sprintf('Customer portal: access request for %s from %s refused, too many', $number, $ip));
+            Log::notice(sprintf(
+                'Customer portal: access request for %s from %s refused, too many',
+                self::forLog($number),
+                $ip,
+            ));
             $this->answer(['status' => 'blocked']);
 
             return;
         }
         $throttle->failed($key, $ip);
 
-        $customer = $this->customerByNumber($number);
         $links = new AccessLinks();
-        if (!$customer instanceof Customer || !$links->isEmailOf($customer->id, $email)) {
-            Log::notice(sprintf('Customer portal: access request for %s from %s, no such pair', $number, $ip));
+        if (!$customer instanceof Customer || !self::isTyped($email) || !$links->isEmailOf($customer->id, $email)) {
+            Log::notice(sprintf(
+                'Customer portal: access request for %s from %s, no such pair',
+                self::forLog($number),
+                $ip,
+            ));
             $this->answer(['status' => 'unknown']);
 
             return;
@@ -516,6 +534,29 @@ class CustomerPortalController extends AppController
         }
 
         return $login;
+    }
+
+    /**
+     * Whether text is something a person could have typed. A NUL byte makes the database driver
+     * cut the text, and text that is not UTF-8 makes the database refuse the question.
+     *
+     * @param string $text The text.
+     * @return bool
+     */
+    private static function isTyped(string $text): bool
+    {
+        return preg_match('/^\P{C}+$/u', $text) === 1;
+    }
+
+    /**
+     * Text as it may go into a log, where a line break would start a line of its own.
+     *
+     * @param string $text The text.
+     * @return string
+     */
+    private static function forLog(string $text): string
+    {
+        return addcslashes($text, "\0..\37\177");
     }
 
     /**
