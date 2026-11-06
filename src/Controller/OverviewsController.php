@@ -215,7 +215,7 @@ class OverviewsController extends AppController
 
         // filter by registry address
         $registryAddressId = $this->getRequest()->getQuery('registry_address_id');
-        if (is_string($registryAddressId)) {
+        if (is_string($registryAddressId) && str_contains($registryAddressId, '|')) {
             // expect format "source|reference", e.g. "cz|12345678"
             [
                 $address_registry_source,

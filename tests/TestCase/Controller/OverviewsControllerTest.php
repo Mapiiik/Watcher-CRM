@@ -13,6 +13,7 @@ use Cake\I18n\Date;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -70,6 +71,26 @@ class OverviewsControllerTest extends TestCase
         // the whole table of historical connections is reachable from here, there is
         // nowhere else to get at it outside a single customer or contract
         $this->assertResponseContains('/historical-connections');
+    }
+
+    /**
+     * The filter form sends every one of its fields, so a change to any filter arrives with the
+     * address left empty, and a value in no known shape is no filter either.
+     *
+     * @param string $query What the form sends.
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContracts()
+     */
+    #[TestWith(['registry_address_id='])]
+    #[TestWith(['registry_address_id=nonsense'])]
+    #[TestWith(['registry_address_id=cz|12345678'])]
+    public function testOverviewOfContractsTakesWhatTheFilterFormSends(string $query): void
+    {
+        $this->login();
+
+        $this->get('/overviews/overview-of-contracts?' . $query);
+
+        $this->assertResponseOk();
     }
 
     /**
