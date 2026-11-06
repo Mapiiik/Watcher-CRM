@@ -1124,4 +1124,37 @@ class TasksControllerTest extends TestCase
 
         return (string)$users->saveOrFail($person)->get('id');
     }
+
+    /**
+     * The form asks for a contract only of a customer, so taking the customer away takes the
+     * contract with it.
+     *
+     * @return void
+     * @link \App\Controller\TasksController::edit()
+     */
+    public function testATaskLosingItsCustomerLosesTheContract(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $taskId = $this->firstId('Tasks');
+        $tasks = $this->getTableLocator()->get('Tasks');
+        $tasks->updateAll(
+            ['customer_id' => $this->firstId('Customers'), 'contract_id' => $this->firstId('Contracts')],
+            ['id' => $taskId],
+        );
+
+        $this->getTableLocator()->get('TaskTypes')->updateAll(
+            ['customer_required' => false, 'contract_required' => false],
+            ['1 = 1'],
+        );
+
+        $this->post('/tasks/edit/' . $taskId, ['customer_id' => '']);
+
+        $this->assertRedirect();
+        $task = $tasks->get($taskId);
+        $this->assertNull($task->customer_id);
+        $this->assertNull($task->contract_id);
+    }
 }

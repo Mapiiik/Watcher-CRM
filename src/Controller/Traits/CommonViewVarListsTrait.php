@@ -124,9 +124,14 @@ trait CommonViewVarListsTrait
     /**
      * Set the `accessPoints` view var from the NMS API.
      *
-     * Falls back to an empty list + Flash warning when NMS is unreachable.
+     * Falls back to a Flash warning when NMS is unreachable. What a record already holds stays on
+     * offer whatever the list says, or saving the form would take it away without a word.
+     *
+     * @param bool $onlyActive Whether to leave out what has been archived.
+     * @param string|null $keep The access point the record holds.
+     * @return void
      */
-    protected function setAccessPointsViewVarList(bool $onlyActive = false): void
+    protected function setAccessPointsViewVarList(bool $onlyActive = false, ?string $keep = null): void
     {
         // load access points from NMS if possible (only active)
         $accessPoints = NMSApiClient::getAccessPointsList(onlyActive: $onlyActive);
@@ -135,15 +140,28 @@ trait CommonViewVarListsTrait
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
         }
 
-        $this->set('accessPoints', $accessPoints->or([]));
+        $list = $accessPoints->or([]);
+        if ($keep !== null && $keep !== '' && !isset($list[$keep])) {
+            $all = NMSApiClient::getAccessPointsList()->or([]);
+            if (isset($all[$keep]) || !$accessPoints->ok()) {
+                $list[$keep] = $all[$keep] ?? $keep;
+            }
+        }
+
+        $this->set('accessPoints', $list);
     }
 
     /**
      * Set the `accessPoints` view var from the NMS API.
      *
-     * Falls back to an empty list + Flash warning when NMS is unreachable.
+     * Falls back to a Flash warning when NMS is unreachable. What a record already holds stays on
+     * offer whatever the list says, or saving the form would take it away without a word.
+     *
+     * @param bool $onlyActive Whether to leave out what has been archived.
+     * @param string|null $keep The access point the record holds.
+     * @return void
      */
-    protected function setAccessPointsViewVarListWithRanges(bool $onlyActive = false): void
+    protected function setAccessPointsViewVarListWithRanges(bool $onlyActive = false, ?string $keep = null): void
     {
         // load access points with ranges from NMS if possible
         $accessPointsAnswer = NMSApiClient::getAccessPoints();
@@ -151,7 +169,9 @@ trait CommonViewVarListsTrait
 
         if (!$accessPointsAnswer->ok() || !$rangesAnswer->ok()) {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
-            $this->set('accessPoints', []);
+            $this->set('accessPoints', $keep === null || $keep === '' ? [] : [
+                ['value' => $keep, 'text' => $keep, 'style' => null],
+            ]);
 
             return;
         }
@@ -160,7 +180,9 @@ trait CommonViewVarListsTrait
         $ranges = $rangesAnswer->data;
 
         $this->set('accessPoints', $accessPointsAnswer->data
-            ->filter(fn(AccessPoint $accessPoint): bool => !$onlyActive || !$accessPoint->isArchived())
+            ->filter(fn(AccessPoint $accessPoint): bool => !$onlyActive
+                || !$accessPoint->isArchived()
+                || $accessPoint->id === $keep)
             ->map(function (AccessPoint $accessPoint) use ($ranges): array {
                 $text = (string)$accessPoint->name
                     . ($accessPoint->isArchived() ? ' (' . __('archived') . ')' : '');

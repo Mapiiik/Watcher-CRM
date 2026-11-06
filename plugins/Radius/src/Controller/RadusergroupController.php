@@ -112,7 +112,10 @@ class RadusergroupController extends AppController
             order: [
                 'groupname',
             ],
-        );
+        )->toArray();
+        // a group without reply attributes is still the group of the account
+        $groupnames[$radusergroup->groupname] = $radusergroup->groupname;
+        ksort($groupnames, SORT_NATURAL | SORT_FLAG_CASE);
         $this->set(compact('radusergroup', 'accounts', 'groupnames'));
 
         return null;

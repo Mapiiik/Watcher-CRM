@@ -66,13 +66,24 @@ class WorkReportWorkersController extends AppController
         /** @var \App\Model\Table\UsersTable $users */
         $users = $this->fetchTable('Users');
 
-        $people = $this->usersForSelect($users->find('holdingTasks'));
+        // what the row already holds stays on offer, or saving it would hand it to somebody else
+        $record = $this->viewBuilder()->getVar('record');
+        $people = $this->usersForSelect($users->find()->where(['OR' => [
+            'Users.holds_tasks' => true,
+            'Users.id IS' => $record?->get('user_id'),
+        ]]));
         $privateCars = $this->WorkReportWorkers->DefaultPrivateCars->find('list')
-            ->where(['DefaultPrivateCars.owner_id IS NOT' => null, 'DefaultPrivateCars.active' => true])
+            ->where(['DefaultPrivateCars.owner_id IS NOT' => null, 'OR' => [
+                'DefaultPrivateCars.active' => true,
+                'DefaultPrivateCars.id IS' => $record?->get('default_private_car_id'),
+            ]])
             ->contain(['Owners']);
         $companyCars = $this->WorkReportWorkers->DefaultCompanyCars->find('company')
             ->find('list')
-            ->where(['DefaultCompanyCars.active' => true]);
+            ->where(['OR' => [
+                'DefaultCompanyCars.active' => true,
+                'DefaultCompanyCars.id IS' => $record?->get('default_company_car_id'),
+            ]]);
 
         $this->set(compact('people', 'privateCars', 'companyCars'));
     }

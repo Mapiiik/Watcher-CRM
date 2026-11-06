@@ -42,8 +42,10 @@ class WorkCarsController extends AppController
         // a private car belongs to whoever reports work with it
         /** @var \WorkReports\Model\Table\WorkReportWorkersTable $workers */
         $workers = $this->fetchTable('WorkReports.WorkReportWorkers');
+        // whoever owns the car stays on offer after leaving, an empty owner means a company car
+        $owner = $this->viewBuilder()->getVar('record')?->get('owner_id');
         $this->set('owners', $this->usersForSelect(
-            $users->find()->where(['Users.id IN' => $workers->activeIds()]),
+            $users->find()->where(['OR' => ['Users.id IN' => $workers->activeIds(), 'Users.id IS' => $owner]]),
         ));
     }
 }

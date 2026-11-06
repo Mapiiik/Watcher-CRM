@@ -8,6 +8,7 @@ use Cake\Http\Response;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use PhpCollective\DecimalObject\Decimal;
+use WorkReports\Model\Entity\WorkLabel;
 use WorkReports\Model\Entity\WorkReportItem;
 
 /**
@@ -277,8 +278,11 @@ class WorkReportItemsController extends AppController
             ->where(['OR' => ['CompanyCars.active' => true, 'CompanyCars.id IS' => $item->company_car_id]]);
         $workRates = $table->WorkRates->find('list', order: ['code'])
             ->where(['OR' => ['WorkRates.active' => true, 'WorkRates.id IS' => $item->work_rate_id]]);
+        $labelIds = array_map(fn(WorkLabel $label): string => $label->id, $item->work_labels ?? []);
         $workLabels = $table->WorkLabels->find('list', order: ['name'])
-            ->where(['WorkLabels.active' => true]);
+            ->where($labelIds === []
+                ? ['WorkLabels.active' => true]
+                : ['OR' => ['WorkLabels.active' => true, 'WorkLabels.id IN' => $labelIds]]);
 
         /** @var \App\Model\Table\UsersTable $users */
         $users = $this->fetchTable('Users');
@@ -303,6 +307,6 @@ class WorkReportItemsController extends AppController
             'collaborators',
         ));
 
-        $this->setAccessPointsViewVarList(onlyActive: true);
+        $this->setAccessPointsViewVarList(onlyActive: true, keep: $item->access_point_id);
     }
 }

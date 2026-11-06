@@ -207,4 +207,75 @@ class PagesRenderTest extends TestCase
             'item' => $item->id,
         ];
     }
+
+    /**
+     * What a record holds stays on offer after it is no longer among what is offered to new ones,
+     * or saving the form would take it away or hand it to somebody else.
+     *
+     * @return void
+     */
+    public function testAFormKeepsWhatItsRecordHolds(): void
+    {
+        $seeded = $this->seed();
+        $locator = $this->getTableLocator();
+
+        $users = $locator->get('Users');
+        $other = $users->newEmptyEntity();
+        $other->patch([
+            'username' => 'other',
+            'nid' => 2,
+            'email' => 'other@example.com',
+            'role' => 'user',
+            'active' => true,
+            'holds_tasks' => false,
+        ], ['guard' => false]);
+        $other->set('password', 'secret', ['setter' => false]);
+        $users->saveOrFail($other, ['validate' => false, 'checkRules' => false]);
+
+        // a worker with no tasks to hold, and a company car taken out of use
+        $locator->get('WorkReports.WorkReportWorkers')->updateAll(
+            ['user_id' => $other->id],
+            ['id' => $seeded['work-report-workers']],
+        );
+        $locator->get('WorkReports.WorkCars')->updateAll(['active' => false], ['id' => $seeded['work-cars']]);
+        $this->get('/work-reports/work-report-workers/edit/' . $seeded['work-report-workers']);
+        $this->assertResponseOk();
+        $this->assertContains($other->id, array_column((array)$this->viewVariable('people'), 'value'));
+        $this->assertArrayHasKey($seeded['work-cars'], $this->viewVariable('companyCars')->toArray());
+
+        // an owner who has left
+        $locator->get('WorkReports.WorkCars')->updateAll(['owner_id' => $other->id], ['id' => $seeded['work-cars']]);
+        $locator->get('WorkReports.WorkReportWorkers')->updateAll(['active' => false], ['user_id' => $other->id]);
+        $this->get('/work-reports/work-cars/edit/' . $seeded['work-cars']);
+        $this->assertResponseOk();
+        $this->assertContains($other->id, array_column((array)$this->viewVariable('owners'), 'value'));
+
+        // a label switched off, on an item of somebody who reports work
+        $locator->get('WorkReports.WorkReportWorkers')->updateAll(
+            ['user_id' => self::WORKER, 'active' => true],
+            ['id' => $seeded['work-report-workers']],
+        );
+        $locator->get('WorkReports.WorkLabels')->updateAll(['active' => false], ['id' => $seeded['work-labels']]);
+        $this->get('/work-reports/work-report-items/edit/' . $seeded['item']);
+        $this->assertResponseOk();
+        $this->assertArrayHasKey($seeded['work-labels'], $this->viewVariable('workLabels')->toArray());
+    }
+
+    /**
+     * The form asks for a contract and a task only of a customer, so taking the customer away
+     * takes them with it, the fields being gone from the form.
+     *
+     * @return void
+     */
+    public function testAnItemLosingItsCustomerLosesTheContractAndTheTask(): void
+    {
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $item = $items->newEmptyEntity();
+        $item->patch(['contract_id' => 'c1000000-0000-4000-8000-000000000001', 'task_id' => 't'], ['guard' => false]);
+
+        $items->patchEntity($item, ['customer_id' => '']);
+
+        $this->assertNull($item->get('contract_id'));
+        $this->assertNull($item->get('task_id'));
+    }
 }

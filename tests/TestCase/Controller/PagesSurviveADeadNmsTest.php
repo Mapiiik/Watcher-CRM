@@ -223,4 +223,40 @@ class PagesSurviveADeadNmsTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseNotContains('warning-text');
     }
+
+    /**
+     * A form drawn without the list still holds what the record has. It would otherwise send an
+     * empty value back, and saving would take the access point away under the warning.
+     *
+     * @return void
+     * @link \App\Controller\Traits\CommonViewVarListsTrait::setAccessPointsViewVarListWithRanges()
+     */
+    public function testAFormKeepsTheAccessPointItCouldNotList(): void
+    {
+        $contractId = $this->firstId('Contracts');
+        $accessPointId = $this->getTableLocator()->get('Contracts')->get($contractId)->access_point_id;
+
+        $this->get('/contracts/edit/' . $contractId);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<option value="' . $accessPointId . '" selected="selected"');
+    }
+
+    /**
+     * The same on a form listing the access points without their ranges.
+     *
+     * @return void
+     * @link \App\Controller\Traits\CommonViewVarListsTrait::setAccessPointsViewVarList()
+     */
+    public function testATaskKeepsTheAccessPointItCouldNotList(): void
+    {
+        $taskId = $this->firstId('Tasks');
+        $accessPointId = 'a1000000-0000-4000-8000-000000000001';
+        $this->getTableLocator()->get('Tasks')->updateAll(['access_point_id' => $accessPointId], ['id' => $taskId]);
+
+        $this->get('/tasks/edit/' . $taskId);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<option value="' . $accessPointId . '" selected="selected"');
+    }
 }

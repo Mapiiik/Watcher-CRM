@@ -633,6 +633,10 @@ class TasksController extends AppController
         $task = $this->Tasks->get($id, contain: ['Collaborators']);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $task = $this->Tasks->patchEntity($task, $this->getRequest()->getData());
+            // the form asks for a contract only of a customer, so it cannot say this itself
+            if ($task->customer_id === null) {
+                $task->contract_id = null;
+            }
 
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
@@ -700,7 +704,7 @@ class TasksController extends AppController
         $this->set(compact('task', 'taskTypes', 'customers', 'contracts', 'users', 'taskStates'));
 
         // load access points from NMS if possible
-        $this->setAccessPointsViewVarList(onlyActive: false);
+        $this->setAccessPointsViewVarList(onlyActive: false, keep: $task->access_point_id);
 
         return null;
     }

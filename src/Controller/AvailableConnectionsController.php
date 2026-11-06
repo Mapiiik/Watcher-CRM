@@ -239,7 +239,7 @@ class AvailableConnectionsController extends AppController
         $this->set('registrySources', $this->registrySources());
         $this->set('searchCountryCode', $availableConnection->address_registry_source
             ?? (string)array_key_first($this->registrySources()));
-        $this->setAccessPointsViewVarList(onlyActive: true);
+        $this->setAccessPointsViewVarList(onlyActive: true, keep: $availableConnection->access_point_id);
 
         return null;
     }

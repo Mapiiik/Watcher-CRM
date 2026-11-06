@@ -497,7 +497,7 @@ class ContractsController extends AppController
         ));
 
         // load access points with ranges from NMS if possible
-        $this->setAccessPointsViewVarListWithRanges(onlyActive: false);
+        $this->setAccessPointsViewVarListWithRanges(onlyActive: false, keep: $contract->access_point_id);
 
         return null;
     }

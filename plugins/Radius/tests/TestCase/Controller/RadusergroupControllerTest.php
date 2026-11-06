@@ -103,4 +103,23 @@ class RadusergroupControllerTest extends TestCase
 
         $this->assertRedirect();
     }
+
+    /**
+     * A group with no reply attributes is still the one the account is in. Left out of the list,
+     * saving a change of the priority would move the account to the first group on it.
+     *
+     * @return void
+     * @link \Radius\Controller\RadusergroupController::edit()
+     */
+    public function testEditOffersTheGroupTheAccountIsIn(): void
+    {
+        $this->login();
+        $id = $this->firstId('Radius.Radusergroup');
+        $this->getTableLocator()->get('Radius.Radusergroup')->updateAll(['groupname' => 'Individual'], ['id' => $id]);
+
+        $this->get('/radius/radusergroup/edit/' . $id);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('<option value="Individual" selected="selected"');
+    }
 }

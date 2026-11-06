@@ -134,6 +134,12 @@ class WorkReportItemsTable extends AppTable
      */
     public function beforeMarshal(EventInterface $event, ArrayObject $data, ArrayObject $options): void
     {
+        // the form asks for a contract and a task only of a customer, so it cannot say this itself
+        if ($data->offsetExists('customer_id') && in_array($data['customer_id'], [null, ''], true)) {
+            $data['contract_id'] = null;
+            $data['task_id'] = null;
+        }
+
         // a type that allows one way of stating the time only needs no saying which
         $typeId = $data['work_report_item_type_id'] ?? null;
         if (is_string($typeId) && $typeId !== '') {
