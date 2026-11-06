@@ -54,6 +54,9 @@ class AccountsTable extends AppTable
         $this->setDisplayField('username');
         $this->setPrimaryKey('id');
 
+        // the audit log says that a password changed, never what it is now
+        $this->getBehavior('AuditLog')->setConfig('sensitive', ['password']);
+
         $this->getSchema()->setColumnType(
             'type',
             EnumType::from(AccountType::class),

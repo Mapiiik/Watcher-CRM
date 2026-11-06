@@ -44,6 +44,9 @@ class RadcheckTable extends AppTable
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        // a check may be a password, and the attribute says which it is only in some entries
+        $this->getBehavior('AuditLog')->setConfig('sensitive', ['value']);
+
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');

@@ -49,9 +49,9 @@
         <tr>
             <?= $this->element('Radius.Accounts/UpdateRelatedRecordsSummaryCells', ['change' => $change]) ?>
             <td><pre><?= $change->getRadcheckChange() ?
-                h(json_encode($change->getRadcheckChange()->getOriginal(), JSON_PRETTY_PRINT)) : '' ?></pre></td>
+                h(json_encode($change->getRadcheckChange()->originalToRead(), JSON_PRETTY_PRINT)) : '' ?></pre></td>
             <td><pre><?= $change->getRadcheckChange() ?
-                h(json_encode($change->getRadcheckChange()->getChanged(), JSON_PRETTY_PRINT)) : '' ?></pre></td>
+                h(json_encode($change->getRadcheckChange()->changedToRead(), JSON_PRETTY_PRINT)) : '' ?></pre></td>
             <td><pre><?= $change->getRadreplyChange() ?
                 h(json_encode($change->getRadreplyChange()->getOriginal(), JSON_PRETTY_PRINT)) : '' ?></pre></td>
             <td><pre><?= $change->getRadreplyChange() ?

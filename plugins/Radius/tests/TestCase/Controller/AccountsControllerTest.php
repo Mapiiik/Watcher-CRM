@@ -10,6 +10,7 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Radius\Controller\AccountsController;
+use Radius\Updater\ChangeLog\RadcheckChange;
 
 /**
  * Radius\Controller\AccountsController Test Case
@@ -374,6 +375,28 @@ class AccountsControllerTest extends TestCase
 
         $this->assertTrue($this->fetchTable('Contracts')->exists(['id' => $contractId]));
         $this->assertStringContainsString('still has a RADIUS account', $this->messagesLeft());
+    }
+
+    /**
+     * The overview of what changed, which also goes out by e-mail, says that a password changed
+     * and never what it is. The audit log the same.
+     *
+     * @return void
+     * @link \Radius\Updater\ChangeLog\RadcheckChange::changedToRead()
+     */
+    public function testAPasswordIsNotWrittenOutWhereChangesAreRead(): void
+    {
+        $check = $this->fetchTable('Radius.Radcheck')->newEmptyEntity();
+        $check->patch(['attribute' => 'Cleartext-Password', 'op' => ':=', 'value' => 'The password'], ['guard' => false]);
+        $other = $this->fetchTable('Radius.Radcheck')->newEmptyEntity();
+        $other->patch(['attribute' => 'Auth-Type', 'op' => ':=', 'value' => 'Reject'], ['guard' => false]);
+
+        $rows = (new RadcheckChange([$check, $other], []))->originalToRead();
+
+        $this->assertSame('****', $rows[0]['value']);
+        $this->assertSame('Reject', $rows[1]['value']);
+        $this->assertSame(['value'], $this->fetchTable('Radius.Radcheck')->getBehavior('AuditLog')->getConfig('sensitive'));
+        $this->assertSame(['password'], $this->fetchTable('Radius.Accounts')->getBehavior('AuditLog')->getConfig('sensitive'));
     }
 
     /**

@@ -41,6 +41,9 @@ class NasTable extends AppTable
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        // the audit log says that a secret changed, never what it is now
+        $this->getBehavior('AuditLog')->setConfig('sensitive', ['secret']);
+
         $this->addBehavior('Timestamp');
         $this->addBehavior('Footprint');
         $this->addBehavior('StringModifications');
