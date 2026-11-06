@@ -14,11 +14,9 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
-use Cake\Utility\Text;
 use Override;
 use PDO;
 use PDOException;
-use SplObjectStorage;
 use Throwable;
 
 /**
@@ -155,14 +153,7 @@ class UpdateCustomerLabelsCommand extends Command
                     if (
                         $labelsTable->CustomerLabels->saveMany(
                             $label->customer_labels,
-                            [
-                                // saveMany audit options kept intentionally:
-                                // - mapiiik/audit-log (5.x, 6.x) logs nothing without them
-                                // - even audit-stash 2.0.1+ groups the batch under one transaction id only
-                                //   when they're passed (otherwise each record gets its own)
-                                '_auditQueue' => new SplObjectStorage(),
-                                '_auditTransaction' => Text::uuid(),
-                            ],
+                            AuditTrail::batchOptions(),
                         ) === false
                     ) {
                         Log::error('The related dynamic customer labels could not be saved. Please, try again.');

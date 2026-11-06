@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\Billing;
 use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
@@ -12,9 +13,7 @@ use App\Model\Table\BillingsTable;
 use App\Model\Table\CustomerMessagesTable;
 use App\Utility\ServiceChangeMessageBuilder;
 use Cake\ORM\Locator\LocatorAwareTrait;
-use Cake\Utility\Text;
 use Settings\Utility\Settings;
-use SplObjectStorage;
 
 /**
  * Moves a billing to another service: the old one ends the day before and a new one takes over.
@@ -85,14 +84,7 @@ final class BillingServiceChange
                 $original,
                 $newBilling,
             ],
-            $saveOptions + [
-                // saveMany audit options kept intentionally:
-                // - mapiiik/audit-log (5.x, 6.x) logs nothing without them
-                // - even audit-stash 2.0.1+ groups the batch under one transaction id only
-                //   when they're passed (otherwise each record gets its own)
-                '_auditQueue' => new SplObjectStorage(),
-                '_auditTransaction' => Text::uuid(),
-            ],
+            $saveOptions + AuditTrail::batchOptions(),
         );
 
         if ($saved === false) {

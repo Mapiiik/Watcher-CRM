@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Model\Audit\AuditTrail;
 use App\Phones\Formatter as PhoneFormatter;
 use Cake\Http\Response;
-use Cake\Utility\Text;
-use SplObjectStorage;
 
 /**
  * Phones Controller
@@ -212,14 +211,7 @@ class PhonesController extends AppController
         if (
             $this->Phones->saveMany(
                 $phones,
-                [
-                    // saveMany audit options kept intentionally:
-                    // - mapiiik/audit-log (5.x, 6.x) logs nothing without them
-                    // - even audit-stash 2.0.1+ groups the batch under one transaction id only
-                    //   when they're passed (otherwise each record gets its own)
-                    '_auditQueue' => new SplObjectStorage(),
-                    '_auditTransaction' => Text::uuid(),
-                ],
+                AuditTrail::batchOptions(),
             ) === false
         ) {
             $this->Flash->error(

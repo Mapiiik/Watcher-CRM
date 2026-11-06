@@ -7,6 +7,7 @@ use App\BulkMessages\BulkRecipientFilterRegistry;
 use App\BulkMessages\BulkRecipients;
 use App\BulkMessages\BulkSendSummary;
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\CustomerMessage;
 use App\Model\Enum\CustomerMessageBodyFormat;
 use App\Model\Enum\CustomerMessageDeliveryStatus;
@@ -17,9 +18,7 @@ use App\NMS\ApiClient as NMSApiClient;
 use Cake\Http\Response;
 use Cake\Http\Session;
 use Cake\Log\Log;
-use Cake\Utility\Text;
 use Settings\Utility\Settings;
-use SplObjectStorage;
 use Throwable;
 
 /**
@@ -387,14 +386,7 @@ class CustomerMessagesController extends AppController
 
         $saved = (bool)$this->CustomerMessages->saveMany(
             $customerMessages,
-            [
-                // saveMany audit options kept intentionally:
-                // - mapiiik/audit-log (5.x, 6.x) logs nothing without them
-                // - even audit-stash 2.0.1+ groups the batch under one transaction id only
-                //   when they're passed (otherwise each record gets its own)
-                '_auditQueue' => new SplObjectStorage(),
-                '_auditTransaction' => Text::uuid(),
-            ],
+            AuditTrail::batchOptions(),
         );
 
         if (!$saved) {
