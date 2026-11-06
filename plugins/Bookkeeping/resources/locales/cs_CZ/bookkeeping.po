@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-02 20:34+0100\n"
+"POT-Creation-Date: 2026-11-06 03:09+0100\n"
 "PO-Revision-Date: 2026-08-26 13:21+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -225,7 +225,7 @@ msgstr "Chyba při interpretaci času poslední synchronizace ze souboru: {0}"
 msgid "Error saving last synchronization time to file: {0}"
 msgstr "Chyba při ukládání času poslední synchronizace do souboru: {0}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:103
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:112
 msgid ""
 "Send only a notification of an overdue claims (within the allowed payment "
 "delay)."
@@ -233,7 +233,7 @@ msgstr ""
 "Odeslat pouze oznámení o pohledávce po splatnosti (v rámci povoleného "
 "zpoždění platby)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:111
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:120
 msgid ""
 "Send only a notification of blocking (or continuing debt for services no "
 "longer active) for overdue claims (after an allowed delay in payment)."
@@ -242,7 +242,7 @@ msgstr ""
 "již nejsou aktivní) u pohledávek po splatnosti (po povoleném zpoždění "
 "platby)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:120
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:129
 msgid ""
 "Automatically update the blocking of debtors in systems (routers, firewalls, "
 "IPTV, ...)."
@@ -250,19 +250,36 @@ msgstr ""
 "Automatická aktualizace blokování dlužníků v systémech (routery, firewally, "
 "IPTV, ...)."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:128
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:137
 msgid "Do not send emails, the operation will be skipped."
 msgstr "Neodesílat e-maily, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:133
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:142
 msgid "Do not send SMS, the operation will be skipped."
 msgstr "Neodesílat SMS, operace bude přeskočena."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:153
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:162
 msgid "Debtor notifications are globally disabled by settings."
 msgstr "Oznámení dlužníkům jsou globálně deaktivována v nastavení."
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:211
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:220
+#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:244
+msgid "Done"
+msgstr "Hotovo"
+
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:226
+msgid "Error during debtor processing: {0}"
+msgstr "Chyba při zpracování dlužníků: {0}"
+
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:233
+msgid "Debtor processing failed"
+msgstr "Zpracování dlužníků se nezdařilo"
+
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:234
+msgid "Debtor processing failed."
+msgstr "Zpracování dlužníků se nezdařilo."
+
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:266
 msgid ""
 "Notification email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -270,7 +287,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:231
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:281
 msgid ""
 "Notification SMS has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -278,7 +295,7 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:258
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:312
 msgid ""
 "Blocking email has been generated for customer {customer_number}, "
 "recipients: {recipients}"
@@ -286,7 +303,7 @@ msgstr ""
 "Byl vygenerován blokovací e-mail pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:269
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:318
 msgid ""
 "Notification email has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -294,7 +311,7 @@ msgstr ""
 "Byl vygenerován oznamovací e-mail pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:290
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:335
 msgid ""
 "Blocking SMS has been generated for customer {customer_number}, recipients: "
 "{recipients}"
@@ -302,7 +319,7 @@ msgstr ""
 "Byla vygenerována blokovací SMS pro zákazníka {customer_number}, příjemci: "
 "{recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:301
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:341
 msgid ""
 "Notification SMS has been generated for inactive services for customer "
 "{customer_number}, recipients: {recipients}"
@@ -310,22 +327,20 @@ msgstr ""
 "Byla vygenerována notifikační SMS pro neaktivní služby pro zákazníka "
 "{customer_number}, příjemci: {recipients}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:314
-#: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:244
-msgid "Done"
-msgstr "Hotovo"
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:383
+msgid "Customer {0}, invoice {1}: {2}"
+msgstr "Zákazník {0}, faktura {1}: {2}"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:320
-msgid "Error during debtor processing: {0}"
-msgstr "Chyba při zpracování dlužníků: {0}"
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:411
+msgid "Debtors left without a message"
+msgstr "Dlužníci bez zprávy"
 
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:327
-msgid "Debtor processing failed"
-msgstr "Zpracování dlužníků se nezdařilo"
-
-#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:328
-msgid "Debtor processing failed."
-msgstr "Zpracování dlužníků se nezdařilo."
+#: plugins/Bookkeeping/src/Command/ProcessDebtorsCommand.php:412
+msgid ""
+"These customers got no message, because the PDF of an invoice could not be "
+"had:"
+msgstr ""
+"Tito zákazníci nedostali zprávu, protože PDF faktury nebylo k dispozici:"
 
 #: plugins/Bookkeeping/src/Command/SendIssuedInvoicesCommand.php:101
 msgid "Number of emails to process."
@@ -461,27 +476,24 @@ msgstr "Zákazník byl odeslán do účetnictví."
 msgid "The customer could not be sent to the accounting system: {0}"
 msgstr "Zákazníka se nepodařilo odeslat do účetnictví: {0}"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:95
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:96
 msgid "Nothing has changed."
 msgstr "Nic se nezměnilo."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:107
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:108
 msgid "{0} failed"
 msgstr "{0} selhala"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:116
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:117
 msgid "Unknown error."
 msgstr "Neznámá chyba."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:182
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:183
 msgid "Debtors data is not available."
 msgstr "Údaje o dlužnících nejsou k dispozici."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:327
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:381
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:436
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:488
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:548
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:353
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:420
 msgid ""
 "Debtor blocking is globally disabled by settings. No external systems were "
 "modified."
@@ -489,78 +501,71 @@ msgstr ""
 "Blokování dlužníků je globálně deaktivováno v nastavení. Žádné externí "
 "systémy nebyly upraveny."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:336
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:390
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:362
 msgid "Customer ID of the debtor must be provided."
 msgstr "Je nutné uvést identifikační číslo dlužníka."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:355
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:409
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:461
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:513
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:598
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:385
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:457
 msgid "SledovaniTV blocking update"
 msgstr "Aktualizace blokace SledovaniTV"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:366
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:420
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:472
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:524
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:609
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:396
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:468
 msgid "Routers blocking update"
 msgstr "Aktualizace blokace routerů"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:567
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:676
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:783
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:492
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:561
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:695
 msgid "debtor"
 msgstr "dlužník"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:641
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:526
 msgid "blocked state"
 msgstr "blokovaný stav"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1055
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:969
 msgid "RouterOS device {0}: {1}"
 msgstr "RouterOS zařízení {0}: {1}"
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1059
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:973
 msgid "Watcher Agent is not configured."
 msgstr "Watcher Agent není nakonfigurován."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1089
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1003
 msgid "Added IPv6 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv6 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1096
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1010
 msgid "Added IPv4 record {0} ({1}) to router {2}."
 msgstr "Přidán záznam IPv4 {0} ({1}) do směrovače {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1108
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1022
 msgid "Updated IPv6 record {0} ({1}) on router {2}."
 msgstr "Upraven záznam IPv6 {0} ({1}) na směrovači {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1115
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1029
 msgid "Updated IPv4 record {0} ({1}) on router {2}."
 msgstr "Upraven záznam IPv4 {0} ({1}) na směrovači {2}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1127
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1041
 msgid "Removed IPv6 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv6 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1128
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1042
 msgid "Removed IPv4 record {0} from router {1}."
 msgstr "Odstraněn záznam IPv4 {0} ze směrovače {1}."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1151
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1065
 msgid "SledovaniTV is not configured."
 msgstr "SledovaniTV není nakonfigurováno."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1213
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1127
 msgid "SledovaniTV - Suspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Pozastavený uživatel s ID: {0} (ID partnera: {1})."
 
-#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1219
+#: plugins/Bookkeeping/src/Debtors/DebtorsProcessor.php:1133
 msgid "SledovaniTV - Unsuspended user with ID: {0} (partner ID: {1})."
 msgstr "SledovaniTV - Aktivovaný uživatel s ID: {0} (ID partnera: {1})."
 
