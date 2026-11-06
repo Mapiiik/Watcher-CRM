@@ -8,6 +8,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Files\Model\Entity\File;
 use Files\Service\FileStorage;
@@ -42,6 +43,13 @@ class CheckFilesCommand extends Command
      * @var int
      */
     private const SHOWN = 10;
+
+    /**
+     * How long bytes nobody has a row for have to lie there before they count as left behind.
+     *
+     * @var int
+     */
+    private const HOURS_TO_SETTLE = 24;
 
     /**
      * The name of this command.
@@ -169,7 +177,8 @@ class CheckFilesCommand extends Command
         }
 
         if (($stray !== [] || $pictures !== []) && $args->getOption('fix')) {
-            foreach ($stray as $path) {
+            $unclaimed = $this->stillUnclaimed($storage, $stray);
+            foreach ($unclaimed as $path) {
                 $storage->filesystem()->delete($path);
             }
 
@@ -177,8 +186,8 @@ class CheckFilesCommand extends Command
                 unlink($path);
             }
 
-            $io->success(__d('files', '{0} thrown away.', count($stray) + count($pictures)));
-            $stray = [];
+            $io->success(__d('files', '{0} thrown away.', count($unclaimed) + count($pictures)));
+            $stray = array_diff($stray, $unclaimed);
             $pictures = [];
         }
 
@@ -221,6 +230,37 @@ class CheckFilesCommand extends Command
 
         Log::error('check_files: ' . $gone . ' rows without bytes, ' . $short . ' of the wrong size.');
         ErrorReport::send(__d('files', 'File store check failed'), $body);
+    }
+
+    /**
+     * The bytes that can go, asked at the last moment.
+     *
+     * Bytes are written before their row and the list took a whole pass over the store to make,
+     * so what is young may be a paper being filed right now, and a row may have turned up since.
+     *
+     * @param \Files\Service\FileStorage $storage The store.
+     * @param array<string> $stray Paths nobody had a row for.
+     * @return array<string>
+     */
+    private function stillUnclaimed(FileStorage $storage, array $stray): array
+    {
+        if ($stray === []) {
+            return [];
+        }
+
+        /** @var list<string> $claimed */
+        $claimed = $this->fetchTable('Files.Files')->find()
+            ->select(['path'])
+            ->where(['path IN' => $stray])
+            ->all()
+            ->extract('path')
+            ->toList();
+        $settled = DateTime::now()->subHours(self::HOURS_TO_SETTLE)->getTimestamp();
+
+        return array_filter(
+            array_diff($stray, $claimed),
+            fn(string $path): bool => $storage->filesystem()->lastModified($path) < $settled,
+        );
     }
 
     /**

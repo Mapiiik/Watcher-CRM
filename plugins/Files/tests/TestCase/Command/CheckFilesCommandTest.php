@@ -130,6 +130,7 @@ class CheckFilesCommandTest extends TestCase
         $stray = $this->root . DS . 'ab' . DS . 'cd' . DS . 'abcdef';
         mkdir(dirname($stray), 0777, true);
         file_put_contents($stray, 'nobody wrote a row for this');
+        touch($stray, (int)strtotime('-2 days'));
 
         $this->withConfigure(['Report.errorEmails' => ['oncall@example.com']]);
 
@@ -146,6 +147,59 @@ class CheckFilesCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputContains('thrown away');
         $this->assertFileDoesNotExist($stray);
+    }
+
+    /**
+     * Bytes are written before their row, so bytes that have only just arrived may be somebody
+     * filing a paper at this moment. They are reported and stay.
+     *
+     * @link \Files\Command\CheckFilesCommand::execute()
+     * @return void
+     */
+    public function testBytesThatHaveOnlyJustArrivedAreLeftAlone(): void
+    {
+        $stray = $this->root . DS . 'ab' . DS . 'cd' . DS . 'abcdef';
+        mkdir(dirname($stray), 0777, true);
+        file_put_contents($stray, 'a row is on its way');
+
+        $this->exec('check_files --fix');
+
+        $this->assertExitSuccess();
+        $this->assertFileExists($stray);
+    }
+
+    /**
+     * The list takes a whole pass over the store to make, and a row may turn up in the meantime.
+     *
+     * @link \Files\Command\CheckFilesCommand::execute()
+     * @return void
+     */
+    public function testBytesThatGetARowDuringTheRunAreLeftAlone(): void
+    {
+        $file = (new FileStorage())->store('a paper of some sort', 'application/pdf');
+        $bytes = $this->root . DS . $file->path;
+        touch($bytes, (int)strtotime('-2 days'));
+
+        $files = $this->getTableLocator()->get('Files.Files');
+        $files->deleteAll(['id' => $file->id]);
+
+        // the first question is the snapshot of the rows, and the row arrives right after it
+        $asked = 0;
+        $files->getEventManager()->on(
+            'Model.beforeFind',
+            function () use (&$asked, $files, $file): void {
+                $asked++;
+                if ($asked === 2) {
+                    $file->setNew(true);
+                    $files->saveOrFail($file);
+                }
+            },
+        );
+
+        $this->exec('check_files --fix');
+
+        $this->assertExitSuccess();
+        $this->assertFileExists($bytes);
     }
 
     /**
