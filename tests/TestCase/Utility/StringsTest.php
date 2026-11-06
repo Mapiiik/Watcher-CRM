@@ -14,6 +14,25 @@ use PHPUnit\Framework\Attributes\UsesClass;
 class StringsTest extends TestCase
 {
     /**
+     * It is the value that decides, a customer number of ten digits is fine with a large series.
+     *
+     * @return void
+     * @link \App\Utility\Strings::isDatabaseInteger()
+     */
+    public function testADatabaseIntegerIsDecidedByItsValue(): void
+    {
+        $this->assertTrue(Strings::isDatabaseInteger('0'));
+        $this->assertTrue(Strings::isDatabaseInteger('110009'));
+        $this->assertTrue(Strings::isDatabaseInteger('2147483647'));
+        $this->assertFalse(Strings::isDatabaseInteger('2147483648'));
+        $this->assertFalse(Strings::isDatabaseInteger('9999999999'));
+        $this->assertFalse(Strings::isDatabaseInteger('12345678901'));
+        $this->assertFalse(Strings::isDatabaseInteger(''));
+        $this->assertFalse(Strings::isDatabaseInteger('-1'));
+        $this->assertFalse(Strings::isDatabaseInteger('12a'));
+    }
+
+    /**
      * The marks come off and the letters underneath stay, which is what makes a name written one way
      * findable when it was typed the other.
      *

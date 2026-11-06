@@ -7,6 +7,7 @@ use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Controller\Traits\MessageHandlerTrait;
 use App\Maps\TaskMap;
 use App\Model\Enum\AddressType;
+use App\Utility\Strings;
 use Cake\Form\Form;
 use Cake\Http\Response;
 use Cake\I18n\Date;
@@ -278,7 +279,7 @@ class TasksController extends AppController
                     'Tasks.subject ILIKE' => '%' . $search . '%',
                     'Tasks.text ILIKE' => '%' . $search . '%',
                 ] + (
-                    ctype_digit($search) && strlen($search) <= 9 ? // what is sure to fit an integer
+                    Strings::isDatabaseInteger($search) ?
                     [
                         'Tasks.nid' => (int)$search,
                     ] : []

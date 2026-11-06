@@ -17,6 +17,7 @@ use App\Model\Entity\Login;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\IpNetworkTypeOfUse;
 use App\Model\Table\LoginsTable;
+use App\Utility\Strings;
 use BackedEnum;
 use Bookkeeping\Model\Entity\Invoice;
 use Bookkeeping\Service\BookkeepingService;
@@ -527,9 +528,10 @@ class CustomerPortalController extends AppController
     private function customerByNumber(string $number): ?Customer
     {
         $customers = $this->fetchTable('Customers');
-        if (ctype_digit($number) && strlen($number) <= 9) {
+        $nid = (int)$number - (int)Configure::read('Customers.series');
+        if (ctype_digit($number) && Strings::isDatabaseInteger((string)$nid)) {
             $customer = $customers->find()
-                ->where(['Customers.nid' => (int)$number - (int)Configure::read('Customers.series')])
+                ->where(['Customers.nid' => $nid])
                 ->first();
             if ($customer instanceof Customer) {
                 return $customer;

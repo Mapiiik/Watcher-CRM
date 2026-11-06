@@ -31,6 +31,18 @@ class Strings
     }
 
     /**
+     * Whether text is a whole number a database integer holds. Asking the database about a larger
+     * one is an error, not an empty answer.
+     *
+     * @param string $text The text.
+     * @return bool
+     */
+    public static function isDatabaseInteger(string $text): bool
+    {
+        return ctype_digit($text) && strlen($text) <= 10 && (int)$text <= 2147483647;
+    }
+
+    /**
      * Generate password with unique characters.
      *
      * @param int $length Length of new password

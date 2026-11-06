@@ -16,6 +16,7 @@ use App\Proposals\ProposalRows;
 use App\Proposals\WholeProposal;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
+use App\Utility\Strings;
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
@@ -722,7 +723,7 @@ class DocumentsController extends AppController
 
         $said['CustomerProposals.id IN'] = $ofAContract;
 
-        if (ctype_digit($search) && strlen($search) <= 9) {
+        if (Strings::isDatabaseInteger($search)) {
             $series = (int)Configure::read('Customers.series');
             $said['(Customers.nid + ' . $series . ') ='] = (int)$search;
         }

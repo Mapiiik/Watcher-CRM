@@ -11,6 +11,7 @@ use App\Customers\Check\CustomerCheckRegistry;
 use App\Database\Expression\FulltextSearchCustomersExpression;
 use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerLegalStatus;
+use App\Utility\Strings;
 use App\View\PdfView;
 use Bookkeeping\Service\BookkeepingService;
 use Cake\Core\Configure;
@@ -147,9 +148,9 @@ class CustomersController extends AppController
                 ],
             ]);
         } elseif (ctype_digit($search) && strlen($search) <= 12) {
-            // search by customer number, as far as it is sure to fit an integer, or identity number
+            // search by customer number, where it can be one, or identity number
             $customersQuery->where([
-                'OR' => (strlen($search) <= 9 ? [
+                'OR' => (Strings::isDatabaseInteger($search) ? [
                     '(Customers.nid + ' . (int)Configure::read('Customers.series') . ') =' => (int)$search,
                 ] : []) + [
                     'Customers.identity_number' => $search,
