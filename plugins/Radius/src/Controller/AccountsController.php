@@ -287,6 +287,10 @@ class AccountsController extends AppController
                 if ($this->Accounts->save($account)) {
                     $this->Flash->success(__d('radius', 'The RADIUS account has been saved.'));
 
+                    if ($deactivating) {
+                        $this->endOpenSessions((string)$account->id);
+                    }
+
                     // a station accepted earlier stays on the access point until its entry is gone
                     if ($deactivating && $this->getRequest()->getData('remove_mac_address')) {
                         $accessListCleaner = new AccessListCleaner();
@@ -413,6 +417,29 @@ class AccountsController extends AppController
         sleep(1);
 
         return $this->redirect($this->referer(['action' => 'monitoring', $account->id]));
+    }
+
+    /**
+     * Ends what is still running on an account: a reject stops the next sign-in, not this session.
+     *
+     * @param string $id Account id.
+     * @return void
+     */
+    private function endOpenSessions(string $id): void
+    {
+        $account = $this->Accounts->get($id, contain: [
+            'Radacct' => [
+                'conditions' => [
+                    'Radacct.acctstoptime IS' => null,
+                ],
+            ],
+        ]);
+
+        $radiusRequestSender = new RadiusRequestSender();
+        foreach ($account->radacct as $session) {
+            $radiusRequestSender->sendDisconnectRequest($session);
+        }
+        $this->handleMessages($radiusRequestSender->Messages);
     }
 
     /**

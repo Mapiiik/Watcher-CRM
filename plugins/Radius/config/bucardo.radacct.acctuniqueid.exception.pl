@@ -81,7 +81,7 @@ my ($expr, $pred) = $dbh->selectrow_array(q{
          ORDER BY s.i
     ) AS tab
     GROUP BY pred
-}, undef, undef, $relation, $index);
+}, undef, $relation, $index);
 
 unless ($expr) {
     # Should not happen, but just to be safe.
@@ -129,7 +129,7 @@ for my $db (sort keys %{ $dbhs }) {
         # Store away the older record in a separate table if we want to manually
         # check or recover deleted records later.
         $dbhs->{ $lose->{db} }->do(
-            "INSERT INTO $copy_to SELECT * FROM $relation WHERE id = ?",
+            "INSERT INTO $copy_to SELECT * FROM $relation WHERE $pk_col = ?",
             $lose->{pkey},
         ) if $copy_to;
 

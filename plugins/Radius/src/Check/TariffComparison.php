@@ -134,20 +134,21 @@ class TariffComparison
             return $this->accounts;
         }
 
-        $query = $this->fetchTable(AccountsTable::class)
-            ->find()
-            ->contain(['Radusergroup'])
-            ->where(['Accounts.active' => true])
-            ->orderBy(['Accounts.username' => 'ASC']);
-
-        if ($this->scope->contract_id !== null) {
-            $query->where(['Accounts.contract_id' => $this->scope->contract_id]);
-        }
-        if ($this->scope->customer_id !== null) {
-            $query->where(['Accounts.customer_id' => $this->scope->customer_id]);
-        }
-
         try {
+            // the table reads its columns from the database, so even building this may fail
+            $query = $this->fetchTable(AccountsTable::class)
+                ->find()
+                ->contain(['Radusergroup'])
+                ->where(['Accounts.active' => true])
+                ->orderBy(['Accounts.username' => 'ASC']);
+
+            if ($this->scope->contract_id !== null) {
+                $query->where(['Accounts.contract_id' => $this->scope->contract_id]);
+            }
+            if ($this->scope->customer_id !== null) {
+                $query->where(['Accounts.customer_id' => $this->scope->customer_id]);
+            }
+
             /** @var list<\Radius\Model\Entity\Account> $accounts */
             $accounts = $query->all()->toList();
         } catch (MissingConnectionException $e) {

@@ -305,4 +305,64 @@ class AccountsControllerTest extends TestCase
         $this->assertResponseContains('The changes could not be applied to these accounts.');
         $this->assertResponseContains('Timeout after 3 attempts');
     }
+
+    /**
+     * Unticking Active ends what is running. The reject written to the account stops the next
+     * sign-in only, and a customer already connected would go on for days.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::edit()
+     */
+    public function testDeactivatingEndsTheOpenSessions(): void
+    {
+        Configure::write('Agent.url', 'https://agent.example.com');
+        Configure::write('Agent.token', 'agent-token');
+        $this->fetchTable('Radius.Radacct')->updateAll(['acctstoptime' => null], ['1 = 1']);
+        $this->mockClientPost(
+            'https://agent.example.com/api/radius/disconnect',
+            $this->newClientResponse(200, ['Content-Type: application/json'], (string)json_encode([
+                'success' => true,
+                'result' => 'Disconnect-ACK',
+            ])),
+        );
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/edit/' . self::ACCOUNT_ID, ['active' => 0]);
+
+        $this->assertRedirect();
+        $this->assertStringContainsString('has been disconnected', $this->messagesLeft());
+    }
+
+    /**
+     * An account that stays active keeps its session, saving it disconnects nothing.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::edit()
+     */
+    public function testSavingAnActiveAccountDisconnectsNothing(): void
+    {
+        Configure::write('Agent.url', 'https://agent.example.com');
+        Configure::write('Agent.token', 'agent-token');
+        $this->fetchTable('Radius.Radacct')->updateAll(['acctstoptime' => null], ['1 = 1']);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/edit/' . self::ACCOUNT_ID, ['active' => 1]);
+
+        $this->assertRedirect();
+        $this->assertStringNotContainsString('disconnected', $this->messagesLeft());
+    }
+
+    /**
+     * What was left for the next page to say.
+     *
+     * @return string
+     */
+    private function messagesLeft(): string
+    {
+        return (string)json_encode($_SESSION['Flash'] ?? []);
+    }
 }
