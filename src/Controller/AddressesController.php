@@ -429,6 +429,11 @@ class AddressesController extends AppController
         // check if the country is supported by the national address registry API
         $supportedCountries = $this->loadSupportedCountriesForAddressRegistry();
 
+        // nobody answered, which says nothing about the address, and the reason is on the page
+        if ($supportedCountries === []) {
+            return [];
+        }
+
         if (!in_array($countryCode, $supportedCountries, true)) {
             $this->Flash->info(__(
                 'National address registry lookup is not supported for country code: {0}.',

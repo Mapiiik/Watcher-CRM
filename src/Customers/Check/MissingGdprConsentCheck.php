@@ -73,7 +73,7 @@ class MissingGdprConsentCheck extends AbstractCustomerCheck
     public function find(): SelectQuery
     {
         $query = $this->candidates()->where([
-            'Customers.agree_gdpr IS NOT' => true,
+            'Customers.agree_gdpr IS NOT TRUE',
             'Customers.id NOT IN' => $this->excusedBy('missing_gdpr_consent_excused_by'),
         ]);
 

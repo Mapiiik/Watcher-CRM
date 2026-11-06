@@ -149,4 +149,18 @@ class ViesSourceTest extends TestCase
         $this->assertIsArray($croatian);
         $this->assertSame('80625159724', $croatian['identity_number']);
     }
+
+    /**
+     * A name reads like a number, a country and the rest, but no such country is in the register.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\ViesSource::ask()
+     */
+    public function testANameIsNotAskedAbout(): void
+    {
+        $answer = (new ViesSource())->search('Netair');
+
+        $this->assertTrue($answer->ok());
+        $this->assertCount(0, $answer->data);
+    }
 }

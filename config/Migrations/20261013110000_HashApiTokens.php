@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Migrations\BaseMigration;
+use Migrations\Migration\IrreversibleMigrationException;
 
 /**
  * API keys kept only as their SHA-256.
@@ -28,9 +29,11 @@ class HashApiTokens extends BaseMigration
      * Down Method.
      *
      * @return void
+     * @throws \Migrations\Migration\IrreversibleMigrationException Always, as a hash cannot be turned
+     *      back into the key, and running `up` again would hash the hash.
      */
     public function down(): void
     {
-        // a hash cannot be turned back into the key
+        throw new IrreversibleMigrationException('A hash of an API key cannot be turned back into the key.');
     }
 }

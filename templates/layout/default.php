@@ -159,7 +159,7 @@ $urlWithQuery = function ($query = []) use ($request) {
                 ['controller' => 'Accounts', 'action' => 'index', 'plugin' => 'Radius', 'customer_id' => false],
                 ['class' => 'button button-small' . $buttonSelected([
                     'Accounts',
-                    'Nass',
+                    'Nas',
                     'Radacct',
                     'Radcheck',
                     'Radgroupcheck',

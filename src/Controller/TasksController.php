@@ -425,6 +425,10 @@ class TasksController extends AppController
                         'task_state_ids' => '',
                         'access_point_id' => '',
                         'show_completed' => 0,
+                        'pressing' => 0,
+                        'stale' => 0,
+                        'ignore_collaborators' => 0,
+                        'search' => '',
                     ]],
                 ),
                 [

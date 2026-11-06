@@ -26,6 +26,16 @@ use Override;
 class ViesSource extends BaseSource implements VatNumberCheckInterface
 {
     /**
+     * The prefixes VIES answers for: the member states, Greece as EL and Northern Ireland as XI.
+     *
+     * @var list<string>
+     */
+    private const MEMBER_STATES = [
+        'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'EL', 'ES', 'FI', 'FR', 'HR', 'HU',
+        'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'XI',
+    ];
+
+    /**
      * @inheritDoc
      */
     #[Override]
@@ -128,6 +138,10 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
         }
 
         [, $memberState, $number] = $matches;
+        // a name reads like a number too, Netair as NE and TAIR
+        if (!in_array($memberState, self::MEMBER_STATES, true)) {
+            return Answer::of(null);
+        }
 
         $path = self::path($memberState, $number);
 

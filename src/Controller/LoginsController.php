@@ -131,8 +131,9 @@ class LoginsController extends AppController
         $login = $this->Logins->get($id, contain: []);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             // change password if is set new
-            if ((string)$this->getRequest()->getData('new_password', '') !== '') {
-                $login->password = $this->getRequest()->getData('new_password');
+            $newPassword = trim((string)$this->getRequest()->getData('new_password', ''));
+            if ($newPassword !== '') {
+                $login->password = $newPassword;
                 // whoever was signed in with the old one is signed out, wherever they are
                 $login->sessions_valid_from = DateTime::now();
             }

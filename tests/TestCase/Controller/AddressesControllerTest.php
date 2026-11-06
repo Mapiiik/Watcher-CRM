@@ -8,6 +8,7 @@ use App\Test\TestCase\BusinessRegister\Source\StubSource;
 use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
+use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
@@ -21,6 +22,7 @@ class AddressesControllerTest extends TestCase
 {
     use ConfigureTestTrait;
     use ControllerTestTrait;
+    use HttpClientTrait;
     use IntegrationTestTrait;
 
     /**
@@ -406,5 +408,31 @@ class AddressesControllerTest extends TestCase
         $this->assertSame('Jan', $address->first_name);
         $this->assertNull($address->note);
         $this->assertNull($address->created);
+    }
+
+    /**
+     * A registry that does not answer says nothing about the address. Taking that for a country
+     * it does not cover wiped the reference and the position, and a connection point with them.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::edit()
+     */
+    public function testARegistryThatDoesNotAnswerLeavesTheAddressAlone(): void
+    {
+        $this->withConfigure(['Addresses.url' => 'https://registry.example.com']);
+        Cache::clear('addresses_api');
+        $this->mockClientGet('https://registry.example.com/v1/meta', $this->newClientResponse(500));
+
+        $addresses = $this->getTableLocator()->get('Addresses');
+        $addressId = $this->firstId('Addresses');
+        $addresses->updateAll(['address_registry_reference' => '16936213'], ['id' => $addressId]);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/addresses/edit/' . $addressId, ['note' => 'Ring twice', 'number_type' => 0]);
+
+        $this->assertRedirect();
+        $this->assertSame('16936213', $addresses->get($addressId)->address_registry_reference);
     }
 }
