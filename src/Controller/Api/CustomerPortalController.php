@@ -451,22 +451,14 @@ class CustomerPortalController extends AppController
             throw new HttpException('Too many lookups, try again in a minute.', 429);
         }
 
-        $ipAddress = $this->fetchTable('IpAddresses')->find()
-            ->contain(['Customers' => [
-                'Emails' => ['sort' => ['Emails.email' => 'ASC']],
-                'Addresses',
-            ]])
-            ->where(['IpAddresses.ip_address' => $ip])
-            ->orderBy(['Customers.company' => 'ASC', 'Customers.last_name' => 'ASC', 'Customers.first_name' => 'ASC'])
-            ->first();
-        $customer = $ipAddress?->get('customer');
+        $customer = $this->customerUsing($ip);
         Log::info(sprintf(
             'Customer portal: %s asked who uses %s: %s',
             $caller,
             $ip,
-            $customer instanceof Customer ? 'customer ' . $customer->number : 'nobody',
+            $customer === null ? 'nobody' : 'customer ' . $customer->number,
         ));
-        if (!$customer instanceof Customer) {
+        if ($customer === null) {
             $this->answer(['customer' => null]);
 
             return;
@@ -480,6 +472,30 @@ class CustomerPortalController extends AppController
             'email' => $customer->emails[0]->email ?? null,
             'address' => $address === null ? null : $this->fields($address, ['street', 'number', 'city', 'zip']),
         ]]);
+    }
+
+    /**
+     * The customer using an address, as an address of theirs or inside a network of theirs.
+     *
+     * @param string $ip The address.
+     * @return \App\Model\Entity\Customer|null
+     */
+    private function customerUsing(string $ip): ?Customer
+    {
+        $holder = fn(string $table, array $conditions): ?EntityInterface => $this->fetchTable($table)->find()
+            ->contain(['Customers' => [
+                'Emails' => ['sort' => ['Emails.email' => 'ASC']],
+                'Addresses',
+            ]])
+            ->where($conditions)
+            ->orderBy(['Customers.company' => 'ASC', 'Customers.last_name' => 'ASC', 'Customers.first_name' => 'ASC'])
+            ->first();
+
+        $found = $holder('IpAddresses', ['IpAddresses.ip_address' => $ip])
+            ?? $holder('IpNetworks', ['IpNetworks.ip_network >>=' => $ip]);
+        $customer = $found?->get('customer');
+
+        return $customer instanceof Customer ? $customer : null;
     }
 
     /**

@@ -514,6 +514,26 @@ class CustomerPortalControllerTest extends TestCase
     }
 
     /**
+     * A customer with a whole network is recognised at any address of it, and an address of the
+     * other family is in no network.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::identify()
+     */
+    public function testAnAddressInsideANetworkIsAnsweredWithItsCustomer(): void
+    {
+        $this->asService();
+        $this->get('/api/customer-portal/identify?ip=10.20.30.40');
+        $this->assertResponseOk();
+        $this->assertSame('NETAIR, s.r.o.', $this->answer()['customer']['company']);
+
+        $this->asService();
+        $this->get('/api/customer-portal/identify?ip=2001:db8::1');
+        $this->assertResponseOk();
+        $this->assertSame(['customer' => null], $this->answer());
+    }
+
+    /**
      * The address a service is told is the one the customer is billed at, as on their invoices.
      *
      * @return void
