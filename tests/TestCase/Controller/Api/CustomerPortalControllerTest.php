@@ -539,6 +539,32 @@ class CustomerPortalControllerTest extends TestCase
     }
 
     /**
+     * One visitor reloading a page is one address, however often, and locks nobody out.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::identify()
+     */
+    public function testAVisitorReloadingAPageLocksNobodyOut(): void
+    {
+        Settings::set('core.customer_portal.identify_per_minute', 2);
+        Chronos::setTestNow('2026-10-12 10:00:15');
+
+        try {
+            foreach (range(1, 5) as $ignored) {
+                $this->asService();
+                $this->get('/api/customer-portal/identify?ip=192.0.2.1');
+                $this->assertResponseOk();
+            }
+            $this->asService();
+            $this->get('/api/customer-portal/identify?ip=192.168.11.11');
+            $this->assertResponseOk();
+            $this->assertResponseContains('NETAIR');
+        } finally {
+            Chronos::setTestNow(null);
+        }
+    }
+
+    /**
      * The customer portal signs customers in but does not look up who uses an address.
      *
      * @return void

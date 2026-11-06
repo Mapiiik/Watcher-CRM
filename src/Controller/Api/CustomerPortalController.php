@@ -441,7 +441,7 @@ class CustomerPortalController extends AppController
 
         $caller = (string)($this->getRequest()->getAttribute('identity')['username'] ?? 'unknown');
         $lookups = Lookups::fromSettings();
-        if (!$lookups->allow($caller)) {
+        if (!$lookups->allow($caller, $ip)) {
             Log::warning(sprintf(
                 'Customer portal: %s asked who uses %s, refused over %d lookups a minute',
                 $caller,

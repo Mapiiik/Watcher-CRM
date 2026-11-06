@@ -9,13 +9,15 @@ use Cake\Chronos\Chronos;
 /**
  * How many addresses a service looks up in a minute.
  *
- * Recognising a customer by their address is a handful of lookups a minute. A service going
- * through whole ranges asks for many more, so it is refused over the limit, and the log shows it.
+ * Recognising a customer by their address is a handful of addresses a minute. A service going
+ * through whole ranges asks about many more, so it is refused over the limit, and the log shows
+ * it. An address asked about again is not counted: a visitor reloading a page goes through
+ * nothing, and everybody behind the same service would be locked out with them.
  */
 final class Lookups
 {
     /**
-     * @param int $perMinute Lookups of one caller in one minute.
+     * @param int $perMinute Addresses one caller may ask about in one minute.
      * @param string $cacheConfig Cache configuration holding the counters.
      */
     public function __construct(
@@ -35,20 +37,31 @@ final class Lookups
     }
 
     /**
-     * Counts a lookup of a caller.
+     * Counts an address a caller asks about.
      *
      * @param string $caller Who asks.
+     * @param string $address The address they ask about.
      * @return bool Whether it is within the limit of this minute.
      */
-    public function allow(string $caller): bool
+    public function allow(string $caller, string $address): bool
     {
         $minute = intdiv(Chronos::now()->getTimestamp(), 60);
-        $key = 'customer_portal_lookups_' . hash('sha256', $caller) . '_' . $minute;
         $pool = Cache::pool($this->cacheConfig);
+
+        $answered = 'customer_portal_lookup_' . hash('sha256', $caller . '|' . $address) . '_' . $minute;
+        if ($pool->get($answered, false) === true) {
+            return true;
+        }
+
+        $key = 'customer_portal_lookups_' . hash('sha256', $caller) . '_' . $minute;
         $count = (int)$pool->get($key, 0) + 1;
         $pool->set($key, $count, 120);
+        if ($count > $this->perMinute) {
+            return false;
+        }
+        $pool->set($answered, true, 120);
 
-        return $count <= $this->perMinute;
+        return true;
     }
 
     /**
