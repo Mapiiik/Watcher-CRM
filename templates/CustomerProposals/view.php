@@ -5,6 +5,7 @@
  * @var array<array<string, mixed>> $parts
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
+ * @var bool $takingBackIsOnOffer
  * @var array<string, array<string, list<\Files\Model\Entity\FileLink>>> $filed
  */
 
@@ -40,6 +41,13 @@ foreach ($filed as $byVariant) {
                         ? __('Record the Sending Again')
                         : __('Record the Sending'),
                     ['action' => 'send', $customerProposal->id],
+                    ['class' => 'side-nav-item'],
+                ) ?>
+            <?php endif; ?>
+            <?php if ($takingBackIsOnOffer) : ?>
+                <?= $this->AuthLink->link(
+                    __('Take Back the Sending'),
+                    ['action' => 'takeBackSending', $customerProposal->id],
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>

@@ -5,14 +5,22 @@ namespace App\Test\TestCase\Controller;
 
 use App\Controller\CustomerProposalsController;
 use App\Model\Entity\CustomerProposal;
+use App\Model\Enum\ContractDocumentType;
+use App\Model\Enum\CustomerDocumentType;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
+use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalPurpose;
+use App\Service\ContractPrint\ContractDocuments;
+use App\Service\CustomerPrint\CustomerDocuments;
 use App\Test\Traits\ControllerTestTrait;
+use Cake\Core\Configure;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Files\Model\Entity\FileLink;
+use Files\Service\FileStorage;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -73,6 +81,8 @@ class CustomerProposalsControllerTest extends TestCase
         'app.ContractProposals',
         'app.EquipmentTypes',
         'app.BorrowedEquipments',
+        'plugin.Files.Files',
+        'plugin.Files.FileLinks',
         'plugin.Settings.Settings',
     ];
 
@@ -286,6 +296,182 @@ class CustomerProposalsControllerTest extends TestCase
 
         $this->post($at . 'revoke/' . $proposal->id);
         $this->assertRedirectContains($its);
+    }
+
+    /**
+     * Papers printed ahead and written down as sent can still change before they are handed over.
+     * The page lists what would go, and taking the sending back unlocks the proposal.
+     *
+     * @link \App\Controller\CustomerProposalsController::takeBackSending()
+     * @return void
+     */
+    public function testASendingInPersonIsTakenBack(): void
+    {
+        Configure::write('Files.root', TMP . 'take-back-' . uniqid());
+        $proposal = $this->drawOneUpWithPapers();
+        $part = $this->papersOf((string)$proposal->id)[0];
+        $drawn = $this->filed(
+            ContractDocuments::MODEL,
+            (string)$part->id,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::Generated,
+        );
+        $received = $this->filed(
+            ContractDocuments::MODEL,
+            (string)$part->id,
+            ContractDocumentType::Other->value,
+            DocumentVariant::Received,
+        );
+        $this->sendAs($proposal, DocumentsDeliveryType::InPerson);
+
+        $this->get($this->takeBack($proposal));
+        $this->assertResponseOk();
+        $this->assertResponseContains(h(ContractDocumentType::ContractAmendment->label()));
+        $this->assertResponseContains('name="discard[' . $part->id . ']"');
+
+        $this->post($this->takeBack($proposal), ['discard' => [$part->id => '1']]);
+        $this->assertRedirectContains('/customer-proposals/view/' . $proposal->id);
+
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+        $back = $proposals->get($proposal->id);
+        $this->assertNull($back->sent_date);
+        $this->assertNull($back->delivery_type);
+        $this->assertTrue($proposals->mayBeEdited($back));
+
+        $links = $this->getTableLocator()->get('Files.FileLinks');
+        $this->assertFalse($links->exists(['id' => $drawn->id]));
+        $this->assertTrue($links->exists(['id' => $received->id]), 'What came back is not ours to discard.');
+
+        Configure::delete('Files.root');
+    }
+
+    /**
+     * Each record says for itself whether its documents go, so one left unticked keeps them.
+     *
+     * @link \App\Controller\CustomerProposalsController::takeBackSending()
+     * @return void
+     */
+    public function testAnUntickedRecordKeepsItsDocuments(): void
+    {
+        Configure::write('Files.root', TMP . 'take-back-' . uniqid());
+        $proposal = $this->drawOneUpWithPapers();
+        $part = $this->papersOf((string)$proposal->id)[0];
+        $kept = $this->filed(
+            ContractDocuments::MODEL,
+            (string)$part->id,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::Generated,
+        );
+        $discarded = $this->filed(
+            CustomerDocuments::MODEL,
+            (string)$proposal->id,
+            CustomerDocumentType::GdprNew->value,
+            DocumentVariant::Generated,
+        );
+        $this->sendAs($proposal, DocumentsDeliveryType::InPerson);
+
+        $this->post($this->takeBack($proposal), [
+            'discard' => [$part->id => '0', $proposal->id => '1'],
+        ]);
+        $this->assertRedirect();
+
+        $links = $this->getTableLocator()->get('Files.FileLinks');
+        $this->assertTrue($links->exists(['id' => $kept->id]));
+        $this->assertFalse($links->exists(['id' => $discarded->id]));
+
+        Configure::delete('Files.root');
+    }
+
+    /**
+     * Papers sent any other way may already be with the customer. The page says so, offers nothing
+     * to submit, and a submission is refused anyway.
+     *
+     * @link \App\Controller\CustomerProposalsController::takeBackSending()
+     * @return void
+     */
+    public function testASendingByPostStands(): void
+    {
+        $proposal = $this->drawOneUpWithPapers();
+        $this->sendAs($proposal, DocumentsDeliveryType::Post);
+
+        $this->get($this->takeBack($proposal));
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('Only papers handed over in person can be taken back'));
+        $this->assertResponseNotContains('type="submit"');
+
+        $this->post($this->takeBack($proposal));
+        $this->assertRedirect();
+        $this->assertNotNull(
+            $this->getTableLocator()->get('CustomerProposals')->get($proposal->id)->sent_date,
+        );
+    }
+
+    /**
+     * A signed copy on file means the customer has had the papers, however they were written down
+     * as sent.
+     *
+     * @link \App\Controller\CustomerProposalsController::takeBackSending()
+     * @return void
+     */
+    public function testASignedCopyKeepsTheSending(): void
+    {
+        Configure::write('Files.root', TMP . 'take-back-' . uniqid());
+        $proposal = $this->drawOneUpWithPapers();
+        $part = $this->papersOf((string)$proposal->id)[0];
+        $drawn = $this->filed(
+            ContractDocuments::MODEL,
+            (string)$part->id,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::Generated,
+        );
+        $this->filed(
+            ContractDocuments::MODEL,
+            (string)$part->id,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::ReceivedSignedByCustomer,
+        );
+        $this->sendAs($proposal, DocumentsDeliveryType::InPerson);
+
+        $this->get($this->takeBack($proposal));
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('The customer has already signed a document from this proposal, so'));
+        $this->assertResponseNotContains('type="submit"');
+
+        $this->post($this->takeBack($proposal), ['discard' => [$part->id => '1']]);
+        $this->assertRedirect();
+        $this->assertNotNull(
+            $this->getTableLocator()->get('CustomerProposals')->get($proposal->id)->sent_date,
+        );
+        $this->assertTrue($this->getTableLocator()->get('Files.FileLinks')->exists(['id' => $drawn->id]));
+
+        Configure::delete('Files.root');
+    }
+
+    /**
+     * The step is offered only where there is a sending to take back, whichever way it went out, so
+     * that somebody looking for it is told why not rather than left searching.
+     *
+     * @link \App\Controller\CustomerProposalsController::view()
+     * @return void
+     */
+    public function testTheStepIsOfferedOnceThePapersAreSent(): void
+    {
+        $proposal = $this->drawOneUpWithPapers();
+        $detail = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/view/' . $proposal->id;
+
+        $this->get($detail);
+        $this->assertResponseNotContains('take-back-sending');
+
+        $this->get($this->takeBack($proposal));
+        $this->assertRedirectContains('/customer-proposals/view/' . $proposal->id);
+
+        $this->sendAs($proposal, DocumentsDeliveryType::Post);
+        $this->get($detail);
+        $this->assertResponseContains('take-back-sending');
+
+        $this->post($this->conclude($proposal), ['conclusion_date' => '2026-10-05']);
+        $this->get($detail);
+        $this->assertResponseNotContains('take-back-sending');
     }
 
     /**
@@ -1091,6 +1277,56 @@ class CustomerProposalsControllerTest extends TestCase
         $proposal = $this->addedRecord('CustomerProposals', $before);
 
         return $proposal;
+    }
+
+    /**
+     * Where the sending of a proposal is taken back.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @return string
+     */
+    private function takeBack(CustomerProposal $proposal): string
+    {
+        return '/customers/' . self::CUSTOMER_ID . '/customer-proposals/take-back-sending/' . $proposal->id;
+    }
+
+    /**
+     * Records that the proposal went out.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @param \App\Model\Enum\DocumentsDeliveryType $how How it went.
+     * @return void
+     */
+    private function sendAs(CustomerProposal $proposal, DocumentsDeliveryType $how): void
+    {
+        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/send/' . $proposal->id, [
+            'sent_date' => '2026-10-01',
+            'delivery_type' => $how->value,
+        ]);
+        $this->assertRedirect();
+    }
+
+    /**
+     * Puts a paper on file against a record of the proposal.
+     *
+     * @param string $model What it hangs on.
+     * @param string $id Which record.
+     * @param string $document_type Which document it is.
+     * @param \App\Model\Enum\DocumentVariant $variant Whose hand it is in.
+     * @return \Files\Model\Entity\FileLink
+     */
+    private function filed(string $model, string $id, string $document_type, DocumentVariant $variant): FileLink
+    {
+        $storage = new FileStorage();
+
+        return $storage->link(
+            $storage->store('%PDF-1.7 ' . uniqid(), 'application/pdf'),
+            $model,
+            $id,
+            $document_type,
+            $variant->value,
+            ['name' => 'paper.pdf'],
+        );
     }
 
     /**

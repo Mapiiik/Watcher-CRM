@@ -508,6 +508,7 @@ $permissions = [
                 'conclude',
                 'revoke',
                 'send',
+                'takeBackSending',
                 'applyChanges',
                 'serviceChange',
                 'setDatesForRelatedBorrowedEquipments',

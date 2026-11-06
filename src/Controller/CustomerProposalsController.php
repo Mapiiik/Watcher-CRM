@@ -9,6 +9,7 @@ use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\DocumentsDeliveryType;
 use App\Model\Enum\ProposalStep;
 use App\Model\Table\BillingsTable;
+use App\Proposals\TakingBackTheSending;
 use App\Proposals\WholeProposal;
 use App\Service\CustomerPrint\CustomerDocuments;
 use Cake\Http\Response;
@@ -46,6 +47,7 @@ class CustomerProposalsController extends AppController
         'edit',
         'conclude',
         'send',
+        'takeBackSending',
         'applyChanges',
     ];
 
@@ -57,6 +59,7 @@ class CustomerProposalsController extends AppController
         'edit',
         'conclude',
         'send',
+        'takeBackSending',
         'applyChanges',
     ];
 
@@ -81,6 +84,7 @@ class CustomerProposalsController extends AppController
         $this->set('parts', $this->whatEachPartSays($customerProposal));
         $this->set('mayBeEdited', $this->CustomerProposals->mayBeEdited($customerProposal));
         $this->set('mayBeDeleted', $this->CustomerProposals->mayBeDeleted($customerProposal));
+        $this->set('takingBackIsOnOffer', (new TakingBackTheSending())->isOnOffer($customerProposal));
         // Only the count: the tables themselves are drawn by a cell, which asks for what it draws.
         $this->set('filed', (new CustomerDocuments())->filedAgainst([$customerProposal])[$customerProposal->id] ?? []);
     }
@@ -209,6 +213,77 @@ class CustomerProposalsController extends AppController
         ));
 
         return null;
+    }
+
+    /**
+     * Takes back a sending recorded before the papers reached the customer.
+     *
+     * The page lists what is on file for each contract, and the operator ticks whose generated
+     * documents go with it.
+     *
+     * @param string|null $id Customer proposal id.
+     * @return \Cake\Http\Response|null Redirects when done or refused, renders the page otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function takeBackSending(?string $id = null): ?Response
+    {
+        $proposal = $this->CustomerProposals->get($id, contain: ['Customers', 'ContractProposals']);
+        $takingBack = new TakingBackTheSending();
+
+        if (!$takingBack->isOnOffer($proposal)) {
+            $this->Flash->warning(__('This proposal has no sending to take back.'));
+
+            return $this->onFromTheStep((string)$id);
+        }
+
+        $papers = $takingBack->papers($proposal);
+        $stopping = $takingBack->whatStopsIt($proposal, $papers);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            if ($stopping !== null) {
+                $this->Flash->error($stopping);
+
+                return $this->onFromTheStep((string)$id);
+            }
+
+            if ($takingBack->takeBack($proposal)) {
+                $this->Flash->success(__('The sending has been taken back. The proposal can be changed again.'));
+                $this->sayWhatWasDiscarded($takingBack->discard($papers, (array)$this->request->getData('discard')));
+
+                return $this->onFromTheStep((string)$proposal->id);
+            }
+
+            $this->flashValidationErrors($proposal->getErrors());
+            $this->Flash->error(__('The sending could not be taken back. Please, try again.'));
+        }
+
+        $this->set('customerProposal', $proposal);
+        $this->set(compact('papers', 'stopping'));
+
+        return null;
+    }
+
+    /**
+     * Says what became of the generated documents.
+     *
+     * @param array<string, int> $outcome How many were discarded, and how many failed.
+     * @return void
+     * @phpstan-param array{discarded: int, failed: int} $outcome
+     */
+    private function sayWhatWasDiscarded(array $outcome): void
+    {
+        if ($outcome['discarded'] > 0) {
+            $this->Flash->success(__n(
+                'One generated document has been deleted.',
+                '{0} generated documents have been deleted.',
+                $outcome['discarded'],
+                $outcome['discarded'],
+            ));
+        }
+
+        if ($outcome['failed'] > 0) {
+            $this->Flash->warning(__('A generated document could not be deleted. Please delete it manually.'));
+        }
     }
 
     /**
