@@ -385,6 +385,8 @@ class CustomerPortalController extends AppController
 
         $made = $login->isNew();
         $login->set('password', $password);
+        // asked for when the account may be in the wrong hands, so whoever is signed in is out
+        $login->set('sessions_valid_from', DateTime::now());
         $logins->saveOrFail($login);
         Log::notice(sprintf(
             'Customer portal: %s of "%s" for customer %s set from %s with an access link',

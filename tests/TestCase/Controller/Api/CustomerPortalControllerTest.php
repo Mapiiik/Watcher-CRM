@@ -1035,4 +1035,35 @@ class CustomerPortalControllerTest extends TestCase
 
         $this->assertSame('found', $answer['status']);
     }
+
+    /**
+     * A link for a new password is what somebody uses when the account may be in the wrong hands,
+     * so whoever is signed in with the old one is out.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::setAccess()
+     */
+    public function testAnAccessLinkEndsTheSessionsOfTheLogin(): void
+    {
+        Cache::clear('default');
+        $signedIn = $this->signIn(self::PASSWORD)['token'];
+        $link = (string)$this->requestAccess($this->customerNumber(self::CUSTOMER_ID), 'customer@example.com')['token'];
+
+        Chronos::setTestNow(Chronos::now()->addMinutes(1));
+        try {
+            $this->asPortal();
+            $this->post('/api/customer-portal/access', [
+                'token' => $link,
+                'password' => 'a new password of mine',
+                'ip' => '192.0.2.10',
+            ]);
+            $this->assertResponseOk();
+
+            $this->asPortal($signedIn);
+            $this->get('/api/customer-portal/customer');
+            $this->assertResponseCode(401);
+        } finally {
+            Chronos::setTestNow(null);
+        }
+    }
 }
