@@ -583,7 +583,7 @@ class WorkReportItemsTable extends AppTable
     }
 
     /**
-     * Whether the day of the item is one the report has closed.
+     * Whether the day of the item, or the day it is being moved from, is one the report has closed.
      *
      * @param \WorkReports\Model\Entity\WorkReportItem $item Item to check.
      * @return bool
@@ -591,8 +591,13 @@ class WorkReportItemsTable extends AppTable
     protected function isClosed(WorkReportItem $item): bool
     {
         $report = $this->WorkReports->find()->where(['id' => $item->work_report_id])->first();
+        if ($report === null) {
+            return false;
+        }
 
-        return $report !== null && $report->isClosedOn($item->date);
+        $movedFrom = $item->isNew() ? null : $item->getOriginal('date');
+
+        return $report->isClosedOn($item->date) || ($movedFrom !== null && $report->isClosedOn($movedFrom));
     }
 
     /**

@@ -278,4 +278,24 @@ class PagesRenderTest extends TestCase
         $this->assertNull($item->get('contract_id'));
         $this->assertNull($item->get('task_id'));
     }
+
+    /**
+     * A closed day keeps what is on it: an item cannot be moved out of it, as it cannot be moved in.
+     *
+     * @return void
+     */
+    public function testAnItemDoesNotLeaveAClosedDay(): void
+    {
+        $seeded = $this->seed();
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+        $item = $items->get($seeded['item']);
+        $this->getTableLocator()->get('WorkReports.WorkReports')->updateAll(
+            ['closed_until' => '2026-06-01'],
+            ['id' => $item->get('work_report_id')],
+        );
+
+        $items->patchEntity($item, ['date' => '2026-06-02']);
+
+        $this->assertFalse($items->save($item));
+    }
 }

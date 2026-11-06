@@ -101,7 +101,10 @@ class AddressesController extends AppController
         if ($this->customer_id !== null) {
             $customer = $this->Addresses->Customers->get($this->customer_id);
 
-            $address = $this->Addresses->patchEntity($address, $customer->toArray(), ['validate' => false]);
+            $address = $this->Addresses->patchEntity($address, array_intersect_key(
+                $customer->toArray(),
+                array_flip(['title', 'first_name', 'last_name', 'suffix', 'company']),
+            ), ['validate' => false]);
             $address->customer_id = $customer->id;
         }
 

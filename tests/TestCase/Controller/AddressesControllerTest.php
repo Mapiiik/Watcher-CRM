@@ -384,4 +384,27 @@ class AddressesControllerTest extends TestCase
             $this->getTableLocator()->get('Addresses')->get($addressId)->street,
         );
     }
+
+    /**
+     * A new address starts with the name of the customer and nothing else of theirs: it used to
+     * take over when the customer was created and their note too.
+     *
+     * @return void
+     * @link \App\Controller\AddressesController::add()
+     */
+    public function testAddTakesOnlyTheNameOfTheCustomer(): void
+    {
+        $this->login();
+        $customers = $this->getTableLocator()->get('Customers');
+        $customerId = $this->firstId('Customers');
+        $customers->updateAll(['note' => 'A note of the customer', 'first_name' => 'Jan'], ['id' => $customerId]);
+
+        $this->get('/customers/' . $customerId . '/addresses/add');
+
+        $this->assertResponseOk();
+        $address = $this->viewVariable('address');
+        $this->assertSame('Jan', $address->first_name);
+        $this->assertNull($address->note);
+        $this->assertNull($address->created);
+    }
 }
