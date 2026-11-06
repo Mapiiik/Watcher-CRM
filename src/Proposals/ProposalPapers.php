@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Proposals;
 
 use App\Model\Enum\DocumentVariant;
+use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Files\Model\Entity\FileLink;
 use Files\Service\FiledPages;
@@ -94,10 +95,12 @@ final class ProposalPapers
             return 1;
         }
 
+        // One moment for all of them, so that they come back from the trash together as well.
+        $at = DateTime::now();
         $dropped = 0;
 
         foreach ($this->everyVariantWeDrewOf($link) as $one) {
-            $this->pages->drop($one);
+            $this->pages->drop($one, $at);
             $dropped++;
         }
 

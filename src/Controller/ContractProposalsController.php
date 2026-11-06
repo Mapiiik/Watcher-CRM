@@ -372,11 +372,12 @@ class ContractProposalsController extends AppController
     private function discardTheDocuments(array $documents): int
     {
         $storage = new FileStorage();
+        $at = DateTime::now();
         $discarded = 0;
 
         foreach ($documents as $document) {
             try {
-                $storage->unlink($document);
+                $storage->unlink($document, $at);
                 $discarded++;
             } catch (Throwable) {
                 // The papers are already right; a file left behind is untidy rather than wrong,

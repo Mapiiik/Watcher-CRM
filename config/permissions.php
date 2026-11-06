@@ -431,6 +431,25 @@ $permissions = [
                 'view',
             ],
         ],
+        //what was removed may be looked at and put back. Throwing it away for good stays with the
+        //administrator, like the rest of what is on the shelf
+        [
+            'role' => [
+                'manager',
+            ],
+            'plugin' => 'Files',
+            'controller' => [
+                'Trash',
+            ],
+            'action' => [
+                'index',
+                'download',
+                'open',
+                'thumbnail',
+                'preview',
+                'restore',
+            ],
+        ],
         //whoever may draw a paper up may see what has been filed and fetch it back
         //
         //Not narrowed to the record the file hangs on: printing is not either, so this is the

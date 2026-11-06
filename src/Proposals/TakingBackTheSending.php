@@ -9,6 +9,7 @@ use App\Model\Enum\DocumentVariant;
 use App\Model\Enum\ProposalStep;
 use App\Service\ContractPrint\ContractDocuments;
 use App\Service\CustomerPrint\CustomerDocuments;
+use Cake\I18n\DateTime;
 use Files\Service\FileStorage;
 use Throwable;
 
@@ -142,6 +143,7 @@ final class TakingBackTheSending
     public function discard(array $papers, array $ticked): array
     {
         $storage = new FileStorage();
+        $at = DateTime::now();
         $discarded = 0;
         $failed = 0;
 
@@ -152,7 +154,7 @@ final class TakingBackTheSending
 
             foreach ($record['links'] as $link) {
                 try {
-                    $storage->unlink($link);
+                    $storage->unlink($link, $at);
                     $discarded++;
                 } catch (Throwable) {
                     $failed++;

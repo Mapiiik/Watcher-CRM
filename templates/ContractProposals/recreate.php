@@ -130,11 +130,11 @@ use App\Model\Enum\ProposalPurpose;
                     ),
                     // Said at the moment of agreeing rather than at the moment of submitting: by
                     // then the operator is answering for the whole form and this is the one part
-                    // of it that cannot be undone.
+                    // of it that takes something away.
                     'onclick' => 'if (this.checked && !window.confirm('
                         . json_encode(__n(
-                            'This document will be permanently deleted. Continue?',
-                            'These {0} documents will be permanently deleted. Continue?',
+                            'This document will be moved to the trash. Continue?',
+                            'These {0} documents will be moved to the trash. Continue?',
                             count($documentsToDiscard),
                             count($documentsToDiscard),
                         ), JSON_THROW_ON_ERROR | JSON_HEX_APOS | JSON_HEX_QUOT)

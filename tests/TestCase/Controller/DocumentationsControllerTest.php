@@ -57,6 +57,7 @@ class DocumentationsControllerTest extends TestCase
         'plugin.Files.Documentations',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
+        'plugin.Files.RemovedFileLinks',
     ];
 
     /**
@@ -169,7 +170,7 @@ class DocumentationsControllerTest extends TestCase
      * @link \App\Controller\DocumentationsController::delete()
      * @return void
      */
-    public function testDeletingOneTakesWhatItHeldWithIt(): void
+    public function testDeletingOneLeavesItInTheTrashToComeBackWhole(): void
     {
         $documentation = $this->documentations()->saveOrFail($this->documentations()->newEntity([
             'documentation_type_id' => $this->kind(),
@@ -191,7 +192,21 @@ class DocumentationsControllerTest extends TestCase
 
         $this->assertRedirect();
         $this->assertSame(0, $this->documentations()->find()->count());
-        $this->assertFalse($storage->has($file), 'The bytes should have gone with the last link to them.');
+        $this->assertTrue($storage->has($file), 'The bytes should wait in the trash with the link.');
+
+        /** @var \Files\Model\Entity\RemovedFileLink $removed */
+        $removed = $this->fetchTable('Files.RemovedFileLinks')->find()->firstOrFail();
+
+        $this->post('/files/trash/restore/' . $removed->id);
+
+        $this->assertRedirect();
+
+        /** @var \App\Model\Entity\Documentation $back */
+        $back = $this->documentations()->get($documentation->id);
+
+        $this->assertSame('The installation', $back->name);
+        $this->assertSame(self::CONTRACT_ID, $back->contract_id);
+        $this->assertCount(1, (new Documentations())->contentsOf($back));
     }
 
     /**

@@ -3,8 +3,15 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Proposals;
 
+use App\Model\Enum\DocumentVariant;
 use App\Proposals\ProposalPapers;
+use App\Service\ContractPrint\ContractDocuments;
+use Cake\Chronos\Chronos;
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Filesystem;
+use Files\Model\Table\FileLinksTable;
+use Files\Service\FileStorage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 
@@ -19,6 +26,17 @@ use stdClass;
 #[CoversClass(ProposalPapers::class)]
 class ProposalPapersTest extends TestCase
 {
+    /**
+     * Fixtures
+     *
+     * @var array<string>
+     */
+    protected array $fixtures = [
+        'plugin.Files.Files',
+        'plugin.Files.FileLinks',
+        'plugin.Files.RemovedFileLinks',
+    ];
+
     /**
      * @link \App\Proposals\ProposalPapers::cutShort()
      * @return void
@@ -64,6 +82,71 @@ class ProposalPapersTest extends TestCase
 
         $this->assertStringContainsString((string)ProposalPapers::atMostAtOnce(), $said);
         $this->assertNotSame('', trim($said));
+    }
+
+    /**
+     * The plugin cannot read the enum, so it keeps the list the index holds to one per document.
+     *
+     * @link \Files\Model\Table\FileLinksTable::ONE_PER_DOCUMENT
+     * @return void
+     */
+    public function testThePluginHoldsToOneWhatWeDraw(): void
+    {
+        $drawn = array_filter(
+            DocumentVariant::cases(),
+            fn(DocumentVariant $variant): bool => $variant->isGeneratedByUs(),
+        );
+
+        $this->assertSame(
+            FileLinksTable::ONE_PER_DOCUMENT,
+            array_values(array_map(fn(DocumentVariant $variant): string => $variant->value, $drawn)),
+        );
+    }
+
+    /**
+     * The trash brings back what left in one act, so both forms of a paper have to leave in one.
+     * Asked with the clock running, as under a stopped one any two moments are the same.
+     *
+     * @link \App\Proposals\ProposalPapers::drop()
+     * @return void
+     */
+    public function testBothFormsOfAPaperLeaveInOneAct(): void
+    {
+        $root = TMP . 'proposal-papers-' . uniqid();
+        Configure::write('Files.root', $root);
+        $clock = Chronos::getTestNow();
+        Chronos::setTestNow(null);
+
+        try {
+            $storage = new FileStorage();
+            $record = '11111111-2222-4333-8444-555555555555';
+
+            $plain = $storage->link(
+                $storage->store('a paper', 'application/pdf'),
+                ContractDocuments::MODEL,
+                $record,
+                'contract-new',
+                DocumentVariant::Generated->value,
+            );
+            $storage->link(
+                $storage->store('a paper, stamped', 'application/pdf'),
+                ContractDocuments::MODEL,
+                $record,
+                'contract-new',
+                DocumentVariant::GeneratedSignedByUs->value,
+            );
+
+            $this->assertSame(2, (new ProposalPapers($storage))->drop($plain));
+
+            $moments = $this->fetchTable('Files.RemovedFileLinks')->find()->all()->extract('removed')->toList();
+
+            $this->assertCount(2, $moments);
+            $this->assertEquals($moments[0], $moments[1]);
+        } finally {
+            Chronos::setTestNow($clock);
+            Configure::delete('Files.root');
+            (new Filesystem())->deleteDir($root);
+        }
     }
 
     /**

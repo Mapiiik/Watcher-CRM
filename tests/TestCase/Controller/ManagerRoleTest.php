@@ -35,6 +35,8 @@ class ManagerRoleTest extends TestCase
         'app.TaskStates',
         'app.TaskTypes',
         'plugin.Files.DocumentationTypes',
+        'plugin.Files.Files',
+        'plugin.Files.RemovedFileLinks',
         'plugin.WorkReports.WorkCars',
         'plugin.WorkReports.WorkLabels',
         'plugin.WorkReports.WorkRates',
@@ -52,6 +54,7 @@ class ManagerRoleTest extends TestCase
     {
         return [
             'documentation types' => ['/documentation-types/add'],
+            'trash' => ['/files/trash'],
             'equipment types' => ['/equipment-types/add'],
             'task states' => ['/task-states/add'],
             'task types' => ['/task-types/add'],
