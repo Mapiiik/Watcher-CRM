@@ -14,7 +14,7 @@ trait ErrorFormatterTrait
      * @param array<string> $validationErrors The Validation Errors from an entity
      * @return string
      */
-    public function formatValidationErrors(array $validationErrors = []): string
+    protected function formatValidationErrors(array $validationErrors = []): string
     {
         // get Validation errors and append them into a string
         $flattened = array_values(Hash::flatten($validationErrors));
@@ -28,7 +28,7 @@ trait ErrorFormatterTrait
      * @param array<string> $validationErrors The Validation Errors from an entity
      * @return void
      */
-    public function flashValidationErrors(array $validationErrors = []): void
+    protected function flashValidationErrors(array $validationErrors = []): void
     {
         // Generate Flash message with Validation errors
         $this->Flash->error(

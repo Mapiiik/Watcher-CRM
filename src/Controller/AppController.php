@@ -48,6 +48,20 @@ class AppController extends Controller
     use RedirectionTrait;
 
     /**
+     * The languages a page may be asked for, as the layout offers them.
+     *
+     * @var list<string>
+     */
+    private const LANGUAGES = ['cs_CZ', 'en_US', 'hr_HR'];
+
+    /**
+     * The themes a page may be asked for, as the layout offers them.
+     *
+     * @var list<string>
+     */
+    private const THEMES = ['default', 'light', 'dark', 'contrast'];
+
+    /**
      * User settings
      *
      * @var array<string, mixed>
@@ -140,7 +154,7 @@ class AppController extends Controller
         $this->loadNesting();
 
         # Determine if we want to set the language
-        if ($this->getRequest()->getQuery('language')) {
+        if (in_array($this->getRequest()->getQuery('language'), self::LANGUAGES, true)) {
             $this->getRequest()->getSession()->write(
                 'Config.UI.language',
                 $this->getRequest()->getQuery('language'),
@@ -162,7 +176,7 @@ class AppController extends Controller
         }
 
         # Determine if we want to set a theme
-        if ($this->getRequest()->getQuery('theme')) {
+        if (in_array($this->getRequest()->getQuery('theme'), self::THEMES, true)) {
             $this->getRequest()->getSession()->write(
                 'Config.UI.theme',
                 $this->getRequest()->getQuery('theme'),
@@ -247,7 +261,7 @@ class AppController extends Controller
      * @return string
      * @psalm-suppress PossiblyUnusedMethod
      */
-    public function urlWithQuery(array $query = []): string
+    protected function urlWithQuery(array $query = []): string
     {
         $request = $this->getRequest();
 

@@ -21,7 +21,7 @@ trait RedirectionTrait
      * @param int $status HTTP status code. Defaults to `302`.
      * @return \Cake\Http\Response|null
      */
-    public function afterAddRedirect(UriInterface|array|string $url, int $status = 302): ?Response
+    protected function afterAddRedirect(UriInterface|array|string $url, int $status = 302): ?Response
     {
         // other behavior if not in win-link
         if ($this->getRequest()->getQuery('win-link') != 'true') {
@@ -62,7 +62,7 @@ trait RedirectionTrait
      * @param int $status HTTP status code. Defaults to `302`.
      * @return \Cake\Http\Response|null
      */
-    public function afterEditRedirect(UriInterface|array|string $url, int $status = 302): ?Response
+    protected function afterEditRedirect(UriInterface|array|string $url, int $status = 302): ?Response
     {
         # Use afterAddRedirect
         return $this->afterAddRedirect($url, $status);
@@ -75,7 +75,7 @@ trait RedirectionTrait
      * @param int $status HTTP status code. Defaults to `302`.
      * @return \Cake\Http\Response|null
      */
-    public function afterDeleteRedirect(UriInterface|array|string $url, int $status = 302): ?Response
+    protected function afterDeleteRedirect(UriInterface|array|string $url, int $status = 302): ?Response
     {
         $referer_url = $this->getRequest()->referer();
 
