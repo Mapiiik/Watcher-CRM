@@ -97,10 +97,10 @@ class CustomerProposalsTable extends AppTable
     /**
      * Gives up on the proposal, and on everything still standing in it.
      *
-     * Written into the papers rather than read back from here afterwards. Giving up is final and
-     * nothing joins a proposal that has been given up on, so the one word written across them cannot
-     * come apart the way a copied date would - and the papers go on answering for themselves
-     * wherever they are read without their envelope.
+     * Written into the papers rather than read back from here afterwards. Nothing joins a proposal
+     * that has been given up on, so the one word written across them cannot come apart the way a
+     * copied date would - and the papers go on answering for themselves wherever they are read
+     * without their envelope. That one moment is also how {@see restoreTheProposal()} knows them.
      *
      * What was already applied keeps what it says: an envelope does not undo what has reached
      * the live records. So does anything given up on earlier, which has its own day and its own
@@ -145,6 +145,93 @@ class CustomerProposalsTable extends AppTable
         }
 
         return $given;
+    }
+
+    /**
+     * Takes a revocation back, with the papers that were revoked together with the proposal.
+     *
+     * Those are the ones carrying its very moment. Papers given up on by themselves have a day of
+     * their own and stay as they are.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @return bool Whether it was written.
+     */
+    public function restoreTheProposal(CustomerProposal $proposal): bool
+    {
+        $revoked = $proposal->revoked;
+
+        if ($revoked === null) {
+            return false;
+        }
+
+        $proposal->revoked = null;
+        $proposal->revoked_by = null;
+
+        $trail = new AuditTrail();
+
+        $restored = (bool)$this->getConnection()->transactional(
+            function () use ($proposal, $revoked, $trail): bool {
+                if (!$this->save($proposal, ['checkRules' => false] + $trail->options())) {
+                    return false;
+                }
+
+                $given = $this->ContractProposals->find()->where([
+                    'ContractProposals.customer_proposal_id' => $proposal->id,
+                    'ContractProposals.revoked IS NOT' => null,
+                ]);
+
+                foreach ($given as $papers) {
+                    if ($papers->revoked === null || !$papers->revoked->equals($revoked)) {
+                        continue;
+                    }
+
+                    $papers->revoked = null;
+                    $papers->revoked_by = null;
+
+                    if (!$this->ContractProposals->save($papers, ['checkRules' => false] + $trail->options())) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+        );
+
+        if ($restored) {
+            $trail->flush($this, $proposal);
+        }
+
+        return $restored;
+    }
+
+    /**
+     * The contracts of this proposal that have another proposal waiting on them as well.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @return list<string> The numbers of the contracts.
+     */
+    public function contractsWaitingOnAnotherProposal(CustomerProposal $proposal): array
+    {
+        $its = $this->ContractProposals->find('open')
+            ->select(['ContractProposals.contract_id'])
+            ->where(['ContractProposals.customer_proposal_id' => $proposal->id]);
+
+        $others = $this->ContractProposals->find('open')
+            ->contain(['Contracts'])
+            ->where([
+                'ContractProposals.contract_id IN' => $its,
+                'ContractProposals.customer_proposal_id !=' => $proposal->id,
+            ])
+            ->all();
+
+        $numbers = [];
+
+        /** @var \App\Model\Entity\ContractProposal $other */
+        foreach ($others as $other) {
+            $numbers[(string)$other->contract_id] = (string)($other->contract->number ?? '');
+        }
+
+        return array_values($numbers);
     }
 
     /**

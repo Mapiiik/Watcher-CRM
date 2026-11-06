@@ -5,6 +5,8 @@
  * @var array<array<string, mixed>> $parts
  * @var bool $mayBeEdited
  * @var bool $mayBeDeleted
+ * @var bool $mayBeRevoked
+ * @var bool $mayBeRestored
  * @var bool $takingBackIsOnOffer
  * @var array<string, array<string, list<\Files\Model\Entity\FileLink>>> $filed
  */
@@ -67,13 +69,27 @@ foreach ($filed as $byVariant) {
                     ['class' => 'side-nav-item'],
                 ) ?>
             <?php endif; ?>
-            <?php if ($customerProposal->isOpen()) : ?>
+            <?php if ($mayBeRevoked) : ?>
                 <?= $this->AuthLink->postLink(
                     __('Revoke'),
                     ['action' => 'revoke', $customerProposal->id],
                     [
                         'class' => 'side-nav-item',
-                        'confirm' => __('Revoke this customer proposal?'),
+                        'confirm' => $customerProposal->isOpen()
+                            ? __('Revoke this customer proposal?')
+                            : __('This proposal has already been settled. Revoke it anyway? Its documents'
+                                . ' stop counting, but nothing else changes.'),
+                    ],
+                ) ?>
+            <?php endif; ?>
+            <?php if ($mayBeRestored) : ?>
+                <?= $this->AuthLink->postLink(
+                    __('Restore Proposal'),
+                    ['action' => 'restore', $customerProposal->id],
+                    [
+                        'class' => 'side-nav-item',
+                        'confirm' => __('Restore this customer proposal? It goes back to where it stood'
+                            . ' before it was revoked.'),
                     ],
                 ) ?>
             <?php endif; ?>

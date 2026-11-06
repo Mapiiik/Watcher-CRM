@@ -84,6 +84,8 @@ class CustomerProposalsController extends AppController
         $this->set('parts', $this->whatEachPartSays($customerProposal));
         $this->set('mayBeEdited', $this->CustomerProposals->mayBeEdited($customerProposal));
         $this->set('mayBeDeleted', $this->CustomerProposals->mayBeDeleted($customerProposal));
+        $this->set('mayBeRevoked', $this->mayBeRevoked($customerProposal));
+        $this->set('mayBeRestored', $this->mayBeRestored($customerProposal));
         $this->set('takingBackIsOnOffer', (new TakingBackTheSending())->isOnOffer($customerProposal));
         // Only the count: the tables themselves are drawn by a cell, which asks for what it draws.
         $this->set('filed', (new CustomerDocuments())->filedAgainst([$customerProposal])[$customerProposal->id] ?? []);
@@ -548,7 +550,7 @@ class CustomerProposalsController extends AppController
 
         $proposal = $this->CustomerProposals->get($id, contain: ['ContractProposals']);
 
-        if (!$proposal->isOpen()) {
+        if (!$this->mayBeRevoked($proposal)) {
             $this->Flash->warning(__('This proposal has already been settled.'));
 
             return $this->redirect(['action' => 'view', $id]);
@@ -558,12 +560,104 @@ class CustomerProposalsController extends AppController
 
         if ($this->CustomerProposals->giveUpOnTheProposal($proposal, is_string($by) ? $by : null)) {
             $this->Flash->success(__('The proposal has been revoked.'));
+            $this->sayWhatOutlivesTheRevocation($proposal);
         } else {
             $this->flashValidationErrors($proposal->getErrors());
             $this->Flash->error(__('The proposal could not be revoked. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'view', $id]);
+    }
+
+    /**
+     * Takes a revocation back. Nothing was lost by it, so the proposal goes back to where it stood.
+     *
+     * @param string|null $id Customer proposal id.
+     * @return \Cake\Http\Response|null Redirects back to the proposal.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function restore(?string $id = null): ?Response
+    {
+        $this->request->allowMethod(['post']);
+
+        $proposal = $this->CustomerProposals->get($id);
+
+        if (!$this->mayBeRestored($proposal)) {
+            $this->Flash->warning(__('This proposal cannot be restored.'));
+
+            return $this->redirect(['action' => 'view', $id]);
+        }
+
+        if ($this->CustomerProposals->restoreTheProposal($proposal)) {
+            $this->Flash->success(__('The proposal has been restored.'));
+
+            foreach ($this->CustomerProposals->contractsWaitingOnAnotherProposal($proposal) as $number) {
+                $this->Flash->warning(__(
+                    'Contract {0} has another proposal waiting. Check which of them is to count.',
+                    $number,
+                ));
+            }
+        } else {
+            $this->flashValidationErrors($proposal->getErrors());
+            $this->Flash->error(__('The proposal could not be restored. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'view', $id]);
+    }
+
+    /**
+     * Whether whoever is asking may revoke the proposal.
+     *
+     * What is settled stays, except for those who may override: papers signed with a mistake are
+     * torn up and signed anew, and the old ones have to say that they no longer count.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @return bool
+     */
+    private function mayBeRevoked(CustomerProposal $proposal): bool
+    {
+        return !$proposal->hasBeenRevoked() && ($proposal->isOpen() || $this->mayOverride());
+    }
+
+    /**
+     * Whether whoever is asking may take the revocation back.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal.
+     * @return bool
+     */
+    private function mayBeRestored(CustomerProposal $proposal): bool
+    {
+        return $proposal->hasBeenRevoked() && $this->mayOverride();
+    }
+
+    /**
+     * Says what revoking a signed proposal leaves as it was, because it undoes nothing by itself.
+     *
+     * @param \App\Model\Entity\CustomerProposal $proposal The proposal that was revoked.
+     * @return void
+     */
+    private function sayWhatOutlivesTheRevocation(CustomerProposal $proposal): void
+    {
+        if (!$proposal->hasBeenConcluded()) {
+            return;
+        }
+
+        foreach ($proposal->contract_proposals as $part) {
+            if ($part->hasBeenApplied()) {
+                $this->Flash->warning(__(
+                    'The changes already applied stay on the contract. Put them right with a new proposal.',
+                ));
+
+                break;
+            }
+        }
+
+        if ($proposal->purpose === CustomerProposalPurpose::GdprConsent) {
+            $this->Flash->warning(__(
+                'The consent recorded by the signature stays on the customer. If it no longer holds,'
+                . ' correct it there.',
+            ));
+        }
     }
 
     /**

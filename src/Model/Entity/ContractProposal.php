@@ -188,6 +188,20 @@ class ContractProposal extends AppEntity
     }
 
     /**
+     * Whether these papers no longer count.
+     *
+     * Asked of the envelope as well: papers whose changes were applied stay applied when the
+     * proposal is revoked afterwards, so they are never revoked themselves.
+     *
+     * @return bool
+     * @throws \RuntimeException When the envelope was not fetched.
+     */
+    public function hasStoppedCounting(): bool
+    {
+        return $this->hasBeenRevoked() || $this->envelope()->hasBeenRevoked();
+    }
+
+    /**
      * The fields the proposal keeps.
      *
      * Everything a proposal of a contract asks for reaches the records by being applied, so

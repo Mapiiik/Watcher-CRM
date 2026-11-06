@@ -117,6 +117,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
         <?php foreach ($rows as $index => $row) : ?>
             <?php
             $proposal = $row['proposal'];
+            $greyed = $proposal['revoked'] === true ? ' style="color: darkgray;"' : '';
             $page = $spans['variant'][$index];
             $first = $page['start'] === $index;
             $last = $page['start'] + $page['span'] - 1 === $index;
@@ -252,7 +253,7 @@ $joined = function (array $run, int $index, string $content, string $class = '')
             </tr>
                 <?php continue; ?>
             <?php endif; ?>
-            <tr<?= $spans[$leftmost][$index]['start'] === $index ? '' : ' class="continued"' ?>>
+            <tr<?= $spans[$leftmost][$index]['start'] === $index ? '' : ' class="continued"' ?><?= $greyed ?>>
                 <?= $showContract ? $joined($spans['contract'][$index], $index, $contractCell) : '' ?>
                 <?= $showProposal ? $joined($spans['proposal'][$index], $index, $proposalCell) : '' ?>
                 <?= $joined($spans['document'][$index], $index, h($row['document'])) ?>

@@ -507,6 +507,7 @@ $permissions = [
                 'edit',
                 'conclude',
                 'revoke',
+                'restore',
                 'send',
                 'takeBackSending',
                 'applyChanges',

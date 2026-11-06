@@ -545,8 +545,7 @@ class CustomerProposalsControllerTest extends TestCase
         $this->assertRedirect();
         $this->assertSame('2026-10-06', $proposals->get($proposal->id)->conclusion_date?->toDateString());
 
-        // Giving up on a proposal is the one thing that closes the door, and it can only be done
-        // before there is a signature to speak of.
+        // Giving up on a proposal is the one thing that closes the door.
         $abandoned = $this->drawOneUp();
         $this->post('/customer-proposals/revoke/' . $abandoned->id);
         $this->post('/customer-proposals/conclude/' . $abandoned->id, ['conclusion_date' => '2026-10-07']);
@@ -608,6 +607,229 @@ class CustomerProposalsControllerTest extends TestCase
         $revoked = $this->getTableLocator()->get('CustomerProposals')->get($proposal->id);
         $this->assertFalse($revoked->isOpen());
         $this->assertSame(__('Revoked'), $revoked->getState());
+    }
+
+    /**
+     * Papers signed with a mistake are torn up and signed anew, so an administrator can mark them
+     * as no longer counting. What was applied stays applied, and the page says so.
+     *
+     * @link \App\Controller\CustomerProposalsController::revoke()
+     * @return void
+     */
+    public function testAnAdministratorRevokesWhatHasBeenSigned(): void
+    {
+        [$proposal] = $this->appliedProposal();
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+
+        $this->get($at . 'view/' . $proposal->id);
+        $this->assertResponseContains('customer-proposals/revoke/' . $proposal->id);
+
+        $this->enableRetainFlashMessages();
+        $this->post($at . 'revoke/' . $proposal->id);
+        $this->assertRedirect();
+        $this->assertFlashMessageAt(1, __(
+            'The changes already applied stay on the contract. Put them right with a new proposal.',
+        ));
+        $this->assertFlashMessageAt(2, __(
+            'The consent recorded by the signature stays on the customer. If it no longer holds,'
+            . ' correct it there.',
+        ));
+
+        $revoked = $this->getTableLocator()->get('CustomerProposals')->get($proposal->id);
+        $this->assertSame(__('Revoked'), $revoked->getState());
+
+        $part = $this->papersOf((string)$proposal->id)[0];
+        $this->assertTrue($part->hasBeenApplied());
+        $this->assertFalse($part->hasBeenRevoked(), 'What was applied did not stop being applied.');
+    }
+
+    /**
+     * What was signed stays for the operators. A manager is offered what an administrator is.
+     *
+     * @link \App\Controller\CustomerProposalsController::revoke()
+     * @return void
+     */
+    public function testOnlyWhoMayOverrideRevokesWhatHasBeenSigned(): void
+    {
+        $proposal = $this->signedProposal();
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+
+        $this->login('sales-representative');
+        $this->get($at . 'view/' . $proposal->id);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('customer-proposals/revoke/' . $proposal->id);
+
+        $this->post($at . 'revoke/' . $proposal->id);
+        $this->assertRedirect();
+        $this->assertFalse($proposals->get($proposal->id)->hasBeenRevoked());
+
+        $this->login('manager');
+        $this->get($at . 'view/' . $proposal->id);
+        $this->assertResponseContains('customer-proposals/revoke/' . $proposal->id);
+
+        $this->post($at . 'revoke/' . $proposal->id);
+        $this->assertRedirect();
+        $this->assertTrue($proposals->get($proposal->id)->hasBeenRevoked());
+    }
+
+    /**
+     * A revocation can be a mistake too. Nothing was lost by it, so the proposal goes back to where
+     * it stood, with the papers that went with it.
+     *
+     * @link \App\Controller\CustomerProposalsController::restore()
+     * @return void
+     */
+    public function testARevokedProposalIsRestored(): void
+    {
+        $proposal = $this->signedProposal();
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+
+        $this->get($at . 'view/' . $proposal->id);
+        $this->assertResponseNotContains('customer-proposals/restore/' . $proposal->id);
+
+        $this->post($at . 'revoke/' . $proposal->id);
+        $this->assertTrue($this->papersOf((string)$proposal->id)[0]->hasBeenRevoked());
+
+        $this->get($at . 'view/' . $proposal->id);
+        $this->assertResponseContains('customer-proposals/restore/' . $proposal->id);
+
+        $this->post($at . 'restore/' . $proposal->id);
+        $this->assertRedirectContains('/customer-proposals/view/' . $proposal->id);
+
+        $back = $proposals->get($proposal->id);
+        $this->assertFalse($back->hasBeenRevoked());
+        $this->assertNull($back->revoked_by);
+        $this->assertSame('2026-10-05', $back->conclusion_date?->toDateString());
+
+        $part = $this->papersOf((string)$proposal->id)[0];
+        $this->assertFalse($part->hasBeenRevoked());
+        $this->assertNull($part->revoked_by);
+        $this->assertTrue($part->isStillToBeApplied());
+    }
+
+    /**
+     * Papers given up on by themselves were not revoked with the proposal, so they do not come back
+     * with it.
+     *
+     * @link \App\Model\Table\CustomerProposalsTable::restoreTheProposal()
+     * @return void
+     */
+    public function testPapersGivenUpOnEarlierStayGivenUp(): void
+    {
+        $proposal = $this->drawOneUpWithPapers();
+        $papers = $this->getTableLocator()->get('ContractProposals');
+        $of = $papers->get($this->papersOf((string)$proposal->id)[0]->id);
+
+        $of->revoked = new DateTime('2026-09-01 08:00:00');
+        $papers->saveOrFail($of, ['checkRules' => false]);
+
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $this->post($at . 'revoke/' . $proposal->id);
+        $this->post($at . 'restore/' . $proposal->id);
+        $this->assertRedirect();
+
+        $this->assertFalse($this->getTableLocator()->get('CustomerProposals')->get($proposal->id)->hasBeenRevoked());
+        $this->assertSame('2026-09-01 08:00:00', $papers->get($of->id)->revoked?->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * Restoring is for those who may override, so a proposal an operator revoked goes to them.
+     *
+     * @link \App\Controller\CustomerProposalsController::restore()
+     * @return void
+     */
+    public function testOnlyWhoMayOverrideRestores(): void
+    {
+        $proposal = $this->drawOneUp();
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $proposals = $this->getTableLocator()->get('CustomerProposals');
+        $this->post($at . 'revoke/' . $proposal->id);
+
+        $this->login('sales-representative');
+        $this->get($at . 'view/' . $proposal->id);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('customer-proposals/restore/' . $proposal->id);
+
+        $this->post($at . 'restore/' . $proposal->id);
+        $this->assertRedirect();
+        $this->assertTrue($proposals->get($proposal->id)->hasBeenRevoked());
+
+        $this->login('manager');
+        $this->post($at . 'restore/' . $proposal->id);
+        $this->assertRedirect();
+        $this->assertFalse($proposals->get($proposal->id)->hasBeenRevoked());
+    }
+
+    /**
+     * The proposal that replaced a revoked one is not touched, but two of them waiting on the same
+     * contract is something the operator has to know about.
+     *
+     * @link \App\Controller\CustomerProposalsController::restore()
+     * @return void
+     */
+    public function testRestoringSaysWhatElseWaitsOnTheContract(): void
+    {
+        $revoked = $this->drawOneUpWithPapers();
+        $at = '/customers/' . self::CUSTOMER_ID . '/customer-proposals/';
+        $this->post($at . 'revoke/' . $revoked->id);
+
+        $this->drawOneUpWithPapers();
+
+        $this->enableRetainFlashMessages();
+        $this->post($at . 'restore/' . $revoked->id);
+        $this->assertRedirect();
+
+        $number = (string)$this->getTableLocator()->get('Contracts')->get(self::CONTRACT_ID)->number;
+        $this->assertFlashMessageAt(1, __(
+            'Contract {0} has another proposal waiting. Check which of them is to count.',
+            $number,
+        ));
+    }
+
+    /**
+     * The point of revoking what was signed is telling which papers count, so the papers of a
+     * contract go with the proposal even where its changes were applied.
+     *
+     * @link \App\View\Cell\DocumentsCell
+     * @return void
+     */
+    public function testThePapersOfARevokedProposalStopCounting(): void
+    {
+        Configure::write('Files.root', TMP . 'revoked-papers-' . uniqid());
+        [$proposal] = $this->appliedProposal();
+        $part = $this->papersOf((string)$proposal->id)[0];
+        $this->filed(
+            ContractDocuments::MODEL,
+            (string)$part->id,
+            ContractDocumentType::ContractAmendment->value,
+            DocumentVariant::ReceivedSignedByCustomer,
+        );
+        $at = '/customers/' . self::CUSTOMER_ID . '/documents/manage';
+
+        // The table of the proposals above greys what is dealt with on its own account.
+        $tableOfPapers = fn(): string => (string)strstr($this->_getBodyAsString(), 'files-documents');
+
+        $this->get($at);
+        $this->assertResponseOk();
+        $this->assertResponseContains('paper.pdf');
+        $this->assertStringNotContainsString('color: darkgray;', $tableOfPapers());
+
+        $this->post('/customers/' . self::CUSTOMER_ID . '/customer-proposals/revoke/' . $proposal->id);
+        $this->assertRedirect();
+
+        $this->get($at);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('paper.pdf');
+
+        $this->get($at . '?show_revoked=1');
+        $this->assertResponseOk();
+        $this->assertResponseContains('paper.pdf');
+        $this->assertResponseContains('(' . __('Revoked') . ')');
+        $this->assertStringContainsString('color: darkgray;', $tableOfPapers());
+
+        Configure::delete('Files.root');
     }
 
     /**
@@ -1275,6 +1497,21 @@ class CustomerProposalsControllerTest extends TestCase
 
         /** @var \App\Model\Entity\CustomerProposal $proposal */
         $proposal = $this->addedRecord('CustomerProposals', $before);
+
+        return $proposal;
+    }
+
+    /**
+     * A proposal with papers in it, sent and signed and not yet applied.
+     *
+     * @return \App\Model\Entity\CustomerProposal
+     */
+    private function signedProposal(): CustomerProposal
+    {
+        $proposal = $this->drawOneUpWithPapers();
+        $this->sendAs($proposal, DocumentsDeliveryType::Post);
+        $this->post($this->conclude($proposal), ['conclusion_date' => '2026-10-05']);
+        $this->assertRedirect();
 
         return $proposal;
     }

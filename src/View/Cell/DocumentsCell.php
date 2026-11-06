@@ -182,7 +182,10 @@ class DocumentsCell extends Cell
                 'of' => $proposal,
                 'owed' => $owed->of($proposal),
                 'holds' => $owed->mayHoldPapers($proposal),
-                'label' => $proposal->effective_from . ' - ' . $proposal->whatItIsFor(),
+                'label' => $this->labelled(
+                    $proposal->effective_from . ' - ' . $proposal->whatItIsFor(),
+                    $proposal->hasBeenRevoked(),
+                ),
                 // The column reads down a table, where the day leads and the dashes line up. The
                 // viewer reads across one line, where it wants a sentence instead.
                 'says' => __('{0} from {1}', $proposal->whatItIsFor(), $proposal->effective_from),
@@ -206,16 +209,31 @@ class DocumentsCell extends Cell
                 'of' => $proposal,
                 'owed' => $owed->of($proposal),
                 'holds' => $owed->mayHoldPapers($proposal),
-                'label' => $proposal->effective_from . ' - ' . $proposal->purpose->label(),
+                'label' => $this->labelled(
+                    $proposal->effective_from . ' - ' . $proposal->purpose->label(),
+                    $proposal->hasStoppedCounting(),
+                ),
                 'says' => __('{0} from {1}', $proposal->purpose->label(), $proposal->effective_from),
                 'contract_id' => (string)$proposal->contract_id,
                 'contract' => (string)($proposal->contract->number ?? ''),
-                'revoked' => $proposal->hasBeenRevoked(),
+                'revoked' => $proposal->hasStoppedCounting(),
                 'documents' => $documents,
             ], $filed));
         }
 
         return $rows;
+    }
+
+    /**
+     * What a proposal is called in the table, which says when its papers no longer count.
+     *
+     * @param string $label What it is called.
+     * @param bool $revoked Whether it was revoked.
+     * @return string
+     */
+    private function labelled(string $label, bool $revoked): string
+    {
+        return $revoked ? sprintf('%s (%s)', $label, __('Revoked')) : $label;
     }
 
     /**
@@ -374,7 +392,7 @@ class DocumentsCell extends Cell
         /** @var \App\Model\Table\ContractProposalsTable $proposals */
         $proposals = $this->fetchTable(ContractProposalsTable::class);
 
-        $query = $proposals->find()->contain(['Contracts']);
+        $query = $proposals->find()->contain(['Contracts', 'CustomerProposals']);
         $query = match ($of) {
             'contractProposal' => $query->where(['ContractProposals.id' => $id]),
             'contractVersion' => $query->where(['ContractProposals.contract_version_id' => $id]),
@@ -386,7 +404,10 @@ class DocumentsCell extends Cell
         };
 
         if (!$this->withRevoked && $of !== 'contractProposal') {
-            $query->where(['ContractProposals.revoked IS' => null]);
+            $query->where([
+                'ContractProposals.revoked IS' => null,
+                'CustomerProposals.revoked IS' => null,
+            ]);
         }
 
         /** @var list<\App\Model\Entity\ContractProposal> $found */
