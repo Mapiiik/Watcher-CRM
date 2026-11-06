@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2026-11-06 03:16+0100\n"
+"POT-Creation-Date: 2026-11-06 11:01+0100\n"
 "PO-Revision-Date: 2026-09-11 13:24+0200\n"
 "Last-Translator: Martin Patočka <mapik@mapik.net>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -727,7 +727,7 @@ msgstr "Číslo zákazníka"
 #: templates/CustomerMessages/add_bulk/step_done.php:107
 #: templates/CustomerMessages/add_bulk/step_done.php:155
 #: templates/CustomerMessages/view.php:48
-#: templates/CustomerProposals/view.php:109 templates/Customers/view.php:117
+#: templates/CustomerProposals/view.php:117 templates/Customers/view.php:117
 #: templates/Emails/view.php:32 templates/EquipmentTypes/view.php:68
 #: templates/EquipmentTypes/view.php:131
 #: templates/HistoricalConnections/index.php:35
@@ -997,8 +997,8 @@ msgstr ""
 #: templates/Contracts/view.php:179 templates/CustomerProposals/add.php:18
 #: templates/CustomerProposalsly_changes.php:40
 #: templates/CustomerProposals/conclude.php:22
-#: templates/CustomerProposals/view.php:81
-#: templates/CustomerProposals/view.php:95 templates/Customers/view.php:53
+#: templates/CustomerProposals/view.php:89
+#: templates/CustomerProposals/view.php:103 templates/Customers/view.php:53
 #: templates/Customers/view.php:203 templates/Documents/add_pages.php:36
 #: templates/Documents/add_pages.php:49 templates/Documents/index.php:41
 #: templates/Documents/manage.php:87 templates/Documents/manage.php:88
@@ -1383,8 +1383,8 @@ msgstr "Zapůjčená zařízení nelze vyměnit přede dnem založení návrhu v
 #: src/Contracts/Proposal/ChangeApplication.php:90
 #: src/Contracts/Proposal/ChangeApplication.php:121
 #: src/Controller/ContractProposalsController.php:984
-#: src/Controller/CustomerProposalsController.php:176
-#: src/Controller/CustomerProposalsController.php:477
+#: src/Controller/CustomerProposalsController.php:180
+#: src/Controller/CustomerProposalsController.php:552
 msgid "This proposal has already been settled."
 msgstr "Tento návrh je již vyřízený."
 
@@ -1406,7 +1406,7 @@ msgstr "Fakturaci nelze uložit."
 #: templates/ContractProposals/view.php:174
 #: templates/ContractVersions/view.php:120
 #: templates/CustomerProposals/conclude.php:44
-#: templates/CustomerProposals/view.php:132
+#: templates/CustomerProposals/view.php:140
 #: templates/element/ContractChecks/implausible_conclusion_date.php:30
 #: templates/element/ContractChecks/impossible_contract_version_period.php:28
 #: templates/element/ContractChecks/proposal_table.php:19
@@ -1937,7 +1937,7 @@ msgstr "Profil připojení nelze odstranit. Zkuste to prosím znovu."
 #: src/Controller/ContractProposalsController.php:205
 #: src/Controller/ContractProposalsController.php:335
 #: src/Controller/ContractProposalsController.php:842
-#: src/Controller/CustomerProposalsController.php:140
+#: src/Controller/CustomerProposalsController.php:144
 msgid "This proposal can no longer be changed."
 msgstr "Tento návrh už nelze měnit."
 
@@ -1965,6 +1965,7 @@ msgid "The contract proposal has been recreated."
 msgstr "Návrh smlouvy byl sestaven znovu."
 
 #: src/Controller/ContractProposalsController.php:384
+#: src/Controller/CustomerProposalsController.php:285
 msgid "A generated document could not be deleted. Please delete it manually."
 msgstr ""
 "Vygenerovaný dokument se nepodařilo odstranit. Odstraňte ho prosím ručně."
@@ -2006,35 +2007,35 @@ msgstr "Vyberte typ zařízení."
 
 #: src/Controller/ContractProposalsController.php:872
 #: src/Controller/ContractProposalsController.php:1067
-#: src/Controller/CustomerProposalsController.php:110
-#: src/Controller/CustomerProposalsController.php:149
+#: src/Controller/CustomerProposalsController.php:114
+#: src/Controller/CustomerProposalsController.php:153
 msgid "The proposal has been saved."
 msgstr "Návrh byl uložen."
 
 #: src/Controller/ContractProposalsController.php:878
 #: src/Controller/ContractProposalsController.php:1073
-#: src/Controller/CustomerProposalsController.php:119
-#: src/Controller/CustomerProposalsController.php:155
+#: src/Controller/CustomerProposalsController.php:123
+#: src/Controller/CustomerProposalsController.php:159
 msgid "The proposal could not be saved. Please, try again."
 msgstr "Návrh nelze uložit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractProposalsController.php:955
-#: src/Controller/CustomerProposalsController.php:518
+#: src/Controller/CustomerProposalsController.php:593
 msgid "The proposal could not be deleted. Please, try again."
 msgstr "Návrh nelze odstranit. Zkuste to prosím znovu."
 
 #: src/Controller/ContractProposalsController.php:960
-#: src/Controller/CustomerProposalsController.php:523
+#: src/Controller/CustomerProposalsController.php:598
 msgid "The proposal has been deleted."
 msgstr "Návrh byl odstraněn."
 
 #: src/Controller/ContractProposalsController.php:993
-#: src/Controller/CustomerProposalsController.php:485
+#: src/Controller/CustomerProposalsController.php:560
 msgid "The proposal has been revoked."
 msgstr "Návrh byl zrušen."
 
 #: src/Controller/ContractProposalsController.php:996
-#: src/Controller/CustomerProposalsController.php:488
+#: src/Controller/CustomerProposalsController.php:563
 msgid "The proposal could not be revoked. Please, try again."
 msgstr "Návrh nelze zrušit. Zkuste to prosím znovu."
 
@@ -2299,46 +2300,58 @@ msgstr "Zpráva pro zákazníka byla smazána."
 msgid "The customer message could not be deleted. Please, try again."
 msgstr "Zprávu pro zákazníka nelze odstranit. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerProposalsController.php:195
+#: src/Controller/CustomerProposalsController.php:199
 msgid "The proposal has been recorded as sent."
 msgstr "Odeslání návrhu bylo zapsáno."
 
-#: src/Controller/CustomerProposalsController.php:201
+#: src/Controller/CustomerProposalsController.php:205
 msgid "The sending could not be recorded. Please, try again."
 msgstr "Odeslání nelze zapsat. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerProposalsController.php:228
-#: src/Controller/CustomerProposalsController.php:314
+#: src/Controller/CustomerProposalsController.php:234
+msgid "This proposal has no sending to take back."
+msgstr "Tento návrh nemá odeslání, které by šlo vzít zpět."
+
+#: src/Controller/CustomerProposalsController.php:250
+msgid "The sending has been taken back. The proposal can be changed again."
+msgstr "Odeslání bylo vzato zpět. Návrh lze znovu měnit."
+
+#: src/Controller/CustomerProposalsController.php:257
+msgid "The sending could not be taken back. Please, try again."
+msgstr "Odeslání nelze vzít zpět. Zkuste to prosím znovu."
+
+#: src/Controller/CustomerProposalsController.php:303
+#: src/Controller/CustomerProposalsController.php:389
 msgid "This customer proposal has been revoked."
 msgstr "Tento návrh zákazníka byl zrušen."
 
-#: src/Controller/CustomerProposalsController.php:240
+#: src/Controller/CustomerProposalsController.php:315
 msgid "The signature has been recorded."
 msgstr "Podpis byl zapsán."
 
-#: src/Controller/CustomerProposalsController.php:255
+#: src/Controller/CustomerProposalsController.php:330
 msgid "The signature could not be recorded. Please, try again."
 msgstr "Podpis nelze zapsat. Zkuste to prosím znovu."
 
-#: src/Controller/CustomerProposalsController.php:326
+#: src/Controller/CustomerProposalsController.php:401
 msgid "There are no changes left to apply in this proposal."
 msgstr "V tomto návrhu už nejsou žádné změny k aplikování."
 
-#: src/Controller/CustomerProposalsController.php:340
+#: src/Controller/CustomerProposalsController.php:415
 msgid "The changes of this proposal cannot be applied in its current state."
 msgstr "Změny tohoto návrhu nelze v současném stavu aplikovat."
 
-#: src/Controller/CustomerProposalsController.php:343
+#: src/Controller/CustomerProposalsController.php:418
 msgid ""
 "Borrowed equipments cannot be recorded as handed over on a day still to come."
 msgstr ""
 "Zapůjčená zařízení nelze zapsat jako předaná ke dni, který teprve přijde."
 
-#: src/Controller/CustomerProposalsController.php:387
+#: src/Controller/CustomerProposalsController.php:462
 msgid "The changes of the proposal could not be applied: {0}"
 msgstr "Změny návrhu se nepodařilo aplikovat: {0}"
 
-#: src/Controller/CustomerProposalsController.php:404
+#: src/Controller/CustomerProposalsController.php:479
 msgid ""
 "Contract {0} now has an end date. Its state was not changed, because a "
 "change of state has requirements of its own."
@@ -2346,11 +2359,18 @@ msgstr ""
 "Smlouva {0} má nyní datum ukončení. Její stav se nezměnil, protože změna "
 "stavu má vlastní podmínky."
 
-#: src/Controller/CustomerProposalsController.php:511
+#: src/Controller/CustomerProposalsController.php:586
 msgid "This proposal can no longer be deleted."
 msgstr "Tento návrh už nelze odstranit."
 
-#: src/Controller/CustomerProposalsController.php:243
+#: src/Controller/CustomerProposalsController.php:276
+msgid "One generated document has been deleted."
+msgid_plural "{0} generated documents have been deleted."
+msgstr[0] "Byl odstraněn jeden vygenerovaný dokument."
+msgstr[1] "Byly odstraněny {0} vygenerované dokumenty."
+msgstr[2] "Bylo odstraněno {0} vygenerovaných dokumentů."
+
+#: src/Controller/CustomerProposalsController.php:318
 msgid "The contract version signed on the old day has been corrected as well."
 msgid_plural ""
 "{0} contract versions signed on the old day have been corrected as well."
@@ -2358,7 +2378,7 @@ msgstr[0] "Opravena byla i verze smlouvy podepsaná v původní den."
 msgstr[1] "Opraveny byly i {0} verze smlouvy podepsané v původní den."
 msgstr[2] "Opraveno bylo i {0} verzí smlouvy podepsaných v původní den."
 
-#: src/Controller/CustomerProposalsController.php:395
+#: src/Controller/CustomerProposalsController.php:470
 msgid "The changes of the proposal have been applied to the live records."
 msgid_plural ""
 "The changes of the proposal and everything in it have been applied to the "
@@ -4235,7 +4255,7 @@ msgid "{0} ({1} - {2})"
 msgstr "{0} ({1} - {2})"
 
 #: src/Proposals/Settlement.php:116 templates/ContractProposals/view.php:245
-#: templates/CustomerProposals/view.php:159
+#: templates/CustomerProposals/view.php:167
 #: templates/ServiceOverrides/view.php:110
 #: templates/element/common/audit.php:74
 msgid "Revoked"
@@ -4253,6 +4273,25 @@ msgstr "Vydáno"
 #: templates/element/Documents/proposals.php:45
 msgid "Signed"
 msgstr "Podepsáno"
+
+#: src/Proposals/TakingBackTheSending.php:58
+msgid ""
+"The customer has already signed a document from this proposal, so the "
+"sending stands. To agree on something else, revoke this proposal and draw up "
+"a new one."
+msgstr ""
+"Zákazník už podepsal dokument z tohoto návrhu, a proto odeslání platí. Pokud "
+"se má dohodnout něco jiného, návrh zrušte a vytvořte nový."
+
+#: src/Proposals/TakingBackTheSending.php:66
+msgid ""
+"Only papers handed over in person can be taken back, because papers sent any "
+"other way may already be with the customer. To agree on something else, "
+"revoke this proposal and draw up a new one."
+msgstr ""
+"Zpět lze vzít jen papíry předávané osobně, protože papíry odeslané jinak už "
+"zákazník může mít. Pokud se má dohodnout něco jiného, návrh zrušte a "
+"vytvořte nový."
 
 #: src/RegulatoryReporting/ConnectionPointCollector.php:204
 msgid "Invalid RUIAN GID: {0} for addresses associated with contracts: {1}"
@@ -4455,7 +4494,8 @@ msgstr ""
 #: templates/CustomerProposals/conclude.php:14
 #: templates/CustomerProposals/edit.php:12
 #: templates/CustomerProposals/send.php:19
-#: templates/CustomerProposals/view.php:29 templates/Customers/add.php:15
+#: templates/CustomerProposals/take_back_sending.php:27
+#: templates/CustomerProposals/view.php:30 templates/Customers/add.php:15
 #: templates/Customers/edit.php:15
 #: templates/Customers/identity_number_check.php:20
 #: templates/Customers/index.php:79 templates/Customers/view.php:38
@@ -4629,7 +4669,8 @@ msgstr "Potvrdit"
 #: templates/CustomerLabels/edit.php:15 templates/CustomerLabels/index.php:73
 #: templates/CustomerMessages/edit.php:13
 #: templates/CustomerMessages/index.php:80
-#: templates/CustomerProposals/view.php:74 templates/Customers/edit.php:17
+#: templates/CustomerProposals/take_back_sending.php:53
+#: templates/CustomerProposals/view.php:82 templates/Customers/edit.php:17
 #: templates/Customers/view.php:453 templates/Customers/view.php:502
 #: templates/Customers/view.php:555 templates/Customers/view.php:638
 #: templates/Customers/view.php:710 templates/DealerCommissions/edit.php:14
@@ -4837,7 +4878,7 @@ msgstr "Port"
 #: templates/ContractStates/view.php:205
 #: templates/ContractVersions/view.php:134 templates/Contracts/view.php:202
 #: templates/CustomerLabels/view.php:80
-#: templates/CustomerProposals/view.php:215 templates/Customers/view.php:400
+#: templates/CustomerProposals/view.php:223 templates/Customers/view.php:400
 #: templates/Customers/view.php:432 templates/Customers/view.php:481
 #: templates/Customers/view.php:590 templates/Customers/view.php:671
 #: templates/Emails/view.php:65 templates/IpAddresses/view.php:97
@@ -5750,7 +5791,7 @@ msgstr "Účel nového návrhu zákazníka"
 #: templates/ContractProposals/add.php:101
 #: templates/ContractProposals/view.php:162
 #: templates/CustomerMessages/add_bulk/step_purpose.php:28
-#: templates/CustomerProposals/view.php:120
+#: templates/CustomerProposals/view.php:128
 #: templates/element/ContractChecks/proposal_table.php:32
 #: templates/element/CustomerChecks/customer_proposal.php:22
 #: templates/element/CustomerProposals/form.php:34
@@ -5780,7 +5821,7 @@ msgstr ""
 
 #: templates/ContractProposals/add.php:139
 #: templates/ContractProposals/view.php:158
-#: templates/CustomerProposals/view.php:124
+#: templates/CustomerProposals/view.php:132
 #: templates/element/ContractChecks/proposal_table.php:33
 #: templates/element/CustomerChecks/customer_proposal.php:23
 #: templates/element/CustomerProposals/form.php:40
@@ -5932,7 +5973,9 @@ msgstr "Ponechat to tak, jak je na smlouvě?"
 #: templates/CustomerProposalsly_changes.php:34
 #: templates/CustomerProposals/conclude.php:16
 #: templates/CustomerProposals/edit.php:15
-#: templates/CustomerProposals/send.php:21 templates/Documents/add_pages.php:41
+#: templates/CustomerProposals/send.php:21
+#: templates/CustomerProposals/take_back_sending.php:29
+#: templates/Documents/add_pages.php:41
 #: templates/element/CustomerChecks/customer_proposal.php:46
 msgid "View Proposal"
 msgstr "Zobrazit návrh"
@@ -5990,6 +6033,7 @@ msgstr ""
 "– odstraňte návrh smlouvy a vytvořte místo něj nový."
 
 #: templates/ContractProposals/recreate.php:114
+#: templates/CustomerProposals/take_back_sending.php:52
 #: templates/Documents/manage.php:214
 msgid "Generated Documents"
 msgstr "Vygenerované dokumenty"
@@ -6017,7 +6061,7 @@ msgstr[1] "Tyto {0} dokumenty budou nenávratně odstraněny. Pokračovat?"
 msgstr[2] "Těchto {0} dokumentů bude nenávratně odstraněno. Pokračovat?"
 
 #: templates/ContractProposals/view.php:49
-#: templates/CustomerProposals/view.php:64
+#: templates/CustomerProposals/view.php:72
 #: templates/ServiceOverrides/edit.php:17
 #: templates/ServiceOverrides/index.php:105
 msgid "Revoke"
@@ -6039,7 +6083,7 @@ msgid ""
 msgstr "Bylo to, co tento návrh nemohl zapsat, vyřízeno na smlouvě ručně?"
 
 #: templates/ContractProposals/view.php:73
-#: templates/CustomerProposals/view.php:76
+#: templates/CustomerProposals/view.php:84
 msgid "Are you sure?"
 msgstr "Opravdu?"
 
@@ -6055,7 +6099,7 @@ msgstr "Snímek pořízen"
 #: templates/ContractVersions/index.php:42
 #: templates/ContractVersions/view.php:116
 #: templates/CustomerProposals/send.php:46
-#: templates/CustomerProposals/view.php:128
+#: templates/CustomerProposals/view.php:136
 #: templates/element/ContractChecks/proposal_table.php:18
 #: templates/element/ContractChecks/unsigned_contract_version.php:32
 #: templates/element/Contracts/ContractVersions.php:18
@@ -6063,12 +6107,12 @@ msgid "Sent To The Customer"
 msgstr "Odesláno zákazníkovi"
 
 #: templates/ContractProposals/view.php:178
-#: templates/CustomerProposals/view.php:136
+#: templates/CustomerProposals/view.php:144
 msgid "Stored Documents"
 msgstr "Uložené dokumenty"
 
 #: templates/ContractProposals/view.php:182
-#: templates/CustomerProposals/view.php:140
+#: templates/CustomerProposals/view.php:148
 msgid "None"
 msgstr "Žádné"
 
@@ -6098,7 +6142,7 @@ msgid "None"
 msgstr "Žádné"
 
 #: templates/ContractProposals/view.php:183
-#: templates/CustomerProposals/view.php:141
+#: templates/CustomerProposals/view.php:149
 msgid "{0} generated, {1} received"
 msgstr "{0} vygenerováno, {1} přijato"
 
@@ -7039,7 +7083,7 @@ msgid "Mark as Settled"
 msgstr "Označit jako vyřízené"
 
 #: templates/CustomerProposalsly_changes.php:138
-#: templates/CustomerProposals/view.php:57
+#: templates/CustomerProposals/view.php:65
 #: templates/element/ContractChecks/proposal_table.php:104
 #: templates/element/Documents/proposals.php:131
 msgid "Apply Changes"
@@ -7055,7 +7099,7 @@ msgstr "Opravdu chcete aplikovat změny tohoto návrhu?"
 
 #: templates/CustomerProposals/conclude.php:35
 #: templates/CustomerProposals/edit.php:31
-#: templates/CustomerProposals/view.php:50
+#: templates/CustomerProposals/view.php:58
 #: templates/element/ContractChecks/proposal_table.php:92
 #: templates/element/Documents/proposals.php:121
 msgid "Record the Signature"
@@ -7084,14 +7128,14 @@ msgstr "Stejné datum se zapíše i u těchto, protože se vrátily společně."
 
 #: templates/CustomerProposals/edit.php:26
 #: templates/CustomerProposals/send.php:14
-#: templates/CustomerProposals/view.php:41
+#: templates/CustomerProposals/view.php:42
 #: templates/element/ContractChecks/proposal_table.php:80
 #: templates/element/Documents/proposals.php:110
 msgid "Record the Sending"
 msgstr "Zapsat odeslání"
 
 #: templates/CustomerProposals/send.php:14
-#: templates/CustomerProposals/view.php:40
+#: templates/CustomerProposals/view.php:41
 msgid "Record the Sending Again"
 msgstr "Zapsat odeslání znovu"
 
@@ -7120,23 +7164,58 @@ msgid ""
 "The same date is recorded for these as well, because they were sent together."
 msgstr "Stejné datum se zapíše i u těchto, protože byly odeslány společně."
 
-#: templates/CustomerProposals/view.php:32
+#: templates/CustomerProposals/take_back_sending.php:14
+msgid ""
+"It was recorded as handed over in person on {0}. Taking the sending back "
+"removes that record and the proposal can be changed again. Do this only if "
+"the customer does not have the papers yet."
+msgstr ""
+"Návrh je zapsaný jako předaný osobně {0}. Vzetím odeslání zpět se tento "
+"zápis odstraní a návrh půjde znovu měnit. Udělejte to jen tehdy, když "
+"zákazník papíry ještě nemá."
+
+#: templates/CustomerProposals/take_back_sending.php:19
+msgid ""
+"Ticked documents are deleted, and a copy already printed will no longer "
+"match once the proposal changes. Received documents always stay on file."
+msgstr ""
+"Zaškrtnuté dokumenty se odstraní a už vytištěná kopie po změně návrhu nebude "
+"odpovídat. Přijaté dokumenty vždy zůstávají."
+
+#: templates/CustomerProposals/take_back_sending.php:37
+#: templates/CustomerProposals/take_back_sending.php:87
+#: templates/CustomerProposals/view.php:49
+msgid "Take Back the Sending"
+msgstr "Vzít odeslání zpět"
+
+#: templates/CustomerProposals/take_back_sending.php:51
+#: templates/cell/Documents/display.php:100
+#: templates/element/Documents/proposals.php:42
+msgid "Proposal"
+msgstr "Návrh"
+
+#: templates/CustomerProposals/take_back_sending.php:54
+#: templates/Documents/manage.php:200
+msgid "Received Documents"
+msgstr "Přijaté dokumenty"
+
+#: templates/CustomerProposals/view.php:33
 msgid "Edit Proposal"
 msgstr "Upravit návrh"
 
-#: templates/CustomerProposals/view.php:49
+#: templates/CustomerProposals/view.php:57
 msgid "Correct the Signature"
 msgstr "Opravit podpis"
 
-#: templates/CustomerProposals/view.php:68
+#: templates/CustomerProposals/view.php:76
 msgid "Revoke this customer proposal?"
 msgstr "Zrušit tento návrh zákazníka?"
 
-#: templates/CustomerProposals/view.php:172 templates/Documents/manage.php:108
+#: templates/CustomerProposals/view.php:180 templates/Documents/manage.php:108
 msgid "New Contract Proposal"
 msgstr "Nový návrh smlouvy"
 
-#: templates/CustomerProposals/view.php:192 templates/Documents/manage.php:155
+#: templates/CustomerProposals/view.php:200 templates/Documents/manage.php:155
 msgid "View Contract Proposal"
 msgstr "Zobrazit návrh smlouvy"
 
@@ -7504,10 +7583,6 @@ msgstr "Zobrazit i dokumenty návrhů smluv"
 #: templates/Documents/manage.php:187 templates/cell/Documents/display.php:243
 msgid "Add Files"
 msgstr "Nahrát soubory"
-
-#: templates/Documents/manage.php:200
-msgid "Received Documents"
-msgstr "Přijaté dokumenty"
 
 #: templates/Documents/manage.php:201
 msgid ""
@@ -8790,11 +8865,6 @@ msgstr "Zatím není nic vygenerováno."
 #: templates/cell/Documents/display.php:89
 msgid "Nothing has been received yet."
 msgstr "Zatím nebylo nic přijato."
-
-#: templates/cell/Documents/display.php:100
-#: templates/element/Documents/proposals.php:42
-msgid "Proposal"
-msgstr "Návrh"
 
 #: templates/cell/Documents/display.php:105
 msgid "Page"
