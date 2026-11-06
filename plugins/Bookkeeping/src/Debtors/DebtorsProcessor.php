@@ -620,6 +620,7 @@ class DebtorsProcessor
      *
      * VIP goes by the contract, and the television service knows nothing of contracts, so this is
      * where the two meet. Which contracts are for television is a setting: nothing else says so.
+     * Only a contract that still provides its services counts.
      *
      * @param string $customer_id The customer.
      * @return bool
@@ -631,11 +632,14 @@ class DebtorsProcessor
             [],
         );
 
-        return $serviceTypes !== [] && $this->fetchTable(ContractsTable::class)->exists([
-            'Contracts.customer_id' => $customer_id,
-            'Contracts.service_type_id IN' => $serviceTypes,
-            'Contracts.vip' => true,
-        ]);
+        return $serviceTypes !== [] && $this->fetchTable(ContractsTable::class)
+            ->find('withActiveServices')
+            ->where([
+                'Contracts.customer_id' => $customer_id,
+                'Contracts.service_type_id IN' => $serviceTypes,
+                'Contracts.vip' => true,
+            ])
+            ->count() > 0;
     }
 
     /**

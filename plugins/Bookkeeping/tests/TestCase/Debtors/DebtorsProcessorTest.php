@@ -488,6 +488,10 @@ class DebtorsProcessorTest extends TestCase
 
         Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_ids', []);
         $this->assertSame([self::CUSTOMER_ID], $leftWithNothing(), 'Nobody said which contract is the television.');
+
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.service_type_ids', [$television]);
+        $this->fetchTable('ContractStates')->updateAll(['active_services' => false], ['1 = 1']);
+        $this->assertSame([self::CUSTOMER_ID], $leftWithNothing(), 'The VIP contract no longer provides anything.');
     }
 
     /**
