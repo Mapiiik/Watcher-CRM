@@ -68,12 +68,17 @@ class FormAuthenticator extends BaseFormAuthenticator
             return new Result(null, self::FAILURE_BLOCKED);
         }
 
-        $result = parent::authenticate($request);
+        // the database driver cuts text at a NUL byte, so such a name would reach the account past
+        // its counter, and the database refuses text that is not UTF-8
+        $typed = preg_match('/^\P{C}+$/u', $account) === 1;
+        $result = $typed ? parent::authenticate($request) : new Result(null, Result::FAILURE_CREDENTIALS_INVALID);
         if ($result->isValid()) {
             $throttle->succeeded($account, $address);
         } elseif ($result->getStatus() !== Result::FAILURE_CREDENTIALS_MISSING) {
             $throttle->failed($account, $address);
-            $this->usersTable()->noteDenied($account, $address);
+            if ($typed) {
+                $this->usersTable()->noteDenied($account, $address);
+            }
             AuthLog::warning('sign-in failed', [
                 'user' => $account,
                 'ip' => $address,

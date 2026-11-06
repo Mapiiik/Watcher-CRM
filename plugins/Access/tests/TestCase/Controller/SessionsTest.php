@@ -320,4 +320,20 @@ class SessionsTest extends TestCase
 
         return $account;
     }
+
+    /**
+     * The name of an account spelled with a NUL byte must not reach the account: the database
+     * driver cuts the text there, while the failures are counted under the whole of it.
+     *
+     * @return void
+     */
+    public function testANameNobodyCouldHaveTypedSignsNobodyIn(): void
+    {
+        $this->addAccount();
+
+        $this->enableCsrfToken();
+        $this->post('/login', ['username' => "jnovak\0x", 'password' => 'Kopr na zahrade 7x']);
+
+        $this->assertArrayNotHasKey('Auth', $_SESSION);
+    }
 }
