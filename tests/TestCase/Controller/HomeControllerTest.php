@@ -154,8 +154,7 @@ class HomeControllerTest extends TestCase
         // asked
         $users = $this->getTableLocator()->get('Users');
         $user = $users->find()->firstOrFail();
-        $user->set('role', 'user');
-        $user->set('is_superuser', false);
+        $users->updateAll(['role' => 'user', 'is_superuser' => false], ['id' => $user->get('id')]);
         $this->session(['Auth' => $user]);
 
         $this->get('/users/user-settings');

@@ -5,6 +5,7 @@ namespace Access\Model\Entity;
 
 use Access\Authentication\Argon2idPasswordHasher;
 use Access\Model\Table\UsersTable;
+use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 
 /**
@@ -35,6 +36,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $last_denied
  * @property string|null $last_denied_ip
  * @property array|null $user_settings
+ * @property \Cake\I18n\DateTime|null $sessions_valid_from
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  * @property array<\Access\Model\Entity\SocialAccount> $social_accounts
@@ -106,6 +108,27 @@ class User extends Entity
     public function checkPassword(string $password): bool
     {
         return (new Argon2idPasswordHasher())->check($password, (string)$this->get('password'));
+    }
+
+    /**
+     * Ends every session of the account signed in up to now, on the next request of each.
+     *
+     * @return void
+     */
+    public function endSessions(): void
+    {
+        $this->set('sessions_valid_from', DateTime::now());
+    }
+
+    /**
+     * Whether a session signed in at a moment is still good.
+     *
+     * @param int $signedInAt When it signed in, as a timestamp.
+     * @return bool
+     */
+    public function sessionsAllow(int $signedInAt): bool
+    {
+        return $this->sessions_valid_from === null || $signedInAt >= $this->sessions_valid_from->getTimestamp();
     }
 
     /**

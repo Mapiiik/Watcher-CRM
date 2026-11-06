@@ -236,11 +236,11 @@ class OneTimePasswordTest extends TestCase
     public function testAnAdminResetsTheCodes(): void
     {
         $id = $this->addAccountWithCodes();
-        $this->session(['Auth' => ['id' => $id, 'username' => 'admin', 'role' => 'admin']]);
+        $this->session(['Auth' => $this->addOtherAccount(role: 'admin')]);
         $this->get('/users/index');
         $this->assertResponseOk();
         $this->assertResponseContains('Two-Step Verification');
-        $this->assertSame(['jnovak' => true], $this->listedTwoStepVerification());
+        $this->assertSame(['jnovak' => true, 'pdvorak' => false], $this->listedTwoStepVerification());
         $this->get('/users/view/' . $id);
         $this->assertResponseContains('action="/users/reset-one-time-password-authenticator/' . $id . '"');
         $this->enableCsrfToken();
@@ -251,11 +251,11 @@ class OneTimePasswordTest extends TestCase
         $this->assertNull($this->account($id)->get('secret'));
         $this->assertSame(0, $this->getTableLocator()->get('Access.RecoveryCodes')->left($id));
         $this->get('/users/index');
-        $this->assertSame(['jnovak' => false], $this->listedTwoStepVerification());
+        $this->assertSame(['jnovak' => false, 'pdvorak' => false], $this->listedTwoStepVerification());
         /** @var \Cake\Log\Engine\ArrayLog $log */
         $log = Log::engine('auth');
         $this->assertStringContainsString(
-            'one-time password reset user="jnovak" by="admin"',
+            'one-time password reset user="jnovak" by="pdvorak"',
             implode("\n", $log->read()),
         );
     }

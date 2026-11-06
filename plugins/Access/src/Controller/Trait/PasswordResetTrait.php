@@ -99,6 +99,7 @@ trait PasswordResetTrait
             ]);
             // the link works once
             $user->patch(['token' => null, 'token_expires' => null], ['guard' => false]);
+            $user->endSessions();
 
             if (!$user->hasErrors() && $users->save($user)) {
                 AuthLog::notice('password reset', [

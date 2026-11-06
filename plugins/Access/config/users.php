@@ -9,6 +9,7 @@
 
 use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\FormAuthenticator;
+use Access\Authentication\SessionAuthenticator;
 use Access\Authentication\TwoFactorChecker;
 use Access\Middleware\UnauthorizedHandler\RedirectHandler;
 use Access\Social\Mapper\Oidc as OidcMapper;
@@ -56,7 +57,7 @@ return [
         // without the password and without the second factor.
         'Authenticators' => [
             'Session' => [
-                'className' => 'Authentication.Session',
+                'className' => SessionAuthenticator::class,
                 'skipTwoFactorVerify' => true,
                 'sessionKey' => 'Auth',
             ],

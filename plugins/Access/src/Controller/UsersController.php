@@ -7,6 +7,7 @@ use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\AuthLog;
 use Access\Authentication\FormAuthenticator;
 use Access\Authentication\SecurityPolicy;
+use Access\Authentication\SessionAuthenticator;
 use Access\Controller\Trait\ApiTokenTrait;
 use Access\Controller\Trait\OneTimePasswordTrait;
 use Access\Controller\Trait\PasswordResetTrait;
@@ -18,7 +19,6 @@ use Access\Social\Providers;
 use Access\Social\Service\OidcService;
 use App\Controller\AppController;
 use Authentication\Authenticator\AuthenticatorInterface;
-use Authentication\Authenticator\SessionAuthenticator;
 use Authentication\Identifier\IdentifierCollection;
 use Authentication\Identifier\PasswordIdentifier;
 use Cake\Core\Configure;
@@ -258,7 +258,15 @@ class UsersController extends AppController
                 $user->setError('password', __d('access', 'The new password has to differ from the current one.'));
             }
 
+            // whoever has the old password is out, somebody changing their own stays
+            $user->endSessions();
             if (!$user->hasErrors() && $users->save($user)) {
+                if ($own) {
+                    $this->getRequest()->getSession()->write(
+                        SessionAuthenticator::SIGNED_IN_AT,
+                        $user->sessions_valid_from?->getTimestamp(),
+                    );
+                }
                 AuthLog::notice('password changed', [
                     'user' => (string)$user->get('username'),
                     'by' => $own ? null : (string)$signedIn->get('username'),

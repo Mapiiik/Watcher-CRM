@@ -47,9 +47,10 @@ trait AccountsTrait
      * Adds a second account, beside the one of `addAccount()`.
      *
      * @param string|null $email Its e-mail.
+     * @param string $role Its role.
      * @return \Cake\Datasource\EntityInterface
      */
-    protected function addOtherAccount(?string $email = null): EntityInterface
+    protected function addOtherAccount(?string $email = null, string $role = 'user'): EntityInterface
     {
         $users = $this->getTableLocator()->get('Users');
         $user = $users->newEmptyEntity();
@@ -57,7 +58,7 @@ trait AccountsTrait
             'username' => 'pdvorak',
             'email' => $email,
             'password' => 'Mrkev na zahrade 9z',
-            'role' => 'user',
+            'role' => $role,
             'active' => true,
         ], ['guard' => false]);
 

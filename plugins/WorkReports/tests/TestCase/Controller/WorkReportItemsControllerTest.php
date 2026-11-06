@@ -881,12 +881,11 @@ class WorkReportItemsControllerTest extends TestCase
      */
     private function loginAs(string $id, string $role, bool $superuser = true): void
     {
-        $user = $this->getTableLocator()->get('Users')->get($id);
-        $user->role = $role;
+        $users = $this->getTableLocator()->get('Users');
         // the user of the fixture is a superuser, whom the permissions do not stop
-        $user->set('is_superuser', $superuser);
+        $users->updateAll(['role' => $role, 'is_superuser' => $superuser], ['id' => $id]);
 
-        $this->session(['Auth' => $user]);
+        $this->session(['Auth' => $users->get($id)]);
     }
 
     /**

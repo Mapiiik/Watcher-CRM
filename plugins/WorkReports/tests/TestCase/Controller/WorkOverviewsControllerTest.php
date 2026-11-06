@@ -62,9 +62,7 @@ class WorkOverviewsControllerTest extends TestCase
     {
         parent::setUp();
 
-        $user = $this->getTableLocator()->get('Users')->get(self::WORKER);
-        $user->role = 'bookkeeper';
-        $this->session(['Auth' => $user]);
+        $this->signInAs('bookkeeper');
 
         // whoever reports work is on the list of workers, which is what says the months are theirs
         $workers = $this->getTableLocator()->get('WorkReports.WorkReportWorkers');
@@ -140,10 +138,7 @@ class WorkOverviewsControllerTest extends TestCase
         $this->getTableLocator()->get('WorkReports.WorkReportItems')->saveOrFail($atAccessPoint);
         $this->item('Office work', invoiced: false, from: '13:00');
 
-        $user = $this->getTableLocator()->get('Users')->get(self::WORKER);
-        $user->role = 'network-technician';
-        $user->set('is_superuser', false);
-        $this->session(['Auth' => $user]);
+        $this->signInAs('network-technician', superuser: false);
 
         $this->get('/work-reports/work-overviews/by-access-point');
 
@@ -169,9 +164,7 @@ class WorkOverviewsControllerTest extends TestCase
         $item->set('access_point_id', '5d1e1f9a-8c1b-4d7a-9f3e-2b6c7d8e9f01');
         $this->getTableLocator()->get('WorkReports.WorkReportItems')->saveOrFail($item);
 
-        $user = $this->getTableLocator()->get('Users')->get(self::WORKER);
-        $user->role = 'admin';
-        $this->session(['Auth' => $user]);
+        $this->signInAs('admin');
 
         foreach (['/work-reports/work-overviews/by-access-point', '/work-reports/work-reports/sheet?month=2026-06'] as $page) {
             $this->get($page);
@@ -187,11 +180,8 @@ class WorkOverviewsControllerTest extends TestCase
      */
     public function testOnlyForThoseWhoInvoice(): void
     {
-        $user = $this->getTableLocator()->get('Users')->get(self::WORKER);
-        $user->role = 'user';
         // the user of the fixture is a superuser, whom the permissions do not stop
-        $user->set('is_superuser', false);
-        $this->session(['Auth' => $user]);
+        $this->signInAs('user', superuser: false);
 
         $this->get('/work-reports/work-overviews/to-invoice');
 
@@ -229,5 +219,20 @@ class WorkOverviewsControllerTest extends TestCase
             'rate_multiplier' => '3',
             'invoiced' => $invoiced,
         ]));
+    }
+
+    /**
+     * Signs the worker in with a role, which the account itself has to hold.
+     *
+     * @param string $role The role.
+     * @param bool $superuser Whether they are a superuser.
+     * @return void
+     */
+    private function signInAs(string $role, bool $superuser = true): void
+    {
+        $users = $this->getTableLocator()->get('Users');
+        $users->updateAll(['role' => $role, 'is_superuser' => $superuser], ['id' => self::WORKER]);
+
+        $this->session(['Auth' => $users->get(self::WORKER)]);
     }
 }

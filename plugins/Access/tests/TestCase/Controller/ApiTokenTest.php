@@ -89,7 +89,7 @@ class ApiTokenTest extends TestCase
     public function testAnAdminMakesAKeyThatIsShownOnce(): void
     {
         $id = (string)$this->addAccount(role: 'api')->get('id');
-        $this->session(['Auth' => ['id' => $id, 'username' => 'admin', 'role' => 'admin']]);
+        $this->session(['Auth' => $this->addOtherAccount(role: 'admin')]);
         $this->get('/users/view/' . $id);
         $this->assertResponseContains('New API Key');
 
@@ -126,7 +126,7 @@ class ApiTokenTest extends TestCase
         $user->set('api_token', 'client-key');
         $this->getTableLocator()->get('Users')->saveOrFail($user);
         $id = (string)$user->get('id');
-        $this->session(['Auth' => ['id' => $id, 'username' => 'admin', 'role' => 'admin']]);
+        $this->session(['Auth' => $this->addOtherAccount(role: 'admin')]);
         $this->get('/users/view/' . $id);
         $this->assertResponseContains('Remove API Key');
         $this->assertResponseContains("<th>API Key Sign-In</th>\n    <td>On</td>");
