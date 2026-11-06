@@ -37,6 +37,11 @@ class ServiceProvider implements AuthenticationServiceProviderInterface, Authori
     {
         $service = new AuthenticationService(['processors' => TwoFactorProcessorLoader::processors()]);
         foreach ((array)Configure::read('Auth.Authenticators') as $name => $options) {
+            // a Bearer token switches off what guards a cookie, so only the token may sign it in
+            if ($name === 'Session' && BearerRequest::isApi($request)) {
+                continue;
+            }
+
             $service->loadAuthenticator((string)$name, (array)$options);
         }
         $service->loadAuthenticator('TwoFactor', [

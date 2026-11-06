@@ -46,6 +46,42 @@ class TasksControllerTest extends TestCase
     ];
 
     /**
+     * A made-up Bearer token next to a cookie gets nobody in.
+     *
+     * The token is what switches the protections of the cookie off, so the cookie cannot be what
+     * signs such a request in. Otherwise anybody at a desk could write through the API whatever
+     * the forms keep from them, down to the role of their own account.
+     *
+     * @return void
+     * @link \App\Controller\Api\TasksController::add()
+     */
+    public function testACookieDoesNotSignInARequestCarryingABearerToken(): void
+    {
+        $users = $this->getTableLocator()->get('Users');
+        $colleague = $users->find()->firstOrFail();
+        $role = $colleague->get('role');
+        $contract = $this->getTableLocator()->get('Contracts')->find()->firstOrFail();
+
+        $this->login('network-technician');
+        $this->configRequest(['headers' => [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer made-up',
+        ]]);
+        $this->post('/api/tasks.json', [
+            'task_state_id' => $this->getTableLocator()->get('TaskStates')->find()->firstOrFail()->get('id'),
+            'task_type_id' => $this->getTableLocator()->get('TaskTypes')->find()->firstOrFail()->get('id'),
+            'customer_id' => $contract->get('customer_id'),
+            'contract_id' => $contract->get('id'),
+            'subject' => 'Anything',
+            'priority' => 0,
+            'collaborators' => [['id' => $colleague->get('id'), 'role' => 'admin']],
+        ]);
+
+        $this->assertSame($role, $users->get($colleague->get('id'))->get('role'));
+        $this->assertResponseCode(401);
+    }
+
+    /**
      * With nothing asked of it, the search hands over what there is and says how much that was.
      *
      * @return void

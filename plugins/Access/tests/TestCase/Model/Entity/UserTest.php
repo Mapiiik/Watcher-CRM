@@ -41,6 +41,23 @@ class UserTest extends TestCase
     }
 
     /**
+     * A record naming an account cannot rewrite it, whatever comes along with the name. Only the
+     * forms of an account set its fields, and they say which.
+     *
+     * @return void
+     */
+    public function testNothingOfAnAccountIsOpenToWhatMerelyNamesIt(): void
+    {
+        $user = new User();
+        $user->patch(['role' => 'admin', 'email' => 'someone@example.com', 'active' => true]);
+        $this->assertSame([], $user->getDirty());
+
+        $user->patch(['role' => 'admin'], ['guard' => false]);
+        $this->assertArrayHasKey('role', $user->formFields());
+        $this->assertSame('admin', $user->role);
+    }
+
+    /**
      * An account written out whole leaves its secrets out.
      *
      * @return void
@@ -68,6 +85,7 @@ class UserTest extends TestCase
     public function testAFormSetsOnlyWhatAnAccountIsMadeOf(): void
     {
         $user = new User();
+        $user->setAccess(array_keys($user->formFields()), true);
         $user->patch([
             'username' => 'jnovak',
             'email' => 'jan.novak@example.com',

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Access\Test\TestCase\Model\Table;
 
+use Access\Model\Entity\User;
 use Access\Model\Table\UsersTable;
 use Access\Test\TestCase\AccountsTrait;
 use Cake\TestSuite\TestCase;
@@ -38,7 +39,7 @@ class UsersTableTest extends TestCase
             'username' => 'jnovak',
             'password' => 'Kopr na zahrade',
             'role' => 'user',
-        ], ['accessibleFields' => ['password' => true]]);
+        ], ['accessibleFields' => ['username' => true, 'password' => true, 'role' => true]]);
         $this->assertSame([], $user->getError('password'));
         $this->assertStringStartsWith('$argon2id$', $user->get('password'));
 
@@ -46,7 +47,7 @@ class UsersTableTest extends TestCase
             'username' => 'jnovak',
             'password' => 'Kopr na zahrade',
             'role' => 'admin',
-        ], ['accessibleFields' => ['password' => true]]);
+        ], ['accessibleFields' => ['username' => true, 'password' => true, 'role' => true]]);
         $this->assertSame(
             ['The password has to have at least 17 characters.'],
             array_values($admin->getError('password')),
@@ -144,7 +145,7 @@ class UsersTableTest extends TestCase
             'is_superuser' => true,
             'last_granted' => '2026-10-13 12:00:00',
             'last_denied_ip' => '192.0.2.1',
-        ], ['validate' => false]);
+        ], ['validate' => false, 'accessibleFields' => (new User())->formFields()]);
 
         $this->assertSame('Jan', $user->get('first_name'));
         foreach (['password', 'api_token', 'secret', 'is_superuser', 'last_granted', 'last_denied_ip'] as $field) {

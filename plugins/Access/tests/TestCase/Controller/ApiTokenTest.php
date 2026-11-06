@@ -61,6 +61,26 @@ class ApiTokenTest extends TestCase
     }
 
     /**
+     * A Bearer token switches off what guards a cookie, so a cookie sent along with one does not
+     * sign the request in, not even the cookie of an admin.
+     *
+     * @return void
+     */
+    public function testACookieDoesNotStandInForAKey(): void
+    {
+        $id = (string)$this->addAccount(role: 'admin')->get('id');
+        $this->session(['Auth' => ['id' => $id, 'username' => 'jnovak', 'role' => 'admin']]);
+        $this->configRequest(['headers' => [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer made-up',
+        ]]);
+
+        $this->get('/api/geocoder-bridge/search.json');
+
+        $this->assertResponseCode(401);
+    }
+
+    /**
      * An admin makes a key, which is shown once and kept only as its hash, and signs the client in
      * when it comes as a Bearer token.
      *

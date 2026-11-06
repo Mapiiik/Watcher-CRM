@@ -62,7 +62,13 @@ class AddAdminCommand extends Command
             'password' => $password,
             'role' => 'admin',
             'active' => true,
-        ], ['accessibleFields' => ['password' => true]]);
+        ], ['accessibleFields' => [
+            'username' => true,
+            'email' => true,
+            'password' => true,
+            'role' => true,
+            'active' => true,
+        ]]);
 
         if (!$users->save($user)) {
             foreach ($user->getErrors() as $field => $errors) {

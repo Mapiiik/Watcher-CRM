@@ -368,7 +368,7 @@ class UsersController extends AppController
         $user = $users->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
             $user = $users->patchEntity($user, (array)$this->getRequest()->getData(), [
-                'accessibleFields' => ['password' => true],
+                'accessibleFields' => $user->formFields() + ['password' => true],
             ]);
             if ($users->save($user)) {
                 $this->Flash->success(__d('access', 'The account has been saved.'));
@@ -393,7 +393,9 @@ class UsersController extends AppController
         $users = $this->getUsersTable();
         $user = $users->get($id);
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $user = $users->patchEntity($user, (array)$this->getRequest()->getData());
+            $user = $users->patchEntity($user, (array)$this->getRequest()->getData(), [
+                'accessibleFields' => $user->formFields(),
+            ]);
             if ($users->save($user)) {
                 $this->Flash->success(__d('access', 'The account has been saved.'));
 

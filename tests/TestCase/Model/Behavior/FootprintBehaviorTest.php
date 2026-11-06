@@ -126,7 +126,7 @@ class FootprintBehaviorTest extends TestCase
         $this->advanceIdentity('users', 'nid');
         $users = $this->getTableLocator()->get('Users');
         $creator = $users->newEmptyEntity();
-        $creator->patch(['username' => 'author', 'role' => 'admin', 'active' => true]);
+        $creator->patch(['username' => 'author', 'role' => 'admin', 'active' => true], ['guard' => false]);
         $creator->set('password', 'irrelevant-for-this-test', ['setter' => false]);
         $users->saveOrFail($creator);
 

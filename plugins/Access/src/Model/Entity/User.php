@@ -61,19 +61,30 @@ class User extends Entity
     ];
 
     /**
-     * What the forms of an account set. Anything else - the password, the keys, the settings,
-     * what signing in keeps - is set by the action that looks after it, naming it.
+     * Nothing, so that a record naming an account cannot rewrite it on the way in. Whoever sets
+     * something on an account says so, the forms through {@see formFields()}.
      *
      * @var array<string, bool>
      */
-    protected array $_accessible = [
-        'username' => true,
-        'email' => true,
-        'first_name' => true,
-        'last_name' => true,
-        'role' => true,
-        'active' => true,
-    ];
+    protected array $_accessible = ['*' => false];
+
+    /**
+     * What the forms of an account set. Anything else - the password, the keys, the settings,
+     * what signing in keeps - is set by the action that looks after it, naming it.
+     *
+     * @return array<string, bool>
+     */
+    public function formFields(): array
+    {
+        return [
+            'username' => true,
+            'email' => true,
+            'first_name' => true,
+            'last_name' => true,
+            'role' => true,
+            'active' => true,
+        ];
+    }
 
     /**
      * Keeps a password as its Argon2id hash.

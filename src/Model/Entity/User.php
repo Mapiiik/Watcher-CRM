@@ -14,17 +14,14 @@ use Override;
 class User extends AccessUser
 {
     /**
-     * An account, which a form may also say holds tasks.
+     * What the forms of an account set, which here also say whether tasks can be given to it.
      *
-     * @param array<string, mixed> $properties The fields of the account.
-     * @param array<string, mixed> $options How to set them.
+     * @return array<string, bool>
      */
-    public function __construct(array $properties = [], array $options = [])
+    #[Override]
+    public function formFields(): array
     {
-        parent::__construct($properties, $options);
-
-        // a form of the account says whether tasks can be given to it
-        $this->setAccess('holds_tasks', true);
+        return parent::formFields() + ['holds_tasks' => true];
     }
 
     /**
