@@ -193,9 +193,7 @@ trait DocumentationsControllerTrait
     /**
      * Delete method
      *
-     * What the folder holds goes with it, and the bytes go with the last thing that wanted them.
-     * That is the table's doing rather than this one's, so a folder taken away with the record it
-     * hung on behaves the same.
+     * What the folder holds goes to the trash, which is the table's doing rather than this one's.
      *
      * @param string|null $id Documentation id.
      * @return \Cake\Http\Response|null Redirects to index.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Files\Service;
 
 use App\Model\Audit\AuditTrail;
+use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Files\Model\Entity\FileLink;
 use Files\Model\Table\FileLinksTable;
@@ -103,12 +104,13 @@ class FiledPages
      * Lets go of one page, and closes the gap it leaves.
      *
      * @param \Files\Model\Entity\FileLink $link The page.
+     * @param \Cake\I18n\DateTime|null $at When, where it goes as part of something larger.
      * @return void
      */
-    public function drop(FileLink $link): void
+    public function drop(FileLink $link, ?DateTime $at = null): void
     {
         $group = $this->group($link);
-        $this->storage->unlink($link);
+        $this->storage->unlink($link, $at);
 
         $this->renumber(array_values(array_filter(
             $group,

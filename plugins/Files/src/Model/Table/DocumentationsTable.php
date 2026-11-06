@@ -144,8 +144,8 @@ class DocumentationsTable extends AppTable
     /**
      * Lets go of what the folder holds before the folder itself goes.
      *
-     * Here rather than in whoever pressed the button, so that a folder taken away with the record
-     * it hangs on - a contract deleted, a mast deleted - takes its files with it just the same.
+     * Here rather than in whoever pressed the button, so that however a folder goes, what it held
+     * ends up in the trash.
      *
      * @param \Cake\Event\EventInterface<\Files\Model\Table\DocumentationsTable> $event The event.
      * @param \Cake\Datasource\EntityInterface $entity The folder on its way out.

@@ -6,8 +6,11 @@ namespace Files\Service;
 use Cake\Core\Configure;
 use Cake\Log\Log;
 use Files\Model\Entity\File;
+use FilesystemIterator;
 use Imagick;
 use InvalidArgumentException;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use RuntimeException;
 use Throwable;
 
@@ -205,6 +208,60 @@ class Previews
         }
 
         return (string)Configure::read('Data.root') . DS . 'files-previews';
+    }
+
+    /**
+     * Takes away the pictures of some content that is gone.
+     *
+     * @param string $id Which content.
+     * @return void
+     */
+    public static function forget(string $id): void
+    {
+        foreach (array_keys(self::BOXES) as $size) {
+            $path = self::pathFor($id, $size);
+
+            if (is_file($path)) {
+                unlink($path);
+            }
+        }
+    }
+
+    /**
+     * The pictures of content that is no longer on file.
+     *
+     * Only the finished ones of the two sizes: a picture still being written and the scratch
+     * directory are the business of whoever is making it.
+     *
+     * @param array<string, bool> $known The content on file, by its id.
+     * @return list<string> Where they are.
+     */
+    public static function leftBehind(array $known): array
+    {
+        $found = [];
+
+        foreach (array_keys(self::BOXES) as $size) {
+            $directory = self::root() . DS . $size;
+
+            if (!is_dir($directory)) {
+                continue;
+            }
+
+            $entries = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS),
+            );
+
+            /** @var \SplFileInfo $entry */
+            foreach ($entries as $entry) {
+                $name = $entry->getFilename();
+
+                if (str_ends_with($name, self::EXTENSION) && !isset($known[basename($name, self::EXTENSION)])) {
+                    $found[] = $entry->getPathname();
+                }
+            }
+        }
+
+        return $found;
     }
 
     /**

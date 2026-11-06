@@ -11,6 +11,7 @@ use Cake\TestSuite\TestCase;
 use Files\Command\CheckFilesCommand;
 use Files\Model\Entity\File;
 use Files\Service\FileStorage;
+use Files\Service\Previews;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
@@ -36,14 +37,17 @@ class CheckFilesCommandTest extends TestCase
         'app.Users',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
+        'plugin.Files.RemovedFileLinks',
     ];
 
     /**
-     * Where the bytes go while this runs.
+     * Where the bytes and the pictures go while this runs. The command throws away what it finds
+     * there, so neither may be left pointing at a real store.
      *
      * @var string
      */
     private string $root;
+    private string $previews;
 
     /**
      * setUp method
@@ -56,7 +60,9 @@ class CheckFilesCommandTest extends TestCase
         parent::setUp();
 
         $this->root = TMP . 'check-files-' . uniqid();
+        $this->previews = TMP . 'check-files-previews-' . uniqid();
         Configure::write('Files.root', $this->root);
+        Configure::write('Files.previews', $this->previews);
     }
 
     /**
@@ -68,8 +74,10 @@ class CheckFilesCommandTest extends TestCase
     protected function tearDown(): void
     {
         Configure::delete('Files.root');
+        Configure::delete('Files.previews');
         $this->restoreConfigure();
         $this->removeDirectory($this->root);
+        $this->removeDirectory($this->previews);
 
         parent::tearDown();
     }
@@ -138,6 +146,66 @@ class CheckFilesCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputContains('thrown away');
         $this->assertFileDoesNotExist($stray);
+    }
+
+    /**
+     * Pictures of content that is gone go the way of bytes nobody claims. Whatever is still being
+     * made is left alone, it belongs to whoever is making it.
+     *
+     * @link \Files\Service\Previews::leftBehind()
+     * @return void
+     */
+    public function testPicturesOfContentThatIsGoneAreThrownAwayOnlyWhenAskedFor(): void
+    {
+        $file = $this->fileOnTheShelf();
+
+        $kept = Previews::pathFor((string)$file->id, Previews::THUMBNAIL);
+        $gone = Previews::pathFor('aabbccdd-1111-4222-8333-444444444444', Previews::PREVIEW);
+        $unfinished = $gone . '.123.part';
+        $scratch = $this->previews . DS . '.scratch' . DS . 'working';
+
+        foreach ([$kept, $gone, $unfinished, $scratch] as $path) {
+            if (!is_dir(dirname($path))) {
+                mkdir(dirname($path), 0777, true);
+            }
+
+            file_put_contents($path, 'a picture');
+        }
+
+        $this->exec('check_files');
+
+        $this->assertExitSuccess();
+        $this->assertErrorContains('Pictures of content nobody has a row for');
+        $this->assertFileExists($gone);
+
+        $this->exec('check_files --fix');
+
+        $this->assertExitSuccess();
+        $this->assertFileDoesNotExist($gone);
+        $this->assertFileExists($kept);
+        $this->assertFileExists($unfinished);
+        $this->assertFileExists($scratch);
+    }
+
+    /**
+     * What waits in the trash can still come back, so to the check it is simply on file.
+     *
+     * @link \Files\Model\Table\FilesTable::findUnused()
+     * @return void
+     */
+    public function testWhatWaitsInTheTrashIsNeitherRubbishNorUnused(): void
+    {
+        $this->fileOnTheShelf();
+
+        /** @var \Files\Model\Entity\FileLink $link */
+        $link = $this->fetchTable('Files.FileLinks')->find()->firstOrFail();
+        (new FileStorage())->unlink($link);
+
+        $this->exec('check_files');
+
+        $this->assertExitSuccess();
+        $this->assertOutputContains('The store and the records agree.');
+        $this->assertOutputNotContains('rows nothing points at');
     }
 
     /**

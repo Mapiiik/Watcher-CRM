@@ -229,6 +229,16 @@
 }
 
 /* The same reason the table of documents lines up at the top: a picture drags its row down. */
-.files-documentations td {
+.files-documentations td,
+.files-trash td {
     vertical-align: top;
+}
+
+/* An action that cannot be taken, set like the ones that can. */
+.files-stopped {
+    font-family: "Exo 2", sans-serif;
+    font-size: 1.05em;
+    font-weight: bold;
+    padding: 0 0.4rem;
+    cursor: help;
 }

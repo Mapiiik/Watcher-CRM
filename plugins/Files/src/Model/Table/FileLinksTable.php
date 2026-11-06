@@ -32,6 +32,13 @@ use Override;
 class FileLinksTable extends AppTable
 {
     /**
+     * The variants a document can only have one of, as the index `file_links_generated` holds them.
+     *
+     * @var list<string>
+     */
+    public const ONE_PER_DOCUMENT = ['generated', 'generated-signed-by-us'];
+
+    /**
      * Initialize method
      *
      * @param array<string, mixed> $config The configuration for the Table.

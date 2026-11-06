@@ -64,9 +64,13 @@
                     <td><?= $this->Number->toReadableSize($file->byte_size) ?></td>
                     <td>
                         <?php $uses = count($file->file_links ?? []); ?>
-                        <?= $uses === 0
+                        <?php $inTheTrash = count($file->removed_file_links ?? []); ?>
+                        <?= $uses === 0 && $inTheTrash === 0
                             ? __d('files', 'nothing')
                             : $this->Number->format($uses) ?>
+                        <?php if ($inTheTrash > 0) : ?>
+                            (<?= __d('files', '{0} in the trash', $this->Number->format($inTheTrash)) ?>)
+                        <?php endif; ?>
                     </td>
                     <td class="actions">
                         <?= $this->AuthLink->link(__d('files', 'View'), ['action' => 'view', $file->id]) ?>

@@ -32,7 +32,7 @@ class StorageController extends AppController
      */
     public function index(): void
     {
-        $query = $this->files()->find(contain: ['FileLinks']);
+        $query = $this->files()->find(contain: ['FileLinks', 'RemovedFileLinks']);
 
         $mime = $this->getRequest()->getQuery('mime_type');
         if (is_string($mime) && $mime !== '') {
@@ -70,7 +70,7 @@ class StorageController extends AppController
      */
     public function view(?string $id = null): void
     {
-        $file = $this->files()->get($id, contain: ['FileLinks', 'Creators']);
+        $file = $this->files()->get($id, contain: ['FileLinks', 'RemovedFileLinks', 'Creators']);
 
         $this->set('file', $file);
         $this->set('onTheShelf', (new FileStorage())->has($file));

@@ -33,6 +33,7 @@ class StorageControllerTest extends TestCase
         'app.Users',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
+        'plugin.Files.RemovedFileLinks',
     ];
 
     /**
@@ -122,6 +123,35 @@ class StorageControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains('contract-new');
         $this->assertResponseContains('gdpr-new');
+    }
+
+    /**
+     * What waits in the trash is not rubbish, however little points at it.
+     *
+     * @link \Files\Controller\StorageController::index()
+     * @return void
+     */
+    public function testContentInTheTrashIsNotCalledUnused(): void
+    {
+        $storage = new FileStorage();
+        $file = $storage->store('a paper somebody removed', 'application/pdf');
+        $storage->unlink($storage->link($file, 'ContractProposals', self::RECORD, 'contract-new', 'generated'));
+
+        $this->get('/files/storage');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('1 in the trash');
+        $this->assertResponseContains('0 of them pointed at by nothing');
+
+        $this->get('/files/storage?unused=1');
+
+        $this->assertResponseNotContains(substr($file->hash, 0, 12));
+
+        $this->get('/files/storage/view/' . $file->id);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('waiting in the trash');
+        $this->assertResponseNotContains('Nothing points at this content');
     }
 
     /**

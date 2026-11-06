@@ -23,6 +23,7 @@ use App\Model\Entity\AppEntity;
  * @property string $path
  *
  * @property array<\Files\Model\Entity\FileLink> $file_links
+ * @property array<\Files\Model\Entity\RemovedFileLink> $removed_file_links
  */
 class File extends AppEntity
 {

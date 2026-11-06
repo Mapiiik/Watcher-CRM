@@ -11,6 +11,7 @@ use Files\Model\Entity\DocumentationType;
 use Files\Model\Table\DocumentationsTable;
 use Files\Model\Table\DocumentationTypesTable;
 use Files\Model\Table\FileLinksTable;
+use Files\Model\Table\RemovedFileLinksTable;
 use Files\Service\Documentations;
 use Files\Service\FileStorage;
 use Override;
@@ -37,6 +38,7 @@ class DocumentationsTableTest extends TestCase
         'plugin.Files.Documentations',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
+        'plugin.Files.RemovedFileLinks',
     ];
 
     /**
@@ -225,7 +227,13 @@ class DocumentationsTableTest extends TestCase
             $links->find()->where(['FileLinks.foreign_key' => $folder->id])->count(),
             'Nothing should still be pointing at a folder that has gone.',
         );
-        $this->assertFalse($storage->has($file), 'The bytes should have gone with the last link to them.');
+        $this->assertTrue($storage->has($file), 'The bytes should wait in the trash with the link.');
+
+        /** @var \Files\Model\Entity\RemovedFileLink $removed */
+        $removed = $this->fetchTable(RemovedFileLinksTable::class)->find()->firstOrFail();
+
+        $this->assertSame((string)$folder->id, $removed->foreign_key);
+        $this->assertSame('The wiring in the rack', $removed->folderName());
     }
 
     /**

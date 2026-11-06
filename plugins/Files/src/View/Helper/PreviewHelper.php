@@ -5,6 +5,7 @@ namespace Files\View\Helper;
 
 use Cake\View\Helper;
 use Files\Model\Entity\FileLink;
+use Files\Model\Entity\RemovedFileLink;
 use Files\Service\Previews;
 use Files\Service\Viewable;
 
@@ -139,7 +140,7 @@ class PreviewHelper extends Helper
         $picture = $this->Html->image(
             [
                 'plugin' => 'Files',
-                'controller' => 'FileLinks',
+                'controller' => $this->controllerOf($link),
                 'action' => 'thumbnail',
                 $link->id,
             ],
@@ -188,7 +189,7 @@ class PreviewHelper extends Helper
             ? $this->Html->image(
                 [
                     'plugin' => 'Files',
-                    'controller' => 'FileLinks',
+                    'controller' => $this->controllerOf($link),
                     'action' => 'thumbnail',
                     $link->id,
                 ],
@@ -298,10 +299,22 @@ class PreviewHelper extends Helper
     {
         return [
             'plugin' => 'Files',
-            'controller' => 'FileLinks',
+            'controller' => $this->controllerOf($link),
             'action' => 'open',
             $link->id,
         ];
+    }
+
+    /**
+     * Which controller hands it over. What was removed comes through the trash and nowhere else,
+     * with the permissions of the trash.
+     *
+     * @param \Files\Model\Entity\FileLink $link The page.
+     * @return string
+     */
+    private function controllerOf(FileLink $link): string
+    {
+        return $link instanceof RemovedFileLink ? 'Trash' : 'FileLinks';
     }
 
     /**
@@ -359,7 +372,7 @@ class PreviewHelper extends Helper
             $pages[] = [
                 'href' => $this->Url->build([
                     'plugin' => 'Files',
-                    'controller' => 'FileLinks',
+                    'controller' => $this->controllerOf($link),
                     'action' => 'open',
                     $link->id,
                 ]),
@@ -371,7 +384,7 @@ class PreviewHelper extends Helper
                 // asked for, and a strip that waited for the making would show nothing at all.
                 'thumb' => $this->Url->build([
                     'plugin' => 'Files',
-                    'controller' => 'FileLinks',
+                    'controller' => $this->controllerOf($link),
                     'action' => 'thumbnail',
                     $link->id,
                 ]),

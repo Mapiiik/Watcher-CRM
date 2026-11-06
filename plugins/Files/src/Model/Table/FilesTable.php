@@ -12,6 +12,7 @@ use Override;
  * Files Model
  *
  * @property \Files\Model\Table\FileLinksTable&\Cake\ORM\Association\HasMany $FileLinks
+ * @property \Files\Model\Table\RemovedFileLinksTable&\Cake\ORM\Association\HasMany $RemovedFileLinks
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Creators
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Modifiers
  * @method \Files\Model\Entity\File newEmptyEntity()
@@ -62,6 +63,11 @@ class FilesTable extends AppTable
         // still wants it. Letting go happens the other way round: the last link goes, then this.
         $this->hasMany('FileLinks', [
             'className' => 'Files.FileLinks',
+            'foreignKey' => 'file_id',
+        ]);
+
+        $this->hasMany('RemovedFileLinks', [
+            'className' => 'Files.RemovedFileLinks',
             'foreignKey' => 'file_id',
         ]);
     }
@@ -136,18 +142,24 @@ class FilesTable extends AppTable
      * Bytes without a row are the harmless way round for a backup to be torn - they are found
      * here and thrown away, whereas a row without bytes cannot be put right at all.
      *
+     * What is in the trash is not unused, it can still come back.
+     *
      * @param \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\File> $query The query.
      * @return \Cake\ORM\Query\SelectQuery<\Files\Model\Entity\File>
      */
     public function findUnused(SelectQuery $query): SelectQuery
     {
         return $query->where(function ($exp, SelectQuery $q) {
-            return $exp->notExists(
-                $q->getConnection()->selectQuery()
-                    ->select(['1'])
-                    ->from(['FileLinksCheck' => 'file_links'])
-                    ->where(['FileLinksCheck.file_id' => $q->identifier($this->aliasField('id'))]),
-            );
+            foreach (['file_links', 'removed_file_links'] as $table) {
+                $exp = $exp->notExists(
+                    $q->getConnection()->selectQuery()
+                        ->select(['1'])
+                        ->from(['LinksCheck' => $table])
+                        ->where(['LinksCheck.file_id' => $q->identifier($this->aliasField('id'))]),
+                );
+            }
+
+            return $exp;
         });
     }
 }

@@ -49,6 +49,11 @@
         ['controller' => 'Storage', 'action' => 'index'],
         ['class' => 'button float-right'],
     ) ?>
+    <?= $this->AuthLink->link(
+        __d('files', 'Trash'),
+        ['controller' => 'Trash', 'action' => 'index'],
+        ['class' => 'button float-right'],
+    ) ?>
     <?= $this->heading(__d('files', 'File Links')) ?>
     <p><?= __d('files', 'Every file the records have, and what each of them is filed as.') ?></p>
     <div class="table-responsive">
@@ -95,8 +100,7 @@
                             ['action' => 'delete', $document->id],
                             ['confirm' => __d(
                                 'files',
-                                'Remove this document from the record? The content itself goes only'
-                                . ' if nothing else wants it.',
+                                'Remove this document from the record? It goes to the trash.',
                             )],
                         ) ?>
                     </td>

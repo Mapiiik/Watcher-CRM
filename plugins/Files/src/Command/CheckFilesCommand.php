@@ -11,6 +11,7 @@ use Cake\Console\ConsoleOptionParser;
 use Cake\Log\Log;
 use Files\Model\Entity\File;
 use Files\Service\FileStorage;
+use Files\Service\Previews;
 use League\Flysystem\StorageAttributes;
 use Override;
 
@@ -21,9 +22,10 @@ use Override;
  * order they are written in. This asks what the two have to say about each other.
  *
  * Only one of the answers is repairable. Bytes nobody has a row for are rubbish - that is what a
- * backup taken while something was being written leaves behind - and `--fix` throws them away.
- * A row whose bytes are gone cannot be put right from here at all, so it is reported and the run
- * ends badly, which is what makes this worth running from cron.
+ * backup taken while something was being written leaves behind - and `--fix` throws them away,
+ * along with the pictures of content that is gone. A row whose bytes are gone cannot be put right
+ * from here at all, so it is reported and the run ends badly, which is what makes this worth
+ * running from cron.
  *
  * A document filed against content that is not there is not asked about: the foreign key keeps
  * that promise, and a check for what the database will not allow is a check that never fires.
@@ -88,7 +90,10 @@ class CheckFilesCommand extends Command
         ));
 
         $parser->addOption('fix', [
-            'help' => __d('files', 'Throw away the bytes nobody has a row for. Nothing else is touched.'),
+            'help' => __d(
+                'files',
+                'Throw away the bytes and the pictures nobody has a row for. Nothing else is touched.',
+            ),
             'boolean' => true,
         ]);
 
@@ -111,11 +116,13 @@ class CheckFilesCommand extends Command
         $rows = $files->find()->all();
 
         $claimed = [];
+        $known = [];
         $gone = [];
         $short = [];
 
         foreach ($rows as $file) {
             $claimed[$file->path] = true;
+            $known[(string)$file->id] = true;
 
             if (!$storage->has($file)) {
                 $gone[] = $file;
@@ -130,6 +137,7 @@ class CheckFilesCommand extends Command
         }
 
         $stray = $this->stray($storage, $claimed);
+        $pictures = Previews::leftBehind($known);
         $unused = $files->find('unused')->count();
 
         $io->out(__d(
@@ -150,6 +158,7 @@ class CheckFilesCommand extends Command
         ), true);
 
         $this->report($io, __d('files', 'Bytes nobody has a row for'), $stray, false);
+        $this->report($io, __d('files', 'Pictures of content nobody has a row for'), $pictures, false);
 
         if ($unused > 0) {
             $io->out(__d(
@@ -159,17 +168,22 @@ class CheckFilesCommand extends Command
             ));
         }
 
-        if ($stray !== [] && $args->getOption('fix')) {
+        if (($stray !== [] || $pictures !== []) && $args->getOption('fix')) {
             foreach ($stray as $path) {
                 $storage->filesystem()->delete($path);
             }
 
-            $io->success(__d('files', '{0} thrown away.', count($stray)));
+            foreach ($pictures as $path) {
+                unlink($path);
+            }
+
+            $io->success(__d('files', '{0} thrown away.', count($stray) + count($pictures)));
             $stray = [];
+            $pictures = [];
         }
 
         if ($gone === [] && $short === []) {
-            $io->success($stray === []
+            $io->success($stray === [] && $pictures === []
                 ? __d('files', 'The store and the records agree.')
                 : __d('files', 'Nothing is missing. Run this again with --fix to throw the rest away.'));
 

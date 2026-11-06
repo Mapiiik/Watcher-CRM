@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Files\Service;
 
+use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Files\Model\Entity\Documentation;
 use Files\Model\Entity\FileLink;
@@ -148,13 +149,21 @@ class Documentations
      * The positions are not put straight afterwards, because there is nothing left to put
      * straight - this is what a folder on its way out does with what it was holding.
      *
+     * The trash keeps what the folder said, as it cannot come back to a folder that is gone. Its
+     * columns are the application's, so they are read from the table.
+     *
      * @param \Files\Model\Entity\Documentation $documentation The folder.
      * @return void
      */
     public function clear(Documentation $documentation): void
     {
+        $at = DateTime::now();
+        $folder = $documentation->extract(
+            $this->fetchTable($documentation->getSource())->getSchema()->columns(),
+        );
+
         foreach ($this->contentsOf($documentation) as $link) {
-            $this->storage->unlink($link);
+            $this->storage->unlink($link, $at, $folder);
         }
     }
 

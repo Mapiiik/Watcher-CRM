@@ -33,6 +33,7 @@ class FileLinksControllerTest extends TestCase
         'app.Users',
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
+        'plugin.Files.RemovedFileLinks',
     ];
 
     /**
@@ -316,7 +317,7 @@ class FileLinksControllerTest extends TestCase
      * @link \Files\Controller\FileLinksController::delete()
      * @return void
      */
-    public function testUnfilingADocumentTakesTheBytesWithTheLastOfThem(): void
+    public function testRemovingADocumentLeavesItInTheTrash(): void
     {
         $link = $this->file('the only use of this content', 'IMG_001.jpg');
 
@@ -326,7 +327,8 @@ class FileLinksControllerTest extends TestCase
 
         $this->assertRedirect();
         $this->assertSame(0, $this->fetchTable('Files.FileLinks')->find()->count());
-        $this->assertSame(0, $this->fetchTable('Files.Files')->find()->count());
+        $this->assertSame(1, $this->fetchTable('Files.RemovedFileLinks')->find()->count());
+        $this->assertSame(1, $this->fetchTable('Files.Files')->find()->count());
     }
 
     /**

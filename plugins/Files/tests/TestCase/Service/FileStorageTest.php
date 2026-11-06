@@ -4,10 +4,14 @@ declare(strict_types=1);
 namespace Files\Test\TestCase\Service;
 
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
+use Cake\ORM\Exception\PersistenceFailedException;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\TestSuite\TestCase;
+use Files\Model\Table\FileLinksTable;
 use Files\Model\Table\FilesTable;
 use Files\Service\FileStorage;
+use Files\Service\Previews;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -31,6 +35,7 @@ class FileStorageTest extends TestCase
     protected array $fixtures = [
         'plugin.Files.Files',
         'plugin.Files.FileLinks',
+        'plugin.Files.RemovedFileLinks',
     ];
 
     /**
@@ -43,11 +48,12 @@ class FileStorageTest extends TestCase
     private const OTHER_RECORD = '66666666-7777-4888-9999-000000000000';
 
     /**
-     * Where the bytes go while this runs.
+     * Where the bytes and the pictures go while this runs.
      *
      * @var string
      */
     private string $root;
+    private string $previews;
 
     /**
      * setUp method
@@ -60,7 +66,9 @@ class FileStorageTest extends TestCase
         parent::setUp();
 
         $this->root = TMP . 'file-storage-' . uniqid();
+        $this->previews = TMP . 'file-storage-previews-' . uniqid();
         Configure::write('Files.root', $this->root);
+        Configure::write('Files.previews', $this->previews);
     }
 
     /**
@@ -72,7 +80,9 @@ class FileStorageTest extends TestCase
     protected function tearDown(): void
     {
         Configure::delete('Files.root');
+        Configure::delete('Files.previews');
         $this->removeDirectory($this->root);
+        $this->removeDirectory($this->previews);
 
         parent::tearDown();
     }
@@ -142,7 +152,93 @@ class FileStorageTest extends TestCase
      * @link \Files\Service\FileStorage::unlink()
      * @return void
      */
-    public function testTheBytesGoWithTheLastThingThatWantedThem(): void
+    public function testRemovingAUseMovesItToTheTrashAndKeepsTheBytes(): void
+    {
+        $storage = new FileStorage();
+        $file = $storage->store('a paper nobody else wants', 'application/pdf');
+        $link = $storage->link($file, 'Contracts', self::RECORD, 'contract-new', 'generated', ['name' => 'a.pdf']);
+
+        $storage->unlink($link);
+
+        $this->assertSame(0, $this->fetchTable('Files.FileLinks')->find()->count());
+
+        /** @var \Files\Model\Entity\RemovedFileLink $removed */
+        $removed = $this->fetchTable('Files.RemovedFileLinks')->get($link->id);
+
+        $this->assertSame($file->id, $removed->file_id);
+        $this->assertSame('contract-new', $removed->document_type);
+        $this->assertSame('a.pdf', $removed->name);
+        $this->assertNotNull($removed->removed);
+        $this->assertNull($removed->documentation);
+
+        $this->assertSame(1, $this->fetchTable('Files.Files')->find()->count());
+        $this->assertTrue($storage->has($file), 'The bytes should wait in the trash with the link.');
+    }
+
+    /**
+     * The row in the trash carries the id of the link, so one left behind by a failed attempt
+     * would stand in the way of every attempt after it.
+     *
+     * @link \Files\Service\FileStorage::unlink()
+     * @return void
+     */
+    public function testALinkThatCannotGoLeavesNothingInTheTrash(): void
+    {
+        $storage = new FileStorage();
+        $file = $storage->store('a paper that refuses to go', 'application/pdf');
+        $link = $storage->link($file, 'Contracts', self::RECORD, 'contract-new', 'generated');
+
+        $links = $this->fetchTable(FileLinksTable::class);
+        $refuse = function (EventInterface $event): void {
+            $event->setResult(false);
+            $event->stopPropagation();
+        };
+        $links->getEventManager()->on('Model.beforeDelete', $refuse);
+
+        try {
+            $storage->unlink($link);
+            $this->fail('A link that cannot go should have been said out loud.');
+        } catch (PersistenceFailedException) {
+            $this->assertSame(0, $this->fetchTable('Files.RemovedFileLinks')->find()->count());
+            $this->assertSame(1, $links->find()->count());
+        } finally {
+            $links->getEventManager()->off('Model.beforeDelete', $refuse);
+        }
+
+        $storage->unlink($link);
+
+        $this->assertSame(1, $this->fetchTable('Files.RemovedFileLinks')->find()->count());
+    }
+
+    /**
+     * Nothing written inside a transaction reaches the log by itself.
+     *
+     * @link \Files\Service\FileStorage::unlink()
+     * @return void
+     */
+    public function testRemovingReachesTheAuditLog(): void
+    {
+        $storage = new FileStorage();
+        $file = $storage->store('a paper somebody will ask about', 'application/pdf');
+        $link = $storage->link($file, 'Contracts', self::RECORD, 'contract-new', 'generated');
+
+        $connection = $this->fetchTable(FileLinksTable::class)->getConnection();
+        $logged = fn(): int => (int)$connection->selectQuery(['c' => 'count(*)'], 'audit_logs')
+            ->execute()
+            ->fetchAll('assoc')[0]['c'];
+
+        $before = $logged();
+
+        $storage->unlink($link);
+
+        $this->assertSame($before + 2, $logged(), 'The row leaving and the row arriving are both on record.');
+    }
+
+    /**
+     * @link \Files\Service\FileStorage::letGoOf()
+     * @return void
+     */
+    public function testTheContentGoesOnlyWhenNothingWantsItAnyMore(): void
     {
         $storage = new FileStorage();
         $file = $storage->store('a paper two records share', 'application/pdf');
@@ -152,13 +248,46 @@ class FileStorageTest extends TestCase
 
         $storage->unlink($one);
 
-        $this->assertSame(1, $this->fetchTable('Files.Files')->find()->count());
-        $this->assertTrue($storage->has($file), 'The bytes went while something still wanted them.');
+        $this->assertFalse($storage->letGoOf($file->id), 'A link still wants it.');
 
         $storage->unlink($two);
 
+        $this->assertFalse($storage->letGoOf($file->id), 'The trash still wants it.');
+        $this->assertTrue($storage->has($file));
+
+        $this->fetchTable('Files.RemovedFileLinks')->deleteAll([]);
+
+        $this->assertTrue($storage->letGoOf($file->id));
         $this->assertSame(0, $this->fetchTable('Files.Files')->find()->count());
         $this->assertFalse($storage->has($file));
+    }
+
+    /**
+     * Otherwise a picture of a page somebody wanted gone for good stays on the disk.
+     *
+     * @link \Files\Service\FileStorage::letGoOf()
+     * @return void
+     */
+    public function testThePicturesGoWithTheContent(): void
+    {
+        $storage = new FileStorage();
+        $file = $storage->store('a page with a picture of it', 'image/jpeg');
+
+        $pictures = [
+            Previews::pathFor($file->id, Previews::THUMBNAIL),
+            Previews::pathFor($file->id, Previews::PREVIEW),
+        ];
+
+        foreach ($pictures as $picture) {
+            mkdir(dirname($picture), 0777, true);
+            file_put_contents($picture, 'a picture');
+        }
+
+        $this->assertTrue($storage->letGoOf($file->id));
+
+        foreach ($pictures as $picture) {
+            $this->assertFileDoesNotExist($picture);
+        }
     }
 
     /**

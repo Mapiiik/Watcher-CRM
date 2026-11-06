@@ -3,12 +3,16 @@ declare(strict_types=1);
 
 namespace Files\Service;
 
+use App\Model\Audit\AuditTrail;
 use Cake\Core\Configure;
+use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\Routing\Router;
 use Files\Model\Entity\File;
 use Files\Model\Entity\FileLink;
 use Files\Model\Table\FileLinksTable;
 use Files\Model\Table\FilesTable;
+use Files\Model\Table\RemovedFileLinksTable;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -154,37 +158,73 @@ class FileStorage
     }
 
     /**
-     * Lets go of one use of some content, and of the content itself when it was the last.
+     * Moves one use of some content to the trash.
+     *
+     * The content stays, so that it can come back. It goes when the trash lets go of the last row
+     * wanting it, see {@see letGoOf()}.
+     *
+     * One transaction, because the row in the trash carries the id of the link: left behind by a
+     * failed attempt, it would stand in the way of every attempt after it.
+     *
+     * @param \Files\Model\Entity\FileLink $link The use to let go of.
+     * @param \Cake\I18n\DateTime|null $at When. What goes in one act is handed the same moment,
+     *   which is how the trash knows what comes back together.
+     * @param array<string, mixed> $documentation The folder, where it goes as well.
+     * @return void
+     * @throws \RuntimeException When the link cannot be removed.
+     */
+    public function unlink(FileLink $link, ?DateTime $at = null, array $documentation = []): void
+    {
+        $links = $this->fileLinks();
+        $trash = $this->removedFileLinks();
+
+        $removed = $trash->newEmptyEntity();
+        $removed->patch([
+            'removed' => $at ?? DateTime::now(),
+            'removed_by' => Router::getRequest()?->getAttribute('identity')['id'] ?? null,
+            'documentation' => $documentation === [] ? null : $documentation,
+        ] + $link->extract($links->getSchema()->columns()), ['guard' => false]);
+
+        $trail = new AuditTrail();
+
+        $links->getConnection()->transactional(function () use ($links, $trash, $link, $removed, $trail): void {
+            $trash->saveOrFail($removed, $trail->options());
+            $links->deleteOrFail($link, $trail->options());
+        });
+
+        $trail->flush($links, $link);
+    }
+
+    /**
+     * Lets go of some content, unless a link or the trash still wants it.
      *
      * The row goes before the bytes. The other way round leaves a row pointing at nothing, which
      * cannot be put right; this way the worst case is bytes nobody asked for, which can.
      *
-     * @param \Files\Model\Entity\FileLink $link The use to let go of.
-     * @return void
-     * @throws \RuntimeException When the link cannot be removed.
+     * @param string $file_id The content.
+     * @return bool Whether it went.
      */
-    public function unlink(FileLink $link): void
+    public function letGoOf(string $file_id): bool
     {
-        $links = $this->fileLinks();
-
-        if (!$links->delete($link)) {
-            throw new RuntimeException('The file could not be unlinked from the record.');
-        }
-
-        $remaining = $links->find()->where(['file_id' => $link->file_id])->count();
-        if ($remaining > 0) {
-            return;
+        if (
+            $this->fileLinks()->exists(['file_id' => $file_id])
+            || $this->removedFileLinks()->exists(['file_id' => $file_id])
+        ) {
+            return false;
         }
 
         $files = $this->files();
-        $file = $files->find()->where(['id' => $link->file_id])->first();
+        $file = $files->find()->where(['id' => $file_id])->first();
 
         if (!$file instanceof File) {
-            return;
+            return false;
         }
 
-        $files->delete($file);
+        $files->deleteOrFail($file);
         $this->filesystem()->delete($file->path);
+        Previews::forget($file_id);
+
+        return true;
     }
 
     /**
@@ -346,7 +386,7 @@ class FileStorage
      * @param string $variant Which variant of that document this is.
      * @return int
      */
-    private function nextPosition(string $model, string $foreign_key, string $document_type, string $variant): int
+    public function nextPosition(string $model, string $foreign_key, string $document_type, string $variant): int
     {
         // Asked for as one number rather than by reading the group's last row. The group finder
         // sorts the pages into reading order, and a sort added to that is appended rather than
@@ -390,5 +430,16 @@ class FileStorage
         $links = $this->fetchTable(FileLinksTable::class);
 
         return $links;
+    }
+
+    /**
+     * @return \Files\Model\Table\RemovedFileLinksTable
+     */
+    private function removedFileLinks(): RemovedFileLinksTable
+    {
+        /** @var \Files\Model\Table\RemovedFileLinksTable $removed */
+        $removed = $this->fetchTable(RemovedFileLinksTable::class);
+
+        return $removed;
     }
 }

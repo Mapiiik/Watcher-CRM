@@ -66,7 +66,19 @@
 
             <div class="related">
                 <h4><?= __d('files', 'File Links') ?></h4>
-                <?php if (empty($file->file_links)) : ?>
+                <?php if (!empty($file->removed_file_links)) : ?>
+                    <p>
+                        <?=
+                        __d(
+                            'files',
+                            '{0} removed from the records and waiting in the trash, which keeps this'
+                            . ' content until it has let go of them.',
+                            $this->Number->format(count($file->removed_file_links)),
+                        )
+                        ?>
+                    </p>
+                <?php endif; ?>
+                <?php if (empty($file->file_links) && empty($file->removed_file_links)) : ?>
                     <p>
                         <?=
                         __d(
@@ -77,7 +89,7 @@
                         )
                         ?>
                     </p>
-                <?php else : ?>
+                <?php elseif (!empty($file->file_links)) : ?>
                     <div class="table-responsive">
                         <table>
                             <thead>
