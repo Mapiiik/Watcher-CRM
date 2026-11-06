@@ -42,7 +42,7 @@
                     <td><?= $radreply->account !== null ? $this->Html->link(
                         $radreply->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id],
-                    ) : $radreply->username ?></td>
+                    ) : h($radreply->username) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Attribute') ?></th>

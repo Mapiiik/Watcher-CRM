@@ -194,4 +194,25 @@ class HomeControllerTest extends TestCase
         $this->assertResponseCode(302);
         $this->assertSession(null, 'Config.UI.language');
     }
+
+    /**
+     * Saved settings take effect at once: what the page header picked for the session used to
+     * stand in front of them until signing out.
+     *
+     * @return void
+     * @link \App\Controller\Traits\UserSettingsTrait::userSettings()
+     */
+    public function testSavedSettingsReplaceWhatTheSessionPicked(): void
+    {
+        $users = $this->getTableLocator()->get('Users');
+        $user = $users->find()->firstOrFail();
+        $this->session(['Auth' => $user, 'Config' => ['UI' => ['language' => 'hr_HR']]]);
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/users/user-settings', ['user_settings' => ['language' => 'cs_CZ']]);
+
+        $this->assertRedirect();
+        $this->assertArrayNotHasKey('UI', $_SESSION['Config'] ?? []);
+    }
 }

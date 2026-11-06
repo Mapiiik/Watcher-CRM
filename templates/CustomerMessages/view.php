@@ -54,7 +54,7 @@
                         </tr>
                         <tr>
                             <th><?= __('Recipients') ?></th>
-                            <td><?= implode('<br>', $customerMessage->recipients) ?></td>
+                            <td><?= implode('<br>', array_map('h', $customerMessage->recipients)) ?></td>
                         </tr>
                         <tr>
                             <th><?= __('Subject') ?></th>

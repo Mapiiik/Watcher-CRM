@@ -26,11 +26,11 @@
 
     <?php foreach ($dealers as $dealer => $dealerCommissions) : ?>
         <br>
-        <h4><?= $dealer ?></h4>
+        <h4><?= h($dealer) ?></h4>
 
         <?php foreach ($dealerCommissions as $dealerCommission) : ?>
             <div class="related">
-                <h5><?= $dealerCommission->commission->name ?></h5>
+                <h5><?= h($dealerCommission->commission->name) ?></h5>
                 <div><?= __('Fixed') . ': '
                     . $this->Number->currency($dealerCommission->fixed ?? 0)?></div>
                 <div><?= __('Percentage') . ': '

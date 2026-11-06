@@ -66,6 +66,8 @@ trait UserSettingsTrait
             if ($usersTable->save($user)) {
                 // update current identity data if it is a logged-in user
                 if ($user->id === $userId) {
+                    // what was picked in the page header for this session gives way to what was saved
+                    $this->getRequest()->getSession()->delete('Config.UI');
                     $this->getRequest()->getAttribute('identity')
                         ->getOriginalData()
                         ->set('user_settings', $user->user_settings);

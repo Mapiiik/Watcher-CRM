@@ -29,7 +29,7 @@
                         <?= $radreply->account !== null ? $this->Html->link(
                             $radreply->account->username,
                             ['controller' => 'Accounts', 'action' => 'view', $radreply->account->id],
-                        ) : $radreply->username ?>
+                        ) : h($radreply->username) ?>
                     </td>
                     <td><?= h($radreply->attribute) ?></td>
                     <td><?= h($radreply->op) ?></td>

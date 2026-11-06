@@ -42,7 +42,7 @@
                     <td><?= $radpostauth->account !== null ? $this->Html->link(
                         $radpostauth->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radpostauth->account->id],
-                    ) : $radpostauth->username ?></td>
+                    ) : h($radpostauth->username) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Authentication Date') ?></th>

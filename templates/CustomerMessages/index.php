@@ -56,7 +56,7 @@
                         ) : '' ?></td>
                     <td><?= $customerMessage->type === null ? '' : h($customerMessage->type->label()) ?></td>
                     <td><?= $customerMessage->direction === null ? '' : h($customerMessage->direction->label()) ?></td>
-                    <td><?= implode('<br>', $customerMessage->recipients) ?></td>
+                    <td><?= implode('<br>', array_map('h', $customerMessage->recipients)) ?></td>
                     <td><?= h($customerMessage->subject) ?></td>
                     <td><?= $customerMessage->body_format === null ?
                         '' : h($customerMessage->body_format->label()) ?></td>

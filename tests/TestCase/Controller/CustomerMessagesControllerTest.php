@@ -661,4 +661,26 @@ class CustomerMessagesControllerTest extends TestCase
 
         return (new BulkRecipients())->findCustomers($purpose, $filters, $registry, false, true);
     }
+
+    /**
+     * Recipients are free text somebody typed, and the listing and the detail write them out as text.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::index()
+     */
+    public function testRecipientsAreWrittenOutAsText(): void
+    {
+        $this->login();
+        $id = $this->firstId('CustomerMessages');
+        $this->getTableLocator()->get('CustomerMessages')->updateAll(
+            ['recipients' => ['<img src=x onerror=alert(1)>']],
+            ['id' => $id],
+        );
+
+        foreach (['/customer-messages', '/customer-messages/view/' . $id] as $page) {
+            $this->get($page);
+            $this->assertResponseOk();
+            $this->assertResponseNotContains('<img src=x');
+        }
+    }
 }

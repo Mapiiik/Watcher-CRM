@@ -29,7 +29,7 @@
                         <?= $radcheck->account !== null ? $this->Html->link(
                             $radcheck->account->username,
                             ['controller' => 'Accounts', 'action' => 'view', $radcheck->account->id],
-                        ) : $radcheck->username ?>
+                        ) : h($radcheck->username) ?>
                     </td>
                     <td><?= h($radcheck->attribute) ?></td>
                     <td><?= h($radcheck->op) ?></td>

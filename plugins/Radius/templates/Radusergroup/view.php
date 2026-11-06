@@ -42,7 +42,7 @@
                     <td><?= $radusergroup->account !== null ? $this->Html->link(
                         $radusergroup->account->username,
                         ['controller' => 'Accounts', 'action' => 'view', $radusergroup->account->id],
-                    ) : $radusergroup->username ?></td>
+                    ) : h($radusergroup->username) ?></td>
                 </tr>
                 <tr>
                     <th><?= __d('radius', 'Groupname') ?></th>
