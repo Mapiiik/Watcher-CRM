@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller\Api;
 use App\Controller\Api\CustomerPortalController;
 use App\CustomerPortal\Passwords;
 use App\CustomerPortal\Tokens;
+use App\Model\Enum\AddressType;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\LoginRights;
 use App\Test\Traits\ControllerTestTrait;
@@ -510,6 +511,57 @@ class CustomerPortalControllerTest extends TestCase
         $this->asService();
         $this->get('/api/customer-portal/identify?ip=nowhere');
         $this->assertResponseCode(400);
+    }
+
+    /**
+     * The address a service is told is the one the customer is billed at, as on their invoices.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::identify()
+     */
+    public function testACustomerIsAnsweredWithTheirBillingAddress(): void
+    {
+        $addresses = $this->fetchTable('Addresses');
+        $billing = $addresses->newEntity([
+            'type' => AddressType::Billing,
+            'customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481',
+            'street' => 'Billing Street',
+            'number' => '12',
+            'city' => 'Billing City',
+            'zip' => '100 00',
+            'country_id' => 'b490f1c9-ff7e-430a-bfb0-f400878e1617',
+        ], ['validate' => false]);
+        $addresses->saveOrFail($billing, ['checkRules' => false]);
+
+        $this->asService();
+        $this->get('/api/customer-portal/identify?ip=192.168.11.11');
+
+        $this->assertResponseOk();
+        $this->assertSame(
+            ['street' => 'Billing Street', 'number' => '12', 'city' => 'Billing City', 'zip' => '100 00'],
+            $this->answer()['customer']['address'],
+        );
+    }
+
+    /**
+     * A service is sold to the customer and not to a connection, so an installation address
+     * is not asked for.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::identify()
+     */
+    public function testACustomerWithoutAnInstallationAddressIsAnsweredToo(): void
+    {
+        $this->fetchTable('Addresses')->updateAll(
+            ['type' => AddressType::Billing->value],
+            ['customer_id' => '403bab0e-52cd-4a8e-83f8-43c2457d0481'],
+        );
+
+        $this->asService();
+        $this->get('/api/customer-portal/identify?ip=192.168.11.11');
+
+        $this->assertResponseOk();
+        $this->assertSame('Jablonec nad Jizerou', $this->answer()['customer']['address']['city']);
     }
 
     /**

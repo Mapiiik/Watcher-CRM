@@ -14,7 +14,6 @@ use App\Model\Entity\Customer;
 use App\Model\Entity\IpAddress;
 use App\Model\Entity\IpNetwork;
 use App\Model\Entity\Login;
-use App\Model\Enum\AddressType;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Enum\IpNetworkTypeOfUse;
 use App\Model\Table\LoginsTable;
@@ -455,7 +454,7 @@ class CustomerPortalController extends AppController
         $ipAddress = $this->fetchTable('IpAddresses')->find()
             ->contain(['Customers' => [
                 'Emails' => ['sort' => ['Emails.email' => 'ASC']],
-                'Addresses' => ['conditions' => ['Addresses.type' => AddressType::Installation->value]],
+                'Addresses',
             ]])
             ->where(['IpAddresses.ip_address' => $ip])
             ->orderBy(['Customers.company' => 'ASC', 'Customers.last_name' => 'ASC', 'Customers.first_name' => 'ASC'])
@@ -473,7 +472,8 @@ class CustomerPortalController extends AppController
             return;
         }
 
-        $address = $customer->addresses[0] ?? null;
+        // a service is sold to the customer, not to a connection, so it gets where the invoices go
+        $address = $customer->billing_address;
         $this->answer(['customer' => ['number' => $customer->number] + $this->fields($customer, [
             'title', 'first_name', 'last_name', 'suffix', 'company',
         ]) + [
