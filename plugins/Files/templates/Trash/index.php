@@ -32,7 +32,7 @@ $pages = iterator_to_array($documents, false);
 </div>
 <?= $this->Form->end() ?>
 
-<div class="files index content files-trash">
+<div class="files index content files-listing">
     <?= $this->AuthLink->link(
         __d('files', 'File Links'),
         ['controller' => 'FileLinks', 'action' => 'index'],

@@ -230,7 +230,7 @@
 
 /* The same reason the table of documents lines up at the top: a picture drags its row down. */
 .files-documentations td,
-.files-trash td {
+.files-listing td {
     vertical-align: top;
 }
 

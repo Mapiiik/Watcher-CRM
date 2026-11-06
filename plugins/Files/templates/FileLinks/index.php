@@ -6,6 +6,10 @@
  * @var array<string, string> $documentTypes
  * @var array<string, string> $variants
  */
+
+$this->Preview->load();
+
+$pages = iterator_to_array($documents, false);
 ?>
 <?= $this->Form->create(null, ['type' => 'get', 'valueSources' => ['query', 'context']]) ?>
 <div class="row">
@@ -43,7 +47,7 @@
 </div>
 <?= $this->Form->end() ?>
 
-<div class="files index content">
+<div class="files index content files-listing">
     <?= $this->AuthLink->link(
         __d('files', 'Storage'),
         ['controller' => 'Storage', 'action' => 'index'],
@@ -55,7 +59,10 @@
         ['class' => 'button float-right'],
     ) ?>
     <?= $this->heading(__d('files', 'File Links')) ?>
-    <p><?= __d('files', 'Every file the records have, and what each of them is filed as.') ?></p>
+    <p>
+        <?= __d('files', 'Every file the records have, and what each of them is filed as.') ?>
+        <?= $this->Preview->flipThrough($pages, 'file-links', __d('files', 'File Links')) ?>
+    </p>
     <div class="table-responsive">
         <table>
             <thead>
@@ -67,19 +74,21 @@
                     <th><?= $this->Paginator->sort('position', __d('files', 'Position')) ?></th>
                     <th><?= $this->Paginator->sort('name', __d('files', 'Name')) ?></th>
                     <th><?= __d('files', 'Size') ?></th>
+                    <th></th>
                     <th class="actions"><?= __d('files', 'Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($documents as $document) : ?>
+                <?php foreach ($pages as $at => $document) : ?>
                 <tr>
                     <td><?= h($document->created) ?></td>
                     <td><?= $this->Record->linkTo($document) ?></td>
                     <td><?= h($document->document_type) ?></td>
                     <td><?= h($document->variant) ?></td>
                     <td><?= $this->Number->format($document->position) ?></td>
-                    <td><?= h($document->name) ?></td>
+                    <td><?= $this->Preview->pageName($pages, $at, 'file-links') ?></td>
                     <td><?= $this->Number->toReadableSize($document->file->byte_size) ?></td>
+                    <td><?= $this->Preview->pageMark($pages, $at, 'file-links') ?></td>
                     <td class="actions">
                         <?= $this->AuthLink->link(
                             __d('files', 'Open'),

@@ -110,6 +110,22 @@ class FileLinksControllerTest extends TestCase
     }
 
     /**
+     * @link \Files\View\Helper\PreviewHelper::pageMark()
+     * @return void
+     */
+    public function testThePicturesOpenTheViewer(): void
+    {
+        $link = $this->file('a contract', 'IMG_001.jpg');
+
+        $this->get('/files/file-links');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('data-files-gallery="file-links"');
+        $this->assertResponseContains('data-files-pages=');
+        $this->assertResponseContains('/files/file-links/thumbnail/' . $link->id);
+    }
+
+    /**
      * A document says what it is filed against, and offers the way to it where the application
      * has said where that model is to be found.
      *
