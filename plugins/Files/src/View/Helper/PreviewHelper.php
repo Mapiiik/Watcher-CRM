@@ -377,7 +377,8 @@ class PreviewHelper extends Helper
                     $link->id,
                 ]),
                 'type' => $type,
-                'title' => $caption,
+                // the viewer puts this on the page as markup, and it says what somebody typed
+                'title' => h($caption),
                 'description' => $this->descriptionOf($link, $at + 1, $of),
                 // What the strip under the page shows. The address is given whether or not there
                 // is anything at the end of it yet - the picture is made the first time it is
