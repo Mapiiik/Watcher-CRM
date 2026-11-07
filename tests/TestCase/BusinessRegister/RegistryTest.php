@@ -466,6 +466,42 @@ class RegistryTest extends TestCase
     }
 
     /**
+     * A company found in a search has just been held, whatever was kept about it before. Reading
+     * the old answer would refuse a company that was registered after somebody looked it up.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::byReferenceFromCache()
+     */
+    public function testACompanyRegisteredSinceIsSeenWhenAskedAgain(): void
+    {
+        $this->assertNull($this->heldUnder('27496139'));
+
+        StubSource::$entries = [['reference' => '27496139', 'name' => 'NETAIR, s.r.o.']];
+        $this->assertNull($this->heldUnder('27496139'), 'The answer is kept.');
+
+        $this->assertSame('NETAIR, s.r.o.', $this->heldUnder('27496139', askAgainIfNotHeld: true));
+
+        StubSource::$entries = [];
+        $this->assertSame('NETAIR, s.r.o.', $this->heldUnder('27496139'), 'What was found is kept in its place.');
+    }
+
+    /**
+     * Who the stub register is said to hold under a reference, the cache having its say.
+     *
+     * @param string $reference The reference.
+     * @param bool $askAgainIfNotHeld Whether having held nothing is asked about again.
+     * @return string|null
+     * @phpstan-impure
+     */
+    private function heldUnder(string $reference, bool $askAgainIfNotHeld = false): ?string
+    {
+        /** @var \App\BusinessRegister\Dto\Subject|null $subject */
+        $subject = Registry::byReferenceFromCache('stub', $reference, $askAgainIfNotHeld)->data;
+
+        return $subject?->name;
+    }
+
+    /**
      * A register that checks VAT numbers is asked, and its answer is what the customer is shown -
      * including the middle answer, that the number is held by someone who does not pay VAT.
      *

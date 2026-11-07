@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\BusinessRegister\Registry;
 use App\Controller\CustomersController;
 use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerDealer;
@@ -1033,6 +1034,33 @@ class CustomersControllerTest extends TestCase
         $this->assertResponseContains('/customers/register-note/' . self::CUSTOMER_ID . '/identity');
         $this->assertResponseContains('/customers/register-note/' . self::CUSTOMER_ID . '/vat');
         $this->assertResponseNotContains('NETAIR, s.r.o. (');
+    }
+
+    /**
+     * The search reads no cache, so the operator can pick a company somebody looked up before it
+     * was registered. Picking it has to work, not say the register no longer holds it.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::add()
+     */
+    public function testACompanyRegisteredSinceTheLastLookupCanBePicked(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        Registry::byReferenceFromCache('stub', '27496139');
+        StubSource::$entries = [['reference' => '27496139', 'name' => 'NETAIR, s.r.o.']];
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/customers/add', [
+            'refresh' => 'refresh',
+            'business_register_source' => 'stub',
+            'business_register_search' => 'stub|27496139',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('no longer held by the register');
+        $this->assertResponseContains('NETAIR, s.r.o.');
     }
 
     /**

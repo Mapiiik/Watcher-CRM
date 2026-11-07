@@ -112,10 +112,15 @@ class Registry
      *
      * @param string $key The name the register is known by.
      * @param string $reference The reference a search result carried.
+     * @param bool $askAgainIfNotHeld Whether having held nothing is asked about again, for a caller
+     *   that has just been told the register does hold it.
      * @return \App\Http\Answer<\App\BusinessRegister\Dto\Subject|null>
      */
-    public static function byReferenceFromCache(string $key, string $reference): Answer
-    {
+    public static function byReferenceFromCache(
+        string $key,
+        string $reference,
+        bool $askAgainIfNotHeld = false,
+    ): Answer {
         // A register not holding the reference is an answer too, and is kept as one - `false`
         // rather than null, which a cache cannot tell from having nothing.
         // Asked before the cache rather than after it. The entry is kept per register, so one
@@ -131,7 +136,7 @@ class Registry
         if (is_array($cached)) {
             return Answer::of(SubjectPayloadNormalizer::subject($cached));
         }
-        if ($cached === false) {
+        if ($cached === false && !$askAgainIfNotHeld) {
             return Answer::of(null);
         }
 

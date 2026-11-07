@@ -645,10 +645,12 @@ class CustomersController extends AppController
             throw new RuntimeException(__('Invalid business register reference.'));
         }
 
+        // A search reads no cache, so it finds a company the cache still has as held by nobody.
         /** @var \App\BusinessRegister\Dto\Subject|null $subject */
         $subject = Registry::byReferenceFromCache(
             key: $businessRegisterSource,
             reference: $businessRegisterReference,
+            askAgainIfNotHeld: true,
         )->orFail(__('The business register is not configured.'));
 
         if ($subject === null) {
