@@ -16,10 +16,13 @@ use RuntimeException;
 /**
  * Gathers the address points a regulator's report is made of.
  *
- * What is common to them all: the connections active in a month, at an address the national
- * registry knows, and those recorded as there to be had, sorted into the regulator's categories and
- * put together by address point. Which categories there are, and what is reported about each point,
- * is up to the report.
+ * What is common to them all: the connections running on the last day of a month, at an address the
+ * national registry knows, and those recorded as there to be had, sorted into the regulator's
+ * categories and put together by address point. Which categories there are, and what is reported
+ * about each point, is up to the report.
+ *
+ * The last day because a regulator asks for the state on a day: ČTÚ wants the actual state on
+ * 31 December, with what has been cancelled by then taken out.
  */
 class ConnectionPointCollector
 {
@@ -41,7 +44,8 @@ class ConnectionPointCollector
     }
 
     /**
-     * The points of the month, by category and then by "source|reference", both in order.
+     * The points as they stand on the last day of the month, by category and then by
+     * "source|reference", both in order.
      *
      * @param \Cake\I18n\Date $month Any day of the month.
      * @param string $registrySource The country's registry, the report being about one country.
@@ -60,7 +64,7 @@ class ConnectionPointCollector
             ->andWhere([
                 'OR' => [
                     'Billings.billing_until IS NULL',
-                    'Billings.billing_until >=' => $month->firstOfMonth(),
+                    'Billings.billing_until >=' => $month->lastOfMonth(),
                 ],
             ])
             ->where(['ConnectionProfiles.speed_down IS NOT NULL'])

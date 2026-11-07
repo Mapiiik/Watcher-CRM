@@ -767,7 +767,7 @@ class OverviewsController extends AppController
     {
         $month_to_display = new Date($this->getRequest()->getQuery('month_to_display', 'now'));
 
-        $cto_categories = $this->applyActiveInMonthScope($this->fetchTable(BillingsTable::class)->find()
+        $cto_categories = $this->applyActiveOnLastDayScope($this->fetchTable(BillingsTable::class)->find()
             ->contain('Customers')
             ->contain([
                 'Contracts' => [
@@ -928,6 +928,27 @@ class OverviewsController extends AppController
                 'OR' => [
                     'Billings.billing_until IS NULL',
                     'Billings.billing_until >=' => $monthToDisplay->firstOfMonth(),
+                ],
+            ]);
+    }
+
+    /**
+     * Narrows a query of billings to those still running on the last day of the month, which is the
+     * state a regulator asks for.
+     *
+     * @template TSubject of array|\Cake\Datasource\EntityInterface
+     * @param \Cake\ORM\Query\SelectQuery<TSubject> $query Query on a (root or contained) Billings.
+     * @param \Cake\I18n\Date $monthToDisplay Any date within the target month.
+     * @return \Cake\ORM\Query\SelectQuery<TSubject> The same query (returned for chaining).
+     */
+    private function applyActiveOnLastDayScope(SelectQuery $query, Date $monthToDisplay): SelectQuery
+    {
+        return $query
+            ->where(['Billings.billing_from <=' => $monthToDisplay->lastOfMonth()])
+            ->andWhere([
+                'OR' => [
+                    'Billings.billing_until IS NULL',
+                    'Billings.billing_until >=' => $monthToDisplay->lastOfMonth(),
                 ],
             ]);
     }

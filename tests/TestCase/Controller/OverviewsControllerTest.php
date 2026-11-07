@@ -26,6 +26,20 @@ class OverviewsControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
+     * A billing of the fixtures that is still open.
+     *
+     * @var string
+     */
+    private const OPEN_BILLING_ID = 'b2000000-0000-4000-8000-000000000002';
+
+    /**
+     * A service of the fixtures with a connection profile.
+     *
+     * @var string
+     */
+    private const CONNECTION_SERVICE_ID = 'eaacfeb3-1430-43ce-842e-497c5c95d953';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -232,6 +246,37 @@ class OverviewsControllerTest extends TestCase
         $this->assertResponseContains(
             "16936132;s2_ftth;0;0;ANO;1000;1000;1000;1000;1;Luční 464, Podmoklice, 51301 Semily\r\n",
         );
+    }
+
+    /**
+     * ČTÚ asks for the state on the last day: a connection cancelled before it is left out, also
+     * when it ran for most of the month.
+     *
+     * @return void
+     * @link \App\RegulatoryReporting\ConnectionPointCollector::collect()
+     */
+    public function testAConnectionCancelledBeforeTheLastDayIsNotReported(): void
+    {
+        Configure::write('Addresses.url', '');
+        $this->getTableLocator()->get('Addresses')->updateAll(['address_registry_reference' => '11111111'], ['1 = 1']);
+        $billings = $this->getTableLocator()->get('Billings');
+        $billings->deleteAll(['id !=' => self::OPEN_BILLING_ID]);
+        $billings->updateAll(['billing_from' => '2020-01-01', 'service_id' => self::CONNECTION_SERVICE_ID], ['1 = 1']);
+        $this->login();
+        $points = '/overviews/overview-of-czech-customer-connection-points/s2_wifi.csv?month_to_display=2026-06-15';
+        $speeds = '/overviews/overview-of-czech-customer-connection-speeds?month_to_display=2026-06-15';
+
+        $billings->updateAll(['billing_until' => '2026-06-30'], ['1 = 1']);
+        $this->get($points);
+        $this->assertResponseContains('11111111;s2_wifi;1');
+        $this->get($speeds);
+        $this->assertNotEmpty($this->viewVariable('cto_categories')->toArray());
+
+        $billings->updateAll(['billing_until' => '2026-06-29'], ['1 = 1']);
+        $this->get($points);
+        $this->assertResponseNotContains('11111111');
+        $this->get($speeds);
+        $this->assertEmpty($this->viewVariable('cto_categories')->toArray());
     }
 
     /**
