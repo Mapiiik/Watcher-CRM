@@ -166,6 +166,8 @@ class DeletingWhatIsInUseTest extends TestCase
     #[TestWith(['Tasks', 'task_id', null])]
     public function testWhatReportedWorkNamesStays(string $alias, string $column, ?string $id): void
     {
+        // twice, as an application bootstrapped twice in a process hands the rules over twice
+        EventManager::instance()->on(new ReferencesListener());
         EventManager::instance()->on(new ReferencesListener());
 
         $table = $this->getTableLocator()->get($alias);
@@ -175,7 +177,10 @@ class DeletingWhatIsInUseTest extends TestCase
         $record = $table->get($id);
 
         $this->assertFalse($table->delete($record));
-        $this->assertArrayHasKey('hasNoReportedWork', $record->getError('id'));
+        $this->assertContains(
+            'Reported work names this record, so it cannot be deleted.',
+            $record->getError('id'),
+        );
 
         $this->getTableLocator()->get('WorkReports.WorkReportItems')->deleteAll(['id' => $item]);
 

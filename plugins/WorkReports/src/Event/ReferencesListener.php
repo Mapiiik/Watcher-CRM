@@ -48,11 +48,11 @@ class ReferencesListener implements EventListenerInterface
             return;
         }
 
+        // without a name, as a process bootstrapping twice would have the second one refused
         $rules->addDelete(
             fn(EntityInterface $entity): bool => !$this->fetchTable('WorkReports.WorkReportItems')->exists([
                 $column => $entity->get('id'),
             ]),
-            'hasNoReportedWork',
             [
                 'errorField' => 'id',
                 'message' => __d('work_reports', 'Reported work names this record, so it cannot be deleted.'),
