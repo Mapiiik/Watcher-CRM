@@ -276,6 +276,28 @@ class DocumentationsControllerTest extends TestCase
     }
 
     /**
+     * A filter that cannot mean anything, as a hand-edited address has it, leaves the listing as it
+     * is. The database would refuse it as a type.
+     *
+     * @return void
+     */
+    public function testAFilterThatMeansNothingIsLeftOut(): void
+    {
+        $this->documentations()->saveOrFail($this->documentations()->newEntity([
+            'documentation_type_id' => $this->kind(),
+            'name' => 'Something filed against nobody',
+        ]));
+
+        $this->get('/documentations?documentation_type_id=nonsense');
+        $this->assertResponseOk();
+        $this->assertResponseContains('Something filed against nobody');
+
+        $this->get('/documentations?documentation_type_id[]=one&search[]=two');
+        $this->assertResponseOk();
+        $this->assertResponseContains('Something filed against nobody');
+    }
+
+    /**
      * Every page of the agenda answers. Little is asked of them beyond that, but a page that has
      * stopped rendering at all is worth hearing about from the suite rather than from somebody
      * clicking.

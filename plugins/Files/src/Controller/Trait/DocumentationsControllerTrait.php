@@ -5,6 +5,7 @@ namespace Files\Controller\Trait;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Response;
+use Cake\Validation\Validation;
 use Files\Model\Entity\FileLink;
 use Files\Model\Table\FileLinksTable;
 use Files\Service\Documentations;
@@ -76,16 +77,16 @@ trait DocumentationsControllerTrait
         }
 
         $kind = $this->getRequest()->getQuery('documentation_type_id');
-        if (!empty($kind)) {
+        if (is_string($kind) && Validation::uuid($kind)) {
             $conditions[$this->Documentations->aliasField('documentation_type_id')] = $kind;
         }
 
         $search = $this->getRequest()->getQuery('search');
-        if (!empty($search)) {
+        if (is_string($search) && trim($search) !== '') {
             $conditions[] = [
                 'OR' => [
-                    'Documentations.name ILIKE' => '%' . trim((string)$search) . '%',
-                    'Documentations.note ILIKE' => '%' . trim((string)$search) . '%',
+                    'Documentations.name ILIKE' => '%' . trim($search) . '%',
+                    'Documentations.note ILIKE' => '%' . trim($search) . '%',
                 ],
             ];
         }
