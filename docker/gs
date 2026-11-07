@@ -1,0 +1,11 @@
+#!/bin/sh
+# Ghostscript, as ImageMagick finds it, for the PDFs uploaded from outside.
+#
+# PHP's time limit does not reach a program it waits for, and a few kilobytes of nested forms can
+# keep Ghostscript busy for hours, so it has a limit of its own. Even with -dSAFER it reads whatever
+# is under the temporary directory, so it is given one with nothing in it.
+scratch=$(mktemp -d) || exit 1
+TMPDIR=$scratch timeout -k 5 60 /usr/bin/gs "$@"
+status=$?
+rm -rf "$scratch"
+exit "$status"

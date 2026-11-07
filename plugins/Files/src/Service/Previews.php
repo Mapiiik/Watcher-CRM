@@ -100,6 +100,14 @@ class Previews
     private const MAP_LIMIT = 536870912;
 
     /**
+     * What a failure is noted under, beside where the picture would go, and how long it is taken at
+     * its word. A file that will not convert can take a minute to say so, which is not to be spent
+     * on every look at it, and a failure may also have been passing.
+     */
+    private const FAILED = '.failed';
+    private const FAILURE_KEPT_FOR = 86400;
+
+    /**
      * How the path is cut up, the same way the store cuts its own: two levels of two characters
      * keeps any one directory to a few hundred entries however much is kept.
      */
@@ -163,7 +171,7 @@ class Previews
             return $target;
         }
 
-        if (!extension_loaded('imagick')) {
+        if (!extension_loaded('imagick') || $this->failedLately($target)) {
             return null;
         }
 
@@ -174,6 +182,7 @@ class Previews
             // It is worth knowing about, though: a deployment where nothing converts looks the
             // same from the outside as one with nothing to convert.
             Log::warning(sprintf('Files: no %s of %s: %s', $size, $file->id, $e->getMessage()));
+            $this->noteFailure($target);
 
             return null;
         }
@@ -221,8 +230,10 @@ class Previews
         foreach (array_keys(self::BOXES) as $size) {
             $path = self::pathFor($id, $size);
 
-            if (is_file($path)) {
-                unlink($path);
+            foreach ([$path, $path . self::FAILED] as $kept) {
+                if (is_file($kept)) {
+                    unlink($kept);
+                }
             }
         }
     }
@@ -279,6 +290,36 @@ class Previews
         }
 
         return implode(DS, $segments) . DS . $id . self::EXTENSION;
+    }
+
+    /**
+     * Whether making this picture failed not long ago.
+     *
+     * @param string $target Where it goes.
+     * @return bool
+     */
+    private function failedLately(string $target): bool
+    {
+        $note = $target . self::FAILED;
+
+        return is_file($note) && time() - (int)filemtime($note) < self::FAILURE_KEPT_FOR;
+    }
+
+    /**
+     * Notes that this picture could not be made.
+     *
+     * @param string $target Where it would have gone.
+     * @return void
+     */
+    private function noteFailure(string $target): void
+    {
+        try {
+            $this->makeDirectory(dirname($target));
+            touch($target . self::FAILED);
+        } catch (Throwable $e) {
+            // it only saves trying again, and whatever stopped it is in the log by now
+            Log::warning(sprintf('Files: a failure was not noted: %s', $e->getMessage()));
+        }
     }
 
     /**

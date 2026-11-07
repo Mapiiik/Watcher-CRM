@@ -33,7 +33,8 @@
     No ceiling on time. What ImageMagick offers counts the processor time of the whole process
     rather than of the conversion, so on a build that reads it that way, anything long-lived -
     a batch of previews, a worker answering all day - eventually cannot draw at all. What a
-    crafted file could spend is bounded by the sizes instead.
+    crafted file could spend here is bounded by the sizes instead, and Ghostscript, which runs
+    apart from all this, has a limit of its own in docker/gs.
   -->
   <policy domain="resource" name="thread" value="2"/>
   <policy domain="system" name="max-memory-request" value="256MiB"/>

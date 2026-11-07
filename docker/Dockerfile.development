@@ -39,6 +39,7 @@ RUN install-php-extensions \
 # which says of itself that it is for a container behind a firewall. Ours names the formats a scan
 # or a photograph arrives in and refuses the rest.
 COPY docker/imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
+COPY --chmod=755 docker/gs /usr/local/bin/gs
 
 # Coverage is measured when it is asked for rather than always. pcov costs something on every
 # request it is enabled for, and this container mostly serves pages instead of measuring them:

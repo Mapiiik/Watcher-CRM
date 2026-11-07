@@ -59,6 +59,7 @@ RUN install-php-extensions \
 # which says of itself that it is for a container behind a firewall. Ours names the formats a scan
 # or a photograph arrives in and refuses the rest.
 COPY docker/imagemagick-policy.xml /etc/ImageMagick-7/policy.xml
+COPY --chmod=755 docker/gs /usr/local/bin/gs
 
 # On top of the production defaults of the base image, what the installations on a server have set
 # for their pools. Their time limit counted only the processor time of PHP-FPM, here it is the whole

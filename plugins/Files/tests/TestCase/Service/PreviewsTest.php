@@ -161,6 +161,48 @@ class PreviewsTest extends TestCase
     }
 
     /**
+     * What will not convert is not tried on every look at it, as that can take a minute each time,
+     * and is tried again after a day, as the failure may have been passing.
+     *
+     * @link \Files\Service\Previews::generate()
+     * @return void
+     */
+    public function testAFailureIsNotRepeatedOnEveryLook(): void
+    {
+        $file = (new FileStorage())->store('These are no pictures.', 'image/png');
+        $this->assertNull((new Previews())->thumbnail($file));
+
+        // a real picture in its place, which only another attempt would find
+        $store = (new FileStorage())->filesystem();
+        $path = (string)$file->path;
+        $store->write($path, (string)file_get_contents(dirname(__DIR__, 2) . DS . 'content' . DS . 'picture.jpg'));
+
+        $this->assertNull((new Previews())->thumbnail($file), 'It was tried again straight away.');
+        $this->assertIsString((new Previews())->preview($file), 'A size that did not fail was held back too.');
+
+        touch(Previews::pathFor((string)$file->id, Previews::THUMBNAIL) . '.failed', time() - 2 * 86400);
+        $this->assertIsString((new Previews())->thumbnail($file), 'It was not tried again after a day.');
+    }
+
+    /**
+     * What is forgotten of a file includes that it would not convert.
+     *
+     * @link \Files\Service\Previews::forget()
+     * @return void
+     */
+    public function testForgettingAFileForgetsItsFailures(): void
+    {
+        $file = (new FileStorage())->store('These are no pictures.', 'image/png');
+        $this->assertNull((new Previews())->thumbnail($file));
+        $note = Previews::pathFor((string)$file->id, Previews::THUMBNAIL) . '.failed';
+        $this->assertFileExists($note);
+
+        Previews::forget((string)$file->id);
+
+        $this->assertFileDoesNotExist($note);
+    }
+
+    /**
      * @link \Files\Service\Previews::generate()
      * @return void
      */

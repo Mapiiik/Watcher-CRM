@@ -14,6 +14,7 @@
 !VERSION
 !CHANGELOG
 !docker/imagemagick-policy.xml
+!docker/gs
 
 # What a working copy holds for itself, never for an image
 config/.env
