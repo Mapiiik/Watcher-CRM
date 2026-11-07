@@ -123,6 +123,8 @@ $migrator->runMany([
     ['plugin' => 'Bookkeeping'],
     ['plugin' => 'Files'],
     ['plugin' => 'WorkReports'],
+    ['plugin' => 'Queue'],
+    ['plugin' => 'QueueScheduler'],
 ]);
 
 /*

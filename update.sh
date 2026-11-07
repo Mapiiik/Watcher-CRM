@@ -36,6 +36,9 @@ composer cache-clear
 # Read the new schema once here rather than on somebody's first request.
 composer schema-cache
 
+# The jobs a new version brings to the schedule, which is no reason to stop here.
+composer scheduler-sync || echo 'The schedule was not brought up to date' >&2
+
 # Compiled PHP is held in opcache. Where it is configured not to check file timestamps
 # (`opcache.validate_timestamps=0`), the old code keeps being served until the pool is reloaded.
 if [ -n "${PHP_FPM_SERVICE:-}" ]; then

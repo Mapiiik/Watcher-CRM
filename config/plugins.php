@@ -58,4 +58,9 @@ return [
 
     // Work reports
     'WorkReports' => [],
+
+    // The jobs, what runs when and the queue they run from
+    'Queue' => [],
+    'QueueScheduler' => [],
+    'Scheduler' => [],
 ];
