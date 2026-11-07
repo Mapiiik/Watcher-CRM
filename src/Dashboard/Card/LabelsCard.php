@@ -43,6 +43,26 @@ class LabelsCard extends AbstractCustomerListingCard
     }
 
     /**
+     * The whole office, as against the accounts other systems sign in with.
+     *
+     * @return list<string>
+     */
+    #[Override]
+    public function roles(): array
+    {
+        return [
+            'user',
+            'customer-service-technician',
+            'network-technician',
+            'network-manager',
+            'sales-representative',
+            'sales-manager',
+            'bookkeeper',
+            'manager',
+        ];
+    }
+
+    /**
      * @return array<string, mixed>
      */
     #[Override]

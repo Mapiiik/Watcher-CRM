@@ -281,6 +281,57 @@ class DashboardControllerTest extends TestCase
     }
 
     /**
+     * The cards meant for the whole office reach all of it.
+     *
+     * @return void
+     * @link \App\Dashboard\DashboardCardRegistry::forRole()
+     */
+    public function testTheCardsForTheWholeOfficeReachEveryoneInIt(): void
+    {
+        $roles = [
+            'user',
+            'customer-service-technician',
+            'network-technician',
+            'network-manager',
+            'sales-representative',
+            'sales-manager',
+            'bookkeeper',
+            'manager',
+            'admin',
+        ];
+
+        foreach ($roles as $role) {
+            $this->login($role);
+            $this->get('/dashboard/cards');
+            $this->assertResponseOk();
+
+            /** @var list<\Dashboard\Card\DashboardCardInterface> $cards */
+            $cards = $this->viewVariable('cards');
+            $ids = array_map(fn($card): string => $card->id(), $cards);
+
+            $this->assertContains('labels', $ids, $role);
+            $this->assertContains('power_outages', $ids, $role);
+        }
+    }
+
+    /**
+     * An account another system signs in with has nobody to read a dashboard, so it stays empty.
+     *
+     * @return void
+     * @link \App\Dashboard\DashboardCardRegistry::forRole()
+     */
+    public function testTheMachineRolesAreOfferedNoCards(): void
+    {
+        foreach (['api', 'watcher-nms', 'customer-portal', 'customer-identification'] as $role) {
+            $this->login($role);
+            $this->get('/dashboard/cards');
+
+            $this->assertResponseOk();
+            $this->assertSame([], $this->viewVariable('cards'), $role);
+        }
+    }
+
+    /**
      * The card counts unsigned paperwork several times over - by two sets of deadlines, and then
      * over the proposals of both agendas - so every one of those queries has to actually run.
      *
