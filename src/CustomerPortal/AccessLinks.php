@@ -85,7 +85,8 @@ final class AccessLinks
     }
 
     /**
-     * The customer's logins as they are now, changing with any password set and any login made.
+     * The customer's logins as they are now, changing with any password set, any login made and
+     * any login locked: a link left working would find no open login and make a new one.
      *
      * @param string $customerId The customer.
      * @return string
@@ -93,12 +94,15 @@ final class AccessLinks
     private function fingerprint(string $customerId): string
     {
         $logins = $this->fetchTable('Logins')->find()
-            ->select(['id', 'password'])
+            ->select(['id', 'password', 'locked'])
             ->where(['customer_id' => $customerId])
             ->orderBy(['id' => 'ASC'])
             ->disableHydration()
             ->toArray();
-        $lines = array_map(fn(array $login): string => $login['id'] . ':' . $login['password'], $logins);
+        $lines = array_map(
+            fn(array $login): string => $login['id'] . ':' . $login['password'] . ':' . (int)$login['locked'],
+            $logins,
+        );
 
         return self::encode(hash('sha256', implode("\n", $lines), true));
     }

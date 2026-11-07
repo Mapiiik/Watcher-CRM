@@ -834,6 +834,25 @@ class CustomerPortalControllerTest extends TestCase
     }
 
     /**
+     * Locking a login ends the links sent for it. One left working would find no open login and
+     * make a new one, past the lock.
+     *
+     * @return void
+     * @link \App\CustomerPortal\AccessLinks::fingerprint()
+     */
+    public function testLockingALoginEndsTheLinksSentForIt(): void
+    {
+        $answer = $this->requestAccess($this->customerNumber(self::CUSTOMER_ID), 'customer@example.com');
+        $token = (string)$answer['token'];
+
+        $this->getTableLocator()->get('Logins')->updateAll(['locked' => true], ['id' => self::LOGIN_ID]);
+
+        $this->asPortal();
+        $this->get('/api/customer-portal/access?token=' . urlencode($token));
+        $this->assertSame('invalid', $this->answer()['status']);
+    }
+
+    /**
      * A link sets the password only of a login of its customer that is not locked.
      *
      * @return void
