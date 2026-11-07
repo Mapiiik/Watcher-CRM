@@ -240,8 +240,11 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
         }
 
         // For both countries the CRM knows, the VAT number without its prefix is the
-        // identification number - but only where it holds up as one.
-        $identityNumber = IdentityNumber::isValid($number, $memberState) ? $number : null;
+        // identification number - but only where it holds up as one. The number of any other
+        // country says nothing, however well it passes for one of these two by its length.
+        $identityNumber = in_array($memberState, ['CZ', 'HR'], true) && IdentityNumber::isValid($number, $memberState)
+            ? $number
+            : null;
 
         return [
             'reference' => $memberState . $number,

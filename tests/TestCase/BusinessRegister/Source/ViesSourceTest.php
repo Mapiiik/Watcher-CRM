@@ -148,6 +148,11 @@ class ViesSourceTest extends TestCase
         $croatian = ViesSource::mapSubject($subject, 'HR', '80625159724');
         $this->assertIsArray($croatian);
         $this->assertSame('80625159724', $croatian['identity_number']);
+
+        // eight digits that pass as a Czech number and belong to a company in Slovenia
+        $slovene = ViesSource::mapSubject($subject, 'SI', '27496139');
+        $this->assertIsArray($slovene);
+        $this->assertNull($slovene['identity_number']);
     }
 
     /**
