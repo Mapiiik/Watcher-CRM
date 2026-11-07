@@ -95,6 +95,47 @@ class LoginThrottleTest extends TestCase
     }
 
     /**
+     * A right password forgets wrong passwords, not wrong codes, and only a right code forgets
+     * those.
+     *
+     * @return void
+     */
+    public function testARightPasswordDoesNotForgetWrongCodes(): void
+    {
+        $throttle = new LoginThrottle(2, 100, 15, 'login_throttle_test');
+
+        $throttle->codeFailed('jnovak', '192.0.2.1');
+        $throttle->succeeded('jnovak', '192.0.2.1');
+        $this->assertFalse($throttle->codeBlocked('jnovak', '192.0.2.1'));
+        $throttle->codeFailed('JNovak ', '192.0.2.1');
+        $throttle->succeeded('jnovak', '192.0.2.1');
+
+        $this->assertTrue($throttle->codeBlocked('jnovak', '192.0.2.1'));
+        $this->assertFalse($throttle->blocked('jnovak', '192.0.2.1'));
+        $this->assertFalse($throttle->codeBlocked('jnovak', '192.0.2.2'));
+        $this->assertFalse($throttle->codeBlocked('pdvorak', '192.0.2.1'));
+
+        $throttle->codeAccepted('jnovak', '192.0.2.1');
+        $this->assertFalse($throttle->codeBlocked('jnovak', '192.0.2.1'));
+    }
+
+    /**
+     * Wrong codes count for the address too, and a refused address gets no code looked at.
+     *
+     * @return void
+     */
+    public function testWrongCodesCountForTheAddress(): void
+    {
+        $throttle = new LoginThrottle(100, 2, 15, 'login_throttle_test');
+
+        $throttle->codeFailed('jnovak', '192.0.2.1');
+        $throttle->codeFailed('pdvorak', '192.0.2.1');
+
+        $this->assertTrue($throttle->addressBlocked('192.0.2.1'));
+        $this->assertTrue($throttle->codeBlocked('jdoe', '192.0.2.1'));
+    }
+
+    /**
      * IPv6 addresses count by their /64.
      *
      * @return void

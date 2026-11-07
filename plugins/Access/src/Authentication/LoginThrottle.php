@@ -15,6 +15,9 @@ use Cake\Cache\Cache;
  *
  * Asking for a link to set a new password counts as a failure of the address, so that nobody
  * sends mail without end from one place.
+ *
+ * Wrong one-time codes are counted apart from wrong passwords. A right password forgets the failures
+ * of the password, and whoever has it would otherwise guess at the code without end.
  */
 final class LoginThrottle
 {
@@ -82,6 +85,47 @@ final class LoginThrottle
         foreach (array_keys($this->limits($account, $ip)) as $key) {
             $pool->set($key, (int)$pool->get($key, 0) + 1, $this->minutes * 60);
         }
+    }
+
+    /**
+     * Whether a one-time code of this account from this address is refused without looking at it.
+     *
+     * @param string $account The account as typed.
+     * @param string $ip The address.
+     * @return bool
+     */
+    public function codeBlocked(string $account, string $ip): bool
+    {
+        $wrongCodes = (int)Cache::pool($this->cacheConfig)->get($this->codeKey($account, $ip), 0);
+
+        return $wrongCodes >= $this->perAccountAndAddress || $this->blocked($account, $ip);
+    }
+
+    /**
+     * Counts a wrong one-time code.
+     *
+     * @param string $account The account as typed.
+     * @param string $ip The address.
+     * @return void
+     */
+    public function codeFailed(string $account, string $ip): void
+    {
+        $pool = Cache::pool($this->cacheConfig);
+        foreach ([$this->codeKey($account, $ip), $this->addressKey($ip)] as $key) {
+            $pool->set($key, (int)$pool->get($key, 0) + 1, $this->minutes * 60);
+        }
+    }
+
+    /**
+     * Forgets the wrong one-time codes of this account from this address after a right one.
+     *
+     * @param string $account The account as typed.
+     * @param string $ip The address.
+     * @return void
+     */
+    public function codeAccepted(string $account, string $ip): void
+    {
+        Cache::pool($this->cacheConfig)->delete($this->codeKey($account, $ip));
     }
 
     /**
@@ -157,6 +201,16 @@ final class LoginThrottle
     private function addressKey(string $ip): string
     {
         return $this->key('address', self::network($ip));
+    }
+
+    /**
+     * @param string $account The account as typed.
+     * @param string $ip The address.
+     * @return string
+     */
+    private function codeKey(string $account, string $ip): string
+    {
+        return $this->key('code', $this->pair($account, $ip));
     }
 
     /**

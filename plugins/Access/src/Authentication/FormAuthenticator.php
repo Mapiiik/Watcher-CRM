@@ -7,6 +7,8 @@ use Access\Model\Table\UsersTable;
 use Authentication\Authenticator\FormAuthenticator as BaseFormAuthenticator;
 use Authentication\Authenticator\Result;
 use Authentication\Authenticator\ResultInterface;
+use Authentication\Identifier\IdentifierCollection;
+use Authentication\Identifier\PasswordIdentifier;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Http\ServerRequest;
@@ -19,7 +21,8 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * An account that failed too often from one address, or an address that failed too often, is
  * refused for a while without its password being looked at. Every failure and refusal is logged,
- * and a failure is noted on the account too.
+ * and a failure is noted on the account too. A password hashed the old way is stored as Argon2id
+ * here, as a sign-in with a second step finishes somewhere else.
  */
 class FormAuthenticator extends BaseFormAuthenticator
 {
@@ -74,6 +77,7 @@ class FormAuthenticator extends BaseFormAuthenticator
         $result = $typed ? parent::authenticate($request) : new Result(null, Result::FAILURE_CREDENTIALS_INVALID);
         if ($result->isValid()) {
             $throttle->succeeded($account, $address);
+            $this->rehashPassword($request, $result->getData());
         } elseif ($result->getStatus() !== Result::FAILURE_CREDENTIALS_MISSING) {
             $throttle->failed($account, $address);
             if ($typed) {
@@ -87,6 +91,35 @@ class FormAuthenticator extends BaseFormAuthenticator
         }
 
         return $result;
+    }
+
+    /**
+     * Stores a password hashed the old way as Argon2id, now that it is known.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request The request.
+     * @param mixed $identity The account signed in to.
+     * @return void
+     */
+    private function rehashPassword(ServerRequestInterface $request, mixed $identity): void
+    {
+        $identifiers = $this->getIdentifier();
+        $checker = $identifiers instanceof IdentifierCollection && $identifiers->has('Password')
+            ? $identifiers->get('Password')
+            : null;
+        $password = $this->_getData($request)['password'] ?? null;
+        if (
+            !$identity instanceof EntityInterface
+            || !is_string($password)
+            || !$checker instanceof PasswordIdentifier
+            || !$checker->needsPasswordRehash()
+        ) {
+            return;
+        }
+
+        $this->usersTable()->updateQuery()
+            ->set(['password' => (new Argon2idPasswordHasher())->hash($password)])
+            ->where(['id' => $identity->get('id')])
+            ->execute();
     }
 
     /**

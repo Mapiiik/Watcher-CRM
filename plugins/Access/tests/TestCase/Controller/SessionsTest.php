@@ -40,6 +40,13 @@ class SessionsTest extends TestCase
     ];
 
     /**
+     * The clock as the suite had it.
+     *
+     * @var \Cake\Chronos\Chronos|null
+     */
+    private ?Chronos $clockBefore = null;
+
+    /**
      * @inheritDoc
      */
     #[Override]
@@ -48,6 +55,7 @@ class SessionsTest extends TestCase
         parent::setUp();
 
         Cache::clear(LoginThrottle::CACHE);
+        $this->clockBefore = Chronos::getTestNow();
         Chronos::setTestNow('2026-11-06 10:00:00');
     }
 
@@ -57,7 +65,7 @@ class SessionsTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        Chronos::setTestNow(null);
+        Chronos::setTestNow($this->clockBefore);
         Cache::clear(LoginThrottle::CACHE);
 
         parent::tearDown();
@@ -210,6 +218,40 @@ class SessionsTest extends TestCase
         $this->session([SessionAuthenticator::SIGNED_IN_AT => $thisOne]);
         $this->get('/profile');
         $this->assertResponseOk();
+    }
+
+    /**
+     * Guessing at the current password counts as failed sign-ins, so a session left open is no way
+     * to find it out, and the right one is then refused too.
+     *
+     * @return void
+     */
+    public function testGuessingTheCurrentPasswordIsCounted(): void
+    {
+        $account = $this->signIn($this->addAccount());
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->enableCsrfToken();
+            $this->enableSecurityToken();
+            $this->post('/users/change-password', [
+                'current_password' => 'not the one',
+                'password' => self::NEW_PASSWORD,
+                'password_confirm' => self::NEW_PASSWORD,
+            ]);
+            $this->assertResponseContains('This is not the current password.');
+        }
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/change-password', [
+            'current_password' => 'Kopr na zahrade 7x',
+            'password' => self::NEW_PASSWORD,
+            'password_confirm' => self::NEW_PASSWORD,
+        ]);
+
+        $this->assertResponseContains('Too many failed sign-ins.');
+        $stored = $this->getTableLocator()->get('Users')->get($account->get('id'), finder: 'withSecrets');
+        $this->assertTrue($stored->checkPassword('Kopr na zahrade 7x'));
     }
 
     /**

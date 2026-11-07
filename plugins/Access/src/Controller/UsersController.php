@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Access\Controller;
 
-use Access\Authentication\Argon2idPasswordHasher;
 use Access\Authentication\AuthLog;
 use Access\Authentication\FormAuthenticator;
+use Access\Authentication\LoginThrottle;
 use Access\Authentication\SecurityPolicy;
 use Access\Authentication\SessionAuthenticator;
 use Access\Controller\Trait\ApiTokenTrait;
@@ -18,9 +18,6 @@ use Access\Model\Table\UsersTable;
 use Access\Social\Providers;
 use Access\Social\Service\OidcService;
 use App\Controller\AppController;
-use Authentication\Authenticator\AuthenticatorInterface;
-use Authentication\Identifier\IdentifierCollection;
-use Authentication\Identifier\PasswordIdentifier;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
@@ -245,14 +242,14 @@ class UsersController extends AppController
             );
             // checked before the new password takes the place of the old one
             $current = (string)($data['current_password'] ?? '');
-            $proven = !$own || $this->signedInAccount(secrets: true)->checkPassword($current);
+            $fault = $own && $current !== '' ? $this->currentPasswordFault($current) : null;
             $user = $users->patchEntity($user, $data, [
                 'validate' => $own ? 'passwordChange' : 'passwordConfirm',
                 'accessibleFields' => ['password' => true, 'password_confirm' => true, 'current_password' => true],
             ]);
 
-            if (!$proven && $current !== '') {
-                $user->setError('current_password', __d('access', 'This is not the current password.'));
+            if ($fault !== null) {
+                $user->setError('current_password', $fault);
             }
             if ($own && $current !== '' && $current === ($data['password'] ?? null)) {
                 $user->setError('password', __d('access', 'The new password has to differ from the current one.'));
@@ -286,6 +283,34 @@ class UsersController extends AppController
         ]);
 
         return null;
+    }
+
+    /**
+     * What is wrong with the current password given to change it, if anything. A wrong one counts
+     * as a failed sign-in, so that a session left open is no way to guess at it.
+     *
+     * @param string $current The current password as typed.
+     * @return string|null
+     */
+    private function currentPasswordFault(string $current): ?string
+    {
+        $account = $this->signedInAccount(secrets: true);
+        $username = (string)$account->get('username');
+        $address = AuthLog::address($this->getRequest());
+        $throttle = LoginThrottle::fromSettings();
+        if ($throttle->blocked($username, $address)) {
+            AuthLog::warning('password change blocked', ['user' => $username, 'ip' => $address]);
+
+            return __d('access', 'Too many failed sign-ins. Try again in a few minutes.');
+        }
+        if ($account->checkPassword($current)) {
+            return null;
+        }
+
+        $throttle->failed($username, $address);
+        AuthLog::warning('current password refused', ['user' => $username, 'ip' => $address]);
+
+        return __d('access', 'This is not the current password.');
     }
 
     /**
@@ -440,8 +465,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Finishes signing in: stores a password hashed the old way again, notes when and from where
-     * and sends the account where it was going.
+     * Finishes signing in: notes when and from where and sends the account where it was going.
      *
      * @return \Cake\Http\Response|null
      */
@@ -455,7 +479,6 @@ class UsersController extends AppController
             return $this->redirect($this->afterSignIn());
         }
 
-        $this->rehashPassword($provider, $user);
         $address = AuthLog::address($this->getRequest());
         $this->getUsersTable()->noteGranted((string)$user->get('id'), $address);
 
@@ -475,31 +498,6 @@ class UsersController extends AppController
         }
 
         return $this->redirect($this->afterSignIn());
-    }
-
-    /**
-     * Stores a password hashed the old way as Argon2id, now that it is known.
-     *
-     * @param \Authentication\Authenticator\AuthenticatorInterface $provider What signed the account in.
-     * @param \Access\Model\Entity\User $user The account.
-     * @return void
-     */
-    private function rehashPassword(AuthenticatorInterface $provider, User $user): void
-    {
-        $password = $this->getRequest()->getData('password');
-        $identifiers = $provider instanceof FormAuthenticator ? $provider->getIdentifier() : null;
-        $checker = $identifiers instanceof IdentifierCollection && $identifiers->has('Password')
-            ? $identifiers->get('Password')
-            : null;
-        if (!is_string($password) || !$checker instanceof PasswordIdentifier || !$checker->needsPasswordRehash()) {
-            return;
-        }
-
-        $user->set('password', (new Argon2idPasswordHasher())->hash($password), ['setter' => false]);
-        $this->getUsersTable()->updateQuery()
-            ->set(['password' => $user->get('password')])
-            ->where(['id' => $user->get('id')])
-            ->execute();
     }
 
     /**

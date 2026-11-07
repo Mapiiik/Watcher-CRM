@@ -70,11 +70,11 @@ trait OneTimePasswordTrait
         $username = (string)$user->get('username');
         $address = AuthLog::address($this->getRequest());
         $throttle = LoginThrottle::fromSettings();
-        $blocked = $throttle->blocked($username, $address);
+        $blocked = $throttle->codeBlocked($username, $address);
         $how = $blocked ? null : $this->acceptCode($user, (string)$this->getRequest()->getData('code'));
         if ($how === null) {
             if (!$blocked) {
-                $throttle->failed($username, $address);
+                $throttle->codeFailed($username, $address);
                 $this->getUsersTable()->noteDenied($username, $address);
             }
             AuthLog::warning($blocked ? 'one-time code blocked' : 'one-time code refused', [
@@ -92,6 +92,7 @@ trait OneTimePasswordTrait
             return $this->redirect($loginAction);
         }
 
+        $throttle->codeAccepted($username, $address);
         if ($how === 'recovery code') {
             AuthLog::notice('recovery code used', [
                 'user' => $username,
@@ -156,18 +157,15 @@ trait OneTimePasswordTrait
             return $this->redirect(['action' => 'profile']);
         }
 
-        if ($this->getRequest()->is('post')) {
-            if ($this->acceptCode($user, (string)$this->getRequest()->getData('code')) === 'one-time code') {
-                $this->forgetOneTimePassword($user);
-                AuthLog::notice('one-time password turned off', [
-                    'user' => (string)$user->get('username'),
-                    'ip' => AuthLog::address($this->getRequest()),
-                ]);
-                $this->Flash->success(__d('access', 'Two-step verification is turned off.'));
+        if ($this->getRequest()->is('post') && $this->provenByCode($user)) {
+            $this->forgetOneTimePassword($user);
+            AuthLog::notice('one-time password turned off', [
+                'user' => (string)$user->get('username'),
+                'ip' => AuthLog::address($this->getRequest()),
+            ]);
+            $this->Flash->success(__d('access', 'Two-step verification is turned off.'));
 
-                return $this->redirect(['action' => 'profile']);
-            }
-            $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
+            return $this->redirect(['action' => 'profile']);
         }
 
         return null;
@@ -186,20 +184,17 @@ trait OneTimePasswordTrait
             return $this->redirect(['action' => 'profile']);
         }
 
-        if ($this->getRequest()->is('post')) {
-            if ($this->acceptCode($user, (string)$this->getRequest()->getData('code')) === 'one-time code') {
-                $this->getRequest()->getSession()->write(
-                    self::recoveryCodesKey(),
-                    $this->recoveryCodesTable()->renew((string)$user->get('id')),
-                );
-                AuthLog::notice('recovery codes renewed', [
-                    'user' => (string)$user->get('username'),
-                    'ip' => AuthLog::address($this->getRequest()),
-                ]);
+        if ($this->getRequest()->is('post') && $this->provenByCode($user)) {
+            $this->getRequest()->getSession()->write(
+                self::recoveryCodesKey(),
+                $this->recoveryCodesTable()->renew((string)$user->get('id')),
+            );
+            AuthLog::notice('recovery codes renewed', [
+                'user' => (string)$user->get('username'),
+                'ip' => AuthLog::address($this->getRequest()),
+            ]);
 
-                return $this->redirect(['action' => 'recoveryCodes']);
-            }
-            $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
+            return $this->redirect(['action' => 'recoveryCodes']);
         }
 
         return null;
@@ -256,9 +251,10 @@ trait OneTimePasswordTrait
      *
      * @param \Cake\Datasource\EntityInterface $user The account.
      * @param string $code The code as typed.
+     * @param bool $recovery Whether a recovery code will do, and is spent if it does.
      * @return string|null `one-time code`, `recovery code`, or null for neither.
      */
-    protected function acceptCode(EntityInterface $user, string $code): ?string
+    protected function acceptCode(EntityInterface $user, string $code, bool $recovery = true): ?string
     {
         $digits = (string)preg_replace('/\s+/', '', $code);
         $secret = (string)$user->get('secret');
@@ -284,11 +280,45 @@ trait OneTimePasswordTrait
             return $accepted ? 'one-time code' : null;
         }
 
-        if ($user->get('secret_verified') && $this->recoveryCodesTable()->useUp((string)$user->get('id'), $code)) {
-            return 'recovery code';
+        $spent = $recovery
+            && $user->get('secret_verified')
+            && $this->recoveryCodesTable()->useUp((string)$user->get('id'), $code);
+
+        return $spent ? 'recovery code' : null;
+    }
+
+    /**
+     * Whether the code given in the profile as proof that it is the owner asking is right.
+     *
+     * Wrong codes count as on signing in, so that a session left open is no way to guess at them.
+     * Only a one-time code will do, a recovery code is for signing in and is not spent here.
+     *
+     * @param \Cake\Datasource\EntityInterface $user The account.
+     * @return bool
+     */
+    protected function provenByCode(EntityInterface $user): bool
+    {
+        $username = (string)$user->get('username');
+        $address = AuthLog::address($this->getRequest());
+        $throttle = LoginThrottle::fromSettings();
+        if ($throttle->codeBlocked($username, $address)) {
+            AuthLog::warning('one-time code blocked', ['user' => $username, 'ip' => $address]);
+            $this->Flash->error(__d('access', 'Too many failed sign-ins. Try again in a few minutes.'));
+
+            return false;
         }
 
-        return null;
+        if ($this->acceptCode($user, (string)$this->getRequest()->getData('code'), recovery: false) !== null) {
+            $throttle->codeAccepted($username, $address);
+
+            return true;
+        }
+
+        $throttle->codeFailed($username, $address);
+        AuthLog::warning('one-time code refused', ['user' => $username, 'ip' => $address]);
+        $this->Flash->error(__d('access', 'The code is not right. Please try again.'));
+
+        return false;
     }
 
     /**

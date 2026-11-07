@@ -134,6 +134,87 @@ class OneTimePasswordTest extends TestCase
     }
 
     /**
+     * Whoever has the password gets no more guesses at the code by typing the password again in
+     * between, and a right code is then refused too.
+     *
+     * @return void
+     */
+    public function testARightPasswordGivesNoMoreGuessesAtTheCode(): void
+    {
+        $id = $this->addAccountWithCodes();
+        $wrong = OneTimePassword::code(self::SECRET, intdiv(time(), 30) - 10);
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->_session = [];
+            $this->signIn();
+            $this->assertRedirectContains('/verify');
+            $this->enterCode($wrong);
+            $this->assertRedirectContains('/login');
+        }
+
+        $this->_session = [];
+        $this->signIn();
+        $this->assertRedirectContains('/verify');
+        $this->enterCode(OneTimePassword::code(self::SECRET, intdiv(time(), 30)));
+
+        $this->assertRedirectContains('/login');
+        $this->assertSession(null, 'Auth');
+        $this->assertNull($this->account($id)->get('otp_last_timestep'));
+        /** @var \Cake\Log\Engine\ArrayLog $log */
+        $log = Log::engine('auth');
+        $this->assertStringContainsString('one-time code blocked user="jnovak"', implode("\n", $log->read()));
+    }
+
+    /**
+     * A right code forgets the wrong ones before it, so that somebody who mistypes now and then is
+     * never locked out.
+     *
+     * @return void
+     */
+    public function testARightCodeForgetsTheWrongOnes(): void
+    {
+        $this->addAccountWithCodes();
+        $now = intdiv(time(), 30);
+
+        foreach ([$now, $now + 1] as $timeslice) {
+            for ($attempt = 0; $attempt < 4; $attempt++) {
+                $this->_session = [];
+                $this->signIn();
+                $this->enterCode(OneTimePassword::code(self::SECRET, $now - 10));
+            }
+
+            $this->_session = [];
+            $this->signIn();
+            $this->enterCode(OneTimePassword::code(self::SECRET, $timeslice));
+            $this->get('/login');
+            $this->assertRedirect('/');
+        }
+    }
+
+    /**
+     * A password hashed the old way moves to Argon2id for an account with a second step too, which
+     * finishes signing in somewhere else.
+     *
+     * @return void
+     */
+    public function testAnAccountWithCodesMovesAnOldPasswordToArgon2id(): void
+    {
+        $id = $this->addAccountWithCodes();
+        $users = $this->getTableLocator()->get('Users');
+        $users->updateQuery()
+            ->set(['password' => password_hash('Kopr na zahrade 7x', PASSWORD_BCRYPT)])
+            ->where(['id' => $id])
+            ->execute();
+
+        $this->signIn();
+        $this->assertRedirectContains('/verify');
+
+        $stored = (string)$this->account($id)->get('password');
+        $this->assertStringStartsWith('$argon2id$', $stored);
+        $this->assertTrue(password_verify('Kopr na zahrade 7x', $stored));
+    }
+
+    /**
      * A sign-in waiting for its code outlasts the sign-in page shown in the meantime, as a browser
      * sent there by a request of its own, or another tab, does.
      *
@@ -225,6 +306,91 @@ class OneTimePasswordTest extends TestCase
         $this->_session = [];
         $this->signIn();
         $this->assertRedirect('/');
+    }
+
+    /**
+     * Wrong codes in the profile count as on signing in, so a session left open is no way to guess
+     * at them, and a right one is then refused too.
+     *
+     * @return void
+     */
+    public function testWrongCodesInTheProfileAreCounted(): void
+    {
+        $id = $this->addAccountWithCodes();
+        $this->session(['Auth' => $this->account($id)]);
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->enableCsrfToken();
+            $this->enableSecurityToken();
+            $this->post('/users/disable-one-time-password', [
+                'code' => OneTimePassword::code(self::SECRET, intdiv(time(), 30) - 10),
+            ]);
+            $this->assertResponseContains('The code is not right.');
+        }
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/disable-one-time-password', [
+            'code' => OneTimePassword::code(self::SECRET, intdiv(time(), 30)),
+        ]);
+
+        $this->assertResponseContains('Too many failed sign-ins.');
+        $this->assertTrue($this->account($id)->get('secret_verified'));
+    }
+
+    /**
+     * A right code in the profile forgets the wrong ones before it, as on signing in.
+     *
+     * @return void
+     */
+    public function testARightCodeInTheProfileForgetsTheWrongOnes(): void
+    {
+        $id = $this->addAccountWithCodes();
+        $now = intdiv(time(), 30);
+        $this->session(['Auth' => $this->account($id)]);
+
+        foreach ([$now, $now + 1] as $timeslice) {
+            for ($attempt = 0; $attempt < 4; $attempt++) {
+                $this->enableCsrfToken();
+                $this->enableSecurityToken();
+                $this->post('/users/new-recovery-codes', [
+                    'code' => OneTimePassword::code(self::SECRET, $now - 10),
+                ]);
+                $this->assertResponseContains('The code is not right.');
+            }
+
+            $this->enableCsrfToken();
+            $this->enableSecurityToken();
+            $this->post('/users/new-recovery-codes', ['code' => OneTimePassword::code(self::SECRET, $timeslice)]);
+            $this->assertRedirectContains('/users/recovery-codes');
+        }
+    }
+
+    /**
+     * A recovery code is for signing in. Typed into the profile, where only a one-time code will
+     * do, it is refused and still signs in afterwards.
+     *
+     * @return void
+     */
+    public function testARecoveryCodeIsNotSpentInTheProfile(): void
+    {
+        $id = $this->addAccountWithCodes();
+        $codes = $this->getTableLocator()->get('Access.RecoveryCodes');
+        $code = $codes->renew($id)[0];
+        $this->session(['Auth' => $this->account($id)]);
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/disable-one-time-password', ['code' => $code]);
+        $this->assertResponseContains('The code is not right.');
+        $this->assertTrue($this->account($id)->get('secret_verified'));
+        $this->assertSame(10, $codes->left($id));
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/users/new-recovery-codes', ['code' => $code]);
+        $this->assertResponseContains('The code is not right.');
+        $this->assertSame(10, $codes->left($id));
     }
 
     /**
