@@ -852,6 +852,7 @@ class ContractsController extends AppController
                             $billing->name . ' - ' . __('The billing has been saved.'),
                         );
                     } else {
+                        $this->flashValidationErrors($billing->getErrors());
                         $this->Flash->error(
                             $billing->name . ' - ' . __('The billing could not be saved. Please, try again.'),
                         );

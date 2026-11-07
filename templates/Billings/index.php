@@ -32,10 +32,10 @@
                     <th><?= $this->Paginator->sort('price') ?></th>
                     <th><?= $this->Paginator->sort('fixed_discount') ?></th>
                     <th><?= $this->Paginator->sort('percentage_discount') ?></th>
-                    <th><?= $this->Paginator->sort('total_price') ?></th>
+                    <th><?= __('Total Price') ?></th>
                     <th><?= $this->Paginator->sort('billing_from') ?></th>
                     <th><?= $this->Paginator->sort('billing_until') ?></th>
-                    <th><?= $this->Paginator->sort('active') ?></th>
+                    <th><?= __('Active') ?></th>
                     <th><?= $this->Paginator->sort('separate_invoice') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>

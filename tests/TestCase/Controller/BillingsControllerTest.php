@@ -548,6 +548,76 @@ class BillingsControllerTest extends TestCase
     }
 
     /**
+     * The text of a billing goes before the name of its service on the invoice and in the letter,
+     * so a change of service offers it to be written anew, filled in with the old one.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::serviceChange()
+     */
+    public function testTheTextOfAServiceChangeIsAskedFor(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billing = $billings->find()->where(['Billings.billing_until IS' => null])->firstOrFail();
+        $billing->set('text', 'Guaranteed line (110 Mbps)');
+        $billings->saveOrFail($billing, ['checkRules' => false]);
+        $from = $billings->firstOpenPeriodStart();
+        $service = $billings->Services
+            ->find()
+            ->where(['Services.id IS NOT' => $billing->get('service_id')])
+            ->firstOrFail();
+
+        $this->login('bookkeeper');
+        $this->get('/billings/service-change/' . $billing->get('id'));
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="text"');
+        $this->assertResponseContains('value="Guaranteed line (110 Mbps)"');
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $before = $this->idsIn('Billings');
+        $this->post('/billings/service-change/' . $billing->get('id'), [
+            'service_id' => $service->get('id'),
+            'text' => 'Guaranteed line (250 Mbps)',
+            'billing_from' => $from->toDateString(),
+        ]);
+
+        $this->assertRedirectContains('/billings/view/');
+        $this->assertSame('Guaranteed line (250 Mbps)', $this->addedRecord('Billings', $before)->get('text'));
+        $this->assertSame('Guaranteed line (110 Mbps)', $billings->get($billing->get('id'))->get('text'));
+    }
+
+    /**
+     * A text emptied on the form leaves the billing to go by the name of its new service.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::serviceChange()
+     */
+    public function testAServiceChangeWithTheTextEmptiedGoesByTheService(): void
+    {
+        $billings = $this->getTableLocator()->get('Billings');
+        $billing = $billings->find()->where(['Billings.billing_until IS' => null])->firstOrFail();
+        $billing->set('text', 'Guaranteed line (110 Mbps)');
+        $billings->saveOrFail($billing, ['checkRules' => false]);
+        $service = $billings->Services
+            ->find()
+            ->where(['Services.id IS NOT' => $billing->get('service_id')])
+            ->firstOrFail();
+
+        $this->login('bookkeeper');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $before = $this->idsIn('Billings');
+        $this->post('/billings/service-change/' . $billing->get('id'), [
+            'service_id' => $service->get('id'),
+            'text' => '',
+            'billing_from' => $billings->firstOpenPeriodStart()->toDateString(),
+        ]);
+
+        $this->assertRedirectContains('/billings/view/');
+        $this->assertNull($this->addedRecord('Billings', $before)->get('text'));
+    }
+
+    /**
      * The letter itself, which has never been written: the action it hangs off was dormant for
      * years and then refused everything, so this branch has not run once.
      *
@@ -697,6 +767,57 @@ class BillingsControllerTest extends TestCase
             $fixedUntil,
             $this->replacementOn($fixed['contract_id'])->get('billing_until')->toDateString(),
         );
+    }
+
+    /**
+     * A filter nothing matches changes nothing, and does not say it has.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::bulkServiceChange()
+     */
+    public function testABulkChangeOfNothingDoesNotClaimToHaveDoneIt(): void
+    {
+        $this->bulkChange(['active_on_date' => '1990-01-01'], [
+            'billing_from' => $this->getTableLocator()->get('Billings')->firstOpenPeriodStart()->toDateString(),
+        ]);
+
+        $this->assertFlashElement('flash/warning');
+    }
+
+    /**
+     * Where this installation has no Watcher NMS, nothing failed to load from it.
+     *
+     * @return void
+     * @link \App\Controller\Traits\CommonViewVarListsTrait::setAccessPointsViewVarList()
+     * @link \App\Controller\Traits\CommonViewVarListsTrait::setAccessPointsViewVarListWithRanges()
+     */
+    public function testNoWarningWhereThereIsNoNmsToAsk(): void
+    {
+        $this->login();
+
+        foreach (['/billings/bulk-service-change', '/contracts/add'] as $page) {
+            $this->get($page);
+            $this->assertResponseOk();
+            $this->assertResponseNotContains('The access points list could not be loaded', $page);
+        }
+    }
+
+    /**
+     * What is worked out from other columns cannot be sorted by, so its heading offers nothing.
+     *
+     * @return void
+     * @link \App\Controller\BillingsController::index()
+     */
+    public function testTheHeadingsOfWhatIsWorkedOutAreNotLinks(): void
+    {
+        $this->login();
+
+        $this->get('/billings');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('sort=billing_from');
+        $this->assertResponseNotContains('sort=total_price');
+        $this->assertResponseNotContains('sort=active');
     }
 
     /**

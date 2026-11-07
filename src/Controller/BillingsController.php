@@ -452,6 +452,12 @@ class BillingsController extends AppController
 
         // process change request
         if ($this->getRequest()->is('post')) {
+            if ($billings->isEmpty()) {
+                $this->Flash->warning(__('No billing matches the filter, so nothing was changed.'));
+
+                return $this->redirect([]);
+            }
+
             foreach ($billings as $original_billing) {
                 /** @var \App\Model\Entity\Billing $original_billing */
                 if ($this->processServiceChange($original_billing) === false) {

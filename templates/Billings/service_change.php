@@ -133,6 +133,7 @@
                     'empty' => true,
                     'required' => true,
                 ]);
+                echo $this->Form->control('text', ['label' => __('Text')]);
                 echo $this->Form->control('billing_from', [
                     'empty' => true,
                     'value' => '',

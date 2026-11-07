@@ -124,8 +124,9 @@ trait CommonViewVarListsTrait
     /**
      * Set the `accessPoints` view var from the NMS API.
      *
-     * Falls back to a Flash warning when NMS is unreachable. What a record already holds stays on
-     * offer whatever the list says, or saving the form would take it away without a word.
+     * Falls back to a Flash warning when NMS does not answer, and to nothing where there is none to
+     * ask. What a record already holds stays on offer whatever the list says, or saving the form
+     * would take it away without a word.
      *
      * @param bool $onlyActive Whether to leave out what has been archived.
      * @param string|null $keep The access point the record holds.
@@ -136,7 +137,7 @@ trait CommonViewVarListsTrait
         // load access points from NMS if possible (only active)
         $accessPoints = NMSApiClient::getAccessPointsList(onlyActive: $onlyActive);
 
-        if (!$accessPoints->ok()) {
+        if ($accessPoints->unanswered()) {
             $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
         }
 
@@ -154,8 +155,9 @@ trait CommonViewVarListsTrait
     /**
      * Set the `accessPoints` view var from the NMS API.
      *
-     * Falls back to a Flash warning when NMS is unreachable. What a record already holds stays on
-     * offer whatever the list says, or saving the form would take it away without a word.
+     * Falls back to a Flash warning when NMS does not answer, and to nothing where there is none to
+     * ask. What a record already holds stays on offer whatever the list says, or saving the form
+     * would take it away without a word.
      *
      * @param bool $onlyActive Whether to leave out what has been archived.
      * @param string|null $keep The access point the record holds.
@@ -168,7 +170,9 @@ trait CommonViewVarListsTrait
         $rangesAnswer = NMSApiClient::searchIpAddressRanges([]);
 
         if (!$accessPointsAnswer->ok() || !$rangesAnswer->ok()) {
-            $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            if ($accessPointsAnswer->unanswered() || $rangesAnswer->unanswered()) {
+                $this->Flash->warning(__('The access points list could not be loaded. Please, try again.'));
+            }
             $this->set('accessPoints', $keep === null || $keep === '' ? [] : [
                 ['value' => $keep, 'text' => $keep, 'style' => null],
             ]);

@@ -984,9 +984,15 @@ class ContractsControllerTest extends TestCase
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
         $this->post('/contracts/terminate-related-billings/' . self::CONTRACT_ID);
 
         $this->assertRedirect();
+        $this->assertStringContainsString(
+            'may not end before',
+            implode(' ', array_column((array)$this->_requestSession?->read('Flash.flash'), 'message')),
+            'The operator was not told why.',
+        );
         $this->assertGreaterThan(
             0,
             $billings->find()->where([
