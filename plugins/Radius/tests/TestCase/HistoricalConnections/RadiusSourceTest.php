@@ -98,6 +98,27 @@ class RadiusSourceTest extends TestCase
     }
 
     /**
+     * A stop time older than the start says nothing about the end of the session. Taken at its
+     * word it makes an interval no one can save, and the update fails on it every night.
+     *
+     * @return void
+     */
+    public function testAStopTimeBeforeTheStartIsNotTheEnd(): void
+    {
+        $this->fetchTable('Radius.Radacct')->updateAll([
+            'nasipaddress' => '10.0.0.3',
+            'acctstoptime' => '2026-01-15 09:00:00',
+            'acctupdatetime' => '2026-03-02 10:00:00',
+        ], ['radacctid' => 5]);
+
+        $interval = $this->intervals()[3];
+
+        $this->assertSame('10.0.0.3', $interval->nasIpAddress);
+        $this->assertSame('2026-03-02 10:00:00', $interval->firstSeen->format('Y-m-d H:i:s'));
+        $this->assertSame('2026-03-02 10:00:00', $interval->lastSeen->format('Y-m-d H:i:s'));
+    }
+
+    /**
      * The placement of the account travels with the intervals, the accounting
      * data itself knows nothing about customers or contracts.
      *

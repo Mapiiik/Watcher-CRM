@@ -42,6 +42,10 @@ class RadiusSource implements SourceInterface
      * outlast the start of the interval following them. Whatever consumes these
      * has to expect them to overlap.
      *
+     * Some sessions carry a stop time weeks older than their start, with no
+     * update since. The last sign of life wins over such a stop time, otherwise
+     * the interval would end before it starts.
+     *
      * @var string
      */
     private const INTERVALS_SQL = <<<'SQL'
@@ -54,7 +58,7 @@ class RadiusSource implements SourceInterface
                 accounts.contract_id,
                 accounts.modified AS account_modified,
                 radacct.acctstarttime AS started,
-                COALESCE(
+                GREATEST(
                     radacct.acctstoptime,
                     radacct.acctupdatetime,
                     radacct.acctstarttime
