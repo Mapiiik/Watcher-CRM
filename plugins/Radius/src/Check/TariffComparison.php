@@ -4,15 +4,21 @@ declare(strict_types=1);
 namespace Radius\Check;
 
 use App\Check\CheckScope;
+use App\Model\Table\ContractsTable;
+use App\Model\Table\IpAddressesTable;
+use App\Model\Table\IpNetworksTable;
 use Cake\Database\Exception\MissingConnectionException;
 use Cake\Log\Log;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Radius\Model\Entity\Account;
+use Radius\Model\Entity\Radreply;
+use Radius\Model\Enum\AddressAttribute;
 use Radius\Model\Table\AccountsTable;
 use Radius\Updater\ExpectedUserGroups;
 
 /**
- * The active RADIUS accounts held against the groups their contracts' tariffs name.
+ * The active RADIUS accounts held against their contracts: the groups the tariffs name and the
+ * addresses the contracts have.
  *
  * Read once and shared by the checks reporting on it, since each of them needs every active
  * account and the tariffs behind them. A RADIUS database that cannot be reached gives no
@@ -48,6 +54,11 @@ class TariffComparison
      * @var list<\Radius\Check\AccountFinding>|null
      */
     private ?array $without_tariff = null;
+
+    /**
+     * @var list<\Radius\Check\AccountFinding>|null
+     */
+    private ?array $outside_their_contract = null;
 
     /**
      * @param \App\Check\CheckScope $scope What is being asked about.
@@ -129,6 +140,148 @@ class TariffComparison
     }
 
     /**
+     * Accounts handed an address their contract does not have.
+     *
+     * @return list<\Radius\Check\AccountFinding>
+     */
+    public function outsideTheirContract(): array
+    {
+        if ($this->outside_their_contract !== null) {
+            return $this->outside_their_contract;
+        }
+
+        $accounts = $this->accounts();
+        $own = $this->blocksOf(array_map(fn(Account $account): string => $account->contract_id, $accounts));
+
+        $stray = [];
+        foreach ($accounts as $account) {
+            foreach ($this->handedOut($account) as $block) {
+                if (!$this->holds($own[$account->contract_id] ?? [], $block)) {
+                    $stray[$account->id][] = $block;
+                }
+            }
+        }
+
+        if ($stray === []) {
+            return $this->outside_their_contract = [];
+        }
+
+        $holders = $this->holdersOf(array_merge(...array_values($stray)));
+
+        $findings = [];
+        foreach ($accounts as $account) {
+            $addresses = [];
+            foreach ($stray[$account->id] ?? [] as $block) {
+                $addresses[(string)$block] = $holders[(string)$block] ?? null;
+            }
+
+            if ($addresses !== []) {
+                $findings[] = new AccountFinding($account, stray_addresses: $addresses);
+            }
+        }
+
+        return $this->outside_their_contract = $findings;
+    }
+
+    /**
+     * The addresses and networks an account is handed.
+     *
+     * @param \Radius\Model\Entity\Account $account The account.
+     * @return list<\Radius\Check\AddressBlock>
+     */
+    private function handedOut(Account $account): array
+    {
+        $replies = array_filter(
+            $account->radreply,
+            fn(Radreply $reply): bool => AddressAttribute::tryFrom($reply->attribute) !== null,
+        );
+
+        return array_values(array_filter(array_map(
+            fn(Radreply $reply): ?AddressBlock => AddressBlock::read($reply->value),
+            $replies,
+        )));
+    }
+
+    /**
+     * Whether any of the blocks has the address or network inside it.
+     *
+     * @param list<\Radius\Check\AddressBlock> $blocks The blocks.
+     * @param \Radius\Check\AddressBlock $block The address or network.
+     * @return bool
+     */
+    private function holds(array $blocks, AddressBlock $block): bool
+    {
+        foreach ($blocks as $held) {
+            if ($block->isWithin($held)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The contract each of the addresses and networks is on now, keyed by how it reads.
+     *
+     * @param list<\Radius\Check\AddressBlock> $blocks The addresses and networks.
+     * @return array<string, \App\Model\Entity\Contract>
+     */
+    private function holdersOf(array $blocks): array
+    {
+        $found = [];
+        foreach ($this->blocksOf(null) as $contract_id => $held) {
+            foreach ($blocks as $block) {
+                if ($this->holds($held, $block)) {
+                    $found[(string)$block] = $contract_id;
+                }
+            }
+        }
+
+        /** @var array<string, \App\Model\Entity\Contract> $contracts */
+        $contracts = $this->fetchTable(ContractsTable::class)
+            ->find()
+            ->whereInList('Contracts.id', array_values($found), ['allowEmpty' => true])
+            ->all()
+            ->indexBy('id')
+            ->toArray();
+
+        return array_map(fn(string $contract_id) => $contracts[$contract_id], $found);
+    }
+
+    /**
+     * The addresses and networks the contracts have, by contract id.
+     *
+     * @param list<string>|null $contract_ids The contracts, null for all of them.
+     * @return array<string, list<\Radius\Check\AddressBlock>>
+     */
+    private function blocksOf(?array $contract_ids): array
+    {
+        $sources = [[IpAddressesTable::class, 'ip_address'], [IpNetworksTable::class, 'ip_network']];
+
+        $blocks = [];
+        foreach ($sources as [$table, $column]) {
+            $query = $this->fetchTable($table)
+                ->find()
+                ->select(['contract_id', $column])
+                ->where(['contract_id IS NOT' => null])
+                ->disableHydration();
+
+            if ($contract_ids !== null) {
+                $query->whereInList('contract_id', $contract_ids, ['allowEmpty' => true]);
+            }
+
+            foreach ($query->all() as $row) {
+                $block = AddressBlock::read((string)$row[$column]);
+                if ($block !== null) {
+                    $blocks[(string)$row['contract_id']][] = $block;
+                }
+            }
+        }
+
+        return $blocks;
+    }
+
+    /**
      * The groups the tariffs name, by contract id.
      *
      * @return array<string, string>
@@ -155,7 +308,7 @@ class TariffComparison
             // the table reads its columns from the database, so even building this may fail
             $query = $this->fetchTable(AccountsTable::class)
                 ->find()
-                ->contain(['Radusergroup'])
+                ->contain(['Radusergroup', 'Radreply'])
                 ->where(['Accounts.active' => true])
                 ->orderBy(['Accounts.username' => 'ASC']);
 

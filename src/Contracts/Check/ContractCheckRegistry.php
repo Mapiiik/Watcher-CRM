@@ -13,6 +13,7 @@ use App\Model\Table\ContractsTable;
 use App\Model\Table\ContractVersionsTable;
 use Cake\Core\Plugin;
 use Radius\Check\RadiusAccountWithoutTariffCheck;
+use Radius\Check\RadiusAddressOutsideContractCheck;
 use Radius\Check\RadiusGroupMismatchCheck;
 use Radius\Check\TariffComparison;
 
@@ -98,7 +99,7 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
     /**
      * The RADIUS accounts held against the tariffs, where the plugin keeping them is loaded.
      *
-     * Both checks read one comparison, so the accounts are fetched once.
+     * The checks read one comparison, so the accounts are fetched once.
      *
      * @param \App\Model\Table\ContractsTable $contracts Contracts table.
      * @return array<string, callable(): \App\Contracts\Check\ContractCheckInterface>
@@ -116,6 +117,8 @@ final class ContractCheckRegistry extends AbstractCheckRegistry
                 fn() => new RadiusGroupMismatchCheck($contracts, $this->scope, $comparison),
             'radius_account_without_tariff' =>
                 fn() => new RadiusAccountWithoutTariffCheck($contracts, $this->scope, $comparison),
+            'radius_address_outside_contract' =>
+                fn() => new RadiusAddressOutsideContractCheck($contracts, $this->scope, $comparison),
         ];
     }
 }

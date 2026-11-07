@@ -66,6 +66,7 @@ class OverviewsControllerTest extends TestCase
         'app.Billings',
         'plugin.Radius.Accounts',
         'plugin.Radius.Radacct',
+        'plugin.Radius.Radreply',
         'plugin.Radius.Radusergroup',
         'app.ServiceOverrides',
     ];
@@ -584,6 +585,29 @@ class OverviewsControllerTest extends TestCase
         $this->assertTrue($this->viewVariable('shown')['radius_group_mismatch']);
         $this->assertCount(1, $this->viewVariable('results')['radius_group_mismatch']);
         $this->assertResponseContains('/radius/accounts/view/ab8f2c14-6d3e-4b91-9f0a-7c25d8e41b63');
+    }
+
+    /**
+     * An account holding an address its contract does not have is listed with the address.
+     *
+     * @return void
+     * @link \App\Controller\OverviewsController::overviewOfContractProblems()
+     */
+    public function testOverviewOfContractProblemsListsAnAddressOutsideItsContract(): void
+    {
+        $account = $this->fetchTable('Radius.Accounts')->find()->firstOrFail();
+        $this->fetchTable('Radius.Radreply')->updateAll(
+            ['username' => $account->get('username'), 'attribute' => 'Framed-IP-Address', 'value' => '192.0.2.10'],
+            ['1 = 1'],
+        );
+
+        $this->login();
+
+        $this->get('/overviews/overview-of-contract-problems');
+
+        $this->assertResponseOk();
+        $this->assertCount(1, $this->viewVariable('results')['radius_address_outside_contract']);
+        $this->assertResponseContains('<td>192.0.2.10</td>');
     }
 
     /**
