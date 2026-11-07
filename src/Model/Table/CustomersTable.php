@@ -8,6 +8,7 @@ use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
 use App\Model\Enum\CustomerLegalStatus;
 use Cake\Collection\CollectionInterface;
+use Cake\Core\Plugin;
 use Cake\Database\Type\EnumType;
 use Cake\I18n\Date;
 use Cake\ORM\Query\SelectQuery;
@@ -33,6 +34,11 @@ use Override;
  * @property \App\Model\Table\RemovedIpNetworksTable&\Cake\ORM\Association\HasMany $RemovedIpNetworks
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
+ * @property \App\Model\Table\CustomerMessagesTable&\Cake\ORM\Association\HasMany $CustomerMessages
+ * @property \App\Model\Table\DocumentationsTable&\Cake\ORM\Association\HasMany $Documentations
+ * @property \App\Model\Table\HistoricalConnectionsTable&\Cake\ORM\Association\HasMany $HistoricalConnections
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $ContractsInstalled
+ * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\HasMany $ContractsUninstalled
  * @method \App\Model\Entity\Customer newEmptyEntity()
  * @method \App\Model\Entity\Customer newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Customer[] newEntities(array $data, array $options = [])
@@ -207,6 +213,31 @@ class CustomersTable extends AppTable
         $this->hasMany('DealerCommissions', [
             'foreignKey' => 'dealer_id',
         ]);
+        $this->hasMany('CustomerMessages', [
+            'foreignKey' => 'customer_id',
+        ]);
+        $this->hasMany('Documentations', [
+            'foreignKey' => 'customer_id',
+        ]);
+        $this->hasMany('HistoricalConnections', [
+            'foreignKey' => 'customer_id',
+        ]);
+        // as technicians
+        $this->hasMany('ContractsInstalled', [
+            'className' => 'Contracts',
+            'foreignKey' => 'installation_technician_id',
+        ]);
+        $this->hasMany('ContractsUninstalled', [
+            'className' => 'Contracts',
+            'foreignKey' => 'uninstallation_technician_id',
+        ]);
+
+        if (Plugin::isLoaded('Bookkeeping')) {
+            $this->hasMany('Invoices', [
+                'className' => 'Bookkeeping.Invoices',
+                'foreignKey' => 'customer_id',
+            ]);
+        }
     }
 
     /**
@@ -384,6 +415,16 @@ class CustomersTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('RemovedIpNetworks'));
         $rules->addDelete($rules->isNotLinkedTo('Tasks'));
         $rules->addDelete($rules->isNotLinkedTo('DealerCommissions')); // as Dealers
+        $rules->addDelete($rules->isNotLinkedTo('CustomerMessages'));
+        $rules->addDelete($rules->isNotLinkedTo('CustomerProposals'));
+        $rules->addDelete($rules->isNotLinkedTo('Documentations'));
+        $rules->addDelete($rules->isNotLinkedTo('HistoricalConnections'));
+        $rules->addDelete($rules->isNotLinkedTo('ContractsInstalled')); // as technicians
+        $rules->addDelete($rules->isNotLinkedTo('ContractsUninstalled')); // as technicians
+
+        if ($this->hasAssociation('Invoices')) {
+            $rules->addDelete($rules->isNotLinkedTo('Invoices'));
+        }
 
         return $rules;
     }

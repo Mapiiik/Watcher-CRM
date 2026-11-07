@@ -15,6 +15,7 @@ use Override;
  * @property \App\Model\Table\ServiceTypesTable&\Cake\ORM\Association\BelongsTo $ServiceTypes
  * @property \App\Model\Table\ConnectionProfilesTable&\Cake\ORM\Association\BelongsTo $ConnectionProfiles
  * @property \App\Model\Table\BillingsTable&\Cake\ORM\Association\HasMany $Billings
+ * @property \App\Model\Table\ServiceOverridesTable&\Cake\ORM\Association\HasMany $ServiceOverrides
  * @method \App\Model\Entity\Service newEmptyEntity()
  * @method \App\Model\Entity\Service newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Service[] newEntities(array $data, array $options = [])
@@ -63,6 +64,9 @@ class ServicesTable extends AppTable
             'foreignKey' => 'connection_profile_id',
         ]);
         $this->hasMany('Billings', [
+            'foreignKey' => 'service_id',
+        ]);
+        $this->hasMany('ServiceOverrides', [
             'foreignKey' => 'service_id',
         ]);
     }
@@ -120,6 +124,7 @@ class ServicesTable extends AppTable
         );
 
         $rules->addDelete($rules->isNotLinkedTo('Billings'));
+        $rules->addDelete($rules->isNotLinkedTo('ServiceOverrides'));
 
         return $rules;
     }

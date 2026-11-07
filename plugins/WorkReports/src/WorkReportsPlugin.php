@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace WorkReports;
 
 use Cake\Core\BasePlugin;
+use Cake\Core\PluginApplicationInterface;
+use Cake\Event\EventManager;
 use Cake\Routing\RouteBuilder;
 use Override;
+use WorkReports\Event\ReferencesListener;
 
 /**
  * Plugin for WorkReports
@@ -17,6 +20,20 @@ use Override;
  */
 class WorkReportsPlugin extends BasePlugin
 {
+    /**
+     * Load all the plugin configuration and bootstrap logic.
+     *
+     * @param \Cake\Core\PluginApplicationInterface $app The host application.
+     * @return void
+     */
+    #[Override]
+    public function bootstrap(PluginApplicationInterface $app): void
+    {
+        parent::bootstrap($app);
+
+        EventManager::instance()->on(new ReferencesListener());
+    }
+
     /**
      * Add routes for the plugin.
      *

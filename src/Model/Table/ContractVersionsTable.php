@@ -17,6 +17,7 @@ use Override;
  *
  * @property \App\Model\Table\ContractsTable&\Cake\ORM\Association\BelongsTo $Contracts
  * @property \App\Model\Table\ContractProposalsTable&\Cake\ORM\Association\HasMany $ContractProposals
+ * @property \App\Model\Table\ContractProposalsTable&\Cake\ORM\Association\HasMany $TerminatingContractProposals
  * @method \App\Model\Entity\ContractVersion newEmptyEntity()
  * @method \App\Model\Entity\ContractVersion newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\ContractVersion[] newEntities(array $data, array $options = [])
@@ -61,6 +62,10 @@ class ContractVersionsTable extends AppTable
         $this->hasMany('ContractProposals', [
             'foreignKey' => 'contract_version_id',
             'sort' => ['ContractProposals.effective_from' => 'DESC'],
+        ]);
+        $this->hasMany('TerminatingContractProposals', [
+            'className' => 'ContractProposals',
+            'foreignKey' => 'terminates_contract_version_id',
         ]);
     }
 
@@ -193,6 +198,7 @@ class ContractVersionsTable extends AppTable
         // A version may still be taken back while nobody has signed it, and its proposals are the
         // record of the papers that were drawn up for it - so it goes with them or not at all.
         $rules->addDelete($rules->isNotLinkedTo('ContractProposals'));
+        $rules->addDelete($rules->isNotLinkedTo('TerminatingContractProposals'));
 
         // Both of these are asked whenever a version is saved, not only when a date has been
         // touched. A stretch of time that cannot exist was wrong the day it was written and time

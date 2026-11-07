@@ -40,6 +40,9 @@ use Override;
  * @property \App\Model\Table\RemovedIpNetworksTable&\Cake\ORM\Association\HasMany $RemovedIpNetworks
  * @property \App\Model\Table\SoldEquipmentsTable&\Cake\ORM\Association\HasMany $SoldEquipments
  * @property \App\Model\Table\TasksTable&\Cake\ORM\Association\HasMany $Tasks
+ * @property \App\Model\Table\ServiceOverridesTable&\Cake\ORM\Association\HasMany $ServiceOverrides
+ * @property \App\Model\Table\DocumentationsTable&\Cake\ORM\Association\HasMany $Documentations
+ * @property \App\Model\Table\HistoricalConnectionsTable&\Cake\ORM\Association\HasMany $HistoricalConnections
  * @property \App\Model\Table\CustomerLabelsTable&\Cake\ORM\Association\HasMany $CustomerLabels
  * @method \App\Model\Entity\Contract newEmptyEntity()
  * @method \App\Model\Entity\Contract newEntity(array $data, array $options = [])
@@ -187,7 +190,16 @@ class ContractsTable extends AppTable
             ],
         ]);
         $this->hasMany('CustomerLabels', [
-            'foreignKey' => 'customer_id',
+            'foreignKey' => 'contract_id',
+        ]);
+        $this->hasMany('ServiceOverrides', [
+            'foreignKey' => 'contract_id',
+        ]);
+        $this->hasMany('Documentations', [
+            'foreignKey' => 'contract_id',
+        ]);
+        $this->hasMany('HistoricalConnections', [
+            'foreignKey' => 'contract_id',
         ]);
     }
 
@@ -502,6 +514,10 @@ class ContractsTable extends AppTable
         $rules->addDelete($rules->isNotLinkedTo('SoldEquipments'));
         $rules->addDelete($rules->isNotLinkedTo('Tasks'));
         $rules->addDelete($rules->isNotLinkedTo('CustomerLabels'));
+        $rules->addDelete($rules->isNotLinkedTo('ContractProposals'));
+        $rules->addDelete($rules->isNotLinkedTo('ServiceOverrides'));
+        $rules->addDelete($rules->isNotLinkedTo('Documentations'));
+        $rules->addDelete($rules->isNotLinkedTo('HistoricalConnections'));
         // kept in a database of its own, so nothing there stops the contract going, and the nightly
         // update of the accounts stops at one whose contract is gone
         if (Plugin::isLoaded('Radius')) {
