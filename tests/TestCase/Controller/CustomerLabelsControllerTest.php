@@ -30,6 +30,13 @@ class CustomerLabelsControllerTest extends TestCase
     private const CUSTOMER_ID = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
 
     /**
+     * Contract of that customer, which has another one beside it.
+     *
+     * @var string
+     */
+    private const CONTRACT_ID = '7f76dc3f-a11b-4109-958b-4b0382545a66';
+
+    /**
      * Fixtures
      *
      * @var array<string>
@@ -38,6 +45,12 @@ class CustomerLabelsControllerTest extends TestCase
         'app.Users',
         'app.AccountingProfiles',
         'app.Customers',
+        'app.Countries',
+        'app.Addresses',
+        'app.Commissions',
+        'app.ContractStates',
+        'app.ServiceTypes',
+        'app.Contracts',
         'app.Labels',
         'app.CustomerLabels',
     ];
@@ -154,6 +167,26 @@ class CustomerLabelsControllerTest extends TestCase
         $this->assertRedirect();
         $added = $this->addedRecord('CustomerLabels', $before);
         $this->assertSame(self::CUSTOMER_ID, $added->get('customer_id'));
+    }
+
+    /**
+     * Under a contract the label goes to that contract, so the form offers no other to pick. Under
+     * the customer alone the choice is still there.
+     *
+     * @return void
+     * @link \App\Controller\CustomerLabelsController::add()
+     */
+    public function testTheFormUnderAContractOffersNoOtherContract(): void
+    {
+        $this->login();
+
+        $this->get('/customers/' . self::CUSTOMER_ID . '/contracts/' . self::CONTRACT_ID . '/customer-labels/add');
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('name="contract_id"');
+
+        $this->get('/customers/' . self::CUSTOMER_ID . '/customer-labels/add');
+        $this->assertResponseOk();
+        $this->assertResponseContains('name="contract_id"');
     }
 
     /**

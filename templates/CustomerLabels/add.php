@@ -33,7 +33,9 @@
                     ]);
                     $this->Form->unlockField('refresh'); //disable form security check
                 }
-                echo $this->Form->control('contract_id', ['options' => $contracts]);
+                if (!isset($contract_id)) {
+                    echo $this->Form->control('contract_id', ['options' => $contracts]);
+                }
                 echo $this->Form->control('note');
                 ?>
             </fieldset>

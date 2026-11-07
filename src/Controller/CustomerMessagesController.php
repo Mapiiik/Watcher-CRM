@@ -110,7 +110,10 @@ class CustomerMessagesController extends AppController
     {
         $customerMessage = $this->CustomerMessages->newEmptyEntity();
         if ($this->request->is('post')) {
-            $customerMessage = $this->CustomerMessages->patchEntity($customerMessage, $this->request->getData());
+            $customerMessage = $this->CustomerMessages->patchEntity(
+                $customerMessage,
+                $this->dataWithNesting($this->CustomerMessages, $this->request->getData()),
+            );
             if ($this->CustomerMessages->save($customerMessage)) {
                 $this->Flash->success(__('The customer message has been saved.'));
 

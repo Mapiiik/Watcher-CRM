@@ -8,6 +8,8 @@ use App\BulkMessages\BulkRecipients;
 use App\BulkMessages\BulkSendSummary;
 use App\Controller\CustomerMessagesController;
 use App\Model\Enum\CustomerMessageBodyFormat;
+use App\Model\Enum\CustomerMessageDeliveryStatus;
+use App\Model\Enum\CustomerMessageDirection;
 use App\Model\Enum\CustomerMessagePurpose;
 use App\Model\Enum\CustomerMessageType;
 use App\Model\Enum\ServiceCriticalityLevel;
@@ -139,6 +141,42 @@ class CustomerMessagesControllerTest extends TestCase
         $this->get('/customer-messages/add');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * Under a customer the form offers nobody else, and a message goes to them whatever the request
+     * names.
+     *
+     * @return void
+     * @link \App\Controller\CustomerMessagesController::add()
+     */
+    public function testAddUnderACustomerFilesItUnderThem(): void
+    {
+        $url = '/customers/' . self::CUSTOMER_WITH_CONTRACT . '/customer-messages/add';
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->get($url);
+        $this->assertResponseOk();
+        $this->assertResponseNotContains('name="customer_id"');
+
+        $before = $this->idsIn('CustomerMessages');
+        $this->post($url, [
+            'customer_id' => self::CUSTOMER_WITHOUT_CONTRACT,
+            'type' => CustomerMessageType::Email->value,
+            'direction' => CustomerMessageDirection::Outgoing->value,
+            'recipients' => 'customer@example.com',
+            'subject' => 'Planned maintenance',
+            'body' => 'The network will be down at night.',
+            'body_format' => CustomerMessageBodyFormat::Plaintext->value,
+            'delivery_status' => CustomerMessageDeliveryStatus::Pending->value,
+        ]);
+
+        $this->assertRedirect();
+        $added = $this->addedRecord('CustomerMessages', $before);
+        $this->assertSame(self::CUSTOMER_WITH_CONTRACT, $added->get('customer_id'));
     }
 
     /**

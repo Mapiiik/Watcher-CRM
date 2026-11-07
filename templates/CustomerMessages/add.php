@@ -22,16 +22,18 @@
             <fieldset>
                 <?= $this->legend(__('Add Customer Message')) ?>
                 <?php
+                if (!isset($customer_id)) {
                     echo $this->Form->control('customer_id', ['options' => $customers, 'empty' => true]);
-                    echo $this->Form->control('type');
-                    echo $this->Form->control('direction');
-                    echo $this->Form->control('recipients');
-                    echo $this->Form->control('subject');
-                    echo $this->Form->control('body');
-                    echo $this->Form->control('body_format');
-                    echo $this->Form->control('delivery_status');
-                    echo $this->Form->control('processed');
-                    echo $this->Form->control('identifier');
+                }
+                echo $this->Form->control('type');
+                echo $this->Form->control('direction');
+                echo $this->Form->control('recipients');
+                echo $this->Form->control('subject');
+                echo $this->Form->control('body');
+                echo $this->Form->control('body_format');
+                echo $this->Form->control('delivery_status');
+                echo $this->Form->control('processed');
+                echo $this->Form->control('identifier');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
