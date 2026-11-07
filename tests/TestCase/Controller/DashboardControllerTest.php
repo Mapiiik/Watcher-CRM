@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Addresses\Check\AddressCheckRegistry;
 use App\Controller\DashboardController;
 use App\Model\Enum\CustomerProposalPurpose;
 use App\Model\Enum\IpAddressTypeOfUse;
@@ -366,6 +367,19 @@ class DashboardControllerTest extends TestCase
         $this->assertResponseContains('overview-of-customer-problems');
         // with both parts on the card, a line stands between them
         $this->assertResponseContains('<hr>');
+
+        // a figure leads to its own finding and to nothing beside it
+        /** @var \Dashboard\Card\DashboardCardInterface $card */
+        $card = $this->viewVariable('card');
+        $data = $card->data();
+        $this->assertSame(
+            ['unsent_contract_proposal'],
+            array_keys(array_filter($data['unsent_url']['?']['checks'])),
+        );
+        $this->assertSame(
+            ['unsigned_customer_proposal'],
+            array_keys(array_filter($data['customer_unanswered_url']['?']['checks'])),
+        );
     }
 
     /**
@@ -1013,11 +1027,20 @@ class DashboardControllerTest extends TestCase
         $card = $this->viewVariable('card');
         $data = $card->data();
 
+        $this->assertTrue($card->deferred(), 'Counting over the whole file is not worth waiting for.');
+        $this->assertSame('overviewOfAddressProblems', $data['overview_url']['action']);
+
+        // the way to all of them leaves off what the overview leaves off on its own
+        foreach ((new AddressCheckRegistry())->all() as $check) {
+            $this->assertSame((int)!$check->optional(), $data['overview_url']['?']['checks'][$check->id()]);
+        }
+
         $this->assertNotEmpty($data['rows'], 'The fixtures hold a customer with no address at all.');
 
         foreach ($data['rows'] as $row) {
             $checks = $row['url']['?']['checks'];
 
+            $this->assertSame('overviewOfAddressProblems', $row['url']['action']);
             $this->assertSame([1], array_values(array_unique(array_filter($checks))));
             $this->assertGreaterThan(1, count($checks), 'The other checks have to be named as off.');
 

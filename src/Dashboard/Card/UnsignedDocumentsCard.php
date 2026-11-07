@@ -46,6 +46,8 @@ use Override;
  */
 class UnsignedDocumentsCard extends AbstractDashboardCard
 {
+    use OverviewOfChecksTrait;
+
     /**
      * @param \App\Contracts\Unsigned\UnsignedPaperwork $paperwork What counts as unsigned.
      * @param \App\Contracts\Check\UnsignedContractProposalCheck $unsigned Papers out and not signed.
@@ -193,11 +195,6 @@ class UnsignedDocumentsCard extends AbstractDashboardCard
     /**
      * An overview of findings, showing the wanted checks and nothing else.
      *
-     * Every other check has to be named as off rather than left out: the overview reads a
-     * check that is not in the query string as being at its default, so a link that only
-     * switched one on would arrive with the rest switched on beside it and hold a different
-     * number than the card that led there.
-     *
      * @param string $action The overview to open.
      * @param list<\App\Check\CheckInterface> $all Every check the overview knows.
      * @param array<string> $wanted The ids of the checks it is to show.
@@ -210,12 +207,6 @@ class UnsignedDocumentsCard extends AbstractDashboardCard
             $checks[$check->id()] = (int)in_array($check->id(), $wanted, true);
         }
 
-        return [
-            'controller' => 'Overviews',
-            'action' => $action,
-            'customer_id' => false,
-            // The card counts the day's work, so the link has to ask for the day's work.
-            '?' => ['checks' => $checks, 'ignore_inactive' => 1],
-        ];
+        return $this->overviewOf($action, $checks);
     }
 }
