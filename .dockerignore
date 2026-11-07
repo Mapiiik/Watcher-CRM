@@ -15,6 +15,7 @@
 !CHANGELOG
 !docker/imagemagick-policy.xml
 !docker/gs
+!docker/scheduler.crontab
 
 # What a working copy holds for itself, never for an image
 config/.env
@@ -29,4 +30,5 @@ webroot/debug_kit
 webroot/files
 webroot/maps
 webroot/radius
+webroot/scheduler
 webroot/settings

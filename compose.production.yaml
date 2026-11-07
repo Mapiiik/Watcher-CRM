@@ -1,6 +1,6 @@
 services:
   webserver:
-    build:
+    build: &build
       context: .
       dockerfile: docker/Dockerfile.production
       args:
@@ -9,7 +9,7 @@ services:
     depends_on:
       - database
       - cache
-    tmpfs:
+    tmpfs: &tmpfs
       - /app/tmp:uid=1000,gid=1000
     volumes:
       - app-logs:/app/logs:uid=1000,gid=1000
@@ -18,7 +18,7 @@ services:
       - caddy_config:/config
     working_dir: /app/
     restart: unless-stopped
-    environment:
+    environment: &environment
       DATABASE_URL: postgres://postgres@database/watcher_crm
       CACHE_DURATION: "${CACHE_DURATION:-+10 days}"
       CACHE_DEFAULT_URL: "redis://cache:6379/?database=0&password=redis&prefix=${APP_NAME:-localhost}_default_&duration=${CACHE_DURATION:-+10 days}"
@@ -30,12 +30,32 @@ services:
       SERVER_NAME: ${APP_NAME:-localhost} # Set to your domain in production, Caddy obtains the certificate
       LISTENER_MODE: ${LISTENER_MODE:-direct}
       PROXY_ALLOW: ${PROXY_ALLOW:-127.0.0.1/32 ::1/128}
-    env_file:
+    env_file: &env_file
       - ./config/.env
     ports:
       - 80:80/tcp
       - 443:443/tcp
       - 443:443/udp
+
+  # What runs when is in the database, this runs it. Stopping it waits for the jobs that are running.
+  scheduler:
+    build: *build
+    entrypoint: ["supercronic", "/etc/watcher/scheduler.crontab"]
+    depends_on:
+      webserver:
+        condition: service_healthy
+    tmpfs: *tmpfs
+    volumes:
+      - app-logs:/app/logs:uid=1000,gid=1000
+      - app-data:/app/data:uid=1000,gid=1000
+    working_dir: /app/
+    restart: unless-stopped
+    environment: *environment
+    env_file: *env_file
+    # The one of the image asks the web server
+    healthcheck:
+      disable: true
+    stop_grace_period: 20m
 
   database:
     image: postgres:18

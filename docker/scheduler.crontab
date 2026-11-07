@@ -1,0 +1,5 @@
+# What the service `scheduler` runs, the same on every installation: what runs when is in the
+# database. Each worker line is one job at a time, so more of them is more jobs at once.
+* * * * * bin/cake scheduler run
+* * * * * sleep 3; bin/cake queue run
+*/15 * * * * bin/cake scheduler check

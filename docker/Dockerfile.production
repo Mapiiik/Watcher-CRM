@@ -84,6 +84,28 @@ RUN echo "upload_max_filesize = 250M" > $PHP_INI_DIR/conf.d/zz-uploads.ini \
  && echo "post_max_size = 256M" >> $PHP_INI_DIR/conf.d/zz-uploads.ini \
  && echo "max_file_uploads = 200" >> $PHP_INI_DIR/conf.d/zz-uploads.ini
 
+############################
+# Scheduler
+############################
+# Starts the dispatcher and the worker of the service `scheduler`. Stopping it waits for what is
+# running, which is why it is not a crontab on the host calling `docker exec`.
+ARG SUPERCRONIC_VERSION=0.2.49
+ARG SUPERCRONIC_SHA256_AMD64=a53ae236602c7338aba3fbaff40bda6300eae3b9fedb8261eb06cfe3724430c1
+ARG SUPERCRONIC_SHA256_ARM64=02aa0cb229ba09050cba6638059dadb9eedc2276632ea43d6a57a2f8c1629dd5
+ARG TARGETARCH
+
+RUN case "${TARGETARCH:-amd64}" in \
+        amd64) sum="${SUPERCRONIC_SHA256_AMD64}" ;; \
+        arm64) sum="${SUPERCRONIC_SHA256_ARM64}" ;; \
+        *) echo "Unsupported architecture: ${TARGETARCH}" >&2; exit 1 ;; \
+    esac \
+ && curl -fsSL -o /usr/local/bin/supercronic \
+        "https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-${TARGETARCH:-amd64}" \
+ && echo "${sum}  /usr/local/bin/supercronic" | sha256sum -c - \
+ && chmod +x /usr/local/bin/supercronic
+
+COPY docker/scheduler.crontab /etc/watcher/scheduler.crontab
+
 # Composer stays for the scripts the container runs on start (composer.json says which)
 COPY --from=vendor /usr/bin/composer /usr/local/bin/composer
 
@@ -137,6 +159,9 @@ composer run-script cache-clear -d /app
 # Read the new schema once here rather than on somebody's first request. After the clearing,
 # not before, or it would throw away what it had just built.
 composer run-script schema-cache -d /app
+
+# The jobs a new version brings to the schedule, which is no reason to keep the pages down.
+composer run-script scheduler-sync -d /app || echo 'The schedule was not brought up to date' >&2
 
 exec docker-php-entrypoint "$@"
 EOF

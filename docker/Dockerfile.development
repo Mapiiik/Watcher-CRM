@@ -87,6 +87,7 @@ composer install -d /app
 composer run-script migrations -d /app -- --no-lock
 composer run-script plugin-assets -d /app
 composer run-script schema-cache -d /app
+composer run-script scheduler-sync -d /app || echo 'The schedule was not brought up to date' >&2
 
 exec docker-php-entrypoint "$@"
 EOF
