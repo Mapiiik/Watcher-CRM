@@ -10,7 +10,7 @@ CREATE TABLE "public"."accounts" (
     "active" boolean DEFAULT true NOT NULL,
     "customer_id" integer NOT NULL,
     "contract_id" integer NOT NULL,
-    "created" timestamptz DEFAULT now() NOT NULL,
+    "created" timestamp DEFAULT now() NOT NULL,
     "created_by" integer DEFAULT '0' NOT NULL,
     "modified" timestamptz,
     "modified_by" integer,
@@ -72,9 +72,9 @@ CREATE TABLE "public"."radacct" (
     CONSTRAINT "radacct_pkey" PRIMARY KEY ("radacctid")
 ) WITH (oids = false);
 
-CREATE INDEX "radacct_active_session_idx" ON "public"."radacct" USING btree ("acctuniqueid");
+CREATE INDEX "radacct_active_session_idx" ON "public"."radacct" USING btree ("acctuniqueid") WHERE ("acctstoptime" IS NULL);
 
-CREATE INDEX "radacct_bulk_close" ON "public"."radacct" USING btree ("nasipaddress", "acctstarttime");
+CREATE INDEX "radacct_bulk_close" ON "public"."radacct" USING btree ("nasipaddress", "acctstarttime") WHERE ("acctstoptime" IS NULL);
 
 CREATE INDEX "radacct_start_user_idx" ON "public"."radacct" USING btree ("acctstarttime", "username");
 
@@ -133,6 +133,8 @@ CREATE TABLE "public"."radpostauth" (
     "authdate" timestamptz DEFAULT now() NOT NULL,
     CONSTRAINT "radpostauth_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
+
+CREATE INDEX "radpostauth_username_authdate" ON "public"."radpostauth" USING btree ("username", "authdate");
 
 
 CREATE SEQUENCE radreply_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
