@@ -5,6 +5,7 @@ namespace Bookkeeping\Test\TestCase\Provider\Pohoda;
 
 use App\Model\Entity\AccountingProfile;
 use App\Model\Entity\Address;
+use App\Model\Entity\Billing;
 use App\Model\Entity\Customer;
 use App\Model\Enum\AddressType;
 use Bookkeeping\Model\ValueObject\InvoiceDraft;
@@ -73,6 +74,100 @@ class XmlExporterTest extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    /**
+     * An ordinary invoice splits its price into the base and the VAT, in the summary and on each
+     * line alike.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlExporter::export()
+     */
+    public function testAnInvoiceIsSplitIntoTheBaseAndTheVat(): void
+    {
+        $xml = $this->exportedInvoice(reverseCharge: false);
+
+        $this->assertSame('UD', $this->read($xml, '//inv:classificationVAT/typ:ids'));
+        $this->assertSame('100', $this->read($xml, '//inv:invoiceSummary/inv:homeCurrency/typ:priceHigh'));
+        $this->assertSame('21', $this->read($xml, '//inv:invoiceSummary/inv:homeCurrency/typ:priceHighVAT'));
+        $this->assertSame('100', $this->read($xml, '//inv:invoiceItem/inv:homeCurrency/typ:price'));
+        $this->assertSame('21', $this->read($xml, '//inv:invoiceItem/inv:homeCurrency/typ:priceVAT'));
+        $this->assertSame('false', $this->read($xml, '//inv:invoiceItem/inv:PDP'));
+    }
+
+    /**
+     * With reverse charge the customer settles the VAT, so the invoice asks for the base alone:
+     * the prices in the CRM include VAT here too, which is why the base is the same as above.
+     *
+     * @return void
+     * @link \Bookkeeping\Provider\Pohoda\XmlExporter::export()
+     */
+    public function testReverseChargeAsksForTheBaseAlone(): void
+    {
+        $xml = $this->exportedInvoice(reverseCharge: true);
+
+        $this->assertSame('UDpdp', $this->read($xml, '//inv:classificationVAT/typ:ids'));
+        $this->assertSame('100', $this->read($xml, '//inv:invoiceSummary/inv:homeCurrency/typ:priceHigh'));
+        $this->assertSame('0', $this->read($xml, '//inv:invoiceSummary/inv:homeCurrency/typ:priceHighVAT'));
+        $this->assertSame('100', $this->read($xml, '//inv:invoiceItem/inv:homeCurrency/typ:price'));
+        $this->assertSame('0', $this->read($xml, '//inv:invoiceItem/inv:homeCurrency/typ:priceVAT'));
+        $this->assertSame('true', $this->read($xml, '//inv:invoiceItem/inv:PDP'));
+    }
+
+    /**
+     * An invoice of 121 with one line, as the accounting system receives it.
+     *
+     * @param bool $reverseCharge Whether the customer settles the VAT.
+     * @return \SimpleXMLElement
+     */
+    private function exportedInvoice(bool $reverseCharge): SimpleXMLElement
+    {
+        $draft = new InvoiceDraft();
+        $draft->number = '2026090001';
+        $draft->variableSymbol = '117512';
+        $draft->customerNumber = '117512';
+        $draft->creationDate = new Date('2026-09-30');
+        $draft->dueDate = new Date('2026-10-14');
+        $draft->text = 'Internet access 9/2026';
+        $draft->total = Decimal::create('121.00', 2);
+        $draft->debt = Decimal::create('121.00', 2);
+        $draft->customer = new Customer(['nid' => 512, 'addresses' => [
+            new Address(['type' => AddressType::Billing, 'company' => 'Example Networks s.r.o.', 'city' => 'Springfield']),
+        ]]);
+        $draft->items = [new Billing([
+            'text' => 'Internet access',
+            'quantity' => 1,
+            'period_total' => Decimal::create('121.00', 2),
+        ])];
+
+        (new XmlExporter())->export(
+            [$draft],
+            new Date('2026-09-01'),
+            new AccountingProfile(['vat_rate' => 0.21, 'reverse_charge' => $reverseCharge]),
+            $this->filePath,
+        );
+
+        $xml = simplexml_load_file($this->filePath);
+        $this->assertInstanceOf(SimpleXMLElement::class, $xml);
+        $xml->registerXPathNamespace('inv', 'http://www.stormware.cz/schema/version_2/invoice.xsd');
+        $xml->registerXPathNamespace('typ', 'http://www.stormware.cz/schema/version_2/type.xsd');
+
+        return $xml;
+    }
+
+    /**
+     * The text of the one element the path leads to.
+     *
+     * @param \SimpleXMLElement $xml The document.
+     * @param string $path The path.
+     * @return string
+     */
+    private function read(SimpleXMLElement $xml, string $path): string
+    {
+        $found = $xml->xpath($path) ?: [];
+        $this->assertCount(1, $found, $path);
+
+        return (string)$found[0];
     }
 
     /**
