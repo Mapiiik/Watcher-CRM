@@ -1070,8 +1070,9 @@ class CustomerPortalControllerTest extends TestCase
         $signedIn = $this->signIn(self::PASSWORD)['token'];
         $link = (string)$this->requestAccess($this->customerNumber(self::CUSTOMER_ID), 'customer@example.com')['token'];
 
+        // a minute after the token, which carries the time of the machine and not of a stopped clock
         $clock = Chronos::getTestNow();
-        Chronos::setTestNow(Chronos::now()->addMinutes(1));
+        Chronos::setTestNow(Chronos::createFromTimestamp(time() + 60));
         try {
             $this->asPortal();
             $this->post('/api/customer-portal/access', [
