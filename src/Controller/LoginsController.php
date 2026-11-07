@@ -41,17 +41,15 @@ class LoginsController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->Logins),
         ];
-        $logins = $this->paginate($this->Logins->find(
+        $logins = $this->paginate($this->newestFirst($this->Logins->find(
             'all',
             contain: [
                 'Customers',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('logins'));
     }

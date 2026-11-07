@@ -45,19 +45,14 @@ class AccountsController extends AppController
             ];
         }
 
-        $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
-        ];
-        $accounts = $this->paginate($this->Accounts->find(
+        $accounts = $this->paginate($this->newestFirst($this->Accounts->find(
             'all',
             contain: [
                 'Contracts',
                 'Customers',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('accounts'));
     }

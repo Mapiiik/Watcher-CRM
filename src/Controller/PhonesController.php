@@ -49,17 +49,15 @@ class PhonesController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->Phones),
         ];
-        $phones = $this->paginate($this->Phones->find(
+        $phones = $this->paginate($this->newestFirst($this->Phones->find(
             'all',
             contain: [
                 'Customers',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('phones'));
     }

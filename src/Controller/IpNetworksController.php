@@ -45,18 +45,16 @@ class IpNetworksController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->IpNetworks),
         ];
-        $ipNetworks = $this->paginate($this->IpNetworks->find(
+        $ipNetworks = $this->paginate($this->newestFirst($this->IpNetworks->find(
             'all',
             contain: [
                 'Contracts',
                 'Customers',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('ipNetworks'));
     }

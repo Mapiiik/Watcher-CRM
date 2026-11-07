@@ -86,8 +86,9 @@ class ContractsController extends AppController
         // pagination settings
         $this->paginate = [
             'order' => [
-                'id' => 'DESC',
+                'nid' => 'DESC',
             ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->Contracts),
         ];
 
         // paginate results

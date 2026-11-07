@@ -24,7 +24,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
+                    <th><?= $this->Paginator->sort('Customers.nid', __('Customer Number')) ?></th>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>
                     <th><?= $this->Paginator->sort('service_id') ?></th>
                     <th><?= $this->Paginator->sort('text') ?></th>

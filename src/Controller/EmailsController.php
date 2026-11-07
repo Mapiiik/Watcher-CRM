@@ -39,17 +39,15 @@ class EmailsController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->Emails),
         ];
-        $emails = $this->paginate($this->Emails->find(
+        $emails = $this->paginate($this->newestFirst($this->Emails->find(
             'all',
             contain: [
                 'Customers',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('emails'));
     }

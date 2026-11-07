@@ -44,11 +44,9 @@ class SoldEquipmentsController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->SoldEquipments),
         ];
-        $soldEquipments = $this->paginate($this->SoldEquipments->find(
+        $soldEquipments = $this->paginate($this->newestFirst($this->SoldEquipments->find(
             'all',
             contain: [
                 'Contracts',
@@ -56,7 +54,7 @@ class SoldEquipmentsController extends AppController
                 'EquipmentTypes',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('soldEquipments'));
     }

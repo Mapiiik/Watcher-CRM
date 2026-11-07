@@ -53,18 +53,16 @@ class AddressesController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->Addresses),
         ];
-        $addresses = $this->paginate($this->Addresses->find(
+        $addresses = $this->paginate($this->newestFirst($this->Addresses->find(
             'all',
             contain: [
                 'Countries',
                 'Customers',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('addresses'));
     }

@@ -29,7 +29,7 @@
                 <tr>
                     <?php if (!isset($customer_id)) : ?>
                     <th><?= $this->Paginator->sort('customer_id') ?></th>
-                    <th><?= $this->Paginator->sort('customer_id', __('Customer Number')) ?></th>
+                    <th><?= $this->Paginator->sort('Customers.nid', __('Customer Number')) ?></th>
                     <?php endif; ?>
                     <?php if (!isset($contract_id)) : ?>
                     <th><?= $this->Paginator->sort('contract_id') ?></th>

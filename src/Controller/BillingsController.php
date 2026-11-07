@@ -50,11 +50,9 @@ class BillingsController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->Billings),
         ];
-        $billings = $this->paginate($this->Billings->find(
+        $billings = $this->paginate($this->newestFirst($this->Billings->find(
             'all',
             contain: [
                 'Contracts' => [
@@ -64,7 +62,7 @@ class BillingsController extends AppController
                 'Services',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('billings'));
     }

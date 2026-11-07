@@ -39,11 +39,9 @@ class CustomerLabelsController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->CustomerLabels),
         ];
-        $customerLabels = $this->paginate($this->CustomerLabels->find(
+        $customerLabels = $this->paginate($this->newestFirst($this->CustomerLabels->find(
             'all',
             contain: [
                 'Customers',
@@ -51,7 +49,7 @@ class CustomerLabelsController extends AppController
                 'Labels',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('customerLabels'));
     }

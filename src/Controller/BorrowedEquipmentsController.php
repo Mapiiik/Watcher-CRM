@@ -44,11 +44,9 @@ class BorrowedEquipmentsController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->BorrowedEquipments),
         ];
-        $borrowedEquipments = $this->paginate($this->BorrowedEquipments->find(
+        $borrowedEquipments = $this->paginate($this->newestFirst($this->BorrowedEquipments->find(
             'all',
             contain: [
                 'Contracts',
@@ -56,7 +54,7 @@ class BorrowedEquipmentsController extends AppController
                 'EquipmentTypes',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('borrowedEquipments'));
     }

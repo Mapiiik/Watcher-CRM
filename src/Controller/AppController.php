@@ -30,6 +30,8 @@ use Cake\Event\EventManager;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\I18n\I18n;
+use Cake\ORM\Query\SelectQuery;
+use Cake\ORM\Table;
 use Cake\Routing\Router;
 use Override;
 
@@ -89,6 +91,37 @@ class AppController extends Controller
          * see https://book.cakephp.org/5/en/controllers/components/form-protection.html
          */
         $this->loadComponent('FormProtection');
+    }
+
+    /**
+     * Opens a listing with what was added last, until somebody sorts it by a column.
+     *
+     * An id is random, so it says nothing about what is new. Records that do not say when they were
+     * added go last, or they would fill the first pages.
+     *
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query The listing.
+     * @return \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface>
+     */
+    protected function newestFirst(SelectQuery $query): SelectQuery
+    {
+        if ($this->getRequest()->getQuery('sort') !== null) {
+            return $query;
+        }
+
+        $alias = $query->getRepository()->getAlias();
+
+        return $query->orderBy([$alias . '.created DESC NULLS LAST', $alias . '.id DESC']);
+    }
+
+    /**
+     * What a listing of the table may be sorted by: its own columns and the number of the customer.
+     *
+     * @param \Cake\ORM\Table $table The table listed, joined with its customers.
+     * @return array<string>
+     */
+    protected function sortableWithCustomerNumber(Table $table): array
+    {
+        return [...$table->getSchema()->columns(), 'Customers.nid'];
     }
 
     /**

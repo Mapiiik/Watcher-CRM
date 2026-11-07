@@ -33,19 +33,14 @@ class DealerCommissionsController extends AppController
             ];
         }
 
-        $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
-        ];
-        $dealerCommissions = $this->paginate($this->DealerCommissions->find(
+        $dealerCommissions = $this->paginate($this->newestFirst($this->DealerCommissions->find(
             'all',
             contain: [
                 'Commissions',
                 'Dealers',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('dealerCommissions'));
     }

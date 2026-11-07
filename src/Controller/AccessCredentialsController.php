@@ -53,7 +53,9 @@ class AccessCredentialsController extends AppController
             ])
             ->where($conditions);
 
-        $accessCredentials = $this->paginate($query);
+        $accessCredentials = $this->paginate($query, [
+            'sortableFields' => $this->sortableWithCustomerNumber($this->AccessCredentials),
+        ]);
 
         $this->set(compact('accessCredentials'));
     }

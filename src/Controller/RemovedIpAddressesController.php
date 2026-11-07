@@ -44,18 +44,16 @@ class RemovedIpAddressesController extends AppController
         }
 
         $this->paginate = [
-            'order' => [
-                'id' => 'DESC',
-            ],
+            'sortableFields' => $this->sortableWithCustomerNumber($this->RemovedIpAddresses),
         ];
-        $removedIpAddresses = $this->paginate($this->RemovedIpAddresses->find(
+        $removedIpAddresses = $this->paginate($this->newestFirst($this->RemovedIpAddresses->find(
             'all',
             contain: [
                 'Contracts',
                 'Customers',
             ],
             conditions: $conditions,
-        ));
+        )));
 
         $this->set(compact('removedIpAddresses'));
     }
