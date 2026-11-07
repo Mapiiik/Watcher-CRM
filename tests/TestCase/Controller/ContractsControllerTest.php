@@ -563,6 +563,31 @@ class ContractsControllerTest extends TestCase
     }
 
     /**
+     * A technician who was never a dealer is not offered to anybody, except on the contract that
+     * has them. Left out of the form, they would be gone from it with the next save.
+     *
+     * @return void
+     * @link \App\Controller\ContractsController::edit()
+     */
+    public function testTheTechnicianOfAContractStaysOffered(): void
+    {
+        $nobodysDealer = '403bab0e-52cd-4a8e-83f8-43c2457d0481';
+        $contractId = $this->firstId('Contracts');
+        $this->getTableLocator()->get('Contracts')->updateAll(
+            ['installation_technician_id' => $nobodysDealer, 'uninstallation_technician_id' => null],
+            ['id' => $contractId],
+        );
+
+        $this->login();
+        $this->get('/contracts/edit/' . $contractId);
+
+        $this->assertResponseOk();
+        $offered = fn(string $list): array => array_column($this->viewVariable($list), 'value');
+        $this->assertContains($nobodysDealer, $offered('installationTechnicians'));
+        $this->assertNotContains($nobodysDealer, $offered('uninstallationTechnicians'));
+    }
+
+    /**
      * Put a usable subscriber verification code format on the given service type.
      *
      * The controller builds the code by selecting the format as a SQL expression, so the column

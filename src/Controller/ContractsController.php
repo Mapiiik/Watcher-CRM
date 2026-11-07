@@ -8,6 +8,7 @@ use App\Contracts\Check\ContractCheckRegistry;
 use App\Controller\Traits\CommonViewVarListsTrait;
 use App\Maps\ContractMap;
 use App\Model\Entity\Contract;
+use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerDealer;
 use App\Model\Table\ContractsTable;
 use App\View\PdfView;
@@ -394,6 +395,42 @@ class ContractsController extends AppController
     }
 
     /**
+     * The technicians a contract is offered, with the one it has now among them.
+     *
+     * The associations keep to those who are or have been dealers. A technician the form does not
+     * offer would be taken off the contract by the next save, whoever it was.
+     *
+     * @param string|null $current The technician the contract has now.
+     * @return list<array<string, mixed>>
+     */
+    private function techniciansOffered(?string $current): array
+    {
+        /** @var list<\App\Model\Entity\Customer> $technicians */
+        $technicians = $this->Contracts->InstallationTechnicians->getTarget()
+            ->find()
+            ->where([
+                'OR' => [
+                    'dealer IN' => [CustomerDealer::Current, CustomerDealer::Former],
+                    'id IS' => $current,
+                ],
+            ])
+            ->orderBy([
+                'dealer',
+                'company',
+                'last_name',
+                'first_name',
+            ])
+            ->all()
+            ->toList();
+
+        return array_map(fn(Customer $dealer): array => [
+            'value' => $dealer->id,
+            'text' => $dealer->name_for_lists,
+            'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
+        ], $technicians);
+    }
+
+    /**
      * Edit method
      *
      * @param string|null $id Contract id.
@@ -445,38 +482,10 @@ class ContractsController extends AppController
                 'name',
             ],
         );
-        $installationTechnicians = $this->Contracts->InstallationTechnicians
-            ->find()
-            ->orderBy([
-                'dealer',
-                'company',
-                'last_name',
-                'first_name',
-            ])
-            ->all()
-            ->map(function ($dealer): array {
-                return [
-                    'value' => $dealer->id,
-                    'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
-                ];
-            });
-        $uninstallationTechnicians = $this->Contracts->UninstallationTechnicians
-            ->find()
-            ->orderBy([
-                'dealer',
-                'company',
-                'last_name',
-                'first_name',
-            ])
-            ->all()
-            ->map(function ($dealer): array {
-                return [
-                    'value' => $dealer->id,
-                    'text' => $dealer->name_for_lists,
-                    'style' => $dealer->dealer == CustomerDealer::Current ? null : 'color: darkgray;',
-                ];
-            });
+        $installationTechnicians = $this->techniciansOffered($contract->getOriginal('installation_technician_id'));
+        $uninstallationTechnicians = $this->techniciansOffered(
+            $contract->getOriginal('uninstallation_technician_id'),
+        );
         $commissions = $this->Contracts->Commissions->find('list', order: [
             'name',
         ]);
