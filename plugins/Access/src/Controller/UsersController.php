@@ -184,16 +184,16 @@ class UsersController extends AppController
             ]);
         }
         $idToken = $user instanceof User ? (string)$user->get(LinkedSocialIdentifier::ID_TOKEN) : '';
-        $issuedBy = $user instanceof User ? (string)$user->get(LinkedSocialIdentifier::ID_TOKEN_PROVIDER) : '';
+        $issuedBy = $user instanceof User ? $user->get(LinkedSocialIdentifier::ID_TOKEN_PROVIDER) : null;
 
         $this->getRequest()->getSession()->destroy();
         $this->Flash->success(__d('access', 'You have signed out.'));
         $signedOut = $this->Authentication->logout() ?? $this->loginAction();
 
         // who signed in through an OpenID Connect provider ends the session with this application
-        // there too, and comes back
+        // there too, and comes back. A session naming no provider is one of the configured provider.
         $atProvider = $idToken !== ''
-            ? OidcService::endSessionUrl($idToken, Router::url($signedOut, true), $issuedBy)
+            ? OidcService::endSessionUrl($idToken, Router::url($signedOut, true), (string)($issuedBy ?? 'oidc'))
             : null;
 
         return $this->redirect($atProvider ?? $signedOut);

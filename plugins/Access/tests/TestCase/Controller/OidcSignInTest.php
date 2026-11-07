@@ -217,6 +217,23 @@ class OidcSignInTest extends TestCase
     }
 
     /**
+     * A session that does not name its provider ends at the configured one all the same.
+     *
+     * @return void
+     */
+    public function testSigningOutOfASessionNamingNoProviderEndsItAtTheProvider(): void
+    {
+        $this->linkedAccount();
+        $this->comeBackFromTheProvider($this->startSigningIn());
+        $this->_session = $_SESSION ?? [];
+        $this->_session['Auth']->unset(LinkedSocialIdentifier::ID_TOKEN_PROVIDER);
+
+        $this->get('/logout');
+
+        $this->assertRedirectContains(self::oidcIssuer() . 'end-session/?id_token_hint=');
+    }
+
+    /**
      * The owner of an account links their identity at the provider from the profile.
      *
      * @return void
