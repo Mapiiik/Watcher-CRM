@@ -7,8 +7,8 @@ use App\Colors\ColorThemeSelector;
 use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Override;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\UsesTrait;
 use Tasks\Model\Entity\Task;
 use Tasks\Model\Entity\TaskState;
 use Tasks\Model\Entity\Trait\ColoredStyleTrait;
@@ -18,7 +18,7 @@ use Tasks\Model\Entity\Trait\ColoredStyleTrait;
  *
  * Asked through a task, which is the entity both applications share.
  */
-#[CoversClass(ColoredStyleTrait::class)]
+#[UsesTrait(ColoredStyleTrait::class)]
 class ColoredStyleTraitTest extends TestCase
 {
     /**
