@@ -593,6 +593,27 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
+     * An item for a month still ahead is turned away before a report comes to be for it, which
+     * would stay at the workload of today.
+     *
+     * @return void
+     */
+    public function testAnItemAheadStartsNoReport(): void
+    {
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $months = $reports->find()->count();
+
+        $this->post('/work-reports/work-report-items/add', [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+            'date' => Date::today()->addMonths(1)->format('Y-m-d'),
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('Work is not reported ahead of time.');
+        $this->assertSame($months, $reports->find()->count());
+    }
+
+    /**
      * A report closed up to a day keeps those days as they are written and goes on being filled in
      * above them. The worker moves the day forward, a supervisor also back.
      *

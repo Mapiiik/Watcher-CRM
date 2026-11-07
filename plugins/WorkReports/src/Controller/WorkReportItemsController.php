@@ -53,7 +53,12 @@ class WorkReportItemsController extends AppController
             $item = $this->WorkReportItems->patchEntity($item, $this->formData());
 
             if ($this->getRequest()->getData('refresh') != 'refresh') {
-                if ($item->date instanceof Date) {
+                // asked before the report is looked up, so that a month still ahead does not come to be
+                if ($item->date instanceof Date && $item->date > Date::today()) {
+                    $item->setError('date', [
+                        'notAhead' => __d('work_reports', 'Work is not reported ahead of time.'),
+                    ]);
+                } elseif ($item->date instanceof Date) {
                     $item->work_report_id = $this->WorkReportItems->WorkReports
                         ->findOrCreateFor($userId, $item->date)->id;
                 }
