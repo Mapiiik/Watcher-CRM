@@ -459,10 +459,10 @@ class CustomersTable extends AppTable
                     ->where([
                         'ContractStates.billed' => true,
                     ])
-                    // order by contract ID
+                    // by the number of the contract, in place of the order the association keeps
                     ->orderBy([
                         'Contracts.nid',
-                    ]);
+                    ], true);
             })
             // only customers with the selected accounting profile
             ->where([

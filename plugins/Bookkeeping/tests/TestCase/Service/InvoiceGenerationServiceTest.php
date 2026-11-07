@@ -246,6 +246,34 @@ class InvoiceGenerationServiceTest extends TestCase
     }
 
     /**
+     * The contracts of a customer go by their number, either way round, and not by the order the
+     * association keeps, which their random ids would decide.
+     *
+     * @return void
+     * @link \App\Model\Table\CustomersTable::findBillingDataForMonth()
+     */
+    public function testTheContractsOfACustomerGoByTheirNumber(): void
+    {
+        $contracts = $this->fetchTable(ContractsTable::class);
+        $contracts->updateAll(['service_type_id' => $contracts->get(self::CONTRACT_ID)->service_type_id], ['1 = 1']);
+        $contracts->updateAll(['contract_state_id' => $contracts->get(self::CONTRACT_ID)->contract_state_id], ['1 = 1']);
+
+        $numbers = [900001, 900002, 900003, 900004];
+        foreach ([[self::CONTRACT_ID, self::OTHER_CONTRACT_ID], [self::OTHER_CONTRACT_ID, self::CONTRACT_ID]] as $order) {
+            // the numbers are unique, so each round takes numbers of its own
+            $contracts->updateAll(['nid' => array_shift($numbers)], ['id' => $order[0]]);
+            $contracts->updateAll(['nid' => array_shift($numbers)], ['id' => $order[1]]);
+
+            $customer = $this->fetchTable(CustomersTable::class)
+                ->find('billingDataForMonth', invoicedMonth: new Date('2026-06-01'), accountingProfileId: self::PROFILE_ID)
+                ->where(['Customers.id' => self::CUSTOMER_ID])
+                ->firstOrFail();
+
+            $this->assertSame($order, array_column((array)$customer->get('contracts'), 'id'));
+        }
+    }
+
+    /**
      * A contract in a state that is not billed is not invoiced, whatever its lines say.
      *
      * @return void
