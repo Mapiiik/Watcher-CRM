@@ -464,7 +464,9 @@ class Customer extends AppEntity
      * could say - none is configured, or the one that covers the number could not be reached.
      *
      * A number that fails its own check digit is not asked about at all: no register holds it,
-     * and `verifyIdentityNumber()` already says so without anyone being asked.
+     * and `verifyIdentityNumber()` already says so without anyone being asked. Neither is the OIB
+     * of a natural person, which everybody in Croatia has: no register of companies holds it, and
+     * it is not to be sent out to find that out.
      *
      * This reaches a register over the network. Answers are kept for as long as the
      * `business_register` cache says, so asking about the same customer again is cheap - but a
@@ -486,6 +488,13 @@ class Customer extends AppEntity
     public function identityNumberAnswer(): Answer
     {
         if (!$this->verifyIdentityNumber()) {
+            return Answer::notAsked();
+        }
+
+        if (
+            $this->legal_status === CustomerLegalStatus::NaturalPerson
+            && IdentityNumber::isValidCroatian((string)$this->identity_number)
+        ) {
             return Answer::notAsked();
         }
 

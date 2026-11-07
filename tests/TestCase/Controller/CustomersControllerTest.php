@@ -22,6 +22,7 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
@@ -1059,7 +1060,7 @@ class CustomersControllerTest extends TestCase
         ]);
 
         $this->assertResponseOk();
-        $this->assertResponseNotContains('no longer held by the register');
+        $this->assertResponseNotContains(__('The company is no longer held by the register.'));
         $this->assertResponseContains('NETAIR, s.r.o.');
     }
 
@@ -1156,6 +1157,33 @@ class CustomersControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertResponseContains(' (NETAIR s. r. o.)');
         $this->assertResponseNotContains('<span class="error-text"> (NETAIR s. r. o.)</span>');
+    }
+
+    /**
+     * Not being in a register of companies is a mistake for somebody in business and nothing at
+     * all for anybody else, so it says the same in both but is marked only for the first.
+     *
+     * @param \App\Model\Enum\CustomerLegalStatus $legalStatus Who the customer is in law.
+     * @param bool $wrong Whether it is marked.
+     * @return void
+     * @link \App\Controller\CustomersController::registerNote()
+     */
+    #[TestWith([CustomerLegalStatus::LegalEntity, true])]
+    #[TestWith([CustomerLegalStatus::SoleTrader, true])]
+    #[TestWith([CustomerLegalStatus::NaturalPerson, false])]
+    public function testRegisterNoteMarksAMissingNumberOnlyOfABusiness(
+        CustomerLegalStatus $legalStatus,
+        bool $wrong,
+    ): void {
+        $this->withConfigure(['BusinessRegister.sources' => ['stub' => StubSource::class]]);
+        $this->givenCustomerNumbers('27496139', 'CZ27496139', $legalStatus);
+
+        $this->login();
+        $this->get('/customers/register-note/' . self::CUSTOMER_ID . '/identity');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('not in the register');
+        $this->assertSame($wrong, str_contains($this->_getBodyAsString(), 'error-text'));
     }
 
     /**

@@ -287,6 +287,28 @@ class CustomerTest extends TestCase
     }
 
     /**
+     * The OIB of a natural person stays here: no register of companies holds it. Everybody else
+     * is asked about, a customer nobody has said anything about too, as that is how their legal
+     * status gets found out, and so is the Czech number of a natural person.
+     *
+     * @return void
+     * @link \App\Model\Entity\Customer::identityNumberAnswer()
+     */
+    public function testTheOibOfANaturalPersonIsNotSentOut(): void
+    {
+        $asked = fn(string $number, ?CustomerLegalStatus $status): bool => (new Customer([
+            'identity_number' => $number,
+            'legal_status' => $status,
+        ]))->identityNumberAnswer()->asked;
+
+        $this->assertFalse($asked('69435151530', CustomerLegalStatus::NaturalPerson));
+        $this->assertTrue($asked('69435151530', CustomerLegalStatus::LegalEntity));
+        $this->assertTrue($asked('69435151530', CustomerLegalStatus::SoleTrader));
+        $this->assertTrue($asked('69435151530', null));
+        $this->assertTrue($asked('27496139', CustomerLegalStatus::NaturalPerson));
+    }
+
+    /**
      * A register writing the name a little differently is still the same company - the dots a
      * legal form is abbreviated with, and the case it is written in, are not what tells two
      * companies apart.
