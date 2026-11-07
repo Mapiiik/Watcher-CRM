@@ -128,6 +128,17 @@ class ContractProposalsTableTest extends TestCase
     }
 
     /**
+     * A reference that points nowhere is refused - see the trait.
+     *
+     * @return void
+     * @link \App\Model\Table\ContractProposalsTable::buildRules()
+     */
+    public function testAReferenceThatPointsNowhereIsRefused(): void
+    {
+        $this->assertDanglingReferencesAreRefused($this->Proposals);
+    }
+
+    /**
      * A contract version put there by the test rather than by a fixture.
      *
      * The unsigned paperwork and the contract checks read every version on file, so an unsigned or

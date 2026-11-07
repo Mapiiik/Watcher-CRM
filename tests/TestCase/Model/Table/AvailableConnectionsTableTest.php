@@ -72,6 +72,17 @@ class AvailableConnectionsTableTest extends TestCase
     }
 
     /**
+     * A reference that points nowhere is refused - see the trait.
+     *
+     * @return void
+     * @link \App\Model\Table\AvailableConnectionsTable::buildRules()
+     */
+    public function testBuildRules(): void
+    {
+        $this->assertDanglingReferencesAreRefused($this->AvailableConnections);
+    }
+
+    /**
      * A second record of the same technology at the same address point is refused with a word the
      * operator understands, while another technology at it is welcome.
      *

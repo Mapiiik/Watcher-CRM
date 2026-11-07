@@ -220,6 +220,28 @@ class ContractProposalsTable extends AppTable
      */
     private function theEnvelopeOf(ContractProposal $proposal): CustomerProposal
     {
+        $envelope = $this->envelopeIfThereIsOne($proposal);
+        if ($envelope !== null) {
+            return $envelope;
+        }
+
+        /** @var \App\Model\Entity\CustomerProposal $envelope */
+        $envelope = $this->CustomerProposals->get($proposal->customer_proposal_id);
+
+        return $envelope;
+    }
+
+    /**
+     * The envelope, or null when the papers point at one that is not there.
+     *
+     * The rules ask this one: `existsIn` answers for a missing envelope, and the rest have nothing
+     * to read from it.
+     *
+     * @param \App\Model\Entity\ContractProposal $proposal The papers being asked about.
+     * @return \App\Model\Entity\CustomerProposal|null
+     */
+    private function envelopeIfThereIsOne(ContractProposal $proposal): ?CustomerProposal
+    {
         // What came loaded says nothing once the papers are being pointed at another one.
         if (
             isset($proposal->customer_proposal)
@@ -228,10 +250,7 @@ class ContractProposalsTable extends AppTable
             return $proposal->customer_proposal;
         }
 
-        /** @var \App\Model\Entity\CustomerProposal $envelope */
-        $envelope = $this->CustomerProposals->get($proposal->customer_proposal_id);
-
-        return $envelope;
+        return $this->proposalOf($proposal->customer_proposal_id);
     }
 
     /**
@@ -333,6 +352,10 @@ class ContractProposalsTable extends AppTable
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['contract_id'], 'Contracts'), ['errorField' => 'contract_id']);
+        $rules->add(
+            $rules->existsIn(['customer_proposal_id'], 'CustomerProposals'),
+            ['errorField' => 'customer_proposal_id'],
+        );
         $rules->add(
             $rules->existsIn(['contract_version_id'], 'ContractVersions'),
             ['errorField' => 'contract_version_id'],
@@ -677,7 +700,9 @@ class ContractProposalsTable extends AppTable
                     return true;
                 }
 
-                return $this->CustomerProposals->mayBeEdited($this->theEnvelopeOf($entity));
+                $envelope = $this->envelopeIfThereIsOne($entity);
+
+                return $envelope === null || $this->CustomerProposals->mayBeEdited($envelope);
             },
             'papersJoinAnOpenProposal',
             [
@@ -1007,7 +1032,7 @@ class ContractProposalsTable extends AppTable
         // went again, or that they came back signed, is not rewriting it.
         $rules->add(
             function (ContractProposal $entity): bool {
-                if ($entity->isNew() || !$this->theEnvelopeOf($entity)->hasBeenSent()) {
+                if ($entity->isNew() || !$this->envelopeIfThereIsOne($entity)?->hasBeenSent()) {
                     return true;
                 }
 
@@ -1033,7 +1058,7 @@ class ContractProposalsTable extends AppTable
         // writes, but the last word is here, so that no other way in can get around it.
         $rules->add(
             fn(ContractProposal $entity): bool => $entity->applied === null
-                || $this->theEnvelopeOf($entity)->hasBeenConcluded(),
+                || ($this->envelopeIfThereIsOne($entity)?->hasBeenConcluded() ?? true),
             'appliedNeedsAConclusion',
             [
                 'errorField' => 'applied',
