@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Controller\Traits\CommonViewVarListsTrait;
+use App\Model\Audit\AuditTrail;
 use App\Model\Entity\IpAddress;
+use App\Model\Entity\RemovedIpAddress;
 use App\Model\Enum\IpAddressTypeOfUse;
 use App\Model\Table\RemovedIpAddressesTable;
 use App\NMS\ApiClient as NMSApiClient;
@@ -322,19 +324,9 @@ class IpAddressesController extends AppController
      */
     private function addToRemovedIpAddresses(IpAddress $ipAddress): bool
     {
-        $removedIpAddressesTable = $this->fetchTable(RemovedIpAddressesTable::class);
+        $removedIpAddress = $this->newRemovedIpAddress($ipAddress);
 
-        $removedIpAddress = $removedIpAddressesTable->newEntity($ipAddress->toArray());
-
-        // remove associated data
-        $removedIpAddress->unset('contract');
-        $removedIpAddress->unset('customer');
-
-        // add who and when deleted this
-        $removedIpAddress->removed = DateTime::now();
-        $removedIpAddress->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
-
-        if ($removedIpAddressesTable->save($removedIpAddress)) {
+        if ($this->fetchTable(RemovedIpAddressesTable::class)->save($removedIpAddress)) {
             $this->Flash->success(__('The removed IP address has been saved.'));
 
             return true;
@@ -344,6 +336,91 @@ class IpAddressesController extends AppController
         $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
 
         return false;
+    }
+
+    /**
+     * The record of an IP address being taken away, not stored yet.
+     *
+     * @param \App\Model\Entity\IpAddress $ipAddress IP Address Entity.
+     * @return \App\Model\Entity\RemovedIpAddress
+     */
+    private function newRemovedIpAddress(IpAddress $ipAddress): RemovedIpAddress
+    {
+        $removedIpAddress = $this->fetchTable(RemovedIpAddressesTable::class)->newEntity($ipAddress->toArray());
+
+        // remove associated data
+        $removedIpAddress->unset('contract');
+        $removedIpAddress->unset('customer');
+
+        // add who and when deleted this
+        $removedIpAddress->removed = DateTime::now();
+        $removedIpAddress->removed_by = $this->getRequest()->getAttribute('identity')['id'] ?? null;
+
+        return $removedIpAddress;
+    }
+
+    /**
+     * Move a contract from one IP address to another, the whole way or not at all, so that it is
+     * never left without one.
+     *
+     * @param \App\Model\Entity\IpAddress $ipAddress The IP address to take away.
+     * @param string $availableIpAddress The IP address to put in its place.
+     * @return bool
+     */
+    private function reassignIpAddress(IpAddress $ipAddress, string $availableIpAddress): bool
+    {
+        $trail = new AuditTrail();
+
+        $reassigned = (bool)$this->IpAddresses->getConnection()->transactional(
+            function () use ($ipAddress, $availableIpAddress, $trail): bool {
+                $removedIpAddress = $this->newRemovedIpAddress($ipAddress);
+                $removedIpAddresses = $this->fetchTable(RemovedIpAddressesTable::class);
+
+                if (!$removedIpAddresses->save($removedIpAddress, $trail->options())) {
+                    $this->flashValidationErrors($removedIpAddress->getErrors());
+                    $this->Flash->error(__('The removed IP address could not be saved. Please, try again.'));
+
+                    return false;
+                }
+
+                if (!$this->IpAddresses->delete($ipAddress, $trail->options())) {
+                    $this->flashValidationErrors($ipAddress->getErrors());
+                    $this->Flash->error(__('The IP address could not be deleted. Please, try again.'));
+
+                    return false;
+                }
+
+                // create a new entity (with data from the original entity)
+                $newIpAddress = $this->IpAddresses->newEntity($ipAddress->toArray());
+
+                // remove associated data
+                $newIpAddress->unset('contract');
+                $newIpAddress->unset('customer');
+
+                // assign new IP address
+                $newIpAddress->ip_address = $availableIpAddress;
+
+                if (!$this->IpAddresses->save($newIpAddress, $trail->options())) {
+                    $this->flashValidationErrors($newIpAddress->getErrors());
+                    $this->Flash->error(__('The IP address could not be saved. Please, try again.'));
+
+                    return false;
+                }
+
+                return true;
+            },
+        );
+
+        if ($reassigned) {
+            $trail->flush($this->IpAddresses, $ipAddress);
+            $ipAddress->set('reassigned_ip_address', $availableIpAddress);
+
+            $this->Flash->success(__('The removed IP address has been saved.'));
+            $this->Flash->success(__('The IP address has been deleted.'));
+            $this->Flash->success(__('The IP address has been saved.'));
+        }
+
+        return $reassigned;
     }
 
     /**
@@ -425,6 +502,8 @@ class IpAddressesController extends AppController
             if ($this->getRequest()->getData('refresh') == 'refresh') {
                 // only refresh
             } else {
+                $completed = false;
+
                 // load available IP addresses if IP address range is selected
                 if ($ipAddressRanges->ok() && $this->getRequest()->getData('ip_address_range') !== null) {
                     $ipAddressRange = $this->rangeById(
@@ -438,6 +517,7 @@ class IpAddressesController extends AppController
                             $ipAddressRange,
                             (int)Configure::read('IpAddresses.minimumDaysSinceLastUse'),
                         ));
+                        $completed = true;
 
                         foreach ($ipAddresses as $ipAddressToProcess) {
                             // reassign IP address
@@ -462,47 +542,22 @@ class IpAddressesController extends AppController
 
                                 if ($availableIpAddress === null) {
                                     $this->Flash->error(__('No available IP addresses for reassignment.'));
+                                    $completed = false;
 
                                     break 1;
                                 }
 
-                                if ($this->addToRemovedIpAddresses($ipAddressToProcess)) {
-                                    if ($this->IpAddresses->delete($ipAddressToProcess)) {
-                                        $this->Flash->success(__('The IP address has been deleted.'));
-
-                                        // create a new entity (with data from the original entity)
-                                        $newIpAddress = $this->IpAddresses->newEntity($ipAddressToProcess->toArray());
-
-                                        // remove associated data
-                                        $newIpAddress->unset('contract');
-                                        $newIpAddress->unset('customer');
-
-                                        // assign new IP address
-                                        $newIpAddress->ip_address = $availableIpAddress;
-                                        $ipAddressToProcess->set('reassigned_ip_address', $availableIpAddress);
-
-                                        // save new IP address entity
-                                        if ($this->IpAddresses->save($newIpAddress)) {
-                                            $this->Flash->success(__('The IP address has been saved.'));
-                                        } else {
-                                            $this->flashValidationErrors($newIpAddress->getErrors());
-                                            $this->Flash->error(
-                                                __('The IP address could not be saved. Please, try again.'),
-                                            );
-                                        }
-                                    } else {
-                                        $this->flashValidationErrors($ipAddressToProcess->getErrors());
-                                        $this->Flash->error(
-                                            __('The IP address could not be deleted. Please, try again.'),
-                                        );
-                                    }
+                                if (!$this->reassignIpAddress($ipAddressToProcess, $availableIpAddress)) {
+                                    $completed = false;
                                 }
                             }
                         }
                     }
                 }
 
-                $this->Flash->info(__('Processing completed.'));
+                if ($completed) {
+                    $this->Flash->info(__('Processing completed.'));
+                }
             }
         }
 

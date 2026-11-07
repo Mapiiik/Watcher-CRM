@@ -4,12 +4,16 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\IpAddressesController;
+use App\Model\Enum\IpAddressTypeOfUse;
+use App\Test\Traits\ConfigureTestTrait;
 use App\Test\Traits\ControllerTestTrait;
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -22,6 +26,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[UsesClass(IpAddressesController::class)]
 class IpAddressesControllerTest extends TestCase
 {
+    use ConfigureTestTrait;
     use ControllerTestTrait;
     use HttpClientTrait;
     use IntegrationTestTrait;
@@ -73,7 +78,21 @@ class IpAddressesControllerTest extends TestCase
         'app.ServiceTypes',
         'app.Contracts',
         'app.IpAddresses',
+        'app.RemovedIpAddresses',
     ];
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    #[Override]
+    public function tearDown(): void
+    {
+        $this->restoreConfigure();
+
+        parent::tearDown();
+    }
 
     /**
      * The listing renders.
@@ -320,5 +339,121 @@ class IpAddressesControllerTest extends TestCase
         } finally {
             Configure::write('Nms.url', $nmsUrl);
         }
+    }
+
+    /**
+     * Moving an address is one act: the old one joins the removed ones, the contract keeps an
+     * address, and the audit log has all of it under one entry.
+     *
+     * @return void
+     * @link \App\Controller\IpAddressesController::bulkReassignment()
+     */
+    public function testBulkReassignmentMovesTheAddress(): void
+    {
+        $addresses = $this->getTableLocator()->get('IpAddresses');
+        $removed = $this->getTableLocator()->get('RemovedIpAddresses')->find()->count();
+        $addresses->getConnection()->execute('DELETE FROM audit_logs');
+
+        $contractId = $this->reassignTheAddressInto('10.0.0.0/29');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('Processing completed.');
+
+        $now = $addresses->find()->where(['contract_id' => $contractId])->all()->toList();
+        $this->assertCount(1, $now);
+        $this->assertStringStartsWith('10.0.0.', (string)$now[0]->get('ip_address'));
+        $this->assertSame($removed + 1, $this->getTableLocator()->get('RemovedIpAddresses')->find()->count());
+
+        $entries = $addresses->getConnection()
+            ->execute('SELECT transaction_key, type FROM audit_logs ORDER BY type')
+            ->fetchAll('assoc');
+
+        $this->assertSame(['create', 'create', 'delete'], array_column($entries, 'type'));
+        $this->assertCount(1, array_unique(array_column($entries, 'transaction_key')));
+    }
+
+    /**
+     * A new address that cannot be written leaves the old one where it was, so the contract is not
+     * left without any, and the page does not claim what did not happen.
+     *
+     * @return void
+     * @link \App\Controller\IpAddressesController::bulkReassignment()
+     */
+    public function testBulkReassignmentKeepsTheAddressThatCouldNotBeMoved(): void
+    {
+        $addresses = $this->getTableLocator()->get('IpAddresses');
+        $removed = $this->getTableLocator()->get('RemovedIpAddresses')->find()->count();
+
+        $addresses->getEventManager()->on('Model.beforeSave', function (EventInterface $event): void {
+            $event->stopPropagation();
+            $event->setResult(false);
+        });
+
+        $contractId = $this->reassignTheAddressInto('10.0.0.0/29');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('The IP address could not be saved.');
+        $this->assertResponseNotContains('The IP address has been deleted.');
+        $this->assertResponseNotContains('The removed IP address has been saved.');
+        $this->assertResponseNotContains('Processing completed.');
+
+        $this->assertSame(
+            '192.168.11.11',
+            (string)$addresses->find()->where(['contract_id' => $contractId])->firstOrFail()->get('ip_address'),
+        );
+        $this->assertSame($removed, $this->getTableLocator()->get('RemovedIpAddresses')->find()->count());
+    }
+
+    /**
+     * A range with nothing free moves nothing, which is not the same as being done.
+     *
+     * @return void
+     * @link \App\Controller\IpAddressesController::bulkReassignment()
+     */
+    public function testBulkReassignmentDoesNotSayItIsDoneWithNoAddressLeft(): void
+    {
+        $this->reassignTheAddressInto('10.0.0.0/31');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('No available IP addresses for reassignment.');
+        $this->assertResponseNotContains('Processing completed.');
+    }
+
+    /**
+     * Sends the form asking to move the address of the fixture into a range of Watcher NMS.
+     *
+     * @param string $network The network of the range.
+     * @return string The contract the address is on.
+     */
+    private function reassignTheAddressInto(string $network): string
+    {
+        $this->withConfigure(['Nms.url' => 'https://nms.example.com', 'Nms.key' => 'secret']);
+        $this->mockClientGet('https://nms.example.com/*', $this->newClientResponse(
+            200,
+            ['Content-Type: application/json'],
+            (string)json_encode(['ipAddressRanges' => [[
+                'id' => self::RANGE_ID,
+                'name' => 'Hilltop customers',
+                'ip_network' => $network,
+                'ip_gateway' => '10.0.0.1',
+            ]]]),
+        ));
+
+        $ipAddress = $this->getTableLocator()->get('IpAddresses')->find()->contain(['Contracts'])->firstOrFail();
+        /** @var \App\Model\Entity\Contract $contract */
+        $contract = $ipAddress->get('contract');
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+
+        $this->post('/ip-addresses/bulk-reassignment', [
+            'access_point_id' => $contract->access_point_id,
+            'type_of_use' => IpAddressTypeOfUse::CustomerManually->value,
+            'ip_address_range' => self::RANGE_ID,
+            'reassing_ip_address' => [$ipAddress->get('id') => $ipAddress->get('id')],
+        ]);
+
+        return $contract->id;
     }
 }
