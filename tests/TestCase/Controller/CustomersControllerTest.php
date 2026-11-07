@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\CustomersController;
+use App\Model\Entity\Customer;
 use App\Model\Enum\CustomerDealer;
 use App\Model\Enum\CustomerInvoiceDeliveryType;
 use App\Model\Enum\CustomerLegalStatus;
@@ -843,6 +844,35 @@ class CustomersControllerTest extends TestCase
         $this->get('/customers');
 
         $this->assertResponseOk();
+    }
+
+    /**
+     * Letting that role in is not letting it read the customers. It gets the one whose number it
+     * knows, and neither the whole list nor a search by name, whatever the request says.
+     *
+     * @return void
+     * @link \App\Controller\CustomersController::index()
+     */
+    public function testANonAdminRoleFindsACustomerOnlyByTheNumber(): void
+    {
+        $number = $this->fetchTable('Customers')->get(self::CUSTOMER_ID)->get('number');
+        $found = function (string $query): array {
+            $this->get('/customers' . $query);
+            $this->assertResponseOk();
+
+            /** @var iterable<\App\Model\Entity\Customer> $customers */
+            $customers = $this->viewVariable('customers');
+
+            return array_map(fn(Customer $customer): string => (string)$customer->id, [...$customers]);
+        };
+
+        $this->login('admin');
+        $this->assertContains(self::CUSTOMER_ID, $found('?search=&advanced_search=0'));
+
+        $this->login('user');
+        $this->assertSame([], $found('?search=&advanced_search=0'));
+        $this->assertSame([], $found('?search=NETAIR&advanced_search=1'));
+        $this->assertSame([self::CUSTOMER_ID], $found('?search=' . $number));
     }
 
     /**

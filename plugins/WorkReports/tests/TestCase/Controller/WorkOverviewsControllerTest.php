@@ -9,12 +9,14 @@ use Cake\Cache\Cache;
 use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
+use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use WorkReports\Controller\WorkOverviewsController;
 use WorkReports\Model\Entity\WorkReportItem;
+use WorkReports\Service\WorkingCalendar;
 use WorkReports\Test\Fixture\WorkReportItemTypesFixture;
 
 /**
@@ -27,6 +29,7 @@ class WorkOverviewsControllerTest extends TestCase
 {
     use ConfigureTestTrait;
     use ControllerTestTrait;
+    use EmailTrait;
     use HttpClientTrait;
     use IntegrationTestTrait;
 
@@ -108,17 +111,19 @@ class WorkOverviewsControllerTest extends TestCase
     }
 
     /**
-     * Marking goes through even on a submitted report, which is locked for everything else.
+     * Marking goes through on a report that was really submitted, which both locks it and closes
+     * the month, and under the role that invoices rather than as somebody the permissions pass.
      *
      * @return void
      */
     public function testMarkInvoiced(): void
     {
         $item = $this->item('Router replaced', invoiced: false);
+        $this->theRestOfTheMonth((string)$item->work_report_id);
         $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
-        $report = $reports->get($item->work_report_id);
-        $report->set('submitted', DateTime::now());
-        $reports->saveOrFail($report);
+
+        $this->post('/work-reports/work-reports/submit/' . $item->work_report_id);
+        $this->assertNotNull($reports->get($item->work_report_id)->submitted);
 
         $this->post('/work-reports/work-overviews/mark-invoiced', ['ids' => [$item->id], 'invoiced' => '1']);
 
@@ -138,7 +143,7 @@ class WorkOverviewsControllerTest extends TestCase
         $this->getTableLocator()->get('WorkReports.WorkReportItems')->saveOrFail($atAccessPoint);
         $this->item('Office work', invoiced: false, from: '13:00');
 
-        $this->signInAs('network-technician', superuser: false);
+        $this->signInAs('network-technician');
 
         $this->get('/work-reports/work-overviews/by-access-point');
 
@@ -180,8 +185,7 @@ class WorkOverviewsControllerTest extends TestCase
      */
     public function testOnlyForThoseWhoInvoice(): void
     {
-        // the user of the fixture is a superuser, whom the permissions do not stop
-        $this->signInAs('user', superuser: false);
+        $this->signInAs('user');
 
         $this->get('/work-reports/work-overviews/to-invoice');
 
@@ -222,16 +226,35 @@ class WorkOverviewsControllerTest extends TestCase
     }
 
     /**
-     * Signs the worker in with a role, which the account itself has to hold.
+     * Fills in every working day of the month, which is what a report needs to be submitted.
      *
-     * @param string $role The role.
-     * @param bool $superuser Whether they are a superuser.
+     * @param string $reportId The report.
      * @return void
      */
-    private function signInAs(string $role, bool $superuser = true): void
+    private function theRestOfTheMonth(string $reportId): void
+    {
+        $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
+
+        foreach ((new WorkingCalendar('CzechRepublic'))->workingDays(new Date('2026-06-01')) as $day) {
+            $items->saveOrFail($items->newEntity([
+                'work_report_id' => $reportId,
+                'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
+                'date' => $day->format('Y-m-d'),
+            ]));
+        }
+    }
+
+    /**
+     * Signs the worker in with a role, which the account itself has to hold. The user of the
+     * fixture is a superuser, whom the permissions do not stop, so that is taken away.
+     *
+     * @param string $role The role.
+     * @return void
+     */
+    private function signInAs(string $role): void
     {
         $users = $this->getTableLocator()->get('Users');
-        $users->updateAll(['role' => $role, 'is_superuser' => $superuser], ['id' => self::WORKER]);
+        $users->updateAll(['role' => $role, 'is_superuser' => false], ['id' => self::WORKER]);
 
         $this->session(['Auth' => $users->get(self::WORKER)]);
     }

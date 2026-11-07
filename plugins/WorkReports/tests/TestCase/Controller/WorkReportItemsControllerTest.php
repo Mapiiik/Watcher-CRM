@@ -9,6 +9,7 @@ use Cake\I18n\DateTime;
 use Cake\TestSuite\EmailTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Cake\TestSuite\TestEmailTransport;
 use Override;
 use PHPUnit\Framework\Attributes\UsesClass;
 use WorkReports\Controller\WorkReportItemsController;
@@ -420,14 +421,15 @@ class WorkReportItemsControllerTest extends TestCase
         $other = $this->otherUser();
         $report = $this->monthOfVacation();
         $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
-        $report->set('submitted', DateTime::now());
-        $reports->saveOrFail($report);
+        $this->post('/work-reports/work-reports/submit/' . $report->id);
+        $this->assertNotNull($reports->get($report->id)->submitted);
+        TestEmailTransport::clearMessages();
 
         $this->post('/work-reports/work-reports/reopen/' . $report->id);
         $this->assertResponseCode(403);
 
         $this->addRecipient(self::WORKER, $other, mayEdit: true);
-        $this->loginAs($other, 'user');
+        $this->loginAs($other, 'user', superuser: false);
 
         $this->get('/work-reports/work-reports/reopen/' . $report->id);
         $this->assertResponseOk();
@@ -449,13 +451,14 @@ class WorkReportItemsControllerTest extends TestCase
         $this->assertMailSentTo('operator@example.com');
         $this->assertMailContains('The 15th is a workday.');
 
-        $this->loginAs(self::WORKER, 'user');
+        $this->loginAs(self::WORKER, 'user', superuser: false);
         $this->get('/work-reports/work-reports/sheet?month=2026-06');
         $this->assertResponseContains('The 15th is a workday.');
     }
 
     /**
-     * Once the report is submitted, its items stay as they were - except whether they were invoiced.
+     * Once the report is submitted, by the worker and through the button, its items stay as they
+     * were - except whether they were invoiced.
      *
      * @return void
      */
@@ -464,23 +467,26 @@ class WorkReportItemsControllerTest extends TestCase
         $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
         $items = $this->getTableLocator()->get('WorkReports.WorkReportItems');
 
-        $report = $reports->findOrCreateFor(self::WORKER, new Date('2026-06-01'));
-        $item = $items->saveOrFail($items->newEntity([
-            'work_report_id' => $report->id,
-            'work_report_item_type_id' => WorkReportItemTypesFixture::VACATION,
-            'date' => '2026-06-15',
-        ]));
-        $report->set('submitted', DateTime::now());
-        $reports->saveOrFail($report);
+        $report = $this->monthOfVacation();
+        $id = (string)$items->find()->where(['work_report_id' => $report->id])->firstOrFail()->get('id');
 
-        $this->post('/work-reports/work-report-items/delete/' . $item->id);
-        $this->assertTrue($items->exists(['id' => $item->id]));
+        $this->post('/work-reports/work-reports/submit/' . $report->id);
+        $this->assertNotNull($reports->get($report->id)->submitted);
 
-        $item = $items->get($item->id);
-        $items->patchEntity($item, ['date' => '2026-06-16']);
+        $this->post('/work-reports/work-report-items/delete/' . $id);
+        $this->assertTrue($items->exists(['id' => $id]));
+
+        // submitting closes the month too, so the rule of the lock is told from that one by its field
+        $item = $items->get($id);
+        $this->assertFalse($items->delete($item));
+        $this->assertArrayHasKey('work_report_id', $item->getErrors());
+
+        $item = $items->get($id);
+        $items->patchEntity($item, ['note' => 'Changed afterwards']);
         $this->assertFalse($items->save($item));
+        $this->assertArrayHasKey('work_report_id', $item->getErrors());
 
-        $item = $items->get($item->id);
+        $item = $items->get($id);
         $items->patchEntity($item, ['invoiced' => true]);
         $this->assertNotFalse($items->save($item));
     }

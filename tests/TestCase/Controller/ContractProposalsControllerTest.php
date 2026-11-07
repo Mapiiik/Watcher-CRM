@@ -2952,6 +2952,74 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * Not being offered the box is not the whole of it: sending it by hand has to leave the
+     * proposal where it was, or the form would be all that stands in the way.
+     *
+     * @return void
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
+     */
+    public function testALineIsNotLeftOutOnABoxSentByHand(): void
+    {
+        $this->aSignedProposalAgainstAGoneBilling();
+
+        $this->login('sales-manager');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(
+            '/customer-proposals/apply-changes/' . self::ROUND_ID,
+            [CustomerProposalsController::LEAVE_OUT_WHAT_IS_GONE => '1'],
+        );
+
+        $this->assertResponseOk();
+        $this->assertResponseContains(__('The changes of this proposal cannot be applied in its'
+            . ' current state.'));
+        $this->assertFalse($this->getTableLocator()->get('ContractProposals')->get(self::PROPOSAL_ID)->hasBeenApplied());
+    }
+
+    /**
+     * Papers that reach into an invoiced period take a role that may and a box that says so. The
+     * role alone does not write, and the box sent by somebody else does not either.
+     *
+     * @return void
+     * @link \App\Controller\CustomerProposalsController::applyChanges()
+     */
+    public function testAnInvoicedPeriodIsReachedOnlyByTheRoleWithTheBox(): void
+    {
+        /** @var \App\Model\Table\BillingsTable $billings */
+        $billings = $this->getTableLocator()->get('Billings');
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $invoiced = $billings->lastClosedPeriodEnd()->subDays(5);
+
+        $proposal = $proposals->get(self::PROPOSAL_ID);
+        $proposal->set('changes', $proposal->proposedChanges()->withLine(
+            ProposedBilling::fromArray(['billing_id' => self::KNOWN_BILLING_ID, 'terminates_only' => true]),
+        )->toArray());
+        $proposal->set('effective_from', $invoiced);
+        $proposals->saveOrFail($proposal, ['checkRules' => false]);
+        $this->theProposalSays(['effective_from' => $invoiced, 'conclusion_date' => $invoiced->subDays(1)]);
+
+        $apply = function (string $role, array $box): void {
+            $this->login($role);
+            $this->enableCsrfToken();
+            $this->enableSecurityToken();
+            $this->post('/customer-proposals/apply-changes/' . self::ROUND_ID, $box);
+        };
+        $box = [BillingsTable::ALLOW_CLOSED_PERIODS => '1'];
+
+        $apply('bookkeeper', $box);
+        $this->assertResponseOk();
+        $this->assertNull($billings->get(self::KNOWN_BILLING_ID)->billing_until, 'A box sent by hand wrote.');
+
+        $apply('manager', []);
+        $this->assertResponseOk();
+        $this->assertNull($billings->get(self::KNOWN_BILLING_ID)->billing_until, 'The role alone wrote.');
+
+        $apply('manager', $box);
+        $this->assertRedirect();
+        $this->assertNotNull($billings->get(self::KNOWN_BILLING_ID)->billing_until);
+    }
+
+    /**
      * And ticking the box settles the proposal with the line written down on it.
      *
      * @return void
