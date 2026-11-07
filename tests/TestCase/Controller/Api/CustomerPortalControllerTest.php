@@ -1066,4 +1066,32 @@ class CustomerPortalControllerTest extends TestCase
             Chronos::setTestNow(null);
         }
     }
+
+    /**
+     * A customer changing their password stays signed in where they did it, and only there. The
+     * portal signs in again to check the current password, so the token it changes it with is
+     * the newest one the login has.
+     *
+     * @return void
+     * @link \App\Controller\Api\CustomerPortalController::password()
+     */
+    public function testChangingThePasswordLeavesOnlyTheActiveSession(): void
+    {
+        Cache::clear('default');
+        $elsewhere = $this->signIn(self::PASSWORD)['token'];
+        sleep(1);
+        $active = $this->signIn(self::PASSWORD)['token'];
+
+        $this->asPortal($active);
+        $this->post('/api/customer-portal/password', ['password' => 'a new password of mine']);
+        $this->assertResponseOk();
+
+        $this->asPortal($active);
+        $this->get('/api/customer-portal/customer');
+        $this->assertResponseOk();
+
+        $this->asPortal($elsewhere);
+        $this->get('/api/customer-portal/customer');
+        $this->assertResponseCode(401);
+    }
 }

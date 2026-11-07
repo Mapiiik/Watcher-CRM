@@ -227,6 +227,9 @@ class CustomerPortalController extends AppController
         $logins = $this->fetchTable('Logins');
         $login = $logins->get($this->signedIn()->id);
         $login->set('password', $password);
+        // the portal has just signed in to check the current password, so only this token stays
+        $token = Tokens::read($this->getRequest()->getHeaderLine(self::TOKEN_HEADER));
+        $login->set('sessions_valid_from', DateTime::createFromTimestamp((int)($token['issued'] ?? 0)));
         $logins->saveOrFail($login);
 
         $this->answer(['status' => 'saved']);
