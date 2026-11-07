@@ -1262,6 +1262,18 @@ $permissions = [
             ],
             'plugin' => null,
             'controller' => [
+                'ContractProposals',
+            ],
+            'action' => [
+                'settleWhatWasLeftOut',
+            ],
+        ],
+        [
+            'role' => [
+                'manager',
+            ],
+            'plugin' => null,
+            'controller' => [
                 'DocumentationTypes',
                 'EquipmentTypes',
                 'TaskStates',

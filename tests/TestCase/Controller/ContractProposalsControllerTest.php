@@ -2977,6 +2977,31 @@ class ContractProposalsControllerTest extends TestCase
     }
 
     /**
+     * A manager may leave rows out, so a manager may also say they have been dealt with.
+     *
+     * @return void
+     * @link \App\Controller\ContractProposalsController::settleWhatWasLeftOut()
+     */
+    public function testAManagerSettlesWhatWasLeftOut(): void
+    {
+        $proposals = $this->getTableLocator()->get('ContractProposals');
+        $proposals->saveOrFail(
+            $proposals->patchEntity($proposals->get(self::PROPOSAL_ID), [
+                'applied' => DateTime::now()->subDays(1),
+                'left_out' => ['7db8e6a3-e8e9-47c3-8683-473b77c56664' => 'The billing has gone.'],
+            ]),
+            ['checkRules' => false],
+        );
+
+        $this->login('manager');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post(self::NESTED . '/contract-proposals/settle-what-was-left-out/' . self::PROPOSAL_ID);
+
+        $this->assertTrue($proposals->get(self::PROPOSAL_ID)->whatWasLeftOutHasBeenSettled());
+    }
+
+    /**
      * What was left out is a job, so it has to be possible to say it is done - and saying so is
      * what takes the contract off the listing. The record of what was left out stays.
      *
