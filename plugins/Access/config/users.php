@@ -18,10 +18,7 @@ use Cake\Core\Configure;
 use Cake\Routing\Router;
 use CakeDC\Auth\Authentication\TwoFactorProcessor\OneTimePasswordProcessor;
 use CakeDC\Auth\Authenticator\SocialAuthenticator;
-use CakeDC\Auth\Social\Mapper\Google as GoogleMapper;
-use CakeDC\Auth\Social\Service\OAuth2Service;
 use League\OAuth2\Client\Provider\GenericProvider;
-use League\OAuth2\Client\Provider\Google;
 
 $users = ['plugin' => false, 'prefix' => false, 'controller' => 'Users'];
 $login = $users + ['action' => 'login'];
@@ -125,11 +122,14 @@ return [
     'OAuth' => [
         'path' => $users + ['action' => 'socialLogin'],
         'providers' => [
+            // an OpenID Connect provider like any other, so that a sign-in is held to its state, nonce
+            // and PKCE verifier
             'google' => [
-                'service' => OAuth2Service::class,
-                'className' => Google::class,
-                'mapper' => GoogleMapper::class,
+                'service' => OidcService::class,
+                'className' => GenericProvider::class,
+                'mapper' => OidcMapper::class,
                 'options' => [
+                    'issuer' => 'https://accounts.google.com',
                     'clientId' => env('GOOGLE_OAUTH_CLIENT_ID', null),
                     'clientSecret' => env('GOOGLE_OAUTH_CLIENT_SECRET', null),
                     'redirectUri' => $base . '/auth/google',

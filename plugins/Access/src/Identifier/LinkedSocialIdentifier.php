@@ -36,6 +36,11 @@ class LinkedSocialIdentifier extends AbstractIdentifier
     public const ID_TOKEN = 'provider_id_token';
 
     /**
+     * The provider the ID token is from, on the account signed in.
+     */
+    public const ID_TOKEN_PROVIDER = 'provider_of_id_token';
+
+    /**
      * The methods the provider says the person signed in with (`amr`), on the account signed in.
      */
     public const METHODS = 'provider_methods';
@@ -116,6 +121,7 @@ class LinkedSocialIdentifier extends AbstractIdentifier
         }
         if (!empty($identity['id_token'])) {
             $user->set(self::ID_TOKEN, (string)$identity['id_token']);
+            $user->set(self::ID_TOKEN_PROVIDER, $provider);
             $user->setHidden(array_unique([...$user->getHidden(), self::ID_TOKEN]));
         }
     }

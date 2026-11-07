@@ -184,6 +184,7 @@ class UsersController extends AppController
             ]);
         }
         $idToken = $user instanceof User ? (string)$user->get(LinkedSocialIdentifier::ID_TOKEN) : '';
+        $issuedBy = $user instanceof User ? (string)$user->get(LinkedSocialIdentifier::ID_TOKEN_PROVIDER) : '';
 
         $this->getRequest()->getSession()->destroy();
         $this->Flash->success(__d('access', 'You have signed out.'));
@@ -191,7 +192,9 @@ class UsersController extends AppController
 
         // who signed in through an OpenID Connect provider ends the session with this application
         // there too, and comes back
-        $atProvider = $idToken !== '' ? OidcService::endSessionUrl($idToken, Router::url($signedOut, true)) : null;
+        $atProvider = $idToken !== ''
+            ? OidcService::endSessionUrl($idToken, Router::url($signedOut, true), $issuedBy)
+            : null;
 
         return $this->redirect($atProvider ?? $signedOut);
     }
