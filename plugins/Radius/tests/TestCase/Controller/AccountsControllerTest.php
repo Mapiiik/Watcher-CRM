@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use Cake\Http\TestSuite\HttpClientTrait;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\UsesClass;
 use Radius\Controller\AccountsController;
 use Radius\Updater\ChangeLog\RadcheckChange;
@@ -219,6 +220,41 @@ class AccountsControllerTest extends TestCase
     }
 
     /**
+     * Unticking Active and saving is what shuts somebody out: the check that refuses them is what
+     * FreeRADIUS reads, whatever the account says. Ticking it again takes that away.
+     *
+     * @return void
+     * @link \Radius\Controller\AccountsController::edit()
+     */
+    public function testAnAccountSwitchedOffIsRefusedByTheChecks(): void
+    {
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        foreach (['Radius.Radcheck', 'Radius.Radreply', 'Radius.Radusergroup'] as $related) {
+            $this->advanceIdentity($related, 'id');
+        }
+
+        $accounts = $this->fetchTable('Radius.Accounts');
+        $username = $accounts->get(self::ACCOUNT_ID)->get('username');
+        $refused = ['username' => $username, 'attribute' => 'Auth-Type', 'op' => ':=', 'value' => 'Reject'];
+
+        $this->post('/radius/accounts/edit/' . self::ACCOUNT_ID, ['active' => 0]);
+
+        $this->assertRedirect();
+        $this->assertFalse($accounts->get(self::ACCOUNT_ID)->get('active'));
+        $this->assertTrue($this->fetchTable('Radius.Radcheck')->exists($refused));
+
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/edit/' . self::ACCOUNT_ID, ['active' => 1]);
+
+        $this->assertRedirect();
+        $this->assertTrue($accounts->get(self::ACCOUNT_ID)->get('active'));
+        $this->assertFalse($this->fetchTable('Radius.Radcheck')->exists($refused));
+    }
+
+    /**
      * An account that stays active has nothing to clean up, so the offer is not there.
      *
      * @return void
@@ -253,20 +289,54 @@ class AccountsControllerTest extends TestCase
     }
 
     /**
-     * The delete action runs and redirects. Whether the account really goes depends on what else
-     * still references it, which is the application rules' business rather than this test's.
+     * An account switched off and never used goes, and what FreeRADIUS would read for it goes along.
      *
      * @return void
      * @link \Radius\Controller\AccountsController::delete()
      */
     public function testDelete(): void
     {
+        $accounts = $this->fetchTable('Radius.Accounts');
+        $account = $accounts->get(self::ACCOUNT_ID);
+        $accounts->updateAll(['active' => false], ['id' => self::ACCOUNT_ID]);
+        $this->fetchTable('Radius.Radacct')->deleteAll(['1 = 1']);
+        $this->fetchTable('Radius.Radpostauth')->deleteAll(['1 = 1']);
+        $checks = $this->fetchTable('Radius.Radcheck');
+        $this->assertTrue($checks->exists(['username' => $account->get('username')]));
+
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
         $this->post('/radius/accounts/delete/' . self::ACCOUNT_ID);
 
         $this->assertRedirect();
+        $this->assertFalse($accounts->exists(['id' => self::ACCOUNT_ID]));
+        $this->assertFalse($checks->exists(['username' => $account->get('username')]));
+    }
+
+    /**
+     * An account somebody has used stays, as its sessions and its attempts to sign in say who held
+     * an address and when. Either of them is enough.
+     *
+     * @param string $theOtherOne The record of use that is not there.
+     * @return void
+     * @link \Radius\Model\Table\AccountsTable::buildRules()
+     */
+    #[TestWith(['Radius.Radacct'])]
+    #[TestWith(['Radius.Radpostauth'])]
+    public function testAnAccountThatHasBeenUsedStays(string $theOtherOne): void
+    {
+        $accounts = $this->fetchTable('Radius.Accounts');
+        $accounts->updateAll(['active' => false], ['id' => self::ACCOUNT_ID]);
+        $this->fetchTable($theOtherOne)->deleteAll(['1 = 1']);
+
+        $this->login();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->post('/radius/accounts/delete/' . self::ACCOUNT_ID);
+
+        $this->assertRedirect();
+        $this->assertTrue($accounts->exists(['id' => self::ACCOUNT_ID]));
     }
 
     /**

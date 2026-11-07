@@ -53,6 +53,7 @@ class OverviewsControllerTest extends TestCase
         'app.Emails',
         'app.Phones',
         'app.Commissions',
+        'app.DealerCommissions',
         'app.ContractStates',
         'app.ServiceTypes',
         'app.Contracts',
@@ -357,18 +358,40 @@ class OverviewsControllerTest extends TestCase
     }
 
     /**
-     * Test overview of dealer commissions method
+     * A dealer is paid from what their contracts bill in the month, so a billing that runs in
+     * another month or on a contract of nobody's commission must not reach the sum.
      *
      * @return void
      * @link \App\Controller\OverviewsController::overviewOfDealerCommissions()
      */
     public function testOverviewOfDealerCommissions(): void
     {
+        $this->fetchTable('Billings')->updateAll(['fixed_discount' => 0, 'percentage_discount' => 0], ['1 = 1']);
         $this->login();
 
-        $this->get('/overviews/overview-of-dealer-commissions');
+        $this->assertSame(1.0, $this->dealerTotalIn('2021-11'), 'Only the billing of that month.');
+        $this->assertSame(0.0, $this->dealerTotalIn('2021-12'), 'A month with no billing running.');
+        $this->assertSame(2.0, $this->dealerTotalIn('2022-03'), 'The billing that has not ended.');
+    }
 
+    /**
+     * What the only dealer of the fixtures is paid from in a month.
+     *
+     * @param string $month The month, as the filter sends it.
+     * @return float
+     */
+    private function dealerTotalIn(string $month): float
+    {
+        $this->get('/overviews/overview-of-dealer-commissions?month_to_display=' . $month);
         $this->assertResponseOk();
+
+        /** @var \Cake\Collection\CollectionInterface<string, list<\App\Model\Entity\DealerCommission>> $dealers */
+        $dealers = $this->viewVariable('dealers');
+        $commissions = array_values($dealers->toArray());
+        $this->assertCount(1, $commissions);
+        $this->assertCount(1, $commissions[0]);
+
+        return (float)$commissions[0][0]->commission->get('total_price');
     }
 
     /**

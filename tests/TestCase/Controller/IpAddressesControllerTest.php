@@ -166,20 +166,33 @@ class IpAddressesControllerTest extends TestCase
     }
 
     /**
-     * The delete action runs and redirects. Whether the record really goes depends on what else
-     * still references it, which is the application rules' business rather than this test's.
+     * An address goes and leaves behind who held it, which is what is asked for when somebody wants
+     * to know who used it on a given day.
      *
      * @return void
      * @link \App\Controller\IpAddressesController::delete()
      */
     public function testDelete(): void
     {
+        $id = $this->firstId('IpAddresses');
+        $table = $this->fetchTable('IpAddresses');
+        $address = $table->get($id);
+        $removed = $this->fetchTable('RemovedIpAddresses');
+        $before = $removed->find()->count();
+
         $this->login();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->post('/ip-addresses/delete/' . $this->firstId('IpAddresses'));
+        $this->post('/ip-addresses/delete/' . $id);
 
         $this->assertRedirect();
+        $this->assertFalse($table->exists(['id' => $id]));
+        $this->assertSame($before + 1, $removed->find()->count());
+
+        $history = $removed->find()->where(['ip_address' => $address->get('ip_address')])->firstOrFail();
+        $this->assertSame($address->get('contract_id'), $history->get('contract_id'));
+        $this->assertSame($address->get('customer_id'), $history->get('customer_id'));
+        $this->assertNotNull($history->get('removed'));
     }
 
     /**

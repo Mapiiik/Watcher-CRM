@@ -574,6 +574,69 @@ class DebtorsProcessorTest extends TestCase
     }
 
     /**
+     * A debtor left with nothing loses the television, and a viewer of somebody else keeps it. The
+     * two run on the same answer of the service, so a mix-up here would cut off the wrong people.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::updateSledovaniTV()
+     */
+    public function testADebtorLeftWithNothingLosesTheTelevision(): void
+    {
+        $this->watchingTelevision();
+        $this->fetchTable('Contracts')->updateAll(['vip' => false], ['1 = 1']);
+        $this->fetchTable('ContractStates')->updateAll(['blocked' => true], ['1 = 1']);
+        $this->viewers([
+            ['id' => '7', 'partnerid' => $this->numberOfTheCustomer(), 'active' => 1, 'suspended' => 0],
+            ['id' => '8', 'partnerid' => '2024001', 'active' => 1, 'suspended' => 0],
+        ]);
+        $this->mockClientPost(
+            'https://sledovanitv.cz/partner/api/suspend-user',
+            $this->agentAnswer(200, ['suspended' => true]),
+        );
+
+        $processor = new DebtorsProcessor();
+        $processor->blockingUpdate();
+
+        Configure::delete('SledovaniTv');
+
+        $this->assertNoErrors($processor);
+        $this->assertStringContainsString('Suspended user with ID: 7', $this->allMessages($processor));
+        $this->assertStringNotContainsString('user with ID: 8', $this->allMessages($processor));
+    }
+
+    /**
+     * Blocking somebody by hand switches the television off and letting them back in switches it on.
+     *
+     * @return void
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::block()
+     * @link \Bookkeeping\Debtors\DebtorsProcessor::unblock()
+     */
+    public function testOneCustomerIsSwitchedOffAndBackOn(): void
+    {
+        $this->watchingTelevision();
+        $this->viewers([['id' => '7', 'partnerid' => $this->numberOfTheCustomer(), 'active' => 1, 'suspended' => 0]]);
+        $this->viewers([['id' => '7', 'partnerid' => $this->numberOfTheCustomer(), 'active' => 1, 'suspended' => 1]]);
+        $this->mockClientPost(
+            'https://sledovanitv.cz/partner/api/suspend-user',
+            $this->agentAnswer(200, ['suspended' => true]),
+        );
+        $this->mockClientPost(
+            'https://sledovanitv.cz/partner/api/unsuspend-user',
+            $this->agentAnswer(200, ['activated' => true]),
+        );
+
+        $processor = new DebtorsProcessor();
+        $processor->block(self::CUSTOMER_ID);
+        $processor->unblock(self::CUSTOMER_ID);
+
+        Configure::delete('SledovaniTv');
+
+        $this->assertNoErrors($processor);
+        $this->assertStringContainsString('- Suspended user with ID: 7', $this->allMessages($processor));
+        $this->assertStringContainsString('Unsuspended user with ID: 7', $this->allMessages($processor));
+    }
+
+    /**
      * VIP goes by the contract. A customer whose television runs on a VIP contract keeps it, and one
      * whose VIP contract is for something else loses it with everything else they have.
      *
@@ -750,6 +813,43 @@ class DebtorsProcessorTest extends TestCase
         $this->assertCount(1, $messages);
 
         return $messages[0]->text;
+    }
+
+    /**
+     * Blocking that reaches the television and nothing else.
+     *
+     * @return void
+     */
+    private function watchingTelevision(): void
+    {
+        $this->onlyLabelling();
+        Settings::set('bookkeeping.debtors.blocking.services.sledovani_tv.enabled', true);
+        Configure::write('SledovaniTv.username', 'partner');
+        Configure::write('SledovaniTv.password', 'secret');
+    }
+
+    /**
+     * Who the television service says it has.
+     *
+     * @param list<array<string, mixed>> $users What it answers with.
+     * @return void
+     */
+    private function viewers(array $users): void
+    {
+        $this->mockClientPost(
+            'https://sledovanitv.cz/partner/api/get-users',
+            $this->agentAnswer(200, ['users' => $users]),
+        );
+    }
+
+    /**
+     * The number the television service knows the customer by.
+     *
+     * @return string
+     */
+    private function numberOfTheCustomer(): string
+    {
+        return (string)$this->fetchTable('Customers')->get(self::CUSTOMER_ID)->get('number');
     }
 
     /**
