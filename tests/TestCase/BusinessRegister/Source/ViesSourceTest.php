@@ -163,4 +163,16 @@ class ViesSourceTest extends TestCase
         $this->assertTrue($answer->ok());
         $this->assertCount(0, $answer->data);
     }
+
+    /**
+     * An identification number without a member state is not a VAT number, so VIES was not asked
+     * and holds nothing about it either way.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\ViesSource::byReference()
+     */
+    public function testAnIdentificationNumberIsNotAskedAbout(): void
+    {
+        $this->assertFalse((new ViesSource())->byReference('27496139')->asked);
+    }
 }

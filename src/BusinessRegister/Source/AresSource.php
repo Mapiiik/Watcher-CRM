@@ -213,7 +213,8 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
     }
 
     /**
-     * One subject as ARES returned it, null when ARES holds no such company.
+     * One subject as ARES returned it, null when ARES holds no such company and not asked when
+     * the number is not one ARES takes.
      *
      * @param string $identityNumber The identification number to ask about.
      * @return \App\Http\Answer<array<int|string, mixed>|null>
@@ -226,7 +227,7 @@ class AresSource extends BaseSource implements VatNumberCheckInterface
         // Croatian one is eleven digits and comes back a bad request, not an empty answer. Asking
         // at all would turn "this is not ours" into a register that could not be reached.
         if (!IdentityNumber::isValidCzech($identityNumber)) {
-            return Answer::of(null);
+            return Answer::notAsked();
         }
 
         return $this->record('ekonomicke-subjekty/' . urlencode($identityNumber));

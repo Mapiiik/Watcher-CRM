@@ -59,7 +59,14 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
     #[Override]
     public function search(string $query, int $limit = 25): Answer
     {
-        return $this->byReference($query)->map(
+        $answer = $this->byReference($query);
+
+        // being handed a name is not a fault, there is only nothing to find it by
+        if (!$answer->asked) {
+            return Answer::of(new Collection([]));
+        }
+
+        return $answer->map(
             fn(?Subject $subject): CollectionInterface => new Collection($subject === null ? [] : [$subject]),
         );
     }
@@ -75,7 +82,7 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
             return Answer::sameFailure($asked);
         }
 
-        // not a number VIES can be asked about at all
+        // asked, and VIES has nothing under the number
         if ($asked->data === null) {
             return Answer::of(null);
         }
@@ -101,11 +108,17 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
     public function vatNumberCheck(string $vatNumber): Answer
     {
         $asked = $this->ask($vatNumber);
+
+        // not a number VIES can be asked about at all
+        if (!$asked->asked) {
+            return Answer::of(null);
+        }
+
         if (!$asked->ok()) {
             return Answer::sameFailure($asked);
         }
 
-        // not a number VIES can be asked about at all
+        // asked, and VIES has nothing under the number
         if ($asked->data === null) {
             return Answer::of(null);
         }
@@ -123,24 +136,24 @@ class ViesSource extends BaseSource implements VatNumberCheckInterface
     }
 
     /**
-     * Ask VIES about a number, null when it is not a number VIES can be asked about.
+     * Ask VIES about a number, not asked when it is not a number VIES can be asked about.
      *
      * @param string $vatNumber The number as it was given, prefix included.
      * @return \App\Http\Answer Answering with the member state, the number without it, and what
-     *      VIES said - or with null where this is not a number VIES can be asked about.
+     *      VIES said - or with null where it holds nothing under the number.
      * @return \App\Http\Answer<array{0: string, 1: string, 2: array<int|string, mixed>}|null>
      */
     private function ask(string $vatNumber): Answer
     {
         $vatNumber = strtoupper(self::withoutWhitespace($vatNumber));
         if (!preg_match('/^([A-Z]{2})([0-9A-Z]{2,12})$/', $vatNumber, $matches)) {
-            return Answer::of(null);
+            return Answer::notAsked();
         }
 
         [, $memberState, $number] = $matches;
         // a name reads like a number too, Netair as NE and TAIR
         if (!in_array($memberState, self::MEMBER_STATES, true)) {
-            return Answer::of(null);
+            return Answer::notAsked();
         }
 
         $path = self::path($memberState, $number);

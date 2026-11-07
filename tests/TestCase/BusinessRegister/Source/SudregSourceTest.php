@@ -17,6 +17,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 class SudregSourceTest extends TestCase
 {
     /**
+     * A Czech number does not go out as an OIB.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\SudregSource::byReference()
+     */
+    public function testAnythingButAnOibIsNotAskedAbout(): void
+    {
+        $this->assertFalse((new SudregSource())->byReference('27496139')->asked);
+        $this->assertFalse((new SudregSource())->byReference('')->asked);
+    }
+
+    /**
      * A subject comes out in the shape every register answers in, with the seat put back onto
      * one line and the VAT number made of the identification number the way Croatia does.
      *

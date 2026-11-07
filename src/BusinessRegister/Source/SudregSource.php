@@ -85,8 +85,10 @@ class SudregSource extends BaseSource
     public function byReference(string $reference): Answer
     {
         $reference = self::withoutWhitespace($reference);
-        if ($reference === '') {
-            return Answer::of(null);
+
+        // a Czech number would go out as an OIB, and a miss would read as a company nobody holds
+        if (!IdentityNumber::isValidCroatian($reference)) {
+            return Answer::notAsked();
         }
 
         return $this->get('javni/detalji_subjekta', [

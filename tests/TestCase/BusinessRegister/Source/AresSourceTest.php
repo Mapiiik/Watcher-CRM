@@ -18,6 +18,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 class AresSourceTest extends TestCase
 {
     /**
+     * A Croatian number is none of ARES's business, which is not the same as ARES not holding it.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Source\AresSource::byReference()
+     */
+    public function testANumberOfAnotherCountryIsNotAskedAbout(): void
+    {
+        $this->assertFalse((new AresSource())->byReference('69435151530')->asked);
+    }
+
+    /**
      * A subject as ARES returns it, cut down to the fields that are read.
      *
      * @return array<string, mixed>

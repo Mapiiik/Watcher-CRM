@@ -63,6 +63,13 @@ class StubSource implements SourceInterface, VatNumberCheckInterface
     public static int $turnsAway = 0;
 
     /**
+     * Whether it takes no number, the way a register of another country does not.
+     *
+     * @var bool
+     */
+    public static bool $takesNothing = false;
+
+    /**
      * Put back what a test found, so the next one starts from the same place.
      *
      * @return void
@@ -75,6 +82,7 @@ class StubSource implements SourceInterface, VatNumberCheckInterface
         self::$unreachable = false;
         self::$unreachableOnReference = false;
         self::$turnsAway = 0;
+        self::$takesNothing = false;
     }
 
     /**
@@ -119,6 +127,10 @@ class StubSource implements SourceInterface, VatNumberCheckInterface
     #[Override]
     public function byReference(string $reference): Answer
     {
+        if (self::$takesNothing) {
+            return Answer::notAsked();
+        }
+
         if (self::$unreachableOnReference) {
             return Answer::failed('The stub register is unreachable.');
         }

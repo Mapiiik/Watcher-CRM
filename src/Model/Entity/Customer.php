@@ -8,6 +8,7 @@ use App\BusinessRegister\IdentityNumberCheck;
 use App\BusinessRegister\PortalLinks;
 use App\BusinessRegister\Registry;
 use App\BusinessRegister\VatNumberCheck;
+use App\Http\Answer;
 use App\Model\Enum\AddressType;
 use App\Model\Enum\CustomerLegalStatus;
 use Cake\Core\Configure;
@@ -473,11 +474,22 @@ class Customer extends AppEntity
      */
     public function identityNumberCheck(): ?IdentityNumberCheck
     {
+        return $this->identityNumberAnswer()->or(null);
+    }
+
+    /**
+     * The same question for whoever has to tell a register that could not be reached from one that
+     * was not asked. {@see \App\Model\Entity\Customer::identityNumberCheck()} says when that is.
+     *
+     * @return \App\Http\Answer<\App\BusinessRegister\IdentityNumberCheck>
+     */
+    public function identityNumberAnswer(): Answer
+    {
         if (!$this->verifyIdentityNumber()) {
-            return null;
+            return Answer::notAsked();
         }
 
-        return Registry::identityNumberCheck($this->identity_number);
+        return Registry::identityNumberAnswer($this->identity_number);
     }
 
     /**

@@ -58,6 +58,10 @@ interface SourceInterface
     /**
      * A single entry, or null when the register does not hold it.
      *
+     * A reference the register could never hold, a number of another country, is not asked about
+     * and says so with {@see \App\Http\Answer::notAsked()}. Not holding it would read as a verdict
+     * on a number nobody looked up.
+     *
      * @param string $reference The reference a search result carried.
      * @return \App\Http\Answer<\App\BusinessRegister\Dto\Subject|null>
      */

@@ -5,6 +5,8 @@ namespace App\Test\TestCase\BusinessRegister;
 
 use App\BusinessRegister\IdentityNumberStatus;
 use App\BusinessRegister\Registry;
+use App\BusinessRegister\Source\AresSource;
+use App\BusinessRegister\Source\ViesSource;
 use App\BusinessRegister\VatNumberCheck;
 use App\BusinessRegister\VatNumberStatus;
 use App\Model\Enum\CustomerLegalStatus;
@@ -23,6 +25,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 class RegistryTest extends TestCase
 {
     use ConfigureTestTrait;
+
+    /**
+     * An OIB that holds up.
+     */
+    private const OIB = '69435151530';
 
     /**
      * setUp method
@@ -348,6 +355,68 @@ class RegistryTest extends TestCase
         $this->assertNotNull($check);
         $this->assertSame(IdentityNumberStatus::NotFound, $check->status);
         $this->assertNull($check->company);
+    }
+
+    /**
+     * A number no register takes was looked up by nobody, so it is not said to be missing. The
+     * customer of a Czech installation with a Croatian number used to get that in red.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberAnswer()
+     */
+    public function testANumberNoRegisterTakesIsNoVerdict(): void
+    {
+        StubSource::$takesNothing = true;
+
+        $this->assertNull(Registry::identityNumberCheck('27496139'));
+        $this->assertFalse(Registry::identityNumberAnswer('27496139')->asked);
+    }
+
+    /**
+     * The real registers of one country stay out of the number of the other, without a request.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberAnswer()
+     */
+    public function testACroatianNumberIsNoVerdictWithoutARegisterForIt(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => [
+            'ares' => AresSource::class,
+            'vies' => ViesSource::class,
+        ]]);
+        $this->assertCount(2, Registry::sources());
+
+        $this->assertNull(Registry::identityNumberCheck(self::OIB));
+    }
+
+    /**
+     * A register that stayed out of it does not take away the verdict of the one that looked.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberAnswer()
+     */
+    public function testTheRegisterThatTookTheNumberAnswersForIt(): void
+    {
+        $this->withConfigure(['BusinessRegister.sources' => [
+            'vies' => ViesSource::class,
+            'stub' => StubSource::class,
+        ]]);
+        $this->assertCount(2, Registry::sources());
+
+        $this->assertSame(IdentityNumberStatus::NotFound, Registry::identityNumberCheck('27496139')?->status);
+    }
+
+    /**
+     * The three states come out as what they are, which is what a command has to tell apart.
+     *
+     * @return void
+     * @link \App\BusinessRegister\Registry::identityNumberAnswer()
+     */
+    public function testAnOutageIsToldFromNobodyBeingAsked(): void
+    {
+        StubSource::$unreachableOnReference = true;
+
+        $this->assertTrue(Registry::identityNumberAnswer('27496139')->unanswered());
     }
 
     /**

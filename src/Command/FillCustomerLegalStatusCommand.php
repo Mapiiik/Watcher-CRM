@@ -330,14 +330,22 @@ class FillCustomerLegalStatusCommand extends Command
             return null;
         }
 
-        $check = $customer->identityNumberCheck();
+        $answer = $customer->identityNumberAnswer();
 
-        if ($check === null) {
+        if ($answer->unanswered()) {
             $reason = __('No business register could be asked, try again later.');
             $unreached = true;
 
             return null;
         }
+
+        if (!$answer->ok()) {
+            $reason = __('No business register takes this number.');
+
+            return null;
+        }
+
+        $check = $answer->data;
 
         if ($check->status === IdentityNumberStatus::NotFound) {
             $reason = __('Not in the business register.');

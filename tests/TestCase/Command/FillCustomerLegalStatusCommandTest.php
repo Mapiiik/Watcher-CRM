@@ -233,6 +233,29 @@ class FillCustomerLegalStatusCommandTest extends TestCase
     }
 
     /**
+     * A number no register takes is not an outage: nobody is waited for, and a guess may stand in.
+     *
+     * @return void
+     * @link \App\Command\FillCustomerLegalStatusCommand::execute()
+     */
+    public function testANumberNoRegisterTakesIsNotWaitedFor(): void
+    {
+        StubSource::$takesNothing = true;
+        $this->givenCustomer(self::COMPANY_ID, legalStatus: null);
+
+        $this->exec('customers fill_legal_status --wait 0');
+
+        $this->assertExitSuccess();
+        $this->assertOutputContains('No business register takes this number.');
+        $this->assertOutputNotContains('turned the lookup');
+
+        $this->exec('customers fill_legal_status --guess identity-number --wait 0');
+
+        $this->assertExitSuccess();
+        $this->assertNotNull($this->legalStatusOf(self::COMPANY_ID));
+    }
+
+    /**
      * Without being told to check them all, a legal status somebody filled in is not asked about.
      *
      * @return void

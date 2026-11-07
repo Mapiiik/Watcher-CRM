@@ -147,38 +147,44 @@ class Registry
     }
 
     /**
-     * What the registers say about the identification number, null when none of them could be
-     * asked - none is configured, or the one that covers the number could not be reached.
-     *
-     * The registers are asked in turn and the first that holds the number answers. Which one
-     * that is follows from the number itself - a register hands back nothing for a number that
-     * is not its country's - so there is no country logic here to keep in step with them.
+     * What the registers say about the identification number, null when none of them could say.
      *
      * @param string|null $identityNumber The number as it is stored.
      * @return \App\BusinessRegister\IdentityNumberCheck|null
      */
     public static function identityNumberCheck(?string $identityNumber): ?IdentityNumberCheck
     {
+        return self::identityNumberAnswer($identityNumber)->or(null);
+    }
+
+    /**
+     * What the registers say about the identification number. Not asked when none is configured
+     * or none takes such a number, a failure when the one that covers it could not be reached.
+     *
+     * The registers are asked in turn and the first that holds the number answers. Which one that
+     * is follows from the number itself - a register does not ask about a number that is not its
+     * country's - so there is no country logic here to keep in step with them.
+     *
+     * @param string|null $identityNumber The number as it is stored.
+     * @return \App\Http\Answer<\App\BusinessRegister\IdentityNumberCheck>
+     */
+    public static function identityNumberAnswer(?string $identityNumber): Answer
+    {
         $identityNumber = trim((string)$identityNumber);
         if ($identityNumber === '') {
-            return null;
-        }
-
-        $keys = array_keys(self::sources());
-        if ($keys === []) {
-            return null;
+            return Answer::notAsked();
         }
 
         $answered = false;
-        $unreached = false;
-        foreach ($keys as $key) {
+        $failure = null;
+        foreach (array_keys(self::sources()) as $key) {
             $answer = self::byReferenceFromCache($key, $identityNumber);
 
             if (!$answer->ok()) {
                 // one register being down is not the others' answer, so the rest are still asked
                 if ($answer->unanswered()) {
                     Log::error('Could not look the identification number up: ' . $answer->failure);
-                    $unreached = true;
+                    $failure ??= (string)$answer->failure;
                 }
 
                 continue;
@@ -189,19 +195,24 @@ class Registry
             $subject = $answer->data;
             $company = trim((string)$subject?->name);
             if ($subject !== null && $company !== '') {
-                return new IdentityNumberCheck(
+                return Answer::of(new IdentityNumberCheck(
                     IdentityNumberStatus::Found,
                     $company,
                     $subject->addresses,
                     $subject->legalStatus,
-                );
+                ));
             }
         }
 
-        // Every register was asked and none holds it, which is an answer of its own - but only if
-        // they were all actually asked. Where one could not be, it may be the very one holding the
-        // number, and the others having nothing is no answer for it.
-        return $answered && !$unreached ? new IdentityNumberCheck(IdentityNumberStatus::NotFound) : null;
+        // Where one could not be reached, it may be the very one holding the number, and the others
+        // having nothing is no answer for it.
+        if ($failure !== null) {
+            return Answer::failed($failure);
+        }
+
+        // Every register that takes the number holds nothing, which is an answer of its own - but
+        // only if one of them took it. Nobody having looked is no verdict on the number.
+        return $answered ? Answer::of(new IdentityNumberCheck(IdentityNumberStatus::NotFound)) : Answer::notAsked();
     }
 
     /**
