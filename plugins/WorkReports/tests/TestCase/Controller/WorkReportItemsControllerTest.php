@@ -657,6 +657,36 @@ class WorkReportItemsControllerTest extends TestCase
     }
 
     /**
+     * Work going on under the closed day could no longer be finished and would hold the time after
+     * it, so the day is not closed over it. Work on a later day stays out of this.
+     *
+     * @return void
+     */
+    public function testADayIsNotClosedOverWorkStillGoingOn(): void
+    {
+        $reports = $this->getTableLocator()->get('WorkReports.WorkReports');
+        $report = $this->monthOfVacation(except: '2026-06-12');
+
+        $this->post('/work-reports/work-report-items/add', [
+            'work_report_item_type_id' => WorkReportItemTypesFixture::WORK,
+            'date' => '2026-06-12',
+            'time_from' => '08:00',
+            'time_until' => '',
+            'description' => 'Router upgrade',
+        ]);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-06-12']);
+        $this->assertResponseOk();
+        $this->assertResponseContains('Some work is still going on. Finish it first.');
+        $this->assertNull($reports->get($report->id)->closed_until);
+
+        $this->post('/work-reports/work-reports/close/' . $report->id, ['closed_until' => '2026-06-11']);
+        $this->assertRedirectContains('/work-reports/work-reports/sheet');
+        $this->assertEquals(new Date('2026-06-11'), $reports->get($report->id)->closed_until);
+    }
+
+    /**
      * A month belongs to whoever is on the list of workers. Somebody who is not on it has no
      * report of their own, and is told so rather than shown an empty month to fill in.
      *

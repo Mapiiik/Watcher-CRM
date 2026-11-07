@@ -329,6 +329,11 @@ class WorkReportsController extends AppController
                         'Nothing is reported on {0}.',
                         implode(', ', array_map(fn(Date $day): string => (string)$day, $missing)),
                     )]);
+                } elseif ($workReport->hasRunningItem(upTo: $asked)) {
+                    // work on a closed day can no longer be finished, and would hold the time after it
+                    $workReport->setError('closed_until', [
+                        'finished' => __d('work_reports', 'Some work is still going on. Finish it first.'),
+                    ]);
                 }
             }
 

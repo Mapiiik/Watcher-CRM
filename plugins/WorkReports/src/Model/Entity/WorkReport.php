@@ -68,12 +68,13 @@ class WorkReport extends AppEntity
     /**
      * Whether any of the items read with the report is work still going on.
      *
+     * @param \Cake\I18n\Date|null $upTo The last day to count in, every day when there is none.
      * @return bool
      */
-    public function hasRunningItem(): bool
+    public function hasRunningItem(?Date $upTo = null): bool
     {
         foreach ($this->work_report_items ?? [] as $item) {
-            if ($item->isRunning()) {
+            if ($item->isRunning() && ($upTo === null || $item->date <= $upTo)) {
                 return true;
             }
         }
