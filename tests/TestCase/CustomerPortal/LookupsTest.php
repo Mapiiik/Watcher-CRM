@@ -17,6 +17,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 class LookupsTest extends TestCase
 {
     /**
+     * What the clock was stopped at before this class moved it.
+     */
+    private ?Chronos $clock = null;
+
+    /**
      * Counters start empty, in a minute that stands still.
      *
      * @return void
@@ -26,6 +31,7 @@ class LookupsTest extends TestCase
     {
         parent::setUp();
         Cache::clear('default');
+        $this->clock = Chronos::getTestNow();
         Chronos::setTestNow('2026-10-12 10:00:15');
     }
 
@@ -35,7 +41,7 @@ class LookupsTest extends TestCase
     #[Override]
     protected function tearDown(): void
     {
-        Chronos::setTestNow(null);
+        Chronos::setTestNow($this->clock);
         parent::tearDown();
     }
 

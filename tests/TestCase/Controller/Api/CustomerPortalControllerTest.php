@@ -593,6 +593,7 @@ class CustomerPortalControllerTest extends TestCase
     public function testAServiceGoingThroughAddressesIsRefused(): void
     {
         Settings::set('core.customer_portal.identify_per_minute', 2);
+        $clock = Chronos::getTestNow();
         Chronos::setTestNow('2026-10-12 10:00:15');
 
         try {
@@ -606,7 +607,7 @@ class CustomerPortalControllerTest extends TestCase
             $this->assertResponseCode(429);
             $this->assertResponseNotContains('NETAIR');
         } finally {
-            Chronos::setTestNow(null);
+            Chronos::setTestNow($clock);
         }
     }
 
@@ -619,6 +620,7 @@ class CustomerPortalControllerTest extends TestCase
     public function testAVisitorReloadingAPageLocksNobodyOut(): void
     {
         Settings::set('core.customer_portal.identify_per_minute', 2);
+        $clock = Chronos::getTestNow();
         Chronos::setTestNow('2026-10-12 10:00:15');
 
         try {
@@ -632,7 +634,7 @@ class CustomerPortalControllerTest extends TestCase
             $this->assertResponseOk();
             $this->assertResponseContains('NETAIR');
         } finally {
-            Chronos::setTestNow(null);
+            Chronos::setTestNow($clock);
         }
     }
 
@@ -1068,6 +1070,7 @@ class CustomerPortalControllerTest extends TestCase
         $signedIn = $this->signIn(self::PASSWORD)['token'];
         $link = (string)$this->requestAccess($this->customerNumber(self::CUSTOMER_ID), 'customer@example.com')['token'];
 
+        $clock = Chronos::getTestNow();
         Chronos::setTestNow(Chronos::now()->addMinutes(1));
         try {
             $this->asPortal();
@@ -1082,7 +1085,7 @@ class CustomerPortalControllerTest extends TestCase
             $this->get('/api/customer-portal/customer');
             $this->assertResponseCode(401);
         } finally {
-            Chronos::setTestNow(null);
+            Chronos::setTestNow($clock);
         }
     }
 
